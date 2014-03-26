@@ -1,0 +1,285 @@
+
+a{
+    display: block;
+    text-decoration: none;
+    color:#000;
+    padding: 3px 0;
+    font-weight: bold;
+}
+
+strong{
+    text-decoration: underline;
+}
+
+/*
+.weaponsForms, .addAlienForm, .classifySpecies{
+    float: left;
+    width: 224px;
+    margin: 15px;
+    display:block;
+    border: 1px solid #000;
+    background: #dde;
+}
+
+.classifySpecies{
+    width: 275px;
+}
+
+.addAlienForm{
+    width: 325px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.weaponsForms{
+    width: 374px;
+}*/
+/*
+input,label,select{
+    display:block;
+}
+
+label{
+    margin-top:8px;
+    overflow: auto;
+    padding:0 10px;
+}
+
+input[type="submit"]{
+    margin:10px;
+}
+
+input[type="text"],input[type="submit"], select{
+    float:right;
+}
+
+input,select{
+    width: 200px;
+}
+*/
+form.classifySpecies input,label{
+    float:none;
+    margin:8px auto;
+}
+
+form.classifySpecies label{
+    text-align: center;
+}
+
+tr{
+    background: #ccc;
+}
+
+tr:nth-child(even) {
+    background: #dde;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+#messages{
+	/*margin: 2px 0;*/
+}
+
+.hiddenMsg{
+	visibility:hidden;
+	padding:10px 0 5px;
+}
+
+.userMsg,.errorMsg{
+	visibility:visible;
+    font-weight: bold;
+	text-align:center;
+	margin: 1px 0;
+}
+
+.userMsg{
+	color:green;
+}
+
+.errorMsg{
+	color:red;
+}
+
+.dataTable, .dataObjectTable{
+	display: table;
+    border:1px solid #000;
+    margin-bottom: 20px;
+}
+
+.dataTable .tableHeader, .tableData{
+	display: table-cell;
+    border:1px solid #000;
+    padding:2px 5px;
+    white-space: nowrap;
+    height: 20px;
+}
+
+.dataTable td,th{
+    border:1px solid #000;
+    padding:2px 5px;
+    white-space: nowrap;
+    height: 20px;
+}
+
+.dataTable td input{
+    margin:0;
+    padding:0 5px;
+    /*width:100%;*/
+}
+/*
+.dataTable .dataRow:hover{
+    background-color: #FFF;
+    cursor:pointer;
+}
+*/
+
+.dataTable .dataRow{
+    display:table-row;
+}
+
+.dataTable .headerRow{
+	display:table-row;
+    background-color: #bfbfbf; 
+}
+
+.dataTable .tableCaption{
+    /*font-weight: bold;*/
+	display:table-caption;
+    color:#fff;
+    background-color: #000;
+    font-size:1.2em;
+}
+
+
+.dataTable caption{
+    /*font-weight: bold;*/
+    color:#fff;
+    background-color: #000;
+    font-size:1.2em;
+}
+
+.dataObjectTable caption{
+    /*font-weight: bold;*/
+    color:#fff;
+    background-color: #000;
+    font-size:1.2em;
+}
+
+.dataObjectTable label{
+    display:block;
+	float:left;
+	padding:5px;
+}
+
+.dataObjectTable td,th{
+	border:1px solid #000;
+    padding:2px 5px;
+    white-space: nowrap;
+    height: 20px;
+}
+
+.dataObjectTable input[type="submit"]{
+	margin:5px;
+	float:right;
+}
+
+#wrapper{
+    background-color: #ededed;
+    /*overflow:auto;*/
+	/*width:100%*/
+	display:inline-block;
+    margin: 15px 0 50px;
+	min-width:100%;
+}
+
+#menu, #content, #footer{
+    border:1px solid #999;
+    background:#CCC;
+}
+
+table{
+   overflow:auto;
+}
+
+#content{
+    margin-bottom: 15px;
+   /* overflow:auto;*/
+	/*overflow:hidden;*/
+
+    padding:15px;
+    /*background-image: url('../images/ufo.png');*/
+    background-repeat: no-repeat;
+    background-position: center;
+	/*width:100%;*/
+}
+
+#menu{
+   /* margin-bottom: 15px;*/
+    padding:5px;
+    overflow: auto;
+}
+
+#menu form{
+    display:block;
+    float: left;
+    margin:0;
+    padding:0;
+}
+
+#menu form input{
+    margin:0;
+    padding:0;
+    float:left;
+}
+
+#menu form.searchForm{
+    display:block;
+   
+    float: left;
+    margin:0 30px 0;
+    padding:0;
+}
+
+#menu form.searchForm input{
+    margin-top: 5px;
+}
+
+#menu a{
+    font-weight: bold;
+    color:#000;
+    text-decoration: none;
+    display:block;
+    float: left;
+    font-size: 1.5em;
+    margin:5px;
+    padding:0;
+    /*border:1px solid #ccc;*/
+    border-radius:3px;
+}
+
+#menu a:hover{
+    background-color: #fff;
+     /*box-shadow: 5px 5px #000;*/
+    /*border:1px solid #eee;*/
+    box-shadow: -5px -5px 15px #fff, 5px -5px 20px #fdfdfd, 5px 5px 15px #fcfcfc, -5px 5px 20px #fcfcfc;
+}
+
+#menu .logoutForm{
+    float: right;
+}
+
+#menu a.currentLink{
+    background-color: #eee;
+     box-shadow: -5px -5px 20px #eee, 5px -5px 15px #ededed, 5px 5px 20px #ececec, -5px 5px 15px #ececec;
+    /*border:1px solid #999;*/
+}
+
+#footer{
+    padding:15px;
+}
+
+#footer p{
+    text-align: center;
+}

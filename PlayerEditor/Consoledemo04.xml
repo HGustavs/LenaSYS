@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script>
+<timestep delay="0.198">
+</timestep>
+<timestep delay="0.014">
+<special state="8bit" />
+</timestep>
+<timestep delay="0.000">
+<color foreground="intense-green" />
+<text>fish</text>
+<color operation="reset" />
+<text>@</text>
+<color foreground="intense-yellow" />
+<text>iki188 </text>
+<color foreground="intense-default" />
+<text>~/playground/scriptinterpreter</text>
+<color operation="reset" />
+<text> &gt; </text>
+</timestep>
+<timestep delay="0.000">
+<text>H</text>
+</timestep>
+<timestep delay="1.555">
+<text>e</text>
+</timestep>
+<timestep delay="0.233">
+<text>l</text>
+</timestep>
+<timestep delay="0.117">
+<text>l</text>
+</timestep>
+<timestep delay="0.155">
+<text>o</text>
+</timestep>
+<timestep delay="0.232">
+</timestep>
+<timestep delay="0.882">
+</timestep>
+<timestep delay="0.194">
+</timestep>
+<timestep delay="0.155">
+</timestep>
+<timestep delay="0.193">
+</timestep>
+<timestep delay="0.155">
+<text>w</text>
+</timestep>
+<timestep delay="0.349">
+<text>o</text>
+</timestep>
+<timestep delay="0.155">
+<text>r</text>
+</timestep>
+<timestep delay="0.270">
+<text>l</text>
+</timestep>
+<timestep delay="0.116">
+<text>d</text>
+</timestep>
+<timestep delay="0.233">
+<text>!</text>
+</timestep>
+<timestep delay="0.461">
+<newline />
+</timestep>
+<timestep delay="1.115">
+<text>bash: world!: command not found</text>
+<newline />
+</timestep>
+<timestep delay="0.000">
+<color foreground="intense-green" />
+<text>fish</text>
+<color operation="reset" />
+<text>@</text>
+<color foreground="intense-yellow" />
+<text>iki188 </text>
+<color foreground="intense-default" />
+<text>~/playground/scriptinterpreter</text>
+<color operation="reset" />
+<text> &gt; </text>
+</timestep>
+<timestep delay="0.001">
+<text>e</text>
+</timestep>
+<timestep delay="1.654">
+<text>x</text>
+</timestep>
+<timestep delay="0.193">
+<text>i</text>
+</timestep>
+<timestep delay="0.083">
+<text>t</text>
+</timestep>
+<timestep delay="0.075">
+<newline />
+<text>exit</text>
+<newline />
+</timestep>
+</script>

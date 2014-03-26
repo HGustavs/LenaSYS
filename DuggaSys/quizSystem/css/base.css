@@ -1,0 +1,68 @@
+/* CSS Document */
+
+html, body, ol, li, table, td, th, tr {margin:0;padding:0;}
+
+html {font-size:125%;}
+
+body{
+    font-size:50%;
+    background-color:#BEC3C6;
+}
+
+p, a, h1, h2, h3, h4, h5, table, td, th, label, caption{
+    font-family:Helvetica, Arial, sans-serif;
+}
+
+h1{
+    font-size:3.4em;
+}
+
+h2{
+    font-size:2.1em;
+    clear:both;
+}
+
+p, a{
+    font-size:1.4em;
+}
+
+th, td, caption{
+    font-size:1.0em;
+}
+
+p a{
+    font-size:14px;
+}
+
+a {outline: none;}
+
+table{
+    border-collapse:collapse;
+    border-spacing: 0px;
+    clear:both;
+}
+
+fieldset{
+    border:1px solid #CCCCCC;
+    background-color:#F3F3F3;
+    margin:10px 0;
+    padding: 15px 10px;
+}
+
+textarea {
+    resize: none;
+} 
+
+form{
+    padding:0;
+}
+
+form h3{
+    padding:0;
+    margin:0;
+    text-align: center;
+    color: #fff;
+    background-color:#000;
+    font-size:1.6em;
+    font-weight:normal;
+}

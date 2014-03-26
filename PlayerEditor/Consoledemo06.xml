@@ -1,0 +1,2155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script>
+<timestep delay="0.433">
+</timestep>
+<timestep delay="0.016">
+<special state="8bit" />
+</timestep>
+<timestep delay="0.000">
+<color foreground="intense-green" />
+<text>fish</text>
+<color operation="reset" />
+<text>@</text>
+<color foreground="intense-yellow" />
+<text>iki188 </text>
+<color foreground="intense-default" />
+<text>~/playground/scriptinterpreter</text>
+<color operation="reset" />
+<text> &gt; </text>
+</timestep>
+<timestep delay="0.000">
+<text>t</text>
+</timestep>
+<timestep delay="0.862">
+<text>o</text>
+</timestep>
+<timestep delay="0.118">
+<text>p</text>
+</timestep>
+<timestep delay="0.115">
+<newline />
+</timestep>
+<timestep delay="0.118">
+<cursor state="save" />
+<screen switchto="1" />
+<cursor key-control="application" />
+<cursor show="true" />
+</timestep>
+<timestep delay="0.007">
+<cursor absoluterow="1" absolutecolumn="1" />
+<erase scope="in_page" range="all" />
+<text>B</text>
+<text>top - 14:25:47 up 35 min,  6 users,  load average: 0.03, 0.10, 0.17</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>Tasks:</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 187 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>running,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 186 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sleeping,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>stopped,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>zombie</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.153">
+<text>%Cpu(s):</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  2.7 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>us,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.8 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sy,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>ni,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 96.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>id,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.4 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>wa,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>hi,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>si,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>st</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>KiB Mem: </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  8044016 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  3744264 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>used,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  4299752 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>free,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   136132 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>buffers</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>KiB Swap:</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>used,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>free,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  1931064 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>cached</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<cursor absoluterow="6" absolutecolumn="1" />
+<newline />
+<text>  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    1 root      20   0   32740   3592   1924 S   0.0  0.0   0:00.58 systemd     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+<text>B</text>
+<text>    2 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kthreadd    </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    3 root      20   0       0      0      0 S   0.0  0.0   0:00.13 ksoftirqd/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    7 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    8 root      20   0       0      0      0 S   0.0  0.0   0:00.72 rcu_preempt </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    9 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh      </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   10 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_sched   </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   11 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/0  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   12 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/1  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   13 root      rt   0       0      0      0 S   0.0  0.0   </text>
+</timestep>
+<timestep delay="0.000">
+<text>0:00.00 migration/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   14 root      20   0       0      0      0 S   0.0  0.0   0:00.31 ksoftirqd/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   16 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/1:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   17 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/2  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   18 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   19 root      20   0       0      0      0 S   0.0  0.0   0:00.12 ksoftirqd/2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   21 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/2:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<cursor show="true" />
+<cursor absoluterow="6" absolutecolumn="1" />
+<text>Change delay from 3.0 to </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<cursor blinking="false" />
+<cursor show="false" />
+</timestep>
+<timestep delay="1.950">
+<cursor absoluterow="6" absolutecolumn="26" />
+<text>1</text>
+<cursor absoluterow="6" absolutecolumn="27" />
+</timestep>
+<timestep delay="0.500">
+<cursor show="true" />
+<cursor absoluterow="1" absolutecolumn="1" />
+<text>B</text>
+<text>top - 14:25:50 up 35 min,  6 users,  load average: 0.03, 0.10, 0.17</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>Tasks:</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 187 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>running,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 185 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sleeping,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>stopped,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>zombie</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>%Cpu(s):</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.5 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>us,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.3 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sy,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>ni,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 99.2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>id,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>wa,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>hi,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>si,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>st</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>KiB Mem: </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  8044016 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  3744428 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>used,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  4299588 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>free,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   136132 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>buffers</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>KiB Swap:</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>used,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>free,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  1931168 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>cached</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<cursor absoluterow="6" absolutecolumn="1" />
+<newline />
+<text>  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  757 fish      20   0 3350356 175504  57116 S   2.1  2.2   0:33.58 plasma-des+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  411 root      20   0  191152  62000  42888 S   1.1  0.8   1:00.34 X           </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  747 fish      20   0 2948836  70760  40160 S   0.7  0.9   0:28.19 kwin        </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    8 root      20   0       0      0      0 S   0.4  0.0   0:00.73 rcu_preempt </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  426 tor       20   0   41744  20900   5172 S   0.4  0.3   0:01.48 tor         </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  761 fish      20   0    9844   1328    880 S   0.4  0.0   0:02.91 ksysguardd  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text> 1050 fish      20   0 4643800 109680  22992 S   0.4  1.4   0:09.51 java        </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    1 root      20   0   32740   3592   1924 S   0.0  0.0   0:00.58 systemd     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    2 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kthreadd    </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    3 root      20   0       0      0      0 S   0.0  0.0   0:00.13 ksoftirqd/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    7 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    9 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh      </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   10 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_sched   </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   11 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/0  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   12 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/1  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   13 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.352">
+<cursor absoluterow="1" absolutecolumn="1" />
+<text>B</text>
+<text>top - 14:25:51 up 35 min,  6 users,  load average: 0.03, 0.10, 0.17</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>Tasks:</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 187 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>running,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 186 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sleeping,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>stopped,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>zombie</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>%Cpu(s):</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>us,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sy,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>ni,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 99.5 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>id,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>wa,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>hi,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>si,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>st</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+</timestep>
+<timestep delay="1.006">
+<newline />
+<cursor absoluterow="6" absolutecolumn="1" />
+<newline />
+<newline />
+<text>B</text>
+<text> 7301 fish      20   0   66080   6988   5824 S   1.0  0.1   0:00.07 xterm       </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    1 root      20   0   32740   3592   1924 S   0.0  0.0   0:00.58 systemd     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    2 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kthreadd    </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    3 root      20   0       0      0      0 S   0.0  0.0   0:00.13 ksoftirqd/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    7 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    8 root      20   0       0      0      0 S   0.0  0.0   0:00.73 rcu_preempt </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    9 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh      </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   10 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_sched   </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   11 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/0  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   12 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/1  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   13 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   14 root      20   0       0      0      0 S</text>
+</timestep>
+<timestep delay="0.000">
+<text>   0.0  0.0   0:00.31 ksoftirqd/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   16 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/1:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   17 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/2  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   18 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   19 root      20   0       0      0      0 S   0.0  0.0   0:00.12 ksoftirqd/2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<cursor absoluterow="1" absolutecolumn="1" />
+<text>B</text>
+<text>top - 14:25:52 up 35 min,  6 users,  load average: 0.03, 0.10, 0.17</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<text>%Cpu(s):</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  1.2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>us,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.5 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sy,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>ni,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 98.3 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>id,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>wa,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>hi,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>si,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>st</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<newline />
+<cursor absoluterow="6" absolutecolumn="1" />
+<newline />
+<newline />
+<text>B</text>
+<text>  757 fish      20   0 3350356 175504  57116 S   3.0  2.2   0:33.61 plasma-des+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="1.005">
+<newline />
+<text>B</text>
+<text>    3 root      20   0       0      0      0 S   1.0  0.0   0:00.14 ksoftirqd/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  411 root      20   0  191152  62000  42888 S   1.0  0.8   1:00.35 X           </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  747 fish      20   0 2949028  70760  40160 S   1.0  0.9   0:28.20 kwin        </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text> 7346 fish      20   0   18032   1564   1108 R   1.0  0.0   0:00.01 top         </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    1 root      20   0   32740   3592   1924 S   0.0  0.0   0:00.58 systemd     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    2 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kthreadd    </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    7 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    8 root      20   0       0      0      0 S   0.0  0.0   0:00.73 rcu_preempt </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    9 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh      </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   10 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_sched   </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   11 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/0  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   12 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/1  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   13 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/1 </text>
+<text>B</text>
+</timestep>
+<timestep delay="0.000">
+<text>m</text>
+<newline />
+<text>B</text>
+<text>   14 root      20   0       0      0      0 S   0.0  0.0   0:00.31 ksoftirqd/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   16 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/1:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<cursor absoluterow="1" absolutecolumn="1" />
+<text>B</text>
+<text>top - 14:25:53 up 35 min,  6 users,  load average: 0.03, 0.10, 0.17</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<text>%Cpu(s):</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>us,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sy,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>ni,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 99.8 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>id,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>wa,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>hi,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>si,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>st</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<text>KiB Swap:</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>used,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>free,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  1931176 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>cached</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<cursor absoluterow="6" absolutecolumn="1" />
+</timestep>
+<timestep delay="1.007">
+<newline />
+<newline />
+<text>B</text>
+<text>  411 root      20   0  191152  62000  42888 S   1.0  0.8   1:00.36 X           </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    1 root      20   0   32740   3592   1924 S   0.0  0.0   0:00.58 systemd     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    2 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kthreadd    </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    3 root      20   0       0      0      0 S   0.0  0.0   0:00.14 ksoftirqd/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    7 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    8 root      20   0       0      0      0 S   0.0  0.0   0:00.73 rcu_preempt </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    9 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh      </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   10 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_sched   </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+<text>B</text>
+<text>   11 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/0  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   12 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/1  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   13 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   14 root      20   0       0      0      0 S   0.0  0.0   0:00.31 ksoftir</text>
+</timestep>
+<timestep delay="0.000">
+<text>qd/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   16 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/1:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   17 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/2  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   18 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+<text>B</text>
+<text>   19 root      20   0       0      0      0 S   0.0  0.0   0:00.12 ksoftirqd/2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<cursor absoluterow="1" absolutecolumn="1" />
+<text>B</text>
+<text>top - 14:25:54 up 35 min,  6 users,  load average: 0.03, 0.10, 0.17</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<text>%Cpu(s):</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  1.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>us,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sy,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>ni,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 98.8 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>id,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>wa,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>hi,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>si,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>st</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<newline />
+<cursor absoluterow="6" absolutecolumn="1" />
+<newline />
+<newline />
+</timestep>
+<timestep delay="1.005">
+<text>B</text>
+<text>  757 fish      20   0 3350356 175504  57116 S   3.0  2.2   0:33.64 plasma-des+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  747 fish      20   0 2948836  70760  40160 S   1.0  0.9   0:28.21 kwin        </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text> 7346 fish      20   0   18032   1564   1108 R   1.0  0.0   0:00.02 top         </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    1 root      20   0   32740   3592   1924 S   0.0  0.0   0:00.58 systemd     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    2 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kthreadd    </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    3 root      20   0       0      0      0 S   0.0  0.0   0:00.14 ksoftirqd/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    7 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    8 root      20   0       0      0      0 S   0.0  0.0   0:00.73 rcu_preempt </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    9 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh      </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+<text>B</text>
+<text>   10 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_sched   </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   11 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/0  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   12 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/1  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   13 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   14 root      20   0       0      0      0 S   0.0  0.0   0:00.31 ksoftirqd/1 </text>
+<text>B</text>
+</timestep>
+<timestep delay="0.000">
+<text>m</text>
+<newline />
+<text>B</text>
+<text>   16 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/1:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   17 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/2  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<cursor absoluterow="1" absolutecolumn="1" />
+<text>B</text>
+<text>top - 14:25:55 up 35 min,  6 users,  load average: 0.03, 0.10, 0.17</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<text>%Cpu(s):</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>us,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.2 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sy,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>ni,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 99.5 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>id,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>wa,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>hi,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>si,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>st</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<newline />
+<cursor absoluterow="6" absolutecolumn="1" />
+<newline />
+<newline />
+</timestep>
+<timestep delay="1.006">
+<text>B</text>
+<text>  411 root      20   0  191152  62000  42888 S   1.0  0.8   1:00.37 X           </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  623 fish      20   0 1286056  39264  24552 S   1.0  0.5   0:01.55 kded4       </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text> 1095 fish      20   0  547896  38060  23624 S   1.0  0.5   0:06.03 konsole     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text> 7346 fish      20   0   18032   1564   1108 R   1.0  0.0   0:00.03 top         </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    1 root      20   0   32740   3592   1924 S   0.0  0.0   0:00.58 systemd     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    2 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kthreadd    </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    3 root      20   0       0      0      0 S   0.0  0.0   0:00.14 ksoftirqd/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    7 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    8 root      20   0       0      0      0 S   0.0  0.0   0:00.73 rcu_preempt </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    9 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh      </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   10 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_sched   </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   11 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/0  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+<text>B</text>
+<text>   12 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/1  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   13 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/1 </text>
+<text>B</text>
+</timestep>
+<timestep delay="0.000">
+<text>m</text>
+<newline />
+<text>B</text>
+<text>   14 root      20   0       0      0      0 S   0.0  0.0   0:00.31 ksoftirqd/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   16 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/1:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<cursor absoluterow="1" absolutecolumn="1" />
+<text>B</text>
+<text>top - 14:25:56 up 35 min,  6 users,  load average: 0.02, 0.10, 0.17</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<newline />
+<text>%Cpu(s):</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.7 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>us,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.5 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>sy,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>ni,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text> 98.8 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>id,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>wa,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>hi,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>si,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  0.0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>st</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>KiB Mem: </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  8044016 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  3744552 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>used,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  4299464 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>free,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>   136132 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>buffers</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>KiB Swap:</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>total,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>used,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>        0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>free,</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>  1931184 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>cached</text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="1.006">
+<cursor absoluterow="6" absolutecolumn="1" />
+<newline />
+<newline />
+<text>B</text>
+<text>  757 fish      20   0 3350356 175504  57116 S   2.0  2.2   0:33.66 plasma-des+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  761 fish      20   0    9844   1328    880 S   2.0  0.0   0:02.93 ksysguardd  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>  411 root      20   0  191152  62000  42888 S   1.0  0.8   1:00.38 X           </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text> 1050 fish      20   0 4643800 109680  22992 S   1.0  1.4   0:09.52 java        </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text> 7301 fish      20   0   66080   6988   5824 S   1.0  0.1   0:00.08 xterm       </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    1 root      20   0   32740   3592   1924 S   0.0  0.0   0:00.58 systemd     </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    2 root      20   0       0      0      0 S   0.0  0.0   0:00.00 kthreadd    </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    3 root      20   0       0      0      0 S   0.0  0.0   0:00.14 ksoftirqd/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    5 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:+ </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>    7 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/0 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<newline />
+<text>B</text>
+<text>    8 root      20   0       0      0      0 S   0.0</text>
+</timestep>
+<timestep delay="0.000">
+<text>  0.0   0:00.73 rcu_preempt </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>    9 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_bh      </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   10 root      20   0       0      0      0 S   0.0  0.0   0:00.00 rcu_sched   </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   11 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/0  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+<text>B</text>
+<text>   12 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 watchdog/1  </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   13 root      rt   0       0      0      0 S   0.0  0.0   0:00.00 migration/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+<newline />
+</timestep>
+<timestep delay="0.000">
+<text>B</text>
+<text>   14 root      20   0       0      0      0 S   0.0  0.0   0:00.31 ksoftirqd/1 </text>
+<text>B</text>
+<color foreground="normal-default" />
+<color background="normal-default" />
+</timestep>
+<timestep delay="0.000">
+<cursor show="true" />
+<cursor key-control="terminal" />
+<newline />
+<cursor state="restore" />
+<screen switchto="0" />
+<cursor blinking="false" />
+<cursor show="false" />
+</timestep>
+<timestep delay="0.743">
+<color foreground="intense-green" />
+<text>fish</text>
+<color operation="reset" />
+<text>@</text>
+<color foreground="intense-yellow" />
+<text>iki188 </text>
+<color foreground="intense-default" />
+<text>~/playground/scriptinterpreter</text>
+<color operation="reset" />
+<text> &gt; </text>
+</timestep>
+<timestep delay="0.001">
+<text>exit</text>
+<newline />
+</timestep>
+</script>
