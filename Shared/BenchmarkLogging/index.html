@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGL Benchmark Test Page</title>
+    <style>
+
+        .group 
+        {
+					display: block;
+        	padding: 1em;
+	    			width: 100%;
+        	margin: auto auto;
+					font-family: "Franklin Gothic Medium", "Franklin Gothic", "ITC Franklin Gothic", Arial, sans-serif;
+				}
+
+        .group h1
+        {
+        	font-weight: normal;
+        	font-size: 1.8em;
+					margin-bottom: 1em;
+
+					font-family: Cambria, Georgia, serif;
+        }
+
+				.group .info
+				{	
+					padding: 0.4em;
+					margin: 0.5em;
+					font-size: 1em;
+					color: #000;
+				}
+
+				.group .info:first-letter
+				{	
+					font-size:1.3em;
+				}
+
+	      .group h2
+	      {
+					font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif; 
+					border-bottom: 2px solid #000;
+					color: #fff;
+					background: #c0d0e0;
+					background-color: #c0d0e0;
+			
+					text-shadow: 1px 1px 2px #000;
+					font-weight:normal;            
+			
+					background: linear-gradient(to top, #abc 10%, #89a 90%, #678 99% );
+					background: -webkit-linear-gradient(bottom, #abc 10%, #89a 90%, #678 99%);
+					background: -moz-linear-gradient(bottom, #abc 10%, #89a 90%, #678 99%);
+			          
+					font-size: 1.4em;
+					margin-top: 1em;
+		    	margin-bottom: 0;
+					padding:3px;
+			      
+	      	padding-left:20px;
+	      }
+
+        a
+        {
+        	line-height: 2em;
+        	margin-left: 1.3em;
+        	color: black;
+        	text-decoration: underline;
+        	font-size: 1em;
+        }
+        
+        li
+        {
+						color: #555;
+        }
+    
+        a:hover
+        {
+        	text-decoration: none;
+        }
+
+				.container
+				{
+					border-left: 2px dotted #ddd;
+					margin-left: 8px;	
+				}
+			
+				.container .demo
+				{
+					float:right;
+				}
+		
+				body{
+					margin:0;
+				}
+		
+				#menu
+				{
+					position:fixed;
+					top:40px;
+					width:10.5%;
+					padding: 10px 0 1% 0.3%;
+					background: #c0d0e0;
+					background-color: #c0d0e0;
+					border-bottom-right-radius: 1.3em;
+					border-top-right-radius: 1.3em;
+					border-bottom: 2px solid #000;
+					border-right: 1px solid #000;
+					color: #fff;
+
+					text-shadow: 1px 1px 2px #000;
+					font-weight:bolder;
+
+					background:#678;
+					background-color:#678;
+
+ 					background: linear-gradient(to top, #abc 10%, #89a 90%, #678 99% );
+					background: -webkit-linear-gradient(bottom, #abc 10%, #89a 90%, #678 99%);
+					background: -moz-linear-gradient(bottom, #abc 10%, #89a 90%, #678 99%);
+
+				}
+				
+				#menu #menuHeader{
+					margin:0 0 1.5% 0;
+					background:#333333;
+					width:97%;
+					height:31px;
+					padding-left:10px;
+					margin-left:-10px;
+					border-radius: 0 10px 10px 0
+				}
+				
+				#menuHeader h3{
+					float:left;
+					font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif; 
+					font-size:1.2em;
+					background-color:#333;
+					color:#fff;
+					width:80%;
+					margin-top:4px;
+					padding:0;
+				}
+				
+				#menuArrow{
+					float:left;
+					padding:0;
+					margin-top:8px;
+					width:15%;
+				}
+				
+				#menu a{
+					display:block;color:#fff;
+					font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif; 
+					text-decoration: none; 
+					margin-left:1%;
+					font-size:100%
+				}
+				
+				#menu a:hover{
+					font-weight:bolder;
+					text-decoration:underline;
+				}
+				
+				#menuItems{
+					float:left;
+					width:80%;
+				}
+				
+				#sidebar{
+					float:left;
+					min-width:11%;
+					min-height:100px;
+					overflow:auto;
+				}
+				
+				#content{
+					float:left;
+					width:75%;
+				}
+		
+    </style>
+    
+	</script>
+</head>
+<body>
+	<div id="content">
+    <div class="group">
+    	<h1>Benchmarks</h1>
+
+        <h2 id="Assignments">Benchmarks</h2>
+				<div class="container">
+					<a href='Test1Perlin.html'>Main Benchmark - This is what we consider to be an <i>ordinary</i> WebGL shader.</a><br>	
+					<a href='Test1Perlin2.html'>Lower Resolution of the Main Benchmark mainly for benchmarking Mobile Platforms</a><br>	
+					<a href='Test1Mountains.html'>Shader Stress Test</a><br>	
+					<a href='Test1Mountains2.html'>Shader Stress Test High</a><br>	
+					<a href='Test1ShaderStartup.html'>Minimum Shader Startup Test</a><br>	
+
+					<br>
+
+					<ul>
+							<li>The startup test is an even smaller app for testing if WebGL works on any platform.</li>
+							<li>An internet connection is necessary during the benchmark.</li>
+							<li>Shader performance may vary, some GPU configurations may execute the stress tests faster than the ordinary benchmark.</li>
+							<li>Run the benchmark for at least 1 minute as performance often is slower at first.</li>
+							<li>Some plugins may under certain conditions affect WebGL performance. Consider disabling <i>Firebug</i>, <i>Greasemonkey</i> and similar plugins if accurate benchmarking performance is needed.</li>
+							<li>Any development computer must be able to run these benchmarks without major visual artifacts</li>
+							<li>We consider interactive framerates on the main benchmark to be sufficient for development computers.</li>
+							<li>Interactive frame rates on the shader stress test (especially High resolution version) is not necessary for our purpouses.</li>
+							<li>If any development computer runs the stress test benchmarks other development computers should be <i>largely unaffected.</i></li>
+					</ul>
+
+					Stress test shader was made by <a href="https://www.shadertoy.com/">iq</a>
+
+	    	</div>
+    </div> <!---- End Group div ----> 
+
+	</div>
+</body>
+</html>
