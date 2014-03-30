@@ -56,7 +56,7 @@ INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) val
 CREATE TABLE codeexample(
 		exampleno		  MEDIUMINT NOT NULL AUTO_INCREMENT,
 		coursename 		VARCHAR(64),
-		sectionname		VARCHAR(64),
+		sectionno		  MEDIUMINT,
 		examplename		VARCHAR(64),
 		wordlist			VARCHAR(64),
 		runlink			  VARCHAR(64),
@@ -67,16 +67,17 @@ CREATE TABLE codeexample(
 		PRIMARY KEY(exampleno)		
 );
 
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","Javascript","Events 1","JS","",0,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","Javascript","Events 2","JS","",1,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","Javascript","Callback 1","GLSL","Culf.html",2,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","Javascript","Callback 2","GLSL","Dulf.html",3,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","Javascript","Callback 3","GLSL","",4,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","Javascript","Callback 4","JS","Fulf.html",5,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","HTML5","Design 1","GLSL","Gulf.html",0,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","HTML5","Design 2","JS","Hulf.html",1,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","HTML5","Design 3","JS","Iulf.html",2,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering","HTML5","Design 4","JS","Julf.html",3,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Events 1","JS","",0,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Events 2","JS","",1,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Callback 1","GLSL","Culf.html",2,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Callback 2","GLSL","Dulf.html",3,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Callback 3","GLSL","",4,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Callback 4","JS","Fulf.html",5,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 1","GLSL","Gulf.html",0,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 2","JS","Hulf.html",1,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 3","JS","Iulf.html",2,"Creationscript",2013);
+INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 4","JS","Julf.html",3,"Creationscript",2013);
+
 
 
 /* improw contains a list of the important rows for a certain example */
