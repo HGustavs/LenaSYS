@@ -25,86 +25,20 @@ function countsect(sectpos)
 		}
 		return cnt;
 }
-		
-function sendOut(sectpos,pos,sectname,kind)
-{
-			// Either move section or example one step up
-			if(kind=='UP'){
-					if(pos==-1){
-							if(sectpos==0){
-									alert('First section cannot be moved up!');
-							}else{
-									AJAXServiceSection("sectionUp","&sectpos="+sectpos+"&pos="+pos);		
-							}
-					}else{
-							if(pos==0){
-									alert('First example cannot be moved up!');
-							}else{
-									AJAXServiceSection("exampleUp","&sectpos="+sectpos+"&pos="+pos+"&sectname="+sectname);											
-							}
-					}
-			}else if(kind=='DO'){
-					if(pos==-1){
-							if(sectpos==retdata['sections'].length-1){
-									alert('Last section cannot be moved down!!');
-							}else{
-									AJAXServiceSection("sectionDown","&sectpos="+sectpos+"&pos="+pos);		
-							}
-					}else{
-							if(pos==countsect(sectpos)-1){
-									alert('Last example cannot be moved down!');
-							}else{
-									AJAXServiceSection("exampleDown","&sectpos="+sectpos+"&pos="+pos+"&sectname="+sectname);
-							}
-					}
-			}else if(kind=='PL'){
-					if(pos==-1){
-							AJAXServiceSection("exampleNewSection","&sectpos="+sectpos+"&pos="+pos+"&sectname="+sectname);
-					}else{
-							AJAXServiceSection("exampleNew","&sectpos="+sectpos+"&pos="+pos+"&sectname="+sectname);
-					}
-			}else if(kind=='PP'){
-					location="EditorV30.php?courseid="+courseID+"&sectionid="+sectname+"&version="+vers+"&position="+pos;						
-			}else if(kind=='MI'){
-					if(pos==-1){
-							if(confirm("Do you really want to delete this section and all examples in it?")){
-									AJAXServiceSection("sectionDel","&sectpos="+sectpos+"&sectname="+sectname);					
-							}
-					}else{
-							if(confirm("Do you really want to delete this example?")){
-									AJAXServiceSection("exampleDel","&pos="+pos+"&sectname="+sectname+"&sectpos="+sectpos+"&sectname="+sectname);					
-							}
-					}
-			}
-			
-			return false;
-}
 			
 function newSection(kind)
 {
 		AJAXServiceSection("sectionNew","&kind="+kind);						
 }			
 			
-// Create a button for a section row
-function butt(kind,imgname,sectname,sectpos,pos,typ)
-{
-		if(typ){
-				return "<span class='smallishbutt' onclick='sendOut(\""+sectpos+"\",\""+pos+"\",\""+sectname+"\",\""+kind+"\")'><img src='icons/"+imgname+"'/></span>";				
-		}else{
-				return "<span class='smallbutt' onclick='sendOut(\""+sectpos+"\",\""+pos+"\",\""+sectname+"\",\""+kind+"\")'><img src='icons/"+imgname+"'/></span>";				
-		}
-}
-
-
 function editedExampleName(obj)
 {
 				var newname=obj.innerHTML;
 				newname=dehtmlify(newname,false,60);
 				obj.innerHTML=newname;
 
-				ido=obj.id.split("_");
-				sname=retdata['sections'][parseInt(ido[1])][0];
-				AJAXServiceSection("editExampleName","&newname="+newname+"&sectname="+sname+"+&sectpos="+ido[1]+"&pos="+ido[2]);
+				AJAXServiceSection("editExampleName","&newname="+newname+"&sectid="+obj.id);
+
 }
 
 function editedSectionName(obj)
@@ -113,9 +47,7 @@ function editedSectionName(obj)
 				newname=dehtmlify(newname,false,60);
 				obj.innerHTML=newname;
 
-				ido=obj.id.split("_");
-				sname=retdata['sections'][parseInt(ido[1])][0];
-				AJAXServiceSection("editSectionName","&newname="+newname+"&sectname="+sname+"+&sectpos="+ido[1]);
+				AJAXServiceSection("editSectionName","&newname="+newname+"&sectid="+obj.id);
 }
 
 
@@ -284,7 +216,7 @@ function SkipFUp()
 
 function setup()
 {
-		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionname="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
+		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
 		
 		if(sessionkind==courseID){
 				setupEditable();						
@@ -393,6 +325,53 @@ function changedPlayLink()
 
 *********************************************************************************/
 
+/*		
+function sendOut(sectid,kind)
+{
+			// Either move section or example one step up / down / delete or 
+			if(kind=='UP'){
+					if(pos==-1){
+							AJAXServiceSection("sectionUp","&sectid="+sectid);		
+					}else{
+							AJAXServiceSection("exampleUp","&sectid="+sectid);
+					}
+			}else if(kind=='DO'){
+					if(pos==-1){
+							AJAXServiceSection("sectionDown","&sectid="+sectid);		
+					}else{
+							AJAXServiceSection("exampleDown","&sectid="+sectid);
+					}
+			}else if(kind=='PL'){
+					if(pos==-1){
+							AJAXServiceSection("exampleNewSection","&sectid="+sectid);
+					}else{
+							AJAXServiceSection("exampleNew","&sectid="+sectid);
+					}
+			}else if(kind=='PP'){
+					location="EditorV30.php?courseid="+courseID+"&sectionid="+sectname+"&version="+vers+"&position="+pos;						
+			}else if(kind=='MI'){
+					if(pos==-1){
+							AJAXServiceSection("sectionDel","&sectid="+sectid);					
+					}else{
+							AJAXServiceSection("exampleDel","&sectid="+sectid);					
+					}
+			}
+			
+			return false;
+}
+*/
+// Create a button for a section row
+function Sectionbutton(kind,imgname,sectid,typ)
+{
+		if(typ=="SMALL"){
+				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";				
+		}else if(typ=="BIG"){
+				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
+		}else if(typ=="EXAMPLE"){
+				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
+		}		
+}
+
 function returnedSection(data)
 {
 		retdata=data;
@@ -405,63 +384,75 @@ function returnedSection(data)
 
 		// For now we only have two kinds of sections
 		for(i=0;i<data['sections'].length;i++){
-				if(parseInt(data['sections'][i][2])==2){
-						str+="<span class='bigg' id='SCE_"+data['sections'][i][1]+"'><span";
-							if(sessionkind==courseID){
-								str+=" contenteditable='true' id='SE_"+data['sections'][i][1]+"'>"+data['sections'][i][0]+"</span>";
-								str+=butt("UP","UpT.svg",data['sections'][i][0],data['sections'][i][1],-1,true);
-								str+=butt("DO","DownT.svg",data['sections'][i][0],data['sections'][i][1],-1,true);
-								str+=butt("MI","MinusT.svg",data['sections'][i][0],data['sections'][i][1],-1,true);											
-							}else{
-								str+=" id='SE_"+data['sections'][i][1]+"'>"+data['sections'][i][0]+"</span>";
-							}
-				}else{
-						str+="<span class='butt' id='SCE_"+data['sections'][i][1]+"'><span";
-
-						if(sessionkind==courseID){
-								str+=" contenteditable='true' id='SE_"+data['sections'][i][1]+"'>"+data['sections'][i][0]+"</span>";
-								str+=butt("UP","UpS.svg",data['sections'][i][0],data['sections'][i][1],-1,false);
-								str+=butt("DO","DownS.svg",data['sections'][i][0],data['sections'][i][1],-1,false);
-								str+=butt("PL","PlusS.svg",data['sections'][i][0],data['sections'][i][1],-1,false);
-								str+=butt("MI","MinusS.svg",data['sections'][i][0],data['sections'][i][1],-1,false);
+				if(parseInt(data['sections'][i]['sectionkind'])==2){
+						str+="<span class='bigg' id='SCE"+data['sections'][i]['sectionno']+"'>";
+						if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"' >"+data['sections'][i]['sectionname']+"</span>";
+							str+="<span class='smallishbutt'>";
+							str+=Sectionbutton("sectionUp","UpT.svg",data['sections'][i]['sectionno'],"BIG");
+							str+=Sectionbutton("sectionDown","DownT.svg",data['sections'][i]['sectionno'],"BIG");
+							str+=Sectionbutton("sectionDel","MinusT.svg",data['sections'][i]['sectionno'],"BIG");											
+							str+="</span>";
 						}else{
-								str+=" id='SE_"+data['sections'][i][1]+"'>"+data['sections'][i][0]+"</span>";						
+							str+="<span id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";						
 						}
 						str+="</span>";
+				}else{
+						str+="<span class='butt' id='SCE"+data['sections'][i]['sectionno']+"' >";
+
+						// If we are allowed to edit
+						if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";
+							str+="<span class='smallbutt'>";
+							str+=Sectionbutton("sectionUp","UpS.svg",data['sections'][i]['sectionno'],"SMALL");
+							str+=Sectionbutton("sectionDown","DownS.svg",data['sections'][i]['sectionno'],"SMALL");
+							str+=Sectionbutton("exampleNew","PlusS.svg",data['sections'][i]['sectionno'],"SMALL");
+							str+=Sectionbutton("sectionDel","MinusS.svg",data['sections'][i]['sectionno'],"SMALL");
+							str+="</span>";
+						}else{
+							str+="<span id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";						
+						}
+						
+						// End of butt span
+						str+="</span>"
+
+						// For each of the examples
 						for(j=0;j<data['examples'].length;j++){
-								if(data['sections'][i][1]==data['examples'][j][3]){
-										str+="<span class='norm' id='ECX_"+data['examples'][j][3]+"_"+data['examples'][j][2]+"'><span id='EX_"+data['examples'][j][3]+"_"+data['examples'][j][2]+"'";
-										if(sessionkind==courseID){
-												str+="contenteditable='true'>"+data['examples'][j][1]+"</span>";
-												str+=butt("UP","UpT.svg",data['examples'][j][0],data['examples'][j][3],data['examples'][j][2],false);
-												str+=butt("DO","DownT.svg",data['examples'][j][0],data['examples'][j][3],data['examples'][j][2],false);
-												str+=butt("PL","PlusT.svg",data['examples'][j][0],data['examples'][j][3],data['examples'][j][2],false);
-												str+=butt("MI","MinusT.svg",data['examples'][j][0],data['examples'][j][3],data['examples'][j][2],false);											
-												str+=butt("PP","PlayT.svg",data['examples'][j][0],data['examples'][j][3],data['examples'][j][2],false);
-												str+="</span>";
+								if(data['sections'][i]['sectionno']==data['examples'][j]['sectionno']){
+										str+="<span class='norm' id='ECX"+data['examples'][j]['sectionno']+"'>";
+										if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+												str+="<span id='EX"+data['examples'][j]['exampleno']+"' contenteditable='true'>"+data['examples'][j]['examplename']+"</span>";
+												str+="<span class='smallbutt'>";
+													str+=Sectionbutton("exampleUp","UpT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
+													str+=Sectionbutton("exampleDown","DownT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
+													str+=Sectionbutton("exampleDel","MinusT.svg",data['examples'][j]['exampleno'],"EXAMPLE");											
+													str+=Sectionbutton("PP","PlayT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
+												str+="</span>"
 										}else{
-												str+="><a href='EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j][0]+"&version="+vers+"&position="+data['examples'][j][2]+"'>"+data['examples'][j][1]+"</a></span></span>";		
+												str+="<a href='EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j]['sectionno']+"&version="+vers+"&position="+data['examples'][j]['pos']+"'>"+data['examples'][j]['examplename']+"</a>";		
 										}
+										str+="</span>";
 								}
 						}
 				}
+
 		}
 		
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;
 
-		if(sessionkind==courseID){
+		if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
 				// Setup editable sections with events etc
 				for(i=0;i<data['sections'].length;i++){
-						if(parseInt(data['sections'][i][2])==2){
-								var editable=document.getElementById("SE_"+data['sections'][i][1]);
+						if(parseInt(data['sections'][i]['sectionkind'])==2){
+								var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
 				    		editable.addEventListener("blur", function(){editedSectionName(this);}, true);
 						}else{
-								var editable=document.getElementById("SE_"+data['sections'][i][1]);
+								var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
 				    		editable.addEventListener("blur", function(){editedSectionName(this);}, true);
 								for(j=0;j<data['examples'].length;j++){
-										if(data['sections'][i][1]==data['examples'][j][3]){
-												var editable=document.getElementById("EX_"+data['examples'][j][3]+"_"+data['examples'][j][2]);
+										if(data['sections'][i]['sectionno']==data['examples'][j]['sectionno']){
+												var editable=document.getElementById("EX"+data['examples'][j]['exampleno']);
 								    		editable.addEventListener("blur", function(){editedExampleName(this);}, true);
 										}
 								}
@@ -469,6 +460,10 @@ function returnedSection(data)
 						}
 				}				
 		}
+
+
+	  if(data['debug']!="NONE!") alert(data['debug']);
+
 }				
 
 function returned(data)
