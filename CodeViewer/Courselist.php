@@ -9,7 +9,7 @@
 			</script>
 			<body>
 					<?php
-						include_once("../coursesyspw.php");	
+						include_once("../../coursesyspw.php");	
 						include_once("basic.php");
 
 						session_start();

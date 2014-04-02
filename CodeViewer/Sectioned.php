@@ -5,7 +5,7 @@
 			<script type="text/javascript" src="js/codeviewer.js"></script>
 
 			<script>
-				
+				//HEJ! :)
 				<?php
 
 						if(isset($_GET['courseid'])&&isset($_GET['vers'])){
@@ -35,7 +35,7 @@
 
 <?php
 				
-		include_once("../coursesyspw.php");	
+		include_once("../../coursesyspw.php");	
 		include_once("basic.php");
 		
 		dbConnect();

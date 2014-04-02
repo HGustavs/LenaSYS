@@ -102,7 +102,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 	
 <?php
 				
-		include_once("../coursesyspw.php");	
+		include_once("../../coursesyspw.php");	
 		include_once("basic.php");
 		
 		dbConnect();

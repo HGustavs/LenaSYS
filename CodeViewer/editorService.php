@@ -9,7 +9,8 @@
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
-	include_once("../coursesyspw.php");	
+	include_once("../../coursesyspw.php");	
+	//Ändrade lanken igen! 
 	include_once("basic.php");
 
 	// Connect to database and start session
