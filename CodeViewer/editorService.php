@@ -13,7 +13,7 @@
 	//Ändrade lanken igen! // Anton
 	include_once("basic.php");
 
-	// Connect to database and start sessions
+	// Connect to database and start session
 	dbConnect();
 	session_start();
 
