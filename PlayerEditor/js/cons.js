@@ -291,12 +291,12 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 		if (this.repeat == 0) {
 			// Repeat
 			this.repeat = 1;
-			document.getElementById("repeatcontrol").innerHTML="<img src='images/Plus.svg'/>";
+			document.getElementById("repeatcontrol").innerHTML="<img src='images/Replay_pressed.svg'/>";
 		}
 		else {
 			// Don't repeat
 			this.repeat = 0;
-			document.getElementById("repeatcontrol").innerHTML="<img src='images/Minus.svg'/>";
+			document.getElementById("repeatcontrol").innerHTML="<img src='images/Replay.svg'/>";
 		}
 	}
 
