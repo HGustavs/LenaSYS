@@ -42,6 +42,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	// Playing variables
 	this.step=0;	
 	this.paused=1;
+	this.finished=0;
 	this.fastforward=0;
 	this.windtarget=-1;
 	this.playafterwind=0;
@@ -251,7 +252,10 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 				// Only play if we have a document
 				if(this.timesteps!=null){
 						this.paused=0;
-				
+						// Start over if finished
+						if (this.finished == 1) {
+							this.step = 0;
+						}
 						this.advancestep();								
 				}
 				
@@ -434,7 +438,9 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 
 					}else{
 						cons.renderTiles();
-							alert("Finished Script!");
+						this.pause();
+						this.finished = 1;
+						alert("Finished Script!");
 					}
 			
 			}
