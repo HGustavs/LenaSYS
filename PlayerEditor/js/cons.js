@@ -43,6 +43,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	this.step=0;	
 	this.paused=1;
 	this.finished=0;
+	this.repeat=0;
 	this.fastforward=0;
 	this.windtarget=-1;
 	this.playafterwind=0;
@@ -254,6 +255,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 						this.paused=0;
 						// Start over if finished
 						if (this.finished == 1) {
+							// Clearing screen
+							this.clrscr();
 							this.step = 0;
 						}
 						this.advancestep();								
@@ -274,6 +277,27 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 				this.paused=1;
 
 				document.getElementById("playcontrol").innerHTML="<img src='images/PlayR.svg'/>";	
+	}
+
+	//-------------------------------------------------------------------------------------------
+	// toggleRepeat 		
+	//-------------------------------------------------------------------------------------------
+	// Toggle the repeat function
+	//-------------------------------------------------------------------------------------------
+
+	this.toggleRepeat = function()
+	{
+		// Toggle repeat
+		if (this.repeat == 0) {
+			// Repeat
+			this.repeat = 1;
+			document.getElementById("repeatcontrol").innerHTML="<img src='images/Plus.svg'/>";
+		}
+		else {
+			// Don't repeat
+			this.repeat = 0;
+			document.getElementById("repeatcontrol").innerHTML="<img src='images/Minus.svg'/>";
+		}
 	}
 
 	//-------------------------------------------------------------------------------------------
@@ -440,7 +464,14 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 						cons.renderTiles();
 						this.pause();
 						this.finished = 1;
-						alert("Finished Script!");
+
+						// Repeat or finish
+						if (this.repeat == 1) {
+							this.play();
+						}
+						else {
+							alert("Finished Script!");
+						}
 					}
 			
 			}
