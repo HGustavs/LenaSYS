@@ -19,7 +19,7 @@ Version History
  3.05    2013-08-21 - Added new features to back-end
  												Separate tables for Important words and descriptions
  												Fields for play link and chosen wordlist
- 												Updates of datanase from back-end 
+ 												Updates of database from back-end 
  												Navigation using arrows (dropdown still missing)
  3.06		 2013-08-21 - Create new example and save description section
  3.07    2013-08-22 - Section Editor
