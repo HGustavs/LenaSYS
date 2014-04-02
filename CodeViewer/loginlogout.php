@@ -7,7 +7,7 @@
 <?php
 
 		// Include basic application services!
-		include_once("../coursesyspw.php");	
+		include_once("../../coursesyspw.php");	
 		include_once("basic.php");
 
 		session_start();
