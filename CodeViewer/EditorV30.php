@@ -93,7 +93,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				
 				function AJAXService(sname,param)
 				{
-						$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionname="+sectionID+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});															
+						$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});															
 				}
 
 		
