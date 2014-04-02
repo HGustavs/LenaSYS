@@ -10,7 +10,7 @@
 
 	// Include basic application services!
 	include_once("../../coursesyspw.php");	
-	//Ändrade lanken igen! // Anton
+	//Ändrade lanken igen! 
 	include_once("basic.php");
 
 	// Connect to database and start session
