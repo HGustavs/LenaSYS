@@ -215,7 +215,6 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 
 		// Move to new position
 		this.windto(Math.floor(this.timesteps.length * percentage));
-
 	}
 	
 	//-------------------------------------------------------------------------------------------
@@ -227,7 +226,14 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 
 	this.windto = function(windpos)
 	{
-			if(windpos<this.step){
+			// Check if reset is needed
+			if(windpos == 0)
+			{
+				this.reset();
+			}
+
+			if(windpos<this.step)
+			{
 					// Rewind
 					this.pause();
 					this.windtarget=windpos;
@@ -235,7 +241,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					this.fastforward=1;
 					this.clrscr();
 					this.play();
-			}else if(windpos>this.step){
+			} else if(windpos>this.step)
+			{
 					// Fast Forward
 					this.pause();
 					this.windtarget=windpos;
@@ -272,9 +279,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 						// Start over if finished
 						if (this.finished == 1) {
 							// Clearing screen
-							this.clrscr();
-							this.step = 0;
-							this.finished = 0;
+							this.reset();
 						}
 						this.advancestep();								
 				}
@@ -294,6 +299,18 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 				this.paused=1;
 
 				document.getElementById("playcontrol").innerHTML="<img src='../images/PlayR.svg'/>";	
+	}
+
+	//-------------------------------------------------------------------------------------------
+	// reset 		
+	//-------------------------------------------------------------------------------------------
+	// Resetting playback
+	//-------------------------------------------------------------------------------------------
+	this.reset = function() 
+	{
+		this.clrscr();
+		this.step = 0;
+		this.finished = 0;
 	}
 
 	//-------------------------------------------------------------------------------------------
@@ -459,7 +476,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 									this.renderTiles();
 							}		
 							
-							// If we are in fastforward do not render tiles
+						// If we are in fastforward do not render tiles
 						if(this.fastforward){
 								nextdelay=0;			
 					  }else{
