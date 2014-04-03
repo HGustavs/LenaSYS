@@ -201,6 +201,22 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					this.windto(windpos);
 			}							
 	}
+
+	//-------------------------------------------------------------------------------------------
+	// search
+	//-------------------------------------------------------------------------------------------
+	// Search by clicking the playback position
+	//-------------------------------------------------------------------------------------------
+	this.search = function(event)
+	{
+		// Calculating search percentage (0%-100%)
+		var rect = document.getElementById("barcontainer").getBoundingClientRect();
+		var percentage = (event.clientX - rect.left) / rect.right;
+
+		// Move to new position
+		this.windto(Math.floor(this.timesteps.length * percentage));
+
+	}
 	
 	//-------------------------------------------------------------------------------------------
 	// windto
