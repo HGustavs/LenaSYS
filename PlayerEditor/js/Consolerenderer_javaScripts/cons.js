@@ -258,6 +258,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 							// Clearing screen
 							this.clrscr();
 							this.step = 0;
+							this.finished = 0;
 						}
 						this.advancestep();								
 				}
