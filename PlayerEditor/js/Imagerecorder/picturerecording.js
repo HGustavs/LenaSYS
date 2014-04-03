@@ -40,18 +40,18 @@
 		 *  Function that fills the div-element with a picture. Changes picture depending on the 
 		 *  array number, which is declared by the variable "i". Also removes the previous picture.
 		 */
-		var i = 0;
+		var currentImage = 0;
 		function changePic(){
-			document.getElementById('iPic').innerHTML=i;	
-			document.getElementById('OutputDiv').appendChild(picArray[i]);
+			document.getElementById('iPic').innerHTML=currentImage;	
+			document.getElementById('OutputDiv').appendChild(picArray[currentImage]);
 
-			if(i > 0){
-				document.getElementById('OutputDiv').removeChild(picArray[i-1]);
+			if(currentImage > 0){
+				document.getElementById('OutputDiv').removeChild(picArray[currentImage-1]);
 			}	
 		}
 		/*
 		 *  Adds 1 to "i" each time the user releases the mousebutton.
 		 */
-		function addI(){
-			i++;
+		function nextImage(){
+			currentImage++;
 		}
