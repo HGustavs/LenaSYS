@@ -1,27 +1,5 @@
 <?php
 include "../Shared/basic.php";
-
-	//---------------------------------------------------------------------------------------------------------------
-	// getposfromid - Using a query string returns the value generated from that query
-	//---------------------------------------------------------------------------------------------------------------
-	
-	function getqueryvalue($querystring)
-	{		
-		$pos=-1;
-		$result=mysql_query($querystring);
-		if (!$result) err("SQL Query Error: ".mysql_error(),"Section Position Reading Error");
-		while ($row = mysql_fetch_assoc($result)){
-				$pos=$row['pos'];
-		}
-		
-		return $pos;
-	}
-	
-	//---------------------------------------------------------------------------------------------------------------
-	// getposfromid - Performs a database Query and if an error occurrs the error is logged and execution is terminated
-	//---------------------------------------------------------------------------------------------------------------
-	
-
 	//---------------------------------------------------------------------------------------------------------------
 	// editsectionmenu - Displays an editable or un-editable section menu
 	//---------------------------------------------------------------------------------------------------------------
