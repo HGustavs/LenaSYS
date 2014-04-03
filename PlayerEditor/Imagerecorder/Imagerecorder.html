@@ -1,83 +1,17 @@
 <html>
 <head>
-<title> Test mouse cords</title>
-
+<title>Prototype imagerecorder</title>s
 <style>
+		.mouseDiv{
 
-.mouseDiv{
+			width: 600px;
+			height: 600px;
+			border: solid;
+			overflow-x: auto;
 
-	width: 600px;
-	height: 600px;
-	border: solid;
-	overflow-x: auto;
-
-}
-
+		}
 </style>
-<script>
-	
-	//Array of images
-	var picArray = new Array();
-		
-	var img = document.createElement("IMG");
-	img.src = "pictures/a.png";
-	picArray[0] = new Image();
-	picArray[0] = img;
-	
-	var img1 = document.createElement("IMG");
-	img1.src = "pictures/b.png"
-	picArray[1] = new Image();
-	picArray[1] = img1;
-
-	var img2 = document.createElement("IMG");
-	img2.src = "pictures/c.png"
-	picArray[2] = new Image();
-	picArray[2] = img2;
-	
-	var img3 = document.createElement("IMG");
-	img3.src = "pictures/d.png"
-	picArray[3] = new Image();
-	picArray[3] = img3;
-	
-		var i = 0;
-	//Global variables mouse coords
-		var xMouse;
-		var yMouse;
-	
-		function checkMouseCoords(event){
-		
-		xMouse = event.clientX;
-		yMouse = event.clientY;
-		
-		//alert("X coord: " + xMouse + " Y coord: " + yMouse);
-		
-		document.getElementById('xCord').innerHTML=xMouse;
-		document.getElementById('yCord').innerHTML=yMouse;
-	
-		changePic();
-	
-		}
-		
-		function changePic(){
-		document.getElementById('iPic').innerHTML=i;
-				
-			document.getElementById('OutputDiv').appendChild(picArray[i]);
-			
-			if(i > 0){
-				document.getElementById('OutputDiv').removeChild(picArray[i-1]);
-			}	
-		}
-		
-		function addI(){
-		
-			i++;
-		
-		}
-		
-		
-		
-</script>
-
+	<script src="../js/Imagerecorder_javaScripts/picturerecording.js"></script>
 </head>
 
 	<body onload="">	
@@ -86,7 +20,6 @@
 			Y-Coordinate: <span id="yCord"></span>&nbsp;
 			Picture(i): <span id="iPic"></span>
 
-			
 			</div>
 	</body>
 		
