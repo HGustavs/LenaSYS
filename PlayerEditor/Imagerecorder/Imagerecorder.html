@@ -11,9 +11,21 @@
 
 		}
 </style>
-	<script src="../js/Imagerecorder/picturerecording.js"></script>
+	<script src="../js/Imagerecorder/imagerecorder.js"></script>
 </head>
+<script>
+var imagerec = new imagerecorder();
+function checkMouseCoords(event){
+	imagerec.checkMouseCoords(event);
+}
+function changePic(event){
+	imagerec.changePic(event);
+}
+function nextImage(event){
+	imagerec.nextImage(event);
+}
 
+</script>
 	<body onload="">	
 			<div id="OutputDiv" class="mouseDiv" onmousedown="checkMouseCoords(event);changePic(event);" onmouseup="nextImage(event)";>
 			X-Coordinate: <span id="xCord"></span>&nbsp;
