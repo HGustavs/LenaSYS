@@ -214,17 +214,12 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.windto = function(windpos)
 	{
-		// Check if reset is needed
-		if(windpos == 0){
-			this.reset();
-		}
-
 		if(windpos<this.step){
 			// Rewind
 			this.pause();
 			this.windtarget=windpos;
 			this.step=0;
-			this.fastforward=1;
+			this.fastforward=1;	
 			this.clrscr();
 			this.play();
 		} else if(windpos>this.step){
@@ -441,16 +436,18 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 				this.step++;
 				
 				// If we reach fastforward target, stop fastforward mode and render current tile
-				if(this.windtarget>0&&this.step>=this.windtarget){
-						this.fastforward=0;
-						this.windtarget=-1;
-						
-						if(!this.playafterwind) this.pause();
+				if(this.windtarget>=0&&this.step>=this.windtarget){
+					this.fastforward=0;
+					this.windtarget=-1;
+					
+					if(!this.playafterwind){
+						this.pause();
+					}
 
-						var fract=this.step/this.timesteps.length;
-						document.getElementById("bar").style.width=Math.round(fract*392);							
-						
-						this.renderTiles();
+					var fract=this.step/this.timesteps.length;
+					document.getElementById("bar").style.width=Math.round(fract*392);							
+					
+					this.renderTiles();
 				}		
 					
 				// If we are in fastforward do not render tiles
@@ -468,7 +465,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 						}
 					}
 				}		
-				setTimeout(function(){cons.advancestep();}, nextdelay);							
+			setTimeout(function(){cons.advancestep();}, nextdelay);							
 			}else{
 				// Reached end of XML
 				cons.renderTiles();
