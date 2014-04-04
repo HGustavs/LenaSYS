@@ -216,7 +216,7 @@ function SkipFUp()
 
 function setup()
 {
-		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionname="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
+		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
 		
 		if(sessionkind==courseID){
 				setupEditable();						

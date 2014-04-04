@@ -87,28 +87,8 @@
 								// Create new codeExample - Last in Section.
 								$newpos=getqueryvalue("SELECT max(pos) as pos FROM codeexample WHERE sectionno='$sectid';")+1;
 								makequery("INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ('$coursename','$sectid','New Example','JS','<none>','$newpos','$appuser','$vers');","Error Creating New Code Example");
-								makequery("INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionname='$sectname' and cversion='$vers'),'<none>',1,'$appuser');","Error Creating New Code Example");
-								makequery("INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionname='$sectname' and cversion='$vers'),'Enter description here.',1,'$appuser');","Error Creating Description Text");
-
-
-
-/*		
-								$newpos=$pos+1;
-		
-								$query = "UPDATE codeexample SET pos=pos+1 WHERE pos>'$pos' and coursename='$coursename' and sectionname='$sectname' and cversion='$vers';";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Positions!");	
-								
-		
-								$query = "INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionname='$sectname' and cversion='$vers'),'<none>',1,'$appuser');";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
-		
-								$query = "INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionname='$sectname' and cversion='$vers'),'Enter description here.',1,'$appuser');";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Description Section!");	
-*/		
-	
+								makequery("INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and cversion='$vers' limit 1),'<none>',1,'$appuser');","Error Creating New Code Example");
+								makequery("INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and cversion='$vers' limit 1),'Enter description here.',1,'$appuser');","Error Creating Description Text");
 				}else if(strcmp("editExampleName",$opt)===0){
 								$sectid=substr($sectid,2);
 								makequery("UPDATE codeexample SET examplename='$newname' WHERE exampleno='$sectid';","Error Updating Example Name");
