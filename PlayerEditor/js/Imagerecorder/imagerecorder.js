@@ -1,13 +1,10 @@
 function imagerecorder(imgCanvas)
 {	/*
-	 * Declaring an array that will act as a picutre library(for the time being), and adding pictures to the array.
+	 * Declaring an array that will act as a picture library(for the time being), and adding pictures to the array.
 	 */
 	var imageCanvas = imgCanvas;
 	var picArray = new Array();	
 	var img = document.createElement("IMG");
-	
-	
-	
 	var currentImage = 0;
 	
 	this.initImages = function(){
@@ -30,6 +27,9 @@ function imagerecorder(imgCanvas)
 		picArray[3] = new Image();
 		picArray[3] = img3;
 	}
+	/*
+	 *	Logging mouse-clicks
+	 */
 	function log(){
 	
 		// todo: implement logging 
