@@ -1,63 +1,69 @@
-		
-function imagerecorder()
-{
-	/*
+function imagerecorder(imgCanvas)
+{	/*
 	 * Declaring an array that will act as a picutre library(for the time being), and adding pictures to the array.
 	 */
-	var picArray = new Array();
-		
+	var imageCanvas = imgCanvas;
+	var picArray = new Array();	
 	var img = document.createElement("IMG");
-	img.src = "pictures/a.png";
-	picArray[0] = new Image();
-	picArray[0] = img;
 	
-	var img1 = document.createElement("IMG");
-	img1.src = "pictures/b.png"
-	picArray[1] = new Image();
-	picArray[1] = img1;
-
-	var img2 = document.createElement("IMG");
-	img2.src = "pictures/c.png"
-	picArray[2] = new Image();
-	picArray[2] = img2;
-	
-	var img3 = document.createElement("IMG");
-	img3.src = "pictures/d.png"
-	picArray[3] = new Image();
-	picArray[3] = img3;
 	
 	
 	var currentImage = 0;
 	
-	/*
-	 *  this function checks the mouse coords via an event that occurs when the user clicks the div-element
-	 *  then calls the function that changes the picture. 
-	 */
-	this.checkMouseCoords = function(event){
-		var xMouse = event.clientX;
-		var yMouse = event.clientY;
+	this.initImages = function(){
+		img.src = "pictures/a.png";
+		picArray[0] = new Image();
+		picArray[0] = img;
+		
+		var img1 = document.createElement("IMG");
+		img1.src = "pictures/b.png"
+		picArray[1] = new Image();
+		picArray[1] = img1;
+
+		var img2 = document.createElement("IMG");
+		img2.src = "pictures/c.png"
+		picArray[2] = new Image();
+		picArray[2] = img2;
+		
+		var img3 = document.createElement("IMG");
+		img3.src = "pictures/d.png"
+		picArray[3] = new Image();
+		picArray[3] = img3;
+	}
+	function log(){
 	
-		document.getElementById('xCord').innerHTML=xMouse;
-		document.getElementById('yCord').innerHTML=yMouse;
-
-	changePic();
+		// todo: implement logging 
+	
 	}
+	this.initImages();
 	/*
-	 *  Function that fills the div-element with a picture. Changes picture depending on the 
-	 *  array number, which is declared by the variable "i". Also removes the previous picture.
+	 *	jquery function that records mouse clicks to get the coordinates of the mouse pointer, 
+	 *	and change the picture if the canvas is clicked.
 	 */
-	this.changePic = function(){
-		document.getElementById('iPic').innerHTML=currentImage;	
-		document.getElementById('OutputDiv').appendChild(picArray[currentImage]);
-
-		if(currentImage > 0){
-			document.getElementById('OutputDiv').removeChild(picArray[currentImage-1]);
-		}	
-	}
+	$(document).ready(function(){
+	$("#" + imageCanvas).click(function(event){
+			var xMouse = event.clientX;
+			var yMouse = event.clientY;
+			log();
+			document.getElementById('xCord').innerHTML=xMouse;
+			document.getElementById('yCord').innerHTML=yMouse;
+			var canvas = document.getElementById(imageCanvas);
+			var ctx=canvas.getContext("2d");
+			ctx.drawImage(picArray[currentImage],0,0);
+			document.getElementById(imageCanvas).appendChild(picArray[currentImage]);
+			if(currentImage > 0){
+				document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);
+			}
+			currentImage++;
+		});
 	/*
-	 *  Adds 1 to "i" each time the user releases the mousebutton.
+	 *checks the mouse-position in realtime.
 	 */
-	this.nextImage = function(){
-		currentImage++;
-	}
+			$("#" + imageCanvas).mousemove(function(event){	
+			var xMouseReal = event.clientX;
+			var yMouseReal = event.clientY;
+			document.getElementById('xCordReal').innerHTML=xMouseReal;
+			document.getElementById('yCordReal').innerHTML=yMouseReal;
+			});
+	});
 }
