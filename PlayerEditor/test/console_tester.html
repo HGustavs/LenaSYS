@@ -31,26 +31,13 @@
 				$('#testTable > tbody').append("<tr class='trFail'><td>"+id+"</td><td>"+expected+"</td><td>"+actual+"</td><td>FAIL</td></tr>");
 			}
 		}
-		
-	</script>
-	
-	<!-- Include modules -->
-	<script src="../js/Consolerenderer/cons.js"></script>
-	<script src="../js/Consolerenderer/tile.js"></script>
-	<script src="../js/Consolerenderer/tiledata.js"></script>
-	<script src="../js/Consolerenderer/caretstate.js"></script>
 
-	<!-- Create console -->
-	<script>
-		var consolewidth = 100;
-		var consoleheight = 40;
-		var tilesize = 8;
-		var color = 14;
-		var bgcolor = 6;
-		var cons = new cons(consolewidth,consoleheight,tilesize,color,bgcolor);
 	</script>
 	
 	<body>
+	
+		<iframe src="../Consolerenderer/Consolerenderer.html" width="800" height="800" name="consframe"></iframe>
+
 		<div style="display: none;">
 			<div id="playcontrol"></div>
 		</div>
@@ -65,10 +52,12 @@
 				<tr></tr>
 			</tbody>
 		</table>
-		<!-- Run tests -->
-		<script src="cons/test.init.js"></script>
-		<script src="cons/test.play.js"></script>
-
+		
+		<a href="#" onClick="alert(window.frames['consframe'].cons.paused);return false;">Testar</a>
+		<script>
+			 alert(window.frames['consframe'].cons.paused);
+		</script>
+	<!-- Run tests -->
 		
 
 	</body>
