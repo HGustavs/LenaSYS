@@ -190,10 +190,10 @@ function captureCanvas(canvas){
         this.ctx.setTransform(a,b,c,d,e,f);
 	}
 	//This functions will log text functions.
-	this.font = function(font-style,font-variant,font-weight,font-size,font-family,caption){
+	this.font = function(fontstyle,fontvariant,fontweight,fontsize,fontfamily,caption){
 		// TODO: Log to XML file instead of debug log
-        console.log("called font. Parameters (font-style,font-variant,font-weight,font-size,font-family,caption): " + font-style + ", " + font-variant+ ", "+font-weight+", "+font-size+", "+font-family+", "+caption);        
-        this.ctx.font(font-style,font-variant,font-weight,font-size,font-family,caption);
+        console.log("called font. Parameters (font-style,font-variant,font-weight,font-size,font-family,caption): " + fontstyle + ", " + fontvariant+ ", "+fontweight+", "+ fontsize +", "+fontsize + ", "+caption);        
+        this.ctx.font(fontstyle,fontvariant,fontweight,fontsize,fontfamily,caption);
 	}
 	this.textAlign = function(start,end,center,left,right){
 		// TODO: Log to XML file instead of debug log
