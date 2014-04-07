@@ -6,19 +6,21 @@ function imagerecorder(imgCanvas)
 	var picArray = new Array();	
 	var img = document.createElement("IMG");
 	var currentImage = 0;
+	var dd = new Date();
+	var lastEvent = dd.getTime();
 	
 	this.initImages = function(){
-		img.src = "pictures/a.png";
+		img.src = "pictures/1.png";
 		picArray[0] = new Image();
 		picArray[0] = img;
 		
 		var img1 = document.createElement("IMG");
-		img1.src = "pictures/b.png"
+		img1.src = "pictures/2.png"
 		picArray[1] = new Image();
 		picArray[1] = img1;
 
 		var img2 = document.createElement("IMG");
-		img2.src = "pictures/c.png"
+		img2.src = "pictures/3.png"
 		picArray[2] = new Image();
 		picArray[2] = img2;
 		
@@ -30,11 +32,29 @@ function imagerecorder(imgCanvas)
 	/*
 	 *	Logging mouse-clicks
 	 */
-	function log(){
+	function log(str){
+	console.log(str);
+	var dd = new Date();	
+	var currentTime = dd.getTime();
+	var delay = currentTime - lastEvent;
+	lastEvent = currentTime;
+	var delayStr = "<timestep delay=" + delay + "/>";
 	
-		// todo: implement logging 
+	console.log(delayStr);
+	/*
+    var dd = new Date();
+    var mm = dd.getMinutes();
+    var ss = dd.getSeconds();
+		
+	console.log("-------------------------");	
+	console.log("Time: "+mm+":"+ss);
+	console.log('X: '+xClick+' Y: '+yClick);
+	console.log("-------------------------");	
+	*/
+	// todo: write to a file using the groups xml-standard
 	
 	}
+	
 	this.initImages();
 	/*
 	 *	jquery function that records mouse clicks to get the coordinates of the mouse pointer, 
@@ -44,12 +64,12 @@ function imagerecorder(imgCanvas)
 	$("#" + imageCanvas).click(function(event){
 			var xMouse = event.clientX;
 			var yMouse = event.clientY;
-			log();
+			log("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
 			document.getElementById('xCord').innerHTML=xMouse;
 			document.getElementById('yCord').innerHTML=yMouse;
 			var canvas = document.getElementById(imageCanvas);
 			var ctx=canvas.getContext("2d");
-			ctx.drawImage(picArray[currentImage],0,0);
+			ctx.drawImage(picArray[currentImage],0,0, width = 1280, height = 720);
 			document.getElementById(imageCanvas).appendChild(picArray[currentImage]);
 			if(currentImage > 0){
 				document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);

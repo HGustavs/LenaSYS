@@ -4,16 +4,14 @@
 <style>
 		.canvasStyle{
 
-			width: 600px;
-			height: 600px;
 			border: solid;
-			overflow-x: auto;
+
 
 		}
 		
 </style>
 	<script language="javascript" src="../js/Imagerecorder/imagerecorder.js"></script>
-	<script language="javascript" src="../jQuery/jquery-1.11.0.min.js"></script>
+	<script language="javascript" src="../js/jquery-1.11.0.min.js"></script>
 </head>
 <script>
 var imagerec = new imagerecorder("ImageCanvas");
@@ -22,10 +20,10 @@ var imagerec = new imagerecorder("ImageCanvas");
 			X(click): <span id="xCord"></span>&nbsp;
 			Y(click): <span id="yCord"></span>&nbsp;
 			<br/>
-			X(Realtime): <span id="xCordReal"></span>&nbsp;
-			Y(Realtime): <span id="yCordReal"></span>&nbsp;
+			X(realtime): <span id="xCordReal"></span>&nbsp;
+			Y(realtime): <span id="yCordReal"></span>&nbsp;
 			<br/>
-			<canvas id="ImageCanvas" class="canvasStyle"></canvas>	
+			<canvas id="ImageCanvas" class="canvasStyle" width="1280" height="720"></canvas>	
 	</body>
 		
 </html>
