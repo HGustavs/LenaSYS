@@ -25,7 +25,7 @@
 				
 				function AJAXServiceSection(opt,para)
 				{
-						$.ajax({url: "SectionedService.php", type: "POST", data: "coursename="+courseID+"&vers="+vers+"&opt="+opt+para, dataType: "json", success: returnedSection});															
+						$.ajax({url: "SectionedService.php", type: "POST", data: "coursename="+courseID+"&vers="+vers+"&opt="+opt+para, dataType: "json", success: returnedSection});
 				}
 
 			</script>
@@ -47,7 +47,7 @@
 
 						if(checklogin()){
 								$kind=$_SESSION['kind'];
-								if($kind==$courseID){
+								if(strpos($kind,$courseID)>-1||strpos($kind,"Superuser")>-1){
 										// Allowed to edit this course
 										editsectionmenu(true);
 								}else if($kind!="LOGIN!"){
@@ -56,8 +56,7 @@
 								}
 						}else{
 								editsectionmenu(false);
-						}
-						
+						}			
 				}else{
 						// Print Warning If course does not exist!
 						bodywarning("This course does not seem to exist!");

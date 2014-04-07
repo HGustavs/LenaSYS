@@ -52,8 +52,12 @@
 				#Sectionlist .bigg {font-size:26px;margin-top:8px;margin-bottom:8px;text-align:center;font-family: Cambria, Georgia, serif; color:#000;display:block;background-color:#FFF;}
 				#Sectionlist .course {margin-bottom:4px;background:linear-gradient(to right, #888 0%,#AAA 99%);border-radius: 3px;box-shadow: 3px 3px 6px #000 inset;text-align:center;font-size:26px;padding-left:8px;height:36px;text-shadow: 2px 2px 2px #000;color:#fff;display:block;font-style:italic;color:black;font-family:Calibri,Sans-Serif;background-color:#888;color:#fff;}
 				.warning {box-shadow: 10px 10px 14px #000;color:#fff;position:absolute;top:200px;width:200px;border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background-color:#000;}
-				.smallbutt {float:right;margin:4px;}
-				.smallishbutt {float:right;margin-left:6px;margin-right:6px;margin-top:8px;margin-bottom:8px;}
+				.smallbutt {float:right}
+				.smallishbutt {float:right}
+
+				.smallbutt img{margin-left:4px;}
+				.smallishbutt img{margin-top:8px;margin-left:4px;}
+
 
 				#buttomenus {width:100%; height: 50px;background-color:#000;margin:0px;}
 				.buttos {border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background:linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);height:44px;color:white;background-color:#BBB;}

@@ -10,15 +10,14 @@
 
 	// Include basic application services!
 	include_once("../../coursesyspw.php");	
-	//Ändrade lanken igen! 
 	include_once("basic.php");
 
 	// Connect to database and start session
 	dbConnect();
 	session_start();
-
+	
 	$coursename=$_POST['coursename'];
-	$sectionname=$_POST['sectionname'];
+	$sectionid=$_POST['sectionid'];
 	$position=$_POST['position'];
 	$version=$_POST['version'];
 	$opt=$_POST['opt'];
@@ -27,7 +26,7 @@
 	
 	// To guarantee that things only happen if the example exists in the named version
 	$cnt=0;
-	$query = "SELECT exampleno FROM codeexample WHERE cversion=$version and coursename='$coursename' and sectionname='$sectionname' and pos=$position;";		
+	$query = "SELECT exampleno FROM codeexample WHERE cversion=$version and coursename='$coursename' and pos=$position;";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 	while ($row = mysql_fetch_assoc($result)){
@@ -113,7 +112,7 @@
 								// Create new codeExample - create new file with same id.
 								$newpos=$position+1;
 		
-								$query = "UPDATE codeexample SET pos=pos+1 WHERE pos>'$position' and coursename='$coursename' and sectionname='$sectionname' and cversion='$version';";		
+								$query = "UPDATE codeexample SET pos=pos+1 WHERE pos>'$position' and coursename='$coursename' and sectionid='$sectionid' and cversion='$version';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Positions!");	
 								
@@ -144,7 +143,7 @@
 		
 			// Backward Button Data
 			$before=array();
-			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and coursename='$coursename' and sectionname='$sectionname' and pos<$position ORDER BY pos ASC;";		
+			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and coursename='$coursename' and pos<$position and sectionno='$sectionid' ORDER BY pos ASC;";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -153,19 +152,19 @@
 		
 			// Forward Button Data
 			$after=array();
-			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and coursename='$coursename' and sectionname='$sectionname' and pos>$position ORDER BY pos ASC;";		
+			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and coursename='$coursename' and sectionno='$sectionid' and pos>$position ORDER BY pos ASC;";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
 					array_push($after,array($row['examplename'],$row['pos']));
 			}
-			
+						
 			// Open file and read name of Example
 			$examplename="";
 			$exampleno=0;
 			$chosenwordlist="";
 			$playlink="";
-			$query = "SELECT exampleno,examplename,wordlist,runlink FROM codeexample WHERE cversion=$version and coursename='$coursename' and sectionname='$sectionname' and pos=$position";		
+			$query = "SELECT exampleno,examplename,wordlist,runlink FROM codeexample WHERE cversion=$version and coursename='$coursename' and sectionno='$sectionid' and pos='$position'";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
