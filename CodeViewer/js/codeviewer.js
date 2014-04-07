@@ -426,10 +426,10 @@ function returnedSection(data)
 													str+=Sectionbutton("exampleUp","UpT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
 													str+=Sectionbutton("exampleDown","DownT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
 													str+=Sectionbutton("exampleDel","MinusT.svg",data['examples'][j]['exampleno'],"EXAMPLE");											
-													str+=Sectionbutton("PP","PlayT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
+													str+=Sectionbutton("PP","PlayT.svg",data['examples'][j]['sectionno'],"EXAMPLE");
 												str+="</span>"
 										}else{
-												str+="<a href='EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j]['exampleno']+"&version="+vers+"&position="+data['examples'][j][2]+"'>"+data['examples'][j]['examplename']+"</a>";		
+												str+="<a href='EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j]['sectionno']+"&version="+vers+"&position="+data['examples'][j]['pos']+"'>"+data['examples'][j]['examplename']+"</a>";		
 										}
 										str+="</span>";
 								}
