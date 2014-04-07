@@ -23,6 +23,10 @@
 		function testSubId(str) {	
 			$('#testTable > tbody').append("<tr><td colspan='4' class='testsubid'>"+str+"</td></tr>");
 		}
+		
+		function console(name) {
+			return eval("window.frames['consframe']." + name);
+		}
 	
 		function test(id, expected, actual) {	
 			if(expected==actual) {
@@ -53,10 +57,10 @@
 			</tbody>
 		</table>
 		
-		<a href="#" onClick="alert(window.frames['consframe'].cons.paused);return false;">Testar</a>
-		<script>
-			 alert(window.frames['consframe'].cons.paused);
-		</script>
+
+		<a href="#" onClick="alert(console('cons.paused'));return false;">Testar</a>
+		
+
 	<!-- Run tests -->
 		
 
