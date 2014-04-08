@@ -369,7 +369,7 @@ function Sectionbutton(kind,imgname,sectid,typ,pos)
 				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
 		}else if(typ=="EXAMPLE"){
 				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
-		}		
+		}
 }
 
 function returnedSection(data)
@@ -426,7 +426,11 @@ function returnedSection(data)
 													str+=Sectionbutton("exampleUp","UpT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
 													str+=Sectionbutton("exampleDown","DownT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
 													str+=Sectionbutton("exampleDel","MinusT.svg",data['examples'][j]['exampleno'],"EXAMPLE");											
-													str+=Sectionbutton("PP","PlayT.svg",data['examples'][j]['sectionno'],"EXAMPLE",data['examples'][j]['exampleno']);
+													str+="<img src='icons/PlayT.svg' onclick=\"window.location='EditorV30.php?courseid="+courseID+
+														"&version="+vers+
+														"&sectionid="+data['examples'][j]['sectionno']+
+														"&position="+data['examples'][j]['pos']+
+														"'\"/>";
 												str+="</span>"
 										}else{
 												str+="<a href='EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j]['sectionno']+"&version="+vers+"&position="+data['examples'][j]['pos']+"'>"+data['examples'][j]['examplename']+"</a>";		
