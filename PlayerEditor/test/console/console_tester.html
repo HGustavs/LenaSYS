@@ -20,6 +20,7 @@
 	<!-- Test cases -->
 	<script src="cases/init.js"></script>
 	<script src="cases/playpause.js"></script>
+	<script src="cases/repeat.js"></script>
 	
 	
 	<!-- Print testIds/testcases to table -->
@@ -75,6 +76,14 @@
 			alert("Välkommen till testfallet");
 			$("#consframe").contents().find("#playcontrol").click(function() {
 				console_play();
+			});
+			$("#consframe").contents().find("#repeatcontrol").click(function() {
+				if(console('repeat')==1) {
+					console_repeatOn();
+				}
+				else {
+					console_repeatOff();
+				}
 			});
 		});
 	</script>
