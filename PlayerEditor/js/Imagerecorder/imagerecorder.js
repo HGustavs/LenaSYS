@@ -30,7 +30,7 @@ function imagerecorder(imgCanvas)
 		picArray[3] = img3;
 	}
 	/*
-	 *	Logging mouse-clicks
+	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function log(str){
 	console.log(str);
@@ -41,18 +41,9 @@ function imagerecorder(imgCanvas)
 	var delayStr = "<timestep delay=" + delay + "/>";
 	
 	console.log(delayStr);
-	/*
-    var dd = new Date();
-    var mm = dd.getMinutes();
-    var ss = dd.getSeconds();
-		
-	console.log("-------------------------");	
-	console.log("Time: "+mm+":"+ss);
-	console.log('X: '+xClick+' Y: '+yClick);
-	console.log("-------------------------");	
-	*/
-	// todo: write to a file using the groups xml-standard
-	
+		 /*	
+		  *	TODO: Write to a file instead of just to the log.
+		  */
 	}
 	
 	this.initImages();
@@ -64,6 +55,7 @@ function imagerecorder(imgCanvas)
 	$("#" + imageCanvas).click(function(event){
 			var xMouse = event.clientX;
 			var yMouse = event.clientY;
+			log(picArray[currentImage]);
 			log("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
 			document.getElementById('xCord').innerHTML=xMouse;
 			document.getElementById('yCord').innerHTML=yMouse;

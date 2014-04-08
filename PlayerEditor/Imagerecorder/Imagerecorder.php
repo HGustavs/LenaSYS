@@ -10,6 +10,7 @@
 </head>
 <script>
 var imagerec = new imagerecorder("ImageCanvas");
+
 </script>
 	<body onload="">
 	<div class="wrapper">
@@ -22,14 +23,15 @@ var imagerec = new imagerecorder("ImageCanvas");
 			</div>
 			<canvas id="ImageCanvas" class="canvasStyle" width="1280" height="720"></canvas>
 		<div class="uploadImages">
-		<?php
-			echo "<form name='form' method='post' action='Imagerecorder.php'>;
-				 <input name='uploadImages' type='SUBMIT' value='Upload'/>
-				 </form";
-	
-				 
-				 
-		?>
+		Upload images here:
+			<form name='form' method='post' action='Imagerecorder.php'>
+				<input name='uploadImage' type='SUBMIT' value='Upload'/>
+			</form>
+			<?php
+			if(isset($_POST['uploadImage'])){
+				// TODO: Upload local images to the array in the javaScript file imagerecorder.js
+			}
+			?>	
 		</div>
 	</div>
 	</body>		
