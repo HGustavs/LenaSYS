@@ -151,9 +151,9 @@ include "../Shared/basic.php";
 
 
 
-<script>
+<!--<script>
     $(function() {
         $("td[title]").tooltips();
     });
 </script>
-
+-->
