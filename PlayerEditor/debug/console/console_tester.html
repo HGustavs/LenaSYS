@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Testing</title>
+		<style type="text/css">
+			.debugid { background-color: #000; color: #fff; }
+			.debugsubid { background-color: #3d3d3d; color: #fff; }
+			.debugtd { background-color: #fed; }
+			table { border-collapse: collapse; width: 500px; }
+			th { text-align: left; }
+		</style>
+	</head>
+
+	<script src="../../js/jQuery-Core-1.10.2.js"></script>
+
+	
+	
+	<!-- Print testIds/testcases to table -->
+	<script>
+		function debugid(str) {	
+			$('#debugTable > tbody').append("<tr><td colspan='4' class='debugid'>"+str+"</td></tr>");
+		}
+		function debugsubid(str) {	
+			$('#debugTable > tbody').append("<tr><td colspan='4' class='debugsubid'>"+str+"</td></tr>");
+		}
+		
+		function console(name) {
+			return eval("window.frames['consframe'].cons." + name);
+		}
+	
+		function debug(id) {	
+			$('#debugTable').append("<tr class='debugtd'><td>"+id+"</td><td>"+console(id)+"</td></tr>");
+		}
+
+	</script>
+	
+	<body>
+	
+		<iframe src="../../Consolerenderer/Consolerenderer.html" width="900" height="750" id="consframe" name="consframe" style="float: right;"></iframe>
+
+		<table border="0" id="debugTable">
+			<thead>
+				<th>ID</th>
+				<th>State</th>
+			</thead>
+			<tbody>
+				<tr></tr>
+			</tbody>
+		</table>
+		
+	</body>
+	
+	<script>
+		alert("!");
+		setInterval(function() {
+			$("#debugTable").empty();
+			debugid("General Console variables");
+			//debug("rows",console('rows'));
+			//debug("altrows",console('altrows'));
+			debug("consolewidth");
+			debug("consoleheight");
+			debug("tilesize");
+			debugid("Swap screen con var");
+			debug("currentbuffer");
+			debugid("Caret variables");
+			debug("carethidden");
+			debug("caretblink");
+			debug("caretx");
+			debug("carety");
+			debug("oldcaretx");
+			debug("oldcarety");
+			debugid("Color and default color");
+			debug("defaultcolor");
+			debug("defaultbgcolor");
+			debug("color");
+			debug("caretcolor");
+			debugid("Deferred rendering vars");
+			debug("delaycnt");
+			debug("deferscroll");
+			debug("step");
+			debug("paused");
+			debug("finished");
+			debug("repeat");
+			debug("fastforward");
+			debug("windtarget");
+			debug("playafterwind");
+			debugid("Timesteps");
+			debug("timesteps");
+		}, 250);
+	</script>
+
+	
+</html>
