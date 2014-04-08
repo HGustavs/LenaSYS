@@ -4,11 +4,12 @@
 		<meta charset="utf-8">
 		<title>Testing</title>
 		<style type="text/css">
-			.debugid { background-color: #000; color: #fff; }
+			.debugid { background-color: #212121; color: #fff; font-family: verdana, arial, sans-serif; font-weight: bold; font-size: 0.67em; padding: 6px; }
 			.debugsubid { background-color: #3d3d3d; color: #fff; }
-			.debugtd { background-color: #fed; }
+			.debugtd {  background-color: #fed; font-family: arial, verdana, sans-serif; font-size:0.67em; padding: 6px;}
 			table { border-collapse: collapse; width: 500px; }
 			th { text-align: left; }
+			td { padding: 6px; }
 		</style>
 	</head>
 
@@ -25,12 +26,18 @@
 			$('#debugTable > tbody').append("<tr><td colspan='4' class='debugsubid'>"+str+"</td></tr>");
 		}
 		
+		// Fetch variable from obj "cons" in iframe
 		function console(name) {
 			return eval("window.frames['consframe'].cons." + name);
 		}
 	
 		function debug(id) {	
-			$('#debugTable').append("<tr class='debugtd'><td>"+id+"</td><td>"+console(id)+"</td></tr>");
+			var value = console(id);
+			
+			if(typeof value == "object") {
+				value = JSON.stringify(value);
+			}
+			$('#debugTable').append("<tr class='debugtd'><td>"+id+"</td><td>"+value+"</td></tr>");
 		}
 
 	</script>
@@ -56,8 +63,6 @@
 		setInterval(function() {
 			$("#debugTable").empty();
 			debugid("General Console variables");
-			//debug("rows",console('rows'));
-			//debug("altrows",console('altrows'));
 			debug("consolewidth");
 			debug("consoleheight");
 			debug("tilesize");
@@ -87,29 +92,16 @@
 			debug("playafterwind");
 			debugid("Timesteps");
 			debug("timesteps");
-			debugId("carestate");
-			debug("xk");
-			debug("yk");
-			debug("carethidden");
-			debug("caretblink");
-			debug("caretcolor");
-			debug("textcolor");
-			debug("textbgcolor");
-			debugId("tileData");
-			debug("i");
-			debug("colors");
-			debug("bgcolors");
-			debug("characters");
-			dubugId("tile");
-			debug("tileid");
-			debug("updated");
-			debug("tiledata");
-			debug("oldcolor");
-			debug("oldbgcolor);
-			debug("str");
-			debug("tp");
-			debug("tileSize");
-			debug("tileText");
+			debugid("carestate");
+			debug("caretsaved.xk");
+			debug("caretsaved.yk");
+			debug("caretsaved.carethidden");
+			debug("caretsaved.caretblink");
+			debug("caretsaved.caretcolor");
+			debug("caretsaved.textcolor");
+			debug("caretsaved.textbgcolor");
+			debugid("rows");
+			debug("rows");
 		}, 250);
 	</script>
 
