@@ -25,6 +25,10 @@ $.fn.tooltips = function(el) {
             left: linkPosition.left - ($tooltip.width()/2)
         });
 
+
+
+
+
         $el
             // Get rid of yellow box popup
             .removeAttr("title")
@@ -39,10 +43,24 @@ $.fn.tooltips = function(el) {
                 // Reposition tooltip, in case of page movement e.g. screen resize
                 var linkPosition = $el.position();
 
+
+                var topoflink = $el.scrollTop();
+
+                if (topoflink < 10) {
+
+                    $tooltip.css({
+                        top: linkPosition.bottom - $tooltip.outerHeight() ,
+                        left: linkPosition.left - ($tooltip.width()/2)
+                    });
+                }
+
+                else {
+
                 $tooltip.css({
                     top: linkPosition.top - $tooltip.outerHeight() + 13,
                     left: linkPosition.left - ($tooltip.width()/2)
                 });
+                }
 
                 // Adding class handles animation through CSS
                 $tooltip.addClass("active");
