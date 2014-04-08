@@ -18,58 +18,58 @@
 		}
 	    this.beginPath = function(){
 	        // TODO: Log to XML file instead of debug log
-			log("<command x='"+x+"' y='"+y"' comm='beginPath'>");
+			this.log("<beginPath x='"+x+"' y='"+y +"' />");
 	        this.ctx.beginPath();
 	    }
 	    
 	    this.moveTo = function(x, y){
 	        // TODO: Log to XML file instead of debug log
-			log("<command x='"+x+"' y='"+y"' comm='moveTo'>");
+			this.log("<moveTo x='"+x+"' y='"+y+"' />");
 	        this.ctx.moveTo(x, y);
 	    }
 	    
 	     this.lineTo = function(x, y){
 	        // TODO: Log to XML file instead of debug log
-			log("<command x='"+x+"' y='"+y"' comm='lineTo'>");
+			this.log("<lineTo x='"+x+"' y='"+y+"' />");
 	        this.ctx.lineTo(x, y);
 	    }
 	    
 	    this.stroke = function(){
 	        // TODO: Log to XML file instead of debug log
-			log("<command x='"+x+"' y='"+y"' comm='stroke'>");       
+			this.log("<stroke x='"+x+"' y='"+y+"' />");       
 	        this.ctx.stroke();
 	    }
 		
 		this.createLinearGradient = function(x, y, x1,y1){
 			// TODO: Log to XML file instead of debug log
-			str+="<command x='"+x+"' y='"+y+"' x1='"+x1+"' y1='"+y1"' comm='createLinearGradient'>";       
+			str+="<command x='"+x+"' y='"+y+"' x1='"+x1+"' y1='"+y1+"' comm='createLinearGradient'>";       
 	        this.ctx.createLinearGradient(x, y, x1,y1);
 		}
 		this.createPattern = function(x, y,img){
 			// TODO: Log to XML file instead of debug log
-			str+="<command x='"+x+"' y='"+y+"' img='"+img"' comm='createPattern'>";        
+			str+="<command x='"+x+"' y='"+y+"' img='"+img+"' comm='createPattern'>";        
 	        this.ctx.createPattern(x, y,img);
 		}
 		this.createRadialGradient = function(x, y,r, x1,y1,r1){
 			// TODO: Log to XML file instead of debug log
-			str+="<command x='"+x+"' y='"+y+"' r='"+r+"' x1='"+x1+"' y1='"+y1+"' r1='"+r1"' comm='createRadialGradient'>";       
+			str+="<command x='"+x+"' y='"+y+"' r='"+r+"' x1='"+x1+"' y1='"+y1+"' r1='"+r1+"' comm='createRadialGradient'>";       
 	        this.ctx.createRadialGradient(x, y,r, x1,y1,r1);
 		}
 		
 		//This functions will log the rectangel functions.
 		this.rect = function(x, y, width, height){
 			// TODO: Log to XML file instead of debug log
-	        str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height"' comm='rect'>";         
+	        str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' comm='rect'>";         
 	        this.ctx.rect(x, y, width, height);
 		}
 		this.fillRect = function(x, y, width, height){
 			// TODO: Log to XML file instead of debug log
-			str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height"' comm='fillRect'>";        
+			str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' comm='fillRect'>";        
 	        this.ctx.fillRect(x, y, width, height);
 		}
 		this.strokeRect = function(x, y, width, height){
 			// TODO: Log to XML file instead of debug log
-	        str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height"' comm='strokeRect'>";        
+	        str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' comm='strokeRect'>";        
 	        this.ctx.strokeRect(x, y, width, height);
 		}
 		this.clearRect = function(x, y, width, height){
