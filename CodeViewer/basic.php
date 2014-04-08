@@ -1,5 +1,7 @@
 <?php
 include "../Shared/basic.php";
+
+
 	//---------------------------------------------------------------------------------------------------------------
 	// editsectionmenu - Displays an editable or un-editable section menu
 	//---------------------------------------------------------------------------------------------------------------
@@ -78,7 +80,7 @@ include "../Shared/basic.php";
 						echo '<td class="butto" onclick="Up();"><img src="icons/Up.svg" /></td>';
 						echo '<td class="butto" id="beforebutton" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="icons/SkipB.svg" /></td>';
 						echo '<td class="butto" id="afterbutton" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="icons/SkipF.svg" /></td>';
-						echo '<td class="butto" id="playbutton" onclick="Play();"><img src="icons/Play.svg" /></td>';
+						echo '<td class="butto" id="playbutton" onclick="Play();" title="Visa demo"><img src="icons/Play.svg"/></td>';
 						echo '<td class="buttospacer">&nbsp;</td>';
 						if($kind){
 								echo '<td class="butto" onclick="Plus();"><img src="icons/Plus.svg" /></td>';
@@ -143,6 +145,15 @@ include "../Shared/basic.php";
 				}else{
 						echo 'var '.$varname.'="NONE!";';												
 				}
-		}		
+		}
 
 ?>
+
+
+
+<script>
+    $(function() {
+        $("td[title]").tooltips();
+    });
+</script>
+
