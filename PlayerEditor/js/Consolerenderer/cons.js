@@ -221,13 +221,17 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 			this.step=0;
 			this.fastforward=1;	
 			this.clrscr();
-			this.play();
+			// Set to playing
+			this.paused=0;
+			this.advancestep();
 		} else if(windpos>this.step){
 			// Fast Forward
 			this.pause();
 			this.windtarget=windpos;
 			this.fastforward=1;
-			this.play();
+			// Set to playing
+			this.paused=0;
+			this.advancestep();
 		}
 			
 	}
