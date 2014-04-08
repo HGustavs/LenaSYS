@@ -1,6 +1,6 @@
 
 <?php
-$filename="canvas.txt";
+$filename="canvas.xml";
 $content = $_POST['string'];
 $length = strlen($content);
 echo("creating file");
