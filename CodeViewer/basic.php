@@ -54,8 +54,7 @@ include "../Shared/basic.php";
 
 						echo "</div></td>";
 						echo "<td align='right' class='butto' onclick='location=\"loginlogout.php\";'><img src='icons/Man.svg' /></td>";
-						echo "</tr><tr><td></td></tr></table>";
-				
+						echo "</tr><tr><td></td></tr></table>";				
 		}
 		
 	//---------------------------------------------------------------------------------------------------------------
@@ -63,7 +62,7 @@ include "../Shared/basic.php";
 	//---------------------------------------------------------------------------------------------------------------
 		
 		function editcodemenu($kind)
-		{
+		{	
 				// Body if we are allowed to run code viewer
 				echo '<body style="margin: 0; padding: 0;" onload="setup();">';
 				echo '<span id="forwdrop" class="dropdown forwdrop"><div class="dropdownback">Forw</div></span>';
@@ -79,6 +78,7 @@ include "../Shared/basic.php";
 						echo '<td class="butto" id="beforebutton" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="icons/SkipB.svg" /></td>';
 						echo '<td class="butto" id="afterbutton" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="icons/SkipF.svg" /></td>';
 						echo '<td class="butto" id="playbutton" onclick="Play();"><img src="icons/Play.svg" /></td>';
+						echo '<td class="butto" id="numberbutton" onclick="fadelinenumbers();"><img src="icons/nrshow.svg" /></td>';
 						echo '<td class="buttospacer">&nbsp;</td>';
 						if($kind){
 								echo '<td class="butto" onclick="Plus();"><img src="icons/Plus.svg" /></td>';
@@ -143,6 +143,6 @@ include "../Shared/basic.php";
 				}else{
 						echo 'var '.$varname.'="NONE!";';												
 				}
-		}		
+		}	
 
 ?>

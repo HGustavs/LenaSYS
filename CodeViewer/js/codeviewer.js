@@ -325,8 +325,8 @@ function changedPlayLink()
 
 *********************************************************************************/
 
-/*		
-function sendOut(sectid,kind)
+/*	
+function sendOut(kind, sectid)
 {
 			// Either move section or example one step up / down / delete or 
 			if(kind=='UP'){
@@ -348,7 +348,7 @@ function sendOut(sectid,kind)
 							AJAXServiceSection("exampleNew","&sectid="+sectid);
 					}
 			}else if(kind=='PP'){
-					location="EditorV30.php?courseid="+courseID+"&sectionid="+sectname+"&version="+vers+"&position="+pos;						
+					location="EditorV30.php?courseid="+courseID+"&sectionid="+sectid+"&version="+vers+"&position="+pos;						
 			}else if(kind=='MI'){
 					if(pos==-1){
 							AJAXServiceSection("sectionDel","&sectid="+sectid);					
@@ -361,15 +361,15 @@ function sendOut(sectid,kind)
 }
 */
 // Create a button for a section row
-function Sectionbutton(kind,imgname,sectid,typ)
-{
+function Sectionbutton(kind,imgname,sectid,typ,pos)
+{	
 		if(typ=="SMALL"){
 				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";				
 		}else if(typ=="BIG"){
 				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
 		}else if(typ=="EXAMPLE"){
 				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
-		}		
+		}
 }
 
 function returnedSection(data)
@@ -426,10 +426,14 @@ function returnedSection(data)
 													str+=Sectionbutton("exampleUp","UpT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
 													str+=Sectionbutton("exampleDown","DownT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
 													str+=Sectionbutton("exampleDel","MinusT.svg",data['examples'][j]['exampleno'],"EXAMPLE");											
-													str+=Sectionbutton("PP","PlayT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
+													str+="<img src='icons/PlayT.svg' onclick=\"window.location='EditorV30.php?courseid="+courseID+
+														"&version="+vers+
+														"&sectionid="+data['examples'][j]['sectionno']+
+														"&position="+data['examples'][j]['pos']+
+														"'\"/>";
 												str+="</span>"
 										}else{
-												str+="<a href='EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j]['exampleno']+"&version="+vers+"&position="+data['examples'][j][2]+"'>"+data['examples'][j]['examplename']+"</a>";		
+												str+="<a href='EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j]['sectionno']+"&version="+vers+"&position="+data['examples'][j]['pos']+"'>"+data['examples'][j]['examplename']+"</a>";		
 										}
 										str+="</span>";
 								}
@@ -469,8 +473,7 @@ function returnedSection(data)
 function returned(data)
 {
 		retdata=data;
-
-		//----------------------------------------------------
+				//----------------------------------------------------
 		// Populate interface with returned data (all relevant data is returned)
 		//----------------------------------------------------
 
@@ -525,7 +528,10 @@ function returned(data)
 		var examplenme=document.getElementById('exampleName');
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
+		// Should be sectionname instead of sectionID
+		
 		examplesect.innerHTML=sectionID;
+	//	examplesect.innerHTML=getsectionname(sectionID);
 
 		if(sessionkind==courseID){
 				// Fill file requester with file names
@@ -1129,5 +1135,22 @@ function rendercode(codestring,destinationdiv)
 		}
 		str+="</div>";						
 		printout.innerHTML=str;
-
+		linenumbers();
+}
+function linenumbers(){	
+	if(localStorage.getItem("linenumbers") == "false"){	
+		$( "#numberbutton img" ).attr('src', 'icons/nrhide.svg');
+		$( ".no" ).css("display","none");	
+	}
+}
+function fadelinenumbers(){
+	if ( $( ".no" ).is( ":hidden" ) ) {
+		$( ".no" ).fadeIn( "slow" );
+		$( "#numberbutton img" ).attr('src', 'icons/nrshow.svg');
+		localStorage.setItem("linenumbers", "true");					  
+	}else{
+		$( ".no" ).fadeOut("slow");
+		$( "#numberbutton img" ).attr('src', 'icons/nrhide.svg');
+		localStorage.setItem("linenumbers", "false");
+	 }
 }
