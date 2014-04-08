@@ -459,8 +459,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					nextdelay=0;			
 				}else{
 					if(delay>0){
-							cons.renderTiles();
-							this.delaycnt=0;
+						cons.renderTiles();
+						this.delaycnt=0;
 					}else{
 						this.delaycnt++;
 						if(this.delaycnt>this.deferscroll){
@@ -468,8 +468,12 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 							this.delaycnt=0;
 						}
 					}
-				}		
-			setTimeout(function(){cons.advancestep();}, nextdelay);							
+				}
+
+				// Run advancestep after specific amount of time (recursive).
+				// Set timeout is needed to ensure that HTML-changes are loading.
+				setTimeout(function(){cons.advancestep();}, nextdelay);
+									
 			}else{
 				// Reached end of XML
 				cons.renderTiles();

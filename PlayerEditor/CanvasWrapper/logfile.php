@@ -1,7 +1,7 @@
 
 <?php
 $filename="canvas.txt";
-$content = "This is our test file";
+$content = $_POST['string'];
 $length = strlen($content);
 echo("creating file");
 //if(file_exists($filename)==false){

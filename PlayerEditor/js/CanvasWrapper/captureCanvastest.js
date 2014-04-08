@@ -42,145 +42,160 @@
 		
 		this.createLinearGradient = function(x, y, x1,y1){
 			// TODO: Log to XML file instead of debug log
-			str+="<command x='"+x+"' y='"+y+"' x1='"+x1+"' y1='"+y1+"' comm='createLinearGradient'>";       
+			this.log("<createLinearGradient x='"+x+"' y='"+y+"' x1='"+x1+"' y1='"+y1+"' />");       
 	        this.ctx.createLinearGradient(x, y, x1,y1);
 		}
 		this.createPattern = function(x, y,img){
 			// TODO: Log to XML file instead of debug log
-			str+="<command x='"+x+"' y='"+y+"' img='"+img+"' comm='createPattern'>";        
+			this.log("<createPattern x='"+x+"' y='"+y+"' img='"+img+"' />");        
 	        this.ctx.createPattern(x, y,img);
 		}
 		this.createRadialGradient = function(x, y,r, x1,y1,r1){
 			// TODO: Log to XML file instead of debug log
-			str+="<command x='"+x+"' y='"+y+"' r='"+r+"' x1='"+x1+"' y1='"+y1+"' r1='"+r1+"' comm='createRadialGradient'>";       
+			this.log("<createRadialGradient x='"+x+"' y='"+y+"' r='"+r+"' x1='"+x1+"' y1='"+y1+"' r1='"+r1+"' />");       
 	        this.ctx.createRadialGradient(x, y,r, x1,y1,r1);
 		}
 		
 		//This functions will log the rectangel functions.
 		this.rect = function(x, y, width, height){
 			// TODO: Log to XML file instead of debug log
-	        str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' comm='rect'>";         
+	        this.log("<rect x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' />");         
 	        this.ctx.rect(x, y, width, height);
 		}
 		this.fillRect = function(x, y, width, height){
 			// TODO: Log to XML file instead of debug log
-			str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' comm='fillRect'>";        
+			this.log("<fillRect x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' />");        
 	        this.ctx.fillRect(x, y, width, height);
 		}
 		this.strokeRect = function(x, y, width, height){
 			// TODO: Log to XML file instead of debug log
-	        str+="<command x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' comm='strokeRect'>";        
+	        this.log("<strokeRect x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' />");        
 	        this.ctx.strokeRect(x, y, width, height);
 		}
 		this.clearRect = function(x, y, width, height){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called clearRect. Parameters (x, y, width, height): " + x + ", " + y+ ","+width+","+height);        
+	        this.log("<clearRect x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' />");        
 	        this.ctx.clearRect(x, y, width, height);
 		}
 		//This functions will log the path functions.
 		this.fill = function(){
 	        // TODO: Log to XML file instead of debug log
-	        console.log("called fill");        
+	        this.log("<fill x='"+x+"' y='"+y+"' />");        
 	        this.ctx.fill();
 	    }
 		this.closePath = function(){
 	        // TODO: Log to XML file instead of debug log
-	        console.log("called closePath");        
+	        this.log("<closePath x='"+x+"' y='"+y+"' />");        
 	        this.ctx.closePath();
 	    }
 		this.clip = function(){
 	        // TODO: Log to XML file instead of debug log
-	        console.log("called clip");        
+	        this.log("<clip x='"+x+"' y='"+y+"' />");        
 	        this.ctx.clip();
 	    }
 		this.quadraticCurveTo = function(x, y, cpx, cpy){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called quadraticCurveTo. Parameters (x, y, cpx, cpy): " + x + ", " + y+ ","+cpx+","+cpy);        
+	        this.log( "<quadraticCurveTo x='" + x + "' y='" + y+ "' cpx='"+cpx+"' cpy='"+cpy+"' />");        
 	        this.ctx.quadraticCurveTo(x, y, cpx, cpy);
 		}
 		this.bezierCurveTo = function(x, y, cpx, cpy, cpx1, cpy1){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called bezierCurveTo. Parameters (x, y, cpx, cpy, cpx1, cpy1): " + x + ", " + y+ ","+cpx+","+cpy+","+cpx1+","+cpy1);        
+	        this.log("<bezierCurveTo x='" + x + "' y='" + y+ "' cpx='"+cpx+"' cpy='"+cpy+"' cpx1='"+cpx1+"  cpy1='"+cpy1+"'/>");        
 	        this.ctx.bezierCurveTo(x, y, cpx, cpy, cpx1, cpy1);
 		}
 		this.arc = function(x, y,r,sAngle,eAngle,counterclockwise){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called arc. Parameters (x, y,r,sAngle,eAngle,counterclockwise): " + x + ", " + y+ ","+r+","+sAngle+","+eAngle+","+counterclockwise);        
+	        this.log("<arc x='"+x+"' y='"+y+"' r='"+r+"' sAngle='"+sAngle+"' eAngle='"+eAngle+"' counterclockwise='"+counterclockwise+"' />");        
 	        this.ctx.arc(x, y,r,sAngle,eAngle,counterclockwise);
 		}
 		this.arcTo = function(x, y,r,x1,y1){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called arcTo. Parameters (x, y,r,x1,y1): " + x + ", " + y+ ","+r+","+x1+","+y1);        
+	        this.log("<arcTo x='"+x+"' y='"+y+"' r='"+r+"' x1='"+x1+"' y1='"+y1+"' />");        
 	        this.ctx.arcTo(x, y,r,x1,y1);
 		}
 		this.isPointInPath = function(x, y){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called isPointInPath. Parameters (x, y): " + x + ", " + y);        
+	        this.log("<isPointInPath x='"+x+"' y='"+y+"' />");        
 	        this.ctx.isPointInPath(x, y);
 		}
 		//This functions will log transformation functions.
 		this.scale = function(width, height){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called scale. Parameters (width, height): " + width + ", " + height);        
+	        this.log("<scale width='"+width+"' height='"+height+"' />");        
 	        this.ctx.scale(width, height);
 		}
 		this.rotate = function(angle){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called rotate. Parameters (angle): " + angle);        
+	        this.log("<rotate angle='"+angle+"' />");        
 	        this.ctx.rotate(angle);
 		}
 		this.translate = function(x, y){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called translate. Parameters (x, y): " + x + ", " + y);        
+	        this.log("<translate x='"+x+"' y='"+y+"' />");        
 	        this.ctx.translate(x, y);
 		}
 		this.transform = function(a,b,c,d,e,f){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called transform. Parameters (a,b,c,d,e,f): " + a + ", " + b+ ", "+c+", "+d+", "+e+", "+f);        
+	        this.log("<transform a='" + a + "' b='" +b+ "' c='"+c+"' d='"+d+"' e='"+e+"  f='"+f+"'/>");        
 	        this.ctx.transform(a,b,c,d,e,f);
 		}
 		this.setTransform = function(a,b,c,d,e,f){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called setTransform. Parameters (a,b,c,d,e,f): " + a + ", " + b+ ", "+c+", "+d+", "+e+", "+f);        
+	        this.log("<setTransform a='" + a + "' b='" +b+ "' c='"+c+"' d='"+d+"' e='"+e+"  f='"+f+"'/>");        
 	        this.ctx.setTransform(a,b,c,d,e,f);
 		}
 		//This functions will log text functions.
 		this.fillText = function(x, y,text,maxWidth){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called fillText. Parameters (x, y,text,maxWidth): " + x + ", " + y+ ", " + text+ ", " + maxWidth);        
+	        this.log("<fillText x='" + x + "' y='" + y+ "' text='"+text+"' maxWidth='"+maxWidth+"' />");        
 	        this.ctx.fillText(x, y,text,maxWidth);
 		}
 		this.strokeText = function(x, y,text,maxWidth){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called strokeText. Parameters (x, y,text,maxWidth): " + x + ", " + y+ ", " + text+ ", " + maxWidth);        
+	        this.log("<strokeText x='" + x + "' y='" + y+ "' text='"+text+"' maxWidth='"+maxWidth+"' />");        
 	        this.ctx.strokeText(x, y,text,maxWidth);
 		}
 		this.measureText = function(text){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called measureText. Parameters (text): " + text);        
+	        this.log("<measureText text='"+text+"' />");        
 	        this.ctx.measureText(text);
 		}
 		//This functions will log image draw functions.
 		this.drawImage = function(img,sx,sy,swidth,sheight,x,y,width,height){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called drawImage. Parameters (img,sx,sy,swidth,sheight,x,y,width,height): " + img + ", " + sx+ ", "+sy+", "+swidth+", "+sheight+", "+x+", "+y+", "+width+", "+height);        
+	        this.log("<drawImage img='"+img+"' sx='"+sx+"' sy='"+sy+"' swidth='"+swidth+"' sheight='"+sheight+"' x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' />");        
 	        this.ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 		}
 		//This functions will log pixel manipulation functions.
 		this.createImageData = function( imageData, width, height){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called createImageData. Parameters ( imageData, width, height): " + imageData+ ","+width+","+height);        
+	        this.log("<createImageData imageData='"+imageData+"' width='"+width+"' height='"+height+"' />");        
 	        this.ctx.createImageData( imageData, width, height);
 		}
 		this.getImageData = function(x, y, width, height){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called getImageData. Parameters (x, y, width, height): " + x + ", " + y+ ","+width+","+height);        
+	        this.log("<getImageData x='"+x+"' y='"+y+"' width='"+width+"' height='"+height+"' />");        
 	        this.ctx.getImageData(x, y, width, height);
 		}
 		this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){
 			// TODO: Log to XML file instead of debug log
-	        console.log("called putImageData. Parameters (imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight): " + imgData + ", " + dirtyX+ ", "+dirtyY+", "+dirtyWidth+", "+dirtyHeight+", "+x+", "+y);        
+	        this.log("<putImageData imgData='"+imgData+"' x='"+x+"' y='"+y+"' dirtyX='"+dirtyX+"' dirtyY='"+dirtyY+"' dirtyWidth='"+dirtyWidth+"' dirtyHeight='"+dirtyHeight+"'/>");        
 	        this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
+		}
+		
+		this.klart = function()
+		{
+
+		$.ajax({
+           type: "POST",
+           url: '../CanvasWrapper/logfile.php',
+           data : { 'string': this.str},
+           success: function(msg){
+           alert(msg);
+           }
+         });
+
+
 		}
 	}
  	
