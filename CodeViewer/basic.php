@@ -148,12 +148,3 @@ include "../Shared/basic.php";
 		}	
 
 ?>
-
-
-
-<!--<script>
-    $(function() {
-        $("td[title]").tooltips();
-    });
-</script>
--->
