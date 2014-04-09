@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<script src="canvasPlayer.js"></script>
+
+<script>
+function initPlayer()
+{
+	
+ 	canvasPlayer = new canvasPlayer();
+ 
+ 	//canvasPlayer.loadXMLDoc('canvas.xml');
+	  
+	
+}
+function beginpath() {
+		ctx.lineWidth = 5;
+		console.log("func beginpath");
+		ctx.beginPath();
+}
+
+function moveto(x, y) {
+	console.log("func moveTo" + x +" " +y);
+	ctx.moveTo(x,y);
+	
+}
+
+function lineto(x, y) {
+	console.log("func lineTo");
+	ctx.lineTo(x, y);
+	
+}
+
+function stroke() {
+	console.log("func stroke");
+	ctx.stroke();
+	
+}
+
+</script>
+</head>
+
+<body onload="initPlayer();">
+
+	<canvas id="Canvas" width="400" height="400" style="border:1px solid #000"></canvas>
+ 	<script>
+    var c = document.getElementById('Canvas');
+	var ctx = c.getContext("2d");
+    </script>
+</body>
+
+</html>
