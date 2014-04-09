@@ -219,7 +219,6 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	{
 		if(windpos<this.step){
 			// Rewind
-			this.pause();
 			this.windtarget=windpos;
 			this.step=0;
 			this.fastforward=1;	
@@ -229,7 +228,6 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 			this.advancestep();
 		} else if(windpos>this.step){
 			// Fast Forward
-			this.pause();
 			this.windtarget=windpos;
 			this.fastforward=1;
 			// Set to playing
