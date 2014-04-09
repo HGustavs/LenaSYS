@@ -21,7 +21,7 @@ var x,y;
 
 function drawLine(ctx, x, y) {
     if (needPoint) {
-        
+        ctx.lineWidth = 12;
         ctx.beginPath();
         ctx.moveTo(x, y);
         needPoint = false;
