@@ -64,29 +64,4 @@ include "../Shared/basic.php";
 		echo '</div>';
 
 		}
-
-		//---------------------------------------------------------------------------------------------------------------
-		// jsvarget - Code to translate get variable to javascript through PHP
-		//---------------------------------------------------------------------------------------------------------------
-		
-		function jsvarget($getname,$varname){
-				if(isset($_GET[$getname])){
-						echo 'var '.$varname.'="'.$_GET[$getname].'";';
-				}else{
-						echo 'var '.$varname.'="NONE!";';												
-				}
-		}		
-
-		//---------------------------------------------------------------------------------------------------------------
-		// jsvarget - Code to translate session variable to javascript through PHP
-		//---------------------------------------------------------------------------------------------------------------
-
-		function jsvarsession($getname,$varname){
-				if(isset($_SESSION[$getname])){
-						echo 'var '.$varname.'="'.$_SESSION[$getname].'";';
-				}else{
-						echo 'var '.$varname.'="NONE!";';												
-				}
-		}	
-
 ?>
