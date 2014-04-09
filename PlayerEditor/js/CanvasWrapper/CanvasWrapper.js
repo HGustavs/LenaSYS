@@ -9,11 +9,12 @@
 	
 	 
 	function captureCanvas(canvas){
-	 var str='';
+		var str='';
+
 	    this.ctx = canvas;      // This is the actual canvas object
-	    this.lineWidth;
-		this.lineJoin;
-		this.miterLimit;
+	    this.lineWidth = this.ctx.lineWidth;
+		this.lineJoin = this.ctx.lineJoin;
+		this.miterLimit = this.ctx.miterLimit;
 		
 		// Log XML line
 		this.log = function(string){
@@ -164,11 +165,38 @@
 	        this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 		}
 		
-		
+		// Update state
 		this.updateContextLineState = function(){
-			this.ctx.lineWidth = this.lineWidth;
-			this.ctx.lineJoin = this.lineJoin;
-			this.ctx.miterLimit = this.miterLimit;
+			var str = '<state';
+
+			// Check for updates
+			if (this.ctx.lineWidth != this.lineWidth) {
+				str += this.updateContextProperty('lineWidth');
+			}
+			if (this.ctx.lineJoin != this.lineJoin) {
+				str += this.updateContextProperty('lineJoin');
+			}
+			if (this.ctx.miterLimit != this.miterLimit) {
+				str += this.updateContextProperty('miterLimit');
+			}
+
+			// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+
+		// Update a specific property
+		this.updateContextProperty = function(property) {
+			// Update property
+			this.ctx[property] = this[property];
+
+			// Create string for state
+			var attribute = ' ' + property + '="' + this[property] + '"';
+			attribute.toLowerCase();
+
+			return (attribute);
 		}
 		
 		// Send xml-data to server
