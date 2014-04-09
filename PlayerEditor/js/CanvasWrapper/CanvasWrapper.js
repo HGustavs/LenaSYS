@@ -13,10 +13,11 @@
 	    this.ctx = canvas;      // This is the actual canvas object
 	    this.ctx.lineWidth = 5;
 		
+		// Log XML line
 		this.log = function(string){
 			str += string + '\n';
-			console.log(str);
 		}
+
 	    this.beginPath = function(){
 			this.log('<beginpath/>');
 	        this.ctx.beginPath();
