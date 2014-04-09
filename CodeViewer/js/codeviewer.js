@@ -1116,21 +1116,22 @@ function rendercode(codestring,destinationdiv)
 								cont="&nbsp;&nbsp;";
 						}
 						
-						str+=num+cont;
-						cont="";
-						str+="</div>";
+						
 						if(improws.length==0){
 								str+="<div class='norm'>";
 						}else{
 								for(var kp=0;kp<improws.length;kp++){
-										if(lineno>=parseInt(improws[kp][0])-1&&lineno<parseInt(improws[kp][1])){
+										if(lineno>=parseInt(improws[kp][0])&&lineno<=parseInt(improws[kp][1])){
 												str+="<div class='impo'>";
 												break;
 										}else{
 												str+="<div class='norm'>";
 										}						
 								}
-						}						
+						}	
+						str+=num+cont;
+						cont="";
+						str+="</div>";					
 				}
 		}
 		str+="</div>";						
