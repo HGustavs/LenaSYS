@@ -11,7 +11,9 @@
 	function captureCanvas(canvas){
 	 var str='';
 	    this.ctx = canvas;      // This is the actual canvas object
-	    this.ctx.lineWidth = 5;
+	    this.lineWidth;
+		this.lineJoin;
+		this.miterLimit;
 		
 		// Log XML line
 		this.log = function(string){
@@ -29,11 +31,14 @@
 	    }
 	    
 	     this.lineTo = function(x, y){
+			this.updateContextLineState();
+			
 			this.log('<lineto x="'+x+'" y="'+y+'"/>');
 	        this.ctx.lineTo(x, y);
 	    }
 	    
 	    this.stroke = function(){
+			this.updateContextLineState();
 			this.log('<stroke/>');       
 	        this.ctx.stroke();
 	    }
@@ -157,6 +162,13 @@
 		this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){
 	        this.log('<putimagedata imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dirtyx="'+dirtyX+'" dirtyy="'+dirtyY+'" dirtywidth="'+dirtyWidth+'" dirtyheight="'+dirtyHeight+'"/>');        
 	        this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
+		}
+		
+		
+		this.updateContextLineState = function(){
+			this.ctx.lineWidth = this.lineWidth;
+			this.ctx.lineJoin = this.lineJoin;
+			this.ctx.miterLimit = this.miterLimit;
 		}
 		
 		// Send xml-data to server
