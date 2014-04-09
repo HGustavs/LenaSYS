@@ -45,7 +45,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	this.repeat=0;
 	this.fastforward=0;
 	this.windtarget=-1;
-	this.playafterwind=0;
+	this.playafterwind=1;
 	
 	// Timesteps
 	this.timesteps=null;
@@ -446,8 +446,10 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					
 					if(!this.playafterwind){
 						this.pause();
+					} else { // This fix sort of works for the überspeed when fastforwarding. Need to investigate more
+						this.pause();
+						setTimeout(function(){cons.play();},750);
 					}
-
 					var fract=this.step/this.timesteps.length;
 					document.getElementById("bar").style.width=Math.round(fract*392);							
 					
@@ -471,8 +473,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 				}
 
 				// Run advancestep after specific amount of time (recursive).
-				// Set timeout is needed to ensure that HTML-changes are loading.
-				setTimeout(function(){cons.advancestep();}, nextdelay);
+				// Set timeout is needed to ensure that HTML-changes are loading.	
+				var timeoutStore = setTimeout(function(){cons.advancestep();}, nextdelay);			
 									
 			}else{
 				// Reached end of XML
