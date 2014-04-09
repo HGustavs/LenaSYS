@@ -2,7 +2,7 @@ DROP DATABASE Imperious;
 CREATE DATABASE Imperious;
 USE Imperious;
 
-/* Appuser contains the users of the system and the corresponding permissions*/
+/* Appuser contains the us 	ers of the system and the corresponding permissions*/
 
 CREATE TABLE appuser(
 		userid			 MEDIUMINT NOT NULL AUTO_INCREMENT,
@@ -121,8 +121,16 @@ CREATE TABLE descriptionsection(
 		PRIMARY KEY(descno)		
 );
 	
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (3,"<b>Test Description</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (3,"<b>Test Description S2</b>This is the seond section of the description<b>Even More</b>This is even more text",2,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (3,"<b>Callback 1</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (4,"<b>Callback 2 S2</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (5,"<b>Callback 3</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (6,"<b>Callback 4</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (7,"<b>Design 1</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (8,"<b>Design 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (9,"<b>Design 3</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
+INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (10,"<b>Design 4</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
 
 /* Wordlist contains a list of keywords for a certain programming language or file type */
 
