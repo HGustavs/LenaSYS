@@ -76,16 +76,8 @@ include "../Shared/basic.php";
 
 				echo '<div id="buttomenu">';
 				echo '<table cellspacing="2"><tr>';
-						echo '<td class="butto" onclick="Up();"><img src="icons/Up.svg" /></td>';
-						echo '<td class="butto" id="beforebutton" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="icons/SkipB.svg" /></td>';
-						echo '<td class="butto" id="afterbutton" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="icons/SkipF.svg" /></td>';
-						echo '<td class="butto" id="playbutton" onclick="Play();"><img src="icons/Play.svg" /></td>';
-						echo '<td class="butto" id="numberbutton" onclick="fadelinenumbers();"><img src="icons/nrshow.svg" /></td>';
-						echo '<td class="buttospacer">&nbsp;</td>';
-						if($kind){
-								echo '<td class="buttospacer">&nbsp;</td>';
-								echo '<td class="butto" onclick="Bold();"><img src="icons/Bold.svg" /></td>';
-								echo '<td class="butto" onclick="Save();"><img src="icons/Diskett.svg" /></td>';
+				if($kind){
+
 								echo '<td class="buttospacer">&nbsp;</td>';
 								echo '<td class="butto" onclick="Code();"><img src="icons/Document.svg" /></td>';
 								echo '<td class="butto" onclick="Wordlist();"><img src="icons/Book.svg" /></td>';
@@ -93,7 +85,13 @@ include "../Shared/basic.php";
 						}else{
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';						
 						}
-						echo '<td class="butto" onclick="location=\'loginlogout.php\';"><img src="icons/Man.svg" /></td></tr>';
+						echo '<td class="butto" id="numberbutton" onclick="fadelinenumbers();"><img src="new icons/noNumbers_button.svg" /></td>';
+						echo '<td class="butto" id="beforebutton" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
+						echo '<td class="butto" id="afterbutton" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="new icons/forward_button.svg" /></td>';
+						echo '<td class="butto" id="playbutton" onclick="Play();"><img src="new icons/play_button.svg" /></td>';
+						echo '<td class="butto" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
+						echo '<td class="buttospacer">&nbsp;</td>';
+						
 				echo '</table></div>';
 				echo '<div style="width:100%; position: absolute; top: 50px; bottom: 0px;" id="div2;background-color:#def">';
 				echo '<div id="docucontent"';
@@ -104,7 +102,7 @@ include "../Shared/basic.php";
 				} 
 				echo '<div style="left:20px" class="warning">';
 						echo 'Please wait while content loads<br/>';
-						echo '<img src="icons/Starspinner3.gif" /><br/>';
+						echo '<img src="new icons/loadingJS.gif" /><br/>';
 						echo 'Do not forget to enable Javascript<br/>';
 						echo '</div>';
 						echo '</div>';
@@ -112,7 +110,7 @@ include "../Shared/basic.php";
 						echo '<div id="infobox" class="codeview">';
 						echo '<div style="left:300px" class="warning">';
 							echo 'Please wait while content loads<br/>';
-							echo '<img src="icons/Starspinner3.gif" /><br/>';
+							echo '<img src="new icons/loadingJS.gif" /><br/>';
 							echo 'Do not forget to enable Javascript<br/>';
 					echo '</div>';
 				echo '</div>';

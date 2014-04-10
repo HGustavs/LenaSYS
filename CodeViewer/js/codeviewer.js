@@ -1201,18 +1201,19 @@ function rendercode(codestring,destinationdiv)
 }
 function linenumbers(){	
 	if(localStorage.getItem("linenumbers") == "false"){	
-		$( "#numberbutton img" ).attr('src', 'icons/nrhide.svg');
+		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		$( ".no" ).css("display","none");	
 	}
 }
 function fadelinenumbers(){
 	if ( $( ".no" ).is( ":hidden" ) ) {
-		$( ".no" ).fadeIn( "slow" );
-		$( "#numberbutton img" ).attr('src', 'icons/nrshow.svg');
+		$( ".no" ).fadeIn( "fast" );
+		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
+
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
-		$( ".no" ).fadeOut("slow");
-		$( "#numberbutton img" ).attr('src', 'icons/nrhide.svg');
+		$( ".no" ).fadeOut("fast");
+		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
 }
