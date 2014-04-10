@@ -260,10 +260,38 @@ function delImpword()
 
 function addImpline()
 {
-		from=parseInt(document.getElementById('implistfrom').value);
-		to=parseInt(document.getElementById('implistto').value);
-		if(from<=to){
-				AJAXService("addImpLine","&from="+from+"&to="+to);
+		from=document.getElementById('implistfrom');
+		to=document.getElementById('implistto');
+		errormsg = document.getElementById('impLinesError');
+		
+		// reset the color of input boxes
+		to.style.backgroundColor="#FFFFFF";
+		from.style.backgroundColor="#FFFFFF";  
+		
+		// make integers of the input
+		fromValue = parseInt(from.value)
+		toValue = parseInt(to.value)
+
+		
+		// error messages if NaN
+		if((isNaN(fromValue))||(isNaN(toValue))){
+			if(isNaN(fromValue)){
+				from.style.backgroundColor="#E33D3D"; 
+			}if(isNaN(toValue)){
+				to.style.backgroundColor="#E33D3D"; 
+			}
+			errormsg.innerHTML = "Failed to add. Not a number.";
+			return;
+		}
+		// add important lines
+		if(fromValue<=toValue){
+				AJAXService("addImpLine","&from="+fromValue+"&to="+toValue);
+		}
+		// Error message if from>to
+		else{
+			to.style.backgroundColor="#E42217"; 
+			from.style.backgroundColor="#E42217";
+			errormsg.innerHTML = "Failed to add. Use ascending order.";
 		}
 }
 
@@ -275,7 +303,7 @@ function delImpline()
 }
 
 function addWordlistWord()
-{
+{ 
 		word=encodeURIComponent(document.getElementById('wordlisttextbox').value);
 		wordlist=encodeURIComponent(retdata['chosenwordlist']);
 		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+word);
@@ -289,9 +317,18 @@ function delWordlistWord()
 }
 
 function newWordlist()
-{
-		wordlist=encodeURIComponent(document.getElementById('wordlisttextbox').value);
-		AJAXService("newWordlist","&wordlist="+wordlist);
+{		
+		wordlist=document.getElementById('wordlisttextbox');
+		// check if UTF encoded
+		for(var i=0; i<wordlist.value.length; i++) {
+	        if(wordlist.value.charCodeAt(i) > 127){
+				document.getElementById('wordlistError').innerHTML = "Error. Not UTF-encoded.";
+				wordlist.style.backgroundColor="#E33D3D";
+	          	return;
+	        }
+	    }
+		wordlistEncoded = encodeURIComponent(wordlist.value);
+		AJAXService("newWordlist","&wordlist="+wordlistEncoded);
 }
 				
 function selectWordlistWord(word)
@@ -568,6 +605,7 @@ function returned(data)
 						}
 				}
 				str+="</select><br/>";
+				str+="<div id='wordlistError'></div>";
 				str+="<input type='text' size='24' id='wordlisttextbox' />";
 				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
 				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
@@ -588,15 +626,15 @@ function returned(data)
 				//----------------------------------------------------
 				// Fill important line list part of document dialog
 				//----------------------------------------------------
-				str+="<br/><br/>Important lines: <br/><select size='4'>";
+				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
 				for(i=0;i<data['improws'].length;i++){
 						str+="<option onclick='selectImpLines(\""+data['improws'][i]+"\");'>"+data['improws'][i][0]+"-"+data['improws'][i][1]+"</option>";										
 				}
 				str+="</select><br/>"
+				str+="<div id='impLinesError'></div>";
 				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
 				str+="<input type='button' value='add' onclick='addImpline();' />";
 				str+="<input type='button' value='del' onclick='delImpline();' />";
-				
 				str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
 		
 				var docurec=document.getElementById('docudrop');
