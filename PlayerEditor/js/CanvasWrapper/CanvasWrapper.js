@@ -9,14 +9,9 @@
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
 
-<<<<<<< HEAD
-			// Add script tag
-			str += '<script type="canvas">\n';
-=======
 		// Add script tag
 		str += '<script type="canvas">\n';
 
->>>>>>> 3b6790e25beb532b044d91999297f3e6c9003286
 	    this.ctx = canvas;      // This is the actual canvas object
 	    this.lineWidth = this.ctx.lineWidth;
 		this.lineJoin = this.ctx.lineJoin;
@@ -48,7 +43,7 @@
 	        this.ctx.moveTo(x, y);
 	    }
 	    
-	     this.lineTo = function(x, y){
+	    this.lineTo = function(x, y){
 			this.updateContextLineState();
 			
 			this.log('<lineto x="'+x+'" y="'+y+'"/>');
@@ -230,28 +225,29 @@
 			if (this.ctx.shadowOffsetY != this.shadowOffsetY) {
 				str += this.updateContextProperty('shadowOffsetY');
 			}
-		}
-		// Add state update to XML if needed
+
+			// Add state update to XML if needed
 			if (str.length > 6){
 				str += '/>';
 				this.log(str);
 			}
 		}
+
 		// Update state
 		this.updateContextTextState = function(){
-			var str = '<state';
-			
-			// Check for updates
-			if (this.ctx.font != this.font) {
-				str += this.updateContextProperty('font');
-			}
-			if (this.ctx.textAlign != this.textAlign) {
-				str += this.updateContextProperty('textAlign');
-			}
-			if (this.ctx.textBaseline != this.textBaseline) {
-				str += this.updateContextProperty('textBaseline');
-			}
+		var str = '<state';
+		
+		// Check for updates
+		if (this.ctx.font != this.font) {
+			str += this.updateContextProperty('font');
 		}
+		if (this.ctx.textAlign != this.textAlign) {
+			str += this.updateContextProperty('textAlign');
+		}
+		if (this.ctx.textBaseline != this.textBaseline) {
+			str += this.updateContextProperty('textBaseline');
+		}
+
 		// Add state update to XML if needed
 			if (str.length > 6){
 				str += '/>';
@@ -272,13 +268,14 @@
 			if (this.ctx.imageData.data != this.imageData.data) {
 				str += this.updateContextProperty('imageData.data');
 			}
-		}
-		// Add state update to XML if needed
+
+			// Add state update to XML if needed
 			if (str.length > 6){
 				str += '/>';
 				this.log(str);
 			}
 		}
+
 		// Update state
 		this.updateContextCompositingState = function(){
 			var str = '<state';
@@ -290,13 +287,14 @@
 			if (this.ctx.globalCompositeOperation != this.globalCompositeOperation) {
 				str += this.updateContextProperty('globalCompositeOperation');
 			}
-		}
-		// Add state update to XML if needed
+		
+			// Add state update to XML if needed
 			if (str.length > 6){
 				str += '/>';
 				this.log(str);
 			}
 		}
+		
 		// Update a specific property
 		this.updateContextProperty = function(property) {
 			// Update property
@@ -314,10 +312,7 @@
 		{
 			// Close script
 			str += '</script>';
-<<<<<<< HEAD
-=======
 
->>>>>>> 3b6790e25beb532b044d91999297f3e6c9003286
 			$.ajax({
 		        type: 'POST',
 		        url: '../CanvasWrapper/logfile.php',
