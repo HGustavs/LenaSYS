@@ -14,7 +14,7 @@
 				.dropdown {display:none;position:fixed;top:50px;z-index:4000;background:#000;border:solid 2px #000;box-shadow: 6px 6px 8px #444;font-size:14px; font-family:Verdana,Arial,Sans-serif;color:#fff;}
 				.dropdownback {padding-left:8px;background-color:#804;color:#fff;font-family:Verdana,Serif; font-size:16px;font-weight:normal;background:linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);}
 				.codedrop {left:314px;height:400px;width:400px;}
-				.docudrop {left:354px;height:50%;width:500px;}
+				.docudrop {left:354px;height:620px;width:500px;}
 				.forwdrop {left:76px;height:200px;width:200px;}
 				.backwdrop {left:38px;height:200px;width:200px;}
 				
