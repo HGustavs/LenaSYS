@@ -34,15 +34,16 @@ function imagerecorder(imgCanvas)
 	var delay = currentTime - lastEvent;
 	lastEvent = currentTime;
 	var delayStr = "<timestep delay=" + delay + "/>";
-	var currentImage = "<picture src=" + picArray[currentImage] + "/>";
-	console.log(currentImage);
+	imgPath = (picArray[currentImage].src).split("/");
+	imgPath = "<picture src=" + imgPath[imgPath.length-2] +"/"+ imgPath[imgPath.length-1] + "/>";
+	
+	console.log(imgPath);
 	console.log(delayStr);
 	console.log(str);
 
-		document.getElementById("test").value += currentImage;
+		document.getElementById("test").value += imgPath;
 		document.getElementById("test").value += delayStr;
 		document.getElementById("test").value += str;
-	
 	}
 	
 	this.initImages();

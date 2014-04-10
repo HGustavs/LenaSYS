@@ -4,16 +4,19 @@
 	 *  This function acts as a wrapper to a canvas object. It logs
 	 *  every function call before forwarding the call to the canvas.
 	 *
-	 */
-	
-	
-	 
+	 */ 
 	function captureCanvas(canvas){
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
 
+<<<<<<< HEAD
 			// Add script tag
 			str += '<script type="canvas">\n';
+=======
+		// Add script tag
+		str += '<script type="canvas">\n';
+
+>>>>>>> 3b6790e25beb532b044d91999297f3e6c9003286
 	    this.ctx = canvas;      // This is the actual canvas object
 	    this.lineWidth = this.ctx.lineWidth;
 		this.lineJoin = this.ctx.lineJoin;
@@ -311,6 +314,10 @@
 		{
 			// Close script
 			str += '</script>';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b6790e25beb532b044d91999297f3e6c9003286
 			$.ajax({
 		        type: 'POST',
 		        url: '../CanvasWrapper/logfile.php',
