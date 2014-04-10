@@ -34,29 +34,23 @@ var imagerec = new imagerecorder("ImageCanvas");
 				$filename = 'test.txt';
 				$textString = $_POST['test'];
 			
-				// Let's make sure the file exists and is writable first.
 				if (is_writable($filename)) {
-
-					// In our example we're opening $filename in append mode.
-					// The file pointer is at the bottom of the file hence
-					// that's where $textString will go when we fwrite() it.
+	
 					if (!$handle = fopen($filename, 'a')) {
-						 echo "Cannot open file ($filename)";
+						 echo "Can't open the file:($filename)";
 						 exit;
 					}
 
-					// Write $textString to our opened file.
 					if (fwrite($handle, $textString) === FALSE) {
-						echo "Cannot write to file ($filename)";
+						echo "Couldn't write to file: ($filename)";
 						exit;
 					}
-
-					echo "Success, wrote ($textString) to file ($filename)";
+					echo "Ok! ($textString) to file ($filename)";
 
 					fclose($handle);
 
 				} else {
-					echo "The file $filename is not writable";
+					echo "Error!";
 				}
 				?>
 		</div>
