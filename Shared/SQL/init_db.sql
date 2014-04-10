@@ -79,6 +79,36 @@ INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,ap
 INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 4","JS","Julf.html",3,"Creationscript",2013);
 
 
+/* boxes with information in a certain example */
+CREATE TABLE box(
+		boxid				INTEGER NOT NULL AUTO_INCREMENT,
+		exampleno 			INTEGER NOT NULL,
+		boxcontent			VARCHAR(39),
+		descno				INT DEFAULT '0',
+		fileno				MEDIUMINT  DEFAULT '0',					
+		settings			VARCHAR(1024),
+		PRIMARY KEY(boxid)		
+);
+
+INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,1,"[viktig=1]");
+INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,2,"[viktig=1]");
+INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,3,"[viktig=1]");
+
+
+/* template with information about a certain template */
+CREATE TABLE template(
+		templateid			INTEGER NOT NULL,
+		stylesheet 			VARCHAR(39) NOT NULL,
+		boxid				INTEGER NOT NULL,	
+		PRIMARY KEY(templateid, stylesheet, boxid)		
+);
+
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",1);
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",2);
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",3);
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (2,"template2.css",4);
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (2,"template2.css",5);
+
 
 /* improw contains a list of the important rows for a certain example */
 
