@@ -9,9 +9,11 @@
 	
 	 
 	function captureCanvas(canvas){
-		var str='';
+		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
 
+			// Add script tag
+			str += '<script type="canvas">\n';
 	    this.ctx = canvas;      // This is the actual canvas object
 	    this.lineWidth = this.ctx.lineWidth;
 		this.lineJoin = this.ctx.lineJoin;
@@ -191,6 +193,9 @@
 			if (this.ctx.miterLimit != this.miterLimit) {
 				str += this.updateContextProperty('miterLimit');
 			}
+			if (this.ctx.lineCap != this.lineCap) {
+				str += this.updateContextProperty('lineCap');
+			}
 
 			// Add state update to XML if needed
 			if (str.length > 6){
@@ -198,7 +203,97 @@
 				this.log(str);
 			}
 		}
-
+		
+		// Update state
+		this.updateContextCssState = function(){
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.fillStyle != this.fillStyle) {
+				str += this.updateContextProperty('fillStyle');
+			}
+			if (this.ctx.strokeStyle != this.strokeStyle) {
+				str += this.updateContextProperty('strokeStyle');
+			}
+			if (this.ctx.shadowColor != this.shadowColor) {
+				str += this.updateContextProperty('shadowColor');
+			}
+			if (this.ctx.shadowBlur != this.shadowBlur) {
+				str += this.updateContextProperty('shadowBlur');
+			}
+			if (this.ctx.shadowOffsetX != this.shadowOffsetX) {
+				str += this.updateContextProperty('shadowOffsetX');
+			}
+			if (this.ctx.shadowOffsetY != this.shadowOffsetY) {
+				str += this.updateContextProperty('shadowOffsetY');
+			}
+		}
+		// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+		// Update state
+		this.updateContextTextState = function(){
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.font != this.font) {
+				str += this.updateContextProperty('font');
+			}
+			if (this.ctx.textAlign != this.textAlign) {
+				str += this.updateContextProperty('textAlign');
+			}
+			if (this.ctx.textBaseline != this.textBaseline) {
+				str += this.updateContextProperty('textBaseline');
+			}
+		}
+		// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+		// Update state
+		this.updateContextPixelManipulationState = function(){
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.imgData.width != this.imgData.width) {
+				str += this.updateContextProperty('imgData.width');
+			}
+			if (this.ctx.imgData.height != this.imgData.height) {
+				str += this.updateContextProperty('imgData.height');
+			}
+			if (this.ctx.imageData.data != this.imageData.data) {
+				str += this.updateContextProperty('imageData.data');
+			}
+		}
+		// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+		// Update state
+		this.updateContextCompositingState = function(){
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.globalAlpha != this.globalAlpha) {
+				str += this.updateContextProperty('globalAlpha');
+			}
+			if (this.ctx.globalCompositeOperation != this.globalCompositeOperation) {
+				str += this.updateContextProperty('globalCompositeOperation');
+			}
+		}
+		// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
 		// Update a specific property
 		this.updateContextProperty = function(property) {
 			// Update property
@@ -211,9 +306,11 @@
 			return (attribute);
 		}
 		
-		// Send xml-data to server
+		// Finalize and send xml-data to server
 		this.sendXML = function()
 		{
+			// Close script
+			str += '</script>';
 			$.ajax({
 		        type: 'POST',
 		        url: '../CanvasWrapper/logfile.php',
