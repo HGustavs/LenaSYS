@@ -83,8 +83,6 @@ include "../Shared/basic.php";
 						echo '<td class="butto" id="numberbutton" onclick="fadelinenumbers();"><img src="icons/nrshow.svg" /></td>';
 						echo '<td class="buttospacer">&nbsp;</td>';
 						if($kind){
-								echo '<td class="butto" onclick="Plus();"><img src="icons/Plus.svg" /></td>';
-								echo '<td class="butto" onclick="Minus();"><img src="icons/Minus.svg" /></td>';
 								echo '<td class="buttospacer">&nbsp;</td>';
 								echo '<td class="butto" onclick="Bold();"><img src="icons/Bold.svg" /></td>';
 								echo '<td class="butto" onclick="Save();"><img src="icons/Diskett.svg" /></td>';
