@@ -5,45 +5,47 @@ function canvasPlayer()
 {	
 	this.parseLine = function(operation){
 		// console.log(operation);
-		// console.log("-->"+operation.nodeName);
+		 
 		for(x = 0; x < operation.length; x++) {
 			
-			console.log("operation: "+operation.nodeName);
 			console.log(operation[x].attributes);
 			if(operation[x].attributes != null){
 				console.log("attribute length " + operation[x].attributes.length);
+				if(operation[x].nodeName.substring(0,1) == "#") continue;
+				console.log("operation: "+operation[x].nodeName);
 				if(operation[x].attributes.length == 0){
-					window["canvasPlayer"][operation[x].nodeName]();
+					this[operation[x].nodeName]();
 				}
 				else if(operation[x].attributes.length == 1){
-					window["canvasPlayer"][operation[x].nodeName](operation[x].attributes.item(0).nodeValue);
+					this[operation[x].nodeName](operation[x].attributes.item(0).nodeValue);
 				}
 				else if(operation[x].attributes.length == 2){
-					window["canvasPlayer"][operation[x].nodeName](operation[x].attributes.item(0).nodeValue,operation[x].attributes.item(1).nodeValue);
+					//window["canvasPlayer"][operation[x].nodeName](operation[x].attributes.item(0).nodeValue, operation[x].attributes.item(1).nodeValue);
+					this[operation[x].nodeName](operation[x].attributes.item(0).nodeValue, operation[x].attributes.item(1).nodeValue);
 				}
 			}	
 		}	
 	}
 	
-function beginpath() {
+this.beginpath = function() {
 		ctx.lineWidth = 5;
 		console.log("func beginpath");
 		ctx.beginPath();
 }
 
-function moveto(x, y) {
+this.moveto = function(x, y) {
 	console.log("func moveTo" + x +" " +y);
 	ctx.moveTo(x,y);
 	
 }
 
-function lineto(x, y) {
+this.lineto = function(x, y) {
 	console.log("func lineTo");
 	ctx.lineTo(x, y);
 	
 }
 
-function stroke() {
+this.stroke = function() {
 	console.log("func stroke");
 	ctx.stroke();
 	
