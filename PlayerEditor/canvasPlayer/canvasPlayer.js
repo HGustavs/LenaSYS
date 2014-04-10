@@ -73,14 +73,12 @@ this.stroke = function() {
 	xmlhttp.open("GET","canvas.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
-//	  
+	
   	timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
 	  console.log(JSON.stringify(timesteps));
 	  console.log(timesteps.length);
-	  //tStep = xmlDoc.getElementsByTagName("timestep");
 	  var totalTime = 0;
 	for(i = 0; i < timesteps.length; i++) {		 
- 		//if(i > xmlDoc.getElementsByTagName("timestep").length) break;
 		operation = xmlDoc.getElementsByTagName("timestep");
 		if(operation[i]){
 		delay = operation[i].getAttribute("delay");
@@ -88,15 +86,9 @@ this.stroke = function() {
 		
 		console.log("delay " + totalTime);
 		
-		//operation = tStep[i].childNodes;
-		//this.parseLine(operation);
 		nodes = operation[i].childNodes;
+		setTimeout(parseLine, totalTime, nodes);
 		
-		this.parseLine(nodes);
-		// for(j=0; j<nodes.length; j++) {
-			// console.log(nodes[j].nodeName);
-			// this.parseLine(nodes[j]);
-		// }
 
 		
 		}

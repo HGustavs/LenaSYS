@@ -16,28 +16,9 @@ function initPlayer()
 	  
 	
 }
-function beginpath() {
-		ctx.lineWidth = 5;
-		console.log("func beginpath");
-		ctx.beginPath();
-}
 
-function moveto(x, y) {
-	console.log("func moveTo" + x +" " +y);
-	ctx.moveTo(x,y);
-	
-}
-
-function lineto(x, y) {
-	console.log("func lineTo");
-	ctx.lineTo(x, y);
-	
-}
-
-function stroke() {
-	console.log("func stroke");
-	ctx.stroke();
-	
+function parseLine(op){
+	canvas.parseLine(op);
 }
 
 </script>
@@ -49,7 +30,7 @@ function stroke() {
  	<script>
     var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
-	var can = new canvasPlayer();
+	var canvas = new canvasPlayer();
     </script>
 </body>
 
