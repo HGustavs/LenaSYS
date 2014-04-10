@@ -5,7 +5,7 @@
 			    #codebox {border-style: solid; border-width:1px;position: absolute; top:0px; bottom: 0px;left:300px;right:0px;background-color:#fff;overflow:scroll}
 				#impLinesError{color: #E42217;}
 				#wordlistError{color: #E42217;}
-				
+				#impWordlistError{color: #E42217;}
 				.butto {border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background:linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);height:44px;color:white;background-color:#BBB;}
 				.buttogray {border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background:linear-gradient(to bottom, #AAA 0%,#DDD 15%,#FFF 40%, #555 48%,#555 80%,#DDD 99%);height:44px;color:white;background-color:#BBB;}
 				.buttospacer {width:20px;}

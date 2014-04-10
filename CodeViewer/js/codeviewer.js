@@ -247,9 +247,21 @@ function chosenWordlist()
 }
 
 function addImpword()
-{
-		word=encodeURIComponent(document.getElementById('impwordtextbox').value);
-		AJAXService("addImpWord","&word="+word);
+{	
+	word=document.getElementById('impwordtextbox');
+		// check if UTF encoded
+		for(var i=0; i<word.value.length; i++) {
+	        if(word.value.charCodeAt(i) > 127){
+				document.getElementById('impWordlistError').innerHTML = "Error. Not UTF-encoded.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+	        }
+	    }
+		wordEncoded = encodeURIComponent(word.value);
+		AJAXService("addImpWord","&word="+wordEncoded);
+		
+	/*	word=encodeURIComponent(document.getElementById('impwordtextbox').value);
+		AJAXService("addImpWord","&word="+word);*/
 }
 
 function delImpword()
@@ -619,6 +631,7 @@ function returned(data)
 						str+="<option onclick='selectImpWord(\""+data['impwords'][i]+"\");'>"+data['impwords'][i]+"</option>";										
 				}
 				str+="</select><br/>";
+				str+="<div id='impWordlistError'></div>";
 				str+="<input type='text' size='24' id='impwordtextbox' />";
 				str+="<input type='button' value='add' onclick='addImpword();' />";
 				str+="<input type='button' value='del' onclick='delImpword();'/>";													
