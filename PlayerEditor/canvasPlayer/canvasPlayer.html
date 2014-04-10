@@ -6,48 +6,26 @@
 <script src="canvasPlayer.js"></script>
 
 <script>
+
 function initPlayer()
 {
-	
- 	canvasPlayer = new canvasPlayer();
- 
- 	//canvasPlayer.loadXMLDoc('canvas.xml');
-	  
-	
-}
-function beginpath() {
-		ctx.lineWidth = 5;
-		console.log("func beginpath");
-		ctx.beginPath();
+ 	//canvasPlayer.loadXMLDoc('canvas.xml');	
 }
 
-function moveto(x, y) {
-	console.log("func moveTo" + x +" " +y);
-	ctx.moveTo(x,y);
-	
-}
-
-function lineto(x, y) {
-	console.log("func lineTo");
-	ctx.lineTo(x, y);
-	
-}
-
-function stroke() {
-	console.log("func stroke");
-	ctx.stroke();
-	
+function executeTimestep(nodes)
+{
+	canvas.executeTimestep(nodes);
 }
 
 </script>
 </head>
 
 <body onload="initPlayer();">
-
 	<canvas id="Canvas" width="400" height="400" style="border:1px solid #000"></canvas>
  	<script>
     var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
+	var canvas = new canvasPlayer();
     </script>
 </body>
 
