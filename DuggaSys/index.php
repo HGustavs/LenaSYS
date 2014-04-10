@@ -1,12 +1,15 @@
-﻿<?php header("Location: quiz/index.html"); ?>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta charset="utf-8" />
-		<title></title>
-	</head>
-	<body>
-		<h1>Quiz server v. 2</h1>
-	</body>
+<head>
+	<link type="text/css" href="css/style.css" rel="stylesheet">
+
+</head>
+<body>
+	<header>
+
+	</header>
+	<content>
+
+	</content>
+</body>
 </html>
