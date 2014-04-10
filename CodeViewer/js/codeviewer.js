@@ -361,14 +361,14 @@ function sendOut(kind, sectid)
 }
 */
 // Create a button for a section row
-function Sectionbutton(kind,imgname,sectid,typ,pos)
+function Sectionbutton(kind,imgname,title,sectid,typ,pos)
 {	
 		if(typ=="SMALL"){
-				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";				
+				return "<img src='icons/"+imgname+"' title='"+title+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
 		}else if(typ=="BIG"){
-				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
+				return "<img src='icons/"+imgname+"' title='"+title+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
 		}else if(typ=="EXAMPLE"){
-				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
+				return "<img src='icons/"+imgname+"' title='"+title+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
 		}
 }
 
@@ -389,9 +389,9 @@ function returnedSection(data)
 						if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
 							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"' >"+data['sections'][i]['sectionname']+"</span>";
 							str+="<span class='smallishbutt'>";
-							str+=Sectionbutton("sectionUp","UpT.svg",data['sections'][i]['sectionno'],"BIG");
-							str+=Sectionbutton("sectionDown","DownT.svg",data['sections'][i]['sectionno'],"BIG");
-							str+=Sectionbutton("sectionDel","MinusT.svg",data['sections'][i]['sectionno'],"BIG");											
+							str+=Sectionbutton("sectionUp","UpT.svg","Move section up",data['sections'][i]['sectionno'],"BIG");
+							str+=Sectionbutton("sectionDown","DownT.svg","Move section down",data['sections'][i]['sectionno'],"BIG");
+							str+=Sectionbutton("sectionDel","MinusT.svg","Remove section",data['sections'][i]['sectionno'],"BIG");
 							str+="</span>";
 						}else{
 							str+="<span id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";						
@@ -404,10 +404,10 @@ function returnedSection(data)
 						if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
 							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";
 							str+="<span class='smallbutt'>";
-							str+=Sectionbutton("sectionUp","UpS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("sectionDown","DownS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("exampleNew","PlusS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("sectionDel","MinusS.svg",data['sections'][i]['sectionno'],"SMALL");
+							str+=Sectionbutton("sectionUp","UpS.svg","Move section up",data['sections'][i]['sectionno'],"SMALL");
+							str+=Sectionbutton("sectionDown","DownS.svg","Move section down",data['sections'][i]['sectionno'],"SMALL");
+							str+=Sectionbutton("exampleNew","PlusS.svg","Add section",data['sections'][i]['sectionno'],"SMALL");
+							str+=Sectionbutton("sectionDel","MinusS.svg","Remove section",data['sections'][i]['sectionno'],"SMALL");
 							str+="</span>";
 						}else{
 							str+="<span id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";						
@@ -423,9 +423,9 @@ function returnedSection(data)
 										if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
 												str+="<span id='EX"+data['examples'][j]['exampleno']+"' contenteditable='true'>"+data['examples'][j]['examplename']+"</span>";
 												str+="<span class='smallbutt'>";
-													str+=Sectionbutton("exampleUp","UpT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
-													str+=Sectionbutton("exampleDown","DownT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
-													str+=Sectionbutton("exampleDel","MinusT.svg",data['examples'][j]['exampleno'],"EXAMPLE");											
+													str+=Sectionbutton("exampleUp","UpT.svg","Move section up",data['examples'][j]['exampleno'],"EXAMPLE");
+													str+=Sectionbutton("exampleDown","DownT.svg","Move section down",data['examples'][j]['exampleno'],"EXAMPLE");
+													str+=Sectionbutton("exampleDel","MinusT.svg","Remove section",data['examples'][j]['exampleno'],"EXAMPLE");
 													str+="<img src='icons/PlayT.svg' onclick=\"window.location='EditorV30.php?courseid="+courseID+
 														"&version="+vers+
 														"&sectionid="+data['examples'][j]['sectionno']+

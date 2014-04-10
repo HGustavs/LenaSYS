@@ -139,3 +139,11 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
 </body>
 </html>
+
+
+        //Creation of tooltips for all TD-elements with titles
+        <script>
+    $( document ).ready(function() {
+        $("td[title]").tooltips();
+    });
+        </script>

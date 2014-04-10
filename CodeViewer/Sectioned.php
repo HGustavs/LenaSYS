@@ -66,5 +66,23 @@
 						bodywarning("This course does not seem to exist!");
 		}
 
-?>			
+?>
+
+
+
 </html>
+
+<script>
+
+    $( document ).ready(function() {
+
+        setTimeout(function() {
+
+            $("*[title]").tooltips();
+
+        }, 800);
+
+
+    });
+
+</script>

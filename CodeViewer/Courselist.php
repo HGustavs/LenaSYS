@@ -21,3 +21,18 @@
 
 			</body>
 </html>
+
+<script>
+
+    $( document ).ready(function() {
+
+        setTimeout(function() {
+
+            $("*[title]").tooltips();
+
+        }, 800);
+
+
+    });
+
+</script>

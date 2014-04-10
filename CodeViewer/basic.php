@@ -24,10 +24,12 @@ function editsectionmenu($kind)
     echo "<td align='right' valign='top'>";
     echo "<table cellspacing='2'><tr>";
     if($kind){
-        echo "<td class='buttos' onclick='newSection(\"1\");'><img src='icons/Plus.svg' /></td>";
-        echo "<td class='buttos' onclick='newSection(\"2\");'><img src='icons/Bold.svg' /></td>";
+        echo "<td class='buttos' title='New section' onclick='newSection(\"1\");'><img src='icons/Plus.svg' /></td>";
+        echo "<td class='buttos' title='New bold section' onclick='newSection(\"2\");'><img src='icons/Bold.svg' /></td>";
     }
-    echo "<td align='right' class='butto' title='Logga in' onclick='location=\"loginlogout.php\";'><img src='icons/Man.svg' /></td>";
+
+    //To be inserted here: Put different title depending on user beging logged in or not
+    echo "<td align='right' class='butto' title='Logga ut' onclick='location=\"loginlogout.php\";'><img src='icons/Man.svg' /></td>";
     echo "</tr></table>";
 
     echo "</tr><tr><td></td></tr></table>";
@@ -55,6 +57,8 @@ function courselist()
     }
 
     echo "</div></td>";
+
+    //To be inserted here: Put different title depending on user beging logged in or not
     echo "<td align='right' class='butto' title='Logga in' onclick='location=\"loginlogout.php\";'><img src='icons/Man.svg' /></td>";
     echo "</tr><tr><td></td></tr></table>";
 }
@@ -67,8 +71,8 @@ function editcodemenu($kind)
 {
     // Body if we are allowed to run code viewer
     echo '<body style="margin: 0; padding: 0;" onload="setup();">';
-    echo '<span id="forwdrop" class="dropdown forwdrop"><div class="dropdownback">Forw</div></span>';
-    echo '<span id="backwdrop" class="dropdown backwdrop"><div class="dropdownback">Backw</div></span>';
+    echo '<span id="forwdrop" title="Test1" class="dropdown forwdrop"><div class="dropdownback">Forw</div></span>';
+    echo '<span id="backwdrop" title="Test2" class="dropdown backwdrop"><div class="dropdownback">Backw</div></span>';
     if($kind){
         echo '<span id="codedrop" class="dropdown codedrop" style="overflow:scroll;"><div class="dropdownback">Code viewer Code File Selector</div></span>';
         echo '<span id="docudrop" class="dropdown docudrop"><div class="dropdownback">Wordlist Selector</div></span>';
@@ -76,14 +80,14 @@ function editcodemenu($kind)
 
     echo '<div id="buttomenu">';
     echo '<table cellspacing="2"><tr>';
-    echo '<td class="butto" onclick="Up();"><img src="icons/Up.svg" /></td>';
-    echo '<td class="butto" id="beforebutton" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="icons/SkipB.svg" /></td>';
-    echo '<td class="butto" id="afterbutton" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="icons/SkipF.svg" /></td>';
-    echo '<td class="butto" id="playbutton" title="Detta är ett test av tooltip" onclick="Play();"><img src="icons/Play.svg" /></td>';
-    echo '<td class="butto" id="numberbutton" onclick="fadelinenumbers();"><img src="icons/nrshow.svg" /></td>';
+    echo '<td class="butto" title="Back to menu" onclick="Up();"><img src="icons/Up.svg" /></td>';
+    echo '<td class="butto" id="beforebutton" title="Previous" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="icons/SkipB.svg" /></td>';
+    echo '<td class="butto" id="afterbutton" title="Next" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="icons/SkipF.svg" /></td>';
+    echo '<td class="butto" id="playbutton" title="Play demo" onclick="Play();"><img src="icons/Play.svg" /></td>';
+    echo '<td class="butto" id="numberbutton" title="Show/Hide linenumbers" onclick="fadelinenumbers();"><img src="icons/nrshow.svg" /></td>';
     echo '<td class="buttospacer">&nbsp;</td>';
     if($kind){
-        echo '<td class="butto" onclick="Plus();"><img src="icons/Plus.svg" /></td>';
+        echo '<td class="butto" title="Plus" onclick="Plus();"><img src="icons/Plus.svg" /></td>';
         echo '<td class="butto" onclick="Minus();"><img src="icons/Minus.svg" /></td>';
         echo '<td class="buttospacer">&nbsp;</td>';
         echo '<td class="butto" onclick="Bold();"><img src="icons/Bold.svg" /></td>';
@@ -95,7 +99,9 @@ function editcodemenu($kind)
     }else{
         echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';
     }
-    echo '<td class="butto" title="Logga in" onclick="location=\'loginlogout.php\';"><img src="icons/Man.svg" /></td></tr>';
+
+    //To be inserted here: Put different title depending on user beging logged in or not
+    echo '<td class="butto" id="tipthis" title="Logga in" onclick="location=\'loginlogout.php\';"><img src="icons/Man.svg" /></td></tr>';
     echo '</table></div>';
     echo '<div style="width:100%; position: absolute; top: 50px; bottom: 0px;" id="div2;background-color:#def">';
     echo '<div id="docucontent"';
@@ -151,9 +157,5 @@ function jsvarsession($getname,$varname){
 
 
 
-<script>
-    $(function() {
-        $("td[title]").tooltips();
-    });
-</script>
+
 

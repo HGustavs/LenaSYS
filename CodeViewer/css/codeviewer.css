@@ -76,30 +76,30 @@
 
               /*Tooltips*/
 
-                .tooltip, .arrow:after {
+                .tooltip, .arrow:after, .arrow2:after {
                     background: black;
-                    border: 2px solid white;
+                    /*border: 1px solid white;*/
                 }
 
                 .tooltip {
                     pointer-events: none;
                     opacity: 0;
                     display: inline-block;
-                    position: absolute;
-                    padding: 10px 20px;
+                    position: fixed;
+                    padding: 5px 10px;
                     color: white;
-                    border-radius: 20px;
+                    border-radius: 5px;
                     margin-top: 20px;
                     text-align: center;
-                    font: bold 14px "Helvetica Neue", Sans-Serif;
+                    font: 10px "Helvetica Neue", Sans-Serif;
                     font-stretch: condensed;
                     text-decoration: none;
                     text-transform: uppercase;
-                    box-shadow: 0 0 7px black;
+                    /*box-shadow: 0 0 3px black;*/
                 }
                 .arrow {
                     width: 70px;
-                    height: 16px;
+                    height: 18px;
                     overflow: hidden;
                     position: absolute;
                     left: 50%;
@@ -113,26 +113,77 @@
                     top: -20px;
                     width: 25px;
                     height: 25px;
-                    -webkit-box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
-                    -moz-box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
-                    box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
+                    /*-webkit-box-shadow: 3px 2px 4px -4px black,
+                    2px 3px 4px -4px black;
+                    -moz-box-shadow: 3px 2px 4px -4px black,
+                    2px 3px 4px -4px black;
+                    box-shadow: 3px 2px 4px -4px black,
+                    2px 3px 4px -4px black;*/
                     -webkit-transform: rotate(45deg);
                     -moz-transform:    rotate(45deg);
                     -ms-transform:     rotate(45deg);
                     -o-transform:      rotate(45deg);
                 }
+
+                .arrow2 {
+                    width: 70px;
+                    height: 18px;
+                    overflow: hidden;
+                    position: absolute;
+                    left: 50%;
+                    margin-left: -35px;
+                    top: -16px;
+                }
+                .arrow2:after {
+                    content: "";
+                    position: absolute;
+                    left: 22px;
+                    bottom: -20px;
+                    width: 25px;
+                    height: 25px;
+                    /*-webkit-box-shadow: 3px 2px 4px -4px black,
+                    2px 3px 4px -4px black;
+                    -moz-box-shadow: 3px 2px 4px -4px black,
+                    2px 3px 4px -4px black;
+                    box-shadow: 3px 2px 4px -4px black,
+                    2px 3px 4px -4px black;*/
+                    -webkit-transform: rotate(45deg);
+                    -moz-transform:    rotate(45deg);
+                    -ms-transform:     rotate(45deg);
+                    -o-transform:      rotate(45deg);
+                }
+
+
                 .tooltip.active {
                     opacity: 1;
                     margin-top: 5px;
+                    transition-delay: 1s !important;
+                    -webkit-transition-delay: 1s !important;
                     -webkit-transition: all 0.2s ease;
                     -moz-transition:    all 0.2s ease;
                     -ms-transition:     all 0.2s ease;
                     -o-transition:      all 0.2s ease;
                 }
+
+                .tooltip.active2 {
+                    opacity: 1;
+                    margin-top: 5px;
+                    transition-delay: 1s !important;
+                    -webkit-transition-delay: 1s !important;
+                    -webkit-transition: all 0.2s ease;
+                    -moz-transition:    all 0.2s ease;
+                    -ms-transition:     all 0.2s ease;
+                    -o-transition:      all 0.2s ease;
+                }
+
                 .tooltip.out {
                     opacity: 0;
-                    margin-top: -20px;
+                    margin-top: -5px;
+                    transition-delay: 0s !important;
+                }
+
+                .tooltip.out2 {
+                    opacity: 0;
+                    margin-top: 15px;
+                    transition-delay: 0s !important;
                 }
