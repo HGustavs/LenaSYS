@@ -10,6 +10,7 @@
 	 
 	function captureCanvas(canvas){
 		var str='';
+		var lastTimestep = new Date().getTime();
 
 	    this.ctx = canvas;      // This is the actual canvas object
 	    this.lineWidth = this.ctx.lineWidth;
@@ -18,7 +19,18 @@
 		
 		// Log XML line
 		this.log = function(string){
+			var timestep = new Date().getTime();
+
+			// Calculate delay
+			var delay = timestep - lastTimestep;
+
+			// Update timestep
+			lastTimestep = timestep;
+
+			// Set string
+			str += '<timestep delay="' + delay + '">' + '\n';
 			str += string + '\n';
+			str += '</timestep>' + '\n';
 		}
 
 	    this.beginPath = function(){
