@@ -235,20 +235,20 @@
 
 		// Update state
 		this.updateContextTextState = function(){
-		var str = '<state';
-		
-		// Check for updates
-		if (this.ctx.font != this.font) {
-			str += this.updateContextProperty('font');
-		}
-		if (this.ctx.textAlign != this.textAlign) {
-			str += this.updateContextProperty('textAlign');
-		}
-		if (this.ctx.textBaseline != this.textBaseline) {
-			str += this.updateContextProperty('textBaseline');
-		}
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.font != this.font) {
+				str += this.updateContextProperty('font');
+			}
+			if (this.ctx.textAlign != this.textAlign) {
+				str += this.updateContextProperty('textAlign');
+			}
+			if (this.ctx.textBaseline != this.textBaseline) {
+				str += this.updateContextProperty('textBaseline');
+			}
 
-		// Add state update to XML if needed
+			// Add state update to XML if needed
 			if (str.length > 6){
 				str += '/>';
 				this.log(str);
