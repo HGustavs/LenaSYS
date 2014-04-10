@@ -3,32 +3,54 @@ CREATE DATABASE Imperious;
 USE Imperious;
 
 /* Appuser contains the us 	ers of the system and the corresponding permissions*/
-
-CREATE TABLE appuser(
-		userid			 MEDIUMINT NOT NULL AUTO_INCREMENT,
-		loginname    VARCHAR(64),
-		passwd			 VARCHAR(64),
-		kind			   VARCHAR(1024),
-		ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser						VARCHAR(64),
-		PRIMARY KEY(userid)		
+CREATE TABLE user(
+		uid				INT NOT NULL AUTO_INCREMENT,
+		username		VARCHAR(80) NOT NULL UNIQUE, 
+		ssn				VARCHAR(20) NULL,
+		password		VARCHAR(225) NOT NULL,
+		lastupdated		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		newpassword		TINYINT(1) NULL,
+		creator			INT NULL,
+		superuser		TINYINT(1) NULL,
+		PRIMARY KEY(uid)		
 );
 
-INSERT INTO appuser(loginname,passwd,kind,appuser) values ("Grimling","Atintegulsno","Webbprogrammering","Creationscript");
-INSERT INTO appuser(loginname,passwd,kind,appuser) values ("Toddler","Kong","Webbprogrammering Superuser","Creationscript");
+INSERT INTO user(username,password,creator,superuser) values ("Grimling","Atintegulsno",1,1);
+INSERT INTO user(username,password,creator) values ("Toddler","Kong",1);
+
 
 /* Course contains a list of the course names for each course in the database */
-
 CREATE TABLE course(
-		courseno				 MEDIUMINT NOT NULL AUTO_INCREMENT,
-		coursename			 VARCHAR(64),
-		ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser						VARCHAR(64),
-		PRIMARY KEY(courseno)		
+		cid				INT NOT NULL AUTO_INCREMENT,
+		coursecode		VARCHAR(45) NULL,
+		coursename		VARCHAR(80) NULL,
+		created			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		creator			INT NOT NULL,
+		updated			TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+		PRIMARY KEY(cid),
+		FOREIGN KEY (creator) REFERENCES user (uid)
 );
 
-INSERT INTO course(coursename,appuser) values ("Webbprogrammering","Creationscript");
-INSERT INTO course(coursename,appuser) values ("Futhark","Creationscript");
+INSERT INTO course(coursecode,coursename,creator) values ("DV12G","Webbprogrammering",1);
+INSERT INTO course(coursecode,coursename,creator) values ("DV13G","Futhark",1);
+
+
+/* User access to the application*/
+CREATE TABLE user_course(
+		uid				INT NOT NULL,
+		cid				INT NOT NULL, 
+		access			VARCHAR(10) NOT NULL,
+		PRIMARY KEY(uid, cid),
+		FOREIGN KEY (uid) REFERENCES user (uid),
+		FOREIGN KEY (cid) REFERENCES course (cid)
+		
+);
+
+INSERT INTO user_course(uid,cid,access) values (1,1,"R");
+INSERT INTO user_course(uid,cid,access) values (2,2,"W");
+
+
+
 
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
