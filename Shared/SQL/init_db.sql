@@ -1,4 +1,4 @@
-DROP DATABASE Imperious;
+DROP DATABASE IF EXISTS Imperious;
 CREATE DATABASE Imperious;
 USE Imperious;
 
@@ -13,7 +13,7 @@ CREATE TABLE user(
 		creator			INT NULL,
 		superuser		TINYINT(1) NULL,
 		PRIMARY KEY(uid)		
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO user(username,password,creator,superuser) values ("Grimling","Atintegulsno",1,1);
 INSERT INTO user(username,password,creator) values ("Toddler","Kong",1);
@@ -24,15 +24,15 @@ CREATE TABLE course(
 		cid				INT NOT NULL AUTO_INCREMENT,
 		coursecode		VARCHAR(45) NULL,
 		coursename		VARCHAR(80) NULL,
-		created			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		created			DATETIME,
 		creator			INT NOT NULL,
-		updated			TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+		updated			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 		PRIMARY KEY(cid),
 		FOREIGN KEY (creator) REFERENCES user (uid)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO course(coursecode,coursename,creator) values ("DV12G","Webbprogrammering",1);
-INSERT INTO course(coursecode,coursename,creator) values ("DV13G","Futhark",1);
+INSERT INTO course(coursecode,coursename,created,creator) values ("DV12G","Webbprogrammering",NOW(),1);
+INSERT INTO course(coursecode,coursename,created,creator) values ("DV13G","Futhark",NOW(),1);
 
 
 /* User access to the application*/
@@ -48,9 +48,6 @@ CREATE TABLE user_course(
 
 INSERT INTO user_course(uid,cid,access) values (1,1,"R");
 INSERT INTO user_course(uid,cid,access) values (2,2,"W");
-
-
-
 
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
