@@ -217,6 +217,11 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.windto = function(windpos)
 	{
+		if(this.paused==0) {
+			this.playafterwind=1;
+		} else {
+			this.playafterwind=0;
+		}
 		if(windpos<this.step){
 			// Rewind
 			this.windtarget=windpos;
