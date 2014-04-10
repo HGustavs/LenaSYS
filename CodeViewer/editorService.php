@@ -55,9 +55,9 @@
 								$query = "DELETE FROM wordlist WHERE wordlist='$wordlist' and word='$word';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
-					}else if(strcmp('newWordlistWord',$opt)===0){
+					}else if(strcmp('newWordlist',$opt)===0){
 								// Add word to wordlist
-								$word="<new>";
+								$word="-new-";
 								$wordlist=htmlEntities($_POST['wordlist']);
 								$query = "INSERT INTO wordlist(wordlist,word,appuser) VALUES ('$wordlist','$word','$appuser');";		
 								$result=mysql_query($query);

@@ -77,6 +77,7 @@ include "../Shared/basic.php";
 				echo '<div id="buttomenu">';
 				echo '<table cellspacing="2"><tr>';
 				if($kind){
+
 								echo '<td class="buttospacer">&nbsp;</td>';
 								echo '<td class="butto" onclick="Code();"><img src="icons/Document.svg" /></td>';
 								echo '<td class="butto" onclick="Wordlist();"><img src="icons/Book.svg" /></td>';
