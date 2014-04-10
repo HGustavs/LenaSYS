@@ -26,32 +26,41 @@ var imagerec = new imagerecorder("ImageCanvas");
 			</div>
 			<canvas id="ImageCanvas" class="canvasStyle" width="1280" height="720"></canvas>
 		<div class="uploadImages">
-			<form name='form' method='post' action='Imagerecorder.php'>
-				<input name='uploadImages' type='SUBMIT' value='Upload'/>
-			</form>
-
-				<?php
-				$filename = 'test.txt';
-				$textString = $_POST['test'];
+			<form method='post' action='Imagerecorder.php' enctype="multipart/form-data">
+				<input name='image' type='FILE'/>
+				<input name='upload' type='SUBMIT' value='Upload'/>
+			</form>			
 			
-				if (is_writable($filename)) {
-	
-					if (!$handle = fopen($filename, 'a')) {
-						 echo "Can't open the file:($filename)";
-						 exit;
-					}
-
-					if (fwrite($handle, $textString) === FALSE) {
-						echo "Couldn't write to file: ($filename)";
-						exit;
-					}
-					echo "Ok! ($textString) to file ($filename)";
-
-					fclose($handle);
-
-				} else {
-					echo "Error!";
+	<?php
+							
+			if(isset($_POST['upload'])){
+				echo $image_name = $_FILES['image']['name'];
+				echo $image_type = $_FILES['image']['type'];
+				echo $image_size = $_FILES['image']['size'];
+				echo $image_tmp_name = $_FILES['image']['tmp_name'];
+			if($image_name==''){
+				exit();
+			}
+			else
+			move_uploaded_file($image_tmp_name,"pictures/$image_name");
+			}
+			
+			$filename = 'test.txt';
+			$textString = $_POST['test'];
+			if (is_writable($filename)) {
+				if (!$handle = fopen($filename, 'a')) {
+					 echo "Cannot open file ($filename)";
+					 exit;
 				}
+				if (fwrite($handle, $textString) === FALSE) {
+					echo "Error!";
+					exit;
+				}
+				echo "Ok!";
+				fclose($handle);
+			} else {
+				echo "Error!";
+			}
 				?>
 		</div>
 	</div>
