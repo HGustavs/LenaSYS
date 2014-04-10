@@ -252,7 +252,7 @@ function addImpword()
 		// check if UTF encoded
 		for(var i=0; i<word.value.length; i++) {
 	        if(word.value.charCodeAt(i) > 127){
-				document.getElementById('wordlistError').innerHTML = "Error. Not UTF-encoded.";
+				document.getElementById('impwordlistError').innerHTML = "Error. Not UTF-encoded.";
 				wordlist.style.backgroundColor="#E33D3D";
 	          	return;
 	        }
