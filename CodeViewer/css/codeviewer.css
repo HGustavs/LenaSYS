@@ -1,138 +1,599 @@
-				#docucontent {padding-left:4px;border-style: solid; border-width:1px;position: absolute; top:0px; bottom: 0px;left:0px;width:296px;background-color:#ddd;overflow:scroll;color:black;font-family:Calibri,Sans-Serif;font-size:16px;}
-				#docucontent b {color:white;display:block;font-family:Calibri,Sans-Serif;text-align: center;font-size:18px;font-weight:bold;font-style:italic;color:black;font-family:Calibri,Sans-Serif;font-size:16px;}
-				#docucontent p {color:black;font-family:Calibri,Sans-Serif;font-size:16px;}
-				#buttomenu {width:100%; position: absolute; top: 0px; height: 50px;background-color:#000;margin:0px;}
-			  #codebox {border-style: solid; border-width:1px;position: absolute; top:0px; bottom: 0px;left:300px;right:0px;background-color:#fff;overflow:scroll}
 
-				.butto {border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background:linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);height:44px;color:white;background-color:#BBB;}
-				.buttogray {border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background:linear-gradient(to bottom, #AAA 0%,#DDD 15%,#FFF 40%, #555 48%,#555 80%,#DDD 99%);height:44px;color:white;background-color:#BBB;}
-				.buttospacer {width:20px;}
-				.warning {box-shadow: 10px 10px 14px #000;color:#fff;position:absolute;top:200px;width:200px;border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background-color:#000;}
+#docucontent {
+    padding-left: 4px;
+    border-style: solid;
+    border-width: 1px;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: 296px;
+    background-color: #ddd;
+    overflow: scroll;
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    font-size: 16px;
+}
 
-				.menutext {overflow:hidden;height:46px;vertical-align:middle;color:white;width:100%;border-radius: 12px;font-family:Verdana,Serif; font-size:24px;font-weight:normal;padding:4px;}
+#docucontent b {
+    color: white;
+    display: block;
+    font-family: Calibri,Sans-Serif;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    font-size: 16px;
+}
 
-				.dropdown {display:none;position:fixed;top:50px;z-index:4000;background:#000;border:solid 2px #000;box-shadow: 6px 6px 8px #444;font-size:14px; font-family:Verdana,Arial,Sans-serif;color:#fff;}
-				.dropdownback {padding-left:8px;background-color:#804;color:#fff;font-family:Verdana,Serif; font-size:16px;font-weight:normal;background:linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);}
-				.codedrop {left:314px;height:400px;width:400px;}
-				.docudrop {left:354px;height:600px;width:500px;}
-				.forwdrop {left:76px;height:200px;width:200px;}
-				.backwdrop {left:38px;height:200px;width:200px;}
-				
-				.dropdownitem {background:#000;color:#fff;display:block;font-size:14px; font-family:Verdana,Arial,Sans-serif;}
-				.menuhi {background:#48f;color:#fff;text-shadow: 1px 1px 2px #000;}
-				.menuch {background:#0a4;color:#fff;text-shadow: 1px 1px 2px #000;}
+#docucontent p {
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    font-size: 16px;
+}
 
-				 a {text-decoration:none;color:#000}
+#buttomenu {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    height: 50px;
+    background-color:  #614875;
+    margin: 0px;
+}
 
-				.codeview {display:block; font-size:14px; font-family:Courier,Courier New,Monospace;}
-				.norm {color:#000;background-color:#fff}
-				.impo {color:#000;background-color:#fed}
-				.norm .no {border-right:2px #444;color:#000;background-color:#d8d8d8;}
-				.impo .no {border-right:2px #444;color:#000;background-color:#dcb;}
-				.comment {color:#888}
-				.norm .oper {color:#06F;font-weight:bold;}
-				.impo .oper {color:#02D;font-weight:bold;}
-				.norm .string {color:#092;font-weight:bold;}
-				.impo .string {color:#070;font-weight:bold;}
-				.norm .number {color:#029;font-weight:bold;}
-				.impo .number {color:#000;font-weight:bold;}
-				.norm .hi {background-color:#000;color:#fff;}
-				.impo .hi {background-color:#000;color:#fed;}
-				.norm .keyword {color:#902;font-weight:bold;}
-				.impo .keyword {color:#401;font-weight:bold;}
-				.norm .impword {color:#000;background-color:#def;font-weight:bold;border: 1px dotted #f00;}
-				.impo .impword {color:#401;background-color:#bce;font-weight:bold;border: 1px dotted #f00;}
-				.norm .imphi {background-color:#000;color:#fff;}
-				.impo .imphi {background-color:#000;color:#fed;}
+#codebox {
+    border-style: solid;
+    border-width: 1px;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 300px;
+    right: 0px;
+    background-color: #fff;
+    overflow: scroll;
+}
 
-				#Sectionlist {padding:2px;width:800px;box-shadow: 7px 7px 7px #000;background-color:#fff;color:black;display:block;border: 2px outset #888;text-align:left;border-radius: 6px;}
-				#Sectionlist .butt {border-radius: 3px;margin-right:4px;box-shadow: 2px 1px 3px #000;margin-bottom:4px;padding-left:8px;height:24px;text-shadow: 2px 2px 2px #000;color:#fff;display:block;text-align:left;font-size:18px;font-weight:bold;font-style:italic;color:black;font-family:Calibri,Sans-Serif;background:linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);color:white;background-color:#BBB;}
-				#Sectionlist .norm {margin-left:8px;padding-left:8px;border-left: 4px solid #DDD;height:24px;color:#000;display:block;font-family:Calibri,Sans-Serif;text-align:left;font-size:18px;font-weight:bold;font-style:italic;color:black;font-family:Calibri,Sans-Serif;background-color:#FFF;}
-				#Sectionlist .norm:hover {border-radius: 3px;box-shadow: 1px 1px 3px #000 inset;background: linear-gradient(to right, #FED 0%,#FED 80%,#FFD 90%,#FFF 99%);color:#000;background-color:#BBB;}
-				#Sectionlist .bigg {font-size:26px;margin-top:8px;margin-bottom:8px;text-align:center;font-family: Cambria, Georgia, serif; color:#000;display:block;background-color:#FFF;}
-				#Sectionlist .course {margin-bottom:4px;background:linear-gradient(to right, #888 0%,#AAA 99%);border-radius: 3px;box-shadow: 3px 3px 6px #000 inset;text-align:center;font-size:26px;padding-left:8px;height:36px;text-shadow: 2px 2px 2px #000;color:#fff;display:block;font-style:italic;color:black;font-family:Calibri,Sans-Serif;background-color:#888;color:#fff;}
-				.warning {box-shadow: 10px 10px 14px #000;color:#fff;position:absolute;top:200px;width:200px;border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background-color:#000;}
-				.smallbutt {float:right}
-				.smallishbutt {float:right}
+.butto {
+    text-align: center;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 4px;
+    height: 44px;
+    background-color: #614875;
+}
+.butto:hover{
+	background-color: #7D5CA0;
+    cursor: pointer;
+}
 
-				.smallbutt img{margin-left:4px;}
-				.smallishbutt img{margin-top:8px;margin-left:4px;}
+.buttogray {
+    border: 1px inset #888;
+    text-align: center;
+    border-radius: 6px;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 4px;
+    background: linear-gradient(to bottom, #AAA 0%,#DDD 15%,#FFF 40%, #555 48%,#555 80%,#DDD 99%);
+    height: 44px;
+    color: white;
+    background-color: #BBB;
+}
 
+.buttospacer {
+    width: 20px;
+}
 
-				#buttomenus {width:100%; height: 50px;background-color:#000;margin:0px;}
-				.buttos {border: 1px inset #888;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;padding:4px;background:linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);height:44px;color:white;background-color:#BBB;}
-				.menutexts {overflow:hidden;height:46px;vertical-align:middle;color:white;width:100%;border-radius: 12px;font-family:Verdana,Serif; font-size:24px;font-weight:normal;padding:4px;}
+.warning {
+    position: absolute;
+    top: 200px;
+    width: 200px;
+    border: 1px inset #fff;
+    text-align: center;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 4px;
+    background-color: #5D5D5D;
+}
 
-				#loginbox {background:linear-gradient(to bottom, #CCC 0%,#888 35%,#AAA 90%, #CCC 99%);padding:4px;position:relative;width:400;height:240;display:block;border:outset 2px #888;border-radius: 8px; box-shadow: 2px 2px 4px #000;text-align:left;color:#fff;text-shadow: 2px 2px 2px #000;font-family:Verdana,Serif; font-size:14px;font-weight:normal;}
-				#loginheading {border: 2px solid #888;padding-top:4px;text-shadow: 2px 2px 2px #000;box-shadow: 2px 2px 4px #000 inset;color:#fff;display:block;background:#fed;text-align:center;border-radius: 6px;font-family:Verdana,Serif; font-size:14px;font-weight:normal;background:linear-gradient(to right, #555 0%,#888 85%,#AAA 90%);height:24px;color:white;background-color:#BBB;}
-				.logininput {width:150px;border 1px solid #000;font-family:Verdana,Serif; font-size:14px;font-weight:normal;}
-			  .loginbutton {width:120px;padding-bottom:4px;height:25px;color:#fff;text-shadow:2px 2px 2px #000;background:linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);border-radius: 4px;box-shadow 2px 2px 2px #000;font-family:Verdana,Serif; font-size:14px;font-weight:normal; box-shadow: 2px 2px 4px #000;}
-			  .logincenter {text-align:center;}
-			  .loginleft {margin-left:16px;}
-			  
-			  .inv {font-family:Calibri,Sans-Serif; font-size:24px;font-weight:normal;padding:4px;box-shadow: 1px 1px 2px #666;position:fixed;bottom:4px;left:4px;padding-left:6px;padding-right:6px;background:#000;color:#fff;margin-left:8px;border-radius:4px;}
+.menutext {
+    overflow: hidden;
+    height: 46px;
+    vertical-align: middle;
+    color: white;
+    width: 100%;
+    border-radius: 12px;
+    font-family: Verdana,Serif;
+    font-size: 24px;
+    font-weight: normal;
+    padding: 4px;
+}
+
+.dropdown {
+    display: none;
+    position: fixed;
+    top: 50px;
+    z-index: 4000;
+    background: #000;
+    border: solid 2px #000;
+    box-shadow: 6px 6px 8px #444;
+    font-size: 14px;
+    font-family: Verdana,Arial,Sans-serif;
+    color: #fff;
+}
+
+.dropdownback {
+    padding-left: 8px;
+    background-color: #804;
+    color: #fff;
+    font-family: Verdana,Serif;
+    font-size: 16px;
+    font-weight: normal;
+    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+}
+
+.codedrop {
+    left: 314px;
+    height: 400px;
+    width: 400px;
+}
+
+.docudrop {
+    left: 354px;
+    height: 600px;
+    width: 500px;
+}
+
+.forwdrop {
+    left: 76px;
+    height: 200px;
+    width: 200px;
+}
+
+.backwdrop {
+    left: 38px;
+    height: 200px;
+    width: 200px;
+}
+
+.dropdownitem {
+    background: #000;
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    font-family: Verdana,Arial,Sans-serif;
+}
+
+.menuhi {
+    background: #48f;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.menuch {
+    background: #0a4;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.codeview {
+    display: block;
+    font-size: 14px;
+    font-family: Courier,Courier New,Monospace;
+}
+
+.norm {
+    color: #000;
+    background-color: #fff;
+}
+
+.impo {
+    color: #000;
+    background-color: #fed;
+}
+
+.norm .no {
+    border-right: 2px #444;
+    color: #000;
+    background-color: #d8d8d8;
+}
+
+.impo .no {
+    border-right: 2px #444;
+    color: #000;
+    background-color: #dcb;
+}
+
+.comment {
+    color: #888;
+}
+
+.norm .oper {
+    color: #06F;
+    font-weight: bold;
+}
+
+.impo .oper {
+    color: #02D;
+    font-weight: bold;
+}
+
+.norm .string {
+    color: #092;
+    font-weight: bold;
+}
+
+.impo .string {
+    color: #070;
+    font-weight: bold;
+}
+
+.norm .number {
+    color: #029;
+    font-weight: bold;
+}
+
+.impo .number {
+    color: #000;
+    font-weight: bold;
+}
+
+.norm .hi {
+    background-color: #000;
+    color: #fff;
+}
+
+.impo .hi {
+    background-color: #000;
+    color: #fed;
+}
+
+.norm .keyword {
+    color: #902;
+    font-weight: bold;
+}
+
+.impo .keyword {
+    color: #401;
+    font-weight: bold;
+}
+
+.norm .impword {
+    color: #000;
+    background-color: #def;
+    font-weight: bold;
+    border: 1px dotted #f00;
+}
+
+.impo .impword {
+    color: #401;
+    background-color: #bce;
+    font-weight: bold;
+    border: 1px dotted #f00;
+}
+
+.norm .imphi {
+    background-color: #000;
+    color: #fff;
+}
+
+.impo .imphi {
+    background-color: #000;
+    color: #fed;
+}
+
+#Sectionlist {
+    padding: 2px;
+    width: 800px;
+    box-shadow: 7px 7px 7px #000;
+    background-color: #fff;
+    color: black;
+    display: block;
+    border: 2px outset #888;
+    text-align: left;
+    border-radius: 6px;
+}
+
+#Sectionlist .butt {
+    border-radius: 3px;
+    margin-right: 4px;
+    box-shadow: 2px 1px 3px #000;
+    margin-bottom: 4px;
+    padding-left: 8px;
+    height: 24px;
+    text-shadow: 2px 2px 2px #000;
+    color: #fff;
+    display: block;
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+    color: white;
+    background-color: #BBB;
+}
+
+#Sectionlist .norm {
+    margin-left: 8px;
+    padding-left: 8px;
+    border-left: 4px solid #DDD;
+    height: 24px;
+    color: #000;
+    display: block;
+    font-family: Calibri,Sans-Serif;
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    background-color: #FFF;
+}
+
+#Sectionlist .norm:hover {
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #000 inset;
+    background: linear-gradient(to right, #FED 0%,#FED 80%,#FFD 90%,#FFF 99%);
+    color: #000;
+    background-color: #BBB;
+}
+
+#Sectionlist .bigg {
+    font-size: 26px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-align: center;
+    font-family: Cambria, Georgia, serif;
+    color: #000;
+    display: block;
+    background-color: #FFF;
+}
+
+#Sectionlist .course {
+    margin-bottom: 4px;
+    background: linear-gradient(to right, #888 0%,#AAA 99%);
+    border-radius: 3px;
+    box-shadow: 3px 3px 6px #000 inset;
+    text-align: center;
+    font-size: 26px;
+    padding-left: 8px;
+    height: 36px;
+    text-shadow: 2px 2px 2px #000;
+    color: #fff;
+    display: block;
+    font-style: italic;
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    background-color: #888;
+    color: #fff;
+}
+
+.warning {
+    box-shadow: 10px 10px 14px #000;
+    color: #fff;
+    position: absolute;
+    top: 200px;
+    width: 200px;
+    border: 1px inset #888;
+    text-align: center;
+    border-radius: 6px;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 4px;
+    background-color: #000;
+}
+
+.smallbutt {
+    float: right;
+}
+
+.smallishbutt {
+    float: right;
+}
+
+.smallbutt img {
+    margin-left: 4px;
+}
+
+.smallishbutt img {
+    margin-top: 8px;
+    margin-left: 4px;
+}
+
+#buttomenus {
+    width: 100%;
+    height: 50px;
+    background-color: #000;
+    margin: 0px;
+}
+
+.buttos {
+    border: 1px inset #888;
+    text-align: center;
+    border-radius: 6px;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 4px;
+    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+    height: 44px;
+    color: white;
+    background-color: #BBB;
+}
+
+.menutexts {
+    overflow: hidden;
+    height: 46px;
+    vertical-align: middle;
+    color: white;
+    width: 100%;
+    border-radius: 12px;
+    font-family: Verdana,Serif;
+    font-size: 24px;
+    font-weight: normal;
+    padding: 4px;
+}
+
+#loginbox {
+    background: linear-gradient(to bottom, #CCC 0%,#888 35%,#AAA 90%, #CCC 99%);
+    padding: 4px;
+    position: relative;
+    width: 400;
+    height: 240;
+    display: block;
+    border: outset 2px #888;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px #000;
+    text-align: left;
+    color: #fff;
+    text-shadow: 2px 2px 2px #000;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+#loginheading {
+    border: 2px solid #888;
+    padding-top: 4px;
+    text-shadow: 2px 2px 2px #000;
+    box-shadow: 2px 2px 4px #000 inset;
+    color: #fff;
+    display: block;
+    background: #fed;
+    text-align: center;
+    border-radius: 6px;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    background: linear-gradient(to right, #555 0%,#888 85%,#AAA 90%);
+    height: 24px;
+    color: white;
+    background-color: #BBB;
+}
+
+.logininput {
+    width: 150px;
+    border 1px solid #000;font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.loginbutton {
+    width: 120px;
+    padding-bottom: 4px;
+    height: 25px;
+    color: #fff;
+    text-shadow: 2px 2px 2px #000;
+    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+    border-radius: 4px;
+    box-shadow 2px 2px 2px #000;font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    box-shadow: 2px 2px 4px #000;
+}
+
+.logincenter {
+    text-align: center;
+}
+
+.loginleft {
+    margin-left: 16px;
+}
+
+.inv {
+    font-family: Calibri,Sans-Serif;
+    font-size: 24px;
+    font-weight: normal;
+    padding: 4px;
+    box-shadow: 1px 1px 2px #666;
+    position: fixed;
+    bottom: 4px;
+    left: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    background: #000;
+    color: #fff;
+    margin-left: 8px;
+    border-radius: 4px;
+}
 
 
 
               /*Tooltips*/
 
-                .tooltip, .arrow:after {
-                    background: black;
-                    border: 2px solid white;
-                }
+.tooltip, .arrow:after {
+    background: black;
+    border: 2px solid white;
+}
 
-                .tooltip {
-                    pointer-events: none;
-                    opacity: 0;
-                    display: inline-block;
-                    position: absolute;
-                    padding: 10px 20px;
-                    color: white;
-                    border-radius: 20px;
-                    margin-top: 20px;
-                    text-align: center;
-                    font: bold 14px "Helvetica Neue", Sans-Serif;
-                    font-stretch: condensed;
-                    text-decoration: none;
-                    text-transform: uppercase;
-                    box-shadow: 0 0 7px black;
-                }
-                .arrow {
-                    width: 70px;
-                    height: 16px;
-                    overflow: hidden;
-                    position: absolute;
-                    left: 50%;
-                    margin-left: -35px;
-                    bottom: -16px;
-                }
-                .arrow:after {
-                    content: "";
-                    position: absolute;
-                    left: 20px;
-                    top: -20px;
-                    width: 25px;
-                    height: 25px;
-                    -webkit-box-shadow: 6px 5px 9px -9px black,
+.tooltip {
+    pointer-events: none;
+    opacity: 0;
+    display: inline-block;
+    position: absolute;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 20px;
+    margin-top: 20px;
+    text-align: center;
+    font: bold 14px "Helvetica Neue", Sans-Serif;
+    font-stretch: condensed;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 0 0 7px black;
+}
+
+.arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+}
+
+.arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    -webkit-box-shadow: 6px 5px 9px -9px black,
                     5px 6px 9px -9px black;
-                    -moz-box-shadow: 6px 5px 9px -9px black,
+    -moz-box-shadow: 6px 5px 9px -9px black,
                     5px 6px 9px -9px black;
-                    box-shadow: 6px 5px 9px -9px black,
+    box-shadow: 6px 5px 9px -9px black,
                     5px 6px 9px -9px black;
-                    -webkit-transform: rotate(45deg);
-                    -moz-transform:    rotate(45deg);
-                    -ms-transform:     rotate(45deg);
-                    -o-transform:      rotate(45deg);
-                }
-                .tooltip.active {
-                    opacity: 1;
-                    margin-top: 5px;
-                    -webkit-transition: all 0.2s ease;
-                    -moz-transition:    all 0.2s ease;
-                    -ms-transition:     all 0.2s ease;
-                    -o-transition:      all 0.2s ease;
-                }
-                .tooltip.out {
-                    opacity: 0;
-                    margin-top: -20px;
-                }
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+}
+
+.tooltip.active {
+    opacity: 1;
+    margin-top: 5px;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+}
+
+.tooltip.out {
+    opacity: 0;
+    margin-top: -20px;
+}

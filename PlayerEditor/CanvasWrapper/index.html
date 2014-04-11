@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <title>canvas</title>
-<script src="../../js/jQuery-Core-1.10.2.js"></script>
+<script src="../js/jQuery-Core-1.10.2.js"></script>
 <style>
 mycanvas {
     border: 1px solid #000;
@@ -13,18 +13,18 @@ mycanvas {
 
 <body >
 <canvas id="mycanvas" width="400" height="400" style="border:1px solid #ccc"></canvas>
-<script src="captureCanvas.js"></script>
+<script src="../js/CanvasWrapper/CanvasWrapper.js"></script>
 <script>
-var needFirstPoint = true;
+var needPoint = true;
 var x,y;
 
 
-function drawNextLine(ctx, x, y) {
-    if (needFirstPoint) {
-        
+function drawLine(ctx, x, y) {
+    if (needPoint) {
+        ctx.lineWidth = 12;
         ctx.beginPath();
         ctx.moveTo(x, y);
-        needFirstPoint = false;
+        needPoint = false;
     }
     else {
         ctx.lineTo(x, y);
@@ -40,11 +40,11 @@ $(document).ready(function(){
     // which logs and forwards each function call  to the actual canvas. 
     var ctx = new captureCanvas(canvas.getContext('2d'));
     
-    $('#mycanvas').on('click', function(e){
+    $('#mycanvas').on('click', function(o){
         var offset = $(this).offset();
-        var x = e.pageX - offset.left;
-        var y = e.pageY - offset.top;
-        drawNextLine(ctx, x, y);
+        var x = o.pageX - offset.left;
+        var y = o.pageY - offset.top;
+        drawLine(ctx, x, y);
     });
 });
 </script> 
