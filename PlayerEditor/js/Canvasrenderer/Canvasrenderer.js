@@ -261,7 +261,78 @@ function Canvasrenderer()
 	this.putimagedata = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
 		ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 	}	
-
+	//canvas state functions
+	this.state_fillstyle = function(value){
+		ctx.fillStyle = value;
+	}
+	
+	this.state_strokestyle = function(value){
+		ctx.strokestyle = value;
+	}
+	
+	this.state_shadowcolor = function(value){
+		ctx.shadowColor = value;
+	}
+	
+	this.state_shadowblur = function(value){
+		ctx.shadowBlur = value;
+	}
+	
+	this.state_shadowoffsetx = function(value){
+		ctx.shadowOffsetX = value;
+	}
+	
+	this.state_shadowoffsety = function(value){
+		ctx.shadwoOffsetY = value;
+	}
+	
+	this.state_linecap = function(value){
+		ctx.lineCap = value;
+	}
+	
+	this.state_linejoin = function(value){
+		ctx.lineJoin = value;
+	}
+	
+	this.state_linewidth = function(value){
+		ctx.lineWidth = value;
+	}
+	
+	this.state_miterlimit = function(value){
+		ctx.miterLimit = value;
+	}
+	
+	this.state_font = function(value){
+		ctx.font = value;
+	}
+	
+	this.state_textalign = function(value){
+		ctx.textAlign = value;
+	}
+	
+	this.state_textbaseline = function(value){
+		ctx.textBaseline = value;
+	}
+	
+	this.state_width = function(value){
+		ctx.width = value;
+	}
+	
+	this.state_height = function(value){
+		ctx.height = value;
+	}
+	
+	this.state_data = function(value){
+		ctx.data = value;
+	}
+	
+	this.state_globalalpha = function(value){
+		ctx.globalAlpha = value;
+	}
+	
+	this.state_globalcompositeoperation = function(value){
+		ctx.globalCompositeOperation = value;
+	}
 	/*
 	 *
 	 * Start running XML
