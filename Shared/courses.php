@@ -14,4 +14,24 @@ function courseexists($coursename)
 	
 	return $guf;
 }
+
+function getCourseId($coursename)
+{
+	$querystring = sprintf("SELECT cid FROM course WHERE coursename='%s' LIMIT 1",
+		mysql_real_escape_string($coursename)
+	);
+
+	$result = mysql_query($querystring);
+
+	if(!$result) {
+		return false;
+	} else {
+		$course = mysql_fetch_assoc($result);
+		if(count($course) > 0) {
+			return $course['cid'];
+		} else {
+			return false;
+		}
+	}
+}
 ?>
