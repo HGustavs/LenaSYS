@@ -1,6 +1,6 @@
 <html>
 		<head>
-				<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />		
+				<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />		
 		</head>
 		<body>
 

@@ -45,10 +45,13 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	this.repeat=0;
 	this.fastforward=0;
 	this.windtarget=-1;
-	this.playafterwind=0;
+	this.playafterwind=1;
 	
 	// Timesteps
 	this.timesteps=null;
+	
+	// Timeout storer
+	this.timeoutStore=null;
 	
 	var cx,cy;
 						
@@ -214,9 +217,13 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.windto = function(windpos)
 	{
+		if(this.paused==0) {
+			this.playafterwind=1;
+		} else {
+			this.playafterwind=0;
+		}
 		if(windpos<this.step){
 			// Rewind
-			this.pause();
 			this.windtarget=windpos;
 			this.step=0;
 			this.fastforward=1;	
@@ -226,7 +233,6 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 			this.advancestep();
 		} else if(windpos>this.step){
 			// Fast Forward
-			this.pause();
 			this.windtarget=windpos;
 			this.fastforward=1;
 			// Set to playing
@@ -446,8 +452,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					
 					if(!this.playafterwind){
 						this.pause();
-					}
-
+					} 
+					
 					var fract=this.step/this.timesteps.length;
 					document.getElementById("bar").style.width=Math.round(fract*392);							
 					
@@ -472,7 +478,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 
 				// Run advancestep after specific amount of time (recursive).
 				// Set timeout is needed to ensure that HTML-changes are loading.
-				setTimeout(function(){cons.advancestep();}, nextdelay);
+				clearTimeout(this.timeoutStore);
+				this.timeoutStore = setTimeout(function(){cons.advancestep();}, nextdelay);			
 									
 			}else{
 				// Reached end of XML

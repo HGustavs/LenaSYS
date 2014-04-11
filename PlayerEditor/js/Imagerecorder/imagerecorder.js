@@ -4,12 +4,13 @@ function imagerecorder(imgCanvas)
 	 */
 	var imageCanvas = imgCanvas;
 	var picArray = new Array();	
-	var img = document.createElement("IMG");
 	var currentImage = 0;
 	var dd = new Date();
 	var lastEvent = dd.getTime();
-	
+
 	this.initImages = function(){
+	
+		var img = document.createElement("IMG");
 		img.src = "pictures/1.png";
 		picArray[0] = new Image();
 		picArray[0] = img;
@@ -23,27 +24,26 @@ function imagerecorder(imgCanvas)
 		img2.src = "pictures/3.png"
 		picArray[2] = new Image();
 		picArray[2] = img2;
-		
-		var img3 = document.createElement("IMG");
-		img3.src = "pictures/d.png"
-		picArray[3] = new Image();
-		picArray[3] = img3;
 	}
 	/*
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function log(str){
-	console.log(str);
-	var dd = new Date();	
+	var dd = new Date();
 	var currentTime = dd.getTime();
 	var delay = currentTime - lastEvent;
 	lastEvent = currentTime;
 	var delayStr = "<timestep delay=" + delay + "/>";
+	imgPath = (picArray[currentImage].src).split("/");
+	imgPath = "<picture src=" + imgPath[imgPath.length-2] +"/"+ imgPath[imgPath.length-1] + "/>";
 	
+	console.log(imgPath);
 	console.log(delayStr);
-		 /*	
-		  *	TODO: Write to a file instead of just to the log.
-		  */
+	console.log(str);
+
+		document.getElementById("test").value += imgPath;
+		document.getElementById("test").value += delayStr;
+		document.getElementById("test").value += str;
 	}
 	
 	this.initImages();
@@ -55,8 +55,8 @@ function imagerecorder(imgCanvas)
 	$("#" + imageCanvas).click(function(event){
 			var xMouse = event.clientX;
 			var yMouse = event.clientY;
-			log(picArray[currentImage]);
-			log("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
+			// log(picArray[currentImage]);
+		
 			document.getElementById('xCord').innerHTML=xMouse;
 			document.getElementById('yCord').innerHTML=yMouse;
 			var canvas = document.getElementById(imageCanvas);
@@ -66,6 +66,7 @@ function imagerecorder(imgCanvas)
 			if(currentImage > 0){
 				document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);
 			}
+			log("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
 			currentImage++;
 		});
 	/*
@@ -78,4 +79,5 @@ function imagerecorder(imgCanvas)
 			document.getElementById('yCordReal').innerHTML=yMouseReal;
 			});
 	});
+	
 }

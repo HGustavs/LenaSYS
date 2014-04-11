@@ -22,14 +22,38 @@ var imagerec = new imagerecorder("ImageCanvas");
 			</div>
 			<canvas id="ImageCanvas" class="canvasStyle" width="1280" height="720"></canvas>
 		<div class="uploadImages">
-		<?php
-			echo "<form name='form' method='post' action='Imagerecorder.php'>;
-				 <input name='uploadImages' type='SUBMIT' value='Upload'/>
-				 </form";
-	
-				 
-				 
-		?>
+			<form name='form' method='post' action='Imagerecorder.php'>
+				<input name='uploadImages' type='SUBMIT' value='Upload'/>
+			</form>
+				<?php
+				$filename = 'test.txt';
+				$somecontent = "Add this to the file\n";
+
+				// Let's make sure the file exists and is writable first.
+				if (is_writable($filename)) {
+
+					// In our example we're opening $filename in append mode.
+					// The file pointer is at the bottom of the file hence
+					// that's where $somecontent will go when we fwrite() it.
+					if (!$handle = fopen($filename, 'a')) {
+						 echo "Cannot open file ($filename)";
+						 exit;
+					}
+
+					// Write $somecontent to our opened file.
+					if (fwrite($handle, $somecontent) === FALSE) {
+						echo "Cannot write to file ($filename)";
+						exit;
+					}
+
+					echo "Success, wrote ($somecontent) to file ($filename)";
+
+					fclose($handle);
+
+				} else {
+					echo "The file $filename is not writable";
+				}
+				?>
 		</div>
 	</div>
 	</body>		

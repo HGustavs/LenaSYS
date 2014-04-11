@@ -4,18 +4,58 @@
 	 *  This function acts as a wrapper to a canvas object. It logs
 	 *  every function call before forwarding the call to the canvas.
 	 *
-	 */
-	
-	
-	 
+	 */ 
 	function captureCanvas(canvas){
-	 var str='';
+		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
+		var lastTimestep = new Date().getTime();
+
+		// Add script tag
+		str += '<script type="canvas">\n';
+
 	    this.ctx = canvas;      // This is the actual canvas object
-	    this.ctx.lineWidth = 5;
+	    this.lineWidth = this.ctx.lineWidth;
+		this.lineJoin = this.ctx.lineJoin;
+		this.miterLimit = this.ctx.miterLimit;
+		this.lineCap = this.ctx.lineCap;
+		//Color,shadow and style.
+		this.fillStyle = this.ctx.fillStyle;
+		this.strokeStyle = this.ctx.strokeStyle;
+		this.shadowColor = this.ctx.shadowColor;
+		this.shadowBlur = this.ctx.shadowBlur;
+		this.shadowOffsetX = this.ctx.shadowOffsetX;
+		this.shadowOffsetY = this.ctx.shadowOffsetY;
+		
+		//Text property.
+		this.font = this.ctx.font;
+		this.textAlign = this.ctx.textAlign;
+		this.textBaseline = this.ctx.textBaseline;
+		//PixelManipulation property.
+		this.imgData = function(){
+			this.width = this.ctx.imgData.width;
+			this.height = this.ctx.imgData.height;
+			this.data = this.ctx.imageData.data;
+		}
+		
+		//Compositing property.
+		this.globalAlpha = this.ctx.globalAlpha;
+		this.globalCompositeOperation = this.ctx.globalCompositeOperation;
 		
 		// Log XML line
 		this.log = function(string){
+			var timestep = new Date().getTime();
+
+			// Calculate delay
+			var delay = timestep - lastTimestep;
+
+			// Update timestep
+			lastTimestep = timestep;
+
+			// Set string
+			str += '<timestep delay="' + delay + '">' + '\n';
 			str += string + '\n';
+			str += '</timestep>' + '\n';
+			console.log("=====");
+			console.log(str);
 		}
 
 	    this.beginPath = function(){
@@ -28,12 +68,15 @@
 	        this.ctx.moveTo(x, y);
 	    }
 	    
-	     this.lineTo = function(x, y){
+	    this.lineTo = function(x, y){
+			this.updateContextLineState();
+			
 			this.log('<lineto x="'+x+'" y="'+y+'"/>');
 	        this.ctx.lineTo(x, y);
 	    }
 	    
 	    this.stroke = function(){
+			this.updateContextLineState();
 			this.log('<stroke/>');       
 	        this.ctx.stroke();
 	    }
@@ -159,12 +202,146 @@
 	        this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 		}
 		
-		// Send xml-data to server
+		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
+		This updates are added to the xml if there are any.*/
+		this.updateContextLineState = function(){
+			var str = '<state';
+
+			// Check for updates
+			if (this.ctx.lineWidth != this.lineWidth) {
+				str += this.updateContextProperty('lineWidth');
+			}
+			if (this.ctx.lineJoin != this.lineJoin) {
+				str += this.updateContextProperty('lineJoin');
+			}
+			if (this.ctx.miterLimit != this.miterLimit) {
+				str += this.updateContextProperty('miterLimit');
+			}
+			if (this.ctx.lineCap != this.lineCap) {
+				str += this.updateContextProperty('lineCap');
+			}
+
+			// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+		
+		// Update state
+		this.updateContextCssState = function(){
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.fillStyle != this.fillStyle) {
+				str += this.updateContextProperty('fillStyle');
+			}
+			if (this.ctx.strokeStyle != this.strokeStyle) {
+				str += this.updateContextProperty('strokeStyle');
+			}
+			if (this.ctx.shadowColor != this.shadowColor) {
+				str += this.updateContextProperty('shadowColor');
+			}
+			if (this.ctx.shadowBlur != this.shadowBlur) {
+				str += this.updateContextProperty('shadowBlur');
+			}
+			if (this.ctx.shadowOffsetX != this.shadowOffsetX) {
+				str += this.updateContextProperty('shadowOffsetX');
+			}
+			if (this.ctx.shadowOffsetY != this.shadowOffsetY) {
+				str += this.updateContextProperty('shadowOffsetY');
+			}
+
+			// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+
+		// Update state
+		this.updateContextTextState = function(){
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.font != this.font) {
+				str += this.updateContextProperty('font');
+			}
+			if (this.ctx.textAlign != this.textAlign) {
+				str += this.updateContextProperty('textAlign');
+			}
+			if (this.ctx.textBaseline != this.textBaseline) {
+				str += this.updateContextProperty('textBaseline');
+			}
+
+			// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+		// Update state
+		this.updateContextPixelManipulationState = function(){
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.imgData.width != this.imgData.width) {
+				str += this.updateContextProperty('imgData.width');
+			}
+			if (this.ctx.imgData.height != this.imgData.height) {
+				str += this.updateContextProperty('imgData.height');
+			}
+			if (this.ctx.imageData.data != this.imageData.data) {
+				str += this.updateContextProperty('imageData.data');
+			}
+
+			// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+
+		// Update state
+		this.updateContextCompositingState = function(){
+			var str = '<state';
+			
+			// Check for updates
+			if (this.ctx.globalAlpha != this.globalAlpha) {
+				str += this.updateContextProperty('globalAlpha');
+			}
+			if (this.ctx.globalCompositeOperation != this.globalCompositeOperation) {
+				str += this.updateContextProperty('globalCompositeOperation');
+			}
+		
+			// Add state update to XML if needed
+			if (str.length > 6){
+				str += '/>';
+				this.log(str);
+			}
+		}
+		
+		// Update a specific property
+		this.updateContextProperty = function(property) {
+			// Update property
+			this.ctx[property] = this[property];
+
+			// Create string for state
+			var attribute = ' ' + property + '="' + this[property] + '"';
+			attribute.toLowerCase();
+
+			return (attribute);
+		}
+		
+		// Finalize and send xml-data to server
 		this.sendXML = function()
 		{
+			// Close script
+			str += '</script>';
+
 			$.ajax({
 		        type: 'POST',
-		        url: '../CanvasWrapper/logfile.php',
+		        url: '../../CanvasWrapper/logfile.php',
 		        data : { 'string': this.str},
 		        success: function(msg){
 		        	alert(msg);
