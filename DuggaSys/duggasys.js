@@ -67,7 +67,7 @@ function returnedSection(data)
 		for(i=0;i<data['sections'].length;i++){
 				if(parseInt(data['sections'][i]['sectionkind'])==2){
 						str+="<span class='bigg' id='SCE"+data['sections'][i]['sectionno']+"'>";
-						if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+						if(sessionkind===1){
 							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"' >"+data['sections'][i]['sectionname']+"</span>";
 							str+="<span class='smallishbutt'>";
 							str+=Sectionbutton("sectionUp","UpT.svg",data['sections'][i]['sectionno'],"BIG");
@@ -82,7 +82,7 @@ function returnedSection(data)
 						str+="<span class='butt' id='SCE"+data['sections'][i]['sectionno']+"' >";
 
 						// If we are allowed to edit
-						if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+						if(sessionkind===1){
 							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";
 							str+="<span class='smallbutt'>";
 							str+=Sectionbutton("sectionUp","UpS.svg",data['sections'][i]['sectionno'],"SMALL");
@@ -101,7 +101,7 @@ function returnedSection(data)
 						for(j=0;j<data['examples'].length;j++){
 								if(data['sections'][i]['sectionno']==data['examples'][j]['sectionno']){
 										str+="<span class='norm' id='ECX"+data['examples'][j]['sectionno']+"'>";
-										if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+										if(sessionkind===1){
 												str+="<span id='EX"+data['examples'][j]['exampleno']+"' contenteditable='true'>"+data['examples'][j]['examplename']+"</span>";
 												str+="<span class='smallbutt'>";
 													str+=Sectionbutton("exampleUp","UpT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
@@ -126,7 +126,7 @@ function returnedSection(data)
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;
 
-		if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+		if(sessionkind===1){
 				// Setup editable sections with events etc
 				for(i=0;i<data['sections'].length;i++){
 						if(parseInt(data['sections'][i]['sectionkind'])==2){
