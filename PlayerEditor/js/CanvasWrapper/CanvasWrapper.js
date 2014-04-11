@@ -202,7 +202,8 @@
 	        this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 		}
 		
-		// Update state
+		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
+		This updates are added to the xml if there are any.*/
 		this.updateContextLineState = function(){
 			var str = '<state';
 
@@ -340,7 +341,7 @@
 
 			$.ajax({
 		        type: 'POST',
-		        url: '../CanvasWrapper/logfile.php',
+		        url: '../../CanvasWrapper/logfile.php',
 		        data : { 'string': this.str},
 		        success: function(msg){
 		        	alert(msg);

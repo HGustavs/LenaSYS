@@ -23,7 +23,7 @@ session_start();
 						}
 
 						if(array_key_exists('uid', $_SESSION)) {
-							echo 'var sessionkind=' . hasAccess($_SESSION['uid'], $_GET['courseid'], 'w').';';						
+							echo 'var sessionkind=' . (hasAccess($_SESSION['uid'], $_GET['courseid'], 'w') ? 1 : 0) .';';						
 						} else {
 							echo 'var sessionkind=0';
 						}
