@@ -1,13 +1,16 @@
 <html>
 		<head>
-				<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />		
+				<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />		
 		</head>
 		<body>
 
 <?php
 
 		// Include basic application services!
-		include_once("../../coursesyspw.php");	
+		include_once("../Shared/coursesyspw.php");
+		include_once("../Shared/database.php");	
+		include_once("../Shared/sessions.php");
+		include_once("../Shared/basic.php");	
 		include_once("basic.php");
 
 		session_start();

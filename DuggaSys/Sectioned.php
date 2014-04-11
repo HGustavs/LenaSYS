@@ -1,8 +1,19 @@
+<?php 	
+		include_once("../Shared/coursesyspw.php");
+		include_once("../Shared/database.php");
+		include_once("../Shared/courses.php");
+		include_once("../Shared/sessions.php");	
+		include_once("../Shared/basic.php");	
+		include_once("basic.php");
+		dbConnect();
+?>
+
 <html>
 	<head>
-			<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />	
-			<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
-			<script type="text/javascript" src="js/codeviewer.js"></script>
+			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
+			<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+			<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+			<script type="text/javascript" src="duggasys.js"></script>
 
 			<script>
 				<?php
@@ -33,11 +44,6 @@
 	</head>
 
 <?php
-				
-		include_once("../../coursesyspw.php");	
-		include_once("basic.php");
-		
-		dbConnect();
 		
 		if(isset($_GET['courseid'])&&isset($_GET['vers'])){
 				$courseID=$_GET['courseid'];
@@ -50,6 +56,22 @@
 								if(strpos($kind,$courseID)>-1||strpos($kind,"Superuser")>-1){
 										// Allowed to edit this course
 										editsectionmenu(true);
+										?>
+										<script>
+											$(function() {
+												// Placeholder
+												$( "#Sectionlist" ).sortable({
+													opacity: 0.5,
+													cursor: "move",
+													items: "> span",
+													update: function() {
+														var order = $(this).sortable("serialize") + '&action=updateRecordsListings';
+														$.post("421blazeit.php", order);
+													}
+												});
+											});
+										</script>
+<?php
 								}else if($kind!="LOGIN!"){
 										// No editing
 										editsectionmenu(false);
@@ -65,5 +87,5 @@
 						bodywarning("This course does not seem to exist!");
 		}
 
-?>			
+?>		
 </html>
