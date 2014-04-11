@@ -152,7 +152,6 @@ function jsvarsession($getname,$varname){
         echo 'var '.$varname.'="NONE!";';
     }
 }
-
 ?>
 
 
