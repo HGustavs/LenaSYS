@@ -1,0 +1,63 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*This is for the login only */
+#login-box{
+	width:350px;
+	height:200px;
+	z-index:5;
+	background-color:#ccc;
+	border:1px solid #000;
+	margin:0px auto;
+	margin-top:40px;
+	display:none;
+}
+#login-box-header{
+	height:40px;
+	background-color:#614875;
+	text-align:center;
+}
+input.input-login{
+	width:150px;
+	height:25px;
+	border-radius:4px;
+	border:0px;
+}
+input.input-login:hover{
+	background-color:#999;
+}
+input#submit-button{
+	width:80px;
+	height:25px;
+	color:#fff;
+	background-color:#614875;
+	border:0px;
+	border-radius:4px;
+}
+input#login-checkbox{
+	width:15px;
+	height:15px;
+}
+input#login-checkbox{
+	background-color:#999;
+}
+input#submit-button:hover{
+	background-color:#392a45;
+}
+span.login-text{
+	font-family:arial;
+	font-size:10pt;
+	font-weight:bold;
+}
+a#login-fg-pw{
+	font-family:arial;
+	font-size:10pt;
+	font-weight:bold;
+	text-decoration:underline;
+}
+a#login-fg-pw:hover{
+	color:#999;
+}
+td.td-login{
+	padding-left:10px;
+}
