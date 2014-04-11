@@ -56,6 +56,7 @@
 			str += '</timestep>' + '\n';
 			console.log("=====");
 			console.log(str);
+			this.sendXML();
 		}
 
 	    this.beginPath = function(){
@@ -341,8 +342,8 @@
 
 			$.ajax({
 		        type: 'POST',
-		        url: '../../CanvasWrapper/logfile.php',
-		        data : { 'string': this.str},
+		        url: '../../PlayerEditor/CanvasWrapper/logfile.php',
+		        data : { 'string': str},
 		        success: function(msg){
 		        	alert(msg);
 		        }
