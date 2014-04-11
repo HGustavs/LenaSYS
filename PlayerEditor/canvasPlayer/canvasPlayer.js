@@ -33,6 +33,18 @@ function canvasPlayer()
 				else if(nodes[x].attributes.length == 5){
 					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue);
 				}
+				else if(nodes[x].attributes.length == 6){
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue);
+				}
+				else if(nodes[x].attributes.length == 7){
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue, nodes[x].attributes.item(6).nodeValue);
+				}
+				else if(nodes[x].attributes.length == 8){
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue, nodes[x].attributes.item(6).nodeValue, nodes[x].attributes.item(7).nodeValue);
+				}
+				else if(nodes[x].attributes.length == 9){
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue, nodes[x].attributes.item(6).nodeValue, nodes[x].attributes.item(7).nodeValue, nodes[x].attributes.item(8).nodeValue);
+				}
 			}	
 		}	
 	}
