@@ -1,0 +1,35 @@
+body{
+	background-color:#CAE9BE;
+}
+.canvasStyle{
+	background:rgba(0,0,0,0.2);
+}
+.wrapper{
+	margin-left:auto;
+	margin-right:auto;
+	width:1485px;
+	height:auto;
+}
+@font-face{
+	font-family:'Raleway Thin';
+	src: url('Raleway Thin.ttf');
+}
+.header{
+	font-family:'Raleway Thin';
+	font-size:52px;
+}
+.cords{
+	margin-left:auto;
+	margin-right:auto;
+}
+.cordFont{
+	font-size:18px;
+	font-family:arial;
+}
+.uploadImages{
+	margin-left:5px;
+	float:right;
+	width:200px;
+	height:720px;
+	background:rgba(0,0,0,0.2);
+}

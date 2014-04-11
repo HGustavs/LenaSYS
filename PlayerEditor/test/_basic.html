@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Testing</title>
+		<style type="text/css">
+			.testid { background-color: #000; color: #fff; }
+			.testsubid { background-color: #3d3d3d; color: #fff; }
+			.trFail { background-color: #ff0000; }
+			.trSucc { background-color: green; }
+			table { border-collapse: collapse; width: 500px; }
+			th { text-align: left; }
+		</style>
+	</head>
+
+	<script src="../js/jQuery-Core-1.10.2.js"></script>
+	
+	<!-- Print testIds/testcases to table -->
+	<script>
+		function testId(str) {	
+			$('#testTable > tbody').append("<tr><td colspan='4' class='testid'>"+str+"</td></tr>");
+		}
+		function testSubId(str) {	
+			$('#testTable > tbody').append("<tr><td colspan='4' class='testsubid'>"+str+"</td></tr>");
+		}
+		
+		function console(name) {
+			return eval("window.frames['consframe']." + name);
+		}
+	
+		function test(id, expected, actual) {	
+			if(expected==actual) {
+				$('#testTable > tbody').append("<tr class='trSucc'><td>"+id+"</td><td>"+expected+"</td><td>"+actual+"</td><td>OK</td></tr>");
+			} else {
+				$('#testTable > tbody').append("<tr class='trFail'><td>"+id+"</td><td>"+expected+"</td><td>"+actual+"</td><td>FAIL</td></tr>");
+			}
+		}
+
+	</script>
+	
+	<body>
+	
+		<iframe src="../Consolerenderer/Consolerenderer.html" width="800" height="800" name="consframe"></iframe>
+
+		<div style="display: none;">
+			<div id="playcontrol"></div>
+		</div>
+		<table border="0" id="testTable">
+			<thead>
+				<th>ID</th>
+				<th>Expected</th>
+				<th>Actual</th>
+				<th>State</th>
+			</thead>
+			<tbody>
+				<tr></tr>
+			</tbody>
+		</table>
+		
+
+		<a href="#" onClick="alert(console('cons.paused'));return false;">Testar</a>
+		
+
+	<!-- Run tests -->
+		
+
+	</body>
+	
+	
+</html>
