@@ -267,7 +267,7 @@ function Canvasrenderer()
 	}
 	
 	this.state_strokestyle = function(value){
-		ctx.strokestyle = value;
+		ctx.strokeStyle = value;
 	}
 	
 	this.state_shadowcolor = function(value){
