@@ -47,7 +47,7 @@ session_start();
 						// If course exists - check login credentials
 						// Logged in and with credentials - show full editor otherwise show viewer version 
 
-						if(checklogin()){
+						if(checklogin() && array_key_exists('uid', $_SESSION)){
 								$ha=hasAccess($_SESSION['uid'], $courseID, 'w');
 								if($ha){
 										// Allowed to edit this course
