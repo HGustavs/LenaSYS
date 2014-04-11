@@ -1,8 +1,15 @@
+<?php
+include_once("../../coursesyspw.php");	
+include_once("basic.php");
+
+dbConnect();
+session_start();
+?>
 <html>
 	<head>
-			<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />	
-			<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
-			<script type="text/javascript" src="js/codeviewer.js"></script>
+			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
+			<script type="text/javascript" src="../CodeViewer/js/jquery-1.5.1.min.js"></script>
+			<script type="text/javascript" src="duggasys.js"></script>
 
 			<script>
 				<?php
@@ -15,11 +22,10 @@
 								echo 'var vers="NONE!";';					
 						}
 
-						session_start();
-						if(isset($_SESSION['kind'])){
-								echo 'var sessionkind="'.$_SESSION['kind'].'";';						
-						}else{
-								echo 'var sessionkind="NONE!";';												
+						if(array_key_exists('uid', $_SESSION)) {
+							echo 'var sessionkind=' . hasAccess($_SESSION['uid'], $_GET['courseid'], 'w').';';						
+						} else {
+							echo 'var sessionkind=0';
 						}
 				?>			
 				
@@ -34,10 +40,6 @@
 
 <?php
 				
-		include_once("../../coursesyspw.php");	
-		include_once("basic.php");
-		
-		dbConnect();
 		
 		if(isset($_GET['courseid'])&&isset($_GET['vers'])){
 				$courseID=$_GET['courseid'];
@@ -46,18 +48,18 @@
 						// Logged in and with credentials - show full editor otherwise show viewer version 
 
 						if(checklogin()){
-								$kind=$_SESSION['kind'];
-								if(strpos($kind,$courseID)>-1||strpos($kind,"Superuser")>-1){
+								$ha=hasAccess($_SESSION['uid'], $courseID, 'w');
+								if($ha){
 										// Allowed to edit this course
 										editsectionmenu(true);
-								}else if($kind!="LOGIN!"){
+								} else {
 										// No editing
 										editsectionmenu(false);
 								}
 						}else{
 								editsectionmenu(false);
 						}			
-				}else{
+				} else {
 						// Print Warning If course does not exist!
 						bodywarning("This course does not seem to exist!");
 				}

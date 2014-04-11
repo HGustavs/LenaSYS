@@ -1,34 +1,53 @@
-DROP DATABASE Imperious;
+DROP DATABASE IF EXISTS Imperious;
 CREATE DATABASE Imperious;
 USE Imperious;
 
 /* Appuser contains the us 	ers of the system and the corresponding permissions*/
+CREATE TABLE user(
+		uid				INT NOT NULL AUTO_INCREMENT,
+		username		VARCHAR(80) NOT NULL UNIQUE, 
+		ssn				VARCHAR(20) NULL,
+		password		VARCHAR(225) NOT NULL,
+		lastupdated		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		newpassword		TINYINT(1) NULL,
+		creator			INT NULL,
+		superuser		TINYINT(1) NULL,
+		PRIMARY KEY(uid)		
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-CREATE TABLE appuser(
-		userid			 MEDIUMINT NOT NULL AUTO_INCREMENT,
-		loginname    VARCHAR(64),
-		passwd			 VARCHAR(64),
-		kind			   VARCHAR(1024),
-		ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser						VARCHAR(64),
-		PRIMARY KEY(userid)		
-);
+INSERT INTO user(username,password,creator,superuser) values ("Grimling","Atintegulsno",1,1);
+INSERT INTO user(username,password,creator) values ("Toddler","Kong",1);
 
-INSERT INTO appuser(loginname,passwd,kind,appuser) values ("Grimling","Atintegulsno","Webbprogrammering","Creationscript");
-INSERT INTO appuser(loginname,passwd,kind,appuser) values ("Toddler","Kong","Webbprogrammering Superuser","Creationscript");
 
 /* Course contains a list of the course names for each course in the database */
-
 CREATE TABLE course(
-		courseno				 MEDIUMINT NOT NULL AUTO_INCREMENT,
-		coursename			 VARCHAR(64),
-		ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser						VARCHAR(64),
-		PRIMARY KEY(courseno)		
+		cid				INT NOT NULL AUTO_INCREMENT,
+		coursecode		VARCHAR(45) NULL,
+		coursename		VARCHAR(80) NULL,
+		created			DATETIME,
+		creator			INT NOT NULL,
+		updated			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+		PRIMARY KEY(cid),
+		FOREIGN KEY (creator) REFERENCES user (uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO course(coursecode,coursename,created,creator) values ("DV12G","Webbprogrammering",NOW(),1);
+INSERT INTO course(coursecode,coursename,created,creator) values ("DV13G","Futhark",NOW(),1);
+
+
+/* User access to the application*/
+CREATE TABLE user_course(
+		uid				INT NOT NULL,
+		cid				INT NOT NULL, 
+		access			VARCHAR(10) NOT NULL,
+		PRIMARY KEY(uid, cid),
+		FOREIGN KEY (uid) REFERENCES user (uid),
+		FOREIGN KEY (cid) REFERENCES course (cid)
+		
 );
 
-INSERT INTO course(coursename,appuser) values ("Webbprogrammering","Creationscript");
-INSERT INTO course(coursename,appuser) values ("Futhark","Creationscript");
+INSERT INTO user_course(uid,cid,access) values (1,1,"R");
+INSERT INTO user_course(uid,cid,access) values (2,2,"W");
 
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
@@ -78,6 +97,36 @@ INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,ap
 INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 3","JS","Iulf.html",2,"Creationscript",2013);
 INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 4","JS","Julf.html",3,"Creationscript",2013);
 
+
+/* boxes with information in a certain example */
+CREATE TABLE box(
+		boxid				INTEGER NOT NULL AUTO_INCREMENT,
+		exampleno 			INTEGER NOT NULL,
+		boxcontent			VARCHAR(39),
+		descno				INT DEFAULT '0',
+		fileno				MEDIUMINT  DEFAULT '0',					
+		settings			VARCHAR(1024),
+		PRIMARY KEY(boxid)		
+);
+
+INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,1,"[viktig=1]");
+INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,2,"[viktig=1]");
+INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,3,"[viktig=1]");
+
+
+/* template with information about a certain template */
+CREATE TABLE template(
+		templateid			INTEGER NOT NULL,
+		stylesheet 			VARCHAR(39) NOT NULL,
+		boxid				INTEGER NOT NULL,	
+		PRIMARY KEY(templateid, stylesheet, boxid)		
+);
+
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",1);
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",2);
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",3);
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (2,"template2.css",4);
+INSERT INTO template(templateid,stylesheet,boxid) VALUES (2,"template2.css",5);
 
 
 /* improw contains a list of the important rows for a certain example */
