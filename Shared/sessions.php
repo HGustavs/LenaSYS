@@ -1,4 +1,5 @@
 <?php
+require_once('../Shared/external/password.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
@@ -9,12 +10,11 @@ function checklogin()
 		return true;
 	} else if(array_key_exists('loginname', $_POST) && array_key_exists('passwd', $_POST)){
 		$username=$_POST["loginname"];
-		$passwd=$_POST["passwd"];				
+		$password=$_POST['passwd'];
 
 		// Protect against SQL injection.
-		$querystring=sprintf("SELECT * FROM user WHERE username='%s' AND password='%s' LIMIT 1",
-			mysql_real_escape_string($username),
-			mysql_real_escape_string($passwd)
+		$querystring=sprintf("SELECT * FROM user WHERE username='%s' LIMIT 1",
+			mysql_real_escape_string($username)
 		);
 
 		$result=mysql_query($querystring);
@@ -23,12 +23,16 @@ function checklogin()
 		// Fetch the result
 		$row = mysql_fetch_assoc($result);
 
-		$_SESSION['uid'] = $row['uid'];
-		$_SESSION["loginname"]=$row['username'];
-		$_SESSION["passwd"]=$row['password'];
-		$_SESSION["superuser"]=$row['superuser'];
+		if(password_verify($password, $row['password'])) {
+			$_SESSION['uid'] = $row['uid'];
+			$_SESSION["loginname"]=$row['username'];
+			$_SESSION["passwd"]=$row['password'];
+			$_SESSION["superuser"]=$row['superuser'];
+			return true;
+		} else {
+			return false;
+		}
 
-		return true;
 	} else {		
 		return false;
 	}
