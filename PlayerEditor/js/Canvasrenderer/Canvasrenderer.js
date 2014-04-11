@@ -1,10 +1,27 @@
 // Canvas renderer
 function Canvasrenderer() 
-{	
-	// List of all valid canvas functions
-	// No other operation in the XML should be possible to run
-	var validFuctions = ['beginpath', 'moveto', 'lineto', 'stroke', 'createlineargradient', 'createpattern', 'createradialgradient', 'rect', 'fillrect', 'strokerect', 'clearrect', 'fill', 'closepath', 'clip', 'quadraticcurveto', 'beziercurveto', 'arc', 'arcto', 'ispointinpath', 'scale', 'rotate', 'translate', 'transform', 'measuretext', 'drawimage', 'createimagedata', 'getimagedata', 'putimagedata', 'state_fillstyle', 'state_strokestyle', 'state_shadowcolor', 'state_shadowblur', 'state_shadowoffsetx', 'state_shadowoffsety', 'state_linecap', 'state_linejoin', 'state_linewidth', 'state_miterlimit', 'state_font', 'state_textalign', 'state_textbaseline', 'state_width', 'state_height', 'state_data', 'state_globalapha', 'state_globalcompositeoperation'];
+{		
+	/*
+	 * Check if function name is valid
+	 * A valid function name will return 1, invalid 0.
+	 *
+	 */
+	 this.validFunction = function(name)
+	 {
+	 	// List of all valid canvas functions
+		// No other operation in the XML should be possible to run
+		var validFunctions = ['beginpath', 'moveto', 'lineto', 'stroke', 'createlineargradient', 'createpattern', 'createradialgradient', 'rect', 'fillrect', 'strokerect', 'clearrect', 'fill', 'closepath', 'clip', 'quadraticcurveto', 'beziercurveto', 'arc', 'arcto', 'ispointinpath', 'scale', 'rotate', 'translate', 'transform', 'measuretext', 'drawimage', 'createimagedata', 'getimagedata', 'putimagedata', 'state_fillstyle', 'state_strokestyle', 'state_shadowcolor', 'state_shadowblur', 'state_shadowoffsetx', 'state_shadowoffsety', 'state_linecap', 'state_linejoin', 'state_linewidth', 'state_miterlimit', 'state_font', 'state_textalign', 'state_textbaseline', 'state_width', 'state_height', 'state_data', 'state_globalapha', 'state_globalcompositeoperation'];
 
+	 	// Compare to list of valid functions
+	 	for(i=0; i<validFunctions.length; ++i){
+	 		if(validFunctions[i]==name){
+	 			// Function is valid
+	 			return 1;
+	 		}
+	 	}
+	 	// Function is invalid
+	 	return 0;
+	 }
 
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
@@ -14,8 +31,8 @@ function Canvasrenderer()
 
 			if(nodes[x].attributes != null){
 				console.log("attribute length " + nodes[x].attributes.length);
-				// Continue if invalid node (i.e. #text)
-				if(nodes[x].nodeName.substring(0,1) == "#") continue;
+				// Continue if invalid node (i.e. not in list of valid functions)
+				if(!this.validFunction(nodes[x].nodeName)) continue;
 				console.log("nodes: "+nodes[x].nodeName);
 
 				// Check number of arguments and call canvas function

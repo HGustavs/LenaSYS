@@ -46,7 +46,7 @@ CREATE TABLE user_course(
 		
 );
 
-INSERT INTO user_course(uid,cid,access) values (1,1,"R");
+INSERT INTO user_course(uid,cid,access) values (1,1,"W");
 INSERT INTO user_course(uid,cid,access) values (2,2,"W");
 
 /* Section contains a list of the course sections for a version of a course in the database */
