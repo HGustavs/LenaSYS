@@ -15,42 +15,6 @@ var isdropped=false;
 
 *********************************************************************************/
 
-function countsect(sectpos)
-{
-		var cnt=0;						
-		for(j=0;j<retdata['examples'].length;j++){
-				if(retdata['examples'][j][3]==sectpos){
-						cnt++;
-				}
-		}
-		return cnt;
-}
-			
-function newSection(kind)
-{
-		AJAXServiceSection("sectionNew","&kind="+kind);						
-}			
-			
-function editedExampleName(obj)
-{
-				var newname=obj.innerHTML;
-				newname=dehtmlify(newname,false,60);
-				obj.innerHTML=newname;
-
-				AJAXServiceSection("editExampleName","&newname="+newname+"&sectid="+obj.id);
-
-}
-
-function editedSectionName(obj)
-{
-				var newname=obj.innerHTML;
-				newname=dehtmlify(newname,false,60);
-				obj.innerHTML=newname;
-
-				AJAXServiceSection("editSectionName","&newname="+newname+"&sectid="+obj.id);
-}
-
-
 function highlightKeyword(kw)
 {
 			$(".impword").each(function(){
@@ -112,14 +76,6 @@ function Save()
 				AJAXService("editDescription","&description="+desc);
 }
 
-function editedExamplename()
-{
-		var editable=document.getElementById('exampleName');
-		var examplename=dehtmlify(editable.innerHTML,true,60);
-		editable.innerHTML=examplename;
-		AJAXService("editExampleName","&examplename="+examplename);
-}
-
 function highlightop(otherop,thisop)
 {
 		$("#"+otherop).addClass("hi");					
@@ -141,7 +97,6 @@ function Wordlist()
 {
 		switchDrop("docudrop");
 }
-
 function Up()
 {						
 		location="Sectioned.php?courseid="+courseID+"&vers="+version;
@@ -247,9 +202,22 @@ function chosenWordlist()
 }
 
 function addImpword()
-{
-		word=encodeURIComponent(document.getElementById('impwordtextbox').value);
-		AJAXService("addImpWord","&word="+word);
+{	
+	word=document.getElementById('impwordtextbox');
+		// check if UTF encoded
+		for(var i=0; i<word.value.length; i++) {
+	        if(word.value.charCodeAt(i) > 127){
+				document.getElementById('impwordlistError').innerHTML = "Error. Not UTF-encoded.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+	        }
+	    }
+	    
+		wordEncoded = encodeURIComponent(word.value);
+		AJAXService("addImpWord","&word="+wordEncoded);
+		
+	/*	word=encodeURIComponent(document.getElementById('impwordtextbox').value);
+		AJAXService("addImpWord","&word="+word);*/
 }
 
 function delImpword()
@@ -260,10 +228,38 @@ function delImpword()
 
 function addImpline()
 {
-		from=parseInt(document.getElementById('implistfrom').value);
-		to=parseInt(document.getElementById('implistto').value);
-		if(from<=to){
-				AJAXService("addImpLine","&from="+from+"&to="+to);
+		from=document.getElementById('implistfrom');
+		to=document.getElementById('implistto');
+		errormsg = document.getElementById('impLinesError');
+		
+		// reset the color of input boxes
+		to.style.backgroundColor="#FFFFFF";
+		from.style.backgroundColor="#FFFFFF";  
+		
+		// make integers of the input
+		fromValue = parseInt(from.value)
+		toValue = parseInt(to.value)
+
+		
+		// error messages if NaN
+		if((isNaN(fromValue))||(isNaN(toValue))){
+			if(isNaN(fromValue)){
+				from.style.backgroundColor="#E33D3D"; 
+			}if(isNaN(toValue)){
+				to.style.backgroundColor="#E33D3D"; 
+			}
+			errormsg.innerHTML = "Failed to add. Not a number.";
+			return;
+		}
+		// add important lines
+		if(fromValue<=toValue){
+				AJAXService("addImpLine","&from="+fromValue+"&to="+toValue);
+		}
+		// Error message if from>to
+		else{
+			to.style.backgroundColor="#E42217"; 
+			from.style.backgroundColor="#E42217";
+			errormsg.innerHTML = "Failed to add. Use ascending order.";
 		}
 }
 
@@ -275,10 +271,20 @@ function delImpline()
 }
 
 function addWordlistWord()
-{
-		word=encodeURIComponent(document.getElementById('wordlisttextbox').value);
-		wordlist=encodeURIComponent(retdata['chosenwordlist']);
-		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+word);
+{ 
+		word=document.getElementById('wordlisttextbox');
+		// check if UTF encoded
+		for(var i=0; i<word.value.length; i++) {
+	        if(word.value.charCodeAt(i) > 127){
+				document.getElementById('wordlistError').innerHTML = "Error. Not UTF-encoded.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+	        }
+	    }   
+	    wordlist=encodeURIComponent(retdata['chosenwordlist']);		
+		encodedWord=encodeURIComponent(word.value);
+
+		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+encodedWord);
 }
 
 function delWordlistWord()
@@ -289,9 +295,18 @@ function delWordlistWord()
 }
 
 function newWordlist()
-{
-		wordlist=encodeURIComponent(document.getElementById('wordlisttextbox').value);
-		AJAXService("newWordlist","&wordlist="+wordlist);
+{		
+		wordlist=document.getElementById('wordlisttextbox');
+		// check if UTF encoded
+		for(var i=0; i<wordlist.value.length; i++) {
+	        if(wordlist.value.charCodeAt(i) > 127){
+				document.getElementById('wordlistError').innerHTML = "Error. Not UTF-encoded.";
+				wordlist.style.backgroundColor="#E33D3D";
+	          	return;
+	        }
+	    }
+		wordlistEncoded = encodeURIComponent(wordlist.value);
+		AJAXService("newWordlist","&wordlist="+wordlistEncoded);
 }
 				
 function selectWordlistWord(word)
@@ -359,116 +374,7 @@ function sendOut(kind, sectid)
 			
 			return false;
 }
-*/
-// Create a button for a section row
-function Sectionbutton(kind,imgname,sectid,typ,pos)
-{	
-		if(typ=="SMALL"){
-				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";				
-		}else if(typ=="BIG"){
-				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
-		}else if(typ=="EXAMPLE"){
-				return "<img src='icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
-		}
-}
-
-function returnedSection(data)
-{
-		retdata=data;
-		
-		// Fill section list with information
-		str="";
-		
-		// Course Name
-		str+="<span class='course'>"+courseID+"</span>"
-
-		// For now we only have two kinds of sections
-		for(i=0;i<data['sections'].length;i++){
-				if(parseInt(data['sections'][i]['sectionkind'])==2){
-						str+="<span class='bigg' id='SCE"+data['sections'][i]['sectionno']+"'>";
-						if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
-							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"' >"+data['sections'][i]['sectionname']+"</span>";
-							str+="<span class='smallishbutt'>";
-							str+=Sectionbutton("sectionUp","UpT.svg",data['sections'][i]['sectionno'],"BIG");
-							str+=Sectionbutton("sectionDown","DownT.svg",data['sections'][i]['sectionno'],"BIG");
-							str+=Sectionbutton("sectionDel","MinusT.svg",data['sections'][i]['sectionno'],"BIG");											
-							str+="</span>";
-						}else{
-							str+="<span id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";						
-						}
-						str+="</span>";
-				}else{
-						str+="<span class='butt' id='SCE"+data['sections'][i]['sectionno']+"' >";
-
-						// If we are allowed to edit
-						if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
-							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";
-							str+="<span class='smallbutt'>";
-							str+=Sectionbutton("sectionUp","UpS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("sectionDown","DownS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("exampleNew","PlusS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("sectionDel","MinusS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+="</span>";
-						}else{
-							str+="<span id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";						
-						}
-						
-						// End of butt span
-						str+="</span>"
-
-						// For each of the examples
-						for(j=0;j<data['examples'].length;j++){
-								if(data['sections'][i]['sectionno']==data['examples'][j]['sectionno']){
-										str+="<span class='norm' id='ECX"+data['examples'][j]['sectionno']+"'>";
-										if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
-												str+="<span id='EX"+data['examples'][j]['exampleno']+"' contenteditable='true'>"+data['examples'][j]['examplename']+"</span>";
-												str+="<span class='smallbutt'>";
-													str+=Sectionbutton("exampleUp","UpT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
-													str+=Sectionbutton("exampleDown","DownT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
-													str+=Sectionbutton("exampleDel","MinusT.svg",data['examples'][j]['exampleno'],"EXAMPLE");											
-													str+="<img src='icons/PlayT.svg' onclick=\"window.location='EditorV30.php?courseid="+courseID+
-														"&version="+vers+
-														"&sectionid="+data['examples'][j]['sectionno']+
-														"&position="+data['examples'][j]['pos']+
-														"'\"/>";
-												str+="</span>"
-										}else{
-												str+="<a href='EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j]['sectionno']+"&version="+vers+"&position="+data['examples'][j]['pos']+"'>"+data['examples'][j]['examplename']+"</a>";		
-										}
-										str+="</span>";
-								}
-						}
-				}
-
-		}
-		
-		var slist=document.getElementById('Sectionlist');
-		slist.innerHTML=str;
-
-		if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
-				// Setup editable sections with events etc
-				for(i=0;i<data['sections'].length;i++){
-						if(parseInt(data['sections'][i]['sectionkind'])==2){
-								var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
-				    		editable.addEventListener("blur", function(){editedSectionName(this);}, true);
-						}else{
-								var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
-				    		editable.addEventListener("blur", function(){editedSectionName(this);}, true);
-								for(j=0;j<data['examples'].length;j++){
-										if(data['sections'][i]['sectionno']==data['examples'][j]['sectionno']){
-												var editable=document.getElementById("EX"+data['examples'][j]['exampleno']);
-								    		editable.addEventListener("blur", function(){editedExampleName(this);}, true);
-										}
-								}
-		
-						}
-				}				
-		}
-
-
-	  if(data['debug']!="NONE!") alert(data['debug']);
-
-}				
+*/			
 
 function returned(data)
 {
@@ -568,6 +474,7 @@ function returned(data)
 						}
 				}
 				str+="</select><br/>";
+				str+="<div id='wordlistError'></div>";
 				str+="<input type='text' size='24' id='wordlisttextbox' />";
 				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
 				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
@@ -581,6 +488,7 @@ function returned(data)
 						str+="<option onclick='selectImpWord(\""+data['impwords'][i]+"\");'>"+data['impwords'][i]+"</option>";										
 				}
 				str+="</select><br/>";
+				str+="<div id='impwordlistError'></div>";
 				str+="<input type='text' size='24' id='impwordtextbox' />";
 				str+="<input type='button' value='add' onclick='addImpword();' />";
 				str+="<input type='button' value='del' onclick='delImpword();'/>";													
@@ -588,15 +496,15 @@ function returned(data)
 				//----------------------------------------------------
 				// Fill important line list part of document dialog
 				//----------------------------------------------------
-				str+="<br/><br/>Important lines: <br/><select size='4'>";
+				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
 				for(i=0;i<data['improws'].length;i++){
 						str+="<option onclick='selectImpLines(\""+data['improws'][i]+"\");'>"+data['improws'][i][0]+"-"+data['improws'][i][1]+"</option>";										
 				}
 				str+="</select><br/>"
+				str+="<div id='impLinesError'></div>";
 				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
 				str+="<input type='button' value='add' onclick='addImpline();' />";
 				str+="<input type='button' value='del' onclick='delImpline();' />";
-				
 				str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
 		
 				var docurec=document.getElementById('docudrop');
@@ -1116,21 +1024,22 @@ function rendercode(codestring,destinationdiv)
 								cont="&nbsp;&nbsp;";
 						}
 						
-						str+=num+cont;
-						cont="";
-						str+="</div>";
+						
 						if(improws.length==0){
 								str+="<div class='norm'>";
 						}else{
 								for(var kp=0;kp<improws.length;kp++){
-										if(lineno>=parseInt(improws[kp][0])-1&&lineno<parseInt(improws[kp][1])){
+										if(lineno>=parseInt(improws[kp][0])&&lineno<=parseInt(improws[kp][1])){
 												str+="<div class='impo'>";
 												break;
 										}else{
 												str+="<div class='norm'>";
 										}						
 								}
-						}						
+						}	
+						str+=num+cont;
+						cont="";
+						str+="</div>";					
 				}
 		}
 		str+="</div>";						
@@ -1139,18 +1048,19 @@ function rendercode(codestring,destinationdiv)
 }
 function linenumbers(){	
 	if(localStorage.getItem("linenumbers") == "false"){	
-		$( "#numberbutton img" ).attr('src', 'icons/nrhide.svg');
+		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		$( ".no" ).css("display","none");	
 	}
 }
 function fadelinenumbers(){
 	if ( $( ".no" ).is( ":hidden" ) ) {
-		$( ".no" ).fadeIn( "slow" );
-		$( "#numberbutton img" ).attr('src', 'icons/nrshow.svg');
+		$( ".no" ).fadeIn( "fast" );
+		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
+
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
-		$( ".no" ).fadeOut("slow");
-		$( "#numberbutton img" ).attr('src', 'icons/nrhide.svg');
+		$( ".no" ).fadeOut("fast");
+		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
 }
