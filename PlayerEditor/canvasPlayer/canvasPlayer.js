@@ -24,6 +24,15 @@ function canvasPlayer()
 				else if(nodes[x].attributes.length == 2){
 					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue);
 				}
+				else if(nodes[x].attributes.length == 3){
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue);
+				}
+				else if(nodes[x].attributes.length == 4){
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue);
+				}
+				else if(nodes[x].attributes.length == 5){
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue);
+				}
 			}	
 		}	
 	}
