@@ -141,7 +141,6 @@ function Wordlist()
 {
 		switchDrop("docudrop");
 }
-
 function Up()
 {						
 		location="Sectioned.php?courseid="+courseID+"&vers="+version;
@@ -253,10 +252,11 @@ function addImpword()
 		for(var i=0; i<word.value.length; i++) {
 	        if(word.value.charCodeAt(i) > 127){
 				document.getElementById('impwordlistError').innerHTML = "Error. Not UTF-encoded.";
-				wordlist.style.backgroundColor="#E33D3D";
+				word.style.backgroundColor="#E33D3D";
 	          	return;
 	        }
 	    }
+	    
 		wordEncoded = encodeURIComponent(word.value);
 		AJAXService("addImpWord","&word="+wordEncoded);
 		

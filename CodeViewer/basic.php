@@ -71,8 +71,8 @@ include "../Shared/basic.php";
 				echo '<span id="backwdrop" class="dropdown backwdrop"><div class="dropdownback">Backw</div></span>';				
 				if($kind){
 						echo '<span id="codedrop" class="dropdown codedrop" style="overflow:scroll;"><div class="dropdownback">Code viewer Code File Selector</div></span>';
-						echo '<span id="docudrop" class="dropdown docudrop"><div class="dropdownback">Wordlist Selector</div></span>';				
-				}
+	       				echo '<span id="docudrop" class="dropdown docudrop"><div class="dropdownback">Wordlist Selector</div></span>';
+	 			}
 
 				echo '<div id="buttomenu">';
 				echo '<table cellspacing="2"><tr>';
