@@ -1,5 +1,5 @@
-// Canvas player
-function canvasPlayer() 
+// Canvas renderer
+function Canvasrenderer() 
 {	
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
