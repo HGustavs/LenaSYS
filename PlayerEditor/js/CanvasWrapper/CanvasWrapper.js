@@ -16,6 +16,26 @@
 	    this.lineWidth = this.ctx.lineWidth;
 		this.lineJoin = this.ctx.lineJoin;
 		this.miterLimit = this.ctx.miterLimit;
+		this.lineCap = this.ctx.lineCap;
+		//Color,shadow and style.
+		this.fillStyle = this.ctx.fillStyle;
+		this.strokeStyle = this.ctx.strokeStyle;
+		this.shadowColor = this.ctx.shadowColor;
+		this.shadowBlur = this.ctx.shadowBlur;
+		this.shadowOffsetX = this.ctx.shadowOffsetX;
+		this.shadowOffsetY = this.ctx.shadowOffsetY;
+		
+		//Text property.
+		this.font = this.ctx.font;
+		this.textAlign = this.ctx.textAlign;
+		this.textBaseline = this.ctx.textBaseline;
+		//PixelManipulation property.
+		this.imgData.width = this.ctx.imgData.width;
+		this.imgData.height = this.ctx.imgData.height;
+		this.imageData.data = this.ctx.imageData.data;
+		//Compositing property.
+		this.globalAlpha = this.ctx.globalAlpha;
+		this.globalCompositeOperation = this.ctx.globalCompositeOperation;
 		
 		// Log XML line
 		this.log = function(string){
@@ -31,6 +51,8 @@
 			str += '<timestep delay="' + delay + '">' + '\n';
 			str += string + '\n';
 			str += '</timestep>' + '\n';
+			console.log("=====");
+			console.log(str);
 		}
 
 	    this.beginPath = function(){
