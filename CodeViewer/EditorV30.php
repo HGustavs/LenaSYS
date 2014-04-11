@@ -74,15 +74,17 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 	<head>
 
 		<title>Code Viewer and Editor Version 3</title>
-		<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />	
-		<script type="text/javascript" src="js/codeviewer.js"></script>
-
+		<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />
 		<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
-		<script>
+        <script type="text/javascript" src="js/codeviewer.js"></script>
+        <script type="text/javascript" src="js/tooltips.js"></script>
+
+
 
 <?php
 				include_once("basic.php");
 
+                echo'<script>';
 				jsvarget("courseid","courseID");
 				jsvarget("sectionid","sectionID");
 				jsvarget("position","position");
