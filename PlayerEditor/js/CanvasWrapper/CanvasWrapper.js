@@ -30,9 +30,12 @@
 		this.textAlign = this.ctx.textAlign;
 		this.textBaseline = this.ctx.textBaseline;
 		//PixelManipulation property.
-		this.imgData.width = this.ctx.imgData.width;
-		this.imgData.height = this.ctx.imgData.height;
-		this.imageData.data = this.ctx.imageData.data;
+		this.imgData = function(){
+			this.width = this.ctx.imgData.width;
+			this.height = this.ctx.imgData.height;
+			this.data = this.ctx.imageData.data;
+		}
+		
 		//Compositing property.
 		this.globalAlpha = this.ctx.globalAlpha;
 		this.globalCompositeOperation = this.ctx.globalCompositeOperation;
