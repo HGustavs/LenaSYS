@@ -83,9 +83,9 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
 <?php
 				include_once("basic.php");
-
+				
                 echo'<script>';
-				jsvarget("courseid","courseID");
+				jsvarget("courseid","courseID");				
 				jsvarget("sectionid","sectionID");
 				jsvarget("position","position");
 				jsvarget("version","version");
@@ -115,14 +115,14 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 						// If course exists - check login credentials
 						// Logged in and with credentials - show full editor otherwise show viewer version 
 						if(checklogin()){
-								$kind=$_SESSION['kind'];
-								if($kind==$courseID){
-										// Allowed to edit this course
-										editcodemenu(true);
-								}else if($kind!="LOGIN!"){
-										// No editing
-										editcodemenu(false);
-								}
+							$ha=getAccessType($_SESSION['uid'], $courseID);
+							if($ha == "w"){
+								// Allowed to edit this course
+								editcodemenu(true);
+							}else{
+								// No editing
+								editcodemenu(false);
+							}
 						}else{
 								editcodemenu(false);
 						}

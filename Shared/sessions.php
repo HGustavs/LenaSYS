@@ -26,7 +26,6 @@ function checklogin()
 		$_SESSION['uid'] = $row['uid'];
 		$_SESSION["loginname"]=$row['username'];
 		$_SESSION["passwd"]=$row['password'];
-		$_SESSION["superuser"]=$row['superuser'];
 
 		return true;
 	} else {		
@@ -67,9 +66,47 @@ function hasAccess($userId, $courseId, $access_type)
 			return false;
 		}
 	}
-
 	return false;
 }
+
+function getAccessType($userId, $courseId)
+{
+	require_once "../Shared/courses.php";
+	if(is_string($courseId)) {
+		$courseId = getCourseId($courseId);
+	}
+
+	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
+		mysql_real_escape_string($userId),
+		mysql_real_escape_string($courseId)
+	);
+
+	$result = mysql_query($querystring);
+	if(!$result) {
+		return false;
+	} else {
+		// Fetch data from the database
+		$access = mysql_fetch_assoc($result);
+		if(count($access) > 0) {
+			// Check access if it was returned
+			if(strtolower($access['access']) == "r") {
+				$_SESSION["kind"] = "r";
+				return "r";
+			} else if (strtolower($access['access']) == "w") {
+				$_SESSION["kind"] = "w";
+				// w implies access r
+				return "w";
+			} else {
+				return false;
+			}
+		} else {
+			// Otherwise default to no.
+			return false;
+		}
+	}
+	return false;
+}
+
 
 //---------------------------------------------------------------------------------------------------------------
 // logout

@@ -103,7 +103,7 @@ function GeneralSettings()
 }
 function Up()
 {						
-		location="Sectioned.php?courseid="+courseID+"&vers="+version;
+		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
 }				
 
 function gotoPosition(poz)
@@ -177,7 +177,7 @@ function setup()
 {
 		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
 		
-		if(sessionkind==courseID){
+		if(sessionkind=="w"){
 				setupEditable();						
 		}
 }
@@ -440,8 +440,9 @@ function returned(data)
 		var examplesect=document.getElementById("exampleSection");
 		// Should be sectionname instead of sectionID
 		examplesect.innerHTML=sectionID;
-
-		if(sessionkind==courseID){
+		
+		
+		if(sessionkind=="w"){
 				// Fill file requester with file names
 				str="";
 				for(i=0;i<data['directory'].length;i++){
@@ -459,7 +460,8 @@ function returned(data)
 		// Fill wordlist part of document dialog
 		//----------------------------------------------------
 
-		if(sessionkind==courseID){
+		if(sessionkind=="w"){
+			
 				displayWordlist();
 			
 		/*		
@@ -585,7 +587,7 @@ function displayWordlist(){
 				//----------------------------------------------------
 				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
 				for(i=0;i<retdata['improws'].length;i++){
-						str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+data['improws'][i][0]+"-"+data['improws'][i][1]+"</option>";										
+						str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+retdata['improws'][i][0]+"-"+retdata['improws'][i][1]+"</option>";										
 				}
 				str+="</select><br/>"
 				str+="<div id='impLinesError'></div>";
@@ -652,8 +654,8 @@ function issetDrop(dname)
 //----------------------------------------------------------------------------------
 
 function setupEditable()
-{
-		if(sessionkind==courseID){
+{	
+		if(sessionkind=="w"){
 				var editable=document.getElementById('exampleName');
 				editable.addEventListener("blur", function(){editedExamplename();}, true);
 		
@@ -742,8 +744,8 @@ this.row = row;
 
 function maketoken(kind,val,from,to,rowno)
 {
-newtoken=new token(kind,val,from,to,rowno);
-tokens.push(newtoken);
+	newtoken=new token(kind,val,from,to,rowno);
+	tokens.push(newtoken);
 }
 
 //----------------------------------------------------------

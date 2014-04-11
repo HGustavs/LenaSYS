@@ -16,7 +16,7 @@
 	dbConnect();
 	session_start();
 	
-	$coursename=$_POST['coursename'];
+	$coursename=$_POST['coursename'];	
 	$sectionid=$_POST['sectionid'];
 	$position=$_POST['position'];
 	$version=$_POST['version'];

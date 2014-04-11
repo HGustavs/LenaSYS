@@ -1,5 +1,6 @@
 <?php
 include "../Shared/basic.php";
+
 	//---------------------------------------------------------------------------------------------------------------
 	// editcontentmenu - Code Viewer Menu Code
 	//---------------------------------------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ include "../Shared/basic.php";
 				echo '<span id="backwdrop" class="dropdown backwdrop"><div class="dropdownback">Backw</div></span>';				
 				if($kind){
 						echo '<span id="codedrop" class="dropdown codedrop" style="overflow:scroll;"><div class="dropdownback">Code viewer Code File Selector</div></span>';
-						echo '<span id="docudrop" class="dropdown docudrop" style="overflow:scroll;"><div class="dropdownback">Wordlist Selector</div></span>';				
+						echo '<span id="docudrop" class="dropdown docudrop" style="overflow:scroll;"><div class="dropdownback">General settings</div></span>';				
 				}
 
 				echo '<div id="buttomenu">';
@@ -28,9 +29,9 @@ include "../Shared/basic.php";
 								echo '<td class="butto" onclick="Code();"><img src="icons/Document.svg" /></td>';
 								
 								
-						}else{
+				}else{
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';						
-						}
+				}
 						echo '<td class="butto" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 						echo '<td class="butto" id="numberbutton" onclick="fadelinenumbers();"><img src="new icons/Numbers_button.svg" /></td>';
 						echo '<td class="butto" id="beforebutton" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';

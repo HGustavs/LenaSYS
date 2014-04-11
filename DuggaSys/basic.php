@@ -53,7 +53,7 @@ include_once "../Shared/basic.php";
 						}	
 
 						echo "</div></td>";
-						echo "<td align='right' class='butto' onclick='location=\"loginlogout.php\";'><img src='icons/Man.svg' /></td>";
+						echo "<td align='right' class='butto' onclick='location=\"loginlogout.php\";'><img src='../CodeViewer/icons/Man.svg' /></td>";
 						echo "</tr><tr><td></td></tr></table>";				
 		}
 ?>
