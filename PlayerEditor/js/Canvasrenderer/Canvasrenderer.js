@@ -15,6 +15,75 @@ function Canvasrenderer()
 
 				// Check number of arguments and call canvas function
 				// TODO: Add for functions with more arguments
+				switch(nodes[x].attributes.length){
+					case 0:
+					this[nodes[x].nodeName]();
+					break;
+					case 1:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue);
+					break;
+					case 2:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
+											nodes[x].attributes.item(1).nodeValue);
+					break;
+					case 3:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue);
+					break;
+					case 4:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue,
+											nodes[x].attributes.item(3).nodeValue);
+					break;
+					case 5:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue, 
+											nodes[x].attributes.item(3).nodeValue, 
+											nodes[x].attributes.item(4).nodeValue);
+					break;
+					case 6:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue, 
+											nodes[x].attributes.item(3).nodeValue, 
+											nodes[x].attributes.item(4).nodeValue, 
+											nodes[x].attributes.item(5).nodeValue);
+					break;
+					case 7:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue, 
+											nodes[x].attributes.item(3).nodeValue, 
+											nodes[x].attributes.item(4).nodeValue, 
+											nodes[x].attributes.item(5).nodeValue, 
+											nodes[x].attributes.item(6).nodeValue);
+					break;
+					case 8:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
+											nodes[x].attributes.item(1).nodeValue,
+											nodes[x].attributes.item(2).nodeValue,
+											nodes[x].attributes.item(3).nodeValue,
+											nodes[x].attributes.item(4).nodeValue,
+											nodes[x].attributes.item(5).nodeValue,
+											nodes[x].attributes.item(6).nodeValue,
+											nodes[x].attributes.item(7).nodeValue);
+					break;
+					case 9:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue, 
+											nodes[x].attributes.item(3).nodeValue, 
+											nodes[x].attributes.item(4).nodeValue, 
+											nodes[x].attributes.item(5).nodeValue, 
+											nodes[x].attributes.item(6).nodeValue, 
+											nodes[x].attributes.item(7).nodeValue, 
+											nodes[x].attributes.item(8).nodeValue);
+					break;
+				}
+				/*
 				if(nodes[x].attributes.length == 0){
 					this[nodes[x].nodeName]();
 				}
@@ -44,7 +113,7 @@ function Canvasrenderer()
 				}
 				else if(nodes[x].attributes.length == 9){
 					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue, nodes[x].attributes.item(6).nodeValue, nodes[x].attributes.item(7).nodeValue, nodes[x].attributes.item(8).nodeValue);
-				}
+				}*/
 			}	
 		}	
 	}
