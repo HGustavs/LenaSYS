@@ -47,79 +47,7 @@ Fixed Bugs:
 
 		  <title>Console Printing Playground!</title>
 		  
-		  <style>
-
-					table {
-								    border-collapse: seperate;
-								    border-spacing: 2px;
-					}
-
-			    .conso {
-			    		border: 2px inset;
-							font-family: "Lucida Console", Monaco, monospace;
-							font-size: 14px;
-			    }		  
-					
-					.caret {
-							pointer-events:none;
-							position:absolute;
-							left:2;
-							top:2;
-							font-family: "Lucida Console", Monaco, monospace;
-							font-size: 14px;
-							margin:0px;
-							padding:0px;
-					}
-
-					.caretblink {
-					    animation: blink 1s steps(5, start) infinite;
-					}
-
-					.caretnoblink {
-							visibility:visible;					
-					}
-					
-					.carethidden{
-							visibility:hidden;
-					}
-
-					.barbutton {
-							background-color: #000;
-							color: #fff;
-							background-image: url("../images/BP64F.png"); background-repeat: repeat-x;
-							background-size: 64px 100%;
-							border-radius: 12px;
-							margin:3px;
-							border-spacing:10px;
-							height:38px;
-							width:38px;
-							vertical-align:center;
-							text-align:center; 
-					}
-					
-					.barcontainer{
-							padding:3px;
-							border-radius: 8px;
-							border:solid 2px #000;
-					}
-					
-					.bar{
-							position:absolute;
-							height:18px;
-							width:2px;
-							background-image: url('../images/BP64D.gif'); 
-							background-repeat: repeat-x;
-							background-size: 64px 100%;
-							border-radius: 8px;
-					}					
-
-					@keyframes blink {
-					    to {
-					        visibility: hidden;
-					    }
-					} 
-
-		  </style>
+		  <link rel="stylesheet" type="text/css" href="Design.css">
 		  <script src="../js/Consolerenderer/cons.js"></script>
 		  <script src="../js/Consolerenderer/tile.js"></script>
 		  <script src="../js/Consolerenderer/tiledata.js"></script>
@@ -168,21 +96,30 @@ Fixed Bugs:
 		
 				  
 		</head>
+
 		<body onload="initengine();">
 			
+			<div id="wrapper">
 			<div style="position:relative">
 					<div id="cons" class="conso">&nbsp;</div>
 					<div id="caret" class="caret caretblink">&nbsp;</div>
 			</div>
+			<div id="bardesign">
 			<table>
 				<tr>
-					<td onclick="cons.switch();" id="playcontrol" class="barbutton" align="center" valign="center"><img src="../images/PlayR.svg"/></td>
+					<td onclick="cons.switch();" id="playcontrol" class="barbutton" align="center" valign="center"><img src="Bilder/play_button.svg"/></td>
+
 					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick="cons.search(event);"><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>
-					<td onclick="cons.skip(-10);" id="backcontrol" class="barbutton"><img src="../images/SkipB.svg"/></td>
-					<td onclick="cons.skip(10);" id="forwcontrol" class="barbutton"><img src="../images/SkipF.svg"/></td>
-					<td onclick="cons.toggleRepeat();" id="repeatcontrol" class="barbutton"><img src="../images/Replay.svg"/></td>
+					
+					<td onclick="cons.skip(-10);" id="backcontrol" class="barbutton"><img src="Bilder/backward_button.svg"/></td>
+					
+					<td onclick="cons.skip(10);" id="forwcontrol" class="barbutton"><img src="Bilder/forward_button.svg"/></td>
+					
+					<td onclick="cons.toggleRepeat();" id="repeatcontrol" class="barbutton"><img src="Bilder/replay_button.svg"/></td>
 				</tr>
 		</table>
+	</div>
+</div>
 		</body>
 </html>
 
