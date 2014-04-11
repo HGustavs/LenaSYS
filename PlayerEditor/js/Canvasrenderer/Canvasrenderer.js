@@ -1,6 +1,11 @@
 // Canvas renderer
 function Canvasrenderer() 
 {	
+	// List of all valid canvas functions
+	// No other operation in the XML should be possible to run
+	var validFuctions = ['beginpath', 'moveto', 'lineto', 'stroke', 'createlineargradient', 'createpattern', 'createradialgradient', 'rect', 'fillrect', 'strokerect', 'clearrect', 'fill', 'closepath', 'clip', 'quadraticcurveto', 'beziercurveto', 'arc', 'arcto', 'ispointinpath', 'scale', 'rotate', 'translate', 'transform', 'measuretext', 'drawimage', 'createimagedata', 'getimagedata', 'putimagedata', 'state_fillstyle', 'state_strokestyle', 'state_shadowcolor', 'state_shadowblur', 'state_shadowoffsetx', 'state_shadowoffsety', 'state_linecap', 'state_linejoin', 'state_linewidth', 'state_miterlimit', 'state_font', 'state_textalign', 'state_textbaseline', 'state_width', 'state_height', 'state_data', 'state_globalapha', 'state_globalcompositeoperation'];
+
+
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
 		// Step through nodes
