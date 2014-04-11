@@ -9,7 +9,7 @@ include "../Shared/basic.php";
 		function editsectionmenu($kind)
 		{
 				echo "<body onload='AJAXServiceSection(\"\",\"\");'>";
-	
+
 				// Course Content List - If course exists!
 				echo "<table width='100%'><tr><td rowspan='2'><div id='Sectionlist'>";
 				echo "<div style='left:20px' class='warning'>";
@@ -40,13 +40,13 @@ include "../Shared/basic.php";
 	//---------------------------------------------------------------------------------------------------------------
 	// courselist - Displays a list of the current courses
 	//---------------------------------------------------------------------------------------------------------------
-		
+
 		function courselist()
 		{		
 						echo "<span class='inv'>LenaSYS</span>";
 						echo "<table width='100%'><tr><td rowspan='2'><div id='Sectionlist'>";
 						echo "<span class='course'>Course Example Organization System</span>";
-						
+
 						$querystring="SELECT course.coursename,max(cversion) AS version FROM course LEFT OUTER JOIN section ON course.coursename=section.coursename GROUP BY course.coursename;;";
 						$result=mysql_query($querystring);
 						if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
@@ -58,11 +58,11 @@ include "../Shared/basic.php";
 						echo "<td align='right' class='butto' onclick='location=\"loginlogout.php\";'><img src='icons/Man.svg' /></td>";
 						echo "</tr><tr><td></td></tr></table>";				
 		}
-		
+
 	//---------------------------------------------------------------------------------------------------------------
 	// editcontentmenu - Code Viewer Menu Code
 	//---------------------------------------------------------------------------------------------------------------
-		
+
 		function editcodemenu($kind)
 		{	
 				// Body if we are allowed to run code viewer
@@ -71,7 +71,7 @@ include "../Shared/basic.php";
 				echo '<span id="backwdrop" class="dropdown backwdrop"><div class="dropdownback">Backw</div></span>';				
 				if($kind){
 						echo '<span id="codedrop" class="dropdown codedrop" style="overflow:scroll;"><div class="dropdownback">Code viewer Code File Selector</div></span>';
-						echo '<span id="docudrop" class="dropdown docudrop"><div class="dropdownback">Wordlist Selector</div></span>';				
+						echo '<span id="docudrop" class="dropdown docudrop" style="overflow:scroll;"><div class="dropdownback">Wordlist Selector</div></span>';				
 				}
 
 				echo '<div id="buttomenu">';
@@ -91,7 +91,7 @@ include "../Shared/basic.php";
 						echo '<td class="butto" id="playbutton" onclick="Play();"><img src="new icons/play_button.svg" /></td>';
 						echo '<td class="butto" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 						echo '<td class="buttospacer">&nbsp;</td>';
-						
+
 				echo '</table></div>';
 				echo '<div style="width:100%; position: absolute; top: 50px; bottom: 0px;" id="div2;background-color:#def">';
 				echo '<div id="docucontent"';
@@ -122,7 +122,7 @@ include "../Shared/basic.php";
 		//---------------------------------------------------------------------------------------------------------------
 		// jsvarget - Code to translate get variable to javascript through PHP
 		//---------------------------------------------------------------------------------------------------------------
-		
+
 		function jsvarget($getname,$varname){
 				if(isset($_GET[$getname])){
 						echo 'var '.$varname.'="'.$_GET[$getname].'";';
