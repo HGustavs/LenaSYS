@@ -93,9 +93,13 @@ function Code()
 		switchDrop("codedrop");
 }
 
-function Wordlist()
+function generalSettings()
 {
 		switchDrop("docudrop");
+}
+function GeneralSettings()
+{
+	$( ".genSettingsSection" ).toggle("slow");
 }
 function Up()
 {						
@@ -435,9 +439,7 @@ function returned(data)
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
 		// Should be sectionname instead of sectionID
-		
 		examplesect.innerHTML=sectionID;
-	//	examplesect.innerHTML=getsectionname(sectionID);
 
 		if(sessionkind==courseID){
 				// Fill file requester with file names
@@ -458,8 +460,10 @@ function returned(data)
 		//----------------------------------------------------
 
 		if(sessionkind==courseID){
-
-				str="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
+				displayWordlist();
+			
+		/*		
+				str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
 				for(i=0;i<data['wordlists'].length;i++){
 						if(data['wordlists'][i]==data['chosenwordlist']){
 								str+="<option selected='selected'>"+data['wordlists'][i]+"</option>";										
@@ -505,13 +509,93 @@ function returned(data)
 				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
 				str+="<input type='button' value='add' onclick='addImpline();' />";
 				str+="<input type='button' value='del' onclick='delImpline();' />";
-				str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
-		
-				var docurec=document.getElementById('docudrop');
-				if(docurec!=null) docurec.innerHTML=str;						
+		//		str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
+		*/
+			//	var docurec=document.getElementById('docudrop');
+			//	if(docurec!=null) docurec.innerHTML=str;						
 		}
 }
+function displayPlaylink(){
+	str="<ul id='settingsTabMenu'>";
+		str+="<li onclick='displayWordlist();'>Wordlist</li>";
+		str+="<li class='activeSetMenuLink'>Playlink</li>";
+		str+="<li onclick='displayTemplates();'>Templates</li>";
+	str+="</ul>";
+				
+	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
+	docurec=document.getElementById('docudrop');
+	docurec.innerHTML=str;
+}
+function displayTemplates()
+{
+	str="<ul id='settingsTabMenu'>";
+		str+="<li onclick='displayWordlist();'>Wordlist</li>";
+		str+="<li onclick='displayPlaylink()'>Playlink</li>";
+		str+="<li class='activeSetMenuLink'>Templates</li>";
+	str+="</ul>";
+	str+="Templates";
+		
+	docurec=document.getElementById('docudrop');
+	docurec.innerHTML=str;
+}
+function displayWordlist(){
+	str="<ul id='settingsTabMenu'>";
+		str+="<li class='activeSetMenuLink'>Wordlist</li>";
+		str+="<li onclick='displayPlaylink();'>Playlink</li>";
+		str+="<li onclick='displayTemplates();'>Templates</li>";
+	str+="</ul>";
+	
 
+	str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
+				for(i=0;i<retdata['wordlists'].length;i++){
+						if(retdata['wordlists'][i]==retdata['chosenwordlist']){
+								str+="<option selected='selected'>"+retdata['wordlists'][i]+"</option>";										
+						}else{
+								str+="<option>"+retdata['wordlists'][i]+"</option>";										
+						}
+				}
+				str+="</select><br/>Wordlist: "+retdata['chosenwordlist']+"<br/><select size='8' style='width:200px;'>";
+				for(i=0;i<retdata['wordlist'].length;i++){
+						if(retdata['wordlist'][i][0]==retdata['chosenwordlist']){
+								str+="<option onclick='selectWordlistWord(\""+retdata['wordlist'][i][1]+"\");'>"+retdata['wordlist'][i][1]+"</option>";										
+						}
+				}
+				str+="</select><br/>";
+				str+="<div id='wordlistError'></div>";
+				str+="<input type='text' size='24' id='wordlisttextbox' />";
+				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
+				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
+				str+="<input type='button' value='new' onclick='newWordlist();'' />";
+		
+				//----------------------------------------------------
+				// Fill important word list	part of document dialog
+				//----------------------------------------------------
+				str+="</select><br/><br/>Important Word List: <br/><select size='8' style='width:200px;'>";
+				for(i=0;i<retdata['impwords'].length;i++){
+						str+="<option onclick='selectImpWord(\""+retdata['impwords'][i]+"\");'>"+retdata['impwords'][i]+"</option>";										
+				}
+				str+="</select><br/>";
+				str+="<div id='impwordlistError'></div>";
+				str+="<input type='text' size='24' id='impwordtextbox' />";
+				str+="<input type='button' value='add' onclick='addImpword();' />";
+				str+="<input type='button' value='del' onclick='delImpword();'/>";													
+		
+				//----------------------------------------------------
+				// Fill important line list part of document dialog
+				//----------------------------------------------------
+				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
+				for(i=0;i<retdata['improws'].length;i++){
+						str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+data['improws'][i][0]+"-"+data['improws'][i][1]+"</option>";										
+				}
+				str+="</select><br/>"
+				str+="<div id='impLinesError'></div>";
+				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
+				str+="<input type='button' value='add' onclick='addImpline();' />";
+				str+="<input type='button' value='del' onclick='delImpline();' />";
+				
+				var docurec=document.getElementById('docudrop');
+				docurec.innerHTML=str;
+}
 /********************************************************************************
 
    HTML freeform editing code
@@ -534,17 +618,19 @@ function hideDrop(dname)
 
 function switchDrop(dname)
 {
-		var dropd=document.getElementById(dname);
+		var dropd=document.getElementById(dname); 
 		if(dropd.style.display=="block"){
-				dropd.style.display="none";							
+			$( dropd ).slideUp("fast");
+			//	dropd.style.display="none";							
 		}else{
 				hideDrop("forwdrop");
 				hideDrop("backwdrop");
 				hideDrop("docudrop");
 				hideDrop("codedrop");
-
-				dropd.style.display="block";
-		}
+			
+			$( dropd ).slideDown("fast");
+			dropd.style.display="block";
+		} 
 }
 
 //----------------------------------------------------------------------------------
@@ -1054,12 +1140,12 @@ function linenumbers(){
 }
 function fadelinenumbers(){
 	if ( $( ".no" ).is( ":hidden" ) ) {
-		$( ".no" ).fadeIn( "fast" );
+		$( ".no" ).fadeIn( "slow" );
 		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
 
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
-		$( ".no" ).fadeOut("fast");
+		$( ".no" ).fadeOut("slow");
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
