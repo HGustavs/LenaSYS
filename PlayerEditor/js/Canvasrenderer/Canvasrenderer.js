@@ -53,8 +53,8 @@ function Canvasrenderer()
 	 * Canvas functions
 	 */
 	this.beginpath = function() {
-			ctx.lineWidth = 5;
-			ctx.beginPath();
+		ctx.lineWidth = 5;
+		ctx.beginPath();
 	}
 
 	this.moveto = function(x, y) {
@@ -69,6 +69,107 @@ function Canvasrenderer()
 		ctx.stroke();
 	}
 	
+	this.createlineargradient = function(x, y, x1,y1){		      
+	    ctx.createLinearGradient(x, y, x1,y1);
+	}
+	
+	this.createpattern = function(x, y,img){		        
+	    ctx.createPattern(x, y,img);
+	}
+	this.createradialgradient = function(x, y,r, x1,y1,r1){   
+	    ctx.createRadialGradient(x, y,r, x1,y1,r1);
+	}
+		
+		// Rectangle functions
+	this.rect = function(x, y, width, height){
+	    ctx.rect(x, y, width, height);
+	}
+	
+	this.fillrect = function(x, y, width, height){		
+	    ctx.fillrect(x, y, width, height);
+	}
+		
+	this.strokerect = function(x, y, width, height){        
+	    ctx.strokeRect(x, y, width, height);
+	}
+	
+	this.clearrect = function(x, y, width, height){	    
+	    ctx.clearRect(x, y, width, height);
+	}
+	// Path functions
+	this.fill = function(){	
+	    ctx.fill();
+	}
+	
+	this.closepath = function(){       
+		ctx.closePath();		
+	}
+	
+	this.clip = function(){	   
+	    ctx.clip();
+	}
+	this.quadraticcurveto = function(x, y, cpx, cpy){        
+	    ctx.quadraticCurveTo(x, y, cpx, cpy);
+	}
+	
+	this.beziercurveto = function(x, y, cpx, cpy, cpx1, cpy1){        
+	     ctx.bezierCurveTo(x, y, cpx, cpy, cpx1, cpy1);
+	}
+	
+	this.arc = function(x, y,r,sAngle,eAngle,counterclockwise){        
+	    ctx.arc(x, y,r,sAngle,eAngle,counterclockwise);
+	}
+	
+	this.arcto = function(x, y,r,x1,y1){
+	    ctx.arcTo(x, y,r,x1,y1);
+	}
+	
+	this.ispointinpath = function(x, y){	      
+	    ctx.isPointInPath(x, y);
+	}
+	// Transformation functions
+	this.scale = function(width, height){   
+	    ctx.scale(width, height);
+	}
+		
+	this.rotate = function(angle){	      
+	    ctx.rotate(angle);
+	}
+		
+	this.translate = function(x, y){	      
+	    ctx.translate(x, y);
+	}
+	this.transform = function(a,b,c,d,e,f){
+        ctx.transform(a,b,c,d,e,f);
+	}
+		
+	this.settransform = function(a,b,c,d,e,f){	      
+	    ctx.setTransform(a,b,c,d,e,f);
+	}
+	// Text functions
+	this.filltext = function(x, y,text,maxWidth){		
+		ctx.fillText(x, y,text,maxWidth);
+	}
+	this.stroketext = function(x, y,text,maxWidth){		
+		ctx.strokeText(x, y,text,maxWidth);
+	}
+	this.measuretext = function(text){		
+		ctx.measureText(text);
+	}
+	// Image draw functions
+	this.drawimage = function(img,sx,sy,swidth,sheight,x,y,width,height){		
+		ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+	}
+	// Pixel manipulation functions
+	this.createimagedata = function( imageData, width, height){		
+		ctx.createImageData( imageData, width, height);
+	}
+	this.getimagedata = function(x, y, width, height){		
+		ctx.getImageData(x, y, width, height);
+	}
+	this.putimagedata = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
+		ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
+	}	
 
 	/*
 	 *
