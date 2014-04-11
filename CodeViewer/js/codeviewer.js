@@ -97,7 +97,6 @@ function Wordlist()
 {
 		switchDrop("docudrop");
 }
-
 function Up()
 {						
 		location="Sectioned.php?courseid="+courseID+"&vers="+version;
@@ -203,9 +202,22 @@ function chosenWordlist()
 }
 
 function addImpword()
-{
-		word=encodeURIComponent(document.getElementById('impwordtextbox').value);
-		AJAXService("addImpWord","&word="+word);
+{	
+	word=document.getElementById('impwordtextbox');
+		// check if UTF encoded
+		for(var i=0; i<word.value.length; i++) {
+	        if(word.value.charCodeAt(i) > 127){
+				document.getElementById('impwordlistError').innerHTML = "Error. Not UTF-encoded.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+	        }
+	    }
+	    
+		wordEncoded = encodeURIComponent(word.value);
+		AJAXService("addImpWord","&word="+wordEncoded);
+		
+	/*	word=encodeURIComponent(document.getElementById('impwordtextbox').value);
+		AJAXService("addImpWord","&word="+word);*/
 }
 
 function delImpword()
@@ -216,10 +228,38 @@ function delImpword()
 
 function addImpline()
 {
-		from=parseInt(document.getElementById('implistfrom').value);
-		to=parseInt(document.getElementById('implistto').value);
-		if(from<=to){
-				AJAXService("addImpLine","&from="+from+"&to="+to);
+		from=document.getElementById('implistfrom');
+		to=document.getElementById('implistto');
+		errormsg = document.getElementById('impLinesError');
+		
+		// reset the color of input boxes
+		to.style.backgroundColor="#FFFFFF";
+		from.style.backgroundColor="#FFFFFF";  
+		
+		// make integers of the input
+		fromValue = parseInt(from.value)
+		toValue = parseInt(to.value)
+
+		
+		// error messages if NaN
+		if((isNaN(fromValue))||(isNaN(toValue))){
+			if(isNaN(fromValue)){
+				from.style.backgroundColor="#E33D3D"; 
+			}if(isNaN(toValue)){
+				to.style.backgroundColor="#E33D3D"; 
+			}
+			errormsg.innerHTML = "Failed to add. Not a number.";
+			return;
+		}
+		// add important lines
+		if(fromValue<=toValue){
+				AJAXService("addImpLine","&from="+fromValue+"&to="+toValue);
+		}
+		// Error message if from>to
+		else{
+			to.style.backgroundColor="#E42217"; 
+			from.style.backgroundColor="#E42217";
+			errormsg.innerHTML = "Failed to add. Use ascending order.";
 		}
 }
 
@@ -231,10 +271,20 @@ function delImpline()
 }
 
 function addWordlistWord()
-{
-		word=encodeURIComponent(document.getElementById('wordlisttextbox').value);
-		wordlist=encodeURIComponent(retdata['chosenwordlist']);
-		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+word);
+{ 
+		word=document.getElementById('wordlisttextbox');
+		// check if UTF encoded
+		for(var i=0; i<word.value.length; i++) {
+	        if(word.value.charCodeAt(i) > 127){
+				document.getElementById('wordlistError').innerHTML = "Error. Not UTF-encoded.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+	        }
+	    }   
+	    wordlist=encodeURIComponent(retdata['chosenwordlist']);		
+		encodedWord=encodeURIComponent(word.value);
+
+		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+encodedWord);
 }
 
 function delWordlistWord()
@@ -245,9 +295,18 @@ function delWordlistWord()
 }
 
 function newWordlist()
-{
-		wordlist=encodeURIComponent(document.getElementById('wordlisttextbox').value);
-		AJAXService("newWordlist","&wordlist="+wordlist);
+{		
+		wordlist=document.getElementById('wordlisttextbox');
+		// check if UTF encoded
+		for(var i=0; i<wordlist.value.length; i++) {
+	        if(wordlist.value.charCodeAt(i) > 127){
+				document.getElementById('wordlistError').innerHTML = "Error. Not UTF-encoded.";
+				wordlist.style.backgroundColor="#E33D3D";
+	          	return;
+	        }
+	    }
+		wordlistEncoded = encodeURIComponent(wordlist.value);
+		AJAXService("newWordlist","&wordlist="+wordlistEncoded);
 }
 				
 function selectWordlistWord(word)
@@ -415,6 +474,7 @@ function returned(data)
 						}
 				}
 				str+="</select><br/>";
+				str+="<div id='wordlistError'></div>";
 				str+="<input type='text' size='24' id='wordlisttextbox' />";
 				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
 				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
@@ -428,6 +488,7 @@ function returned(data)
 						str+="<option onclick='selectImpWord(\""+data['impwords'][i]+"\");'>"+data['impwords'][i]+"</option>";										
 				}
 				str+="</select><br/>";
+				str+="<div id='impwordlistError'></div>";
 				str+="<input type='text' size='24' id='impwordtextbox' />";
 				str+="<input type='button' value='add' onclick='addImpword();' />";
 				str+="<input type='button' value='del' onclick='delImpword();'/>";													
@@ -435,15 +496,15 @@ function returned(data)
 				//----------------------------------------------------
 				// Fill important line list part of document dialog
 				//----------------------------------------------------
-				str+="<br/><br/>Important lines: <br/><select size='4'>";
+				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
 				for(i=0;i<data['improws'].length;i++){
 						str+="<option onclick='selectImpLines(\""+data['improws'][i]+"\");'>"+data['improws'][i][0]+"-"+data['improws'][i][1]+"</option>";										
 				}
 				str+="</select><br/>"
+				str+="<div id='impLinesError'></div>";
 				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
 				str+="<input type='button' value='add' onclick='addImpline();' />";
 				str+="<input type='button' value='del' onclick='delImpline();' />";
-				
 				str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
 		
 				var docurec=document.getElementById('docudrop');
@@ -963,21 +1024,22 @@ function rendercode(codestring,destinationdiv)
 								cont="&nbsp;&nbsp;";
 						}
 						
-						str+=num+cont;
-						cont="";
-						str+="</div>";
+						
 						if(improws.length==0){
 								str+="<div class='norm'>";
 						}else{
 								for(var kp=0;kp<improws.length;kp++){
-										if(lineno>=parseInt(improws[kp][0])-1&&lineno<parseInt(improws[kp][1])){
+										if(lineno>=parseInt(improws[kp][0])&&lineno<=parseInt(improws[kp][1])){
 												str+="<div class='impo'>";
 												break;
 										}else{
 												str+="<div class='norm'>";
 										}						
 								}
-						}						
+						}	
+						str+=num+cont;
+						cont="";
+						str+="</div>";					
 				}
 		}
 		str+="</div>";						
@@ -986,18 +1048,19 @@ function rendercode(codestring,destinationdiv)
 }
 function linenumbers(){	
 	if(localStorage.getItem("linenumbers") == "false"){	
-		$( "#numberbutton img" ).attr('src', 'icons/nrhide.svg');
+		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		$( ".no" ).css("display","none");	
 	}
 }
 function fadelinenumbers(){
 	if ( $( ".no" ).is( ":hidden" ) ) {
-		$( ".no" ).fadeIn( "slow" );
-		$( "#numberbutton img" ).attr('src', 'icons/nrshow.svg');
+		$( ".no" ).fadeIn( "fast" );
+		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
+
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
-		$( ".no" ).fadeOut("slow");
-		$( "#numberbutton img" ).attr('src', 'icons/nrhide.svg');
+		$( ".no" ).fadeOut("fast");
+		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
 }

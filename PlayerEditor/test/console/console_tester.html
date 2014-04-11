@@ -13,7 +13,15 @@
 		</style>
 	</head>
 
-	<script src="../js/jQuery-Core-1.10.2.js"></script>
+	<script src="../../js/jQuery-Core-1.10.2.js"></script>
+	
+
+	
+	<!-- Test cases -->
+	<script src="cases/init.js"></script>
+	<script src="cases/playpause.js"></script>
+	<script src="cases/repeat.js"></script>
+	
 	
 	<!-- Print testIds/testcases to table -->
 	<script>
@@ -23,6 +31,10 @@
 		function testSubId(str) {	
 			$('#testTable > tbody').append("<tr><td colspan='4' class='testsubid'>"+str+"</td></tr>");
 		}
+		
+		function console(name) {
+			return eval("window.frames['consframe'].cons." + name);
+		}
 	
 		function test(id, expected, actual) {	
 			if(expected==actual) {
@@ -31,29 +43,13 @@
 				$('#testTable > tbody').append("<tr class='trFail'><td>"+id+"</td><td>"+expected+"</td><td>"+actual+"</td><td>FAIL</td></tr>");
 			}
 		}
-		
-	</script>
-	
-	<!-- Include modules -->
-	<script src="../js/Consolerenderer/cons.js"></script>
-	<script src="../js/Consolerenderer/tile.js"></script>
-	<script src="../js/Consolerenderer/tiledata.js"></script>
-	<script src="../js/Consolerenderer/caretstate.js"></script>
 
-	<!-- Create console -->
-	<script>
-		var consolewidth = 100;
-		var consoleheight = 40;
-		var tilesize = 8;
-		var color = 14;
-		var bgcolor = 6;
-		var cons = new cons(consolewidth,consoleheight,tilesize,color,bgcolor);
 	</script>
 	
 	<body>
-		<div style="display: none;">
-			<div id="playcontrol"></div>
-		</div>
+	
+		<iframe src="../../Consolerenderer/Consolerenderer.html" width="900" height="750" id="consframe" name="consframe" style="float: right;"></iframe>
+
 		<table border="0" id="testTable">
 			<thead>
 				<th>ID</th>
@@ -65,13 +61,31 @@
 				<tr></tr>
 			</tbody>
 		</table>
-		<!-- Run tests -->
-		<script src="cons/test.init.js"></script>
-		<script src="cons/test.play.js"></script>
+		
 
+		<strong><a href="#" onClick="console_init();">EXECUTE TESTS</a></strong>
+		
+
+	<!-- Run tests -->
 		
 
 	</body>
 	
+	<script>
+		$(document).ready(function(){
+			alert("Välkommen till testfallet");
+			$("#consframe").contents().find("#playcontrol").click(function() {
+				console_play();
+			});
+			$("#consframe").contents().find("#repeatcontrol").click(function() {
+				if(console('repeat')==1) {
+					console_repeatOn();
+				}
+				else {
+					console_repeatOff();
+				}
+			});
+		});
+	</script>
 	
 </html>
