@@ -252,7 +252,7 @@ function addImpline()
 			}if(isNaN(toValue)){
 				to.style.backgroundColor="#E33D3D"; 
 			}
-			errormsg.innerHTML = "Failed to add. Not a number.";
+			errormsg.innerHTML = "Error. Not a number.";
 			return;
 		}
 		// add important lines
@@ -263,7 +263,7 @@ function addImpline()
 		else{
 			to.style.backgroundColor="#E42217"; 
 			from.style.backgroundColor="#E42217";
-			errormsg.innerHTML = "Failed to add. Use ascending order.";
+			errormsg.innerHTML = "Error. Use ascending order.";
 		}
 }
 
@@ -563,7 +563,7 @@ function displayWordlist(){
 						}
 				}
 				str+="</select><br/>";
-				str+="<div id='wordlistError'></div>";
+				str+="<div id='wordlistError' class='errormsg'></div>";
 				str+="<input type='text' size='24' id='wordlisttextbox' />";
 				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
 				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
@@ -577,7 +577,7 @@ function displayWordlist(){
 						str+="<option onclick='selectImpWord(\""+retdata['impwords'][i]+"\");'>"+retdata['impwords'][i]+"</option>";										
 				}
 				str+="</select><br/>";
-				str+="<div id='impwordlistError'></div>";
+				str+="<div id='impwordlistError' class='errormsg'></div>";
 				str+="<input type='text' size='24' id='impwordtextbox' />";
 				str+="<input type='button' value='add' onclick='addImpword();' />";
 				str+="<input type='button' value='del' onclick='delImpword();'/>";													
@@ -590,7 +590,7 @@ function displayWordlist(){
 						str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+retdata['improws'][i][0]+"-"+retdata['improws'][i][1]+"</option>";										
 				}
 				str+="</select><br/>"
-				str+="<div id='impLinesError'></div>";
+				str+="<div id='impLinesError' class='errormsg'></div>";
 				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
 				str+="<input type='button' value='add' onclick='addImpline();' />";
 				str+="<input type='button' value='del' onclick='delImpline();' />";

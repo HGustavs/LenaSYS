@@ -606,6 +606,9 @@ a {
 .genSettingsSection{
 	display:none;
 }
+.errormsg{
+	color: red;
+}
 #settingsTabMenu{	
 	border-bottom: solid 2px;
 	padding-left:0px;
