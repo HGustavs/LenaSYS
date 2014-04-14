@@ -92,10 +92,8 @@ function getAccessType($userId, $courseId)
 			$access = mysql_fetch_assoc($result);
 			// Check access if it was returned
 			if(strtolower($access['access']) == "r") {
-				$_SESSION["kind"] = "r";
 				return "r";
 			} else if (strtolower($access['access']) == "w") {
-				$_SESSION["kind"] = "w";
 				// w implies access r
 				return "w";
 			} else {
