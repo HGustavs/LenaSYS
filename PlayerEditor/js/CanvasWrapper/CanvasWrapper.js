@@ -54,9 +54,9 @@
 			str += '<timestep delay="' + delay + '">' + '\n';
 			str += string + '\n';
 			str += '</timestep>' + '\n';
-			console.log("=====");
-			console.log(str);
-			this.sendXML();
+			//console.log("=====");
+			//console.log(str);
+			//this.sendXML();
 		}
 
 	    this.beginPath = function(){
@@ -252,7 +252,7 @@
 			this.updateContextCompositingState();
 		}
 		this.updateContextLineState = function(){
-			var str = '<state';
+			//var str = '<state';
 
 			// Check for updates
 			if (this.ctx.lineWidth != this.lineWidth) {
@@ -269,15 +269,15 @@
 			}
 
 			// Add state update to XML if needed
-			if (str.length > 6){
+			/*if (str.length > 6){
 				str += '/>';
 				this.log(str);
-			}
+			}*/
 		}
 		
 		// Update state
 		this.updateContextCssState = function(){
-			var str = '<state';
+			//var str = '<state';
 			
 			// Check for updates
 			if (this.ctx.fillStyle != this.fillStyle) {
@@ -300,15 +300,15 @@
 			}
 
 			// Add state update to XML if needed
-			if (str.length > 6){
+			/*if (str.length > 6){
 				str += '/>';
 				this.log(str);
-			}
+			}*/
 		}
 
 		// Update state
 		this.updateContextTextState = function(){
-			var str = '<state';
+			//var str = '<state';
 			
 			// Check for updates
 			if (this.ctx.font != this.font) {
@@ -322,10 +322,10 @@
 			}
 
 			// Add state update to XML if needed
-			if (str.length > 6){
+			/*if (str.length > 6){
 				str += '/>';
 				this.log(str);
-			}
+			}*/
 		}
 		// Update state
 		this.updateContextPixelManipulationState = function(){
@@ -353,7 +353,7 @@
 
 		// Update state
 		this.updateContextCompositingState = function(){
-			var str = '<state';
+			//var str = '<state';
 			
 			// Check for updates
 			if (this.ctx.globalAlpha != this.globalAlpha) {
@@ -364,23 +364,34 @@
 			} 
 		
 			// Add state update to XML if needed
-			if (str.length > 6){
+			/*if (str.length > 6){
 				str += '/>';
 				this.log(str);
-			}
+			}*/
 		}
 		
 		// Update a specific property
 		this.updateContextProperty = function(property) {
 			// Update property
-			this.ctx[property] = this[property];
+			
 
 			// Create string for state
-			var attribute = '_' + property + ' value="' + this[property] + '"';
-			attribute.toLowerCase();
-
-			return (attribute);
+			//var attribute = '<state_' + property + ' value="' + this[property] + '"' + "/>";
+			//attribute.toLowerCase();
+			this.ctx[property] = this[property];
+			return ('<state_' + property + ' value="' + this[property] + '"' + "/>");
 		}
+		
+		// Add save button to BODY
+		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
+		// Call sendXML() on save-button click
+		$("#CanvasWrapper-save").click(function(){
+			console.log(str);	
+			
+			// TODO:
+			// this.sendXML();
+		});
+
 		
 		// Finalize and send xml-data to server
 		this.sendXML = function()
