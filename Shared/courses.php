@@ -26,8 +26,8 @@ function getCourseId($coursename)
 	if(!$result) {
 		return false;
 	} else {
-		$course = mysql_fetch_assoc($result);
-		if(count($course) > 0) {
+		if(mysql_num_rows($result) > 0) {
+			$course = mysql_fetch_assoc($result);
 			return $course['cid'];
 		} else {
 			return false;
