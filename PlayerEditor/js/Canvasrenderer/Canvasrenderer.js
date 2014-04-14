@@ -170,7 +170,6 @@ function Canvasrenderer()
 	 * Canvas functions
 	 */
 	this.beginpath = function() {
-		ctx.lineWidth = 5;
 		ctx.beginPath();
 	}
 
