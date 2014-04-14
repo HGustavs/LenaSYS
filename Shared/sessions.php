@@ -20,15 +20,17 @@ function checklogin()
 		$result=mysql_query($querystring);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
 		
-		// Fetch the result
-		$row = mysql_fetch_assoc($result);
+		if(mysql_num_rows($result) > 0) {
+			// Fetch the result
+			$row = mysql_fetch_assoc($result);
 
-		$_SESSION['uid'] = $row['uid'];
-		$_SESSION["loginname"]=$row['username'];
-		$_SESSION["passwd"]=$row['password'];
-		$_SESSION["superuser"]=$row['superuser'];
+			$_SESSION['uid'] = $row['uid'];
+			$_SESSION["loginname"]=$row['username'];
+			$_SESSION["passwd"]=$row['password'];
+			$_SESSION["superuser"]=$row['superuser'];
 
-		return true;
+			return true;
+		}
 	} else {		
 		return false;
 	}
@@ -51,9 +53,9 @@ function hasAccess($userId, $courseId, $access_type)
 		return false;
 	} else {
 		// Fetch data from the database
-		$access = mysql_fetch_assoc($result);
-		if(count($access) > 0) {
+		if(mysql_num_rows($result) > 0) {
 			// Check access if it was returned
+			$access = mysql_fetch_assoc($result);
 			if($access_type == 'w') {
 				return strtolower($access['access']) == 'w';
 			} else if ($access_type == 'r') {
