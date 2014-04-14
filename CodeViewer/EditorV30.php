@@ -139,3 +139,19 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
 </body>
 </html>
+
+        <!--Place tooltips on all objects with a title-->
+        <script>
+
+    $( document ).ready(function() {
+
+        setTimeout(function() {
+
+            $("*[title]").tooltips();
+
+        }, 800);
+
+
+    });
+
+        </script>
