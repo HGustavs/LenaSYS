@@ -42,6 +42,9 @@ function Canvasrenderer()
 				}
 			}
 		}
+
+		// Set icon
+		document.getElementById("play").innerHTML="<img src='images/pause.svg'/>";
 	}
 
 	// Pause canvas
@@ -53,6 +56,9 @@ function Canvasrenderer()
 		for(i = 0; i < this.runningTimesteps.length; ++i){
 			this.runningTimesteps[i].pause();
 		}
+
+		// Set icon
+		document.getElementById("play").innerHTML="<img src='images/play_button.svg'/>";
 	}
 
 
