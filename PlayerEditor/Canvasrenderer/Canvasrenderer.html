@@ -18,6 +18,53 @@ function executeTimestep(nodes)
 }
 
 </script>
+<style>
+
+body {
+	
+	background-color:#614875;
+	
+}
+
+canvas {
+	
+	background-color:#FFF;
+	
+}
+
+.barbutton {
+	margin:3px;
+	border-spacing:10px;
+	height:38px;
+	width:38px;
+	vertical-align:center;
+	text-align:center; 	
+}
+
+.barbutton:hover{
+	background-color: #7D5CA0;
+	cursor: pointer;
+}
+
+.barcontainer{
+	background-size: 64px 100%;
+	background-color: #FFFFFF;
+	padding:1px;
+	border-radius: 8px;
+	border:solid 2px #000;
+}
+
+.bar{
+	position:absolute;
+	height: px;
+	width:20px;
+	background-image: url('../images/BP64D.gif'); 
+	background-repeat: repeat-x;
+	background-size: 64px 100%;
+	border-radius: 8px;
+}	
+
+</style>
 </head>
 
 <body onload="initPlayer();">
@@ -27,6 +74,21 @@ function executeTimestep(nodes)
 	var ctx = c.getContext("2d");
 	var canvas = new Canvasrenderer();
     </script>
+    
+    <div id="buttons">
+    
+    	<table>
+				<tr>
+					<td onclick="" id="play" class="barbutton"><img src="images/play_button.svg"/></td>
+					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick=""><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>					
+					<td onclick="" id="back" class="barbutton"><img src="images/backward_button.svg"/></td>					
+					<td onclick="" id="forward" class="barbutton"><img src="images/forward_button.svg"/></td>					
+					<td onclick="" id="repeat" class="barbutton"><img src="images/replay_button.svg"/></td>
+				</tr>
+		</table>
+        
+    </div>
+    
 </body>
 
 </html>

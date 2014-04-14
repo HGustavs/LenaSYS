@@ -2,6 +2,61 @@
 function Canvasrenderer() 
 {		
 	/*
+	 * Playback variables
+	 */
+	this.paused=1;
+	this.finished=0;
+	this.step=0;
+	// Array of all delayed timesteps
+	this.runningTimesteps = new Array();
+
+	/*
+	 * Playback functions
+	 *
+	 */
+	// Play/pause switch
+	this.switch = function()
+	{
+		if(this.paused == 1){
+			this.play();
+		}
+		else{
+			this.pause();
+		}
+	}
+
+	// Play canvas
+	this.play = function()
+	{
+		// Only play if we have a document
+		if(this.timesteps!=null){
+			this.paused=0;
+			// Start over if finished
+			if(this.finished == 1){
+				this.reset();
+			}
+			else{
+				// Resume all timesteps
+				for(i = 0; i < this.runningTimesteps.length; ++i){
+					this.runningTimesteps[i].resume();
+				}
+			}
+		}
+	}
+
+	// Pause canvas
+	this.pause = function()
+	{
+		this.paused = 1;
+
+		// Pause all timesteps
+		for(i = 0; i < this.runningTimesteps.length; ++i){
+			this.runningTimesteps[i].pause();
+		}
+	}
+
+
+	/*
 	 * Check if function name is valid
 	 * A valid function name will return 1, invalid 0.
 	 *
@@ -105,46 +160,16 @@ function Canvasrenderer()
 											nodes[x].attributes.item(8).nodeValue);
 					break;
 				}
-				/*
-				if(nodes[x].attributes.length == 0){
-					this[nodes[x].nodeName]();
-				}
-				else if(nodes[x].attributes.length == 1){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue);
-				}
-				else if(nodes[x].attributes.length == 2){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue);
-				}
-				else if(nodes[x].attributes.length == 3){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue);
-				}
-				else if(nodes[x].attributes.length == 4){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue);
-				}
-				else if(nodes[x].attributes.length == 5){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue);
-				}
-				else if(nodes[x].attributes.length == 6){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue);
-				}
-				else if(nodes[x].attributes.length == 7){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue, nodes[x].attributes.item(6).nodeValue);
-				}
-				else if(nodes[x].attributes.length == 8){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue, nodes[x].attributes.item(6).nodeValue, nodes[x].attributes.item(7).nodeValue);
-				}
-				else if(nodes[x].attributes.length == 9){
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue, nodes[x].attributes.item(6).nodeValue, nodes[x].attributes.item(7).nodeValue, nodes[x].attributes.item(8).nodeValue);
-				}*/
 			}	
-		}	
+		}
+		// Go to next step
+		this.step++;	
 	}
 	
 	/*
 	 * Canvas functions
 	 */
 	this.beginpath = function() {
-		ctx.lineWidth = 5;
 		ctx.beginPath();
 	}
 
@@ -356,11 +381,11 @@ function Canvasrenderer()
   	xmlDoc=xmlhttp.responseXML;
 	
   	// Load timesteps
-  	timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
+  	this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
 	var totalTime = 0;
 
 	// Step through timesteps
-	for(i = 0; i < timesteps.length; i++){		 
+	for(i = 0; i < this.timesteps.length; i++){		 
 		timestepElements = xmlDoc.getElementsByTagName("timestep");
 
 		// Check for elements
@@ -375,8 +400,41 @@ function Canvasrenderer()
 				nodes = timestepElements[i].childNodes;
 
 				// Execute timestep nodes after specified delay
-				setTimeout(executeTimestep, totalTime, nodes);
+				//setTimeout(executeTimestep, totalTime, nodes);
+				this.runningTimesteps.push(new TimestepTimeout(executeTimestep, totalTime, nodes));
 			}
 		}
-	}	
+	}
+}
+
+
+/*
+ * Wrapper for setTimeout, enabling pause functionality
+ * Will be created as a paused timeout
+ */
+function TimestepTimeout(callback, delay, args)
+{
+	var timerID;
+	var start;
+	var remaining = delay;
+
+	// Pause timeout
+	this.pause = function()
+	{
+		// Remove timeout and save remaining time
+		clearTimeout(timerID);
+		remaining -= new Date() - start;
+	}
+
+	// Resume timout
+	this.resume = function()
+	{
+		start = new Date();
+		timerID = setTimeout(callback, remaining, args);
+	}
+
+	// Has to be resumed for timeout to be initialized, and ID to be set
+	this.resume();
+	// Pause right after start
+	this.pause();
 }

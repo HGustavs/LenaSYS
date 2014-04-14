@@ -361,7 +361,7 @@
 			}
 			if (this.ctx.globalCompositeOperation != this.globalCompositeOperation) {
 				str += this.updateContextProperty('globalCompositeOperation');
-			}
+			} 
 		
 			// Add state update to XML if needed
 			if (str.length > 6){
@@ -376,7 +376,7 @@
 			this.ctx[property] = this[property];
 
 			// Create string for state
-			var attribute = ' ' + property + '="' + this[property] + '"';
+			var attribute = '_' + property + ' value="' + this[property] + '"';
 			attribute.toLowerCase();
 
 			return (attribute);
@@ -385,9 +385,6 @@
 		// Finalize and send xml-data to server
 		this.sendXML = function()
 		{
-			// Close script
-			str += '</script>';
-
 			$.ajax({
 		        type: 'POST',
 		        url: '../../PlayerEditor/CanvasWrapper/logfile.php',
