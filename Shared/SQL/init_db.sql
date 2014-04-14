@@ -52,21 +52,20 @@ INSERT INTO user_course(uid,cid,access) values (2,2,"W");
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
 CREATE TABLE section(
-		sectionid		MEDIUMINT NOT NULL AUTO_INCREMENT,
-		cid				INT NOT NULL,
-		sectionname		VARCHAR(64),
-		sectionpos		INTEGER,
-		kind			TINYINT,
-		updated			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		cversion		INTEGER,
-		creator			INT NOT NULL,
-		PRIMARY KEY(sectionno),		
-		FOREIGN KEY (creator) REFERENCES user (uid)
+		sectionno				 MEDIUMINT NOT NULL AUTO_INCREMENT,
+		coursename			 VARCHAR(64),
+		sectionname			 VARCHAR(64),
+		sectionpos			 INTEGER,
+		kind						 INTEGER,
+		ts 							 TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		cversion				 INTEGER,
+		appuser					 VARCHAR(64),
+		PRIMARY KEY(sectionno)		
 );
 
-INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,creator) values ("Webbprogrammering","Code Examples",2,2013,0,1);
-INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,creator) values ("Webbprogrammering","Javascript",1,2013,1,1);
-INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,creator) values ("Webbprogrammering","HTML5",1,2013,2,1);
+INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","Code Examples",2,2013,0,"Creationscript");
+INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","Javascript",1,2013,1,"Creationscript");
+INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","HTML5",1,2013,2,"Creationscript");
 
 
 /* Code Example contains a list of the code examples for a version of a course in the database */
