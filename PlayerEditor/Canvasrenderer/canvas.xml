@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <script type="canvas">
 <timestep delay="1000">
-<<<<<<< HEAD
-<state_linewidth value="50"/>
-<beginpath/>
-<moveto x="277" y="286"/>
-<state_strokestyle value="#FF0000"/>
-=======
 <state_lineWidth value="500"/>
 <beginPath/>
 <moveTo x="277" y="286"/>
 <state_strokeStyle value="#FF0000"/>
->>>>>>> FETCH_HEAD
 </timestep>
 <timestep delay="1000">
 <lineTo x="334" y="270"/>
