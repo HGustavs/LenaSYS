@@ -367,13 +367,16 @@ function Canvasrenderer()
 		if(timestepElements[i]){
 			// Fetch delay
 			delay = timestepElements[i].getAttribute("delay");
-			totalTime += parseInt(delay);
-			
-			// Fetch timestep nodes
-			nodes = timestepElements[i].childNodes;
+			// Ignore timesteps with non numeric or negative delay
+			if (!isNaN(delay) && delay >= 0){
+				// Calculate total delay
+				totalTime += parseInt(delay);
+				// Fetch timestep nodes
+				nodes = timestepElements[i].childNodes;
 
-			// Execute timestep nodes after specified delay
-			setTimeout(executeTimestep, totalTime, nodes);
+				// Execute timestep nodes after specified delay
+				setTimeout(executeTimestep, totalTime, nodes);
+			}
 		}
 	}	
 }
