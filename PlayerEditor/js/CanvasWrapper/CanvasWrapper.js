@@ -6,15 +6,6 @@
 	 *
 	 */ 
 	function captureCanvas(canvas){
-		// Add save button to BODY
-		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
-		// Call sendXML() on save-button click
-		$("#CanvasWrapper-save").click(function(){
-			console.log(str);	
-			// TODO:
-			// this.sendXML();
-		});
-		
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
 
@@ -63,8 +54,8 @@
 			str += '<timestep delay="' + delay + '">' + '\n';
 			str += string + '\n';
 			str += '</timestep>' + '\n';
-			// console.log("=====");
-			// console.log(str);
+			console.log("=====");
+			console.log(str);
 			this.sendXML();
 		}
 
@@ -397,10 +388,8 @@
 			$.ajax({
 		        type: 'POST',
 		        url: '../../PlayerEditor/CanvasWrapper/logfile.php',
-		        data : { 'string': str},
-		        success: function(msg){
-		        	alert(msg);
-		        }
+		        data : { 'string': str + "</script>"},
+		        
 	        });
 		}
 	}
