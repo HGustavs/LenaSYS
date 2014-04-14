@@ -163,7 +163,7 @@
 		this.isPointInPath = function(x, y){
 			this.UpdateAllFunctions();
 	        this.log('<ispointinpath x="'+x+'" y="'+y+'"/>');        
-	        this.ctx.isPointInPath(x, y);
+	        return this.ctx.isPointInPath(x, y);
 		}
 
 		// Transformation functions
@@ -207,7 +207,7 @@
 		this.measureText = function(text){
 			this.UpdateAllFunctions();
 	        this.log('<measuretext text="'+text+'"/>');        
-	        this.ctx.measureText(text);
+	        return this.ctx.measureText(text);
 		}
 
 		// Image draw functions
@@ -228,13 +228,19 @@
 		this.getImageData = function(x, y, width, height){
 			this.UpdateAllFunctions();
 	        this.log('<getimagedata x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
-	        this.ctx.getImageData(x, y, width, height);
+	        return this.ctx.getImageData(x, y, width, height);
 		}
 		this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){
 			this.UpdateAllFunctions();
 	        this.log('<putimagedata imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dirtyx="'+dirtyX+'" dirtyy="'+dirtyY+'" dirtywidth="'+dirtyWidth+'" dirtyheight="'+dirtyHeight+'"/>');        
-	        this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
+	        return this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 		}
+		//Other methods.
+		this.restore = function(){
+			this.UpdateAllFunctions();
+	        this.log('<restore/>');        
+	        return this.ctx.restore();
+	    }
 		
 		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
 		This updates are added to the xml if there are any.*/
