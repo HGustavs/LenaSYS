@@ -4,6 +4,10 @@ body{
 .canvasStyle{
 	background:rgba(0,0,0,0.2);
 }
+
+.canvasStyle2{
+
+}
 .wrapper{
 	margin-left:auto;
 	margin-right:auto;
@@ -31,5 +35,6 @@ body{
 	float:right;
 	width:200px;
 	height:720px;
-	background:rgba(0,0,0,0.2);
+	overflow:hidden;
+	
 }

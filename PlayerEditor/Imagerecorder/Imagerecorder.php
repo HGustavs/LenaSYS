@@ -6,19 +6,13 @@
 </style>
 	<link href="stylesheet.css" rel="stylesheet" type="text/css"/>
 	<script language="javascript" src="../js/Imagerecorder/imagerecorder.js"></script>
-	<script language="javascript" src="../js/jquery-1.11.0.min.js"></script>	
+	<script language="javascript" src="../js/jquery-1.11.0.min.js"></script>
+
 </head>
-<script>
-var imagerec = new imagerecorder("ImageCanvas");
-</script>
 	<body onload="">
 	<div class="wrapper">
 		<div class="header">Image Recorder</div>
 			<div class="cords">
-			<form name='form' method='post' action=''>
-				<input id='test' name='test' style='width:1280px;'/>
-				<input type="submit" value="Click me!"></input>
-			</form>
 				X(click): <span class="cordFont"><span id="xCord"></span></span>&nbsp;
 				Y(click): <span class="cordFont"><span id="yCord"></span></span>&nbsp;
 				X(realtime): <span class="cordFont"><span id="xCordReal"></span></span>&nbsp;
@@ -26,18 +20,14 @@ var imagerec = new imagerecorder("ImageCanvas");
 			</div>
 			<canvas id="ImageCanvas" class="canvasStyle" width="1280" height="720"></canvas>
 		<div class="uploadImages">
-			<form method='post' action='Imagerecorder.php' enctype="multipart/form-data">
-				<input name='image' type='FILE'/>
-				<input name='upload' type='SUBMIT' value='Upload'/>
-			</form>			
-			
-	<?php
-							
+		
+			<?php
+			$image_name = null;
 			if(isset($_POST['upload'])){
-				echo $image_name = $_FILES['image']['name'];
-				echo $image_type = $_FILES['image']['type'];
-				echo $image_size = $_FILES['image']['size'];
-				echo $image_tmp_name = $_FILES['image']['tmp_name'];
+				$image_name = $_FILES['image']['name'];
+				$image_type = $_FILES['image']['type'];
+				$image_size = $_FILES['image']['size'];
+				$image_tmp_name = $_FILES['image']['tmp_name'];	
 			if($image_name==''){
 				exit();
 			}
@@ -46,7 +36,7 @@ var imagerec = new imagerecorder("ImageCanvas");
 			}
 			
 			$filename = 'test.txt';
-			$textString = $_POST['test'];
+			$textString = (isset($_POST['test']));
 			if (is_writable($filename)) {
 				if (!$handle = fopen($filename, 'a')) {
 					 echo "Cannot open file ($filename)";
@@ -56,13 +46,28 @@ var imagerec = new imagerecorder("ImageCanvas");
 					echo "Error!";
 					exit;
 				}
-				echo "Ok!";
 				fclose($handle);
 			} else {
 				echo "Error!";
 			}
-				?>
+			?>
+		<br/>
+		<canvas id="canvasTemp" class="canvasStyle2" height="720" width="200"></canvas>
+
 		</div>
+		<form method='post' action='' enctype="multipart/form-data">
+			<input id='imageLoader' name='image' type='FILE'/>
+			<input name='upload' type='SUBMIT' value='Upload' id='imageUpload'/>
+		</form>
+		<br/>
+		<form name='form' method='post' action=''>
+			<input id='test' name='test' style='width:1280px;'/>
+			<input type="submit" value="Export XML"></input>
+		</form>
 	</div>
+	<script>
+	var imgSource = "<?php echo $image_name; ?>";
+	var imagerec = new imagerecorder("ImageCanvas", imgSource);
+	</script>
 	</body>		
 </html>

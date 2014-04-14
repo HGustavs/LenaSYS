@@ -1,29 +1,36 @@
-function imagerecorder(imgCanvas)
+function imagerecorder(imgCanvas, img1)
 {	/*
 	 * Declaring an array that will act as a picture library(for the time being), and adding pictures to the array.
 	 */
 	var imageCanvas = imgCanvas;
 	var picArray = new Array();	
 	var currentImage = 0;
+	var arrayImage = 0;
 	var dd = new Date();
 	var lastEvent = dd.getTime();
-
-	this.initImages = function(){
+	var yCan = 0;
 	
-		var img = document.createElement("IMG");
-		img.src = "pictures/1.png";
-		picArray[0] = new Image();
-		picArray[0] = img;
-		
-		var img1 = document.createElement("IMG");
-		img1.src = "pictures/2.png"
-		picArray[1] = new Image();
-		picArray[1] = img1;
-
-		var img2 = document.createElement("IMG");
-		img2.src = "pictures/3.png"
-		picArray[2] = new Image();
-		picArray[2] = img2;
+	var imageLoader = document.getElementById('imageLoader');
+    imageLoader.addEventListener('change', handleImage, false);
+	var canvas = document.getElementById('ImageCanvas');
+	var ctx = canvas.getContext('2d');
+	
+	var tCanvas = document.getElementById('canvasTemp');
+	var tCtx = tCanvas.getContext('2d');
+	
+	function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+        var img = new Image();
+        img.onload = function(){
+			picArray[arrayImage] = img;
+			tCtx.drawImage(picArray[arrayImage],34,yCan, width = 130, height = 130);
+			arrayImage++;
+			yCan += 150;
+        }
+        img.src = event.target.result;
+    }
+		reader.readAsDataURL(e.target.files[0]);     
 	}
 	/*
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
@@ -46,7 +53,7 @@ function imagerecorder(imgCanvas)
 		document.getElementById("test").value += str;
 	}
 	
-	this.initImages();
+	
 	/*
 	 *	jquery function that records mouse clicks to get the coordinates of the mouse pointer, 
 	 *	and change the picture if the canvas is clicked.
@@ -55,12 +62,10 @@ function imagerecorder(imgCanvas)
 	$("#" + imageCanvas).click(function(event){
 			var xMouse = event.clientX;
 			var yMouse = event.clientY;
-			// log(picArray[currentImage]);
 		
 			document.getElementById('xCord').innerHTML=xMouse;
 			document.getElementById('yCord').innerHTML=yMouse;
-			var canvas = document.getElementById(imageCanvas);
-			var ctx=canvas.getContext("2d");
+
 			ctx.drawImage(picArray[currentImage],0,0, width = 1280, height = 720);
 			document.getElementById(imageCanvas).appendChild(picArray[currentImage]);
 			if(currentImage > 0){
