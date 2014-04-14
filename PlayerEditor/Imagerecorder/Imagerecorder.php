@@ -34,9 +34,9 @@
 			else
 			move_uploaded_file($image_tmp_name,"pictures/$image_name");
 			}
-			
+			if(isset($_POST['test'])){
 			$filename = 'test.txt';
-			$textString = (isset($_POST['test']));
+			$textString = $_POST['test'];
 			if (is_writable($filename)) {
 				if (!$handle = fopen($filename, 'a')) {
 					 echo "Cannot open file ($filename)";
@@ -50,6 +50,7 @@
 			} else {
 				echo "Error!";
 			}
+			}
 			?>
 		<br/>
 		<canvas id="canvasTemp" class="canvasStyle2" height="720" width="200"></canvas>
@@ -57,7 +58,7 @@
 		</div>
 		<form method='post' action='' enctype="multipart/form-data">
 			<input id='imageLoader' name='image' type='FILE'/>
-			<input name='upload' type='SUBMIT' value='Upload' id='imageUpload'/>
+			<input name='upload' type='SUBMIT' value='Upload'/>
 		</form>
 		<br/>
 		<form name='form' method='post' action=''>
