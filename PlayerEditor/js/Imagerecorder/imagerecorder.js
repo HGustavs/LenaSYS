@@ -1,73 +1,84 @@
-function imagerecorder(imgCanvas)
+function imagerecorder(imgCanvas, img1)
 {	/*
 	 * Declaring an array that will act as a picture library(for the time being), and adding pictures to the array.
 	 */
 	var imageCanvas = imgCanvas;
-	var picArray = new Array();	
+	var picArray = new Array();
+	var pathArray = new Array();
 	var currentImage = 0;
+	var arrayImage = 0;
 	var dd = new Date();
 	var lastEvent = dd.getTime();
-
-	this.initImages = function(){
+	var yCan = 0;
+	var imgIndex = 0;
 	
-		var img = document.createElement("IMG");
-		img.src = "pictures/1.png";
-		picArray[0] = new Image();
-		picArray[0] = img;
-		
-		var img1 = document.createElement("IMG");
-		img1.src = "pictures/2.png"
-		picArray[1] = new Image();
-		picArray[1] = img1;
+	var imageLoader = document.getElementById('imageLoader');
+    imageLoader.addEventListener('change', getImages, false);
+	var canvas = document.getElementById('ImageCanvas');
+	var ctx = canvas.getContext('2d');
+	
+	var tCanvas = document.getElementById('canvasTemp');
+	var tCtx = tCanvas.getContext('2d');
 
-		var img2 = document.createElement("IMG");
-		img2.src = "pictures/3.png"
-		picArray[2] = new Image();
-		picArray[2] = img2;
+	
+	function getImages(e){
+		var reader = new FileReader();
+		reader.onload = function(event){
+			var img = new Image();
+			img.onload = function(){
+				picArray[arrayImage] = img;
+				tCtx.drawImage(picArray[arrayImage],34,yCan, width = 130, height = 130);
+				arrayImage++;
+				yCan += 150;
+			}
+			img.src = event.target.result;
+		}
+			reader.readAsDataURL(e.target.files[0]);
+			pathArray[currentImage] = document.getElementById('imageLoader').value;
 	}
 	/*
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function log(str){
-	var dd = new Date();
-	var currentTime = dd.getTime();
-	var delay = currentTime - lastEvent;
-	lastEvent = currentTime;
-	var delayStr = "<timestep delay=" + delay + "/>";
-	imgPath = (picArray[currentImage].src).split("/");
-	imgPath = "<picture src=" + imgPath[imgPath.length-2] +"/"+ imgPath[imgPath.length-1] + "/>";
-	
-	console.log(imgPath);
-	console.log(delayStr);
-	console.log(str);
-
-		document.getElementById("test").value += imgPath;
-		document.getElementById("test").value += delayStr;
-		document.getElementById("test").value += str;
+	alert(imgIndex+" "+currentImage);
+		var dd = new Date();
+		var currentTime = dd.getTime();
+		var delay = currentTime - lastEvent;
+		lastEvent = currentTime;
+		var delayStr = "<timestep delay=" + delay + "/>";
+		imgPath = "<picture src="+pathArray[imgIndex]+"/>";
+		var logTest;
+		
+		console.log(imgPath);
+		console.log(delayStr);
+		console.log(str);
+		console.log(logTest);
+		
+			document.getElementById("test").value += imgPath;
+			document.getElementById("test").value += delayStr;
+			document.getElementById("test").value += str;
+			imgIndex++;
 	}
 	
-	this.initImages();
 	/*
 	 *	jquery function that records mouse clicks to get the coordinates of the mouse pointer, 
 	 *	and change the picture if the canvas is clicked.
 	 */
 	$(document).ready(function(){
 	$("#" + imageCanvas).click(function(event){
-			var xMouse = event.clientX;
-			var yMouse = event.clientY;
-			// log(picArray[currentImage]);
-		
-			document.getElementById('xCord').innerHTML=xMouse;
-			document.getElementById('yCord').innerHTML=yMouse;
-			var canvas = document.getElementById(imageCanvas);
-			var ctx=canvas.getContext("2d");
-			ctx.drawImage(picArray[currentImage],0,0, width = 1280, height = 720);
-			document.getElementById(imageCanvas).appendChild(picArray[currentImage]);
-			if(currentImage > 0){
-				document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);
-			}
-			log("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
-			currentImage++;
+		var xMouse = event.clientX;
+		var yMouse = event.clientY;
+	
+		document.getElementById('xCord').innerHTML=xMouse;
+		document.getElementById('yCord').innerHTML=yMouse;
+
+		ctx.drawImage(picArray[currentImage],0,0, width = 1280, height = 720);
+		document.getElementById(imageCanvas).appendChild(picArray[currentImage]);
+		if(currentImage > 0){
+			document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);
+		}
+		log("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
+		currentImage++;
 		});
 	/*
 	 *checks the mouse-position in realtime.

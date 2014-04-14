@@ -6,7 +6,7 @@ function Canvasrenderer()
 	 */
 	this.paused=1;
 	this.finished=0;
-	this.step=0;
+	this.repeat=0;
 	// Array of all delayed timesteps
 	this.runningTimesteps = new Array();
 
@@ -35,11 +35,11 @@ function Canvasrenderer()
 			if(this.finished == 1){
 				this.reset();
 			}
-			else{
-				// Resume all timesteps
-				for(i = 0; i < this.runningTimesteps.length; ++i){
-					this.runningTimesteps[i].resume();
-				}
+
+			// Resume all timesteps
+			// Starting with the closest timestep, to preserve the right order
+			for(i = this.runningTimesteps.length-1; i >= 0; --i){
+				this.runningTimesteps[i].resume();
 			}
 		}
 
@@ -61,6 +61,39 @@ function Canvasrenderer()
 		document.getElementById("play").innerHTML="<img src='images/play_button.svg'/>";
 	}
 
+	// Reset canvas
+	this.reset = function()
+	{
+		console.log("Clear");
+		// Clear canvas
+		ctx.clearRect(0, 0, c.width, c.height);
+
+		// Stop and clear array of running timesteps
+		this.pause();
+		this.runningTimesteps = [];
+
+		// Reload timesteps
+		this.scheduleTimesteps();
+
+		this.step = 0;
+		this.finished = 0;
+	}
+
+	// Toggle repeat
+	this.toggleRepeat = function()
+	{
+		// Toggle repeat
+		if (this.repeat == 0) {
+			// Repeat
+			this.repeat = 1;
+			document.getElementById("repeat").innerHTML="<img src='images/replay_button.svg'/>";
+		}else {
+			// Don't repeat
+			this.repeat = 0;
+			document.getElementById("repeat").innerHTML="<img src='images/replay_button.svg'/>";
+		}
+	}
+
 
 	/*
 	 * Check if function name is valid
@@ -71,7 +104,7 @@ function Canvasrenderer()
 	 {
 	 	// List of all valid canvas functions
 		// No other operation in the XML should be possible to run
-		var validFunctions = ['beginpath', 'moveto', 'lineto', 'stroke', 'createlineargradient', 'createpattern', 'createradialgradient', 'rect', 'fillrect', 'strokerect', 'clearrect', 'fill', 'closepath', 'clip', 'quadraticcurveto', 'beziercurveto', 'arc', 'arcto', 'ispointinpath', 'scale', 'rotate', 'translate', 'transform', 'measuretext', 'drawimage', 'createimagedata', 'getimagedata', 'putimagedata', 'state_fillstyle', 'state_strokestyle', 'state_shadowcolor', 'state_shadowblur', 'state_shadowoffsetx', 'state_shadowoffsety', 'state_linecap', 'state_linejoin', 'state_linewidth', 'state_miterlimit', 'state_font', 'state_textalign', 'state_textbaseline', 'state_width', 'state_height', 'state_data', 'state_globalapha', 'state_globalcompositeoperation'];
+		var validFunctions = ['beginPath', 'moveTo', 'lineTo', 'stroke', 'createLinearGradient', 'createPattern', 'createRadialGradient', 'rect', 'fillRect', 'strokeRect', 'clearRect', 'fill', 'closePath', 'clip', 'quadraticCurveTo', 'bezierCurveTo', 'arc', 'arcTo', 'isPointInPath', 'scale', 'rotate', 'translate', 'transform', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'state_fillStyle', 'state_strokeStyle', 'state_shadowColor', 'state_shadowBlur', 'state_shadowOffsetX', 'state_shadowOffsetY', 'state_lineCap', 'state_lineJoin', 'state_lineWidth', 'state_miterLimit', 'state_font', 'state_textAlign', 'state_textBaseline', 'state_width', 'state_height', 'state_data', 'state_globalAlpha', 'state_globalCompositeOperation'];
 
 	 	// Compare to list of valid functions
 	 	for(i=0; i<validFunctions.length; ++i){
@@ -82,7 +115,37 @@ function Canvasrenderer()
 	 	}
 	 	// Function is invalid
 	 	return 0;
-	 }
+	}
+
+	// Schedule timesteps
+	this.scheduleTimesteps = function()
+	{
+		// Reset total time
+		var totalTime = 0;
+
+		// Step through timesteps
+		for(i = 0; i < this.timesteps.length; i++){		 
+			this.timestepElements = xmlDoc.getElementsByTagName("timestep");
+
+			// Check for elements
+			if(this.timestepElements[i]){
+				// Fetch delay
+				delay = this.timestepElements[i].getAttribute("delay");
+				// Ignore timesteps with non numeric or negative delay
+				if (!isNaN(delay) && delay >= 0){
+					// Calculate total delay
+					totalTime += parseInt(delay);
+					// Fetch timestep nodes
+					nodes = this.timestepElements[i].childNodes;
+
+					// Execute timestep nodes after specified delay
+					this.runningTimesteps.push(new TimestepTimeout(executeTimestep, totalTime, nodes));
+				}
+			}
+		}
+		// Reverse timestep array
+		this.runningTimesteps.reverse();
+	}
 
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
@@ -168,22 +231,36 @@ function Canvasrenderer()
 				}
 			}	
 		}
-		// Go to next step
-		this.step++;	
+		// Remove current step from list
+		this.runningTimesteps.pop();
+		// Check if done
+		if(this.runningTimesteps.length <= 0){
+			if(this.repeat == 1){
+				// Repeat
+				this.reset();
+				this.play();
+			}
+			else{
+				// Finish
+				this.pause();
+				alert("Finished Script!");
+				this.finished = 1;
+			}
+		}
 	}
 	
 	/*
 	 * Canvas functions
 	 */
-	this.beginpath = function() {
+	this.beginPath = function() {
 		ctx.beginPath();
 	}
 
-	this.moveto = function(x, y) {
+	this.moveTo = function(x, y) {
 		ctx.moveTo(x,y);
 	}
 
-	this.lineto = function(x, y) {
+	this.lineTo = function(x, y) {
 		ctx.lineTo(x, y);
 	}
 
@@ -191,14 +268,14 @@ function Canvasrenderer()
 		ctx.stroke();
 	}
 	
-	this.createlineargradient = function(x, y, x1,y1){		      
+	this.createLinearGradient = function(x, y, x1,y1){		      
 	    ctx.createLinearGradient(x, y, x1,y1);
 	}
 	
-	this.createpattern = function(x, y,img){		        
+	this.createPattern = function(x, y,img){		        
 	    ctx.createPattern(x, y,img);
 	}
-	this.createradialgradient = function(x, y,r, x1,y1,r1){   
+	this.createRadialGradient = function(x, y,r, x1,y1,r1){   
 	    ctx.createRadialGradient(x, y,r, x1,y1,r1);
 	}
 		
@@ -207,15 +284,15 @@ function Canvasrenderer()
 	    ctx.rect(x, y, width, height);
 	}
 	
-	this.fillrect = function(x, y, width, height){		
-	    ctx.fillrect(x, y, width, height);
+	this.fillRect = function(x, y, width, height){		
+	    ctx.fillRect(x, y, width, height);
 	}
 		
-	this.strokerect = function(x, y, width, height){        
+	this.strokeRect = function(x, y, width, height){        
 	    ctx.strokeRect(x, y, width, height);
 	}
 	
-	this.clearrect = function(x, y, width, height){	    
+	this.clearRect = function(x, y, width, height){	    
 	    ctx.clearRect(x, y, width, height);
 	}
 	// Path functions
@@ -223,18 +300,18 @@ function Canvasrenderer()
 	    ctx.fill();
 	}
 	
-	this.closepath = function(){       
+	this.closePath = function(){       
 		ctx.closePath();		
 	}
 	
 	this.clip = function(){	   
 	    ctx.clip();
 	}
-	this.quadraticcurveto = function(x, y, cpx, cpy){        
+	this.quadraticCurveTo = function(x, y, cpx, cpy){        
 	    ctx.quadraticCurveTo(x, y, cpx, cpy);
 	}
 	
-	this.beziercurveto = function(x, y, cpx, cpy, cpx1, cpy1){        
+	this.bezierCurveTo = function(x, y, cpx, cpy, cpx1, cpy1){        
 	     ctx.bezierCurveTo(x, y, cpx, cpy, cpx1, cpy1);
 	}
 	
@@ -242,11 +319,11 @@ function Canvasrenderer()
 	    ctx.arc(x, y,r,sAngle,eAngle,counterclockwise);
 	}
 	
-	this.arcto = function(x, y,r,x1,y1){
+	this.arcTo = function(x, y,r,x1,y1){
 	    ctx.arcTo(x, y,r,x1,y1);
 	}
 	
-	this.ispointinpath = function(x, y){	      
+	this.isPointInPath = function(x, y){	      
 	    ctx.isPointInPath(x, y);
 	}
 	// Transformation functions
@@ -265,71 +342,71 @@ function Canvasrenderer()
         ctx.transform(a,b,c,d,e,f);
 	}
 		
-	this.settransform = function(a,b,c,d,e,f){	      
+	this.setTransform = function(a,b,c,d,e,f){	      
 	    ctx.setTransform(a,b,c,d,e,f);
 	}
 	// Text functions
-	this.filltext = function(x, y,text,maxWidth){		
+	this.fillText = function(x, y,text,maxWidth){		
 		ctx.fillText(x, y,text,maxWidth);
 	}
 	this.stroketext = function(x, y,text,maxWidth){		
 		ctx.strokeText(x, y,text,maxWidth);
 	}
-	this.measuretext = function(text){		
+	this.measureText = function(text){		
 		ctx.measureText(text);
 	}
 	// Image draw functions
-	this.drawimage = function(img,sx,sy,swidth,sheight,x,y,width,height){		
+	this.drawImage = function(img,sx,sy,swidth,sheight,x,y,width,height){		
 		ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 	}
 	// Pixel manipulation functions
-	this.createimagedata = function( imageData, width, height){		
+	this.createImageData = function( imageData, width, height){		
 		ctx.createImageData( imageData, width, height);
 	}
-	this.getimagedata = function(x, y, width, height){		
+	this.getImageData = function(x, y, width, height){		
 		ctx.getImageData(x, y, width, height);
 	}
-	this.putimagedata = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
+	this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
 		ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 	}	
 	//canvas state functions
-	this.state_fillstyle = function(value){
+	this.state_fillStyle = function(value){
 		ctx.fillStyle = value;
 	}
 	
-	this.state_strokestyle = function(value){
+	this.state_strokeStyle = function(value){
 		ctx.strokeStyle = value;
 	}
 	
-	this.state_shadowcolor = function(value){
+	this.state_shadowColor = function(value){
 		ctx.shadowColor = value;
 	}
 	
-	this.state_shadowblur = function(value){
+	this.state_shadowBlur = function(value){
 		ctx.shadowBlur = value;
 	}
 	
-	this.state_shadowoffsetx = function(value){
+	this.state_shadowOffsetX = function(value){
 		ctx.shadowOffsetX = value;
 	}
 	
-	this.state_shadowoffsety = function(value){
+	this.state_shadowOffsetY = function(value){
 		ctx.shadwoOffsetY = value;
 	}
 	
-	this.state_linecap = function(value){
+	this.state_lineCap = function(value){
 		ctx.lineCap = value;
 	}
 	
-	this.state_linejoin = function(value){
+	this.state_lineJoin = function(value){
 		ctx.lineJoin = value;
 	}
 	
-	this.state_linewidth = function(value){
+	this.state_lineWidth = function(value){
 		ctx.lineWidth = value;
 	}
 	
-	this.state_miterlimit = function(value){
+	this.state_miterLimit = function(value){
 		ctx.miterLimit = value;
 	}
 	
@@ -337,11 +414,11 @@ function Canvasrenderer()
 		ctx.font = value;
 	}
 	
-	this.state_textalign = function(value){
+	this.state_textAlign = function(value){
 		ctx.textAlign = value;
 	}
 	
-	this.state_textbaseline = function(value){
+	this.state_textBaseline = function(value){
 		ctx.textBaseline = value;
 	}
 	
@@ -357,13 +434,14 @@ function Canvasrenderer()
 		ctx.data = value;
 	}
 	
-	this.state_globalalpha = function(value){
+	this.state_globalAlpha = function(value){
 		ctx.globalAlpha = value;
 	}
 	
-	this.state_globalcompositeoperation = function(value){
+	this.state_globalCompositeOperation = function(value){
 		ctx.globalCompositeOperation = value;
 	}
+
 	/*
 	 *
 	 * Start running XML
@@ -390,27 +468,7 @@ function Canvasrenderer()
   	this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
 	var totalTime = 0;
 
-	// Step through timesteps
-	for(i = 0; i < this.timesteps.length; i++){		 
-		timestepElements = xmlDoc.getElementsByTagName("timestep");
-
-		// Check for elements
-		if(timestepElements[i]){
-			// Fetch delay
-			delay = timestepElements[i].getAttribute("delay");
-			// Ignore timesteps with non numeric or negative delay
-			if (!isNaN(delay) && delay >= 0){
-				// Calculate total delay
-				totalTime += parseInt(delay);
-				// Fetch timestep nodes
-				nodes = timestepElements[i].childNodes;
-
-				// Execute timestep nodes after specified delay
-				//setTimeout(executeTimestep, totalTime, nodes);
-				this.runningTimesteps.push(new TimestepTimeout(executeTimestep, totalTime, nodes));
-			}
-		}
-	}
+	this.scheduleTimesteps();
 }
 
 
