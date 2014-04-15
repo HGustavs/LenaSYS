@@ -6,7 +6,7 @@ function Canvasrenderer()
 	 */
 	this.paused=1;
 	this.finished=0;
-	this.step=0;
+	this.repeat=0;
 	// Array of all delayed timesteps
 	this.runningTimesteps = new Array();
 
@@ -29,22 +29,22 @@ function Canvasrenderer()
 	this.play = function()
 	{
 		// Only play if we have a document
-		if(this.timesteps!=null){
+		if(this.timesteps!=null && this.paused == 1){
 			this.paused=0;
 			// Start over if finished
 			if(this.finished == 1){
 				this.reset();
 			}
-			else{
-				// Resume all timesteps
-				for(i = 0; i < this.runningTimesteps.length; ++i){
-					this.runningTimesteps[i].resume();
-				}
-			}
-		}
 
-		// Set icon
-		document.getElementById("play").innerHTML="<img src='images/pause.svg'/>";
+			// Resume all timesteps
+			// Starting with the closest timestep, to preserve the right order
+			for(i = this.runningTimesteps.length-1; i >= 0; --i){
+				this.runningTimesteps[i].resume();
+			}
+
+			// Set icon
+			document.getElementById("play").innerHTML="<img src='images/pause.svg'/>";
+		}
 	}
 
 	// Pause canvas
@@ -53,12 +53,43 @@ function Canvasrenderer()
 		this.paused = 1;
 
 		// Pause all timesteps
-		for(i = 0; i < this.runningTimesteps.length; ++i){
-			this.runningTimesteps[i].pause();
-		}
+		this.pauseTimesteps();
 
 		// Set icon
 		document.getElementById("play").innerHTML="<img src='images/play_button.svg'/>";
+	}
+
+	// Reset canvas
+	this.reset = function()
+	{
+		console.log("Clear");
+		// Clear canvas
+		ctx.clearRect(0, 0, c.width, c.height);
+
+		// Stop and clear array of running timesteps
+		this.pauseTimesteps();
+		this.runningTimesteps = [];
+
+		// Reload timesteps
+		this.scheduleTimesteps();
+
+		this.step = 0;
+		this.finished = 0;
+	}
+
+	// Toggle repeat
+	this.toggleRepeat = function()
+	{
+		// Toggle repeat
+		if (this.repeat == 0) {
+			// Repeat
+			this.repeat = 1;
+			document.getElementById("repeat").innerHTML="<img src='images/replay_button.svg'/>";
+		}else {
+			// Don't repeat
+			this.repeat = 0;
+			document.getElementById("repeat").innerHTML="<img src='images/replay_button.svg'/>";
+		}
 	}
 
 
@@ -82,7 +113,45 @@ function Canvasrenderer()
 	 	}
 	 	// Function is invalid
 	 	return 0;
-	 }
+	}
+
+	// Schedule timesteps
+	this.scheduleTimesteps = function()
+	{
+		// Reset total time
+		var totalTime = 0;
+
+		// Step through timesteps
+		for(i = 0; i < this.timesteps.length; i++){		 
+			this.timestepElements = xmlDoc.getElementsByTagName("timestep");
+
+			// Check for elements
+			if(this.timestepElements[i]){
+				// Fetch delay
+				delay = this.timestepElements[i].getAttribute("delay");
+				// Ignore timesteps with non numeric or negative delay
+				if (!isNaN(delay) && delay >= 0){
+					// Calculate total delay
+					totalTime += parseInt(delay);
+					// Fetch timestep nodes
+					nodes = this.timestepElements[i].childNodes;
+
+					// Execute timestep nodes after specified delay
+					this.runningTimesteps.push(new TimestepTimeout(executeTimestep, totalTime, nodes));
+				}
+			}
+		}
+		// Reverse timestep array
+		this.runningTimesteps.reverse();
+	}
+
+	// Pause/stop all timesteps
+	this.pauseTimesteps = function() {
+		// Pause all timesteps
+		for(i = 0; i < this.runningTimesteps.length; ++i){
+			this.runningTimesteps[i].pause();
+		}
+	}
 
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
@@ -168,8 +237,22 @@ function Canvasrenderer()
 				}
 			}	
 		}
-		// Go to next step
-		this.step++;	
+		// Remove current step from list
+		this.runningTimesteps.pop();
+		// Check if done
+		if(this.runningTimesteps.length <= 0){
+			if(this.repeat == 1){
+				// Repeat
+				this.reset();
+				this.play();
+			}
+			else{
+				// Finish
+				this.pause();
+				alert("Finished Script!");
+				this.finished = 1;
+			}
+		}
 	}
 	
 	/*
@@ -364,6 +447,7 @@ function Canvasrenderer()
 	this.state_globalCompositeOperation = function(value){
 		ctx.globalCompositeOperation = value;
 	}
+
 	/*
 	 *
 	 * Start running XML
@@ -390,27 +474,7 @@ function Canvasrenderer()
   	this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
 	var totalTime = 0;
 
-	// Step through timesteps
-	for(i = 0; i < this.timesteps.length; i++){		 
-		timestepElements = xmlDoc.getElementsByTagName("timestep");
-
-		// Check for elements
-		if(timestepElements[i]){
-			// Fetch delay
-			delay = timestepElements[i].getAttribute("delay");
-			// Ignore timesteps with non numeric or negative delay
-			if (!isNaN(delay) && delay >= 0){
-				// Calculate total delay
-				totalTime += parseInt(delay);
-				// Fetch timestep nodes
-				nodes = timestepElements[i].childNodes;
-
-				// Execute timestep nodes after specified delay
-				//setTimeout(executeTimestep, totalTime, nodes);
-				this.runningTimesteps.push(new TimestepTimeout(executeTimestep, totalTime, nodes));
-			}
-		}
-	}
+	this.scheduleTimesteps();
 }
 
 
