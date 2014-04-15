@@ -54,9 +54,6 @@
 			str += '<timestep delay="' + delay + '">' + '\n';
 			str += string + '\n';
 			str += '</timestep>' + '\n';
-			console.log("=====");
-			console.log(str);
-			this.sendXML();
 		}
 
 	    this.beginPath = function(){
@@ -381,25 +378,14 @@
 			return (attribute);
 		}
 		
-		// Finalize and send xml-data to server
-		this.sendXML = function()
-		{
-			$.ajax({
-		        type: 'POST',
-		        url: '../../PlayerEditor/CanvasWrapper/logfile.php',
-		        data : { 'string': str + "</script>"},
-		        
-	        });
-		}
-		
 		// Add save button to BODY
 		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
-		// Call sendXML() on save-button click
+		// Save log when "Save log" button is clciked
 		$("#CanvasWrapper-save").click(function(){
 			$.ajax({
 		        type: 'POST',
 		        url: 'logfile.php',
-		        data: { string: str }
+		        data: { string: str + "</script>" }
 	        });
 		});
 		
