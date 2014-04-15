@@ -9,6 +9,8 @@ function Canvasrenderer()
 	this.repeat=0;
 	// Array of all delayed timesteps
 	this.runningTimesteps = new Array();
+	// The number of valid timesteps
+	this.numValidTimesteps = 0;
 
 	/*
 	 * Playback functions
@@ -29,7 +31,7 @@ function Canvasrenderer()
 	this.play = function()
 	{
 		// Only play if we have a document
-		if(this.timesteps!=null && this.paused == 1){
+		if(this.timesteps!=null){
 			this.paused=0;
 			// Start over if finished
 			if(this.finished == 1){
@@ -62,7 +64,6 @@ function Canvasrenderer()
 	// Reset canvas
 	this.reset = function()
 	{
-		console.log("Clear");
 		// Clear canvas
 		ctx.clearRect(0, 0, c.width, c.height);
 
@@ -73,7 +74,6 @@ function Canvasrenderer()
 		// Reload timesteps
 		this.scheduleTimesteps();
 
-		this.step = 0;
 		this.finished = 0;
 	}
 
@@ -92,6 +92,79 @@ function Canvasrenderer()
 		}
 	}
 
+	// Skip N steps forward or backward
+	this.skip = function(skippos)
+	{
+		if(this.timesteps != null) {
+			// Calculate new position
+			var windpos = this.currentPosition()+skippos;
+			// Prevent error
+			if(windpos<0) windpos=0;
+			if(windpos>this.numValidTimesteps) windpos=this.numValidTimesteps;
+			// Wind
+			console.log(windpos);
+			this.windto(windpos);
+		}
+	}
+
+	// Fast forward or rewind to specific position
+	this.windto = function(windpos)
+	{
+		// Check if it should play or pause after wind
+		var shouldPause = this.paused;
+
+		// Pause all timesteps
+		//this.pauseTimesteps();
+		this.pause();
+
+		// Do not wind to own position
+		if (this.currentPosition() != windpos) {
+			// Rewind - will need to start from the beginning
+			if (windpos < this.currentPosition()) {
+				// Will need to start from the beginning
+				this.reset();
+			}
+
+			// Calculate usable windpos (reversed array)
+			windpos = this.numValidTimesteps-windpos;
+
+			// Run timesteps to winding position directly (from the most recent)
+			for (i = this.runningTimesteps.length-1; i >= windpos; --i) {
+				// Set zero delay
+				this.runningTimesteps[i].setDelay(0);
+				// Run em
+				this.runningTimesteps[i].resume();
+			}
+
+			// Fetch remaining time from wind position
+			if (windpos < this.runningTimesteps.length) {
+				var remainingTime = this.runningTimesteps[windpos].getDelay();
+			}
+			// Update time on following timesteps
+			for (i = windpos-1; i >= 0; --i) {
+				// Calculate new delay
+				var newDelay = this.runningTimesteps[i].getDelay() - remainingTime;
+				// Update delay
+				this.runningTimesteps[i].setDelay(newDelay);
+			}
+		}
+
+		/**
+		// Play or pause
+		if (shouldPause) {
+			this.pause();
+		}
+		else {
+			this.play();
+		}
+		*/
+	}
+
+	// Calculate current position
+	this.currentPosition = function()
+	{
+		return this.numValidTimesteps - this.runningTimesteps.length;
+	}
 
 	/*
 	 * Check if function name is valid
@@ -143,6 +216,8 @@ function Canvasrenderer()
 		}
 		// Reverse timestep array
 		this.runningTimesteps.reverse();
+		// Update number of valid timesteps
+		this.numValidTimesteps = this.runningTimesteps.length;
 	}
 
 	// Pause/stop all timesteps
@@ -239,6 +314,7 @@ function Canvasrenderer()
 		}
 		// Remove current step from list
 		this.runningTimesteps.pop();
+
 		// Check if done
 		if(this.runningTimesteps.length <= 0){
 			if(this.repeat == 1){
@@ -501,6 +577,20 @@ function TimestepTimeout(callback, delay, args)
 	{
 		start = new Date();
 		timerID = setTimeout(callback, remaining, args);
+	}
+
+	// Set delay (will pause)
+	this.setDelay = function(delay)
+	{
+		this.pause();
+		remaining = delay;
+	}
+
+	// Get remaining delay
+	this.getDelay = function()
+	{
+		// Calculate the remaining part of the delay
+		return remaining - new Date() - start;
 	}
 
 	// Has to be resumed for timeout to be initialized, and ID to be set
