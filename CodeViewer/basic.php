@@ -26,7 +26,7 @@ include "../Shared/basic.php";
 							//	echo '<td class="genSettingsSection" onclick="Code();"><img src="icons/Document.svg" /></td>';
 							//	echo '<td class="genSettingsSection" onclick="Wordlist();"><img src="icons/Book.svg" /></td>';
 								echo '<td class="butto" title="Settings" onclick="generalSettings();"><img src="new icons/general_settings_button.svg" /></td>';
-								echo '<td class="butto" title="Select codesource" onclick="Code();"><img src="icons/Document.svg" /></td>';
+								echo '<td class="butto" title="Select codesource" onclick="Code();"><img src="new icons/list_codefiles.svg" /></td>';
 								
 								
 				}else{
