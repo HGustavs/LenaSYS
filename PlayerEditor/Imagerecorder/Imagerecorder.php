@@ -62,13 +62,13 @@
 		</form>
 		<br/>
 		<form name='form' method='post' action=''>
-			<input id='test' name='test' style='width:1280px;'/>
+			<input id='XMLfile' name='test' style='width:1280px;'/>
 			<input type="submit" value="Export XML"></input>
 		</form>
 	</div>
 	<script>
-		var imgSource = "<?php echo $image_name; ?>";
-		var imagerec = new imagerecorder("ImageCanvas", imgSource);
+	var imgSource = "<?php echo $image_name; ?>";
+	var imagerec = new imagerecorder("ImageCanvas", imgSource);
 	</script>
 	</body>		
 </html>

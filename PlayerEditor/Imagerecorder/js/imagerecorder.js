@@ -11,6 +11,7 @@ function imagerecorder(imgCanvas, img1)
 	var lastEvent = dd.getTime();
 	var yCan = 0;
 	var imgIndex = 0;
+	var i = 0;
 	
 	var imageLoader = document.getElementById('imageLoader');
     imageLoader.addEventListener('change', getImages, false);
@@ -19,7 +20,6 @@ function imagerecorder(imgCanvas, img1)
 	
 	var tCanvas = document.getElementById('canvasTemp');
 	var tCtx = tCanvas.getContext('2d');
-
 	
 	function getImages(e){
 		var reader = new FileReader();
@@ -30,23 +30,25 @@ function imagerecorder(imgCanvas, img1)
 				tCtx.drawImage(picArray[arrayImage],34,yCan, width = 130, height = 130);
 				arrayImage++;
 				yCan += 150;
+				pathArray[imgIndex] = document.getElementById('imageLoader').value;
+				imgIndex++;
 			}
 			img.src = event.target.result;
 		}
+			
 			reader.readAsDataURL(e.target.files[0]);
-			pathArray[currentImage] = document.getElementById('imageLoader').value;
+			
 	}
 	/*
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function log(str){
-	alert(imgIndex+" "+currentImage);
 		var dd = new Date();
 		var currentTime = dd.getTime();
 		var delay = currentTime - lastEvent;
 		lastEvent = currentTime;
 		var delayStr = "<timestep delay=" + delay + "/>";
-		imgPath = "<picture src="+pathArray[imgIndex]+"/>";
+		imgPath = "<picture src="+pathArray[i]+"/>";
 		var logTest;
 		
 		console.log(imgPath);
@@ -54,10 +56,10 @@ function imagerecorder(imgCanvas, img1)
 		console.log(str);
 		console.log(logTest);
 		
-			document.getElementById("test").value += imgPath;
-			document.getElementById("test").value += delayStr;
-			document.getElementById("test").value += str;
-			imgIndex++;
+		document.getElementById("XMLfile").value += imgPath;
+		document.getElementById("XMLfile").value += delayStr;
+		document.getElementById("XMLfile").value += str;
+		i++;
 	}
 	
 	/*
@@ -83,12 +85,12 @@ function imagerecorder(imgCanvas, img1)
 	/*
 	 *checks the mouse-position in realtime.
 	 */
-			$("#" + imageCanvas).mousemove(function(event){	
-			var xMouseReal = event.clientX;
-			var yMouseReal = event.clientY;
-			document.getElementById('xCordReal').innerHTML=xMouseReal;
-			document.getElementById('yCordReal').innerHTML=yMouseReal;
-			});
+		$("#" + imageCanvas).mousemove(function(event){	
+		var xMouseReal = event.clientX;
+		var yMouseReal = event.clientY;
+		document.getElementById('xCordReal').innerHTML=xMouseReal;
+		document.getElementById('yCordReal').innerHTML=yMouseReal;
+		});
 	});
 	
 }
