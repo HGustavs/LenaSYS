@@ -19,18 +19,20 @@ function checklogin()
 
 		$result=mysql_query($querystring);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
-		
-		// Fetch the result
-		$row = mysql_fetch_assoc($result);
 
-		if(password_verify($password, $row['password'])) {
-			$_SESSION['uid'] = $row['uid'];
-			$_SESSION["loginname"]=$row['username'];
-			$_SESSION["passwd"]=$row['password'];
-			$_SESSION["superuser"]=$row['superuser'];
-			return true;
-		} else {
-			return false;
+		if(mysql_num_rows($result) > 0) {
+			// Fetch the result
+			$row = mysql_fetch_assoc($result);
+
+			if(password_verify($password, $row['password'])) {
+				$_SESSION['uid'] = $row['uid'];
+				$_SESSION["loginname"]=$row['username'];
+				$_SESSION["passwd"]=$row['password'];
+				$_SESSION["superuser"]=$row['superuser'];
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 	} else {		
