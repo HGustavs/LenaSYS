@@ -21,18 +21,22 @@ body{
 .header{
 	font-family:'Raleway Thin';
 	font-size:52px;
+	color:#FFFFFF;
 }
 .cords{
 	margin-left:auto;
 	margin-right:auto;
+	color:#FFFFFF;
 }
 .cordFont{
 	font-size:18px;
 	font-family:arial;
+	color:#FFFFFF;
 }
 .uploadImages{
 	margin-left:5px;
 	float:right;
 	width:200px;
-	overflow: hidden;
+	height:720px;
+	background:rgba(0,0,0,0.2);
 }
