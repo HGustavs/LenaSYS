@@ -34,7 +34,5 @@ body{
 	margin-left:5px;
 	float:right;
 	width:200px;
-	height:720px;
-	overflow:hidden;
-	
+	overflow: hidden;
 }

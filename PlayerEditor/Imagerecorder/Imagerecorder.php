@@ -5,7 +5,7 @@
 <style>
 </style>
 	<link href="stylesheet.css" rel="stylesheet" type="text/css"/>
-	<script language="javascript" src="../js/Imagerecorder/imagerecorder.js"></script>
+	<script language="javascript" src="js/imagerecorder.js"></script>
 	<script language="javascript" src="../js/jquery-1.11.0.min.js"></script>
 
 </head>
@@ -67,8 +67,8 @@
 		</form>
 	</div>
 	<script>
-	var imgSource = "<?php echo $image_name; ?>";
-	var imagerec = new imagerecorder("ImageCanvas", imgSource);
+		var imgSource = "<?php echo $image_name; ?>";
+		var imagerec = new imagerecorder("ImageCanvas", imgSource);
 	</script>
 	</body>		
 </html>
