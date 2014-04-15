@@ -1,4 +1,3 @@
-
 	/*
 	 *
 	 *  This function acts as a wrapper to a canvas object. It logs
@@ -6,6 +5,17 @@
 	 *
 	 */ 
 	function captureCanvas(canvas){
+			// Add save button to BODY
+		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
+		// Save log when "Save log" button is clciked
+		$("#CanvasWrapper-save").click(function(){
+			alert("Saving");
+			$.ajax({
+		        type: 'POST',
+		        url: 'logfile.php',
+		        data: { string: str + "</script>" }
+	        });
+		});
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
 		
@@ -233,27 +243,27 @@
 		this.restore = function(){
 			this.UpdateAllFunctions();
 	        this.log('<restore/>');        
-	        return this.ctx.restore();
+	        this.ctx.restore();
 	    }
 		this.save = function(){
 			this.UpdateAllFunctions();
 	        this.log('<save/>');        
-	        return this.ctx.save();
+	        this.ctx.save();
 	    }
 		this.createEvent = function(){
 			this.UpdateAllFunctions();
 	        this.log('<createEvent/>');        
-	        return this.ctx.createEvent();
+	        this.ctx.createEvent();
 	    }
 		this.getContext = function(){
 			this.UpdateAllFunctions();
 	        this.log('<getContext/>');        
-	        return this.ctx.getContext();
+	        this.ctx.getContext();
 	    }
 		this.toDataURL = function(){
 			this.UpdateAllFunctions();
 	        this.log('<toDataURL/>');        
-	        return this.ctx.toDataURL();
+	        this.ctx.toDataURL();
 	    }
 		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
 		This updates are added to the xml if there are any.*/
@@ -356,18 +366,6 @@
 			attribute += '</timestep>' + '\n';
 			return (attribute);
 		}
-		
-		// Add save button to BODY
-		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
-		// Save log when "Save log" button is clciked
-		$("#CanvasWrapper-save").click(function(){
-			alert("Saving");
-			$.ajax({
-		        type: 'POST',
-		        url: 'logfile.php',
-		        data: { string: str + "</script>" }
-	        });
-		});
 		
 		
 	}
