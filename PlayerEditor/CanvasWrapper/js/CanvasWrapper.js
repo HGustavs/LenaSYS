@@ -327,13 +327,13 @@
 			this.lastTimestep = this.timestep;
 
 			// Set string
-			var attribute = '<timestep delay="' + delay + '">' + '\n';
+			var attribute = '<timestep delay="0">' + '\n';
 			
 			
 			this.ctx[property] = this[property];
 			attribute += '<state';
 			// Create string for state
-			attribute = '_' + property + ' value="' + this[property] + '"' + '/>';
+			attribute += '_' + property + ' value="' + this[property] + '"' + '/>';
 			attribute.toLowerCase();
 			attribute += '</timestep>' + '\n';
 			return (attribute);
