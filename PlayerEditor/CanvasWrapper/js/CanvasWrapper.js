@@ -78,7 +78,7 @@
 	    }
 	    
 	    this.stroke = function(){
-			this.UpdateAllFunctions= function();
+			this.UpdateAllFunctions();
 			this.log('<stroke/>');       
 	        this.ctx.stroke();
 	    }
