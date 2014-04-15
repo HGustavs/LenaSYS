@@ -591,6 +591,7 @@ a {
     font-stretch: condensed;
     text-decoration: none;
     text-transform: uppercase;
+    z-index: 10000;
     /*box-shadow: 0 0 3px black;*/
 }
 .arrow {
