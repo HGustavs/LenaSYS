@@ -8,7 +8,7 @@
 	function captureCanvas(canvas){
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
-
+		
 		// Add script tag
 		str += '<script type="canvas">\n';
 
@@ -235,7 +235,26 @@
 	        this.log('<restore/>');        
 	        return this.ctx.restore();
 	    }
-		
+		this.save = function(){
+			this.UpdateAllFunctions();
+	        this.log('<save/>');        
+	        return this.ctx.save();
+	    }
+		this.createEvent = function(){
+			this.UpdateAllFunctions();
+	        this.log('<createEvent/>');        
+	        return this.ctx.createEvent();
+	    }
+		this.getContext = function(){
+			this.UpdateAllFunctions();
+	        this.log('<getContext/>');        
+	        return this.ctx.getContext();
+	    }
+		this.toDataURL = function(){
+			this.UpdateAllFunctions();
+	        this.log('<toDataURL/>');        
+	        return this.ctx.toDataURL();
+	    }
 		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
 		This updates are added to the xml if there are any.*/
 		this.UpdateAllFunctions = function(){
@@ -321,19 +340,19 @@
 			var timestep = new Date().getTime();
 
 			// Calculate delay
-			var delay = this.timestep - this.lastTimestep;
+			var delay = timestep - lastTimestep;
 
 			// Update timestep
-			this.lastTimestep = this.timestep;
+			lastTimestep = timestep;
 
 			// Set string
 			var attribute = '<timestep delay="' + delay + '">' + '\n';
-			
+			console.log(delay);
 			
 			this.ctx[property] = this[property];
 			attribute += '<state';
 			// Create string for state
-			attribute = '_' + property + ' value="' + this[property] + '"' + '/>';
+			attribute += '_' + property + ' value="' + this[property] + '"' + '/>';
 			attribute.toLowerCase();
 			attribute += '</timestep>' + '\n';
 			return (attribute);
