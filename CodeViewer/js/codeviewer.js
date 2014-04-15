@@ -210,6 +210,11 @@ function addImpword()
 	word=document.getElementById('impwordtextbox');
 		// check if UTF encoded
 		for(var i=0; i<word.value.length; i++) {
+			if(word.value.indexOf(' ') >=0){
+				document.getElementById('impwordlistError').innerHTML = "Error. One word at a time.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+			}
 	        if(word.value.charCodeAt(i) > 127){
 				document.getElementById('impwordlistError').innerHTML = "Error. Not UTF-encoded.";
 				word.style.backgroundColor="#E33D3D";
@@ -279,6 +284,11 @@ function addWordlistWord()
 		word=document.getElementById('wordlisttextbox');
 		// check if UTF encoded
 		for(var i=0; i<word.value.length; i++) {
+			if(word.value.indexOf(' ') >=0){
+				document.getElementById('wordlistError').innerHTML = "Error. One word at a time.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+			}
 	        if(word.value.charCodeAt(i) > 127){
 				document.getElementById('wordlistError').innerHTML = "Error. Not UTF-encoded.";
 				word.style.backgroundColor="#E33D3D";
@@ -1136,7 +1146,7 @@ function rendercode(codestring,destinationdiv)
 }
 function linenumbers(){	
 	if(localStorage.getItem("linenumbers") == "false"){	
-		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
+		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg'); 
 		$( ".no" ).css("display","none");	
 	}
 }
@@ -1144,7 +1154,6 @@ function fadelinenumbers(){
 	if ( $( ".no" ).is( ":hidden" ) ) {
 		$( ".no" ).fadeIn( "slow" );
 		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
-
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
 		$( ".no" ).fadeOut("slow");
