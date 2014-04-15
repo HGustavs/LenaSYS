@@ -8,7 +8,7 @@
 	function captureCanvas(canvas){
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
-
+		
 		// Add script tag
 		str += '<script type="canvas">\n';
 
@@ -340,14 +340,14 @@
 			var timestep = new Date().getTime();
 
 			// Calculate delay
-			var delay = this.timestep - this.lastTimestep;
+			var delay = timestep - lastTimestep;
 
 			// Update timestep
-			this.lastTimestep = this.timestep;
+			lastTimestep = timestep;
 
 			// Set string
-			var attribute = '<timestep delay="0">' + '\n';
-			
+			var attribute = '<timestep delay="' + delay + '">' + '\n';
+			console.log(delay);
 			
 			this.ctx[property] = this[property];
 			attribute += '<state';
