@@ -386,10 +386,11 @@
 		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
 		// Call sendXML() on save-button click
 		$("#CanvasWrapper-save").click(function(){
-			console.log(str);	
-			
-			// TODO:
-			// this.sendXML();
+			$.ajax({
+		        type: 'POST',
+		        url: 'logfile.php',
+		        data: { string: str }
+	        });
 		});
 
 		
