@@ -1,12 +1,22 @@
-﻿<?php header("Location: quiz/index.html"); ?>
-<!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta charset="utf-8" />
-		<title></title>
-	</head>
-	<body>
-		<h1>Quiz server v. 2</h1>
-	</body>
+			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
+            <link type="text/css" href="../DuggaSys/css/duggasys.css" rel="stylesheet" />	
+			<script type="text/javascript" src="../CodeViewer/js/jquery-1.5.1.min.js"></script>
+			<script type="text/javascript" src="duggasys.js"></script>
+
+			<script>
+			</script>
+			<body>
+					<?php
+						include_once("../../coursesyspw.php");	
+						include_once("basic.php");
+
+						session_start();
+						dbConnect();
+
+						courselist();
+					?>			
+
+			</body>
 </html>
