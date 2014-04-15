@@ -37,7 +37,147 @@
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.5235987755982988"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="100" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
 <timestep delay="1">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.5235987755982988"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="100" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.5235987755982988"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="100" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.5235987755982988"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="100" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
 <rotate angle="0.5235987755982988"/>
 </timestep>
 <timestep delay="0">
@@ -177,171 +317,31 @@
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.5235987755982988"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="100" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
 <timestep delay="1">
-<rotate angle="0.5235987755982988"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="100" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.5235987755982988"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="100" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.5235987755982988"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="100" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="1">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.5235987755982988"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="100" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.5235987755982988"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="100" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
@@ -473,153 +473,6 @@
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
-<timestep delay="1">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
 <timestep delay="0">
 <beginpath/>
 </timestep>
@@ -753,260 +606,8 @@
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
-<timestep delay="1">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
 <timestep delay="0">
 <rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
 </timestep>
 <timestep delay="0">
 <state_fillStyle value="white"/></timestep>
@@ -1055,6 +656,111 @@
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
 <timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
 <rotate angle="0.10471975511965977"/>
 </timestep>
 <timestep delay="0">
@@ -1206,44 +912,9 @@
 </timestep>
 <timestep delay="0">
 <state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
 <timestep delay="1">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
 <beginpath/>
 </timestep>
 <timestep delay="0">
@@ -1271,87 +942,269 @@
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
 <timestep delay="1">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
@@ -1435,154 +1288,7 @@
 <timestep delay="0">
 <moveto x="117" y="0"/>
 </timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
 <timestep delay="1">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
@@ -1698,59 +1404,206 @@
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
 <timestep delay="1">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<beginpath/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<moveto x="117" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<lineto x="120" y="0"/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
-<state_strokeStyle value="black"/></timestep>
-<timestep delay="0">
-<rotate angle="0.10471975511965977"/>
-</timestep>
-<timestep delay="0">
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
@@ -1922,12 +1775,159 @@
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<moveto x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<lineto x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
+<timestep delay="0">
+<state_strokeStyle value="black"/></timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/></timestep>
 <timestep delay="1">
-<stroke/>
-</timestep>
-<timestep delay="0">
-<state_fillStyle value="white"/></timestep>
-<timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
 <timestep delay="0">
 <rotate angle="0.10471975511965977"/>
@@ -2146,7 +2146,7 @@
 <state_fillStyle value="white"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
-<timestep delay="1">
+<timestep delay="0">
 <stroke/>
 </timestep>
 <timestep delay="0">
@@ -2242,12 +2242,12 @@
 <timestep delay="0">
 <save/>
 </timestep>
-<timestep delay="0">
+<timestep delay="1">
 <state_fillStyle value="black"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
 <timestep delay="0">
-<rotate angle="1.7192947573187476"/>
+<rotate angle="1.8563031036003022"/>
 </timestep>
 <timestep delay="0">
 <state_lineWidth value="14"/></timestep>
@@ -2300,7 +2300,7 @@
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
 <timestep delay="0">
-<rotate angle="1.7819811662862102"/>
+<rotate angle="3.426081321664869"/>
 </timestep>
 <timestep delay="0">
 <state_lineWidth value="10"/></timestep>
@@ -2353,7 +2353,7 @@
 <timestep delay="0">
 <state_strokeStyle value="black"/></timestep>
 <timestep delay="0">
-<rotate angle="0.10471975511965977"/>
+<rotate angle="4.50294947014537"/>
 </timestep>
 <timestep delay="0">
 <state_lineWidth value="6"/></timestep>
@@ -2410,7 +2410,7 @@
 <state_fillStyle value="#D40000"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="#D40000"/></timestep>
-<timestep delay="1">
+<timestep delay="0">
 <beginpath/>
 </timestep>
 <timestep delay="0">
@@ -2473,7 +2473,7 @@
 <timestep delay="0">
 <stroke/>
 </timestep>
-<timestep delay="0">
+<timestep delay="1">
 <state_fillStyle value="rgba(0,0,0,0)"/></timestep>
 <timestep delay="0">
 <state_strokeStyle value="#325FA2"/></timestep>

@@ -347,7 +347,6 @@
 
 			// Set string
 			var attribute = '<timestep delay="' + delay + '">' + '\n';
-			console.log(delay);
 			
 			this.ctx[property] = this[property];
 			attribute += '<state';
@@ -362,6 +361,7 @@
 		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
 		// Save log when "Save log" button is clciked
 		$("#CanvasWrapper-save").click(function(){
+			alert("Saving");
 			$.ajax({
 		        type: 'POST',
 		        url: 'logfile.php',
