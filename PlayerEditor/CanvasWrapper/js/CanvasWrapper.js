@@ -235,7 +235,26 @@
 	        this.log('<restore/>');        
 	        return this.ctx.restore();
 	    }
-		
+		this.save = function(){
+			this.UpdateAllFunctions();
+	        this.log('<save/>');        
+	        return this.ctx.save();
+	    }
+		this.createEvent = function(){
+			this.UpdateAllFunctions();
+	        this.log('<createEvent/>');        
+	        return this.ctx.createEvent();
+	    }
+		this.getContext = function(){
+			this.UpdateAllFunctions();
+	        this.log('<getContext/>');        
+	        return this.ctx.getContext();
+	    }
+		this.toDataURL = function(){
+			this.UpdateAllFunctions();
+	        this.log('<toDataURL/>');        
+	        return this.ctx.toDataURL();
+	    }
 		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
 		This updates are added to the xml if there are any.*/
 		this.UpdateAllFunctions = function(){
