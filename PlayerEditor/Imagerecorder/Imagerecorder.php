@@ -5,7 +5,7 @@
 <style>
 </style>
 	<link href="stylesheet.css" rel="stylesheet" type="text/css"/>
-	<script language="javascript" src="../js/Imagerecorder/imagerecorder.js"></script>
+	<script language="javascript" src="js/imagerecorder.js"></script>
 	<script language="javascript" src="../js/jquery-1.11.0.min.js"></script>
 
 </head>
@@ -62,7 +62,7 @@
 		</form>
 		<br/>
 		<form name='form' method='post' action=''>
-			<input id='test' name='test' style='width:1280px;'/>
+			<input id='XMLfile' name='test' style='width:1280px;'/>
 			<input type="submit" value="Export XML"></input>
 		</form>
 	</div>
