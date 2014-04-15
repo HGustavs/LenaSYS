@@ -68,19 +68,19 @@
 
 	    this.beginPath = function(){
 			this.UpdateAllFunctions();
-			this.log('<beginpath/>');
+			this.log('<beginPath/>');
 	        this.ctx.beginPath();
 	    }
 	    
 	    this.moveTo = function(x, y){
 			this.UpdateAllFunctions();
-			this.log('<moveto x="'+x+'" y="'+y+'"/>');
+			this.log('<moveTo x="'+x+'" y="'+y+'"/>');
 	        this.ctx.moveTo(x, y);
 	    }
 	    
 	    this.lineTo = function(x, y){
 			this.UpdateAllFunctions();
-			this.log('<lineto x="'+x+'" y="'+y+'"/>');
+			this.log('<lineTo x="'+x+'" y="'+y+'"/>');
 	        this.ctx.lineTo(x, y);
 	    }
 	    
@@ -92,17 +92,17 @@
 		
 		this.createLinearGradient = function(x, y, x1,y1){
 			this.UpdateAllFunctions();
-			this.log('<createlineargradient x="'+x+'" y="'+y+'" x1="'+x1+'" y1="'+y1+'"/>');       
+			this.log('<createLinearGradient x="'+x+'" y="'+y+'" x1="'+x1+'" y1="'+y1+'"/>');       
 	        this.ctx.createLinearGradient(x, y, x1,y1);
 		}
 		this.createPattern = function(x, y,img){
 			this.UpdateAllFunctions();
-			this.log('<createpattern x="'+x+'" y="'+y+'" img="'+img+'"/>');        
+			this.log('<createPattern x="'+x+'" y="'+y+'" img="'+img+'"/>');        
 	        this.ctx.createPattern(x, y,img);
 		}
 		this.createRadialGradient = function(x, y,r, x1,y1,r1){
 			this.UpdateAllFunctions();
-			this.log('<createradialgradient x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'" r1="'+r1+'"/>');       
+			this.log('<createRadialGradient x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'" r1="'+r1+'"/>');       
 	        this.ctx.createRadialGradient(x, y,r, x1,y1,r1);
 		}
 		
@@ -114,17 +114,17 @@
 		}
 		this.fillRect = function(x, y, width, height){
 			this.UpdateAllFunctions();
-			this.log('<fillrect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+			this.log('<fillRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
 	        this.ctx.fillRect(x, y, width, height);
 		}
 		this.strokeRect = function(x, y, width, height){
 			this.UpdateAllFunctions();
-	        this.log('<strokerect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+	        this.log('<strokeRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
 	        this.ctx.strokeRect(x, y, width, height);
 		}
 		this.clearRect = function(x, y, width, height){
 			this.UpdateAllFunctions();
-	        this.log('<clearrect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+	        this.log('<clearRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
 	        this.ctx.clearRect(x, y, width, height);
 		}
 
@@ -136,7 +136,7 @@
 	    }
 		this.closePath = function(){
 			this.UpdateAllFunctions();
-	        this.log('<closepath/>');        
+	        this.log('<closePath/>');        
 	        this.ctx.closePath();
 	    }
 		this.clip = function(){
@@ -146,12 +146,12 @@
 	    }
 		this.quadraticCurveTo = function(x, y, cpx, cpy){
 			this.UpdateAllFunctions();
-	        this.log('<quadraticcurveto x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'"/>');        
+	        this.log('<quadraticCurveTo x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'"/>');        
 	        this.ctx.quadraticCurveTo(x, y, cpx, cpy);
 		}
 		this.bezierCurveTo = function(x, y, cpx, cpy, cpx1, cpy1){
 			this.UpdateAllFunctions();
-	        this.log('<beziercurveto x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'" cpx1="'+cpx1+'  cpy1="'+cpy1+'"/>');        
+	        this.log('<bezierCurveTo x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'" cpx1="'+cpx1+'  cpy1="'+cpy1+'"/>');        
 	        this.ctx.bezierCurveTo(x, y, cpx, cpy, cpx1, cpy1);
 		}
 		this.arc = function(x, y,r,sAngle,eAngle,counterclockwise){
@@ -161,12 +161,12 @@
 		}
 		this.arcTo = function(x, y,r,x1,y1){
 			this.UpdateAllFunctions();
-	        this.log('<arcto x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'"/>');        
+	        this.log('<arcTo x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'"/>');        
 	        this.ctx.arcTo(x, y,r,x1,y1);
 		}
 		this.isPointInPath = function(x, y){
 			this.UpdateAllFunctions();
-	        this.log('<ispointinpath x="'+x+'" y="'+y+'"/>');        
+	        this.log('<isPointInPath x="'+x+'" y="'+y+'"/>');        
 	        return this.ctx.isPointInPath(x, y);
 		}
 
@@ -193,24 +193,24 @@
 		}
 		this.setTransform = function(a,b,c,d,e,f){
 			this.UpdateAllFunctions();
-	        this.log('<settransform a="' + a + '" b="' +b+ '" c="'+c+'" d="'+d+'" e="'+e+'  f="'+f+'"/>');        
+	        this.log('<setTransform a="' + a + '" b="' +b+ '" c="'+c+'" d="'+d+'" e="'+e+'  f="'+f+'"/>');        
 	        this.ctx.setTransform(a,b,c,d,e,f);
 		}
 
 		// Text functions
 		this.fillText = function(x, y,text,maxWidth){
 			this.UpdateAllFunctions();
-	        this.log('<filltext x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');        
+	        this.log('<fillText x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');        
 	        this.ctx.fillText(x, y,text,maxWidth);
 		}
 		this.strokeText = function(x, y,text,maxWidth){
 			this.UpdateAllFunctions();
-	        this.log('<stroketext x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');        
+	        this.log('<strokeText x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');        
 	        this.ctx.strokeText(x, y,text,maxWidth);
 		}
 		this.measureText = function(text){
 			this.UpdateAllFunctions();
-	        this.log('<measuretext text="'+text+'"/>');        
+	        this.log('<measureText text="'+text+'"/>');        
 	        return this.ctx.measureText(text);
 		}
 
@@ -218,25 +218,25 @@
 		this.drawImage = function(img,sx,sy,swidth,sheight,x,y,width,height){
 		
 			this.UpdateAllFunctions();
-	        this.log('<drawimage img="'+img+'" sx="'+sx+'" sy="'+sy+'" swidth="'+swidth+'" sheight="'+sheight+'" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+	        this.log('<drawImage img="'+img+'" sx="'+sx+'" sy="'+sy+'" swidth="'+swidth+'" sheight="'+sheight+'" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
 	        this.ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 		}
 
 		// Pixel manipulation functions
 		this.createImageData = function( imageData, width, height){
 			this.UpdateAllFunctions();
-			this.log('<createimagedata imagedata="'+imageData+'" width="'+width+'" height="'+height+'"/>');        
+			this.log('<createImageData imagedata="'+imageData+'" width="'+width+'" height="'+height+'"/>');        
 			this.ctx.createImageData( imageData, width, height);
 			
 		}
 		this.getImageData = function(x, y, width, height){
 			this.UpdateAllFunctions();
-	        this.log('<getimagedata x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+	        this.log('<getImageData x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
 	        return this.ctx.getImageData(x, y, width, height);
 		}
 		this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){
 			this.UpdateAllFunctions();
-	        this.log('<putimagedata imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dirtyx="'+dirtyX+'" dirtyy="'+dirtyY+'" dirtywidth="'+dirtyWidth+'" dirtyheight="'+dirtyHeight+'"/>');        
+	        this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dirtyx="'+dirtyX+'" dirtyy="'+dirtyY+'" dirtywidth="'+dirtyWidth+'" dirtyheight="'+dirtyHeight+'"/>');        
 	        return this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 		}
 		//Other methods.
