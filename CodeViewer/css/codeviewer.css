@@ -157,12 +157,14 @@
     right: 20px;
     height: auto;
     width: 200px;
+    cursor: default;
 }
 
 .backwdrop {
     right: 20px;
     height: auto;
     width: 200px;
+    cursor: default;
 }
 
 .dropdownitem {
@@ -171,6 +173,7 @@
     display: block;
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
+    cursor: default;
 }
 
 .menuhi {
