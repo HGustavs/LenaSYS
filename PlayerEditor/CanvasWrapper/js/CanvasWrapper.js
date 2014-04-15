@@ -364,17 +364,27 @@
 			}
 		}
 		
-		
-		
 		// Update a specific property
 		this.updateContextProperty = function(property) {
 			// Update property
+			var timestep = new Date().getTime();
+
+			// Calculate delay
+			var delay = this.timestep - this.lastTimestep;
+
+			// Update timestep
+			this.lastTimestep = this.timestep;
+
+			// Set string
+			var attribute = '<timestep delay="' + delay + '">' + '\n';
+			
+			
 			this.ctx[property] = this[property];
 
 			// Create string for state
-			var attribute = '_' + property + ' value="' + this[property] + '"';
+			attribute = '_' + property + ' value="' + this[property] + '"';
 			attribute.toLowerCase();
-
+			attribute += '</timestep>' + '\n';
 			return (attribute);
 		}
 		
