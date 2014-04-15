@@ -242,11 +242,9 @@
 			this.updateContextLineState();
 			this.updateContextCssState();
 			this.updateContextTextState();
-			this.updateContextPixelManipulationState();
 			this.updateContextCompositingState();
 		}
 		this.updateContextLineState = function(){
-			var str = '<state';
 
 			// Check for updates
 			if (this.ctx.lineWidth != this.lineWidth) {
@@ -262,16 +260,10 @@
 				str += this.updateContextProperty('lineCap');
 			}
 
-			// Add state update to XML if needed
-			if (str.length > 6){
-				str += '/>';
-				this.log(str);
-			}
 		}
 		
 		// Update state
 		this.updateContextCssState = function(){
-			var str = '<state';
 			
 			// Check for updates
 			if (this.ctx.fillStyle != this.fillStyle) {
@@ -292,17 +284,10 @@
 			if (this.ctx.shadowOffsetY != this.shadowOffsetY) {
 				str += this.updateContextProperty('shadowOffsetY');
 			}
-
-			// Add state update to XML if needed
-			if (str.length > 6){
-				str += '/>';
-				this.log(str);
-			}
 		}
 
 		// Update state
 		this.updateContextTextState = function(){
-			var str = '<state';
 			
 			// Check for updates
 			if (this.ctx.font != this.font) {
@@ -315,39 +300,10 @@
 				str += this.updateContextProperty('textBaseline');
 			}
 
-			// Add state update to XML if needed
-			if (str.length > 6){
-				str += '/>';
-				this.log(str);
-			}
-		}
-		// Update state
-		this.updateContextPixelManipulationState = function(){
-			
-			// These properties does not exist in canvas and should be removed.
-			/*
-			var str = '<state';
-				// Check for updates
-				if (this.ctx.imgData.width != this.imgData.width) {
-					str += this.updateContextProperty('imgData.width');
-				}
-				if (this.ctx.imgData.height != this.imgData.height) {
-					str += this.updateContextProperty('imgData.height');
-				}
-				if (this.ctx.imageData.data != this.imageData.data) {
-					str += this.updateContextProperty('imageData.data');
-				}
-
-				// Add state update to XML if needed
-				if (str.length > 6){
-					str += '/>';
-					this.log(str);
-				}*/
 		}
 
 		// Update state
 		this.updateContextCompositingState = function(){
-			var str = '<state';
 			
 			// Check for updates
 			if (this.ctx.globalAlpha != this.globalAlpha) {
@@ -357,11 +313,6 @@
 				str += this.updateContextProperty('globalCompositeOperation');
 			} 
 		
-			// Add state update to XML if needed
-			if (str.length > 6){
-				str += '/>';
-				this.log(str);
-			}
 		}
 		
 		// Update a specific property
@@ -380,9 +331,9 @@
 			
 			
 			this.ctx[property] = this[property];
-
+			attribute += '<state';
 			// Create string for state
-			attribute = '_' + property + ' value="' + this[property] + '"';
+			attribute = '_' + property + ' value="' + this[property] + '"' + '/>';
 			attribute.toLowerCase();
 			attribute += '</timestep>' + '\n';
 			return (attribute);
