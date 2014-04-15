@@ -237,7 +237,7 @@ function Canvasrenderer()
 			if(nodes[x].attributes != null){
 				console.log("attribute length " + nodes[x].attributes.length);
 				// Continue if invalid node (i.e. not in list of valid functions)
-				if(!this.validFunction(nodes[x].nodeName)) continue;
+				if(!this.validFunction(nodes[x].nodeName)){ console.log("ERROR: " + nodes[x].nodeName + " is not in valid functions-list"; continue; }
 				console.log("nodes: "+nodes[x].nodeName);
 
 				// Check number of arguments and call canvas function
