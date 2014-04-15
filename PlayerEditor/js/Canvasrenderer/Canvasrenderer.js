@@ -29,7 +29,7 @@ function Canvasrenderer()
 	this.play = function()
 	{
 		// Only play if we have a document
-		if(this.timesteps!=null){
+		if(this.timesteps!=null && this.paused == 1){
 			this.paused=0;
 			// Start over if finished
 			if(this.finished == 1){
@@ -41,10 +41,10 @@ function Canvasrenderer()
 			for(i = this.runningTimesteps.length-1; i >= 0; --i){
 				this.runningTimesteps[i].resume();
 			}
-		}
 
-		// Set icon
-		document.getElementById("play").innerHTML="<img src='images/pause.svg'/>";
+			// Set icon
+			document.getElementById("play").innerHTML="<img src='images/pause.svg'/>";
+		}
 	}
 
 	// Pause canvas
@@ -53,9 +53,7 @@ function Canvasrenderer()
 		this.paused = 1;
 
 		// Pause all timesteps
-		for(i = 0; i < this.runningTimesteps.length; ++i){
-			this.runningTimesteps[i].pause();
-		}
+		this.pauseTimesteps();
 
 		// Set icon
 		document.getElementById("play").innerHTML="<img src='images/play_button.svg'/>";
@@ -69,7 +67,7 @@ function Canvasrenderer()
 		ctx.clearRect(0, 0, c.width, c.height);
 
 		// Stop and clear array of running timesteps
-		this.pause();
+		this.pauseTimesteps();
 		this.runningTimesteps = [];
 
 		// Reload timesteps
@@ -145,6 +143,14 @@ function Canvasrenderer()
 		}
 		// Reverse timestep array
 		this.runningTimesteps.reverse();
+	}
+
+	// Pause/stop all timesteps
+	this.pauseTimesteps = function() {
+		// Pause all timesteps
+		for(i = 0; i < this.runningTimesteps.length; ++i){
+			this.runningTimesteps[i].pause();
+		}
 	}
 
 	// Execute timestep nodes
