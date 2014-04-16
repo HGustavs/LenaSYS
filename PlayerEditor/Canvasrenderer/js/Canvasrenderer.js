@@ -227,7 +227,9 @@ function Canvasrenderer()
 
 	// Pause/stop all timesteps
 	this.pauseTimesteps = function() {
-		this.runningTimesteps[this.runningTimesteps.length-1].pause();
+		if (this.runningTimesteps.length > 0) {
+			this.runningTimesteps[this.runningTimesteps.length-1].pause();
+		}
 	}
 
 	// Execute timestep nodes
