@@ -175,7 +175,14 @@ function Canvasrenderer()
 	 {
 	 	// List of all valid canvas functions
 		// No other operation in the XML should be possible to run
-		var validFunctions = ['beginPath', 'moveTo', 'lineTo', 'stroke', 'createLinearGradient', 'createPattern', 'createRadialGradient', 'rect', 'fillRect', 'strokeRect', 'clearRect', 'fill', 'closePath', 'clip', 'quadraticCurveTo', 'beizerCurveTo', 'arc', 'arcTo', 'isPointInPath', 'scale', 'rotate', 'translate', 'transform', 'measureText', 'drawImage', 'createImageData', 'getImageData', 'putImageData', 'save', 'createEvent', 'getContext', 'toDataURL', 'restore', 'state_fillStyle', 'state_strokeStyle', 'state_shadowColor', 'state_shadowBlur', 'state_shadowOffsetX', 'state_shadowOffsetY', 'state_lineCap', 'state_lineJoin', 'state_lineWidth', 'state_miterLimit', 'state_font', 'state_textAlign', 'state_textBaseline', 'state_width', 'state_height', 'state_data', 'state_globalAlpha', 'state_globalCompositeOperation'];
+		var validFunctions = 	['beginPath', 'moveTo', 'lineTo', 'stroke', 'createLinearGradient', 'createPattern', 'createRadialGradient', 
+								'rect', 'fillRect', 'strokeRect', 'clearRect', 'fill', 'closePath', 'clip', 'quadraticCurveTo', 'beizerCurveTo', 
+								'arc', 'arcTo', 'isPointInPath', 'scale', 'rotate', 'translate', 'transform', 'measureText', 'drawImage', 
+								'createImageData', 'getImageData', 'putImageData', 'save', 'createEvent', 'getContext', 'toDataURL', 'restore', 
+								'state_fillStyle', 'state_strokeStyle', 'state_shadowColor', 'state_shadowBlur', 'state_shadowOffsetX', 
+								'state_shadowOffsetY', 'state_lineCap', 'state_lineJoin', 'state_lineWidth', 'state_miterLimit', 'state_font', 
+								'state_textAlign', 'state_textBaseline', 'state_width', 'state_height', 'state_data', 'state_globalAlpha', 
+								'state_globalCompositeOperation'];
 
 	 	// Compare to list of valid functions
 	 	for(i=0; i<validFunctions.length; ++i){
