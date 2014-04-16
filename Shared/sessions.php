@@ -6,7 +6,7 @@ require_once('../Shared/external/password.php');
 function checklogin()
 {
 	// If neither session nor post return not logged in
-	if(array_key_exists('loginname', $_SESSION) && array_key_exists('passwd', $_SESSION)){
+	if(array_key_exists('loginname', $_SESSION)){
 		return true;
 	} else {		
 		return false;
