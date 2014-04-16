@@ -1,9 +1,14 @@
 @charset "utf-8";
 /* CSS Document */
+body {
+	margin: 0 0;
+}
 
 /*<<----------------------------------------------------Start*/
 /*This is for the login only */
 #login-box{
+	position: absolute;
+	top: 100px;
 	width:350px;
 	height:200px;
 	z-index:5;
@@ -12,6 +17,9 @@
 	margin-top:40px;
 	display:none;
 	border:2px solid #999;
+}
+#bg {
+	z-index: 4;
 }
 #login-box-header{
 	height:25px;

@@ -18,7 +18,7 @@
 
 						courselist();
 					?>			
-
+						<div id="bg" style="display:none; width:100%; height:100%"></div>
 						<div id='login-box'><div id='login-box-header'><span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span><div id='login-box-header-closeb' onclick='closeloginbox();'>x</div></div><div id='login-box-content'>"
 						<form id='loginform' action='login.php' method='post'>
 						<table><tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>
@@ -30,6 +30,5 @@
 						<a id='login-fg-pw' href='#' style='padding-left:10px;'>Forgot password</a></td></tr>
 						</table></form>
 						</div></div>
-
 			</body>
 </html>
