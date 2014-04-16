@@ -53,22 +53,20 @@ include_once "../Shared/basic.php";
 						}	
 
 						echo "</div></td>";
-						//old onclick='location=\"loginlogout.php\";'
-						//new to be implemented for onclick loginbox();
-						echo "<td align='right' class='butto' onclick='location=\"loginlogout.php\";'><img src='icons/Man.svg' /></td>";
+						
+						echo "<td align='right' class='butto' onclick='loginbox();'><img src='icons/Man.svg' /></td>";
 						echo "</tr><tr><td></td></tr></table>";
-						//This is new
-						echo "<div id='login-box'><div id='login-box-header'><span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span></div><div id='login-box-content'>";
-						echo "<form action='#' method='post'>";
+						
+						echo "<div id='login-box'><div id='login-box-header'><span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span><div id='login-box-header-closeb' onclick='closeloginbox();'>x</div></div><div id='login-box-content'>";
+						echo "<form id='loginform' action='login.php' onsubmit='ajaxlogin(this);' method='post'>";
 						echo "<table><tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>";
-						echo "<tr><td class='td-login'><input class='input-login' type='text' name='usern'></td></tr>";
+						echo "<tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>";
 						echo "<tr><td class='td-login'><span class='login-text'>Password</span></td></tr>";
-						echo "<tr><td class='td-login'><input class='input-login' type='password' name='passw'></td></tr>";
-						echo "<tr><td class='td-login'><input id='login-checkbox' type='checkbox' name='saveuserlogin'><span class='login-text'>Keep credentials</span></td></tr>";
+						echo "<tr><td class='td-login'><input class='input-login' type='password' name='password'></td></tr>";
+						echo "<tr><td class='td-login'><input id='login-checkbox' type='checkbox' name='saveuserlogin'><span class='login-text'>Remember me</span></td></tr>";
 						echo "<tr><td class='td-login'><input type='submit' id='submit-button' value='Login'>";
 						echo "<a id='login-fg-pw' href='#' style='padding-left:10px;'>Forgot password</a></td></tr>";
 						echo "</table></form>";
-						echo "</div></div>";
-						//down to here				
+						echo "</div></div>";			
 		}
 ?>

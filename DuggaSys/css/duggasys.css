@@ -1,21 +1,41 @@
 @charset "utf-8";
 /* CSS Document */
 
+/*<<----------------------------------------------------Start*/
 /*This is for the login only */
 #login-box{
 	width:350px;
 	height:200px;
 	z-index:5;
 	background-color:#ccc;
-	border:1px solid #000;
 	margin:0px auto;
 	margin-top:40px;
 	display:none;
+	border:2px solid #999;
 }
 #login-box-header{
-	height:40px;
+	height:25px;
 	background-color:#614875;
+	vertical-align:bottom;
+	padding-top:15px;
+	padding-left:10px;
+}
+#login-box-header-closeb{
+	height:20px;
+	width:40px;
+	float:right;
+	margin-right:4px;
+	margin-top:-15px;
+	background-color:#c75050;
 	text-align:center;
+	color:white;
+	font-family:arial;
+	font-size:10pt;
+	font-weight:bold;
+	cursor:default;
+}
+#login-box-header-closeb:hover{
+	background-color:#ce3d3d;
 }
 input.input-login{
 	width:150px;
@@ -61,3 +81,4 @@ a#login-fg-pw:hover{
 td.td-login{
 	padding-left:10px;
 }
+/*<<----------------------------------------------------End*/

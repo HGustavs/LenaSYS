@@ -2,7 +2,8 @@
 
 //function for showin the login-box
 function loginbox(){
-	
-  		$("#login-box").toggle();
-	
+  	$("#login-box").toggle();
+}
+function closeloginbox(){
+	$("#login-box").hide();
 }
