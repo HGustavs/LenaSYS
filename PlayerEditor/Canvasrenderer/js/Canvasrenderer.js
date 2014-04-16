@@ -38,11 +38,8 @@ function Canvasrenderer()
 				this.reset();
 			}
 
-			// Resume all timesteps
-			// Starting with the closest timestep, to preserve the right order
-			for(i = this.runningTimesteps.length-1; i >= 0; --i){
-				this.runningTimesteps[i].resume();
-			}
+			// Start first timestep (will be recursive)
+			t = this.runningTimesteps[this.runningTimesteps.length-1].resume();
 
 			// Set icon
 			document.getElementById("play").innerHTML="<img src='images/pause.svg'/>";
@@ -102,7 +99,7 @@ function Canvasrenderer()
 			if(windpos<0) windpos=0;
 			if(windpos>this.numValidTimesteps) windpos=this.numValidTimesteps;
 			// Wind
-			console.log(windpos);
+			//console.log(windpos);
 			this.windto(windpos);
 		}
 	}
@@ -201,10 +198,11 @@ function Canvasrenderer()
 		// Reset total time
 		var totalTime = 0;
 
-		// Step through timesteps
-		for(i = 0; i < this.timesteps.length; i++){		 
-			this.timestepElements = xmlDoc.getElementsByTagName("timestep");
+		// Fetch timestep elements
+		this.timestepElements = xmlDoc.getElementsByTagName("timestep");
 
+		// Step through timesteps
+		for(i = 0; i < this.timesteps.length; i++){
 			// Check for elements
 			if(this.timestepElements[i]){
 				// Fetch delay
@@ -217,7 +215,7 @@ function Canvasrenderer()
 					nodes = this.timestepElements[i].childNodes;
 
 					// Execute timestep nodes after specified delay
-					this.runningTimesteps.push(new TimestepTimeout(executeTimestep, totalTime, nodes));
+					this.runningTimesteps.push(new TimestepTimeout(delay, nodes));
 				}
 			}
 		}
@@ -239,13 +237,14 @@ function Canvasrenderer()
 	this.executeTimestep = function(nodes){
 		// Step through nodes
 		for(x = 0; x < nodes.length; x++) {
-			console.log(nodes[x].attributes);
+			//console.log(nodes[x].attributes);
 
 			if(nodes[x].attributes != null){
-				console.log("attribute length " + nodes[x].attributes.length);
+				//console.log("attribute length " + nodes[x].attributes.length);
 				// Continue if invalid node (i.e. not in list of valid functions)
-				if(!this.validFunction(nodes[x].nodeName)){ console.log("ERROR: " + nodes[x].nodeName + " is not in valid functions-list"); continue; }
-				console.log("nodes: "+nodes[x].nodeName);
+				if(!this.validFunction(nodes[x].nodeName)){ //console.log("ERROR: " + nodes[x].nodeName + " is not in valid functions-list"); 
+				continue; }
+				//console.log("nodes: "+nodes[x].nodeName);
 
 				// Check number of arguments and call canvas function
 				// TODO: Add for functions with more arguments
@@ -321,6 +320,11 @@ function Canvasrenderer()
 		}
 		// Remove current step from list
 		this.runningTimesteps.pop();
+		
+		// Update search bar
+		//var fract = this.currentPosition() / this.numValidTimesteps;
+		//document.getElementById("bar").style.width=Math.round(fract*392);
+		////console.log("Bar length: " + document.getElementById("bar").style.width);
 
 		// Check if done
 		if(this.runningTimesteps.length <= 0){
@@ -335,6 +339,10 @@ function Canvasrenderer()
 				alert("Finished Script!");
 				this.finished = 1;
 			}
+		} 
+		else {
+			// Start next
+			this.runningTimesteps[this.runningTimesteps.length-1].resume();
 		}
 	}
 	
@@ -580,7 +588,7 @@ function Canvasrenderer()
  * Wrapper for setTimeout, enabling pause functionality
  * Will be created as a paused timeout
  */
-function TimestepTimeout(callback, delay, args)
+function TimestepTimeout(delay, args)
 {
 	var timerID;
 	var start;
@@ -590,15 +598,22 @@ function TimestepTimeout(callback, delay, args)
 	this.pause = function()
 	{
 		// Remove timeout and save remaining time
-		clearTimeout(timerID);
-		remaining -= new Date() - start;
+		if (remaining != 0) {
+			clearTimeout(timerID);
+		}
 	}
 
 	// Resume timout
 	this.resume = function()
 	{
-		start = new Date();
-		timerID = setTimeout(callback, remaining, args);
+		// Run timesteps with zero delay directly, to avoid waiting 
+		// for timeout rendering etc.
+		if (remaining != 0) {
+			timerID = setTimeout(executeTimestep, remaining, args);
+		}
+		else {
+			window.executeTimestep(args);
+		}
 	}
 
 	// Set delay (will pause)
@@ -608,15 +623,7 @@ function TimestepTimeout(callback, delay, args)
 		remaining = delay;
 	}
 
-	// Get remaining delay
-	this.getDelay = function()
-	{
-		// Calculate the remaining part of the delay
-		return remaining - new Date() - start;
-	}
-
-	// Has to be resumed for timeout to be initialized, and ID to be set
-	this.resume();
+	// Has to be initialized, and ID to be set
 	// Pause right after start
 	this.pause();
 }

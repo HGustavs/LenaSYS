@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script type="canvas">
+<timestep delay="834">
+<state_lineWidth value="12"/></timestep>
+<timestep delay="0">
+<beginpath/>
+</timestep>
+<timestep delay="0">
+<moveTo x="278" y="131"/>
+</timestep>
+<timestep delay="160">
+<lineTo x="83" y="126"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="160">
+<lineTo x="166" y="276"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="152">
+<lineTo x="214" y="283"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="136">
+<lineTo x="232" y="243"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="202" y="228"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="272">
+<lineTo x="141" y="143"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="136">
+<lineTo x="277" y="155"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="416">
+<lineTo x="237" y="325"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="136">
+<lineTo x="194" y="313"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="192">
+<lineTo x="151" y="330"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="120">
+<lineTo x="118" y="271"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="88">
+<lineTo x="106" y="252"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="171" y="240"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="312" y="340"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="325" y="349"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="120">
+<lineTo x="230" y="209"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="161" y="189"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="95" y="247"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="176" y="340"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="105">
+<lineTo x="260" y="270"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="121">
+<lineTo x="299" y="141"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="131">
+<lineTo x="233" y="115"/>
+</timestep>
+<timestep delay="1">
+<stroke/>
+</timestep>
+<timestep delay="66">
+<lineTo x="153" y="161"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="165" y="316"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="242" y="360"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="260" y="338"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="128">
+<lineTo x="77" y="206"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="27" y="219"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="176" y="261"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="265" y="264"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="232">
+<lineTo x="180" y="244"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="176" y="278"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="88">
+<lineTo x="183" y="281"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="120">
+<lineTo x="147" y="308"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="147" y="310"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="136">
+<lineTo x="104" y="315"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="73">
+<lineTo x="95" y="318"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="111">
+<lineTo x="68" y="302"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="67" y="284"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="73" y="233"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="83" y="199"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="216">
+<lineTo x="85" y="132"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="120">
+<lineTo x="86" y="118"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="97">
+<lineTo x="87" y="106"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="110">
+<lineTo x="85" y="86"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="89">
+<lineTo x="83" y="81"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="103" y="61"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="88">
+<lineTo x="132" y="55"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="128">
+<lineTo x="165" y="65"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="196" y="102"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="120">
+<lineTo x="211" y="167"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="234" y="328"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="305" y="370"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="344" y="261"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="332" y="194"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="96">
+<lineTo x="318" y="121"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="120">
+<lineTo x="250" y="84"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="189" y="103"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="88">
+<lineTo x="200" y="263"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="256" y="315"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="207" y="355"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="200">
+<lineTo x="187" y="85"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="128">
+<lineTo x="263" y="86"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="83">
+<lineTo x="282" y="85"/>
+</timestep>
+<timestep delay="1">
+<stroke/>
+</timestep>
+<timestep delay="104">
+<lineTo x="265" y="52"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="204">
+<lineTo x="175" y="232"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="120">
+<lineTo x="212" y="280"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="168" y="268"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="112">
+<lineTo x="117" y="193"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="208">
+<lineTo x="367" y="87"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="128">
+<lineTo x="273" y="192"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="88">
+<lineTo x="253" y="280"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+</script>
