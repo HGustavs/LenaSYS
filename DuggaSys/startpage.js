@@ -20,12 +20,26 @@ function setupLogin()
 
 //function for showin the login-box
 function loginbox(){
+	$("#forgot-passw-box").hide();
 	$("#bg").css({'background': 'rgba(0, 0, 0, 0.5)', 'position': 'absolute', 'top': '0'});
 	$("#login-box").css({'left': (($(document).width()/2) - $("#login-box").width()/2)});
+
   	$("#login-box").toggle();
 	$("#bg").toggle();
 }
 function closeloginbox(){
 	$("#login-box").hide();
-	$("#bg").toggle();
+	$("#bg").hide();
 }
+function closeforgotpwbox(){
+	$("#forgot-passw-box").hide();
+	$("#bg").hide();
+}
+function showForgotPasswBox(){
+	$("#login-box").hide();
+	
+	$("#bg").css({'background': 'rgba(0, 0, 0, 0.5)', 'position': 'absolute', 'top': '0'});
+	$("#forgot-passw-box").css({'left': (($(document).width()/2) - $("#login-box").width()/2)});
+	$("#forgot-passw-box").toggle();
+}
+

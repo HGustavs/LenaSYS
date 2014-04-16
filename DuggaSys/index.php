@@ -19,16 +19,41 @@
 						courselist();
 					?>			
 						<div id="bg" style="display:none; width:100%; height:100%"></div>
-						<div id='login-box'><div id='login-box-header'><span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span><div id='login-box-header-closeb' onclick='closeloginbox();'>x</div></div><div id='login-box-content'>"
-						<form id='loginform' action='login.php' method='post'>
-						<table><tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>
-						<tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>
-						<tr><td class='td-login'><span class='login-text'>Password</span></td></tr>";
-						<tr><td class='td-login'><input class='input-login' type='password' name='password'></td></tr>
-						<tr><td class='td-login'><input id='login-checkbox' type='checkbox' name='saveuserlogin'><span class='login-text'>Remember me</span></td></tr>
-						<tr><td class='td-login'><input type='submit' id='submit-button' value='Login'>
-						<a id='login-fg-pw' href='#' style='padding-left:10px;'>Forgot password</a></td></tr>
-						</table></form>
-						</div></div>
+						<div id='login-box'>
+                        	<div id='login-box-header'>
+                            	<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span>
+                                	<div id='login-box-header-closeb' onclick='closeloginbox();'>x</div>
+                            </div>
+                            <div id='login-box-content'>
+                                <form id='loginform' action='login.php' method='post'>
+                                    <table><tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>
+                                        <tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>
+                                        <tr><td class='td-login'><span class='login-text'>Password</span></td></tr>
+                                        <tr><td class='td-login'><input class='input-login' type='password' name='password'></td></tr>
+                                        <tr><td class='td-login'><input id='login-checkbox' type='checkbox' name='saveuserlogin'>
+                                            <span class='login-text'>Remember me</span></td></tr>
+                                        <tr><td class='td-login'><input type='submit' id='submit-button' value='Login'>
+                                        <span id='login-fg-pw' onclick='showForgotPasswBox();' style='padding-left:10px;'>Forgot password</span></td></tr>
+                                    </table>
+                                </form>
+							</div>
+                         </div>
+                         
+                         <div id='forgot-passw-box'>
+                         	<div id='forgot-passw-box-header'>
+                            	<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>Forgot Password</span>
+                            	<div id='forgot-passw-box-header-closeb' onclick='closeforgotpwbox()'>x</div>
+                                <div id='forgot-password-box-content'>
+                                	<form method='post'>
+                                    	<table>
+                                            <tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>
+                                            <tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>
+                                            <tr><td class='td-login'><input type='submit' id='submit-button' value='Next'></td></tr>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                         </div>
+                         
 			</body>
 </html>
