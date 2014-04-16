@@ -58,7 +58,7 @@ include_once "../Shared/basic.php";
 						echo "</tr><tr><td></td></tr></table>";
 						
 						echo "<div id='login-box'><div id='login-box-header'><span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span><div id='login-box-header-closeb' onclick='closeloginbox();'>x</div></div><div id='login-box-content'>";
-						echo "<form id='loginform' action='login.php' onsubmit='ajaxlogin(this);' method='post'>";
+						echo "<form id='loginform' action='login.php' method='post'>";
 						echo "<table><tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>";
 						echo "<tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>";
 						echo "<tr><td class='td-login'><span class='login-text'>Password</span></td></tr>";
