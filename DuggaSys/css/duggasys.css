@@ -21,14 +21,14 @@ body {
 #bg {
 	z-index: 4;
 }
-#login-box-header{
+.box-header {
 	height:25px;
 	background-color:#614875;
 	vertical-align:bottom;
 	padding-top:15px;
 	padding-left:10px;
 }
-#login-box-header-closeb{
+.box-header-cbutton {
 	height:20px;
 	width:40px;
 	float:right;
@@ -42,7 +42,7 @@ body {
 	font-weight:bold;
 	cursor:default;
 }
-#login-box-header-closeb:hover{
+.box-header-cbutton:hover{
 	background-color:#ce3d3d;
 }
 input.input-login{
@@ -54,7 +54,7 @@ input.input-login{
 input.input-login:hover{
 	background-color:#999;
 }
-input#submit-button{
+input.submit-button{
 	width:80px;
 	height:25px;
 	color:#fff;
@@ -69,7 +69,7 @@ input#login-checkbox{
 input#login-checkbox{
 	background-color:#999;
 }
-input#submit-button:hover{
+input.submit-button:hover{
 	background-color:#392a45;
 }
 span.login-text{
@@ -106,27 +106,16 @@ td.td-login{
 	display:none;
 	border:2px solid #999;
 }
-#forgot-passw-box-header{
-	height:25px;
-	background-color:#614875;
-	vertical-align:bottom;
-	padding-top:15px;
-	padding-left:10px;
-}
-#forgot-passw-box-header-closeb{
-	height:20px;
-	width:40px;
-	float:right;
-	margin-right:4px;
-	margin-top:-15px;
-	background-color:#c75050;
-	text-align:center;
-	color:white;
-	font-family:arial;
-	font-size:10pt;
-	font-weight:bold;
-	cursor:default;
-}
-#forgot-passw-box-header-closeb:hover{
-	background-color:#ce3d3d;
+
+#answer-box {
+	position: absolute;
+	top: 100px;
+	width:350px;
+	height:200px;
+	z-index:5;
+	background-color:#ccc;
+	margin:0px auto;
+	margin-top:40px;
+	display:none;
+	border:2px solid #999;
 }
