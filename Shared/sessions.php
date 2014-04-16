@@ -8,37 +8,43 @@ function checklogin()
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION) && array_key_exists('passwd', $_SESSION)){
 		return true;
-	} else if(array_key_exists('loginname', $_POST) && array_key_exists('passwd', $_POST)){
-		$username=$_POST["loginname"];
-		$password=$_POST['passwd'];
-
-		// Protect against SQL injection.
-		$querystring=sprintf("SELECT * FROM user WHERE username='%s' LIMIT 1",
-			mysql_real_escape_string($username)
-		);
-
-		$result=mysql_query($querystring);
-		if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
-
-		if(mysql_num_rows($result) > 0) {
-			// Fetch the result
-			$row = mysql_fetch_assoc($result);
-
-			if(password_verify($password, $row['password'])) {
-				$_SESSION['uid'] = $row['uid'];
-				$_SESSION["loginname"]=$row['username'];
-				$_SESSION["passwd"]=$row['password'];
-				$_SESSION["superuser"]=$row['superuser'];
-				return true;
-			} else {
-				return false;
-			}
-		}
-
 	} else {		
 		return false;
 	}
 }	
+
+function login()
+{
+	if(!array_key_exists('username', $_POST) || !array_key_exists('password', $_POST)) {
+		return false;
+	}
+
+	$username=$_POST["username"];
+	$password=$_POST['password'];
+
+	// Protect against SQL injection.
+	$querystring=sprintf("SELECT * FROM user WHERE username='%s' LIMIT 1",
+		mysql_real_escape_string($username)
+	);
+
+	$result=mysql_query($querystring);
+	if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
+
+	if(mysql_num_rows($result) > 0) {
+		// Fetch the result
+		$row = mysql_fetch_assoc($result);
+
+		if(password_verify($password, $row['password'])) {
+			$_SESSION['uid'] = $row['uid'];
+			$_SESSION["loginname"]=$row['username'];
+			$_SESSION["passwd"]=$row['password'];
+			$_SESSION["superuser"]=$row['superuser'];
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
 
 function hasAccess($userId, $courseId, $access_type)
 {
