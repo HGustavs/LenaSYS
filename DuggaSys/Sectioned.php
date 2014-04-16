@@ -28,7 +28,6 @@ session_start();
 							echo 'var sessionkind=0';
 						}
 				?>			
-				
 				function AJAXServiceSection(opt,para)
 				{
 						$.ajax({url: "SectionedService.php", type: "POST", data: "coursename="+courseID+"&vers="+vers+"&opt="+opt+para, dataType: "json", success: returnedSection});

@@ -44,7 +44,7 @@ include_once "../Shared/basic.php";
 						echo "<span class='inv'>LenaSYS</span>";
 						echo "<table width='100%'><tr><td rowspan='2'><div id='Sectionlist'>";
 						echo "<span class='course'>Course Example Organization System</span>";
-						
+
 						$querystring="SELECT course.coursename,max(cversion) AS version FROM course LEFT OUTER JOIN section ON course.coursename=section.coursename GROUP BY course.coursename;;";
 						$result=mysql_query($querystring);
 						if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");

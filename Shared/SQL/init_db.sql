@@ -87,7 +87,7 @@ CREATE TABLE codeexample(
 		FOREIGN KEY (uid) REFERENCES user (uid)
 		
 	
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Events 1","JS","",0,1,2013);
 INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Events 2","JS","",1,1,2013);
@@ -115,7 +115,7 @@ CREATE TABLE improw(
 		PRIMARY KEY(impid),
 		FOREIGN KEY (uid) REFERENCES user (uid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 	
 INSERT INTO improw(exampleid,istart,iend,uid) VALUES (3,6,8,1);
 INSERT INTO improw(exampleid,istart,iend,uid) VALUES (5,15,19,1);
@@ -133,7 +133,7 @@ CREATE TABLE filelist(
 		PRIMARY KEY(fileid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 	
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (1,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (2,"js2.js",1,1);
@@ -149,7 +149,7 @@ CREATE TABLE descriptionsection(
 		PRIMARY KEY(descid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 	
 INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text",1);
 INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
@@ -175,7 +175,7 @@ CREATE TABLE box(
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (descid) REFERENCES descriptionsection (descid),
 		FOREIGN KEY (fileid) references filelist (fileid)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,1,"[viktig=1]");
 INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,2,"[viktig=1]");
@@ -188,7 +188,7 @@ CREATE TABLE template(
 		stylesheet 			VARCHAR(39) NOT NULL,
 		boxid				INTEGER NOT NULL,	
 		PRIMARY KEY(templateid, stylesheet, boxid)		
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",1);
 INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",2);
@@ -207,7 +207,7 @@ CREATE TABLE wordlist(
 		uid					INT NOT NULL,
 		PRIMARY KEY(wordid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","for",1);
 INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","if",1);
@@ -228,7 +228,7 @@ CREATE TABLE impwordlist(
 		PRIMARY KEY(wordid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"elem",1);
