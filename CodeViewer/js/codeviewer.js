@@ -97,10 +97,6 @@ function generalSettings()
 {
 		switchDrop("docudrop");
 }
-function GeneralSettings()
-{
-	$( ".genSettingsSection" ).toggle("slow");
-}
 function Up()
 {						
 		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
@@ -182,9 +178,49 @@ function setup()
 		}
 }
 
+function checkPlaylink(url){
+	// code for IE7+, Firefox, Chrome, Opera, Safari
+	 if (window.XMLHttpRequest){
+		var xmlhttp=new XMLHttpRequest();
+	  }
+	  else{ // code for IE6, IE5
+	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  // check if the playlink refers to a real url.
+	xmlhttp.open('GET', url, true);  			
+	xmlhttp.send();		
+	
+	// 0.1s timeout because it takes some time for xmlhttp.status to get its value
+	setTimeout(function(){
+		if (xmlhttp.status == "404") { 
+			return false;
+		}else{	
+			if(retdata['playlink']!=""){
+				return true;
+			}
+		} 
+	},100);	
+}
+// Function to return the real playlink that is inserted
+function getPlaylinkURL(){
+	var currentUrl = window.location.pathname.split('/');
+	var directories = "";
+	// Get the names of the current directories in url
+	for(i=1; i<currentUrl.length-1; i++){
+		directories += currentUrl[i]+"/";
+	}
+	return "http://"+location.hostname+"/"+directories+retdata['playlink'];	
+}
 function Play()
-{
-		if(retdata['playlink']!="") location=retdata['playlink'];
+{ 	
+	var url = getPlaylinkURL();
+	if(checkPlaylink(url)){
+		window.open(url);
+	}else{
+		var span = document.getElementById("playlinkErrorMsg");
+		span.innerHTML = "Error. Invalid playlink.";	
+		span.style.display = "block";
+	}
 }
 
 function Plus()
@@ -248,7 +284,6 @@ function addImpline()
 		// make integers of the input
 		fromValue = parseInt(from.value)
 		toValue = parseInt(to.value)
-
 		
 		// error messages if NaN
 		if((isNaN(fromValue))||(isNaN(toValue))){
@@ -343,7 +378,7 @@ function selectImpLines(word)
 }
 
 function changedPlayLink()
-{
+{		
 		playlink=encodeURIComponent(document.getElementById('playlink').value);	
 		AJAXService("editPlaylink","&playlink="+playlink);				
 }

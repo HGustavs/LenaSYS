@@ -54,6 +54,7 @@ include "../Shared/basic.php";
 						echo '</div>';
 						echo '</div>';
 						echo '<div id="codebox">';
+						echo '<span id="playlinkErrorMsg" onclick="$(this).hide();"></span>';
 						echo '<div id="infobox" class="codeview">';
 						echo '<div style="left:300px" class="warning">';
 							echo 'Please wait while content loads<br/>';
@@ -63,6 +64,5 @@ include "../Shared/basic.php";
 				echo '</div>';
 		echo '</div>';
 		echo '</div>';
-
 		}
 ?>
