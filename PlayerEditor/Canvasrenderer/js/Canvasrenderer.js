@@ -7,6 +7,7 @@ function Canvasrenderer()
 	this.paused=1;
 	this.finished=0;
 	this.repeat=0;
+	this.playafterwind=0;
 	// Array of all delayed timesteps
 	this.runningTimesteps = new Array();
 	// The number of valid timesteps
@@ -112,11 +113,16 @@ function Canvasrenderer()
 	this.windto = function(pos)
 	{
 		// Check if it should play or pause after wind
-		var shouldPause = this.paused;
+		if (this.paused) {
+			this.playafterwind = 0;
+		}
+		else {
+			this.playafterwind = 1;
+		}
 
 		// Pause all timesteps
 		//this.pauseTimesteps();
-		this.pause();
+		this.pauseTimesteps();
 
 		// Do not wind to own position
 		if (this.currentPosition() != pos) {
