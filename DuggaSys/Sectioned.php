@@ -8,10 +8,13 @@ session_start();
 <html>
 	<head>
 			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
-			<script type="text/javascript" src="../CodeViewer/js/jquery-1.5.1.min.js"></script>
+			<link type="text/css" href="css/duggasys.css" rel="stylesheet" />
+			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 			<script type="text/javascript" src="duggasys.js"></script>
+			<script type="text/javascript" src="startpage.js"></script>
 
 			<script>
+				setupLogin();
 				<?php
 
 						if(isset($_GET['courseid'])&&isset($_GET['vers'])){
@@ -47,7 +50,7 @@ session_start();
 						// If course exists - check login credentials
 						// Logged in and with credentials - show full editor otherwise show viewer version 
 
-						if(checklogin()){
+						if(checklogin() && array_key_exists('uid', $_SESSION)){
 								$ha=hasAccess($_SESSION['uid'], $courseID, 'w');
 								if($ha){
 										// Allowed to edit this course
@@ -66,6 +69,7 @@ session_start();
 		}else{
 						bodywarning("This course does not seem to exist!");
 		}
+		loginwins();
 
 ?>			
 </html>
