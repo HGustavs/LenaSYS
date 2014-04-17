@@ -48,15 +48,25 @@ function imagerecorder(imgCanvas, img1)
 		var delay = currentTime - lastEvent;
 		lastEvent = currentTime;
 		var delayStr = "<timestep delay=" + delay + "/>";
-		imgPath = "<picture src="+pathArray[i]+"/>";
+		var imgPath = "<picture src="+pathArray[i]+"/>";		
 		var logTest;
-		
-		console.log(imgPath);
+		var chrome = window.chrome, vendorName = window.navigator.vendor;
+			if (chrome !== null && vendorName === "Google Inc.") {
+   				alert('Chrome');
+				var imgPathChrome = "<picture src="+pathArray[i].split("\\").pop() + "/>";
+				console.log(imgPathChrome);
+				document.getElementById("XMLfile").value += imgPathChrome;
+			}else{
+
+				console.log(imgPath);
+				document.getElementById("XMLfile").value += imgPath;
+			}
+			
+ 			
 		console.log(delayStr);
 		console.log(str);
-		console.log(logTest);
+		//console.log(logTest);
 		
-		document.getElementById("XMLfile").value += imgPath;
 		document.getElementById("XMLfile").value += delayStr;
 		document.getElementById("XMLfile").value += str;
 		i++;
