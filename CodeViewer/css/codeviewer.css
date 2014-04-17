@@ -13,6 +13,7 @@
     color: black;
     font-family: Calibri,Sans-Serif;
     font-size: 16px;
+    outline: 0 none;
 }
 
 #docucontent b {
