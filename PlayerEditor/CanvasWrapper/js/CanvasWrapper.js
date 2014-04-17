@@ -339,16 +339,16 @@
 		this.updateContextLineState = function(){
 			var string = "";
 			// Check for updates
-			if (this.ctx.lineWidth != this.lineWidth) {
+			if (this.ctx.lineWidth !== this.lineWidth && !(this.lineWidth === undefined)) {
 				string += this.updateContextProperty('lineWidth');
 			}
-			if (this.ctx.lineJoin != this.lineJoin) {
+			if (this.ctx.lineJoin !== this.lineJoin && !(this.lineJoin === undefined)) {
 				string += this.updateContextProperty('lineJoin');
 			}
-			if (this.ctx.miterLimit != this.miterLimit) {
+			if (this.ctx.miterLimit !== this.miterLimit && !(this.miterLimit === undefined)) {
 				string += this.updateContextProperty('miterLimit');
 			}
-			if (this.ctx.lineCap != this.lineCap) {
+			if (this.ctx.lineCap !== this.lineCap && !(this.lineCap === undefined)) {
 				string += this.updateContextProperty('lineCap');
 			}
 			return string;
@@ -359,22 +359,22 @@
 		this.updateContextCssState = function(){
 			// Check for updates
 			var string = "";
-			if (this.ctx.fillStyle != this.fillStyle) {
+			if (this.ctx.fillStyle !== this.fillStyle && !(this.fillStyle === undefined)) {
 				string += this.updateContextProperty('fillStyle');
 			}
 			if (this.ctx.strokeStyle !== this.strokeStyle && !(this.strokeStyle === undefined)) {
 				string += this.updateContextProperty('strokeStyle');
 			}
-			if (this.ctx.shadowColor != this.shadowColor) {
+			if (this.ctx.shadowColor !== this.shadowColor && !(this.shadowColor === undefined)) {
 				string += this.updateContextProperty('shadowColor');
 			}
-			if (this.ctx.shadowBlur != this.shadowBlur) {
+			if (this.ctx.shadowBlur !== this.shadowBlur && !(this.shadowBlur === undefined)) {
 				string += this.updateContextProperty('shadowBlur');
 			}
-			if (this.ctx.shadowOffsetX != this.shadowOffsetX) {
+			if (this.ctx.shadowOffsetX !== this.shadowOffsetX && !(this.shadowOffsetX === undefined)) {
 				string += this.updateContextProperty('shadowOffsetX');
 			}
-			if (this.ctx.shadowOffsetY != this.shadowOffsetY) {
+			if (this.ctx.shadowOffsetY !== this.shadowOffsetY && !(this.shadowOffsetY === undefined)) {
 				string += this.updateContextProperty('shadowOffsetY');
 			}
 			return string;
@@ -384,13 +384,13 @@
 		this.updateContextTextState = function(){
 			var string = "";
 			// Check for updates
-			if (this.ctx.font != this.font) {
+			if (this.ctx.font !== this.font && !(this.font === undefined)) {
 				string += this.updateContextProperty('font');
 			}
-			if (this.ctx.textAlign != this.textAlign) {
+			if (this.ctx.textAlign !== this.textAlign && !(this.textAlign === undefined)) {
 				string += this.updateContextProperty('textAlign');
 			}
-			if (this.ctx.textBaseline != this.textBaseline) {
+			if (this.ctx.textBaseline !== this.textBaseline && !(this.textBaseline === undefined)) {
 				string += this.updateContextProperty('textBaseline');
 			}
 			return string;
@@ -401,10 +401,10 @@
 		this.updateContextCompositingState = function(){
 			var string = "";
 			// Check for updates
-			if (this.ctx.globalAlpha != this.globalAlpha) {
+			if (this.ctx.globalAlpha !== this.globalAlpha && !(this.globalAlpha === undefined)) {
 				string += this.updateContextProperty('globalAlpha');
 			}
-			if (this.ctx.globalCompositeOperation != this.globalCompositeOperation) {
+			if (this.ctx.globalCompositeOperation !== this.globalCompositeOperation && !(this.globalCompositeOperation === undefined)) {
 				string += this.updateContextProperty('globalCompositeOperation');
 			} 
 			return string;
