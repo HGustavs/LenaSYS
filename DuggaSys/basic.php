@@ -42,14 +42,14 @@ include_once "../Shared/basic.php";
 		function courselist()
 		{		
 					?>
-						<span class='inv'>LenaSYS</span>";
+						<span class='inv'>LenaSYS</span>
 						<table width='100%'>
 							<tr>
 								<td rowspan='2'>
 									<div id='Sectionlist'>
 										<span class='course'>Course Example Organization System</span>
 										<?php
-											$querystring="SELECT course.coursename,max(cversion) AS version FROM course LEFT OUTER JOIN section ON course.coursename=section.coursename GROUP BY course.coursename;;";
+											$querystring="SELECT course.coursename,max(cversion) AS version FROM course LEFT OUTER JOIN section ON course.coursename=section.coursename GROUP BY course.coursename";
 											$result=mysql_query($querystring);
 											if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
 											while ($row = mysql_fetch_assoc($result)){
@@ -61,7 +61,7 @@ include_once "../Shared/basic.php";
 								</td>
 								<td align='right' class='butto' onclick='loginbox();'>
 									<img src='../CodeViewer/icons/Man.svg' />
-								</td>";
+								</td>
 							</tr>
 							<tr>
 								<td></td>
