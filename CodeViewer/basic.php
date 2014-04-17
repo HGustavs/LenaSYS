@@ -33,7 +33,7 @@ include "../Shared/basic.php";
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';						
 				}
 						echo '<td class="butto" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
-						echo '<td class="butto" id="numberbutton" title="Show/hide linenumbers" onclick="fadelinenumbers();"><img src="new icons/Numbers_button.svg" /></td>';
+						echo '<td class="butto" id="numberbutton" title="Show/hide linenumbers" onclick="fadelinenumbers();"><img src="new icons/numbers_button.svg" /></td>';
 						echo '<td class="butto" id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
 						echo '<td class="butto" id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="new icons/forward_button.svg" /></td>';
 						echo '<td class="butto" id="playbutton" title="Open demo" onclick="Play();"><img src="new icons/play_button.svg" /></td>';

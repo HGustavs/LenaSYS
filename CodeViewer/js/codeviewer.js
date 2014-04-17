@@ -354,8 +354,8 @@ function changedPlayLink()
 	  }
 	  // check if the playlink refers to a real url.
 	xmlhttp.open('GET', url, true);  			
-	xmlhttp.send();		
-	
+	xmlhttp.send(null);	
+
 	// 0.1s timeout because it takes some time for xmlhttp.status to get its value
 	setTimeout(function(){
 		if (xmlhttp.status == "404") { 
@@ -364,7 +364,7 @@ function changedPlayLink()
 			span.style.display = "block";
 			document.getElementById('playbutton').style.display="none";	
 		}else{	
-			if(playlink != ""){
+			if(playlink != ""){ 
 				document.getElementById('playbutton').style="";	
 				encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
 				AJAXService("editPlaylink","&playlink="+encodedplaylink);	
@@ -388,7 +388,7 @@ function getPlaylinkURL()
 	for(i=1; i<currentUrl.length-1; i++){
 		directories += currentUrl[i]+"/";
 	}
-	return "http://"+location.hostname+"/"+directories+link;	
+	return "http://"+location.hostname+":"+location.port+"/"+directories+link;	
 }
 
 /********************************************************************************
