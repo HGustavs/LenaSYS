@@ -3,7 +3,7 @@
 <timestep delay="834">
 <state_lineWidth value="12"/></timestep>
 <timestep delay="0">
-<beginpath/>
+<beginPath/>
 </timestep>
 <timestep delay="0">
 <moveTo x="278" y="131"/>
