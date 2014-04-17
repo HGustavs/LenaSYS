@@ -634,7 +634,7 @@ function displayWordlist(){
 				}
 				str+="</select><br/>";
 				str+="<div id='wordlistError' class='errormsg'></div>";
-				str+="<input type='text' size='24' id='wordlisttextbox' />";
+				str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
 				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
 				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
 				str+="<input type='button' value='new' onclick='newWordlist();'' />";
@@ -648,7 +648,7 @@ function displayWordlist(){
 				}
 				str+="</select><br/>";
 				str+="<div id='impwordlistError' class='errormsg'></div>";
-				str+="<input type='text' size='24' id='impwordtextbox' />";
+				str+="<input type='text' size='24' id='impwordtextbox' maxlength='60' />";
 				str+="<input type='button' value='add' onclick='addImpword();' />";
 				str+="<input type='button' value='del' onclick='delImpword();'/>";													
 		
