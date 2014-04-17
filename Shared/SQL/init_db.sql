@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS Imperious;
 CREATE DATABASE Imperious;
 USE Imperious;
 
-/* Appuser contains the us 	ers of the system and the corresponding permissions*/
+/* user contains the users of the system and related  information */
 CREATE TABLE user(
 		uid				INT NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE, 
@@ -15,9 +15,21 @@ CREATE TABLE user(
 		PRIMARY KEY(uid)		
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO user(username,password,creator,superuser) values ("Grimling","Atintegulsno",1,1);
-INSERT INTO user(username,password,creator) values ("Toddler","Kong",1);
+INSERT INTO user(username,password,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",1,1);
+INSERT INTO user(username,password,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1);
 
+CREATE TABLE user_question (
+	qid			INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	question	TEXT,
+	answer		TEXT,
+	owner		INT NOT NULL,
+	INDEX `owner_index` (owner),
+	FOREIGN KEY(owner) REFERENCES user(uid)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO user_question (question, answer, owner) VALUES("What is the color of night?", "Sanguine, my brother.", 1);
 
 /* Course contains a list of the course names for each course in the database */
 CREATE TABLE course(
