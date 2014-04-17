@@ -10,7 +10,14 @@
 		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
 		// Save log when "Save log" button is clicked
 		$("#CanvasWrapper-save").click(function(){
-			console.log(str + "</script>");
+			console.log(inTimestepDelay);
+			if(inTimestepDelay){ 
+				console.log(str + "</timestep>\n" + "</script>");
+			}
+			else{
+				console.log(str + "</script>");
+			 }
+			
 			alert("Saving");
 			$.ajax({
 				type: 'POST',
@@ -36,7 +43,7 @@
 		this.shadowBlur = this.ctx.shadowBlur;
 		this.shadowOffsetX = this.ctx.shadowOffsetX;
 		this.shadowOffsetY = this.ctx.shadowOffsetY;
-		
+		var inTimestepDelay = false;
 		//Text property.
 		this.font = this.ctx.font;
 		this.textAlign = this.ctx.textAlign;
@@ -63,9 +70,28 @@
 			lastTimestep = timestep;
 
 			// Set string
-			str += '<timestep delay="' + delay + '">' + '\n';
-			str += string + '\n';
-			str += '</timestep>' + '\n';
+			if(delay == 0){
+				if(inTimestepDelay){
+					str += string + '\n';
+				}
+				else{
+					inTimestepDelay = true;
+					str += '<timestep delay="' + delay + '">' + "\n";
+					str += string;
+					
+					//str += '</timestep>' + '\n';
+				}
+			}
+			else{
+				if(inTimestepDelay){
+					str += '</timestep>' + '\n';
+					inTimestepDelay = false;
+				}
+				str += '<timestep delay="' + delay + '">' + '\n';
+				str += string + '\n';
+				str += '</timestep>' + '\n';
+				
+			}
 		}
 
 	    this.beginPath = function(){
@@ -281,9 +307,33 @@
 				var delay = timestep - lastTimestep;
 				// Update timestep
 				lastTimestep = timestep;
-				str += '<timestep delay="' + delay + '">' + '\n';
-				str += string;
-				str += "</timestep>" + '\n';
+				
+				if(delay == 0){
+					if(inTimestepDelay){
+						str += string + '\n';
+					}
+					else{
+						inTimestepDelay = true;
+						str += '<timestep delay="' + delay + '">' + "\n";
+						str += string + '\n';
+						
+					}
+				}
+				else{
+					if(inTimestepDelay){
+						str += '</timestep>' + '\n';
+						inTimestepDelay = false;
+					}
+					str += '<timestep delay="' + delay + '">' + '\n';
+					str += string + '\n';
+					str += '</timestep>' + '\n';
+				}
+				
+				
+				
+				//str += '<timestep delay="' + delay + '">' + '\n';
+				//str += string;
+				//str += "</timestep>" + '\n';
 			}
 		}
 		this.updateContextLineState = function(){
@@ -312,7 +362,7 @@
 			if (this.ctx.fillStyle != this.fillStyle) {
 				string += this.updateContextProperty('fillStyle');
 			}
-			if (this.ctx.strokeStyle != this.strokeStyle) {
+			if (this.ctx.strokeStyle !== this.strokeStyle && !(this.strokeStyle === undefined)) {
 				string += this.updateContextProperty('strokeStyle');
 			}
 			if (this.ctx.shadowColor != this.shadowColor) {
@@ -364,17 +414,12 @@
 		// Update a specific property
 		this.updateContextProperty = function(property) {
 			// Update property
-			
-			
-
 			// Set string
-			//var attribute = '<timestep delay="' + delay + '">' + '\n';
 			var attribute = "";
 			this.ctx[property] = this[property];
 			attribute += '<state';
 			// Create string for state
 			attribute += '_' + property + ' value="' + this[property] + '"' + '/>' + "\n";
-		//	attribute += '</timestep>' + '\n';
 			return (attribute);
 		}
 		
