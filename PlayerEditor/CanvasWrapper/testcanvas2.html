@@ -9,15 +9,18 @@
 <script src="js/CanvasWrapper.js"></script>
 <script>
 	init();
+	
 	function init(){
-	  clock();
-	  setInterval(clock,1000);
+		
+		var displayCanvas = document.getElementById("canvas");
+		var ctx = new captureCanvas(displayCanvas.getContext("2d"));
+		setInterval(function() { clock(ctx); },1000);
+		//clock(ctx);
+	  
 	}
 
-	function clock(){
+	function clock(ctx){
 	  var now = new Date();
-	  var displayCanvas = document.getElementById("canvas");
-	  var ctx = new captureCanvas(displayCanvas.getContext("2d"));
 	  ctx.save();
 	  ctx.clearRect(0,0,150,150);
 	  ctx.translate(75,75);

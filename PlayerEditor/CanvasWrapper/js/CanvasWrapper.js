@@ -6,15 +6,17 @@
 	 */ 
 	function captureCanvas(canvas){
 			// Add save button to BODY
+			
 		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
-		// Save log when "Save log" button is clciked
+		// Save log when "Save log" button is clicked
 		$("#CanvasWrapper-save").click(function(){
+			console.log(str + "</script>");
 			alert("Saving");
 			$.ajax({
-		        type: 'POST',
-		        url: 'logfile.php',
-		        data: { string: str + "</script>" }
-	        });
+				type: 'POST',
+				url: 'logfile.php',
+				data: { string: str + "</script>" }
+			});
 		});
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
@@ -28,8 +30,8 @@
 		this.miterLimit = this.ctx.miterLimit;
 		this.lineCap = this.ctx.lineCap;
 		//Color,shadow and style.
-		this.fillStyle = this.ctx.fillStyle;
-		this.strokeStyle = this.ctx.strokeStyle;
+		var fillStyle = this.ctx.fillStyle;
+		var strokeStyle = this.ctx.strokeStyle;
 		this.shadowColor = this.ctx.shadowColor;
 		this.shadowBlur = this.ctx.shadowBlur;
 		this.shadowOffsetX = this.ctx.shadowOffsetX;
@@ -268,102 +270,111 @@
 		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
 		This updates are added to the xml if there are any.*/
 		this.UpdateAllFunctions = function(){
-			this.updateContextLineState();
-			this.updateContextCssState();
-			this.updateContextTextState();
-			this.updateContextCompositingState();
+			var string = "";
+			string += this.updateContextLineState();
+			string += this.updateContextCssState();
+			string += this.updateContextTextState();
+			string += this.updateContextCompositingState();
+			if(string.length > 0){
+				var timestep = new Date().getTime();
+				// Calculate delay
+				var delay = timestep - lastTimestep;
+				// Update timestep
+				lastTimestep = timestep;
+				str += '<timestep delay="' + delay + '">' + '\n';
+				str += string;
+				str += "</timestep>" + '\n';
+			}
 		}
 		this.updateContextLineState = function(){
-
+			var string = "";
 			// Check for updates
 			if (this.ctx.lineWidth != this.lineWidth) {
-				str += this.updateContextProperty('lineWidth');
+				string += this.updateContextProperty('lineWidth');
 			}
 			if (this.ctx.lineJoin != this.lineJoin) {
-				str += this.updateContextProperty('lineJoin');
+				string += this.updateContextProperty('lineJoin');
 			}
 			if (this.ctx.miterLimit != this.miterLimit) {
-				str += this.updateContextProperty('miterLimit');
+				string += this.updateContextProperty('miterLimit');
 			}
 			if (this.ctx.lineCap != this.lineCap) {
-				str += this.updateContextProperty('lineCap');
+				string += this.updateContextProperty('lineCap');
 			}
+			return string;
 
 		}
 		
 		// Update state
 		this.updateContextCssState = function(){
-			
 			// Check for updates
+			var string = "";
 			if (this.ctx.fillStyle != this.fillStyle) {
-				str += this.updateContextProperty('fillStyle');
+				string += this.updateContextProperty('fillStyle');
 			}
 			if (this.ctx.strokeStyle != this.strokeStyle) {
-				str += this.updateContextProperty('strokeStyle');
+				string += this.updateContextProperty('strokeStyle');
 			}
 			if (this.ctx.shadowColor != this.shadowColor) {
-				str += this.updateContextProperty('shadowColor');
+				string += this.updateContextProperty('shadowColor');
 			}
 			if (this.ctx.shadowBlur != this.shadowBlur) {
-				str += this.updateContextProperty('shadowBlur');
+				string += this.updateContextProperty('shadowBlur');
 			}
 			if (this.ctx.shadowOffsetX != this.shadowOffsetX) {
-				str += this.updateContextProperty('shadowOffsetX');
+				string += this.updateContextProperty('shadowOffsetX');
 			}
 			if (this.ctx.shadowOffsetY != this.shadowOffsetY) {
-				str += this.updateContextProperty('shadowOffsetY');
+				string += this.updateContextProperty('shadowOffsetY');
 			}
+			return string;
 		}
 
 		// Update state
 		this.updateContextTextState = function(){
-			
+			var string = "";
 			// Check for updates
 			if (this.ctx.font != this.font) {
-				str += this.updateContextProperty('font');
+				string += this.updateContextProperty('font');
 			}
 			if (this.ctx.textAlign != this.textAlign) {
-				str += this.updateContextProperty('textAlign');
+				string += this.updateContextProperty('textAlign');
 			}
 			if (this.ctx.textBaseline != this.textBaseline) {
-				str += this.updateContextProperty('textBaseline');
+				string += this.updateContextProperty('textBaseline');
 			}
+			return string;
 
 		}
 
 		// Update state
 		this.updateContextCompositingState = function(){
-			
+			var string = "";
 			// Check for updates
 			if (this.ctx.globalAlpha != this.globalAlpha) {
-				str += this.updateContextProperty('globalAlpha');
+				string += this.updateContextProperty('globalAlpha');
 			}
 			if (this.ctx.globalCompositeOperation != this.globalCompositeOperation) {
-				str += this.updateContextProperty('globalCompositeOperation');
+				string += this.updateContextProperty('globalCompositeOperation');
 			} 
+			return string;
 		
 		}
 		
 		// Update a specific property
 		this.updateContextProperty = function(property) {
 			// Update property
-			var timestep = new Date().getTime();
-
-			// Calculate delay
-			var delay = timestep - lastTimestep;
-
-			// Update timestep
-			lastTimestep = timestep;
+			
+			
 
 			// Set string
-			var attribute = '<timestep delay="' + delay + '">' + '\n';
-			
+			//var attribute = '<timestep delay="' + delay + '">' + '\n';
+			var attribute = "";
 			this.ctx[property] = this[property];
 			attribute += '<state';
 			// Create string for state
-			attribute += '_' + property + ' value="' + this[property] + '"' + '/>';
-			attribute.toLowerCase();
-			attribute += '</timestep>' + '\n';
+			attribute += '_' + property + ' value="' + this[property] + '"' + '/>' + "\n";
+		//	attribute += '</timestep>' + '\n';
 			return (attribute);
 		}
 		
