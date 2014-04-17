@@ -1,6 +1,28 @@
 // Canvas renderer
 function Canvasrenderer() 
-{	
+{		
+	/*
+	 * Check if function name is valid
+	 * A valid function name will return 1, invalid 0.
+	 *
+	 */
+	 this.validFunction = function(name)
+	 {
+	 	// List of all valid canvas functions
+		// No other operation in the XML should be possible to run
+		var validFunctions = ['beginpath', 'moveto', 'lineto', 'stroke', 'createlineargradient', 'createpattern', 'createradialgradient', 'rect', 'fillrect', 'strokerect', 'clearrect', 'fill', 'closepath', 'clip', 'quadraticcurveto', 'beziercurveto', 'arc', 'arcto', 'ispointinpath', 'scale', 'rotate', 'translate', 'transform', 'measuretext', 'drawimage', 'createimagedata', 'getimagedata', 'putimagedata', 'state_fillstyle', 'state_strokestyle', 'state_shadowcolor', 'state_shadowblur', 'state_shadowoffsetx', 'state_shadowoffsety', 'state_linecap', 'state_linejoin', 'state_linewidth', 'state_miterlimit', 'state_font', 'state_textalign', 'state_textbaseline', 'state_width', 'state_height', 'state_data', 'state_globalapha', 'state_globalcompositeoperation'];
+
+	 	// Compare to list of valid functions
+	 	for(i=0; i<validFunctions.length; ++i){
+	 		if(validFunctions[i]==name){
+	 			// Function is valid
+	 			return 1;
+	 		}
+	 	}
+	 	// Function is invalid
+	 	return 0;
+	 }
+
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
 		// Step through nodes
@@ -9,12 +31,81 @@ function Canvasrenderer()
 
 			if(nodes[x].attributes != null){
 				console.log("attribute length " + nodes[x].attributes.length);
-				// Continue if invalid node (i.e. #text)
-				if(nodes[x].nodeName.substring(0,1) == "#") continue;
+				// Continue if invalid node (i.e. not in list of valid functions)
+				if(!this.validFunction(nodes[x].nodeName)) continue;
 				console.log("nodes: "+nodes[x].nodeName);
 
 				// Check number of arguments and call canvas function
 				// TODO: Add for functions with more arguments
+				switch(nodes[x].attributes.length){
+					case 0:
+					this[nodes[x].nodeName]();
+					break;
+					case 1:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue);
+					break;
+					case 2:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
+											nodes[x].attributes.item(1).nodeValue);
+					break;
+					case 3:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue);
+					break;
+					case 4:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue,
+											nodes[x].attributes.item(3).nodeValue);
+					break;
+					case 5:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue, 
+											nodes[x].attributes.item(3).nodeValue, 
+											nodes[x].attributes.item(4).nodeValue);
+					break;
+					case 6:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue, 
+											nodes[x].attributes.item(3).nodeValue, 
+											nodes[x].attributes.item(4).nodeValue, 
+											nodes[x].attributes.item(5).nodeValue);
+					break;
+					case 7:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue, 
+											nodes[x].attributes.item(3).nodeValue, 
+											nodes[x].attributes.item(4).nodeValue, 
+											nodes[x].attributes.item(5).nodeValue, 
+											nodes[x].attributes.item(6).nodeValue);
+					break;
+					case 8:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
+											nodes[x].attributes.item(1).nodeValue,
+											nodes[x].attributes.item(2).nodeValue,
+											nodes[x].attributes.item(3).nodeValue,
+											nodes[x].attributes.item(4).nodeValue,
+											nodes[x].attributes.item(5).nodeValue,
+											nodes[x].attributes.item(6).nodeValue,
+											nodes[x].attributes.item(7).nodeValue);
+					break;
+					case 9:
+					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
+											nodes[x].attributes.item(1).nodeValue, 
+											nodes[x].attributes.item(2).nodeValue, 
+											nodes[x].attributes.item(3).nodeValue, 
+											nodes[x].attributes.item(4).nodeValue, 
+											nodes[x].attributes.item(5).nodeValue, 
+											nodes[x].attributes.item(6).nodeValue, 
+											nodes[x].attributes.item(7).nodeValue, 
+											nodes[x].attributes.item(8).nodeValue);
+					break;
+				}
+				/*
 				if(nodes[x].attributes.length == 0){
 					this[nodes[x].nodeName]();
 				}
@@ -44,7 +135,7 @@ function Canvasrenderer()
 				}
 				else if(nodes[x].attributes.length == 9){
 					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, nodes[x].attributes.item(1).nodeValue, nodes[x].attributes.item(2).nodeValue, nodes[x].attributes.item(3).nodeValue, nodes[x].attributes.item(4).nodeValue, nodes[x].attributes.item(5).nodeValue, nodes[x].attributes.item(6).nodeValue, nodes[x].attributes.item(7).nodeValue, nodes[x].attributes.item(8).nodeValue);
-				}
+				}*/
 			}	
 		}	
 	}
@@ -170,7 +261,78 @@ function Canvasrenderer()
 	this.putimagedata = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
 		ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 	}	
-
+	//canvas state functions
+	this.state_fillstyle = function(value){
+		ctx.fillStyle = value;
+	}
+	
+	this.state_strokestyle = function(value){
+		ctx.strokeStyle = value;
+	}
+	
+	this.state_shadowcolor = function(value){
+		ctx.shadowColor = value;
+	}
+	
+	this.state_shadowblur = function(value){
+		ctx.shadowBlur = value;
+	}
+	
+	this.state_shadowoffsetx = function(value){
+		ctx.shadowOffsetX = value;
+	}
+	
+	this.state_shadowoffsety = function(value){
+		ctx.shadwoOffsetY = value;
+	}
+	
+	this.state_linecap = function(value){
+		ctx.lineCap = value;
+	}
+	
+	this.state_linejoin = function(value){
+		ctx.lineJoin = value;
+	}
+	
+	this.state_linewidth = function(value){
+		ctx.lineWidth = value;
+	}
+	
+	this.state_miterlimit = function(value){
+		ctx.miterLimit = value;
+	}
+	
+	this.state_font = function(value){
+		ctx.font = value;
+	}
+	
+	this.state_textalign = function(value){
+		ctx.textAlign = value;
+	}
+	
+	this.state_textbaseline = function(value){
+		ctx.textBaseline = value;
+	}
+	
+	this.state_width = function(value){
+		ctx.width = value;
+	}
+	
+	this.state_height = function(value){
+		ctx.height = value;
+	}
+	
+	this.state_data = function(value){
+		ctx.data = value;
+	}
+	
+	this.state_globalalpha = function(value){
+		ctx.globalAlpha = value;
+	}
+	
+	this.state_globalcompositeoperation = function(value){
+		ctx.globalCompositeOperation = value;
+	}
 	/*
 	 *
 	 * Start running XML
@@ -205,13 +367,16 @@ function Canvasrenderer()
 		if(timestepElements[i]){
 			// Fetch delay
 			delay = timestepElements[i].getAttribute("delay");
-			totalTime += parseInt(delay);
-			
-			// Fetch timestep nodes
-			nodes = timestepElements[i].childNodes;
+			// Ignore timesteps with non numeric or negative delay
+			if (!isNaN(delay) && delay >= 0){
+				// Calculate total delay
+				totalTime += parseInt(delay);
+				// Fetch timestep nodes
+				nodes = timestepElements[i].childNodes;
 
-			// Execute timestep nodes after specified delay
-			setTimeout(executeTimestep, totalTime, nodes);
+				// Execute timestep nodes after specified delay
+				setTimeout(executeTimestep, totalTime, nodes);
+			}
 		}
 	}	
 }

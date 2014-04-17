@@ -13,6 +13,7 @@
     color: black;
     font-family: Calibri,Sans-Serif;
     font-size: 16px;
+    outline: 0 none;
 }
 
 #docucontent b {
@@ -548,14 +549,6 @@ a {
 #playlinkErrorMsg{
 	display: none;
 	color: red;
-	background-color: #614875;
-	margin-top: 0px; 
-	right: 0px;
-	height: auto;
-	width: auto;
-	font-size: 30px;
-	position: absolute;
-	cursor: default;
 }
 #settingsTabMenu{	
 	border-bottom: solid 2px;
@@ -702,4 +695,30 @@ a {
 .norm > [contenteditable="true"] br,
 .butt > [contenteditable="true"] br{
     display:none;
+}
+@-webkit-keyframes wiggle {
+    0% {
+        -webkit-transform:rotate(4deg);
+    }
+    50% {
+        -webkit-transform:rotate(-4deg);
+    }
+    100% {
+        -webkit-transform:rotate(4deg);
+    }
+}
+
+.wiggle:hover {
+    -webkit-animation: wiggle 0.5s infinite;
+    cursor: pointer;
+}
+
+.templateicon{
+    width: 45%;
+    margin: 0px;
+    float: left;
+}
+.templatethumbicon{
+    width: 98%;
+    margin: 2% 1% 2% 1%;
 }

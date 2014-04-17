@@ -7,7 +7,8 @@
 var retdata;
 var tokens = [];            // Array to hold the tokens.
 var dmd=0;
-var isdropped=false;				
+var isdropped=false;
+var tabmenuvalue = "wordlist";				
 
 /********************************************************************************
 
@@ -178,49 +179,11 @@ function setup()
 		}
 }
 
-function checkPlaylink(url){
-	// code for IE7+, Firefox, Chrome, Opera, Safari
-	 if (window.XMLHttpRequest){
-		var xmlhttp=new XMLHttpRequest();
-	  }
-	  else{ // code for IE6, IE5
-	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-	  // check if the playlink refers to a real url.
-	xmlhttp.open('GET', url, true);  			
-	xmlhttp.send();		
-	
-	// 0.1s timeout because it takes some time for xmlhttp.status to get its value
-	setTimeout(function(){
-		if (xmlhttp.status == "404") { 
-			return false;
-		}else{	
-			if(retdata['playlink']!=""){
-				return true;
-			}
-		} 
-	},100);	
-}
-// Function to return the real playlink that is inserted
-function getPlaylinkURL(){
-	var currentUrl = window.location.pathname.split('/');
-	var directories = "";
-	// Get the names of the current directories in url
-	for(i=1; i<currentUrl.length-1; i++){
-		directories += currentUrl[i]+"/";
-	}
-	return "http://"+location.hostname+"/"+directories+retdata['playlink'];	
-}
+
 function Play()
-{ 	
-	var url = getPlaylinkURL();
-	if(checkPlaylink(url)){
-		window.open(url);
-	}else{
-		var span = document.getElementById("playlinkErrorMsg");
-		span.innerHTML = "Error. Invalid playlink.";	
-		span.style.display = "block";
-	}
+{ 
+	var url = getPlaylinkURL();		
+	window.open(url);
 }
 
 function Plus()
@@ -378,9 +341,54 @@ function selectImpLines(word)
 }
 
 function changedPlayLink()
-{		
-		playlink=encodeURIComponent(document.getElementById('playlink').value);	
-		AJAXService("editPlaylink","&playlink="+playlink);				
+{
+	var url = getPlaylinkURL();
+	var playlink = document.getElementById('playlink').value
+	
+	// code for IE7+, Firefox, Chrome, Opera, Safari
+	 if (window.XMLHttpRequest){
+		var xmlhttp=new XMLHttpRequest();
+	  }
+	  else{ // code for IE6, IE5
+	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  // check if the playlink refers to a real url.
+	xmlhttp.open('GET', url, true);  			
+	xmlhttp.send(null);	
+
+	// 0.1s timeout because it takes some time for xmlhttp.status to get its value
+	setTimeout(function(){
+		if (xmlhttp.status == "404") { 
+			var span = document.getElementById("playlinkErrorMsg");
+			span.innerHTML = "Error. This link is invalid.";
+			span.style.display = "block";
+			document.getElementById('playbutton').style.display="none";	
+		}else{	
+			if(playlink != ""){ 
+				document.getElementById('playbutton').style="";	
+				encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
+				AJAXService("editPlaylink","&playlink="+encodedplaylink);	
+			}
+		} 
+	},100);	
+	
+}
+// Function to return the fully url-playlink that is inserted
+function getPlaylinkURL()
+{
+	var currentUrl = window.location.pathname.split('/');
+	var directories = "";
+	
+	if(document.getElementById('playlink') != null){
+		var link = document.getElementById('playlink').value;
+	}else{
+		var link = retdata['playlink'];
+	}
+	// Get the names of the current directories in url
+	for(i=1; i<currentUrl.length-1; i++){
+		directories += currentUrl[i]+"/";
+	}
+	return "http://"+location.hostname+":"+location.port+"/"+directories+link;	
 }
 
 /********************************************************************************
@@ -507,7 +515,14 @@ function returned(data)
 
 		if(sessionkind=="w"){
 			
+			// Check what tab in general settings menu should be displayed, otherwise the same tabmenu will be displayed after every update.
+			if(tabmenuvalue == "wordlist"){
 				displayWordlist();
+			}else if(tabmenuvalue == "playlink"){
+				displayPlaylink();	
+			}else if(tabmenuvalue == "templates"){
+				displayTemplates();
+			}
 			
 		/*		
 				str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
@@ -563,6 +578,7 @@ function returned(data)
 		}
 }
 function displayPlaylink(){
+	tabmenuvalue = "playlink";
 	str="<ul id='settingsTabMenu'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
 		str+="<li class='activeSetMenuLink'>Playlink</li>";
@@ -570,22 +586,31 @@ function displayPlaylink(){
 	str+="</ul>";
 				
 	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
+	str+="<span id='playlinkErrorMsg'></span>";
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
 }
 function displayTemplates()
 {
+	tabmenuvalue = "templates";
 	str="<ul id='settingsTabMenu'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
 		str+="<li onclick='displayPlaylink()'>Playlink</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
-	str+="Templates";
+	str+="<h1>Pick a template for your example!</h1>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
+
 		
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
 }
 function displayWordlist(){
+	tabmenuvalue = "wordlist";
 	str="<ul id='settingsTabMenu'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
 		str+="<li onclick='displayPlaylink();'>Playlink</li>";
@@ -609,7 +634,7 @@ function displayWordlist(){
 				}
 				str+="</select><br/>";
 				str+="<div id='wordlistError' class='errormsg'></div>";
-				str+="<input type='text' size='24' id='wordlisttextbox' />";
+				str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
 				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
 				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
 				str+="<input type='button' value='new' onclick='newWordlist();'' />";
@@ -623,7 +648,7 @@ function displayWordlist(){
 				}
 				str+="</select><br/>";
 				str+="<div id='impwordlistError' class='errormsg'></div>";
-				str+="<input type='text' size='24' id='impwordtextbox' />";
+				str+="<input type='text' size='24' id='impwordtextbox' maxlength='60' />";
 				str+="<input type='button' value='add' onclick='addImpword();' />";
 				str+="<input type='button' value='del' onclick='delImpword();'/>";													
 		

@@ -98,7 +98,7 @@
 								$playlink=htmlEntities($_POST['playlink']);
 								$query = "UPDATE codeexample SET runlink='$playlink' WHERE exampleid='$exampleno';";		
 								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating codeexample!");	
 					}else if(strcmp("editExampleName",$opt)===0){
 								$examplename=htmlEntities($_POST['examplename']);
 								$query = "UPDATE codeexample SET examplename='$examplename' WHERE exampleid='$exampleno';";		
