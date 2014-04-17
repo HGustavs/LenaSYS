@@ -68,7 +68,6 @@
 
 			// Update timestep
 			lastTimestep = timestep;
-
 			// Set string
 			if(delay == 0){
 				if(inTimestepDelay){
@@ -77,9 +76,7 @@
 				else{
 					inTimestepDelay = true;
 					str += '<timestep delay="' + delay + '">' + "\n";
-					str += string;
-					
-					//str += '</timestep>' + '\n';
+					str += string + "\n";
 				}
 			}
 			else{
@@ -310,7 +307,7 @@
 				
 				if(delay == 0){
 					if(inTimestepDelay){
-						str += string + '\n';
+						str += string;
 					}
 					else{
 						inTimestepDelay = true;
@@ -325,15 +322,11 @@
 						inTimestepDelay = false;
 					}
 					str += '<timestep delay="' + delay + '">' + '\n';
-					str += string + '\n';
+					str += string;
 					str += '</timestep>' + '\n';
 				}
 				
 				
-				
-				//str += '<timestep delay="' + delay + '">' + '\n';
-				//str += string;
-				//str += "</timestep>" + '\n';
 			}
 		}
 		this.updateContextLineState = function(){
