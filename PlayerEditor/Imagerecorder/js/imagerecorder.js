@@ -11,8 +11,9 @@ function imagerecorder(imgCanvas, img1)
 	var lastEvent = dd.getTime();
 	var yCan = 0;
 	var imgIndex = 0;
-	var i = 0;
-	
+	var pathIndex = 0;
+	var clicked = 0;
+
 	var imageLoader = document.getElementById('imageLoader');
     imageLoader.addEventListener('change', getImages, false);
 	var canvas = document.getElementById('ImageCanvas');
@@ -42,18 +43,17 @@ function imagerecorder(imgCanvas, img1)
 	/*
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
-	function log(str){
+	function getEvents(str){
 		var dd = new Date();
 		var currentTime = dd.getTime();
 		var delay = currentTime - lastEvent;
 		lastEvent = currentTime;
 		var delayStr = "<timestep delay=" + delay + "/>";
-		var imgPath = "<picture src="+pathArray[i].split("\\").pop()+"/>";		
+		var imgPath = "<picture src="+pathArray[pathIndex].split("\\").pop()+"/>";		
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
 			if (chrome !== null && vendorName === "Google Inc.") {
-   				alert('Chrome');
-				var imgPathChrome = "<picture src="+pathArray[i].split("\\").pop() + "/>";
+				var imgPathChrome = "<picture src="+pathArray[pathIndex].split("\\").pop() + "/>";
 				console.log(imgPathChrome);
 				document.getElementById("XMLfile").value += imgPathChrome;
 			}else{
@@ -69,7 +69,7 @@ function imagerecorder(imgCanvas, img1)
 		
 		document.getElementById("XMLfile").value += delayStr;
 		document.getElementById("XMLfile").value += str;
-		i++;
+		pathIndex++;
 	}
 	
 	/*
@@ -78,7 +78,7 @@ function imagerecorder(imgCanvas, img1)
 	 */
 	$(document).ready(function(){
 	$("#" + imageCanvas).click(function(event){
-		
+		clicked = 1;
 		var xMouse = event.clientX - ImageCanvas.offsetLeft; 
 		var yMouse = event.clientY - ImageCanvas.offsetTop;
 	
@@ -90,7 +90,7 @@ function imagerecorder(imgCanvas, img1)
 		if(currentImage > 0){
 			document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);
 		}
-		log("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
+		getEvents("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
 		currentImage++;
 		});
 	/*
@@ -101,7 +101,22 @@ function imagerecorder(imgCanvas, img1)
 		var yMouseReal = event.clientY - ImageCanvas.offsetTop;
 		document.getElementById('xCordReal').innerHTML=xMouseReal;
 		document.getElementById('yCordReal').innerHTML=yMouseReal;
+		
+				appendEvString(xMouseReal,yMouseReal);
+			
 		});
 	});
+	function appendEvString(x, y){
+		var mouseMovement = "<Mousemove x="+x+" y="+y+"/>";
+		if(clicked == 1){
+			log(mouseMovement);
+			console.log(mouseMovement);
+		}
+	}
+
+	function log(str){
 	
+		document.getElementById("XMLfile").value += str;
+	
+	}
 }
