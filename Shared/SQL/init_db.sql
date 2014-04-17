@@ -146,6 +146,7 @@ CREATE TABLE descriptionsection(
 		segment				VARCHAR(64000),
 		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INTEGER NOT NULL,
+		pos					MEDIUMINT NOT NULL,
 		PRIMARY KEY(descid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)

@@ -20,15 +20,17 @@ function checklogin()
 		$result=mysql_query($querystring);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
 		
-		// Fetch the result
-		$row = mysql_fetch_assoc($result);
+		if(mysql_num_rows($result) > 0) {
+			// Fetch the result
+			$row = mysql_fetch_assoc($result);
 
-		$_SESSION['uid'] = $row['uid'];
-		$_SESSION["loginname"]=$row['username'];
-		$_SESSION["passwd"]=$row['password'];
-		$_SESSION["superuser"]=$row['superuser'];
+			$_SESSION['uid'] = $row['uid'];
+			$_SESSION["loginname"]=$row['username'];
+			$_SESSION["passwd"]=$row['password'];
+			$_SESSION["superuser"]=$row['superuser'];
 
-		return true;
+			return true;
+		}
 	} else {		
 		return false;
 	}
@@ -51,9 +53,9 @@ function hasAccess($userId, $courseId, $access_type)
 		return false;
 	} else {
 		// Fetch data from the database
-		$access = mysql_fetch_assoc($result);
-		if(count($access) > 0) {
+		if(mysql_num_rows($result) > 0) {
 			// Check access if it was returned
+			$access = mysql_fetch_assoc($result);
 			if($access_type == 'w') {
 				return strtolower($access['access']) == 'w';
 			} else if ($access_type == 'r') {
@@ -67,9 +69,44 @@ function hasAccess($userId, $courseId, $access_type)
 			return false;
 		}
 	}
+}
 
+function getAccessType($userId, $courseId)
+{
+	require_once "../Shared/courses.php";
+	if(is_string($courseId)) {
+		$courseId = getCourseId($courseId);
+	}
+
+	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
+		mysql_real_escape_string($userId),
+		mysql_real_escape_string($courseId)
+	);
+
+	$result = mysql_query($querystring);
+	if(!$result) {
+		return false;
+	} else {
+		// Fetch data from the database
+		if(mysql_num_rows($result) > 0) {
+			$access = mysql_fetch_assoc($result);
+			// Check access if it was returned
+			if(strtolower($access['access']) == "r") {
+				return "r";
+			} else if (strtolower($access['access']) == "w") {
+				// w implies access r
+				return "w";
+			} else {
+				return false;
+			}
+		} else {
+			// Otherwise default to no.
+			return false;
+		}
+	}
 	return false;
 }
+
 
 //---------------------------------------------------------------------------------------------------------------
 // logout
