@@ -10,6 +10,7 @@ function setupLogin()
 				if(res.login == "success") {
 					alert("Successfully logged in");
 					closeloginbox();
+					window.location.reload();
 				} else {
 					alert("Failed to log in ");
 				}
