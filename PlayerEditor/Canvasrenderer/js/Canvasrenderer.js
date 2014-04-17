@@ -81,7 +81,7 @@ function Canvasrenderer()
 		if (this.repeat == 0) {
 			// Repeat
 			this.repeat = 1;
-			document.getElementById("repeat").innerHTML="<img src='images/replay_button.svg'/>";
+			document.getElementById("repeat").innerHTML="<img src='images/replay_button_activated.svg'/>";
 		}else {
 			// Don't repeat
 			this.repeat = 0;
