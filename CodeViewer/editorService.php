@@ -26,7 +26,7 @@
 	
 	// To guarantee that things only happen if the example exists in the named version
 	$cnt=0;
-	$query = "SELECT exampleno FROM codeexample WHERE cversion=$version and coursename='$coursename' and pos='$position' and sectionno='$sectionid';";		
+	$query = "SELECT exampleid FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position' and sectionid='$sectionid';";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 	while ($row = mysql_fetch_assoc($result)){

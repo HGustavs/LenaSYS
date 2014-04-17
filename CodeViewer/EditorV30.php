@@ -80,11 +80,9 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
         <script type="text/javascript" src="js/tooltips.js"></script>
 
 
-
+        <script type="text/javascript">
 <?php
 				include_once("basic.php");
-
-                echo'<script>';
 				jsvarget("courseid","courseID");
 				jsvarget("sectionid","sectionID");
 				jsvarget("position","position");
@@ -92,7 +90,8 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
 				jsvarsession("kind","sessionkind");				
 ?>				
-				
+				console.log(courseID);
+
 				function AJAXService(sname,param)
 				{
 						$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});															
@@ -114,7 +113,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				if(courseexists($courseID)){
 						// If course exists - check login credentials
 						// Logged in and with credentials - show full editor otherwise show viewer version 
-						if(checklogin()){
+						if(checklogin() && array_key_exists('kind', $_SESSION)){
 								$kind=$_SESSION['kind'];
 								if($kind==$courseID){
 										// Allowed to edit this course

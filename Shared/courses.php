@@ -1,11 +1,15 @@
-<?php
+	<?php
 //---------------------------------------------------------------------------------------------------------------
 // courseexists - Checks if a cerain course exists or not
 //---------------------------------------------------------------------------------------------------------------
 function courseexists($coursename)
-{		
+{
+	if(is_string($coursename)) {
+		$coursename = getCourseId($coursename);
+	}
+
 	$guf=false;
-	$querystring="SELECT * FROM course WHERE coursename='$coursename';";
+	$querystring="SELECT * FROM course WHERE cid='$coursename';";
 	$result=mysql_query($querystring);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
 	while ($row = mysql_fetch_assoc($result)){
@@ -26,8 +30,8 @@ function getCourseId($coursename)
 	if(!$result) {
 		return false;
 	} else {
-		$course = mysql_fetch_assoc($result);
-		if(count($course) > 0) {
+		if(mysql_num_rows($result) > 0) {
+			$course = mysql_fetch_assoc($result);
 			return $course['cid'];
 		} else {
 			return false;
