@@ -42,34 +42,32 @@ include_once "../Shared/basic.php";
 		
 		function courselist()
 		{		
-						echo "<span class='inv'>LenaSYS</span>";
-						echo "<table width='100%'><tr><td rowspan='2'><div id='Sectionlist'>";
-						echo "<span class='course'>Course Example Organization System</span>";
-						
-						$querystring="SELECT course.coursename,max(cversion) AS version FROM course LEFT OUTER JOIN section ON course.coursename=section.coursename GROUP BY course.coursename;;";
-						$result=mysql_query($querystring);
-						if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
-						while ($row = mysql_fetch_assoc($result)){
-								echo "<span class='bigg'><a href='Sectioned.php?courseid=".$row['coursename']."&vers=".$row['version']."'>".$row['coursename']."</a></span>";
-						}	
+					?>
+						<span class='inv'>LenaSYS</span>
+						<table width='100%'>
+							<tr>
+								<td rowspan='2'>
+									<div id='Sectionlist'>
+										<span class='course'>Course Example Organization System</span>
+										<?php
+											$querystring="SELECT course.coursename,max(cversion) AS version FROM course LEFT OUTER JOIN section ON course.coursename=section.coursename GROUP BY course.coursename";
+											$result=mysql_query($querystring);
+											if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
+											while ($row = mysql_fetch_assoc($result)){
+													echo "<span class='bigg'><a href='Sectioned.php?courseid=".$row['coursename']."&vers=".$row['version']."'>".$row['coursename']."</a></span>";
+											}	
+										?>
 
-						echo "</div></td>";
-						//old onclick='location=\"loginlogout.php\";'
-						//new to be implemented for onclick loginbox();
-						echo "<td align='right' class='butto' onclick='location=\"loginlogout.php\";'><img src='icons/Man.svg' /></td>";
-						echo "</tr><tr><td></td></tr></table>";
-						//This is new
-						echo "<div id='login-box'><div id='login-box-header'><span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span></div><div id='login-box-content'>";
-						echo "<form action='#' method='post'>";
-						echo "<table><tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>";
-						echo "<tr><td class='td-login'><input class='input-login' type='text' name='usern'></td></tr>";
-						echo "<tr><td class='td-login'><span class='login-text'>Password</span></td></tr>";
-						echo "<tr><td class='td-login'><input class='input-login' type='password' name='passw'></td></tr>";
-						echo "<tr><td class='td-login'><input id='login-checkbox' type='checkbox' name='saveuserlogin'><span class='login-text'>Keep credentials</span></td></tr>";
-						echo "<tr><td class='td-login'><input type='submit' id='submit-button' value='Login'>";
-						echo "<a id='login-fg-pw' href='#' style='padding-left:10px;'>Forgot password</a></td></tr>";
-						echo "</table></form>";
-						echo "</div></div>";
-						//down to here				
+									</div>
+								</td>
+								<td align='right' class='butto' onclick='loginbox();'>
+									<img src='../CodeViewer/icons/Man.svg' />
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+						</table>
+					<?php
 		}
 ?>
