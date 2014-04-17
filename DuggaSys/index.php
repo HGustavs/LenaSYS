@@ -1,12 +1,25 @@
-﻿<?php header("Location: quiz/index.html"); ?>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta charset="utf-8" />
-		<title></title>
+			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
+			<link type="text/css" href="../DuggaSys/css/duggasys.css" rel="stylesheet" />	
+			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+			<script type="text/javascript" src="startpage.js"></script>
+
+<script>
+setupLogin();
+</script>
 	</head>
 	<body>
-		<h1>Quiz server v. 2</h1>
-	</body>
+<?php
+include_once("../../coursesyspw.php");	
+include_once("basic.php");
+
+session_start();
+dbConnect();
+
+courselist();
+loginwins();
+?>			
+			</body>
 </html>

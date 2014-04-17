@@ -8,10 +8,14 @@ session_start();
 <html>
 	<head>
 			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
-			<script type="text/javascript" src="../CodeViewer/js/jquery-1.5.1.min.js"></script>
+			<link type="text/css" href="css/duggasys.css" rel="stylesheet" />
+			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 			<script type="text/javascript" src="duggasys.js"></script>
-
+			<script type="text/javascript" src="startpage.js"></script>
+            <script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>
+			
 			<script>
+				setupLogin();
 				<?php
 
 						if(isset($_GET['courseid'])&&isset($_GET['vers'])){
@@ -23,7 +27,8 @@ session_start();
 						}
 
 						if(array_key_exists('uid', $_SESSION)) {
-							echo 'var sessionkind=' . (hasAccess($_SESSION['uid'], $_GET['courseid'], 'w') ? 1 : 0) .';';						
+							echo 'var sessionkind=' . (hasAccess($_SESSION['uid'], $_GET['courseid'], 'w') ? 1 : 0) .';';
+						//	$_SESSION['kind'] =  (hasAccess($_SESSION['uid'], $_GET['courseid'], 'w') ? 1 : 0);						
 						} else {
 							echo 'var sessionkind=0';
 						}
@@ -48,11 +53,11 @@ session_start();
 						// Logged in and with credentials - show full editor otherwise show viewer version 
 
 						if(checklogin()){
-								$ha=hasAccess($_SESSION['uid'], $courseID, 'w');
-								if($ha){
+							$ha=hasAccess($_SESSION['uid'], $courseID, 'w');
+							if($ha){
 										// Allowed to edit this course
 										editsectionmenu(true);
-								} else {
+							} else {
 										// No editing
 										editsectionmenu(false);
 								}
@@ -66,6 +71,24 @@ session_start();
 		}else{
 						bodywarning("This course does not seem to exist!");
 		}
+		loginwins();
 
 ?>			
 </html>
+
+
+<!--Place tooltips on all objects with a title-->
+<script>
+
+    $( document ).ready(function() {
+
+        setTimeout(function() {
+
+            $("*[title]").tooltips();
+
+        }, 800);
+
+
+    });
+
+</script>
