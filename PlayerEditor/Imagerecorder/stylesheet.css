@@ -6,7 +6,7 @@ body{
 }
 
 .canvasStyle2{
-
+	overflow-y:hidden;
 }
 .wrapper{
 	margin-left:auto;
@@ -39,4 +39,7 @@ body{
 	width:200px;
 	height:720px;
 	background:rgba(0,0,0,0.2);
+	overflow-x:hidden;
+	overflow-y:scroll;
 }
+

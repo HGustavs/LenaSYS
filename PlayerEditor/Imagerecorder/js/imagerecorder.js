@@ -78,6 +78,7 @@ function imagerecorder(imgCanvas, img1)
 	 */
 	$(document).ready(function(){
 	$("#" + imageCanvas).click(function(event){
+		
 		var xMouse = event.clientX;
 		var yMouse = event.clientY;
 	
@@ -96,8 +97,8 @@ function imagerecorder(imgCanvas, img1)
 	 *checks the mouse-position in realtime.
 	 */
 		$("#" + imageCanvas).mousemove(function(event){	
-		var xMouseReal = event.clientX;
-		var yMouseReal = event.clientY;
+		var xMouseReal = event.clientX - ImageCanvas.offsetLeft;
+		var yMouseReal = event.clientY - ImageCanvas.offsetTop;
 		document.getElementById('xCordReal').innerHTML=xMouseReal;
 		document.getElementById('yCordReal').innerHTML=yMouseReal;
 		});

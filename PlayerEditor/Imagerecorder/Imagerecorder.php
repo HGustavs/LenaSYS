@@ -53,8 +53,7 @@
 			}
 			?>
 		<br/>
-		<canvas id="canvasTemp" class="canvasStyle2" height="720" width="200"></canvas>
-
+		<canvas id="canvasTemp" class="canvasStyle2" height="2000" width="200"></canvas>
 		</div>
 		<form method='post' action='' enctype="multipart/form-data">
 			<input id='imageLoader' name='image' type='FILE'/>
