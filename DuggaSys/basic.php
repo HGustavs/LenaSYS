@@ -25,9 +25,10 @@ include_once "../Shared/basic.php";
 						echo "<td class='buttos' onclick='newSection(\"1\");'><img src='../CodeViewer/icons/Plus.svg' /></td>";
 						echo "<td class='buttos' onclick='newSection(\"2\");'><img src='../CodeViewer/icons/Bold.svg' /></td>";
 				}
-				echo "<td align='right' class='butto' onclick='loginbox()'><img src='../CodeViewer/icons/Man.svg' /></td>";
 				if(checklogin()) {
-					echo "<td align='right' class='butto' onclick='location=\"logout.php\"' style='background:red; display:inline-block; width:50px; height:50px;'></td>";
+					echo "<td align='right' class='butto' onclick='location=\"logout.php\"'><img src='../CodeViewer/icons/Man.svg' /></td>";
+				} else {
+					echo "<td align='right' class='butto' onclick='loginbox()'><img src='../CodeViewer/icons/Man.svg' /></td>";
 				}
 				echo "</tr></table>";
 
@@ -62,12 +63,13 @@ include_once "../Shared/basic.php";
 
 									</div>
 								</td>
+								<?php if(checklogin()) { ?>
+								<td align='right' class='butto' onclick='location="logout.php"'>
+								<?php } else { ?>
 								<td align='right' class='butto' onclick='loginbox();'>
+								<?php } ?>
 									<img src='../CodeViewer/icons/Man.svg' />
 								</td>
-								<?php if(checklogin()) { ?>
-								<td align='right' class='butto' onclick='location="logout.php"' style='background:red; display:inline-block; width:50px; height:50px;'></td>
-								<?php } ?>
 							</tr>
 							<tr>
 								<td></td>
