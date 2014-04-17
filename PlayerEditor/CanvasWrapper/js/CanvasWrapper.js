@@ -10,13 +10,13 @@
 		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
 		// Save log when "Save log" button is clicked
 		$("#CanvasWrapper-save").click(function(){
-			console.log(inTimestepDelay);
-			if(inTimestepDelay){ 
+			//console.log(inTimestepDelay);
+			/*if(inTimestepDelay){ 
 				console.log(str + "</timestep>\n" + "</script>");
 			}
 			else{
 				console.log(str + "</script>");
-			 }
+			 }*/
 			
 			alert("Saving");
 			$.ajax({
