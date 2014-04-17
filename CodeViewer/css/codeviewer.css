@@ -549,14 +549,6 @@ a {
 #playlinkErrorMsg{
 	display: none;
 	color: red;
-	background-color: #614875;
-	margin-top: 0px; 
-	right: 0px;
-	height: auto;
-	width: auto;
-	font-size: 30px;
-	position: absolute;
-	cursor: default;
 }
 #settingsTabMenu{	
 	border-bottom: solid 2px;
