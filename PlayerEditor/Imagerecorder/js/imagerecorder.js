@@ -48,7 +48,7 @@ function imagerecorder(imgCanvas, img1)
 		var delay = currentTime - lastEvent;
 		lastEvent = currentTime;
 		var delayStr = "<timestep delay=" + delay + "/>";
-		var imgPath = "<picture src="+pathArray[i]+"/>";		
+		var imgPath = "<picture src="+pathArray[i].split("\\").pop()+"/>";		
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
 			if (chrome !== null && vendorName === "Google Inc.") {
