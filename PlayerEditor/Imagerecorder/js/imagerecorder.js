@@ -79,8 +79,8 @@ function imagerecorder(imgCanvas, img1)
 	$(document).ready(function(){
 	$("#" + imageCanvas).click(function(event){
 		
-		var xMouse = event.clientX;
-		var yMouse = event.clientY;
+		var xMouse = event.clientX - ImageCanvas.offsetLeft; 
+		var yMouse = event.clientY - ImageCanvas.offsetTop;
 	
 		document.getElementById('xCord').innerHTML=xMouse;
 		document.getElementById('yCord').innerHTML=yMouse;
