@@ -8,11 +8,10 @@ function setupLogin()
 			$.post("login.php", data, function(data) {
 				var res = $.parseJSON(data);
 				if(res.login == "success") {
-					alert("Successfully logged in");
 					closeloginbox();
 					window.location.reload();
 				} else {
-					alert("Failed to log in ");
+					alert("Failed to log in.");
 				}
 			})
 		});
@@ -91,7 +90,6 @@ function checkAnswer(event) {
 	$.post("forgotpassword.php", data, function(data) {
 		var res = $.parseJSON(data);
 		if(typeof res.success !== "undefined" && res.success == true) {
-			alert("Successfully changed password");
 			form.closest("#forgot-passw-box").hide();
 			closeanswerbox();
 		} else {
