@@ -545,6 +545,19 @@ a {
 .errormsg{
 	color: red;
 }
+
+#playlinkErrorMsg{
+	display: none;
+	color: red;
+	background-color: #614875;
+	margin-top: 0px; 
+	right: 0px;
+	height: auto;
+	width: auto;
+	font-size: 30px;
+	position: absolute;
+	cursor: default;
+}
 #settingsTabMenu{	
 	border-bottom: solid 2px;
 	padding-left:0px;
@@ -684,4 +697,10 @@ a {
     opacity: 0;
     margin-top: 15px;
     transition-delay: 0s !important;
+}
+
+/*Prevent new lines to entered (which creates screen-errors) when editing names in lists*/
+.norm > [contenteditable="true"] br,
+.butt > [contenteditable="true"] br{
+    display:none;
 }
