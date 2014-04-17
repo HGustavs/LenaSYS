@@ -580,7 +580,13 @@ function displayTemplates()
 		str+="<li onclick='displayPlaylink()'>Playlink</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
-	str+="Templates";
+	str+="<h1>Pick a template for your example!</h1>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
+
 		
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
