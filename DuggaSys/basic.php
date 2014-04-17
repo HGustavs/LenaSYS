@@ -1,4 +1,3 @@
-<script type="text/javascript" src="../DuggaSys/startpage.js"></script>
 <?php
 include_once "../Shared/basic.php";
 	//---------------------------------------------------------------------------------------------------------------
