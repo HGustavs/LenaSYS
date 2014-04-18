@@ -80,6 +80,21 @@ INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) val
 INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","HTML5",1,2013,2,"Creationscript");
 
 
+/* template with information about a certain template */
+CREATE TABLE template(
+		templateid			INTEGER NOT NULL,
+		stylesheet 			VARCHAR(39) NOT NULL,
+		numbox				INTEGER NOT NULL,
+		PRIMARY KEY(templateid, stylesheet)
+)CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO template (templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template1.css",2);
+INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template1.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template2.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template2.css",4);
+
 /* Code Example contains a list of the code examples for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
 CREATE TABLE codeexample(
@@ -93,27 +108,25 @@ CREATE TABLE codeexample(
 		cversion			INTEGER,
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT NOT NULL,
+		templateid			INT NOT NULL DEFAULT '0',
 		PRIMARY KEY(exampleid),
 		FOREIGN KEY (cid) REFERENCES course (cid),
 		FOREIGN KEY (sectionid) REFERENCES section (sectionno),
-		FOREIGN KEY (uid) REFERENCES user (uid)
-		
-	
+		FOREIGN KEY (uid) REFERENCES user (uid),
+		FOREIGN KEY (templateid) REFERENCES template (templateid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Events 1","JS","",0,1,2013);
 INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Events 2","JS","",1,1,2013);
 INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Callback 1","GLSL","Culf.html",2,1,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,2,"Callback 2","GLSL","Dulf.html",3,1,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,2,"Callback 3","GLSL","",4,2,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,2,"Callback 4","JS","Fulf.html",5,2,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 1","GLSL","Gulf.html",0,2,2013);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 2","GLSL","Dulf.html",3,1,2013,1);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 3","GLSL","",4,2,2013,1);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 4","JS","Fulf.html",5,2,2013,1);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,3,"Design 1","GLSL","Gulf.html",0,2,2013,1);
 INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 2","JS","Hulf.html",1,2,2013);
 INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 3","JS","Iulf.html",2,1,2013);
 INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 4","JS","Julf.html",3,1,2013);
-
-
-
+ 
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
@@ -182,9 +195,9 @@ CREATE TABLE box(
 		exampleid 			MEDIUMINT NOT NULL,
 		boxcontent			VARCHAR(39),
 		descid				MEDIUMINT DEFAULT '0',
-		fileid				MEDIUMINT  DEFAULT '0',					
+		fileid				MEDIUMINT DEFAULT '0',					
 		settings			VARCHAR(1024),
-		PRIMARY KEY(boxid),
+		PRIMARY KEY(boxid, exampleid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (descid) REFERENCES descriptionsection (descid),
 		FOREIGN KEY (fileid) references filelist (fileid)
@@ -195,22 +208,7 @@ INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document
 INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,3,"[viktig=1]");
 
 
-/* template with information about a certain template */
-CREATE TABLE template(
-		templateid			INTEGER NOT NULL,
-		stylesheet 			VARCHAR(39) NOT NULL,
-		boxid				INTEGER NOT NULL,	
-		PRIMARY KEY(templateid, stylesheet, boxid)		
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",1);
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",2);
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",3);
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (2,"template2.css",4);
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (2,"template2.css",5);
-
 /* Wordlist contains a list of keywords for a certain programming language or file type */
-
 CREATE TABLE wordlist(
 		wordid		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
 		wordlist			VARCHAR(64),
@@ -230,7 +228,6 @@ INSERT INTO wordlist(wordlist,word,uid) VALUES ("GLSL","vec3",2);
 INSERT INTO wordlist(wordlist,word,uid) VALUES ("GLSL","dot",2);
 
 /* Wordlist contains a list of important words for a certain code example */
-
 CREATE TABLE impwordlist(
 		wordid		  	MEDIUMINT NOT NULL AUTO_INCREMENT,
 		exampleid		MEDIUMINT NOT NULL,
