@@ -18,10 +18,10 @@
 		dbConnect();
 		session_start();
 	
-		$coursename=$_POST['coursename'];
-		$vers=$_POST['vers'];
-		$opt=$_POST['opt'];		
-		$appuser="NOT YET IMPL";
+		$courseid=$_POST['courseid'];
+		//$vers=$_POST['vers'];
+		//$opt=$_POST['opt'];		
+		//$appuser="NOT YET IMPL";
 		$exampleno=0;
 
 		if(isset($_POST['sectid'])) $sectid=htmlEntities($_POST['sectid']);
@@ -116,24 +116,16 @@
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
 		//------------------------------------------------------------------------------------------------
-	
-		$examples=array();
-		$query = "SELECT section.sectionname,section.sectionno,examplename,exampleno,pos,sectionpos,kind FROM section,codeexample WHERE section.sectionno=codeexample.sectionno and section.cversion='$vers' and section.coursename='$coursename' ORDER BY sectionpos,pos;";		
-		$result=mysql_query($query);
-		if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
-		while ($row = mysql_fetch_assoc($result)){
-				array_push($examples,array('exampleno'=>$row['exampleno'],'sectionname'=>$row['sectionname'],'sectionno'=>$row['sectionno'],'examplename'=>$row['examplename'],'pos'=>$row['pos'],'sectionpos'=>$row['sectionpos'],'kind'=>$row['kind']));
-		}
 
-		$sections=array();
-		$query = "SELECT sectionno,sectionname,sectionpos,kind FROM section WHERE section.cversion='$vers' and section.coursename='$coursename' ORDER BY sectionpos;";		
+		$entries=array();
+		$query = "SELECT lid,entryname,pos,kind,link FROM listentries WHERE listentries.cid='$courseid' ORDER BY pos;";		
 		$result=mysql_query($query);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 		while ($row = mysql_fetch_assoc($result)){
-				array_push($sections,array('sectionname'=>$row['sectionname'],'sectionno'=>$row['sectionno'],'sectionpos'=>$row['sectionpos'],'sectionkind'=>$row['kind']));
+				array_push($sections,array('entryname'=>$row['entryname'],'lid'=>$row['lid'],'pos'=>$row['pos'],'kind'=>$row['kind'], 'link'=>$row['link']));
 		}
 	
-		$array = array('sections'=>$sections,'examples'=>$examples,"debug"=>$debug);
+		$array = array('entries'=>$entries,"debug"=>$debug);
 			
 		echo json_encode($array);
 	
