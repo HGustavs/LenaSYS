@@ -62,7 +62,6 @@ function imagerecorder(imgCanvas, img1)
 				document.getElementById("XMLfile").value += imgPath;
 			}
 			
- 			
 		console.log(delayStr);
 		console.log(str);
 		//console.log(logTest);
@@ -96,27 +95,43 @@ function imagerecorder(imgCanvas, img1)
 	/*
 	 *checks the mouse-position in realtime.
 	 */
+	var timer = null;
+	var interval = false;
+	var xMouseReal;
+	var yMouseReal;
 		$("#" + imageCanvas).mousemove(function(event){	
-		var xMouseReal = event.clientX - ImageCanvas.offsetLeft;
-		var yMouseReal = event.clientY - ImageCanvas.offsetTop;
+	
+		xMouseReal = event.clientX - ImageCanvas.offsetLeft;
+		yMouseReal = event.clientY - ImageCanvas.offsetTop;
 		document.getElementById('xCordReal').innerHTML=xMouseReal;
 		document.getElementById('yCordReal').innerHTML=yMouseReal;
 		
-				appendEvString(xMouseReal,yMouseReal);
-			
+		if (interval) {
+			return;
+		}
+		timer = window.setInterval(function() {
+		var dd = new Date();
+		var currentTime = dd.getTime();
+		var delay = currentTime - lastEvent;
+		lastEvent = currentTime;
+				appendEvString(xMouseReal,yMouseReal, delay);
+		}, 33,333);
+			interval = true;		
 		});
 	});
-	function appendEvString(x, y){
+	
+	function appendEvString(x, y, delay){
 		var mouseMovement = "<Mousemove x="+x+" y="+y+"/>";
+		var delayStr = "<timestep delay=" + delay + "/>";;
 		if(clicked == 1){
+			log(delayStr);
 			log(mouseMovement);
+			console.log(delayStr);
 			console.log(mouseMovement);
 		}
 	}
-
+	
 	function log(str){
-	
 		document.getElementById("XMLfile").value += str;
-	
 	}
 }
