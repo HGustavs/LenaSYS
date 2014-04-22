@@ -91,7 +91,7 @@
 			}
 		}
 
-	    this.beginPath = function(){
+		this.beginPath = function(){
 			this.UpdateAllFunctions();
 			this.log('<beginPath/>');
 	        this.ctx.beginPath();
@@ -290,6 +290,11 @@
 	        this.log('<toDataURL/>');        
 	        this.ctx.toDataURL();
 	    }
+		this.resize= function(x, y){
+			this.UpdateAllFunctions();
+			this.log('<resize x="'+x+'" y="'+y+'"/>');
+			this.ctx.resize(x, y);
+		}
 		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
 		This updates are added to the xml if there are any.*/
 		this.UpdateAllFunctions = function(){
