@@ -476,6 +476,9 @@ function Canvasrenderer()
 	this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
 		ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 	}
+	this.putImageData = function(imgData, x, y){
+		ctx.putImageData(imgData, x, y);
+	}
 	this.save = function(){
 		ctx.save();
 	}
