@@ -61,6 +61,21 @@ CREATE TABLE user_course(
 INSERT INTO user_course(uid,cid,access) values (1,1,"W");
 INSERT INTO user_course(uid,cid,access) values (2,2,"W");
 
+
+CREATE TABLE listentries (
+	lid int UNSIGNED NOT NULL AUTO_INCREMENT,
+	cid int(11) UNSIGNED NOT NULL,
+	entryname varchar(64),
+	link varchar(80),
+	kind int unsigned,
+	pos int,
+	creator int unsigned not null,
+	ts timestamp default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	code_id mediumint not null,
+	PRIMARY KEY(lid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
 CREATE TABLE section(
