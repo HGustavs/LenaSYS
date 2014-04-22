@@ -30,7 +30,7 @@
 		
 		// Add script tag
 		str += '<script type="canvas">\n';
-
+		if(canvas == undefined) alert("Error");
 	    this.ctx = canvas;      // This is the actual canvas object
 	    this.lineWidth = this.ctx.lineWidth;
 		this.lineJoin = this.ctx.lineJoin;
@@ -49,11 +49,16 @@
 		this.textAlign = this.ctx.textAlign;
 		this.textBaseline = this.ctx.textBaseline;
 		//PixelManipulation property.
-		this.imgData = function(){
+		/*this.imgData = function(){
 			this.width = this.ctx.imgData.width;
 			this.height = this.ctx.imgData.height;
 			this.data = this.ctx.imageData.data;
+		}*/
+		this.canvas = function(){
+			this.width = this.ctx.width;
+			this.height = this.ctx.height;
 		}
+		
 		
 		//Compositing property.
 		this.globalAlpha = this.ctx.globalAlpha;
@@ -263,6 +268,11 @@
 			this.UpdateAllFunctions();
 	        this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dirtyx="'+dirtyX+'" dirtyy="'+dirtyY+'" dirtywidth="'+dirtyWidth+'" dirtyheight="'+dirtyHeight+'"/>');        
 	        return this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
+		}
+		this.putImageData = function(imgData,x,y){
+			this.UpdateAllFunctions();
+	        this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y);        
+	        return this.ctx.putImageData(imgData,x,y);
 		}
 		//Other methods.
 		this.restore = function(){
