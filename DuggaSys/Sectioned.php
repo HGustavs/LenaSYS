@@ -65,8 +65,8 @@
 													cursor: "move",
 													items: "> span",
 													update: function() {
-														var order = $(this).sortable("serialize") + '&action=updateEntries';
-														$.post("421blazeit.php", order);
+														var sorted = $(this).sortable("serialize") + '&action=updateEntries';
+														$.post("entryupdate.php", sorted);
 													}
 												});
 											});
