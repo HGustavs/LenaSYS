@@ -337,8 +337,11 @@ function Canvasrenderer()
 		else {
 			// Execute next step
 			if (this.windpos >= 0) {
-				// Check if done
-				if (this.currentPosition() >= this.windpos) {
+				// Fetch delay
+				var delay = this.runningTimesteps[this.runningTimesteps.length-1].getDelay();
+
+				// Check if done and not trying to stop at a zero-delay timestep
+				if (this.currentPosition() >= this.windpos && delay > 0) {
 					this.windpos = -1;
 
 					// Check if we should pause or resume
@@ -647,6 +650,12 @@ function TimestepTimeout(delay, args)
 	{
 		this.pause();
 		remaining = delay;
+	}
+
+	// Get delay
+	this.getDelay = function()
+	{
+		return remaining;
 	}
 
 	// Has to be initialized, and ID to be set
