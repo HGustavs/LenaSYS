@@ -3,6 +3,8 @@
 <timestep delay="1000">
 <beginpath/>
 <moveto x="277" y="286"/>
+<state_strokestyle value="#FF0000"/>
+<state_linewidth value="50"/>
 </timestep>
 <timestep delay="1000">
 <lineto x="334" y="270"/>

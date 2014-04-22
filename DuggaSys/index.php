@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<link type="text/css" href="css/style.css" rel="stylesheet">
+	<head>
+			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />
+			<link type="text/css" href="../DuggaSys/css/duggasys.css" rel="stylesheet" />
+			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+			<script type="text/javascript" src="startpage.js"></script>
 
-</head>
-<body>
-	<header>
+<script>
+setupLogin();
+</script>
+	</head>
+	<body>
+<?php
+include_once("../../coursesyspw.php");
+include_once("basic.php");
 
-	</header>
-	<content>
+session_start();
+dbConnect();
 
-	</content>
-</body>
+courselist();
+loginwins();
+?>			
+			</body>
 </html>
