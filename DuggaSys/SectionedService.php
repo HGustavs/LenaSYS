@@ -116,11 +116,11 @@
 		//------------------------------------------------------------------------------------------------
 	
 		$examples=array();
-		$query = "SELECT section.sectionname,section.sectionno,examplename,exampleno,pos,sectionpos,kind FROM section,codeexample WHERE section.sectionno=codeexample.sectionno and section.cversion='$vers' and section.coursename='$coursename' ORDER BY sectionpos,pos;";		
+		$query = "SELECT section.sectionname,section.sectionno,examplename,exampleid,pos,sectionpos,kind FROM section,codeexample WHERE section.sectionno=codeexample.sectionid and section.cversion='$vers' and section.coursename='$coursename' ORDER BY sectionpos,pos;";		
 		$result=mysql_query($query);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 		while ($row = mysql_fetch_assoc($result)){
-				array_push($examples,array('exampleno'=>$row['exampleno'],'sectionname'=>$row['sectionname'],'sectionno'=>$row['sectionno'],'examplename'=>$row['examplename'],'pos'=>$row['pos'],'sectionpos'=>$row['sectionpos'],'kind'=>$row['kind']));
+				array_push($examples,array('exampleno'=>$row['exampleid'],'sectionname'=>$row['sectionname'],'sectionno'=>$row['sectionno'],'examplename'=>$row['examplename'],'pos'=>$row['pos'],'sectionpos'=>$row['sectionpos'],'kind'=>$row['kind']));
 		}
 
 		$sections=array();
