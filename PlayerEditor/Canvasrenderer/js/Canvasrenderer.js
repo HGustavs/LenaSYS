@@ -139,16 +139,6 @@ function Canvasrenderer()
 			this.paused = 0;
 			t = this.runningTimesteps[this.runningTimesteps.length-1].resume();
 		}
-
-		/**
-		// Play or pause
-		if (shouldPause) {
-			this.pause();
-		}
-		else {
-			this.play();
-		}
-		*/
 	}
 
 	// Calculate current position
