@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<title>Prototype imagerecorder</title>
+<title>Imagerecorder</title>
 <style>
 </style>
 	<link href="stylesheet.css" rel="stylesheet" type="text/css"/>
@@ -22,6 +22,7 @@
 		<div class="uploadImages">
 		
 			<?php
+			
 			$image_name = null;
 			if(isset($_POST['upload'])){
 				$image_name = $_FILES['image']['name'];
@@ -34,9 +35,9 @@
 			else
 			move_uploaded_file($image_tmp_name,"pictures/$image_name");
 			}
-			if(isset($_POST['test'])){
-			$filename = 'test.txt';
-			$textString = $_POST['test'];
+			if(isset($_POST['xmlfile'])){
+			$filename = 'xmlfile.txt';
+			$textString = $_POST['xmlfile'];
 			if (is_writable($filename)) {
 				if (!$handle = fopen($filename, 'a')) {
 					 echo "Cannot open file ($filename)";
@@ -61,7 +62,7 @@
 		</form>
 		<br/>
 		<form name='form' method='post' action=''>
-			<input id='XMLfile' name='test' style='width:1280px;'/>
+			<input id='XMLfile' name='xmlfile' style='width:1280px;'/>
 			<input type="submit" value="Export XML"></input>
 		</form>
 	</div>
