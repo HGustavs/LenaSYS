@@ -274,7 +274,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 			this.advancestep();								
 		}
 		
-		document.getElementById("playcontrol").innerHTML="<img src='../images/PauseR.svg'/>";			
+		document.getElementById("playcontrol").innerHTML="<img src='Bilder/pause.svg'/>";			
 	}
 
 	//-------------------------------------------------------------------------------------------
@@ -286,7 +286,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	{
 		this.paused=1;
 
-		document.getElementById("playcontrol").innerHTML="<img src='../images/PlayR.svg'/>";	
+		document.getElementById("playcontrol").innerHTML="<img src='Bilder/play_button.svg'/>";	
 	}
 
 	//-------------------------------------------------------------------------------------------
@@ -312,11 +312,11 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 		if (this.repeat == 0) {
 			// Repeat
 			this.repeat = 1;
-			document.getElementById("repeatcontrol").innerHTML="<img src='../images/Replay_pressed.svg'/>";
+			document.getElementById("repeatcontrol").innerHTML="<img src='Bilder/replay_button.svg'/>";
 		}else {
 			// Don't repeat
 			this.repeat = 0;
-			document.getElementById("repeatcontrol").innerHTML="<img src='../images/Replay.svg'/>";
+			document.getElementById("repeatcontrol").innerHTML="<img src='Bilder/replay_button.svg'/>";
 		}
 	}
 
