@@ -61,6 +61,17 @@ function Canvasrenderer()
 		document.getElementById("play").innerHTML="<img src='Images/play_button.svg'/>";
 	}
 
+	// Search canvas playback
+	this.search = function(event)
+	{
+		// Calculating search percentage (0%-100%)
+		var rect = document.getElementById("barcontainer").getBoundingClientRect();
+		var percentage = (event.clientX - rect.left) / rect.right;
+
+		// Move to new position
+		this.windto(Math.floor((this.numValidTimesteps-1) * percentage));
+	}
+
 	// Reset canvas
 	this.reset = function()
 	{
