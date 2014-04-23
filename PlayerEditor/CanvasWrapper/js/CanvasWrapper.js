@@ -31,7 +31,9 @@
 		// Add script tag
 		str += '<script type="canvas">\n';
 		if(canvas == undefined) alert("Error");
-	    this.ctx = canvas;      // This is the actual canvas object
+		this.canvas=canvas;
+	    this.ctx = canvas.getContext('2d');      // This is the actual canvas object
+		//canvas = 800;
 	    this.lineWidth = this.ctx.lineWidth;
 		this.lineJoin = this.ctx.lineJoin;
 		this.miterLimit = this.ctx.miterLimit;
@@ -300,11 +302,7 @@
 	        this.log('<toDataURL/>');        
 	        this.ctx.toDataURL();
 	    }
-		this.resize= function(x, y){
-			this.UpdateAllFunctions();
-			this.log('<resize x="'+x+'" y="'+y+'"/>');
-			this.ctx.resize(x, y);
-		}
+		
 		/* Update state of the contextlines in the function for the properties and will check if any property needs updates.
 		This updates are added to the xml if there are any.*/
 		this.UpdateAllFunctions = function(){
@@ -430,7 +428,7 @@
 			attribute += '_' + property + ' value="' + this[property] + '"' + '/>' + "\n";
 			return (attribute);
 		}
-		
+		this.log('<canvasSize width="'+canvas.width+'" height="'+canvas.height+'"/>');
 		
 	}
  	
