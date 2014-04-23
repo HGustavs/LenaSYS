@@ -18,7 +18,7 @@
 		dbConnect();
 		session_start();
 	
-		$courseid=$_POST['courseid'];
+		$coursename=$_POST['coursename'];
 		//$vers=$_POST['vers'];
 		//$opt=$_POST['opt'];		
 		//$appuser="NOT YET IMPL";
@@ -116,13 +116,13 @@
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
 		//------------------------------------------------------------------------------------------------
-
+		$courseid = getCourseId($coursename);
 		$entries=array();
 		$query = "SELECT lid,entryname,pos,kind,link FROM listentries WHERE listentries.cid='$courseid' ORDER BY pos;";		
 		$result=mysql_query($query);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 		while ($row = mysql_fetch_assoc($result)){
-				array_push($sections,array('entryname'=>$row['entryname'],'lid'=>$row['lid'],'pos'=>$row['pos'],'kind'=>$row['kind'], 'link'=>$row['link']));
+				array_push($entries,array('entryname'=>$row['entryname'],'lid'=>$row['lid'],'pos'=>$row['pos'],'kind'=>$row['kind'], 'link'=>$row['link']));
 		}
 	
 		$array = array('entries'=>$entries,"debug"=>$debug);

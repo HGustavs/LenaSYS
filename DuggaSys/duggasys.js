@@ -108,7 +108,7 @@ function returnedSection(data)
 							str+=Sectionbutton("PP","PlayT.svg",data['entries'][j]['lid'],"EXAMPLE",data['entries'][j]['lid']);
 							str+="</span>"
 					}else{
-							str+="<a href="data['entries'][j]['link']+"</a>";		
+							str+="<a href="+data['entries'][j]['link']+"</a>";		
 					}
 					str+="</span>";
 					break;
@@ -120,29 +120,27 @@ function returnedSection(data)
 				break;
 				}
 			}
+			
+			var slist=document.getElementById('Sectionlist');
+			slist.innerHTML=str;
 
-		}
-		
-		var slist=document.getElementById('Sectionlist');
-		slist.innerHTML=str;
-
-		if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
-			// Setup editable sections with events etc
-			for(i=0;i<data['entries'].length;i++){
-				if(parseInt(data['entries'][i]['kind'])==0){
-					var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
-					editable.addEventListener("blur", function(){editedSectionName(this);}, true);
-				}else if (parseInt(data['entries'][i]['kind'])==1){
-					var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
-					editable.addEventListener("blur", function(){editedSectionName(this);}, true);
-				}else{
-					var editable=document.getElementById("EX"+data['examples'][j]['exampleno']);
-					editable.addEventListener("blur", function(){editedExampleName(this);}, true);
-				}
-			}				
-		}
+			if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+				// Setup editable sections with events etc
+				for(i=0;i<data['entries'].length;i++){
+					if(parseInt(data['entries'][i]['kind'])==0){
+						var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
+						editable.addEventListener("blur", function(){editedSectionName(this);}, true);
+					}else if (parseInt(data['entries'][i]['kind'])==1){
+						var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
+						editable.addEventListener("blur", function(){editedSectionName(this);}, true);
+					}else{
+						var editable=document.getElementById("EX"+data['examples'][j]['exampleno']);
+						editable.addEventListener("blur", function(){editedExampleName(this);}, true);
+					}
+				}				
+			}
 
 
-	  if(data['debug']!="NONE!") alert(data['debug']);
+		  if(data['debug']!="NONE!") alert(data['debug']);
 
 }
