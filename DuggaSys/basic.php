@@ -4,6 +4,12 @@ include_once "../Shared/basic.php";
 	// editsectionmenu - Displays an editable or un-editable section menu
 	//---------------------------------------------------------------------------------------------------------------
 
+		/**
+		 * Generate the HTML for the section editor menu and whatnot
+		 * TODO: Make this slightly more portable?
+		 * @param boolean $kind Boolean representing if the user is allowed to edit
+		 * or not.
+		 */
 		function editsectionmenu($kind)
 		{
 				echo "<body onload='AJAXServiceSection(\"\",\"\");'>";
@@ -43,6 +49,9 @@ include_once "../Shared/basic.php";
 	// courselist - Displays a list of the current courses
 	//---------------------------------------------------------------------------------------------------------------
 		
+		/**
+		 * Generate the course list HTML
+		 */
 		function courselist()
 		{		
 					?>
@@ -78,6 +87,9 @@ include_once "../Shared/basic.php";
 					<?php
 		}
 
+		/**
+		 * Generate the HTML needed by the login, password recovery etc methods
+		 */
 		function loginwins()
 		{
 ?>

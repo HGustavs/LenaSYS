@@ -23,7 +23,7 @@ if(array_key_exists('user', $_POST) && array_key_exists('answer', $_POST) && arr
 		$res = mysql_fetch_assoc($result);
 		if($res["answer"] == $_POST['answer']) {
 			if(strlen($_POST['newpassword']) < MIN_PASSWORD_LENGTH) {
-				// Ensure that the newly provided password meets our requirements on 
+				// Ensure that the newly provided password meets our requirements on
 				// passwords (i.e. it must be at least MIN_PASSWORD_LENGTH characters long).
 				$answerres["success"] = false;
 				$answerres["error"] = "Password is not long enough";
