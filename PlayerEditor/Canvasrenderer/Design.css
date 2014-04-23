@@ -1,6 +1,9 @@
 	
 body {background-color:#614875;}
 
+
+
+
 table {
 	border-collapse: seperate;
 	border-spacing: 2px;
@@ -25,30 +28,29 @@ span { display: inline-block; }
 	background-color:#614875;
 }
 #wrapper{
-
-	background-image:url('Bilder/bakgrund.png');
+background-color: #614875;
 }
 
 .barcontainer{
 	background-size: 64px 100%;
 	background-color: #FFFFFF;
 	padding:1px;
-	border-radius: 8px;
+	/*border-radius: 8px;´*/
 	border:solid 2px #000;
 }
 
 .bar{
 	position:absolute;
 	height: px;
-	width:20px;
-	background-image: url('../images/BP64D.gif'); 
+	width:0px;
+	background-image: url('Images/Loadingbar.gif'); 
 	background-repeat: repeat-x;
 	background-size: 64px 100%;
-	border-radius: 8px;
+	/*border-radius: 8px;*/
 }					
 
 canvas {
 	
-	background-color:#FFF;
+	background-color:#fff;
 	
 }

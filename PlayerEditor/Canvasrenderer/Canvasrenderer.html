@@ -22,26 +22,30 @@ function executeTimestep(nodes)
 </head>
 
 <body onload="initPlayer();">
-	<canvas id="Canvas" width="800" height="600" style="border:1px solid #000"></canvas>
+	<canvas id="Canvas" width="850" height="590" style="border:1px solid #000"></canvas>
  	<script>
     var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
 	var canvas = new Canvasrenderer();
     </script>
-    
-    <div id="buttons">
-    
+    <div id="wrapper">
+    	<div id="bardesign">
+   
+ 
     	<table>
 				<tr>
 					<td onclick="canvas.switch();" id="play" class="barbutton"><img src="images/play_button.svg"/></td>
-					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick=""><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>					
-					<td onclick="canvas.skip(-1)" id="back" class="barbutton"><img src="images/backward_button.svg"/></td>					
-					<td onclick="canvas.skip(1);" id="forward" class="barbutton"><img src="images/forward_button.svg"/></td>					
-					<td onclick="canvas.toggleRepeat();" id="repeat" class="barbutton"><img src="images/replay_button.svg"/></td>
+					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick="canvas.search(event);"><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>					
+					<td onclick="canvas.skip(-1)" id="back" class="barbutton"><img src="Images/backward_button.svg"/></td>					
+					<td onclick="canvas.skip(1);" id="forward" class="barbutton"><img src="Images/forward_button.svg"/></td>					
+					<td onclick="canvas.toggleRepeat();" id="repeat" class="barbutton"><img src="Images/replay_button.svg"/></td>
 				</tr>
 		</table>
         
-    </div>
+
+</div>
+</div>
+</div>
     
 </body>
 
