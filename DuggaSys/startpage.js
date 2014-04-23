@@ -19,6 +19,15 @@ function setupLogin()
 		$("#answerform").on("submit", checkAnswer);
 	});
 }
+//function for closing windows with escape
+$( document ).on( 'keydown', function ( e ) {
+    if ( e.keyCode === 27 ) {
+		$("#bg").hide();
+        $("#login-box").hide();
+		$("#forgot-passw-box").hide();
+    }
+});
+
 
 //function for showin the login-box
 function loginbox(){
@@ -46,6 +55,11 @@ function showForgotPasswBox(){
 	$("#forgot-passw-box").css({'left': (($(document).width()/2) - $("#login-box").width()/2)});
 	$("#forgot-passw-box").toggle();
 
+}
+
+function returnToLogin(){
+	$("#login-box").show();
+	$("#forgot-passw-box").hide();
 }
 
 function showQuestion(event) {

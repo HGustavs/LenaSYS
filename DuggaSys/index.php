@@ -28,13 +28,13 @@ courselist();
 						</div>
 						<div id='login-box-content'>
 							<form id='loginform' action='login.php' method='post'>
-								<table><tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>
-									<tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>
-									<tr><td class='td-login'><span class='login-text'>Password</span></td></tr>
-									<tr><td class='td-login'><input class='input-login' type='password' name='password'></td></tr>
-									<tr><td class='td-login'><input id='login-checkbox' type='checkbox' name='saveuserlogin'>
+								<table><tr><td><span class='login-text'>Login name</span></td></tr>
+									<tr><td><input class='input-login' type='text' name='username'></td></tr>
+									<tr><td><span class='login-text'>Password</span></td></tr>
+									<tr><td><input class='input-login' type='password' name='password'></td></tr>
+									<tr><td><input id='login-checkbox' type='checkbox' name='saveuserlogin'>
 										<span class='login-text'>Remember me</span></td></tr>
-									<tr><td class='td-login'><input type='submit' class='submit-button' value='Login'>
+									<tr><td><input type='submit' class='submit-button' value='Login'>
 									<span id='login-fg-pw' onclick='showForgotPasswBox();' style='padding-left:10px;'>Forgot password</span></td></tr>
 								</table>
 							</form>
@@ -44,13 +44,14 @@ courselist();
 					 <div id='forgot-passw-box'>
 						<div id='forgot-passw-box-header' class='box-header'>
 							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>Forgot Password</span>
-							<div id='forgot-passw-box-header-closeb' class='box-header-cbutton' onclick='closeforgotpwbox()'>x</div>
-							<div id='forgot-password-box-content'>
+							<div id='forgot-passw-box-header-closeb' class='box-header-cbutton' onclick='closeforgotpwbox()'>x</div></div>
+							<div id='forgot-pw-content'>
 								<form method='post' id="recoverform">
 									<table>
-										<tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>
-										<tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>
-										<tr><td class='td-login'><input type='submit' class='submit-button' value='Next'></td></tr>
+										<tr><td><span class='login-text'>Login name</span></td></tr>
+										<tr><td><input class='input-login' type='text' name='username'></td></tr>
+                                        <tr><td><input type='submit' class='submit-button' onclick='returnToLogin();' value='Back'>
+										<input type='submit' class='submit-button' value='Next'></td></tr>
 									</table>
 								</form>
 							</div>
@@ -69,7 +70,7 @@ courselist();
 										<tr><td class='td-login'><input class='input-login' type='text' name='answer' placeholder='Answer'></td></tr>
 										<tr><td class='td-login'><span class='login-text'>New password</span></td></tr>
 										<tr><td class='td-login'><input class='input-login' type='password' name='newpassword'></td></tr>
-										<tr><td class='td-login'><input type='submit' class='submit-button' value='Next'></td></tr>
+                                        <tr><td class='td-login'><input type='submit' class='submit-button' value='Next'></td></tr>
 									</table>
 								</form>
 							</div>
