@@ -38,7 +38,7 @@ $(document).ready(function(){
     // This is where we capture the canvas context. Instead of 
     // using the canvas context directly, ctx uses our captureCanvas-object
     // which logs and forwards each function call  to the actual canvas. 
-    var ctx = new captureCanvas(canvas.getContext('2d'));
+    var ctx = new captureCanvas(canvas);
     
     $('#mycanvas').on('click', function(o){
         var offset = $(this).offset();
