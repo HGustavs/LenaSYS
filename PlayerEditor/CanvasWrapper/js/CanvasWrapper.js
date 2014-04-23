@@ -24,6 +24,32 @@
 				data: { string: str }
 			});
 		});
+		
+		var optimize = false;
+
+		$("body").append("<input type='button' id='XML_type' value='Make optimized XML' style='position:absolute;right:50;top:0'>");
+		
+		$("#XML_type").click(function(){
+		
+			if(optimize == false){
+			
+				optimize = true;
+				
+				this.value = "Make normal XML";
+				
+				console.log(optimize);
+				
+			}else{
+			
+				optimize = false;
+				
+				this.value = "Make optimized XML";
+				
+				console.log(optimize);
+			}			
+		});
+			
+
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
 		
@@ -99,19 +125,31 @@
 
 		this.beginPath = function(){
 			this.UpdateAllFunctions();
-			this.log('<beginPath/>');
+			if(optimize == true){
+				this.log('<bP/>');
+			}else{
+				this.log('<beginPath/>');
+			}
 	        this.ctx.beginPath();
 	    }
 	    
 	    this.moveTo = function(x, y){
 			this.UpdateAllFunctions();
-			this.log('<moveTo x="'+x+'" y="'+y+'"/>');
+			if(optimize == true){
+				this.log('<mT x="'+x+'" y="'+y+'"/>');
+			}else{
+				this.log('<moveTo x="'+x+'" y="'+y+'"/>');
+			}
 	        this.ctx.moveTo(x, y);
 	    }
 	    
 	    this.lineTo = function(x, y){
 			this.UpdateAllFunctions();
-			this.log('<lineTo x="'+x+'" y="'+y+'"/>');
+			if(optimize == true){
+				this.log('<lT x="'+x+'" y="'+y+'"/>');
+			}else{
+				this.log('<lineTo x="'+x+'" y="'+y+'"/>');
+			}
 	        this.ctx.lineTo(x, y);
 	    }
 	    

@@ -426,7 +426,7 @@ function Canvasrenderer()
 	    ctx.fillRect(x, y, width, height);
 	}
 	
-	this sRec = function(x, y, w, h){
+	this.sRec = function(x, y, w, h){
 		this.strokeRect(x, y, w, h);
 	}
 		
@@ -635,7 +635,8 @@ function Canvasrenderer()
 	}
 	
 	this.st_shdwOffsetY = function(value){
-		this.state_shadowOffsetY(value)
+		this.state_shadowOffsetY(value);
+	}
 	
 	this.state_shadowOffsetY = function(value){
 		ctx.shadwoOffsetY = value;
@@ -714,7 +715,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_data = function(value){
-		this.state:data(value);
+		this.state_data(value);
 	}
 	
 	this.state_data = function(value){
