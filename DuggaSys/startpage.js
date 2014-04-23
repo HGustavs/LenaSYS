@@ -25,6 +25,7 @@ $( document ).on( 'keydown', function ( e ) {
 		$("#bg").hide();
         $("#login-box").hide();
 		$("#forgot-passw-box").hide();
+		$("#answer-box").hide();
     }
 });
 
@@ -60,6 +61,7 @@ function showForgotPasswBox(){
 function returnToLogin(){
 	$("#login-box").show();
 	$("#forgot-passw-box").hide();
+	$("#answer-box").hide();
 }
 
 function showQuestion(event) {

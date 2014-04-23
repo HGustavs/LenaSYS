@@ -23,7 +23,7 @@ courselist();
 				<div id="bg" style="display:none; width:100%; height:100%"></div>
 					<div id='login-box'>
 						<div id='login-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span>
+							<span class='login-header-text'>LenaSYS Login</span>
 								<div id='login-box-header-closeb' class='box-header-cbutton' onclick='closeloginbox();'>x</div>
 						</div>
 						<div id='login-box-content'>
@@ -43,7 +43,7 @@ courselist();
 
 					 <div id='forgot-passw-box'>
 						<div id='forgot-passw-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>Forgot Password</span>
+							<span class='login-header-text'>Forgot Password</span>
 							<div id='forgot-passw-box-header-closeb' class='box-header-cbutton' onclick='closeforgotpwbox()'>x</div></div>
 							<div id='forgot-pw-content'>
 								<form method='post' id="recoverform">
@@ -60,17 +60,18 @@ courselist();
 
 					<div id='answer-box'>
 						<div id='answer-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>Forgot Password</span>
+							<span class='login-header-text'>Forgot Password</span>
 							<div id='answer-box-header-closeb' class='box-header-cbutton' onclick='closeanswerbox()'>x</div>
 							<div id='answer-box-content'>
 								<form method='post' id="answerform">
 									<input type="hidden" name="user" value="">
 									<table>
-										<tr><td class='td-login'><span class='login-text' id="recoverquestion"></span></td></tr>
-										<tr><td class='td-login'><input class='input-login' type='text' name='answer' placeholder='Answer'></td></tr>
-										<tr><td class='td-login'><span class='login-text'>New password</span></td></tr>
-										<tr><td class='td-login'><input class='input-login' type='password' name='newpassword'></td></tr>
-                                        <tr><td class='td-login'><input type='submit' class='submit-button' value='Next'></td></tr>
+										<tr><td><span class='login-text' id="recoverquestion"></span></td></tr>
+										<tr><td><input class='input-login' type='text' name='answer' placeholder='Answer'></td></tr>
+										<tr><td><span class='login-text'>New password</span></td></tr>
+										<tr><td><input class='input-login' type='password' name='newpassword'></td></tr>
+                                        <tr><td><input type='button' class='submit-button' onclick='returnToLogin();' value='Back'>
+                                        <input type='submit' class='submit-button' value='Next'></td></tr>
 									</table>
 								</form>
 							</div>

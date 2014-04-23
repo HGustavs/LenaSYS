@@ -89,6 +89,12 @@ span#login-fg-pw{
 span#login-fg-pw:hover{
 	color:#999;
 }
+span.login-header-text{
+	color:white;
+	font-family:arial;
+	font-weight:bold;
+	font-size:14pt;
+}
 /*<<----------------------------------------------------End*/
 
 /*<<----------------------------------------------------Start*/
@@ -113,11 +119,16 @@ span#login-fg-pw:hover{
 	position: absolute;
 	top: 100px;
 	width:350px;
-	height:200px;
+	height:215px;
 	z-index:5;
 	background-color:#ccc;
 	margin:0px auto;
 	margin-top:40px;
 	display:none;
 	border:2px solid #999;
+}
+
+#answer-box-content{
+	width:330px;
+	margin-left:10px;	
 }
