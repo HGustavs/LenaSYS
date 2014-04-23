@@ -134,6 +134,8 @@ include_once "../Shared/basic.php";
 										<tr><td><input class='input-login' type='text' name='answer' placeholder='Answer'></td></tr>
 										<tr><td><span class='login-text'>New password</span></td></tr>
 										<tr><td><input class='input-login' type='password' name='newpassword'></td></tr>
+										<tr><td><span class='login-text'>New password (type again)</span></td></tr>
+										<tr><td><input class='input-login' type='password' name='newpassword2'></td></tr>
                                         <tr><td><input type='button' class='submit-button' onclick='returnToLogin();' value='Back'>
                                         <input type='submit' class='submit-button' value='Next'></td></tr>
 									</table>

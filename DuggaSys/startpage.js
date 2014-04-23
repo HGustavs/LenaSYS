@@ -35,7 +35,7 @@ $( document ).on( 'keydown', function ( e ) {
 });
 
 
-//function for showin the login-box
+//function for showing the login-box
 function loginbox(){
 	$("#forgot-passw-box").hide();
 	$("#bg").css({'background': 'rgba(0, 0, 0, 0.5)', 'position': 'absolute', 'top': '0'});
@@ -124,7 +124,7 @@ function checkAnswer(event) {
 			form.closest("#forgot-passw-box").hide();
 			closeanswerbox();
 		} else {
-			alert("Failed to change password, incorrect answer");
+			alert("Failed to change password.\r\n" + res.error);
 		}
 	});
 }
