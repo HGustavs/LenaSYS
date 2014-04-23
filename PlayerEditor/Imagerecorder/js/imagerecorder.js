@@ -44,30 +44,24 @@ function imagerecorder(imgCanvas, img1)
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function getEvents(str){
-		var dd = new Date();
-		var currentTime = dd.getTime();
-		var delay = currentTime - lastEvent;
-		lastEvent = currentTime;
-		var delayStr = "<timestep delay=" + delay + "/>";
-		var imgPath = "<picture src="+pathArray[pathIndex].split("\\").pop()+"/>";		
+		//var imgPath = '<picture src="'+pathArray[pathIndex].split('\\').pop()+'"/>';		
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
-			if (chrome !== null && vendorName === "Google Inc.") {
-				var imgPathChrome = "<picture src="+pathArray[pathIndex].split("\\").pop() + "/>";
-				console.log(imgPathChrome);
-				document.getElementById("XMLfile").value += imgPathChrome;
-			}else{
 
-				console.log(imgPath);
-				document.getElementById("XMLfile").value += imgPath;
-			}
+		// Add image path
+		if (chrome !== null && vendorName === 'Google Inc.') {
+			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop() + '"/>';
+			//document.getElementById('XMLfile').value += imgPathChrome;
+		}else{
+			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop()+'"/>';
+			//document.getElementById('XMLfile').value += imgPath;
+		}
 			
-		console.log(delayStr);
 		console.log(str);
-		//console.log(logTest);
 		
-		document.getElementById("XMLfile").value += delayStr;
-		document.getElementById("XMLfile").value += str;
+		// Add as a timestep
+		addTimestep(str);
+
 		pathIndex++;
 	}
 	
@@ -76,7 +70,7 @@ function imagerecorder(imgCanvas, img1)
 	 *	and change the picture if the canvas is clicked.
 	 */
 	$(document).ready(function(){
-	$("#" + imageCanvas).click(function(event){
+	$('#' + imageCanvas).click(function(event){
 		clicked = 1;
 		var xMouse = event.clientX - ImageCanvas.offsetLeft; 
 		var yMouse = event.clientY - ImageCanvas.offsetTop;
@@ -89,7 +83,7 @@ function imagerecorder(imgCanvas, img1)
 		if(currentImage > 0){
 			document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);
 		}
-		getEvents("<mouseclick x=" + xMouse + " y=" + yMouse+ "/>");
+		getEvents('<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
 		currentImage++;
 		});
 	/*
@@ -99,7 +93,7 @@ function imagerecorder(imgCanvas, img1)
 	var interval = false;
 	var xMouseReal;
 	var yMouseReal;
-		$("#" + imageCanvas).mousemove(function(event){	
+		$('#' + imageCanvas).mousemove(function(event){	
 	
 		xMouseReal = event.clientX - ImageCanvas.offsetLeft;
 		yMouseReal = event.clientY - ImageCanvas.offsetTop;
@@ -110,28 +104,35 @@ function imagerecorder(imgCanvas, img1)
 			return;
 		}
 		timer = window.setInterval(function() {
-		var dd = new Date();
-		var currentTime = dd.getTime();
-		var delay = currentTime - lastEvent;
-		lastEvent = currentTime;
-				appendEvString(xMouseReal,yMouseReal, delay);
-		}, 33,333);
+			appendEvString(xMouseReal,yMouseReal);
+		}, 10000);
 			interval = true;		
 		});
 	});
 	
-	function appendEvString(x, y, delay){
-		var mouseMovement = "<Mousemove x="+x+" y="+y+"/>";
-		var delayStr = "<timestep delay=" + delay + "/>";;
+	function appendEvString(x, y){
 		if(clicked == 1){
-			log(delayStr);
-			log(mouseMovement);
-			console.log(delayStr);
-			console.log(mouseMovement);
+			addTimestep('<mousemove x="'+x+'" y="'+y+'"/>');
 		}
 	}
 	
+	function addTimestep(string){
+		// Calculate delay
+		var dd = new Date();
+		var currentTime = dd.getTime();
+		var delay = currentTime - lastEvent;
+		lastEvent = currentTime;
+
+		// Create timestep
+		var timestep = '\n<timestep delay="' + delay + '">\n';
+		timestep += string;
+		timestep += '</timestep>'
+
+		// Add to string
+		log(timestep);
+	}
+
 	function log(str){
-		document.getElementById("XMLfile").value += str;
+		document.getElementById('XMLfile').value += str;
 	}
 }
