@@ -65,8 +65,9 @@
 													cursor: "move",
 													items: "> span",
 													update: function() {
-														var sorted = $(this).sortable("serialize") + '&action=updateEntries';
-														$.post("entryupdate.php", sorted);
+														// Pass course ID to check write access
+														var array = $(this).sortable("serialize");
+														$.post("entryupdate.php", array);
 													}
 												});
 											});

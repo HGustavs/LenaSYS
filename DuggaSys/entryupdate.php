@@ -1,14 +1,22 @@
 <?php
 include_once("../Shared/database.php");
+include_once("../Shared/sessions.php");
+include_once("../../coursesyspw.php");
 
-$action = mysql_real_escape_string($_POST['action']);
-$recordsArray = $_POST['recordsArray'];
+dbConnect();
+session_start();
 
-if ($action == "updateEntries"){
+if (checklogin()) {
+	$sectionArray = $_POST['Entry'];
+
 	$counter = 0;
-	foreach ($recordsArray as $entryID) {
-		makequery("UPDATE entries SET pos = '$counter' WHERE lid = '$entryID';", "Error updating entries");
-		$counter = $counter + 1;
+	foreach ($sectionArray as $entryID) {
+		$result = mysql_query("UPDATE listentries SET pos = '$counter' WHERE lid = '$entryID';");
+		if(!$result) {
+			echo "Error updating entries";
+		} else {
+			$counter = $counter + 1;
+		}
 	}
 }
 ?>

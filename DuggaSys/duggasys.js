@@ -68,7 +68,7 @@ function returnedSection(data)
 			switch(parseInt(data['entries'][i]['kind'])) {
 				case 0:
 					// Styling for header row
-					str+="<span class='bigg' id='"+data['entries'][i]['lid']+"'>";
+					str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
 					if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
 						str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' >"+data['entries'][i]['entryname']+"</span>";
 						str+="<span class='smallishbutt'>";
@@ -81,7 +81,7 @@ function returnedSection(data)
 					break;
 				case 1:
 					//Styling for section row
-					str+="<span class='butt' id='"+data['entries'][i]['lid']+"' >";
+					str+="<span class='butt' id='Entry_"+data['entries'][i]['lid']+"' >";
 
 					// If we are allowed to edit
 					if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
@@ -100,15 +100,15 @@ function returnedSection(data)
 				default:
 				case 2:
 					// Styling for example row
-					str+="<span class='norm' id='"+data['examples'][j]['sectionno']+"'>";
+					str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
 					if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
-							str+="<span id='EX"+data['entries'][j]['lid']+"' contenteditable='true'>"+data['entries'][j]['entryname']+"</span>";
+							str+="<span id='EX"+data['entries'][i]['lid']+"' contenteditable='true'>"+data['entries'][i]['entryname']+"</span>";
 							str+="<span class='smallbutt'>";
-							str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][j]['lid'],"EXAMPLE");											
-							str+=Sectionbutton("PP","PlayT.svg",data['entries'][j]['lid'],"EXAMPLE",data['entries'][j]['lid']);
+							str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+							str+=Sectionbutton("PP","PlayT.svg",data['entries'][i]['lid'],"EXAMPLE",data['entries'][i]['lid']);
 							str+="</span>"
 					}else{
-							str+="<a href="+data['entries'][j]['link']+"</a>";		
+							str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
 					}
 					str+="</span>";
 					break;
@@ -124,21 +124,21 @@ function returnedSection(data)
 			var slist=document.getElementById('Sectionlist');
 			slist.innerHTML=str;
 
-			if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+			//if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
 				// Setup editable sections with events etc
 				for(i=0;i<data['entries'].length;i++){
 					if(parseInt(data['entries'][i]['kind'])==0){
-						var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
+						var editable=document.getElementById("SE"+data['entries'][i]['lid']);
 						editable.addEventListener("blur", function(){editedSectionName(this);}, true);
 					}else if (parseInt(data['entries'][i]['kind'])==1){
-						var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
+						var editable=document.getElementById("SE"+data['entries'][i]['lid']);
 						editable.addEventListener("blur", function(){editedSectionName(this);}, true);
 					}else{
-						var editable=document.getElementById("EX"+data['examples'][j]['exampleno']);
+						var editable=document.getElementById("EX"+data['entries'][i]['lid']);
 						editable.addEventListener("blur", function(){editedExampleName(this);}, true);
 					}
 				}				
-			}
+			//}
 
 
 		  if(data['debug']!="NONE!") alert(data['debug']);
