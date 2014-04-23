@@ -307,9 +307,7 @@ function Canvasrenderer()
 
 		// Update search bar
 		var fract = this.currentPosition() / this.numValidTimesteps;
-		document.getElementById("bar").style.width=Math.round(fract*392);
-		console.log("Bar length: " + document.getElementById("bar").style.width);
-
+		document.getElementById("bar").style.width=(Math.round(fract*392) + 'px');
 
 		// Check if done
 		if(this.runningTimesteps.length <= 0){
