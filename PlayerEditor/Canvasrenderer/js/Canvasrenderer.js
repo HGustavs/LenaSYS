@@ -359,44 +359,83 @@ function Canvasrenderer()
 	/*
 	 * Canvas functions
 	 */
-	this.beginPath = function() {
+	this.bP = function(){
+		this.beginPath();
+	}
+	 
+	this.beginPath = function(){
 		ctx.beginPath();
 	}
-
-	this.moveTo = function(x, y) {
-		ctx.moveTo(x,y);
+	
+	this.mT = function(x, y){
+		this.moveTo(x, y);
 	}
 
-	this.lineTo = function(x, y) {
+	this.moveTo = function(x, y){
+		ctx.moveTo(x,y);
+	}
+	
+	this.lT = function(x, y){
+		this.lineTo(x, y);
+	}
+
+	this.lineTo = function(x, y){
 		ctx.lineTo(x, y);
 	}
 
-	this.stroke = function() {
+	this.stroke = function(){
 		ctx.stroke();
+	}
+	
+	this.crtLinearGrad = function(x, y, x1, y1){
+		this.createLinearGradient(x, y, x1,y1);
 	}
 	
 	this.createLinearGradient = function(x, y, x1,y1){		      
 	    ctx.createLinearGradient(x, y, x1,y1);
 	}
 	
+	this.crtPat = function(x, y, img){
+		this.createPattern(x ,y, img);
+	}
+	
 	this.createPattern = function(x, y,img){		        
 	    ctx.createPattern(x, y,img);
 	}
+	
+	this.crtRadialGrad = function(x, y,r, x1,y1,r1){
+		this.createRadialGradient(x, y,r, x1,y1,r1);
+	}
+	
 	this.createRadialGradient = function(x, y,r, x1,y1,r1){   
 	    ctx.createRadialGradient(x, y,r, x1,y1,r1);
-	}
-		
+	}	
 		// Rectangle functions
+	this.rec = function(x, y, w, h){
+		this.rect(x, y, w, h);
+	}
 	this.rect = function(x, y, width, height){
 	    ctx.rect(x, y, width, height);
+	}
+	
+	this.fRec = function(x, y, w, h){
+		this.fillRect(x, y, w, h);
 	}
 	
 	this.fillRect = function(x, y, width, height){		
 	    ctx.fillRect(x, y, width, height);
 	}
+	
+	this sRec = function(x, y, w, h){
+		this.strokeRect(x, y, w, h);
+	}
 		
 	this.strokeRect = function(x, y, width, height){        
 	    ctx.strokeRect(x, y, width, height);
+	}
+	
+	this.cRec = function(x, y, w, h){
+		this.clearRect(x, y, w, h);
 	}
 	
 	this.clearRect = function(x, y, width, height){	    
@@ -407,6 +446,10 @@ function Canvasrenderer()
 	    ctx.fill();
 	}
 	
+	this.cP = function(){
+		this.closePath();
+	}
+	
 	this.closePath = function(){       
 		ctx.closePath();		
 	}
@@ -414,8 +457,17 @@ function Canvasrenderer()
 	this.clip = function(){	   
 	    ctx.clip();
 	}
+	
+	this.quadCrvTo = function(x, y, cpx, cpy){
+		this.quadraticCurveTo(x, y, cpx, cpy);
+	}
+	
 	this.quadraticCurveTo = function(x, y, cpx, cpy){        
 	    ctx.quadraticCurveTo(x, y, cpx, cpy);
+	}
+	
+	this.beziCrvTo = function(x, y, cpx, cpy, cpx1, cpy1){
+		this.bezierCurveTo(x, y, cpx, cpy, cpx1, cpy1);
 	}
 	
 	this.bezierCurveTo = function(x, y, cpx, cpy, cpx1, cpy1){        
@@ -426,7 +478,11 @@ function Canvasrenderer()
 	    ctx.arc(x, y,r,sAngle,eAngle,counterclockwise);
 	}
 	
-	this.arcTo = function(x, y,r,x1,y1){
+	this.aT = function(x, y, r, x1, y1){
+		this.arcTo(x, y, r, x1, y1);
+	}
+	
+	this.arcTo = function(x, y, r, x1, y1){
 	    ctx.arcTo(x, y,r,x1,y1);
 	}
 	
@@ -452,27 +508,61 @@ function Canvasrenderer()
 	this.setTransform = function(a,b,c,d,e,f){	      
 	    ctx.setTransform(a,b,c,d,e,f);
 	}
+	
 	// Text functions
+	this.ftxt = function(x, y, txt, maxW){
+		this.fillText(x, y, txt, maxW);
+	}
+	
 	this.fillText = function(x, y,text,maxWidth){		
 		ctx.fillText(x, y,text,maxWidth);
 	}
-	this.stroketext = function(x, y,text,maxWidth){		
+	
+	this.sTxt = function(x, y, txt, maxW){
+		this.strokeText(x, y, txt, maxW);
+	}
+
+	this.strokeText = function(x, y,text,maxWidth){		
 		ctx.strokeText(x, y,text,maxWidth);
 	}
+	
+	this.mTxt = function(txt){
+		this.measureText(txt);
+	}
+	
 	this.measureText = function(text){		
 		ctx.measureText(text);
 	}
 	// Image draw functions
+	this.drawImg = function(img, sx, sy, sw, sh, x, y, w, h){
+		this.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+	}
+	
 	this.drawImage = function(img,sx,sy,swidth,sheight,x,y,width,height){		
 		ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 	}
+	
 	// Pixel manipulation functions
+	this.crtImgData = function(imgData, w, h){
+		this.createImageData(imgData, w, h);
+	}
+	
 	this.createImageData = function( imageData, width, height){		
 		ctx.createImageData( imageData, width, height);
 	}
+	
+	this.getImgData = function(x, y, w, h){
+		this.getImageData(x, y, w, h);
+	}
+	
 	this.getImageData = function(x, y, width, height){		
 		ctx.getImageData(x, y, width, height);
 	}
+	
+	this.putImgData = function(imgData, x, y, dX, dY, dW, dH){
+		this.putImageData(imgData, x, y, dX, dY, dW, dH);
+	}
+	
 	this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
 		ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 	}
@@ -482,6 +572,11 @@ function Canvasrenderer()
 	this.save = function(){
 		ctx.save();
 	}
+	
+	this.crtEvent = function(){
+		this.createEvent();
+	}
+	
 	this.createEvent = function(){
 		ctx.createEvent();
 	}
@@ -495,72 +590,147 @@ function Canvasrenderer()
 		ctx.restore();
 	}
 	//canvas state functions
+	this.st_fs = function(value){
+		this.state_fillStyle(value);
+	}
+	
+	this.st_fs = function(value){
+		this.state_fillStyle(value);
+	}
+	
 	this.state_fillStyle = function(value){
 		ctx.fillStyle = value;
+	}
+	
+	this.st_ss = function(value){
+		this.state_strokeStyle(value);
 	}
 	
 	this.state_strokeStyle = function(value){
 		ctx.strokeStyle = value;
 	}
 	
+	this.st_shdwC = function(value){
+		this.state_shadowColor(value);
+	}
+	
 	this.state_shadowColor = function(value){
 		ctx.shadowColor = value;
+	}
+	
+	this.st_shdwB = function(value){
+		this.state_shadowBlur(value);
 	}
 	
 	this.state_shadowBlur = function(value){
 		ctx.shadowBlur = value;
 	}
 	
+	this.st_shdwOffsetX = function(value){
+		this.state_shadowOffsetX(value);
+	}
+	
 	this.state_shadowOffsetX = function(value){
 		ctx.shadowOffsetX = value;
 	}
 	
+	this.st_shdwOffsetY = function(value){
+		this.state_shadowOffsetY(value)
+	
 	this.state_shadowOffsetY = function(value){
 		ctx.shadwoOffsetY = value;
+	}
+	
+	this.st_lC = function(value){
+		this.state_lineCap(value);
 	}
 	
 	this.state_lineCap = function(value){
 		ctx.lineCap = value;
 	}
 	
+	this.st_lJ = function(value){
+		this.state_lineJoin(value);
+	}
+	
 	this.state_lineJoin = function(value){
 		ctx.lineJoin = value;
+	}
+	
+	this.st_lW = function(value){
+		this.state_lineWidth(value);
 	}
 	
 	this.state_lineWidth = function(value){
 		ctx.lineWidth = value;
 	}
 	
+	this.st_miterLimit = function(value){
+		this.state_miterLimit(value);
+	}
+	
 	this.state_miterLimit = function(value){
 		ctx.miterLimit = value;
+	}
+	
+	this.st_font = function(value){
+		this.state_font(value);
 	}
 	
 	this.state_font = function(value){
 		ctx.font = value;
 	}
 	
+	this.st_txtAlign = function(value){
+		this.state_textAlign(value);
+	}
+	
 	this.state_textAlign = function(value){
 		ctx.textAlign = value;
+	}
+	
+	this.st_txtBaseline = function(value){
+		this.state_textBaseline(value);
 	}
 	
 	this.state_textBaseline = function(value){
 		ctx.textBaseline = value;
 	}
 	
+	this.st_w = function(value){
+		this.state_width(value);
+	}
+	
 	this.state_width = function(value){
 		ctx.width = value;
+	}
+	
+	this.st_h = function(value){
+		this.state_height(value);
 	}
 	
 	this.state_height = function(value){
 		ctx.height = value;
 	}
 	
+	this.st_data = function(value){
+		this.state:data(value);
+	}
+	
 	this.state_data = function(value){
 		ctx.data = value;
 	}
 	
+	this.st_globalAlpha = function(value){
+		this.state_globalAlpha(value);
+	}
+	
 	this.state_globalAlpha = function(value){
 		ctx.globalAlpha = value;
+	}
+	
+	this.st_globalCompositeOperation = function(value){
+		this.globalCompositeOperation(value);
 	}
 	
 	this.state_globalCompositeOperation = function(value){
