@@ -176,8 +176,15 @@ CREATE TABLE filelist(
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 	
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (1,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (2,"js2.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (3,"js3.js",1,2);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (2,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (3,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (4,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (5,"js1.js",1,2);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (6,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (7,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (8,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (9,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);
 
 
 CREATE TABLE descriptionsection(
