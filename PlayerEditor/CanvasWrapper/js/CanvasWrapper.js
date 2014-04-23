@@ -5,12 +5,11 @@
 	 *
 	 */ 
 	function captureCanvas(canvas){
-			// Add save button to BODY
+		// Add save button to BODY
 			
 		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
 		// Save log when "Save log" button is clicked
 		$("#CanvasWrapper-save").click(function(){
-			//console.log(inTimestepDelay);
 			if(inTimestepDelay){ 
 				str += "</timestep>\n" + "</script>";
 			}
@@ -32,12 +31,14 @@
 		str += '<script type="canvas">\n';
 		if(canvas == undefined) alert("Error");
 		this.canvas=canvas;
-	    this.ctx = canvas.getContext('2d');      // This is the actual canvas object
-		//canvas = 800;
+		
+		// This is the actual canvas object
+	    this.ctx = canvas.getContext('2d');
 	    this.lineWidth = this.ctx.lineWidth;
 		this.lineJoin = this.ctx.lineJoin;
 		this.miterLimit = this.ctx.miterLimit;
 		this.lineCap = this.ctx.lineCap;
+		
 		//Color,shadow and style.
 		var fillStyle = this.ctx.fillStyle;
 		var strokeStyle = this.ctx.strokeStyle;
@@ -46,16 +47,13 @@
 		this.shadowOffsetX = this.ctx.shadowOffsetX;
 		this.shadowOffsetY = this.ctx.shadowOffsetY;
 		var inTimestepDelay = false;
+		
 		//Text property.
 		this.font = this.ctx.font;
 		this.textAlign = this.ctx.textAlign;
 		this.textBaseline = this.ctx.textBaseline;
 		//PixelManipulation property.
-		/*this.imgData = function(){
-			this.width = this.ctx.imgData.width;
-			this.height = this.ctx.imgData.height;
-			this.data = this.ctx.imageData.data;
-		}*/
+		
 		this.canvas = function(){
 			this.width = this.ctx.width;
 			this.height = this.ctx.height;
@@ -75,6 +73,7 @@
 
 			// Update timestep
 			lastTimestep = timestep;
+			
 			// Set string
 			if(delay == 0){
 				if(inTimestepDelay){
@@ -313,8 +312,10 @@
 			string += this.updateContextCompositingState();
 			if(string.length > 0){
 				var timestep = new Date().getTime();
+				
 				// Calculate delay
 				var delay = timestep - lastTimestep;
+				
 				// Update timestep
 				lastTimestep = timestep;
 				
