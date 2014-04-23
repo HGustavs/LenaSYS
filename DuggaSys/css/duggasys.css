@@ -145,3 +145,8 @@ span.login-header-text{
 	display:none;
 	border:2px solid #999;
 }
+
+#newpassword-box-content{
+	width:330px;
+	margin-left:10px;
+}

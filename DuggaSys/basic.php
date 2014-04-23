@@ -106,7 +106,8 @@ include_once "../Shared/basic.php";
 					 <div id='forgot-passw-box'>
 						<div id='forgot-passw-box-header' class='box-header'>
 							<span class='login-header-text'>Forgot Password</span>
-							<div id='forgot-passw-box-header-closeb' class='box-header-cbutton' onclick='closeforgotpwbox()'>x</div></div>
+							<div id='forgot-passw-box-header-closeb' class='box-header-cbutton' onclick='closeforgotpwbox()'>x</div>
+                        </div>
 							<div id='forgot-pw-content'>
 								<form method='post' id="recoverform">
 									<table>
@@ -124,15 +125,17 @@ include_once "../Shared/basic.php";
 						<div id='answer-box-header' class='box-header'>
 							<span class='login-header-text'>Forgot Password</span>
 							<div id='answer-box-header-closeb' class='box-header-cbutton' onclick='closeanswerbox()'>x</div>
+                        </div>
 							<div id='answer-box-content'>
 								<form method='post' id="answerform">
 									<input type="hidden" name="user" value="">
 									<table>
-										<tr><td class='td-login'><span class='login-text' id="recoverquestion"></span></td></tr>
-										<tr><td class='td-login'><input class='input-login' type='text' name='answer' placeholder='Answer'></td></tr>
-										<tr><td class='td-login'><span class='login-text'>New password</span></td></tr>
-										<tr><td class='td-login'><input class='input-login' type='password' name='newpassword'></td></tr>
-                                        <tr><td class='td-login'><input type='submit' class='submit-button' value='Next'></td></tr>
+										<tr><td><span class='login-text' id="recoverquestion"></span></td></tr>
+										<tr><td><input class='input-login' type='text' name='answer' placeholder='Answer'></td></tr>
+										<tr><td><span class='login-text'>New password</span></td></tr>
+										<tr><td><input class='input-login' type='password' name='newpassword'></td></tr>
+                                        <tr><td><input type='button' class='submit-button' onclick='returnToLogin();' value='Back'>
+                                        <input type='submit' class='submit-button' value='Next'></td></tr>
 									</table>
 								</form>
 							</div>
@@ -142,17 +145,18 @@ include_once "../Shared/basic.php";
 						<div id="newpassword-box-header" class="box-header">
 							<span class='login-header-text'>Complete Registration</span>
 							<div id='newpassword-box-header-closeb' class='box-header-cbutton' onclick='closenewpwbox()'>x</div>
+                        </div>
 							<div id="newpassword-box-content">
 								<form method="post" id="newpasswordform">
 									<table>
-										<tr><td class="td-login">New password</td></tr>
-										<tr><td class="td-login"><input type="password" name="password"></td></tr>
-										<tr><td class="td-login"><input type="password" name="password2"></td></tr>
-										<tr><td class="td-login">Recovery question</td></tr>
-										<tr><td class="td-login"><input type="text" name="question"></td></tr>
-										<tr><td class="td-login">Answer</td></tr>
-										<tr><td class="td-login"><input type="text" name="answer"></td></tr>
-										<tr><td class="td-login"><input type="submit" value="Save" class="submit-button"></td></tr>
+										<tr><td>New password</td></tr>
+										<tr><td><input type="password" name="password"></td></tr>
+										<tr><td><input type="password" name="password2"></td></tr>
+										<tr><td>Recovery question</td></tr>
+										<tr><td><input type="text" name="question"></td></tr>
+										<tr><td>Answer</td></tr>
+										<tr><td><input type="text" name="answer"></td></tr>
+										<tr><td><input type="submit" value="Save" class="submit-button"></td></tr>
 									</table>
 								</form>
 							</div>
