@@ -12,9 +12,9 @@
 		$("#CanvasWrapper-save").click(function(){
 			if(inTimestepDelay){ 
 				str += "</timestep>\n";
+				inTimestepDelay = false;
 			}
 			
-			alert("Saving");
 			$.ajax({
 				type: 'POST',
 				url: 'logfile.php',
