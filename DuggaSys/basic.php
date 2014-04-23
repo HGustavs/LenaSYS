@@ -85,7 +85,7 @@ include_once "../Shared/basic.php";
 				<div id="bg" style="display:none; width:100%; height:100%"></div>
 					<div id='login-box'>
 						<div id='login-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span>
+							<span class='login-header-text'>LenaSYS Login</span>
 								<div id='login-box-header-closeb' class='box-header-cbutton' onclick='closeloginbox();'>x</div>
 						</div>
 						<div id='login-box-content'>
@@ -105,7 +105,7 @@ include_once "../Shared/basic.php";
 
 					 <div id='forgot-passw-box'>
 						<div id='forgot-passw-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>Forgot Password</span>
+							<span class='login-header-text'>Forgot Password</span>
 							<div id='forgot-passw-box-header-closeb' class='box-header-cbutton' onclick='closeforgotpwbox()'>x</div></div>
 							<div id='forgot-pw-content'>
 								<form method='post' id="recoverform">
@@ -122,7 +122,7 @@ include_once "../Shared/basic.php";
 
 					<div id='answer-box'>
 						<div id='answer-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>Forgot Password</span>
+							<span class='login-header-text'>Forgot Password</span>
 							<div id='answer-box-header-closeb' class='box-header-cbutton' onclick='closeanswerbox()'>x</div>
 							<div id='answer-box-content'>
 								<form method='post' id="answerform">
@@ -140,7 +140,7 @@ include_once "../Shared/basic.php";
 					</div>
 					<div id="newpassword-box">
 						<div id="newpassword-box-header" class="box-header">
-							<span style='color:#fff;font-family:arial;font-weight:bold;font-size:14pt;'>Complete Registration</span>
+							<span class='login-header-text'>Complete Registration</span>
 							<div id='newpassword-box-header-closeb' class='box-header-cbutton' onclick='closenewpwbox()'>x</div>
 							<div id="newpassword-box-content">
 								<form method="post" id="newpasswordform">
