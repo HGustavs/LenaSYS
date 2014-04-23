@@ -71,7 +71,6 @@ if(array_key_exists('user', $_POST) && array_key_exists('answer', $_POST) && arr
 
 	// Fetch the information from the database and update the result variable.
 	$result = mysql_query($query);
-	echo mysql_error();
 	if(mysql_num_rows($result) > 0) {
 		$data = mysql_fetch_assoc($result);
 		$res = array(
