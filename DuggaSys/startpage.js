@@ -8,15 +8,20 @@ function setupLogin()
 			$.post("login.php", data, function(data) {
 				var res = $.parseJSON(data);
 				if(res.login == "success") {
-					alert("Successfully logged in");
 					closeloginbox();
+					if(res.newpw == true) {
+						shownewpw();
+					} else {
+						window.location.reload();
+					}
 				} else {
-					alert("Failed to log in ");
+					alert("Failed to log in.");
 				}
 			})
 		});
 		$("#recoverform").on("submit", showQuestion);
 		$("#answerform").on("submit", checkAnswer);
+		$("#newpasswordform").on("submit", newPasswordAndQuestion);
 	});
 }
 //function for closing windows with escape
@@ -58,6 +63,16 @@ function showForgotPasswBox(){
 
 }
 
+function shownewpw() {
+	$("#newpassword-box").css({'left': (($(document).width()/2) - $("#newpassword-box").width()/2)});
+	$("#newpassword-box").toggle();
+	$("#bg").toggle();
+}
+
+function closenewpwbox() {
+	$("#newpassword-box").hide();
+	$("#bg").hide();
+}
 function returnToLogin(){
 	$("#login-box").show();
 	$("#forgot-passw-box").hide();
@@ -106,11 +121,26 @@ function checkAnswer(event) {
 	$.post("forgotpassword.php", data, function(data) {
 		var res = $.parseJSON(data);
 		if(typeof res.success !== "undefined" && res.success == true) {
-			alert("Successfully changed password");
 			form.closest("#forgot-passw-box").hide();
 			closeanswerbox();
 		} else {
 			alert("Failed to change password, incorrect answer");
+		}
+	});
+}
+
+function newPasswordAndQuestion(event) {
+	event.preventDefault();
+
+	var data = $(this).serialize();
+	$.post("newpassword.php", data, function(data) {
+		var res = $.parseJSON(data);
+		if(typeof res.success !== "undefined" && res.success == true) {
+			alert("New password set and successfully logged in");
+			closenewpwbox();
+			window.location.reload();
+		} else {
+			alert("Failed to set new password. " + res.errormsg);
 		}
 	});
 }

@@ -128,7 +128,20 @@ span.login-header-text{
 	border:2px solid #999;
 }
 
+
 #answer-box-content{
 	width:330px;
 	margin-left:10px;	
+}
+#newpassword-box {
+	position: absolute;
+	top: 100px;
+	width:350px;
+	height:300px;
+	z-index:5;
+	background-color:#ccc;
+	margin:0px auto;
+	margin-top:40px;
+	display:none;
+	border:2px solid #999;
 }

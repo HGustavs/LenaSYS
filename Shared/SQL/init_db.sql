@@ -19,10 +19,11 @@ INSERT INTO user(username,password,creator,superuser) values ("Grimling","$2y$12
 INSERT INTO user(username,password,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1);
 
 CREATE TABLE user_question (
-	qid			INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	qid			INT NOT NULL AUTO_INCREMENT,
 	question	TEXT,
 	answer		TEXT,
 	owner		INT NOT NULL,
+	PRIMARY KEY(qid, owner),
 	INDEX `owner_index` (owner),
 	FOREIGN KEY(owner) REFERENCES user(uid)
 		ON DELETE CASCADE

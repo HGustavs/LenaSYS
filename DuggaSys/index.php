@@ -19,7 +19,9 @@ session_start();
 dbConnect();
 
 courselist();
+loginwins();
 ?>			
+<<<<<<< HEAD
 				<div id="bg" style="display:none; width:100%; height:100%"></div>
 					<div id='login-box'>
 						<div id='login-box-header' class='box-header'>
@@ -77,5 +79,7 @@ courselist();
 							</div>
 						</div>
 					</div>
+=======
+>>>>>>> 884d9d3c70e6ffdeaf2bb0bab899aa47e035454c
 			</body>
 </html>
