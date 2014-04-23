@@ -136,6 +136,27 @@ include_once "../Shared/basic.php";
 							</div>
 						</div>
 					</div>
+
+					<div id="newpassword-box">
+						<div id="newpassword-box-header" class="box-header">
+							<span style='color:#fff;font-family:arial;font-weight:bold;font-size:14pt;'>Complete Registration</span>
+							<div id='newpassword-box-header-closeb' class='box-header-cbutton' onclick='closenewpwbox()'>x</div>
+							<div id="newpassword-box-content">
+								<form method="post" id="newpasswordform">
+									<table>
+										<tr><td class="td-login">New password</td></tr>
+										<tr><td class="td-login"><input type="password" name="password"></td></tr>
+										<tr><td class="td-login"><input type="password" name="password2"></td></tr>
+										<tr><td class="td-login">Recovery question</td></tr>
+										<tr><td class="td-login"><input type="text" name="question"></td></tr>
+										<tr><td class="td-login">Answer</td></tr>
+										<tr><td class="td-login"><input type="text" name="answer"></td></tr>
+										<tr><td class="td-login"><input type="submit" value="Save" class="submit-button"></td></tr>
+									</table>
+								</form>
+							</div>
+						</div>
+					</div>
 <?php
 			}
 ?>
