@@ -21,6 +21,5 @@ dbConnect();
 courselist();
 loginwins();
 ?>			
-				
 			</body>
 </html>

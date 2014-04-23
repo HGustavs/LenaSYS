@@ -24,6 +24,15 @@ function setupLogin()
 		$("#newpasswordform").on("submit", newPasswordAndQuestion);
 	});
 }
+//function for closing windows with escape
+$( document ).on( 'keydown', function ( e ) {
+    if ( e.keyCode === 27 ) {
+		$("#bg").hide();
+        $("#login-box").hide();
+		$("#forgot-passw-box").hide();
+    }
+});
+
 
 //function for showin the login-box
 function loginbox(){
@@ -62,6 +71,10 @@ function shownewpw() {
 function closenewpwbox() {
 	$("#newpassword-box").hide();
 	$("#bg").hide();
+}
+function returnToLogin(){
+	$("#login-box").show();
+	$("#forgot-passw-box").hide();
 }
 
 function showQuestion(event) {
