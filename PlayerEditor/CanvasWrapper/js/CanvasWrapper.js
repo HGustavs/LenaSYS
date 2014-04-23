@@ -11,17 +11,14 @@
 		// Save log when "Save log" button is clicked
 		$("#CanvasWrapper-save").click(function(){
 			if(inTimestepDelay){ 
-				str += "</timestep>\n" + "</script>";
+				str += "</timestep>\n";
 			}
-			else{
-				str += "</script>";
-			 }
 			
 			alert("Saving");
 			$.ajax({
 				type: 'POST',
 				url: 'logfile.php',
-				data: { string: str }
+				data: { string: str + "</script>" }
 			});
 		});
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
