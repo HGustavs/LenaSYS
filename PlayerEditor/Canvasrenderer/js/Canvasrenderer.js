@@ -14,11 +14,11 @@ function Canvasrenderer()
 	this.numValidTimesteps = 0;
 	// Wind to position (-1, do not wind)
 	this.windto = -1;
-	// Mouse cursor image
+	// Mouse cursor image, background and position
 	this.mouseCursor;
-	 
-	this.mouseCursorX = 0;
-	this.mouseCursorY = 0;
+	this.mouseCursorBackground;
+	this.mouseCursorX = 1;
+	this.mouseCursorY = 1;
 
 	/*
 	 * Playback functions
@@ -756,21 +756,16 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
-		var imageData = ctx.getImageData(this.mouseCursorX,this.mouseCursorY,17,23);
-		var data = imageData.data;
-		for (var i = 0; i < data.length; i+=4) {
-			data[i] = 0; //red
-			data[i+1] = 0; //green
-			data[i+2] = 0; //blue
-			data[i+3] = 0; //alpha
-		}
-		ctx.putImageData(imageData, this.mouseCursorX, this.mouseCursorY);
-	
+		// Restore background
+		ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
+		// Save background
+		this.mouseCursorBackground = ctx.getImageData(x ,y ,17,23);
+		// Save mouse position
 		this.mouseCursorX = x;
 		this.mouseCursorY = y;
 
+		// Draw mouse pointer
 		ctx.drawImage(this.mouseCursor, x, y);
-
 	}
 
 	this.mouseclick = function(x, y)
@@ -785,9 +780,12 @@ function Canvasrenderer()
 		// Draw image when loaded
 		image.onload = function() {
 			ctx.drawImage(image , 0, 0);
+			console.log(canvas.mouseCursorX);
+			// New mouse cursor background
+			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17, 23);
 		}
 		image.src = src;
-	}
+	} 
 
 	/*
 	 *
@@ -801,6 +799,10 @@ function Canvasrenderer()
 	// Load mouse pointer image
 	this.mouseCursor = new Image();
 	this.mouseCursor.src = 'images/cursor.gif';
+	// Set default mouse drawing values
+	this.mouseCursorX = 1;
+	this.mouseCursorY = 1;
+	this.mouseCursorBackground = ctx.getImageData(1, 1, 1, 1);
 	
 	if (window.XMLHttpRequest){   
 		  // code for IE7+, Firefox, Chrome, Opera, Safari
