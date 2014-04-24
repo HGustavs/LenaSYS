@@ -307,7 +307,7 @@
 		}
 		this.putImageData = function(imgData,x,y){
 			this.UpdateAllFunctions();
-	        this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y);        
+	        this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y+'"/>');        
 	        return this.ctx.putImageData(imgData,x,y);
 		}
 		//Other methods.
