@@ -66,7 +66,7 @@ function imagerecorder(imgCanvas, img1)
 		if (chrome !== null && vendorName === 'Google Inc.') {
 			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop() + '"/>';
 		}else{
-			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop()+ '/>';
+			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop()+ '"/>';
 		}
 			
 		console.log(str);
