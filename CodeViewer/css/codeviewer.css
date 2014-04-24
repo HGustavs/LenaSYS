@@ -109,15 +109,19 @@
 .codedrop {
  /*   left: 314px;  */
 	right: 0px;
-    height: 400px;
-    width: 400px;
+    width: -moz-calc(20.0%);
+	width: -webkit-calc(20.0%);  
+    height: -webkit-calc(40.0%);
+    height: -moz-calc(40.0%);
 }
 
 .docudrop {
   /*  left: 354px; */
  	right: 0px;
-    height: 600px;
-    width: 500px;
+    width: -moz-calc(25.0%);
+	width: -webkit-calc(25.0%);  
+    height: -webkit-calc(65.0%);
+    height: -moz-calc(65.0%);
     background-color: #614875; 
     background: rgb(0, 0, 0) transparent;
 
