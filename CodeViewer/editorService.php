@@ -16,7 +16,7 @@
 	dbConnect();
 	session_start();
 	
-	$coursename=$_POST['coursename'];
+	$coursename=$_POST['coursename'];	
 	$sectionid=$_POST['sectionid'];
 	$position=$_POST['position'];
 	$version=$_POST['version'];
@@ -26,7 +26,7 @@
 	
 	// To guarantee that things only happen if the example exists in the named version
 	$cnt=0;
-	$query = "SELECT exampleno FROM codeexample WHERE cversion=$version and coursename='$coursename' and pos=$position;";		
+	$query = "SELECT exampleno FROM codeexample WHERE cversion=$version and coursename='$coursename' and pos='$position' and sectionno='$sectionid';";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 	while ($row = mysql_fetch_assoc($result)){
@@ -55,9 +55,9 @@
 								$query = "DELETE FROM wordlist WHERE wordlist='$wordlist' and word='$word';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
-					}else if(strcmp('newWordlistWord',$opt)===0){
+					}else if(strcmp('newWordlist',$opt)===0){
 								// Add word to wordlist
-								$word="<new>";
+								$word="-new-";
 								$wordlist=htmlEntities($_POST['wordlist']);
 								$query = "INSERT INTO wordlist(wordlist,word,appuser) VALUES ('$wordlist','$word','$appuser');";		
 								$result=mysql_query($query);
@@ -97,7 +97,7 @@
 								$playlink=htmlEntities($_POST['playlink']);
 								$query = "UPDATE codeexample SET runlink='$playlink' WHERE exampleno='$exampleno';";		
 								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating codeexample!");	
 					}else if(strcmp("editExampleName",$opt)===0){
 								$examplename=htmlEntities($_POST['examplename']);
 								$query = "UPDATE codeexample SET examplename='$examplename' WHERE exampleno='$exampleno';";		
@@ -111,26 +111,22 @@
 					}else if(strcmp("createNewExample",$opt)===0){
 								// Create new codeExample - create new file with same id.
 								$newpos=$position+1;
-		
-								$query = "UPDATE codeexample SET pos=pos+1 WHERE pos>'$position' and coursename='$coursename' and sectionid='$sectionid' and cversion='$version';";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Positions!");	
-								
-								$query = "INSERT INTO codeexample(coursename,sectionname,examplename,wordlist,runlink,pos,appuser,cversion) values ('$coursename','$sectionname','New Example','JS','<none>','$newpos','$appuser','$version');";		
+										
+								$query = "INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ('$coursename','$sectionid','New Example','JS','<none>','$newpos','$appuser','$version');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Example!");	
 		
-								$query = "INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionname='$sectionname' and cversion='$version'),'<none>',1,'$appuser');";		
+								$query = "INSERT INTO filelist(exampleno,filename,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionno='$sectionid' and cversion='$version'),'<none>','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 		
-								$query = "INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionname='$sectionname' and cversion='$version'),'Enter description here.',1,'$appuser');";		
+								$query = "INSERT INTO descriptionsection(exampleno,segment,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionno='$sectionid' and cversion='$version'),'Enter description here.','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 								
 					}else if(strcmp("editDescription",$opt)===0){
 								$description=$_POST['description'];
-								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleno='$exampleno' and pos='1';";
+								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleno='$exampleno';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}

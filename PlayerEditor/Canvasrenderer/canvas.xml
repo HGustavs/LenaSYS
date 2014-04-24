@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<script type="canvas">
+<timestep delay="1000">
+<beginpath/>
+<moveto x="277" y="286"/>
+<state_strokestyle value="#FF0000"/>
+<state_linewidth value="50"/>
+</timestep>
+<timestep delay="1000">
+<lineto x="334" y="270"/>
+<stroke/>
+</timestep>
+<timestep delay="1000">
+<lineto x="133" y="141"/>
+<stroke/>
+</timestep>
+<timestep delay="1000">
+<lineto x="75" y="308"/>
+<stroke/>
+</timestep>
+<timestep delay="1000">
+<lineto x="287" y="101"/>
+<stroke/>
+</timestep>
+</script>

@@ -1,0 +1,4 @@
+*.swp
+*.patch
+*.db
+.metadata

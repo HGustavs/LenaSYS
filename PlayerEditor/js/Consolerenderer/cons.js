@@ -45,10 +45,13 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	this.repeat=0;
 	this.fastforward=0;
 	this.windtarget=-1;
-	this.playafterwind=0;
+	this.playafterwind=1;
 	
 	// Timesteps
 	this.timesteps=null;
+	
+	// Timeout storer
+	this.timeoutStore=null;
 	
 	var cx,cy;
 						
@@ -214,20 +217,27 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.windto = function(windpos)
 	{
+		if(this.paused==0) {
+			this.playafterwind=1;
+		} else {
+			this.playafterwind=0;
+		}
 		if(windpos<this.step){
 			// Rewind
-			this.pause();
 			this.windtarget=windpos;
 			this.step=0;
 			this.fastforward=1;	
 			this.clrscr();
-			this.play();
+			// Set to playing
+			this.paused=0;
+			this.advancestep();
 		} else if(windpos>this.step){
 			// Fast Forward
-			this.pause();
 			this.windtarget=windpos;
 			this.fastforward=1;
-			this.play();
+			// Set to playing
+			this.paused=0;
+			this.advancestep();
 		}
 			
 	}
@@ -264,7 +274,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 			this.advancestep();								
 		}
 		
-		document.getElementById("playcontrol").innerHTML="<img src='../images/PauseR.svg'/>";			
+		document.getElementById("playcontrol").innerHTML="<img src='Bilder/pause.svg'/>";			
 	}
 
 	//-------------------------------------------------------------------------------------------
@@ -276,7 +286,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	{
 		this.paused=1;
 
-		document.getElementById("playcontrol").innerHTML="<img src='../images/PlayR.svg'/>";	
+		document.getElementById("playcontrol").innerHTML="<img src='Bilder/play_button.svg'/>";	
 	}
 
 	//-------------------------------------------------------------------------------------------
@@ -302,11 +312,11 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 		if (this.repeat == 0) {
 			// Repeat
 			this.repeat = 1;
-			document.getElementById("repeatcontrol").innerHTML="<img src='../images/Replay_pressed.svg'/>";
+			document.getElementById("repeatcontrol").innerHTML="<img src='Bilder/replay_button.svg'/>";
 		}else {
 			// Don't repeat
 			this.repeat = 0;
-			document.getElementById("repeatcontrol").innerHTML="<img src='../images/Replay.svg'/>";
+			document.getElementById("repeatcontrol").innerHTML="<img src='Bilder/replay_button.svg'/>";
 		}
 	}
 
@@ -442,8 +452,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					
 					if(!this.playafterwind){
 						this.pause();
-					}
-
+					} 
+					
 					var fract=this.step/this.timesteps.length;
 					document.getElementById("bar").style.width=Math.round(fract*392);							
 					
@@ -455,8 +465,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					nextdelay=0;			
 				}else{
 					if(delay>0){
-							cons.renderTiles();
-							this.delaycnt=0;
+						cons.renderTiles();
+						this.delaycnt=0;
 					}else{
 						this.delaycnt++;
 						if(this.delaycnt>this.deferscroll){
@@ -464,8 +474,13 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 							this.delaycnt=0;
 						}
 					}
-				}		
-			setTimeout(function(){cons.advancestep();}, nextdelay);							
+				}
+
+				// Run advancestep after specific amount of time (recursive).
+				// Set timeout is needed to ensure that HTML-changes are loading.
+				clearTimeout(this.timeoutStore);
+				this.timeoutStore = setTimeout(function(){cons.advancestep();}, nextdelay);			
+									
 			}else{
 				// Reached end of XML
 				cons.renderTiles();

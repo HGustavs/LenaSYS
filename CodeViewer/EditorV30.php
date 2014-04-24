@@ -74,21 +74,33 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 	<head>
 
 		<title>Code Viewer and Editor Version 3</title>
-		<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />	
-		<script type="text/javascript" src="js/codeviewer.js"></script>
-
+		<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />
 		<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
-		<script>
+        <script type="text/javascript" src="js/codeviewer.js"></script>
+        <script type="text/javascript" src="js/tooltips.js"></script>
+
+
 
 <?php
+				include_once("../../coursesyspw.php");
 				include_once("basic.php");
-
-				jsvarget("courseid","courseID");
+				include_once("../Shared/database.php");
+				dbConnect();
+				
+                echo'<script>';
+				jsvarget("courseid","courseID");				
 				jsvarget("sectionid","sectionID");
 				jsvarget("position","position");
 				jsvarget("version","version");
-
-				jsvarsession("kind","sessionkind");				
+				
+				$kind = "r";
+				if(array_key_exists('uid', $_SESSION)) {
+					$type = getAccessType($_SESSION['uid'], $_GET['courseid']);
+					// If we get a type back, set it.
+					if($type)
+						$kind = $type;
+				}
+				echo "var sessionkind='" . $kind . "';";			
 ?>				
 				
 				function AJAXService(sname,param)
@@ -101,26 +113,20 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 	</head>
 	
 <?php
-				
-		include_once("../../coursesyspw.php");	
-		include_once("basic.php");
-		
-		dbConnect();
-		
 		if(isset($_GET['courseid'])&&isset($_GET['version'])){
 				$courseID=$_GET['courseid'];
 				if(courseexists($courseID)){
 						// If course exists - check login credentials
 						// Logged in and with credentials - show full editor otherwise show viewer version 
 						if(checklogin()){
-								$kind=$_SESSION['kind'];
-								if($kind==$courseID){
-										// Allowed to edit this course
-										editcodemenu(true);
-								}else if($kind!="LOGIN!"){
-										// No editing
-										editcodemenu(false);
-								}
+							$ha=getAccessType($_SESSION['uid'], $courseID);
+							if($ha == "w"){
+								// Allowed to edit this course
+								editcodemenu(true);
+							}else{
+								// No editing
+								editcodemenu(false);
+							}
 						}else{
 								editcodemenu(false);
 						}
@@ -137,3 +143,19 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
 </body>
 </html>
+
+        <!--Place tooltips on all objects with a title-->
+        <script>
+
+    $( document ).ready(function() {
+
+        setTimeout(function() {
+
+            $("*[title]").tooltips();
+
+        }, 800);
+
+
+    });
+
+        </script>
