@@ -1,20 +1,21 @@
-/* 
+
 #docucontent {
     padding-left: 4px;
     border-style: solid;
     border-width: 1px;
+    border-color: #272822;
     position: absolute;
     top: 0px;
     bottom: 0px;
     left: 0px;
     width: 296px;
-    background-color: #ddd;
+    background-color: #272822;
     overflow: scroll;
-    color: black;
+    color: white;
     font-family: Calibri,Sans-Serif;
     font-size: 16px;
     outline: 0 none;
-}*/
+}
 
 #docucontent b {
     color: white;
@@ -43,7 +44,7 @@
     background-color:  #614875;
     margin: 0px;
 }
-/*
+
 #codebox {
     border-style: solid;
     border-width: 1px;
@@ -52,10 +53,10 @@
     bottom: 0px;
     left: 300px;
     right: 0px;
-    background-color: #fff;
+    background-color: #272822;
     overflow: scroll;
 }
-*/
+
 .butto {
     text-align: center;
     font-family: Verdana,Serif;
@@ -201,25 +202,26 @@ a {
 }
 
 .norm {
-    color: #000;
-    background-color: #fff;
+    color: #fff;
+    background-color: #272822;
 }
 
 .impo {
-    color: #000;
-    background-color: #fed;
+    color: #fff;
+    background-color: #5d5d5d;
 }
 
 .norm .no {
     border-right: 2px #444;
-    color: #000;
-    background-color: #d8d8d8;
+    color: white;
+    padding-left: 3px; 
+    background-color: #755096;
 }
 
 .impo .no {
     border-right: 2px #444;
-    color: #000;
-    background-color: #dcb;
+    color: white;
+    background-color: #9569BD;
 }
 
 .comment {
@@ -227,27 +229,27 @@ a {
 }
 
 .norm .oper {
-    color: #06F;
+    color: white;
     font-weight: bold;
 }
 
 .impo .oper {
-    color: #02D;
+    color: #fff;
     font-weight: bold;
 }
 
 .norm .string {
-    color: #092;
+    color: #fff;
     font-weight: bold;
 }
 
 .impo .string {
-    color: #070;
+    color: #fff;
     font-weight: bold;
 }
 
 .norm .number {
-    color: #029;
+    color: #fff;
     font-weight: bold;
 }
 
@@ -257,22 +259,22 @@ a {
 }
 
 .norm .hi {
-    background-color: #000;
+    background-color: #5d5d5d;
     color: #fff;
 }
 
 .impo .hi {
-    background-color: #000;
+    background-color: #272822;
     color: #fed;
 }
 
 .norm .keyword {
-    color: #902;
+    color: #C5822C;
     font-weight: bold;
 }
 
 .impo .keyword {
-    color: #401;
+    color: #C5822C;
     font-weight: bold;
 }
 
@@ -280,23 +282,22 @@ a {
     color: #000;
     background-color: #def;
     font-weight: bold;
-    border: 1px dotted #f00;
 }
 
 .impo .impword {
-    color: #401;
-    background-color: #bce;
+    color: #000000;
+    background-color: #fff;
     font-weight: bold;
-    border: 1px dotted #f00;
 }
 
 .norm .imphi {
-    background-color: #000;
+    background-color: #5d5d5d;
     color: #fff;
+    
 }
 
 .impo .imphi {
-    background-color: #000;
+    background-color: #272822;
     color: #fed;
 }
 
