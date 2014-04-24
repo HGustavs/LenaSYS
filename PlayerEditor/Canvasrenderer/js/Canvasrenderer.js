@@ -753,6 +753,7 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
+		
 		console.log("mousemove");
 	}
 
@@ -763,7 +764,13 @@ function Canvasrenderer()
 
 	this.picture = function(src)
 	{
-		console.log("picture");
+		// Load image
+		var image = new Image();
+		// Draw image when loaded
+		image.onload = function() {
+			ctx.drawImage(image , 0, 0);
+		}
+		image.src = src;
 	}
 
 	/*
