@@ -21,6 +21,12 @@ time, mark, audio, video {
     -webkit-font-smoothing: antialiased;
     -webkit-font-smoothing: antialiased;
 }
+table {
+    border-collapse: collapse;
+}
+th, td {
+    padding: 0;
+}
 h1 {
     color: #fff;
     font-size: 1.8em;
@@ -37,6 +43,11 @@ h4 {
 body {
     background: #ddd;
 }
+hr {
+    border: 0;
+    border-bottom: 1px dashed #ccc;
+    background: #999;
+}
 header {
     color: #fff;
     height: 50px;
@@ -46,9 +57,6 @@ header {
     z-index: 999999;
     top: 0px;
     left: 0px;
-    -webkit-box-shadow: 0px 8px 5px -4px rgba(0,0,0,0.40);
-    -moz-box-shadow: 0px 8px 5px -4px rgba(0,0,0,0.40);
-    box-shadow: 0px 8px 5px -4px rgba(0,0,0,0.40);
 }
     nav#navigate {
         padding: 12px;
@@ -130,7 +138,7 @@ header {
     }
 button {
     display: inline-block;
-    margin-bottom: 0;
+    margin: 0;
     font-weight: 400;
     text-align: center;
     vertical-align: middle;
@@ -150,6 +158,7 @@ button {
         color: #333;
         background-color: #fff;
         border-color: #ccc;
+        margin: 0px;
     }
         button.default:hover {
             background-color: #ebebeb;
@@ -204,5 +213,36 @@ button.option {
     height: 38px;
     padding: 6px 12px;
     margin: 2px 0px 2px -38px;
-    line-height: 1.42857143;
+}
+
+table.list {
+    color: #333;
+    width: 100%;
+    font-size:  0.9em;
+    border: 1px solid #ccc;
+}
+table.list th {
+    padding: 8px;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    text-align: left;
+}
+table.list tr {
+    line-height: 1.428571429;
+    border-top: 1px solid #ddd;
+    background: #fff;
+}
+table.list tr:first-child {
+    border-top: 0px;
+}
+table.list td {
+    padding: 8px;
+}
+table.list tr.green {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+table.list tr.red {
+    background-color: #f2dede;
+    border-color: #eed3d7;
 }
