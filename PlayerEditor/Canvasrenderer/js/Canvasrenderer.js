@@ -175,9 +175,9 @@ function Canvasrenderer()
 		var validFunctions = 	['bP', 'beginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
 								'createPattern', 'crtRadialGrad', 'createRadialGradient', 'rec', 'rect', 'fRec', 'fillRect', 'sRec', 'strokeRect', 
 								'cRec', 'clearRect', 'fill', 'cP', 'closePath', 'clip', 'quadCrvTo', 'quadraticCurveTo', 'beizCrvTo', 'beizerCurveTo',
-								'arc', 'aT', 'arcTo', 'isPointInPath', 'scale', 'rotate', 'translate', 'transform', 'mTxt', 'measureText', 'drawImg', 
+								'arc', 'aT', 'arcTo', 'isPointInPath', 'scale', 'rot', 'rotate', 'translate', 'transform', 'mTxt', 'measureText', 'drawImg', 
 								'drawImage', 'crtImgData', 'createImageData', 'getImgData', 'getImageData', 'putImgData', 'putImageData', 'save', 'crtEvent', 
-								'createEvent', 'getContext', 'toDataURL', 'restore', 'st_fs', 'state_fillStyle', 'st_ss', 'state_strokeStyle', 'st_shdwC', 
+								'createEvent', 'getContext', 'toDataURL', 'rest', 'restore', 'st_fs', 'state_fillStyle', 'st_ss', 'state_strokeStyle', 'st_shdwC', 
 								'state_shadowColor', 'st_shdwB', 'state_shadowBlur', 'st_shdwOffsetX', 'state_shadowOffsetX', 'st_shdwOffsetY', 'state_shadowOffsetY', 
 								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
 								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
@@ -510,6 +510,10 @@ function Canvasrenderer()
 	this.scale = function(width, height){   
 	    ctx.scale(width, height);
 	}
+	
+	this.rot = function(angle){
+		this.rotate(angle);
+	}
 		
 	this.rotate = function(angle){	      
 	    ctx.rotate(angle);
@@ -603,6 +607,10 @@ function Canvasrenderer()
 	this.toDataURL = function(){
 		ctx.getContext();
 	}
+	this.rest = function(){
+		this.restore();
+	}
+	
 	this.restore = function(){
 		ctx.restore();
 	}
