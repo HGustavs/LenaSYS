@@ -49,14 +49,12 @@ table {
 	background-color:#614875;
 }
 #wrapper{
-	/*background-image:url('Images/bakgrund.png');*/
 	background-color: #272822;
 }
 .barcontainer{
 	background-size: 64px 100%;
 	background-color: #FFFFFF;
 	padding:1px;
-	/*border-radius: 8px;*/
 	border:solid 2px #000;
 }
 
@@ -67,7 +65,6 @@ table {
 	background-image: url('Images/Loadingbar.gif'); 
 	background-repeat: repeat-x;
 	background-size: 64px 100%;
-	/*border-radius: 8px;*/
 }
 
 @keyframes blink {

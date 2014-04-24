@@ -169,14 +169,16 @@ function Canvasrenderer()
 	 {
 	 	// List of all valid canvas functions
 		// No other operation in the XML should be possible to run
-		var validFunctions = 	['beginPath', 'moveTo', 'lineTo', 'stroke', 'createLinearGradient', 'createPattern', 'createRadialGradient', 
-								'rect', 'fillRect', 'strokeRect', 'clearRect', 'fill', 'closePath', 'clip', 'quadraticCurveTo', 'beizerCurveTo', 
-								'arc', 'arcTo', 'isPointInPath', 'scale', 'rotate', 'translate', 'transform', 'measureText', 'drawImage', 
-								'createImageData', 'getImageData', 'putImageData', 'save', 'createEvent', 'getContext', 'toDataURL', 'restore', 
-								'state_fillStyle', 'state_strokeStyle', 'state_shadowColor', 'state_shadowBlur', 'state_shadowOffsetX', 
-								'state_shadowOffsetY', 'state_lineCap', 'state_lineJoin', 'state_lineWidth', 'state_miterLimit', 'state_font', 
-								'state_textAlign', 'state_textBaseline', 'state_width', 'state_height', 'state_data', 'state_globalAlpha', 
-								'state_globalCompositeOperation', 'mousemove', 'mouseclick', 'picture'];
+		var validFunctions = 	['bP', 'beginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
+								'createPattern', 'crtRadialGrad', 'createRadialGradient', 'rec', 'rect', 'fRec', 'fillRect', 'sRec', 'strokeRect', 
+								'cRec', 'clearRect', 'fill', 'cP', 'closePath', 'clip', 'quadCrvTo', 'quadraticCurveTo', 'beizCrvTo', 'beizerCurveTo',
+								'arc', 'aT', 'arcTo', 'isPointInPath', 'scale', 'rotate', 'translate', 'transform', 'mTxt', 'measureText', 'drawImg', 
+								'drawImage', 'crtImgData', 'createImageData', 'getImgData', 'getImageData', 'putImgData', 'putImageData', 'save', 'crtEvent', 
+								'createEvent', 'getContext', 'toDataURL', 'restore', 'st_fs', 'state_fillStyle', 'st_ss', 'state_strokeStyle', 'st_shdwC', 
+								'state_shadowColor', 'st_shdwB', 'state_shadowBlur', 'st_shdwOffsetX', 'state_shadowOffsetX', 'st_shdwOffsetY', 'state_shadowOffsetY', 
+								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
+								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
+								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'mousemove', 'mouseclick', 'picture'];
 
 	 	// Compare to list of valid functions
 	 	for(i=0; i<validFunctions.length; ++i){
@@ -606,10 +608,6 @@ function Canvasrenderer()
 		this.state_fillStyle(value);
 	}
 	
-	this.st_fs = function(value){
-		this.state_fillStyle(value);
-	}
-	
 	this.state_fillStyle = function(value){
 		ctx.fillStyle = value;
 	}
@@ -734,7 +732,7 @@ function Canvasrenderer()
 		ctx.data = value;
 	}
 	
-	this.st_globalAlpha = function(value){
+	this.st_gA = function(value){
 		this.state_globalAlpha(value);
 	}
 	
@@ -742,7 +740,7 @@ function Canvasrenderer()
 		ctx.globalAlpha = value;
 	}
 	
-	this.st_globalCompositeOperation = function(value){
+	this.st_gCO = function(value){
 		this.globalCompositeOperation(value);
 	}
 	
