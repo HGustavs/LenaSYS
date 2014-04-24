@@ -71,7 +71,7 @@ CREATE TABLE listentries (
 	pos int,
 	creator int unsigned not null,
 	ts timestamp default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-	code_id mediumint not null,
+	code_id mediumint,
 	PRIMARY KEY(lid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
