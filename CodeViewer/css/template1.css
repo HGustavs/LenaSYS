@@ -27,10 +27,12 @@
     overflow: scroll;
 }*/
 
+
 #docucontent {
     padding-left: 4px;
     border-style: solid;
     border-width: 1px;
+     border-color: #272822;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -40,11 +42,11 @@
 	  
       height: -webkit-calc(100.0%);
       height: -moz-calc(100.0%);
-    background-color: #ddd;
+     background-color: #272822;
     overflow: scroll;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
+   color: white;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
     outline: 0 none;
 }
 
@@ -58,7 +60,9 @@
  	  width: -moz-calc(75.0%);
 	  width: -webkit-calc(75.0%);
     right: 0px;
-    background-color: #fff;
+    background-color: #272822;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
     overflow: scroll;
     z-index: 2;
 }

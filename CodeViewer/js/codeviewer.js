@@ -482,7 +482,7 @@ function returned(data)
 
 		// Fill Description
 		var docuwindow=document.getElementById("docucontent");
-		docuwindow.innerHTML=data['desc'];
+		docuwindow.innerHTML="<span>"+data['desc']+"</span>";
 
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");
@@ -1232,7 +1232,7 @@ function addTemplatebox(id)
 	
 	for(i=0; i<temps.length; i++){
 		if(document.getElementById(temps[i])){
-			break;
+			continue;
 		}
 		var div = document.createElement("div");
 		content.appendChild(div);

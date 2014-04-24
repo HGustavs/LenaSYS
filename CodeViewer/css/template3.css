@@ -3,6 +3,7 @@
     padding-left: 4px;
     border-style: solid;
     border-width: 1px;
+    border-color: #272822;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -12,11 +13,11 @@
 	  
       height: -webkit-calc(65.0%);
       height: -moz-calc(65.0%);
-    background-color: #ddd;
+     background-color: #272822;
     overflow: scroll;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
+    color: white;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
     outline: 0 none;
 }
 
@@ -24,6 +25,7 @@
     padding-left: 4px;
     border-style: solid;
     border-width: 1px;
+     border-color: black;
     position: absolute;
     bottom: 0px;
     left: 0px;
@@ -33,17 +35,18 @@
 	  
       height: -webkit-calc(35.0%);
       height: -moz-calc(35.0%);
-    background-color: #ddd;
+      background-color: #272822;
     overflow: scroll;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
+    color: white;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
     outline: 0 none;
 }
 
 #codebox {
     border-style: solid;
     border-width: 1px;
+    border-color: black;
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -51,44 +54,13 @@
  	  width: -moz-calc(75.0%);
 	  width: -webkit-calc(75.0%);
     right: 0px;
-    background-color: #fff;
+     background-color: #272822;
+     font-family: Arial,Sans-Serif;
+    font-size: 14px;
     overflow: scroll;
     z-index: 2;
 }
 
-#temp5-1 {
-	padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-    position: absolute;
-    top: 50px;
-    left: 0px;
-    width: -moz-calc(49.74% - 1px);
-    height: -moz-calc(46.2% - 1px);
-    width: -webkit-calc(49.74% - 1px);
-    height: -webkit-calc(46.4% - 1px);
-    background-color: #ddd;
-    overflow: scroll;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
-    outline: 0 none;
-}
-#temp5-3 {
-    padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    width: -moz-calc(49.74% - 1px);
-    height: -moz-calc(46.2% - 1px);
-    width: -webkit-calc(49.74% - 1px);
-    height: -webkit-calc(46.4% - 1px);
-    background-color: #ddd;
-    overflow: scroll;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
-    outline: 0 none;
+#temp4{
+	display: none;
 }
