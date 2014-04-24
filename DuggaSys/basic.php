@@ -127,6 +127,7 @@ include_once "../Shared/basic.php";
 										<tr><td><input class='input-login' type='text' name='username'></td></tr>
                                         <tr><td><input type='submit' class='submit-button' onclick='returnToLogin();' value='Back'>
 										<input type='submit' class='submit-button' value='Next'></td></tr>
+										<tr><td id="forgot-error"></td></tr>
 									</table>
 								</form>
 							</div>

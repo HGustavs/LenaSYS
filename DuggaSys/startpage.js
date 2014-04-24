@@ -115,7 +115,7 @@ function showQuestion(event) {
 				// Append the error to the form.
 				// TODO: Change this to update a span/div with the error message in it
 				//       instead.
-				form.append(data.error)
+				form.find("#forgot-error").first().text(data.error)
 			}
 		})
 	}
