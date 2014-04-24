@@ -112,9 +112,7 @@ function showQuestion(event) {
 				closeforgotpwbox();
 				showanswerbox(un, data.question)
 			} else {
-				// Append the error to the form.
-				// TODO: Change this to update a span/div with the error message in it
-				//       instead.
+				// Display the error on the form.
 				form.find("#forgot-error").first().text(data.error)
 			}
 		})
