@@ -28,8 +28,8 @@ $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 
 	<div id="student-box">
 		<div id="student-header">Studentvy</div>
-	<form action="addstudent.php" method="post">
-		<input type="submit" id="submit-button" value="Lägg till student"/>
+		<a href="addstudent.php"><input type="submit" id="submit-button" value="Lägg till student"/></a>
+	<form action="" method="post">
 	<div id='students'>
 	<table style='border:1px solid black;'>
 	<tr><th>Name</th>
@@ -44,7 +44,7 @@ $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
                echo "<tr><td>".$row['username']."</td>";
                echo "<td>".$row['uid']."</td>";
                echo "<td>FAIL</td>";
-               echo "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' id='".$userid."'/></td></tr>";
+               echo "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='".$userid."'/></td></tr>";
 }
 	?>
 	</table>
@@ -58,18 +58,13 @@ $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 
  	
 		if (isset($_POST['delete'])) {
-		$checkboxes = $_POST['checkbox'];
- 	 if(empty($checkboxes))
-  {
-    echo("You didn't select any students.");
-  }
-  else
-  {
-    $pdo->query( "DELETE FROM user WHERE uid='$userid'" );
 
-				echo "Studenten har tagits bort!";
-				header("Location:students.php");
-  }
+			if(!empty($_POST['checkbox'])) {
+   				foreach($_POST['checkbox'] as $check) {
+	    			$pdo->query( "DELETE FROM user WHERE uid='$check'" );
+	    			header("Location: students.php");
+   				}
+			}
 		}
 
 		?>
