@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <script type="canvas">
-<timestep delay="11253">
+<timestep delay="300">
 <mouseclick x="597" y="297"/>
 <picture src="a.png"/>
 </timestep>
