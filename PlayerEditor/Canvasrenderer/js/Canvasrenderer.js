@@ -14,6 +14,8 @@ function Canvasrenderer()
 	this.numValidTimesteps = 0;
 	// Wind to position (-1, do not wind)
 	this.windto = -1;
+	// Mouse cursor image
+	this.mouseCursor;
 
 	/*
 	 * Playback functions
@@ -753,8 +755,7 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
-		
-		console.log("mousemove");
+		ctx.drawImage(this.mouseCursor, x, y);
 	}
 
 	this.mouseclick = function(x, y)
@@ -781,6 +782,10 @@ function Canvasrenderer()
 	var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
 	var delay = 0;
+
+	// Load mouse pointer image
+	this.mouseCursor = new Image();
+	this.mouseCursor.src = 'images/cursor.gif';
 	
 	if (window.XMLHttpRequest){   
 		  // code for IE7+, Firefox, Chrome, Opera, Safari
