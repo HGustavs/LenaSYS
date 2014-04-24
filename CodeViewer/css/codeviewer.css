@@ -1,4 +1,4 @@
-
+/* 
 #docucontent {
     padding-left: 4px;
     border-style: solid;
@@ -14,7 +14,7 @@
     font-family: Calibri,Sans-Serif;
     font-size: 16px;
     outline: 0 none;
-}
+}*/
 
 #docucontent b {
     color: white;
@@ -43,7 +43,7 @@
     background-color:  #614875;
     margin: 0px;
 }
-
+/*
 #codebox {
     border-style: solid;
     border-width: 1px;
@@ -55,7 +55,7 @@
     background-color: #fff;
     overflow: scroll;
 }
-
+*/
 .butto {
     text-align: center;
     font-family: Verdana,Serif;
