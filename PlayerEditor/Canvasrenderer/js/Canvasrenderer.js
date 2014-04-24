@@ -174,7 +174,7 @@ function Canvasrenderer()
 								'state_fillStyle', 'state_strokeStyle', 'state_shadowColor', 'state_shadowBlur', 'state_shadowOffsetX', 
 								'state_shadowOffsetY', 'state_lineCap', 'state_lineJoin', 'state_lineWidth', 'state_miterLimit', 'state_font', 
 								'state_textAlign', 'state_textBaseline', 'state_width', 'state_height', 'state_data', 'state_globalAlpha', 
-								'state_globalCompositeOperation'];
+								'state_globalCompositeOperation', 'mousemove', 'mouseclick', 'picture'];
 
 	 	// Compare to list of valid functions
 	 	for(i=0; i<validFunctions.length; ++i){
@@ -749,6 +749,24 @@ function Canvasrenderer()
 	}
 
 	/*
+	 * Image drawing functions
+	 */
+	this.mousemove = function(x, y)
+	{
+		console.log("mousemove");
+	}
+
+	this.mouseclick = function(x, y)
+	{
+		console.log("mouseclick");
+	}
+
+	this.picture = function(src)
+	{
+		console.log("picture");
+	}
+
+	/*
 	 *
 	 * Start running XML
 	 *
@@ -766,7 +784,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","canvas.xml",false);
+	xmlhttp.open("GET","imagerecording.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	
