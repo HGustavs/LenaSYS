@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+			<link type="text/css" href="css/style.css" rel="stylesheet">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script type="text/javascript" src="duggasys.js"></script>
+	</head>
+<body>
+<?php
+
+$pdo = new PDO('mysql:dbname=Imperious;host=localhost', 'root', 'galvaniseradapa');
+$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
+//include_once "studentview.php";
+
+?>
+		<header>
+		<nav id="navigate">
+			<img src="css/svg/Up.svg">
+			<img onclick="menuDugga()" src="css/svg/SkipB.svg">
+		</nav>
+		<nav id="user">
+			Emil & Martina
+			<img src="css/svg/Man.svg">
+		</nav>
+	</header>
+	<div id="content">
+
+	<div id="student-box">
+		<div id="student-header">Studentvy</div>
+	<form action="addstudent.php" method="post">
+		<input type="submit" id="submit-button" value="Lägg till student"/>
+	<div id='students'>
+	<table style='border:1px solid black;'>
+	<tr><th>Name</th>
+	<th>UserID</th>
+	<th>Dugga</th>
+	<th id='deletebox' style='visibility: hidden'>Delete</th></tr>
+
+
+<?php
+              foreach($pdo->query( 'SELECT * FROM user' ) as $row){
+              	$userid = $row['uid'];
+               echo "<tr><td>".$row['username']."</td>";
+               echo "<td>".$row['uid']."</td>";
+               echo "<td>FAIL</td>";
+               echo "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' id='".$userid."'/></td></tr>";
+}
+	?>
+	</table>
+
+		<input id="hide" type="button" value="Tillbaka" onclick="javascript:studentDelete('hide');"/>
+		<input id="show" type="button" value="Redigera" onclick="javascript:studentDelete('show');"/>
+		<input id="deletebutton" type="submit" style='visibility: hidden' value="Delete" name="delete"/>
+
+
+		<?php
+
+ 	
+		if (isset($_POST['delete'])) {
+		$checkboxes = $_POST['checkbox'];
+ 	 if(empty($checkboxes))
+  {
+    echo("You didn't select any students.");
+  }
+  else
+  {
+    $pdo->query( "DELETE FROM user WHERE uid='$userid'" );
+
+				echo "Studenten har tagits bort!";
+				header("Location:students.php");
+  }
+		}
+
+		?>
+		</form>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

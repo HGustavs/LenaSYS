@@ -150,3 +150,23 @@ function returnedSection(data)
 	  if(data['debug']!="NONE!") alert(data['debug']);
 
 }
+  function studentDelete(showhide) {
+      if (showhide == "show") {
+          document.getElementById('deletebox').style.visibility = "visible";
+          document.getElementById('deletebutton').style.visibility = "visible";
+      } else if (showhide == "hide") {
+          document.getElementById('deletebox').style.visibility = "hidden";
+          document.getElementById('deletebutton').style.visibility = "hidden";
+      }
+  }
+
+
+$(function() {
+       $('#hide').click(function() {
+                $('td:nth-child(4)').hide();                
+       });
+
+	   $('#show').click(function() {
+                $('td:nth-child(4)').show();                
+       });
+    });
