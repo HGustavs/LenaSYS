@@ -124,7 +124,7 @@ function returnedSection(data)
 			var slist=document.getElementById('Sectionlist');
 			slist.innerHTML=str;
 
-			//if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
+			if(sessionkind==courseID||sessionkind.indexOf("Superuser")>-1){
 				// Setup editable sections with events etc
 				for(i=0;i<data['entries'].length;i++){
 					if(parseInt(data['entries'][i]['kind'])==0){
@@ -138,7 +138,7 @@ function returnedSection(data)
 						editable.addEventListener("blur", function(){editedExampleName(this);}, true);
 					}
 				}				
-			//}
+			}
 
 
 		  if(data['debug']!="NONE!") alert(data['debug']);

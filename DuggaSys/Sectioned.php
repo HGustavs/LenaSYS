@@ -66,7 +66,7 @@
 													items: "> span",
 													update: function() {
 														// Pass course ID to check write access
-														var array = $(this).sortable("serialize");
+														var array = $(this).sortable("serialize") + "&courseid=" + '<?php echo $courseID; ?>';
 														$.post("entryupdate.php", array);
 													}
 												});
