@@ -276,7 +276,11 @@
 		}
 		this.isPointInPath = function(x, y){
 			this.UpdateAllFunctions();
-	        this.log('<isPointInPath x="'+x+'" y="'+y+'"/>');        
+			if(optimize == true){
+				this.log('<isPinP x="'+x+'" y="'+y+'"/>');
+			}else{
+				this.log('<isPointInPath x="'+x+'" y="'+y+'"/>');
+			}
 	        return this.ctx.isPointInPath(x, y);
 		}
 
@@ -288,8 +292,12 @@
 		}
 		this.rotate = function(angle){
 			this.UpdateAllFunctions();
-	        this.log('<rotate angle="'+angle+'"/>');        
-	        this.ctx.rotate(angle);
+			if(optimize == true){
+				this.log('<rot a="'+angle+'"/>');
+			}else{
+				this.log('<rotate angle="'+angle+'"/>');        
+	        }
+			this.ctx.rotate(angle);
 		}
 		this.translate = function(x, y){
 			this.UpdateAllFunctions();
@@ -388,8 +396,12 @@
 		//Other methods.
 		this.restore = function(){
 			this.UpdateAllFunctions();
-	        this.log('<restore/>');        
-	        this.ctx.restore();
+			if(optimize == true){
+				this.log('<rest/>');
+			}else{
+				this.log('<restore/>');        
+	        }
+			this.ctx.restore();
 	    }
 		this.save = function(){
 			this.UpdateAllFunctions();
@@ -407,8 +419,12 @@
 	    }
 		this.getContext = function(){
 			this.UpdateAllFunctions();
-	        this.log('<getContext/>');        
-	        this.ctx.getContext();
+			if(optimize == true){
+				this.log('<gContxt/>');
+			}else{
+				this.log('<getContext/>');        
+	        }
+			this.ctx.getContext();
 	    }
 		this.toDataURL = function(){
 			this.UpdateAllFunctions();
@@ -532,15 +548,44 @@
 		
 		}
 		
+		var shorterProperties ={shadowOffsetY:"shdwOffsetY",
+								shadowOffsetX:"shdwOffsetX",
+								fillStyle:"fs",
+								strokeStyle:"ss",
+								shadowColor:"shdwC",
+								shadowBlur:"shdwB",
+								LineCap:"lC",
+								lineJoin:"lJ",
+								lineWidth:"lW",
+								miterLimit:"miterLimit",
+								font:"font",
+								textAlign:"txtAlign",
+								textBaseline:"txtBaseline",
+								width:"w",
+								height:"h",
+								data:"data",
+								globalAlpha:"gA",
+								globalCompositeOperation:"gCO"	
+								}; 
+		
 		// Update a specific property
 		this.updateContextProperty = function(property) {
 			// Update property
 			// Set string
 			var attribute = "";
 			this.ctx[property] = this[property];
-			attribute += '<state';
+			if(optimize == true){
+				attribute += '<st';
+			}else{
+				attribute += '<state';
+			}
+			
 			// Create string for state
-			attribute += '_' + property + ' value="' + this[property] + '"' + '/>' + "\n";
+			if(optimize){
+				attribute += '_' + shorterProperties[property] + ' v="' + this[property] + '"' + '/>' + "\n";
+				}else{
+				attribute += '_' + property + ' value="' + this[property] + '"' + '/>' + "\n";
+			}
 			return (attribute);
 		}
 		this.log('<canvasSize width="'+canvas.width+'" height="'+canvas.height+'"/>');
