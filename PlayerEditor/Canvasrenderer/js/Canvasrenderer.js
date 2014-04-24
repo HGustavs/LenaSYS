@@ -764,6 +764,7 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
+		y = parseInt(y) + 69;
 		// Restore background
 		ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
 		// Save background
@@ -787,7 +788,7 @@ function Canvasrenderer()
 		var image = new Image();
 		// Draw image when loaded
 		image.onload = function() {
-			ctx.drawImage(image , 0, 0);
+			ctx.drawImage(image , 0, 0, width = 1280, height = 720);
 			console.log(canvas.mouseCursorX);
 			// New mouse cursor background
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17, 23);
