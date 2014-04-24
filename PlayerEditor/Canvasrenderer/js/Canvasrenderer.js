@@ -16,6 +16,9 @@ function Canvasrenderer()
 	this.windto = -1;
 	// Mouse cursor image
 	this.mouseCursor;
+	 
+	this.mouseCursorX = 0;
+	this.mouseCursorY = 0;
 
 	/*
 	 * Playback functions
@@ -753,7 +756,21 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
+		var imageData = ctx.getImageData(this.mouseCursorX,this.mouseCursorY,17,23);
+		var data = imageData.data;
+		for (var i = 0; i < data.length; i+=4) {
+			data[i] = 0; //red
+			data[i+1] = 0; //green
+			data[i+2] = 0; //blue
+			data[i+3] = 0; //alpha
+		}
+		ctx.putImageData(imageData, this.mouseCursorX, this.mouseCursorY);
+	
+		this.mouseCursorX = x;
+		this.mouseCursorY = y;
+
 		ctx.drawImage(this.mouseCursor, x, y);
+
 	}
 
 	this.mouseclick = function(x, y)
