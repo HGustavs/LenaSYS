@@ -94,4 +94,8 @@
 			</div>
 		</form>
 	</div>
+<?php }else {?>
+	<script type="text/javascript">
+		changeURL('noid');
+	</script>
 <?php } ?>
