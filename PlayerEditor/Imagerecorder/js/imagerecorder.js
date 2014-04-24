@@ -2,6 +2,22 @@ function imagerecorder(imgCanvas, img1)
 {	/*
 	 * Declaring an array that will act as a picture library(for the time being), and adding pictures to the array.
 	 */
+	
+	// document.getElementById('XMLfile').value = '<?xml version="1.0" encoding="UTF-8"?><script type="canvas">';
+	 
+
+	 $("body").append("<input type='button' id='CanvasWrapper-save' value='Export XML' style='position:absolute;right:0;top:0'>");
+		// Save log when "Save log" button is clicked
+		$("#CanvasWrapper-save").click(function(){	
+			alert("Saving");
+			$.ajax({
+				type: 'POST',
+				url: 'logfile.php',
+				data: { string: logStr + "\n</script>" }
+			});
+		});
+	 
+	 
 	var imageCanvas = imgCanvas;
 	var picArray = new Array();
 	var pathArray = new Array();
@@ -14,6 +30,8 @@ function imagerecorder(imgCanvas, img1)
 	var pathIndex = 0;
 	var clicked = 0;
 
+	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
+	
 	var imageLoader = document.getElementById('imageLoader');
     imageLoader.addEventListener('change', getImages, false);
 	var canvas = document.getElementById('ImageCanvas');
@@ -36,25 +54,19 @@ function imagerecorder(imgCanvas, img1)
 			}
 			img.src = event.target.result;
 		}
-			
-			reader.readAsDataURL(e.target.files[0]);
-			
+			reader.readAsDataURL(e.target.files[0]);	
 	}
 	/*
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
-	function getEvents(str){
-		//var imgPath = '<picture src="'+pathArray[pathIndex].split('\\').pop()+'"/>';		
+	function getEvents(str){	
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
-
 		// Add image path
 		if (chrome !== null && vendorName === 'Google Inc.') {
 			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop() + '"/>';
-			//document.getElementById('XMLfile').value += imgPathChrome;
 		}else{
-			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop()+'"/>';
-			//document.getElementById('XMLfile').value += imgPath;
+			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop()+ '"/>';
 		}
 			
 		console.log(str);
@@ -83,7 +95,7 @@ function imagerecorder(imgCanvas, img1)
 		if(currentImage > 0){
 			document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);
 		}
-		getEvents('<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+		getEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
 		currentImage++;
 		});
 	/*
@@ -105,14 +117,14 @@ function imagerecorder(imgCanvas, img1)
 		}
 		timer = window.setInterval(function() {
 			appendEvString(xMouseReal,yMouseReal);
-		}, 10000);
+		}, 33,33333);
 			interval = true;		
 		});
 	});
 	
 	function appendEvString(x, y){
 		if(clicked == 1){
-			addTimestep('<mousemove x="'+x+'" y="'+y+'"/>');
+			addTimestep('\n<mousemove x="'+x+'" y="'+y+'"/>');
 		}
 	}
 	
@@ -124,15 +136,15 @@ function imagerecorder(imgCanvas, img1)
 		lastEvent = currentTime;
 
 		// Create timestep
-		var timestep = '\n<timestep delay="' + delay + '">\n';
+		var timestep = '\n<timestep delay="' + delay + '">';
 		timestep += string;
-		timestep += '</timestep>'
+		timestep += '\n</timestep>'
 
 		// Add to string
 		log(timestep);
 	}
 
-	function log(str){
-		document.getElementById('XMLfile').value += str;
+	function log(str){		
+		logStr += str;
 	}
 }

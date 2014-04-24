@@ -14,6 +14,11 @@ function Canvasrenderer()
 	this.numValidTimesteps = 0;
 	// Wind to position (-1, do not wind)
 	this.windto = -1;
+	// Mouse cursor image
+	this.mouseCursor;
+	 
+	this.mouseCursorX = 0;
+	this.mouseCursorY = 0;
 
 	/*
 	 * Playback functions
@@ -59,6 +64,17 @@ function Canvasrenderer()
 
 		// Set icon
 		document.getElementById("play").innerHTML="<img src='Images/play_button.svg'/>";
+	}
+
+	// Search canvas playback
+	this.search = function(event)
+	{
+		// Calculating search percentage (0%-100%)
+		var rect = document.getElementById("barcontainer").getBoundingClientRect();
+		var percentage = (event.clientX - rect.left) / rect.right;
+
+		// Move to new position
+		this.windto(Math.floor((this.numValidTimesteps-1) * percentage));
 	}
 
 	// Reset canvas
@@ -156,14 +172,16 @@ function Canvasrenderer()
 	 {
 	 	// List of all valid canvas functions
 		// No other operation in the XML should be possible to run
-		var validFunctions = 	['beginPath', 'moveTo', 'lineTo', 'stroke', 'createLinearGradient', 'createPattern', 'createRadialGradient', 
-								'rect', 'fillRect', 'strokeRect', 'clearRect', 'fill', 'closePath', 'clip', 'quadraticCurveTo', 'beizerCurveTo', 
-								'arc', 'arcTo', 'isPointInPath', 'scale', 'rotate', 'translate', 'transform', 'measureText', 'drawImage', 
-								'createImageData', 'getImageData', 'putImageData', 'save', 'createEvent', 'getContext', 'toDataURL', 'restore', 
-								'state_fillStyle', 'state_strokeStyle', 'state_shadowColor', 'state_shadowBlur', 'state_shadowOffsetX', 
-								'state_shadowOffsetY', 'state_lineCap', 'state_lineJoin', 'state_lineWidth', 'state_miterLimit', 'state_font', 
-								'state_textAlign', 'state_textBaseline', 'state_width', 'state_height', 'state_data', 'state_globalAlpha', 
-								'state_globalCompositeOperation'];
+		var validFunctions = 	['bP', 'beginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
+								'createPattern', 'crtRadialGrad', 'createRadialGradient', 'rec', 'rect', 'fRec', 'fillRect', 'sRec', 'strokeRect', 
+								'cRec', 'clearRect', 'fill', 'cP', 'closePath', 'clip', 'quadCrvTo', 'quadraticCurveTo', 'beizCrvTo', 'beizerCurveTo',
+								'arc', 'aT', 'arcTo', 'isPointInPath', 'scale', 'rotate', 'translate', 'transform', 'mTxt', 'measureText', 'drawImg', 
+								'drawImage', 'crtImgData', 'createImageData', 'getImgData', 'getImageData', 'putImgData', 'putImageData', 'save', 'crtEvent', 
+								'createEvent', 'getContext', 'toDataURL', 'restore', 'st_fs', 'state_fillStyle', 'st_ss', 'state_strokeStyle', 'st_shdwC', 
+								'state_shadowColor', 'st_shdwB', 'state_shadowBlur', 'st_shdwOffsetX', 'state_shadowOffsetX', 'st_shdwOffsetY', 'state_shadowOffsetY', 
+								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
+								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
+								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'mousemove', 'mouseclick', 'picture'];
 
 	 	// Compare to list of valid functions
 	 	for(i=0; i<validFunctions.length; ++i){
@@ -307,9 +325,7 @@ function Canvasrenderer()
 
 		// Update search bar
 		var fract = this.currentPosition() / this.numValidTimesteps;
-		document.getElementById("bar").style.width=Math.round(fract*392);
-		console.log("Bar length: " + document.getElementById("bar").style.width);
-
+		document.getElementById("bar").style.width=(Math.round(fract*392) + 'px');
 
 		// Check if done
 		if(this.runningTimesteps.length <= 0){
@@ -595,10 +611,6 @@ function Canvasrenderer()
 		this.state_fillStyle(value);
 	}
 	
-	this.st_fs = function(value){
-		this.state_fillStyle(value);
-	}
-	
 	this.state_fillStyle = function(value){
 		ctx.fillStyle = value;
 	}
@@ -636,8 +648,9 @@ function Canvasrenderer()
 	}
 	
 	this.st_shdwOffsetY = function(value){
-		this.state_shadowOffsetY(value)
+		this.state_shadowOffsetY(value);
 	}
+	
 	this.state_shadowOffsetY = function(value){
 		ctx.shadwoOffsetY = value;
 	}
@@ -715,14 +728,14 @@ function Canvasrenderer()
 	}
 	
 	this.st_data = function(value){
-		this.state.data(value);
+		this.state_data(value);
 	}
 	
 	this.state_data = function(value){
 		ctx.data = value;
 	}
 	
-	this.st_globalAlpha = function(value){
+	this.st_gA = function(value){
 		this.state_globalAlpha(value);
 	}
 	
@@ -730,12 +743,50 @@ function Canvasrenderer()
 		ctx.globalAlpha = value;
 	}
 	
-	this.st_globalCompositeOperation = function(value){
+	this.st_gCO = function(value){
 		this.globalCompositeOperation(value);
 	}
 	
 	this.state_globalCompositeOperation = function(value){
 		ctx.globalCompositeOperation = value;
+	}
+
+	/*
+	 * Image drawing functions
+	 */
+	this.mousemove = function(x, y)
+	{
+		var imageData = ctx.getImageData(this.mouseCursorX,this.mouseCursorY,17,23);
+		var data = imageData.data;
+		for (var i = 0; i < data.length; i+=4) {
+			data[i] = 0; //red
+			data[i+1] = 0; //green
+			data[i+2] = 0; //blue
+			data[i+3] = 0; //alpha
+		}
+		ctx.putImageData(imageData, this.mouseCursorX, this.mouseCursorY);
+	
+		this.mouseCursorX = x;
+		this.mouseCursorY = y;
+
+		ctx.drawImage(this.mouseCursor, x, y);
+
+	}
+
+	this.mouseclick = function(x, y)
+	{
+		console.log("mouseclick");
+	}
+
+	this.picture = function(src)
+	{
+		// Load image
+		var image = new Image();
+		// Draw image when loaded
+		image.onload = function() {
+			ctx.drawImage(image , 0, 0);
+		}
+		image.src = src;
 	}
 
 	/*
@@ -746,6 +797,10 @@ function Canvasrenderer()
 	var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
 	var delay = 0;
+
+	// Load mouse pointer image
+	this.mouseCursor = new Image();
+	this.mouseCursor.src = 'images/cursor.gif';
 	
 	if (window.XMLHttpRequest){   
 		  // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -756,7 +811,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","canvas.xml",false);
+	xmlhttp.open("GET","imagerecording.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	

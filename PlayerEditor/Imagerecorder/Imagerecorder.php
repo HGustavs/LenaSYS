@@ -25,41 +25,23 @@
 		<!--Div that stores uploaded pictures and the php-code for image-upload and .txt-file-->
 		<div class="uploadImages">
 		
-			<?php
-			
-			$image_name = null;
-			if(isset($_POST['upload'])){
-				//variables that stores the name, type and size of the pictures that uploaded.
-				$image_name = $_FILES['image']['name'];
-				$image_type = $_FILES['image']['type'];
-				$image_size = $_FILES['image']['size'];
-				$image_tmp_name = $_FILES['image']['tmp_name'];	
-			
-			if($image_name==''){
-				exit();
-			}
-			else
-			move_uploaded_file($image_tmp_name,"pictures/$image_name");
-			}
-			//.txt-file handler. This is the file that stores all data from the recording.
-			if(isset($_POST['xmlfile'])){
-			$filename = 'xmlfile.txt';
-			$textString = $_POST['xmlfile'];
-			if (is_writable($filename)) {
-				if (!$handle = fopen($filename, 'a')) {
-					 echo "Cannot open file ($filename)";
-					 exit;
-				}
-				if (fwrite($handle, $textString) === FALSE) {
-					echo "Error!";
-					exit;
-				}
-				fclose($handle);
-			} else {
-				echo "Error!";
-			}
-			}
-			?>
+	<?php
+	
+	$image_name = null;
+	if(isset($_POST['upload'])){
+		//variables that stores the name, type and size of the pictures that uploaded.
+		$image_name = $_FILES['image']['name'];
+		$image_type = $_FILES['image']['type'];
+		$image_size = $_FILES['image']['size'];
+		$image_tmp_name = $_FILES['image']['tmp_name'];	
+	
+	if($image_name==''){
+		exit();
+	}
+	else
+	move_uploaded_file($image_tmp_name,"pictures/$image_name");
+	}	
+	?>
 		<br/>
 		<!--creating the small imageviewer, on the right side of the screen-->
 		<canvas id="canvasTemp" class="canvasStyle2" height="2000" width="200"></canvas>
@@ -70,11 +52,6 @@
 			<input name='upload' type='SUBMIT' value='Upload'/>
 		</form>
 		<br/>
-		<!--The form that handles the textfile-->
-		<form name='form' method='post' action=''>
-			<input id='XMLfile' name='xmlfile' style='width:1280px;'/>
-			<input type="submit" value="Export XML"></input>
-		</form>
 	</div>
 	<script>
 	<!--A new variable withe value of the image_name in php. This is important to get the right pictures in the .js-file -->

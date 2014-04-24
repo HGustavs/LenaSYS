@@ -21,6 +21,32 @@
 				data: { string: str + "</script>" }
 			});
 		});
+		
+		var optimize = false;
+
+		$("body").append("<input type='button' id='XML_type' value='Make optimized XML' style='position:absolute;right:50;top:0'>");
+		
+		$("#XML_type").click(function(){
+		
+			if(optimize == false){
+			
+				optimize = true;
+				
+				this.value = "Make normal XML";
+				
+				console.log(optimize);
+				
+			}else{
+			
+				optimize = false;
+				
+				this.value = "Make optimized XML";
+				
+				console.log(optimize);
+			}			
+		});
+			
+
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
 		
@@ -96,19 +122,31 @@
 
 		this.beginPath = function(){
 			this.UpdateAllFunctions();
-			this.log('<beginPath/>');
+			if(optimize == true){
+				this.log('<bP/>');
+			}else{
+				this.log('<beginPath/>');
+			}
 	        this.ctx.beginPath();
 	    }
 	    
 	    this.moveTo = function(x, y){
 			this.UpdateAllFunctions();
-			this.log('<moveTo x="'+x+'" y="'+y+'"/>');
+			if(optimize == true){
+				this.log('<mT x="'+x+'" y="'+y+'"/>');
+			}else{
+				this.log('<moveTo x="'+x+'" y="'+y+'"/>');
+			}
 	        this.ctx.moveTo(x, y);
 	    }
 	    
 	    this.lineTo = function(x, y){
 			this.UpdateAllFunctions();
-			this.log('<lineTo x="'+x+'" y="'+y+'"/>');
+			if(optimize == true){
+				this.log('<lT x="'+x+'" y="'+y+'"/>');
+			}else{
+				this.log('<lineTo x="'+x+'" y="'+y+'"/>');
+			}
 	        this.ctx.lineTo(x, y);
 	    }
 	    
@@ -120,39 +158,67 @@
 		
 		this.createLinearGradient = function(x, y, x1,y1){
 			this.UpdateAllFunctions();
-			this.log('<createLinearGradient x="'+x+'" y="'+y+'" x1="'+x1+'" y1="'+y1+'"/>');       
-	        this.ctx.createLinearGradient(x, y, x1,y1);
+			if(optimize == true){
+				this.log('<crtLinearGrad x="'+x+'" y="'+y+'" x1="'+x1+'" y1="'+y1+'"/>');       
+	        }else{
+				this.log('<createLinearGradient x="'+x+'" y="'+y+'" x1="'+x1+'" y1="'+y1+'"/>');
+			}
+			this.ctx.createLinearGradient(x, y, x1,y1);
 		}
 		this.createPattern = function(x, y,img){
 			this.UpdateAllFunctions();
-			this.log('<createPattern x="'+x+'" y="'+y+'" img="'+img+'"/>');        
+			if(optimize == true){
+				this.log('<crtPat x="'+x+'" y="'+y+'" img="'+img+'"/>');
+			}else{
+				this.log('<createPattern x="'+x+'" y="'+y+'" img="'+img+'"/>'); 
+			}
 	        this.ctx.createPattern(x, y,img);
 		}
 		this.createRadialGradient = function(x, y,r, x1,y1,r1){
 			this.UpdateAllFunctions();
-			this.log('<createRadialGradient x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'" r1="'+r1+'"/>');       
+			if(optimize == true){
+				this.log('<crtRadialGrad x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'" r1="'+r1+'"/>');  
+			}else{
+				this.log('<createRadialGradient x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'" r1="'+r1+'"/>');
+			}
 	        this.ctx.createRadialGradient(x, y,r, x1,y1,r1);
 		}
 		
 		// Rectangle functions
 		this.rect = function(x, y, width, height){
 			this.UpdateAllFunctions();
-	        this.log('<rect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');         
+			if(optimize == true){
+				this.log('<rec x="'+x+'" y="'+y+'" w="'+width+'" h="'+height+'"/>'); 
+			}else{
+				this.log('<rect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');
+			}
 	        this.ctx.rect(x, y, width, height);
 		}
 		this.fillRect = function(x, y, width, height){
 			this.UpdateAllFunctions();
-			this.log('<fillRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+			if(optimize == true){
+				this.log('<fRec x="'+x+'" y="'+y+'" w="'+width+'" h="'+height+'"/>'); 
+			}else{
+				this.log('<fillRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');
+			}
 	        this.ctx.fillRect(x, y, width, height);
 		}
 		this.strokeRect = function(x, y, width, height){
 			this.UpdateAllFunctions();
-	        this.log('<strokeRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+			if(optimize == true){
+				this.log('<sRec x="'+x+'" y="'+y+'" w="'+width+'" h="'+height+'"/>');    
+			}else{
+				this.log('<strokeRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>'); 
+			}
 	        this.ctx.strokeRect(x, y, width, height);
 		}
 		this.clearRect = function(x, y, width, height){
 			this.UpdateAllFunctions();
-	        this.log('<clearRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+			if(optimize == true){
+				this.log('<cRec x="'+x+'" y="'+y+'" w="'+width+'" h="'+height+'"/>');
+			}else{
+				this.log('<clearRect x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');
+			}
 	        this.ctx.clearRect(x, y, width, height);
 		}
 
@@ -164,7 +230,11 @@
 	    }
 		this.closePath = function(){
 			this.UpdateAllFunctions();
-	        this.log('<closePath/>');        
+			if(optimize == true){
+				this.log('<cP/>');     
+			}else{
+				this.log('<closePath/>');
+			}
 	        this.ctx.closePath();
 	    }
 		this.clip = function(){
@@ -174,12 +244,20 @@
 	    }
 		this.quadraticCurveTo = function(x, y, cpx, cpy){
 			this.UpdateAllFunctions();
-	        this.log('<quadraticCurveTo x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'"/>');        
+			if(optimize == true){
+				this.log('<quadCrvTo x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'"/>');     
+			}else{	
+				this.log('<quadraticCurveTo x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'"/>');
+			}
 	        this.ctx.quadraticCurveTo(x, y, cpx, cpy);
 		}
 		this.bezierCurveTo = function(x, y, cpx, cpy, cpx1, cpy1){
 			this.UpdateAllFunctions();
-	        this.log('<bezierCurveTo x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'" cpx1="'+cpx1+'  cpy1="'+cpy1+'"/>');        
+			if(optimize == true){
+				this.log('<beziCrvTo x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'" cpx1="'+cpx1+'  cpy1="'+cpy1+'"/>');
+			}else{
+				this.log('<bezierCurveTo x="' + x + '" y="' + y+ '" cpx="'+cpx+'" cpy="'+cpy+'" cpx1="'+cpx1+'  cpy1="'+cpy1+'"/>');
+			}
 	        this.ctx.bezierCurveTo(x, y, cpx, cpy, cpx1, cpy1);
 		}
 		this.arc = function(x, y,r,sAngle,eAngle,counterclockwise){
@@ -189,7 +267,11 @@
 		}
 		this.arcTo = function(x, y,r,x1,y1){
 			this.UpdateAllFunctions();
-	        this.log('<arcTo x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'"/>');        
+			if(optimize == true){
+				this.log('<aT x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'"/>');     
+			}else{
+				this.log('<arcTo x="'+x+'" y="'+y+'" r="'+r+'" x1="'+x1+'" y1="'+y1+'"/>');
+			}
 	        this.ctx.arcTo(x, y,r,x1,y1);
 		}
 		this.isPointInPath = function(x, y){
@@ -228,48 +310,79 @@
 		// Text functions
 		this.fillText = function(x, y,text,maxWidth){
 			this.UpdateAllFunctions();
-	        this.log('<fillText x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');        
+			if(optimize == true){
+				this.log('<fTxt x="' + x + '" y="' + y+ '" txt="'+text+'" maxW="'+maxWidth+'"/>');   
+			}else{
+				this.log('<fillText x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');
+			}
 	        this.ctx.fillText(x, y,text,maxWidth);
 		}
 		this.strokeText = function(x, y,text,maxWidth){
 			this.UpdateAllFunctions();
-	        this.log('<strokeText x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');        
-	        this.ctx.strokeText(x, y,text,maxWidth);
+			if(optimize == true){
+				this.log('<sTxt x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');        
+	        }else{
+				this.log('<strokeText x="' + x + '" y="' + y+ '" text="'+text+'" maxwidth="'+maxWidth+'"/>');
+			}
+			this.ctx.strokeText(x, y,text,maxWidth);
 		}
 		this.measureText = function(text){
 			this.UpdateAllFunctions();
-	        this.log('<measureText text="'+text+'"/>');        
+			if(optimize == true){
+				this.log('<mTxt txt="'+text+'"/>');  
+			}else{
+				this.log('<measureText text="'+text+'"/>'); 
+			}
 	        return this.ctx.measureText(text);
 		}
 
 		// Image draw functions
-		this.drawImage = function(img,sx,sy,swidth,sheight,x,y,width,height){
-		
+		this.drawImage = function(img,sx,sy,swidth,sheight,x,y,width,height){	
 			this.UpdateAllFunctions();
-	        this.log('<drawImage img="'+img+'" sx="'+sx+'" sy="'+sy+'" swidth="'+swidth+'" sheight="'+sheight+'" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+			if(optimize == true){
+				this.log('<drawImage img="'+img+'" sx="'+sx+'" sy="'+sy+'" swidth="'+swidth+'" sheight="'+sheight+'" x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>'); 
+			}else{
+				this.log('<drawImg img="'+img+'" sx="'+sx+'" sy="'+sy+'" sw="'+swidth+'" sh="'+sheight+'" x="'+x+'" y="'+y+'" w="'+width+'" h="'+height+'"/>');
+			}
 	        this.ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 		}
 
 		// Pixel manipulation functions
-		this.createImageData = function( imageData, width, height){
+		this.createImageData = function(imageData, width, height){
 			this.UpdateAllFunctions();
-			this.log('<createImageData imagedata="'+imageData+'" width="'+width+'" height="'+height+'"/>');        
+			if(optimize == true){
+				this.log('<createImageData imagedata="'+imageData+'" width="'+width+'" height="'+height+'"/>');  
+			}else{
+				this.log('<crtImgData imgdata="'+imageData+'" w="'+width+'" h="'+height+'"/>'); 
+			}
 			this.ctx.createImageData( imageData, width, height);
 			
 		}
 		this.getImageData = function(x, y, width, height){
 			this.UpdateAllFunctions();
-	        this.log('<getImageData x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>');        
+			if(optimize == true){
+				this.log('<getImgData x="'+x+'" y="'+y+'" w="'+width+'" h="'+height+'"/>');  
+			}else{
+				this.log('<getImageData x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>'); 
+			}
 	        return this.ctx.getImageData(x, y, width, height);
 		}
 		this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){
 			this.UpdateAllFunctions();
-	        this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dirtyx="'+dirtyX+'" dirtyy="'+dirtyY+'" dirtywidth="'+dirtyWidth+'" dirtyheight="'+dirtyHeight+'"/>');        
+			if(optimize == true){
+				this.log('<putImgData imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dx="'+dirtyX+'" dy="'+dirtyY+'" dw="'+dirtyWidth+'" dh="'+dirtyHeight+'"/>'); 
+			}else{
+				this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dirtyx="'+dirtyX+'" dirtyy="'+dirtyY+'" dirtywidth="'+dirtyWidth+'" dirtyheight="'+dirtyHeight+'"/>');
+			}
 	        return this.ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 		}
 		this.putImageData = function(imgData,x,y){
 			this.UpdateAllFunctions();
-	        this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y);        
+			if(optimize == true){
+				this.log('<putImgData imgdata="'+imgData+'" x="'+x+'" y="'+y); 
+			}else{
+				this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y);
+			}
 	        return this.ctx.putImageData(imgData,x,y);
 		}
 		//Other methods.
@@ -285,7 +398,11 @@
 	    }
 		this.createEvent = function(){
 			this.UpdateAllFunctions();
-	        this.log('<createEvent/>');        
+			if(optimize == true){
+				this.log('<crtEvent/>');
+			}else{
+				this.log('<createEvent/>');
+			}
 	        this.ctx.createEvent();
 	    }
 		this.getContext = function(){
