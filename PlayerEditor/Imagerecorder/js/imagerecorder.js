@@ -64,9 +64,9 @@ function imagerecorder(imgCanvas, img1)
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
 		// Add image path
 		if (chrome !== null && vendorName === 'Google Inc.') {
-			str += "\n<picture src=\""+pathArray[pathIndex].split('\\').pop() + "/>";
+			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop() + '"/>';
 		}else{
-			str += "\n<picture src=\""+pathArray[pathIndex].split('\\').pop()+ "/>";
+			str += '\n<picture src="'+pathArray[pathIndex].split('\\').pop()+ '"/>';
 		}
 			
 		console.log(str);

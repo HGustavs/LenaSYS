@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script type="canvas">
+<timestep delay="11253">
+<mouseclick x="597" y="297"/>
+<picture src="a.png"/>
+</timestep>
+<timestep delay="9">
+<mousemove x="597" y="297"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="597" y="297"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="597" y="297"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="597" y="297"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="597" y="297"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="597" y="297"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="597" y="297"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="597" y="297"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="596" y="297"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="590" y="295"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="579" y="293"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="561" y="285"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="544" y="278"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="500" y="245"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="450" y="188"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="413" y="151"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="385" y="131"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="377" y="128"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="375" y="127"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="375" y="127"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="127"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="374" y="127"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="126"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="125"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="124"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="123"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="374" y="123"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="123"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="374" y="123"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="26">
+<mouseclick x="374" y="122"/>
+<picture src="b.png"/>
+</timestep>
+<timestep delay="8">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="374" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="377" y="122"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="420" y="122"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="533" y="137"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="597" y="153"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="612" y="158"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="637" y="148"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="667" y="131"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="738" y="93"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="817" y="59"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="902" y="28"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="956" y="11"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="35">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="33">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+<timestep delay="34">
+<mousemove x="977" y="3"/>
+</timestep>
+</script>
