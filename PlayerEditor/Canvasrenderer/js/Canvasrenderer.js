@@ -181,7 +181,8 @@ function Canvasrenderer()
 								'state_shadowColor', 'st_shdwB', 'state_shadowBlur', 'st_shdwOffsetX', 'state_shadowOffsetX', 'st_shdwOffsetY', 'state_shadowOffsetY', 
 								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
 								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
-								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'mousemove', 'mouseclick', 'picture'];
+								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'canvasSize',
+								'mousemove', 'mouseclick', 'picture'];
 
 	 	// Compare to list of valid functions
 	 	for(i=0; i<validFunctions.length; ++i){
@@ -759,6 +760,11 @@ function Canvasrenderer()
 		ctx.globalCompositeOperation = value;
 	}
 
+	this.canvasSize = function(width, height) {
+		c.width = width;
+		c.height = height;
+	}
+
 	/*
 	 * Image drawing functions
 	 */
@@ -822,7 +828,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","imagerecording.xml",false);
+	xmlhttp.open("GET","canvas5.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	
