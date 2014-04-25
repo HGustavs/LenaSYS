@@ -4,6 +4,12 @@ include_once "../Shared/basic.php";
 	// editsectionmenu - Displays an editable or un-editable section menu
 	//---------------------------------------------------------------------------------------------------------------
 
+		/**
+		 * Generate the HTML for the section editor menu and whatnot
+		 * TODO: Make this slightly more portable?
+		 * @param boolean $kind Boolean representing if the user is allowed to edit
+		 * or not.
+		 */
 		function editsectionmenu($kind)
 		{
 				echo "<body onload='AJAXServiceSection(\"\",\"\");'>";
@@ -43,6 +49,9 @@ include_once "../Shared/basic.php";
 	// courselist - Displays a list of the current courses
 	//---------------------------------------------------------------------------------------------------------------
 		
+		/**
+		 * Generate the course list HTML
+		 */
 		function courselist()
 		{		
 					?>
@@ -78,24 +87,28 @@ include_once "../Shared/basic.php";
 					<?php
 		}
 
+		/**
+		 * Generate the HTML needed by the login, password recovery etc methods
+		 */
 		function loginwins()
 		{
 ?>
+
 				<div id="bg" style="display:none; width:100%; height:100%"></div>
 					<div id='login-box'>
 						<div id='login-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>LenaSYS Login</span>
+							<span class='login-header-text'>LenaSYS Login</span>
 								<div id='login-box-header-closeb' class='box-header-cbutton' onclick='closeloginbox();'>x</div>
 						</div>
 						<div id='login-box-content'>
 							<form id='loginform' action='login.php' method='post'>
-								<table><tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>
-									<tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>
-									<tr><td class='td-login'><span class='login-text'>Password</span></td></tr>
-									<tr><td class='td-login'><input class='input-login' type='password' name='password'></td></tr>
-									<tr><td class='td-login'><input id='login-checkbox' type='checkbox' name='saveuserlogin'>
+								<table><tr><td><span class='login-text'>Login name</span></td></tr>
+									<tr><td><input class='input-login' type='text' name='username'></td></tr>
+									<tr><td><span class='login-text'>Password</span></td></tr>
+									<tr><td><input class='input-login' type='password' name='password'></td></tr>
+									<tr><td><input id='login-checkbox' type='checkbox' name='saveuserlogin'>
 										<span class='login-text'>Remember me</span></td></tr>
-									<tr><td class='td-login'><input type='submit' class='submit-button' value='Login'>
+									<tr><td><input type='submit' class='submit-button' value='Login'>
 									<span id='login-fg-pw' onclick='showForgotPasswBox();' style='padding-left:10px;'>Forgot password</span></td></tr>
 								</table>
 							</form>
@@ -104,14 +117,17 @@ include_once "../Shared/basic.php";
 
 					 <div id='forgot-passw-box'>
 						<div id='forgot-passw-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>Forgot Password</span>
+							<span class='login-header-text'>Forgot Password</span>
 							<div id='forgot-passw-box-header-closeb' class='box-header-cbutton' onclick='closeforgotpwbox()'>x</div>
-							<div id='forgot-password-box-content'>
+                        </div>
+							<div id='forgot-pw-content'>
 								<form method='post' id="recoverform">
 									<table>
-										<tr><td class='td-login'><span class='login-text'>Login name</span></td></tr>
-										<tr><td class='td-login'><input class='input-login' type='text' name='username'></td></tr>
-										<tr><td class='td-login'><input type='submit' class='submit-button' value='Next'></td></tr>
+										<tr><td><span class='login-text'>Login name</span></td></tr>
+										<tr><td><input class='input-login' type='text' name='username'></td></tr>
+                                        <tr><td><input type='submit' class='submit-button' onclick='returnToLogin();' value='Back'>
+										<input type='submit' class='submit-button' value='Next'></td></tr>
+										<tr><td id="forgot-error"></td></tr>
 									</table>
 								</form>
 							</div>
@@ -120,22 +136,48 @@ include_once "../Shared/basic.php";
 
 					<div id='answer-box'>
 						<div id='answer-box-header' class='box-header'>
-							<span style='color:fff;font-family:arial;font-weight:bold;font-size:14pt;'>Forgot Password</span>
+							<span class='login-header-text'>Forgot Password</span>
 							<div id='answer-box-header-closeb' class='box-header-cbutton' onclick='closeanswerbox()'>x</div>
+                        </div>
 							<div id='answer-box-content'>
 								<form method='post' id="answerform">
 									<input type="hidden" name="user" value="">
 									<table>
-										<tr><td class='td-login'><span class='login-text' id="recoverquestion"></span></td></tr>
-										<tr><td class='td-login'><input class='input-login' type='text' name='answer' placeholder='Answer'></td></tr>
-										<tr><td class='td-login'><span class='login-text'>New password</span></td></tr>
-										<tr><td class='td-login'><input class='input-login' type='password' name='newpassword'></td></tr>
-										<tr><td class='td-login'><input type='submit' class='submit-button' value='Next'></td></tr>
+										<tr><td><span class='login-text' id="recoverquestion"></span></td></tr>
+										<tr><td><input class='input-login' type='text' name='answer' placeholder='Answer'></td></tr>
+										<tr><td><span class='login-text'>New password</span></td></tr>
+										<tr><td><input class='input-login' type='password' name='newpassword'></td></tr>
+										<tr><td><span class='login-text'>New password (type again)</span></td></tr>
+										<tr><td><input class='input-login' type='password' name='newpassword2'></td></tr>
+                                        <tr><td><input type='button' class='submit-button' onclick='returnToLogin();' value='Back'>
+                                        <input type='submit' class='submit-button' value='Next'></td></tr>
 									</table>
 								</form>
 							</div>
 						</div>
 					</div>
+					<div id="newpassword-box">
+						<div id="newpassword-box-header" class="box-header">
+							<span class='login-header-text'>Complete Registration</span>
+							<div id='newpassword-box-header-closeb' class='box-header-cbutton' onclick='closenewpwbox()'>x</div>
+                        </div>
+							<div id="newpassword-box-content">
+								<form method="post" id="newpasswordform">
+									<table>
+										<tr><td>New password</td></tr>
+										<tr><td><input type="password" name="password"></td></tr>
+										<tr><td><input type="password" name="password2"></td></tr>
+										<tr><td>Recovery question</td></tr>
+										<tr><td><input type="text" name="question"></td></tr>
+										<tr><td>Answer</td></tr>
+										<tr><td><input type="text" name="answer"></td></tr>
+										<tr><td><input type="submit" value="Save" class="submit-button"></td></tr>
+									</table>
+								</form>
+							</div>
+						</div>
+					</div>
+
 <?php
 			}
 ?>
