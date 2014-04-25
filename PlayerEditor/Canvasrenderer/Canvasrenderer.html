@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <title>Untitled Document</title>
-<script src="../js/Canvasrenderer/Canvasrenderer.js"></script>
+<link rel="stylesheet" type="text/css" href="Design.css">
+<script src="js/Canvasrenderer.js"></script>
 
 <script>
 
@@ -18,15 +19,35 @@ function executeTimestep(nodes)
 }
 
 </script>
+
 </head>
 
 <body onload="initPlayer();">
-	<canvas id="Canvas" width="400" height="400" style="border:1px solid #000"></canvas>
+	<canvas id="Canvas" style="border:1px solid #000"></canvas>
  	<script>
     var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
 	var canvas = new Canvasrenderer();
     </script>
+    <div id="wrapper">
+    	<div id="bardesign">
+   
+ 
+    	<table>
+				<tr>
+					<td onclick="canvas.switch();" id="play" class="barbutton"><img src="images/play_button.svg"/></td>
+					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick=""><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>					
+					<td onclick="canvas.skip(-1)" id="back" class="barbutton"><img src="Images/backward_button.svg"/></td>					
+					<td onclick="canvas.skip(1);" id="forward" class="barbutton"><img src="Images/forward_button.svg"/></td>					
+					<td onclick="canvas.toggleRepeat();" id="repeat" class="barbutton"><img src="Images/replay_button.svg"/></td>
+				</tr>
+		</table>
+        
+
+</div>
+</div>
+</div>
+    
 </body>
 
 </html>
