@@ -43,3 +43,12 @@ body{
 	overflow-y:scroll;
 }
 
+.imguploader{
+	margin-top: 5px;
+	background:rgba(0,0,0,0.2);
+	height:50px;
+	width: 1470px;
+	padding-top: 20px;
+	padding-left: 20px;
+}
+

@@ -47,11 +47,13 @@
 		<canvas id="canvasTemp" class="canvasStyle2" height="2000" width="200"></canvas>
 		</div>
 		<!--The form that handles the image upload function-->
-		<form method='post' action='' enctype="multipart/form-data">
-			<input id='imageLoader' name='image' type='FILE'/>
-			<input name='upload' type='SUBMIT' value='Upload'/>
-		</form>
-		<br/>
+		<div class="imguploader">
+			<form method='post' action='' enctype="multipart/form-data">
+				<input id='imageLoader' name='image' type='FILE'/>
+				<input name='upload' type='SUBMIT' value='Upload'/>
+			</form>
+			<br/>
+		</div>
 	</div>
 	<script>
 	<!--A new variable withe value of the image_name in php. This is important to get the right pictures in the .js-file -->
