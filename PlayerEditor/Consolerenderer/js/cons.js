@@ -344,7 +344,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 			if(this.step<this.timesteps.length){
 				if(this.fastforward==0){
 					var fract=this.step/this.timesteps.length;
-					document.getElementById("bar").style.width=Math.round(fract*392);							
+					document.getElementById("bar").style.width=Math.round(fract*392);
+					console.log(this.step);							
 				}
 					
 				childr=this.timesteps[this.step].childNodes;
