@@ -13,7 +13,7 @@ include "../Shared/basic.php";
 				echo '<span id="backwdrop" class="dropdown backwdrop"><div class="dropdownback">Backw</div></span>';				
 				if($kind){
 						echo '<span id="codedrop" class="dropdown codedrop" style="overflow:scroll;"><div class="dropdownback">Code viewer Code File Selector</div></span>';
-						echo '<span id="docudrop" class="dropdown docudrop" style="overflow:scroll;"><div class="dropdownback">General settings</div></span>';				
+						echo '<span id="docudrop" class="dropdown docudrop" style="overflow:scroll;"><div class="dropdownback">General settings</div></span>';
 				}
 
 				echo '<div id="buttomenu">';
@@ -30,7 +30,7 @@ include "../Shared/basic.php";
 								
 								
 				}else{
-								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';						
+								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';
 				}
 						echo '<td class="butto" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 						echo '<td class="butto" id="numberbutton" title="Show/hide linenumbers" onclick="fadelinenumbers();"><img src="new icons/numbers_button.svg" /></td>';
@@ -40,7 +40,7 @@ include "../Shared/basic.php";
 						echo '<td class="buttospacer">&nbsp;</td>';
 
 				echo '</table></div>';
-				echo '<div style="width:100%; position: absolute; top: 50px; bottom: 0px;" id="div2;background-color:#def">';
+				echo '<div id="div2" style="width:100%; position: absolute; top: 50px; bottom: 0px; background-color:#def">';
 				echo '<div id="docucontent"';
 				if($kind){
 						echo ' contenteditable="true" >';				

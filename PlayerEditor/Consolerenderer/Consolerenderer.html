@@ -50,17 +50,17 @@ Fixed Bugs:
 
 		  <link rel="stylesheet" type="text/css" href="Design.css">
 
-		  <script src="../js/Consolerenderer/cons.js"></script>
-		  <script src="../js/Consolerenderer/tile.js"></script>
-		  <script src="../js/Consolerenderer/tiledata.js"></script>
-		  <script src="../js/Consolerenderer/caretstate.js"></script>
+		  <script src="js/cons.js"></script>
+		  <script src="js/tile.js"></script>
+		  <script src="js/tiledata.js"></script>
+		  <script src="js/caretstate.js"></script>
 		  <script>
  
  			var cons;
  			
 			//  0 - black   1 - white   2 - red   3 - cyan   4 - purple   5 - green   6 - blue   7 - yellow   8 - orange   9 - brown   A - light red   B - dark grey   C - grey   D - light green   E - light blue   F - light grey
 
-			var bgcolortab=new Array("background-color:rgb(0,0,0);", "background-color:rgb(255,255,255);", "background-color:rgb(224,64,46);", "background-color:rgb(96,255,255);", "background-color:rgb(224,96,224);", "background-color:rgb(64,224,64);","background-color:rgb(64,64,224);", "background-color:rgb(255,255,64);", "background-color:rgb(224,160,64);", "background-color:rgb(156,116,72);", "background-color:rgb(84,84,84);","background-color:rgb(160,160,255);", "background-color:rgb(136,136,136);", "background-color:rgb(160,255,160);", "background-color:rgb(192,192,192);");
+			var bgcolortab=new Array("background-color:rgb(0,0,0);", "background-color:rgb(255,255,255);", "background-color:rgb(224,64,46);", "background-color:rgb(96,255,255);", "background-color:rgb(224,96,224);", "background-color:rgb(64,224,64);","background-color:rgb(39,40,34);", "background-color:rgb(255,255,64);", "background-color:rgb(224,160,64);", "background-color:rgb(156,116,72);", "background-color:rgb(84,84,84);","background-color:rgb(160,160,255);", "background-color:rgb(136,136,136);", "background-color:rgb(160,255,160);", "background-color:rgb(192,192,192);");
 
 			var colortab=new Array("color:rgb(0,0,0);", "color:rgb(255,255,255);", "color:rgb(224,64,46);", "color:rgb(96,255,255);", "color:rgb(224,96,224);", "color:rgb(64,224,64);", "color:rgb(64,64,224);", "color:rgb(255,255,64);", "color:rgb(224,160,64);", "color:rgb(156,116,72);", "color:rgb(255,160,160);", "background-color:rgb(84,84,84);", "color:rgb(136,136,136);", "color:rgb(160,255,160);","color:rgb(160,160,255);", "color:rgb(192,192,192);");
 
@@ -109,15 +109,15 @@ Fixed Bugs:
 			<div id="bardesign">
 			<table>
 				<tr>
-					<td onclick="cons.switch();" id="playcontrol" class="barbutton" align="center" valign="center"><img src="Bilder/play_button.svg"/></td>
+					<td onclick="cons.switch();" id="playcontrol" class="barbutton" align="center" valign="center"><img src="Images/play_button.svg"/></td>
 
 					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick="cons.search(event);"><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>
 					
-					<td onclick="cons.skip(-10);" id="backcontrol" class="barbutton"><img src="Bilder/backward_button.svg"/></td>
+					<td onclick="cons.skip(-10);" id="backcontrol" class="barbutton"><img src="Images/backward_button.svg"/></td>
 					
-					<td onclick="cons.skip(10);" id="forwcontrol" class="barbutton"><img src="Bilder/forward_button.svg"/></td>
+					<td onclick="cons.skip(10);" id="forwcontrol" class="barbutton"><img src="Images/forward_button.svg"/></td>
 					
-					<td onclick="cons.toggleRepeat();" id="repeatcontrol" class="barbutton"><img src="Bilder/replay_button.svg"/></td>
+					<td onclick="cons.toggleRepeat();" id="repeatcontrol" class="barbutton"><img src="Images/replay_button.svg"/></td>
 				</tr>
 		</table>
 	</div>
