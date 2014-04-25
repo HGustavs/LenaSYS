@@ -3,8 +3,7 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-		<!--<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />-->	
+<head>	
 		<link type="text/css" href="../DuggaSys/css/duggasys.css" rel="stylesheet" />	
 		<link type="text/css" href="../DuggaSys/css/style.css" rel="stylesheet" />
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>

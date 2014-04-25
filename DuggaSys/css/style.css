@@ -534,6 +534,235 @@ button.option {
 }
 
 
+}
+
+.logincenter {
+    text-align: center;
+}
+
+.loginleft {
+    margin-left: 16px;
+}
+
+.inv {
+    font-family: Calibri,Sans-Serif;
+    font-size: 24px;
+    font-weight: normal;
+    padding: 4px;
+    box-shadow: 1px 1px 2px #666;
+    position: fixed;
+    bottom: 4px;
+    left: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    background: #000;
+    color: #fff;
+    margin-left: 8px;
+    border-radius: 4px;
+}
+
+
+
+              /*Tooltips*/
+
+.tooltip, .arrow:after {
+    background: black;
+    border: 2px solid white;
+}
+
+.tooltip {
+    pointer-events: none;
+    opacity: 0;
+    display: inline-block;
+    position: absolute;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 20px;
+    margin-top: 20px;
+    text-align: center;
+    font: bold 14px "Helvetica Neue", Sans-Serif;
+    font-stretch: condensed;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 0 0 7px black;
+}
+
+.arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+}
+
+.arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    -webkit-box-shadow: 6px 5px 9px -9px black,
+                    5px 6px 9px -9px black;
+    -moz-box-shadow: 6px 5px 9px -9px black,
+                    5px 6px 9px -9px black;
+    box-shadow: 6px 5px 9px -9px black,
+                    5px 6px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+}
+
+.tooltip.active {
+    opacity: 1;
+    margin-top: 5px;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+}
+
+.tooltip.out {
+    opacity: 0;
+    margin-top: -20px;
+}
+#content {
+    margin:0px auto;
+    position:relative;
+    padding: 50px 12px 8px 8px;
+    background: #fff;
+    width:80%;
+    min-height: 200px;
+    border: 8px solid #ccc;
+}
+.top {
+    
+}
+.middle {
+    position:absolute;
+    top: 40%;
+    width: 100%;
+    text-align: center;
+}
+.bottom {
+    position:absolute;
+    bottom: 10px;.
+    width: 100%;
+    text-align: center;
+}
+.center {
+    vertical-align: middle;
+    margin: 0px auto;
+    width: 100%;
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}  
+    .alert-success {
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+        color: #3c763d;
+    }
+    .alert-info {
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+        color: #31708f;
+    }
+    .alert-danger {
+        background-color: #f2dede;
+        border-color: #ebccd1;
+        color: #a94442;
+    }
+    .alert-warning {
+        background-color: #fcf8e3;
+        border-color: #faebcc;
+        color: #8a6d3b;
+    }
+button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+    button.default {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+    }
+        button.default:hover {
+            background-color: #ebebeb;
+            border-color: #adadad;
+        }
+    button.submit {
+        color: #fff;
+        background-color: #428bca;
+        border-color: #357ebd;
+    }
+        button.submit:hover {
+            background-color: #3276b1;
+            border-color: #285e8e;
+        }
+.form-group {
+    margin-bottom: 15px;
+}
+#create input.form-control {
+    width: 100%;
+    height: 34px;
+    margin: 2px 0px 2px 0px;
+}
+
+#create select.form-control {
+    height: 34px;
+}
+#create textarea.form-control {
+    width: 100%;
+}
+.form-control {
+    display: block;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+input.option {
+    float: left;
+}
+button.option {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    width: 38px;
+    height: 38px;
+    padding: 6px 12px;
+    margin: 2px 0px 2px -38px;
+    line-height: 1.42857143;
+}
+
 
 #docucontent {
     padding-left: 4px;
@@ -811,6 +1040,99 @@ a {
     background-color: #def;
     font-weight: bold;
     border: 1px dotted #f00;
+}
+
+.impo .impword {
+    color: #401;
+    background-color: #bce;
+}
+
+.impo {
+    color: #000;
+    background-color: #fed;
+}
+
+.norm .no {
+    border-right: 2px #444;
+    color: #000;
+    background-color: #d8d8d8;
+}
+
+.impo .no {
+    border-right: 2px #444;
+    color: #000;
+    background-color: #dcb;
+}
+
+.comment {
+    color: #888;
+}
+
+.norm .oper {
+    color: #06F;
+    font-weight: bold;
+}
+
+.impo .oper {
+    color: #02D;
+    font-weight: bold;
+}
+
+.norm .string {
+    color: #092;
+    font-weight: bold;
+}
+
+.impo .string {
+    color: #070;
+    font-weight: bold;
+}
+
+.norm .number {
+    color: #029;
+    font-weight: bold;
+}
+
+.impo .number {
+    color: #000;
+    font-weight: bold;
+}
+
+.norm .hi {
+    background-color: #000;
+    color: #fff;
+}
+
+.impo .hi {
+    background-color: #000;
+    color: #fed;
+}
+
+.norm .keyword {
+    color: #902;
+    font-weight: bold;
+}
+
+.impo .keyword {
+    color: #401;
+    font-weight: bold;
+}
+
+.norm .impword {
+    color: #000;
+    background-color: #def;
+    font-weight: bold;
+    border: 1px dotted #f00;
+}
+
+.norm .imphi {
+    background-color: #000;
+    color: #fff;
+}
+
+.impo .imphi {
+    background-color: #000;
+    color: #fed;
 }
 
 .impo .impword {
