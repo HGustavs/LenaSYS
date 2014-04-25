@@ -482,7 +482,7 @@ function returned(data)
 
 		// Fill Description
 		var docuwindow=document.getElementById("docucontent");
-		docuwindow.innerHTML=data['desc'];
+		docuwindow.innerHTML="<span>"+data['desc']+"</span>";
 
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");
@@ -599,11 +599,11 @@ function displayTemplates()
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'  onclick='changeCSS(\""+'css/template1.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='changeCSS(\""+'css/template2.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
 
 		
 	docurec=document.getElementById('docudrop');
@@ -730,7 +730,7 @@ function setupEditable()
 				editable.addEventListener("blur", function(){editedExamplename();}, true);
 		
 				var fditable=document.getElementById('docucontent');
-				fditable.addEventListener("blur", function(){editedDescription();}, true);
+				fditable.addEventListener("blur", function(){editedDescription();Save();}, true);
 		}
 }
 
@@ -1204,13 +1204,15 @@ function rendercode(codestring,destinationdiv)
 		printout.innerHTML=str;
 		linenumbers();
 }
-function linenumbers(){	
+function linenumbers()
+{	
 	if(localStorage.getItem("linenumbers") == "false"){	
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg'); 
 		$( ".no" ).css("display","none");	
 	}
 }
-function fadelinenumbers(){
+function fadelinenumbers()
+{
 	if ( $( ".no" ).is( ":hidden" ) ) {
 		$( ".no" ).fadeIn( "slow" );
 		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
@@ -1220,4 +1222,32 @@ function fadelinenumbers(){
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
+}
+function addTemplatebox(id)
+{	
+	var temps = id.split(",");
+	
+	
+	var content = document.getElementById("div2");
+	
+	for(i=0; i<temps.length; i++){
+		if(document.getElementById(temps[i])){
+			continue;
+		}
+		var div = document.createElement("div");
+		content.appendChild(div);
+		div.id = temps[i];
+		div.setAttribute("contenteditable", "true");
+	}	
+}
+function changeCSS(cssFile)
+{
+	var cssLinkIndex = 0;
+	var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
+    var newlink = document.createElement("link");
+    newlink.setAttribute("rel", "stylesheet");
+    newlink.setAttribute("type", "text/css");
+    newlink.setAttribute("href", cssFile);
+ 	
+    document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
