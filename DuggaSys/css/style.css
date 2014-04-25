@@ -171,8 +171,7 @@ header {
     background-color: #888;
     color: #fff;
 }
-tr#bajs:nth-child(even) {background-color: #fff}
-tr#bajs:nth-child(odd) {background-color: #ccc}
+
 
 #content {
     margin:0px auto;

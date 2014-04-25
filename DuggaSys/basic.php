@@ -56,7 +56,7 @@ include_once "../Shared/basic.php";
 		{		
 					?>
 						<table width='100%'>
-							<tr id='bajs'>
+							<tr>
 								<td rowspan='2'>
 									<div id='Sectionlist'>
 										<span class='course'>Course Example Organization System</span>
