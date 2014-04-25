@@ -61,7 +61,7 @@ table {
 .bar{
 	position:absolute;
 	height: px;
-	width:20px;
+	width:0px;
 	background-image: url('Images/Loadingbar.gif'); 
 	background-repeat: repeat-x;
 	background-size: 64px 100%;
