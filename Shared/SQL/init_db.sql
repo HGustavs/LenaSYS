@@ -169,8 +169,16 @@ CREATE TABLE filelist(
 );
 	
 INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (1,"js1.js",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (2,"js2.js",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (3,"js3.js",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (2,"",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (3,"",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (4,"",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (5,"",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (6,"",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (7,"",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (8,"",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (9,"",1,"Creationscript");
+INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (10,"",1,"Creationscript");
+
 
 CREATE TABLE descriptionsection(
 		exampleno			INTEGER,
