@@ -37,6 +37,14 @@ h4 {
 body {
     background: #ddd;
 }
+a#courses{
+	color:black;
+	font-size:14pt;
+	font-family:arial;	
+}
+a#courses:hover{
+	color:#ccc;
+}
 header {
     color: #fff;
     height: 50px;
@@ -46,9 +54,11 @@ header {
     z-index: 999999;
     top: 0px;
     left: 0px;
+	/*
     -webkit-box-shadow: 0px 8px 5px -4px rgba(0,0,0,0.40);
     -moz-box-shadow: 0px 8px 5px -4px rgba(0,0,0,0.40);
     box-shadow: 0px 8px 5px -4px rgba(0,0,0,0.40);
+	*/
 }
     nav#navigate {
         padding: 12px;
@@ -72,6 +82,97 @@ header {
         nav#user img {
             cursor: pointer;
         }
+
+#Sectionlist{
+	margin:0px auto;
+	
+	padding: 2px;
+    width: 800px;
+    /*box-shadow: 7px 7px 7px #000;*/
+    background-color: #fff;
+    color: black;
+    display: block;
+    /*border: 2px outset #888;*/
+    text-align: left;
+    /*border-radius: 6px;*/
+}
+#Sectionlist .butt {
+    /*border-radius: 3px;*/
+    margin-right: 4px;
+    /*box-shadow: 2px 1px 3px #000;*/
+    margin-bottom: 4px;
+    padding-left: 8px;
+    height: 24px;
+    /*text-shadow: 2px 2px 2px #000;*/
+    color: #fff;
+    display: block;
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+    color: white;
+    background-color: #BBB;
+}
+
+#Sectionlist .norm {
+    margin-left: 8px;
+    padding-left: 8px;
+    /*border-left: 4px solid #DDD;*/
+    height: 24px;
+    color: #000;
+    display: block;
+    font-family: Calibri,Sans-Serif;
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    background-color: #FFF;
+}
+
+#Sectionlist .norm:hover {
+    /*border-radius: 3px;*/
+    /*box-shadow: 1px 1px 3px #000 inset;*/
+    background: linear-gradient(to right, #FED 0%,#FED 80%,#FFD 90%,#FFF 99%);
+    color: #000;
+    background-color: #BBB;
+}
+
+#Sectionlist .bigg {
+    font-size: 26px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-align: center;
+    font-family: Cambria, Georgia, serif;
+    color: #000;
+    display: block;
+    background-color: #FFF;
+}
+
+#Sectionlist .course {
+    margin-bottom: 4px;
+    background: linear-gradient(to right, #888 0%,#AAA 99%);
+    /*border-radius: 3px;*/
+    /*box-shadow: 3px 3px 6px #000 inset;*/
+    text-align: center;
+    font-size: 26px;
+    padding-left: 8px;
+    height: 36px;
+    /*text-shadow: 2px 2px 2px #000;*/
+    color: #fff;
+    display: block;
+    /*font-style: italic;*/
+    color: black;
+    font-family: Calibri,Sans-Serif;
+    background-color: #888;
+    color: #fff;
+}
+tr#bajs:nth-child(even) {background-color: #fff}
+tr#bajs:nth-child(odd) {background-color: #ccc}
 
 #content {
     margin:0px auto;
