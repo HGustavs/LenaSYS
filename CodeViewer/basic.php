@@ -40,7 +40,7 @@ include "../Shared/basic.php";
 						echo '<td class="buttospacer">&nbsp;</td>';
 
 				echo '</table></div>';
-				echo '<div style="width:100%; position: absolute; top: 50px; bottom: 0px;" id="div2;background-color:#def">';
+				echo '<div id="div2" style="width:100%; position: absolute; top: 50px; bottom: 0px; background-color:#def">';
 				echo '<div id="docucontent"';
 				if($kind){
 						echo ' contenteditable="true" >';				

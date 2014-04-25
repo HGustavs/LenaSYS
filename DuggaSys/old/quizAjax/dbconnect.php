@@ -1,0 +1,7 @@
+<?php
+	//DB connection
+	$pdo = new PDO('mysql:dbname=quizsystem;host=localhost', '__USER__NAME__', '__PASSWORD__');
+	//Set PDO to display errors
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);//, PDO::MYSQL_ATTR_USE_BUFFERED_QUERY );
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+?>
