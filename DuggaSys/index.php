@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,7 +18,6 @@ setupLogin();
 include_once("../../coursesyspw.php");	
 include_once("basic.php");
 
-session_start();
 dbConnect();
 
 courselist();
