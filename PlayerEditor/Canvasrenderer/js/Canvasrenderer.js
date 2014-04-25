@@ -19,6 +19,8 @@ function Canvasrenderer()
 	this.mouseCursorBackground;
 	this.mouseCursorX = 1;
 	this.mouseCursorY = 1;
+	// Image ration, for downscaling
+	this.scaleRatio = 1;
 
 	/*
 	 * Playback functions
@@ -120,7 +122,6 @@ function Canvasrenderer()
 			if(windpos<0) windpos=0;
 			if(windpos>this.numValidTimesteps) windpos=this.numValidTimesteps-1;
 			// Wind
-			//console.log(windpos);
 			this.windto(windpos);
 		}
 	}
@@ -770,7 +771,9 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
-		y = parseInt(y) + 69;
+		// Calculate positions using the proper scale ratio
+		y *= this.scaleRatio;
+		x *= this.scaleRatio;
 		// Restore background
 		ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
 		// Save background
@@ -794,8 +797,23 @@ function Canvasrenderer()
 		var image = new Image();
 		// Draw image when loaded
 		image.onload = function() {
-			ctx.drawImage(image , 0, 0, width = 1280, height = 720);
-			console.log(canvas.mouseCursorX);
+			if (image.width > c.width || image.height > c.height)
+			{
+				// Calculate scale ratios
+				var widthRatio = c.width / image.width;
+				var heightRatio = c.height / image.height;
+
+				// Set scale ratio
+				if (widthRatio < heightRatio) canvas.scaleRatio = widthRatio;
+				else canvas.scaleRatio = heightRatio;
+			}
+			else {
+				// Draw natural ratio
+				canvas.scaleRatio = 1;
+			}
+
+			// Draw scaled image
+			ctx.drawImage(image , 0, 0, image.width * canvas.scaleRatio, image.height * canvas.scaleRatio);
 			// New mouse cursor background
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17, 23);
 		}
@@ -830,7 +848,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","imagerecording.xml",false);
+	xmlhttp.open("GET","imagerecording3.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	
