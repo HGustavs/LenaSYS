@@ -38,6 +38,7 @@ function login()
 			$_SESSION['uid'] = $row['uid'];
 			$_SESSION["loginname"]=$row['username'];
 			$_SESSION["passwd"]=$row['password'];
+			$_SESSION["newpw"]=($row["newpassword"] > 0);
 			$_SESSION["superuser"]=$row['superuser'];
 			return true;
 		} else {
