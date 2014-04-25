@@ -1,0 +1,5 @@
+*.swp
+*.patch
+*.db
+.metadata
+/PlayerEditor/CanvasWrapper/Tests/*

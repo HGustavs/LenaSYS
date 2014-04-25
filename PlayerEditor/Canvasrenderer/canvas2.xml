@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script type="canvas">
+<timestep delay="1776">
+<beginpath/>
+</timestep>
+<timestep delay="1">
+<moveto x="297" y="194"/>
+</timestep>
+<timestep delay="503">
+<state lineWidth="12"/>
+</timestep>
+<timestep delay="1">
+<lineto x="210" y="84"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="583">
+<lineto x="147" y="184"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="504">
+<lineto x="140" y="315"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="464">
+<lineto x="286" y="296"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="568">
+<lineto x="227" y="363"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
+<timestep delay="968">
+<lineto x="59" y="324"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+</timestep>
