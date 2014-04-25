@@ -165,12 +165,12 @@ include_once "../Shared/basic.php";
 								<form method="post" id="newpasswordform">
 									<table>
 										<tr><td>New password</td></tr>
-										<tr><td><input type="password" name="password"></td></tr>
-										<tr><td><input type="password" name="password2"></td></tr>
+										<tr><td><input type="password" name="password" class="input-login"></td></tr>
+										<tr><td><input type="password" name="password2" class="input-login"></td></tr>
 										<tr><td>Recovery question</td></tr>
-										<tr><td><input type="text" name="question"></td></tr>
+										<tr><td><input type="text" name="question" class="input-login"></td></tr>
 										<tr><td>Answer</td></tr>
-										<tr><td><input type="text" name="answer"></td></tr>
+										<tr><td><input type="text" name="answer" class="input-login"></td></tr>
 										<tr><td><input type="submit" value="Save" class="submit-button"></td></tr>
 									</table>
 								</form>
