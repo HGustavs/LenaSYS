@@ -811,6 +811,8 @@ function Canvasrenderer()
 	var ctx = c.getContext("2d");
 	var delay = 0;
 
+	// Set canvas size to fit screen size
+	this.canvasSize(window.innerWidth - 20, window.innerHeight - 75);
 	// Load mouse pointer image
 	this.mouseCursor = new Image();
 	this.mouseCursor.src = 'images/cursor.gif';
@@ -828,7 +830,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","canvas5.xml",false);
+	xmlhttp.open("GET","imagerecording.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	
