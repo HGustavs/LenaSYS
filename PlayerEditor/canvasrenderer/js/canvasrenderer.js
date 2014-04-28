@@ -777,7 +777,7 @@ function Canvasrenderer()
 		// Restore background
 		ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
 		// Save background
-		this.mouseCursorBackground = ctx.getImageData(x ,y ,17,23);
+		this.mouseCursorBackground = ctx.getImageData(x ,y ,18,24);
 		// Save mouse position
 		this.mouseCursorX = x;
 		this.mouseCursorY = y;
@@ -848,7 +848,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","imagerecording3.xml",false);
+	xmlhttp.open("GET","imagerecording.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	
