@@ -339,7 +339,7 @@ function selectImpLines(word)
 				document.getElementById('implistto').value=lines[1];
 		}
 }
-
+/*
 function changedPlayLink()
 {
 	var url = getPlaylinkURL();
@@ -380,6 +380,7 @@ function changedPlayLink()
 	},100);	
 	
 }
+*/
 // Function to return the fully url-playlink that is inserted
 function getPlaylinkURL()
 {
@@ -397,14 +398,83 @@ function getPlaylinkURL()
 	}
 	return "http://"+location.hostname+":"+location.port+"/"+directories+link;	
 }
+// set playlink into database
 function setPlayLinkURL()
 {
-	
+	encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
+	AJAXService("editPlaylink","&playlink="+encodedplaylink);
 }
-function checkPlaylinkURL()
+
+// function to check the if the url of playlink exists
+function checkPlaylinkURL(url, callback)
 {
+	if(document.getElementById('playlink')){
+		var playlink = document.getElementById('playlink').value;
+	}
+	else{
+		var playlink = retdata['playlink'];
+	}
+	if(playlink==""){
+		callback(false);
+		return;
+	}
+		
+	// code for IE7+, Firefox, Chrome, Opera, Safari
+	if (window.XMLHttpRequest){
+		var xmlhttp=new XMLHttpRequest();
+	 }
+	 else{ // code for IE6, IE5
+	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
 	
+	xmlhttp.open('GET', url, true);  			
+	xmlhttp.send(null);	
+
+	xmlhttp.onreadystatechange = function() {
+		// readyState 4 = the url has been fully loaded. status 404 = url doesn't exists.
+	    if (xmlhttp.readyState==4) {
+	    	if(xmlhttp.status == "404"){
+	    		if (typeof callback == "function"){
+	    			callback(false);
+	    		}
+	    	}else{
+	    		if (typeof callback == "function"){
+	    			callback(true);
+	    		}
+	    	} 
+	    }
+	}	
 }
+// If playlink is changed this method will be called.
+function changedPlayLink()
+{
+	var url = getPlaylinkURL();
+
+/* A callback function has to be used here because it takes some times to load the url 
+  		when checking for errors. */
+	checkPlaylinkURL(url,
+		function(status) {
+			if(status){
+				var playbutton=document.getElementsByClassName('playbutton');
+				for(var i=0; i<playbutton.length; i++){
+					playbutton[i].childNodes[0].style.opacity="1";
+					playbutton[i].onclick=function(){Play();};
+				}
+				setPlayLinkURL();
+			}else{
+				var playbutton=document.getElementsByClassName('playbutton');
+				for(var i=0; i<playbutton.length; i++){
+					playbutton[i].childNodes[0].style.opacity="0.2";
+					playbutton[i].onclick=function(){};
+				}
+				var span = document.getElementById("playlinkErrorMsg");
+				span.innerHTML = "Error. This link is invalid.";
+				span.style.display = "block";
+			}
+  		}
+	);		
+}
+
 
 /********************************************************************************
 
@@ -487,8 +557,29 @@ function returned(data)
 			}
 		}
 		
+		
+	
+			var url = getPlaylinkURL();
+			var playbutton=document.getElementsByClassName('playbutton');
+			checkPlaylinkURL(url,
+				function(status) { 
+					if(status){ 
+						for(var i=0; i<playbutton.length; i++){
+							playbutton[i].childNodes[0].style.opacity="1";
+							playbutton[i].onclick=function(){Play();};
+						}			
+					}else{
+						for(var i=0; i<playbutton.length; i++){
+							playbutton[i].childNodes[0].style.opacity="0.2";
+							playbutton[i].onclick=function(){};
+						}
+					}
+				}
+			);
+	
+		
 		// Playbutton Either Hidden or Shown depending on if there is any play link or not
-		var playbutton=document.getElementsByClassName('playbutton');
+	/*	var playbutton=document.getElementsByClassName('playbutton');
 		if(data['playlink']==""){
 			for(var i=0; i<playbutton.length; i++){
 				playbutton[i].childNodes[0].style.opacity="0.2";
@@ -500,7 +591,7 @@ function returned(data)
 				playbutton[i].onclick=function(){Play();};
 			}									
 		}
-		
+	*/	
 		// Make after dropdown
 		str="<div class='dropdownback'>Skip Forward</div>";
 		for(i=0;i<data['after'].length;i++){
@@ -1281,7 +1372,7 @@ function changeCSS(cssFile)
     document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
-function hotdogmenu()
+function showhotdogmenu()
 {
 
 	var hotdogdrop = document.getElementById("hotdogdrop");
