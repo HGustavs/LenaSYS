@@ -344,6 +344,7 @@ function changedPlayLink()
 {
 	var url = getPlaylinkURL();
 	var playlink = document.getElementById('playlink').value
+	var playbutton=document.getElementsByClassName('playbutton');
 	
 	// code for IE7+, Firefox, Chrome, Opera, Safari
 	 if (window.XMLHttpRequest){
@@ -352,22 +353,28 @@ function changedPlayLink()
 	  else{ // code for IE6, IE5
 	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	  }
-	  // check if the playlink refers to a real url.
+	  // check if the playlink refers to an existing url.
 	xmlhttp.open('GET', url, true);  			
 	xmlhttp.send(null);	
 
-	// 0.1s timeout because it takes some time for xmlhttp.status to get its value
+	// 0.1s timeout because it takes some time for xmlhttp.status to return a value
 	setTimeout(function(){
-		if (xmlhttp.status == "404") { 
+		if (xmlhttp.status == "404" || playlink=="") { 
 			var span = document.getElementById("playlinkErrorMsg");
 			span.innerHTML = "Error. This link is invalid.";
 			span.style.display = "block";
-			document.getElementById('playbutton').style.display="none";	
+			for(var i=0; i<playbutton.length; i++){
+				playbutton[i].childNodes[0].style.opacity="0.2";
+				playbutton[i].onclick=function(){};
+			}
 		}else{	
-			if(playlink != ""){ 
-				document.getElementById('playbutton').style="";	
+			if(playlink != ""){ 	
+				for(var i=0; i<playbutton.length; i++){
+					playbutton[i].childNodes[0].style.opacity="1";
+					playbutton[i].onclick=function(){Play();};
+				}
 				encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
-				AJAXService("editPlaylink","&playlink="+encodedplaylink);	
+				AJAXService("editPlaylink","&playlink="+encodedplaylink);
 			}
 		} 
 	},100);	
@@ -389,6 +396,14 @@ function getPlaylinkURL()
 		directories += currentUrl[i]+"/";
 	}
 	return "http://"+location.hostname+":"+location.port+"/"+directories+link;	
+}
+function setPlayLinkURL()
+{
+	
+}
+function checkPlaylinkURL()
+{
+	
 }
 
 /********************************************************************************
@@ -449,27 +464,41 @@ function returned(data)
 		before.innerHTML=str;
 		
 		// If we have no items before the current item - hide before button and dropdown
-		var before=document.getElementById('beforebutton');
+		var before=document.getElementsByClassName('beforebutton');
 		if(data['before'].length==0){
-				before.style.display="none";								
+			for(var i=0; i<before.length; i++){
+				before[i].childNodes[0].style.opacity="0.2";
+				before[i].onclick="";
+			}
 		}else{
-				before.style.display="normal";														
+			for(var i=0; i<before.length; i++){
+				before[i].style.opacity="1";	
+		//		before[i].onclick ="SkipF();";													
+			}	
 		}
+		
 
 		// If we have no items before the current item - hide before button and dropdown
-		var after=document.getElementById('afterbutton');
+		var after=document.getElementsByClassName('afterbutton');
 		if(data['after'].length==0){
-				after.style.display="none";								
-		}else{
-				after.style.display="normal";								
+			for(var i=0; i<after.length; i++){
+				after[i].childNodes[0].style.opacity="0.2";
+				after[i].onclick="";
+			}
 		}
-
+		
 		// Playbutton Either Hidden or Shown depending on if there is any play link or not
-		var playlink=document.getElementById('playbutton');
+		var playbutton=document.getElementsByClassName('playbutton');
 		if(data['playlink']==""){
-				playlink.style.display="none";								
+			for(var i=0; i<playbutton.length; i++){
+				playbutton[i].childNodes[0].style.opacity="0.2";
+				playbutton[i].onclick=function(){};
+			}
 		}else{
-				playlink.style.display="normal";										
+			for(var i=0; i<playbutton.length; i++){
+				playbutton[i].childNodes[0].style.opacity="1";
+				playbutton[i].onclick=function(){Play();};
+			}									
 		}
 		
 		// Make after dropdown
@@ -1250,4 +1279,16 @@ function changeCSS(cssFile)
     newlink.setAttribute("href", cssFile);
  	
     document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
+}
+
+function hotdogmenu()
+{
+
+	var hotdogdrop = document.getElementById("hotdogdrop");
+	if($(hotdogdrop).is(':hidden')){
+		hotdogdrop.style.display = "block";
+	}
+	else{
+		hotdogdrop.style.display = "none";	
+	}
 }
