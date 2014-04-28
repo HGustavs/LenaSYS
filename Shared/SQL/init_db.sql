@@ -99,7 +99,7 @@ INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) val
 
 /* template with information about a certain template */
 CREATE TABLE template(
-		templateid			INTEGER NOT NULL,
+		templateid			INTEGER UNSIGNED NOT NULL,
 		stylesheet 			VARCHAR(39) NOT NULL,
 		numbox				INTEGER NOT NULL,
 		PRIMARY KEY(templateid, stylesheet)
@@ -115,17 +115,17 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template2.css",4)
 /* Code Example contains a list of the code examples for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
 CREATE TABLE codeexample(
-		exampleid			MEDIUMINT NOT NULL AUTO_INCREMENT,
-		cid					INT NOT NULL,
-		sectionid			MEDIUMINT NOT NULL,
+		exampleid			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		cid					INT UNSIGNED NOT NULL,
+		sectionid			MEDIUMINT UNSIGNED NOT NULL,
 		examplename			VARCHAR(64),
 		wordlist			VARCHAR(64),
 		runlink			  	VARCHAR(64),
 		pos					INTEGER,
 		cversion			INTEGER,
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT NOT NULL,
-		templateid			INT NOT NULL DEFAULT '0',
+		uid					INT UNSIGNED NOT NULL,
+		templateid			INT UNSIGNED NOT NULL DEFAULT '0',
 		PRIMARY KEY(exampleid),
 		FOREIGN KEY (cid) REFERENCES course (cid),
 		FOREIGN KEY (sectionid) REFERENCES section (sectionno),
@@ -147,13 +147,13 @@ INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cvers
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
-		impid		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
-		exampleid 			MEDIUMINT NOT NULL,
+		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
 		istart				INTEGER,
 		iend				INTEGER,
 		irowdesc			VARCHAR(1024),
 		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT NOT NULL,
+		uid					INT UNSIGNED NOT NULL,
 		PRIMARY KEY(impid),
 		FOREIGN KEY (uid) REFERENCES user (uid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
@@ -166,12 +166,12 @@ INSERT INTO improw(exampleid,istart,iend,uid) VALUES (7,10,12,2);
 
 /*filelist contains a list of shortcuts to files */
 CREATE TABLE filelist(
-		fileid		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
-		exampleid			MEDIUMINT NOT NULL,
+		fileid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid			MEDIUMINT UNSIGNED NOT NULL,
 		filename			VARCHAR(1024),
-		pos					INTEGER,
+		pos					INTEGER UNSIGNED,
 		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT NOT NULL,
+		uid					INT UNSIGNED NOT NULL,
 		PRIMARY KEY(fileid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
@@ -190,12 +190,12 @@ INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);
 
 
 CREATE TABLE descriptionsection(
-		descid		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
-		exampleid			MEDIUMINT NOT NULL,
+		descid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid			MEDIUMINT UNSIGNED NOT NULL,
 		segment				VARCHAR(64000),
 		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INTEGER NOT NULL,
-		pos					MEDIUMINT NOT NULL,
+		uid					INTEGER UNSIGNED NOT NULL,
+		pos					MEDIUMINT UNSIGNED NOT NULL,
 		PRIMARY KEY(descid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
@@ -215,11 +215,11 @@ INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (10,"<b>Design 4</b
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
-		boxid				INTEGER NOT NULL AUTO_INCREMENT,
-		exampleid 			MEDIUMINT NOT NULL,
+		boxid				INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
 		boxcontent			VARCHAR(39),
-		descid				MEDIUMINT DEFAULT '0',
-		fileid				MEDIUMINT DEFAULT '0',					
+		descid				MEDIUMINT UNSIGNED DEFAULT '0',
+		fileid				MEDIUMINT UNSIGNED DEFAULT '0',					
 		settings			VARCHAR(1024),
 		PRIMARY KEY(boxid, exampleid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
@@ -234,12 +234,12 @@ INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document
 
 /* Wordlist contains a list of keywords for a certain programming language or file type */
 CREATE TABLE wordlist(
-		wordid		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
+		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		wordlist			VARCHAR(64),
 		word 				VARCHAR(64),
 		description			VARCHAR(256),
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT NOT NULL,
+		uid					INT UNSIGNED NOT NULL,
 		PRIMARY KEY(wordid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -253,12 +253,12 @@ INSERT INTO wordlist(wordlist,word,uid) VALUES ("GLSL","dot",2);
 
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(
-		wordid		  	MEDIUMINT NOT NULL AUTO_INCREMENT,
-		exampleid		MEDIUMINT NOT NULL,
+		wordid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid		MEDIUMINT UNSIGNED NOT NULL,
 		word 			VARCHAR(64),
 		description		VARCHAR(256),
 		UPDATED 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid				INTEGER NOT NULL,
+		uid				INTEGER UNSIGNED NOT NULL,
 		PRIMARY KEY(wordid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
