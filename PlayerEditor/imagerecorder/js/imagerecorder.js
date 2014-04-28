@@ -90,7 +90,25 @@ function imagerecorder(imgCanvas, img1)
 		document.getElementById('xCord').innerHTML=xMouse;
 		document.getElementById('yCord').innerHTML=yMouse;
 
-		ctx.drawImage(picArray[currentImage],0,0, width = 1280, height = 720);
+		// Check for better solution, regarding variable screen size
+		width = 1280;
+		height = 720;
+		var ratio = 1;
+
+		// Picture need to be scaled down
+		if (picArray[currentImage].width > width || picArray[currentImage].height > height) {
+			// Calculate scale ratios
+			var widthRatio = width / picArray[currentImage].width;
+			var heightRatio = height / picArray[currentImage].height;
+
+			// Set scale ratio
+			if (widthRatio < heightRatio) ratio = widthRatio;
+			else ratio = heightRatio;
+		}
+
+		// Draw image in the correct ratio and size
+		ctx.drawImage(picArray[currentImage],0,0, (picArray[currentImage].width*ratio), (picArray[currentImage].height*ratio));
+
 		document.getElementById(imageCanvas).appendChild(picArray[currentImage]);
 		if(currentImage > 0){
 			document.getElementById(imageCanvas).removeChild(picArray[currentImage-1]);
