@@ -1,0 +1,5613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script type="canvas">
+<timestep delay="1">
+<canvasSize width="300" height="150"/>
+</timestep>
+<timestep delay="1009">
+<save/>
+</timestep>
+<timestep delay="0">
+<clearRect x="0" y="0" width="150" height="150"/>
+<translate x="75" y="75"/>
+<scale width="0.4" height="0.4"/>
+<rotate angle="-1.5707963267948966"/>
+<state_lineWidth value="8"/>
+<state_lineCap value="round"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<restore/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_lineWidth value="5"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<restore/>
+<state_lineWidth value="5"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<rotate angle="4.687227150335104"/>
+<state_lineWidth value="14"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<moveTo x="-20" y="0"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<lineTo x="80" y="0"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<restore/>
+<state_lineWidth value="14"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<rotate angle="5.981243346584567"/>
+<state_lineWidth value="10"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<moveTo x="-28" y="0"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<lineTo x="112" y="0"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<restore/>
+<state_lineWidth value="10"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.7330382858376184"/>
+<state_lineWidth value="6"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<beginPath/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<moveTo x="-30" y="0"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<lineTo x="83" y="0"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<stroke/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<beginPath/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<arc x="0" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<fill/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<beginPath/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<arc x="95" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#D40000"/>
+<arc x="0" y="0" r="3" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#D40000"/>
+<fill/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#D40000"/>
+<restore/>
+<state_lineWidth value="6"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#D40000"/>
+<beginPath/>
+<state_lineWidth value="14"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<arc x="0" y="0" r="142" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<stroke/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<restore/>
+</timestep>
+<timestep delay="975">
+<state_lineWidth value="14"/>
+<state_lineCap value="round"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+</timestep>
+<timestep delay="0">
+<save/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<clearRect x="0" y="0" width="150" height="150"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<translate x="75" y="75"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<scale width="0.4" height="0.4"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<rotate angle="-1.5707963267948966"/>
+<state_lineWidth value="8"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="1">
+<rotate angle="0.5235987755982988"/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.5235987755982988"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="100" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<restore/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_lineWidth value="5"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="1">
+<stroke/>
+</timestep>
+<timestep delay="0">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<moveTo x="117" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<lineTo x="120" y="0"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.10471975511965977"/>
+<state_fillStyle value="white"/>
+<state_strokeStyle value="black"/>
+<restore/>
+<state_lineWidth value="5"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<rotate angle="4.687372594439437"/>
+<state_lineWidth value="14"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<moveTo x="-20" y="0"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<lineTo x="80" y="0"/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<restore/>
+<state_lineWidth value="14"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<rotate angle="5.982988675836562"/>
+<state_lineWidth value="10"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<beginPath/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<moveTo x="-28" y="0"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<lineTo x="112" y="0"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<stroke/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<restore/>
+<state_lineWidth value="10"/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<save/>
+<state_fillStyle value="black"/>
+<state_strokeStyle value="black"/>
+<rotate angle="0.8377580409572781"/>
+<state_lineWidth value="6"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<beginPath/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<moveTo x="-30" y="0"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<lineTo x="83" y="0"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<stroke/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<beginPath/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<arc x="0" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<fill/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<beginPath/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<arc x="95" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<state_fillStyle value="#D40000"/>
+<state_strokeStyle value="#D40000"/>
+<stroke/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#D40000"/>
+<arc x="0" y="0" r="3" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#D40000"/>
+<fill/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#D40000"/>
+<restore/>
+<state_lineWidth value="6"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#D40000"/>
+<beginPath/>
+<state_lineWidth value="14"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<arc x="0" y="0" r="142" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<state_fillStyle value="rgba(0,0,0,0)"/>
+<state_strokeStyle value="#325FA2"/>
+</timestep>
+<timestep delay="0">
+<restore/>
+</timestep>
+<timestep delay="993">
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+</timestep>
+<timestep delay="0">
+<save/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<cRec x="0" y="0" w="150" h="150"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<translate x="75" y="75"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<scale width="0.4" height="0.4"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<rot a="-1.5707963267948966"/>
+<st_lW v="8"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rest/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<save/>
+<st_lW v="5"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="1">
+<lT x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<st_fs v="white"/>
+<st_ss v="black"/>
+
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="5"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="4.687518038543771"/>
+</timestep>
+<timestep delay="1">
+<st_lW v="14"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<bP/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<mT x="-20" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<lT x="80" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="14"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="5.984734005088556"/>
+<st_lW v="10"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<mT x="-28" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<lT x="112" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="10"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="0.9424777960769379"/>
+<st_lW v="6"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<mT x="-30" y="0"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<lT x="83" y="0"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<stroke/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<arc x="0" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<fill/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<arc x="95" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<stroke/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<arc x="0" y="0" r="3" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<fill/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<rest/>
+<st_lW v="6"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_lW v="14"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<arc x="0" y="0" r="142" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+</timestep>
+<timestep delay="0">
+<rest/>
+</timestep>
+<timestep delay="989">
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+</timestep>
+<timestep delay="0">
+<save/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<cRec x="0" y="0" w="150" h="150"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<translate x="75" y="75"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<scale width="0.4" height="0.4"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<rot a="-1.5707963267948966"/>
+<st_lW v="8"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rest/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<save/>
+<st_lW v="5"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="1">
+<rot a="0.10471975511965977"/>
+</timestep>
+<timestep delay="0">
+<st_fs v="white"/>
+<st_ss v="black"/>
+
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="5"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="4.687663482648103"/>
+<st_lW v="14"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<bP/>
+</timestep>
+<timestep delay="1">
+<st_fs v="black"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<mT x="-20" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<lT x="80" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="14"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="5.98647933434055"/>
+<st_lW v="10"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<mT x="-28" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<lT x="112" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="10"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="1.0471975511965976"/>
+<st_lW v="6"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<mT x="-30" y="0"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<lT x="83" y="0"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<stroke/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<arc x="0" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<fill/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<arc x="95" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<stroke/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<arc x="0" y="0" r="3" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<fill/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<rest/>
+<st_lW v="6"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_lW v="14"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<arc x="0" y="0" r="142" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+</timestep>
+<timestep delay="0">
+<rest/>
+</timestep>
+<timestep delay="988">
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+</timestep>
+<timestep delay="0">
+<save/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<cRec x="0" y="0" w="150" h="150"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<translate x="75" y="75"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<scale width="0.4" height="0.4"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<rot a="-1.5707963267948966"/>
+<st_lW v="8"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<save/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.5235987755982988"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="100" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rest/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<save/>
+<st_lW v="5"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="1">
+<mT x="117" y="0"/>
+</timestep>
+<timestep delay="0">
+<st_fs v="white"/>
+<st_ss v="black"/>
+
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="1">
+<lT x="120" y="0"/>
+</timestep>
+<timestep delay="0">
+<st_fs v="white"/>
+<st_ss v="black"/>
+
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+</timestep>
+<timestep delay="1">
+<st_fs v="white"/>
+<st_ss v="black"/>
+</timestep>
+<timestep delay="0">
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<mT x="117" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<lT x="120" y="0"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rot a="0.10471975511965977"/>
+<st_fs v="white"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="5"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="4.687808926752436"/>
+<st_lW v="14"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<mT x="-20" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<lT x="80" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="14"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="5.988224663592544"/>
+<st_lW v="10"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<bP/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<mT x="-28" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<lT x="112" y="0"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<stroke/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rest/>
+<st_lW v="10"/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<save/>
+<st_fs v="black"/>
+<st_ss v="black"/>
+<rot a="1.1519173063162573"/>
+<st_lW v="6"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<mT x="-30" y="0"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<lT x="83" y="0"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<stroke/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<arc x="0" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<fill/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<bP/>
+</timestep>
+<timestep delay="1">
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+</timestep>
+<timestep delay="0">
+<arc x="95" y="0" r="10" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="#D40000"/>
+<st_ss v="#D40000"/>
+<stroke/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<arc x="0" y="0" r="3" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<fill/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<rest/>
+<st_lW v="6"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#D40000"/>
+<bP/>
+<st_lW v="14"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<arc x="0" y="0" r="142" sAngle="0" eAngle="6.283185307179586" counterclockwise="true"/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<stroke/>
+<st_fs v="rgba(0,0,0,0)"/>
+<st_ss v="#325FA2"/>
+<rest/>
+</timestep>
+</script>
