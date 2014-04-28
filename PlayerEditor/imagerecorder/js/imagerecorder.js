@@ -86,8 +86,8 @@ function imagerecorder(imgCanvas, img1)
 	$(document).ready(function(){
 	$('#' + imageCanvas).click(function(event){
 		clicked = 1;
-		var xMouse = event.clientX - ImageCanvas.offsetLeft; 
-		var yMouse = event.clientY - ImageCanvas.offsetTop;
+		var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+		var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 	
 		document.getElementById('xCord').innerHTML=xMouse;
 		document.getElementById('yCord').innerHTML=yMouse;
@@ -127,8 +127,8 @@ function imagerecorder(imgCanvas, img1)
 	var yMouseReal;
 		$('#' + imageCanvas).mousemove(function(event){	
 	
-		xMouseReal = event.clientX - ImageCanvas.offsetLeft;
-		yMouseReal = event.clientY - ImageCanvas.offsetTop;
+		xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+		yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 		document.getElementById('xCordReal').innerHTML=xMouseReal;
 		document.getElementById('yCordReal').innerHTML=yMouseReal;
 		
