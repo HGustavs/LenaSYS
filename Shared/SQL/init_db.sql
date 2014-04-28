@@ -4,7 +4,7 @@ USE Imperious;
 
 /* user contains the users of the system and related  information */
 CREATE TABLE user(
-		uid				INT NOT NULL AUTO_INCREMENT,
+		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE, 
 		ssn				VARCHAR(20) NULL,
 		password		VARCHAR(225) NOT NULL,
@@ -20,10 +20,10 @@ INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$1
 INSERT INTO user(username,password,newpassword,creator) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1);
 
 CREATE TABLE user_question (
-	qid			INT NOT NULL AUTO_INCREMENT,
+	qid			INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	question	TEXT,
 	answer		TEXT,
-	owner		INT NOT NULL,
+	owner		INT UNSIGNED NOT NULL,
 	PRIMARY KEY(qid, owner),
 	INDEX `owner_index` (owner),
 	FOREIGN KEY(owner) REFERENCES user(uid)
@@ -35,11 +35,11 @@ INSERT INTO user_question (question, answer, owner) VALUES("What is the color of
 
 /* Course contains a list of the course names for each course in the database */
 CREATE TABLE course(
-		cid				INT NOT NULL AUTO_INCREMENT,
+		cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		coursecode		VARCHAR(45) NULL,
 		coursename		VARCHAR(80) NULL,
 		created			DATETIME,
-		creator			INT NOT NULL,
+		creator			INT UNSIGNED NOT NULL,
 		updated			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 		PRIMARY KEY(cid),
 		FOREIGN KEY (creator) REFERENCES user (uid)
@@ -51,8 +51,8 @@ INSERT INTO course(coursecode,coursename,created,creator) values ("DV13G","Futha
 
 /* User access to the application*/
 CREATE TABLE user_course(
-		uid				INT NOT NULL,
-		cid				INT NOT NULL, 
+		uid				INT UNSIGNED NOT NULL,
+		cid				INT UNSIGNED NOT NULL, 
 		access			VARCHAR(10) NOT NULL,
 		PRIMARY KEY(uid, cid),
 		FOREIGN KEY (uid) REFERENCES user (uid),
@@ -73,7 +73,7 @@ CREATE TABLE listentries (
 	pos int,
 	creator int unsigned not null,
 	ts timestamp default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-	code_id mediumint,
+	code_id mediumint unsigned,
 	PRIMARY KEY(lid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
@@ -81,7 +81,7 @@ CREATE TABLE listentries (
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
 CREATE TABLE section(
-		sectionno			MEDIUMINT NOT NULL AUTO_INCREMENT,
+		sectionno			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		coursename			VARCHAR(64),
 		sectionname			VARCHAR(64),
 		sectionpos			INTEGER,
