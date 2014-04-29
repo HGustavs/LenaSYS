@@ -38,13 +38,13 @@ if($r && mysql_num_rows($r) > 0) {
 	die("Something went horribly wrong." . mysql_error());
 }
 
-// SELECT code_id FROM listentries WHERE code_id IS NOT NULL pos < 5 AND pos > 1
-$prev_ex = mysql_query(
-	sprintf("SELECT code_id FROM listentries WHERE code_id IS NOT NULL and pos < %d AND pos > %d",
-		mysql_real_escape_string($pos),
-		mysql_real_escape_string($previuous)
-	)
+$prevquery = sprintf("SELECT code_id FROM listentries WHERE code_id IS NOT NULL and pos < %d AND pos > %d",
+	mysql_real_escape_string($pos),
+	mysql_real_escape_string($previuous)
 );
+
+// SELECT code_id FROM listentries WHERE code_id IS NOT NULL pos < 5 AND pos > 1
+$prev_ex = mysql_query($prevquery);
 
 $nextquery = sprintf("SELECT code_id FROM listentries WHERE code_id IS NOT NULL and pos > %d",
 	mysql_real_escape_string($pos)
