@@ -219,12 +219,11 @@ table.list {
     color: #333;
     width: 100%;
     font-size:  0.9em;
-    border: 1px solid #ccc;
 }
 table.list th {
     padding: 8px;
     font-weight: bold;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 5px solid #ddd;
     text-align: left;
 }
 table.list tr {
