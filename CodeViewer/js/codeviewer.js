@@ -1386,13 +1386,13 @@ function changeCSS(cssFile)
 
 $(function() {
 	$('#hidesettings').click(function() {
-		$('.docudrop').slideToggle("slow");
+		$('.docudrop').slideToggle("fast");
 		$('.codedrop').hide();
 		$('#hotdogdrop').hide();
 		return false;
 	});
 	$(document).click(function() {
-    	$('.docudrop').slideUp('slow');
+    	$('.docudrop').slideUp('fast');
 	});
 	$(".docudrop").click(function(event) {
    		event.stopPropagation();
@@ -1401,13 +1401,13 @@ $(function() {
 
 $(function() {
 	$('#hidecode').click(function() {
-		$('.codedrop').slideToggle("slow");
+		$('.codedrop').slideToggle("fast");
 		$('.docudrop').hide();
 		$('#hotdogdrop').hide();
 		return false;
 	});
 	$(document).click(function() {
-    	$('.codedrop').slideUp('slow');
+    	$('.codedrop').slideUp('fast');
 	});
 	$(".codedrop").click(function(event) {
    		event.stopPropagation();
@@ -1416,13 +1416,13 @@ $(function() {
 
 $(function() {
 	$('#hidehotdog').click(function() {
-		$('#hotdogdrop').slideToggle("slow");
+		$('#hotdogdrop').slideToggle("fast");
 		$('.docudrop').hide();
 		$('.codedrop').hide();
 		return false;
 	});
 	$(document).click(function() {
-    	$('#hotdogdrop').slideUp('slow');
+    	$('#hotdogdrop').slideUp('fast');
 	});
 	$("#hotdogdrop").click(function(event) {
    		event.stopPropagation();

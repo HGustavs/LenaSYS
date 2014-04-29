@@ -1,8 +1,5 @@
 #docucontent{
     padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-     border-color: #272822;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -17,8 +14,6 @@
 }
 
 #codebox {
-    border-style: solid;
-    border-width: 1px;
     position: absolute;
     float: left;
     top: 250px;

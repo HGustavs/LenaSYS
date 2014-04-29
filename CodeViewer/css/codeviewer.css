@@ -23,6 +23,7 @@
     height: 50px;
     background-color: #614875;
     margin: 0px;
+    border-color: rgb(0,0,0) transparent;
 }
 .beforebutton img{
 /*	opacity: 0.2;
@@ -91,6 +92,7 @@
 	right: 0px;
 	height: auto;
 	width: auto;
+	border-color: rgb(0,0,0) transparent;
 }
 #hotdogdrop table td{
 	 border-bottom: solid 1px #2A120A;
@@ -127,6 +129,9 @@
 	width: -webkit-calc(20.0%);  
     height: -webkit-calc(40.0%);
     height: -moz-calc(40.0%);
+    padding-left:7px;
+    background-color: #614875;
+    border-color: rgb(0,0,0) transparent;	
 }
 
 .docudrop {
@@ -138,7 +143,8 @@
     height: -moz-calc(65.0%);
     background-color: #614875; 
     background: rgb(0, 0, 0) transparent;
-
+	padding-left:7px;
+	border-color: rgb(0,0,0) transparent;
 }
 
 .forwdrop {
