@@ -21,6 +21,22 @@ function Canvasrenderer()
 	this.mouseCursorY = 1;
 	// Image ration, for downscaling
 	this.scaleRatio = 1;
+	this.startTime;
+	
+	// List of all valid canvas functions
+	// No other operation in the XML should be possible to run
+	var validFunctions = 	['bP', 'beginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
+								'createPattern', 'crtRadialGrad', 'createRadialGradient', 'rec', 'rect', 'fRec', 'fillRect', 'sRec', 'strokeRect', 
+								'cRec', 'clearRect', 'fill', 'cP', 'closePath', 'clip', 'quadCrvTo', 'quadraticCurveTo', 'beizCrvTo', 'beizerCurveTo',
+								'arc', 'aT', 'arcTo', 'isPointInPath', 'scale', 'rot', 'rotate', 'translate', 'transform', 'mTxt', 'measureText', 'drawImg', 
+								'drawImage', 'crtImgData', 'createImageData', 'getImgData', 'getImageData', 'putImgData', 'putImageData', 'save', 'crtEvent', 
+								'createEvent', 'getContext', 'toDataURL', 'rest', 'restore', 'st_fs', 'state_fillStyle', 'st_ss', 'state_strokeStyle', 'st_shdwC', 
+								'state_shadowColor', 'st_shdwB', 'state_shadowBlur', 'st_shdwOffsetX', 'state_shadowOffsetX', 'st_shdwOffsetY', 'state_shadowOffsetY', 
+								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
+								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
+								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'canvasSize',
+								'mousemove', 'mouseclick', 'picture'];
+	
 
 	/*
 	 * Playback functions
@@ -163,48 +179,13 @@ function Canvasrenderer()
 	{
 		return this.numValidTimesteps - this.runningTimesteps.length;
 	}
-
-	/*
-	 * Check if function name is valid
-	 * A valid function name will return 1, invalid 0.
-	 *
-	 */
-	 this.validFunction = function(name)
-	 {
-	 	// List of all valid canvas functions
-		// No other operation in the XML should be possible to run
-		var validFunctions = 	['bP', 'beginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
-								'createPattern', 'crtRadialGrad', 'createRadialGradient', 'rec', 'rect', 'fRec', 'fillRect', 'sRec', 'strokeRect', 
-								'cRec', 'clearRect', 'fill', 'cP', 'closePath', 'clip', 'quadCrvTo', 'quadraticCurveTo', 'beizCrvTo', 'beizerCurveTo',
-								'arc', 'aT', 'arcTo', 'isPointInPath', 'scale', 'rot', 'rotate', 'translate', 'transform', 'mTxt', 'measureText', 'drawImg', 
-								'drawImage', 'crtImgData', 'createImageData', 'getImgData', 'getImageData', 'putImgData', 'putImageData', 'save', 'crtEvent', 
-								'createEvent', 'getContext', 'toDataURL', 'rest', 'restore', 'st_fs', 'state_fillStyle', 'st_ss', 'state_strokeStyle', 'st_shdwC', 
-								'state_shadowColor', 'st_shdwB', 'state_shadowBlur', 'st_shdwOffsetX', 'state_shadowOffsetX', 'st_shdwOffsetY', 'state_shadowOffsetY', 
-								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
-								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
-								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'canvasSize',
-								'mousemove', 'mouseclick', 'picture'];
-
-	 	// Compare to list of valid functions
-	 	for(i=0; i<validFunctions.length; ++i){
-	 		if(validFunctions[i]==name){
-	 			// Function is valid
-	 			return 1;
-	 		}
-	 	}
-	 	// Function is invalid
-	 	return 0;
-	}
-
+	
 	// Schedule timesteps
 	this.scheduleTimesteps = function()
 	{
-		// Reset total time
-		var totalTime = 0;
 
 		// Fetch timestep elements
 		this.timestepElements = xmlDoc.getElementsByTagName("timestep");
-
 		// Step through timesteps
 		for(i = 0; i < this.timesteps.length; i++){
 			// Check for elements
@@ -214,10 +195,10 @@ function Canvasrenderer()
 				// Ignore timesteps with non numeric or negative delay
 				if (!isNaN(delay) && delay >= 0){
 					// Calculate total delay
-					totalTime += parseInt(delay);
 					// Fetch timestep nodes
-					nodes = this.timestepElements[i].childNodes;
-
+					nodes = [].slice.call(this.timestepElements[i].childNodes, 0); 
+					//console.log(nodes.length);
+					nodes = this.removeNonvalidCalls(nodes);
 					// Execute timestep nodes after specified delay
 					this.runningTimesteps.push(new TimestepTimeout(delay, nodes));
 				}
@@ -235,22 +216,24 @@ function Canvasrenderer()
 			this.runningTimesteps[this.runningTimesteps.length-1].pause();
 		}
 	}
-
+	this.removeNonvalidCalls = function(nodes){
+		var retnodes = [];
+		//console.log(nodes.length);
+		for(a = 0; a < nodes.length; ++a){
+			if(validFunctions.indexOf(nodes[a].nodeName) >= 0) { retnodes.push(nodes[a]); }
+		}
+		return retnodes;
+	}
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
 		// Step through nodes
+		var fDelta = Date.now();
 		for(x = 0; x < nodes.length; x++) {
 			//console.log(nodes[x].attributes);
 
 			if(nodes[x].attributes != null){
-				//console.log("attribute length " + nodes[x].attributes.length);
-				// Continue if invalid node (i.e. not in list of valid functions)
-				if(!this.validFunction(nodes[x].nodeName)){ //console.log("ERROR: " + nodes[x].nodeName + " is not in valid functions-list"); 
-				continue; }
-				//console.log("nodes: "+nodes[x].nodeName);
-
+				
 				// Check number of arguments and call canvas function
-				// TODO: Add for functions with more arguments
 				switch(nodes[x].attributes.length){
 					case 0:
 					this[nodes[x].nodeName]();
@@ -322,6 +305,8 @@ function Canvasrenderer()
 			}	
 		}
 		
+		fDelta = Date.now() - fDelta;
+		//console.log(fDelta);
 		// Remove current step from list
 		this.runningTimesteps.pop();
 
@@ -339,7 +324,7 @@ function Canvasrenderer()
 			else{
 				// Finish
 				this.pause();
-				alert("Finished Script!");
+				alert("Finished Script in " + (Date.now() - this.startTime) + " milliseconds");
 				this.finished = 1;
 			}
 		} 
@@ -347,7 +332,7 @@ function Canvasrenderer()
 			// Execute next step
 			if (this.windpos >= 0) {
 				// Fetch delay
-				var delay = this.runningTimesteps[this.runningTimesteps.length-1].getDelay();
+				var delay = (this.runningTimesteps[this.runningTimesteps.length-1].getDelay() - fDelta);
 
 				// Check if done and not trying to stop at a zero-delay timestep
 				if (this.currentPosition() >= this.windpos && delay > 0) {
@@ -365,7 +350,6 @@ function Canvasrenderer()
 					// Winding
 					this.runningTimesteps[this.runningTimesteps.length-1].run();
 				}
-				
 			}
 			else {
 				// Start next
@@ -401,7 +385,6 @@ function Canvasrenderer()
 	this.lineTo = function(x, y){
 		ctx.lineTo(x, y);
 	}
-
 	this.stroke = function(){
 		ctx.stroke();
 	}
@@ -848,7 +831,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","imagerecording.xml",false);
+	xmlhttp.open("GET","canvas4.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	
@@ -857,6 +840,7 @@ function Canvasrenderer()
 	var totalTime = 0;
 
 	this.scheduleTimesteps();
+	this.startTime = Date.now();
 }
 
 
