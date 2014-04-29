@@ -11,8 +11,9 @@ function imagerecorder(canvas)
 	var libraryName;			// name of library (writes to librarys/libraryName/) 
 		
 	var imagelibrary = [];		// store all paths to uploaded images
-	var imageid = 0;			// used to identify ID of uploaded image.
-	var activeImage;			// active image display in main canvas
+	var imageid = 0;			// used to identify ID of uploaded imageData.
+	var activeImage;			// active imageData display in main canvas
+	var imageData;				// data of the active imageData
 	
 	var currentImageRatio = 1;
 	
@@ -56,6 +57,9 @@ function imagerecorder(canvas)
 		*	records clicks on canvas and pass them on to getEvents() to be logged
 		*/
 		$('#' + imageCanvas).click(function(event){
+			// Update scale ratio (for correct mouse positions)
+			updateScaleRatio();
+
 			clicked = 1;
 			var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
 			var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
@@ -72,7 +76,11 @@ function imagerecorder(canvas)
 		var interval = false;
 		var xMouseReal;
 		var yMouseReal;
-		$('#' + imageCanvas).mousemove(function(event){			
+		$('#' + imageCanvas).mousemove(function(event){	
+			// Update scale ratio (for correct mouse positions)
+			// TODO: Should probably only be done on click and window resize
+			updateScaleRatio();
+
 			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
 			yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 			document.getElementById('xCordReal').innerHTML=xMouseReal;
@@ -103,29 +111,40 @@ function imagerecorder(canvas)
 	// Prints image as canvas
 	function showImage(id) {
 		activeImage = id;
-		var image = new Image();
-		image.src = imagelibrary[id];
+		imageData = new Image();
+		imageData.src = imagelibrary[id];
 		
 		// Clears screen. May need a better solution.
 		canvas.width = canvas.width; 
-		
-		// Check for better solution, regarding variable screen size
-		width = 1280;
-		height = 720;
-		var ratio = 1;
+
+		// Ratio used for scaling and stuff
+		var ratio;
 
 		// Picture need to be scaled down
-		if (image.width > width || image.height > height) {
+		if (imageData.width > canvas.width || imageData.height > canvas.height) {
 			// Calculate scale ratios
-			var widthRatio = width / image.width;
-			var heightRatio = height / image.height;
+			var widthRatio = canvas.width / imageData.width;
+			var heightRatio = canvas.height / imageData.height;
 
 			// Set scale ratio
 			if (widthRatio < heightRatio) ratio = widthRatio;
 			else ratio = heightRatio;
 		}
 
-		ctx.drawImage(image,0,0, width = image.width*ratio, height = image.height*ratio);
+		ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+	}
+
+	// Calculate the image scale ratio
+	function updateScaleRatio() {
+		if (imageData != undefined) {
+			// Calculate ratio
+			var heightRatio = ImageCanvas.offsetHeight / imageData.height
+			var widthRatio = ImageCanvas.offsetWidth / imageData.width;
+			
+			// Set correct ratio
+			if (widthRatio < heightRatio) currentImageRatio = widthRatio;
+			else currentImageRatio = heightRatio;
+		}
 	}
 	
 	// Uploads image
@@ -195,9 +214,6 @@ function imagerecorder(canvas)
 		}
 		return false;
 	}
-	
-	
-	
 
 	
 	/*
