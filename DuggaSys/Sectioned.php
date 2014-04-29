@@ -60,26 +60,23 @@ session_start();
 										editsectionmenu(true);
 										?>
 										<script>
-										$(document).ready(function(){
-											//$("#dragupdate").hide();
-											$(function() {
-												// Placeholder
-												$( "#Sectionlist" ).sortable({
-													opacity: 0.5,
-													cursor: "move",
-													items: "> span",
-													update: function() {
-														// Pass course ID to check write access
-														var array = $(this).sortable("serialize") + "&courseid=" + '<?php echo $courseID; ?>';
-														$.post("entryupdate.php", array, function(theResponse){
-															$("#dragupdate").html(theResponse);
-															$("#dragupdate").slideDown('slow');
-															setTimeout(function(){
-															  $("#dragupdate").slideUp("slow", function () { });
-															}, 2000);
-														});
-													}
-												});
+										$(function() {
+											// Placeholder
+											$( "#Sectionlist" ).sortable({
+												opacity: 0.5,
+												cursor: "move",
+												items: "> span",
+												update: function() {
+													// Pass course ID to check write access
+													var array = $(this).sortable("serialize") + "&courseid=" + '<?php echo $courseID; ?>';
+													$.post("entryupdate.php", array, function(theResponse){
+														$("#dragupdate").html(theResponse);
+														$("#dragupdate").slideDown('slow');
+														setTimeout(function(){
+														  $("#dragupdate").slideUp("slow", function () { });
+														}, 2000);
+													});
+												}
 											});
 										});
 										</script>
