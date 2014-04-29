@@ -108,13 +108,12 @@ include_once "../Shared/basic.php";
                         </table>
                                 
 								<?php if(checklogin()) { ?>
-								<td align='right' class='butto' onclick='location="logout.php"'>
+								<!--<td align='right' class='butto' onclick='location="logout.php"'>-->
 								<?php } else { ?>
 								<!--<td align='right' class='butto' onclick='loginbox();'>-->
 								<?php } ?>
 									<!--<img src='../CodeViewer/icons/Man.svg' />-->
-								</td>
-							</tr>
+								
 							
 						
 					<?php
