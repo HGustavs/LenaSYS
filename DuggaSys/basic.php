@@ -1,5 +1,6 @@
 <?php
-include_once "../Shared/basic.php";
+define("ABS_PATH", dirname(__FILE__));
+include_once (ABS_PATH . "/../Shared/basic.php");
 	//---------------------------------------------------------------------------------------------------------------
 	// editsectionmenu - Displays an editable or un-editable section menu
 	//---------------------------------------------------------------------------------------------------------------

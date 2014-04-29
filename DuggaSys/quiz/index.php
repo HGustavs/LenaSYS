@@ -1,3 +1,10 @@
+<?php
+include_once(dirname(__FILE__) . "/../../../coursesyspw.php");
+include_once(dirname(__FILE__) . "/../basic.php");
+
+session_start();
+dbConnect();
+?>
 <!DOCTYPE html>
 <html>
 <head>
