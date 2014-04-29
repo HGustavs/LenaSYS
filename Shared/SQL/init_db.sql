@@ -20,7 +20,7 @@ INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$1
 INSERT INTO user(username,password,newpassword,creator) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1);
 
 CREATE TABLE user_question (
-	qid			INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	qid			INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	question	TEXT,
 	answer		TEXT,
 	owner		INT UNSIGNED NOT NULL,
@@ -48,7 +48,6 @@ CREATE TABLE course(
 INSERT INTO course(coursecode,coursename,created,creator) values ("DV12G","Webbprogrammering",NOW(),1);
 INSERT INTO course(coursecode,coursename,created,creator) values ("DV13G","Futhark",NOW(),1);
 
-
 /* User access to the application*/
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
@@ -65,16 +64,15 @@ INSERT INTO user_course(uid,cid,access) values (2,2,"W");
 
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
-
 CREATE TABLE section(
-		sectionno				 MEDIUMINT NOT NULL AUTO_INCREMENT,
-		coursename			 VARCHAR(64),
-		sectionname			 VARCHAR(64),
-		sectionpos			 INTEGER,
-		kind						 INTEGER,
-		ts 							 TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		cversion				 INTEGER,
-		appuser					 VARCHAR(64),
+		sectionno			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		coursename			VARCHAR(64),
+		sectionname			VARCHAR(64),
+		sectionpos			INTEGER,
+		kind				INTEGER,
+		ts 					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		cversion			INTEGER,
+		appuser				VARCHAR(64),
 		PRIMARY KEY(sectionno)		
 );
 
@@ -82,173 +80,193 @@ INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) val
 INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","Javascript",1,2013,1,"Creationscript");
 INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","HTML5",1,2013,2,"Creationscript");
 
+/* template with information about a certain template */
+CREATE TABLE template(
+		templateid			INTEGER UNSIGNED NOT NULL,
+		stylesheet 			VARCHAR(39) NOT NULL,
+		numbox				INTEGER NOT NULL,
+		PRIMARY KEY(templateid, stylesheet)
+)CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+INSERT INTO template (templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template1.css",2);
+INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template1.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template2.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template2.css",4);
+
 /* Code Example contains a list of the code examples for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
-
 CREATE TABLE codeexample(
-		exampleno		  MEDIUMINT NOT NULL AUTO_INCREMENT,
-		coursename 		VARCHAR(64),
-		sectionno		  MEDIUMINT,
-		examplename		VARCHAR(64),
+		exampleid			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		cid					INT UNSIGNED NOT NULL,
+		sectionid			MEDIUMINT UNSIGNED NOT NULL,
+		examplename			VARCHAR(64),
 		wordlist			VARCHAR(64),
-		runlink			  VARCHAR(64),
-		pos						INTEGER,
+		runlink			  	VARCHAR(64),
+		pos					INTEGER,
 		cversion			INTEGER,
-		ts 						TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser						VARCHAR(64),
-		PRIMARY KEY(exampleno)		
-);
+		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		uid					INT UNSIGNED NOT NULL,
+		templateid			INT UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY(exampleid),
+		FOREIGN KEY (cid) REFERENCES course (cid),
+		FOREIGN KEY (sectionid) REFERENCES section (sectionno),
+		FOREIGN KEY (uid) REFERENCES user (uid),
+		FOREIGN KEY (templateid) REFERENCES template (templateid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Events 1","JS","",0,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Events 2","JS","",1,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Callback 1","GLSL","Culf.html",2,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Callback 2","GLSL","Dulf.html",3,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Callback 3","GLSL","",4,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="Javascript"),"Callback 4","JS","Fulf.html",5,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 1","GLSL","Gulf.html",0,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 2","JS","Hulf.html",1,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 3","JS","Iulf.html",2,"Creationscript",2013);
-INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ("Webbprogrammering",(select sectionno from section where coursename="Webbprogrammering" and sectionname="HTML5"),"Design 4","JS","Julf.html",3,"Creationscript",2013);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Events 1","JS","",0,1,2013);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Events 2","JS","",1,1,2013);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Callback 1","GLSL","Culf.html",2,1,2013);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 2","GLSL","Dulf.html",3,1,2013,1);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 3","GLSL","",4,2,2013,1);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 4","JS","Fulf.html",5,2,2013,1);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,3,"Design 1","GLSL","Gulf.html",0,2,2013,1);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 2","JS","Hulf.html",1,2,2013);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 3","JS","Iulf.html",2,1,2013);
+INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 4","JS","Julf.html",3,1,2013);
+ 
+
+/* improw contains a list of the important rows for a certain example */
+CREATE TABLE improw(
+		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
+		istart				INTEGER,
+		iend				INTEGER,
+		irowdesc			VARCHAR(1024),
+		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		uid					INT UNSIGNED NOT NULL,
+		PRIMARY KEY(impid),
+		FOREIGN KEY (uid) REFERENCES user (uid),
+		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+	
+INSERT INTO improw(exampleid,istart,iend,uid) VALUES (3,6,8,1);
+INSERT INTO improw(exampleid,istart,iend,uid) VALUES (5,15,19,1);
+INSERT INTO improw(exampleid,istart,iend,uid) VALUES (7,10,12,2);
+
+
+/*filelist contains a list of shortcuts to files */
+CREATE TABLE filelist(
+		fileid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid			MEDIUMINT UNSIGNED NOT NULL,
+		filename			VARCHAR(1024),
+		pos					INTEGER UNSIGNED,
+		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		uid					INT UNSIGNED NOT NULL,
+		PRIMARY KEY(fileid),
+		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
+		FOREIGN KEY (uid) REFERENCES user (uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+	
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (1,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (2,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (3,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (4,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (5,"js1.js",1,2);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (6,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (7,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (8,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (9,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);
+
+
+CREATE TABLE descriptionsection(
+		descid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid			MEDIUMINT UNSIGNED NOT NULL,
+		segment				VARCHAR(64000),
+		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		uid					INTEGER UNSIGNED NOT NULL,
+		pos					MEDIUMINT UNSIGNED NOT NULL,
+		PRIMARY KEY(descid),
+		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
+		FOREIGN KEY (uid) REFERENCES user (uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+	
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (3,"<b>Callback 1</b>This is the first section of the description<b>More</b>This is more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (4,"<b>Callback 2 S2</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (5,"<b>Callback 3</b>This is the first section of the description<b>More</b>This is more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (6,"<b>Callback 4</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (7,"<b>Design 1</b>This is the first section of the description<b>More</b>This is more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (8,"<b>Design 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (9,"<b>Design 3</b>This is the first section of the description<b>More</b>This is more text",1);
+INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (10,"<b>Design 4</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
 
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
-		boxid				INTEGER NOT NULL AUTO_INCREMENT,
-		exampleno 			INTEGER NOT NULL,
+		boxid				INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
 		boxcontent			VARCHAR(39),
-		descno				INT DEFAULT '0',
-		fileno				MEDIUMINT  DEFAULT '0',					
+		descid				MEDIUMINT UNSIGNED DEFAULT '0',
+		fileid				MEDIUMINT UNSIGNED DEFAULT '0',					
 		settings			VARCHAR(1024),
-		PRIMARY KEY(boxid)		
-);
+		PRIMARY KEY(boxid, exampleid),
+		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
+		FOREIGN KEY (descid) REFERENCES descriptionsection (descid),
+		FOREIGN KEY (fileid) references filelist (fileid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,1,"[viktig=1]");
-INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,2,"[viktig=1]");
-INSERT INTO box(exampleno,boxcontent,descno,fileno,settings) VALUES (1,"Document",1,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,2,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,3,"[viktig=1]");
 
-
-/* template with information about a certain template */
-CREATE TABLE template(
-		templateid			INTEGER NOT NULL,
-		stylesheet 			VARCHAR(39) NOT NULL,
-		boxid				INTEGER NOT NULL,	
-		PRIMARY KEY(templateid, stylesheet, boxid)		
-);
-
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",1);
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",2);
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (1,"template1.css",3);
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (2,"template2.css",4);
-INSERT INTO template(templateid,stylesheet,boxid) VALUES (2,"template2.css",5);
-
-
-/* improw contains a list of the important rows for a certain example */
-
-CREATE TABLE improw(
-		exampleno 		INTEGER,
-		istart				INTEGER,
-		iend					INTEGER,
-		irowdesc			VARCHAR(1024),
-		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser				VARCHAR(64),
-		impno		  MEDIUMINT NOT NULL AUTO_INCREMENT,
-		PRIMARY KEY(impno)		
-);
-	
-INSERT INTO improw(exampleno,istart,iend,appuser) VALUES (3,6,8,"Creationscript");
-INSERT INTO improw(exampleno,istart,iend,appuser) VALUES (3,15,19,"Creationscript");
-INSERT INTO improw(exampleno,istart,iend,appuser) VALUES (3,10,12,"Creationscript");
-
-CREATE TABLE filelist(
-		exampleno			INTEGER,
-		fileno		  	MEDIUMINT NOT NULL AUTO_INCREMENT,
-		filename			VARCHAR(1024),
-		pos						INTEGER,
-		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser				VARCHAR(64),
-		PRIMARY KEY(fileno)		
-);
-	
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (1,"js1.js",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (2,"",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (3,"",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (4,"",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (5,"",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (6,"",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (7,"",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (8,"",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (9,"",1,"Creationscript");
-INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (10,"",1,"Creationscript");
-
-
-CREATE TABLE descriptionsection(
-		exampleno			INTEGER,
-		segment				VARCHAR(1024),
-		pos						INTEGER,
-		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser				VARCHAR(64),
-		descno		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
-		PRIMARY KEY(descno)		
-);
-	
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (3,"<b>Callback 1</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (4,"<b>Callback 2 S2</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (5,"<b>Callback 3</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (6,"<b>Callback 4</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (7,"<b>Design 1</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (8,"<b>Design 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (9,"<b>Design 3</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
-INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (10,"<b>Design 4</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");
 
 /* Wordlist contains a list of keywords for a certain programming language or file type */
-
 CREATE TABLE wordlist(
-		wordno		  	MEDIUMINT NOT NULL AUTO_INCREMENT,
+		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		wordlist			VARCHAR(64),
-		word 					VARCHAR(64),
-		description		VARCHAR(256),
-		ts 						TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser						VARCHAR(64),
-		PRIMARY KEY(wordno)				
-);
+		word 				VARCHAR(64),
+		description			VARCHAR(256),
+		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		uid					INT UNSIGNED NOT NULL,
+		PRIMARY KEY(wordid),
+		FOREIGN KEY (uid) REFERENCES user (uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO wordlist(wordlist,word,appuser) VALUES ("JS","for","Creationscript");
-INSERT INTO wordlist(wordlist,word,appuser) VALUES ("JS","if","Creationscript");
-INSERT INTO wordlist(wordlist,word,appuser) VALUES ("JS","var","Creationscript");
-INSERT INTO wordlist(wordlist,word,appuser) VALUES ("JS","function","Creationscript");
-INSERT INTO wordlist(wordlist,word,appuser) VALUES ("GLSL","vec3","Creationscript");
-INSERT INTO wordlist(wordlist,word,appuser) VALUES ("GLSL","dot","Creationscript");
+INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","for",1);
+INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","if",1);
+INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","var",1);
+INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","function",2);
+INSERT INTO wordlist(wordlist,word,uid) VALUES ("GLSL","vec3",2);
+INSERT INTO wordlist(wordlist,word,uid) VALUES ("GLSL","dot",2);
 
 /* Wordlist contains a list of important words for a certain code example */
-
 CREATE TABLE impwordlist(
-		wordno		  	MEDIUMINT NOT NULL AUTO_INCREMENT,
-		exampleno			INTEGER,
-		word 					VARCHAR(64),
+		wordid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		exampleid		MEDIUMINT UNSIGNED NOT NULL,
+		word 			VARCHAR(64),
 		description		VARCHAR(256),
-		ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser						VARCHAR(64),
-		PRIMARY KEY(wordno)				
-);
+		UPDATED 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		uid				INTEGER UNSIGNED NOT NULL,
+		PRIMARY KEY(wordid),
+		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
+		FOREIGN KEY (uid) REFERENCES user (uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO impwordlist(exampleno,word,appuser) values (3,"event","Creationscript");
-INSERT INTO impwordlist(exampleno,word,appuser) values (3,"elem","Creationscript");
-INSERT INTO impwordlist(exampleno,word,appuser) values (3,"pageY","Creationscript");
+INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
+INSERT INTO impwordlist(exampleid,word,uid) values (3,"elem",1);
+INSERT INTO impwordlist(exampleid,word,uid) values (3,"pageY",2);
 
 CREATE TABLE listentries (
 	lid int UNSIGNED NOT NULL AUTO_INCREMENT,
-	cid int(11) UNSIGNED NOT NULL,
+	cid int UNSIGNED NOT NULL,
 	entryname varchar(64),
 	link varchar(80),
 	kind int unsigned,
 	pos int,
 	creator int unsigned not null,
 	ts timestamp default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-	code_id mediumint null default null,
-	visible tinyint(1) UNSIGNED NOT NULL DEFAULT 0, -- Defaults to not visible
+	code_id mediumint unsigned null default null,
+	visible tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY(lid),
+	FOREIGN KEY(code_id)
+		REFERENCES codeexample(exampleid)
+		ON UPDATE NO ACTION
+		ON DELETE SET NULL,
 	FOREIGN KEY(creator)
 		REFERENCES user(uid)
 		ON DELETE NO ACTION
@@ -256,15 +274,19 @@ CREATE TABLE listentries (
 	FOREIGN KEY(cid)
 		REFERENCES course(cid)
 		ON DELETE CASCADE
-		ON UPDATE CASCADE,
-	FOREIGN KEY(code_id)
-		REFERENCES codeexample(exampleno)
-		ON DELETE CASCADE
 		ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Etapp 1", NULL, 0, 0, 1, 1); 
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Kodexempel", NULL, 1, 1, 1, 1); 
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Basic HTML", "http://nyan.cat/", 2, 2, 1, 1); 
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Basic CSS", "http://nyan.cat/", 2, 3, 1, 1); 
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Basic JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 4, 1, 1); 
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Etapp 1", NULL, 0, 0, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Kodexempel", NULL, 1, 1, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic HTML", "http://nyan.cat/", 2, 2, 1, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic CSS", "http://nyan.cat/", 2, 3, 2, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 4, 3, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Avancerade Kodexempel", NULL, 1, 5, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced HTML", "http://nyan.cat/", 2, 6, 4, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced CSS", "http://nyan.cat/", 2, 7, 5, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 8, 6, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Expert Kodexempel", NULL, 1, 9, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "http://nyan.cat/", 2, 10, 7, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "http://nyan.cat/", 2, 11, 8, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 12, 9, 1, 1);
