@@ -13,7 +13,7 @@ mycanvas {
 
 <body >
 <canvas id="mycanvas" width="400" height="400" style="border:1px solid #ccc"></canvas>
-<script src="../js/CanvasWrapper/CanvasWrapper.js"></script>
+<script src="js/CanvasWrapper.js"></script>
 <script>
 var needPoint = true;
 
@@ -38,7 +38,7 @@ $(document).ready(function(){
     // This is where we capture the canvas context. Instead of 
     // using the canvas context directly, ctx uses our captureCanvas-object
     // which logs and forwards each function call  to the actual canvas. 
-    var ctx = new captureCanvas(canvas.getContext('2d'));
+    var ctx = new captureCanvas(canvas);
     
     $('#mycanvas').on('click', function(o){
         var offset = $(this).offset();

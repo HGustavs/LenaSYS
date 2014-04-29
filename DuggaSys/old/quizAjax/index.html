@@ -1,0 +1,49 @@
+﻿<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="css/base.css" rel="stylesheet" type="text/css" />
+		<link href="css/app.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="js/test.js"></script>
+		<title>Quiz Test</title>
+	</head>
+	<body>
+	<div id="wrapper">
+            <div id="menu">
+            </div>
+            <div id="content">
+			<label>Quiz nr:
+				<input type="text" id="quizNR" value="1" />
+			</label>
+			<button id="button1">Hämta slumpmässig variant av vald dugga för datorgrafikskursen</button>
+			<button id="button2">Hämta data lagrad för dugga objektet med id TEST1 (för ovanstående dugga variant 1)</button>
+			<button id="button3">Hämta data lagrad för dugga objektet med id TEST2 (för ovanstående dugga variant 1)</button>
+			<button id="button4">Hämta data lagrad för dugga objektet med id TEST3 (för ovanstående dugga variant 1)</button>
+			<button id="button5">Hämta data lagrad för dugga objektet med id TEST4 (för ovanstående dugga variant 1)</button>
+			<button id="button6">Hämta data lagrad för dugga objektet med id TEST5 (för ovanstående dugga variant 1)</button>
+			<button id="button7">Hämta data lagrad för dugga objektet med id TEST6 (för ovanstående dugga variant 1)</button>
+			<br />
+			<label>Login name:
+				<input type="text" name="loginName" id="loginName" value="" />
+			</label>
+			<label>password:
+				<input type="text" name="password"  id="password" value="" />
+			</label>
+			<button id="getRegistrations">getRegistrations</button>
+			<button id="checkRegistration">checkRegistration</button>
+			<label>var nr:
+				<input type="text" name="qVarNr"  id="qVarNr" value="1" />
+			</label>
+			<label>answer:
+				<input type="text" name="quizAnswer"  id="quizAnswer" value="1,2,3,4,5,6,7,8" />
+			</label>
+			<button id="answerButton">Answer quiz variant</button>
+			<div id="result"></div>
+            </div>
+            <div id="footer">
+                <p>Sidfot</p>
+            </div>
+        </div>	
+    </body>
+</html>
