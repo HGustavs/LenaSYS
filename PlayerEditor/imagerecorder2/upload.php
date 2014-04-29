@@ -7,7 +7,14 @@
 		
 		$uploaddir = "librarys/".$libName;
 		if(!file_exists($uploaddir)) {
-			mkdir($uploaddir, 0777);
+			try { 
+				if(!@mkdir($uploaddir, 0777)) {
+					throw new Exception();
+				}
+			} catch (Exception $e) {
+				$error = true;
+				$data = array("ERROR" => "Couldn't create library folder.");
+			}
 		}
 	}
 	else {
