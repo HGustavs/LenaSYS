@@ -48,7 +48,6 @@ CREATE TABLE course(
 INSERT INTO course(coursecode,coursename,created,creator) values ("DV12G","Webbprogrammering",NOW(),1);
 INSERT INTO course(coursecode,coursename,created,creator) values ("DV13G","Futhark",NOW(),1);
 
-
 /* User access to the application*/
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
@@ -62,21 +61,6 @@ CREATE TABLE user_course(
 
 INSERT INTO user_course(uid,cid,access) values (1,1,"W");
 INSERT INTO user_course(uid,cid,access) values (2,2,"W");
-
-
-CREATE TABLE listentries (
-	lid int UNSIGNED NOT NULL AUTO_INCREMENT,
-	cid int(11) UNSIGNED NOT NULL,
-	entryname varchar(64),
-	link varchar(80),
-	kind int unsigned,
-	pos int,
-	creator int unsigned not null,
-	ts timestamp default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-	code_id mediumint unsigned,
-	PRIMARY KEY(lid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
 
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
@@ -268,3 +252,34 @@ INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"elem",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"pageY",2);
 
+CREATE TABLE listentries (
+	lid int UNSIGNED NOT NULL AUTO_INCREMENT,
+	cid int UNSIGNED NOT NULL,
+	entryname varchar(64),
+	link varchar(80),
+	kind int unsigned,
+	pos int,
+	creator int unsigned not null,
+	ts timestamp default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	code_id mediumint unsigned,
+	visible tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY(lid),
+	FOREIGN KEY(code_id)
+		REFERENCES codeexample(exampleid)
+		ON UPDATE NO ACTION
+		ON DELETE SET NULL,
+	FOREIGN KEY(creator)
+		REFERENCES user(uid)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION,
+	FOREIGN KEY(cid)
+		REFERENCES course(cid)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Etapp 1", NULL, 0, 0, 1, 1); 
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Kodexempel", NULL, 1, 1, 1, 1); 
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Basic HTML", "http://nyan.cat/", 2, 2, 1, 1); 
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Basic CSS", "http://nyan.cat/", 2, 3, 1, 1); 
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Basic JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 4, 1, 1); 
