@@ -119,3 +119,19 @@ td.td-login{
 	display:none;
 	border:2px solid #999;
 }
+
+/* CSS for the drag and drop update response*/
+
+#dragupdate {
+	padding:10px;
+	background-color:#614875;
+	border:2px solid #000;
+	display:none;
+}
+
+div#dragupdate {
+	font-family:arial;
+	font-size:10pt;
+	font-weight:bold;
+	color:#FFFFFF;
+}

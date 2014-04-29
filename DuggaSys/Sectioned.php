@@ -44,7 +44,7 @@ session_start();
 				}
 
 			</script>
-
+	<div id="dragupdate"></div>
 	</head>
 
 <?php
@@ -61,6 +61,8 @@ session_start();
 										editsectionmenu(true);
 										?>
 										<script>
+										$(document).ready(function(){
+											//$("#dragupdate").hide();
 											$(function() {
 												// Placeholder
 												$( "#Sectionlist" ).sortable({
@@ -70,10 +72,17 @@ session_start();
 													update: function() {
 														// Pass course ID to check write access
 														var array = $(this).sortable("serialize") + "&courseid=" + '<?php echo $courseID; ?>';
-														$.post("entryupdate.php", array);
+														$.post("entryupdate.php", array, function(theResponse){
+															$("#dragupdate").html(theResponse);
+															$("#dragupdate").slideDown('slow');
+															setTimeout(function(){
+															  $("#dragupdate").slideUp("slow", function () { });
+															}, 2000);
+														});
 													}
 												});
 											});
+										});
 										</script>
 <?php
 							} else {

@@ -20,6 +20,8 @@ if (checklogin()) {
 				$counter = $counter + 1;
 			}
 		}
+		
+		echo "Listelementen har uppdaterats!";
 	}
 }
 ?>
