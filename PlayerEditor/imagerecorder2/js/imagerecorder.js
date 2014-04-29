@@ -1,25 +1,22 @@
 function imagerecorder(canvas)
 {
-	var libraryName;
-
 	var clicked = 0;
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
 	var imageCanvas = canvas;
 	var canvas = document.getElementById('ImageCanvas');
 	var ctx = canvas.getContext('2d');
 	
-	ctx.save();
-	
 	var lastEvent = 0;
 	
-	var imagelibrary = [];
-	var imageid = 0;
+	var libraryName;			// name of library (writes to librarys/libraryName/) 
+		
+	var imagelibrary = [];		// store all paths to uploaded images
+	var imageid = 0;			// used to identify ID of uploaded image.
+	var activeImage;			// active image display in main canvas
 	
 	var currentImageRatio = 1;
 	
-	var activeImage;
-	
-	var files;
+	var files;					// store files thats being uploaded
 	
 	
 	$(document).ready(function(){
@@ -56,8 +53,7 @@ function imagerecorder(canvas)
 		
 
 		/*
-		*	jquery function that records mouse clicks to get the coordinates of the mouse pointer, 
-		*	and change the picture if the canvas is clicked.
+		*	records clicks on canvas and pass them on to getEvents() to be logged
 		*/
 		$('#' + imageCanvas).click(function(event){
 			clicked = 1;
@@ -110,8 +106,8 @@ function imagerecorder(canvas)
 		var image = new Image();
 		image.src = imagelibrary[id];
 		
-		
-		canvas.width = canvas.width; // Clears screen. May need a better solution.
+		// Clears screen. May need a better solution.
+		canvas.width = canvas.width; 
 		
 		// Check for better solution, regarding variable screen size
 		width = 1280;
@@ -144,48 +140,56 @@ function imagerecorder(canvas)
 			filedata.append(key, value);
 		});
 		
-		// var fileName = document.getElementById("imageLoader").value;
-		// var fileExt = fileName.split('.').pop();
+		var fileName = document.getElementById("imageLoader").value;
+		var fileExt = fileName.split('.').pop();
 		
-		
-		// Upload the file.
-		$.ajax({
-			url: "upload.php?lib="+libraryName,
-			type: "POST",
-			data: filedata,
-			cache: false,
-			dataType: "json",
-			processData: false,
-			contentType: false,
-			success: function(data) {
-				if((data.SUCCESS).length > 0) {
-					// data.SUCCESS contains the path to the image
-					var imgPath = data.SUCCESS;
-					
-					// add imgpath to array
-					imagelibrary[imageid] = imgPath;
-		
-					// Add thumbnail. ID is associated with imagelibrary (first upload will be 0). X is there because
-					// HTML dont want ID:s starting with numbers. The X is later stripped.
-					var imgStr = "<img src='" + imgPath + "' class='thumbnail' id='X"+imageid+"'>";
-					$("#thumbnails").append(imgStr);
-					
-					imageid++;
+		if(validExtension(fileExt)) {		
+			// Upload the file.
+			$.ajax({
+				url: "upload.php?lib="+libraryName,
+				type: "POST",
+				data: filedata,
+				cache: false,
+				dataType: "json",
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					if(typeof data.SUCCESS !== "undefined") {
+						// data.SUCCESS contains the path to the image
+						var imgPath = data.SUCCESS;
+						
+						// add imgpath to array
+						imagelibrary[imageid] = imgPath;
+			
+						// Add thumbnail. ID is associated with imagelibrary (first upload will be 0). X is there because
+						// HTML dont want ID:s starting with numbers. The X is later stripped.
+						var imgStr = "<img src='" + imgPath + "' class='thumbnail' id='X"+imageid+"'>";
+						$("#thumbnails").append(imgStr);
+						
+						imageid++;
+					}
+					else {
+						alert(data.ERROR);
+					}
+				},
+				error: function(data) {
+					alert("AJAX call failed.");
 				}
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.log('ERROR: ' + textStatus);
-			}
-		
-		});
+			
+			});
+		}
+		// Invalid file ext
+		else {
+			alert("It's not possible to upload this file extension.");
+		}
 
 	}
 	
 	// Check if uploaded image has a valid extension
-	this.validExtension = function(extension) {
+	function validExtension(extension) {
 		var validExtensions =	["jpg", "jpeg", "png", "gif", "bmp"];
 		for(i=0;i<validExtensions.length;++i) {
-			if(validExtensions[i] == extension) {
+			if(validExtensions[i] == extension.toLowerCase()) {
 				return true;
 			}
 		}
