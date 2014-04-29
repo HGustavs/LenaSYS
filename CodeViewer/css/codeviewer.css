@@ -93,9 +93,15 @@
 	height: auto;
 	width: auto;
 	border-color: rgb(0,0,0) transparent;
+	font-family: Arial,Serif;
+	font-size: 14px;
+	color: white;
 }
 #hotdogdrop table td{
 	 border-bottom: solid 1px #2A120A;
+	 	font-family: Arial,Serif;
+	font-size: 14px;
+	color: white;
 }
 
 
