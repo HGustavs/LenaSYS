@@ -89,15 +89,15 @@ function dehighlightop(otherop,thisop)
 		$("#"+thisop).removeClass("hi");					
 }
 				
-function Code()
-{
-		switchDrop("codedrop");
-}
+// function Code()
+// {
+		// switchDrop("codedrop");
+// }
 
-function generalSettings()
-{
-		switchDrop("docudrop");
-}
+// function generalSettings()
+// {
+		// switchDrop("docudrop");
+// }
 function Up()
 {						
 		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
@@ -1372,14 +1372,59 @@ function changeCSS(cssFile)
     document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
-function showhotdogmenu()
-{
+// function showhotdogmenu()
+// {
+// 
+	// var hotdogdrop = document.getElementById("hotdogdrop");
+	// if($(hotdogdrop).is(':hidden')){
+		// hotdogdrop.style.display = "block";
+	// }
+	// else{
+		// hotdogdrop.style.display = "none";	
+	// }
+// }
 
-	var hotdogdrop = document.getElementById("hotdogdrop");
-	if($(hotdogdrop).is(':hidden')){
-		hotdogdrop.style.display = "block";
-	}
-	else{
-		hotdogdrop.style.display = "none";	
-	}
-}
+$(function() {
+	$('#hidesettings').click(function() {
+		$('.docudrop').slideToggle("slow");
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.docudrop').slideUp('slow');
+	});
+	$(".docudrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hidecode').click(function() {
+		$('.codedrop').slideToggle("slow");
+		$('.docudrop').hide();
+		$('#hotdogdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.codedrop').slideUp('slow');
+	});
+	$(".codedrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hidehotdog').click(function() {
+		$('#hotdogdrop').slideToggle("slow");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('#hotdogdrop').slideUp('slow');
+	});
+	$("#hotdogdrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});

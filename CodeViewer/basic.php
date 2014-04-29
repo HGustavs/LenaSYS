@@ -37,14 +37,14 @@ include "../Shared/basic.php";
 
 								echo '<td class="buttospacer">&nbsp;</td>';
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName" contenteditable="true">Example Code Page</td>';
-								echo '<td class="butto" title="Settings" onclick="generalSettings();"><img src="new icons/general_settings_button.svg" /></td>';
-								echo '<td class="butto" title="Select codesource" onclick="Code();"><img src="new icons/list_codefiles.svg" /></td>';
+								echo '<td class="butto" title="Settings" id="hidesettings"><img src="new icons/general_settings_button.svg" /></td>';
+								echo '<td class="butto" title="Select codesource" id="hidecode"><img src="new icons/list_codefiles.svg" /></td>';
 								
 								
 				}else{
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';
 				}		
-						echo '<td id="hotdogbutton" class="butto" title="Menu" onclick="showhotdogmenu();"><img src="new icons/hotdog_button.svg" /></td>';
+						echo '<td class="butto" title="Menu" id="hidehotdog"><img src="new icons/hotdog_button.svg" /></td>';
 						echo '<td class="butto" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 						echo '<td class="butto" id="numberbutton" title="Show/hide linenumbers" onclick="fadelinenumbers();"><img src="new icons/numbers_button.svg" /></td>';
 						echo '<td class="butto beforebutton" id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
