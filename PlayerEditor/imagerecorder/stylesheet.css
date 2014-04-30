@@ -2,16 +2,20 @@ body{
 	background-color:#614875;
 }
 .canvasStyle{
+	width: 80%;
+	float: left;
 	background:rgba(0,0,0,0.2);
 }
-
-.canvasStyle2{
-	overflow-y:hidden;
+#thumbnails {
+	max-height: 720px;
+	float: left;
+	overflow: auto;
 }
 .wrapper{
+	width: 80%;
 	margin-left:auto;
 	margin-right:auto;
-	width:1490px;
+	width:90%;
 	height:auto;
 }
 @font-face{
@@ -20,35 +24,60 @@ body{
 }
 .header{
 	font-family:'Raleway Thin';
-	font-size:52px;
+	font-size:2em;
 	color:#FFFFFF;
 }
 .cords{
-	margin-left:auto;
-	margin-right:auto;
+	font-family: verdana, sans-serif;
+	font-size: 0.66em;
 	color:#FFFFFF;
 }
+
 .cordFont{
-	font-size:18px;
-	font-family:arial;
+	font-size:0.70;
+	font-family:verdana, sans-serif;
 	color:#FFFFFF;
 }
-.uploadImages{
-	margin-left:5px;
-	float:right;
-	width:200px;
-	height:720px;
-	background:rgba(0,0,0,0.2);
-	overflow-x:hidden;
-	overflow-y:scroll;
+.thumbnail {
+	padding: 15px;
+	display: block;
+	width: 160px;
+	opacity: 0.65;
+}
+.thumbnail:hover {
+	opacity: 1;
+	cursor: pointer;
 }
 
-.imguploader{
-	margin-top: 5px;
-	background:rgba(0,0,0,0.2);
-	height:50px;
-	width: 1470px;
-	padding-top: 20px;
-	padding-left: 20px;
+
+#library-name-dialog {
+	width: 250px;
+	font-family:'Raleway Thin';
+	padding: 10px;
+	z-index: 2;
+	position: absolute;
+	left:0;
+	right:0;
+	top: 25%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #fff;
+	box-shadow: 3px 3px 3px #000;
 }
 
+.controlbutton {
+	margin-left: 20px;
+	margin-bottom: 5px;
+	display: block;
+	padding: 5px;
+	background-color: #fff;
+	border: 1px solid #000;
+	box-shadow: 5px 5px 5px #000;
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
+	
+}
+.controlbutton:hover {
+	cursor: pointer;
+	background-color: #fed;
+}
