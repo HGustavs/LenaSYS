@@ -11,6 +11,7 @@ function imagerecorder(canvas)
 	var libraryName;			// name of library (writes to librarys/libraryName/) 
 		
 	var imagelibrary = [];		// store all paths to uploaded images
+	var imageid = 0;			// used to keep track of uploaded images id
 
 	var activeImage=-1;			// active imageData display in main canvas
 	var nextImage=0;			// id of next image
@@ -213,7 +214,6 @@ function imagerecorder(canvas)
 					if(typeof data.SUCCESS !== "undefined") {
 						// data.SUCCESS contains the path to the image
 						var imgPath = data.SUCCESS;
-						var imageid = 0;
 						
 						// add imgpath to array
 						imagelibrary[imageid] = imgPath;
