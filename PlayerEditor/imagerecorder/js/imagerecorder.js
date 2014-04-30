@@ -30,6 +30,9 @@ function imagerecorder(canvas)
 		$("#library-name-button").click(function(){
 			var libName = $("#library-name-input").val();
 			
+			if(libName == ""){
+				alert("Please fill the libaryname");
+			}
 			// Check that name length >0
 			if(libName.length > 0) { 
 				// TODO: Sanitize input (can't create folders with "? \ :"-chars etc.)
@@ -136,10 +139,7 @@ function imagerecorder(canvas)
 			
 			// Clears screen. May need a better solution.
 			canvas.width = canvas.width; 
-
-			// Ratio used for scaling and stuff
-			var ratio;
-
+			var ratio = 1;
 			// Picture need to be scaled down
 			if (imageData.width > canvas.width || imageData.height > canvas.height) {
 				// Calculate scale ratios
