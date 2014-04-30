@@ -22,7 +22,6 @@ function imagerecorder(canvas)
 	
 	var files;					// store files thats being uploaded
 	
-	
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
 		$(".wrapper").hide();
@@ -50,16 +49,10 @@ function imagerecorder(canvas)
 		
 		// Bind event to file input (#imageLoader in imagerecorder.php)
 		$("#imageLoader").on("change", uploadImage);
-		
-		
-		// Show image when user clicks thumbnails
-		// $('body').on('click', '.thumbnail', function () {
-			// var id = $(this).attr('id').substr(1);
-			// showImage(id);
-		// });
-		
+				
 		// Make thumbnails sortable
 		$("#sortableThumbs").sortable({
+			revert: 300,
 			update: function() {
 				imagelibrary = [];
 				// Loop through all li in the ul
@@ -99,10 +92,6 @@ function imagerecorder(canvas)
 		var xMouseReal;
 		var yMouseReal;
 		$('#' + imageCanvas).mousemove(function(event){	
-			// Update scale ratio (for correct mouse positions)
-			// TODO: Should probably only be done on click and window resize
-			updateScaleRatio();
-
 			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
 			yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 			document.getElementById('xCordReal').innerHTML=xMouseReal;
@@ -116,6 +105,14 @@ function imagerecorder(canvas)
 			}, 33,33333);
 				interval = true;		
 		});
+
+		/*
+		 * Update scale ratio when the window is resized
+		 */
+		$(window).on('resize', function(){
+			// Scale ratio update (for correct mouse positions)
+			updateScaleRatio();
+		});
 		
 		// Add save button to body
 		$("#controls").append("<input type='button' class='controlbutton' id='imagerecorder-save' value='Export XML' >");
@@ -128,6 +125,17 @@ function imagerecorder(canvas)
 				data: { string: logStr + "\n</script>" }
 			});
 		});
+	});
+	
+	// On doubleclick on thumbnail, clone it!
+	$(document).on("dblclick", ".thumbnail", function() {
+		var imgPath = $(this).attr("src");
+		imagelibrary[imageid] = imgPath;	
+		
+		// Add thumbnail
+		var imgStr = "<li><img src='" + imgPath + "' class='thumbnail'></li>";
+		$("#sortableThumbs").append(imgStr);
+		imageid++;
 	});
 	
 	// Prints image as canvas
@@ -153,7 +161,7 @@ function imagerecorder(canvas)
 			}
 			ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
 		} else {
-			alert("No more images tho show");
+			alert("No more images to show");
 		}
 	}
 	
@@ -218,9 +226,8 @@ function imagerecorder(canvas)
 						// add imgpath to array
 						imagelibrary[imageid] = imgPath;
 			
-						// Add thumbnail. ID is associated with imagelibrary (first upload will be 0). X is there because
-						// HTML dont want ID:s starting with numbers. The X is later stripped.
-						var imgStr = "<li><img src='" + imgPath + "' class='thumbnail' id='X"+imageid+"'></li>";
+						// Add thumbnail
+						var imgStr = "<li><img src='" + imgPath + "' class='thumbnail'></li>";
 						$("#sortableThumbs").append(imgStr);
 						
 						imageid++;
