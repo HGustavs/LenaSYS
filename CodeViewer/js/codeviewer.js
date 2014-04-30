@@ -66,6 +66,62 @@ function Bold()
 
 
 
+function styleHeader()
+{
+    document.execCommand('formatBlock', false, "H1");
+}
+
+
+function styleCode()
+{
+        if (window.getSelection) {  // all browsers, except IE before version 9
+            var range = window.getSelection();
+            
+        }
+        else {
+            if (document.selection.createRange) { // Internet Explorer
+                var range = document.selection.createRange ();
+
+            }
+        }
+        document.execCommand("insertHTML", false, "<span class='codestyle'>"+ document.getSelection()+"</span>");
+}
+
+
+//Used in stylebutton for codeexample-description-box. Removes all styling.
+function styleReset()
+{
+    document.execCommand('removeformat', false, "");
+
+    var container = null;
+    if (document.selection) //for IE
+        container = document.selection.createRange().parentElement();
+    else {
+        var select = window.getSelection();
+        if (select.rangeCount > 0)
+            container = select.getRangeAt(0).startContainer.parentNode;
+}
+
+
+//Check that the selected parentnode is not a div. If it is there's a good chance that it's the box-div that will be removed.
+while(!$(container).is("div")){
+ //  if(!$(container).is("div")){
+
+    $(container).contents().unwrap(); //for jQuery1.4+
+
+    if (document.selection) //for IE
+       container = document.selection.createRange().parentElement();
+    else {
+        var select = window.getSelection();
+            if (select.rangeCount > 0)
+                container = select.getRangeAt(0).startContainer.parentNode;
+    }
+
+ //  }
+}
+}
+
+
 document.addEventListener("paste", function(e) {
     // cancel paste
     e.preventDefault();

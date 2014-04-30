@@ -1,5 +1,8 @@
 
-#docucontent b {
+
+/* Stylebuttons for description-box */
+
+#docucontent h1 {
     color: white;
     display: block;
     font-family: Arial,Sans-Serif;
@@ -9,12 +12,16 @@
     font-style: italic;
 }
 
-#docucontent span {
+
+#docucontent span.codestyle{
     color: white;
     font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    padding: 7px;
+    font-style: italic;
+
 }
+
+/* --- */
+
 
 #buttomenu {
     width: 100%;

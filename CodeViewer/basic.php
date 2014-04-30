@@ -60,12 +60,11 @@ include "../Shared/basic.php";
 
                     echo '<div id="buttomenu2">';
                     echo '<table cellspacing="2"><tr>';
-                    echo '<td id="knapp1" class="butto" title="Menu" onclick="showhotdogmenu();"><img src="new icons/hotdog_button.svg" /></td>';
-                    echo '<td id="knapp2" class="butto" title="Menu" onclick="showhotdogmenu();"><img src="new icons/hotdog_button.svg" /></td>';
-                    echo '<td id="knapp3" class="butto" title="Menu" onclick="showhotdogmenu();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td id="knapp1" class="butto" title="Överskrift" onclick="styleHeader();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td id="knapp2" class="butto" title="Kodexempel" onclick="styleCode();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td id="knapp3" class="butto" title="Ta bort formatering" onclick="styleReset();"><img src="new icons/hotdog_button.svg" /></td>';
                     echo '</tr></table></div>';
 
-                    echo '<textarea id="clipboard" style="height: 0px; width: 0px;">Test</textarea>';
 
                     echo '<div id="docucontent" contenteditable="true">';
 
