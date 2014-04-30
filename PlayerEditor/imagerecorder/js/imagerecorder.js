@@ -28,6 +28,9 @@ function imagerecorder(canvas)
 		$("#library-name-button").click(function(){
 			var libName = $("#library-name-input").val();
 			
+			if(libName == ""){
+				alert("Please fill the libaryname");
+			}
 			// Check that name length >0
 			if(libName.length > 0) { 
 				// TODO: Sanitize input (can't create folders with "? \ :"-chars etc.)
