@@ -14,6 +14,7 @@
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     padding: 7px;
+    overflow: auto;
 }
 
 #buttomenu {
@@ -588,11 +589,11 @@ a {
     display: inline-block;
     position: fixed;
     padding: 5px 10px;
-    color: white;
+    color: orange;
     border-radius: 5px;
     margin-top: 20px;
     text-align: center;
-    font: 10px "Helvetica Neue", Sans-Serif;
+    font: 10px Arial, Sans-Serif;
     font-stretch: condensed;
     text-decoration: none;
     text-transform: uppercase;
