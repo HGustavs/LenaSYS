@@ -64,6 +64,21 @@ function Bold()
 		document.execCommand('Bold',false,'');
 }
 
+
+
+document.addEventListener("paste", function(e) {
+    // cancel paste
+    e.preventDefault();
+    // get text representation of clipboard
+    var text = e.clipboardData.getData("text/plain");
+    // insert text manually
+    document.execCommand("insertText", false, text);
+
+});
+
+
+
+
 function editedDescription()
 {
 		// What is allowed here?
@@ -73,8 +88,19 @@ function Save()
 {
 				var editable=document.getElementById('docucontent');
 				var desc=editable.innerHTML;
-				desc=dehtmlify(desc,false,0);
-				AJAXService("editDescription","&description="+desc);
+
+                //desc = replaceAll("&nbsp;", " ", desc);
+                //desc = replaceAll("&lt;", "<", desc);
+                //desc=dehtmlify(desc,false,0);
+
+
+				AJAXService2("editDescription", desc);
+
+}
+
+function replaceAll(find, replace, str)
+{
+    return str.replace(new RegExp(find, 'g'), replace);
 }
 
 function highlightop(otherop,thisop)
@@ -602,7 +628,7 @@ function returned(data)
 
 		// Fill Description
 		var docuwindow=document.getElementById("docucontent");
-		docuwindow.innerHTML="<span>"+data['desc']+"</span>";
+		docuwindow.innerHTML=data['desc'];
 
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");

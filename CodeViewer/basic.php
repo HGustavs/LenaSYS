@@ -54,12 +54,31 @@ include "../Shared/basic.php";
 
 				echo '</table></div>';
 				echo '<div id="div2" style="width:100%; position: absolute; top: 50px; bottom: 0px; background-color:#def">';
-				echo '<div id="docucontent"';
+
 				if($kind){
-						echo ' contenteditable="true" >';				
-				}else{ 
-						echo '>';
-				} 
+
+
+                    echo '<div id="buttomenu2">';
+                    echo '<table cellspacing="2"><tr>';
+                    echo '<td id="knapp1" class="butto" title="Menu" onclick="showhotdogmenu();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td id="knapp2" class="butto" title="Menu" onclick="showhotdogmenu();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td id="knapp3" class="butto" title="Menu" onclick="showhotdogmenu();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '</tr></table></div>';
+
+                    echo '<textarea id="clipboard" style="height: 0px; width: 0px;">Test</textarea>';
+
+                    echo '<div id="docucontent" contenteditable="true">';
+
+
+
+				}
+
+            else{
+                echo '<div id="docucontent">';
+
+            }
+
+
 				echo '<div style="left:20px" class="warning">';
 						echo 'Please wait while content loads<br/>';
 						echo '<img src="new icons/loadingJS.gif" /><br/>';

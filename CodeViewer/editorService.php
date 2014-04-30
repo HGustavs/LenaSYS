@@ -126,8 +126,10 @@
 								
 					}else if(strcmp("editDescription",$opt)===0){
 								$description=$_POST['description'];
+
 								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleno='$exampleno';";
-								$result=mysql_query($query);
+								echo($query);
+                                $result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}
 			
