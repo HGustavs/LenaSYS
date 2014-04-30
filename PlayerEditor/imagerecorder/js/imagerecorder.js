@@ -22,7 +22,6 @@ function imagerecorder(canvas)
 	
 	var files;					// store files thats being uploaded
 	
-	
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
 		$(".wrapper").hide();
@@ -50,16 +49,10 @@ function imagerecorder(canvas)
 		
 		// Bind event to file input (#imageLoader in imagerecorder.php)
 		$("#imageLoader").on("change", uploadImage);
-		
-		
-		// Show image when user clicks thumbnails
-		// $('body').on('click', '.thumbnail', function () {
-			// var id = $(this).attr('id').substr(1);
-			// showImage(id);
-		// });
-		
+				
 		// Make thumbnails sortable
 		$("#sortableThumbs").sortable({
+			revert: 300,
 			update: function() {
 				imagelibrary = [];
 				// Loop through all li in the ul
@@ -132,6 +125,17 @@ function imagerecorder(canvas)
 				data: { string: logStr + "\n</script>" }
 			});
 		});
+	});
+	
+	// On doubleclick on thumbnail, clone it!
+	$(document).on("dblclick", ".thumbnail", function() {
+		var imgPath = $(this).attr("src");
+		imagelibrary[imageid] = imgPath;	
+		
+		// Add thumbnail
+		var imgStr = "<li><img src='" + imgPath + "' class='thumbnail'></li>";
+		$("#sortableThumbs").append(imgStr);
+		imageid++;
 	});
 	
 	// Prints image as canvas
@@ -222,9 +226,8 @@ function imagerecorder(canvas)
 						// add imgpath to array
 						imagelibrary[imageid] = imgPath;
 			
-						// Add thumbnail. ID is associated with imagelibrary (first upload will be 0). X is there because
-						// HTML dont want ID:s starting with numbers. The X is later stripped.
-						var imgStr = "<li><img src='" + imgPath + "' class='thumbnail' id='X"+imageid+"'></li>";
+						// Add thumbnail
+						var imgStr = "<li><img src='" + imgPath + "' class='thumbnail'></li>";
 						$("#sortableThumbs").append(imgStr);
 						
 						imageid++;
