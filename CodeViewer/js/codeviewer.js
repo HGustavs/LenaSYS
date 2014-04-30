@@ -80,11 +80,26 @@ function styleCode()
         }
         else {
             if (document.selection.createRange) { // Internet Explorer
-                var range = document.selection.createRange ();
+                var range = document.selection.createRange();
 
             }
         }
-        document.execCommand("insertHTML", false, "<span class='codestyle'>"+ document.getSelection()+"</span>");
+      
+       // replacing to give the description a nice formatting.
+       	range = range.toString();
+		range = range.replace(/\n/g, "<br>");
+		range = replaceAll(" ", "&nbsp;", range);
+	
+//	range = range.replace(/" "/g, '&nbsp;');
+
+      document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
+
+      
+   //  document.execCommand("insertText", true, range);
+}
+function replaceAll(find, replace, str)
+{
+    return str.replace(new RegExp(find, 'g'), replace);
 }
 
 
@@ -100,25 +115,20 @@ function styleReset()
         var select = window.getSelection();
         if (select.rangeCount > 0)
             container = select.getRangeAt(0).startContainer.parentNode;
-}
-
-
-//Check that the selected parentnode is not a div. If it is there's a good chance that it's the box-div that will be removed.
-while(!$(container).is("div")){
- //  if(!$(container).is("div")){
-
-    $(container).contents().unwrap(); //for jQuery1.4+
-
-    if (document.selection) //for IE
-       container = document.selection.createRange().parentElement();
-    else {
-        var select = window.getSelection();
-            if (select.rangeCount > 0)
-                container = select.getRangeAt(0).startContainer.parentNode;
-    }
-
- //  }
-}
+	}
+	//Check that the selected parentnode is not a div. If it is there's a good chance that it's the box-div that will be removed.
+	while(!$(container).is("div")){
+	    $(container).contents().unwrap(); //for jQuery1.4+
+	
+	    if (document.selection) //for IE
+	       container = document.selection.createRange().parentElement();
+	    else {
+	        var select = window.getSelection();
+	        if (select.rangeCount > 0){
+	        	container = select.getRangeAt(0).startContainer.parentNode;
+	        }    
+	    }
+	}
 }
 
 
@@ -144,20 +154,11 @@ function Save()
 {
 				var editable=document.getElementById('docucontent');
 				var desc=editable.innerHTML;
-
-                //desc = replaceAll("&nbsp;", " ", desc);
-                //desc = replaceAll("&lt;", "<", desc);
-                //desc=dehtmlify(desc,false,0);
-
-
+                desc = replaceAll("&nbsp;", " ", desc);
+                desc = replaceAll("<br>", "\n", desc);
+                
 				AJAXService2("editDescription", desc);
-
 }
-
-//function replaceAll(find, replace, str)
-//{
-//    return str.replace(new RegExp(find, 'g'), replace);
-//}
 
 function highlightop(otherop,thisop)
 {
@@ -684,7 +685,13 @@ function returned(data)
 
 		// Fill Description
 		var docuwindow=document.getElementById("docucontent");
-		docuwindow.innerHTML=data['desc'];
+		
+		// replacing spaces and breakrows to give the output a nice formatting.
+		var desc = replaceAll(" ", "&nbsp;", data['desc']);
+		desc = replaceAll("<span&nbsp;", "<span ",desc);
+		desc = replaceAll('\n', "<br>", desc);
+		desc = desc.replace("&nbsp;", " ");
+		docuwindow.innerHTML=desc;
 
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");
