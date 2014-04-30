@@ -11,8 +11,10 @@ function imagerecorder(canvas)
 	var libraryName;			// name of library (writes to librarys/libraryName/) 
 		
 	var imagelibrary = [];		// store all paths to uploaded images
-	var imageid = 0;			// used to identify ID of uploaded imageData.
-	var activeImage;			// active imageData display in main canvas
+
+	var activeImage=-1;			// active imageData display in main canvas
+	var nextImage=0;			// id of next image
+	
 	var imageData;				// data of the active imageData
 	
 	var currentImageRatio = 1;
@@ -47,9 +49,22 @@ function imagerecorder(canvas)
 		
 		
 		// Show image when user clicks thumbnails
-		$('body').on('click', '.thumbnail', function () {
-			var id = $(this).attr('id').substr(1);
-			showImage(id);
+		// $('body').on('click', '.thumbnail', function () {
+			// var id = $(this).attr('id').substr(1);
+			// showImage(id);
+		// });
+		
+		// Make thumbnails sortable
+		$("#sortableThumbs").sortable({
+			update: function() {
+				imagelibrary = [];
+				// Loop through all li in the ul
+				$("li", this).each(function(index) {
+					var src = $("img", this).attr("src");
+					// Rebuild arr
+					imagelibrary[index] = src;
+				});
+			}
 		});
 		
 
@@ -57,6 +72,9 @@ function imagerecorder(canvas)
 		*	records clicks on canvas and pass them on to getEvents() to be logged
 		*/
 		$('#' + imageCanvas).click(function(event){
+		
+			showImage(getNextImage());
+		
 			// Update scale ratio (for correct mouse positions)
 			updateScaleRatio();
 
@@ -110,28 +128,47 @@ function imagerecorder(canvas)
 	
 	// Prints image as canvas
 	function showImage(id) {
-		activeImage = id;
-		imageData = new Image();
-		imageData.src = imagelibrary[id];
-		
-		// Clears screen. May need a better solution.
-		canvas.width = canvas.width; 
+		if(id >= 0) {
+			activeImage = id;
+			
+			imageData = new Image();
+			imageData.src = imagelibrary[id];
+			
+			// Clears screen. May need a better solution.
+			canvas.width = canvas.width; 
 
-		// Ratio used for scaling and stuff
-		var ratio;
+			// Ratio used for scaling and stuff
+			var ratio;
 
-		// Picture need to be scaled down
-		if (imageData.width > canvas.width || imageData.height > canvas.height) {
-			// Calculate scale ratios
-			var widthRatio = canvas.width / imageData.width;
-			var heightRatio = canvas.height / imageData.height;
+			// Picture need to be scaled down
+			if (imageData.width > canvas.width || imageData.height > canvas.height) {
+				// Calculate scale ratios
+				var widthRatio = canvas.width / imageData.width;
+				var heightRatio = canvas.height / imageData.height;
 
-			// Set scale ratio
-			if (widthRatio < heightRatio) ratio = widthRatio;
-			else ratio = heightRatio;
+				// Set scale ratio
+				if (widthRatio < heightRatio) ratio = widthRatio;
+				else ratio = heightRatio;
+			}
+			ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+		} else {
+			alert("No more images tho show");
 		}
-
-		ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+	}
+	
+	// calculate what the next image will be
+	function getNextImage() {
+		// check so we dont try to fetch fields that doesnt exist
+		if(activeImage < imagelibrary.length-1) {
+			// If no image has been shown yet return 0
+			if(activeImage == -1) {
+				return 0;
+			} else {
+				return activeImage + 1;
+			}
+		} else {
+			return -1;
+		}
 	}
 
 	// Calculate the image scale ratio
@@ -176,14 +213,15 @@ function imagerecorder(canvas)
 					if(typeof data.SUCCESS !== "undefined") {
 						// data.SUCCESS contains the path to the image
 						var imgPath = data.SUCCESS;
+						var imageid = 0;
 						
 						// add imgpath to array
 						imagelibrary[imageid] = imgPath;
 			
 						// Add thumbnail. ID is associated with imagelibrary (first upload will be 0). X is there because
 						// HTML dont want ID:s starting with numbers. The X is later stripped.
-						var imgStr = "<img src='" + imgPath + "' class='thumbnail' id='X"+imageid+"'>";
-						$("#thumbnails").append(imgStr);
+						var imgStr = "<li><img src='" + imgPath + "' class='thumbnail' id='X"+imageid+"'></li>";
+						$("#sortableThumbs").append(imgStr);
 						
 						imageid++;
 					}
@@ -219,7 +257,9 @@ function imagerecorder(canvas)
 	/*
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
-	function getEvents(str){	
+	function getEvents(str){
+		console.log("AI"+activeImage);
+		console.log("=>"+imagelibrary);
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
 		// Add image path (substr 9 removes "librarys" from path)

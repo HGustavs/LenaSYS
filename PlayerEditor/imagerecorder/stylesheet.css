@@ -1,6 +1,11 @@
 body{
 	background-color:#614875;
 }
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
 .canvasStyle{
 	width: 80%;
 	float: left;
