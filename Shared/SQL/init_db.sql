@@ -184,7 +184,7 @@ INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (10,"",1,"Creationsc
 
 CREATE TABLE descriptionsection(
 		exampleno			INTEGER,
-		segment				VARCHAR(1024),
+		segment				VARCHAR(64000),
 		pos						INTEGER,
 		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		appuser				VARCHAR(64),

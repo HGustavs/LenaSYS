@@ -242,7 +242,7 @@
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
-					$desc.=$row['segment'];
+					$desc=$row['segment'];
 			}  
 		
 			// Read Directory

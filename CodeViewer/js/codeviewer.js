@@ -98,10 +98,10 @@ function Save()
 
 }
 
-function replaceAll(find, replace, str)
-{
-    return str.replace(new RegExp(find, 'g'), replace);
-}
+//function replaceAll(find, replace, str)
+//{
+//    return str.replace(new RegExp(find, 'g'), replace);
+//}
 
 function highlightop(otherop,thisop)
 {
