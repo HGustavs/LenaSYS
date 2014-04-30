@@ -22,6 +22,7 @@ function Canvasrenderer()
 	// Image ration, for downscaling
 	this.scaleRatio = 1;
 	this.startTime;
+	this.fDelta;
 	
 	// List of all valid canvas functions
 	// No other operation in the XML should be possible to run
@@ -56,6 +57,7 @@ function Canvasrenderer()
 	// Play canvas
 	this.play = function()
 	{
+		this.startTime = Date.now();
 		// Only play if we have a document
 		if(this.timesteps!=null){
 			this.paused=0;
@@ -230,7 +232,7 @@ function Canvasrenderer()
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
 		// Step through nodes
-		var fDelta = Date.now();
+		this.fDelta = Date.now();
 		for(x = 0; x < nodes.length; x++) {
 			//console.log(nodes[x].attributes);
 
@@ -308,46 +310,26 @@ function Canvasrenderer()
 			}	
 		}
 		
-		fDelta = Date.now() - fDelta;
-		//console.log(fDelta);
+		this.fDelta = Date.now() - this.fDelta;
 		// Remove current step from list
 		this.runningTimesteps.pop();
 
-		// Update search bar
-		var fract = this.currentPosition() / this.numValidTimesteps;
-		document.getElementById("bar").style.width=(Math.round(fract*392) + 'px');
+		
 
-		// Check if done
-		if(this.runningTimesteps.length <= 0){
-			if(this.repeat == 1){
-				// Repeat
-				this.reset();
-				this.play();
-			}
-			else{
-				// Finish
-				this.pause();
-				alert("Finished Script in " + (Date.now() - this.startTime) + " milliseconds");
-				this.finished = 1;
-			}
+		if(!this.runningTimesteps.length){
+			(this.repeat == 1) ? this.restart() : this.finish();
 		} 
 		else {
 			// Execute next step
 			if (this.windpos >= 0) {
 				// Fetch delay
-				var delay = (this.runningTimesteps[this.runningTimesteps.length-1].getDelay() - fDelta);
+				this.runningTimesteps[this.runningTimesteps.length-1].remaining -= this.fDelta;
 
 				// Check if done and not trying to stop at a zero-delay timestep
-				if (this.currentPosition() >= this.windpos && delay > 0) {
+				if ((this.numValidTimesteps - this.runningTimesteps.length) >= this.windpos){// delay > this.runningTimesteps[this.runningTimesteps.length-1].remaining) {
 					this.windpos = -1;
-
 					// Check if we should pause or resume
-					if (this.playafterwind) {
-						this.play();
-					}
-					else {
-						this.pause();
-					}
+					(this.playafterwind) ? this.play() : this.pause();
 				}
 				else {
 					// Winding
@@ -355,6 +337,7 @@ function Canvasrenderer()
 				}
 			}
 			else {
+				this.updateSearchBar();
 				// Start next
 				this.runningTimesteps[this.runningTimesteps.length-1].resume();
 			}
@@ -362,6 +345,22 @@ function Canvasrenderer()
 		}
 	}
 	
+	this.restart = function() {
+		this.reset();
+		this.play();
+	}
+	
+	this.finish = function(){
+		this.pause();
+		alert("Finished Script in " + (Date.now() - this.startTime) + " milliseconds");
+		this.finished = 1;
+	}
+	
+	
+	this.updateSearchBar = function(){
+		var fract = this.currentPosition() / this.numValidTimesteps;
+		document.getElementById("bar").style.width=(Math.round(fract*392) + 'px');
+	}
 	/*
 	 * Canvas functions
 	 */
@@ -813,7 +812,6 @@ function Canvasrenderer()
 	 */
 	var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
-	var delay = 0;
 
 	// Set canvas size to fit screen size
 	this.canvasSize(window.innerWidth - 20, window.innerHeight - 75);
@@ -840,10 +838,9 @@ function Canvasrenderer()
 	
   	// Load timesteps
   	this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
-	var totalTime = 0;
+	//var totalTime = 0;
 
 	this.scheduleTimesteps();
-	this.startTime = Date.now();
 }
 
 
@@ -887,7 +884,7 @@ function TimestepTimeout(delay, args)
 		// Execute
 		window.executeTimestep(args);
 	}
-
+/*
 	// Set delay (will pause)
 	this.setDelay = function(delay)
 	{
@@ -900,7 +897,7 @@ function TimestepTimeout(delay, args)
 	{
 		return remaining;
 	}
-
+*/
 	// Has to be initialized, and ID to be set
 	// Pause right after start
 	this.pause();
