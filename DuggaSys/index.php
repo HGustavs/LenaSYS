@@ -27,7 +27,7 @@ session_start();
         </nav>
     </header>
     <div id="content">
-    	<div style="width:50px; height:50px; background-color:red; float:right; cursor:pointer;">add</div>
+    	<div style="margin-right:2px;margin-bottom:5px; float:right;"><input class='submit-button' type='button' value='Add course'></div>
 <?php
 	include_once("../../coursesyspw.php");	
 	include_once("basic.php");
