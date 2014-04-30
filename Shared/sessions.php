@@ -1,5 +1,5 @@
 <?php
-require_once('../Shared/external/password.php');
+require_once(dirname(__file__).'/../Shared/external/password.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
@@ -8,15 +8,20 @@ function checklogin()
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
-	} else if(array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
-		return login($_COOKIE['username'], $_COOKIE['password'], false);
 	} else {		
 		return false;
 	}
 }	
 
-function login($username, $password, $savelogin)
+function login()
 {
+	if(!array_key_exists('username', $_POST) || !array_key_exists('password', $_POST)) {
+		return false;
+	}
+
+	$username=$_POST["username"];
+	$password=$_POST['password'];
+
 	// Protect against SQL injection.
 	$querystring=sprintf("SELECT * FROM user WHERE username='%s' LIMIT 1",
 		mysql_real_escape_string($username)
@@ -28,18 +33,13 @@ function login($username, $password, $savelogin)
 	if(mysql_num_rows($result) > 0) {
 		// Fetch the result
 		$row = mysql_fetch_assoc($result);
-		if(password_verify($password, $row['password']) || sha1($row['password']) === $password) {
+
+		if(password_verify($password, $row['password'])) {
 			$_SESSION['uid'] = $row['uid'];
 			$_SESSION["loginname"]=$row['username'];
 			$_SESSION["passwd"]=$row['password'];
 			$_SESSION["newpw"]=($row["newpassword"] > 0);
 			$_SESSION["superuser"]=$row['superuser'];
-
-			// Save some login details in cookies.
-			if($savelogin) {
-				setcookie('username', $row['username'], time()+60*60*24*30);
-				setcookie('password', sha1($row['password']), time()+60*60*24*30);
-			}
 			return true;
 		} else {
 			return false;
@@ -143,9 +143,5 @@ function logout()
 
 	// Finally, destroy the session.
 	session_destroy();
-
-	// Remove the cookies.
-	setcookie('username', '', 0);
-	setcookie('password', '', 0);
 }
 ?>

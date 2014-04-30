@@ -43,7 +43,7 @@ a#courses{
 	font-family:arial;	
 }
 a#courses:hover{
-	color:#666;
+	color:#ccc;
 }
 header {
     color: #fff;
@@ -525,26 +525,16 @@ button.option {
     Course menu
 */
 .course-table {
-    width: 100%;
+    width: 50%;
     margin: 0 auto;
 }
 
-.course-table th {
-    background-color:#614875;
-	color:white;
-	font-size:16pt;
-	padding:5px;
+.course-table tr {
+    background-color: #ccc;
 }
 
-.course-table td {
-    color:#000;
-	font-size:10pt;
-	font-family:arial;
-	text-align:center;
-}
 
-.course-table tr:nth-child(even) {background: #FFF}
-.course-table tr:nth-child(odd) {background: #CCC}
+}
 
 .logincenter {
     text-align: center;

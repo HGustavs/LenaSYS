@@ -1,5 +1,10 @@
 <?php
+
+include_once("../../coursesyspw.php");	
+include_once("basic.php");
 session_start();
+dbConnect();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -7,6 +12,8 @@ session_start();
 		<link type="text/css" href="../DuggaSys/css/duggasys.css" rel="stylesheet" />	
 		<link type="text/css" href="../DuggaSys/css/style.css" rel="stylesheet" />
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="js/function.js"></script>
+		
 		<script type="text/javascript" src="startpage.js"></script>
 
 		<script>
@@ -14,6 +21,12 @@ session_start();
 		</script>
 </head>
 <body>
+	<script type="text/javascript">
+	window.onload = function() {
+		changeURL("menulist");
+	}
+	</script>
+
     <header>
     	<nav id="navigate">
         	<!--<img src="css/svg/Up.svg">-->
@@ -27,14 +40,9 @@ session_start();
         </nav>
     </header>
     <div id="content">
-    	<div style="margin-right:2px;margin-bottom:5px; float:right;"><input class='submit-button' type='button' value='Add course'></div>
+    	<div style="width:50px; height:50px; background-color:red; float:right; cursor:pointer;">add</div>
 <?php
-	include_once("../../coursesyspw.php");	
-	include_once("basic.php");
-	dbConnect();
-
-	courselist();
-	
+	//courselist();
 ?>
 	</div>
 <?php
