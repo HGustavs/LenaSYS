@@ -153,7 +153,7 @@ function imagerecorder(canvas)
 			}
 			ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
 		} else {
-			alert("No more images tho show");
+			alert("No more images to show");
 		}
 	}
 	
