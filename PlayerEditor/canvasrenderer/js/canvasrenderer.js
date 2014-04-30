@@ -100,6 +100,8 @@ function Canvasrenderer()
 	// Reset canvas
 	this.reset = function()
 	{
+		
+		this.lastUpdateSearchBar = 0;
 		// Clear canvas
 		ctx.clearRect(0, 0, c.width, c.height);
 
@@ -213,6 +215,7 @@ function Canvasrenderer()
 		this.runningTimesteps.reverse();
 		// Update number of valid timesteps
 		this.numValidTimesteps = this.runningTimesteps.length;
+		this.timestepElements = null;
 	}
 
 	// Pause/stop all timesteps
@@ -222,7 +225,7 @@ function Canvasrenderer()
 		}
 	}
 	this.removeNonvalidCalls = function(nodes){
-		var retnodes = [];
+		var retnodes = new Array();
 		//console.log(nodes.length);
 		for(a = 0; a < nodes.length; ++a){
 			if(validFunctions.indexOf(nodes[a].nodeName) >= 0) { retnodes.push(nodes[a]); }
@@ -233,89 +236,84 @@ function Canvasrenderer()
 	this.executeTimestep = function(nodes){
 		// Step through nodes
 		this.fDelta = Date.now();
+		var node;
 		for(x = 0; x < nodes.length; x++) {
-			//console.log(nodes[x].attributes);
+			node = nodes[x];
+			// Check number of arguments and call canvas function
+			switch(node.attributes.length){
+				case 0:
+				this[node.nodeName]();
+				break;
+				case 1:
+				this[node.nodeName](node.attributes.item(0).nodeValue);
+				break;
+				case 2:
+				this[node.nodeName](node.attributes.item(0).nodeValue,
+										node.attributes.item(1).nodeValue);
+				break;
+				case 3:
+				this[node.nodeName](node.attributes.item(0).nodeValue, 
+										node.attributes.item(1).nodeValue, 
+										node.attributes.item(2).nodeValue);
+				break;
+				case 4:
+				this[node.nodeName](node.attributes.item(0).nodeValue, 
+										node.attributes.item(1).nodeValue, 
+										node.attributes.item(2).nodeValue,
+										node.attributes.item(3).nodeValue);
+				break;
+				case 5:
+				this[node.nodeName](node.attributes.item(0).nodeValue, 
+										node.attributes.item(1).nodeValue, 
+										node.attributes.item(2).nodeValue, 
+										node.attributes.item(3).nodeValue, 
+										node.attributes.item(4).nodeValue);
+				break;
+				case 6:
+				this[node.nodeName](node.attributes.item(0).nodeValue, 
+										node.attributes.item(1).nodeValue, 
+										node.attributes.item(2).nodeValue, 
+										node.attributes.item(3).nodeValue, 
+										node.attributes.item(4).nodeValue, 
+										node.attributes.item(5).nodeValue);
+				break;
+				case 7:
+				this[node.nodeName](node.attributes.item(0).nodeValue, 
+										node.attributes.item(1).nodeValue, 
+										node.attributes.item(2).nodeValue, 
+										node.attributes.item(3).nodeValue, 
+										node.attributes.item(4).nodeValue, 
+										node.attributes.item(5).nodeValue, 
+										node.attributes.item(6).nodeValue);
+				break;
+				case 8:
+				this[node.nodeName](node.attributes.item(0).nodeValue,
+										node.attributes.item(1).nodeValue,
+										node.attributes.item(2).nodeValue,
+										node.attributes.item(3).nodeValue,
+										node.attributes.item(4).nodeValue,
+										node.attributes.item(5).nodeValue,
+										node.attributes.item(6).nodeValue,
+										node.attributes.item(7).nodeValue);
+				break;
+				case 9:
+				this[node.nodeName](node.attributes.item(0).nodeValue,
+										node.attributes.item(1).nodeValue, 
+										node.attributes.item(2).nodeValue, 
+										node.attributes.item(3).nodeValue, 
+										node.attributes.item(4).nodeValue, 
+										node.attributes.item(5).nodeValue, 
+										node.attributes.item(6).nodeValue, 
+										node.attributes.item(7).nodeValue, 
+										node.attributes.item(8).nodeValue);
+				break;
+			}
 
-			if(nodes[x].attributes != null){
-				
-				// Check number of arguments and call canvas function
-				switch(nodes[x].attributes.length){
-					case 0:
-					this[nodes[x].nodeName]();
-					break;
-					case 1:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue);
-					break;
-					case 2:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
-											nodes[x].attributes.item(1).nodeValue);
-					break;
-					case 3:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
-											nodes[x].attributes.item(1).nodeValue, 
-											nodes[x].attributes.item(2).nodeValue);
-					break;
-					case 4:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
-											nodes[x].attributes.item(1).nodeValue, 
-											nodes[x].attributes.item(2).nodeValue,
-											nodes[x].attributes.item(3).nodeValue);
-					break;
-					case 5:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
-											nodes[x].attributes.item(1).nodeValue, 
-											nodes[x].attributes.item(2).nodeValue, 
-											nodes[x].attributes.item(3).nodeValue, 
-											nodes[x].attributes.item(4).nodeValue);
-					break;
-					case 6:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
-											nodes[x].attributes.item(1).nodeValue, 
-											nodes[x].attributes.item(2).nodeValue, 
-											nodes[x].attributes.item(3).nodeValue, 
-											nodes[x].attributes.item(4).nodeValue, 
-											nodes[x].attributes.item(5).nodeValue);
-					break;
-					case 7:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue, 
-											nodes[x].attributes.item(1).nodeValue, 
-											nodes[x].attributes.item(2).nodeValue, 
-											nodes[x].attributes.item(3).nodeValue, 
-											nodes[x].attributes.item(4).nodeValue, 
-											nodes[x].attributes.item(5).nodeValue, 
-											nodes[x].attributes.item(6).nodeValue);
-					break;
-					case 8:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
-											nodes[x].attributes.item(1).nodeValue,
-											nodes[x].attributes.item(2).nodeValue,
-											nodes[x].attributes.item(3).nodeValue,
-											nodes[x].attributes.item(4).nodeValue,
-											nodes[x].attributes.item(5).nodeValue,
-											nodes[x].attributes.item(6).nodeValue,
-											nodes[x].attributes.item(7).nodeValue);
-					break;
-					case 9:
-					this[nodes[x].nodeName](nodes[x].attributes.item(0).nodeValue,
-											nodes[x].attributes.item(1).nodeValue, 
-											nodes[x].attributes.item(2).nodeValue, 
-											nodes[x].attributes.item(3).nodeValue, 
-											nodes[x].attributes.item(4).nodeValue, 
-											nodes[x].attributes.item(5).nodeValue, 
-											nodes[x].attributes.item(6).nodeValue, 
-											nodes[x].attributes.item(7).nodeValue, 
-											nodes[x].attributes.item(8).nodeValue);
-					break;
-				}
-			}	
 		}
 		
 		this.fDelta = Date.now() - this.fDelta;
 		// Remove current step from list
-		this.runningTimesteps.pop();
-
-		
-
+		this.runningTimesteps.pop();		
 		if(!this.runningTimesteps.length){
 			(this.repeat == 1) ? this.restart() : this.finish();
 		} 
@@ -326,7 +324,7 @@ function Canvasrenderer()
 				this.runningTimesteps[this.runningTimesteps.length-1].remaining -= this.fDelta;
 
 				// Check if done and not trying to stop at a zero-delay timestep
-				if ((this.numValidTimesteps - this.runningTimesteps.length) >= this.windpos){// delay > this.runningTimesteps[this.runningTimesteps.length-1].remaining) {
+				if ((this.numValidTimesteps - this.runningTimesteps.length) >= this.windpos){
 					this.windpos = -1;
 					// Check if we should pause or resume
 					(this.playafterwind) ? this.play() : this.pause();
@@ -340,6 +338,7 @@ function Canvasrenderer()
 				this.updateSearchBar();
 				// Start next
 				this.runningTimesteps[this.runningTimesteps.length-1].resume();
+				
 			}
 
 		}
@@ -356,16 +355,20 @@ function Canvasrenderer()
 		this.finished = 1;
 	}
 	
+	this.lastUpdateSearchBar = 0;
 	
 	this.updateSearchBar = function(){
 		var fract = this.currentPosition() / this.numValidTimesteps;
-		document.getElementById("bar").style.width=(Math.round(fract*392) + 'px');
+		if((fract - this.lastUpdateSearchBar) > 0.015){
+			document.getElementById("bar").style.width=(fract*392 + 'px');
+			this.lastUpdateSearchBar = fract;
+		}
 	}
 	/*
 	 * Canvas functions
 	 */
 	this.bP = function(){
-		this.beginPath();
+		ctx.beginPath();
 	}
 	 
 	this.beginPath = function(){
@@ -373,7 +376,7 @@ function Canvasrenderer()
 	}
 	
 	this.mT = function(x, y){
-		this.moveTo(x, y);
+		ctx.moveTo(x, y);
 	}
 
 	this.moveTo = function(x, y){
@@ -381,7 +384,7 @@ function Canvasrenderer()
 	}
 	
 	this.lT = function(x, y){
-		this.lineTo(x, y);
+		ctx.lineTo(x, y);
 	}
 
 	this.lineTo = function(x, y){
@@ -392,7 +395,7 @@ function Canvasrenderer()
 	}
 	
 	this.crtLinearGrad = function(x, y, x1, y1){
-		this.createLinearGradient(x, y, x1,y1);
+		ctx.createLinearGradient(x, y, x1,y1);
 	}
 	
 	this.createLinearGradient = function(x, y, x1,y1){		      
@@ -400,7 +403,7 @@ function Canvasrenderer()
 	}
 	
 	this.crtPat = function(x, y, img){
-		this.createPattern(x ,y, img);
+		ctx.createPattern(x ,y, img);
 	}
 	
 	this.createPattern = function(x, y,img){		        
@@ -408,7 +411,7 @@ function Canvasrenderer()
 	}
 	
 	this.crtRadialGrad = function(x, y,r, x1,y1,r1){
-		this.createRadialGradient(x, y,r, x1,y1,r1);
+		ctx.createRadialGradient(x, y,r, x1,y1,r1);
 	}
 	
 	this.createRadialGradient = function(x, y,r, x1,y1,r1){   
@@ -416,14 +419,14 @@ function Canvasrenderer()
 	}	
 		// Rectangle functions
 	this.rec = function(x, y, w, h){
-		this.rect(x, y, w, h);
+		ctx.rect(x, y, w, h);
 	}
 	this.rect = function(x, y, width, height){
 	    ctx.rect(x, y, width, height);
 	}
 	
 	this.fRec = function(x, y, w, h){
-		this.fillRect(x, y, w, h);
+		ctx.fillRect(x, y, w, h);
 	}
 	
 	this.fillRect = function(x, y, width, height){		
@@ -431,7 +434,7 @@ function Canvasrenderer()
 	}
 	
 	this.sRec = function(x, y, w, h){
-		this.strokeRect(x, y, w, h);
+		ctx.strokeRect(x, y, w, h);
 	}
 		
 	this.strokeRect = function(x, y, width, height){        
@@ -439,7 +442,7 @@ function Canvasrenderer()
 	}
 	
 	this.cRec = function(x, y, w, h){
-		this.clearRect(x, y, w, h);
+		ctx.clearRect(x, y, w, h);
 	}
 	
 	this.clearRect = function(x, y, width, height){	    
@@ -451,7 +454,7 @@ function Canvasrenderer()
 	}
 	
 	this.cP = function(){
-		this.closePath();
+		ctx.closePath();
 	}
 	
 	this.closePath = function(){       
@@ -463,7 +466,7 @@ function Canvasrenderer()
 	}
 	
 	this.quadCrvTo = function(x, y, cpx, cpy){
-		this.quadraticCurveTo(x, y, cpx, cpy);
+		ctx.quadraticCurveTo(x, y, cpx, cpy);
 	}
 	
 	this.quadraticCurveTo = function(x, y, cpx, cpy){        
@@ -471,7 +474,7 @@ function Canvasrenderer()
 	}
 	
 	this.beziCrvTo = function(x, y, cpx, cpy, cpx1, cpy1){
-		this.bezierCurveTo(x, y, cpx, cpy, cpx1, cpy1);
+		ctx.bezierCurveTo(x, y, cpx, cpy, cpx1, cpy1);
 	}
 	
 	this.bezierCurveTo = function(x, y, cpx, cpy, cpx1, cpy1){        
@@ -483,7 +486,7 @@ function Canvasrenderer()
 	}
 	
 	this.aT = function(x, y, r, x1, y1){
-		this.arcTo(x, y, r, x1, y1);
+		ctx.arcTo(x, y, r, x1, y1);
 	}
 	
 	this.arcTo = function(x, y, r, x1, y1){
@@ -499,7 +502,7 @@ function Canvasrenderer()
 	}
 	
 	this.rot = function(angle){
-		this.rotate(angle);
+		ctx.rotate(angle);
 	}
 		
 	this.rotate = function(angle){	      
@@ -519,7 +522,7 @@ function Canvasrenderer()
 	
 	// Text functions
 	this.ftxt = function(x, y, txt, maxW){
-		this.fillText(x, y, txt, maxW);
+		ctx.fillText(x, y, txt, maxW);
 	}
 	
 	this.fillText = function(x, y,text,maxWidth){		
@@ -527,7 +530,7 @@ function Canvasrenderer()
 	}
 	
 	this.sTxt = function(x, y, txt, maxW){
-		this.strokeText(x, y, txt, maxW);
+		ctx.strokeText(x, y, txt, maxW);
 	}
 
 	this.strokeText = function(x, y,text,maxWidth){		
@@ -535,7 +538,7 @@ function Canvasrenderer()
 	}
 	
 	this.mTxt = function(txt){
-		this.measureText(txt);
+		ctx.measureText(txt);
 	}
 	
 	this.measureText = function(text){		
@@ -543,7 +546,7 @@ function Canvasrenderer()
 	}
 	// Image draw functions
 	this.drawImg = function(img, sx, sy, sw, sh, x, y, w, h){
-		this.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+		ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
 	}
 	
 	this.drawImage = function(img,sx,sy,swidth,sheight,x,y,width,height){		
@@ -552,7 +555,7 @@ function Canvasrenderer()
 	
 	// Pixel manipulation functions
 	this.crtImgData = function(imgData, w, h){
-		this.createImageData(imgData, w, h);
+		ctx.createImageData(imgData, w, h);
 	}
 	
 	this.createImageData = function( imageData, width, height){		
@@ -560,7 +563,7 @@ function Canvasrenderer()
 	}
 	
 	this.getImgData = function(x, y, w, h){
-		this.getImageData(x, y, w, h);
+		ctx.getImageData(x, y, w, h);
 	}
 	
 	this.getImageData = function(x, y, width, height){		
@@ -568,7 +571,7 @@ function Canvasrenderer()
 	}
 	
 	this.putImgData = function(imgData, x, y, dX, dY, dW, dH){
-		this.putImageData(imgData, x, y, dX, dY, dW, dH);
+		ctx.putImageData(imgData, x, y, dX, dY, dW, dH);
 	}
 	
 	this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
@@ -582,7 +585,7 @@ function Canvasrenderer()
 	}
 	
 	this.crtEvent = function(){
-		this.createEvent();
+		ctx.createEvent();
 	}
 	
 	this.createEvent = function(){
@@ -595,7 +598,7 @@ function Canvasrenderer()
 		ctx.getContext();
 	}
 	this.rest = function(){
-		this.restore();
+		ctx.restore();
 	}
 	
 	this.restore = function(){
@@ -603,7 +606,7 @@ function Canvasrenderer()
 	}
 	//canvas state functions
 	this.st_fs = function(value){
-		this.state_fillStyle(value);
+		ctx.fillStyle = value;
 	}
 	
 	this.state_fillStyle = function(value){
@@ -611,7 +614,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_ss = function(value){
-		this.state_strokeStyle(value);
+		ctx.strokeStyle = value;
 	}
 	
 	this.state_strokeStyle = function(value){
@@ -619,7 +622,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_shdwC = function(value){
-		this.state_shadowColor(value);
+		ctx.shadowColor = value;
 	}
 	
 	this.state_shadowColor = function(value){
@@ -627,7 +630,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_shdwB = function(value){
-		this.state_shadowBlur(value);
+		ctx.shadowBlur = value;
 	}
 	
 	this.state_shadowBlur = function(value){
@@ -635,7 +638,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_shdwOffsetX = function(value){
-		this.state_shadowOffsetX(value);
+		ctx.shadowOffsetX = value;
 	}
 	
 	this.state_shadowOffsetX = function(value){
@@ -643,7 +646,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_shdwOffsetY = function(value){
-		this.state_shadowOffsetY(value);
+		ctx.shadowOffsetY = value;
 	}
 	
 	this.state_shadowOffsetY = function(value){
@@ -651,7 +654,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_lC = function(value){
-		this.state_lineCap(value);
+		ctx.lineCap = value;
 	}
 	
 	this.state_lineCap = function(value){
@@ -659,7 +662,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_lJ = function(value){
-		this.state_lineJoin(value);
+		ctx.lineJoin = value;
 	}
 	
 	this.state_lineJoin = function(value){
@@ -667,7 +670,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_lW = function(value){
-		this.state_lineWidth(value);
+		ctx.lineWidth = value;
 	}
 	
 	this.state_lineWidth = function(value){
@@ -675,7 +678,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_miterLimit = function(value){
-		this.state_miterLimit(value);
+		ctx.miterLimit = value;
 	}
 	
 	this.state_miterLimit = function(value){
@@ -683,7 +686,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_font = function(value){
-		this.state_font(value);
+		ctx.font = value;
 	}
 	
 	this.state_font = function(value){
@@ -691,7 +694,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_txtAlign = function(value){
-		this.state_textAlign(value);
+		ctx.textAlign = value;
 	}
 	
 	this.state_textAlign = function(value){
@@ -699,7 +702,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_txtBaseline = function(value){
-		this.state_textBaseline(value);
+		ctx.textBaseline = value;
 	}
 	
 	this.state_textBaseline = function(value){
@@ -707,7 +710,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_w = function(value){
-		this.state_width(value);
+		ctx.width = value;
 	}
 	
 	this.state_width = function(value){
@@ -715,7 +718,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_h = function(value){
-		this.state_height(value);
+		ctx.height = value;
 	}
 	
 	this.state_height = function(value){
@@ -723,7 +726,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_data = function(value){
-		this.state_data(value);
+		ctx.data = value;
 	}
 	
 	this.state_data = function(value){
@@ -731,7 +734,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_gA = function(value){
-		this.state_globalAlpha(value);
+		ctx.globalAlpha = value;
 	}
 	
 	this.state_globalAlpha = function(value){
@@ -739,7 +742,7 @@ function Canvasrenderer()
 	}
 	
 	this.st_gCO = function(value){
-		this.globalCompositeOperation(value);
+		ctx.globalCompositeOperation = value;
 	}
 	
 	this.state_globalCompositeOperation = function(value){
@@ -838,7 +841,6 @@ function Canvasrenderer()
 	
   	// Load timesteps
   	this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
-	//var totalTime = 0;
 
 	this.scheduleTimesteps();
 }
