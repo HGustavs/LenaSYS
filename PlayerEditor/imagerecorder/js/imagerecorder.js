@@ -118,7 +118,7 @@ function imagerecorder(canvas)
 		canvas.width = canvas.width; 
 
 		// Ratio used for scaling and stuff
-		var ratio;
+		var ratio = 1;
 
 		// Picture need to be scaled down
 		if (imageData.width > canvas.width || imageData.height > canvas.height) {
