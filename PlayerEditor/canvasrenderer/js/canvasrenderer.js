@@ -13,7 +13,7 @@ function Canvasrenderer()
 	// The number of valid timesteps
 	this.numValidTimesteps = 0;
 	// Wind to position (-1, do not wind)
-	this.windto = -1;
+	this.windpos = -1;
 	// Mouse cursor image, background and position
 	this.mouseCursor;
 	this.mouseCursorBackground;
@@ -129,32 +129,35 @@ function Canvasrenderer()
 	// Fast forward or rewind to specific position
 	this.windto = function(pos)
 	{
-		// Check if it should play or pause after wind
-		if (this.paused) {
-			this.playafterwind = 0;
-		}
-		else {
-			this.playafterwind = 1;
-		}
-
-		// Pause all timesteps
-		//this.pauseTimesteps();
-		this.pauseTimesteps();
-
-		// Do not wind to own position
-		if (this.currentPosition() != pos) {
-			// Rewind - will need to start from the beginning
-			if (pos < this.currentPosition()) {
-				// Will need to start from the beginning
-				this.reset();
+		// Do not allow to change an already existing winding position
+		if (this.windpos < 0) {
+			// Check if it should play or pause after wind
+			if (this.paused) {
+				this.playafterwind = 0;
+			}
+			else {
+				this.playafterwind = 1;
 			}
 
-			// Calculate usable windpos (reversed array)
-			this.windpos = pos;
+			// Pause all timesteps
+			//this.pauseTimesteps();
+			this.pauseTimesteps();
 
-			// Start
-			this.paused = 0;
-			t = this.runningTimesteps[this.runningTimesteps.length-1].resume();
+			// Do not wind to own position
+			if (this.currentPosition() != pos) {
+				// Rewind - will need to start from the beginning
+				if (pos < this.currentPosition()) {
+					// Will need to start from the beginning
+					this.reset();
+				}
+
+				// Calculate usable windpos (reversed array)
+				this.windpos = pos;
+
+				// Start
+				this.paused = 0;
+				t = this.runningTimesteps[this.runningTimesteps.length-1].resume();
+			}
 		}
 	}
 
