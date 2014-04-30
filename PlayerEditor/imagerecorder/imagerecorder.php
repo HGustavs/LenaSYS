@@ -5,6 +5,7 @@
 		<link href="stylesheet.css" rel="stylesheet" type="text/css"/>
 		<script language="javascript" src="js/imagerecorder.js"></script>
 		<script language="javascript" src="../js/jquery-1.11.0.min.js"></script>
+		<script language="javascript" src="../js/jquery-ui-1.10.4.custom.min.js"></script>
 		<meta charset="utf-8">
 	</head>
 	<body>
@@ -40,7 +41,11 @@
 			</div>
 
 			<!--creating the small imageviewer, on the right side of the screen-->
-			<div id="thumbnails" class="thumbnails"></div>
+			<div id="thumbnails" class="thumbnails">
+				<ul id="sortableThumbs">
+					<!-- Uploaded images will be appended in this list -->
+				</ul>
+			</div>
 			
 			<!-- Hidden upload form, this is called from controls -->
 			<div class="uploadForm" style="display: none;">
