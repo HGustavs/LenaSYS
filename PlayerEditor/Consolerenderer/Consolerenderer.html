@@ -47,93 +47,20 @@ Fixed Bugs:
 
 		  <title>Console Printing Playground!</title>
 		  
-		  <style>
 
-					table {
-								    border-collapse: seperate;
-								    border-spacing: 2px;
-					}
-					span {
-						display: inline-block;
-					}
+		  <link rel="stylesheet" type="text/css" href="Design.css">
 
-			    .conso {
-			    		border: 2px inset;
-							font-family: "Lucida Console", Monaco, monospace;
-							font-size: 14px;
-			    }		  
-					
-					.caret {
-							pointer-events:none;
-							position:absolute;
-							left:2;
-							top:2;
-							font-family: "Lucida Console", Monaco, monospace;
-							font-size: 14px;
-							margin:0px;
-							padding:0px;
-					}
-
-					.caretblink {
-					    animation: blink 1s steps(5, start) infinite;
-					}
-
-					.caretnoblink {
-							visibility:visible;					
-					}
-					
-					.carethidden{
-							visibility:hidden;
-					}
-
-					.barbutton {
-							background-color: #000;
-							color: #fff;
-							background-image: url("../images/BP64F.png"); background-repeat: repeat-x;
-							background-size: 64px 100%;
-							border-radius: 12px;
-							margin:3px;
-							border-spacing:10px;
-							height:38px;
-							width:38px;
-							vertical-align:center;
-							text-align:center; 
-					}
-					
-					.barcontainer{
-							padding:3px;
-							border-radius: 8px;
-							border:solid 2px #000;
-					}
-					
-					.bar{
-							position:absolute;
-							height:18px;
-							width:2px;
-							background-image: url('../images/BP64D.gif'); 
-							background-repeat: repeat-x;
-							background-size: 64px 100%;
-							border-radius: 8px;
-					}					
-
-					@keyframes blink {
-					    to {
-					        visibility: hidden;
-					    }
-					} 
-
-		  </style>
-		  <script src="../js/Consolerenderer/cons.js"></script>
-		  <script src="../js/Consolerenderer/tile.js"></script>
-		  <script src="../js/Consolerenderer/tiledata.js"></script>
-		  <script src="../js/Consolerenderer/caretstate.js"></script>
+		  <script src="js/cons.js"></script>
+		  <script src="js/tile.js"></script>
+		  <script src="js/tiledata.js"></script>
+		  <script src="js/caretstate.js"></script>
 		  <script>
  
  			var cons;
  			
 			//  0 - black   1 - white   2 - red   3 - cyan   4 - purple   5 - green   6 - blue   7 - yellow   8 - orange   9 - brown   A - light red   B - dark grey   C - grey   D - light green   E - light blue   F - light grey
 
-			var bgcolortab=new Array("background-color:rgb(0,0,0);", "background-color:rgb(255,255,255);", "background-color:rgb(224,64,46);", "background-color:rgb(96,255,255);", "background-color:rgb(224,96,224);", "background-color:rgb(64,224,64);","background-color:rgb(64,64,224);", "background-color:rgb(255,255,64);", "background-color:rgb(224,160,64);", "background-color:rgb(156,116,72);", "background-color:rgb(84,84,84);","background-color:rgb(160,160,255);", "background-color:rgb(136,136,136);", "background-color:rgb(160,255,160);", "background-color:rgb(192,192,192);");
+			var bgcolortab=new Array("background-color:rgb(0,0,0);", "background-color:rgb(255,255,255);", "background-color:rgb(224,64,46);", "background-color:rgb(96,255,255);", "background-color:rgb(224,96,224);", "background-color:rgb(64,224,64);","background-color:rgb(39,40,34);", "background-color:rgb(255,255,64);", "background-color:rgb(224,160,64);", "background-color:rgb(156,116,72);", "background-color:rgb(84,84,84);","background-color:rgb(160,160,255);", "background-color:rgb(136,136,136);", "background-color:rgb(160,255,160);", "background-color:rgb(192,192,192);");
 
 			var colortab=new Array("color:rgb(0,0,0);", "color:rgb(255,255,255);", "color:rgb(224,64,46);", "color:rgb(96,255,255);", "color:rgb(224,96,224);", "color:rgb(64,224,64);", "color:rgb(64,64,224);", "color:rgb(255,255,64);", "color:rgb(224,160,64);", "color:rgb(156,116,72);", "color:rgb(255,160,160);", "background-color:rgb(84,84,84);", "color:rgb(136,136,136);", "color:rgb(160,255,160);","color:rgb(160,160,255);", "color:rgb(192,192,192);");
 
@@ -171,21 +98,30 @@ Fixed Bugs:
 		
 				  
 		</head>
+
 		<body onload="initengine();">
 			
+			<div id="wrapper">
 			<div style="position:relative">
 					<div id="cons" class="conso">&nbsp;</div>
 					<div id="caret" class="caret caretblink">&nbsp;</div>
 			</div>
+			<div id="bardesign">
 			<table>
 				<tr>
-					<td onclick="cons.switch();" id="playcontrol" class="barbutton" align="center" valign="center"><img src="../images/PlayR.svg"/></td>
+					<td onclick="cons.switch();" id="playcontrol" class="barbutton" align="center" valign="center"><img src="Images/play_button.svg"/></td>
+
 					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick="cons.search(event);"><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>
-					<td onclick="cons.skip(-10);" id="backcontrol" class="barbutton"><img src="../images/SkipB.svg"/></td>
-					<td onclick="cons.skip(10);" id="forwcontrol" class="barbutton"><img src="../images/SkipF.svg"/></td>
-					<td onclick="cons.toggleRepeat();" id="repeatcontrol" class="barbutton"><img src="../images/Replay.svg"/></td>
+					
+					<td onclick="cons.skip(-10);" id="backcontrol" class="barbutton"><img src="Images/backward_button.svg"/></td>
+					
+					<td onclick="cons.skip(10);" id="forwcontrol" class="barbutton"><img src="Images/forward_button.svg"/></td>
+					
+					<td onclick="cons.toggleRepeat();" id="repeatcontrol" class="barbutton"><img src="Images/replay_button.svg"/></td>
 				</tr>
 		</table>
+	</div>
+</div>
 		</body>
 </html>
 

@@ -7,7 +7,8 @@
 var retdata;
 var tokens = [];            // Array to hold the tokens.
 var dmd=0;
-var isdropped=false;				
+var isdropped=false;
+var tabmenuvalue = "wordlist";				
 
 /********************************************************************************
 
@@ -93,13 +94,13 @@ function Code()
 		switchDrop("codedrop");
 }
 
-function Wordlist()
+function generalSettings()
 {
 		switchDrop("docudrop");
 }
 function Up()
 {						
-		location="Sectioned.php?courseid="+courseID+"&vers="+version;
+		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
 }				
 
 function gotoPosition(poz)
@@ -173,14 +174,16 @@ function setup()
 {
 		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
 		
-		if(sessionkind==courseID){
+		if(sessionkind=="w"){
 				setupEditable();						
 		}
 }
 
+
 function Play()
-{
-		if(retdata['playlink']!="") location=retdata['playlink'];
+{ 
+	var url = getPlaylinkURL();		
+	window.open(url);
 }
 
 function Plus()
@@ -206,6 +209,11 @@ function addImpword()
 	word=document.getElementById('impwordtextbox');
 		// check if UTF encoded
 		for(var i=0; i<word.value.length; i++) {
+			if(word.value.indexOf(' ') >=0){
+				document.getElementById('impwordlistError').innerHTML = "Error. One word at a time.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+			}
 	        if(word.value.charCodeAt(i) > 127){
 				document.getElementById('impwordlistError').innerHTML = "Error. Not UTF-encoded.";
 				word.style.backgroundColor="#E33D3D";
@@ -239,7 +247,6 @@ function addImpline()
 		// make integers of the input
 		fromValue = parseInt(from.value)
 		toValue = parseInt(to.value)
-
 		
 		// error messages if NaN
 		if((isNaN(fromValue))||(isNaN(toValue))){
@@ -248,7 +255,7 @@ function addImpline()
 			}if(isNaN(toValue)){
 				to.style.backgroundColor="#E33D3D"; 
 			}
-			errormsg.innerHTML = "Failed to add. Not a number.";
+			errormsg.innerHTML = "Error. Not a number.";
 			return;
 		}
 		// add important lines
@@ -259,7 +266,7 @@ function addImpline()
 		else{
 			to.style.backgroundColor="#E42217"; 
 			from.style.backgroundColor="#E42217";
-			errormsg.innerHTML = "Failed to add. Use ascending order.";
+			errormsg.innerHTML = "Error. Use ascending order.";
 		}
 }
 
@@ -275,6 +282,11 @@ function addWordlistWord()
 		word=document.getElementById('wordlisttextbox');
 		// check if UTF encoded
 		for(var i=0; i<word.value.length; i++) {
+			if(word.value.indexOf(' ') >=0){
+				document.getElementById('wordlistError').innerHTML = "Error. One word at a time.";
+				word.style.backgroundColor="#E33D3D";
+	          	return;
+			}
 	        if(word.value.charCodeAt(i) > 127){
 				document.getElementById('wordlistError').innerHTML = "Error. Not UTF-encoded.";
 				word.style.backgroundColor="#E33D3D";
@@ -330,8 +342,53 @@ function selectImpLines(word)
 
 function changedPlayLink()
 {
-		playlink=encodeURIComponent(document.getElementById('playlink').value);	
-		AJAXService("editPlaylink","&playlink="+playlink);				
+	var url = getPlaylinkURL();
+	var playlink = document.getElementById('playlink').value
+	
+	// code for IE7+, Firefox, Chrome, Opera, Safari
+	 if (window.XMLHttpRequest){
+		var xmlhttp=new XMLHttpRequest();
+	  }
+	  else{ // code for IE6, IE5
+	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  // check if the playlink refers to a real url.
+	xmlhttp.open('GET', url, true);  			
+	xmlhttp.send(null);	
+
+	// 0.1s timeout because it takes some time for xmlhttp.status to get its value
+	setTimeout(function(){
+		if (xmlhttp.status == "404") { 
+			var span = document.getElementById("playlinkErrorMsg");
+			span.innerHTML = "Error. This link is invalid.";
+			span.style.display = "block";
+			document.getElementById('playbutton').style.display="none";	
+		}else{	
+			if(playlink != ""){ 
+				document.getElementById('playbutton').style="";	
+				encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
+				AJAXService("editPlaylink","&playlink="+encodedplaylink);	
+			}
+		} 
+	},100);	
+	
+}
+// Function to return the fully url-playlink that is inserted
+function getPlaylinkURL()
+{
+	var currentUrl = window.location.pathname.split('/');
+	var directories = "";
+	
+	if(document.getElementById('playlink') != null){
+		var link = document.getElementById('playlink').value;
+	}else{
+		var link = retdata['playlink'];
+	}
+	// Get the names of the current directories in url
+	for(i=1; i<currentUrl.length-1; i++){
+		directories += currentUrl[i]+"/";
+	}
+	return "http://"+location.hostname+":"+location.port+"/"+directories+link;	
 }
 
 /********************************************************************************
@@ -425,7 +482,7 @@ function returned(data)
 
 		// Fill Description
 		var docuwindow=document.getElementById("docucontent");
-		docuwindow.innerHTML=data['desc'];
+		docuwindow.innerHTML="<span>"+data['desc']+"</span>";
 
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");
@@ -435,11 +492,10 @@ function returned(data)
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
 		// Should be sectionname instead of sectionID
-		
 		examplesect.innerHTML=sectionID;
-	//	examplesect.innerHTML=getsectionname(sectionID);
-
-		if(sessionkind==courseID){
+		
+		
+		if(sessionkind=="w"){
 				// Fill file requester with file names
 				str="";
 				for(i=0;i<data['directory'].length;i++){
@@ -457,9 +513,19 @@ function returned(data)
 		// Fill wordlist part of document dialog
 		//----------------------------------------------------
 
-		if(sessionkind==courseID){
-
-				str="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
+		if(sessionkind=="w"){
+			
+			// Check what tab in general settings menu should be displayed, otherwise the same tabmenu will be displayed after every update.
+			if(tabmenuvalue == "wordlist"){
+				displayWordlist();
+			}else if(tabmenuvalue == "playlink"){
+				displayPlaylink();	
+			}else if(tabmenuvalue == "templates"){
+				displayTemplates();
+			}
+			
+		/*		
+				str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
 				for(i=0;i<data['wordlists'].length;i++){
 						if(data['wordlists'][i]==data['chosenwordlist']){
 								str+="<option selected='selected'>"+data['wordlists'][i]+"</option>";										
@@ -505,13 +571,103 @@ function returned(data)
 				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
 				str+="<input type='button' value='add' onclick='addImpline();' />";
 				str+="<input type='button' value='del' onclick='delImpline();' />";
-				str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
-		
-				var docurec=document.getElementById('docudrop');
-				if(docurec!=null) docurec.innerHTML=str;						
+		//		str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
+		*/
+			//	var docurec=document.getElementById('docudrop');
+			//	if(docurec!=null) docurec.innerHTML=str;						
 		}
 }
+function displayPlaylink(){
+	tabmenuvalue = "playlink";
+	str="<ul id='settingsTabMenu'>";
+		str+="<li onclick='displayWordlist();'>Wordlist</li>";
+		str+="<li class='activeSetMenuLink'>Playlink</li>";
+		str+="<li onclick='displayTemplates();'>Templates</li>";
+	str+="</ul>";
+				
+	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
+	str+="<span id='playlinkErrorMsg'></span>";
+	docurec=document.getElementById('docudrop');
+	docurec.innerHTML=str;
+}
+function displayTemplates()
+{
+	tabmenuvalue = "templates";
+	str="<ul id='settingsTabMenu'>";
+		str+="<li onclick='displayWordlist();'>Wordlist</li>";
+		str+="<li onclick='displayPlaylink()'>Playlink</li>";
+		str+="<li class='activeSetMenuLink'>Templates</li>";
+	str+="</ul>";
+	str+="<h1>Pick a template for your example!</h1>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'  onclick='changeCSS(\""+'css/template1.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='changeCSS(\""+'css/template2.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
 
+		
+	docurec=document.getElementById('docudrop');
+	docurec.innerHTML=str;
+}
+function displayWordlist(){
+	tabmenuvalue = "wordlist";
+	str="<ul id='settingsTabMenu'>";
+		str+="<li class='activeSetMenuLink'>Wordlist</li>";
+		str+="<li onclick='displayPlaylink();'>Playlink</li>";
+		str+="<li onclick='displayTemplates();'>Templates</li>";
+	str+="</ul>";
+	
+
+	str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
+				for(i=0;i<retdata['wordlists'].length;i++){
+						if(retdata['wordlists'][i]==retdata['chosenwordlist']){
+								str+="<option selected='selected'>"+retdata['wordlists'][i]+"</option>";										
+						}else{
+								str+="<option>"+retdata['wordlists'][i]+"</option>";										
+						}
+				}
+				str+="</select><br/>Wordlist: "+retdata['chosenwordlist']+"<br/><select size='8' style='width:200px;'>";
+				for(i=0;i<retdata['wordlist'].length;i++){
+						if(retdata['wordlist'][i][0]==retdata['chosenwordlist']){
+								str+="<option onclick='selectWordlistWord(\""+retdata['wordlist'][i][1]+"\");'>"+retdata['wordlist'][i][1]+"</option>";										
+						}
+				}
+				str+="</select><br/>";
+				str+="<div id='wordlistError' class='errormsg'></div>";
+				str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
+				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
+				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
+				str+="<input type='button' value='new' onclick='newWordlist();'' />";
+		
+				//----------------------------------------------------
+				// Fill important word list	part of document dialog
+				//----------------------------------------------------
+				str+="</select><br/><br/>Important Word List: <br/><select size='8' style='width:200px;'>";
+				for(i=0;i<retdata['impwords'].length;i++){
+						str+="<option onclick='selectImpWord(\""+retdata['impwords'][i]+"\");'>"+retdata['impwords'][i]+"</option>";										
+				}
+				str+="</select><br/>";
+				str+="<div id='impwordlistError' class='errormsg'></div>";
+				str+="<input type='text' size='24' id='impwordtextbox' maxlength='60' />";
+				str+="<input type='button' value='add' onclick='addImpword();' />";
+				str+="<input type='button' value='del' onclick='delImpword();'/>";													
+		
+				//----------------------------------------------------
+				// Fill important line list part of document dialog
+				//----------------------------------------------------
+				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
+				for(i=0;i<retdata['improws'].length;i++){
+						str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+retdata['improws'][i][0]+"-"+retdata['improws'][i][1]+"</option>";										
+				}
+				str+="</select><br/>"
+				str+="<div id='impLinesError' class='errormsg'></div>";
+				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
+				str+="<input type='button' value='add' onclick='addImpline();' />";
+				str+="<input type='button' value='del' onclick='delImpline();' />";
+				
+				var docurec=document.getElementById('docudrop');
+				docurec.innerHTML=str;
+}
 /********************************************************************************
 
    HTML freeform editing code
@@ -534,17 +690,19 @@ function hideDrop(dname)
 
 function switchDrop(dname)
 {
-		var dropd=document.getElementById(dname);
+		var dropd=document.getElementById(dname); 
 		if(dropd.style.display=="block"){
-				dropd.style.display="none";							
+			$( dropd ).slideUp("fast");
+			//	dropd.style.display="none";							
 		}else{
 				hideDrop("forwdrop");
 				hideDrop("backwdrop");
 				hideDrop("docudrop");
 				hideDrop("codedrop");
-
-				dropd.style.display="block";
-		}
+			
+			$( dropd ).slideDown("fast");
+			dropd.style.display="block";
+		} 
 }
 
 //----------------------------------------------------------------------------------
@@ -566,13 +724,13 @@ function issetDrop(dname)
 //----------------------------------------------------------------------------------
 
 function setupEditable()
-{
-		if(sessionkind==courseID){
+{	
+		if(sessionkind=="w"){
 				var editable=document.getElementById('exampleName');
 				editable.addEventListener("blur", function(){editedExamplename();}, true);
 		
 				var fditable=document.getElementById('docucontent');
-				fditable.addEventListener("blur", function(){editedDescription();}, true);
+				fditable.addEventListener("blur", function(){editedDescription();Save();}, true);
 		}
 }
 
@@ -656,8 +814,8 @@ this.row = row;
 
 function maketoken(kind,val,from,to,rowno)
 {
-newtoken=new token(kind,val,from,to,rowno);
-tokens.push(newtoken);
+	newtoken=new token(kind,val,from,to,rowno);
+	tokens.push(newtoken);
 }
 
 //----------------------------------------------------------
@@ -1046,21 +1204,50 @@ function rendercode(codestring,destinationdiv)
 		printout.innerHTML=str;
 		linenumbers();
 }
-function linenumbers(){	
+function linenumbers()
+{	
 	if(localStorage.getItem("linenumbers") == "false"){	
-		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
+		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg'); 
 		$( ".no" ).css("display","none");	
 	}
 }
-function fadelinenumbers(){
+function fadelinenumbers()
+{
 	if ( $( ".no" ).is( ":hidden" ) ) {
-		$( ".no" ).fadeIn( "fast" );
+		$( ".no" ).fadeIn( "slow" );
 		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
-
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
-		$( ".no" ).fadeOut("fast");
+		$( ".no" ).fadeOut("slow");
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
+}
+function addTemplatebox(id)
+{	
+	var temps = id.split(",");
+	
+	
+	var content = document.getElementById("div2");
+	
+	for(i=0; i<temps.length; i++){
+		if(document.getElementById(temps[i])){
+			continue;
+		}
+		var div = document.createElement("div");
+		content.appendChild(div);
+		div.id = temps[i];
+		div.setAttribute("contenteditable", "true");
+	}	
+}
+function changeCSS(cssFile)
+{
+	var cssLinkIndex = 0;
+	var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
+    var newlink = document.createElement("link");
+    newlink.setAttribute("rel", "stylesheet");
+    newlink.setAttribute("type", "text/css");
+    newlink.setAttribute("href", cssFile);
+ 	
+    document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }

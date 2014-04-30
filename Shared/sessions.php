@@ -1,40 +1,53 @@
 <?php
+require_once('../Shared/external/password.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
 function checklogin()
 {
 	// If neither session nor post return not logged in
-	if(array_key_exists('loginname', $_SESSION) && array_key_exists('passwd', $_SESSION)){
+	if(array_key_exists('loginname', $_SESSION)){
 		return true;
-	} else if(array_key_exists('loginname', $_POST) && array_key_exists('passwd', $_POST)){
-		$username=$_POST["loginname"];
-		$passwd=$_POST["passwd"];				
-
-		// Protect against SQL injection.
-		$querystring=sprintf("SELECT * FROM user WHERE username='%s' AND password='%s' LIMIT 1",
-			mysql_real_escape_string($username),
-			mysql_real_escape_string($passwd)
-		);
-
-		$result=mysql_query($querystring);
-		if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
-		
-		if(mysql_num_rows($result) > 0) {
-			// Fetch the result
-			$row = mysql_fetch_assoc($result);
-
-			$_SESSION['uid'] = $row['uid'];
-			$_SESSION["loginname"]=$row['username'];
-			$_SESSION["passwd"]=$row['password'];
-			$_SESSION["superuser"]=$row['superuser'];
-
-			return true;
-		}
 	} else {		
 		return false;
 	}
 }	
+
+function login()
+{
+	if(!array_key_exists('username', $_POST) || !array_key_exists('password', $_POST)) {
+		return false;
+	}
+
+	$username=$_POST["username"];
+	$password=$_POST['password'];
+
+	// Protect against SQL injection.
+	$querystring=sprintf("SELECT * FROM user WHERE username='%s' LIMIT 1",
+		mysql_real_escape_string($username)
+	);
+
+	$result=mysql_query($querystring);
+	if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
+
+	if(mysql_num_rows($result) > 0) {
+		// Fetch the result
+		$row = mysql_fetch_assoc($result);
+
+		if(password_verify($password, $row['password'])) {
+			$_SESSION['uid'] = $row['uid'];
+			$_SESSION["loginname"]=$row['username'];
+			$_SESSION["passwd"]=$row['password'];
+			$_SESSION["newpw"]=($row["newpassword"] > 0);
+			$_SESSION["superuser"]=$row['superuser'];
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
 
 function hasAccess($userId, $courseId, $access_type)
 {
@@ -69,9 +82,44 @@ function hasAccess($userId, $courseId, $access_type)
 			return false;
 		}
 	}
+}
 
+function getAccessType($userId, $courseId)
+{
+	require_once "../Shared/courses.php";
+	if(is_string($courseId)) {
+		$courseId = getCourseId($courseId);
+	}
+
+	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
+		mysql_real_escape_string($userId),
+		mysql_real_escape_string($courseId)
+	);
+
+	$result = mysql_query($querystring);
+	if(!$result) {
+		return false;
+	} else {
+		// Fetch data from the database
+		if(mysql_num_rows($result) > 0) {
+			$access = mysql_fetch_assoc($result);
+			// Check access if it was returned
+			if(strtolower($access['access']) == "r") {
+				return "r";
+			} else if (strtolower($access['access']) == "w") {
+				// w implies access r
+				return "w";
+			} else {
+				return false;
+			}
+		} else {
+			// Otherwise default to no.
+			return false;
+		}
+	}
 	return false;
 }
+
 
 //---------------------------------------------------------------------------------------------------------------
 // logout
