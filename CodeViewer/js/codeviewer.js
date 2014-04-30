@@ -932,7 +932,7 @@ function setupEditable()
 				editable.addEventListener("blur", function(){editedExamplename();}, true);
 		
 				var fditable=document.getElementById('docucontent');
-				fditable.addEventListener("blur", function(){editedDescription();Save();}, true);
+				fditable.addEventListener("blur", function(){editedDescription();}, true);
 		}
 }
 
