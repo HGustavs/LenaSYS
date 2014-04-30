@@ -99,10 +99,6 @@ function imagerecorder(canvas)
 		var xMouseReal;
 		var yMouseReal;
 		$('#' + imageCanvas).mousemove(function(event){	
-			// Update scale ratio (for correct mouse positions)
-			// TODO: Should probably only be done on click and window resize
-			updateScaleRatio();
-
 			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
 			yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 			document.getElementById('xCordReal').innerHTML=xMouseReal;
@@ -115,6 +111,14 @@ function imagerecorder(canvas)
 				appendEvString(xMouseReal,yMouseReal);
 			}, 33,33333);
 				interval = true;		
+		});
+
+		/*
+		 * Update scale ratio when the window is resized
+		 */
+		$(window).on('resize', function(){
+			// Scale ratio update (for correct mouse positions)
+			updateScaleRatio();
 		});
 		
 		// Add save button to body
