@@ -125,6 +125,9 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 								
 					}else if(strcmp("editDescription",$opt)===0){
+							// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
+								$description = str_replace("&nbsp;"," ",$_POST['description']);
+								$description = str_replace("<br>","\n",$description);
 								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleno='$exampleno';";
                                 $result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
@@ -239,9 +242,19 @@
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
-					$desc=$row['segment'];
+				// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox
+					$desc=str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row['segment']));
 			}  
-		
+			
+			// Read sectionname 
+			$sectionname="";
+			$query = "SELECT sectionname FROM section WHERE sectionno=$sectionid;";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			while ($row = mysql_fetch_assoc($result)){
+					$sectionname=$row['sectionname'];
+			} 
+			
 			// Read Directory
 			$directory=array();
 			$dir = opendir('./codeupload');
@@ -251,7 +264,7 @@
 		    }
 		  }  
 
-			$array = array('before' => $before,'after' => $after,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
+			$array = array('before' => $before,'after' => $after,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'playlink' => $playlink,'desc' => $desc,'sectionname' => $sectionname,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
 			echo json_encode($array);
 
 	}else{

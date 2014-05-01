@@ -71,32 +71,23 @@ function styleHeader()
     document.execCommand('formatBlock', false, "H1");
 }
 
-
+/* style codeexample in desc.box */
 function styleCode()
 {
         if (window.getSelection) {  // all browsers, except IE before version 9
-            var range = window.getSelection();
+            var range = window.getSelection().toString();
             
         }
         else {
             if (document.selection.createRange) { // Internet Explorer
-                var range = document.selection.createRange();
+                var range = document.selection.createRange().toString();
 
             }
         }
-      
-       // replacing to give the description a nice formatting.
-       	range = range.toString();
-		range = range.replace(/\n/g, "<br>");
-		range = replaceAll(" ", "&nbsp;", range);
-	
-//	range = range.replace(/" "/g, '&nbsp;');
-
-      document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
-
-      
-   //  document.execCommand("insertText", true, range);
+		document.execCommand("insertHTML", false, "<span class='codestyle'></span>");
+		document.execCommand("insertText", false, range);
 }
+
 function replaceAll(find, replace, str)
 {
     return str.replace(new RegExp(find, 'g'), replace);
@@ -139,7 +130,6 @@ document.addEventListener("paste", function(e) {
     var text = e.clipboardData.getData("text/plain");
     // insert text manually
     document.execCommand("insertText", false, text);
-
 });
 
 
@@ -154,9 +144,7 @@ function Save()
 {
 				var editable=document.getElementById('docucontent');
 				var desc=editable.innerHTML;
-                desc = replaceAll("&nbsp;", " ", desc);
-                desc = replaceAll("<br>", "\n", desc);
-                
+
 				AJAXService2("editDescription", desc);
 }
 
@@ -686,12 +674,9 @@ function returned(data)
 		// Fill Description
 		var docuwindow=document.getElementById("docucontent");
 		
-		// replacing spaces and breakrows to give the output a nice formatting.
-		var desc = replaceAll(" ", "&nbsp;", data['desc']);
-		desc = replaceAll("<span&nbsp;", "<span ",desc);
-		desc = replaceAll('\n', "<br>", desc);
-		desc = desc.replace("&nbsp;", " ");
-		docuwindow.innerHTML=desc;
+		// replacing span&nsbp; so it is perceived as a tagname for codestyle
+		docuwindow.innerHTML=replaceAll("<span&nbsp;","<span ",data['desc']);
+	
 
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");
@@ -701,7 +686,7 @@ function returned(data)
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
 		// Should be sectionname instead of sectionID
-		examplesect.innerHTML=sectionID;
+		examplesect.innerHTML=data['sectionname'];
 		
 		
 		if(sessionkind=="w"){
