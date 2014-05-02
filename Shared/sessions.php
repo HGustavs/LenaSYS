@@ -1,5 +1,6 @@
 <?php
 require_once('../Shared/external/password.php');
+require_once('../Shared/database.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
@@ -15,6 +16,12 @@ function checklogin()
 
 function login()
 {
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
 	if(!array_key_exists('username', $_POST) || !array_key_exists('password', $_POST)) {
 		return false;
 	}
@@ -22,17 +29,13 @@ function login()
 	$username=$_POST["username"];
 	$password=$_POST['password'];
 
-	// Protect against SQL injection.
-	$querystring=sprintf("SELECT * FROM user WHERE username='%s' LIMIT 1",
-		mysql_real_escape_string($username)
-	);
+	$query = $pdo->prepare('SELECT * FROM user WHERE username=:username LIMIT 1');
+	$query->bindParam(':username', $username);
+	$query->execute();
 
-	$result=mysql_query($querystring);
-	if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
-
-	if(mysql_num_rows($result) > 0) {
+	if($query->rowCount() > 0) {
 		// Fetch the result
-		$row = mysql_fetch_assoc($result);
+		$row = $query->fetch(PDO::FETCH_ASSOC);
 
 		if(password_verify($password, $row['password'])) {
 			$_SESSION['uid'] = $row['uid'];
@@ -51,70 +54,42 @@ function login()
 
 function hasAccess($userId, $courseId, $access_type)
 {
-	require_once "../Shared/courses.php";
-	if(is_string($courseId)) {
-		$courseId = getCourseId($courseId);
-	}
+	$access = getAccessType($userId, $courseId);
 
-	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
-		mysql_real_escape_string($userId),
-		mysql_real_escape_string($courseId)
-	);
-
-	$result = mysql_query($querystring);
-	if(!$result) {
-		return false;
+	if($access_type === 'w') {
+		return strtolower($access) == 'w';
+	} else if ($access_type === 'r') {
+		// w implies access r
+		return strtolower($access) == 'r' || strtolower($access) == 'w'; 
 	} else {
-		// Fetch data from the database
-		if(mysql_num_rows($result) > 0) {
-			// Check access if it was returned
-			$access = mysql_fetch_assoc($result);
-			if($access_type == 'w') {
-				return strtolower($access['access']) == 'w';
-			} else if ($access_type == 'r') {
-				// w implies access r
-				return strtolower($access['access']) == 'r' || strtolower($access['access']) == 'w'; 
-			} else {
-				return false;
-			}
-		} else {
-			// Otherwise default to no.
-			return false;
-		}
+		return false;
 	}
 }
 
 function getAccessType($userId, $courseId)
 {
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
 	require_once "../Shared/courses.php";
 	if(is_string($courseId)) {
 		$courseId = getCourseId($courseId);
 	}
 
-	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
-		mysql_real_escape_string($userId),
-		mysql_real_escape_string($courseId)
-	);
+	$query = $pdo->prepare('SELECT access FROM user_course WHERE uid=:uid AND cid=:cid LIMIT 1');
+	$query->bindParam(':uid', $userId);
+	$query->bindParam(':cid', $courseId);
 
-	$result = mysql_query($querystring);
-	if(!$result) {
+	if(!$query->execute()) {
 		return false;
 	} else {
 		// Fetch data from the database
-		if(mysql_num_rows($result) > 0) {
-			$access = mysql_fetch_assoc($result);
-			// Check access if it was returned
-			if(strtolower($access['access']) == "r") {
-				return "r";
-			} else if (strtolower($access['access']) == "w") {
-				// w implies access r
-				return "w";
-			} else {
-				return false;
-			}
-		} else {
-			// Otherwise default to no.
-			return false;
+		if($query->rowCount() > 0) {
+			$access = $query->fetch(PDO::FETCH_ASSOC);
+			return strtolower($access['access']);
 		}
 	}
 	return false;
