@@ -70,7 +70,7 @@ function returnedSection(data)
 					// Styling for header row
 					str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
 					if(sessionkind===1){
-						str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' >"+data['entries'][i]['entryname']+"</span>";
+						str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' ><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 						str+="<span class='smallishbutt'>";
 						str+=Sectionbutton("sectionDel","MinusT.svg",data['entries'][i]['lid'],"BIG");											
 						str+="</span>";
@@ -85,9 +85,8 @@ function returnedSection(data)
 
 					// If we are allowed to edit
 					if(sessionkind===1){
-						str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";
+						str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";
 						str+="<span class='smallbutt'>";
-						str+=Sectionbutton("exampleNew","PlusS.svg",data['entries'][i]['lid'],"SMALL");
 						str+=Sectionbutton("sectionDel","MinusS.svg",data['entries'][i]['lid'],"SMALL");
 						str+="</span>";
 					}else{
@@ -97,15 +96,13 @@ function returnedSection(data)
 					// End of butt span
 					str+="</span>"
 					break;
-				default:
 				case 2:
 					// Styling for example row
-					str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
+					str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
 					if(sessionkind===1){
-							str+="<span id='EX"+data['entries'][i]['lid']+"' contenteditable='true'>"+data['entries'][i]['entryname']+"</span>";
+							str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 							str+="<span class='smallbutt'>";
 							str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
-							str+=Sectionbutton("PP","PlayT.svg",data['entries'][i]['lid'],"EXAMPLE",data['entries'][i]['lid']);
 							str+="</span>"
 					}else{
 							str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
@@ -113,32 +110,37 @@ function returnedSection(data)
 					str+="</span>";
 					break;
 				case 3:
-				// Styling for test row
-				break;
+					// Styling for test row
+					str+="<span class='test' id='Entry_"+data['entries'][i]['lid']+"'>";
+					if(sessionkind===1){
+							str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+							str+="<span class='smallbutt'>";
+							str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+							str+="</span>"
+					}else{
+							str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+					}
+					str+="</span>";
+					break;
+				default:
 				case 4:
-				// Styling for 'others' row
-				break;
+					// Styling for 'others' row
+					str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
+					if(sessionkind===1){
+							str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+							str+="<span class='smallbutt'>";
+							str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+							str+="</span>"
+					}else{
+							str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+					}
+					str+="</span>";
+					break;
 				}
 			}
 			
 			var slist=document.getElementById('Sectionlist');
 			slist.innerHTML=str;
-
-			if(sessionkind===1){
-				// Setup editable sections with events etc
-				for(i=0;i<data['entries'].length;i++){
-					if(parseInt(data['entries'][i]['kind'])==0){
-						var editable=document.getElementById("SE"+data['entries'][i]['lid']);
-						editable.addEventListener("blur", function(){editedSectionName(this);}, true);
-					}else if (parseInt(data['entries'][i]['kind'])==1){
-						var editable=document.getElementById("SE"+data['entries'][i]['lid']);
-						editable.addEventListener("blur", function(){editedSectionName(this);}, true);
-					}else{
-						var editable=document.getElementById("EX"+data['entries'][i]['lid']);
-						editable.addEventListener("blur", function(){editedExampleName(this);}, true);
-					}
-				}				
-			}
 
 
 		  if(data['debug']!="NONE!") alert(data['debug']);
