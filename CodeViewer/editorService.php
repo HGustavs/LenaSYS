@@ -244,6 +244,7 @@
 			while ($row = mysql_fetch_assoc($result)){
 				// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox
 					$desc=str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row['segment']));
+				//	$desc = $row['segment'];
 			}  
 			
 			// Read sectionname 

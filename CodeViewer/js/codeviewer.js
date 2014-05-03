@@ -20,7 +20,10 @@ function highlightKeyword(kw)
 {
 			$(".impword").each(function(){
 				if(this.innerHTML==kw){
-						highlightimp(this.id);
+					
+					$(this).addClass("imphi");	
+					//	$(".impword").addClass("temphighlightclass");
+					//	highlightimp(this.id);
 				}
 			});	
 }
@@ -29,7 +32,8 @@ function dehighlightKeyword(kw)
 {
 			$(".impword").each(function(){
 				if(this.innerHTML==kw){
-						dehighlightimp(this.id);
+					$(this).removeClass("imphi");	
+					//	dehighlightimp(this.id);
 				}
 			});	
 }
@@ -42,21 +46,21 @@ function highlightMenu(keywid)
 
 // Callback for highlighting back/forward menu item
 function dehighlightMenu(keywid)
-{
+{		
 		$("#"+keywid).removeClass("menuhi");					
 }
 
 
 // Callback for highlighting important keyword
 function highlightimp(keywid)
-{
-		$("#"+keywid).addClass("imphi");					
+{  /* THIS FUCNTION IS NOT USED AT THE MOMENT. YOU CAN FIND THIS FUCNTIONALITY IN highlightKeyword() */
+	//	$("#"+keywid).addClass("imphi");					
 }
 
 // Callback for highlighting important keyword
 function dehighlightimp(keywid)
-{
-		$("#"+keywid).removeClass("imphi");					
+{		 /* THIS FUCNTION IS NOT USED AT THE MOMENT. YOU CAN FIND THIS FUCNTIONALITY IN dehighlightKeyword() */
+	//	$("#"+keywid).removeClass("imphi");					
 }
 				
 function Bold()
@@ -84,6 +88,7 @@ function styleCode()
 
             }
         }
+    //    document.execCommand("insertHTML",false,rendercode2(range,"docucontent"));
 		document.execCommand("insertHTML", false, "<span class='codestyle'></span>");
 		document.execCommand("insertText", false, range);
 }
@@ -108,7 +113,7 @@ function styleReset()
             container = select.getRangeAt(0).startContainer.parentNode;
 	}
 	//Check that the selected parentnode is not a div. If it is there's a good chance that it's the box-div that will be removed.
-	while(!$(container).is("div")){
+	while(!$(container).is("div")){ 
 	    $(container).contents().unwrap(); //for jQuery1.4+
 	
 	    if (document.selection) //for IE
@@ -119,6 +124,7 @@ function styleReset()
 	        	container = select.getRangeAt(0).startContainer.parentNode;
 	        }    
 	    }
+	    
 	}
 }
 
@@ -141,11 +147,12 @@ function editedDescription()
 }
 
 function Save()
-{
-				var editable=document.getElementById('docucontent');
-				var desc=editable.innerHTML;
-
-				AJAXService2("editDescription", desc);
+{		
+	// remove all formatting before saving
+	$('.codestyle span').contents().unwrap();
+	var editable=document.getElementById('docucontent');
+	var desc=editable.innerHTML;
+					AJAXService2("editDescription", desc);
 }
 
 function highlightop(otherop,thisop)
@@ -294,9 +301,6 @@ function addImpword()
 	    
 		wordEncoded = encodeURIComponent(word.value);
 		AJAXService("addImpWord","&word="+wordEncoded);
-		
-	/*	word=encodeURIComponent(document.getElementById('impwordtextbox').value);
-		AJAXService("addImpWord","&word="+word);*/
 }
 
 function delImpword()
@@ -410,48 +414,7 @@ function selectImpLines(word)
 				document.getElementById('implistto').value=lines[1];
 		}
 }
-/*
-function changedPlayLink()
-{
-	var url = getPlaylinkURL();
-	var playlink = document.getElementById('playlink').value
-	var playbutton=document.getElementsByClassName('playbutton');
-	
-	// code for IE7+, Firefox, Chrome, Opera, Safari
-	 if (window.XMLHttpRequest){
-		var xmlhttp=new XMLHttpRequest();
-	  }
-	  else{ // code for IE6, IE5
-	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-	  // check if the playlink refers to an existing url.
-	xmlhttp.open('GET', url, true);  			
-	xmlhttp.send(null);	
 
-	// 0.1s timeout because it takes some time for xmlhttp.status to return a value
-	setTimeout(function(){
-		if (xmlhttp.status == "404" || playlink=="") { 
-			var span = document.getElementById("playlinkErrorMsg");
-			span.innerHTML = "Error. This link is invalid.";
-			span.style.display = "block";
-			for(var i=0; i<playbutton.length; i++){
-				playbutton[i].childNodes[0].style.opacity="0.2";
-				playbutton[i].onclick=function(){};
-			}
-		}else{	
-			if(playlink != ""){ 	
-				for(var i=0; i<playbutton.length; i++){
-					playbutton[i].childNodes[0].style.opacity="1";
-					playbutton[i].onclick=function(){Play();};
-				}
-				encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
-				AJAXService("editPlaylink","&playlink="+encodedplaylink);
-			}
-		} 
-	},100);	
-	
-}
-*/
 // Function to return the fully url-playlink that is inserted
 function getPlaylinkURL()
 {
@@ -675,9 +638,25 @@ function returned(data)
 		var docuwindow=document.getElementById("docucontent");
 		
 		// replacing span&nsbp; so it is perceived as a tagname for codestyle
-		docuwindow.innerHTML=replaceAll("<span&nbsp;","<span ",data['desc']);
 	
-
+	/* START code for first function made START */
+	//	var desc = data['desc'];
+	//	desc = replaceAll("<span&nbsp;","<span ",data['desc']);
+	//	desc = replaceAll('"&nbsp;','" ', desc);
+	//	desc = replaceAll('&nbsp;"',' "', desc);
+	//	docuwindow.innerHTML = desc;
+	/* 	STOP */	
+	
+		var desc = data['desc'];
+		desc = replaceAll("<span&nbsp;","<span ",desc);
+		
+		docuwindow.innerHTML = desc;
+		
+		var cs = docuwindow.getElementsByClassName("codestyle");
+		for(var i=0; i<cs.length; i++){
+			desc = desc.replace(cs[i].innerHTML,test(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML,"docuwindow"))));
+		}
+		docuwindow.innerHTML = desc;
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");
 
@@ -685,7 +664,6 @@ function returned(data)
 		var examplenme=document.getElementById('exampleName');
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
-		// Should be sectionname instead of sectionID
 		examplesect.innerHTML=data['sectionname'];
 		
 		
@@ -716,59 +694,7 @@ function returned(data)
 				displayPlaylink();	
 			}else if(tabmenuvalue == "templates"){
 				displayTemplates();
-			}
-			
-		/*		
-				str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
-				for(i=0;i<data['wordlists'].length;i++){
-						if(data['wordlists'][i]==data['chosenwordlist']){
-								str+="<option selected='selected'>"+data['wordlists'][i]+"</option>";										
-						}else{
-								str+="<option>"+data['wordlists'][i]+"</option>";										
-						}
-				}
-				str+="</select><br/>Wordlist: "+data['chosenwordlist']+"<br/><select size='8' style='width:200px;'>";
-				for(i=0;i<data['wordlist'].length;i++){
-						if(data['wordlist'][i][0]==data['chosenwordlist']){
-								str+="<option onclick='selectWordlistWord(\""+data['wordlist'][i][1]+"\");'>"+data['wordlist'][i][1]+"</option>";										
-						}
-				}
-				str+="</select><br/>";
-				str+="<div id='wordlistError'></div>";
-				str+="<input type='text' size='24' id='wordlisttextbox' />";
-				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
-				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
-				str+="<input type='button' value='new' onclick='newWordlist();'' />";
-		
-				//----------------------------------------------------
-				// Fill important word list	part of document dialog
-				//----------------------------------------------------
-				str+="</select><br/><br/>Important Word List: <br/><select size='8' style='width:200px;'>";
-				for(i=0;i<data['impwords'].length;i++){
-						str+="<option onclick='selectImpWord(\""+data['impwords'][i]+"\");'>"+data['impwords'][i]+"</option>";										
-				}
-				str+="</select><br/>";
-				str+="<div id='impwordlistError'></div>";
-				str+="<input type='text' size='24' id='impwordtextbox' />";
-				str+="<input type='button' value='add' onclick='addImpword();' />";
-				str+="<input type='button' value='del' onclick='delImpword();'/>";													
-		
-				//----------------------------------------------------
-				// Fill important line list part of document dialog
-				//----------------------------------------------------
-				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
-				for(i=0;i<data['improws'].length;i++){
-						str+="<option onclick='selectImpLines(\""+data['improws'][i]+"\");'>"+data['improws'][i][0]+"-"+data['improws'][i][1]+"</option>";										
-				}
-				str+="</select><br/>"
-				str+="<div id='impLinesError'></div>";
-				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
-				str+="<input type='button' value='add' onclick='addImpline();' />";
-				str+="<input type='button' value='del' onclick='delImpline();' />";
-		//		str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
-		*/
-			//	var docurec=document.getElementById('docudrop');
-			//	if(docurec!=null) docurec.innerHTML=str;						
+			}					
 		}
 }
 function displayPlaylink(){
@@ -927,7 +853,13 @@ function setupEditable()
 				fditable.addEventListener("blur", function(){editedDescription();}, true);
 		}
 }
-
+function editedExamplename()
+{
+		var editable=document.getElementById('exampleName');
+		var examplename=dehtmlify(editable.innerHTML,true,60);
+		editable.innerHTML=examplename;
+		AJAXService("editExampleName","&examplename="+examplename);
+}
 //----------------------------------------------------------------------------------
 // Removes most html tags from a string!
 //----------------------------------------------------------------------------------
@@ -1018,7 +950,7 @@ function maketoken(kind,val,from,to,rowno)
 
 function error(str,val,row)
 {
-alert("Tokenizer Error: "+str+val+" at row "+row);
+	alert("Tokenizer Error: "+str+val+" at row "+row);
 }
 
 //----------------------------------------------------------
@@ -1030,6 +962,11 @@ alert("Tokenizer Error: "+str+val+" at row "+row);
 function tokenize(instring,inprefix,insuffix)
 {
 
+// replace HTML-entities
+instring = replaceAll("&lt;","<",instring);
+instring = replaceAll("&gt;",">",instring);
+instring = replaceAll("&amp;","&",instring);
+
 var from;                   	// index of the start of the token.
 var i = 0;                  	// index of the current character.
 var length=instring.length;		// length of the string
@@ -1040,10 +977,8 @@ var q;                      	// current quote character
 var str;                    	// current string value.
 var row=1;										// current row value
 
-
 c = instring.charAt(i);
-while (c) {
-
+while (c) {		// c == first character in each word
 		from = i;
 
 		if (c <= ' '){																					// White space and carriage return
@@ -1054,10 +989,10 @@ while (c) {
 				}else{
         		str=c;
 				}
+				
         i++;
     		while(true){
 		        c=instring.charAt(i);
-
 						if(c>' '||!c) break;
     				if((c=='\n')||(c=='\r')||(c =='')){
                 //str += c;
@@ -1067,13 +1002,13 @@ while (c) {
 								// White space Row (so we get one white space token for each new row) also increase row number
     						row++;
     				}else{
-            		str += c;		        				
+            		str += c;
     				}
             i++;
 				}
 				if(str!="") maketoken('whitespace',str,from,i,row);
 		}else if((c >='a'&&c<='z')||(c>='A'&&c<='Z')){					// Names i.e. Text
-    		str = c;
+    		str = c;      				
     		i++;
     		while(true){
         		c = instring.charAt(i);
@@ -1083,9 +1018,9 @@ while (c) {
         		}else{
             		break;
         		}
-    		}
+    		} 
     		maketoken('name',str,from,i,row);
-    }else if(c >= '0' && c <= '9'){												// Number token
+    }else if(c >= '0' && c <= '9'){			// Number token
         str = c;
         i++;
     		while(true){
@@ -1131,15 +1066,14 @@ while (c) {
         }else{
             error('Bad Number: ',str,row);
         }
-    }else if(c=='\''||c=='"'){																				// String .. handles c style breaking codes
+    }else if(c=='\''||c=='"'){	   // String .. handles c style breaking codes. Ex: "elem" or "text"
         str='';
         q=c;
         i++;
     		while(true){
 		        c=instring.charAt(i);
-
             if (c<' '){
-        				if((c=='\n')||(c=='\r')||(c == '')) row++;						// Add row if this white space is a row terminator				 																						
+        				if((c=='\n')||(c=='\r')||(c == '')) row++; 	// Add row if this white space is a row terminator				 																						
             		error('Unterminated String: ',str,row);		                		
             }
 
@@ -1177,9 +1111,9 @@ while (c) {
         maketoken('string',str,from,i,row);
         c=instring.charAt(i);
 
-    }else if (c=='/'&&instring.charAt(i+1)=='/'){								// Comment of // type ... does not cover block comments
+    }else if (c=='/'&&instring.charAt(i+1)=='/'){	// Comment of // type ... does not cover block comments
         i++;
-        str=c;
+        str=c; 
     		while(true){
 		        c=instring.charAt(i);
             if (c=='\n'||c=='\r'||c=='') {
@@ -1191,43 +1125,44 @@ while (c) {
             i++;
         }
 				maketoken('rowcomment',str,from,i,row);
-				maketoken('newline',"",i,i,row);											                
-    }else if (c=='/'&&instring.charAt(i+1)=='*'){								// Block comment of /* type
+				/* This does not have to be hear because a newline creates in coderender function 
+				maketoken('newline',"",i,i,row); */													                
+    }else if (c=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
         i++;
-    		str=c;
+    		str=c; 
     		while(true){
-		        c=instring.charAt(i);
+		        c=instring.charAt(i); 
             if ((c=='*'&&instring.charAt(i+1)=='/')||(i==length)) {
                 str+="*/"
                 i+=2;
-    		        c=instring.charAt(i);
+  		        c=instring.charAt(i); 
                 break;
-            }
-            if (c=='\n'||c=='\r'||c=='') {
-								maketoken('blockcomment',str,from,i,row);
+            }	
+            if (c=='\n'||c=='\r'||c=='') { 
+            					maketoken('blockcomment',str,from,i,row);
 								maketoken('newline',"",i,i,row);
                 row++;
                 str="";
-            }else{
+            }else{ 
                 str+=c;                
             }
             i++;
-        }
-				maketoken('blockcomment',str,from,i,row);
+        }	
+      	  	maketoken('blockcomment',str,from,i,row);
 		}else if(inprefix.indexOf(c) >= 0) {											// Multi-character Operators
     		str = c;
     		i++;
     		while(true){
-		        c=instring.charAt(i);
+		        c=instring.charAt(i); 
         		if (i >= length || insuffix.indexOf(c) < 0) {
             		break;
         		}
-        		str += c;
+        		str += c; 
         		i++;
-    		}
+    		} 
     		maketoken('operator',str,from,i,row);
 		} else {																									// Single-character Operators
-    		i++;
+    		i++;  
     		maketoken('operator',c,from,i,row);
     		c = instring.charAt(i);
 		}
@@ -1260,11 +1195,11 @@ function rendercode(codestring,destinationdiv)
 		for(var i=0;i<retdata.improws.length;i++){
 				improws.push(retdata.improws[i]);
 		}
-
+	
 		tokenize(codestring,"<>+-&","=>&:");
 				
 		// Iterate over token objects and print kind of each token and token type in window 
-		printout=document.getElementById("infobox");
+		printout=document.getElementById(destinationdiv);
 		str="";
 		cont="";
 
@@ -1361,6 +1296,7 @@ function rendercode(codestring,destinationdiv)
 				}
 				
 				if(tokens[i].kind=="newline"){
+				
 						lineno++;
 
 						// Make line number										
@@ -1373,7 +1309,7 @@ function rendercode(codestring,destinationdiv)
 						}
 						
 						if(cont==""){
-								cont="&nbsp;&nbsp;";
+						//	cont="&nbsp;&nbsp;";
 						}
 						
 						
@@ -1391,12 +1327,255 @@ function rendercode(codestring,destinationdiv)
 						}	
 						str+=num+cont;
 						cont="";
-						str+="</div>";					
+						str+="</div>";	
+										
 				}
 		}
 		str+="</div>";						
 		printout.innerHTML=str;
 		linenumbers();
+}
+function test(codestring, destinationdiv){
+	tokens = [];
+
+	important = [];
+	for(var i=0;i<retdata.impwords.length;i++){
+		important.push(retdata.impwords[i]);	
+	}
+	keywords=[];
+	for(var i=0;i<retdata.wordlist.length;i++){
+		if(retdata.wordlist[i][0]==retdata.chosenwordlist){
+			keywords.push(retdata.wordlist[i][1]);
+		}
+	}
+	
+	tokenize(codestring,"<>+-&","=>&:");
+	
+		str="";
+		cont="";
+
+		str+="<span class='norm'>";
+		
+		pcount=0;
+		parenthesis=new Array();
+		bcount=0;
+		bracket=new Array();
+		cbcount=0;
+		cbracket=new Array();
+
+		pid="";
+		
+		var iwcounter=0;
+
+		for(i=0;i<tokens.length;i++){
+				
+				tokenvalue=String(tokens[i].val);
+
+				// Make white space characters
+				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
+			//	tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
+				if(tokens[i].kind=="rowcomment"){ 
+						cont+="<span class='comment'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="blockcomment"){ 
+							cont+="<span class='comment'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="string"){ 
+							cont+="<span class='string'>\""+tokenvalue+"\"</span>";
+				}else if(tokens[i].kind=="number"){
+						cont+="<span class='number'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="name"){
+						var foundkey=0;
+						
+						for(var ind in keywords){
+								word=keywords[ind];
+								if(word==tokenvalue){
+										foundkey=1;
+										break;		
+								}
+						}								
+						
+						for(var ind in important){
+								word=important[ind];
+								if(word==tokenvalue){
+										foundkey=2;
+										break;		
+								}
+						}
+						
+						if(foundkey==1){
+								cont+="<span class='keyword'>"+tokenvalue+"</span>";														
+						}else if(foundkey==2){
+								iwcounter++;
+								
+								highlightKeyword("scrollTop")
+								
+								cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
+						}else{
+								cont+=tokenvalue;
+						}
+						
+				}else if(tokens[i].kind=="operator"){
+						if(tokenvalue=="("){
+								pid="PA2"+pcount;
+								pcount++;
+								parenthesis.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue==")"){
+								pid=parenthesis.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else if(tokenvalue=="["){
+								pid="BR"+bcount;
+								bcount++;
+								bracket.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue=="]"){
+								pid=bracket.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else if(tokenvalue=="{"){
+								pid="CBR"+cbcount;
+								cbcount++;
+								cbracket.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue=="}"){
+								pid=cbracket.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else{	
+								cont+="<span class='oper'>"+tokenvalue+"</span>";		
+						}
+				}else{
+						cont+=tokenvalue;
+				}
+				
+				if(tokens[i].kind=="newline"){
+					
+					str+=cont+"<br>";
+					cont="";
+				}
+		}
+		str+="</span>";
+		return str;
+	
+}
+function rendercode2(codestring,destinationdiv)
+{
+		tokens = [];
+		
+		important = [];
+		for(var i=0;i<retdata.impwords.length;i++){
+				important.push(retdata.impwords[i]);		
+		}
+
+		keywords=[];
+		for(var i=0;i<retdata.wordlist.length;i++){
+				if(retdata.wordlist[i][0]==retdata.chosenwordlist){
+						keywords.push(retdata.wordlist[i][1]);
+				}
+		}
+	
+		tokenize(codestring,"<>+-&","=>&:");
+				
+		// Iterate over token objects and print kind of each token and token type in window 
+		str="";
+		cont="";
+
+		str+="<span class='norm'>";
+		
+		pcount=0;
+		parenthesis=new Array();
+		bcount=0;
+		bracket=new Array();
+		cbcount=0;
+		cbracket=new Array();
+
+		pid="";
+		
+		var iwcounter=0;
+
+		for(i=0;i<tokens.length;i++){
+				
+				tokenvalue=String(tokens[i].val);
+
+				// Make white space characters
+				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
+			//	tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
+				if(tokens[i].kind=="rowcomment"){ 
+						cont+="<span class='comment'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="blockcomment"){ 
+							cont+="<span class='comment'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="string"){ 
+							cont+="<span class='string'>\""+tokenvalue+"\"</span>";
+				}else if(tokens[i].kind=="number"){
+						cont+="<span class='number'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="name"){
+						var foundkey=0;
+						
+						for(var ind in keywords){
+								word=keywords[ind];
+								if(word==tokenvalue){
+										foundkey=1;
+										break;		
+								}
+						}								
+						
+						for(var ind in important){
+								word=important[ind];
+								if(word==tokenvalue){
+										foundkey=2;
+										break;		
+								}
+						}
+						
+						if(foundkey==1){
+								cont+="<span class='keyword'>"+tokenvalue+"</span>";														
+						}else if(foundkey==2){
+								iwcounter++;
+								
+								highlightKeyword("scrollTop")
+								
+								cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
+						}else{
+								cont+=tokenvalue;
+						}
+						
+				}else if(tokens[i].kind=="operator"){
+						if(tokenvalue=="("){
+								pid="PA2"+pcount;
+								pcount++;
+								parenthesis.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue==")"){
+								pid=parenthesis.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else if(tokenvalue=="["){
+								pid="BR"+bcount;
+								bcount++;
+								bracket.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue=="]"){
+								pid=bracket.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else if(tokenvalue=="{"){
+								pid="CBR"+cbcount;
+								cbcount++;
+								cbracket.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue=="}"){
+								pid=cbracket.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else{	
+								cont+="<span class='oper'>"+tokenvalue+"</span>";		
+						}
+				}else{
+						cont+=tokenvalue;
+				}
+				
+				if(tokens[i].kind=="newline"){
+					
+					str+=cont+"<br>";
+					cont="";
+				}
+		}
+		str+="</span>";
+		return str;
 }
 function linenumbers()
 {	
