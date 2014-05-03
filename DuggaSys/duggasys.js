@@ -65,77 +65,79 @@ function returnedSection(data)
 
 		// For now we only have two kinds of sections
 		for(i=0;i<data['entries'].length;i++){
-			switch(parseInt(data['entries'][i]['kind'])) {
-				case 0:
-					// Styling for header row
-					str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
-					if(sessionkind===1){
-						str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' ><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
-						str+="<span class='smallishbutt'>";
-						str+=Sectionbutton("sectionDel","MinusT.svg",data['entries'][i]['lid'],"BIG");											
+			if (parseInt(data['entries'][i]['visible']) === 1 || sessionkind === 1) {
+				switch(parseInt(data['entries'][i]['kind'])) {
+					case 0:
+						// Styling for header row
+						str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
+						if(sessionkind===1){
+							str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' ><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+							str+="<span class='smallishbutt'>";
+							str+=Sectionbutton("sectionDel","MinusT.svg",data['entries'][i]['lid'],"BIG");											
+							str+="</span>";
+						}else{
+							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";						
+						}
 						str+="</span>";
-					}else{
-						str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";						
-					}
-					str+="</span>";
-					break;
-				case 1:
-					//Styling for section row
-					str+="<span class='butt' id='Entry_"+data['entries'][i]['lid']+"' >";
+						break;
+					case 1:
+						//Styling for section row
+						str+="<span class='butt' id='Entry_"+data['entries'][i]['lid']+"' >";
 
-					// If we are allowed to edit
-					if(sessionkind===1){
-						str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";
-						str+="<span class='smallbutt'>";
-						str+=Sectionbutton("sectionDel","MinusS.svg",data['entries'][i]['lid'],"SMALL");
+						// If we are allowed to edit
+						if(sessionkind===1){
+							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";
+							str+="<span class='smallbutt'>";
+							str+=Sectionbutton("sectionDel","MinusS.svg",data['entries'][i]['lid'],"SMALL");
+							str+="</span>";
+						}else{
+							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";						
+						}
+						
+						// End of butt span
+						str+="</span>"
+						break;
+					case 2:
+						// Styling for example row
+						str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
+						if(sessionkind===1){
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span class='smallbutt'>";
+								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="</span>"
+						}else{
+								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+						}
 						str+="</span>";
-					}else{
-						str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";						
+						break;
+					case 3:
+						// Styling for test row
+						str+="<span class='test' id='Entry_"+data['entries'][i]['lid']+"'>";
+						if(sessionkind===1){
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span class='smallbutt'>";
+								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="</span>"
+						}else{
+								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+						}
+						str+="</span>";
+						break;
+					default:
+					case 4:
+						// Styling for 'others' row
+						str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
+						if(sessionkind===1){
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span class='smallbutt'>";
+								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="</span>"
+						}else{
+								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+						}
+						str+="</span>";
+						break;
 					}
-					
-					// End of butt span
-					str+="</span>"
-					break;
-				case 2:
-					// Styling for example row
-					str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
-					if(sessionkind===1){
-							str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
-							str+="<span class='smallbutt'>";
-							str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
-							str+="</span>"
-					}else{
-							str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
-					}
-					str+="</span>";
-					break;
-				case 3:
-					// Styling for test row
-					str+="<span class='test' id='Entry_"+data['entries'][i]['lid']+"'>";
-					if(sessionkind===1){
-							str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
-							str+="<span class='smallbutt'>";
-							str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
-							str+="</span>"
-					}else{
-							str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
-					}
-					str+="</span>";
-					break;
-				default:
-				case 4:
-					// Styling for 'others' row
-					str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
-					if(sessionkind===1){
-							str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
-							str+="<span class='smallbutt'>";
-							str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
-							str+="</span>"
-					}else{
-							str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
-					}
-					str+="</span>";
-					break;
 				}
 			}
 			

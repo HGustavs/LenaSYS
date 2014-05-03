@@ -38,11 +38,11 @@
 		//------------------------------------------------------------------------------------------------
 		$courseid = getCourseId($coursename);
 		$entries=array();
-		$query = "SELECT lid,entryname,pos,kind,link FROM listentries WHERE listentries.cid='$courseid' ORDER BY pos;";		
+		$query = "SELECT lid,entryname,pos,kind,link,visible FROM listentries WHERE listentries.cid='$courseid' ORDER BY pos;";		
 		$result=mysql_query($query);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 		while ($row = mysql_fetch_assoc($result)){
-				array_push($entries,array('entryname'=>$row['entryname'],'lid'=>$row['lid'],'pos'=>$row['pos'],'kind'=>$row['kind'], 'link'=>$row['link']));
+				array_push($entries,array('entryname'=>$row['entryname'],'lid'=>$row['lid'],'pos'=>$row['pos'],'kind'=>$row['kind'], 'link'=>$row['link'], 'visible'=>$row['visible']));
 		}
 	
 		$array = array('entries'=>$entries,"debug"=>$debug);
