@@ -19,11 +19,12 @@ function Canvasrenderer()
 	this.mouseCursorBackground;
 	this.mouseCursorX = 1;
 	this.mouseCursorY = 1;
-	// Mouse click (true, false), background and position
+	// Mouse click (true, false), background, position, size
 	this.mouseClick;
 	this.mouseClickBackground;
 	this.mouseClickX = 1;
 	this.mouseClickY = 1;
+	this.mouseClickRadius = 20;
 	// Image ration, for downscaling
 	this.scaleRatio = 1;
 	this.startTime;
@@ -769,7 +770,7 @@ function Canvasrenderer()
 		x *= this.scaleRatio;
 
 		// Restore mouse click background
-		ctx.putImageData(this.mouseClickBackground, this.mouseClickX - 20, this.mouseClickY - 20);
+		ctx.putImageData(this.mouseClickBackground, this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius);
 		// Restore background
 		ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
 
@@ -829,7 +830,7 @@ function Canvasrenderer()
 			// New mouse cursor background
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17, 23);
 			// New mouse click background
-			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
+			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+1, canvas.mouseClickRadius*2+1);
 
 			// Render mouse click
 			canvas.drawMouseClick();
@@ -839,13 +840,14 @@ function Canvasrenderer()
 
 	this.drawMouseClick = function() 
 	{
-		// Draw mouse click (yellow circle) if active
+		// Draw mouse click (yellow circle with radius of 20px) if active
 		if (this.mouseClick) {
 			// Save previous state
 			ctx.save();
 			// Draw mouse click
 			ctx.beginPath();
-			ctx.arc(canvas.mouseClickX, canvas.mouseClickY, 20, 0, 2*Math.PI);
+			ctx.arc(canvas.mouseClickX, canvas.mouseClickY, this.mouseClickRadius, 0, 2*Math.PI);
+			// Yellow with 50% opacity
 			ctx.fillStyle = 'rgba(255, 255, 0, 0.5)';
 			ctx.fill();
 			// Restore previous state
