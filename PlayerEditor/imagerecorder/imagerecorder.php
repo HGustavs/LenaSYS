@@ -9,12 +9,15 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
+	
 		<div id="library-name-dialog" title="Library name">
 			<h3><strong>Library name?</strong></h3>
 			<p>Please choose your library name.</p>
 			<input type="value" id="library-name-input" onClick="this.value='';" value="<?php echo date("YmdHis").rand(1,100); ?>">
 			<input type="button" id="library-name-button" value="OK">
 		</div>
+		
+		<div id="thumbMenu"></div>
 		
 		<div class="wrapper">
 			<div class="header">Image Recorder</div>
@@ -28,7 +31,7 @@
 				Y(realtime): <span class="cordFont"><span id="yCordReal"></span></span>&nbsp;	
 			</div>
 			
-			
+			<div class='thumbMenu'></div>
 			<!--Creating the big canvas, this canvas contains the big picture-->
 			<canvas id="ImageCanvas" class="canvasStyle" width="1280" height="720"></canvas>
 			
