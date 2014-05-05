@@ -9,12 +9,14 @@ function checklogin()
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
+	} else if(array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
+		return login($_COOKIE['username'], $_COOKIE['password'], false);
 	} else {		
 		return false;
 	}
 }	
 
-function login()
+function login($username, $password, $savelogin)
 {
 	global $pdo;
 
@@ -36,13 +38,18 @@ function login()
 	if($query->rowCount() > 0) {
 		// Fetch the result
 		$row = $query->fetch(PDO::FETCH_ASSOC);
-
-		if(password_verify($password, $row['password'])) {
+		if(password_verify($password, $row['password']) || sha1($row['password']) === $password) {
 			$_SESSION['uid'] = $row['uid'];
 			$_SESSION["loginname"]=$row['username'];
 			$_SESSION["passwd"]=$row['password'];
 			$_SESSION["newpw"]=($row["newpassword"] > 0);
 			$_SESSION["superuser"]=$row['superuser'];
+
+			// Save some login details in cookies.
+			if($savelogin) {
+				setcookie('username', $row['username'], time()+60*60*24*30);
+				setcookie('password', sha1($row['password']), time()+60*60*24*30);
+			}
 			return true;
 		} else {
 			return false;
