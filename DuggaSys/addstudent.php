@@ -25,7 +25,7 @@
 		<textarea placeholder="Namn, Pnr, password" name="string" id="string" cols="30"></textarea>
 		<br>
 		<input type="submit" value="Lägg till student"/>
-		<input type="submit" value="Cancel"/>
+		<a href="students.php"><input type="button" value="Cancel"/></a>
 	</form>
 
 <?php	if(isset($_POST['string'])){
@@ -46,7 +46,7 @@
 			echo "<br>";
 			echo "<br>";
 			// Lägger till värden i tabellen.
-			$querystring='INSERT INTO user (username, ssn, password) VALUES(:username,:ssn,:password);';	
+			$querystring='INSERT INTO user (username, ssn, password, newpassword) VALUES(:username,:ssn,:password, 1);';	
 			$stmt = $pdo->prepare($querystring);
 			$stmt->bindParam(':username', $username);
 			$stmt->bindParam(':ssn', $ssn);
