@@ -125,5 +125,9 @@ function logout()
 
 	// Finally, destroy the session.
 	session_destroy();
+
+	// Remove the cookies.
+	setcookie('username', '', 0);
+	setcookie('password', '', 0);
 }
 ?>
