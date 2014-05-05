@@ -25,9 +25,17 @@ function imagerecorder(canvas)
 	
 	var files;					// store files thats being uploaded
 	
+	
+	// Print "click to start rec" image on canvas
+	var initImage = new Image();
+	initImage.src = "img/init.png";
+	ctx.drawImage(initImage,0,0, width = 1280, height = 720);
+	
+	
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
 		$(".wrapper").hide();
+		
 		
 		// Get library name when user clicks OK
 		$("#library-name-button").click(function(){
@@ -143,15 +151,6 @@ function imagerecorder(canvas)
 		showThumbMenu($(this).index());
 	});
 	
-	function rebuildImgLibrary() {
-		imagelibrary = [];
-		// Loop through all li in the ul
-		$("li", "#sortableThumbs").each(function(index) {
-			var src = $("img", this).attr("src");
-			// Rebuild arr
-			imagelibrary[index] = src;
-		});
-	}
 	function showThumbMenu(index) {
 		// Clear old thumbMenu
 		$(".thumbMenu").html("");
@@ -181,12 +180,13 @@ function imagerecorder(canvas)
 				var selectedli = $("#sortableThumbs .tli").eq(index);
 				var imgPath = $("img", selectedli).attr("src");
 				
+				// Remove the thumbnail from the list
 				$(selectedli).remove();
 				
 				// Rebuild imagelibrary arr
 				rebuildImgLibrary();
 				
-				// Remove image source if theres no other copies of it in the thumbs
+				// Remove image source if there's no other copies of it.
 				if (imagelibrary.indexOf(imgPath) == -1) {
 					$.ajax({
 						url: "delete.php",
@@ -197,15 +197,13 @@ function imagerecorder(canvas)
 						cache: false,
 						dataType: "json",
 						success: function(data) {
-							alert(data.SUCCESS);
+							console.log(data.SUCCESS);
 						},
 						error: function() {
-							alert("error");
+							console.log("Error on AJAX call");
 						}
 					});
 				} 
-
-				// alert("Not implemented yet");
 			}
 		}));
 		
@@ -230,6 +228,7 @@ function imagerecorder(canvas)
 			
 			// Clears screen. May need a better solution.
 			canvas.width = canvas.width; 
+			
 			var ratio = 1;
 			// Picture need to be scaled down
 			if (imageData.width > canvas.width || imageData.height > canvas.height) {
@@ -261,7 +260,18 @@ function imagerecorder(canvas)
 			return -1;
 		}
 	}
-
+	
+	// Rebuild imagelibrary
+	function rebuildImgLibrary() {
+		imagelibrary = [];
+		// Loop through all li in the ul
+		$("li", "#sortableThumbs").each(function(index) {
+			var src = $("img", this).attr("src");
+			// Rebuild arr
+			imagelibrary[index] = src;
+		});
+	}
+	
 	// Calculate the image scale ratio
 	function updateScaleRatio() {
 		if (imageData != undefined) {
