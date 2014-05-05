@@ -63,7 +63,7 @@ function dehighlightimp(keywid)
 	//	$("#"+keywid).removeClass("imphi");					
 }
 
-/* THIS FUNCTION IS REPLACED BY styleHeader()*/				
+/* THIS FUNCTION IS REPLACED BY stylecode()*/
 function Bold()
 {
 		document.execCommand('Bold',false,'');
@@ -193,6 +193,11 @@ function dehighlightop(otherop,thisop)
 function Code()
 {
 		switchDrop("codedrop");
+}
+
+function Images()
+{
+    switchDrop("imgdrop");
 }
 
 function generalSettings()

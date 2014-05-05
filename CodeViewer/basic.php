@@ -29,6 +29,7 @@ include "../Shared/basic.php";
 				if($kind){
 						echo '<span id="codedrop" class="dropdown codedrop" style="overflow:scroll;"><div class="dropdownback">Code viewer Code File Selector</div></span>';
 						echo '<span id="docudrop" class="dropdown docudrop" style="overflow:scroll;"><div class="dropdownback">General settings</div></span>';
+                        echo '<span id="imgdrop" class="dropdown imgdrop" style="overflow:scroll;"><div class="dropdownback">Image Selector</div></span>';
 				}
 
 				echo '<div id="buttomenu">';
@@ -64,6 +65,7 @@ include "../Shared/basic.php";
                     echo '<td class="butto" title="Code example" onclick="styleCode();"><img src="new icons/hotdog_button.svg" /></td>';
                     echo '<td class="butto" title="Remove formatting" onclick="styleReset();"><img src="new icons/hotdog_button.svg" /></td>';
 					echo '<td class="butto" title="Save" onclick="Save();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td class="butto" title="Select image" onclick="Images();"><img src="new icons/list_codefiles.svg" /></td>';
                     echo '</tr></table></div>';
 
 
