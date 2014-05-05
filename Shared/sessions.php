@@ -1,5 +1,5 @@
 <?php
-require_once('../Shared/external/password.php');
+require_once(dirname(__FILE__) . '/../Shared/external/password.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------

@@ -36,6 +36,10 @@ h2 {
     font-size: 1.5em;
     line-height: 1.5em; 
 }
+h3 {
+    font-size: 1.3em;
+    line-height: 1.3em; 
+}
 h4 {
     font-size: 1.2em;
     line-height: 1.5em;
@@ -54,7 +58,7 @@ header {
     width: 100%;
     background: #614875;
     position: fixed;
-    z-index: 999999;
+    z-index: 5000;
     top: 0px;
     left: 0px;
 }
@@ -80,7 +84,18 @@ header {
         nav#user img {
             cursor: pointer;
         }
+.load {
+    background:url('images/loader.gif') no-repeat left 0;
+    width: 50px;
+    height: 50px;
+    margin:0px auto;
 
+    -webkit-animation: fadein 2s; /* Safari and Chrome */
+       -moz-animation: fadein 2s; /* Firefox */
+        -ms-animation: fadein 2s; /* Internet Explorer */
+         -o-animation: fadein 2s; /* Opera */
+            animation: fadein 2s;
+}
 #content {
     margin:0px auto;
     position:relative;
@@ -193,6 +208,7 @@ button {
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
+    height: 25px;
     background-color: #fff;
     background-image: none;
     border: 1px solid #ccc;
@@ -219,12 +235,11 @@ table.list {
     color: #333;
     width: 100%;
     font-size:  0.9em;
-    border: 1px solid #ccc;
 }
 table.list th {
     padding: 8px;
     font-weight: bold;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 5px solid #ddd;
     text-align: left;
 }
 table.list tr {
@@ -246,3 +261,37 @@ table.list tr.red {
     background-color: #f2dede;
     border-color: #eed3d7;
 }
+/* ANIMATIONS START */
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-moz-keyframes fadein { /* Firefox */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-o-keyframes fadein { /* Opera */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+/* ANIMATIONS END */
