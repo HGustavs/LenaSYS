@@ -154,6 +154,12 @@
 	border-color: rgb(0,0,0) transparent;
 }
 
+h1 {
+    font-family: arial,serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .forwdrop {
     right: 20px;
     height: auto;
