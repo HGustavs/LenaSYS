@@ -86,3 +86,34 @@ ul {
 	cursor: pointer;
 	background-color: #fed;
 }
+
+/* thumbnail menu */
+.thumbMenu {
+	z-index: 2;
+	display: none;
+	position: absolute;
+	border-radius: 4px;
+	background-color: #fff;
+	box-shadow: 10px 10px 10px #3d3d3d;
+	border: 1px solid #000;
+}
+.thumbMenuOpt {
+	font-family: verdana, arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	display: block;
+	background-color: #fff;
+	padding: 10px;
+}
+.thumbMenuOpt:Link {
+	color: #000;
+	text-decoration: none;
+}
+.thumbMenuOpt:visited {
+	color: #000;
+	text-decoration: none;
+}
+.thumbMenuOpt:hover {
+	background-color: #3d3d3d;
+	color: #fff;
+}
