@@ -4,12 +4,19 @@ include_once "../../coursesyspw.php";
 include_once "../Shared/database.php";
 include_once "../Shared/sessions.php";
 
+if(array_key_exists('username', $_POST) && array_key_exists('password', $_POST)) {
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+}
+
+$savelogin = array_key_exists('saveuserlogin', $_POST) && $_POST['saveuserlogin'] == 'on';
+
 dbConnect();
 
 // Default values
 $res = array("login" => "failed");
 
-if(login()) {
+if(login($username, $password, $savelogin)) {
 	// Successfully logged in, return this.
 	$res["login"] = "success";
 

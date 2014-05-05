@@ -4,6 +4,7 @@ include_once("basic.php");
 
 dbConnect();
 session_start();
+checklogin();
 ?>
 <html>
 	<head>
