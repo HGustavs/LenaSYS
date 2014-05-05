@@ -373,10 +373,14 @@
 			}else{
 				this.log('<getImageData x="'+x+'" y="'+y+'" width="'+width+'" height="'+height+'"/>'); 
 			}
-	        return this.ctx.getImageData(x, y, width, height);
+	       		return this.ctx.getImageData(x, y, width, height);
 		}
 		this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){
 			this.UpdateAllFunctions();
+			// We must log image data to file as we otherwise won't have the actual information
+			// when we try to recreate the object in the player. 
+			this.logImageData(imgData);
+
 			if(optimize == true){
 				this.log('<putImgData imgdata="'+imgData+'" x="'+x+'" y="'+y+'" dx="'+dirtyX+'" dy="'+dirtyY+'" dw="'+dirtyWidth+'" dh="'+dirtyHeight+'"/>'); 
 			}else{
@@ -391,6 +395,7 @@
 			}else{
 				this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y);
 			}
+			this.logImageData(imgData);
 	        return this.ctx.putImageData(imgData,x,y);
 		}
 		//Other methods.
@@ -547,6 +552,20 @@
 			return string;
 		
 		}
+		/**
+		This method logs an imageData object to the log file. This method gets
+		called when a method that uses imagedata gets called, for example
+		putImageData. 
+		**/   	
+		this.logImageData = function(imgData){
+			var imgstr = "<imageData values =\"";
+			valueStr = "";
+			for(i = 0; i < imgData.data.length; ++i){
+				valueStr += imgData.data[i] + " ";
+			}
+			imgstr += valueStr + "\"" + "/>";
+			this.log(imgstr);
+		}	
 		
 		var shorterProperties ={shadowOffsetY:"shdwOffsetY",
 								shadowOffsetX:"shdwOffsetX",

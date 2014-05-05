@@ -30,20 +30,22 @@ function imagerecorder(canvas)
 		$("#library-name-button").click(function(){
 			var libName = $("#library-name-input").val();
 			
-			if(libName == ""){
-				alert("Please fill the libaryname");
-			}
-			// Check that name length >0
-			if(libName.length > 0) { 
-				// TODO: Sanitize input (can't create folders with "? \ :"-chars etc.)
-				if(1 == 1) {
+			// Check that name length >0 && <=32
+			if(libName.length > 0 && libName.length <= 32) { 
+				// Only allow A-Z & 0-9 in libname
+				var regExp = /[^a-z0-9]/i;
+				if(!regExp.test(libName)) {
 					libraryName = libName;
 					// Hide dialog and show wrapper
 					$("#library-name-dialog").fadeOut(350);
 					$(".wrapper").fadeIn(355);
-				} else {
-					alert("Please only use A-Z 0-9");
 				}
+				else {
+					alert("The library name can only contain characters A-Z and 0-9.");
+				}
+			}
+			else {
+				alert("The library name needs to be 1-32 characters long.");
 			}
 		});
 		
