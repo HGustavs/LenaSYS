@@ -19,6 +19,11 @@ function Canvasrenderer()
 	this.mouseCursorBackground;
 	this.mouseCursorX = 1;
 	this.mouseCursorY = 1;
+	// Mouse click (true, false), background and position
+	this.mouseClick;
+	this.mouseClickBackground;
+	this.mouseClickX = 1;
+	this.mouseClickY = 1;
 	// Image ration, for downscaling
 	this.scaleRatio = 1;
 	this.startTime;
@@ -762,21 +767,40 @@ function Canvasrenderer()
 		// Calculate positions using the proper scale ratio
 		y *= this.scaleRatio;
 		x *= this.scaleRatio;
+
+		// Restore mouse click background
+		ctx.putImageData(this.mouseClickBackground, this.mouseClickX - 20, this.mouseClickY - 20);
 		// Restore background
 		ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
+
 		// Save background
-		this.mouseCursorBackground = ctx.getImageData(x ,y ,18,24);
+		this.mouseCursorBackground = ctx.getImageData(x, y, 18, 24);
 		// Save mouse position
 		this.mouseCursorX = x;
 		this.mouseCursorY = y;
 
+		// Draw mouse click (if any)
+		this.drawMouseClick();
 		// Draw mouse pointer
 		ctx.drawImage(this.mouseCursor, x, y);
 	}
 
 	this.mouseclick = function(x, y)
 	{
-		console.log("mouseclick");
+		// Calculate positions using the proper scale ratio
+		this.mouseClickX = x * this.scaleRatio;
+		this.mouseClickY = y * this.scaleRatio;
+
+		// Make visible/active
+		this.mouseClick = true;
+
+		// Draw mouse click
+		this.drawMouseClick();
+
+		// Remove efter 1s
+		setTimeout(function(){
+			canvas.mouseClick = false;
+		}, 1000);
 	}
 
 	this.picture = function(src)
@@ -804,9 +828,30 @@ function Canvasrenderer()
 			ctx.drawImage(image , 0, 0, image.width * canvas.scaleRatio, image.height * canvas.scaleRatio);
 			// New mouse cursor background
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17, 23);
+			// New mouse click background
+			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
+
+			// Render mouse click
+			canvas.drawMouseClick();
 		}
 		image.src = src;
 	} 
+
+	this.drawMouseClick = function() 
+	{
+		// Draw mouse click (yellow circle) if active
+		if (this.mouseClick) {
+			// Save previous state
+			ctx.save();
+			// Draw mouse click
+			ctx.beginPath();
+			ctx.arc(canvas.mouseClickX, canvas.mouseClickY, 20, 0, 2*Math.PI);
+			ctx.fillStyle = 'rgba(255, 255, 0, 0.5)';
+			ctx.fill();
+			// Restore previous state
+			ctx.restore();
+		}
+	}
 
 	/*
 	 *
@@ -835,7 +880,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","canvas4.xml",false);
+	xmlhttp.open("GET","imagerecording2.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	
