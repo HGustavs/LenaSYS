@@ -390,12 +390,12 @@
 		}
 		this.putImageData = function(imgData,x,y){
 			this.UpdateAllFunctions();
-			if(optimize == true){
-				this.log('<putImgData imgdata="'+imgData+'" x="'+x+'" y="'+y); 
-			}else{
-				this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y);
-			}
 			this.logImageData(imgData);
+			if(optimize == true){
+				this.log('<putImgData imgdata="'+imgData+'" x="'+x+'" y="'+y + "\"/>"); 
+			}else{
+				this.log('<putImageData imgdata="'+imgData+'" x="'+x+'" y="'+y + "\"/>");
+			}
 	        return this.ctx.putImageData(imgData,x,y);
 		}
 		//Other methods.
@@ -558,10 +558,11 @@
 		putImageData. 
 		**/   	
 		this.logImageData = function(imgData){
-			var imgstr = "<imageData values =\"";
+			var imgstr = "<imageData width=\"" + imgData.width + "\"" + " height=\"" + imgData.height + "\"" + " values =\"";
 			valueStr = "";
 			for(i = 0; i < imgData.data.length; ++i){
-				valueStr += imgData.data[i] + " ";
+				valueStr += imgData.data[i];
+				if(i < imgData.data.length-1) valueStr += " ";
 			}
 			imgstr += valueStr + "\"" + "/>";
 			this.log(imgstr);
