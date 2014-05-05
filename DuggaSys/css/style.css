@@ -541,9 +541,12 @@ button.option {
 	font-family:arial;
 	text-align:center;
 }
+.course-table td:hover {
+	background-color:#999;
+}
  	
-.course-table tr:nth-child(even) {background: #FFF}
-.course-table tr:nth-child(odd) {background: #CCC}
+.course-table tr:nth-child(even) {background: #6B6B6B}
+.course-table tr:nth-child(odd) {background: #9F9F9F}
 
 
 .logincenter {

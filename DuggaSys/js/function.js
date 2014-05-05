@@ -1,6 +1,5 @@
 ﻿$( document ).ready(function() {
 	page = 	new getPage();
-	getTest();
 	page.load()
 	page.show();
 });
