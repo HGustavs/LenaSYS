@@ -36,6 +36,7 @@ include "../Shared/basic.php";
 				if($kind){
 
 								echo '<td class="buttospacer">&nbsp;</td>';
+								echo '<td class="butto showdesktop" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName" contenteditable="true">Example Code Page</td>';
 								echo '<td class="butto showdesktop" title="Settings" id="hidesettings"><img src="new icons/general_settings_button.svg" /></td>';
 								echo '<td class="butto showdesktop" title="Select codesource" id="hidecode"><img src="new icons/list_codefiles.svg" /></td>';
@@ -44,8 +45,8 @@ include "../Shared/basic.php";
 				}else{
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';
 				}		
+
 						echo '<td class="butto showmobile" title="Menu" id="hidehotdog"><img src="new icons/hotdog_button.svg" /></td>';
-						echo '<td class="butto showdesktop" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 						echo '<td class="butto showdesktop" id="numberbutton" title="Show/hide linenumbers" onclick="fadelinenumbers();"><img src="new icons/numbers_button.svg" /></td>';
 						echo '<td class="butto beforebutton showdesktop" id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
 						echo '<td class="butto afterbutton showdesktop" id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();"><img src="new icons/forward_button.svg" /></td>';
