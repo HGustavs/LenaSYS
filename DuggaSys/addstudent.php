@@ -38,14 +38,14 @@
     return $password;
 	}
 
+	$str = $_POST['string'];
+
+	$row=explode("\r\n", $str);
+	foreach ($row as $row1) {
+	list($ssn, $name, $username)=(explode("\t",$row1));
+	list($lastname, $firstname)=(explode(", ",$name));
 	$password = random_password(8);
 
-	$str = $_POST['string'];
-	list($ssn, $name, $username)=(explode("\t",$str));
-	list($lastname, $firstname)=(explode(", ",$name));
-
-			echo "<br>";
-			echo "<br>";
 			// Lägger till värden i tabellen.
 			$querystring='INSERT INTO user (username, firstname, lastname, ssn, password, newpassword) VALUES(:username,:firstname,:lastname,:ssn,:password, 1);';	
 			$stmt = $pdo->prepare($querystring);
@@ -65,6 +65,7 @@
 				echo "Användare finns redan";
 				}
 			}
+	}
 		}
 		?>
 </div>
