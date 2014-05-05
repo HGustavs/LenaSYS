@@ -27,26 +27,10 @@ dbConnect();
 	}
 	</script>
     <header>
-    	<nav id="navigate">
-        	<!--<img src="css/svg/Up.svg">-->
-        </nav>
-        <div id="title">
-        	<h1>LenaSYS</h1>
-        </div>
-        <nav id="user">
-        	<span>Inloggad: Test</span>
-        	<img src="../CodeViewer/icons/Man.svg" onclick="loginbox();">
-        </nav>
+    	  <div class="load"></div>
     </header>
-    <div id="content">
+    <div id="content"></div>
 
-    	<!--<div style="margin-right:2px;margin-bottom:5px; float:right;"><input class='submit-button' type='button' value='Add course'></div>-->
-<?php
-	//courselist();
-?>
-	</div>
-<?php
-	loginwins();
-?>			
+
 </body>
 </html>
