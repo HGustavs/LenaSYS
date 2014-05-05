@@ -31,20 +31,21 @@ function getPage() {
 		for (var i = this.pages.length - 1; i >= 0; i--) {
 			name = this.pages[i].replace(/^.*[\\\/]/, '');
 			name = name.replace(/.[^.]+$/,'');
-			this.page = name;
 			if(0<url.indexOf("#"+name)) {
+				this.page = name;
 				$("#content").load("pages/"+this.pages[i]);
-				$("#title h1").html(title+" - "+name.capitalize());
-				document.title = title+" | "+name.capitalize();
+				$("#title h1").html(title+" - "+this.page.capitalize());
+				document.title = title+" | "+this.page.capitalize();
 				var found=true;
-				console.log(name.capitalize()+" page loaded!")
+				console.log(this.page.capitalize()+" page loaded!")
 			}
 		};	
 		if(!found) {
 			$("#content").load("pages/404.php");
 			$("#title h1").html(title+" - 404");
 			document.title = title+" | "+"404";
-			console.log(name+", page not found!");
+			console.log(this.page+", page not found!");
+			this.page = "404";
 		}
 	}
 	this.title = function() {
