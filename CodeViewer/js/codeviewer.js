@@ -62,7 +62,8 @@ function dehighlightimp(keywid)
 {		 /* THIS FUCNTION IS NOT USED AT THE MOMENT. YOU CAN FIND THIS FUCNTIONALITY IN dehighlightKeyword() */
 	//	$("#"+keywid).removeClass("imphi");					
 }
-				
+
+/* THIS FUNCTION IS REPLACED BY styleHeader()*/				
 function Bold()
 {
 		document.execCommand('Bold',false,'');
@@ -72,7 +73,19 @@ function Bold()
 
 function styleHeader()
 {
-    document.execCommand('formatBlock', false, "H1");
+	if (window.getSelection) {  // all browsers, except IE before version 9
+		var range = window.getSelection().toString();
+            
+     }
+	else {
+		if (document.selection.createRange) { // Internet Explorer
+       		var range = document.selection.createRange().toString();
+		}
+	}
+	document.execCommand("insertHTML", false, "<h1>"+range+"</h1>");
+	
+	/* This solution sets heading on the whole row*/
+//    document.execCommand('formatBlock', false, "H1");
 }
 
 /* style codeexample in desc.box */
@@ -88,32 +101,36 @@ function styleCode()
 
             }
         }
+        
+    	 range = renderdesccode(range);
     //    document.execCommand("insertHTML",false,rendercode2(range,"docucontent"));
-		document.execCommand("insertHTML", false, "<span class='codestyle'></span>");
-		document.execCommand("insertText", false, range);
-}
-
-function replaceAll(find, replace, str)
-{
-    return str.replace(new RegExp(find, 'g'), replace);
+		document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
 }
 
 
 //Used in stylebutton for codeexample-description-box. Removes all styling.
 function styleReset()
 {
-    document.execCommand('removeformat', false, "");
-
-    var container = null;
+	// get selected text
     if (document.selection) //for IE
-        container = document.selection.createRange().parentElement();
+       var container = document.selection.createRange().parentElement();
     else {
         var select = window.getSelection();
         if (select.rangeCount > 0)
-            container = select.getRangeAt(0).startContainer.parentNode;
+          var container = select.getRangeAt(0).startContainer.parentNode;
 	}
+
+	// reset style on heading.
+	if($(container).is("h1")){
+		 $(container).contents().unwrap();
+	}else{	
+		// reset style on all other elements
+		document.execCommand('removeformat', false, "");
+	}
+	// reset style on heading.
+	 //for jQuery1.4+
 	//Check that the selected parentnode is not a div. If it is there's a good chance that it's the box-div that will be removed.
-	while(!$(container).is("div")){ 
+/*	while(!$(container).is("div")){ 
 	    $(container).contents().unwrap(); //for jQuery1.4+
 	
 	    if (document.selection) //for IE
@@ -125,9 +142,8 @@ function styleReset()
 	        }    
 	    }
 	    
-	}
+	} */
 }
-
 
 document.addEventListener("paste", function(e) {
     // cancel paste
@@ -138,6 +154,10 @@ document.addEventListener("paste", function(e) {
     document.execCommand("insertText", false, text);
 });
 
+function replaceAll(find, replace, str)
+{
+    return str.replace(new RegExp(find, 'g'), replace);
+}
 
 
 
@@ -652,11 +672,14 @@ function returned(data)
 		
 		docuwindow.innerHTML = desc;
 		
+		//  Fill description with code using tokenizer.
 		var cs = docuwindow.getElementsByClassName("codestyle");
 		for(var i=0; i<cs.length; i++){
-			desc = desc.replace(cs[i].innerHTML,test(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML,"docuwindow"))));
+			desc = desc.replace(cs[i].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML))));
 		}
 		docuwindow.innerHTML = desc;
+		
+		
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");
 
@@ -961,7 +984,6 @@ function error(str,val,row)
 
 function tokenize(instring,inprefix,insuffix)
 {
-
 // replace HTML-entities
 instring = replaceAll("&lt;","<",instring);
 instring = replaceAll("&gt;",">",instring);
@@ -980,7 +1002,6 @@ var row=1;										// current row value
 c = instring.charAt(i);
 while (c) {		// c == first character in each word
 		from = i;
-
 		if (c <= ' '){																					// White space and carriage return
 			  if((c=='\n')||(c=='\r')||(c =='')){
 						maketoken('newline',"",i,i,row);
@@ -1123,7 +1144,7 @@ while (c) {		// c == first character in each word
                 str+=c;                
             }
             i++;
-        }
+        }	
 				maketoken('rowcomment',str,from,i,row);
 				/* This does not have to be hear because a newline creates in coderender function 
 				maketoken('newline',"",i,i,row); */													                
@@ -1166,8 +1187,7 @@ while (c) {		// c == first character in each word
     		maketoken('operator',c,from,i,row);
     		c = instring.charAt(i);
 		}
-		
-}
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -1195,7 +1215,6 @@ function rendercode(codestring,destinationdiv)
 		for(var i=0;i<retdata.improws.length;i++){
 				improws.push(retdata.improws[i]);
 		}
-	
 		tokenize(codestring,"<>+-&","=>&:");
 				
 		// Iterate over token objects and print kind of each token and token type in window 
@@ -1220,6 +1239,7 @@ function rendercode(codestring,destinationdiv)
 		for(i=0;i<tokens.length;i++){
 				
 				tokenvalue=String(tokens[i].val);
+				
 				// Make white space characters
 				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
 				tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
@@ -1294,9 +1314,8 @@ function rendercode(codestring,destinationdiv)
 				}else{
 						cont+=tokenvalue;
 				}
-				
-				if(tokens[i].kind=="newline"){
-				
+						// tokens.length-1 so the last line will be printed out
+				if(tokens[i].kind=="newline" || i==tokens.length-1){  
 						lineno++;
 
 						// Make line number										
@@ -1331,14 +1350,17 @@ function rendercode(codestring,destinationdiv)
 										
 				}
 		}
-		str+="</div>";						
+		str+="</div>";	
 		printout.innerHTML=str;
 		linenumbers();
 }
-function test(codestring, destinationdiv){
+function renderdesccode(codestring){
 	tokens = [];
 
 	important = [];
+	// replaceAll("&nbsp;", " ", codestring);
+	// replaceAll("<br>", "\n", codestring);
+	
 	for(var i=0;i<retdata.impwords.length;i++){
 		important.push(retdata.impwords[i]);	
 	}
@@ -1373,7 +1395,7 @@ function test(codestring, destinationdiv){
 
 				// Make white space characters
 				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
-			//	tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
+			
 				if(tokens[i].kind=="rowcomment"){ 
 						cont+="<span class='comment'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="blockcomment"){ 
@@ -1392,7 +1414,6 @@ function test(codestring, destinationdiv){
 										break;		
 								}
 						}								
-						
 						for(var ind in important){
 								word=important[ind];
 								if(word==tokenvalue){
@@ -1400,7 +1421,6 @@ function test(codestring, destinationdiv){
 										break;		
 								}
 						}
-						
 						if(foundkey==1){
 								cont+="<span class='keyword'>"+tokenvalue+"</span>";														
 						}else if(foundkey==2){
@@ -1423,7 +1443,7 @@ function test(codestring, destinationdiv){
 								pid=parenthesis.pop();
 								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
 						}else if(tokenvalue=="["){
-								pid="BR"+bcount;
+								pid="BR2"+bcount;
 								bcount++;
 								bracket.push(pid);
 								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
@@ -1431,7 +1451,7 @@ function test(codestring, destinationdiv){
 								pid=bracket.pop();
 								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
 						}else if(tokenvalue=="{"){
-								pid="CBR"+cbcount;
+								pid="CBR2"+cbcount;
 								cbcount++;
 								cbracket.push(pid);
 								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
@@ -1449,134 +1469,16 @@ function test(codestring, destinationdiv){
 					
 					str+=cont+"<br>";
 					cont="";
+				} // no breakrow on last row in description.
+				if(i==tokens.length-1){
+					str+=cont;
 				}
 		}
 		str+="</span>";
 		return str;
 	
 }
-function rendercode2(codestring,destinationdiv)
-{
-		tokens = [];
-		
-		important = [];
-		for(var i=0;i<retdata.impwords.length;i++){
-				important.push(retdata.impwords[i]);		
-		}
 
-		keywords=[];
-		for(var i=0;i<retdata.wordlist.length;i++){
-				if(retdata.wordlist[i][0]==retdata.chosenwordlist){
-						keywords.push(retdata.wordlist[i][1]);
-				}
-		}
-	
-		tokenize(codestring,"<>+-&","=>&:");
-				
-		// Iterate over token objects and print kind of each token and token type in window 
-		str="";
-		cont="";
-
-		str+="<span class='norm'>";
-		
-		pcount=0;
-		parenthesis=new Array();
-		bcount=0;
-		bracket=new Array();
-		cbcount=0;
-		cbracket=new Array();
-
-		pid="";
-		
-		var iwcounter=0;
-
-		for(i=0;i<tokens.length;i++){
-				
-				tokenvalue=String(tokens[i].val);
-
-				// Make white space characters
-				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
-			//	tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
-				if(tokens[i].kind=="rowcomment"){ 
-						cont+="<span class='comment'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="blockcomment"){ 
-							cont+="<span class='comment'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="string"){ 
-							cont+="<span class='string'>\""+tokenvalue+"\"</span>";
-				}else if(tokens[i].kind=="number"){
-						cont+="<span class='number'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="name"){
-						var foundkey=0;
-						
-						for(var ind in keywords){
-								word=keywords[ind];
-								if(word==tokenvalue){
-										foundkey=1;
-										break;		
-								}
-						}								
-						
-						for(var ind in important){
-								word=important[ind];
-								if(word==tokenvalue){
-										foundkey=2;
-										break;		
-								}
-						}
-						
-						if(foundkey==1){
-								cont+="<span class='keyword'>"+tokenvalue+"</span>";														
-						}else if(foundkey==2){
-								iwcounter++;
-								
-								highlightKeyword("scrollTop")
-								
-								cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
-						}else{
-								cont+=tokenvalue;
-						}
-						
-				}else if(tokens[i].kind=="operator"){
-						if(tokenvalue=="("){
-								pid="PA2"+pcount;
-								pcount++;
-								parenthesis.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue==")"){
-								pid=parenthesis.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else if(tokenvalue=="["){
-								pid="BR"+bcount;
-								bcount++;
-								bracket.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue=="]"){
-								pid=bracket.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else if(tokenvalue=="{"){
-								pid="CBR"+cbcount;
-								cbcount++;
-								cbracket.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue=="}"){
-								pid=cbracket.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else{	
-								cont+="<span class='oper'>"+tokenvalue+"</span>";		
-						}
-				}else{
-						cont+=tokenvalue;
-				}
-				
-				if(tokens[i].kind=="newline"){
-					
-					str+=cont+"<br>";
-					cont="";
-				}
-		}
-		str+="</span>";
-		return str;
-}
 function linenumbers()
 {	
 	if(localStorage.getItem("linenumbers") == "false"){	
