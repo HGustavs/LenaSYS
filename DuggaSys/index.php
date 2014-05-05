@@ -1,3 +1,11 @@
+<?php
+	include_once("../../coursesyspw.php");	
+	include_once("basic.php");
+	session_start();
+	dbConnect();
+	
+?>
+
 <!DOCTYPE html>
 <html>
 <head>	
