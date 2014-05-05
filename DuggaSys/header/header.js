@@ -1,16 +1,18 @@
 $( document ).ready(function() {
-	printHeader();
 	//dynamically load and add this .js file
 	loadHeaderLink(getScriptPath("header.js")+"/login.js", "js") 
 	//dynamically load css file
 	loadHeaderLink(getScriptPath("header.js")+"/css/style.css", "css")
+	printHeader();
 });
 // Simple go back history function //
 function historyBack() {
 	window.history.back()
 }
 function printHeader () {
-	$("header").load(getScriptPath("header.js")+"/content/header.php");
+	$("header").load(getScriptPath("header.js")+"/content/header.php", function() {
+		$("#title h1").html(page.title());
+	});
 }
 //Function to load new links to head dynamically
 function loadHeaderLink(filename, filetype){
