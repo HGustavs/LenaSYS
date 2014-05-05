@@ -88,6 +88,8 @@ function styleHeader()
 //    document.execCommand('formatBlock', false, "H1");
 }
 
+
+
 /* style codeexample in desc.box */
 function styleCode()
 {
@@ -127,23 +129,24 @@ function styleReset()
 		// reset style on all other elements
 		document.execCommand('removeformat', false, "");
 	}
-	// reset style on heading.
-	 //for jQuery1.4+
-	//Check that the selected parentnode is not a div. If it is there's a good chance that it's the box-div that will be removed.
-/*	while(!$(container).is("div")){ 
-	    $(container).contents().unwrap(); //for jQuery1.4+
-	
-	    if (document.selection) //for IE
-	       container = document.selection.createRange().parentElement();
-	    else {
-	        var select = window.getSelection();
-	        if (select.rangeCount > 0){
-	        	container = select.getRangeAt(0).startContainer.parentNode;
-	        }    
-	    }
-	    
-	} */
+
 }
+
+
+
+function insertImage(img)
+{
+
+
+    document.execCommand("insertImage", false, img);
+
+    /* This solution sets heading on the whole row   "<img src='"+img+"' width='40'>"*/
+//    document.execCommand('formatBlock', false, "H1");
+}
+
+
+
+
 document.addEventListener("drop", function(e) {
     // cancel drop
     e.preventDefault();
@@ -711,6 +714,25 @@ function returned(data)
 				}
 				var filereq=document.getElementById('codedrop');
 				if(filereq!=null) filereq.innerHTML=str;
+
+
+            // Fill imagelist
+            str="";
+            for(i=0;i<data['images'].length;i++){
+
+                    //str+="<span class='dropdownitem' id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' onmouseover='highlightMenu(\"DDII"+i+"\");' onmouseout='dehighlightMenu(\"DDII"+i+"\");'>"+data['images'][i]+"</span>";
+                str+="<img id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' src=\""+data['images'][i]+"\"></img>";
+
+            }
+
+            var filereq=document.getElementById('imgdrop');
+            if(filereq!=null) filereq.innerHTML=str;
+
+
+
+
+
+
 		}
 		
 		//----------------------------------------------------

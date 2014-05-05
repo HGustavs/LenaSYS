@@ -184,6 +184,18 @@
     cursor: default;
 }
 
+#imgdrop img{
+
+    width: 25%;
+
+}
+
+
+#docucontent img{
+
+    width: 80%;
+}
+
 .menuhi {
     background: #7D5CA0;
     color: #fff;

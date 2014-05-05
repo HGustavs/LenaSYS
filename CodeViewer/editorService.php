@@ -256,16 +256,26 @@
 					$sectionname=$row['sectionname'];
 			} 
 			
-			// Read Directory
+			// Read Directory - Codeexamples
 			$directory=array();
 			$dir = opendir('./codeupload');
 		  while (($file = readdir($dir)) !== false) {
 		  	if(endsWith($file,".js")){
 		    		array_push($directory,$file);		
 		    }
-		  }  
+		  }
 
-			$array = array('before' => $before,'after' => $after,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'playlink' => $playlink,'desc' => $desc,'sectionname' => $sectionname,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
+
+        // Read Directory - Images
+        $images=array();
+        $img_dir = opendir('./imgupload');
+        while (($img_file = readdir($img_dir)) !== false) {
+            if(endsWith($img_file,".png")){
+                array_push($images,"imgupload/".$img_file);
+            }
+        }
+
+        $array = array('before' => $before,'after' => $after,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'images' => $images, 'examplename'=> $examplename,'playlink' => $playlink,'desc' => $desc,'sectionname' => $sectionname,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
 			echo json_encode($array);
 
 	}else{
