@@ -7,7 +7,8 @@
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery-ui-1.10.4.min.js"></script>
 	<script src="js/function.js"></script>
-	<script src="header/header.js"></script>
+	<script src="../header/header.js"></script>
+
 </head>
 <body>
 	<header>

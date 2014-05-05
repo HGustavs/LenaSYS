@@ -13,6 +13,7 @@ dbConnect();
 		<link type="text/css" href="../DuggaSys/css/style.css" rel="stylesheet" />
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="startpage.js"></script>
+		<script src="header/header.js"></script>
 
 		<script>
 			setupLogin();
