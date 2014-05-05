@@ -70,7 +70,7 @@ function Canvasrenderer()
 			t = this.runningTimesteps[this.runningTimesteps.length-1].resume();
 
 			// Set icon
-			document.getElementById("play").innerHTML="<img src='Images/pause.svg'/>";
+			document.getElementById("play").innerHTML="<img src='images/pause.svg'/>";
 		}
 	}
 	
@@ -83,7 +83,7 @@ function Canvasrenderer()
 		this.pauseTimesteps();
 
 		// Set icon
-		document.getElementById("play").innerHTML="<img src='Images/play_button.svg'/>";
+		document.getElementById("play").innerHTML="<img src='images/play_button.svg'/>";
 	}
 
 	// Search canvas playback
@@ -122,11 +122,11 @@ function Canvasrenderer()
 		if (this.repeat == 0) {
 			// Repeat
 			this.repeat = 1;
-			document.getElementById("repeat").innerHTML="<img src='Images/replay_button_activated.svg'/>";
+			document.getElementById("repeat").innerHTML="<img src='images/replay_button_activated.svg'/>";
 		}else {
 			// Don't repeat
 			this.repeat = 0;
-			document.getElementById("repeat").innerHTML="<img src='Images/replay_button.svg'/>";
+			document.getElementById("repeat").innerHTML="<img src='images/replay_button.svg'/>";
 		}
 	}
 
