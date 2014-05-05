@@ -35,7 +35,7 @@ include "../Shared/basic.php";
 				echo '<table cellspacing="2"><tr>';
 				if($kind){
 
-								echo '<td class="buttospacer">&nbsp;</td>';
+								//echo '<td class="buttospacer">&nbsp;</td>';
 								echo '<td class="butto showdesktop" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName" contenteditable="true">Example Code Page</td>';
 								echo '<td class="butto showdesktop" title="Settings" id="hidesettings"><img src="new icons/general_settings_button.svg" /></td>';
@@ -43,6 +43,7 @@ include "../Shared/basic.php";
 								
 								
 				}else{
+								echo '<td class="butto showdesktop" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 								echo '<td class="menutext"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';
 				}		
 
