@@ -22,14 +22,14 @@
 		<div id="student-header">Lägg till student!</div>
 		<br>
 		<br>
-		<textarea placeholder="Namn, Pnr, password" name="string" id="string" cols="30"></textarea>
+		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="30"></textarea>
 		<br>
 		<input type="submit" value="Lägg till student"/>
 		<a href="students.php"><input type="button" value="Cancel"/></a>
 	</form>
 
 <?php	if(isset($_POST['string'])){
-	$pdo = new PDO('mysql:dbname=Imperious;host=localhost', 'root', 'galvaniseradapa');
+	$pdo = new PDO('mysql:dbname=Imperious;host=localhost', 'root', '');
 	$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 
 	function random_password( $length = 8 ) {
@@ -41,14 +41,17 @@
 	$password = random_password(8);
 
 	$str = $_POST['string'];
-	list($username, $ssn)=(explode(", ",$str));
+	list($ssn, $name, $username)=(explode("\t",$str));
+	list($lastname, $firstname)=(explode(", ",$name));
 
 			echo "<br>";
 			echo "<br>";
 			// Lägger till värden i tabellen.
-			$querystring='INSERT INTO user (username, ssn, password, newpassword) VALUES(:username,:ssn,:password, 1);';	
+			$querystring='INSERT INTO user (username, firstname, lastname, ssn, password, newpassword) VALUES(:username,:firstname,:lastname,:ssn,:password, 1);';	
 			$stmt = $pdo->prepare($querystring);
 			$stmt->bindParam(':username', $username);
+			$stmt->bindParam(':firstname', $firstname);
+			$stmt->bindParam(':lastname', $lastname);
 			$stmt->bindParam(':ssn', $ssn);
 			$stmt->bindParam(':password', $password);
 			try {
