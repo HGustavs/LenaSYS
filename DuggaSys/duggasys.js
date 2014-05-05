@@ -50,7 +50,9 @@ function Sectionbutton(kind,imgname,sectid,typ,pos)
 				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
 		}else if(typ=="EXAMPLE"){
 				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
-		}		
+		}else if(typ=="ADD"){
+				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='newSection(0)' />";
+		}	
 }
 
 function returnedSection(data)
@@ -61,7 +63,13 @@ function returnedSection(data)
 		str="";
 		
 		// Course Name
-		str+="<div class='course'>"+courseID+"</div>"
+		str+="<div class='course'>"+courseID;
+		if (sessionkind===1) {
+			str+="<span class='smallishbutt'>";
+			str+=Sectionbutton("","PlusT.svg",2,"ADD");									
+			str+="</span>";
+		}
+		str+="</div>";
 
 		// For now we only have two kinds of sections
 		for(i=0;i<data['entries'].length;i++){
@@ -69,7 +77,11 @@ function returnedSection(data)
 				switch(parseInt(data['entries'][i]['kind'])) {
 					case 0:
 						// Styling for header row
-						str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
 						if(sessionkind===1){
 							str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' ><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 							str+="<span class='smallishbutt'>";
@@ -82,7 +94,11 @@ function returnedSection(data)
 						break;
 					case 1:
 						//Styling for section row
-						str+="<span class='butt' id='Entry_"+data['entries'][i]['lid']+"' >";
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='butt' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
 
 						// If we are allowed to edit
 						if(sessionkind===1){
@@ -99,7 +115,11 @@ function returnedSection(data)
 						break;
 					case 2:
 						// Styling for example row
-						str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
 						if(sessionkind===1){
 								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";
@@ -112,7 +132,11 @@ function returnedSection(data)
 						break;
 					case 3:
 						// Styling for test row
-						str+="<span class='test' id='Entry_"+data['entries'][i]['lid']+"'>";
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='test' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
 						if(sessionkind===1){
 								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";
@@ -126,7 +150,11 @@ function returnedSection(data)
 					default:
 					case 4:
 						// Styling for 'others' row
-						str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
 						if(sessionkind===1){
 								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";

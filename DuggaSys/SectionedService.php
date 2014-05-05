@@ -20,7 +20,7 @@
 	
 		$coursename=$_POST['coursename'];
 		//$vers=$_POST['vers'];
-		//$opt=$_POST['opt'];		
+		$opt=$_POST['opt'];		
 		//$appuser="NOT YET IMPL";
 		$exampleno=0;
 
@@ -32,6 +32,24 @@
 		if(isset($_POST['kind'])) $kind=htmlEntities($_POST['kind']);
 		
 		$debug="NONE!";
+		if(checklogin()){
+			$ha = hasAccess($_SESSION['uid'], $coursename, 'w');
+			if($ha){
+				$courseID = getCourseId($coursename);
+				if (strcmp("sectionNew",$opt) === 0) {
+					//$newsectpos = getqueryvalue("SELECT MAX(pos)+1 FROM listentries WHERE cid='$courseID';");
+					$result = mysql_query("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, 'Ny sektion', NULL, 0, 6, 1, 1);");
+					if(!$result) {
+						echo "Error updating entries";
+					}
+				} else if (strcmp("sectionDel",$opt) === 0) {
+					$result = mysql_query("DELETE FROM listentries WHERE lid = '$sectid';");
+					if(!$result) {
+						echo "Error updating entries";
+					}
+				}
+			}
+		}
 	
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
