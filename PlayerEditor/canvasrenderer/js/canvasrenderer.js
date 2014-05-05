@@ -233,7 +233,6 @@ function Canvasrenderer()
 	}
 	this.removeNonvalidCalls = function(nodes){
 		var retnodes = new Array();
-		//console.log(nodes.length);
 		for(a = 0; a < nodes.length; ++a){
 			if(validFunctions.indexOf(nodes[a].nodeName) >= 0) { retnodes.push(nodes[a]); }
 		}
@@ -762,9 +761,7 @@ function Canvasrenderer()
 	}
 
 	this.imageData = function(width, height, numberStr){
-		console.log("Creating imageData");
 		var numArray = numberStr.split(" ");
-		console.log(numArray.length);
 		this.mImageData = ctx.createImageData(width, height);
 		if(this.mImageData.data.length != numArray.length){ alert("ERROR: Failed to create new image data. Length mismatch."); }
 		for(i = 0; i < numArray.length; ++i){
