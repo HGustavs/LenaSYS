@@ -59,13 +59,7 @@ function imagerecorder(canvas)
 		$("#sortableThumbs").sortable({
 			revert: 300,
 			update: function() {
-				imagelibrary = [];
-				// Loop through all li in the ul
-				$("li", this).each(function(index) {
-					var src = $("img", this).attr("src");
-					// Rebuild arr
-					imagelibrary[index] = src;
-				});
+				rebuildImgLibrary();
 			}
 		});
 		
@@ -149,6 +143,15 @@ function imagerecorder(canvas)
 		showThumbMenu($(this).index());
 	});
 	
+	function rebuildImgLibrary() {
+		imagelibrary = [];
+		// Loop through all li in the ul
+		$("li", "#sortableThumbs").each(function(index) {
+			var src = $("img", this).attr("src");
+			// Rebuild arr
+			imagelibrary[index] = src;
+		});
+	}
 	function showThumbMenu(index) {
 		// Clear old thumbMenu
 		$(".thumbMenu").html("");
@@ -175,7 +178,34 @@ function imagerecorder(canvas)
 			html:		"Delete image",
 			href: 		"#",
 			click:		function(e) {
-				alert("Not implemented yet");
+				var selectedli = $("#sortableThumbs .tli").eq(index);
+				var imgPath = $("img", selectedli).attr("src");
+				
+				$(selectedli).remove();
+				
+				// Rebuild imagelibrary arr
+				rebuildImgLibrary();
+				
+				// Remove image source if theres no other copies of it in the thumbs
+				if (imagelibrary.indexOf(imgPath) == -1) {
+					$.ajax({
+						url: "delete.php",
+						type: "POST",
+						data: {
+							filepath: imgPath
+						},
+						cache: false,
+						dataType: "json",
+						success: function(data) {
+							alert(data.SUCCESS);
+						},
+						error: function() {
+							alert("error");
+						}
+					});
+				} 
+
+				// alert("Not implemented yet");
 			}
 		}));
 		
