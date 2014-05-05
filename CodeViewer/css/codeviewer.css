@@ -1,37 +1,19 @@
 
-#docucontent {
-    padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    width: 296px;
-    background-color: #ddd;
-    overflow: scroll;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
-}
-
 #docucontent b {
     color: white;
     display: block;
-    font-family: Calibri,Sans-Serif;
+    font-family: Arial,Sans-Serif;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
     font-style: italic;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
 }
 
-#docucontent p {
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
+#docucontent span {
+    color: white;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    padding: 7px;
 }
 
 #buttomenu {
@@ -41,18 +23,6 @@
     height: 50px;
     background-color:  #614875;
     margin: 0px;
-}
-
-#codebox {
-    border-style: solid;
-    border-width: 1px;
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 300px;
-    right: 0px;
-    background-color: #fff;
-    overflow: scroll;
 }
 
 .butto {
@@ -118,9 +88,9 @@
     position: fixed;
     top: 50px;
     z-index: 4000;
-    background: #000;
+/*    background: #614875; */
     border: solid 2px #000;
-    box-shadow: 6px 6px 8px #444;
+ /*   box-shadow: 6px 6px 8px #444; */
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
     color: #fff;
@@ -137,45 +107,57 @@
 }
 
 .codedrop {
-    left: 314px;
-    height: 400px;
-    width: 400px;
+ /*   left: 314px;  */
+	right: 0px;
+    width: -moz-calc(20.0%);
+	width: -webkit-calc(20.0%);  
+    height: -webkit-calc(40.0%);
+    height: -moz-calc(40.0%);
 }
 
 .docudrop {
-    left: 354px;
-    height: 600px;
-    width: 500px;
+  /*  left: 354px; */
+ 	right: 0px;
+    width: -moz-calc(25.0%);
+	width: -webkit-calc(25.0%);  
+    height: -webkit-calc(65.0%);
+    height: -moz-calc(65.0%);
+    background-color: #614875; 
+    background: rgb(0, 0, 0) transparent;
+
 }
 
 .forwdrop {
-    left: 76px;
-    height: 200px;
+    right: 20px;
+    height: auto;
     width: 200px;
+    cursor: default;
 }
 
 .backwdrop {
-    left: 38px;
-    height: 200px;
+    right: 20px;
+    height: auto;
     width: 200px;
+    cursor: default;
 }
 
 .dropdownitem {
-    background: #000;
+    background: #614875;
     color: #fff;
     display: block;
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
+    cursor: default;
 }
 
 .menuhi {
-    background: #48f;
+    background: #7D5CA0;
     color: #fff;
     text-shadow: 1px 1px 2px #000;
 }
 
 .menuch {
-    background: #0a4;
+    background: #5D5D5D;
     color: #fff;
     text-shadow: 1px 1px 2px #000;
 }
@@ -192,25 +174,26 @@ a {
 }
 
 .norm {
-    color: #000;
-    background-color: #fff;
+    color: #fff;
+    background-color: #272822;
 }
 
 .impo {
-    color: #000;
-    background-color: #fed;
+    color: #fff;
+    background-color: #5d5d5d;
 }
 
 .norm .no {
     border-right: 2px #444;
-    color: #000;
-    background-color: #d8d8d8;
+    color: white;
+    padding-left: 3px; 
+    background-color: #755096;
 }
 
 .impo .no {
     border-right: 2px #444;
-    color: #000;
-    background-color: #dcb;
+    color: white;
+    background-color: #9569BD;
 }
 
 .comment {
@@ -218,27 +201,27 @@ a {
 }
 
 .norm .oper {
-    color: #06F;
+    color: white;
     font-weight: bold;
 }
 
 .impo .oper {
-    color: #02D;
+    color: #fff;
     font-weight: bold;
 }
 
 .norm .string {
-    color: #092;
+    color: #fff;
     font-weight: bold;
 }
 
 .impo .string {
-    color: #070;
+    color: #fff;
     font-weight: bold;
 }
 
 .norm .number {
-    color: #029;
+    color: #fff;
     font-weight: bold;
 }
 
@@ -248,46 +231,45 @@ a {
 }
 
 .norm .hi {
-    background-color: #000;
+    background-color: #5d5d5d;
     color: #fff;
 }
 
 .impo .hi {
-    background-color: #000;
+    background-color: #272822;
     color: #fed;
 }
 
 .norm .keyword {
-    color: #902;
+    color: #C5822C;
     font-weight: bold;
 }
 
 .impo .keyword {
-    color: #401;
+    color: #C5822C;
     font-weight: bold;
 }
 
 .norm .impword {
     color: #000;
-    background-color: #def;
+    background-color: #fff;
     font-weight: bold;
-    border: 1px dotted #f00;
 }
 
 .impo .impword {
-    color: #401;
-    background-color: #bce;
+    color: #000000;
+    background-color: #fff;
     font-weight: bold;
-    border: 1px dotted #f00;
 }
 
 .norm .imphi {
-    background-color: #000;
+    background-color: #5d5d5d;
     color: #fff;
+    
 }
 
 .impo .imphi {
-    background-color: #000;
+    background-color: #272822;
     color: #fed;
 }
 
@@ -530,41 +512,76 @@ a {
 }
 
 
+.genSettingsSection{
+	display:none;
+}
+.errormsg{
+	color: red;
+}
 
-              /*Tooltips*/
+#playlinkErrorMsg{
+	display: none;
+	color: red;
+}
+#settingsTabMenu{	
+	border-bottom: solid 2px;
+	padding-left:0px;
+}
+#settingsTabMenu li{
+	display: inline;
+	cursor: default;
+	margin: 5px;
+	padding: 5px 5px 0px 5px;
+	border-style:solid;
+	border-width: 2px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	background-color: #7D5CA0;
+}
+#settingsTabMenu .activeSetMenuLink{
+	border-bottom-color: #614875;
+	background-color: #614875;
+}
 
-.tooltip, .arrow:after {
+
+
+/*Tooltips*/
+
+.tooltip, .arrow:after, .arrow2:after {
     background: black;
-    border: 2px solid white;
+    /*border: 1px solid white;*/
 }
 
 .tooltip {
     pointer-events: none;
     opacity: 0;
     display: inline-block;
-    position: absolute;
-    padding: 10px 20px;
+    position: fixed;
+    padding: 5px 10px;
     color: white;
-    border-radius: 20px;
+    border-radius: 5px;
     margin-top: 20px;
     text-align: center;
-    font: bold 14px "Helvetica Neue", Sans-Serif;
+    font: 10px "Helvetica Neue", Sans-Serif;
     font-stretch: condensed;
     text-decoration: none;
     text-transform: uppercase;
-    box-shadow: 0 0 7px black;
+    z-index: 10000;
+    /*box-shadow: 0 0 3px black;*/
 }
-
 .arrow {
     width: 70px;
-    height: 16px;
+    height: 18px;
     overflow: hidden;
     position: absolute;
     left: 50%;
     margin-left: -35px;
     bottom: -16px;
 }
-
 .arrow:after {
     content: "";
     position: absolute;
@@ -572,28 +589,109 @@ a {
     top: -20px;
     width: 25px;
     height: 25px;
-    -webkit-box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
-    -moz-box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
-    box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
+    /*-webkit-box-shadow: 3px 2px 4px -4px black,
+    2px 3px 4px -4px black;
+    -moz-box-shadow: 3px 2px 4px -4px black,
+    2px 3px 4px -4px black;
+    box-shadow: 3px 2px 4px -4px black,
+    2px 3px 4px -4px black;*/
     -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
+    -moz-transform:    rotate(45deg);
+    -ms-transform:     rotate(45deg);
+    -o-transform:      rotate(45deg);
 }
+
+.arrow2 {
+    width: 70px;
+    height: 18px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    top: -16px;
+}
+.arrow2:after {
+    content: "";
+    position: absolute;
+    left: 22px;
+    bottom: -20px;
+    width: 25px;
+    height: 25px;
+    /*-webkit-box-shadow: 3px 2px 4px -4px black,
+    2px 3px 4px -4px black;
+    -moz-box-shadow: 3px 2px 4px -4px black,
+    2px 3px 4px -4px black;
+    box-shadow: 3px 2px 4px -4px black,
+    2px 3px 4px -4px black;*/
+    -webkit-transform: rotate(45deg);
+    -moz-transform:    rotate(45deg);
+    -ms-transform:     rotate(45deg);
+    -o-transform:      rotate(45deg);
+}
+
 
 .tooltip.active {
     opacity: 1;
     margin-top: 5px;
+    transition-delay: 0.5s !important;
+    -webkit-transition-delay: 1s !important;
     -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
+    -moz-transition:    all 0.2s ease;
+    -ms-transition:     all 0.2s ease;
+    -o-transition:      all 0.2s ease;
+}
+
+.tooltip.active2 {
+    opacity: 1;
+    margin-top: 5px;
+    transition-delay: 0.5s !important;
+    -webkit-transition-delay: 1s !important;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition:    all 0.2s ease;
+    -ms-transition:     all 0.2s ease;
+    -o-transition:      all 0.2s ease;
 }
 
 .tooltip.out {
     opacity: 0;
-    margin-top: -20px;
+    margin-top: -5px;
+    transition-delay: 0s !important;
+}
+
+.tooltip.out2 {
+    opacity: 0;
+    margin-top: 15px;
+    transition-delay: 0s !important;
+}
+
+/*Prevent new lines to entered (which creates screen-errors) when editing names in lists*/
+.norm > [contenteditable="true"] br,
+.butt > [contenteditable="true"] br{
+    display:none;
+}
+@-webkit-keyframes wiggle {
+    0% {
+        -webkit-transform:rotate(4deg);
+    }
+    50% {
+        -webkit-transform:rotate(-4deg);
+    }
+    100% {
+        -webkit-transform:rotate(4deg);
+    }
+}
+
+.wiggle:hover {
+    -webkit-animation: wiggle 0.5s infinite;
+    cursor: pointer;
+}
+
+.templateicon{
+    width: 45%;
+    margin: 0px;
+    float: left;
+}
+.templatethumbicon{
+    width: 98%;
+    margin: 2% 1% 2% 1%;
 }
