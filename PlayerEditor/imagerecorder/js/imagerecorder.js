@@ -20,6 +20,9 @@ function imagerecorder(canvas)
 	
 	var currentImageRatio = 1;
 	
+	var bodyMouseX;
+	var bodyMouseY;
+	
 	var files;					// store files thats being uploaded
 	
 	$(document).ready(function(){
@@ -129,16 +132,63 @@ function imagerecorder(canvas)
 		});
 	});
 	
-	// On doubleclick on thumbnail, clone it!
-	$(document).on("dblclick", ".thumbnail", function() {
-		var imgPath = $(this).attr("src");
-		imagelibrary[imageid] = imgPath;	
-		
-		// Add thumbnail
-		var imgStr = "<li><img src='" + imgPath + "' class='thumbnail'></li>";
-		$("#sortableThumbs").append(imgStr);
-		imageid++;
+	// Fetch mouse movement over body to use when spawning thumbnail men
+	$(document).mousemove(function(e) {
+		bodyMouseX = e.pageX;
+		bodyMouseY = e.pageY;
 	});
+	
+	// Hide context menu when user clicks somewhere
+	$(document).click(function(e) {
+		$(".thumbMenu").slideUp(100);
+	});
+	
+	// Add menu options to images
+	$(document).on("contextmenu", ".tli", function(e) {
+		e.preventDefault();
+		showThumbMenu($(this).index());
+	});
+	
+	function showThumbMenu(index) {
+		// Clear old thumbMenu
+		$(".thumbMenu").html("");
+		// Clone thumb option
+		$(".thumbMenu").append($('<a>', {
+			"class":	"thumbMenuOpt",
+			html:		"Clone image",
+			href: 		"#",
+			click:		function(e) {
+				// Select li-element by index
+				var selectedli = $("#sortableThumbs .tli").eq(index);
+				var imgPath = $("img", selectedli).attr("src");
+				imagelibrary[imageid] = imgPath;	
+				
+				// Add thumbnail
+				var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail'></li>";
+				$("#sortableThumbs").append(imgStr).slideDown(250);
+				imageid++;
+			}
+		}));
+		// Delete thumb option
+		$(".thumbMenu").append($('<a>', {
+			"class":	"thumbMenuOpt",
+			html:		"Delete image",
+			href: 		"#",
+			click:		function(e) {
+				alert("Not implemented yet");
+			}
+		}));
+		
+		// Move menu to current mouse position.
+		$(".thumbMenu").css({
+			"display": "none",
+			"left": bodyMouseX,
+			"top": bodyMouseY
+		});
+		
+		$(".thumbMenu").slideDown(250);
+		
+	}
 	
 	// Prints image as canvas
 	function showImage(id) {
@@ -229,7 +279,7 @@ function imagerecorder(canvas)
 						imagelibrary[imageid] = imgPath;
 			
 						// Add thumbnail
-						var imgStr = "<li><img src='" + imgPath + "' class='thumbnail'></li>";
+						var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail'></li>";
 						$("#sortableThumbs").append(imgStr);
 						
 						imageid++;
@@ -267,8 +317,6 @@ function imagerecorder(canvas)
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function getEvents(str){
-		console.log("AI"+activeImage);
-		console.log("=>"+imagelibrary);
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
 		// Add image path (substr 9 removes "librarys" from path)
