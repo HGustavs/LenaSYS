@@ -4,6 +4,7 @@
 	page.load()
 	page.show();
 });
+
 // Running page object funktions if browser back/forward buttons get pressed //
 window.onhashchange = function() {       
 	page.show();  
@@ -25,12 +26,14 @@ function getUrlVars() {
 function getPage() {
 	var title = "Lenasys";
 	var pages = [];
+	var page = "";
 	// Printing a page into content element depending on a pagelist //
 	this.show = function() {
 		url = $(location).attr('href');
 		for (var i = this.pages.length - 1; i >= 0; i--) {
 			name = this.pages[i].replace(/^.*[\\\/]/, '');
 			name = name.replace(/.[^.]+$/,'');
+			this.page = name;
 			if(0<url.indexOf("#"+name)) {
 				$("#content").load("pages/"+this.pages[i]);
 				$("#title h1").html(title+" - "+name.capitalize());
@@ -45,6 +48,9 @@ function getPage() {
 			document.title = title+" | "+"404";
 			console.log(name+", page not found!");
 		}
+	}
+	this.title = function() {
+		return(title+" - "+this.page.capitalize());
 	}
 	// Grabing a list of pages existing in the pages folder //
 	this.load = function() {
@@ -72,7 +78,6 @@ String.prototype.capitalize = function() {
 }
 
 function getTest() {
-  
   	console.log("Loading Test...");
 
 		$.ajax({

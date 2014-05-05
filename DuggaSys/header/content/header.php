@@ -6,7 +6,6 @@ include_once(dirname(__FILE__) . "/../../../shared/database.php");
 dbConnect();
 ?>
 <!--END INCLUDE -->
-
 <nav id="navigate">
 	<img src="css/svg/Up.svg">
 	<img onclick="historyBack()" src="css/svg/SkipB.svg">
