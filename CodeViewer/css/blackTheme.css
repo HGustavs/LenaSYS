@@ -48,14 +48,13 @@
 }
 
 .dropdownStyle {
-    color: #fff;
+    color: white;
     /*background: #614875;*/
 }
 
 .dropdownbackStyle {
-	background-color: #804;
+	background-color: #614875;
     color: #fff;
-    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
 }
 
 .codedropStyle {
@@ -74,7 +73,7 @@
 
 .dropdownitemStyle {
     background: #614875;
-    color: #fff;
+    color: white;
 }
 
 .normtext {

@@ -48,14 +48,13 @@
 }
 
 .dropdownStyle {
-    color: #fff;
+    color: white;
     /*background: #614875;*/
 }
 
 .dropdownbackStyle {
-	//background-color: #804;
-    color: #fff;
-    background: linear-gradient(to bottom, #555 50%,#888 40%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+	background-color: #614875;
+    color: white;
 }
 
 .codedropStyle {

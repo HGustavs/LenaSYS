@@ -140,18 +140,18 @@
     /*border: solid 2px #000;*/
  /*   box-shadow: 6px 6px 8px #444; */
     font-size: 14px;
-    font-family: Verdana,Arial,Sans-serif;
+    font-family: Arial,Sans-serif;
     /*color: #fff;*/
 }
 
 .dropdownback {
     padding-left: 8px;
-    /*background-color: #804;*/
-    /*color: #fff;*/
-    font-family: Verdana,Serif;
-    font-size: 16px;
+    background-color: #614875;
+    border-color: rgb(0,0,0) transparent;
+    color: white;
+    font-family: Arial,Serif;
+    font-size: 19px;
     font-weight: normal;
-   /* background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);*/
 }
 
 .codedrop {
@@ -205,6 +205,7 @@
     width: 200px;
     cursor: default;
     border-color: rgb(0,0,0) transparent;
+    background-color: #614875;
 }
 
 .backwdrop {
@@ -213,6 +214,7 @@
     width: 200px;
     cursor: default;
     border-color: rgb(0,0,0) transparent;
+    background-color: #614875;
 }
 
 .dropdownitem {
@@ -222,6 +224,8 @@
     cursor: default;
     padding-left: 7px;
 	border-bottom: solid 1px #2A120A;
+	color: white;
+	background: #614875;
 }
 
 #imgdrop img{
@@ -238,16 +242,17 @@
 
 .menuhi {
 	font-family: Arial,Serif;
-	font-size: 16px;
-	color: white;
-	text-shadow: 1px 1px 2px #000;
-	background-color: #7D5CA0;
+ 	font-size: 16px;
+ 	color: white;
+ 	text-shadow: 1px 1px 2px #000;
+ 	background-color: #7D5CA0;
 }
 
 .menuch {
     background: #5D5D5D;
     color: #fff;
     text-shadow: 1px 1px 2px #000;
+    background-color: #614875;
 }
 
 a {
