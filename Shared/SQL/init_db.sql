@@ -184,13 +184,27 @@ INSERT INTO filelist(exampleno,filename,pos,appuser) VALUES (10,"",1,"Creationsc
 
 CREATE TABLE descriptionsection(
 		exampleno			INTEGER,
-		segment				VARCHAR(1024),
+		segment				VARCHAR(64000),
 		pos						INTEGER,
 		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		appuser				VARCHAR(64),
 		descno		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
 		PRIMARY KEY(descno)		
 );
+/* TRIGGER IF WE WANT &nbsp; AND <br> TO BE REPLACED AUTOMATICALLY
+delimiter //
+CREATE TRIGGER nbsp_br_desc_check BEFORE UPDATE ON descriptionsection
+FOR EACH ROW
+BEGIN
+     IF NEW.segment LIKE "%&nbsp;%" THEN
+         SET NEW.segment = replace(NEW.segment, "&nbsp;", " ");
+     END IF;
+     IF NEW.segment LIKE "%<br>%" THEN
+         SET NEW.segment = replace(NEW.segment, "<br>", "\n");
+     END IF;
+ END;//
+ delimiter ;
+*/	
 	
 INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text",1,"Creationscript");
 INSERT INTO descriptionsection(exampleno,segment,pos,appuser) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1,"Creationscript");

@@ -27,11 +27,15 @@
     overflow: scroll;
 }*/
 
-
+#buttomenu2{
+	z-index:2;
+	position: absolute;
+}
 #docucontent {
     padding-left: 4px;
     position: absolute;
     top: 0px;
+    padding-top:45px;
     left: 0px;
     /*width: 296px;*/
  	  width: -moz-calc(25.0%);

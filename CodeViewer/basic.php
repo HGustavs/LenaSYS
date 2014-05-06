@@ -30,13 +30,11 @@ include "../Shared/basic.php";
 						echo '<span id="codedrop" class="dropdown dropdownStyle codedrop codedropStyle " style="overflow:auto;"><div class="dropdownback dropdownbackStyle">Code viewer Code File Selector</div></span>';
 						echo '<span id="docudrop" class="dropdown dropdownStyle docudrop docudropStyle" style="overflow:auto;"><div class="dropdownback dropdownbackStyle">General settings</div></span>';
 						echo '<span id="themedrop" class="dropdown dropdownStyle themedrop themedropStyle" style="overflow:auto;"><div class="dropdownback dropdownbackStyle">Theme</div></span>';
-						
 				}
 
 				echo '<div id="buttomenu" class="buttomenuStyle">';
 				echo '<table cellspacing="2"><tr>';
 				if($kind){
-
 								echo '<td class="buttospacer">&nbsp;</td>';
 								echo '<td class="menutext menutextStyle"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName" contenteditable="true">Example Code Page</td>';
 								echo '<td class="mbutto mbuttoStyle showdesktop" title="Settings" id="hidesettings"><img src="new icons/general_settings_button.svg" /></td>';
@@ -56,13 +54,22 @@ include "../Shared/basic.php";
 
 				echo '</table></div>';
 				echo '<div id="div2" style="width:100%; position: absolute; top: 50px; bottom: 0px; background-color:#def">';
-				echo '<div id="docucontent" class="docucontentStyle"';
+
 				if($kind){
-						echo ' contenteditable="true" >';				
-				}else{ 
-						echo '>';
-				} 
-				echo '<div style="left:20px" class="warning warningStyle">';
+                    echo '<div id="buttomenu2">';
+                    echo '<table cellspacing="2"><tr>';
+                    echo '<td class="butto" title="Heading" onclick="styleHeader();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td class="butto" title="Code example" onclick="styleCode();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td class="butto" title="Remove formatting" onclick="styleReset();"><img src="new icons/hotdog_button.svg" /></td>';
+					echo '<td class="butto" title="Save" onclick="Save();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td class="butto" title="Select image" onclick="Images();"><img src="new icons/list_codefiles.svg" /></td>';
+                    echo '</tr></table></div>';
+                    echo '<div id="docucontent" contenteditable="true">';
+				}
+            else{
+                echo '<div id="docucontent">';
+            }
+            echo '<div style="left:20px" class="warning">';
 						echo 'Please wait while content loads<br/>';
 						echo '<img src="new icons/loadingJS.gif" /><br/>';
 						echo 'Do not forget to enable Javascript<br/>';

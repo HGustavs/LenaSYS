@@ -1,6 +1,5 @@
-
-#docucontent b {
-    /*color: white;*/
+#docucontent h1 {
+    color: white;
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -9,13 +8,14 @@
     font-style: italic;
 }
 
-#docucontent span {
-   /* color: white;*/
+#docucontent span.codestyle{
+    color: grey;
     font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    padding: 7px;
-    overflow: auto;
+    font-style: italic;
 }
+
+/* --- */
+
 
 #buttomenu {
     width: 100%;
@@ -116,6 +116,13 @@
 	font-size: 14px;
 	/*color: white;*/
 }
+#hotdogdrop table td img{
+	 	font-family: Arial,Serif;
+	font-size: 14px;
+	color: white;
+	float:right;
+}
+
 #hotdogdrop table td{
 	 border-bottom: solid 1px #2A120A;
 	 	font-family: Arial,Serif;
@@ -130,7 +137,7 @@
     top: 50px;
     z-index: 4000;
 /*    background: #614875; */
-    border: solid 2px #000;
+    /*border: solid 2px #000;*/
  /*   box-shadow: 6px 6px 8px #444; */
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
@@ -180,6 +187,16 @@
     height: -webkit-calc(40.0%);
     height: -moz-calc(40.0%);
 	/*background-color: #614875;*/
+	
+.imgdrop {
+    /*  left: 354px; */
+    right: 0px;
+    width: -moz-calc(35.0%);
+    width: -webkit-calc(35.0%);
+    height: -webkit-calc(65.0%);
+    height: -moz-calc(65.0%);
+    background-color: #614875;
+    background: rgb(0, 0, 0) transparent;
 }
 
 .forwdrop {
@@ -187,6 +204,7 @@
     height: auto;
     width: 200px;
     cursor: default;
+    border-color: rgb(0,0,0) transparent;
 }
 
 .backwdrop {
@@ -194,21 +212,36 @@
     height: auto;
     width: 200px;
     cursor: default;
+    border-color: rgb(0,0,0) transparent;
 }
 
 .dropdownitem {
-   /* background: #614875;
-    color: #fff;*/
     display: block;
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
     cursor: default;
+    padding-left: 7px;
+	border-bottom: solid 1px #2A120A;
+}
+
+#imgdrop img{
+
+    width: 25%;
+
+}
+
+
+#docucontent img{
+
+    width: 80%;
 }
 
 .menuhi {
-    background: #7D5CA0;
-    color: #fff;
-    text-shadow: 1px 1px 2px #000;
+	font-family: Arial,Serif;
+	font-size: 16px;
+	color: white;
+	text-shadow: 1px 1px 2px #000;
+	background-color: #7D5CA0;
 }
 
 .menuch {
@@ -247,7 +280,7 @@ a {
     border-right: 2px #444;
     color: white;
     padding-left: 3px; 
-    background-color: #755096;
+    background-color: #614875;
 }
 
 .impo .no {
@@ -262,31 +295,26 @@ a {
 
 .norm .oper {
     color: white;
-    font-weight: bold;
 }
 
 .impo .oper {
     color: #fff;
-    font-weight: bold;
 }
 
 .norm .string {
     color: #fff;
-    font-weight: bold;
 }
 
 .impo .string {
-    color: #fff;
-    font-weight: bold;
+    color: #000;
 }
 
 .norm .number {
     color: #fff;
-    font-weight: bold;
 }
 
 .impo .number {
-    color: #000;
+    color: #fff;
     font-weight: bold;
 }
 
@@ -302,12 +330,10 @@ a {
 
 .norm .keyword {
     color: #C5822C;
-    font-weight: bold;
 }
 
 .impo .keyword {
     color: #C5822C;
-    font-weight: bold;
 }
 
 .norm .impword {
@@ -324,8 +350,7 @@ a {
 
 .norm .imphi {
     background-color: #5d5d5d;
-    color: #fff;
-    
+    color: #fff;   
 }
 
 .impo .imphi {
@@ -730,22 +755,6 @@ a {
 .butt > [contenteditable="true"] br{
     display:none;
 }
-@-webkit-keyframes wiggle {
-    0% {
-        -webkit-transform:rotate(4deg);
-    }
-    50% {
-        -webkit-transform:rotate(-4deg);
-    }
-    100% {
-        -webkit-transform:rotate(4deg);
-    }
-}
-
-.wiggle:hover {
-    -webkit-animation: wiggle 0.5s infinite;
-    cursor: pointer;
-}
 
 .templateicon{
     width: 45%;
@@ -753,8 +762,13 @@ a {
     float: left;
 }
 .templatethumbicon{
-    width: 98%;
+    width: 88%;
     margin: 2% 1% 2% 1%;
+    padding: 5%;
+}
+.templatethumbicon:hover{
+    background-color: #7D5CA0;
+    cursor: pointer;
 }
 
 .showdesktop{
