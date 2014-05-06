@@ -104,6 +104,13 @@
 	font-size: 14px;
 	color: white;
 }
+#hotdogdrop table td img{
+	 	font-family: Arial,Serif;
+	font-size: 14px;
+	color: white;
+	float:right;
+}
+
 #hotdogdrop table td{
 	 border-bottom: solid 1px #2A120A;
 	 	font-family: Arial,Serif;
