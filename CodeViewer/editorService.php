@@ -18,7 +18,7 @@
 	session_start();
 	
 	$coursename=getCourseId($_POST['coursename']);	
-	$sectionid=mysql_real_escape_string($_POST['sectionid']);
+	//$sectionid=mysql_real_escape_string($_POST['sectionid']);
 	$position=mysql_real_escape_string($_POST['position']);
 	$version=$_POST['version'];
 	$opt=$_POST['opt'];
@@ -27,7 +27,7 @@
 
 	// To guarantee that things only happen if the example exists in the named version
 	$cnt=0;
-	$query = "SELECT exampleid FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position' and sectionid='$sectionid';";		
+	$query = "SELECT exampleid FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position';";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 	while ($row = mysql_fetch_assoc($result)){
@@ -113,15 +113,15 @@
 								// Create new codeExample - create new file with same id.
 								$newpos=$position+1;
 								
-								$query = "INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values ('$coursename','$sectionid','New Example','JS','<none>','$newpos','$appuser','$version');";		
+								$query = "INSERT INTO codeexample(cid,examplename,wordlist,runlink,pos,uid,cversion) values ('$coursename','New Example','JS','<none>','$newpos','$appuser','$version');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Example!");	
 		
-								$query = "INSERT INTO filelist(exampleid,filename,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and sectionid='$sectionid' and cversion='$version'),'<none>','$appuser');";		
+								$query = "INSERT INTO filelist(exampleid,filename,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and cversion='$version'),'<none>','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 		
-								$query = "INSERT INTO descriptionsection(exampleid,segment,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and sectionid='$sectionid' and cversion='$version'),'Enter description here.','$appuser');";		
+								$query = "INSERT INTO descriptionsection(exampleid,segment,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and cversion='$version'),'Enter description here.','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 								
@@ -140,7 +140,7 @@
 		
 			// Backward Button Data
 			$before=array();
-			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and cid='$coursename' and pos<$position and sectionid='$sectionid' ORDER BY pos ASC LIMIT 1;";		
+			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and cid='$coursename' and pos<$position ORDER BY pos ASC LIMIT 1;";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -149,7 +149,7 @@
 		
 			// Forward Button Data
 			$after=array();
-			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and cid='$coursename' and sectionid='$sectionid' and pos>$position ORDER BY pos ASC LIMIT 1;";		
+			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and cid='$coursename' and pos>$position ORDER BY pos ASC LIMIT 1;";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -161,7 +161,7 @@
 			$exampleno=0;
 			$chosenwordlist="";
 			$playlink="";
-			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE cversion=$version and cid='$coursename' and sectionid='$sectionid' and pos='$position'";		
+			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position'";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
