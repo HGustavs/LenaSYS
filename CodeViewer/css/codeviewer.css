@@ -375,37 +375,7 @@ a {
     background-color: #FBFFDE;
 }
 
-#Sectionlist .norm:hover {
-    border-radius: 3px;
-    box-shadow: 1px 1px 3px #000 inset;
-    background: linear-gradient(to right, #FED 0%,#FED 80%,#FFD 90%,#FFF 99%);
-    color: #000;
-    background-color: #BBB;
-}
 
-#Sectionlist .test:hover {
-    border-radius: 3px;
-    box-shadow: 1px 1px 3px #000 inset;
-    background: linear-gradient(to right, #FED 0%,#FED 80%,#FFD 90%,#FFF 99%);
-    color: #000;
-    background-color: #BBB;
-}
-
-#Sectionlist .example:hover {
-    border-radius: 3px;
-    box-shadow: 1px 1px 3px #000 inset;
-    background: linear-gradient(to right, #FED 0%,#FED 80%,#FFD 90%,#FFF 99%);
-    color: #000;
-    background-color: #BBB;
-}
-
-#Sectionlist .hidden:hover {
-    border-radius: 3px;
-    box-shadow: 1px 1px 3px #000 inset;
-    background: linear-gradient(to right, #FED 0%,#FED 80%,#FFD 90%,#FFF 99%);
-    color: #000;
-    background-color: #BBB;
-}
 
 #Sectionlist .bigg {
     font-size: 26px;

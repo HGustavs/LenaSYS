@@ -11,7 +11,8 @@ session_start();
 <!DOCTYPE html>
 <html>
 	<head>
-			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
+			<!--<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />-->
+            <link type="text/css" href="css/style.css" rel="stylesheet" />
 			<link type="text/css" href="css/duggasys.css" rel="stylesheet" />
 			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 			<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
@@ -44,9 +45,11 @@ session_start();
 				}
 
 			</script>
+            
+            <!--Linkans fula meddelande som kommer upp när du har gjort en dragNdrop-->
 	<div id="dragupdate"></div>
 	</head>
-
+<div id="content">
 <?php
 		if(isset($_GET['courseid'])&&isset($_GET['vers'])){
 				$courseID=$_GET['courseid'];
@@ -110,7 +113,8 @@ session_start();
 		}
 		loginwins();
 
-?>		
+?>
+</div>		
 </html>
 
 

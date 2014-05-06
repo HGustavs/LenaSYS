@@ -61,15 +61,9 @@ function returnedSection(data)
 		
 		// Fill section list with information
 		str="";
-		
+		str+="<div id='button-div' style='margin-right:2px;margin-bottom:5px; float:right;'><input class='submit-button' type='button' value='Add' /></div>";
 		// Course Name
-		str+="<div class='course'>"+courseID;
-		if (sessionkind===1) {
-			str+="<span class='smallishbutt'>";
-			str+=Sectionbutton("","PlusT.svg",2,"ADD");									
-			str+="</span>";
-		}
-		str+="</div>";
+		str+="<div class='course'>"+courseID+"</div>";
 
 		// For now we only have two kinds of sections
 		for(i=0;i<data['entries'].length;i++){
