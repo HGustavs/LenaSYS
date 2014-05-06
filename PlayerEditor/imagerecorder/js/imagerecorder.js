@@ -114,8 +114,13 @@ function imagerecorder(canvas)
 		var xMouseReal;
 		var yMouseReal;
 		$('#' + imageCanvas).mousemove(function(event){	
-			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-			yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
+			var rect = canvas.getBoundingClientRect();
+			mHeight = (rect.bottom - rect.top);
+			mWidth = (rect.right-rect.left);
+			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
+			yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+			//xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+			//yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 			document.getElementById('xCordReal').innerHTML=xMouseReal;
 			document.getElementById('yCordReal').innerHTML=yMouseReal;
 			
@@ -292,9 +297,12 @@ function imagerecorder(canvas)
 	// Calculate the image scale ratio
 	function updateScaleRatio() {
 		if (imageData != undefined) {
+			var rect = canvas.getBoundingClientRect();
+			mHeight = (rect.bottom - rect.top);
+			mWidth = (rect.right-rect.left);
 			// Calculate ratio
-			var heightRatio = ImageCanvas.offsetHeight / imageData.height
-			var widthRatio = ImageCanvas.offsetWidth / imageData.width;
+			var heightRatio = mHeight / imageData.height
+			var widthRatio = mWidth / imageData.width;
 			
 			// Set correct ratio
 			if (widthRatio < heightRatio) currentImageRatio = widthRatio;
