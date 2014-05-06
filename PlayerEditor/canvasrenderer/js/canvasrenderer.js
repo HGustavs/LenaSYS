@@ -863,6 +863,7 @@ function Canvasrenderer()
 
 	// Set canvas size to fit screen size
 	this.canvasSize(window.innerWidth - 20, window.innerHeight - 75);
+	window.addEventListener('resize', canvasSize, false);
 	// Load mouse pointer image
 	this.mouseCursor = new Image();
 	this.mouseCursor.src = 'images/cursor.gif';

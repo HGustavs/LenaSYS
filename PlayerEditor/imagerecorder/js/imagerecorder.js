@@ -1,5 +1,8 @@
 function imagerecorder(canvas)
 {
+	var initImage = new Image();	
+	initImage.src = "img/init.png";	// This is the "Click here to start recording" image.
+	
 	var clicked = 0;
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
 	var imageCanvas = canvas;
@@ -8,26 +11,28 @@ function imagerecorder(canvas)
 	
 	var lastEvent = 0;
 	
-	var libraryName;			// name of library (writes to librarys/libraryName/) 
+	var libraryName;				// name of library (writes to librarys/libraryName/) 
 		
-	var imagelibrary = [];		// store all paths to uploaded images
-	var imageid = 0;			// used to keep track of uploaded images id
+	var imagelibrary = [];			// store all paths to uploaded images
+	var imageid = 0;				// used to keep track of uploaded images id
 
-	var activeImage=-1;			// active imageData display in main canvas
-	var nextImage=0;			// id of next image
+	var activeImage=-1;				// active imageData display in main canvas
+	var nextImage=0;				// id of next image
 	
-	var imageData;				// data of the active imageData
+	var imageData;					// data of the active imageData
 	
 	var currentImageRatio = 1;
 	
 	var bodyMouseX;
 	var bodyMouseY;
 	
-	var files;					// store files thats being uploaded
+	var files;						// store files thats being uploaded
+	
 	
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
 		$(".wrapper").hide();
+		
 		
 		// Get library name when user clicks OK
 		$("#library-name-button").click(function(){
@@ -42,6 +47,9 @@ function imagerecorder(canvas)
 					// Hide dialog and show wrapper
 					$("#library-name-dialog").fadeOut(350);
 					$(".wrapper").fadeIn(355);
+					
+					// Print "click to start rec" image on canvas
+					ctx.drawImage(initImage,0,0, width = 1280, height = 720);
 				}
 				else {
 					alert("The library name can only contain characters A-Z and 0-9.");
@@ -59,13 +67,7 @@ function imagerecorder(canvas)
 		$("#sortableThumbs").sortable({
 			revert: 300,
 			update: function() {
-				imagelibrary = [];
-				// Loop through all li in the ul
-				$("li", this).each(function(index) {
-					var src = $("img", this).attr("src");
-					// Rebuild arr
-					imagelibrary[index] = src;
-				});
+				rebuildImgLibrary();
 			}
 		});
 		
@@ -74,6 +76,18 @@ function imagerecorder(canvas)
 		*	records clicks on canvas and pass them on to getEvents() to be logged
 		*/
 		$('#' + imageCanvas).click(function(event){
+		
+			// Lock thumbs & custom context menu on the first picture shown
+			if(clicked == 0) {
+				$("#sortableThumbs").sortable("destroy");
+				$("#uploadButton").hide();
+				$(".thumbnail").hover(function() {
+					$(this).css({
+						"cursor": "default",
+						"opacity": "0.65"
+					});
+				});
+			}
 		
 			showImage(getNextImage());
 		
@@ -145,8 +159,10 @@ function imagerecorder(canvas)
 	
 	// Add menu options to images
 	$(document).on("contextmenu", ".tli", function(e) {
-		e.preventDefault();
-		showThumbMenu($(this).index());
+		if(clicked == 0) {
+			e.preventDefault();
+			showThumbMenu($(this).index());
+		}
 	});
 	
 	function showThumbMenu(index) {
@@ -175,7 +191,33 @@ function imagerecorder(canvas)
 			html:		"Delete image",
 			href: 		"#",
 			click:		function(e) {
-				alert("Not implemented yet");
+				var selectedli = $("#sortableThumbs .tli").eq(index);
+				var imgPath = $("img", selectedli).attr("src");
+				
+				// Remove the thumbnail from the list
+				$(selectedli).remove();
+				
+				// Rebuild imagelibrary arr
+				rebuildImgLibrary();
+				
+				// Remove image source if there's no other copies of it.
+				if (imagelibrary.indexOf(imgPath) == -1) {
+					$.ajax({
+						url: "delete.php",
+						type: "POST",
+						data: {
+							filepath: imgPath
+						},
+						cache: false,
+						dataType: "json",
+						success: function(data) {
+							console.log(data.SUCCESS);
+						},
+						error: function() {
+							console.log("Error on AJAX call");
+						}
+					});
+				} 
 			}
 		}));
 		
@@ -200,6 +242,7 @@ function imagerecorder(canvas)
 			
 			// Clears screen. May need a better solution.
 			canvas.width = canvas.width; 
+			
 			var ratio = 1;
 			// Picture need to be scaled down
 			if (imageData.width > canvas.width || imageData.height > canvas.height) {
@@ -231,7 +274,18 @@ function imagerecorder(canvas)
 			return -1;
 		}
 	}
-
+	
+	// Rebuild imagelibrary
+	function rebuildImgLibrary() {
+		imagelibrary = [];
+		// Loop through all li in the ul
+		$("li", "#sortableThumbs").each(function(index) {
+			var src = $("img", this).attr("src");
+			// Rebuild arr
+			imagelibrary[index] = src;
+		});
+	}
+	
 	// Calculate the image scale ratio
 	function updateScaleRatio() {
 		if (imageData != undefined) {

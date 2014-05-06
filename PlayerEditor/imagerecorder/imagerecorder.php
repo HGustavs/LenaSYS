@@ -40,7 +40,7 @@
 			</script>
 			
 			<div id="controls">
-				<input type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image">
+				<input id="uploadButton" type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image">
 			</div>
 
 			<!--creating the small imageviewer, on the right side of the screen-->
