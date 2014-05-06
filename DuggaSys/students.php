@@ -43,8 +43,6 @@ $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
               	$userid = $row['uid'];
                echo "<tr><td>".$row['username']."</td>";
                echo "<td>".$row['uid']."</td>";
-               echo "<td>".$row['firstname']."</td>";
-               echo "<td>".$row['lastname']."</td>";
                echo "<td>FAIL</td>";
                echo "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='".$userid."'/></td></tr>";
 }
