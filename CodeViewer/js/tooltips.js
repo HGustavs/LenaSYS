@@ -62,6 +62,7 @@
 
 
 
+
                     // Show tooltip below object if there is no room above
                     if (distanceTop < 25 && elementOffsetLeft > ($tooltip.width()/2)) {
 
@@ -77,7 +78,7 @@
                         $tooltip.addClass("active2");
                     }
 
-                    // Show tooltip aligned to the right if there's no space on the left side
+                    // Show tooltip below object if there is no room above + align to the right if there's no space on the left side
                     else if (distanceTop < 25 && elementOffsetLeft < ($tooltip.width()/2)) {
 
 
@@ -91,6 +92,22 @@
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active2");
                     }
+
+
+                    // Show tooltip above object + align to the right if there's no space on the left side
+                    else if (distanceTop > 25 && elementOffsetLeft < ($tooltip.width()/2)) {
+
+
+                        $tooltip.css({
+                            top: distanceTop - ($tooltip.outerHeight() + 13),
+                            left: linkPosition.left
+
+                        });
+
+                        // Adding class handles animation through CSS
+                        $tooltip.addClass("active2");
+                    }
+
 
 
                     // Show tooltip above object
