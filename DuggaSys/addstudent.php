@@ -44,11 +44,21 @@ if(isset($_POST['string'])){
 			$str = $_POST['string'];
 
 			$row=explode("\r\n", $str);
-			foreach ($row as $row1) {
-				list($ssn, $name, $username)=(explode("\t",$row1));
+				$myFile = "testFile.txt";
+				$fh = fopen($myFile, 'w') or die("can't open file");
+				foreach ($row as $row1) {
+				list($ssn, $name, $username1)=(explode("\t",$row1));
 				list($lastname, $firstname)=(explode(", ",$name));
 				
 				$password1 = random_password(12);
+
+				fwrite($fh, $name);
+				fwrite($fh, "\t\t");
+				fwrite($fh, $username);
+				fwrite($fh, "\t\t");
+				fwrite($fh, $password1);
+				fwrite($fh, "\n");
+
 				$password = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 12));
 
 				$querystring='INSERT INTO user (username, firstname, lastname, ssn, password, newpassword) VALUES(:username,:firstname,:lastname,:ssn,:password, 1);';	
@@ -67,6 +77,7 @@ if(isset($_POST['string'])){
 					}
 				}
 			}
+				fclose($fh);
 	}
 		?>
 </div>
