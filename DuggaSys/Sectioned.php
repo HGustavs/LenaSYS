@@ -22,21 +22,20 @@ session_start();
 			<script>
 				setupLogin();
 				<?php
+					//Sets up a session kind variable in javascript depending on the users rights on the course	
+					if(isset($_GET['courseid'])&&isset($_GET['vers'])){
+							echo 'var courseID="'.$_GET['courseid'].'";';
+							echo 'var vers="'.$_GET['vers'].'";';
+					}else{
+							echo 'var courseID="NONE!";';
+							echo 'var vers="NONE!";';					
+					}
 
-						if(isset($_GET['courseid'])&&isset($_GET['vers'])){
-								echo 'var courseID="'.$_GET['courseid'].'";';
-								echo 'var vers="'.$_GET['vers'].'";';
-						}else{
-								echo 'var courseID="NONE!";';
-								echo 'var vers="NONE!";';					
-						}
-
-						if(array_key_exists('uid', $_SESSION)) {
-							echo 'var sessionkind=' . (hasAccess($_SESSION['uid'], $_GET['courseid'], 'w') ? 1 : 0) .';';
-						//	$_SESSION['kind'] =  (hasAccess($_SESSION['uid'], $_GET['courseid'], 'w') ? 1 : 0);						
-						} else {
-							echo 'var sessionkind=0';
-						}
+					if(array_key_exists('uid', $_SESSION)) {
+						echo 'var sessionkind=' . (hasAccess($_SESSION['uid'], $_GET['courseid'], 'w') ? 1 : 0) .';';				
+					} else {
+						echo 'var sessionkind=0';
+					}
 				?>			
 				
 				function AJAXServiceSection(opt,para)
@@ -64,37 +63,7 @@ session_start();
 										editsectionmenu(true);
 										?>
 										<script>
-										$(function() {
-											// Initialize timer object
-											var timer = null;
-											// Placeholder
-											$( "#Sectionlist" ).sortable({
-												opacity: 0.5,
-												cursor: "move",
-												items: "> span",
-												update: function() {
-													// Check if timer was initialized
-													if (timer != null) {
-														// Clear the timer
-														clearInterval(timer);
-													}
-													var serialized = $(this).sortable("serialize");
-													timer = setTimeout(function(){
-														// Pass course ID to check write access
-														var array = serialized + "&courseid=" + '<?php echo $courseID; ?>';
-														$.post("entryupdate.php", array, function(theResponse){
-															$("#dragupdate").html(theResponse);
-															$("#dragupdate").slideDown('slow');
-															setTimeout(function(){
-															  $("#dragupdate").slideUp("slow", function () { });
-															}, 2000);
-															timer = null;
-														});
-													}, 4000);
-													
-												}
-											});
-										});
+											setupDrag();
 										</script>
 <?php
 							} else {

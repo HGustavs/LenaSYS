@@ -1,3 +1,36 @@
+function setupDrag()
+{
+	// Initialize timer object
+	var timer = null;
+	// Placeholder
+	$( "#Sectionlist" ).sortable({
+		opacity: 0.5,
+		cursor: "move",
+		items: "> span",
+		update: function() {
+			// Check if timer was initialized
+			if (timer != null) {
+				// Clear the timer
+				clearInterval(timer);
+			}
+			var serialized = $(this).sortable("serialize");
+			timer = setTimeout(function(){
+				// Pass course ID to check write access
+				var array = serialized + "&courseid=" + '<?php echo $courseID; ?>';
+				$.post("entryupdate.php", array, function(theResponse){
+					$("#dragupdate").html(theResponse);
+					$("#dragupdate").slideDown('slow');
+					setTimeout(function(){
+					  $("#dragupdate").slideUp("slow", function () { });
+					}, 2000);
+					timer = null;
+				});
+			}, 4000);
+			
+		}
+	});
+}
+
 function countsect(sectpos)
 {
 		var cnt=0;						
