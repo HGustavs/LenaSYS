@@ -12,29 +12,50 @@
 	include_once("../../coursesyspw.php");	
 	include_once("basic.php");
 	include_once("../Shared/courses.php");
-
+	
 	// Connect to database and start session
 	dbConnect();
 	session_start();
 	
-	$coursename=getCourseId($_POST['coursename']);	
+//	$coursename=getCourseId($_POST['coursename']);	
 	//$sectionid=mysql_real_escape_string($_POST['sectionid']);
-	$position=mysql_real_escape_string($_POST['position']);
-	$version=$_POST['version'];
+//	$position=mysql_real_escape_string($_POST['position']);
+
+	$exampleid = $_POST['exampleid'];
+	
+//	$version=$_POST['version'];
 	$opt=$_POST['opt'];
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
-	$exampleno=0;
+	
+	
+					
+//	$exampleno=0;
+
+
 
 	// To guarantee that things only happen if the example exists in the named version
+	// $cnt=0;
+	// $query = "SELECT exampleid FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position';";		
+	// $result=mysql_query($query);
+	// if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+	// while ($row = mysql_fetch_assoc($result)){
+			// $cnt++;
+			// $exampleno=$row['exampleid'];
+	// }
+
+	// Make sure there is an exaple
 	$cnt=0;
-	$query = "SELECT exampleid FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position';";		
+	$query = "SELECT * FROM codeexample WHERE exampleid='$exampleid';";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 	while ($row = mysql_fetch_assoc($result)){
 			$cnt++;
-			$exampleno=$row['exampleid'];
+			$exampleid=$row['exampleid'];
+			$courseID=$row['cid'];
 	}
-
+	
+	
+	
 	if($cnt>0){
 
 			if(checklogin()){
@@ -42,7 +63,7 @@
 					// Perform Update Action
 					//------------------------------------------------------------------------------------------------
 		
-					if(strcmp('addWordlistWord',$opt)===0){
+			/*		if(strcmp('addWordlistWord',$opt)===0){
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
 								$wordlist=htmlEntities($_POST['wordlist']);
@@ -131,7 +152,7 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}
-			
+			*/
 			}
 	
 			//------------------------------------------------------------------------------------------------
@@ -139,8 +160,9 @@
 			//------------------------------------------------------------------------------------------------
 		
 			// Backward Button Data
+			/*
 			$before=array();
-			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and cid='$coursename' and pos<$position ORDER BY pos ASC LIMIT 1;";		
+			$query = "SELECT examplename FROM codeexample WHERE cid=$courseID and pos<$position ORDER BY pos ASC LIMIT 1;";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -149,19 +171,103 @@
 		
 			// Forward Button Data
 			$after=array();
-			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and cid='$coursename' and pos>$position ORDER BY pos ASC LIMIT 1;";		
+			$query = "SELECT examplename,pos FROM codeexample WHERE cid=$courseID and pos>$position ORDER BY pos ASC LIMIT 1;";			
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
 					array_push($after,array($row['examplename'],$row['pos']));
 			}
+					
+			*/		
+				
+			$posquery = mysql_query(
+				sprintf("SELECT pos FROM listentries WHERE code_id=%d",
+					mysql_real_escape_string($exampleid)
+				)
+			);
+			$res = mysql_fetch_assoc($posquery);
+			$pos = $res['pos'];
+			
+			// Locate all the sections in the listentries table
+			$r = mysql_query("SELECT pos FROM listentries WHERE kind=1 ORDER BY pos");
+
+			if($r && mysql_num_rows($r) > 0) {
+				$positions = array();
+			
+				// Fetch all positions for sections
+				while(($position = mysql_fetch_array($r, MYSQL_NUM)) != null) {
+					array_push($positions, $position[0]);
+				}
+			
+				// add the current position into the array and sort
+				array_push($positions, $pos);
+				sort($positions, SORT_NUMERIC);
+			
+				$offset = array_search($pos, $positions);
+			
+				// Remember to check offsets and set the previous and next section
+				// position.
+				if($offset-1 > 0) {
+					$previuous = $positions[$offset-1];
+				} else {
+					$previuous = 0;
+				}
+				if($offset+1 < count($positions)) {
+					$next = $positions[$offset+1];
+				} else {
+					$next = false;
+				}
+			} else {
+				die("Something went horribly wrong." . mysql_error());
+			}	
+			$prevquery = sprintf("SELECT code_id FROM listentries WHERE code_id IS NOT NULL and pos < %d AND pos > %d",
+				mysql_real_escape_string($pos),
+				mysql_real_escape_string($previuous)
+			);
+			
+			// SELECT code_id FROM listentries WHERE code_id IS NOT NULL pos < 5 AND pos > 1
+			$prev_ex = mysql_query($prevquery);
+			
+			$nextquery = sprintf("SELECT code_id FROM listentries WHERE code_id IS NOT NULL and pos > %d",
+				mysql_real_escape_string($pos)
+			);
+			
+			if($next !== false) {
+				$nextquery .= sprintf(" AND pos < %d", mysql_real_escape_string($next));
+			}
+			
+			$next_ex = mysql_query($nextquery);
+			
+			
+			// Fetch examples before
+			$backward_examples = array();
+			while(($example = mysql_fetch_array($prev_ex, MYSQL_NUM)) != null) {
+				array_push($backward_examples, $example[0]);
+			}
+			
+			// Fetch examples after
+			$forward_examples = array();
+			while(($example = mysql_fetch_array($next_ex, MYSQL_NUM)) != null) {
+				array_push($forward_examples, $example[0]);
+			}
+							
+			
+			// Get entryname
+			$query = "SELECT entryname FROM listentries WHERE code_id='$exampleid';";		
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			while ($row = mysql_fetch_assoc($result)){
+					$entryname = $row['entryname'];
+			}
+				
+				
 						
 			// Open file and read name of Example
 			$examplename="";
 			$exampleno=0;
 			$chosenwordlist="";
 			$playlink="";
-			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position'";		
+			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE cid='$courseID'";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -253,8 +359,9 @@
 		    }
 		  }  
 
-			$array = array('before' => $before,'after' => $after,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
 			echo json_encode($array);
+
 
 	}else{
 			echo "Example does not exist!";	

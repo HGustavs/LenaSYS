@@ -64,21 +64,6 @@ INSERT INTO user_course(uid,cid,access) values (2,2,"W");
 
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
-CREATE TABLE section(
-		sectionno			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		coursename			VARCHAR(64),
-		sectionname			VARCHAR(64),
-		sectionpos			INTEGER,
-		kind				INTEGER,
-		ts 					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		cversion			INTEGER,
-		appuser				VARCHAR(64),
-		PRIMARY KEY(sectionno)		
-);
-
-INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","Code Examples",2,2013,0,"Creationscript");
-INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","Javascript",1,2013,1,"Creationscript");
-INSERT INTO section(coursename,sectionname,kind,cversion,sectionpos,appuser) values ("Webbprogrammering","HTML5",1,2013,2,"Creationscript");
 
 
 /* template with information about a certain template */
@@ -101,32 +86,29 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template2.css",4)
 CREATE TABLE codeexample(
 		exampleid			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		cid					INT UNSIGNED NOT NULL,
-		sectionid			MEDIUMINT UNSIGNED NOT NULL,
 		examplename			VARCHAR(64),
 		wordlist			VARCHAR(64),
 		runlink			  	VARCHAR(64),
-		pos					INTEGER,
 		cversion			INTEGER,
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
 		templateid			INT UNSIGNED NOT NULL DEFAULT '0',
 		PRIMARY KEY(exampleid),
 		FOREIGN KEY (cid) REFERENCES course (cid),
-		FOREIGN KEY (sectionid) REFERENCES section (sectionno),
 		FOREIGN KEY (uid) REFERENCES user (uid),
 		FOREIGN KEY (templateid) REFERENCES template (templateid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Events 1","JS","",0,1,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Events 2","JS","",1,1,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,1,"Callback 1","GLSL","Culf.html",2,1,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 2","GLSL","Dulf.html",3,1,2013,1);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 3","GLSL","",4,2,2013,1);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,2,"Callback 4","JS","Fulf.html",5,2,2013,1);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion,templateid) values (1,3,"Design 1","GLSL","Gulf.html",0,2,2013,1);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 2","JS","Hulf.html",1,2,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 3","JS","Iulf.html",2,1,2013);
-INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values (1,3,"Design 4","JS","Julf.html",3,1,2013);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Events 1","JS","",1,2013);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Events 2","JS","",1,2013);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Callback 1","GLSL","Culf.html",1,2013);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion,templateid) values (1,"Callback 2","GLSL","Dulf.html",1,2013,1);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion,templateid) values (1,"Callback 3","GLSL","",2,2013,1);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion,templateid) values (1,"Callback 4","JS","Fulf.html",2,2013,1);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion,templateid) values (1,"Design 1","GLSL","Gulf.html",2,2013,1);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Design 2","JS","Hulf.html",2,2013);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Design 3","JS","Iulf.html",1,2013);
+INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Design 4","JS","Julf.html",1,2013);
  
 
 /* improw contains a list of the important rows for a certain example */

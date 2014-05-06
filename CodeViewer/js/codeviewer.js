@@ -172,8 +172,10 @@ function SkipFUp()
 
 function setup()
 {
-		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
-		
+//		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
+	var exampleid = 2;
+	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
+			
 		if(sessionkind=="w"){
 				setupEditable();						
 		}
@@ -492,7 +494,7 @@ function returned(data)
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
 		// Should be sectionname instead of sectionID
-		examplesect.innerHTML=sectionID;
+		examplesect.innerHTML=data['entryname'];
 		
 		
 		if(sessionkind=="w"){
