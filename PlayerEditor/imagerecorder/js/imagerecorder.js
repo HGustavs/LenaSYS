@@ -1,5 +1,8 @@
 function imagerecorder(canvas)
 {
+	var initImage = new Image();	
+	initImage.src = "img/init.png";	// This is the "Click here to start recording" image.
+	
 	var clicked = 0;
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
 	var imageCanvas = canvas;
@@ -8,28 +11,22 @@ function imagerecorder(canvas)
 	
 	var lastEvent = 0;
 	
-	var libraryName;			// name of library (writes to librarys/libraryName/) 
+	var libraryName;				// name of library (writes to librarys/libraryName/) 
 		
-	var imagelibrary = [];		// store all paths to uploaded images
-	var imageid = 0;			// used to keep track of uploaded images id
+	var imagelibrary = [];			// store all paths to uploaded images
+	var imageid = 0;				// used to keep track of uploaded images id
 
-	var activeImage=-1;			// active imageData display in main canvas
-	var nextImage=0;			// id of next image
+	var activeImage=-1;				// active imageData display in main canvas
+	var nextImage=0;				// id of next image
 	
-	var imageData;				// data of the active imageData
+	var imageData;					// data of the active imageData
 	
 	var currentImageRatio = 1;
 	
 	var bodyMouseX;
 	var bodyMouseY;
 	
-	var files;					// store files thats being uploaded
-	
-	
-	// Print "click to start rec" image on canvas
-	var initImage = new Image();
-	initImage.src = "img/init.png";
-	ctx.drawImage(initImage,0,0, width = 1280, height = 720);
+	var files;						// store files thats being uploaded
 	
 	
 	$(document).ready(function(){
@@ -50,6 +47,9 @@ function imagerecorder(canvas)
 					// Hide dialog and show wrapper
 					$("#library-name-dialog").fadeOut(350);
 					$(".wrapper").fadeIn(355);
+					
+					// Print "click to start rec" image on canvas
+					ctx.drawImage(initImage,0,0, width = 1280, height = 720);
 				}
 				else {
 					alert("The library name can only contain characters A-Z and 0-9.");
