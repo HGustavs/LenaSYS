@@ -1,6 +1,4 @@
 <?php session_start(); ?>
-
-<?php if($_SESSION['user']['permission'] == 2) { ?>
 	<div id='create'>
 		<form role='form'>
 			<div class='form-group'>
@@ -57,8 +55,3 @@
 			</div>
 		</form>
 	</div>
-<?php }else {?>
-	<script type="text/javascript">
-		changeURL('noid');
-	</script>
-<?php } ?>
