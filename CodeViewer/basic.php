@@ -64,10 +64,10 @@ include "../Shared/basic.php";
 					echo '<td class="butto" title="Save" onclick="Save();"><img src="new icons/hotdog_button.svg" /></td>';
                     echo '<td class="butto" title="Select image" onclick="Images();"><img src="new icons/list_codefiles.svg" /></td>';
                     echo '</tr></table></div>';
-                    echo '<div id="docucontent" contenteditable="true">';
+                    echo '<div id="docucontent" class="docucontentStyle" contenteditable="true">';
 				}
             else{
-                echo '<div id="docucontent">';
+                echo '<div id="docucontent" class="docucontentStyle">';
             }
             echo '<div style="left:20px" class="warning">';
 						echo 'Please wait while content loads<br/>';
