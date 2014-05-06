@@ -77,6 +77,18 @@ function imagerecorder(canvas)
 		*/
 		$('#' + imageCanvas).click(function(event){
 		
+			// Lock thumbs & custom context menu on the first picture shown
+			if(clicked == 0) {
+				$("#sortableThumbs").sortable("destroy");
+				$("#uploadButton").hide();
+				$(".thumbnail").hover(function() {
+					$(this).css({
+						"cursor": "default",
+						"opacity": "0.65"
+					});
+				});
+			}
+		
 			showImage(getNextImage());
 		
 			// Update scale ratio (for correct mouse positions)
@@ -147,8 +159,10 @@ function imagerecorder(canvas)
 	
 	// Add menu options to images
 	$(document).on("contextmenu", ".tli", function(e) {
-		e.preventDefault();
-		showThumbMenu($(this).index());
+		if(clicked == 0) {
+			e.preventDefault();
+			showThumbMenu($(this).index());
+		}
 	});
 	
 	function showThumbMenu(index) {
