@@ -32,8 +32,8 @@
 			$pdo = new PDO('mysql:dbname=Imperious;host=localhost', 'root', '');
 			$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 
-			function random_password( $length = 8 ) {
-			    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+			function random_password( $length = 12 ) {
+			    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?<>/";
 			    $password = substr( str_shuffle( $chars ), 0, $length );
 			    return $password;
 			}
@@ -44,7 +44,7 @@
 			foreach ($row as $row1) {
 				list($ssn, $name, $username)=(explode("\t",$row1));
 				list($lastname, $firstname)=(explode(", ",$name));
-				$password = random_password(8);
+				$password = random_password(12);
 
 				$querystring='INSERT INTO user (username, firstname, lastname, ssn, password, newpassword) VALUES(:username,:firstname,:lastname,:ssn,:password, 1);';	
 				$stmt = $pdo->prepare($querystring);
