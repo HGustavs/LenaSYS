@@ -5,9 +5,9 @@
     left: 0px;
     right: 0px;
     height: 250px;
-    background-color: #272822;
+    /*background-color: #272822;*/
     overflow: scroll;
-    color: white;
+   /* color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -22,7 +22,7 @@
     bottom: 0px;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
-     background-color: #272822;
+   /*  background-color: #272822;*/
     overflow: scroll;
 }
 #temp3{

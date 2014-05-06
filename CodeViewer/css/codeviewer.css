@@ -1,6 +1,6 @@
 
 #docucontent b {
-    color: white;
+    /*color: white;*/
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -10,7 +10,7 @@
 }
 
 #docucontent span {
-    color: white;
+   /* color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     padding: 7px;
@@ -22,10 +22,11 @@
     position: absolute;
     top: 0px;
     height: 50px;
-    background-color: #614875;
+    /*background-color: #614875;*/
     margin: 0px;
     border-color: rgb(0,0,0) transparent;
 }
+
 .beforebutton img{
 /*	opacity: 0.2;
 	filter: alpha(opacity=80); */
@@ -40,11 +41,26 @@
     height: 44px;
     background-color: #614875;
 }
+
 .butto:hover{
 	background-color: #7D5CA0;
     cursor: pointer;
 }
 
+.mbutto {
+    text-align: center;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 4px;
+    height: 44px;
+    /*background-color: #614875;*/
+}
+
+.mbutto:hover{
+	/*background-color: #7D5CA0;*/
+    cursor: pointer;
+}
 .buttogray {
     border: 1px inset #888;
     text-align: center;
@@ -63,6 +79,7 @@
     width: 20px;
 }
 
+/*
 .warning {
     position: absolute;
     top: 200px;
@@ -74,13 +91,13 @@
     font-weight: normal;
     padding: 4px;
     background-color: #5D5D5D;
-}
+}*/
 
 .menutext {
     overflow: hidden;
     height: 46px;
     vertical-align: middle;
-    color: white;
+    /*color: white;*/
     width: 100%;
     border-radius: 12px;
     font-family: Verdana,Serif;
@@ -88,6 +105,7 @@
     font-weight: normal;
     padding: 4px;
 }
+
 #hotdogdrop{
 	display: none;
 	right: 0px;
@@ -96,13 +114,13 @@
 	border-color: rgb(0,0,0) transparent;
 	font-family: Arial,Serif;
 	font-size: 14px;
-	color: white;
+	/*color: white;*/
 }
 #hotdogdrop table td{
 	 border-bottom: solid 1px #2A120A;
 	 	font-family: Arial,Serif;
 	font-size: 14px;
-	color: white;
+	/*color: white;*/
 }
 
 
@@ -116,17 +134,17 @@
  /*   box-shadow: 6px 6px 8px #444; */
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
-    color: #fff;
+    /*color: #fff;*/
 }
 
 .dropdownback {
     padding-left: 8px;
-    background-color: #804;
-    color: #fff;
+    /*background-color: #804;*/
+    /*color: #fff;*/
     font-family: Verdana,Serif;
     font-size: 16px;
     font-weight: normal;
-    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+   /* background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);*/
 }
 
 .codedrop {
@@ -137,7 +155,7 @@
     height: -webkit-calc(40.0%);
     height: -moz-calc(40.0%);
     padding-left:7px;
-    background-color: #614875;
+    /*background-color: #614875;*/
     border-color: rgb(0,0,0) transparent;	
 }
 
@@ -148,10 +166,20 @@
 	width: -webkit-calc(25.0%);  
     height: -webkit-calc(65.0%);
     height: -moz-calc(65.0%);
-    background-color: #614875; 
-    background: rgb(0, 0, 0) transparent;
+   /* background-color: #614875; 
+    background: rgb(0, 0, 0) transparent;*/
 	padding-left:7px;
 	border-color: rgb(0,0,0) transparent;
+}
+
+.themedrop {
+ /*   left: 314px;  */
+	right: 0px;
+    width: -moz-calc(20.0%);
+	width: -webkit-calc(20.0%);  
+    height: -webkit-calc(40.0%);
+    height: -moz-calc(40.0%);
+	/*background-color: #614875;*/
 }
 
 .forwdrop {
@@ -169,8 +197,8 @@
 }
 
 .dropdownitem {
-    background: #614875;
-    color: #fff;
+   /* background: #614875;
+    color: #fff;*/
     display: block;
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
@@ -201,6 +229,11 @@ a {
 }
 
 .norm {
+    color: #fff;
+    background-color: #272822;
+}
+/*
+.normtext {
     color: #fff;
     background-color: #272822;
 }
@@ -300,6 +333,7 @@ a {
     color: #fed;
 }
 
+*/
 #Sectionlist {
     padding: 2px;
     width: 800px;

@@ -1,0 +1,182 @@
+.docucontentStyle {
+     background-color: #FFFFFF;
+     color: black;
+    
+}
+
+.codeboxStyle {
+    background-color: #FFFFFF;
+}
+
+.temp3Style{
+	background-color: #FFFFFF;
+}
+
+.temp4Style{
+	background-color: #FFFFFF;
+}
+
+.docucontentStyle b {
+    color: black;
+}
+
+.docucontentStyle span {
+    color: black;
+}
+
+.buttomenuStyle {
+    background-color: #614875;
+}
+
+.mbuttoStyle {
+    background-color: #614875;
+}
+
+.mbuttoStyle:hover{
+	background-color: #7D5CA0;
+}
+
+.menutextStyle {
+   	color: white;
+}
+
+.hotdogdropStyle{
+	color: white;
+}
+.hotdogdropStyle table td{
+	color: white;
+}
+
+.dropdownStyle {
+    color: #fff;
+    /*background: #614875;*/
+}
+
+.dropdownbackStyle {
+	//background-color: #804;
+    color: #fff;
+    background: linear-gradient(to bottom, #555 50%,#888 40%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+}
+
+.codedropStyle {
+    background-color: #614875;
+    border-color: rgb(0,0,0) transparent;	
+}
+
+.docudropStyle {
+    background-color: #614875; 
+    background: rgb(0, 0, 0) transparent;
+}
+
+.themedropStyle {
+	background-color: #614875;
+}
+
+.dropdownitemStyle {
+    background: #614875;
+    color: #fff;
+}
+
+.normtext {
+    color: #000;
+    background-color: #fff;
+}
+
+.impo {
+    color: #000;
+    background-color: #D3BEE3;
+}
+
+.normtext .no {
+    border-right: 2px #444;
+    color: white;
+    padding-left: 3px; 
+    background-color: #755096;
+}
+
+.impo .no {
+    border-right: 2px #444;
+    color: white;
+    background-color: #9569BD;
+}
+
+.comment {
+    color: rgba(72, 68, 101, 0.83);
+}
+
+.normtext .oper {
+    color: #000;
+   // font-weight: bold;
+}
+
+.impo .oper {
+    color: #000;
+    //font-weight: bold;
+}
+
+.normtext .string {
+    color: #000;
+    //font-weight: bold;
+}
+
+.impo .string {
+    color: #000;
+    //font-weight: bold;
+}
+
+.normtext .number {
+    color: #000;
+    font-weight: bold;
+}
+
+.impo .number {
+    color: #000;
+   // font-weight: bold;
+}
+
+.normtext .hi {
+    background-color: #D3BEE3;
+    color: #000;
+}
+
+.impo .hi {
+    background-color: #fff;
+    color: #fed;
+}
+
+.normtext .keyword {
+    color: rgba(234, 32, 32, 1);
+    //font-weight: bold;
+}
+
+.impo .keyword {
+    color: rgba(234, 32, 32, 1);
+    //font-weight: bold;
+}
+
+.normtext .impword {
+    color: #fff;
+    background-color: #614875;
+   // font-weight: bold;
+}
+
+.impo .impword {
+    color: #fff;
+    background-color: #614875;
+  //  font-weight: bold;
+}
+
+.normtext .imphi {
+    background-color: #D3BEE3;
+    color: #000;
+    
+}
+
+.impo .imphi {
+    background-color: #fff;
+    color: #000;
+}
+
+.tooltip{
+	color:white;
+}
