@@ -29,6 +29,27 @@ function Canvasrenderer()
 	this.startTime;
 	this.fDelta;
 	
+	// Function for loading XML-file
+	this.loadXML = function(file) {
+		if (window.XMLHttpRequest){   
+			  // code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+		}else {	
+			  // code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		  
+		// Open XML
+		xmlhttp.open("GET",file,false);
+		xmlhttp.send();
+		xmlDoc=xmlhttp.responseXML;
+		
+		// Load timesteps
+		this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
+
+		this.scheduleTimesteps();
+	}
+	
 	// List of all valid canvas functions
 	// No other operation in the XML should be possible to run
 	var validFunctions = 	['bP', 'beginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
@@ -871,24 +892,6 @@ function Canvasrenderer()
 	this.mouseCursorX = 1;
 	this.mouseCursorY = 1;
 	this.mouseCursorBackground = ctx.getImageData(1, 1, 1, 1);
-	
-	if (window.XMLHttpRequest){   
-		  // code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
-	}else {	
-		  // code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	  
-	// Open XML
-	xmlhttp.open("GET","imagerecording2.xml",false);
-  	xmlhttp.send();
-  	xmlDoc=xmlhttp.responseXML;
-	
-  	// Load timesteps
-  	this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
-
-	this.scheduleTimesteps();
 }
 
 
