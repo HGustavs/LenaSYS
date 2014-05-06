@@ -218,9 +218,10 @@ function gotoPosition(poz)
 }
 
 function SkipB()
-{
+{		
 		if(issetDrop("backwdrop")&&isdropped==false){
-				switchDrop("backwdrop");
+			position=parseInt(position)-1;
+				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
 		}else if(issetDrop("backwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
@@ -231,14 +232,14 @@ function SkipB()
 
 function SkipBTimeout()
 {
-		if(dmd==1){
-				switchDrop("backwdrop");
-				isdropped=true;
-		}
+		if(dmd==1){	
+			switchDrop("backwdrop");
+			isdropped=true;
+		}	
 }
 
 function SkipBDown()
-{
+{		
 		setTimeout(function(){SkipBTimeout();}, 1000);							
 		dmd=1;
 }
@@ -251,25 +252,57 @@ function SkipBUp()
 function SkipF()
 {
 		if(issetDrop("forwdrop")&&isdropped==false){
-				switchDrop("forwdrop");
-		}else if(issetDrop("forwdrop")&&isdropped==true){
+				position=parseInt(position)+1;
+				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+		}
+		else if(issetDrop("forwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 				position=parseInt(position)+1;
 				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
 		}
 }
+$(document).click(function (e)
+{
+		if(e.target.parentElement.getAttribute('id')){
+			if(e.target.parentElement.getAttribute('id').toString() == "beforebutton"){
+				//nothing should happend
+			}else if(e.target.parentElement.getAttribute('id').toString() == "afterbutton"){
+				//nothing should happend
+			}
+			else{
+				hideDrop("backwdrop");
+				hideDrop("forwdrop");
+			}
+		}
+		else if(e.target.getAttribute('id')){
+			if(e.target.getAttribute('id').toString() == "before"){
+				//nothing should happend
+			}
+			else if(e.target.getAttribute('id').toString() == "afterbutton"){
+				//nothing should happend
+			}
+			else{
+				hideDrop("backwdrop");
+				hideDrop("forwdrop");
+			}
+		}else{
+			hideDrop("backwdrop");
+			hideDrop("forwdrop");
+		}	
+});
 
 function SkipFTimeout()
 {
 		if(dmd==1){
-				switchDrop("forwdrop");
-				isdropped=true;
+			switchDrop("forwdrop");
+			isdropped=true;
 		}
 }
 
+
 function SkipFDown()
-{
+{		
 		setTimeout(function(){SkipFTimeout();}, 1000);							
 		dmd=1;
 }
@@ -873,6 +906,7 @@ function switchDrop(dname)
 				hideDrop("backwdrop");
 				hideDrop("docudrop");
 				hideDrop("codedrop");
+				$('#hotdogdrop').hide();
 			
 			$( dropd ).slideDown("fast");
 			dropd.style.display="block";
@@ -1558,14 +1592,65 @@ function changeCSS(cssFile)
     document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
-function showhotdogmenu()
-{
+// function showhotdogmenu()
+// {
+// 
+	// var hotdogdrop = document.getElementById("hotdogdrop");
+	// if($(hotdogdrop).is(':hidden')){
+		// hotdogdrop.style.display = "block";
+	// }
+	// else{
+		// hotdogdrop.style.display = "none";	
+	// }
+// }
 
-	var hotdogdrop = document.getElementById("hotdogdrop");
-	if($(hotdogdrop).is(':hidden')){
-		hotdogdrop.style.display = "block";
-	}
-	else{
-		hotdogdrop.style.display = "none";	
-	}
-}
+$(function() {
+	$('#hidesettings').click(function() {
+		$('.docudrop').slideToggle("fast");
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.docudrop').slideUp('fast');
+	});
+	$(".docudrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hidecode').click(function() {
+		$('.codedrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('#hotdogdrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.codedrop').slideUp('fast');
+	});
+	$(".codedrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hidehotdog').click(function() {
+		$('#hotdogdrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('#hotdogdrop').slideUp('fast');
+	});
+	$("#hotdogdrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});

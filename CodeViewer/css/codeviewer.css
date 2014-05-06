@@ -18,7 +18,6 @@
     color: grey;
     font-family: Arial,Sans-Serif;
     font-style: italic;
-
 }
 
 /* --- */
@@ -31,6 +30,7 @@
     height: 50px;
     background-color: #614875;
     margin: 0px;
+    border-color: rgb(0,0,0) transparent;
 }
 .beforebutton img{
 /*	opacity: 0.2;
@@ -99,9 +99,16 @@
 	right: 0px;
 	height: auto;
 	width: auto;
+	border-color: rgb(0,0,0) transparent;
+	font-family: Arial,Serif;
+	font-size: 14px;
+	color: white;
 }
 #hotdogdrop table td{
 	 border-bottom: solid 1px #2A120A;
+	 	font-family: Arial,Serif;
+	font-size: 14px;
+	color: white;
 }
 
 
@@ -111,7 +118,7 @@
     top: 50px;
     z-index: 4000;
 /*    background: #614875; */
-    border: solid 2px #000;
+    /*border: solid 2px #000;*/
  /*   box-shadow: 6px 6px 8px #444; */
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
@@ -121,11 +128,12 @@
 .dropdownback {
     padding-left: 8px;
     background-color: #804;
-    color: #fff;
-    font-family: Verdana,Serif;
-    font-size: 16px;
+    color: white;
+    font-family: Arial,Serif;
+    font-size: 19px;
     font-weight: normal;
-    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+    background-color: #614875;
+    border-color: rgb(0,0,0) transparent;
 }
 
 .codedrop {
@@ -135,6 +143,9 @@
 	width: -webkit-calc(20.0%);  
     height: -webkit-calc(40.0%);
     height: -moz-calc(40.0%);
+    padding-left:7px;
+    background-color: #614875;
+    border-color: rgb(0,0,0) transparent;	
 }
 
 .docudrop {
@@ -146,7 +157,14 @@
     height: -moz-calc(65.0%);
     background-color: #614875; 
     background: rgb(0, 0, 0) transparent;
+	padding-left:7px;
+	border-color: rgb(0,0,0) transparent;
+}
 
+h1 {
+    font-family: arial,serif;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .imgdrop {
@@ -166,6 +184,7 @@
     height: auto;
     width: 200px;
     cursor: default;
+    border-color: rgb(0,0,0) transparent;
 }
 
 .backwdrop {
@@ -173,15 +192,18 @@
     height: auto;
     width: 200px;
     cursor: default;
+    border-color: rgb(0,0,0) transparent;
 }
 
 .dropdownitem {
     background: #614875;
-    color: #fff;
+    color: white;
     display: block;
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
     cursor: default;
+    padding-left: 7px;
+	border-bottom: solid 1px #2A120A;
 }
 
 #imgdrop img{
@@ -197,9 +219,11 @@
 }
 
 .menuhi {
-    background: #7D5CA0;
-    color: #fff;
-    text-shadow: 1px 1px 2px #000;
+	font-family: Arial,Serif;
+	font-size: 16px;
+	color: white;
+	text-shadow: 1px 1px 2px #000;
+	background-color: #7D5CA0;
 }
 
 .menuch {
@@ -233,7 +257,7 @@ a {
     border-right: 2px #444;
     color: white;
     padding-left: 3px; 
-    background-color: #755096;
+    background-color: #614875;
 }
 
 .impo .no {
@@ -248,7 +272,6 @@ a {
 
 .norm .oper {
     color: white;
-    font-weight: bold;
 }
 
 .impo .oper {
@@ -258,7 +281,6 @@ a {
 
 .norm .string {
     color: #fff;
-    font-weight: bold;
 }
 
 .impo .string {
@@ -268,7 +290,6 @@ a {
 
 .norm .number {
     color: #fff;
-    font-weight: bold;
 }
 
 .impo .number {
@@ -288,7 +309,6 @@ a {
 
 .norm .keyword {
     color: #C5822C;
-    font-weight: bold;
 }
 
 .impo .keyword {
@@ -607,11 +627,11 @@ a {
     display: inline-block;
     position: fixed;
     padding: 5px 10px;
-    color: white;
+    color: orange;
     border-radius: 5px;
     margin-top: 20px;
     text-align: center;
-    font: 10px "Helvetica Neue", Sans-Serif;
+    font: 10px Arial, Sans-Serif;
     font-stretch: condensed;
     text-decoration: none;
     text-transform: uppercase;
@@ -714,22 +734,6 @@ a {
 .butt > [contenteditable="true"] br{
     display:none;
 }
-@-webkit-keyframes wiggle {
-    0% {
-        -webkit-transform:rotate(4deg);
-    }
-    50% {
-        -webkit-transform:rotate(-4deg);
-    }
-    100% {
-        -webkit-transform:rotate(4deg);
-    }
-}
-
-.wiggle:hover {
-    -webkit-animation: wiggle 0.5s infinite;
-    cursor: pointer;
-}
 
 .templateicon{
     width: 45%;
@@ -737,6 +741,28 @@ a {
     float: left;
 }
 .templatethumbicon{
-    width: 98%;
+    width: 88%;
     margin: 2% 1% 2% 1%;
+    padding: 5%;
+}
+.templatethumbicon:hover{
+    background-color: #7D5CA0;
+    cursor: pointer;
+}
+
+.showdesktop{
+    display: table-cell;
+}
+.showmobile{
+    display: none;
+}
+
+@media only screen and (max-width: 700px){
+    .showmobile{
+        display: table-cell;
+    }
+    .showdesktop{
+        display: none;
+    }
+
 }
