@@ -26,31 +26,16 @@
 //	$version=$_POST['version'];
 	$opt=$_POST['opt'];
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
-	
-	
-					
-//	$exampleno=0;
-
-
-
-	// To guarantee that things only happen if the example exists in the named version
-	// $cnt=0;
-	// $query = "SELECT exampleid FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position';";		
-	// $result=mysql_query($query);
-	// if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
-	// while ($row = mysql_fetch_assoc($result)){
-			// $cnt++;
-			// $exampleno=$row['exampleid'];
-	// }
 
 	// Make sure there is an exaple
 	$cnt=0;
-	$query = "SELECT exampleid,cid,cversion FROM codeexample WHERE exampleid='$exampleid';";		
+	$query = "SELECT exampleid,examplename,cid,cversion FROM codeexample WHERE exampleid='$exampleid';";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 	while ($row = mysql_fetch_assoc($result)){
 			$cnt++;
 			$exampleid=$row['exampleid'];
+			$examplename=$row['examplename'];
 			$courseID=$row['cid'];
 			$cversion=$row['cversion'];
 	}
@@ -128,7 +113,7 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("selectFile",$opt)===0){
 								$filename=htmlEntities($_POST['filename']);
-								$query = "UPDATE filelist SET filename='$filename' WHERE exampleid='$exampleid' and pos=1;";		
+								$query = "UPDATE filelist SET filename='$filename' WHERE exampleid='$exampleid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("createNewExample",$opt)===0){
@@ -259,7 +244,7 @@
 			$exampleno=0;
 			$chosenwordlist="";
 			$playlink="";
-			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE cid='$courseID'";		
+			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE exampleid=$exampleid and cid='$courseID'";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -272,7 +257,7 @@
 			// Read File
 			$code="";
 			$filename="";
-			$query = "SELECT filename FROM filelist WHERE exampleid='$exampleno' ORDER BY pos ASC LIMIT 1;";
+			$query = "SELECT filename FROM filelist WHERE exampleid='$exampleid' ORDER BY pos ASC LIMIT 1;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -299,7 +284,7 @@
 		  
 		  // Read important lines
 			$imp=array();
-			$query = "SELECT istart,iend FROM improw WHERE exampleid=$exampleno ORDER BY istart;";
+			$query = "SELECT istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -326,7 +311,7 @@
 		
 		  // Read important wordlist
 			$impwordlist=array();
-			$query = "SELECT word,description FROM impwordlist WHERE exampleid=$exampleno ORDER BY word;";
+			$query = "SELECT word,description FROM impwordlist WHERE exampleid=$exampleid ORDER BY word;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -335,7 +320,7 @@
 		
 			// Read Description Segments
 			$desc="";
-			$query = "SELECT segment FROM descriptionsection WHERE exampleid=$exampleno ORDER BY pos LIMIT  1;";
+			$query = "SELECT segment FROM descriptionsection WHERE exampleid=$exampleid ORDER BY pos LIMIT  1;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
