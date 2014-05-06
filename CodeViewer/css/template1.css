@@ -43,9 +43,9 @@
 	  
       height: -webkit-calc(100.0%);
       height: -moz-calc(100.0%);
-     background-color: #272822;
+     /*background-color: #272822;*/
     overflow: scroll;
-   color: white;
+   /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -59,7 +59,7 @@
  	  width: -moz-calc(75.0%);
 	  width: -webkit-calc(75.0%);
     right: 0px;
-    background-color: #272822;
+   /* background-color: #272822;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     overflow: scroll;

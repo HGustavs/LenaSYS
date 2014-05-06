@@ -319,6 +319,7 @@ function setup()
 		if(sessionkind=="w"){
 				setupEditable();						
 		}
+		setTheme();
 }
 
 
@@ -624,9 +625,9 @@ function returned(data)
 		//----------------------------------------------------
 
 		// Make before dropdown
-		str="<div class='dropdownback'>Skip Backward</div>";
+		str="<div class='dropdownback dropdownbackStyle'>Skip Backward</div>";
 		for(i=0;i<data['before'].length;i++){
-				str+="<span id='F"+data['before'][i][1]+"' onmouseover='highlightMenu(\"F"+data['before'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['before'][i][1]+"\");' onclick='gotoPosition(\""+data['before'][i][1]+"\")' class='dropdownitem'>"+data['before'][i][0]+"</span>";
+				str+="<span id='F"+data['before'][i][1]+"' onmouseover='highlightMenu(\"F"+data['before'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['before'][i][1]+"\");' onclick='gotoPosition(\""+data['before'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['before'][i][0]+"</span>";
 		}
 		var before=document.getElementById('backwdrop');
 		before.innerHTML=str;
@@ -691,9 +692,9 @@ function returned(data)
 		}
 	*/	
 		// Make after dropdown
-		str="<div class='dropdownback'>Skip Forward</div>";
+		str="<div class='dropdownback dropdownbackStyle'>Skip Forward</div>";
 		for(i=0;i<data['after'].length;i++){
-				str+="<span id='F"+data['after'][i][1]+"' onmouseover='highlightMenu(\"F"+data['after'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['after'][i][1]+"\");' onclick='gotoPosition(\""+data['after'][i][1]+"\")' class='dropdownitem'>"+data['after'][i][0]+"</span>";
+				str+="<span id='F"+data['after'][i][1]+"' onmouseover='highlightMenu(\"F"+data['after'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['after'][i][1]+"\");' onclick='gotoPosition(\""+data['after'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['after'][i][0]+"</span>";
 		}
 		var after=document.getElementById('forwdrop');
 		after.innerHTML=str;
@@ -740,9 +741,9 @@ function returned(data)
 				str="";
 				for(i=0;i<data['directory'].length;i++){
 						if(data['directory'][i]==data['filename']){
-								str+="<span class='dropdownitem menuch' id='DDI"+i+"' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";						
+								str+="<span class='dropdownitem dropdownitemStyle menuch' id='DDI"+i+"' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";						
 						}else{
-								str+="<span class='dropdownitem' id='DDI"+i+"' onclick='chosenFile(\""+data['directory'][i]+"\");' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";														
+								str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+data['directory'][i]+"\");' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";														
 						}
 				}
 				var filereq=document.getElementById('codedrop');
@@ -806,11 +807,11 @@ function displayTemplates()
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);'  onclick='changeCSS(\""+'css/template1.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='changeCSS(\""+'css/template2.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);'  onclick='changeCSS(\""+'css/template1.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='changeCSS(\""+'css/template2.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
 
 		
 	docurec=document.getElementById('docudrop');
@@ -1288,7 +1289,7 @@ function rendercode(codestring,destinationdiv)
 		cont="";
 
 		lineno=0;
-		str+="<div class='norm'>";
+		str+="<div class='normtext'>";
 		
 		pcount=0;
 		parenthesis=new Array();
@@ -1398,14 +1399,14 @@ function rendercode(codestring,destinationdiv)
 						
 						
 						if(improws.length==0){
-								str+="<div class='norm'>";
+								str+="<div class='normtext'>";
 						}else{
 								for(var kp=0;kp<improws.length;kp++){
 										if(lineno>=parseInt(improws[kp][0])&&lineno<=parseInt(improws[kp][1])){
 												str+="<div class='impo'>";
 												break;
 										}else{
-												str+="<div class='norm'>";
+												str+="<div class='normtext'>";
 										}						
 								}
 						}	
@@ -1577,12 +1578,14 @@ function addTemplatebox(id)
 		var div = document.createElement("div");
 		content.appendChild(div);
 		div.id = temps[i];
+		div.className = temps[i]+"Style";
 		div.setAttribute("contenteditable", "true");
 	}	
 }
-function changeCSS(cssFile)
+
+function changeCSS(cssFile, index)
 {
-	var cssLinkIndex = 0;
+	var cssLinkIndex = index;
 	var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
     var newlink = document.createElement("link");
     newlink.setAttribute("rel", "stylesheet");
@@ -1609,6 +1612,7 @@ $(function() {
 		$('.docudrop').slideToggle("fast");
 		$('.codedrop').hide();
 		$('#hotdogdrop').hide();
+		$('.themedrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
 		return false;
@@ -1626,6 +1630,7 @@ $(function() {
 		$('.codedrop').slideToggle("fast");
 		$('.docudrop').hide();
 		$('#hotdogdrop').hide();
+		$('.themedrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
 		return false;
@@ -1643,6 +1648,7 @@ $(function() {
 		$('#hotdogdrop').slideToggle("fast");
 		$('.docudrop').hide();
 		$('.codedrop').hide();
+		$('.themedrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
 		return false;
@@ -1654,3 +1660,68 @@ $(function() {
    		event.stopPropagation();
 	});
 });
+
+$(function() {
+	$('#hidetheme').click(function() {
+		$('.themedrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.themedrop').slideUp('fast');
+	});
+	$(".themedrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+function Theme()
+{
+		displayThemes();		
+}
+
+function displayThemes()
+{
+	str="";
+	str+="<h2>Choose a theme!</h2>";
+	str+="<div class='themeicon' onclick='selectTheme(\""+'black'+"\");'>  <img src='new icons/theme_black.svg' /></div>";
+	str+="<div class='themeicon' onclick='selectTheme(\""+'white'+"\");'>  <img src='new icons/theme_white.svg' /></div>";
+	
+	docurec=document.getElementById('themedrop');
+	docurec.innerHTML=str;
+}
+
+function selectTheme(color)
+{
+	localStorage.setItem("storedTheme", color);
+	setTheme();
+	hideDrop("themedrop");
+}
+
+function setTheme()
+{
+	var storedTheme = localStorage.getItem("storedTheme");
+	if(storedTheme != "" && storedTheme != null){
+		var colorTheme = storedTheme;
+
+		if(colorTheme === "black"){
+			//make things black
+			changeCSS("css/blackTheme.css", 2);
+			//alert("black");
+			
+		}
+		
+		else if(colorTheme === "white"){
+			//make things white
+			changeCSS("css/whiteTheme.css", 2);
+			//alert("white");
+			
+		}
+		else{
+			//theme doesnt exist, make default
+			alert("no theme");
+		}
+	}
+}

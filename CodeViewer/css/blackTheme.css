@@ -1,0 +1,182 @@
+.docucontentStyle {
+     background-color: #272822;
+     color: white;
+    
+}
+
+.codeboxStyle {
+    background-color: #272822;
+}
+
+.temp3Style{
+	background-color: #272822;
+}
+
+.temp4Style{
+	background-color: #272822;
+}
+
+.docucontentStyle b {
+    color: white;
+}
+
+.docucontentStyle span {
+    color: white;
+}
+
+.buttomenuStyle {
+    background-color: #614875;
+}
+
+.mbuttoStyle {
+    background-color: #614875;
+}
+
+.mbuttoStyle:hover{
+	background-color: #7D5CA0;
+}
+
+.menutextStyle {
+   	color: white;
+}
+
+.hotdogdropStyle{
+	color: white;
+}
+.hotdogdropStyle table td{
+	color: white;
+}
+
+.dropdownStyle {
+    color: #fff;
+    /*background: #614875;*/
+}
+
+.dropdownbackStyle {
+	background-color: #804;
+    color: #fff;
+    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
+}
+
+.codedropStyle {
+    background-color: #614875;
+    border-color: rgb(0,0,0) transparent;	
+}
+
+.docudropStyle {
+    background-color: #614875; 
+    background: rgb(0, 0, 0) transparent;
+}
+
+.themedropStyle {
+	background-color: #614875;
+}
+
+.dropdownitemStyle {
+    background: #614875;
+    color: #fff;
+}
+
+.normtext {
+    color: #fff;
+    background-color: #272822;
+}
+
+.impo {
+    color: #fff;
+    background-color: #5d5d5d;
+}
+
+.normtext .no {
+    border-right: 2px #444;
+    color: white;
+    padding-left: 3px; 
+    background-color: #755096;
+}
+
+.impo .no {
+    border-right: 2px #444;
+    color: white;
+    background-color: #9569BD;
+}
+
+.comment {
+    color: #888;
+}
+
+.normtext .oper {
+    color: white;
+    font-weight: bold;
+}
+
+.impo .oper {
+    color: #fff;
+    font-weight: bold;
+}
+
+.normtext .string {
+    color: #fff;
+    font-weight: bold;
+}
+
+.impo .string {
+    color: #fff;
+    font-weight: bold;
+}
+
+.normtext .number {
+    color: #fff;
+    font-weight: bold;
+}
+
+.impo .number {
+    color: #000;
+    font-weight: bold;
+}
+
+.normtext .hi {
+    background-color: #5d5d5d;
+    color: #fff;
+}
+
+.impo .hi {
+    background-color: #272822;
+    color: #fed;
+}
+
+.normtext .keyword {
+    color: #C5822C;
+    font-weight: bold;
+}
+
+.impo .keyword {
+    color: #C5822C;
+    font-weight: bold;
+}
+
+.normtext .impword {
+    color: #000;
+    background-color: #fff;
+    font-weight: bold;
+}
+
+.impo .impword {
+    color: #000000;
+    background-color: #fff;
+    font-weight: bold;
+}
+
+.normtext .imphi {
+    background-color: #5d5d5d;
+    color: #fff;
+    
+}
+
+.impo .imphi {
+    background-color: #272822;
+    color: #fed;
+}
+
+.tooltip{
+	color:orange;
+}

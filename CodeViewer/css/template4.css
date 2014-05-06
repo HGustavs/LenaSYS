@@ -11,9 +11,9 @@
 	  
       height: -webkit-calc(35.0%);
       height: -moz-calc(35.0%);
-     background-color: #272822;
+    /* background-color: #272822;*/
     overflow: scroll;
-    color: white;
+    /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -31,9 +31,9 @@
 	  
       height: -webkit-calc(35.0%);
       height: -moz-calc(35.0%);
-     background-color: #272822;
+     /*background-color: #272822;*/
     overflow: scroll;
-    color: white;
+    /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -52,7 +52,7 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
-     background-color: #272822;
+     /*background-color: #272822;*/
      font-family: Arial,Sans-Serif;
     font-size: 14px;
     overflow: scroll;
