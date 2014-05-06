@@ -27,8 +27,10 @@ include "../Shared/basic.php";
 					echo '</table>';
 			echo '</span>';				
 				if($kind){
-						echo '<span id="codedrop" class="dropdown codedrop " style="overflow:scroll;"><div class="dropdownback">Code viewer Code File Selector</div></span>';
-						echo '<span id="docudrop" class="dropdown docudrop " style="overflow:scroll;"><div class="dropdownback">General settings</div></span>';
+						echo '<span id="codedrop" class="dropdown codedrop" style="overflow:scroll;"><div class="dropdownback">Code viewer Code File Selector</div></span>';
+						echo '<span id="docudrop" class="dropdown docudrop" style="overflow:scroll;"><div class="dropdownback">General settings</div></span>';
+                        echo '<span id="imgdrop" class="dropdown imgdrop" style="overflow:scroll;"><div class="dropdownback">Image Selector</div></span>';
+
 				}
 
 				echo '<div id="buttomenu">';
@@ -56,12 +58,33 @@ include "../Shared/basic.php";
 
 				echo '</table></div>';
 				echo '<div id="div2" style="width:100%; position: absolute; top: 50px; bottom: 0px; background-color:#def">';
-				echo '<div id="docucontent"';
+
 				if($kind){
-						echo ' contenteditable="true" >';				
-				}else{ 
-						echo '>';
-				} 
+
+
+                    echo '<div id="buttomenu2">';
+                    echo '<table cellspacing="2"><tr>';
+                    echo '<td class="butto" title="Heading" onclick="styleHeader();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td class="butto" title="Code example" onclick="styleCode();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td class="butto" title="Remove formatting" onclick="styleReset();"><img src="new icons/hotdog_button.svg" /></td>';
+					echo '<td class="butto" title="Save" onclick="Save();"><img src="new icons/hotdog_button.svg" /></td>';
+                    echo '<td class="butto" title="Select image" onclick="Images();"><img src="new icons/list_codefiles.svg" /></td>';
+
+                    echo '</tr></table></div>';
+
+
+                    echo '<div id="docucontent" contenteditable="true">';
+
+
+
+				}
+
+            else{
+                echo '<div id="docucontent">';
+
+            }
+
+
 				echo '<div style="left:20px" class="warning">';
 						echo 'Please wait while content loads<br/>';
 						echo '<img src="new icons/loadingJS.gif" /><br/>';

@@ -125,9 +125,11 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 								
 					}else if(strcmp("editDescription",$opt)===0){
-								$description=$_POST['description'];
+							// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
+								$description = str_replace("&nbsp;"," ",$_POST['description']);
+								$description = str_replace("<br>","\n",$description);
 								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleno='$exampleno';";
-								$result=mysql_query($query);
+                                $result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}
 			
@@ -240,19 +242,40 @@
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
-					$desc.=$row['segment'];
+				// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox
+					$desc=str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row['segment']));
+				//	$desc = $row['segment'];
 			}  
-		
-			// Read Directory
+			
+			// Read sectionname 
+			$sectionname="";
+			$query = "SELECT sectionname FROM section WHERE sectionno=$sectionid;";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			while ($row = mysql_fetch_assoc($result)){
+					$sectionname=$row['sectionname'];
+			} 
+			
+			// Read Directory - Codeexamples
 			$directory=array();
 			$dir = opendir('./codeupload');
 		  while (($file = readdir($dir)) !== false) {
 		  	if(endsWith($file,".js")){
 		    		array_push($directory,$file);		
 		    }
-		  }  
+		  }
 
-			$array = array('before' => $before,'after' => $after,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
+
+        // Read Directory - Images
+        $images=array();
+        $img_dir = opendir('./imgupload');
+        while (($img_file = readdir($img_dir)) !== false) {
+            if(endsWith($img_file,".png")){
+                array_push($images,"imgupload/".$img_file);
+            }
+        }
+
+        $array = array('before' => $before,'after' => $after,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'images' => $images, 'examplename'=> $examplename,'playlink' => $playlink,'desc' => $desc,'sectionname' => $sectionname,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
 			echo json_encode($array);
 
 	}else{

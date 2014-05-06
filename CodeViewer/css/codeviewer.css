@@ -1,5 +1,9 @@
 
-#docucontent b {
+
+/* Stylebuttons for description-box */
+
+
+#docucontent h1 {
     color: white;
     display: block;
     font-family: Arial,Sans-Serif;
@@ -9,13 +13,15 @@
     font-style: italic;
 }
 
-#docucontent span {
-    color: white;
+
+#docucontent span.codestyle{
+    color: grey;
     font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    padding: 7px;
-    overflow: auto;
+    font-style: italic;
 }
+
+/* --- */
+
 
 #buttomenu {
     width: 100%;
@@ -161,6 +167,18 @@ h1 {
     font-size: 20px;
 }
 
+.imgdrop {
+    /*  left: 354px; */
+    right: 0px;
+    width: -moz-calc(35.0%);
+    width: -webkit-calc(35.0%);
+    height: -webkit-calc(65.0%);
+    height: -moz-calc(65.0%);
+    background-color: #614875;
+    background: rgb(0, 0, 0) transparent;
+
+}
+
 .forwdrop {
     right: 20px;
     height: auto;
@@ -186,6 +204,18 @@ h1 {
     cursor: default;
     padding-left: 7px;
 	border-bottom: solid 1px #2A120A;
+}
+
+#imgdrop img{
+
+    width: 25%;
+
+}
+
+
+#docucontent img{
+
+    width: 80%;
 }
 
 .menuhi {
@@ -300,8 +330,7 @@ a {
 
 .norm .imphi {
     background-color: #5d5d5d;
-    color: #fff;
-    
+    color: #fff;   
 }
 
 .impo .imphi {
