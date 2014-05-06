@@ -625,6 +625,15 @@ button.option {
     margin-left: -35px;
     bottom: -16px;
 }
+#Sectionlist .butt {
+    border-radius: 3px;
+    margin-right: 4px;
+    box-shadow: 2px 1px 3px #000;
+    margin-bottom: 4px;
+    padding-left: 8px;
+    height: 24px;
+    text-shadow: 2px 2px 2px #000;
+}
 
 .arrow:after {
     content: "";
@@ -765,7 +774,16 @@ button {
 #create textarea.form-control {
     width: 100%;
 }
-.form-control {
+
+#Sectionlist .butt {
+    /*border-radius: 3px;*/
+    margin-right: 4px;
+    /*box-shadow: 2px 1px 3px #000;*/
+    margin-bottom: 4px;
+    padding-left: 8px;
+    height: 24px;
+    /*text-shadow: 2px 2px 2px #000;*/
+    color: #fff;
     display: block;
     font-size: 14px;
     line-height: 1.42857143;

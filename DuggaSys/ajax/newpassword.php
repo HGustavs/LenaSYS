@@ -6,7 +6,7 @@ include_once "../Shared/database.php";
 include_once "../Shared/external/password.php";
 include_once "../Shared/constants.php";
 
-dbConnect();
+pdoConnect();
 
 // Make sure the user is logged in before proceeding since this is only
 // supposed to work on logged in users.
@@ -25,50 +25,43 @@ if(checklogin()) {
 			die();
 		}
 
+
 		// We should probably migrate to PDO as soon as possible.
-		mysql_query("START TRANSACTION");
+		$pdo->beginTransaction();
 
 		// Update the password for the user.
-		$querystring = sprintf("UPDATE user SET `password`='%s', `newpassword`=0 WHERE uid='%s' LIMIT 1",
-			mysql_real_escape_string(
-				password_hash($_POST['password'], PASSWORD_BCRYPT, array("cost" => 12))
-			),
-			mysql_real_escape_string($_SESSION['uid'])
-		);
+		$query = $pdo->prepare("UPDATE user SET `password`=:password, `newpassword`=0 WHERE uid=:uid LIMIT 1");
+		$query->bindValue(':password', password_hash($_POST['password'], PASSWORD_BCRYPT, array("cost" => 12)));
+		$query->bindParam(':uid', $_SESSION['uid']);
 
-		$result = mysql_query($querystring);
-		if(!$result) {
+		if(!$query->execute()) {
 			echo json_encode(array("success" => false, "errormsg" => "Failed to update user password"));
-			mysql_query("ROLLBACK");
+			$pdo->rollBack();
 			die();
 		} else {
 			if(strlen($_POST['question']) < 1 && strlen($_POST['answer']) < 1) {
 				echo json_encode(array("success" => false, "errormsg" => "Question or answer may not be empty"));
-				mysql_query("ROLLBACK");
+				$pdo->rollBack();
 				die();
 			}
 
-			mysql_query(sprintf("DELETE FROM user_question WHERE owner='%d'", 
-				mysql_real_escape_string($_SESSION['uid'])
-			));
+			$delq = $pdo->prepare("DELETE FROM user_question WHERE owner=:id");
+			$delq->bindParam(':id', $_SESSION['uid']);
 
-			// Insert new question and update it on duplicate
-			$qs = sprintf("INSERT INTO user_question (question, answer, owner) VALUES('%s', '%s', %d)",
-				mysql_real_escape_string($_POST['question']),
-				mysql_real_escape_string($_POST['answer']),
-				mysql_real_escape_string($_SESSION['uid'])
-			);
+			$insq = $pdo->prepare("INSERT INTO user_question (question, answer, owner) VALUES(:question, :answer, :uid)");
+			$insq->bindParam(':question', $_POST['question']);
+			$insq->bindParam(':answer', $_POST['answer']);
+			$insq->bindParam(':uid', $_SESSION['uid']);
 
-			$r = mysql_query($qs);
-			if($r) {
+			if($insq->execute()) {
 				echo json_encode(array("success" => true));
 			} else {
 				echo json_encode(array("success" => false, "errormsg" => "Failed to save recovery question"));
-				mysql_query("ROLLBACK");
+				$pdo->rollBack();
 				die();
 			}
 		}
-		mysql_query("COMMIT");
+		$pdo->commit();
 	}
 	else {
 		echo json_encode(
