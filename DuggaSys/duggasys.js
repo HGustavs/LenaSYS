@@ -1,8 +1,8 @@
 function countsect(sectpos)
 {
 		var cnt=0;						
-		for(j=0;j<retdata['examples'].length;j++){
-				if(retdata['examples'][j][3]==sectpos){
+		for(j=0;j<retdata['entries'].length;j++){
+				if(retdata['entries'][j][3]==sectpos && retdata['entries'][j]['kind'] == 2){
 						cnt++;
 				}
 		}
@@ -50,7 +50,9 @@ function Sectionbutton(kind,imgname,sectid,typ,pos)
 				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
 		}else if(typ=="EXAMPLE"){
 				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
-		}		
+		}else if(typ=="ADD"){
+				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='newSection(0)' />";
+		}	
 }
 
 function returnedSection(data)
@@ -61,92 +63,116 @@ function returnedSection(data)
 		str="";
 		
 		// Course Name
-		str+="<span class='course'>"+courseID+"</span>"
+		str+="<div class='course'>"+courseID;
+		if (sessionkind===1) {
+			str+="<span class='smallishbutt'>";
+			str+=Sectionbutton("","PlusT.svg",2,"ADD");									
+			str+="</span>";
+		}
+		str+="</div>";
 
 		// For now we only have two kinds of sections
-		for(i=0;i<data['sections'].length;i++){
-				if(parseInt(data['sections'][i]['sectionkind'])==2){
-						str+="<span class='bigg' id='SCE"+data['sections'][i]['sectionno']+"'>";
+		for(i=0;i<data['entries'].length;i++){
+			if (parseInt(data['entries'][i]['visible']) === 1 || sessionkind === 1) {
+				switch(parseInt(data['entries'][i]['kind'])) {
+					case 0:
+						// Styling for header row
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
 						if(sessionkind===1){
-							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"' >"+data['sections'][i]['sectionname']+"</span>";
+							str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' ><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 							str+="<span class='smallishbutt'>";
-							str+=Sectionbutton("sectionUp","UpT.svg",data['sections'][i]['sectionno'],"BIG");
-							str+=Sectionbutton("sectionDown","DownT.svg",data['sections'][i]['sectionno'],"BIG");
-							str+=Sectionbutton("sectionDel","MinusT.svg",data['sections'][i]['sectionno'],"BIG");											
+							str+=Sectionbutton("sectionDel","MinusT.svg",data['entries'][i]['lid'],"BIG");											
 							str+="</span>";
 						}else{
-							str+="<span id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";						
+							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";						
 						}
 						str+="</span>";
-				}else{
-						str+="<span class='butt' id='SCE"+data['sections'][i]['sectionno']+"' >";
+						break;
+					case 1:
+						//Styling for section row
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='butt' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
 
 						// If we are allowed to edit
 						if(sessionkind===1){
-							str+="<span contenteditable='true' id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";
+							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";
 							str+="<span class='smallbutt'>";
-							str+=Sectionbutton("sectionUp","UpS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("sectionDown","DownS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("exampleNew","PlusS.svg",data['sections'][i]['sectionno'],"SMALL");
-							str+=Sectionbutton("sectionDel","MinusS.svg",data['sections'][i]['sectionno'],"SMALL");
+							str+=Sectionbutton("sectionDel","MinusS.svg",data['entries'][i]['lid'],"SMALL");
 							str+="</span>";
 						}else{
-							str+="<span id='SE"+data['sections'][i]['sectionno']+"'>"+data['sections'][i]['sectionname']+"</span>";						
+							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";						
 						}
 						
 						// End of butt span
 						str+="</span>"
-
-						// For each of the examples
-						for(j=0;j<data['examples'].length;j++){
-								if(data['sections'][i]['sectionno']==data['examples'][j]['sectionno']){
-										str+="<span class='norm' id='ECX"+data['examples'][j]['sectionno']+"'>";
-										if(sessionkind===1){
-												str+="<span id='EX"+data['examples'][j]['exampleno']+"' contenteditable='true'>"+data['examples'][j]['examplename']+"</span>";
-												str+="<span class='smallbutt'>";
-													str+=Sectionbutton("exampleUp","UpT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
-													str+=Sectionbutton("exampleDown","DownT.svg",data['examples'][j]['exampleno'],"EXAMPLE");
-													str+=Sectionbutton("exampleDel","MinusT.svg",data['examples'][j]['exampleno'],"EXAMPLE");											
-													str+="<img src='../CodeViewer/icons/PlayT.svg' onclick=\"window.location='../CodeViewer/EditorV30.php?courseid="+courseID+
-														"&version="+vers+
-														"&sectionid="+data['examples'][j]['sectionno']+
-														"&position="+data['examples'][j]['pos']+
-														"'\"/>";
-												str+="</span>"
-										}else{
-												str+="<a href='../CodeViewer/EditorV30.php?courseid="+courseID+"&sectionid="+data['examples'][j]['sectionno']+"&version="+vers+"&position="+data['examples'][j]['pos']+"'>"+data['examples'][j]['examplename']+"</a>";		
-										}
-										str+="</span>";
-								}
+						break;
+					case 2:
+						// Styling for example row
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
-				}
-
-		}
-		
-		var slist=document.getElementById('Sectionlist');
-		slist.innerHTML=str;
-
-		if(sessionkind===1){
-				// Setup editable sections with events etc
-				for(i=0;i<data['sections'].length;i++){
-						if(parseInt(data['sections'][i]['sectionkind'])==2){
-								var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
-				    		editable.addEventListener("blur", function(){editedSectionName(this);}, true);
+						if(sessionkind===1){
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span class='smallbutt'>";
+								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="</span>"
 						}else{
-								var editable=document.getElementById("SE"+data['sections'][i]['sectionno']);
-				    		editable.addEventListener("blur", function(){editedSectionName(this);}, true);
-								for(j=0;j<data['examples'].length;j++){
-										if(data['sections'][i]['sectionno']==data['examples'][j]['sectionno']){
-												var editable=document.getElementById("EX"+data['examples'][j]['exampleno']);
-								    		editable.addEventListener("blur", function(){editedExampleName(this);}, true);
-										}
-								}
-		
+								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
 						}
-				}				
-		}
+						str+="</span>";
+						break;
+					case 3:
+						// Styling for test row
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='test' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
+						if(sessionkind===1){
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span class='smallbutt'>";
+								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="</span>"
+						}else{
+								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+						}
+						str+="</span>";
+						break;
+					default:
+					case 4:
+						// Styling for 'others' row
+						if (parseInt(data['entries'][i]['visible']) === 0) {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else {
+							str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
+						if(sessionkind===1){
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span class='smallbutt'>";
+								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="</span>"
+						}else{
+								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+						}
+						str+="</span>";
+						break;
+					}
+				}
+			}
+			
+			var slist=document.getElementById('Sectionlist');
+			slist.innerHTML=str;
 
 
-	  if(data['debug']!="NONE!") alert(data['debug']);
+		  if(data['debug']!="NONE!") alert(data['debug']);
 
 }

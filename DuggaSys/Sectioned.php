@@ -1,19 +1,23 @@
 <?php
 include_once("../../coursesyspw.php");	
+include_once("../Shared/database.php");
+include_once("../Shared/courses.php");
+include_once("../Shared/sessions.php");	
 include_once("basic.php");
 
 dbConnect();
 session_start();
 ?>
+<!DOCTYPE html>
 <html>
 	<head>
 			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
 			<link type="text/css" href="css/duggasys.css" rel="stylesheet" />
 			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+			<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 			<script type="text/javascript" src="duggasys.js"></script>
 			<script type="text/javascript" src="startpage.js"></script>
             <script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>
-			
 			<script>
 				setupLogin();
 				<?php
@@ -40,12 +44,10 @@ session_start();
 				}
 
 			</script>
-
+	<div id="dragupdate"></div>
 	</head>
 
 <?php
-				
-		
 		if(isset($_GET['courseid'])&&isset($_GET['vers'])){
 				$courseID=$_GET['courseid'];
 				if(courseexists($courseID)){
@@ -57,10 +59,45 @@ session_start();
 							if($ha){
 										// Allowed to edit this course
 										editsectionmenu(true);
+										?>
+										<script>
+										$(function() {
+											// Initialize timer object
+											var timer = null;
+											// Placeholder
+											$( "#Sectionlist" ).sortable({
+												opacity: 0.5,
+												cursor: "move",
+												items: "> span",
+												update: function() {
+													// Check if timer was initialized
+													if (timer != null) {
+														// Clear the timer
+														clearInterval(timer);
+													}
+													var serialized = $(this).sortable("serialize");
+													timer = setTimeout(function(){
+														// Pass course ID to check write access
+														var array = serialized + "&courseid=" + '<?php echo $courseID; ?>';
+														$.post("entryupdate.php", array, function(theResponse){
+															$("#dragupdate").html(theResponse);
+															$("#dragupdate").slideDown('slow');
+															setTimeout(function(){
+															  $("#dragupdate").slideUp("slow", function () { });
+															}, 2000);
+															timer = null;
+														});
+													}, 4000);
+													
+												}
+											});
+										});
+										</script>
+<?php
 							} else {
 										// No editing
 										editsectionmenu(false);
-								}
+							}
 						}else{
 								editsectionmenu(false);
 						}			
@@ -73,22 +110,15 @@ session_start();
 		}
 		loginwins();
 
-?>			
+?>		
 </html>
 
 
 <!--Place tooltips on all objects with a title-->
 <script>
-
     $( document ).ready(function() {
-
         setTimeout(function() {
-
             $("*[title]").tooltips();
-
         }, 800);
-
-
     });
-
 </script>
