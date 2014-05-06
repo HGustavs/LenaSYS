@@ -76,32 +76,35 @@ function imagerecorder(canvas)
 		*	records clicks on canvas and pass them on to getEvents() to be logged
 		*/
 		$('#' + imageCanvas).click(function(event){
-		
-			// Lock thumbs & custom context menu on the first picture shown
-			if(clicked == 0) {
-				$("#sortableThumbs").sortable("destroy");
-				$("#uploadButton").hide();
-				$(".thumbnail").hover(function() {
-					$(this).css({
-						"cursor": "default",
-						"opacity": "0.65"
+			if(imagelibrary.length > 0) {
+				// Lock thumbs & custom context menu on the first picture shown
+				if(clicked == 0) {
+					$("#sortableThumbs").sortable("destroy");
+					$("#uploadButton").hide();
+					$(".thumbnail").hover(function() {
+						$(this).css({
+							"cursor": "default",
+							"opacity": "0.65"
+						});
 					});
-				});
+				}
+			
+				showImage(getNextImage());
+			
+				// Update scale ratio (for correct mouse positions)
+				updateScaleRatio();
+
+				clicked = 1;
+				var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+				var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
+			
+				document.getElementById('xCord').innerHTML=xMouse;
+				document.getElementById('yCord').innerHTML=yMouse;
+
+				getEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+			} else {
+				alert("You need to upload at least one image before you can start recording.");
 			}
-		
-			showImage(getNextImage());
-		
-			// Update scale ratio (for correct mouse positions)
-			updateScaleRatio();
-
-			clicked = 1;
-			var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-			var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-		
-			document.getElementById('xCord').innerHTML=xMouse;
-			document.getElementById('yCord').innerHTML=yMouse;
-
-			getEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
 		});
 		/*
 		 *checks the mouse-position in realtime.
