@@ -779,11 +779,15 @@ function Canvasrenderer()
 		y *= this.scaleRatio;
 		x *= this.scaleRatio;
 
-		// Restore mouse click background
-		ctx.putImageData(this.mouseClickBackground, this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius);
-		// Restore background
-		ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
-
+		
+		if(this.mouseClickBackground){
+			// Restore mouse click background
+			ctx.putImageData(this.mouseClickBackground, this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius);
+		}
+		if(this.mouseCursorBackground){
+			// Restore background
+			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
+		}
 		// Save background
 		this.mouseCursorBackground = ctx.getImageData(x, y, 18, 24);
 		// Save mouse position
@@ -838,7 +842,7 @@ function Canvasrenderer()
 			// Draw scaled image
 			ctx.drawImage(image , 0, 0, image.width * canvas.scaleRatio, image.height * canvas.scaleRatio);
 			// New mouse cursor background
-			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17, 23);
+			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatio, 23*canvas.scaleRatio);
 			// New mouse click background
 			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+1, canvas.mouseClickRadius*2+1);
 
@@ -892,7 +896,7 @@ function Canvasrenderer()
 	}
 	  
 	// Open XML
-	xmlhttp.open("GET","canvas6.xml",false);
+	xmlhttp.open("GET","data.xml",false);
   	xmlhttp.send();
   	xmlDoc=xmlhttp.responseXML;
 	
