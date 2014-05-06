@@ -40,7 +40,7 @@ echo '<tr><td class="butto " title="Show code" onclick="" colspan="4">Code<img s
 								echo '<td class="menutext menutextStyle"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName" contenteditable="true">Example Code Page</td>';
 								echo '<td class="mbutto mbuttoStyle showdesktop" title="Settings" id="hidesettings"><img src="new icons/general_settings_button.svg" /></td>';
 								echo '<td class="mbutto mbuttoStyle showdesktop" title="Select codesource" id="hidecode"><img src="new icons/list_codefiles.svg" /></td>';
-								echo '<td class="mbutto mbuttoStyle showdesktop" title="Themes" id="hidetheme" onclick="Theme();"><img src="new icons/theme_button.svg" /></td>';
+								echo '<td class="mbutto mbuttoStyle showdesktop" title="Themes" id="hidetheme" onclick="Theme();"><img src="new icons/switchColorTemp.svg" /></td>';
 								
 				}else{
 								echo '<td class="menutext menutextStyle"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';
