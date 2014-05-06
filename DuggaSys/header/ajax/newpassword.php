@@ -1,10 +1,10 @@
 <?php
 session_start();
-include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
-include_once "../Shared/database.php";
-include_once "../Shared/external/password.php";
-include_once "../Shared/constants.php";
+include_once dirname(__FILE__) . "/../../../../coursesyspw.php";
+include_once dirname(__FILE__) . "/../../../shared/sessions.php";
+include_once dirname(__FILE__) . "/../../../Shared/database.php";
+include_once dirname(__FILE__) . "/../../../Shared/external/password.php";
+include_once dirname(__FILE__) . "/../../../Shared/constants.php";
 
 pdoConnect();
 

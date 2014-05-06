@@ -1,8 +1,8 @@
 <?php
-include_once "../Shared/database.php";
-include_once "../../coursesyspw.php";
-include_once "../Shared/external/password.php";
-include_once "../Shared/constants.php";
+include_once dirname(__FILE__) . "/../../../Shared/database.php";
+include_once dirname(__FILE__) . "/../../../../coursesyspw.php";
+include_once dirname(__FILE__) . "/../../../Shared/external/password.php";
+include_once dirname(__FILE__) . "/../../../Shared/constants.php";
 session_start();
 pdoConnect();
 
@@ -63,7 +63,7 @@ if(array_key_exists('user', $_POST) && array_key_exists('answer', $_POST) && arr
 	}
 
 	echo json_encode($answerres);
-} else if(array_key_exists('user', $_GET)) {
+} else if(array_key_exists('user', $_POST)) {
 	// If a username has been provided, look it up and retrieve the question.
 	// We'll only reach this block if none of the other information was provided.
 	$res = array();
@@ -73,7 +73,7 @@ if(array_key_exists('user', $_POST) && array_key_exists('answer', $_POST) && arr
 			user_question,user 
 		WHERE 
 			user_question.owner=user.uid AND user.username=:username");
-	$query->bindParam(':username', $_GET['user']);
+	$query->bindParam(':username', $_POST['user']);
 
 	// Fetch the information from the database and update the result variable.
 	if($query->execute() && $query->rowCount() > 0) {
@@ -83,7 +83,7 @@ if(array_key_exists('user', $_POST) && array_key_exists('answer', $_POST) && arr
 			"question" => $data["question"]
 		);
 	} else {
-		$res["error"] = "No such user or no secret question set.";
+		$res["error"] = "No such user exists.";
 	}
 
 	echo json_encode($res);
