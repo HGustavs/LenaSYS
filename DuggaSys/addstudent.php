@@ -49,6 +49,7 @@ if(isset($_POST['string'])){
 				foreach ($row as $row1) {
 				list($ssn, $name, $username1)=(explode("\t",$row1));
 				list($lastname, $firstname)=(explode(", ",$name));
+				list($username, $grabage)=(explode("@",$username1));
 				
 				$password1 = random_password(12);
 
