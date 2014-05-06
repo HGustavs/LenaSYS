@@ -8,14 +8,14 @@
 
 <script>
 
-function initPlayer()
-{
- 	//canvasPlayer.loadXMLDoc('canvas.xml');	
-}
-
 function executeTimestep(nodes)
 {
 	canvas.executeTimestep(nodes);
+}
+
+function canvasSize()
+{
+		canvas.canvasSize(window.innerWidth - 20, window.innerHeight - 75);
 }
 
 </script>
@@ -28,6 +28,9 @@ function executeTimestep(nodes)
     var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
 	var canvas = new Canvasrenderer();
+	
+	// Load XML File
+	this.canvas.loadXML("xml123test.xml");
     </script>
     <div id="wrapper">
     	<div id="bardesign">
