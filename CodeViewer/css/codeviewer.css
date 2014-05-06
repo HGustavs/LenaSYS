@@ -276,7 +276,6 @@ a {
 
 .impo .oper {
     color: #fff;
-    font-weight: bold;
 }
 
 .norm .string {
@@ -284,8 +283,7 @@ a {
 }
 
 .impo .string {
-    color: #fff;
-    font-weight: bold;
+    color: #000;
 }
 
 .norm .number {
@@ -293,7 +291,7 @@ a {
 }
 
 .impo .number {
-    color: #000;
+    color: #fff;
     font-weight: bold;
 }
 
@@ -313,7 +311,6 @@ a {
 
 .impo .keyword {
     color: #C5822C;
-    font-weight: bold;
 }
 
 .norm .impword {
