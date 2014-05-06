@@ -217,29 +217,31 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.windto = function(windpos)
 	{
-		if(this.paused==0) {
-			this.playafterwind=1;
-		} else {
-			this.playafterwind=0;
-		}
-		if(windpos<this.step){
-			// Rewind
-			this.windtarget=windpos;
-			this.step=0;
-			this.fastforward=1;	
-			this.clrscr();
-			// Set to playing
-			this.paused=0;
-			this.advancestep();
-		} else if(windpos>this.step){
-			// Fast Forward
-			this.windtarget=windpos;
-			this.fastforward=1;
-			// Set to playing
-			this.paused=0;
-			this.advancestep();
-		}
-			
+		// Only allow winding one step at the time
+		if (this.windtarget < 0) {
+			if(this.paused==0) {
+				this.playafterwind=1;
+			} else {
+				this.playafterwind=0;
+			}
+			if(windpos<this.step){
+				// Rewind
+				this.windtarget=windpos;
+				this.step=0;
+				this.fastforward=1;	
+				this.clrscr();
+				// Set to playing
+				this.paused=0;
+				this.advancestep();
+			} else if(windpos>this.step){
+				// Fast Forward
+				this.windtarget=windpos;
+				this.fastforward=1;
+				// Set to playing
+				this.paused=0;
+				this.advancestep();
+			}
+		}	
 	}
 
 	//-------------------------------------------------------------------------------------------
