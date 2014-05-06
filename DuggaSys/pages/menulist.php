@@ -1,11 +1,11 @@
 <?php
+session_start();
 include_once(dirname(__file__)."/../../../coursesyspw.php");	
 include_once(dirname(__file__)."/../../shared/database.php");
-session_start();
+
 dbConnect();
 ?>
-<div style="margin-right:2px;margin-bottom:5px; float:right;"><input class='submit-button' type='button' value='Add course'></div>
-
+<div style="margin-right:2px;margin-bottom:5px; float:right;"><input style="cursor:pointer;" onclick="changeURL('newCourseForm')" class='submit-button' type='button' value='Add course'></div>
 <table class="course-table">
 	<tr>
 		<th><span class='course'>Course Example Organization System</span><a href=""><img src="../CodeViewer/new icons/general_settings_button.svg" style="float:right; width:20px;height:20px;padding:3px;" /></a></th>

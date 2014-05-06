@@ -1,8 +1,8 @@
 <?php
+session_start();
 
 include_once("../../coursesyspw.php");	
 include_once("basic.php");
-session_start();
 dbConnect();
 
 ?>
@@ -21,12 +21,6 @@ dbConnect();
 		</script>
 </head>
 <body>
-	<script type="text/javascript">
-	window.onload = function() {
-		changeURL("menulist");
-	}
-	</script>
-
     <header>
     	<nav id="navigate">
         	<!--<img src="css/svg/Up.svg">-->

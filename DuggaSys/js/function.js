@@ -12,6 +12,11 @@ function changeURL(url) {
 	history.pushState(null, null, "#"+url);
 	page.show();
 }
+
+function startPageRedirect(url) {
+	history.pushState(null, null, "#"+url);
+}
+
 // Grabing URL values //
 function getUrlVars() {
     var vars = {};
@@ -22,7 +27,7 @@ function getUrlVars() {
 }
 // Page handler object //
 function getPage() {
-	var title = "Duggasys";
+	var title = "lenaSys";
 	var pages = [];
 	// Printing a page into content element depending on a pagelist //
 	this.show = function() {
@@ -39,10 +44,7 @@ function getPage() {
 			}
 		};	
 		if(!found) {
-			$("#content").load("pages/404.php");
-			$("#title h1").html(title+" - 404");
-			document.title = title+" | "+"404";
-			console.log("page not found!");
+			changeURL("menulist");
 		}
 	}
 	// Grabing a list of pages existing in the pages folder //
