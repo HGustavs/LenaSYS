@@ -137,11 +137,11 @@ function styleReset()
 function insertImage(img)
 {
 
+/* This solution makes it possible to insert an image in description which are code styled... */
+    document.execCommand("insertHTML", false, "<div><img src='"+img+"'></div");
 
-    document.execCommand("insertImage", false, img);
-
-    /* This solution sets heading on the whole row   "<img src='"+img+"' width='40'>"*/
-//    document.execCommand('formatBlock', false, "H1");
+    /*.. this does not. */
+//    document.execCommand('insertImage', false, img);
 }
 
 
@@ -1226,10 +1226,13 @@ while (c) {		// c == first character in each word
                 break;
             }	
             if (c=='\n'||c=='\r'||c=='') { 
-            					maketoken('blockcomment',str,from,i,row);
-								maketoken('newline',"",i,i,row);
-                row++;
-                str="";
+            	// don't make blockcomment or newline if str is empty
+            	if(str != ""){
+            		maketoken('blockcomment',str,from,i,row);
+					maketoken('newline',"",i,i,row);
+            		row++;
+                	str="";
+            	}
             }else{ 
                 str+=c;                
             }
@@ -1382,6 +1385,8 @@ function rendercode(codestring,destinationdiv)
 				}
 						// tokens.length-1 so the last line will be printed out
 				if(tokens[i].kind=="newline" || i==tokens.length-1){  
+					// Prevent empty lines to be printed out
+					if(cont != ""){
 						lineno++;
 
 						// Make line number										
@@ -1392,11 +1397,6 @@ function rendercode(codestring,destinationdiv)
 						}else{
 								num="<span class='no'>"+lineno+"&nbsp;</span>";
 						}
-						
-						if(cont==""){
-						//	cont="&nbsp;&nbsp;";
-						}
-						
 						
 						if(improws.length==0){
 								str+="<div class='normtext'>";
@@ -1413,7 +1413,7 @@ function rendercode(codestring,destinationdiv)
 						str+=num+cont;
 						cont="";
 						str+="</div>";	
-										
+					}					
 				}
 		}
 		str+="</div>";	
@@ -1424,9 +1424,6 @@ function renderdesccode(codestring){
 	tokens = [];
 
 	important = [];
-	// replaceAll("&nbsp;", " ", codestring);
-	// replaceAll("<br>", "\n", codestring);
-	
 	for(var i=0;i<retdata.impwords.length;i++){
 		important.push(retdata.impwords[i]);	
 	}
@@ -1442,7 +1439,7 @@ function renderdesccode(codestring){
 		str="";
 		cont="";
 
-		str+="<span class='norm'>";
+		str+="<span class='normtext'>";
 		
 		pcount=0;
 		parenthesis=new Array();

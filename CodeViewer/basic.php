@@ -29,6 +29,7 @@ echo '<tr><td class="butto " title="Show code" onclick="" colspan="4">Code<img s
 				if($kind){
 						echo '<span id="codedrop" class="dropdown dropdownStyle codedrop codedropStyle " style="overflow:auto;"><div class="dropdownback dropdownbackStyle">Code viewer Code File Selector</div></span>';
 						echo '<span id="docudrop" class="dropdown dropdownStyle docudrop docudropStyle" style="overflow:auto;"><div class="dropdownback dropdownbackStyle">General settings</div></span>';
+						echo '<span id="imgdrop" class="dropdown dropdownStyle imgdrop imgdropStyle" style="overflow:auto;"><div class="dropdownback dropdownbackStyle">Images</div></span>';
 						echo '<span id="themedrop" class="dropdown dropdownStyle themedrop themedropStyle" style="overflow:auto;"><div class="dropdownback dropdownbackStyle">Theme</div></span>';
 				}
 
