@@ -25,7 +25,8 @@ function Canvasrenderer()
 	this.mouseClickX = 1;
 	this.mouseClickY = 1;
 	// Image ration, for downscaling
-	this.scaleRatio = 1;
+	this.scaleRatioX = 1;
+	this.scaleRatioY = 1;
 	this.startTime;
 	this.fDelta;
 	this.mouseClickRadius = 20;	
@@ -64,6 +65,25 @@ function Canvasrenderer()
 								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'canvasSize',
 								'mousemove', 'mouseclick', 'picture'];
 	
+	$(document).ready(function(){
+		$(window).on('resize', function(){
+			// Scale ratio update (for correct mouse positions)
+			var rect = c.getBoundingClientRect();
+			mHeight = (rect.bottom - rect.top);
+			mWidth = (rect.right-rect.left);
+			this.scaleRatioX = c.width/mWidth;
+			this.scaleRatioY = c.height/mHeight;
+		
+			//canvas.width = mWidth;
+			//canvas.height = mHeight; 
+		//	updateScaleRatio();
+		//	showImage(activeImage);
+			console.log("On Resize\n");
+			console.log("canvas: " + c.width + ", " + c.height);	
+		});	
+
+
+	});
 
 	/*
 	 * Playback functions
@@ -786,8 +806,8 @@ function Canvasrenderer()
 	this.mousemove = function(x, y)
 	{
 		// Calculate positions using the proper scale ratio
-		y *= this.scaleRatio;
-		x *= this.scaleRatio;
+		y *= this.scaleRatioY;
+		x *= this.scaleRatioX;
 
 		
 		if(this.mouseClickBackground){
@@ -813,9 +833,13 @@ function Canvasrenderer()
 
 	this.mouseclick = function(x, y)
 	{
+		//y *= this.scaleRatioY;
+		//x *= this.scaleRatioX;
+
+
 		// Calculate positions using the proper scale ratio
-		this.mouseClickX = x * this.scaleRatio;
-		this.mouseClickY = y * this.scaleRatio;
+		this.mouseClickX = x;
+		this.mouseClickY = y;
 
 		// Make visible/active
 		this.mouseClick = true;
@@ -870,13 +894,23 @@ function Canvasrenderer()
 			ctx.save();
 			// Draw mouse click
 			ctx.beginPath();
-			ctx.arc(canvas.mouseClickX, canvas.mouseClickY, 20, 0, 2*Math.PI);
+			ctx.arc(this.mouseClickX, this.mouseClickY, 20, 0, 2*Math.PI);
 			ctx.fillStyle = 'rgba(255, 255, 0, 0.5)';
 			ctx.fill();
 			// Restore previous state
 			ctx.restore();
 		}
 	}
+	this.updateScaleRatio = function(){
+		var rect = c.getBoundingClientRect();
+		mHeight = (rect.bottom - rect.top);
+		mWidth = (rect.right-rect.left);
+		this.scaleRatioX = c.width/mWidth;
+		this.scaleRatioY = c.height/mHeight;
+		console.log("Scale ratio X: " + this.scaleRatioX);
+		console.log("Scale ratio Y: " + this.scaleRatioY);
+	}
+
 	/*
 	*
 	* Start running XML
@@ -884,7 +918,7 @@ function Canvasrenderer()
 	*/
 	var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
-
+	this.updateScaleRatio();
 	// Set canvas size to fit screen size
 	this.canvasSize(window.innerWidth - 20, window.innerHeight - 75);
 	window.addEventListener('resize', canvasSize, false);
