@@ -27,13 +27,6 @@
     border-color: rgb(0,0,0) transparent;
 }
 
-#buttomenu2 {
-    background-color: #5D5D5D;
-    height: 50px;
-    width: 100%;
-    position: absolute;
-}
-
 .beforebutton img{
 /*	opacity: 0.2;
 	filter: alpha(opacity=80); */
