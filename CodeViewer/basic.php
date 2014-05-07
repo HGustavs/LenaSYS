@@ -35,6 +35,7 @@ echo '<tr><td class="butto " title="Show code" onclick="" colspan="4">Code<img s
 
 				echo '<div id="buttomenu" class="buttomenuStyle">';
 				echo '<table cellspacing="2"><tr>';
+				echo '<td class="mbutto mbuttoStyle showdesktop" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 				if($kind){
 								echo '<td class="buttospacer">&nbsp;</td>';
 								echo '<td class="menutext menutextStyle"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName" contenteditable="true">Example Code Page</td>';
@@ -46,7 +47,6 @@ echo '<tr><td class="butto " title="Show code" onclick="" colspan="4">Code<img s
 								echo '<td class="menutext menutextStyle"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName">Example Code Page</td>';
 				}		
 						echo '<td class="mbutto mbuttoStyle showmobile" title="Menu" id="hidehotdog"><img src="new icons/hotdog_button.svg" /></td>';
-						echo '<td class="mbutto mbuttoStyle showdesktop" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle showdesktop" id="numberbutton" title="Show/hide linenumbers" onclick="fadelinenumbers();"><img src="new icons/numbers_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle beforebutton showdesktop" id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle afterbutton showdesktop" id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();"><img src="new icons/forward_button.svg" /></td>';
@@ -59,11 +59,11 @@ echo '<tr><td class="butto " title="Show code" onclick="" colspan="4">Code<img s
 				if($kind){
                     echo '<div id="buttomenu2">';
                     echo '<table cellspacing="2"><tr>';
-                    echo '<td class="butto" title="Heading" onclick="styleHeader();"><img src="new icons/hotdog_button.svg" /></td>';
-                    echo '<td class="butto" title="Code example" onclick="styleCode();"><img src="new icons/hotdog_button.svg" /></td>';
-                    echo '<td class="butto" title="Remove formatting" onclick="styleReset();"><img src="new icons/hotdog_button.svg" /></td>';
-					echo '<td class="butto" title="Save" onclick="Save();"><img src="new icons/hotdog_button.svg" /></td>';
-                    echo '<td class="butto" title="Select image" onclick="Images();"><img src="new icons/list_codefiles.svg" /></td>';
+                    echo '<td class="butto2" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
+                    echo '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
+                    echo '<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
+                    echo '<td class="butto2" title="Select image" onclick="Images();"><img src="new icons/picture_button.svg" /></td>';
+                    echo '<td class="butto2" title="Save" onclick="Save();"><img src="new icons/save_button.svg" /></td>';
                     echo '</tr></table></div>';
                     echo '<div id="docucontent" class="docucontentStyle" contenteditable="true">';
 				}
