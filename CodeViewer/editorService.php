@@ -11,27 +11,28 @@
 	// Include basic application services!
 	include_once("../../coursesyspw.php");	
 	include_once("basic.php");
+	include_once("../Shared/courses.php");
 
 	// Connect to database and start session
 	dbConnect();
 	session_start();
 	
-	$coursename=$_POST['coursename'];	
-	$sectionid=$_POST['sectionid'];
-	$position=$_POST['position'];
+	$coursename=getCourseId($_POST['coursename']);	
+	$sectionid=mysql_real_escape_string($_POST['sectionid']);
+	$position=mysql_real_escape_string($_POST['position']);
 	$version=$_POST['version'];
 	$opt=$_POST['opt'];
-	$appuser="NOT YET IMPL";
+	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 	$exampleno=0;
-	
+
 	// To guarantee that things only happen if the example exists in the named version
 	$cnt=0;
-	$query = "SELECT exampleno FROM codeexample WHERE cversion=$version and coursename='$coursename' and pos='$position' and sectionno='$sectionid';";		
+	$query = "SELECT exampleid FROM codeexample WHERE cversion=$version and cid='$coursename' and pos='$position' and sectionid='$sectionid';";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 	while ($row = mysql_fetch_assoc($result)){
 			$cnt++;
-			$exampleno=$row['exampleno'];
+			$exampleno=$row['exampleid'];
 	}
 
 	if($cnt>0){
@@ -45,7 +46,7 @@
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
 								$wordlist=htmlEntities($_POST['wordlist']);
-								$query = "INSERT INTO wordlist(wordlist,word,appuser) VALUES ('$wordlist','$word','$appuser');";		
+								$query = "INSERT INTO wordlist(wordlist,word,uid) VALUES ('$wordlist','$word','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delWordlistWord',$opt)===0){
@@ -59,74 +60,74 @@
 								// Add word to wordlist
 								$word="-new-";
 								$wordlist=htmlEntities($_POST['wordlist']);
-								$query = "INSERT INTO wordlist(wordlist,word,appuser) VALUES ('$wordlist','$word','$appuser');";		
+								$query = "INSERT INTO wordlist(wordlist,word,uid) VALUES ('$wordlist','$word','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('addImpWord',$opt)===0){
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
-								$query = "INSERT INTO impwordlist(exampleno,word,appuser) values ('$exampleno','$word','$appuser');";		
+								$query = "INSERT INTO impwordlist(exampleid,word,uid) values ('$exampleno','$word','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delImpWord',$opt)===0){
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
-								$query = "DELETE FROM impwordlist WHERE word='$word' and exampleno='$exampleno';";		
+								$query = "DELETE FROM impwordlist WHERE word='$word' and exampleid='$exampleno';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('addImpLine',$opt)===0){
 								// Add word to wordlist
 								$from=htmlEntities($_POST['from']);
 								$to=htmlEntities($_POST['to']);						
-								$query = "INSERT INTO improw(exampleno,istart,iend,appuser) VALUES ('$exampleno','$from','$to','$appuser');";		
+								$query = "INSERT INTO improw(exampleid,istart,iend,uid) VALUES ('$exampleno','$from','$to','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delImpLine',$opt)===0){
 								// Add word to wordlist
 								$from=htmlEntities($_POST['from']);
 								$to=htmlEntities($_POST['to']);						
-								$query = "DELETE FROM improw WHERE exampleno='$exampleno' and istart='$from' and iend='$to';";		
+								$query = "DELETE FROM improw WHERE exampleid='$exampleno' and istart='$from' and iend='$to';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('selectWordlist',$opt)===0){
 								$wordlist=htmlEntities($_POST['wordlist']);
-								$query = "UPDATE codeexample SET wordlist='$wordlist' WHERE exampleno='$exampleno';";		
+								$query = "UPDATE codeexample SET wordlist='$wordlist' WHERE exampleid='$exampleno';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("editPlaylink",$opt)===0){
 								$playlink=htmlEntities($_POST['playlink']);
-								$query = "UPDATE codeexample SET runlink='$playlink' WHERE exampleno='$exampleno';";		
+								$query = "UPDATE codeexample SET runlink='$playlink' WHERE exampleid='$exampleno';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating codeexample!");	
 					}else if(strcmp("editExampleName",$opt)===0){
 								$examplename=htmlEntities($_POST['examplename']);
-								$query = "UPDATE codeexample SET examplename='$examplename' WHERE exampleno='$exampleno';";		
+								$query = "UPDATE codeexample SET examplename='$examplename' WHERE exampleid='$exampleno';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("selectFile",$opt)===0){
 								$filename=htmlEntities($_POST['filename']);
-								$query = "UPDATE filelist SET filename='$filename' WHERE exampleno='$exampleno' and pos=1;";		
+								$query = "UPDATE filelist SET filename='$filename' WHERE exampleid='$exampleno' and pos=1;";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("createNewExample",$opt)===0){
 								// Create new codeExample - create new file with same id.
 								$newpos=$position+1;
-										
-								$query = "INSERT INTO codeexample(coursename,sectionno,examplename,wordlist,runlink,pos,appuser,cversion) values ('$coursename','$sectionid','New Example','JS','<none>','$newpos','$appuser','$version');";		
+								
+								$query = "INSERT INTO codeexample(cid,sectionid,examplename,wordlist,runlink,pos,uid,cversion) values ('$coursename','$sectionid','New Example','JS','<none>','$newpos','$appuser','$version');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Example!");	
 		
-								$query = "INSERT INTO filelist(exampleno,filename,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionno='$sectionid' and cversion='$version'),'<none>','$appuser');";		
+								$query = "INSERT INTO filelist(exampleid,filename,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and sectionid='$sectionid' and cversion='$version'),'<none>','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 		
-								$query = "INSERT INTO descriptionsection(exampleno,segment,appuser) VALUES ((SELECT exampleno FROM codeexample WHERE pos='$newpos' and coursename='$coursename' and sectionno='$sectionid' and cversion='$version'),'Enter description here.','$appuser');";		
+								$query = "INSERT INTO descriptionsection(exampleid,segment,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and sectionid='$sectionid' and cversion='$version'),'Enter description here.','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 								
 					}else if(strcmp("editDescription",$opt)===0){
 								$description=$_POST['description'];
-								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleno='$exampleno';";
+								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleid='$exampleno';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}
@@ -139,7 +140,7 @@
 		
 			// Backward Button Data
 			$before=array();
-			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and coursename='$coursename' and pos<$position and sectionno='$sectionid' ORDER BY pos ASC;";		
+			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and cid='$coursename' and pos<$position and sectionid='$sectionid' ORDER BY pos ASC LIMIT 1;";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -148,7 +149,7 @@
 		
 			// Forward Button Data
 			$after=array();
-			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and coursename='$coursename' and sectionno='$sectionid' and pos>$position ORDER BY pos ASC;";		
+			$query = "SELECT examplename,pos FROM codeexample WHERE cversion=$version and cid='$coursename' and sectionid='$sectionid' and pos>$position ORDER BY pos ASC LIMIT 1;";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -160,12 +161,12 @@
 			$exampleno=0;
 			$chosenwordlist="";
 			$playlink="";
-			$query = "SELECT exampleno,examplename,wordlist,runlink FROM codeexample WHERE cversion=$version and coursename='$coursename' and sectionno='$sectionid' and pos='$position'";		
+			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE cversion=$version and cid='$coursename' and sectionid='$sectionid' and pos='$position'";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
 					$examplename=$row['examplename'];
-					$exampleno=$row['exampleno'];
+					$exampleno=$row['exampleid'];
 					$chosenwordlist=$row['wordlist'];
 					$playlink=$row['runlink'];
 			}
@@ -173,7 +174,7 @@
 			// Read File
 			$code="";
 			$filename="";
-			$query = "SELECT filename FROM filelist WHERE exampleno='$exampleno' ORDER BY pos ASC LIMIT 1;";
+			$query = "SELECT filename FROM filelist WHERE exampleid='$exampleno' ORDER BY pos ASC LIMIT 1;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -200,7 +201,7 @@
 		  
 		  // Read important lines
 			$imp=array();
-			$query = "SELECT istart,iend FROM improw WHERE exampleno=$exampleno ORDER BY istart;";
+			$query = "SELECT istart,iend FROM improw WHERE exampleid=$exampleno ORDER BY istart;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -227,7 +228,7 @@
 		
 		  // Read important wordlist
 			$impwordlist=array();
-			$query = "SELECT word,description FROM impwordlist WHERE exampleno=$exampleno ORDER BY word;";
+			$query = "SELECT word,description FROM impwordlist WHERE exampleid=$exampleno ORDER BY word;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
@@ -236,7 +237,7 @@
 		
 			// Read Description Segments
 			$desc="";
-			$query = "SELECT segment FROM descriptionsection WHERE exampleno=$exampleno ORDER BY pos ASC LIMIT 1;";
+			$query = "SELECT segment FROM descriptionsection WHERE exampleid=$exampleno ORDER BY pos LIMIT  1;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){

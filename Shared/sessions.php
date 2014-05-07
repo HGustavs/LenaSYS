@@ -82,24 +82,22 @@ function getAccessType($userId, $courseId)
 	}
 
 	require_once "../Shared/courses.php";
-	if(is_string($courseId)) {
+	if(!is_numeric($courseId)) {
 		$courseId = getCourseId($courseId);
 	}
 
 	$query = $pdo->prepare('SELECT access FROM user_course WHERE uid=:uid AND cid=:cid LIMIT 1');
 	$query->bindParam(':uid', $userId);
 	$query->bindParam(':cid', $courseId);
+	$query->execute();
 
-	if(!$query->execute()) {
-		return false;
+	// Fetch data from the database
+	if($query->rowCount() > 0) {
+		$access = $query->fetch(PDO::FETCH_ASSOC);
+		return strtolower($access['access']);
 	} else {
-		// Fetch data from the database
-		if($query->rowCount() > 0) {
-			$access = $query->fetch(PDO::FETCH_ASSOC);
-			return strtolower($access['access']);
-		}
+		return false;
 	}
-	return false;
 }
 
 
