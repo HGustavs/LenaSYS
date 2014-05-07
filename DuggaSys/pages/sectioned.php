@@ -4,15 +4,9 @@ include_once("basic.php");
 
 dbConnect();
 session_start();
+checklogin();
 ?>
-<html>
-	<head>
-			<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />	
-			<link type="text/css" href="css/duggasys.css" rel="stylesheet" />
-			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
-			<script type="text/javascript" src="duggasys.js"></script>
-			<script type="text/javascript" src="startpage.js"></script>
-            <script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>
+
 			
 			<script>
 				setupLogin();
@@ -41,7 +35,6 @@ session_start();
 
 			</script>
 
-	</head>
 
 <?php
 				
@@ -74,7 +67,6 @@ session_start();
 		loginwins();
 
 ?>			
-</html>
 
 
 <!--Place tooltips on all objects with a title-->
