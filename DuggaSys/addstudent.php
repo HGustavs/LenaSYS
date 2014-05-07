@@ -29,11 +29,12 @@
 	</form>
 
 <?php	
-include_once "../Shared/external/password.php";
+		include_once "../Shared/external/password.php";
+		include_once("../../coursesyspw.php");	
+		include_once("basic.php");
+		pdoConnect();
 
 if(isset($_POST['string'])){
-			$pdo = new PDO('mysql:dbname=Imperious;host=localhost', 'root', '');
-			$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 
 			function random_password( $length = 12 ) {
 			    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?<>/";
@@ -83,7 +84,7 @@ if(isset($_POST['string'])){
 					}
 				}
 		}
-		
+
 		}
 				fclose($fh);
 	}

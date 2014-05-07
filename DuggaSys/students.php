@@ -9,9 +9,10 @@
 <body>
 <?php
 
-	$pdo = new PDO('mysql:dbname=Imperious;host=localhost', 'root', '');
-$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
-//include_once "studentview.php";
+	include_once("../../coursesyspw.php");	
+	include_once("basic.php");
+
+		pdoConnect();
 
 ?>
 		<header>
