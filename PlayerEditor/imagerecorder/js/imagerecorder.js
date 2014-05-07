@@ -337,17 +337,20 @@ function imagerecorder(canvas)
 				contentType: false,
 				success: function(data) {
 					if(typeof data.SUCCESS !== "undefined") {
-						// data.SUCCESS contains the path to the image
-						var imgPath = data.SUCCESS;
-						
-						// add imgpath to array
-						imagelibrary[imageid] = imgPath;
-			
-						// Add thumbnail
-						var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail'></li>";
-						$("#sortableThumbs").append(imgStr);
-						
-						imageid++;
+					
+						for(var i = 0; i < data.SUCCESS.length; i++) {
+							// data.SUCCESS contains the path to the image
+							var imgPath = data.SUCCESS[i];
+							
+							// add imgpath to array
+							imagelibrary[imageid] = imgPath;
+				
+							// Add thumbnail
+							var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail'></li>";
+							$("#sortableThumbs").append(imgStr);
+							
+							imageid++;
+						}
 					}
 					else {
 						alert(data.ERROR);
