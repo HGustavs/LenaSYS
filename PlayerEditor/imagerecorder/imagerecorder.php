@@ -45,7 +45,7 @@
 
 			<!--creating the small imageviewer, on the right side of the screen-->
 			<div id="thumbnails" class="thumbnails">
-				<ul id="sortableThumbs">
+				<ul style="overflow-x: hidden; margin-right:10px" id="sortableThumbs">
 					<!-- Uploaded images will be appended in this list -->
 				</ul>
 			</div>
