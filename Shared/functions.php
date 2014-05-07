@@ -1,7 +1,7 @@
 <?php
-include_once dirname(__file__)."/database.php";
-include_once dirname(__file__)."/courses.php";
-include_once dirname(__file__)."/sessions.php";
+include_once dirname(__FILE__) . "/database.php";
+include_once dirname(__FILE__) . "/courses.php";
+include_once dirname(__FILE__) . "/sessions.php";
 //---------------------------------------------------------------------------------------------------------------
 // err - Displays nicely formatted error and exits
 //---------------------------------------------------------------------------------------------------------------

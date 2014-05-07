@@ -1,4 +1,4 @@
-﻿$( document ).ready(function() {
+$( document ).ready(function() {
 	page = 	new getPage();
 	page.load()
 	page.show();
@@ -27,8 +27,11 @@ function getUrlVars() {
 }
 // Page handler object //
 function getPage() {
-	var title = "lenaSys";
+
+	var title = "Lenasys";
+
 	var pages = [];
+	var page = "";
 	// Printing a page into content element depending on a pagelist //
 	this.show = function() {
 		url = $(location).attr('href');
@@ -36,16 +39,24 @@ function getPage() {
 			name = this.pages[i].replace(/^.*[\\\/]/, '');
 			name = name.replace(/.[^.]+$/,'');
 			if(0<url.indexOf("#"+name)) {
+				this.page = name;
 				$("#content").load("pages/"+this.pages[i]);
-				$("#title h1").html(title+" - "+name.capitalize());
-				document.title = title+" | "+name.capitalize();
+				$("#title h1").html(title+" - "+this.page.capitalize());
+				document.title = title+" | "+this.page.capitalize();
 				var found=true;
-				console.log("page loaded!")
+				console.log(this.page.capitalize()+" page loaded!")
 			}
 		};	
 		if(!found) {
-			changeURL("menulist");
+			$("#content").load("pages/404.php");
+			$("#title h1").html(title+" - 404");
+			document.title = title+" | "+"404";
+			console.log(this.page+", page not found!");
+			this.page = "404";
 		}
+	}
+	this.title = function() {
+		return(title+" - "+this.page.capitalize());
 	}
 	// Grabing a list of pages existing in the pages folder //
 	this.load = function() {

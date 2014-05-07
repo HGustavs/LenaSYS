@@ -7,6 +7,7 @@ include_once("basic.php");
 
 dbConnect();
 session_start();
+checklogin();
 ?>
 <!DOCTYPE html>
 <html>

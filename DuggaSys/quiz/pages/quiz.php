@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 
-<?php if($_SESSION['user']['permission'] == 2) { ?>
+<?php if($_SESSION['user']['permission'] < 3) { ?>
 	<div>
 		<h2>Vem är den bästa fotbollsspelaren?</h2>
 	<form>
