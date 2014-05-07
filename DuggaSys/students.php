@@ -40,7 +40,7 @@
 
 
 <?php
-              foreach($pdo->query( 'SELECT * FROM user' ) as $row){
+              foreach($pdo->query( "SELECT * FROM user, user_course WHERE cid='1' and user.uid=user_course.uid" ) as $row){
               	$userid = $row['uid'];
                echo "<tr><td>".$row['username']."</td>";
                echo "<td>".$row['uid']."</td>";
@@ -62,7 +62,7 @@
 
 			if(!empty($_POST['checkbox'])) {
    				foreach($_POST['checkbox'] as $check) {
-	    			$pdo->query( "DELETE FROM user WHERE uid='$check'" );
+	    			$pdo->query( "DELETE FROM user_course WHERE uid='$check'" );
 	    			header("Location: students.php");
    				}
 			}
