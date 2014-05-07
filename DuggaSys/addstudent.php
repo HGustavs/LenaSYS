@@ -50,9 +50,14 @@ if(isset($_POST['string'])){
 				list($ssn, $name, $username1)=(explode("\t",$row1));
 				list($lastname, $firstname)=(explode(", ",$name));
 				list($username, $grabage)=(explode("@",$username1));
+
+				
+				$stmt = $pdo->prepare("SELECT * FROM user WHERE username='$username'");
+				    $stmt->execute(array($username));
+
+				    if ( $stmt->rowCount() <= 0 ) {
 				
 				$password1 = random_password(12);
-
 				fwrite($fh, $name);
 				fwrite($fh, "\t\t");
 				fwrite($fh, $username);
@@ -77,7 +82,9 @@ if(isset($_POST['string'])){
 					echo "Användare finns redan";
 					}
 				}
-			}
+		}
+		
+		}
 				fclose($fh);
 	}
 		?>
