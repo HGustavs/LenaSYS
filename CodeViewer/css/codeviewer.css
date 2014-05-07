@@ -1,5 +1,6 @@
 #docucontent h1 {
-  //  color: white;
+
+  //color: white;
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -623,13 +624,14 @@ a {
 .genSettingsSection{
 	display:none;
 }
+/*
 .errormsg{
 	color: red;
 }
-
+*/
 #playlinkErrorMsg{
 	display: none;
-	color: red;
+	//color: red;
 }
 #settingsTabMenu{	
 	border-bottom: solid 2px;
@@ -648,13 +650,14 @@ a {
 	-moz-border-radius-topright: 5px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-	background-color: #7D5CA0;
+	/*background-color: #7D5CA0;*/
 }
+/*
 #settingsTabMenu .activeSetMenuLink{
 	border-bottom-color: #614875;
 	background-color: #614875;
 }
-
+*/
 
 
 /*Tooltips*/

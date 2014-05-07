@@ -143,14 +143,20 @@
     color: #fed;
 }
 
-.normtext .keyword {
-    color: #C5822C;
-    font-weight: bold;
+.keywordA {
+    color: #e90000;
 }
 
-.impo .keyword {
-    color: #C5822C;
-    font-weight: bold;
+.keywordB {
+    color: #0004ff;
+}
+
+.keywordC {
+    color: #00d30d;
+}
+
+.keywordD {
+    color: #eb7504;
 }
 
 .normtext .impword {
@@ -178,4 +184,20 @@
 
 .tooltip{
 	color:orange;
+}
+
+.errormsg{
+	color: red;
+}
+
+.playlinkErrorMsgStyle{
+	color: red;
+}
+
+.settingsTabMenuStyle li{
+	background-color: #7D5CA0;
+}
+.settingsTabMenuStyle .activeSetMenuLink{
+	border-bottom-color: #614875;
+	background-color: #614875;
 }
