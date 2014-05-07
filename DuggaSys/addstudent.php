@@ -24,9 +24,12 @@
 		<br>
 		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="30"></textarea>
 		<br>
-		<input type="submit" value="Lägg till student"/>
+		<input type="button" value="Lägg till student" onclick="javascript:passPopUp('show');"/>
 		<a href="students.php"><input type="button" value="Cancel"/></a>
 	</form>
+
+		<div id="light" class="white_content"></div>
+		<div id="fade" class="black_overlay" onclick="javascript:passPopUp('show');"></div>
 
 <?php	
 		include_once "../Shared/external/password.php";
