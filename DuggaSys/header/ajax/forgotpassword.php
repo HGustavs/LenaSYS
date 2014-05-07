@@ -16,7 +16,7 @@ if(array_key_exists('user', $_POST) && array_key_exists('answer', $_POST) && arr
 			user_question,user 
 		WHERE   user_question.owner=user.uid 
 				AND user.username=:username");
-	$query->bindParam(':username', $_GET['user']);
+	$query->bindParam(':username', $_POST['user']);
 	$query->execute();
 
 	// If there's results for the current user then fetch the information
