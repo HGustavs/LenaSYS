@@ -11,7 +11,6 @@ session_start();
 <!DOCTYPE html>
 <html>
 	<head>
-			<!--<link type="text/css" href="../CodeViewer/css/codeviewer.css" rel="stylesheet" />-->
             <link type="text/css" href="css/style.css" rel="stylesheet" />
 			<link type="text/css" href="css/duggasys.css" rel="stylesheet" />
 			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
