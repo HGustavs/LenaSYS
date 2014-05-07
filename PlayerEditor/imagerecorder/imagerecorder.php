@@ -45,13 +45,13 @@
 
 			<!--creating the small imageviewer, on the right side of the screen-->
 			<div id="thumbnails" class="thumbnails">
-				<ul id="sortableThumbs">
+				<ul style="overflow-x: hidden; margin-right:10px" id="sortableThumbs">
 					<!-- Uploaded images will be appended in this list -->
 				</ul>
 			</div>
 			
 			<!-- Hidden upload form, this is called from controls -->
-			<div class="uploadForm" style="display: none;">
+			<div class="uploadForm" style="visibility:hidden;">
 				<form method='post' action="#" id="uploadForm" enctype="multipart/form-data">
 					<input id='imageLoader' name='image' type="file" multiple />
 				</form>

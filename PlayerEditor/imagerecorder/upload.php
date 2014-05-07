@@ -1,5 +1,6 @@
 <?php
 	$files = array();
+	$data = array();
 	$error = false;
 	if(isset($_GET['lib'])) {
 		// TODO: Sanitize $libName  <-------------
@@ -24,11 +25,13 @@
 
 	
 	if(!$error) {
-		foreach($_FILES as $file) {
-			$filename = basename($file['name']);
+		$fileCount = count($_FILES);
+		for($i=0; $i < $fileCount; $i++) {
+
+			$filename = basename($_FILES[$i]["name"]);
 			$fileext = substr(strrchr($filename,'.'),1);
 			// Encrypt file name to ensure duplicate file names can co-exist (16 char names)
-			$encrypted_filename = "i".substr(md5($filename.$file['size']),0,15);
+			$encrypted_filename = "i".substr(md5($filename.$_FILES[$i]['size']),0,15);
 			
 			// Put it all together
 			$finalPath = $uploaddir."/".$encrypted_filename.".".$fileext;
@@ -36,19 +39,22 @@
 			// If file doesn't already exist upload it.
 			if(!file_exists($finalPath)) {
 				// Upload the file.
-				if(move_uploaded_file($file["tmp_name"], $finalPath)) {
-					$files[] = $uploaddir.$file["name"];
+				if(move_uploaded_file($_FILES[$i]['tmp_name'], $finalPath)) {
+					array_push($files, $finalPath);
 				}
 				else {
 					$error = true;
 					$data = array("ERROR" => "Couldn't execute move_uploaded_file.");
 				}
 			}
-		}		
-		if(!$error) {
-			$data = array("SUCCESS" => $finalPath);
+			
 		}
 	}
+	
+	if(!$error) {
+		$data = array("SUCCESS" => $files);
+	}
+	
 	
 	// Give response
 	
