@@ -15,9 +15,11 @@ session_start();
 			<link type="text/css" href="css/duggasys.css" rel="stylesheet" />
 			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 			<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+            
+            <!-- Are all of these scripts necessary?-->
 			<script type="text/javascript" src="duggasys.js"></script>
 			<script type="text/javascript" src="startpage.js"></script>
-            <script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>
+            <!--<script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>-->
 			<script>
 				setupLogin();
 				<?php
