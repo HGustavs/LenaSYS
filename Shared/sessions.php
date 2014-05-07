@@ -1,5 +1,6 @@
 <?php
-require_once(dirname(__file__).'/../Shared/external/password.php');
+require_once(dirname(__FILE__) . '/../Shared/external/password.php');
+require_once(dirname(__FILE__) . '/../Shared/database.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
@@ -8,13 +9,21 @@ function checklogin()
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
+	} else if(array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
+		return login($_COOKIE['username'], $_COOKIE['password'], false);
 	} else {		
 		return false;
 	}
 }	
 
-function login()
+function login($username, $password, $savelogin)
 {
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
 	if(!array_key_exists('username', $_POST) || !array_key_exists('password', $_POST)) {
 		return false;
 	}
@@ -22,24 +31,25 @@ function login()
 	$username=$_POST["username"];
 	$password=$_POST['password'];
 
-	// Protect against SQL injection.
-	$querystring=sprintf("SELECT * FROM user WHERE username='%s' LIMIT 1",
-		mysql_real_escape_string($username)
-	);
+	$query = $pdo->prepare('SELECT * FROM user WHERE username=:username LIMIT 1');
+	$query->bindParam(':username', $username);
+	$query->execute();
 
-	$result=mysql_query($querystring);
-	if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
-
-	if(mysql_num_rows($result) > 0) {
+	if($query->rowCount() > 0) {
 		// Fetch the result
-		$row = mysql_fetch_assoc($result);
-
-		if(password_verify($password, $row['password'])) {
+		$row = $query->fetch(PDO::FETCH_ASSOC);
+		if(password_verify($password, $row['password']) || sha1($row['password']) === $password) {
 			$_SESSION['uid'] = $row['uid'];
 			$_SESSION["loginname"]=$row['username'];
 			$_SESSION["passwd"]=$row['password'];
 			$_SESSION["newpw"]=($row["newpassword"] > 0);
 			$_SESSION["superuser"]=$row['superuser'];
+
+			// Save some login details in cookies.
+			if($savelogin) {
+				setcookie('username', $row['username'], time()+60*60*24*30);
+				setcookie('password', sha1($row['password']), time()+60*60*24*30);
+			}
 			return true;
 		} else {
 			return false;
@@ -51,70 +61,42 @@ function login()
 
 function hasAccess($userId, $courseId, $access_type)
 {
-	require_once "../Shared/courses.php";
-	if(is_string($courseId)) {
-		$courseId = getCourseId($courseId);
-	}
+	$access = getAccessType($userId, $courseId);
 
-	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
-		mysql_real_escape_string($userId),
-		mysql_real_escape_string($courseId)
-	);
-
-	$result = mysql_query($querystring);
-	if(!$result) {
-		return false;
+	if($access_type === 'w') {
+		return strtolower($access) == 'w';
+	} else if ($access_type === 'r') {
+		// w implies access r
+		return strtolower($access) == 'r' || strtolower($access) == 'w'; 
 	} else {
-		// Fetch data from the database
-		if(mysql_num_rows($result) > 0) {
-			// Check access if it was returned
-			$access = mysql_fetch_assoc($result);
-			if($access_type == 'w') {
-				return strtolower($access['access']) == 'w';
-			} else if ($access_type == 'r') {
-				// w implies access r
-				return strtolower($access['access']) == 'r' || strtolower($access['access']) == 'w'; 
-			} else {
-				return false;
-			}
-		} else {
-			// Otherwise default to no.
-			return false;
-		}
+		return false;
 	}
 }
 
 function getAccessType($userId, $courseId)
 {
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
 	require_once "../Shared/courses.php";
 	if(is_string($courseId)) {
 		$courseId = getCourseId($courseId);
 	}
 
-	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
-		mysql_real_escape_string($userId),
-		mysql_real_escape_string($courseId)
-	);
+	$query = $pdo->prepare('SELECT access FROM user_course WHERE uid=:uid AND cid=:cid LIMIT 1');
+	$query->bindParam(':uid', $userId);
+	$query->bindParam(':cid', $courseId);
 
-	$result = mysql_query($querystring);
-	if(!$result) {
+	if(!$query->execute()) {
 		return false;
 	} else {
 		// Fetch data from the database
-		if(mysql_num_rows($result) > 0) {
-			$access = mysql_fetch_assoc($result);
-			// Check access if it was returned
-			if(strtolower($access['access']) == "r") {
-				return "r";
-			} else if (strtolower($access['access']) == "w") {
-				// w implies access r
-				return "w";
-			} else {
-				return false;
-			}
-		} else {
-			// Otherwise default to no.
-			return false;
+		if($query->rowCount() > 0) {
+			$access = $query->fetch(PDO::FETCH_ASSOC);
+			return strtolower($access['access']);
 		}
 	}
 	return false;
@@ -143,5 +125,9 @@ function logout()
 
 	// Finally, destroy the session.
 	session_destroy();
+
+	// Remove the cookies.
+	setcookie('username', '', 0);
+	setcookie('password', '', 0);
 }
 ?>

@@ -1,20 +1,18 @@
 ﻿$( document ).ready(function() {
 	page = 	new getPage();
 	getTest();
-	page.show(page.load());
+	page.load()
+	page.show();
 });
+
 // Running page object funktions if browser back/forward buttons get pressed //
 window.onhashchange = function() {       
-	page.show(page.load());  
+	page.show();  
 }
 // Changing browser url and then running the page object functions //
 function changeURL(url) {
 	history.pushState(null, null, "#"+url);
-	page.show(page.load());
-}
-// Simple go back history function //
-function historyBack() {
-	window.history.back()
+	page.show();
 }
 // Grabing URL values //
 function getUrlVars() {
@@ -26,43 +24,52 @@ function getUrlVars() {
 }
 // Page handler object //
 function getPage() {
-	var title = "Duggasys";
+	var title = "Lenasys";
+	var pages = [];
+	var page = "";
 	// Printing a page into content element depending on a pagelist //
-	this.show = function(pages) {
+	this.show = function() {
 		url = $(location).attr('href');
-		for (var i = pages.length - 1; i >= 0; i--) {
-			name = pages[i].replace(/^.*[\\\/]/, '');
+		for (var i = this.pages.length - 1; i >= 0; i--) {
+			name = this.pages[i].replace(/^.*[\\\/]/, '');
 			name = name.replace(/.[^.]+$/,'');
 			if(0<url.indexOf("#"+name)) {
-				$("#content").load("pages/"+pages[i]);
-				$("#title h1").html(title+" - "+name.capitalize());
-				document.title = title+" | "+name.capitalize();
+				this.page = name;
+				$("#content").load("pages/"+this.pages[i]);
+				$("#title h1").html(title+" - "+this.page.capitalize());
+				document.title = title+" | "+this.page.capitalize();
 				var found=true;
+				console.log(this.page.capitalize()+" page loaded!")
 			}
 		};	
 		if(!found) {
 			$("#content").load("pages/404.php");
 			$("#title h1").html(title+" - 404");
 			document.title = title+" | "+"404";
-			console.log("page not found!");
+			console.log(this.page+", page not found!");
+			this.page = "404";
 		}
+	}
+	this.title = function() {
+		return(title+" - "+this.page.capitalize());
 	}
 	// Grabing a list of pages existing in the pages folder //
 	this.load = function() {
 		console.log("Loading pages...");
+		var result;
 		$.ajax({
 			url:"ajax/getPages.php",
 			success:function(data) {
-				pages = JSON.parse(data);
+				result = JSON.parse(data);
 				console.log("success");
 			},
 			error:function() {
-				pages = "404";
+				result = "404";
 				console.log("error");
 			}
 		});
 		console.log("complete");
-		return(pages);
+		this.pages = result;
 	}
 }
 // Modifying first letter in a string to a capital letter //
@@ -71,7 +78,6 @@ String.prototype.capitalize = function() {
 }
 
 function getTest() {
-  
   	console.log("Loading Test...");
 
 		$.ajax({
@@ -80,7 +86,6 @@ function getTest() {
 			data: "testid="+getUrlVars()["testid"]+"&courseid="+getUrlVars()["courseid"],
 			success:function(data) {
 				console.log("success");
-				console.log("databas: "+data);
 			},
 			error:function() {
 				console.log("error");

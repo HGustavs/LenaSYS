@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+
 	<div id='create'>
 		<form role="form" name='newCourse'>
 			<div class='form-group'>
@@ -22,4 +23,3 @@
 	</div>
 	<script type="text/javascript" src="js/ajax.js"></script>
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
-	
