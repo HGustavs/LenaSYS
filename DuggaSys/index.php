@@ -7,6 +7,13 @@
 		<script src="header/header.js"></script>
 </head>
 <body>
+
+	<script type="text/javascript">
+	window.onload = function() {
+		changeURL("menulist");
+	}
+	</script>
+
     <header>
     	  <div class="load"></div>
     </header>
