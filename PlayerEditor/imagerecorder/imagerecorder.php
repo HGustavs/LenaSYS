@@ -51,7 +51,7 @@
 			</div>
 			
 			<!-- Hidden upload form, this is called from controls -->
-			<div class="uploadForm" style="display: none;">
+			<div class="uploadForm" style="visibility:hidden;">
 				<form method='post' action="#" id="uploadForm" enctype="multipart/form-data">
 					<input id='imageLoader' name='image' type="file" multiple />
 				</form>
