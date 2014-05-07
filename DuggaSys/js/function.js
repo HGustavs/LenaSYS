@@ -1,9 +1,8 @@
-﻿$( document ).ready(function() {
+$( document ).ready(function() {
 	page = 	new getPage();
 	page.load()
 	page.show();
 });
-
 // Running page object funktions if browser back/forward buttons get pressed //
 window.onhashchange = function() {       
 	page.show();  

@@ -1,18 +1,14 @@
-	
 body {background-color:#614875;}
-
 table {
 	border-collapse: seperate;
 	border-spacing: 2px;
 }
-			
 .conso {
 	border: 2px inset;
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 14px;
-}
-span { display: inline-block; }
-			
+}		  
+
 .caret {
 	pointer-events:none;
 	position:absolute;
@@ -22,6 +18,7 @@ span { display: inline-block; }
 	font-size: 14px;
 	margin:0px;
 	padding:0px;
+
 }
 
 .caretblink {
@@ -41,7 +38,7 @@ span { display: inline-block; }
 	height:38px;
 	width:38px;
 	vertical-align:center;
-	text-align:center; 	
+	text-align:center; 
 }
 .barbutton:hover{
 	background-color: #7D5CA0;
@@ -52,16 +49,12 @@ span { display: inline-block; }
 	background-color:#614875;
 }
 #wrapper{
-
-	background-image:url('Bilder/bakgrund.png');
-
+	background-color: #272822;
 }
-
 .barcontainer{
 	background-size: 64px 100%;
 	background-color: #FFFFFF;
 	padding:1px;
-	border-radius: 8px;
 	border:solid 2px #000;
 }
 
@@ -69,14 +62,17 @@ span { display: inline-block; }
 	position:absolute;
 	height: px;
 	width:20px;
-	background-image: url('../images/BP64D.gif'); 
+	background-image: url('Images/Loadingbar.gif'); 
 	background-repeat: repeat-x;
 	background-size: 64px 100%;
-	border-radius: 8px;
-}					
+}
 
 @keyframes blink {
 	to {
 		visibility: hidden;
 	}
-} 
+}
+
+span {
+	display: inline-block;
+}
