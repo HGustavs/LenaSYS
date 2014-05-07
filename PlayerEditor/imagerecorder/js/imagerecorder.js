@@ -95,8 +95,14 @@ function imagerecorder(canvas)
 				updateScaleRatio();
 
 				clicked = 1;
-				var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-				var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
+				var rect = canvas.getBoundingClientRect();
+
+				mHeight = (rect.bottom - rect.top);
+				mWidth = (rect.right-rect.left);
+				var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
+				var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+				//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+				//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 			
 				document.getElementById('xCord').innerHTML=xMouse;
 				document.getElementById('yCord').innerHTML=yMouse;
@@ -141,7 +147,7 @@ function imagerecorder(canvas)
 			var rect = canvas.getBoundingClientRect();
 			mHeight = (rect.bottom - rect.top);
 			mWidth = (rect.right-rect.left);
-			
+			getEvents('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
 			canvas.width = mWidth;
 			canvas.height = mHeight; 
 			updateScaleRatio();
