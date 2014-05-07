@@ -45,49 +45,64 @@ if(isset($_POST['string'])){
 			$str = $_POST['string'];
 
 			$row=explode("\r\n", $str);
-				$myFile = "testFile.txt";
-				$fh = fopen($myFile, 'w') or die("can't open file");
-				foreach ($row as $row1) {
+			$myFile = "testFile.txt";
+			$fh = fopen($myFile, 'w') or die("can't open file");
+			foreach ($row as $row1) {
 				list($ssn, $name, $username1)=(explode("\t",$row1));
 				list($lastname, $firstname)=(explode(", ",$name));
 				list($username, $grabage)=(explode("@",$username1));
 
 				
 				$stmt = $pdo->prepare("SELECT * FROM user WHERE username='$username'");
-				    $stmt->execute(array($username));
+				$stmt->execute(array($username));
 
-				    if ( $stmt->rowCount() <= 0 ) {
+				if ( $stmt->rowCount() <= 0 ) {
 				
-				$password1 = random_password(12);
-				fwrite($fh, $name);
-				fwrite($fh, "\t\t");
-				fwrite($fh, $username);
-				fwrite($fh, "\t\t");
-				fwrite($fh, $password1);
-				fwrite($fh, "\n");
+					$password1 = random_password(12);
+					fwrite($fh, $name);
+					fwrite($fh, "\t\t");
+					fwrite($fh, $username);
+					fwrite($fh, "\t\t");
+					fwrite($fh, $password1);
+					fwrite($fh, "\n");
 
-				$password = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 12));
+					$password = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 12));
 
-				$querystring='INSERT INTO user (username, firstname, lastname, ssn, password, newpassword) VALUES(:username,:firstname,:lastname,:ssn,:password, 1);';	
-				$stmt = $pdo->prepare($querystring);
-				$stmt->bindParam(':username', $username);
-				$stmt->bindParam(':firstname', $firstname);
-				$stmt->bindParam(':lastname', $lastname);
-				$stmt->bindParam(':ssn', $ssn);
-				$stmt->bindParam(':password', $password);
-				try {
-					$stmt->execute();
-					echo "<script type='text/javascript'>alert('Användare är tillagd')</script>";
-				} catch (PDOException $e) {
-					if ($e->getCode()=="23000") {
-					echo "Användare finns redan";
+					$querystring='INSERT INTO user (username, firstname, lastname, ssn, password, newpassword) VALUES(:username,:firstname,:lastname,:ssn,:password, 1);';	
+					$stmt = $pdo->prepare($querystring);
+					$stmt->bindParam(':username', $username);
+					$stmt->bindParam(':firstname', $firstname);
+					$stmt->bindParam(':lastname', $lastname);
+					$stmt->bindParam(':ssn', $ssn);
+					$stmt->bindParam(':password', $password);
+					try {
+						$stmt->execute();
+						echo "<script type='text/javascript'>alert('Användare är tillagd globalt')</script>";
+					} catch (PDOException $e) {
+						if ($e->getCode()=="23000") {
+							echo "Användare finns redan globalt";
+						}
 					}
 				}
-		}
 
-		}
+				
+				foreach($pdo->query( "SELECT * FROM user WHERE username='$username'" ) as $row){
+					$userid = $row['uid'];
+					$querystring='INSERT INTO user_course (uid, cid, access) VALUES(:uid, 1, "R");';	
+					$stmt = $pdo->prepare($querystring);
+					$stmt->bindParam(':uid', $userid);
+					try {
+						$stmt->execute();
+						echo "<script type='text/javascript'>alert('Användare är tillagd på kursen')</script>";
+					} catch (PDOException $e) {
+						if ($e->getCode()=="23000") {
+						echo "Användare finns redan på kursen";
+						}
+					}
+				}
+			}
 				fclose($fh);
-	}
+		}
 		?>
 </div>
 </div>
