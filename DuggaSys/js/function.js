@@ -1,8 +1,9 @@
-$( document ).ready(function() {
+﻿$( document ).ready(function() {
 	page = 	new getPage();
 	page.load()
 	page.show();
 });
+
 // Running page object funktions if browser back/forward buttons get pressed //
 window.onhashchange = function() {       
 	page.show();  
@@ -12,11 +13,6 @@ function changeURL(url) {
 	history.pushState(null, null, "#"+url);
 	page.show();
 }
-
-function startPageRedirect(url) {
-	history.pushState(null, null, "#"+url);
-}
-
 // Grabing URL values //
 function getUrlVars() {
     var vars = {};
@@ -27,7 +23,6 @@ function getUrlVars() {
 }
 // Page handler object //
 function getPage() {
-
 	var title = "Lenasys";
 	var startpage = "menulist";
 	var pages = [];
@@ -47,17 +42,18 @@ function getPage() {
 					//CHECK IF A FOLDER //
 					if(i>0) {
 						if(slashsplit[i-1] in nodes) {
-							nodes = nodes[slashsplit[i-1]];
-							path +=slashsplit[i-1]+"/";
+							name = slashsplit[i-1].split('?')[0];
+							nodes = nodes[name];
+							path +=name+"/";
 						}
 					}
 					//CHECK IF A FILE //
 					if(i==slashsplit.length-1) {
-						this.page = slashsplit[i];
+						this.page = slashsplit[i].split('?')[0];
 					}
 				}
 				else {
-					this.page = slashsplit[i-1];
+					this.page = slashsplit[i-1].split('?')[0];
 					i=slashsplit.length;
 				}
 			};
