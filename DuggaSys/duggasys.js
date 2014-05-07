@@ -170,3 +170,14 @@ $(function() {
                 $('td:nth-child(4)').show();                
        });
     });
+
+function passPopUp(showhidePop){
+	if(showhidePop == "show"){
+		document.getElementById('light').style.visibility = "visible";
+		document.getElementById('fade').style.visibility = "visible";
+	}
+	else if(showhidePop == "hide"){
+		document.getElementById('light').style.visibility = "hidden";
+		document.getElementById('fade').style.visibility = "hidden";	
+	}
+}
