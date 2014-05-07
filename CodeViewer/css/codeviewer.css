@@ -1,5 +1,5 @@
 #docucontent h1 {
-    color: white;
+    //color: white;
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -606,13 +606,14 @@ a {
 .genSettingsSection{
 	display:none;
 }
+/*
 .errormsg{
 	color: red;
 }
-
+*/
 #playlinkErrorMsg{
 	display: none;
-	color: red;
+	//color: red;
 }
 #settingsTabMenu{	
 	border-bottom: solid 2px;

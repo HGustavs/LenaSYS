@@ -794,7 +794,7 @@ function displayPlaylink(){
 	str+="</ul>";
 				
 	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
-	str+="<span id='playlinkErrorMsg'></span>";
+	str+="<span id='playlinkErrorMsg' class='playlinkErrorMsgStyle'></span>";
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
 }
@@ -1685,7 +1685,7 @@ function displayThemes()
 	str+="<h2>Choose a theme!</h2>";
 	str+="<div class='themeicon' onclick='selectTheme(\""+'black'+"\");'>  <img src='new icons/theme_black.svg' /></div>";
 	str+="<div class='themeicon' onclick='selectTheme(\""+'white'+"\");'>  <img src='new icons/theme_white.svg' /></div>";
-	
+	str+="<div class='themeicon' onclick='selectTheme(\""+'colorblind'+"\");'> <img src='new icons/theme_button.svg' /></div>";
 	docurec=document.getElementById('themedrop');
 	docurec.innerHTML=str;
 }
@@ -1715,6 +1715,12 @@ function setTheme()
 			changeCSS("css/whiteTheme.css", 2);
 			//alert("white");
 			
+		}
+		
+		else if(colorTheme === "colorblind"){
+			//colors that makes it easier for colorblind
+			changeCSS("css/colorblind.css", 2);
+			//alert(colorTheme);
 		}
 		else{
 			//theme doesnt exist, make default

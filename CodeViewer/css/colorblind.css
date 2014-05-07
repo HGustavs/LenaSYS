@@ -1,19 +1,19 @@
 .docucontentStyle {
-     background-color: #F2F2F2;
+     background-color: rgba(255, 255, 255, 1);
      color: black;
     
 }
 
 .codeboxStyle {
-    background-color: #F2F2F2;
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .temp3Style{
-	background-color: #F2F2F2;
+	background-color: rgba(255, 255, 255, 1);
 }
 
 .temp4Style{
-	background-color: #F2F2F2;
+	background-color: rgba(255, 255, 255, 1);
 }
 
 .docucontentStyle h1 {
@@ -25,15 +25,15 @@
 }
 
 .buttomenuStyle {
-    background-color: #614875;
+    background-color: #000;
 }
 
 .mbuttoStyle {
-    background-color: #614875;
+    background-color: #000;
 }
 
 .mbuttoStyle:hover{
-	background-color: #7D5CA0;
+	background-color: #4d4d4d;
 }
 
 .menutextStyle {
@@ -53,50 +53,50 @@
 }
 
 .dropdownbackStyle {
-	background-color: #614875;
+	background-color: #000;
     color: white;
 }
 
 .codedropStyle {
-    background-color: #614875;
+    background-color: #000;
     border-color: rgb(0,0,0) transparent;	
 }
 
 .docudropStyle {
-    background-color: #614875; 
+    background-color: #000; 
     background: rgb(0, 0, 0) transparent;
 }
 
 .themedropStyle {
-	background-color: #614875;
+	background-color: #000;
 }
 
 .dropdownitemStyle {
-    background: #614875;
+    background: #000;
     color: #fff;
 }
 
 .normtext {
     color: #000;
-    background-color: #F2F2F2;
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .impo {
     color: #000;
-    background-color: #D3BEE3;
+    background-color: rgba(204, 203, 203, 1);
 }
 
 .normtext .no {
     border-right: 2px #444;
     color: white;
     padding-left: 3px; 
-    background-color: #755096;
+    background-color: #000;
 }
 
 .impo .no {
     border-right: 2px #444;
     color: white;
-    background-color: #9569BD;
+    background-color: rgba(93, 93, 93, 1);
 }
 
 .comment {
@@ -134,7 +134,7 @@
 }
 
 .normtext .hi {
-    background-color: #D3BEE3;
+    background-color: #CCCBCB;
     color: #000;
 }
 
@@ -159,22 +159,20 @@
     color: #eb7504;
 }
 
-
-
 .normtext .impword {
     color: #fff;
-    background-color: #614875;
+    background-color: #000;
    // font-weight: bold;
 }
 
 .impo .impword {
     color: #fff;
-    background-color: #614875;
+    background-color: #000;
   //  font-weight: bold;
 }
 
 .normtext .imphi {
-    background-color: #D3BEE3;
+    background-color: #CCCBCB;
     color: #000;
     
 }
@@ -189,9 +187,9 @@
 }
 
 .errormsg{
-	color: red;
+	color: rgba(37, 132, 255, 1);
 }
 
 .playlinkErrorMsgStyle{
-	color: red;
+	color: rgba(37, 132, 255, 1);
 }
