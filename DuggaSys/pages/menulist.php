@@ -15,7 +15,7 @@ dbConnect();
 		$result=mysql_query($querystring);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
 		while ($row = mysql_fetch_assoc($result)){
-				echo "<tr><td><span class='bigg'><a id='courses' href='Sectioned.php?courseid=".$row['coursename']."&vers=".$row['version']."'>".$row['coursename']."</a></span>";
+				echo "<tr><td onclick='changeURL(\"Sectioned\")'><span class='bigg'>".$row['coursename']."</span>";
 				echo "<a href=''><img src='../CodeViewer/new icons/general_settings_button.svg' style='float:right; width:15px;height:15px;padding:3px;' /></a>";
 				echo "</td></tr>";
 		}	
