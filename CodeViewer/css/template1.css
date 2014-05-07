@@ -30,6 +30,10 @@
 #buttomenu2{
 	z-index:2;
 	position: absolute;
+    background-color: #5D5D5D;
+    height: 50px;
+    width: -moz-calc(24.0%);
+    width: -webkit-calc(24.0%);
 }
 #docucontent {
     padding-left: 4px;

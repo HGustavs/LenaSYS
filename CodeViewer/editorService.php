@@ -45,7 +45,8 @@
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
 								$wordlist=htmlEntities($_POST['wordlist']);
-								$query = "INSERT INTO wordlist(wordlist,word,appuser) VALUES ('$wordlist','$word','$appuser');";		
+								$label=htmlEntities($_POST['label']);
+								$query = "INSERT INTO wordlist(wordlist,word,description,appuser) VALUES ('$wordlist','$word','$label','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delWordlistWord',$opt)===0){
@@ -211,11 +212,11 @@
 		
 		  // Read wordlist
 			$wordlist=array();
-			$query = "SELECT wordlist,word FROM wordlist ORDER BY word;";
+			$query = "SELECT wordlist,word,description FROM wordlist ORDER BY word;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 			while ($row = mysql_fetch_assoc($result)){
-		  		array_push($wordlist,array($row['wordlist'],$row['word']));					
+		  		array_push($wordlist,array($row['wordlist'],$row['word'],$row['description']));					
 			}  
 		
 		  // Read wordlists

@@ -1,5 +1,6 @@
 #docucontent h1 {
-    //color: white;
+
+  //color: white;
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -42,8 +43,23 @@
     background-color: #614875;
 }
 
+.butto2 {
+    text-align: center;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 4px;
+    height: 44px;
+    background-color: #5D5D5D;
+}
+
 .butto:hover{
 	background-color: #7D5CA0;
+    cursor: pointer;
+}
+
+.butto2:hover{
+    background-color: #757575;
     cursor: pointer;
 }
 
@@ -270,6 +286,8 @@ a {
     color: #fff;
     background-color: #272822;
 }
+
+
 /*
 .normtext {
     color: #fff;
