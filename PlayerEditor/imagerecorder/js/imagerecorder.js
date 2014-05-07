@@ -138,7 +138,16 @@ function imagerecorder(canvas)
 		 */
 		$(window).on('resize', function(){
 			// Scale ratio update (for correct mouse positions)
+			var rect = canvas.getBoundingClientRect();
+			mHeight = (rect.bottom - rect.top);
+			mWidth = (rect.right-rect.left);
+			
+			canvas.width = mWidth;
+			canvas.height = mHeight; 
 			updateScaleRatio();
+			showImage(activeImage);
+			console.log("On Resize\n");
+			console.log("canvas: " + canvas.width + ", " + canvas.height);	
 		});
 		
 		// Add save button to body
