@@ -170,17 +170,3 @@ $(function() {
                 $('td:nth-child(4)').show();                
        });
     });
-    
-function passPopUp(showhidePop){
-	if(showhidePop == "show"){
-		document.getElementById('light').style.display='block';
-		document.getElementById('fade').style.display='block';
-	}
-	else if(showhidePop == "hide"){
-		document.getElementById('light').style.display='none';
-		document.getElementById('fade').style.display='none';	
-	}
-	
-	
-}
-    
