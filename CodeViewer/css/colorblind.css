@@ -140,7 +140,7 @@
 
 .impo .hi {
     background-color: #fff;
-    color: #fed;
+    color: #000;
 }
 
 .keywordA {
@@ -192,4 +192,13 @@
 
 .playlinkErrorMsgStyle{
 	color: rgba(37, 132, 255, 1);
+}
+
+
+.settingsTabMenuStyle li{
+	background-color: #000;
+}
+.settingsTabMenuStyle .activeSetMenuLink{
+	border-bottom-color: #4d4d4d;
+	background-color: #4d4d4d;
 }

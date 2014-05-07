@@ -195,3 +195,11 @@
 .playlinkErrorMsgStyle{
 	color: red;
 }
+
+.settingsTabMenuStyle li{
+	background-color: #7D5CA0;
+}
+.settingsTabMenuStyle .activeSetMenuLink{
+	border-bottom-color: #614875;
+	background-color: #614875;
+}

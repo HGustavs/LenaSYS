@@ -787,7 +787,7 @@ function returned(data)
 }
 function displayPlaylink(){
 	tabmenuvalue = "playlink";
-	str="<ul id='settingsTabMenu'>";
+	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
 		str+="<li class='activeSetMenuLink'>Playlink</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
@@ -801,7 +801,7 @@ function displayPlaylink(){
 function displayTemplates()
 {
 	tabmenuvalue = "templates";
-	str="<ul id='settingsTabMenu'>";
+	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
 		str+="<li onclick='displayPlaylink()'>Playlink</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
@@ -819,7 +819,7 @@ function displayTemplates()
 }
 function displayWordlist(){
 	tabmenuvalue = "wordlist";
-	str="<ul id='settingsTabMenu'>";
+	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
 		str+="<li onclick='displayPlaylink();'>Playlink</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
