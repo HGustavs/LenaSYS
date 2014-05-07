@@ -138,6 +138,12 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}
+					else if(strcmp("chooseTemplate",$opt)===0){
+								$templateid=$_POST['templateid'];
+								$query = "UPDATE codeexample SET templateid='$templateid' WHERE exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
+					}
 			}
 	
 			//------------------------------------------------------------------------------------------------
@@ -335,8 +341,16 @@
 		    		array_push($directory,$file);		
 		    }
 		  }  
-
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
+			// Get templates
+			$template=array();
+			$query = "SELECT * FROM template WHERE templateid = (SELECT templateid FROM codeexample WHERE exampleid=$exampleid) ";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			while ($row = mysql_fetch_assoc($result)){
+					array_push($template,array($row['templateid'],$row['stylesheet'],$row['numbox']));	
+			}
+			
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
 			echo json_encode($array);
 
 

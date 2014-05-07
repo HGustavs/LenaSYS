@@ -24,7 +24,21 @@
     background-color:  #614875;
     margin: 0px;
 }
-
+#picktemplate{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: white;
+}
+#picktemplate h1{
+	text-align: center;
+}
+#picktemplate img{
+	width: 250px;
+	height: 150px;
+}
 .butto {
     text-align: center;
     font-family: Verdana,Serif;
