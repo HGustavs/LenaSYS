@@ -419,6 +419,8 @@ function delImpline()
 
 function addWordlistWord()
 { 
+	var label = $( "#wordslabel" ).val();
+	
 		word=document.getElementById('wordlisttextbox');
 		// check if UTF encoded
 		for(var i=0; i<word.value.length; i++) {
@@ -436,7 +438,7 @@ function addWordlistWord()
 	    wordlist=encodeURIComponent(retdata['chosenwordlist']);		
 		encodedWord=encodeURIComponent(word.value);
 
-		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+encodedWord);
+		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+encodedWord+"&label="+label);
 }
 
 function delWordlistWord()
@@ -843,10 +845,16 @@ function displayWordlist(){
 				str+="</select><br/>";
 				str+="<div id='wordlistError' class='errormsg'></div>";
 				str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
+				str+="<select id='wordslabel'>";
+					str+="<option value='A'>Markup level 1??</option>";
+					str+="<option value='B'>Markup level 2??</option>";
+					str+="<option value='C'>Markup level 3??</option>";
+					str+="<option value='D'>Markup level 4??</option>";
+				str+="</select>";
 				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
 				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
 				str+="<input type='button' value='new' onclick='newWordlist();'' />";
-		
+				
 				//----------------------------------------------------
 				// Fill important word list	part of document dialog
 				//----------------------------------------------------
@@ -1276,10 +1284,11 @@ function rendercode(codestring,destinationdiv)
 		keywords=[];
 		for(var i=0;i<retdata.wordlist.length;i++){
 				if(retdata.wordlist[i][0]==retdata.chosenwordlist){
-						keywords.push(retdata.wordlist[i][1]);
+					temp=[retdata.wordlist[i][1],retdata.wordlist[i][2]];
+						keywords.push(temp);
 				}
-		}
-
+		}			
+		
 		improws=[];
 		for(var i=0;i<retdata.improws.length;i++){
 				improws.push(retdata.improws[i]);
@@ -1325,7 +1334,8 @@ function rendercode(codestring,destinationdiv)
 						var foundkey=0;
 						
 						for(var ind in keywords){
-								word=keywords[ind];
+								word=keywords[ind][0];
+								label=keywords[ind][1]
 								if(word==tokenvalue){
 										foundkey=1;
 										break;		
@@ -1341,7 +1351,7 @@ function rendercode(codestring,destinationdiv)
 						}
 						
 						if(foundkey==1){
-								cont+="<span class='keyword'>"+tokenvalue+"</span>";														
+								cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
 						}else if(foundkey==2){
 								iwcounter++;
 								
@@ -1430,9 +1440,10 @@ function renderdesccode(codestring){
 	keywords=[];
 	for(var i=0;i<retdata.wordlist.length;i++){
 		if(retdata.wordlist[i][0]==retdata.chosenwordlist){
-			keywords.push(retdata.wordlist[i][1]);
+			temp=[retdata.wordlist[i][1],retdata.wordlist[i][2]];
+			keywords.push(temp);
 		}
-	}
+	}	
 	
 	tokenize(codestring,"<>+-&","=>&:");
 	
@@ -1471,11 +1482,12 @@ function renderdesccode(codestring){
 						var foundkey=0;
 						
 						for(var ind in keywords){
-								word=keywords[ind];
-								if(word==tokenvalue){
-										foundkey=1;
-										break;		
-								}
+							word=keywords[ind][0];
+							label=keywords[ind][1]
+							if(word==tokenvalue){
+									foundkey=1;
+									break;		
+							}
 						}								
 						for(var ind in important){
 								word=important[ind];
@@ -1485,7 +1497,7 @@ function renderdesccode(codestring){
 								}
 						}
 						if(foundkey==1){
-								cont+="<span class='keyword'>"+tokenvalue+"</span>";														
+								cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
 						}else if(foundkey==2){
 								iwcounter++;
 								
