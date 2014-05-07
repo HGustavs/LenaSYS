@@ -52,7 +52,6 @@ function getPage() {
 		console.log("Loading pages...");
 		$.ajax({
 			url:"ajax/getPages.php",
-			async: false,  
 			success:function(data) {
 				pages = JSON.parse(data);
 				console.log("success");
@@ -78,7 +77,6 @@ function getTest() {
 		$.ajax({
 			type:"POST",
 			url:"ajax/getTest.php",
-			async: false,  
 			data: "testid="+getUrlVars()["testid"]+"&courseid="+getUrlVars()["courseid"],
 			success:function(data) {
 				console.log("success");

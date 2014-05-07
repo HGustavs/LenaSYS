@@ -1,57 +1,25 @@
 <?php session_start(); ?>
 	<div id='create'>
-		<form role='form'>
+		<form role="form" name='newCourse'>
 			<div class='form-group'>
-				<label>Dugganame</label>
+				<label>Course name</label>
 				<input type="text" name="coursename" class="form-control" />
+				<label>Course code</label>
+				<input type="text" name="coursecode" class="form-control" />
 			</div>
-			<div style='' class='form-group'>
-				<label>Open if accessible to the public. Closed if only accessible by course-registered users</label>
-				<select class='form-control'>
-					<option>Open</option>
-					<option>Closed</option>
+			<div class='form-group'>
+				<label>Select visibility for course</label>
+				<select name="visib" class='form-control'>
+					<option id="select-opt" value="0">Select</option>
+					<option class="select-opt" value="1">Open</option>
+					<option class="select-opt" value="2">Closed</option>
 				</select>
+				<sub style="font-size:.8em; font-style:itelic;">Open if accessible to the public. Closed if only accessible by course-registered users</sub>
 			</div>
-			<div class="variant1" style="">
-				<div class='form-group'>
-					<label>Open if accessible to the public. Closed if only accessible by course-registered users</label>
-					<textarea class='form-control' rows='2'></textarea>
-				</div>
-				<div class='form-group'>
-					<select class='form-control'>
-						<option>Template</option>
-						<option>Kryss</option>
-						<option>Solsystem</option>
-					</select>
-				</div>
-				<div class='form-group'>
-					<label>Template parameters</label>
-					<textarea class='form-control' rows='4'></textarea>
-				</div>
-				<div class='form-group'>
-					<label>Answer</label>
-						<div class="input-append">
-		                    <div id="field"><input autocomplete="off" class='option form-control' id="field1" name="prof1" type="text" data-items="8"/><button id="b1" class="option add-more" type="button">+</button></div>
-		                </div>
-				</div>
-				<div class='form-group'>
-					<label>Releasedate</label>
-					<input class='form-control datepicker'>
-				</div>
-				<div class='form-group'>
-					<label>Deadline</label>
-					<input class='form-control datepicker'>
-				</div>
-				<div class='form-group'>		
-					<label>
-						<input type='checkbox'> Activate
-					</label>
-				</div>
-				<div class='form-group'>		
-					<label>
-						<input type='checkbox'> Autograde
-					</label>
-				</div>
-			</div>
+			<button type='button' onclick="submitNewCourse()" class=''>Create Course</button>
+
 		</form>
 	</div>
+	<script type="text/javascript" src="js/ajax.js"></script>
+	<script type="text/javascript" src="js/verificationFunctions.js"></script>
+	
