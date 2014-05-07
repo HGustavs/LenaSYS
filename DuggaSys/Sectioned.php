@@ -19,10 +19,8 @@ checklogin();
             
             <!-- Are all of these scripts necessary?-->
 			<script type="text/javascript" src="duggasys.js"></script>
-			<script type="text/javascript" src="startpage.js"></script>
             <!--<script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>-->
 			<script>
-				setupLogin();
 				<?php
 					//Sets up a session kind variable in javascript depending on the users rights on the course	
 					if(isset($_GET['courseid'])&&isset($_GET['vers'])){
@@ -119,11 +117,14 @@ checklogin();
 </html>
 
 
-<!--Place tooltips on all objects with a title-->
-<script>
+<!--Place tooltips on all objects with a title
+
+Do we want to tooltips?
+
+ <script>
     $( document ).ready(function() {
         setTimeout(function() {
             $("*[title]").tooltips();
         }, 800);
     });
-</script>
+</script>-->
