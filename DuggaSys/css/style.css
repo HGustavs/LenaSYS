@@ -46,9 +46,14 @@ a#courses:hover{
 }
 
 a {
-	color:#fff;
 	font-size:14pt;
-	font-family:arial;	
+	font-family:arial;
+}
+a#section-list {
+	color:#434343;
+	font-family:arial;
+	font-size:10pt;
+	text-decoration:none;
 }
 
 header {
@@ -86,90 +91,54 @@ header {
 
 #Sectionlist{
 	margin:0px auto;
-	padding: 2px;
-    width: 100%;
+	padding: 5px;
     background-color: #fff;
-    color: black;
+    color:#434343;
     display: block;
-    text-align: left;
 }
 #Sectionlist .butt {
     padding-left: 8px;
-	padding:5px;
-    height: 24px;
-    color: #fff;
+	padding:6px;
     display: block;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
+	color:#fff;
+    font-size: 14pt;
     font-family: Calibri,Sans-Serif;
-    color: white;
-    background-color: #8c679e;
+    background-color: #927b9e;
 }
 
+
 #Sectionlist .norm {
-    padding-left: 16px;
-    height: 24px;
-    color: #000;
+	padding:6px;
+	padding-left:15px;
     display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
-    background-color: #cb98e5;
+    background-color: #f0f0f0;
 }
 
 #Sectionlist .test {
-    padding-left: 16px;
-    height: 24px;
-    color: #fff;
+	padding:6px;
+	padding-left:15px;
     display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: white;
-    font-family: Calibri,Sans-Serif;
-    background-color: #9871ac;
+    background-color: #e3e3e3;
 }
 
 #Sectionlist .hidden {
-    padding-left: 16px;
-    height: 24px;
-    color: #000;
+	padding:6px;
+	padding-left:15px;
 	opacity: 0.5;
     display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    background-color: #9871ac;
+    background-color: #d0cfd0;
 }
 
 #Sectionlist .example {
-    padding-left: 16px;
-    height: 24px;
-    color: #000;
+	padding:6px;
+	padding-left:15px;
     display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    background-color: #b487ca;
+    background-color: #dad8db;
 }
 #Sectionlist .bigg {
-    font-size: 26px;
+    font-size: 16pt;
+	padding:4px;
+	color:#fff;
     text-align: center;
     font-family: Cambria, Georgia, serif;
     display: block;
@@ -177,111 +146,62 @@ header {
 }
 
 #Sectionlist .course {
+	padding:6px;
     text-align: center;
-    font-size: 26px;
-    padding-left: 8px;
-    height: 36px;
     color: #fff;
     display: block;
     font-family: Calibri,Sans-Serif;
+	font-size:18pt;
     background-color: #614875;
+	margin-top:40px;
 }
 
 #Sectionlist .norm:hover, #Sectionlist .example:hover, #Sectionlist .test:hover, #Sectionlist .hidden:hover{
-	background-color:rgba(255,0,0,0.2);
+	background-color:#c6b8cd;
     color: #000;
 }
 
-#loginbox {
-    background: linear-gradient(to bottom, #CCC 0%,#888 35%,#AAA 90%, #CCC 99%);
-    padding: 4px;
-    position: relative;
-    width: 400;
-    height: 240;
-    display: block;
-    border: outset 2px #888;
-    border-radius: 8px;
-    box-shadow: 2px 2px 4px #000;
-    text-align: left;
-    color: #fff;
-    text-shadow: 2px 2px 2px #000;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
+#add-course-button-div {
+	float:right;
+	padding-bottom:5px;
 }
-
-#loginheading {
-    border: 2px solid #888;
-    padding-top: 4px;
-    text-shadow: 2px 2px 2px #000;
-    box-shadow: 2px 2px 4px #000 inset;
-    color: #fff;
-    display: block;
-    background: #fed;
-    text-align: center;
-    border-radius: 6px;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    background: linear-gradient(to right, #555 0%,#888 85%,#AAA 90%);
-    height: 24px;
-    color: white;
-    background-color: #BBB;
-}
-
-.logininput {
-    width: 150px;
-    border 1px solid #000;font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-}
-
-.loginbutton {
-    width: 120px;
-    padding-bottom: 4px;
-    height: 25px;
-    color: #fff;
-    text-shadow: 2px 2px 2px #000;
-    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
-    border-radius: 4px;
-    box-shadow 2px 2px 2px #000;font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    box-shadow: 2px 2px 4px #000;
-}
-
-/*
-    Course menu
-*/
 .course-table {
-    width: 100%;
-    margin: 0 auto;
+    width:100%;
+	padding:0px;
+	margin:0px;
 }
 .course-table th {
     background-color:#614875;
 	color:white;
 	font-size:16pt;
-	padding:5px;
+	padding:8px;
 }
 
 .course-table tr {
-	padding:5px;
+	width:100%;
 }
 
 .course-table td {
-    color:#000;
-	font-size:10pt;
+    color:#434343;
+	font-size:14pt;
 	font-family:arial;
 	text-align:center;
+	cursor:pointer;
+	padding:5px;
 }
 .course-table td:hover {
-	background-color:#bda8cc;
+	background-color:#c6b8cd;
 }
  	
-.course-table tr:nth-child(even) {background: #775886 /*8c68a7*/}
-.course-table tr:nth-child(odd) {background: #8c679e  /*ab76d2*/}
+.course-table tr:nth-child(even) {background: #f0f0f0 }
+.course-table tr:nth-child(odd) {background: #e3e3e3 }
 
-
+img#table-img-coggwheel {
+	float:right;
+	width:15px;
+	height:15px;
+	margin-top:4px;
+}
 .logincenter {
     text-align: center;
 }
@@ -307,69 +227,6 @@ header {
     border-radius: 4px;
 }
 
-/*Tooltips*/
-.tooltip, .arrow:after {
-    background: black;
-    border: 2px solid white;
-}
-
-.tooltip {
-    pointer-events: none;
-    opacity: 0;
-    display: inline-block;
-    position: absolute;
-    padding: 10px 20px;
-    color: white;
-    border-radius: 20px;
-    margin-top: 20px;
-    text-align: center;
-    font: bold 14px "Helvetica Neue", Sans-Serif;
-    font-stretch: condensed;
-    text-decoration: none;
-    text-transform: uppercase;
-    box-shadow: 0 0 7px black;
-}
-
-.tooltip.active {
-    opacity: 1;
-    margin-top: 5px;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
-}
-
-.tooltip.out {
-    opacity: 0;
-    margin-top: -20px;
-}
-.arrow {
-    width: 70px;
-    height: 16px;
-    overflow: hidden;
-    position: absolute;
-    left: 50%;
-    margin-left: -35px;
-    bottom: -16px;
-}
-.arrow:after {
-    content: "";
-    position: absolute;
-    left: 20px;
-    top: -20px;
-    width: 25px;
-    height: 25px;
-    -webkit-box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
-    -moz-box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
-    box-shadow: 6px 5px 9px -9px black,
-                    5px 6px 9px -9px black;
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-}
 
 #content {
     margin:0px auto;
@@ -426,42 +283,7 @@ header {
         border-color: #faebcc;
         color: #8a6d3b;
     }
-button {
-    display: inline-block;
-    margin-bottom: 0;
-    font-weight: 400;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-    button.default {
-        color: #333;
-        background-color: #fff;
-        border-color: #ccc;
-    }
-        button.default:hover {
-            background-color: #ebebeb;
-            border-color: #adadad;
-        }
-    button.submit {
-        color: #fff;
-        background-color: #428bca;
-        border-color: #357ebd;
-    }
-        button.submit:hover {
-            background-color: #3276b1;
-            border-color: #285e8e;
-        }
+
 input.option {
     float: left;
 }
@@ -504,77 +326,6 @@ button.option {
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-.butto {
-    text-align: center;
-}
-
-input.option {
-    float: left;
-}
-button.option {
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-    width: 38px;
-    height: 38px;
-    padding: 6px 12px;
-    margin: 2px 0px 2px -38px;
-    line-height: 1.42857143;
-}
-
-/*
-    Course menu
-*/
-.course-table {
-    width: 100%;
-    margin: 0 auto;
-}
-.course-table th {
-    background-color:#614875;
-	color:white;
-	font-size:16pt;
-	padding:5px;
-}
-
-.course-table td {
-    color:#000;
-	font-size:10pt;
-	font-family:arial;
-	text-align:center;
-}
-.course-table td:hover {
-	background-color:#999;
-}
- 	
-.course-table tr:nth-child(even) {background: #6B6B6B}
-.course-table tr:nth-child(odd) {background: #9F9F9F}
-
-
-.logincenter {
-    text-align: center;
-}
-
-.loginleft {
-    margin-left: 16px;
-}
-
-.inv {
-    font-family: Calibri,Sans-Serif;
-    font-size: 24px;
-    font-weight: normal;
-    padding: 4px;
-    box-shadow: 1px 1px 2px #666;
-    position: fixed;
-    bottom: 4px;
-    left: 4px;
-    padding-left: 6px;
-    padding-right: 6px;
-    background: #000;
-    color: #fff;
-    margin-left: 8px;
-    border-radius: 4px;
-}
-
-
 
               /*Tooltips*/
 
@@ -609,15 +360,7 @@ button.option {
     margin-left: -35px;
     bottom: -16px;
 }
-#Sectionlist .butt {
-    border-radius: 3px;
-    margin-right: 4px;
-    box-shadow: 2px 1px 3px #000;
-    margin-bottom: 4px;
-    padding-left: 8px;
-    height: 24px;
-    text-shadow: 2px 2px 2px #000;
-}
+
 
 .arrow:after {
     content: "";
@@ -651,61 +394,7 @@ button.option {
     opacity: 0;
     margin-top: -20px;
 }
-#content {
-    margin:0px auto;
-    position:relative;
-    padding: 50px 12px 8px 8px;
-    background: #fff;
-    width:80%;
-    min-height: 200px;
-    border: 8px solid #ccc;
-}
-.top {
-    
-}
-.middle {
-    position:absolute;
-    top: 40%;
-    width: 100%;
-    text-align: center;
-}
-.bottom {
-    position:absolute;
-    bottom: 10px;.
-    width: 100%;
-    text-align: center;
-}
-.center {
-    vertical-align: middle;
-    margin: 0px auto;
-    width: 100%;
-}
-.alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}  
-    .alert-success {
-        background-color: #dff0d8;
-        border-color: #d6e9c6;
-        color: #3c763d;
-    }
-    .alert-info {
-        background-color: #d9edf7;
-        border-color: #bce8f1;
-        color: #31708f;
-    }
-    .alert-danger {
-        background-color: #f2dede;
-        border-color: #ebccd1;
-        color: #a94442;
-    }
-    .alert-warning {
-        background-color: #fcf8e3;
-        border-color: #faebcc;
-        color: #8a6d3b;
-    }
+
 button {
     display: inline-block;
     margin-bottom: 0;
@@ -742,36 +431,6 @@ button {
             background-color: #3276b1;
             border-color: #285e8e;
         }
-.form-group {
-    margin-bottom: 15px;
-}
-#create input.form-control {
-    width: 100%;
-    height: 34px;
-    margin: 2px 0px 2px 0px;
-}
-
-#create select.form-control {
-    height: 34px;
-}
-
-#create textarea.form-control {
-    width: 100%;
-}
-
-input.option {
-    float: left;
-}
-button.option {
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-    width: 38px;
-    height: 38px;
-    padding: 6px 12px;
-    margin: 2px 0px 2px -38px;
-    line-height: 1.42857143;
-}
-
 
 #docucontent {
     padding-left: 4px;
@@ -815,16 +474,6 @@ button.option {
     height: 50px;
     background-color:  #614875;
     margin: 0px;
-}
-
-
-.warning {
-    box-shadow: 10px 10px 14px #000;
-    color: #fff;
-    position: absolute;
-    top: 200px;
-    width: 200px;
-    border: 1px inset #888;
 }
 
 #codebox {
@@ -968,13 +617,13 @@ button.option {
     text-shadow: 1px 1px 2px #000;
 }
 
-
-button.option {
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-    width: 38px;
-    height: 38px;
-    padding: 6px 12px;
-    margin: 2px 0px 2px -38px;
-    line-height: 1.42857143;
+input.submit-button {
+	background-color:#614875;
+	border:0px;
+	width:100px;
+	height:30px;
+	color:#fff;
+}
+input.submit-button:hover {
+	background-color:#7B5A96;
 }

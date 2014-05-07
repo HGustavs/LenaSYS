@@ -13,11 +13,9 @@ checklogin();
 <html>
 	<head>
             <link type="text/css" href="css/style.css" rel="stylesheet" />
-			<link type="text/css" href="css/duggasys.css" rel="stylesheet" />
 			<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 			<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 
-            <!-- Are all of these scripts necessary?-->
 			<script type="text/javascript" src="duggasys.js"></script>
             <!--<script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>-->
 			<script>
@@ -81,7 +79,7 @@ checklogin();
             <!--Linkans fula meddelande som kommer upp när du har gjort en dragNdrop-->
 	<div id="dragupdate"></div>
 	</head>
-<div id="content">
+	
 	<div id="Sectionlist">
 	</div>
 <?php
@@ -90,7 +88,7 @@ if(checklogin()){
 <script>
 </script>
 <?php } ?>
-</div>		
+
 </html>
 
 

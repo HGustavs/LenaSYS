@@ -61,7 +61,7 @@ function returnedSection(data)
 		
 		// Fill section list with information
 		str="";
-		str+="<div id='button-div' style='margin-right:2px;margin-bottom:5px; float:right;'><input class='submit-button' type='button' value='Add' /></div>";
+		str+="<div style='float:right;'><input class='submit-button' type='button' value='Add' /></div>";
 		//str+=Sectionbutton("","PlusT.svg",2,"ADD");	;	
 		// Course Name
 		str+="<div class='course'>"+coursename+"</div>";
@@ -78,7 +78,7 @@ function returnedSection(data)
 							str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
 						if(sessionkind===1){
-							str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' ><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+							str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' ><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 							str+="<span class='smallishbutt'>";
 							str+=Sectionbutton("sectionDel","MinusT.svg",data['entries'][i]['lid'],"BIG");											
 							str+="</span>";
@@ -116,12 +116,12 @@ function returnedSection(data)
 							str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
 						if(sessionkind===1){
-								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";
 								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
 								str+="</span>"
 						}else{
-								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
 						}
 						str+="</span>";
 						break;
@@ -133,12 +133,12 @@ function returnedSection(data)
 							str+="<span class='test' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
 						if(sessionkind===1){
-								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";
 								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
 								str+="</span>"
 						}else{
-								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
 						}
 						str+="</span>";
 						break;
@@ -151,12 +151,12 @@ function returnedSection(data)
 							str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
 						if(sessionkind===1){
-								str+="<span id='EX"+data['entries'][i]['lid']+"'><a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";
 								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
 								str+="</span>"
 						}else{
-								str+="<a href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
+								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
 						}
 						str+="</span>";
 						break;
