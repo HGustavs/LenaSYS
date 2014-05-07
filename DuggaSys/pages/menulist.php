@@ -11,11 +11,11 @@ dbConnect();
 		<th><span class='course'>Course Example Organization System</span></th>
 	</tr>	
 	<?php
-		$querystring="SELECT course.coursename,max(cversion) AS version FROM course LEFT OUTER JOIN section ON course.coursename=section.coursename GROUP BY course.coursename";
+		$querystring="SELECT course.coursename,max(cversion) AS version, cid AS id FROM course LEFT OUTER JOIN section ON course.coursename=section.coursename GROUP BY course.coursename";
 		$result=mysql_query($querystring);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
 		while ($row = mysql_fetch_assoc($result)){
-				echo "<tr><td onclick='changeURL(\"Sectioned\")'><span class='bigg'>".$row['coursename']."</span>";
+				echo "<tr><td onclick='changeURL(\"Sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'><span class='bigg'>".$row['coursename']."</span>";
 				echo "<a href=''><img src='../CodeViewer/new icons/general_settings_button.svg' style='float:right; width:15px;height:15px;padding:3px;' /></a>";
 				echo "</td></tr>";
 		}	

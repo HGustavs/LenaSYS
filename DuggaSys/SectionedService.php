@@ -18,7 +18,7 @@
 		dbConnect();
 		session_start();
 	
-		$coursename=$_POST['coursename'];
+		$courseid=$_POST['courseid'];
 		//$vers=$_POST['vers'];
 		$opt=$_POST['opt'];		
 		//$appuser="NOT YET IMPL";
@@ -33,9 +33,8 @@
 		
 		$debug="NONE!";
 		if(checklogin()){
-			$ha = hasAccess($_SESSION['uid'], $coursename, 'w');
+			$ha = hasAccess($_SESSION['uid'], $courseid, 'w');
 			if($ha){
-				$courseID = getCourseId($coursename);
 				if (strcmp("sectionNew",$opt) === 0) {
 					//$newsectpos = getqueryvalue("SELECT MAX(pos)+1 FROM listentries WHERE cid='$courseID';");
 					$result = mysql_query("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, 'Ny sektion', NULL, 0, 6, 1, 1);");
@@ -50,21 +49,29 @@
 				}
 			}
 		}
-	
+
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
 		//------------------------------------------------------------------------------------------------
-		$courseid = getCourseId($coursename);
+		$ha = (checklogin() && hasAccess($_SESSION['uid'], $courseid, 'w'));
 		$entries=array();
 		$query = "SELECT lid,entryname,pos,kind,link,visible FROM listentries WHERE listentries.cid='$courseid' ORDER BY pos;";		
 		$result=mysql_query($query);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
 		while ($row = mysql_fetch_assoc($result)){
-				array_push($entries,array('entryname'=>$row['entryname'],'lid'=>$row['lid'],'pos'=>$row['pos'],'kind'=>$row['kind'], 'link'=>$row['link'], 'visible'=>$row['visible']));
+			array_push(
+				$entries,
+				array(
+					'entryname' => $row['entryname'],
+					'lid' => $row['lid'],
+					'pos' => $row['pos'],
+					'kind' => $row['kind'],
+					'link'=>$row['link'],
+					'visible'=>$row['visible']
+				)
+			);
 		}
-	
-		$array = array('entries'=>$entries,"debug"=>$debug);
-			
+
+		$array = array('entries'=>$entries,"debug"=>$debug, 'writeaccess' => $ha);
 		echo json_encode($array);
-	
 ?>
