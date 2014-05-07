@@ -30,6 +30,8 @@ function Canvasrenderer()
 	this.startTime;
 	this.fDelta;
 	this.mouseClickRadius = 20;	
+	this.recordedCanvasWidth;
+	this.recordedCanvasHeight;
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -63,7 +65,7 @@ function Canvasrenderer()
 								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
 								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
 								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'canvasSize',
-								'mousemove', 'mouseclick', 'picture'];
+								'mousemove', 'mouseclick', 'picture', 'recordedCanvasSize'];
 	
 	$(document).ready(function(){
 		$(window).on('resize', function(){
@@ -71,8 +73,8 @@ function Canvasrenderer()
 			var rect = c.getBoundingClientRect();
 			mHeight = (rect.bottom - rect.top);
 			mWidth = (rect.right-rect.left);
-			this.scaleRatioX = c.width/mWidth;
-			this.scaleRatioY = c.height/mHeight;
+			this.scaleRatioX = (mWidth/c.width);
+			this.scaleRatioY = (mHeight/c.height);
 		
 			//canvas.width = mWidth;
 			//canvas.height = mHeight; 
@@ -80,6 +82,8 @@ function Canvasrenderer()
 		//	showImage(activeImage);
 			console.log("On Resize\n");
 			console.log("canvas: " + c.width + ", " + c.height);	
+			console.log(mWidth + ", " + mHeight);
+			console.log("Scale ratio: " + this.scaleRatioX + ", " + this.scaleRatioY);
 		});	
 
 
@@ -833,8 +837,8 @@ function Canvasrenderer()
 
 	this.mouseclick = function(x, y)
 	{
-		//y *= this.scaleRatioY;
-		//x *= this.scaleRatioX;
+		y *= this.scaleRatioY;
+		x *= this.scaleRatioX;
 
 
 		// Calculate positions using the proper scale ratio
@@ -918,7 +922,6 @@ function Canvasrenderer()
 	*/
 	var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
-	this.updateScaleRatio();
 	// Set canvas size to fit screen size
 	this.canvasSize(window.innerWidth - 20, window.innerHeight - 75);
 	window.addEventListener('resize', canvasSize, false);
@@ -929,6 +932,7 @@ function Canvasrenderer()
 	this.mouseCursorX = 1;
 	this.mouseCursorY = 1;
 	this.mouseCursorBackground = ctx.getImageData(1, 1, 1, 1);
+	this.updateScaleRatio();
 }
 
 
