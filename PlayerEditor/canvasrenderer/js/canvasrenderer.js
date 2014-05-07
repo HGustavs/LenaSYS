@@ -28,7 +28,7 @@ function Canvasrenderer()
 	this.scaleRatio = 1;
 	this.startTime;
 	this.fDelta;
-	
+	this.mouseClickRadius = 20;	
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -856,7 +856,6 @@ function Canvasrenderer()
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatio, 23*canvas.scaleRatio);
 			// New mouse click background
 			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
-
 			// Render mouse click
 			canvas.drawMouseClick();
 		}
@@ -878,12 +877,11 @@ function Canvasrenderer()
 			ctx.restore();
 		}
 	}
-
 	/*
-	 *
-	 * Start running XML
-	 *
-	 */
+	*
+	* Start running XML
+	*
+	*/
 	var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
 
@@ -897,24 +895,6 @@ function Canvasrenderer()
 	this.mouseCursorX = 1;
 	this.mouseCursorY = 1;
 	this.mouseCursorBackground = ctx.getImageData(1, 1, 1, 1);
-	
-	if (window.XMLHttpRequest){   
-		  // code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
-	}else {	
-		  // code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	  
-	// Open XML
-	xmlhttp.open("GET","data.xml",false);
-  	xmlhttp.send();
-  	xmlDoc=xmlhttp.responseXML;
-	
-  	// Load timesteps
-  	this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
-
-	this.scheduleTimesteps();
 }
 
 
