@@ -54,4 +54,22 @@ function getCourseId($coursename)
 	}
 }
 
+function getCourseName($courseid)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
+	$query->bindParam(':cid', $courseid);
+
+	if($query->execute() && $query->rowCount() > 0) {
+		$course = $query->fetch();
+		return $course["coursename"];
+	} else {
+		return false;
+	}
+}
 ?>

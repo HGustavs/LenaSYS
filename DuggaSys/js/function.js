@@ -5,8 +5,8 @@
 });
 
 // Running page object funktions if browser back/forward buttons get pressed //
-window.onhashchange = function() {       
-	page.show();  
+window.onhashchange = function() {
+	page.show();
 }
 // Changing browser url and then running the page object functions //
 function changeURL(url) {
@@ -95,7 +95,7 @@ function getPage() {
 		var result;
 		$.ajax({
 			url:"ajax/getPages.php",
-			async: false,  
+			async: false,
 			success:function(data) {
 				result = JSON.parse(data);
 				console.log("success");
@@ -114,12 +114,12 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 function getTest() {
-  	console.log("loading Test...");
+	console.log("loading Test...");
 
 	$.ajax({
 		type:"POST",
 		url:"ajax/getTest.php",
-		async: false,  
+		async: false,
 		data: "testid="+getUrlVars()["testid"]+"&courseid="+getUrlVars()["courseid"],
 		success:function(data) {
 			console.log("success");

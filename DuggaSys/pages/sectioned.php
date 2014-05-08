@@ -36,9 +36,14 @@ checklogin();
 									var serialized = $(this).sortable("serialize");
 									dragtimer = setTimeout(function(){
 										// Pass course ID to check write access
-										var array = serialized + "&courseid=" + querystring.courseid;
-										$.post("entryupdate.php", array, function(theResponse){
-											$("#dragupdate").html(theResponse);
+										var array = serialized + "&courseid=" + querystring.courseid + "&opt=updateEntries";
+										$.post("SectionedService.php", array, function(theResponse){
+											var data = $.parseJSON(theResponse);
+											if(data.success) {
+												$("#dragupdate").html('Sparade listelementen');
+											} else {
+												$("#dragupdate").html('Kunde inte spara listan');
+											}
 											$("#dragupdate").slideDown('slow');
 											setTimeout(function(){
 												$("#dragupdate").slideUp("slow", function () { });
