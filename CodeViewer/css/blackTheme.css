@@ -143,12 +143,16 @@
     color: #fed;
 }
 
+.impo .keywordA{
+	color: rgba(255, 0, 0, 1);
+}
+
 .keywordA {
-    color: #e90000;
+    color: rgba(255, 77, 77, 1);
 }
 
 .keywordB {
-    color: #0004ff;
+    color: rgba(49, 211, 255, 1);
 }
 
 .keywordC {
@@ -162,13 +166,11 @@
 .normtext .impword {
     color: #000;
     background-color: #fff;
-    font-weight: bold;
 }
 
 .impo .impword {
     color: #000000;
     background-color: #fff;
-    font-weight: bold;
 }
 
 .normtext .imphi {

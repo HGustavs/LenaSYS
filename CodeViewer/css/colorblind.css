@@ -144,19 +144,23 @@
 }
 
 .keywordA {
-    color: #e90000;
+    color: #000;
+    font-weight: bold;
 }
 
 .keywordB {
     color: #0004ff;
+    font-weight: bold;
 }
 
 .keywordC {
-    color: #00d30d;
+    color: rgba(15, 4, 191, 1);
+    font-weight: bold;
 }
 
 .keywordD {
-    color: #eb7504;
+    color: rgba(171, 87, 7, 1);
+    font-weight: bold;
 }
 
 .normtext .impword {

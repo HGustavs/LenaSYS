@@ -140,7 +140,7 @@
 
 .impo .hi {
     background-color: #fff;
-    color: #fed;
+    color: #000;
 }
 
 .keywordA {
@@ -152,11 +152,11 @@
 }
 
 .keywordC {
-    color: #00d30d;
+    color: rgba(6, 129, 19, 1);
 }
 
 .keywordD {
-    color: #eb7504;
+    color: rgba(231, 0, 255, 1);
 }
 
 
