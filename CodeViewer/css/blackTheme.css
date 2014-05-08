@@ -83,7 +83,7 @@
 
 .impo {
     color: #fff;
-    background-color: #5d5d5d;
+    background-color: #3C3C3C;
 }
 
 .normtext .no {
@@ -143,9 +143,6 @@
     color: #fed;
 }
 
-.impo .keywordA{
-	color: rgba(255, 0, 0, 1);
-}
 
 .keywordA {
     color: rgba(255, 77, 77, 1);
