@@ -28,10 +28,6 @@ include_once (ABS_PATH . "/../Shared/basic.php");
 
 				echo "<td align='right' valign='top'>";
 				echo "<table cellspacing='2'><tr>";
-				if($kind){
-						echo "<td class='buttos' title='New section' onclick='newSection(\"1\");'><img src='../CodeViewer/icons/Plus.svg' /></td>";
-						echo "<td class='buttos' title='New bold section' onclick='newSection(\"2\");'><img src='../CodeViewer/icons/Bold.svg' /></td>";
-				}
 				if(checklogin()) {
 					echo "<td align='right' class='butto' onclick='location=\"logout.php\"'><img src='../CodeViewer/icons/Man.svg' /></td>";
 				} else {

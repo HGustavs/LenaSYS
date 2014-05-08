@@ -12,6 +12,11 @@ function changeURL(url) {
 	history.pushState(null, null, "#"+url);
 	page.show();
 }
+
+function startPageRedirect(url) {
+	history.pushState(null, null, "#"+url);
+}
+
 // Grabing URL values //
 function getUrlVars() {
     var vars = {};
@@ -22,7 +27,9 @@ function getUrlVars() {
 }
 // Page handler object //
 function getPage() {
+
 	var title = "Lenasys";
+
 	var pages = [];
 	var page = "";
 	// Printing a page into content element depending on a pagelist //

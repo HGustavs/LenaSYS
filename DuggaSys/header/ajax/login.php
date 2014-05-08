@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once dirname(__FILE__) . "/../../../../coursesyspw.php";
-include_once dirname(__FILE__) . "/../../../shared/database.php";
 include_once dirname(__FILE__) . "/../../../shared/sessions.php";
 
 if(array_key_exists('username', $_POST) && array_key_exists('password', $_POST)) {
