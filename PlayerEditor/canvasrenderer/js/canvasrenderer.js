@@ -55,7 +55,7 @@ function Canvasrenderer()
 	
 	// List of all valid canvas functions
 	// No other operation in the XML should be possible to run
-	var validFunctions = 	['bP', 'beginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
+	var validFunctions = 	['bP', 'ibeginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
 								'createPattern', 'crtRadialGrad', 'createRadialGradient', 'rec', 'rect', 'fRec', 'fillRect', 'sRec', 'strokeRect', 
 								'cRec', 'clearRect', 'fill', 'cP', 'closePath', 'clip', 'quadCrvTo', 'quadraticCurveTo', 'beizCrvTo', 'beizerCurveTo',
 								'arc', 'aT', 'arcTo', 'isPointInPath', 'scale', 'rot', 'rotate', 'translate', 'transform', 'mTxt', 'measureText', 'drawImg', 
@@ -73,12 +73,12 @@ function Canvasrenderer()
 			var rect = c.getBoundingClientRect();
 			mHeight = (rect.bottom - rect.top);
 			mWidth = (rect.right-rect.left);
-			this.scaleRatioX = (mWidth/c.width);
-			this.scaleRatioY = (mHeight/c.height);
+			canvas.scaleRatioX = mWidth/c.width;
+			canvas.scaleRatioY = mHeight/c.height;
 		
 			//canvas.width = mWidth;
 			//canvas.height = mHeight; 
-		//	updateScaleRatio();
+			canvas.updateScaleRatio();
 		//	showImage(activeImage);
 			console.log("On Resize\n");
 			console.log("canvas: " + c.width + ", " + c.height);	
@@ -809,11 +809,13 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
-		// Calculate positions using the proper scale ratio
-		y *= this.scaleRatioY;
-		x *= this.scaleRatioX;
-
-		
+		if(!isNaN(this.scaleRatioX) && !isNaN(this.scaleRatioY)){
+			console.log("Applying scale ratios");
+			// Calculate positions using the proper scale ratio
+			y *= this.scaleRatioY;
+			x *= this.scaleRatioX;
+			console.log(x + ", " + y);
+		}
 		if(this.mouseClickBackground){
 			// Restore mouse click background
 			ctx.putImageData(this.mouseClickBackground, this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius);
@@ -877,15 +879,28 @@ function Canvasrenderer()
 				// Draw natural ratio
 				canvas.scaleRatio = 1;
 			}
+			if(canvas.scaleRatio < 1){
+				// Draw scaled image
+				ctx.drawImage(image , 0, 0, image.width * canvas.scaleRatio, image.height * canvas.scaleRatio);
+				// New mouse cursor background
+				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatio, 23*canvas.scaleRatio);
+				// New mouse click background
+				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
+				// Render mouse click
+				canvas.drawMouseClick();
+			}else{
+				// Draw scaled image
+				ctx.drawImage(image , 0, 0, image.width * canvas.scaleRatioX, image.height * canvas.scaleRatioY);
+				// New mouse cursor background
+				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatioX, 23*canvas.scaleRatioY);
+				// New mouse click background
+				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
+				// Render mouse click
+				canvas.drawMouseClick();
 
-			// Draw scaled image
-			ctx.drawImage(image , 0, 0, image.width * canvas.scaleRatio, image.height * canvas.scaleRatio);
-			// New mouse cursor background
-			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatio, 23*canvas.scaleRatio);
-			// New mouse click background
-			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
-			// Render mouse click
-			canvas.drawMouseClick();
+
+
+			}
 		}
 		image.src = src;
 	} 
@@ -909,18 +924,27 @@ function Canvasrenderer()
 		var rect = c.getBoundingClientRect();
 		mHeight = (rect.bottom - rect.top);
 		mWidth = (rect.right-rect.left);
-		this.scaleRatioX = c.width/mWidth;
-		this.scaleRatioY = c.height/mHeight;
+		
+		this.scaleRatioX = parseFloat(mWidth/this.recordedCanvasWidth);
+		this.scaleRatioY = parseFloat(mHeight/this.recordedCanvasHeight);
 		console.log("Scale ratio X: " + this.scaleRatioX);
 		console.log("Scale ratio Y: " + this.scaleRatioY);
 	}
 
+	this.recordedCanvasSize = function(width, height) {
+		console.log("Recorded canvas size is: " + width + ", " + height);
+		this.recordedCanvasWidth = parseFloat(width);
+		this.recordedCanvasHeight = parseFloat(height);
+		this.updateScaleRatio();
+	}
 	/*
 	*
 	* Start running XML
 	*
 	*/
 	var c = document.getElementById('Canvas');
+	//c.width = 1280;
+	//c.height = 720;
 	var ctx = c.getContext("2d");
 	// Set canvas size to fit screen size
 	this.canvasSize(window.innerWidth - 20, window.innerHeight - 75);

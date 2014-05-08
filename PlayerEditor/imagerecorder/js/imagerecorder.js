@@ -9,7 +9,7 @@ function imagerecorder(canvas)
 	var canvas = document.getElementById('ImageCanvas');
 	var ctx = canvas.getContext('2d');
 	
-	var lastEvent = 0;
+	var lastEvent = Date.now();
 	
 	var libraryName;				// name of library (writes to librarys/libraryName/) 
 		
@@ -27,12 +27,19 @@ function imagerecorder(canvas)
 	var bodyMouseY;
 	
 	var files;						// store files thats being uploaded
-	
-	
+	var rect = canvas.getBoundingClientRect();
+
+	mHeight = (rect.bottom - rect.top);
+	mWidth = (rect.right-rect.left);
+
+	addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');	
+	canvas.width = mWidth;
+	canvas.height = mHeight;	
+
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
 		$(".wrapper").hide();
-		
+			
 		
 		// Get library name when user clicks OK
 		$("#library-name-button").click(function(){
@@ -58,6 +65,9 @@ function imagerecorder(canvas)
 			else {
 				alert("The library name needs to be 1-32 characters long.");
 			}
+			
+
+
 		});
 		
 		// Bind event to file input (#imageLoader in imagerecorder.php)
@@ -73,7 +83,7 @@ function imagerecorder(canvas)
 		
 
 		/*
-		*	records clicks on canvas and pass them on to logMouseevents() to be logged
+		*	records clicks on canvas and pass them on to logMouseEvents() to be logged
 		*/
 		$('#' + imageCanvas).click(function(event){
 			if(imagelibrary.length > 0) {
@@ -147,7 +157,7 @@ function imagerecorder(canvas)
 			var rect = canvas.getBoundingClientRect();
 			mHeight = (rect.bottom - rect.top);
 			mWidth = (rect.right-rect.left);
-			logMouseEvents('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
+			addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
 			canvas.width = mWidth;
 			canvas.height = mHeight; 
 			updateScaleRatio();
