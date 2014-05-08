@@ -1,19 +1,7 @@
 <?php
-include_once "database.php";
-include_once "courses.php";
-include_once "sessions.php";
-//---------------------------------------------------------------------------------------------------------------
-// err - Displays nicely formatted error and exits
-//---------------------------------------------------------------------------------------------------------------
-function err ($errmsg,$hdr='')
-{
-	if(!empty($hdr)){
-			echo($hdr);
-	}
-	print "<p><span class=\"err\">Serious Error: <br /><i>$errmsg</i>.";
-	print "</span></p>\n";
-	exit;
-}
+include_once dirname(__FILE__) . "/database.php";
+include_once dirname(__FILE__) . "/courses.php";
+include_once dirname(__FILE__) . "/sessions.php";
 
 //---------------------------------------------------------------------------------------------------------------
 // endsWith - Tests if a string ends with another string - defaults to being non-case sensitive
