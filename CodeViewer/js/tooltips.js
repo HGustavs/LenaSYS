@@ -50,13 +50,7 @@
 
 
                     $tooltip = $('div[data-tooltip=' + $el.data('tooltip') + ']');
-  						
-  						// Remove all classes so the tooltip wont duplicate when mouse leaves window of the browser
-                        $(".active").removeClass("active");
-                        $(".active2").removeClass("active2");
-                        $(".out").removeClass("out");
-                        $(".out2").removeClass("out2");
-                        
+  				 
                     // Reposition tooltip, in case of page movement e.g. screen resize
                     var linkPosition = $el.offset();
 
@@ -167,3 +161,24 @@
 
 })(jQuery);
 
+/* Remove tooltips if mouse leaves window */ 
+$(window).mouseout(function(e){
+	var pageX = e.pageX || e.clientX,
+        pageY = e.pageY || e.clientY;
+    var w = window.innerWidth,
+     	h = window.innerHeight; 
+ 
+ // Remove tooltips if mouse leaves window in x-axis
+    if(parseInt(pageX)>parseInt(w) || parseInt(pageX)<parseInt(0)){
+     	 $(".active").attr("active");
+         $(".active2").removeClass("active2");
+         $(".out").removeClass("out");
+         $(".out2").removeClass("out2");
+	//	Remove tooltips if mouse leaves window in y-axis
+     }else if(parseInt(pageY)>parseInt(h) || parseInt(pageY)<parseInt(0)){
+     	 $(".active").attr("active");
+         $(".active2").removeClass("active2");
+         $(".out").removeClass("out");
+         $(".out2").removeClass("out2");
+     }  
+});
