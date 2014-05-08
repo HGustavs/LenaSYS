@@ -1,11 +1,19 @@
 <?php
-	$result = array();
-
-	foreach(glob('../pages/*.*') as $filename){
-		$file = basename($filename);
-		array_push($result, $file);
+	function dirToArray($dir) { 
+		$result = array(); 
+		$cdir = scandir($dir); 
+		foreach ($cdir as $key => $value) { 
+			if (!in_array($value,array(".",".."))) { 
+				if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) { 
+					$result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value); 
+				} 
+				else { 
+					$result[] = $value; 
+				} 
+			} 
+		} 
+		return $result; 
 	}
-
-	print(json_encode($result));
-
+	$root = dirToArray('../pages/');
+	print(json_encode($root));
 ?>

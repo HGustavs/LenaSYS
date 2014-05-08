@@ -15,7 +15,7 @@ dbConnect();
 		$result=mysql_query($querystring);
 		if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
 		while ($row = mysql_fetch_assoc($result)){
-				echo "<tr><td style='width:98%;' onclick='changeURL(\"Sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
+				echo "<tr><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
 				echo "<td style='width:2%;' onclick='showSettingRow(". $row['id']. ")' ><img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 				echo "</td></tr>";
 				echo "<tr class='settings' id='settings_".$row['id']."'><td>Edit name:<input type='text' value='".$row['coursename']."' /></td></tr>";

@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 
-<?php if($_SESSION['user']['permission'] == 2) { ?>
+<?php if($_SESSION['user']) { ?>
     <table class="list">
         <tr>
             <th>Student ID</th>
