@@ -167,18 +167,13 @@ $(window).mouseout(function(e){
         pageY = e.pageY || e.clientY;
     var w = window.innerWidth,
      	h = window.innerHeight; 
- 
  // Remove tooltips if mouse leaves window in x-axis
     if(parseInt(pageX)>parseInt(w) || parseInt(pageX)<parseInt(0)){
-     	 $(".active").attr("active");
+     	 $(".active").removeClass("active");
          $(".active2").removeClass("active2");
-         $(".out").removeClass("out");
-         $(".out2").removeClass("out2");
 	//	Remove tooltips if mouse leaves window in y-axis
      }else if(parseInt(pageY)>parseInt(h) || parseInt(pageY)<parseInt(0)){
-     	 $(".active").attr("active");
+     	 $(".active").removeClass("active");
          $(".active2").removeClass("active2");
-         $(".out").removeClass("out");
-         $(".out2").removeClass("out2");
-     }  
+     } 
 });
