@@ -4,6 +4,11 @@ require_once(dirname(__FILE__) . '/../Shared/database.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
+
+/**
+ * Check whether or not the user is logged in.
+ * @return bool Returns true if the user is logged in and false if they aren't
+ */
 function checklogin()
 {
 	// If neither session nor post return not logged in
@@ -16,6 +21,15 @@ function checklogin()
 	}
 }	
 
+/**
+ * Log in the user with the specified username and password and
+ * optionally set cookies for the user to be remembered until next
+ * time they visit the site.
+ * @param string $username Username of the user to log in
+ * @param string $password Password of the user to log in
+ * @param bool $savelogin Whether or not to save the information in a cookie
+ * @return bool True on success (the user was logged in), false on failure.
+ */ 
 function login($username, $password, $savelogin)
 {
 	global $pdo;
@@ -59,6 +73,15 @@ function login($username, $password, $savelogin)
 	}
 }
 
+/**
+ * Check if a specified user ID has the requested access on a specified course
+ * @param int $userId User ID of the user to look up
+ * @param int $courseId ID of the course to look up access for
+ * @param string $access_type A single letter denoting read or write access 
+ * (r and w respectively)
+ * @return bool Returns true if the user has the requested access on the course
+ * and false if they don't.
+ */
 function hasAccess($userId, $courseId, $access_type)
 {
 	$access = getAccessType($userId, $courseId);
@@ -73,6 +96,12 @@ function hasAccess($userId, $courseId, $access_type)
 	}
 }
 
+/**
+ * Returns the access a specified user has on the specified course
+ * @param int $userId User ID of the user to look up
+ * @param int $courseId Course ID of the course to look up access on
+ * @return string Returns the access for the user on the selected course (r or w)
+ */
 function getAccessType($userId, $courseId)
 {
 	global $pdo;
