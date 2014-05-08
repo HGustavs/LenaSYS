@@ -1,5 +1,8 @@
 function showSettingRow(ID){
-	$('#settings_'+ID).slideToggle();
-	var hej = document.getElementById('linkan');
-	
+	var display = $('#settings_'+ID).css('display');
+	if(display == 'none'){
+		$('#settings_'+ID).show();
+	}else {
+		$('#settings_'+ID).hide();
+	}
 }
