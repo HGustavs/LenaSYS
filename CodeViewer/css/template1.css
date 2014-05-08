@@ -46,6 +46,8 @@
     height: -webkit-calc(100.0% - 55px);
     height: -moz-calc(100.0% - 55px);
     overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -62,6 +64,8 @@
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
     z-index: 2;
 }
  

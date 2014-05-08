@@ -7,6 +7,8 @@
     height: 250px;
     /*background-color: #272822;*/
     overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
    /* color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
@@ -24,6 +26,8 @@
     font-size: 14px;
    /*  background-color: #272822;*/
     overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 #temp3{
 	display: none;
