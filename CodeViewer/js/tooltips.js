@@ -33,9 +33,6 @@
             }
 
 
-
-
-
             $el
                 // Get rid of yellow box popup
                 .removeAttr("title")
@@ -53,7 +50,13 @@
 
 
                     $tooltip = $('div[data-tooltip=' + $el.data('tooltip') + ']');
-
+  						
+  						// Remove all classes so the tooltip wont duplicate when mouse leaves window of the browser
+                        $(".active").removeClass("active");
+                        $(".active2").removeClass("active2");
+                        $(".out").removeClass("out");
+                        $(".out2").removeClass("out2");
+                        
                     // Reposition tooltip, in case of page movement e.g. screen resize
                     var linkPosition = $el.offset();
 
@@ -114,12 +117,7 @@
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active2");
 
-
-
                     }
-
-
-
                     // Show tooltip above object
                     else {
 
@@ -135,17 +133,10 @@
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active");
 
-
-
                     }
-
-
-
-
-
                     // Mouseleave
                 }, function() {
-
+					
                     $el = $(this);
 
                     if (distanceTop < 25) {
@@ -161,7 +152,7 @@
                         $tooltip = $('div[data-tooltip=' + $el.data('tooltip') + ']').addClass("out");
 
                     }
-
+					
                     // Remove all classes
                     setTimeout(function() {
                         $tooltip.removeClass("active").removeClass("active2").removeClass("out").removeClass("out2");
@@ -175,3 +166,4 @@
     }
 
 })(jQuery);
+
