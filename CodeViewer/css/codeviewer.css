@@ -796,6 +796,25 @@ a {
     cursor: pointer;
 }
 
+.themeicon {
+	height:20px;
+	padding:5px;
+}
+
+.themeicon:hover {
+	cursor: pointer;
+	font-size:20px;
+}
+
+.themeicon img{
+	vertical-align: text-bottom;
+}
+
+.themeicon span{
+	padding-left: 6px;
+	font-size:16px;
+}
+
 .showdesktop{
     display: table-cell;
 }

@@ -203,3 +203,7 @@
 	border-bottom-color: #614875;
 	background-color: #614875;
 }
+
+.themeicon:hover {
+	background-color: #7D5CA0;
+}
