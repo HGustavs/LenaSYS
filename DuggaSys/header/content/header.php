@@ -6,7 +6,7 @@ dbConnect();
 ?>
 <!--END INCLUDE -->
 <nav id="navigate">
-	<img src="css/svg/Up.svg">
+	<img onclick="changeURL('')" src="css/svg/Up.svg">
 	<img onclick="historyBack()" src="css/svg/SkipB.svg">
 </nav>
 <div id="title">
