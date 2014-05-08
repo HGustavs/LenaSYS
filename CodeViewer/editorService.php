@@ -272,7 +272,7 @@
         $img_dir = opendir('./imgupload');
         while (($img_file = readdir($img_dir)) !== false) {
             if(endsWith($img_file,".png")){
-                array_push($images,"imgupload/".$img_file);
+                array_push($images,$img_file);
             }
         }
 

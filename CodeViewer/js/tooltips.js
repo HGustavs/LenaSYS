@@ -55,7 +55,9 @@
                     $tooltip = $('div[data-tooltip=' + $el.data('tooltip') + ']');
 
                     // Reposition tooltip, in case of page movement e.g. screen resize
-                    var linkPosition = $el.position();
+                    var linkPosition = $el.offset();
+
+
 
                     //Collect the target objects height which is used to adjust the tooltips position
                     var targetHeight = $el.height();
@@ -89,14 +91,19 @@
 
                         });
 
+
+
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active2");
+
                     }
 
 
                     // Show tooltip above object + align to the right if there's no space on the left side
                     else if (distanceTop > 25 && elementOffsetLeft < ($tooltip.width()/2)) {
 
+                        //Change to correct arrow
+                        $tooltip.children(".arrow2").removeClass("arrow2").addClass("arrow");
 
                         $tooltip.css({
                             top: distanceTop - ($tooltip.outerHeight() + 13),
@@ -106,12 +113,19 @@
 
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active2");
+
+
+
                     }
 
 
 
                     // Show tooltip above object
                     else {
+
+                        //Change to correct arrow
+                        $tooltip.children(".arrow2").removeClass("arrow2").addClass("arrow");
+
 
                         $tooltip.css({
                             top: distanceTop - ($tooltip.outerHeight() + 13),
@@ -120,6 +134,9 @@
 
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active");
+
+
+
                     }
 
 

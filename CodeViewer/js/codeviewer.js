@@ -757,7 +757,7 @@ function returned(data)
             for(i=0;i<data['images'].length;i++){
 
                     //str+="<span class='dropdownitem' id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' onmouseover='highlightMenu(\"DDII"+i+"\");' onmouseout='dehighlightMenu(\"DDII"+i+"\");'>"+data['images'][i]+"</span>";
-                str+="<img id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' src=\""+data['images'][i]+"\"></img>";
+                str+="<img id='DDII"+i+"' onclick='insertImage(\"imgupload/"+data['images'][i]+"\");' title=\""+data['images'][i]+"\" src=\"imgupload/"+data['images'][i]+"\"></img>";
 
             }
 
