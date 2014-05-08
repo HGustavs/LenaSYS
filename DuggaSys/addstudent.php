@@ -24,13 +24,12 @@
 		<br>
 		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="30"></textarea>
 		<br>
-		<input type="button" value="Lägg till student" onclick="javascript:passPopUp('show');"/>
+		<input type="submit" value="Lägg till student"/>
 		<a href="students.php"><input type="button" value="Cancel"/></a>
 	</form>
 
-		<div id="light" class="white_content"></div>
-		<div id="fade" class="black_overlay" onclick="javascript:passPopUp('show');"></div>
 
+		<div id="light" class="white_content">
 <?php	
 		include_once "../Shared/external/password.php";
 		include_once("../../coursesyspw.php");	
@@ -48,8 +47,6 @@ if(isset($_POST['string'])){
 			$str = $_POST['string'];
 
 			$row=explode("\r\n", $str);
-			$myFile = "testFile.txt";
-			$fh = fopen($myFile, 'w') or die("can't open file");
 			foreach ($row as $row1) {
 				list($ssn, $name, $username1)=(explode("\t",$row1));
 				list($lastname, $firstname)=(explode(", ",$name));
@@ -62,13 +59,6 @@ if(isset($_POST['string'])){
 				if ( $stmt->rowCount() <= 0 ) {
 				
 					$password1 = random_password(12);
-					fwrite($fh, $name);
-					fwrite($fh, "\t\t");
-					fwrite($fh, $username);
-					fwrite($fh, "\t\t");
-					fwrite($fh, $password1);
-					fwrite($fh, "\n");
-
 					$password = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 12));
 
 					$querystring='INSERT INTO user (username, firstname, lastname, ssn, password, newpassword) VALUES(:username,:firstname,:lastname,:ssn,:password, 1);';	
@@ -104,9 +94,10 @@ if(isset($_POST['string'])){
 					}
 				}
 			}
-				fclose($fh);
 		}
 		?>
+		</div>
+		<div id="fade" class="black_overlay" onclick="javascript:passPopUp('show');"></div>
 </div>
 </div>
 
