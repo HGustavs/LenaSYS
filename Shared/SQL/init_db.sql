@@ -36,7 +36,7 @@ INSERT INTO user_question (question, answer, owner) VALUES("What is the color of
 /* Course contains a list of the course names for each course in the database */
 CREATE TABLE course(
 		cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		coursecode		VARCHAR(45) NULL,
+		coursecode		VARCHAR(45) NULL UNIQUE,
 		coursename		VARCHAR(80) NULL,
 		created			DATETIME,
 		creator			INT UNSIGNED NOT NULL,
