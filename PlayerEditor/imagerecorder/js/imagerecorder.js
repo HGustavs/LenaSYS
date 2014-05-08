@@ -73,7 +73,7 @@ function imagerecorder(canvas)
 		
 
 		/*
-		*	records clicks on canvas and pass them on to getEvents() to be logged
+		*	records clicks on canvas and pass them on to logMouseevents() to be logged
 		*/
 		$('#' + imageCanvas).click(function(event){
 			if(imagelibrary.length > 0) {
@@ -107,7 +107,7 @@ function imagerecorder(canvas)
 				document.getElementById('xCord').innerHTML=xMouse;
 				document.getElementById('yCord').innerHTML=yMouse;
 
-				getEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+				logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
 			} else {
 				alert("You need to upload at least one image before you can start recording.");
 			}
@@ -147,7 +147,7 @@ function imagerecorder(canvas)
 			var rect = canvas.getBoundingClientRect();
 			mHeight = (rect.bottom - rect.top);
 			mWidth = (rect.right-rect.left);
-			getEvents('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
+			logMouseEvents('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
 			canvas.width = mWidth;
 			canvas.height = mHeight; 
 			updateScaleRatio();
@@ -399,7 +399,7 @@ function imagerecorder(canvas)
 	/*
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
-	function getEvents(str){
+	function logMouseEvents(str){
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
 		// Add image path (substr 9 removes "librarys" from path)
