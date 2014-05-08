@@ -16,7 +16,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input id="username" class='form-control textinput' type='text' onchange="checkIfEmpty(this)" name='username'>
+						<input id="username" class='form-control textinput' type='text' onkeyup="checkIfEmpty(this)" name='username'>
 					</td>
 				</tr>
 				<tr>
@@ -26,7 +26,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input id="password" class='form-control textinput' type='password' onchange="checkIfEmpty(this)" name='password'>
+						<input id="password" class='form-control textinput' onkeyup="checkIfEmpty(this)" type='password' name='password'>
 					</td>
 				</tr>
 				<tr>
@@ -38,17 +38,10 @@
 				
 				<tr>
 					<td>
-						<input type='button' class='btn btn-login' onclick="makeLogin()" value='Login'>
+						<input type='button' class='btn btn-login active' onclick="makeLogin()" value='Login'>
 						<lable class='forgotPw' onclick='showForgontPw();'>Forgot password?</lable>
 					</td>
 				</tr>
-				<!--
-				<tr>
-					<td>
-						<input type='button' class='btn btn-success btn-forgot' onclick="makeLogin()" value='Forgot password?'>
-					</td>
-				</tr>
-				-->
 			</table>
 		  </div>
 	</div>
@@ -69,7 +62,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input id="username" class='form-control textinput' type='text' onchange="checkIfEmpty(this)" name='username'>
+						<input id="username" class='form-control textinput' type='text' onkeyup="checkIfEmpty(this)" name='username'>
 					</td>
 				</tr>
 				<tr>
@@ -154,12 +147,12 @@
 				</tr>
 				<tr>
 					<td>
-						<input id="password1" type="password" onchange="checkIfEmpty(this)" class="form-control textinput">
+						<input id="password1" type="password" onkeyup="checkIfEmpty(this)" class="form-control textinput">
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input id="password2" type="password" onchange="checkIfEmpty(this)" class="form-control textinput">
+						<input id="password2" type="password" onkeyup="checkIfEmpty(this)" class="form-control textinput">
 					</td>
 				</tr>
 				<tr>
@@ -169,7 +162,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input id="question" type="text" onchange="checkIfEmpty(this)" class="form-control textinput">
+						<input id="question" type="text" onkeyup="checkIfEmpty(this)" class="form-control textinput">
 					</td>
 				</tr>
 				<tr>
@@ -179,7 +172,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input id="answer" type="text" onchange="checkIfEmpty(this)" class="form-control textinput">
+						<input id="answer" type="text" onkeyup="checkIfEmpty(this)" class="form-control textinput">
 					</td>
 				</tr>
 				<tr>

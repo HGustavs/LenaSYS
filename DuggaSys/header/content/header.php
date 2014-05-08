@@ -13,12 +13,19 @@ dbConnect();
 	<h1></h1>
 </div>
 <nav id="user">
-	<label>
+	<label id="userName">
 		<?php 
 			if(isset($_SESSION['loginname'])) { 
 				echo $_SESSION['loginname']; 
 			}
 		?>
 	</label>
-	<img onclick="createDeleteLogin()" src="css/svg/Man.svg">
+		<?php 
+			if(isset($_SESSION['loginname'])) { 
+				echo'<img class="loggedin" onclick="createDeleteLogin()" src="css/svg/Man.svg">';
+			}
+			else {
+				echo'<img onclick="createDeleteLogin()" src="css/svg/Man.svg">';
+			}
+		?>
 </nav>

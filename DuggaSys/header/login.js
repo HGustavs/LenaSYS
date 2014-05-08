@@ -13,31 +13,69 @@ function createDeleteLogin() {
 	}		
 }
 function showLogin() {
+	$(".btn.btn-login").removeClass("active");
+	$("#login .btn.btn-login").addClass("active");
+
 	$("#login").removeClass("hide");
 	$("#forgotPwAnswer").addClass("hide");
 	$("#forgotPw").addClass("hide");
 	$("#newPassword").addClass("hide");
+
+	$('#loginBox input.form-control').val('');
 }
 function showForgontPw() {
+	$(".btn.btn-login").removeClass("active");
+	$("#forgotPw .btn.btn-login").addClass("active");
+
 	$("#forgotPw").removeClass("hide");
 	$("#login").addClass("hide");
 	$("#forgotPwAnswer").addClass("hide");
 	$("#newPassword").addClass("hide");
+
+	$('#loginBox input.form-control').val('');
 }
 function showForgotPwAnswer() {
+	$(".btn.btn-login").removeClass("active");
+	$("#forgotPwAnswer .btn.btn-login").addClass("active");
+
 	$("#forgotPwAnswer").removeClass("hide");
 	$("#forgotPw").addClass("hide");
 	$("#login").addClass("hide");
 	$("#newPassword").addClass("hide");
+
+	$('#loginBox input.form-control').val('');
 }
 function showCreatePassword() {
+	$(".btn.btn-login").removeClass("active");
+	$("#createPassword .btn.btn-login").addClass("active");
+
 	$("#createPassword").removeClass("hide");
 	$("#forgotPwAnswer").addClass("hide");
 	$("#forgotPw").addClass("hide");
 	$("#login").addClass("hide");
+
+	$('#loginBox input.form-control').val('');
 }
 // CREATE AND SHOW/HIDE LOGINBOX FUNCTIONS END //
-
+// TRIGGER BUTTONFUNCTION WHEN KEY IS PRESSED START //
+if (document.layers) {
+	document.captureEvents(Event.KEYDOWN);
+}
+// TRIGGER BUTTONFUNCTION WHEN KEY IS PRESSED END //
+// MAKE BUTTON CLICKED IF ENTER OR CLOSE LOGINBOX IF ESC FUNCTION START //
+document.onkeydown = function (evt) {
+	var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
+	if (keyCode == 13) {
+		$(".active").click();
+	}
+	if (keyCode == 27) {
+		createDeleteLogin();
+	} 
+	else {
+		return true;
+	}
+};
+// MAKE BUTTON CLICKED IF ENTER OR CLOSE LOGINBOX IF ESC FUNCTION END //
 // VALIDATE INPUT FUNCTIONS START //
 	function validate(idElement) {
 		var countElem = 0;
@@ -90,6 +128,7 @@ function makeLogin() {
 				var result = JSON.parse(data);
 				if(result['login'] == "success") {
 					$("#user label").html(result['username']);
+					$("#user img").addClass("loggedin");
 					console.log("Loged in");
 					if(result['newpw'] == true) {
 						showCreatePassword();
@@ -113,6 +152,7 @@ function makeLogout() {
 		url: getScriptPath("login.js")+"/ajax/logout.php",
 		success:function(data) {
 			$("#user label").html("");
+			$("#user img").removeClass("loggedin");
 			page.show();
 			createDeleteLogin();
 		},
@@ -221,3 +261,17 @@ function newPasswordAndQuestion() {
 	}
 }
 // LOGIN AJAX FUNCTIONS END //
+// SHOW OR HIDE LOAD BAR FUNCTION START //
+function addRemoveLoad(show) {
+	if(show && $("header .load").length ==0) {
+
+		$("header").append("<div class='load'></div>");
+	}
+	else if(!show) {
+		$("header .load").fadeOut(300, function() { $(this).remove(); });
+	}
+	else {
+		return true;		
+	}
+}
+// SHOW OR HIDE LOAD BAR FUNCTION END //

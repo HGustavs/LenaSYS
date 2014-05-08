@@ -183,3 +183,12 @@ table {
 .text {
 	font-weight:300;
 }
+nav#user img.loggedin {
+	background-color: #c75050;
+	padding: 13px;
+}
+
+nav#user img.loggedin:hover {
+	background-color: #ce3d3d;
+	padding: 13px;
+}

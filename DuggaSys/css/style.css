@@ -66,6 +66,7 @@ a#section-list {
 	text-decoration:none;
 }
 header {
+    overflow: hidden;
     color: #fff;
     height: 50px;
     width: 100%;
@@ -96,10 +97,16 @@ header {
         }
     nav#user {
         font-size: 0.8em;
-        padding: 12px;
         float: right;
     }
+        nav#user #userName {
+            font-size: 0.8em;
+            padding: 5px;
+            float: left;
+        }
         nav#user img {
+            padding: 12px;
+            float: right;
             cursor: pointer;
         }
 .load {
