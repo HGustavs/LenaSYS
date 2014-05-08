@@ -61,7 +61,7 @@
     bottom: 0px;
     /*left: 300px;*/
  	  width: -moz-calc(75.0%);
-	  width: -webkit-calc(75.0%);
+	  width: -webkit-calc(75.0% - 4px);
     right: 0px;
    /* background-color: #272822;*/
     font-family: Arial,Sans-Serif;
