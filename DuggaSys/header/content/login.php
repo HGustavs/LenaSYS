@@ -16,7 +16,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input id="username" class='form-control textinput' type='text' onkeyup="checkIfEmpty(this)" name='username'>
+						<input id="username" class='form-control textinput' type='text' onkeyup="checkIfEmpty(this)" name='username' autofocus>
 					</td>
 				</tr>
 				<tr>
