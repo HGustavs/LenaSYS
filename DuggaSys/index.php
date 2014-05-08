@@ -7,6 +7,7 @@
 		<link type="text/css" href="css/style.css" rel="stylesheet" />
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="js/function.js"></script>
+        <script type="text/javascript" src="js/section.js"></script>
 		<script src="header/header.js"></script>
 </head>
 <body>
