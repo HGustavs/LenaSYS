@@ -45,7 +45,7 @@
  	  width: -moz-calc(25.0%);
 	  width: -webkit-calc(25.0%);
 	  
-      height: -webkit-calc(100.0%);
+      height: -webkit-calc(100.0% - 50px);
       height: -moz-calc(100.0%);
      /*background-color: #272822;*/
     overflow: scroll;
