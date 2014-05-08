@@ -792,7 +792,7 @@ a {
     padding: 5%;
 }
 .templatethumbicon:hover{
-    background-color: #7D5CA0;
+   /* background-color: #7D5CA0;*/
     cursor: pointer;
 }
 
