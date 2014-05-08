@@ -62,17 +62,3 @@
 #temp4{
 	display: none;
 }
-
-/*CRHOME SCROLLBAR*/
-::-webkit-scrollbar {
-    width: 10px;
-	height: 0px; 
-}
-/*Track*/
-::-webkit-scrollbar-track {
-	background-color: white;
-}
-/*Handle*/
-::-webkit-scrollbar-thumb {
-    background-color: gray;  
-}
