@@ -171,10 +171,39 @@ $(function() {
        });
     });
 
-function passPopUp(showhidePop){
-	if(showhidePop == "show"){
+function passPopUp(){
+
+	 $.ajax({
+          type: 'POST',
+          url: 'addstudent_ajax.php',
+          data: {
+              string: $("#string").val()
+          },
+	 	success: function (data) {
+	 		console.log(data);
+	 		showPopUp('show')
+	 	},
+      });
+	}
+
+	function showPopUp(showhidePop,data){
+		if(showhidePop == "show"){
 		document.getElementById('light').style.visibility = "visible";
 		document.getElementById('fade').style.visibility = "visible";
+
+
+		var output = "<table>";
+      output += "<tr><th>Namn</th>";
+      output += "<th>Användarnamn</th>";
+      output += "<th>Lösenord</th></tr>";
+
+      output += "<tr><td>"+data. + "</td>";
+      output += "<td>Användarnamn</td>";
+      output += "<td>Lösenord</td></tr>";
+
+       output += "</table>"
+      var div = document.getElementById('light');
+      div.innerHTML = output;
 	}
 	else if(showhidePop == "hide"){
 		document.getElementById('light').style.visibility = "hidden";
