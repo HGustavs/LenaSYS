@@ -32,24 +32,20 @@
 	position: absolute;
     background-color: #5D5D5D;
     height: 50px;
-    width: -moz-calc(24.0%);
-    width: -webkit-calc(24.0%);
+    width: -moz-calc(25% - 15px);
+    width: -webkit-calc(25% - 15px);
 }
 #docucontent {
     padding-left: 4px;
     position: absolute;
     top: 0px;
-    padding-top:45px;
+    padding-top:55px;
     left: 0px;
-    /*width: 296px;*/
- 	  width: -moz-calc(25.0%);
-	  width: -webkit-calc(25.0%);
-	  
-      height: -webkit-calc(100.0% - 50px);
-      height: -moz-calc(100.0%);
-     /*background-color: #272822;*/
+ 	width: -moz-calc(25.0%);
+	width: -webkit-calc(25.0%);
+    height: -webkit-calc(100.0% - 50px);
+    height: -moz-calc(100.0% - 50px);
     overflow: scroll;
-   /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -59,11 +55,9 @@
     position: absolute;
     top: 0px;
     bottom: 0px;
-    /*left: 300px;*/
- 	  width: -moz-calc(75.0%);
-	  width: -webkit-calc(75.0% - 4px);
+ 	width: -moz-calc(75% - 4px);	/*had to adjust 4px to fix overlap*/
+	width: -webkit-calc(75% - 4px); /*had to adjust 4px to fix overlap*/
     right: 0px;
-   /* background-color: #272822;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     overflow: scroll;
