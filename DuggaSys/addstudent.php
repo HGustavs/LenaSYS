@@ -3,6 +3,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 			<link type="text/css" href="css/style.css" rel="stylesheet">
+					<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="duggasys.js"></script>
 	</head>
 <body>
@@ -24,7 +25,7 @@
 		<br>
 		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="30"></textarea>
 		<br>
-		<input type="submit" value="Lägg till student"/>
+		<input type="button" value="Lägg till student" onclick="passPopUp();"/>
 		<a href="students.php"><input type="button" value="Cancel"/></a>
 	</form>
 
@@ -36,68 +37,9 @@
 		include_once("basic.php");
 		pdoConnect();
 
-if(isset($_POST['string'])){
-
-			function random_password( $length = 12 ) {
-			    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?<>/";
-			    $password1 = substr( str_shuffle( $chars ), 0, $length );
-			    return $password1;
-			}
-
-			$str = $_POST['string'];
-
-			$row=explode("\r\n", $str);
-			foreach ($row as $row1) {
-				list($ssn, $name, $username1)=(explode("\t",$row1));
-				list($lastname, $firstname)=(explode(", ",$name));
-				list($username, $grabage)=(explode("@",$username1));
-
-				
-				$stmt = $pdo->prepare("SELECT * FROM user WHERE username='$username'");
-				$stmt->execute(array($username));
-
-				if ( $stmt->rowCount() <= 0 ) {
-				
-					$password1 = random_password(12);
-					$password = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 12));
-
-					$querystring='INSERT INTO user (username, firstname, lastname, ssn, password, newpassword) VALUES(:username,:firstname,:lastname,:ssn,:password, 1);';	
-					$stmt = $pdo->prepare($querystring);
-					$stmt->bindParam(':username', $username);
-					$stmt->bindParam(':firstname', $firstname);
-					$stmt->bindParam(':lastname', $lastname);
-					$stmt->bindParam(':ssn', $ssn);
-					$stmt->bindParam(':password', $password);
-					try {
-						$stmt->execute();
-						echo "<script type='text/javascript'>alert('Användare är tillagd globalt')</script>";
-					} catch (PDOException $e) {
-						if ($e->getCode()=="23000") {
-							echo "Användare finns redan globalt";
-						}
-					}
-				}
-
-				
-				foreach($pdo->query( "SELECT * FROM user WHERE username='$username'" ) as $row){
-					$userid = $row['uid'];
-					$querystring='INSERT INTO user_course (uid, cid, access) VALUES(:uid, 1, "R");';	
-					$stmt = $pdo->prepare($querystring);
-					$stmt->bindParam(':uid', $userid);
-					try {
-						$stmt->execute();
-						echo "<script type='text/javascript'>alert('Användare är tillagd på kursen')</script>";
-					} catch (PDOException $e) {
-						if ($e->getCode()=="23000") {
-						echo "Användare finns redan på kursen";
-						}
-					}
-				}
-			}
-		}
 		?>
 		</div>
-		<div id="fade" class="black_overlay" onclick="javascript:passPopUp('show');"></div>
+		<div id="fade" class="black_overlay" onclick="javascript:passPopUp('hide');"></div>
 </div>
 </div>
 
