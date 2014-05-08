@@ -59,6 +59,12 @@ a#courses{
 a#courses:hover{
 	color:#666;
 }
+a#section-list {
+	color:#434343;
+	font-family:arial;
+	font-size:10pt;
+	text-decoration:none;
+}
 header {
     color: #fff;
     height: 50px;
@@ -277,116 +283,138 @@ table.list tr.red {
 /* courselistmenu START */
 
 #Sectionlist{
-    margin:0px auto;
-    
-    padding: 2px;
-    width: 800px;
-    /*box-shadow: 7px 7px 7px #000;*/
+	margin:0px auto;
+	padding: 5px;
     background-color: #fff;
-    color: black;
+    color:#434343;
     display: block;
-    /*border: 2px outset #888;*/
-    text-align: left;
-    /*border-radius: 6px;*/
 }
 #Sectionlist .butt {
-    /*border-radius: 3px;*/
-    margin-right: 4px;
-    /*box-shadow: 2px 1px 3px #000;*/
-    margin-bottom: 4px;
     padding-left: 8px;
-    height: 24px;
-    /*text-shadow: 2px 2px 2px #000;*/
-    color: #fff;
+	padding:6px;
     display: block;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
+	color:#fff;
+    font-size: 14pt;
     font-family: Calibri,Sans-Serif;
-    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
-    color: white;
-    background-color: #BBB;
+    background-color: #927b9e;
 }
+
 
 #Sectionlist .norm {
-    margin-left: 8px;
-    padding-left: 8px;
-    /*border-left: 4px solid #DDD;*/
-    height: 24px;
-    color: #000;
+	padding:6px;
+	padding-left:15px;
     display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
-    background-color: #FFF;
+    background-color: #f0f0f0;
 }
 
-#Sectionlist .norm:hover {
-    /*border-radius: 3px;*/
-    /*box-shadow: 1px 1px 3px #000 inset;*/
-    background: linear-gradient(to right, #FED 0%,#FED 80%,#FFD 90%,#FFF 99%);
-    color: #000;
-    background-color: #BBB;
+#Sectionlist .test {
+	padding:6px;
+	padding-left:15px;
+    display: block;
+    background-color: #e3e3e3;
 }
 
+#Sectionlist .hidden {
+	padding:6px;
+	padding-left:15px;
+	opacity: 0.5;
+    display: block;
+    background-color: #d0cfd0;
+}
+
+#Sectionlist .example {
+	padding:6px;
+	padding-left:15px;
+    display: block;
+    background-color: #dad8db;
+}
 #Sectionlist .bigg {
-    font-size: 26px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    font-size: 16pt;
+	padding:4px;
+	color:#fff;
     text-align: center;
     font-family: Cambria, Georgia, serif;
-    color: #000;
     display: block;
-    background-color: #FFF;
+    background-color: #775886;
 }
 
 #Sectionlist .course {
-    margin-bottom: 4px;
-    background: linear-gradient(to right, #888 0%,#AAA 99%);
-    /*border-radius: 3px;*/
-    /*box-shadow: 3px 3px 6px #000 inset;*/
+	padding:6px;
     text-align: center;
-    font-size: 26px;
-    padding-left: 8px;
-    height: 36px;
-    /*text-shadow: 2px 2px 2px #000;*/
     color: #fff;
     display: block;
-    /*font-style: italic;*/
     font-family: Calibri,Sans-Serif;
-    background-color: #888;
+	font-size:18pt;
+    background-color: #614875;
+	margin-top:40px;
 }
 
+#Sectionlist .norm:hover, #Sectionlist .example:hover, #Sectionlist .test:hover, #Sectionlist .hidden:hover{
+	background-color:#c6b8cd;
+    color: #000;
+}
+
+
+
+#add-course-button-div {
+	float:right;
+	padding-bottom:5px;
+}
 .course-table {
-    width: 100%;
-    margin: 0 auto;
+    width:100%;
+	padding:0px;
+	margin:0px;
 }
 .course-table th {
     background-color:#614875;
 	color:white;
 	font-size:16pt;
-	padding:5px;
+	padding:8px;
+}
+
+.course-table tr.course-table-tr {
+	width:100%;
+}
+.course-table tr.settings {
+	background-color:#fff !important;
+	display:none;
+	height:40px;
+	text-align:left;
 }
 
 .course-table td {
-    color:#000;
-	font-size:10pt;
+    color:#434343;
+	font-size:14pt;
 	font-family:arial;
 	text-align:center;
+	cursor:pointer;
+	padding:5px;
 }
 .course-table td:hover {
-	background-color:#999;
+	background-color:#c6b8cd;
 }
  	
-.course-table tr:nth-child(even) {background: #6B6B6B}
-.course-table tr:nth-child(odd) {background: #9F9F9F}
+.course-table tr:nth-child(even) {background: #f0f0f0 }
+.course-table tr:nth-child(odd) {background: #e3e3e3 }
 
+img#table-img-coggwheel {
+	float:right;
+	width:15px;
+	height:15px;
+	margin-top:4px;
+}
 /* courselistmenu END */
+
+input.submit-button {
+	background-color:#614875;
+	border:0px;
+	width:100px;
+	height:30px;
+	color:#fff;
+}
+input.submit-button:hover {
+	background-color:#7B5A96;
+}
 
 /* ANIMATIONS START */
 @keyframes fadein {
