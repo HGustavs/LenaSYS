@@ -7,7 +7,7 @@
 	function captureCanvas(canvas){
 		// Add save button to BODY
 			
-		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:0;top:0'>");
+		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:5px;top:35px;'>");
 		// Save log when "Save log" button is clicked
 		$("#CanvasWrapper-save").click(function(){
 			if(inTimestepDelay){ 
@@ -24,7 +24,7 @@
 		
 		var optimize = false;
 
-		$("body").append("<input type='button' id='XML_type' value='Make optimized XML' style='position:absolute;right:50;top:0'>");
+		$("body").append("<input type='button' id='XML_type' value='Make optimized XML' style='position:absolute;right:5px;top:5px'>");
 		
 		$("#XML_type").click(function(){
 		
