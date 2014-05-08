@@ -47,8 +47,8 @@ function login($username, $password, $savelogin)
 
 			// Save some login details in cookies.
 			if($savelogin) {
-				setcookie('username', $row['username'], time()+60*60*24*30);
-				setcookie('password', sha1($row['password']), time()+60*60*24*30);
+				setcookie('username', $row['username'], time()+60*60*24*30, '/');
+				setcookie('password', sha1($row['password']), time()+60*60*24*30, '/');
 			}
 			return true;
 		} else {
@@ -125,7 +125,7 @@ function logout()
 	session_destroy();
 
 	// Remove the cookies.
-	setcookie('username', '', 0);
-	setcookie('password', '', 0);
+	setcookie('username', '', 0, '/');
+	setcookie('password', '', 0, '/');
 }
 ?>
