@@ -177,6 +177,7 @@ function showQuestion() {
 				if(!res.error) {
 					showForgotPwAnswer();
 					$("#forgotPwAnswer  #question").html("Question: "+res.question);
+					$("#forgotPwAnswer #forgetfuluser").val(username)
 				}
 				else {
 					$("#forgotPw #message").html("<div class='alert alert-danger'>"+res.error+"!</div>");
@@ -190,7 +191,7 @@ function showQuestion() {
 	}
 }
 function checkAnswer() {
-	var username = $("#forgotPw #username").val();
+	var username = $("#forgotPwAnswer #forgetfuluser").val();
 	var answer = $("#forgotPwAnswer  #answer").val();
 	var password = $("#forgotPwAnswer  #newpassword").val();
 	var password2 = $("#forgotPwAnswer  #newpassword2").val();

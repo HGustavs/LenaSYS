@@ -87,6 +87,7 @@
 			<div onclick="createDeleteLogin()">x</div>
 		</div>
 		 <div class="table-wrap">
+			<input type="hidden" name="user" id="forgetfuluser">
 			<table>
 				<tr>
 					<td>
