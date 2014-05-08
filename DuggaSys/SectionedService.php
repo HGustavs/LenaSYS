@@ -11,6 +11,7 @@
 		// Include basic application services!
 		include_once("../../coursesyspw.php");
 		include_once("../Shared/sessions.php");
+		include_once("../Shared/courses.php");
 	
 		// Connect to database and start session
 		pdoConnect();
