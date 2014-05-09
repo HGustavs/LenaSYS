@@ -90,6 +90,31 @@ function hasAccess($userId, $courseId, $access_type)
 }
 
 /**
+ * Returns superuser status of user
+ * @param int $userId User ID of the user to look up
+ * @return true false. True if superuser false if not
+ */
+function isSuperUser($userId)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare('SELECT count(uid) AS count FROM user WHERE uid=:1 AND superuser=1');
+	$query->bindParam(':1', $userId);
+	$query->execute();
+	$result = $query->fetch();
+
+	if ($result["count"]==1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
  * Returns the access a specified user has on the specified course
  * @param int $userId User ID of the user to look up
  * @param int $courseId Course ID of the course to look up access on
