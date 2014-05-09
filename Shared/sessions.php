@@ -1,45 +1,62 @@
 <?php
-require_once('../Shared/external/password.php');
+require_once(dirname(__FILE__) . '/../Shared/external/password.php');
+require_once(dirname(__FILE__) . '/../Shared/database.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
+
+/**
+ * Check whether or not the user is logged in.
+ * @return bool Returns true if the user is logged in and false if they aren't
+ */
 function checklogin()
 {
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
+	} else if(array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
+		return login($_COOKIE['username'], $_COOKIE['password'], false);
 	} else {		
 		return false;
 	}
 }	
 
-function login()
+/**
+ * Log in the user with the specified username and password and
+ * optionally set cookies for the user to be remembered until next
+ * time they visit the site.
+ * @param string $username Username of the user to log in
+ * @param string $password Password of the user to log in
+ * @param bool $savelogin Whether or not to save the information in a cookie
+ * @return bool True on success (the user was logged in), false on failure.
+ */ 
+function login($username, $password, $savelogin)
 {
-	if(!array_key_exists('username', $_POST) || !array_key_exists('password', $_POST)) {
-		return false;
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
 	}
 
-	$username=$_POST["username"];
-	$password=$_POST['password'];
+	$query = $pdo->prepare('SELECT * FROM user WHERE username=:username LIMIT 1');
+	$query->bindParam(':username', $username);
+	$query->execute();
 
-	// Protect against SQL injection.
-	$querystring=sprintf("SELECT * FROM user WHERE username='%s' LIMIT 1",
-		mysql_real_escape_string($username)
-	);
-
-	$result=mysql_query($querystring);
-	if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
-
-	if(mysql_num_rows($result) > 0) {
+	if($query->rowCount() > 0) {
 		// Fetch the result
-		$row = mysql_fetch_assoc($result);
-
-		if(password_verify($password, $row['password'])) {
+		$row = $query->fetch(PDO::FETCH_ASSOC);
+		if(password_verify($password, $row['password']) || sha1($row['password']) === $password) {
 			$_SESSION['uid'] = $row['uid'];
 			$_SESSION["loginname"]=$row['username'];
 			$_SESSION["passwd"]=$row['password'];
 			$_SESSION["newpw"]=($row["newpassword"] > 0);
 			$_SESSION["superuser"]=$row['superuser'];
+
+			// Save some login details in cookies.
+			if($savelogin) {
+				setcookie('username', $row['username'], time()+60*60*24*30, '/');
+				setcookie('password', sha1($row['password']), time()+60*60*24*30, '/');
+			}
 			return true;
 		} else {
 			return false;
@@ -49,75 +66,60 @@ function login()
 	}
 }
 
+/**
+ * Check if a specified user ID has the requested access on a specified course
+ * @param int $userId User ID of the user to look up
+ * @param int $courseId ID of the course to look up access for
+ * @param string $access_type A single letter denoting read or write access 
+ * (r and w respectively)
+ * @return bool Returns true if the user has the requested access on the course
+ * and false if they don't.
+ */
 function hasAccess($userId, $courseId, $access_type)
 {
-	require_once "../Shared/courses.php";
-	if(is_string($courseId)) {
-		$courseId = getCourseId($courseId);
-	}
+	$access = getAccessType($userId, $courseId);
 
-	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
-		mysql_real_escape_string($userId),
-		mysql_real_escape_string($courseId)
-	);
-
-	$result = mysql_query($querystring);
-	if(!$result) {
-		return false;
+	if($access_type === 'w') {
+		return strtolower($access) == 'w';
+	} else if ($access_type === 'r') {
+		// w implies access r
+		return strtolower($access) == 'r' || strtolower($access) == 'w'; 
 	} else {
-		// Fetch data from the database
-		if(mysql_num_rows($result) > 0) {
-			// Check access if it was returned
-			$access = mysql_fetch_assoc($result);
-			if($access_type == 'w') {
-				return strtolower($access['access']) == 'w';
-			} else if ($access_type == 'r') {
-				// w implies access r
-				return strtolower($access['access']) == 'r' || strtolower($access['access']) == 'w'; 
-			} else {
-				return false;
-			}
-		} else {
-			// Otherwise default to no.
-			return false;
-		}
+		return false;
 	}
 }
 
+/**
+ * Returns the access a specified user has on the specified course
+ * @param int $userId User ID of the user to look up
+ * @param int $courseId Course ID of the course to look up access on
+ * @return string Returns the access for the user on the selected course (r or w)
+ */
 function getAccessType($userId, $courseId)
 {
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
 	require_once "../Shared/courses.php";
-	if(is_string($courseId)) {
+	if(!is_numeric($courseId)) {
 		$courseId = getCourseId($courseId);
 	}
 
-	$querystring = sprintf("SELECT access FROM user_course WHERE uid='%d' AND cid='%d' LIMIT 1",
-		mysql_real_escape_string($userId),
-		mysql_real_escape_string($courseId)
-	);
+	$query = $pdo->prepare('SELECT access FROM user_course WHERE uid=:uid AND cid=:cid LIMIT 1');
+	$query->bindParam(':uid', $userId);
+	$query->bindParam(':cid', $courseId);
+	$query->execute();
 
-	$result = mysql_query($querystring);
-	if(!$result) {
-		return false;
+	// Fetch data from the database
+	if($query->rowCount() > 0) {
+		$access = $query->fetch(PDO::FETCH_ASSOC);
+		return strtolower($access['access']);
 	} else {
-		// Fetch data from the database
-		if(mysql_num_rows($result) > 0) {
-			$access = mysql_fetch_assoc($result);
-			// Check access if it was returned
-			if(strtolower($access['access']) == "r") {
-				return "r";
-			} else if (strtolower($access['access']) == "w") {
-				// w implies access r
-				return "w";
-			} else {
-				return false;
-			}
-		} else {
-			// Otherwise default to no.
-			return false;
-		}
+		return false;
 	}
-	return false;
 }
 
 
@@ -143,5 +145,9 @@ function logout()
 
 	// Finally, destroy the session.
 	session_destroy();
+
+	// Remove the cookies.
+	setcookie('username', '', 0, '/');
+	setcookie('password', '', 0, '/');
 }
 ?>
