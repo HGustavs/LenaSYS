@@ -20,7 +20,7 @@ function returnedSection(data)
 							str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
 						if(sessionkind===true){
-							str+="<span id='SE"+data['entries'][i]['lid']+"' ><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+							str+="<span id='SE"+data['entries'][i]['lid']+"' >"+data['entries'][i]['entryname']+"</span>";
 							str+="<span class='smallishbutt'>";
 							str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";											
 							str+="</span>";

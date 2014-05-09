@@ -23,11 +23,7 @@ function courseSettingsService(ID)
 		}
 	}
 	
-	$.ajax({
-		url: "ajax/updateCourses.php",
-		type: "POST",
-		data: "courseid="+ID+"&coursename="+data['coursename']+"&visibility="+data['visibility'],
-		dataType: "json",
-		success: changeURL("menulist")
+	$.post("ajax/updateCourses.php", "courseid="+ID+"&coursename="+data['coursename']+"&visibility="+data['visibility'], function(response) {
+		changeURL("menulist");
 	});
 }
