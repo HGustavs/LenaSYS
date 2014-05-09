@@ -32,7 +32,7 @@ if (checklogin()) {
 	
 	// if course name or code does not exist, creates and retunes cid with coursecode
 	} else {
-
+		//create course on DB
 		$stmt = $pdo -> prepare('INSERT INTO `course`(`coursecode`, `coursename`, `created`, `creator`, `visibility`, `updated`) VALUES (:2, :1, now(), :3, :4, now())');
 		$stmt -> bindParam(':1', $_POST["coursename"]);
 		$stmt -> bindParam(':2', $_POST["coursecode"]);
@@ -40,6 +40,7 @@ if (checklogin()) {
 		$stmt -> bindParam(':4', $_POST["visib"]);
 		$stmt -> execute();
 
+		// 
 		$stmt = $pdo -> prepare('SELECT cid FROM course WHERE coursecode=:1');
 		$stmt -> bindParam(':1', $_POST["coursecode"]);
 		$stmt -> execute();
@@ -49,7 +50,7 @@ if (checklogin()) {
 
 	}
 } else {
-	echo ("no access");
+	echo json_encode("no access");
 }
 
 ?>

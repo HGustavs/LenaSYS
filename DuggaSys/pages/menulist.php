@@ -34,7 +34,7 @@ dbConnect();
 					echo "<option value='1'>Public</option>";
 				}
 				echo "</select>";
-				echo "<input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;'/><input class='submit-button' type='button' value='Save' />";
+				echo "<input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;'/><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
 				echo "</td></tr>";
 		}	
 	?>
