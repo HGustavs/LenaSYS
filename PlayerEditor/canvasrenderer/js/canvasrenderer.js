@@ -872,65 +872,27 @@ function Canvasrenderer()
                 canvas.updateScaleRatio();
         	var widthRatio = 1;
 		var heightRatio = 1;
-               if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight)
-			{
-              			var rect = c.getBoundingClientRect();
-				mHeight = (rect.bottom - rect.top);
-				mWidth = (rect.right-rect.left);
-				// Calculate scale ratios
-              			widthRatio = mWidth / (image.width*canvas.scaleRatioY);
-				heightRatio = mHeight / (image.height*canvas.scaleRatioY);
-				// Set scale ratio
-                 		canvas.downscaled = true;
-				(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
+		// Calculate scale ratios
+              	widthRatio = c.width / (image.width);
+		heightRatio = c.height / (image.height);
+		// Set scale ratio
+                canvas.downscaled = false;
+		(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
+		var imageScale = canvas.scaleRatio;
 
-//				if (widthRatio < heightRatio) canvas.scaleRatio = widthRatio;
-//				else canvas.scaleRatio = heightRatio;
-                    		ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatioY*canvas.scaleRatio), (image.height*canvas.scaleRatioY*canvas.scaleRatio));
-                
-				// New mouse cursor background
-				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatioX, 23*canvas.scaleRatioY);
-				// New mouse click background
-				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
-				// Render mouse click
-				canvas.drawMouseClick();
-			}
-            
-            else if (image.width > c.width || image.height > c.height)
-			{
-               			canvas.downscaled = false;
-               			var rect = c.getBoundingClientRect();
-				mHeight = (rect.bottom - rect.top);
-				mWidth = (rect.right-rect.left);
-				// Calculate scale ratios
-				widthRatio = mWidth / (image.width);
-				heightRatio = mHeight / (image.height);
-				// Set scale ratio
-				(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
-			//	if (widthRatio < heightRatio) canvas.scaleRatio = widthRatio;
-			//	else canvas.scaleRatio = heightRatio;
-               			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
-				// New mouse cursor background
-				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatioX, 23*canvas.scaleRatioY);
-				// New mouse click background
-				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
-				// Render mouse click
-				canvas.drawMouseClick();
-                
-			}
-			
-			else {
-				// Draw natural ratio
-				canvas.scaleRatio = 1;
-               			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
-				// New mouse cursor background
-				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatioX, 23*canvas.scaleRatioY);
-				// New mouse click background
-				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
-				// Render mouse click
-				canvas.drawMouseClick();
-			}
-                        canvas.updateScaleRatio();
+                if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight)
+		{
+			canvas.downscaled = true;
+		}
+           
+            	ctx.drawImage(image , 0, 0, (image.width*imageScale), (image.height*imageScale));
+		// New mouse cursor background
+		canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatioX, 23*canvas.scaleRatioY);
+		//New mouse click background
+		canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
+		// Render mouse click
+		canvas.drawMouseClick();
+                canvas.updateScaleRatio();
 		}
 		image.src = src;
 	} 
