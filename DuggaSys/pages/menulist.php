@@ -5,6 +5,7 @@ include_once(dirname(__file__)."/../../shared/database.php");
 
 pdoConnect();
 ?>
+<div id="dragupdate-menulist"></div>
 <div style="margin-bottom:7px; float:right;"><input style="cursor:pointer;" onclick="changeURL('newCourseForm')" class='submit-button' type='button' value='Add course'></div>
 <table class="course-table" cellspacing="0">
 	<tr>

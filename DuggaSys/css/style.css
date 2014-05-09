@@ -291,10 +291,10 @@ table.list tr.red {
 
 #Sectionlist{
 	margin:0px auto;
-	padding: 5px;
     background-color: #fff;
     color:#434343;
     display: block;
+	padding-top:1px;
 }
 #Sectionlist .butt {
     padding-left: 8px;
@@ -434,7 +434,6 @@ input.submit-button:hover {
 #dragupdate-section, #dragupdate-menulist {
 	top:40px;
 	background-color:#c75050;
-	padding:10px;
 	display:none;
 	z-index:10;
 	position:absolute;
@@ -444,10 +443,9 @@ input.submit-button:hover {
 	color:#FFF;
 	text-align:center;
 	width:30%;
-	margin: 0 auto;
-	margin-left:5px;
+	padding:10px;
+	float:left;
 }
-
 
 /* ANIMATIONS START */
 @keyframes fadein {

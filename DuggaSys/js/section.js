@@ -22,8 +22,20 @@ function courseSettingsService(ID)
 			data['visibility'] = settingsChildren[i].value;
 		}
 	}
-	
 	$.post("ajax/updateCourses.php", "courseid="+ID+"&coursename="+data['coursename']+"&visibility="+data['visibility'], function(response) {
 		changeURL("menulist");
 	});
+	var dragtimer = null;
+	dragtimer = setTimeout(function(){
+		if(response = null) {
+			$("#dragupdate-menulist").html('Could not update course');
+		} else {
+			$("#dragupdate-menulist").html('Updated course');
+		}
+		$("#dragupdate-menulist").slideDown('slow');
+		setTimeout(function(){
+			$("#dragupdate-menulist").slideUp("slow", function () { });
+		}, 2500);
+		dragtimer = null;
+	}, 500);
 }
