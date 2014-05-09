@@ -106,7 +106,6 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
 				function AJAXService(sname,param)
 				{	
-					var exampleid=2;
 					$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt="+sname+param, dataType: "json", success: returned});
 				<!--		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});	  -->														
 				}
@@ -116,7 +115,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 	</head>
 	
 <?php
-		if(isset($_GET['courseid'])&&isset($_GET['version'])){
+		if(isset($_GET['courseid'])){
 				$courseID=$_GET['courseid'];
 				if(courseexists($courseID)){
 						// If course exists - check login credentials

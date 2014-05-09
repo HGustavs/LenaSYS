@@ -115,11 +115,11 @@ function returnedSection(data)
 						} else {
 							str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
-						if(sessionkind===1){
-								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
-								str+="<span class='smallbutt'>";
+						if(sessionkind){
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href='../CodeViewer/EditorV30.php?exampleid=" + data['entries'][i]['code_id'] + "&courseid=" + data.coursename + "'>"+data['entries'][i]['entryname']+"</a></span>";
+								/*str+="<span class='smallbutt'>";
 								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
-								str+="</span>"
+								str+="</span>"*/
 						}else{
 								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
 						}

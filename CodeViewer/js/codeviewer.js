@@ -175,7 +175,6 @@ function SkipFUp()
 function setup()
 {
 //		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
-	var exampleid = 2;
 	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
 			
 		if(sessionkind=="w"){

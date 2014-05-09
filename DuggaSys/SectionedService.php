@@ -46,16 +46,40 @@
 					if($posq->execute() && $posq->rowCount() > 0) {
 						$posr = $posq->fetch(PDO::FETCH_NUM);
 						$pos = $posr[0];
+						$code_id = NULL;
 
 						// Prepare to insert a new row at the specified position
-						$query = $pdo->prepare("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(:cid, :name, :link, :kind, :pos, :uid, :visible)");
+						$query = $pdo->prepare("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible,code_id) VALUES(:cid, :name, :link, :kind, :pos, :uid, :visible,:code_id)");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':name', $sectname);
+						if($kind == 2 && $link == '') {
+							$stmt = $pdo->prepare("INSERT INTO codeexample (cid, examplename, wordlist, runlink,uid) VALUES(:cid, :name, 'JS', '<none>',:uid)");
+							$stmt->bindParam(':cid', $courseid);
+							$stmt->bindParam(':name', $sectname);
+							$stmt->bindParam(':uid', $_SESSION['uid']);
+							if(!$stmt->execute()) {
+								print_r($stmt->errorInfo());
+							} else {
+								// Get example id
+								$eidq = $pdo->query("SELECT LAST_INSERT_ID() as code_id");
+								$eidq->execute();
+								$eid = $eidq->fetch(PDO::FETCH_NUM);
+								$code_id = $eid[0];
+
+								// Create file list
+								$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
+								$sinto->bindParam(':eid', $eid[0]);
+								if(!$sinto->execute()) {
+									print_r($sinto->errorInfo());
+								}
+							}
+						}
 						$query->bindParam(':link', $link);
 						$query->bindParam(':kind', $kind);
 						$query->bindParam(':pos', $pos);
 						$query->bindParam(':uid', $_SESSION['uid']);
 						$query->bindParam(':visible', $visibility);
+						$query->bindParam(':code_id', $code_id);
 
 						// Insert it.
 						if(!$query->execute()) {
@@ -91,7 +115,7 @@
 		//------------------------------------------------------------------------------------------------
 		$ha = (checklogin() && hasAccess($_SESSION['uid'], $courseid, 'w'));
 		$entries=array();
-		$query = $pdo->prepare("SELECT lid,entryname,pos,kind,link,visible FROM listentries WHERE listentries.cid=:cid ORDER BY pos");
+		$query = $pdo->prepare("SELECT lid,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid ORDER BY pos");
 		$query->bindParam(':cid', $courseid);
 		$result=$query->execute();
 		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
@@ -104,7 +128,8 @@
 					'pos' => $row['pos'],
 					'kind' => $row['kind'],
 					'link'=>$row['link'],
-					'visible'=>$row['visible']
+					'visible'=>$row['visible'],
+					'code_id' => $row['code_id']
 				)
 			);
 		}
