@@ -193,20 +193,6 @@ function dehighlightop(otherop,thisop)
 		$("#"+thisop).removeClass("hi");					
 }
 				
-function Code()
-{
-		switchDrop("codedrop");
-}
-
-function Images()
-{
-    switchDrop("imgdrop");
-}
-
-function generalSettings()
-{
-		switchDrop("docudrop");
-}
 function Up()
 {						
 		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
@@ -1624,6 +1610,7 @@ $(function() {
 		$('.themedrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
+		$('.imgdrop').hide();
 		return false;
 	});
 	$(document).click(function() {
@@ -1642,6 +1629,7 @@ $(function() {
 		$('.themedrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
+		$('.imgdrop').hide();
 		return false;
 	});
 	$(document).click(function() {
@@ -1660,6 +1648,7 @@ $(function() {
 		$('.themedrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
+		$('.imgdrop').hide();
 		return false;
 	});
 	$(document).click(function() {
@@ -1676,12 +1665,34 @@ $(function() {
 		$('.docudrop').hide();
 		$('.codedrop').hide();
 		$('#hotdogdrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		$('.imgdrop').hide();
 		return false;
 	});
 	$(document).click(function() {
     	$('.themedrop').slideUp('fast');
 	});
 	$(".themedrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hideimage').click(function() {
+		$('.imgdrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		$('.themedrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.imgdrop').slideUp('fast');
+	});
+	$(".imgdrop").click(function(event) {
    		event.stopPropagation();
 	});
 });

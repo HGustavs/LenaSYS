@@ -62,7 +62,7 @@ include "../Shared/basic.php";
                     echo '<td class="butto2" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
                     echo '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
                     echo '<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
-                    echo '<td class="butto2" title="Select image" onclick="Images();"><img src="new icons/picture_button.svg" /></td>';
+                    echo '<td class="butto2" id="hideimage" title="Select image"><img src="new icons/picture_button.svg" /></td>';
                     echo '<td class="butto2" title="Save" onclick="Save();"><img src="new icons/save_button.svg" /></td>';
                     echo '</tr></table></div>';
                     echo '<div id="docucontent" class="docucontentStyle" contenteditable="true">';
