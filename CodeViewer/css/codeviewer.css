@@ -724,7 +724,6 @@ a {
 
 .tooltip, .arrow:after, .arrow2:after {
     background: black;
-    /*border: 1px solid white;*/
 }
 
 .tooltip {
@@ -749,23 +748,17 @@ a {
     height: 18px;
     overflow: hidden;
     position: absolute;
-    left: 50%;
-    margin-left: -35px;
-    bottom: -16px;
+   bottom: -16px;
 }
-.arrow:after {
+
+.arrow::after {
     content: "";
     position: absolute;
-    /*left: 20px;*/
     top: -20px;
     width: 25px;
     height: 25px;
-    /*-webkit-box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;
-    -moz-box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;
-    box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;*/
+    /* 22.5 to place the arrow in the middle. arrowwidth/2 - arrow:afterwidth/2=22.5 */
+    left:22.5;
     -webkit-transform: rotate(45deg);
     -moz-transform:    rotate(45deg);
     -ms-transform:     rotate(45deg);
@@ -777,23 +770,17 @@ a {
     height: 18px;
     overflow: hidden;
     position: absolute;
-    left: 50%;
-    margin-left: -35px;
     top: -16px;
 }
-.arrow2:after {
+.arrow2::after {
     content: "";
     position: absolute;
-    /*left: 22px;*/
     bottom: -20px;
     width: 25px;
     height: 25px;
-    /*-webkit-box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;
-    -moz-box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;
-    box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;*/
+    
+    /* 22.5 to place the arrow in the middle. arrow2width/2 - arrow2:afterwidth/2=22.5 */
+    left:22.5;
     -webkit-transform: rotate(45deg);
     -moz-transform:    rotate(45deg);
     -ms-transform:     rotate(45deg);
