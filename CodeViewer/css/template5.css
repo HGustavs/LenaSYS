@@ -10,9 +10,9 @@
     height: -moz-calc(50.0% - 1px);
     width: -webkit-calc(50.0% - 1px);
     width: -moz-calc(50.0% - 1px);
-    background-color: #272822;
+    /*background-color: #272822;*/
     overflow: scroll;
-    color: white;
+   /* color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -30,9 +30,9 @@
     height: -webkit-calc(50.0% - 1px);
     width: -moz-calc(50.0% - 1px);
     width: -webkit-calc(50.0% - 1px);
-    background-color: #272822;
+   /* background-color: #272822;*/
     overflow: scroll;
-    color: white;
+    /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -50,9 +50,11 @@
     width: -webkit-calc(50.0% - 1px);
     height: -moz-calc(50.0% - 1px);
     height: -webkit-calc(50.0% - 1px);
-    background-color: #272822;
+   /* background-color: #272822;*/
     overflow: scroll;
-    color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /*color: white;*/
    font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -70,9 +72,11 @@
     width: -webkit-calc(50.0% - 1px);
     height: -moz-calc(50.0% - 1px);
     height: -webkit-calc(50.0% - 1px);
-    background-color: #272822;
+    /*background-color: #272822;*/
     overflow: scroll;
-    color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;

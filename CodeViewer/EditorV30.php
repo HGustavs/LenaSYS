@@ -76,9 +76,11 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 		<title>Code Viewer and Editor Version 3</title>
 		<link type="text/css" href="css/template1.css" rel="stylesheet" />
 		<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />
+		<link type="text/css" href="css/blackTheme.css" rel="stylesheet" />		
 		<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
         <script type="text/javascript" src="js/codeviewer.js"></script>
         <script type="text/javascript" src="js/tooltips.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
 <?php
@@ -109,6 +111,12 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 					$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt="+sname+param, dataType: "json", success: returned});
 				<!--		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});	  -->														
 				}
+
+<!--                Alternative function used only when editing codeexample-descriptionbox-->
+                function AJAXService2(sname,param)
+                {
+                	$.ajax({url: "editorService.php", type: "POST", data: {coursename:courseID,version:version,sectionid:sectionID,position:position,opt:sname,description:param}, dataType: "json", success: returned});
+                }
 
 		
 		</script>
