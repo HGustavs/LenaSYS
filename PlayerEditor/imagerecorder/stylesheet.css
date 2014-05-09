@@ -7,20 +7,14 @@ ul {
 	margin: 0;
 }
 .canvasStyle{
-	width: 80%;
+	width: 100%;
 	float: left;
 	background:rgba(255,255,255,1);
 }
-#thumbnails {
-	max-height: 720px;
-	float: left;
-	overflow: auto;
-}
 .wrapper{
-	width: 80%;
+	width: 70%;
 	margin-left:auto;
 	margin-right:auto;
-	width:90%;
 	height:auto;
 }
 @font-face{
@@ -43,9 +37,15 @@ ul {
 	font-family:verdana, sans-serif;
 	color:#FFFFFF;
 }
+
+#thumbnails {
+	background-color: #fff;
+	border: 2px solid #000;
+}
 .thumbnail {
-	padding: 15px;
-	display: block;
+	margin-top: 10px;
+	margin-right: 15px;
+	display: inline;
 	width: 160px;
 	opacity: 0.65;
 }
@@ -70,16 +70,24 @@ ul {
 	box-shadow: 3px 3px 3px #000;
 }
 
+/* control buttons */
+
+#controls {
+	margin-top: 20px;
+}
+
 .controlbutton {
-	margin-left: 20px;
+	font-family: verdana, arial, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	margin-top: 20px;
+	margin-right: 20px;
 	margin-bottom: 5px;
-	display: block;
 	padding: 5px;
 	background-color: #fff;
 	border: 1px solid #000;
 	box-shadow: 5px 5px 5px #000;
-	border-top-right-radius: 6px;
-	border-bottom-right-radius: 6px;
+	border-radius: 3px;
 	
 }
 .controlbutton:hover {
@@ -116,4 +124,7 @@ ul {
 .thumbMenuOpt:hover {
 	background-color: #3d3d3d;
 	color: #fff;
+}
+.tli {
+	display: inline-block;
 }

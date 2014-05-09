@@ -46,6 +46,10 @@
 					$error = true;
 					$data = array("ERROR" => "Couldn't execute move_uploaded_file.");
 				}
+			} 
+			// File already exist, return a success so it's added again
+			else {
+				array_push($files, $finalPath);
 			}
 			
 		}
