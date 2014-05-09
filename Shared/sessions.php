@@ -38,13 +38,6 @@ function login($username, $password, $savelogin)
 		pdoConnect();
 	}
 
-	if(!array_key_exists('username', $_POST) || !array_key_exists('password', $_POST)) {
-		return false;
-	}
-
-	$username=$_POST["username"];
-	$password=$_POST['password'];
-
 	$query = $pdo->prepare('SELECT * FROM user WHERE username=:username LIMIT 1');
 	$query->bindParam(':username', $username);
 	$query->execute();

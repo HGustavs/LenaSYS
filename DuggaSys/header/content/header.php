@@ -1,8 +1,9 @@
 <?php
 session_start();
 include_once(dirname(__FILE__) . "/../../../../coursesyspw.php");
-include_once(dirname(__FILE__) . "/../../../shared/database.php");
-dbConnect();
+include_once(dirname(__FILE__) . "/../../../Shared/sessions.php");
+pdoConnect();
+$loggedin = checklogin();
 ?>
 <!--END INCLUDE -->
 <nav id="navigate">
@@ -15,13 +16,13 @@ dbConnect();
 <nav id="user">
 	<label id="userName">
 		<?php 
-			if(isset($_SESSION['loginname'])) { 
+			if($loggedin) { 
 				echo $_SESSION['loginname']; 
 			}
 		?>
 	</label>
 		<?php 
-			if(isset($_SESSION['loginname'])) { 
+			if($loggedin) { 
 				echo'<img class="loggedin" onclick="createDeleteLogin()" src="css/svg/Man.svg">';
 			}
 			else {

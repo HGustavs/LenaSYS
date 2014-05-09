@@ -1,6 +1,10 @@
-<?php session_start(); ?>
+<?php
+include_once(dirname(__FILE__) . "/../../../../coursesyspw.php");
+include_once(dirname(__FILE__) . "/../../../Shared/sessions.php");
+session_start();
+?>
 <!-- IF NOT LOGGEDIN -->
-<?php if(!isset($_SESSION['loginname'])) { ?>
+<?php if(!checklogin()) { ?>
 	<!-- Login START -->
 	<div id='login'>
 		<div class='header'>

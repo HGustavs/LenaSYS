@@ -10,7 +10,7 @@ if(array_key_exists('username', $_POST) && array_key_exists('password', $_POST))
 
 $savelogin = array_key_exists('saveuserlogin', $_POST) && $_POST['saveuserlogin'] == 'on';
 
-dbConnect();
+pdoConnect();
 
 // Default values
 $res = array("login" => "failed");
