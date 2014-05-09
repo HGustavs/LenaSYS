@@ -33,9 +33,6 @@
             }
 
 
-
-
-
             $el
                 // Get rid of yellow box popup
                 .removeAttr("title")
@@ -53,12 +50,15 @@
 
 
                     $tooltip = $('div[data-tooltip=' + $el.data('tooltip') + ']');
-
+  				 
                     // Reposition tooltip, in case of page movement e.g. screen resize
-                    var linkPosition = $el.position();
+                    var linkPosition = $el.offset();
+
+
 
                     //Collect the target objects height which is used to adjust the tooltips position
                     var targetHeight = $el.height();
+
 
 
 
@@ -77,7 +77,7 @@
                         $tooltip.addClass("active2");
                     }
 
-                    // Show tooltip aligned to the right if there's no space on the left side
+                    // Show tooltip below object if there is no room above + align to the right if there's no space on the left side
                     else if (distanceTop < 25 && elementOffsetLeft < ($tooltip.width()/2)) {
 
 
@@ -88,13 +88,36 @@
 
                         });
 
+
+
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active2");
+
                     }
 
 
+                    // Show tooltip above object + align to the right if there's no space on the left side
+                    else if (distanceTop > 25 && elementOffsetLeft < ($tooltip.width()/2)) {
+
+                        //Change to correct arrow
+                        $tooltip.children(".arrow2").removeClass("arrow2").addClass("arrow");
+
+                        $tooltip.css({
+                            top: distanceTop - ($tooltip.outerHeight() + 13),
+                            left: linkPosition.left
+
+                        });
+
+                        // Adding class handles animation through CSS
+                        $tooltip.addClass("active2");
+
+                    }
                     // Show tooltip above object
                     else {
+
+                        //Change to correct arrow
+                        $tooltip.children(".arrow2").removeClass("arrow2").addClass("arrow");
+
 
                         $tooltip.css({
                             top: distanceTop - ($tooltip.outerHeight() + 13),
@@ -103,15 +126,11 @@
 
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active");
+
                     }
-
-
-
-
-
                     // Mouseleave
                 }, function() {
-
+					
                     $el = $(this);
 
                     if (distanceTop < 25) {
@@ -127,7 +146,7 @@
                         $tooltip = $('div[data-tooltip=' + $el.data('tooltip') + ']').addClass("out");
 
                     }
-
+					
                     // Remove all classes
                     setTimeout(function() {
                         $tooltip.removeClass("active").removeClass("active2").removeClass("out").removeClass("out2");
@@ -141,3 +160,20 @@
     }
 
 })(jQuery);
+
+/* Remove tooltips if mouse leaves window */ 
+$(window).mouseout(function(e){
+	var pageX = e.pageX || e.clientX,
+        pageY = e.pageY || e.clientY;
+    var w = window.innerWidth,
+     	h = window.innerHeight; 
+ // Remove tooltips if mouse leaves window in x-axis
+    if(parseInt(pageX)>parseInt(w) || parseInt(pageX)<parseInt(0)){
+     	 $(".active").removeClass("active");
+         $(".active2").removeClass("active2");
+	//	Remove tooltips if mouse leaves window in y-axis
+     }else if(parseInt(pageY)>parseInt(h) || parseInt(pageY)<parseInt(0)){
+     	 $(".active").removeClass("active");
+         $(".active2").removeClass("active2");
+     } 
+});

@@ -21,7 +21,7 @@ Version History
  												Fields for play link and chosen wordlist
  												Updates of database from back-end 
  												Navigation using arrows (dropdown still missing)
- 3.06		 2013-08-21 - Create new example and save description section
+ 3.06		 2013-08-21 - Create new example and save description 
  3.07    2013-08-22 - Section Editor
  3.08    2013-08-25 - Section Editor Back-End finished and more minor bug fixes
                       Linked to external CSS anf JS
@@ -76,10 +76,11 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 		<title>Code Viewer and Editor Version 3</title>
 		<link type="text/css" href="css/template1.css" rel="stylesheet" />
 		<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />
+		<link type="text/css" href="css/blackTheme.css" rel="stylesheet" />		
 		<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
         <script type="text/javascript" src="js/codeviewer.js"></script>
         <script type="text/javascript" src="js/tooltips.js"></script>
-
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
 <?php
@@ -90,9 +91,9 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				
                 echo'<script>';
 				jsvarget("courseid","courseID");				
-				jsvarget("sectionid","sectionID");
 				jsvarget("position","position");
 				jsvarget("version","version");
+				jsvarget("exampleid","exampleid");
 				
 				$kind = "r";
 				if(array_key_exists('uid', $_SESSION)) {
@@ -103,22 +104,31 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				}
 				echo "var sessionkind='" . $kind . "';";			
 ?>				
-				
+				console.log(courseID);
+
 				function AJAXService(sname,param)
-				{
-						$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});															
+				{	
+					$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt="+sname+param, dataType: "json", success: returned});
+				<!--		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});	  -->														
 				}
+
+<!--                Alternative function used only when editing codeexample-descriptionbox-->
+                function AJAXService2(sname,param)
+                {
+                	$.ajax({url: "editorService.php", type: "POST", data: {coursename:courseID,version:version,sectionid:sectionID,position:position,opt:sname,description:param}, dataType: "json", success: returned});
+                }
 
 		
 		</script>
 	</head>
 	
 <?php
-		if(isset($_GET['courseid'])&&isset($_GET['version'])){
+		if(isset($_GET['courseid'])){
 				$courseID=$_GET['courseid'];
 				if(courseexists($courseID)){
 						// If course exists - check login credentials
 						// Logged in and with credentials - show full editor otherwise show viewer version 
+
 						if(checklogin()){
 							$ha=getAccessType($_SESSION['uid'], $courseID);
 							if($ha == "w"){

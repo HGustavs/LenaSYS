@@ -20,7 +20,10 @@ function highlightKeyword(kw)
 {
 			$(".impword").each(function(){
 				if(this.innerHTML==kw){
-						highlightimp(this.id);
+					
+					$(this).addClass("imphi");	
+					//	$(".impword").addClass("temphighlightclass");
+					//	highlightimp(this.id);
 				}
 			});	
 }
@@ -29,7 +32,8 @@ function dehighlightKeyword(kw)
 {
 			$(".impword").each(function(){
 				if(this.innerHTML==kw){
-						dehighlightimp(this.id);
+					$(this).removeClass("imphi");	
+					//	dehighlightimp(this.id);
 				}
 			});	
 }
@@ -42,27 +46,126 @@ function highlightMenu(keywid)
 
 // Callback for highlighting back/forward menu item
 function dehighlightMenu(keywid)
-{
+{		
 		$("#"+keywid).removeClass("menuhi");					
 }
 
 
 // Callback for highlighting important keyword
 function highlightimp(keywid)
-{
-		$("#"+keywid).addClass("imphi");					
+{  /* THIS FUCNTION IS NOT USED AT THE MOMENT. YOU CAN FIND THIS FUCNTIONALITY IN highlightKeyword() */
+	//	$("#"+keywid).addClass("imphi");					
 }
 
 // Callback for highlighting important keyword
 function dehighlightimp(keywid)
-{
-		$("#"+keywid).removeClass("imphi");					
+{		 /* THIS FUCNTION IS NOT USED AT THE MOMENT. YOU CAN FIND THIS FUCNTIONALITY IN dehighlightKeyword() */
+	//	$("#"+keywid).removeClass("imphi");					
 }
-				
+
+/* THIS FUNCTION IS REPLACED BY stylecode()*/
 function Bold()
 {
 		document.execCommand('Bold',false,'');
 }
+
+
+
+function styleHeader()
+{
+	if (window.getSelection) {  // all browsers, except IE before version 9
+		var range = window.getSelection().toString();
+            
+     }
+	else {
+		if (document.selection.createRange) { // Internet Explorer
+       		var range = document.selection.createRange().toString();
+		}
+	}
+	document.execCommand("insertHTML", false, "<h1>"+range+"</h1>");
+	
+	/* This solution sets heading on the whole row*/
+//    document.execCommand('formatBlock', false, "H1");
+}
+
+
+
+/* style codeexample in desc.box */
+function styleCode()
+{
+        if (window.getSelection) {  // all browsers, except IE before version 9
+            var range = window.getSelection().toString();
+            
+        }
+        else {
+            if (document.selection.createRange) { // Internet Explorer
+                var range = document.selection.createRange().toString();
+
+            }
+        }
+        
+    	 range = renderdesccode(range);
+    //    document.execCommand("insertHTML",false,rendercode2(range,"docucontent"));
+		document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
+}
+
+
+//Used in stylebutton for codeexample-description-box. Removes all styling.
+function styleReset()
+{
+	// get selected text
+    if (document.selection) //for IE
+       var container = document.selection.createRange().parentElement();
+    else {
+        var select = window.getSelection();
+        if (select.rangeCount > 0)
+          var container = select.getRangeAt(0).startContainer.parentNode;
+	}
+
+	// reset style on heading.
+	if($(container).is("h1")){
+		 $(container).contents().unwrap();
+	}else{	
+		// reset style on all other elements
+		document.execCommand('removeformat', false, "");
+	}
+
+}
+
+
+
+function insertImage(img)
+{
+
+/* This solution makes it possible to insert an image in description which are code styled... */
+    document.execCommand("insertHTML", false, "<div><img src='"+img+"'></div");
+
+    /*.. this does not. */
+//    document.execCommand('insertImage', false, img);
+}
+
+
+
+
+document.addEventListener("drop", function(e) {
+    // cancel drop
+    e.preventDefault();
+});
+document.addEventListener("paste", function(e) {
+    // cancel paste
+    e.preventDefault();
+    // get text representation of clipboard
+    var text = e.clipboardData.getData("text/plain");
+    // insert text manually
+    document.execCommand("insertText", false, text);
+});
+
+function replaceAll(find, replace, str)
+{
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
+
 
 function editedDescription()
 {
@@ -70,11 +173,12 @@ function editedDescription()
 }
 
 function Save()
-{
-				var editable=document.getElementById('docucontent');
-				var desc=editable.innerHTML;
-				desc=dehtmlify(desc,false,0);
-				AJAXService("editDescription","&description="+desc);
+{		
+	// remove all formatting before saving
+	$('.codestyle span').contents().unwrap();
+	var editable=document.getElementById('docucontent');
+	var desc=editable.innerHTML;
+					AJAXService2("editDescription", desc);
 }
 
 function highlightop(otherop,thisop)
@@ -89,47 +193,40 @@ function dehighlightop(otherop,thisop)
 		$("#"+thisop).removeClass("hi");					
 }
 				
-function Code()
-{
-		switchDrop("codedrop");
-}
-
-function generalSettings()
-{
-		switchDrop("docudrop");
-}
 function Up()
 {						
 		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
 }				
 
-function gotoPosition(poz)
+function gotoPosition(exampleid)
 {
-		location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+poz;
+		location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+exampleid;
 }
 
 function SkipB()
-{
+{		
 		if(issetDrop("backwdrop")&&isdropped==false){
-				switchDrop("backwdrop");
+			position=parseInt(position)-1;
+				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
 		}else if(issetDrop("backwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
-				position=parseInt(position)-1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+			// get previous example in the hierarchy
+			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
+			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+prevexampleid;
 		}
 }
 
 function SkipBTimeout()
 {
-		if(dmd==1){
-				switchDrop("backwdrop");
-				isdropped=true;
-		}
+		if(dmd==1){	
+			switchDrop("backwdrop");
+			isdropped=true;
+		}	
 }
 
 function SkipBDown()
-{
+{		
 		setTimeout(function(){SkipBTimeout();}, 1000);							
 		dmd=1;
 }
@@ -142,25 +239,58 @@ function SkipBUp()
 function SkipF()
 {
 		if(issetDrop("forwdrop")&&isdropped==false){
-				switchDrop("forwdrop");
-		}else if(issetDrop("forwdrop")&&isdropped==true){
-				isdropped=false;
-		}else{
 				position=parseInt(position)+1;
 				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
 		}
+		else if(issetDrop("forwdrop")&&isdropped==true){
+				isdropped=false;
+		}else{
+			// get next example in the hierarchy
+			var nextexampleid=parseInt(retdata['after'][0][1]);
+			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+nextexampleid;
+		}
 }
+$(document).click(function (e)
+{
+		if(e.target.parentElement.getAttribute('id')){
+			if(e.target.parentElement.getAttribute('id').toString() == "beforebutton"){
+				//nothing should happend
+			}else if(e.target.parentElement.getAttribute('id').toString() == "afterbutton"){
+				//nothing should happend
+			}
+			else{
+				hideDrop("backwdrop");
+				hideDrop("forwdrop");
+			}
+		}
+		else if(e.target.getAttribute('id')){
+			if(e.target.getAttribute('id').toString() == "before"){
+				//nothing should happend
+			}
+			else if(e.target.getAttribute('id').toString() == "afterbutton"){
+				//nothing should happend
+			}
+			else{
+				hideDrop("backwdrop");
+				hideDrop("forwdrop");
+			}
+		}else{
+			hideDrop("backwdrop");
+			hideDrop("forwdrop");
+		}	
+});
 
 function SkipFTimeout()
 {
 		if(dmd==1){
-				switchDrop("forwdrop");
-				isdropped=true;
+			switchDrop("forwdrop");
+			isdropped=true;
 		}
 }
 
+
 function SkipFDown()
-{
+{		
 		setTimeout(function(){SkipFTimeout();}, 1000);							
 		dmd=1;
 }
@@ -172,11 +302,13 @@ function SkipFUp()
 
 function setup()
 {
-		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
-		
+//		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
+	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
+			
 		if(sessionkind=="w"){
 				setupEditable();						
 		}
+		setTheme();
 }
 
 
@@ -223,9 +355,6 @@ function addImpword()
 	    
 		wordEncoded = encodeURIComponent(word.value);
 		AJAXService("addImpWord","&word="+wordEncoded);
-		
-	/*	word=encodeURIComponent(document.getElementById('impwordtextbox').value);
-		AJAXService("addImpWord","&word="+word);*/
 }
 
 function delImpword()
@@ -279,6 +408,8 @@ function delImpline()
 
 function addWordlistWord()
 { 
+	var label = $( "#wordslabel" ).val();
+	
 		word=document.getElementById('wordlisttextbox');
 		// check if UTF encoded
 		for(var i=0; i<word.value.length; i++) {
@@ -296,7 +427,7 @@ function addWordlistWord()
 	    wordlist=encodeURIComponent(retdata['chosenwordlist']);		
 		encodedWord=encodeURIComponent(word.value);
 
-		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+encodedWord);
+		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+encodedWord+"&label="+label);
 }
 
 function delWordlistWord()
@@ -340,39 +471,6 @@ function selectImpLines(word)
 		}
 }
 
-function changedPlayLink()
-{
-	var url = getPlaylinkURL();
-	var playlink = document.getElementById('playlink').value
-	
-	// code for IE7+, Firefox, Chrome, Opera, Safari
-	 if (window.XMLHttpRequest){
-		var xmlhttp=new XMLHttpRequest();
-	  }
-	  else{ // code for IE6, IE5
-	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-	  // check if the playlink refers to a real url.
-	xmlhttp.open('GET', url, true);  			
-	xmlhttp.send(null);	
-
-	// 0.1s timeout because it takes some time for xmlhttp.status to get its value
-	setTimeout(function(){
-		if (xmlhttp.status == "404") { 
-			var span = document.getElementById("playlinkErrorMsg");
-			span.innerHTML = "Error. This link is invalid.";
-			span.style.display = "block";
-			document.getElementById('playbutton').style.display="none";	
-		}else{	
-			if(playlink != ""){ 
-				document.getElementById('playbutton').style="";	
-				encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
-				AJAXService("editPlaylink","&playlink="+encodedplaylink);	
-			}
-		} 
-	},100);	
-	
-}
 // Function to return the fully url-playlink that is inserted
 function getPlaylinkURL()
 {
@@ -390,6 +488,83 @@ function getPlaylinkURL()
 	}
 	return "http://"+location.hostname+":"+location.port+"/"+directories+link;	
 }
+// set playlink into database
+function setPlayLinkURL()
+{
+	encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
+	AJAXService("editPlaylink","&playlink="+encodedplaylink);
+}
+
+// function to check the if the url of playlink exists
+function checkPlaylinkURL(url, callback)
+{
+	if(document.getElementById('playlink')){
+		var playlink = document.getElementById('playlink').value;
+	}
+	else{
+		var playlink = retdata['playlink'];
+	}
+	if(playlink==""){
+		callback(false);
+		return;
+	}
+		
+	// code for IE7+, Firefox, Chrome, Opera, Safari
+	if (window.XMLHttpRequest){
+		var xmlhttp=new XMLHttpRequest();
+	 }
+	 else{ // code for IE6, IE5
+	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	
+	xmlhttp.open('GET', url, true);  			
+	xmlhttp.send(null);	
+
+	xmlhttp.onreadystatechange = function() {
+		// readyState 4 = the url has been fully loaded. status 404 = url doesn't exists.
+	    if (xmlhttp.readyState==4) {
+	    	if(xmlhttp.status == "404"){
+	    		if (typeof callback == "function"){
+	    			callback(false);
+	    		}
+	    	}else{
+	    		if (typeof callback == "function"){
+	    			callback(true);
+	    		}
+	    	} 
+	    }
+	}	
+}
+// If playlink is changed this method will be called.
+function changedPlayLink()
+{
+	var url = getPlaylinkURL();
+
+/* A callback function has to be used here because it takes some times to load the url 
+  		when checking for errors. */
+	checkPlaylinkURL(url,
+		function(status) {
+			if(status){
+				var playbutton=document.getElementsByClassName('playbutton');
+				for(var i=0; i<playbutton.length; i++){
+					playbutton[i].childNodes[0].style.opacity="1";
+					playbutton[i].onclick=function(){Play();};
+				}
+				setPlayLinkURL();
+			}else{
+				var playbutton=document.getElementsByClassName('playbutton');
+				for(var i=0; i<playbutton.length; i++){
+					playbutton[i].childNodes[0].style.opacity="0.2";
+					playbutton[i].onclick=function(){};
+				}
+				var span = document.getElementById("playlinkErrorMsg");
+				span.innerHTML = "Error. This link is invalid.";
+				span.style.display = "block";
+			}
+  		}
+	);		
+}
+
 
 /********************************************************************************
 
@@ -433,57 +608,159 @@ function sendOut(kind, sectid)
 }
 */			
 
+function changetemplate(templateid){
+	templateid = parseInt(templateid);
+	AJAXService("chooseTemplate","&templateid="+templateid);
+//	location.reload();
+}
+
+function choosetemplate(){
+	if(sessiondkind = "w"){
+		if(parseInt(retdata['template'][0][0]) == 0){
+			var div2 = document.getElementById("div2");
+			var templateholder = document.createElement("div");
+			templateholder.setAttribute("id", "picktemplate");
+			templateholder.style.zIndex='2';
+			var examplenme=document.getElementById('exampleName');
+			var examplesect=document.getElementById("exampleSection");
+			examplenme.innerHTML=retdata['examplename'];
+			examplesect.innerHTML=retdata['entryname'];
+			
+			
+			str="<h1>Pick a template for your example!</h1>";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'1'+"\");' src='new icons/template1_butt.svg' />";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'2'+"\");' src='new icons/template2_butt.svg' />";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'3'+"\");' src='new icons/template3_butt.svg' />";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'4'+"\");' src='new icons/template4_butt.svg' />";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'5'+"\");' src='new icons/template5_butt.svg' />";
+			templateholder.innerHTML = str;
+			div2.appendChild(templateholder);
+			return false;
+		}
+		return true;
+	}
+}
+
 function returned(data)
 {
 		retdata=data;
+		
+		if(!choosetemplate()){
+			return;
+		}
+		// remove templatebox if it still exist
+		if(document.getElementById("picktemplate")){
+			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
+		}
+			
+		changeCSS("css/"+data['template'][0][1]);
+		
 				//----------------------------------------------------
 		// Populate interface with returned data (all relevant data is returned)
 		//----------------------------------------------------
 
 		// Make before dropdown
-		str="<div class='dropdownback'>Skip Backward</div>";
+		str="<div class='dropdownback dropdownbackStyle'>Skip Backward</div>";
 		for(i=0;i<data['before'].length;i++){
-				str+="<span id='F"+data['before'][i][1]+"' onmouseover='highlightMenu(\"F"+data['before'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['before'][i][1]+"\");' onclick='gotoPosition(\""+data['before'][i][1]+"\")' class='dropdownitem'>"+data['before'][i][0]+"</span>";
+				str+="<span id='F"+data['before'][i][1]+"' onmouseover='highlightMenu(\"F"+data['before'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['before'][i][1]+"\");' onclick='gotoPosition(\""+data['before'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['before'][i][0]+"</span>";
 		}
 		var before=document.getElementById('backwdrop');
 		before.innerHTML=str;
 		
 		// If we have no items before the current item - hide before button and dropdown
-		var before=document.getElementById('beforebutton');
+		var before=document.getElementsByClassName('beforebutton');
 		if(data['before'].length==0){
-				before.style.display="none";								
+			for(var i=0; i<before.length; i++){
+				before[i].childNodes[0].style.opacity="0.2";
+				before[i].onclick="";
+			}
 		}else{
-				before.style.display="normal";														
-		}
-
-		// If we have no items before the current item - hide before button and dropdown
-		var after=document.getElementById('afterbutton');
-		if(data['after'].length==0){
-				after.style.display="none";								
-		}else{
-				after.style.display="normal";								
-		}
-
-		// Playbutton Either Hidden or Shown depending on if there is any play link or not
-		var playlink=document.getElementById('playbutton');
-		if(data['playlink']==""){
-				playlink.style.display="none";								
-		}else{
-				playlink.style.display="normal";										
+			for(var i=0; i<before.length; i++){
+				before[i].style.opacity="1";	
+		//		before[i].onclick ="SkipF();";													
+			}	
 		}
 		
+
+		// If we have no items before the current item - hide before button and dropdown
+		var after=document.getElementsByClassName('afterbutton');
+		if(data['after'].length==0){
+			for(var i=0; i<after.length; i++){
+				after[i].childNodes[0].style.opacity="0.2";
+				after[i].onclick="";
+			}
+		}
+		
+		
+	
+			var url = getPlaylinkURL();
+			var playbutton=document.getElementsByClassName('playbutton');
+			checkPlaylinkURL(url,
+				function(status) { 
+					if(status){ 
+						for(var i=0; i<playbutton.length; i++){
+							playbutton[i].childNodes[0].style.opacity="1";
+							playbutton[i].onclick=function(){Play();};
+						}			
+					}else{
+						for(var i=0; i<playbutton.length; i++){
+							playbutton[i].childNodes[0].style.opacity="0.2";
+							playbutton[i].onclick=function(){};
+						}
+					}
+				}
+			);
+	
+		
+		// Playbutton Either Hidden or Shown depending on if there is any play link or not
+	/*	var playbutton=document.getElementsByClassName('playbutton');
+		if(data['playlink']==""){
+			for(var i=0; i<playbutton.length; i++){
+				playbutton[i].childNodes[0].style.opacity="0.2";
+				playbutton[i].onclick=function(){};
+			}
+		}else{
+			for(var i=0; i<playbutton.length; i++){
+				playbutton[i].childNodes[0].style.opacity="1";
+				playbutton[i].onclick=function(){Play();};
+			}									
+		}
+	*/	
 		// Make after dropdown
-		str="<div class='dropdownback'>Skip Forward</div>";
+		str="<div class='dropdownback dropdownbackStyle'>Skip Forward</div>";
 		for(i=0;i<data['after'].length;i++){
-				str+="<span id='F"+data['after'][i][1]+"' onmouseover='highlightMenu(\"F"+data['after'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['after'][i][1]+"\");' onclick='gotoPosition(\""+data['after'][i][1]+"\")' class='dropdownitem'>"+data['after'][i][0]+"</span>";
+				str+="<span id='F"+data['after'][i][1]+"' onmouseover='highlightMenu(\"F"+data['after'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['after'][i][1]+"\");' onclick='gotoPosition(\""+data['after'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['after'][i][0]+"</span>";
 		}
 		var after=document.getElementById('forwdrop');
 		after.innerHTML=str;
 
 		// Fill Description
 		var docuwindow=document.getElementById("docucontent");
-		docuwindow.innerHTML="<span>"+data['desc']+"</span>";
-
+		
+		// replacing span&nsbp; so it is perceived as a tagname for codestyle
+	
+	/* START code for first function made START */
+	//	var desc = data['desc'];
+	//	desc = replaceAll("<span&nbsp;","<span ",data['desc']);
+	//	desc = replaceAll('"&nbsp;','" ', desc);
+	//	desc = replaceAll('&nbsp;"',' "', desc);
+	//	docuwindow.innerHTML = desc;
+	/* 	STOP */	
+	
+		var desc = data['desc'];
+		desc = replaceAll("<span&nbsp;","<span ",desc);
+		desc =  replaceAll("<img&nbsp;","<img ",desc);
+		
+		docuwindow.innerHTML = desc;
+		
+		//  Fill description with code using tokenizer.
+		var cs = docuwindow.getElementsByClassName("codestyle");
+		for(var i=0; i<cs.length; i++){
+			desc = desc.replace(cs[i].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML))));
+		}
+		docuwindow.innerHTML = desc;
+		
+		
 		// Fill Code Viewer with Code using Tokenizer
 		rendercode(data['code'],"infobox");
 
@@ -491,8 +768,7 @@ function returned(data)
 		var examplenme=document.getElementById('exampleName');
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
-		// Should be sectionname instead of sectionID
-		examplesect.innerHTML=sectionID;
+		examplesect.innerHTML=data['entryname'];
 		
 		
 		if(sessionkind=="w"){
@@ -500,13 +776,32 @@ function returned(data)
 				str="";
 				for(i=0;i<data['directory'].length;i++){
 						if(data['directory'][i]==data['filename']){
-								str+="<span class='dropdownitem menuch' id='DDI"+i+"' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";						
+								str+="<span class='dropdownitem dropdownitemStyle menuch' id='DDI"+i+"' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";						
 						}else{
-								str+="<span class='dropdownitem' id='DDI"+i+"' onclick='chosenFile(\""+data['directory'][i]+"\");' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";														
+								str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+data['directory'][i]+"\");' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";														
 						}
 				}
 				var filereq=document.getElementById('codedrop');
 				if(filereq!=null) filereq.innerHTML=str;
+
+
+            // Fill imagelist
+            str="";
+            for(i=0;i<data['images'].length;i++){
+
+                    //str+="<span class='dropdownitem' id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' onmouseover='highlightMenu(\"DDII"+i+"\");' onmouseout='dehighlightMenu(\"DDII"+i+"\");'>"+data['images'][i]+"</span>";
+                str+="<img id='DDII"+i+"' onclick='insertImage(\"imgupload/"+data['images'][i]+"\");' title=\""+data['images'][i]+"\" src=\"imgupload/"+data['images'][i]+"\"></img>";
+
+            }
+
+            var filereq=document.getElementById('imgdrop');
+            if(filereq!=null) filereq.innerHTML=str;
+
+
+
+
+
+
 		}
 		
 		//----------------------------------------------------
@@ -522,88 +817,36 @@ function returned(data)
 				displayPlaylink();	
 			}else if(tabmenuvalue == "templates"){
 				displayTemplates();
-			}
-			
-		/*		
-				str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
-				for(i=0;i<data['wordlists'].length;i++){
-						if(data['wordlists'][i]==data['chosenwordlist']){
-								str+="<option selected='selected'>"+data['wordlists'][i]+"</option>";										
-						}else{
-								str+="<option>"+data['wordlists'][i]+"</option>";										
-						}
-				}
-				str+="</select><br/>Wordlist: "+data['chosenwordlist']+"<br/><select size='8' style='width:200px;'>";
-				for(i=0;i<data['wordlist'].length;i++){
-						if(data['wordlist'][i][0]==data['chosenwordlist']){
-								str+="<option onclick='selectWordlistWord(\""+data['wordlist'][i][1]+"\");'>"+data['wordlist'][i][1]+"</option>";										
-						}
-				}
-				str+="</select><br/>";
-				str+="<div id='wordlistError'></div>";
-				str+="<input type='text' size='24' id='wordlisttextbox' />";
-				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
-				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
-				str+="<input type='button' value='new' onclick='newWordlist();'' />";
-		
-				//----------------------------------------------------
-				// Fill important word list	part of document dialog
-				//----------------------------------------------------
-				str+="</select><br/><br/>Important Word List: <br/><select size='8' style='width:200px;'>";
-				for(i=0;i<data['impwords'].length;i++){
-						str+="<option onclick='selectImpWord(\""+data['impwords'][i]+"\");'>"+data['impwords'][i]+"</option>";										
-				}
-				str+="</select><br/>";
-				str+="<div id='impwordlistError'></div>";
-				str+="<input type='text' size='24' id='impwordtextbox' />";
-				str+="<input type='button' value='add' onclick='addImpword();' />";
-				str+="<input type='button' value='del' onclick='delImpword();'/>";													
-		
-				//----------------------------------------------------
-				// Fill important line list part of document dialog
-				//----------------------------------------------------
-				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
-				for(i=0;i<data['improws'].length;i++){
-						str+="<option onclick='selectImpLines(\""+data['improws'][i]+"\");'>"+data['improws'][i][0]+"-"+data['improws'][i][1]+"</option>";										
-				}
-				str+="</select><br/>"
-				str+="<div id='impLinesError'></div>";
-				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
-				str+="<input type='button' value='add' onclick='addImpline();' />";
-				str+="<input type='button' value='del' onclick='delImpline();' />";
-		//		str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+data['playlink']+"' />";						
-		*/
-			//	var docurec=document.getElementById('docudrop');
-			//	if(docurec!=null) docurec.innerHTML=str;						
+			}					
 		}
 }
 function displayPlaylink(){
 	tabmenuvalue = "playlink";
-	str="<ul id='settingsTabMenu'>";
+	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
 		str+="<li class='activeSetMenuLink'>Playlink</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 				
 	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
-	str+="<span id='playlinkErrorMsg'></span>";
+	str+="<span id='playlinkErrorMsg' class='playlinkErrorMsgStyle'></span>";
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
 }
 function displayTemplates()
 {
 	tabmenuvalue = "templates";
-	str="<ul id='settingsTabMenu'>";
+	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
 		str+="<li onclick='displayPlaylink()'>Playlink</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);'  onclick='changeCSS(\""+'css/template1.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='changeCSS(\""+'css/template2.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changeCSS(\""+'css/template1.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changeCSS(\""+'css/template2.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
 
 		
 	docurec=document.getElementById('docudrop');
@@ -611,7 +854,7 @@ function displayTemplates()
 }
 function displayWordlist(){
 	tabmenuvalue = "wordlist";
-	str="<ul id='settingsTabMenu'>";
+	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
 		str+="<li onclick='displayPlaylink();'>Playlink</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
@@ -635,10 +878,16 @@ function displayWordlist(){
 				str+="</select><br/>";
 				str+="<div id='wordlistError' class='errormsg'></div>";
 				str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
+				str+="<select id='wordslabel'>";
+					str+="<option value='A'>Markup level 1??</option>";
+					str+="<option value='B'>Markup level 2??</option>";
+					str+="<option value='C'>Markup level 3??</option>";
+					str+="<option value='D'>Markup level 4??</option>";
+				str+="</select>";
 				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
 				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
 				str+="<input type='button' value='new' onclick='newWordlist();'' />";
-		
+				
 				//----------------------------------------------------
 				// Fill important word list	part of document dialog
 				//----------------------------------------------------
@@ -699,6 +948,7 @@ function switchDrop(dname)
 				hideDrop("backwdrop");
 				hideDrop("docudrop");
 				hideDrop("codedrop");
+				$('#hotdogdrop').hide();
 			
 			$( dropd ).slideDown("fast");
 			dropd.style.display="block";
@@ -730,10 +980,16 @@ function setupEditable()
 				editable.addEventListener("blur", function(){editedExamplename();}, true);
 		
 				var fditable=document.getElementById('docucontent');
-				fditable.addEventListener("blur", function(){editedDescription();Save();}, true);
+				fditable.addEventListener("blur", function(){editedDescription();}, true);
 		}
 }
-
+function editedExamplename()
+{
+		var editable=document.getElementById('exampleName');
+		var examplename=dehtmlify(editable.innerHTML,true,60);
+		editable.innerHTML=examplename;
+		AJAXService("editExampleName","&examplename="+examplename);
+}
 //----------------------------------------------------------------------------------
 // Removes most html tags from a string!
 //----------------------------------------------------------------------------------
@@ -824,7 +1080,7 @@ function maketoken(kind,val,from,to,rowno)
 
 function error(str,val,row)
 {
-alert("Tokenizer Error: "+str+val+" at row "+row);
+	alert("Tokenizer Error: "+str+val+" at row "+row);
 }
 
 //----------------------------------------------------------
@@ -835,6 +1091,10 @@ alert("Tokenizer Error: "+str+val+" at row "+row);
 
 function tokenize(instring,inprefix,insuffix)
 {
+// replace HTML-entities
+instring = replaceAll("&lt;","<",instring);
+instring = replaceAll("&gt;",">",instring);
+instring = replaceAll("&amp;","&",instring);
 
 var from;                   	// index of the start of the token.
 var i = 0;                  	// index of the current character.
@@ -846,12 +1106,9 @@ var q;                      	// current quote character
 var str;                    	// current string value.
 var row=1;										// current row value
 
-
 c = instring.charAt(i);
-while (c) {
-
+while (c) {		// c == first character in each word
 		from = i;
-
 		if (c <= ' '){																					// White space and carriage return
 			  if((c=='\n')||(c=='\r')||(c =='')){
 						maketoken('newline',"",i,i,row);
@@ -860,10 +1117,10 @@ while (c) {
 				}else{
         		str=c;
 				}
+				
         i++;
     		while(true){
 		        c=instring.charAt(i);
-
 						if(c>' '||!c) break;
     				if((c=='\n')||(c=='\r')||(c =='')){
                 //str += c;
@@ -873,13 +1130,13 @@ while (c) {
 								// White space Row (so we get one white space token for each new row) also increase row number
     						row++;
     				}else{
-            		str += c;		        				
+            		str += c;
     				}
             i++;
 				}
 				if(str!="") maketoken('whitespace',str,from,i,row);
 		}else if((c >='a'&&c<='z')||(c>='A'&&c<='Z')){					// Names i.e. Text
-    		str = c;
+    		str = c;      				
     		i++;
     		while(true){
         		c = instring.charAt(i);
@@ -889,9 +1146,9 @@ while (c) {
         		}else{
             		break;
         		}
-    		}
+    		} 
     		maketoken('name',str,from,i,row);
-    }else if(c >= '0' && c <= '9'){												// Number token
+    }else if(c >= '0' && c <= '9'){			// Number token
         str = c;
         i++;
     		while(true){
@@ -937,15 +1194,14 @@ while (c) {
         }else{
             error('Bad Number: ',str,row);
         }
-    }else if(c=='\''||c=='"'){																				// String .. handles c style breaking codes
+    }else if(c=='\''||c=='"'){	   // String .. handles c style breaking codes. Ex: "elem" or "text"
         str='';
         q=c;
         i++;
     		while(true){
 		        c=instring.charAt(i);
-
             if (c<' '){
-        				if((c=='\n')||(c=='\r')||(c == '')) row++;						// Add row if this white space is a row terminator				 																						
+        				if((c=='\n')||(c=='\r')||(c == '')) row++; 	// Add row if this white space is a row terminator				 																						
             		error('Unterminated String: ',str,row);		                		
             }
 
@@ -983,9 +1239,9 @@ while (c) {
         maketoken('string',str,from,i,row);
         c=instring.charAt(i);
 
-    }else if (c=='/'&&instring.charAt(i+1)=='/'){								// Comment of // type ... does not cover block comments
+    }else if (c=='/'&&instring.charAt(i+1)=='/'){	// Comment of // type ... does not cover block comments
         i++;
-        str=c;
+        str=c; 
     		while(true){
 		        c=instring.charAt(i);
             if (c=='\n'||c=='\r'||c=='') {
@@ -995,50 +1251,53 @@ while (c) {
                 str+=c;                
             }
             i++;
-        }
+        }	
 				maketoken('rowcomment',str,from,i,row);
-				maketoken('newline',"",i,i,row);											                
-    }else if (c=='/'&&instring.charAt(i+1)=='*'){								// Block comment of /* type
+				/* This does not have to be hear because a newline creates in coderender function 
+				maketoken('newline',"",i,i,row); */													                
+    }else if (c=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
         i++;
-    		str=c;
+    		str=c; 
     		while(true){
-		        c=instring.charAt(i);
+		        c=instring.charAt(i); 
             if ((c=='*'&&instring.charAt(i+1)=='/')||(i==length)) {
                 str+="*/"
                 i+=2;
-    		        c=instring.charAt(i);
+  		        c=instring.charAt(i); 
                 break;
-            }
-            if (c=='\n'||c=='\r'||c=='') {
-								maketoken('blockcomment',str,from,i,row);
-								maketoken('newline',"",i,i,row);
-                row++;
-                str="";
-            }else{
+            }	
+            if (c=='\n'||c=='\r'||c=='') { 
+            	// don't make blockcomment or newline if str is empty
+            	if(str != ""){
+            		maketoken('blockcomment',str,from,i,row);
+					maketoken('newline',"",i,i,row);
+            		row++;
+                	str="";
+            	}
+            }else{ 
                 str+=c;                
             }
             i++;
-        }
-				maketoken('blockcomment',str,from,i,row);
+        }	
+      	  	maketoken('blockcomment',str,from,i,row);
 		}else if(inprefix.indexOf(c) >= 0) {											// Multi-character Operators
     		str = c;
     		i++;
     		while(true){
-		        c=instring.charAt(i);
+		        c=instring.charAt(i); 
         		if (i >= length || insuffix.indexOf(c) < 0) {
             		break;
         		}
-        		str += c;
+        		str += c; 
         		i++;
-    		}
+    		} 
     		maketoken('operator',str,from,i,row);
 		} else {																									// Single-character Operators
-    		i++;
+    		i++;  
     		maketoken('operator',c,from,i,row);
     		c = instring.charAt(i);
 		}
-		
-}
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -1058,24 +1317,24 @@ function rendercode(codestring,destinationdiv)
 		keywords=[];
 		for(var i=0;i<retdata.wordlist.length;i++){
 				if(retdata.wordlist[i][0]==retdata.chosenwordlist){
-						keywords.push(retdata.wordlist[i][1]);
+					temp=[retdata.wordlist[i][1],retdata.wordlist[i][2]];
+						keywords.push(temp);
 				}
-		}
-
+		}			
+		
 		improws=[];
 		for(var i=0;i<retdata.improws.length;i++){
 				improws.push(retdata.improws[i]);
 		}
-
 		tokenize(codestring,"<>+-&","=>&:");
 				
 		// Iterate over token objects and print kind of each token and token type in window 
-		printout=document.getElementById("infobox");
+		printout=document.getElementById(destinationdiv);
 		str="";
 		cont="";
 
 		lineno=0;
-		str+="<div class='norm'>";
+		str+="<div class='normtext'>";
 		
 		pcount=0;
 		parenthesis=new Array();
@@ -1091,6 +1350,7 @@ function rendercode(codestring,destinationdiv)
 		for(i=0;i<tokens.length;i++){
 				
 				tokenvalue=String(tokens[i].val);
+				
 				// Make white space characters
 				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
 				tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
@@ -1107,7 +1367,8 @@ function rendercode(codestring,destinationdiv)
 						var foundkey=0;
 						
 						for(var ind in keywords){
-								word=keywords[ind];
+								word=keywords[ind][0];
+								label=keywords[ind][1]
 								if(word==tokenvalue){
 										foundkey=1;
 										break;		
@@ -1123,7 +1384,7 @@ function rendercode(codestring,destinationdiv)
 						}
 						
 						if(foundkey==1){
-								cont+="<span class='keyword'>"+tokenvalue+"</span>";														
+								cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
 						}else if(foundkey==2){
 								iwcounter++;
 								
@@ -1165,8 +1426,10 @@ function rendercode(codestring,destinationdiv)
 				}else{
 						cont+=tokenvalue;
 				}
-				
-				if(tokens[i].kind=="newline"){
+						// tokens.length-1 so the last line will be printed out
+				if(tokens[i].kind=="newline" || i==tokens.length-1){  
+					// Prevent empty lines to be printed out
+					if(cont != ""){
 						lineno++;
 
 						// Make line number										
@@ -1178,32 +1441,152 @@ function rendercode(codestring,destinationdiv)
 								num="<span class='no'>"+lineno+"&nbsp;</span>";
 						}
 						
-						if(cont==""){
-								cont="&nbsp;&nbsp;";
-						}
-						
-						
 						if(improws.length==0){
-								str+="<div class='norm'>";
+								str+="<div class='normtext'>";
 						}else{
 								for(var kp=0;kp<improws.length;kp++){
 										if(lineno>=parseInt(improws[kp][0])&&lineno<=parseInt(improws[kp][1])){
 												str+="<div class='impo'>";
 												break;
 										}else{
-												str+="<div class='norm'>";
+												str+="<div class='normtext'>";
 										}						
 								}
 						}	
 						str+=num+cont;
 						cont="";
-						str+="</div>";					
+						str+="</div>";	
+					}					
 				}
 		}
-		str+="</div>";						
+		str+="</div>";	
 		printout.innerHTML=str;
 		linenumbers();
 }
+function renderdesccode(codestring){
+	tokens = [];
+
+	important = [];
+	for(var i=0;i<retdata.impwords.length;i++){
+		important.push(retdata.impwords[i]);	
+	}
+	keywords=[];
+	for(var i=0;i<retdata.wordlist.length;i++){
+		if(retdata.wordlist[i][0]==retdata.chosenwordlist){
+			temp=[retdata.wordlist[i][1],retdata.wordlist[i][2]];
+			keywords.push(temp);
+		}
+	}	
+	
+	tokenize(codestring,"<>+-&","=>&:");
+	
+		str="";
+		cont="";
+
+		str+="<span class='normtext'>";
+		
+		pcount=0;
+		parenthesis=new Array();
+		bcount=0;
+		bracket=new Array();
+		cbcount=0;
+		cbracket=new Array();
+
+		pid="";
+		
+		var iwcounter=0;
+
+		for(i=0;i<tokens.length;i++){
+				
+				tokenvalue=String(tokens[i].val);
+
+				// Make white space characters
+				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
+			
+				if(tokens[i].kind=="rowcomment"){ 
+						cont+="<span class='comment'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="blockcomment"){ 
+							cont+="<span class='comment'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="string"){ 
+							cont+="<span class='string'>\""+tokenvalue+"\"</span>";
+				}else if(tokens[i].kind=="number"){
+						cont+="<span class='number'>"+tokenvalue+"</span>";
+				}else if(tokens[i].kind=="name"){
+						var foundkey=0;
+						
+						for(var ind in keywords){
+							word=keywords[ind][0];
+							label=keywords[ind][1]
+							if(word==tokenvalue){
+									foundkey=1;
+									break;		
+							}
+						}								
+						for(var ind in important){
+								word=important[ind];
+								if(word==tokenvalue){
+										foundkey=2;
+										break;		
+								}
+						}
+						if(foundkey==1){
+								cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
+						}else if(foundkey==2){
+								iwcounter++;
+								
+								highlightKeyword("scrollTop")
+								
+								cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
+						}else{
+								cont+=tokenvalue;
+						}
+						
+				}else if(tokens[i].kind=="operator"){
+						if(tokenvalue=="("){
+								pid="PA2"+pcount;
+								pcount++;
+								parenthesis.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue==")"){
+								pid=parenthesis.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else if(tokenvalue=="["){
+								pid="BR2"+bcount;
+								bcount++;
+								bracket.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue=="]"){
+								pid=bracket.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else if(tokenvalue=="{"){
+								pid="CBR2"+cbcount;
+								cbcount++;
+								cbracket.push(pid);
+								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+						}else if(tokenvalue=="}"){
+								pid=cbracket.pop();
+								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+						}else{	
+								cont+="<span class='oper'>"+tokenvalue+"</span>";		
+						}
+				}else{
+						cont+=tokenvalue;
+				}
+				
+				if(tokens[i].kind=="newline"){
+					
+					str+=cont+"<br>";
+					cont="";
+				} // no breakrow on last row in description.
+				if(i==tokens.length-1){
+					str+=cont;
+				}
+		}
+		str+="</span>";
+		return str;
+	
+}
+
 function linenumbers()
 {	
 	if(localStorage.getItem("linenumbers") == "false"){	
@@ -1237,12 +1620,14 @@ function addTemplatebox(id)
 		var div = document.createElement("div");
 		content.appendChild(div);
 		div.id = temps[i];
+		div.className = temps[i]+"Style";
 		div.setAttribute("contenteditable", "true");
 	}	
 }
-function changeCSS(cssFile)
+
+function changeCSS(cssFile, index)
 {
-	var cssLinkIndex = 0;
+	var cssLinkIndex = index;
 	var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
     var newlink = document.createElement("link");
     newlink.setAttribute("rel", "stylesheet");
@@ -1250,4 +1635,166 @@ function changeCSS(cssFile)
     newlink.setAttribute("href", cssFile);
  	
     document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
+}
+
+// function showhotdogmenu()
+// {
+// 
+	// var hotdogdrop = document.getElementById("hotdogdrop");
+	// if($(hotdogdrop).is(':hidden')){
+		// hotdogdrop.style.display = "block";
+	// }
+	// else{
+		// hotdogdrop.style.display = "none";	
+	// }
+// }
+
+$(function() {
+	$('#hidesettings').click(function() {
+		$('.docudrop').slideToggle("fast");
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		$('.themedrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		$('.imgdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.docudrop').slideUp('fast');
+	});
+	$(".docudrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hidecode').click(function() {
+		$('.codedrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('#hotdogdrop').hide();
+		$('.themedrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		$('.imgdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.codedrop').slideUp('fast');
+	});
+	$(".codedrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hidehotdog').click(function() {
+		$('#hotdogdrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('.themedrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		$('.imgdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('#hotdogdrop').slideUp('fast');
+	});
+	$("#hotdogdrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hidetheme').click(function() {
+		$('.themedrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		$('.imgdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.themedrop').slideUp('fast');
+	});
+	$(".themedrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+$(function() {
+	$('#hideimage').click(function() {
+		$('.imgdrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		$('.themedrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		return false;
+	});
+	$(document).click(function() {
+    	$('.imgdrop').slideUp('fast');
+	});
+	$(".imgdrop").click(function(event) {
+   		event.stopPropagation();
+	});
+});
+
+function Theme()
+{
+		displayThemes();		
+}
+
+function displayThemes()
+{
+	str="";
+	str+="<h2>Choose a theme!</h2>";
+	str+="<div class='themeicon' onclick='selectTheme(\""+'black'+"\");'>  <img src='new icons/theme_black.svg' /><span>Black<span/></div>";
+	str+="<div class='themeicon' onclick='selectTheme(\""+'white'+"\");'>  <img src='new icons/theme_white.svg' /><span>White<span/></div>";
+	str+="<div class='themeicon' onclick='selectTheme(\""+'colorblind'+"\");'> <img src='new icons/theme_blind.svg' /><span>Colorblind<span/></div>";
+	docurec=document.getElementById('themedrop');
+	docurec.innerHTML=str;
+}
+
+function selectTheme(color)
+{
+	localStorage.setItem("storedTheme", color);
+	setTheme();
+	hideDrop("themedrop");
+}
+
+function setTheme()
+{
+	var storedTheme = localStorage.getItem("storedTheme");
+	if(storedTheme != "" && storedTheme != null){
+		var colorTheme = storedTheme;
+
+		if(colorTheme === "black"){
+			//make things black
+			changeCSS("css/blackTheme.css", 2);
+			//alert("black");
+			
+		}
+		
+		else if(colorTheme === "white"){
+			//make things white
+			changeCSS("css/whiteTheme.css", 2);
+			//alert("white");
+			
+		}
+		
+		else if(colorTheme === "colorblind"){
+			//colors that makes it easier for colorblind
+			changeCSS("css/colorblind.css", 2);
+			//alert(colorTheme);
+		}
+		else{
+			//theme doesnt exist, make default
+			alert("no theme");
+		}
+	}
 }
