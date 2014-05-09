@@ -90,7 +90,11 @@ function imagerecorder(canvas)
 				// Lock thumbs & custom context menu on the first picture shown
 				if(clicked == 0) {
 					$("#sortableThumbs").sortable("destroy");
-					$("#uploadButton").hide();
+
+					// Change upload button to 'reset'
+					$("#uploadButton").attr('value', 'Reset');
+					$("#uploadButton").attr('onclick', 'imgrecorder.reset();');
+
 					$(".thumbnail").hover(function() {
 						$(this).css({
 							"cursor": "default",
@@ -449,5 +453,37 @@ function imagerecorder(canvas)
 
 	function log(str){		
 		logStr += str;
+	}
+
+	/*
+	 * Public function for resetting the recorder
+	 * Will reset the recording
+	 *
+	 */
+	this.reset = function(){
+		// Reset variables
+		clicked = 0;
+		lastEvent = Date.now();
+		activeImage = -1;
+		nextImage = 0;
+		currentImageRatio = 1;
+
+		// Clear logged data
+		logStr = "";
+
+		// Make thumbnails sortable
+		$("#sortableThumbs").sortable({
+			revert: 300,
+			update: function() {
+				rebuildImgLibrary();
+			}
+		});
+
+		// Clear canvas
+		canvas.width = canvas.width;
+
+		// Change button name and action
+		$("#uploadButton").attr('value', 'Upload image');
+		$("#uploadButton").attr('onclick', 'document.getElementById("imageLoader").click();');
 	}
 }
