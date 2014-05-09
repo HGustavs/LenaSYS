@@ -32,6 +32,7 @@ function Canvasrenderer()
 	this.mouseClickRadius = 20;	
 	this.recordedCanvasWidth;
 	this.recordedCanvasHeight;
+    this.downscaled = false;
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -75,15 +76,7 @@ function Canvasrenderer()
 			mWidth = (rect.right-rect.left);
 			canvas.scaleRatioX = mWidth/c.width;
 			canvas.scaleRatioY = mHeight/c.height;
-		
-			//canvas.width = mWidth;
-			//canvas.height = mHeight; 
 			canvas.updateScaleRatio();
-		//	showImage(activeImage);
-			console.log("On Resize\n");
-			console.log("canvas: " + c.width + ", " + c.height);	
-			console.log(mWidth + ", " + mHeight);
-			console.log("Scale ratio: " + this.scaleRatioX + ", " + this.scaleRatioY);
 		});	
 
 
@@ -95,6 +88,7 @@ function Canvasrenderer()
 	 */
 	// Play/pause switch
 	this.switch = function()
+
 	{
 		if(this.paused == 1){
 			this.play();
@@ -254,7 +248,6 @@ function Canvasrenderer()
 					// Calculate total delay
 					// Fetch timestep nodes
 					nodes = [].slice.call(this.timestepElements[i].childNodes, 0); 
-					//console.log(nodes.length);
 					nodes = this.removeNonvalidCalls(nodes);
 					// Execute timestep nodes after specified delay
 					this.runningTimesteps.push(new TimestepTimeout(delay, nodes));
@@ -276,7 +269,6 @@ function Canvasrenderer()
 	}
 	this.removeNonvalidCalls = function(nodes){
 		var retnodes = new Array();
-		//console.log(nodes.length);
 		for(a = 0; a < nodes.length; ++a){
 			if(validFunctions.indexOf(nodes[a].nodeName) >= 0) { retnodes.push(nodes[a]); }
 		}
@@ -810,11 +802,18 @@ function Canvasrenderer()
 	this.mousemove = function(x, y)
 	{
 		if(!isNaN(this.scaleRatioX) && !isNaN(this.scaleRatioY)){
-			console.log("Applying scale ratios");
 			// Calculate positions using the proper scale ratio
-			y *= this.scaleRatioY;
-			x *= this.scaleRatioX;
-			console.log(x + ", " + y);
+        if(this.downscaled && !isNaN(canvas.scaleRatioY)){
+            y *= canvas.scaleRatioY;
+            x *= canvas.scaleRatioY;
+       }
+        
+        else{
+		if(!isNaN(canvas.scaleRatio)){
+            		y *= canvas.scaleRatio;
+           	 	x *= canvas.scaleRatio;
+		}
+        }
 		}
 		if(this.mouseClickBackground){
 			// Restore mouse click background
@@ -824,7 +823,6 @@ function Canvasrenderer()
 			// Restore background
 			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
 		}
-
 		// Save background
 		this.mouseCursorBackground = ctx.getImageData(x, y, 18, 24);
 		// Save mouse position
@@ -839,10 +837,16 @@ function Canvasrenderer()
 
 	this.mouseclick = function(x, y)
 	{
-		y *= this.scaleRatioY;
-		x *= this.scaleRatioX;
-
-
+    
+        if(this.downscaled){
+            y *= canvas.scaleRatioY;
+            x *= canvas.scaleRatioY;
+        }
+        
+        else{
+            y *= canvas.scaleRatio;
+            x *= canvas.scaleRatio;
+        }
 		// Calculate positions using the proper scale ratio
 		this.mouseClickX = x;
 		this.mouseClickY = y;
@@ -865,42 +869,68 @@ function Canvasrenderer()
 		var image = new Image();
 		// Draw image when loaded
 		image.onload = function() {
-			if (image.width > c.width || image.height > c.height)
+                canvas.updateScaleRatio();
+        	var widthRatio = 1;
+		var heightRatio = 1;
+               if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight)
 			{
+              			var rect = c.getBoundingClientRect();
+				mHeight = (rect.bottom - rect.top);
+				mWidth = (rect.right-rect.left);
 				// Calculate scale ratios
-				var widthRatio = c.width / image.width;
-				var heightRatio = c.height / image.height;
-
+              			widthRatio = mWidth / (image.width*canvas.scaleRatioY);
+				heightRatio = mHeight / (image.height*canvas.scaleRatioY);
 				// Set scale ratio
-				if (widthRatio < heightRatio) canvas.scaleRatio = widthRatio;
-				else canvas.scaleRatio = heightRatio;
-			}
-			else {
-				// Draw natural ratio
-				canvas.scaleRatio = 1;
-			}
-			if(canvas.scaleRatio < 1){
-				// Draw scaled image
-				ctx.drawImage(image , 0, 0, image.width * canvas.scaleRatio, image.height * canvas.scaleRatio);
-				// New mouse cursor background
-				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatio, 23*canvas.scaleRatio);
-				// New mouse click background
-				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
-				// Render mouse click
-				canvas.drawMouseClick();
-			}else{
-				// Draw scaled image
-				ctx.drawImage(image , 0, 0, image.width * canvas.scaleRatioX, image.height * canvas.scaleRatioY);
+                 		canvas.downscaled = true;
+				(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
+
+//				if (widthRatio < heightRatio) canvas.scaleRatio = widthRatio;
+//				else canvas.scaleRatio = heightRatio;
+                    		ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatioY*canvas.scaleRatio), (image.height*canvas.scaleRatioY*canvas.scaleRatio));
+                
 				// New mouse cursor background
 				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatioX, 23*canvas.scaleRatioY);
 				// New mouse click background
 				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
 				// Render mouse click
 				canvas.drawMouseClick();
-
-
-
 			}
+            
+            else if (image.width > c.width || image.height > c.height)
+			{
+               			canvas.downscaled = false;
+               			var rect = c.getBoundingClientRect();
+				mHeight = (rect.bottom - rect.top);
+				mWidth = (rect.right-rect.left);
+				// Calculate scale ratios
+				widthRatio = mWidth / (image.width);
+				heightRatio = mHeight / (image.height);
+				// Set scale ratio
+				(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
+			//	if (widthRatio < heightRatio) canvas.scaleRatio = widthRatio;
+			//	else canvas.scaleRatio = heightRatio;
+               			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
+				// New mouse cursor background
+				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatioX, 23*canvas.scaleRatioY);
+				// New mouse click background
+				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
+				// Render mouse click
+				canvas.drawMouseClick();
+                
+			}
+			
+			else {
+				// Draw natural ratio
+				canvas.scaleRatio = 1;
+               			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
+				// New mouse cursor background
+				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, 17*canvas.scaleRatioX, 23*canvas.scaleRatioY);
+				// New mouse click background
+				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
+				// Render mouse click
+				canvas.drawMouseClick();
+			}
+                        canvas.updateScaleRatio();
 		}
 		image.src = src;
 	} 
@@ -927,12 +957,10 @@ function Canvasrenderer()
 		
 		this.scaleRatioX = parseFloat(mWidth/this.recordedCanvasWidth);
 		this.scaleRatioY = parseFloat(mHeight/this.recordedCanvasHeight);
-		console.log("Scale ratio X: " + this.scaleRatioX);
-		console.log("Scale ratio Y: " + this.scaleRatioY);
+        if (this.scaleRatioX < this.scaleRatioY) this.scaleRatioY = this.scaleRatioX;
 	}
 
 	this.recordedCanvasSize = function(width, height) {
-		console.log("Recorded canvas size is: " + width + ", " + height);
 		this.recordedCanvasWidth = parseFloat(width);
 		this.recordedCanvasHeight = parseFloat(height);
 		this.updateScaleRatio();
