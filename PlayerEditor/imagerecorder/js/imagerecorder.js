@@ -89,11 +89,15 @@ function imagerecorder(canvas)
 			if(imagelibrary.length > 0) {
 				// Lock thumbs & custom context menu on the first picture shown
 				if(clicked == 0) {
+					// Disable sorting thumbs
 					$("#sortableThumbs").sortable("destroy");
 
 					// Change upload button to 'reset'
 					$("#uploadButton").attr('value', 'Reset');
 					$("#uploadButton").attr('onclick', 'imgrecorder.reset();');
+
+					// Show undo button
+					$("#imagerecorder-undo").show();
 
 					$(".thumbnail").hover(function() {
 						$(this).css({
@@ -129,19 +133,21 @@ function imagerecorder(canvas)
 		
 		// keyboard controls
 		$("body").keydown(function(event) {	
-			
 			switch(event.which) {
 			
 				// Arrow right
 				case 39:
-					showImage(getNextImage());
+					if(clicked == 1) {
+						showImage(getNextImage());
+					}
 				break;
 				
 				// Arrow left
 				case 37:
-					showImage(getPrevImage());
-				break;
-			
+					if(clicked == 1) {
+						showImage(getPrevImage());
+					}
+				break;		
 			}
 		});
 		
@@ -176,17 +182,19 @@ function imagerecorder(canvas)
 		 * Update scale ratio when the window is resized
 		 */
 		$(window).on('resize', function(){
-			// Scale ratio update (for correct mouse positions)
-			var rect = canvas.getBoundingClientRect();
-			mHeight = (rect.bottom - rect.top);
-			mWidth = (rect.right-rect.left);
-			addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
-			canvas.width = mWidth;
-			canvas.height = mHeight; 
-			updateScaleRatio();
-			showImage(activeImage);
-			console.log("On Resize\n");
-			console.log("canvas: " + canvas.width + ", " + canvas.height);	
+			if(clicked == 1) {
+				// Scale ratio update (for correct mouse positions)
+				var rect = canvas.getBoundingClientRect();
+				mHeight = (rect.bottom - rect.top);
+				mWidth = (rect.right-rect.left);
+				addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
+				canvas.width = mWidth;
+				canvas.height = mHeight; 
+				updateScaleRatio();
+				showImage(activeImage);
+				console.log("On Resize\n");
+				console.log("canvas: " + canvas.width + ", " + canvas.height);
+			}
 		});
 		
 		// Add save button to body
@@ -200,6 +208,12 @@ function imagerecorder(canvas)
 				data: { string: logStr + "\n</script>" }
 			});
 		});
+
+		// Add undo button to body
+		// Mapped to undo function, hidden by default
+		$("#controls").append("<input type='button' class='controlbutton' id='imagerecorder-undo' value='Undo' >");
+		$("#imagerecorder-undo").click(undo);
+		$("#imagerecorder-undo").hide();
 	});
 	
 	// Fetch mouse movement over body to use when spawning thumbnail men
@@ -484,12 +498,27 @@ function imagerecorder(canvas)
 		logStr += str;
 	}
 
-	/*
-	 * Public function for resetting the recorder
-	 * Will reset the recording
-	 *
-	 */
-	this.reset = function(){
+	// Will undo the last click
+	function undo(){
+		// Check if an undo is possible
+		if (clicked > 0) {
+			// TODO: Undo log string
+
+			// Show previous image
+			var prevImage = getPrevImage();
+			if (prevImage >= 0) {
+				// Show previous
+				showImage(prevImage);
+			}
+			else {
+				// No previous, should reset
+				reset();
+			}
+		}
+	}
+
+	// Reset recording session
+	function reset(){
 		// Reset variables
 		clicked = 0;
 		lastEvent = Date.now();
@@ -500,12 +529,23 @@ function imagerecorder(canvas)
 		// Clear logged data
 		logStr = "";
 
+		// Remove undo button
+		$("#imagerecorder-undo").hide();
+
 		// Make thumbnails sortable
 		$("#sortableThumbs").sortable({
 			revert: 300,
 			update: function() {
 				rebuildImgLibrary();
 			}
+		});
+		
+		// Readd hover effect to thumbnails
+		$(".thumbnail").hover(function() {
+			$(this).css({
+				"cursor": "move",
+				"opacity": "1"
+			});
 		});
 
 		// Clear canvas
@@ -514,5 +554,14 @@ function imagerecorder(canvas)
 		// Change button name and action
 		$("#uploadButton").attr('value', 'Upload image');
 		$("#uploadButton").attr('onclick', 'document.getElementById("imageLoader").click();');
+	}
+
+	/*
+	 * Public function for resetting the recorder
+	 * Will reset the recording
+	 *
+	 */
+	this.reset = function() {
+		reset();
 	}
 }
