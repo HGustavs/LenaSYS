@@ -511,6 +511,14 @@ function imagerecorder(canvas)
 				rebuildImgLibrary();
 			}
 		});
+		
+		// Readd hover effect to thumbnails
+		$(".thumbnail").hover(function() {
+			$(this).css({
+				"cursor": "move",
+				"opacity": "1"
+			});
+		});
 
 		// Clear canvas
 		canvas.width = canvas.width;
