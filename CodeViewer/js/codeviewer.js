@@ -178,7 +178,7 @@ function Save()
 	$('.codestyle span').contents().unwrap();
 	var editable=document.getElementById('docucontent');
 	var desc=editable.innerHTML;
-					AJAXService2("editDescription", desc);
+	AJAXService2("editDescription", desc);
 }
 
 function highlightop(otherop,thisop)
@@ -194,26 +194,26 @@ function dehighlightop(otherop,thisop)
 }
 				
 function Up()
-{						
-		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
+{		
+		location="../DuggaSys/#sectioned?courseid="+courseID;
 }				
 
 function gotoPosition(exampleid)
 {
-		location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+exampleid;
+		location="EditorV30.php?courseid="+courseID+"&exampleid="+exampleid;
 }
 
 function SkipB()
 {		
 		if(issetDrop("backwdrop")&&isdropped==false){
-			position=parseInt(position)-1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
+			location="EditorV30.php?courseid="+courseID+"&exampleid="+prevexampleid;
 		}else if(issetDrop("backwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 			// get previous example in the hierarchy
 			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
-			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+prevexampleid;
+			location="EditorV30.php?courseid="+courseID+"&exampleid="+prevexampleid;
 		}
 }
 
@@ -239,15 +239,15 @@ function SkipBUp()
 function SkipF()
 {
 		if(issetDrop("forwdrop")&&isdropped==false){
-				position=parseInt(position)+1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+			var nextexampleid=parseInt(retdata['after'][0][1]);
+			location="EditorV30.php?courseid="+courseID+"&exampleid="+nextexampleid;
 		}
 		else if(issetDrop("forwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 			// get next example in the hierarchy
 			var nextexampleid=parseInt(retdata['after'][0][1]);
-			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+nextexampleid;
+			location="EditorV30.php?courseid="+courseID+"&exampleid="+nextexampleid;
 		}
 }
 $(document).click(function (e)
@@ -302,13 +302,12 @@ function SkipFUp()
 
 function setup()
 {
-//		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
 	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
 			
-		if(sessionkind=="w"){
-				setupEditable();						
-		}
-		setTheme();
+	if(sessionkind=="w"){
+		setupEditable();						
+	}
+	setTheme();
 }
 
 

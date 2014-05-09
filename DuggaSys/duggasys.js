@@ -58,7 +58,7 @@ function returnedSection(data)
 							str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
 						if(sessionkind===true){
-								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href='../CodeViewer/EditorV30.php?exampleid=" + data['entries'][i]['code_id'] + "&courseid=" + data.coursename + "'>"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href='../CodeViewer/EditorV30.php?exampleid=" + data['entries'][i]['code_id'] + "&courseid=" + data.courseid + "'>"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";
 								str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";											
 								str+="</span>"

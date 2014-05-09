@@ -54,7 +54,7 @@
 								$word=htmlEntities($_POST['word']);
 								$wordlist=htmlEntities($_POST['wordlist']);
 								$label=htmlEntities($_POST['label']);
-								$query = "INSERT INTO wordlist(wordlist,word,description,appuser) VALUES ('$wordlist','$word','$label','$appuser');";		
+								$query = "INSERT INTO wordlist(wordlist,word,description,uid) VALUES ('$wordlist','$word','$label','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delWordlistWord',$opt)===0){
@@ -134,8 +134,10 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 								
 					}else if(strcmp("editDescription",$opt)===0){
-								$description=$_POST['description'];
-								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleid='$exampleid';";
+								// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
+								$description = str_replace("&nbsp;"," ",$_POST['description']);
+								$description = str_replace("<br>","\n",$description);
+								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleno='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}
