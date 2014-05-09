@@ -21,7 +21,7 @@ Version History
  												Fields for play link and chosen wordlist
  												Updates of database from back-end 
  												Navigation using arrows (dropdown still missing)
- 3.06		 2013-08-21 - Create new example and save description section
+ 3.06		 2013-08-21 - Create new example and save description 
  3.07    2013-08-22 - Section Editor
  3.08    2013-08-25 - Section Editor Back-End finished and more minor bug fixes
                       Linked to external CSS anf JS
@@ -89,7 +89,6 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				
                 echo'<script>';
 				jsvarget("courseid","courseID");				
-				jsvarget("sectionid","sectionID");
 				jsvarget("position","position");
 				jsvarget("version","version");
 				
@@ -106,7 +105,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
 				function AJAXService(sname,param)
 				{
-						$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});															
+						$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&position="+position+"&opt="+sname+param, dataType: "json", success: returned});															
 				}
 
 		
