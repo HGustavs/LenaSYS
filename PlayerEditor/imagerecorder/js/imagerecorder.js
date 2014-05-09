@@ -129,19 +129,21 @@ function imagerecorder(canvas)
 		
 		// keyboard controls
 		$("body").keydown(function(event) {	
-			
 			switch(event.which) {
 			
 				// Arrow right
 				case 39:
-					showImage(getNextImage());
+					if(clicked == 1) {
+						showImage(getNextImage());
+					}
 				break;
 				
 				// Arrow left
 				case 37:
-					showImage(getPrevImage());
-				break;
-			
+					if(clicked == 1) {
+						showImage(getPrevImage());
+					}
+				break;		
 			}
 		});
 		
@@ -176,17 +178,19 @@ function imagerecorder(canvas)
 		 * Update scale ratio when the window is resized
 		 */
 		$(window).on('resize', function(){
-			// Scale ratio update (for correct mouse positions)
-			var rect = canvas.getBoundingClientRect();
-			mHeight = (rect.bottom - rect.top);
-			mWidth = (rect.right-rect.left);
-			addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
-			canvas.width = mWidth;
-			canvas.height = mHeight; 
-			updateScaleRatio();
-			showImage(activeImage);
-			console.log("On Resize\n");
-			console.log("canvas: " + canvas.width + ", " + canvas.height);	
+			if(clicked == 1) {
+				// Scale ratio update (for correct mouse positions)
+				var rect = canvas.getBoundingClientRect();
+				mHeight = (rect.bottom - rect.top);
+				mWidth = (rect.right-rect.left);
+				addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
+				canvas.width = mWidth;
+				canvas.height = mHeight; 
+				updateScaleRatio();
+				showImage(activeImage);
+				console.log("On Resize\n");
+				console.log("canvas: " + canvas.width + ", " + canvas.height);
+			}
 		});
 		
 		// Add save button to body
