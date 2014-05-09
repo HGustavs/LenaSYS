@@ -1708,7 +1708,7 @@ function displayThemes()
 	str+="<h2>Choose a theme!</h2>";
 	str+="<div class='themeicon' onclick='selectTheme(\""+'black'+"\");'>  <img src='new icons/theme_black.svg' /><span>Black<span/></div>";
 	str+="<div class='themeicon' onclick='selectTheme(\""+'white'+"\");'>  <img src='new icons/theme_white.svg' /><span>White<span/></div>";
-	str+="<div class='themeicon' onclick='selectTheme(\""+'colorblind'+"\");'> <img src='new icons/theme_button.svg' /><span>Colorblind<span/></div>";
+	str+="<div class='themeicon' onclick='selectTheme(\""+'colorblind'+"\");'> <img src='new icons/theme_blind.svg' /><span>Colorblind<span/></div>";
 	docurec=document.getElementById('themedrop');
 	docurec.innerHTML=str;
 }
