@@ -38,13 +38,13 @@ function dehighlightKeyword(kw)
 			});	
 }
 
-// Callback for highlighting back/forward menu item
+// Callback for highlighting back/forward menu item. NOT IN USE FOR NOW.
 function highlightMenu(keywid)
 {
 		$("#"+keywid).addClass("menuhi");
 }
 
-// Callback for highlighting back/forward menu item
+// Callback for highlighting back/forward menu item. NOT IN USE FOR NOW
 function dehighlightMenu(keywid)
 {		
 		$("#"+keywid).removeClass("menuhi");					
@@ -661,7 +661,7 @@ function returned(data)
 		// Make before dropdown
 		str="<div class='dropdownback dropdownbackStyle'>Skip Backward</div>";
 		for(i=0;i<data['before'].length;i++){
-				str+="<span id='F"+data['before'][i][1]+"' onmouseover='highlightMenu(\"F"+data['before'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['before'][i][1]+"\");' onclick='gotoPosition(\""+data['before'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['before'][i][0]+"</span>";
+				str+="<span id='F"+data['before'][i][1]+"' onclick='gotoPosition(\""+data['before'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['before'][i][0]+"</span>";
 		}
 		var before=document.getElementById('backwdrop');
 		before.innerHTML=str;
@@ -728,7 +728,7 @@ function returned(data)
 		// Make after dropdown
 		str="<div class='dropdownback dropdownbackStyle'>Skip Forward</div>";
 		for(i=0;i<data['after'].length;i++){
-				str+="<span id='F"+data['after'][i][1]+"' onmouseover='highlightMenu(\"F"+data['after'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['after'][i][1]+"\");' onclick='gotoPosition(\""+data['after'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['after'][i][0]+"</span>";
+				str+="<span id='F"+data['after'][i][1]+"' onclick='gotoPosition(\""+data['after'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['after'][i][0]+"</span>";
 		}
 		var after=document.getElementById('forwdrop');
 		after.innerHTML=str;
@@ -775,9 +775,9 @@ function returned(data)
 				str="";
 				for(i=0;i<data['directory'].length;i++){
 						if(data['directory'][i]==data['filename']){
-								str+="<span class='dropdownitem dropdownitemStyle menuch' id='DDI"+i+"' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";						
+								str+="<span class='dropdownitem dropdownitemStyle menuch' id='DDI"+i+"'>"+data['directory'][i]+"</span>";						
 						}else{
-								str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+data['directory'][i]+"\");' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";														
+								str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+data['directory'][i]+"\");''>"+data['directory'][i]+"</span>";														
 						}
 				}
 				var filereq=document.getElementById('codedrop');

@@ -198,6 +198,7 @@
 }
 .settingsTabMenuStyle .activeSetMenuLink{
 	border-bottom-color: #614875;
+	border-bottom-width:3px;
 	background-color: #614875;
 }
 
