@@ -30,16 +30,37 @@
 		if(isset($_POST['pos'])) $pos=htmlEntities($_POST['pos']);
 		if(isset($_POST['newname'])) $newname=htmlEntities($_POST['newname']);
 		if(isset($_POST['kind'])) $kind=htmlEntities($_POST['kind']);
+		if(array_key_exists('link', $_POST)) $link=htmlEntities($_POST['link']);
+		if(array_key_exists('visibility', $_POST)) $visibility = $_POST['visibility'];
 		
 		$debug="NONE!";
 		if(checklogin()){
 			$ha = hasAccess($_SESSION['uid'], $courseid, 'w');
 			if($ha){
 				if (strcmp("sectionNew",$opt) === 0) {
-					//$newsectpos = getqueryvalue("SELECT MAX(pos)+1 FROM listentries WHERE cid='$courseID';");
-					$result = $pdo->query("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, 'Ny sektion', NULL, 0, 6, 1, 1);");
-					if(!$result->execute()) {
-						echo "Error updating entries";
+					// Find out the last position in the list
+					$posq = $pdo->prepare("SELECT MAX(pos)+1 FROM listentries WHERE cid=:cid");
+					$posq->bindParam(':cid', $courseid);
+
+					// Execute the query and fetch the position if all goes well
+					if($posq->execute() && $posq->rowCount() > 0) {
+						$posr = $posq->fetch(PDO::FETCH_NUM);
+						$pos = $posr[0];
+
+						// Prepare to insert a new row at the specified position
+						$query = $pdo->prepare("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(:cid, :name, :link, :kind, :pos, :uid, :visible)");
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':name', $sectname);
+						$query->bindParam(':link', $link);
+						$query->bindParam(':kind', $kind);
+						$query->bindParam(':pos', $pos);
+						$query->bindParam(':uid', $_SESSION['uid']);
+						$query->bindParam(':visible', $visibility);
+
+						// Insert it.
+						if(!$query->execute()) {
+							echo "Error updating entries";
+						}
 					}
 				} else if (strcmp("sectionDel",$opt) === 0) {
 					$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");

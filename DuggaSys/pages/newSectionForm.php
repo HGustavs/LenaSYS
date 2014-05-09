@@ -24,8 +24,8 @@
 			<label>Select visibility for entry</label>
 				<select name="visib" class='form-control'>
 					<option id="select-opt" value="0">Select</option>
-					<option class="select-opt" value="1">Hidden</option>
-					<option class="select-opt" value="2">Shown</option>
+					<option class="select-opt" value="0">Hidden</option>
+					<option class="select-opt" value="1">Shown</option>
 				</select>
 				<sub style="font-size:.8em; font-style:itelic;">
 					Shown is visible to anyone with access to the course. 

@@ -14,5 +14,30 @@
 })(jQuery);
 
 function submitNewSection() {
-	// TODO: Write submit code for the section form
+	var qs = getUrlVars();
+
+
+	var courseid = qs.courseid;
+	var sectionname = $("#create input[name=sectionname]").val();
+	var link = $("#create #linklabel input").val();
+	var type = $("#create #typeselect").val();
+	var visibility = $("#create select[name=visib]").val();
+
+	$.ajax({
+		dataType: 'json',
+		url: 'SectionedService.php',
+		method: 'post',
+		data: {
+			'courseid': courseid,
+			'opt': 'sectionNew',
+			'sectname': sectionname,
+			'link': link,
+			'kind': type,
+			'visibility': visibility ? 1 : 0
+		},
+		success: function() {
+			alert('Yay')
+			changeURL('sectioned?courseid=' + courseid);
+		}
+	});
 }
