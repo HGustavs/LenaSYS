@@ -56,7 +56,7 @@ function Canvasrenderer()
 	
 	// List of all valid canvas functions
 	// No other operation in the XML should be possible to run
-	var validFunctions = 	['bP', 'ibeginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
+	var validFunctions = 	['bP', 'beginPath', 'mT', 'moveTo', 'lT', 'lineTo', 'stroke', 'crtLinearGrad', 'createLinearGradient', 'crtPat',
 								'createPattern', 'crtRadialGrad', 'createRadialGradient', 'rec', 'rect', 'fRec', 'fillRect', 'sRec', 'strokeRect', 
 								'cRec', 'clearRect', 'fill', 'cP', 'closePath', 'clip', 'quadCrvTo', 'quadraticCurveTo', 'beizCrvTo', 'beizerCurveTo',
 								'arc', 'aT', 'arcTo', 'isPointInPath', 'scale', 'rot', 'rotate', 'translate', 'transform', 'mTxt', 'measureText', 'drawImg', 
@@ -74,9 +74,9 @@ function Canvasrenderer()
 			var rect = c.getBoundingClientRect();
 			mHeight = (rect.bottom - rect.top);
 			mWidth = (rect.right-rect.left);
-			canvas.scaleRatioX = mWidth/c.width;
-			canvas.scaleRatioY = mHeight/c.height;
-			canvas.updateScaleRatio();
+			this.scaleRatioX = (mWidth/c.width);
+			this.scaleRatioY = (mHeight/c.height);
+		
 		});	
 
 
@@ -267,10 +267,12 @@ function Canvasrenderer()
 			this.runningTimesteps[this.runningTimesteps.length-1].pause();
 		}
 	}
+
 	this.removeNonvalidCalls = function(nodes){
 		var retnodes = new Array();
 		for(a = 0; a < nodes.length; ++a){
 			if(validFunctions.indexOf(nodes[a].nodeName) >= 0) { retnodes.push(nodes[a]); }
+			else { console.log("removed call: " + nodes[a].nodeName ); }
 		}
 		return retnodes;
 	}
@@ -801,6 +803,7 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
+	
 		if(!isNaN(this.scaleRatioX) && !isNaN(this.scaleRatioY)){
 			// Calculate positions using the proper scale ratio
         if(this.downscaled && !isNaN(canvas.scaleRatioY)){
@@ -833,6 +836,7 @@ function Canvasrenderer()
 		this.drawMouseClick();
 		// Draw mouse pointer
 		ctx.drawImage(this.mouseCursor, x, y);
+		
 	}
 
 	this.mouseclick = function(x, y)
@@ -861,10 +865,12 @@ function Canvasrenderer()
 		setTimeout(function(){
 			canvas.mouseClick = false;
 		}, 1000);
+		
 	}
 
 	this.picture = function(src)
 	{
+	
 		// Load image
 		var image = new Image();
 		// Draw image when loaded
@@ -895,10 +901,12 @@ function Canvasrenderer()
                 canvas.updateScaleRatio();
 		}
 		image.src = src;
+		
 	} 
 
 	this.drawMouseClick = function() 
 	{
+	
 		// Draw mouse click (yellow circle) if active
 		if (this.mouseClick) {
 			// Save previous state
@@ -910,9 +918,11 @@ function Canvasrenderer()
 			ctx.fill();
 			// Restore previous state
 			ctx.restore();
+			
 		}
 	}
 	this.updateScaleRatio = function(){
+		
 		var rect = c.getBoundingClientRect();
 		mHeight = (rect.bottom - rect.top);
 		mWidth = (rect.right-rect.left);
@@ -920,6 +930,7 @@ function Canvasrenderer()
 		this.scaleRatioX = parseFloat(mWidth/this.recordedCanvasWidth);
 		this.scaleRatioY = parseFloat(mHeight/this.recordedCanvasHeight);
         if (this.scaleRatioX < this.scaleRatioY) this.scaleRatioY = this.scaleRatioX;
+		
 	}
 
 	this.recordedCanvasSize = function(width, height) {
