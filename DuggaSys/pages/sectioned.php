@@ -78,9 +78,8 @@ checklogin();
 			</script>
 
             <!--Linkans fula meddelande som kommer upp när du har gjort en dragNdrop-->
-	<div id="dragupdate"></div>
 	</head>
-	
+	<div id="dragupdate"></div>
 	<div id="Sectionlist">
 	</div>
 </html>

@@ -68,7 +68,7 @@ function returnedSection(data)
 
 		// For now we only have two kinds of sections
 		for(i=0;i<data['entries'].length;i++){
-			if (parseInt(data['entries'][i]['visible']) === 1 || sessionkind === 1) {
+			if (parseInt(data['entries'][i]['visible']) === 1 || sessionkind === true) {
 				switch(parseInt(data['entries'][i]['kind'])) {
 					case 0:
 						// Styling for header row
