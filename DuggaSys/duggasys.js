@@ -61,7 +61,7 @@ function returnedSection(data)
 		
 		// Fill section list with information
 		str="";
-		str+="<div style='float:right;'><input class='submit-button' type='button' value='Add' /></div>";
+		str+="<div style='float:right;'><input class='submit-button' type='button' value='Add' onclick='changeURL(\"newSectionForm?courseid=" + data.courseid + "\")'/></div>";
 		//str+=Sectionbutton("","PlusT.svg",2,"ADD");	;	
 		// Course Name
 		str+="<div class='course'>"+data.coursename+"</div>";

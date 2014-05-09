@@ -93,6 +93,7 @@
 			"debug" => $debug,
 			'writeaccess' => $ha,
 			'coursename' => getCourseName($courseid),
+			'courseid' => $courseid,
 			'success' => $success
 		);
 
