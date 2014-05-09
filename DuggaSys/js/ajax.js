@@ -22,20 +22,5 @@
 				console.log("Something went wrong");
 			}
 		});
-
-$.ajax({
-		dataType: "json",
-		type: "POST",
-		url: 'addstudent_ajax.php',
-		data: {
-		string: $("#string").val()
-	},
-		success: function (data) {
-		//console.log(data);
-		showPopUp('show', data)
-	},
-	});
-
-
  	};
  }
