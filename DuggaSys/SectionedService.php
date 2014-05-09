@@ -11,6 +11,7 @@
 		// Include basic application services!
 		include_once("../../coursesyspw.php");
 		include_once("../Shared/sessions.php");
+		include_once("../Shared/courses.php");
 	
 		// Connect to database and start session
 		pdoConnect();
@@ -29,16 +30,61 @@
 		if(isset($_POST['pos'])) $pos=htmlEntities($_POST['pos']);
 		if(isset($_POST['newname'])) $newname=htmlEntities($_POST['newname']);
 		if(isset($_POST['kind'])) $kind=htmlEntities($_POST['kind']);
+		if(array_key_exists('link', $_POST)) $link=htmlEntities($_POST['link']);
+		if(array_key_exists('visibility', $_POST)) $visibility = $_POST['visibility'];
 		
 		$debug="NONE!";
 		if(checklogin()){
 			$ha = hasAccess($_SESSION['uid'], $courseid, 'w');
 			if($ha){
 				if (strcmp("sectionNew",$opt) === 0) {
-					//$newsectpos = getqueryvalue("SELECT MAX(pos)+1 FROM listentries WHERE cid='$courseID';");
-					$result = $pdo->query("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, 'Ny sektion', NULL, 0, 6, 1, 1);");
-					if(!$result->execute()) {
-						echo "Error updating entries";
+					// Find out the last position in the list
+					$posq = $pdo->prepare("SELECT MAX(pos)+1 FROM listentries WHERE cid=:cid");
+					$posq->bindParam(':cid', $courseid);
+
+					// Execute the query and fetch the position if all goes well
+					if($posq->execute() && $posq->rowCount() > 0) {
+						$posr = $posq->fetch(PDO::FETCH_NUM);
+						$pos = $posr[0];
+						$code_id = NULL;
+
+						// Prepare to insert a new row at the specified position
+						$query = $pdo->prepare("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible,code_id) VALUES(:cid, :name, :link, :kind, :pos, :uid, :visible,:code_id)");
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':name', $sectname);
+						if($kind == 2 && $link == '') {
+							$stmt = $pdo->prepare("INSERT INTO codeexample (cid, examplename, wordlist, runlink,uid) VALUES(:cid, :name, 'JS', '<none>',:uid)");
+							$stmt->bindParam(':cid', $courseid);
+							$stmt->bindParam(':name', $sectname);
+							$stmt->bindParam(':uid', $_SESSION['uid']);
+							if(!$stmt->execute()) {
+								print_r($stmt->errorInfo());
+							} else {
+								// Get example id
+								$eidq = $pdo->query("SELECT LAST_INSERT_ID() as code_id");
+								$eidq->execute();
+								$eid = $eidq->fetch(PDO::FETCH_NUM);
+								$code_id = $eid[0];
+
+								// Create file list
+								$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
+								$sinto->bindParam(':eid', $eid[0]);
+								if(!$sinto->execute()) {
+									print_r($sinto->errorInfo());
+								}
+							}
+						}
+						$query->bindParam(':link', $link);
+						$query->bindParam(':kind', $kind);
+						$query->bindParam(':pos', $pos);
+						$query->bindParam(':uid', $_SESSION['uid']);
+						$query->bindParam(':visible', $visibility);
+						$query->bindParam(':code_id', $code_id);
+
+						// Insert it.
+						if(!$query->execute()) {
+							echo "Error updating entries";
+						}
 					}
 				} else if (strcmp("sectionDel",$opt) === 0) {
 					$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
@@ -69,7 +115,7 @@
 		//------------------------------------------------------------------------------------------------
 		$ha = (checklogin() && hasAccess($_SESSION['uid'], $courseid, 'w'));
 		$entries=array();
-		$query = $pdo->prepare("SELECT lid,entryname,pos,kind,link,visible FROM listentries WHERE listentries.cid=:cid ORDER BY pos");
+		$query = $pdo->prepare("SELECT lid,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid ORDER BY pos");
 		$query->bindParam(':cid', $courseid);
 		$result=$query->execute();
 		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
@@ -82,7 +128,8 @@
 					'pos' => $row['pos'],
 					'kind' => $row['kind'],
 					'link'=>$row['link'],
-					'visible'=>$row['visible']
+					'visible'=>$row['visible'],
+					'code_id' => $row['code_id']
 				)
 			);
 		}
@@ -92,6 +139,7 @@
 			"debug" => $debug,
 			'writeaccess' => $ha,
 			'coursename' => getCourseName($courseid),
+			'courseid' => $courseid,
 			'success' => $success
 		);
 

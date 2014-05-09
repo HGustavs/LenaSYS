@@ -4,7 +4,17 @@ include_once "../Shared/database.php";
 
 dbConnect();
 
-$pos = 3;
+$exno = $_GET['exampleid'];
+
+$posquery = mysql_query(
+	sprintf("SELECT pos FROM listentries WHERE code_id=%d",
+		mysql_real_escape_string($exno)
+	)
+);
+
+$res = mysql_fetch_assoc($posquery);
+$pos = $res['pos'];
+
 // Locate all the sections in the listentries table
 $r = mysql_query("SELECT pos FROM listentries WHERE kind=1 ORDER BY pos");
 

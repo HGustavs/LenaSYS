@@ -103,9 +103,9 @@ function Up()
 		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
 }				
 
-function gotoPosition(poz)
+function gotoPosition(exampleid)
 {
-		location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+poz;
+		location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+exampleid;
 }
 
 function SkipB()
@@ -115,8 +115,9 @@ function SkipB()
 		}else if(issetDrop("backwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
-				position=parseInt(position)-1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+			// get previous example in the hierarchy
+			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
+			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+prevexampleid;
 		}
 }
 
@@ -146,8 +147,9 @@ function SkipF()
 		}else if(issetDrop("forwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
-				position=parseInt(position)+1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+			// get next example in the hierarchy
+			var nextexampleid=parseInt(retdata['after'][0][1]);
+			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+nextexampleid;
 		}
 }
 
@@ -172,8 +174,9 @@ function SkipFUp()
 
 function setup()
 {
-		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
-		
+//		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
+	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
+			
 		if(sessionkind=="w"){
 				setupEditable();						
 		}
@@ -433,9 +436,53 @@ function sendOut(kind, sectid)
 }
 */			
 
+function changetemplate(templateid){
+	templateid = parseInt(templateid);
+	AJAXService("chooseTemplate","&templateid="+templateid);
+//	location.reload();
+}
+
+function choosetemplate(){
+	if(sessiondkind = "w"){
+		if(parseInt(retdata['template'][0][0]) == 0){
+			var div2 = document.getElementById("div2");
+			var templateholder = document.createElement("div");
+			templateholder.setAttribute("id", "picktemplate");
+			templateholder.style.zIndex='2';
+			var examplenme=document.getElementById('exampleName');
+			var examplesect=document.getElementById("exampleSection");
+			examplenme.innerHTML=retdata['examplename'];
+			examplesect.innerHTML=retdata['entryname'];
+			
+			
+			str="<h1>Pick a template for your example!</h1>";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'1'+"\");' src='new icons/template1_butt.svg' />";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'2'+"\");' src='new icons/template2_butt.svg' />";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'3'+"\");' src='new icons/template3_butt.svg' />";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'4'+"\");' src='new icons/template4_butt.svg' />";
+			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'5'+"\");' src='new icons/template5_butt.svg' />";
+			templateholder.innerHTML = str;
+			div2.appendChild(templateholder);
+			return false;
+		}
+		return true;
+	}
+}
+
 function returned(data)
 {
 		retdata=data;
+		
+		if(!choosetemplate()){
+			return;
+		}
+		// remove templatebox if it still exist
+		if(document.getElementById("picktemplate")){
+			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
+		}
+			
+		changeCSS("css/"+data['template'][0][1]);
+		
 				//----------------------------------------------------
 		// Populate interface with returned data (all relevant data is returned)
 		//----------------------------------------------------
@@ -471,7 +518,7 @@ function returned(data)
 		}else{
 				playlink.style.display="normal";										
 		}
-		
+	
 		// Make after dropdown
 		str="<div class='dropdownback'>Skip Forward</div>";
 		for(i=0;i<data['after'].length;i++){
@@ -492,7 +539,7 @@ function returned(data)
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
 		// Should be sectionname instead of sectionID
-		examplesect.innerHTML=sectionID;
+		examplesect.innerHTML=data['entryname'];
 		
 		
 		if(sessionkind=="w"){
@@ -599,11 +646,11 @@ function displayTemplates()
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);'  onclick='changeCSS(\""+'css/template1.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='changeCSS(\""+'css/template2.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
-	str+="<div class='templateicon' onmouseup='wigglepick(this);' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\");'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'1'+"\");'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'2'+"\");'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'3'+"\");'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'4'+"\");'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'5'+"\");'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
 
 		
 	docurec=document.getElementById('docudrop');

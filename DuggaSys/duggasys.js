@@ -1,74 +1,16 @@
-function countsect(sectpos)
-{
-		var cnt=0;						
-		for(j=0;j<retdata['entries'].length;j++){
-				if(retdata['entries'][j][3]==sectpos && retdata['entries'][j]['kind'] == 2){
-						cnt++;
-				}
-		}
-		return cnt;
-}
-			
-function newSection(kind)
-{
-		AJAXServiceSection("sectionNew","&kind="+kind);						
-}			
-			
-function editedExampleName(obj)
-{
-				var newname=obj.innerHTML;
-				newname=dehtmlify(newname,false,60);
-				obj.innerHTML=newname;
-
-				AJAXServiceSection("editExampleName","&newname="+newname+"&sectid="+obj.id);
-
-}
-
-function editedSectionName(obj)
-{
-				var newname=obj.innerHTML;
-				newname=dehtmlify(newname,false,60);
-				obj.innerHTML=newname;
-
-				AJAXServiceSection("editSectionName","&newname="+newname+"&sectid="+obj.id);
-}
-
-function editedExamplename()
-{
-		var editable=document.getElementById('exampleName');
-		var examplename=dehtmlify(editable.innerHTML,true,60);
-		editable.innerHTML=examplename;
-		AJAXService("editExampleName","&examplename="+examplename);
-}
-
-// Create a button for a section row
-function Sectionbutton(kind,imgname,sectid,typ,pos)
-{	
-		if(typ=="SMALL"){
-				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";				
-		}else if(typ=="BIG"){
-				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
-		}else if(typ=="EXAMPLE"){
-				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='AJAXServiceSection(\""+kind+"\",\"&sectid="+sectid+"\")' />";
-		}else if(typ=="ADD"){
-				return "<img src='../CodeViewer/icons/"+imgname+"' onclick='newSection(0)' />";
-		}	
-}
-
 function returnedSection(data)
 {
 		retdata=data;
 		
 		// Fill section list with information
 		str="";
-		str+="<div style='float:right;'><input class='submit-button' type='button' value='Add' /></div>";
-		//str+=Sectionbutton("","PlusT.svg",2,"ADD");	;	
+		str+="<div style='float:right;'><input class='submit-button' type='button' value='Add' onclick='changeURL(\"newSectionForm?courseid=" + data.courseid + "\")'/></div>";	
 		// Course Name
 		str+="<div class='course'>"+data.coursename+"</div>";
 
 		// For now we only have two kinds of sections
 		for(i=0;i<data['entries'].length;i++){
-			if (parseInt(data['entries'][i]['visible']) === 1 || sessionkind === 1) {
+			if (parseInt(data['entries'][i]['visible']) === 1 || sessionkind === true) {
 				switch(parseInt(data['entries'][i]['kind'])) {
 					case 0:
 						// Styling for header row
@@ -77,10 +19,10 @@ function returnedSection(data)
 						} else {
 							str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
-						if(sessionkind===1){
-							str+="<span contenteditable='true' id='SE"+data['entries'][i]['lid']+"' ><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+						if(sessionkind===true){
+							str+="<span id='SE"+data['entries'][i]['lid']+"' ><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 							str+="<span class='smallishbutt'>";
-							str+=Sectionbutton("sectionDel","MinusT.svg",data['entries'][i]['lid'],"BIG");											
+							str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";											
 							str+="</span>";
 						}else{
 							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";						
@@ -96,10 +38,10 @@ function returnedSection(data)
 						}
 
 						// If we are allowed to edit
-						if(sessionkind===1){
+						if(sessionkind===true){
 							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";
 							str+="<span class='smallbutt'>";
-							str+=Sectionbutton("sectionDel","MinusS.svg",data['entries'][i]['lid'],"SMALL");
+							str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							str+="</span>";
 						}else{
 							str+="<span id='SE"+data['entries'][i]['lid']+"'>"+data['entries'][i]['entryname']+"</span>";						
@@ -115,10 +57,10 @@ function returnedSection(data)
 						} else {
 							str+="<span class='example' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
-						if(sessionkind===1){
-								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+						if(sessionkind===true){
+								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href='../CodeViewer/EditorV30.php?exampleid=" + data['entries'][i]['code_id'] + "&courseid=" + data.coursename + "'>"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";
-								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";											
 								str+="</span>"
 						}else{
 								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
@@ -132,10 +74,10 @@ function returnedSection(data)
 						} else {
 							str+="<span class='test' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
-						if(sessionkind===1){
+						if(sessionkind===true){
 								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 								str+="<span class='smallbutt'>";
-								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";										
 								str+="</span>"
 						}else{
 								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		
@@ -150,10 +92,10 @@ function returnedSection(data)
 						} else {
 							str+="<span class='norm' id='Entry_"+data['entries'][i]['lid']+"'>";
 						}
-						if(sessionkind===1){
+						if(sessionkind===true){
 								str+="<span id='EX"+data['entries'][i]['lid']+"'><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
-								str+="<span class='smallbutt'>";
-								str+=Sectionbutton("exampleDel","MinusT.svg",data['entries'][i]['lid'],"EXAMPLE");											
+								str+="<span style='float:right;' class='smallbutt'>";
+								str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";											
 								str+="</span>"
 						}else{
 								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";		

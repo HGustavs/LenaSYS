@@ -40,14 +40,14 @@ if(array_key_exists('user', $_POST) && array_key_exists('answer', $_POST) && arr
 				// If the password matches our requirements then update the password for
 				// the user.
 				$updquery = $pdo->prepare("UPDATE user SET password=:password WHERE username=:username");
-				$updquery->bindParam(':username', $_GET['user']);
+				$updquery->bindParam(':username', $_POST['user']);
 				$updquery->bindValue(
 					':password',
 					password_hash($_POST['newpassword'], PASSWORD_BCRYPT, array("cost" => 12))
 				);
 
 				// Run the query and report whether or not is succeeded.
-				if($updquery->execute()) {
+				if($updquery->execute() && $updquery->rowCount() > 0) {
 					$answerres["success"] = true;
 				} else {
 					$answerres["success"] = false;
