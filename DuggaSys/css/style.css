@@ -431,18 +431,21 @@ input.submit-button:hover {
 }
 
 /* DRAG AND DROP MESSAGE */
-#dragupdate {
+#dragupdate-section, #dragupdate-menulist {
+	top:40px;
+	background-color:#c75050;
 	padding:10px;
-	background-color:#614875;
 	display:none;
-	z-index:5;
+	z-index:10;
 	position:absolute;
 	font-family:arial;
 	font-size:10pt;
 	font-weight:bold;
-	color:#FFFFFF;
-	width:40%;
-	margin:inherit;
+	color:#FFF;
+	text-align:center;
+	width:30%;
+	margin: 0 auto;
+	margin-left:5px;
 }
 
 

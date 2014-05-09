@@ -40,17 +40,17 @@ checklogin();
 										$.post("SectionedService.php", array, function(theResponse){
 											var data = $.parseJSON(theResponse);
 											if(data.success) {
-												$("#dragupdate").html('Sparade listelementen');
+												$("#dragupdate-section").html('Saved list elements');
 											} else {
-												$("#dragupdate").html('Kunde inte spara listan');
+												$("#dragupdate-section").html('Could not save list elements');
 											}
-											$("#dragupdate").slideDown('slow');
+											$("#dragupdate-section").slideDown('slow');
 											setTimeout(function(){
-												$("#dragupdate").slideUp("slow", function () { });
-											}, 2000);
+												$("#dragupdate-section").slideUp("slow", function () { });
+											}, 2500);
 											dragtimer = null;
 										});
-									}, 4000);
+									}, 2000);
 
 								}
 						});
@@ -76,18 +76,15 @@ checklogin();
 				}
 				AJAXServiceSection("List", '');
 			</script>
-
-            <!--Linkans fula meddelande som kommer upp när du har gjort en dragNdrop-->
 	</head>
-	<div id="dragupdate"></div>
-	<div id="Sectionlist">
-	</div>
+	<div id="dragupdate-section"></div>
+	<div id="Sectionlist"></div>
 </html>
 
 
 <!--Place tooltips on all objects with a title
 
-Do we want to tooltips?
+Do we want to use tooltips?
 
  <script>
     $( document ).ready(function() {
