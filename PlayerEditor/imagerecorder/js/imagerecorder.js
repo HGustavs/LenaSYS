@@ -126,6 +126,25 @@ function imagerecorder(canvas)
 				alert("You need to upload at least one image before you can start recording.");
 			}
 		});
+		
+		// keyboard controls
+		$("body").keydown(function(event) {	
+			
+			switch(event.which) {
+			
+				// Arrow right
+				case 39:
+					showImage(getNextImage());
+				break;
+				
+				// Arrow left
+				case 37:
+					showImage(getPrevImage());
+				break;
+			
+			}
+		});
+		
 		/*
 		 *checks the mouse-position in realtime.
 		 */
@@ -308,6 +327,16 @@ function imagerecorder(canvas)
 				return activeImage + 1;
 			}
 		} else {
+			return -1;
+		}
+	}
+	
+	function getPrevImage() {
+		
+		if((activeImage - 1) >= 0) {
+			return activeImage - 1;
+		}
+		else {
 			return -1;
 		}
 	}
