@@ -113,7 +113,6 @@ function returnedSection(data)
 						str+="<input class='submit-button' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
 						str+="<input class='submit-button' type='button' value='Save' onclick='sectionSettingsService("+data['entries'][i]['lid']+")' />";
 						str+="</div></div>";
-						str+="</span>";
 					} else {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
 							str+="<span>"+data['entries'][i]['entryname']+"</span>";
@@ -121,6 +120,7 @@ function returnedSection(data)
 							str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 						}
 					}
+					str+="</span>";
 				}
 			}
 		} else {
