@@ -85,16 +85,3 @@ checklogin();
 	<div id="dragupdate-section"></div>
 	<div id="Sectionlist"></div>
 </html>
-
-
-<!--Place tooltips on all objects with a title
-
-Do we want to use tooltips?
-
- <script>
-    $( document ).ready(function() {
-        setTimeout(function() {
-            $("*[title]").tooltips();
-        }, 800);
-    });
-</script>-->

@@ -39,3 +39,12 @@ function courseSettingsService(ID)
 		}, 500);
 	});
 }
+
+function showSectionSettingRow(ID){
+	var display = $('#sectioned_'+ID).css('display');
+	if(display == 'none'){
+		$('#sectioned_'+ID).show();
+	}else {
+		$('#sectioned_'+ID).hide();
+	}
+}

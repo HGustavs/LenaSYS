@@ -45,10 +45,10 @@ function returnedSection(data)
 					if(sessionkind) {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
 							str+="<span>"+data['entries'][i]['entryname']+"</span>";
-							str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+							str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 						} else {
 							str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
-							str+="<img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";	
+							str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";	
 						}
 					} else {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
@@ -57,6 +57,16 @@ function returnedSection(data)
 							str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 						}
 					}
+					
+					str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
+					str+="Edit name:<input type='text' value='"+data['entries'][i]['entryname']+"' />";
+					str+="Edit link:<input type='text' value='"+data['entries'][i]['link']+"' />";
+					str+="Visibility:<select>";
+					str+="<option>Public</option>";
+					str+="</select>";
+					str+="<input class='submit-button' type='button' value='Delete' onclick='' style='margin-left:10px;margin-right:10px;' />";
+					str+="<input class='submit-button' type='button' value='Save' onclick='' />";
+					str+="</div>";
 					str+="</span>";
 				}
 			}
