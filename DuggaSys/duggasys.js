@@ -53,6 +53,46 @@ function returnedSection(data)
 						
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' value='"+data['entries'][i]['entryname']+"' />";
+						str+="Edit type:<select><option value='"+parseInt(data['entries'][i]['kind'])+"'>";
+						switch(parseInt(data['entries'][i]['kind'])){
+							case 0:
+								str+="Header</option>";
+								str+="<option value='1'>Section</option>";
+								str+="<option value='2'>Code Example</option>";
+								str+="<option value='3'>Test</option>";
+								str+="<option value='4'>Link</option>";
+								break;
+							case 1:
+								str+="Section</option>";
+								str+="<option value='0'>Header</option>";
+								str+="<option value='2'>Code Example</option>";
+								str+="<option value='3'>Test</option>";
+								str+="<option value='4'>Link</option>";
+								break;
+							case 2:
+								str+="Code Example</option>";
+								str+="<option value='0'>Header</option>";
+								str+="<option value='1'>Section</option>";
+								str+="<option value='3'>Test</option>";
+								str+="<option value='4'>Link</option>";
+								break;
+							case 3:
+								str+="Test</option>";
+								str+="<option value='0'>Header</option>";
+								str+="<option value='1'>Section</option>";
+								str+="<option value='2'>Code Example</option>";
+								str+="<option value='4'>Link</option>";
+								break;
+							default:
+							case 4:
+								str+="Link</option>";
+								str+="<option value='0'>Header</option>";
+								str+="<option value='1'>Section</option>";
+								str+="<option value='2'>Code Example</option>";
+								str+="<option value='3'>Test</option>";
+								break;
+						}
+						str+="</select>";
 						str+="Edit link:<input type='text' value='"+data['entries'][i]['link']+"' />";
 						str+="Visibility:<select><option value='"+data['entries'][i]['visible']+"'>";
 						if(data['entries'][i]['visible'] != 0){
