@@ -9,7 +9,6 @@
 		date_default_timezone_set("Europe/Stockholm");
 	
 		// Include basic application services!
-		include_once("../../coursesyspw.php");
 		include_once("../Shared/sessions.php");
 		include_once("../Shared/courses.php");
 	
@@ -117,7 +116,12 @@
 		$query->bindParam(':1', $courseid);
 		$result = $query->execute();
 		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-			$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0 || isSuperUser($_SESSION["uid"]));
+			$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0);
+			if (!$hr) {
+				if (checklogin()) {
+					$hr = isSuperUser($_SESSION['uid']);
+				}
+			}
 		}
 		$ha = (checklogin() && (hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"])));
 		$entries=array();

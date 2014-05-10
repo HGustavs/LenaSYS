@@ -5,7 +5,13 @@ include_once(dirname(__file__)."/../../Shared/sessions.php");
 pdoConnect();
 ?>
 <div id="dragupdate-menulist"></div>
-<div style="margin-bottom:7px; float:right;"><input style="cursor:pointer;" onclick="changeURL('newCourseForm')" class='submit-button' type='button' value='Add course'></div>
+<?php
+if (checklogin()) {
+	if (isSuperUser($_SESSION["uid"])) {
+		echo "<div style='margin-bottom:7px; float:right;'><input style='cursor:pointer;' onclick='changeURL('newCourseForm')' class='submit-button' type='button' value='Add course'></div>";
+	}
+}
+?>
 <table class="course-table" cellspacing="0">
 	<tr>
 		<th colspan="2">Course Example Organization System</th>
@@ -26,16 +32,17 @@ pdoConnect();
 		while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 			//Sets $color to either true or false (different colors) depending on row counter.
 			$color=($counter % 2 == 0) ? '#f0f0f0' : '#e3e3e3';
-			$counter++;
 			if ($row['visibility'] == 0) {
 				if (checklogin()) {
 					if (hasAccess($_SESSION["uid"], $row['id'], 'r') && !hasAccess($_SESSION["uid"], $row['id'], 'w')) {
 						echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
 						echo "</td></tr>";
+						$counter++;
 					} else if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
 						echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
 						echo "<td style='width:2%;' onclick='showSettingRow(".$row['id'].")' ><img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 						echo "</td></tr>";
+						$counter++;
 					}
 				}
 			} else {
@@ -46,6 +53,7 @@ pdoConnect();
 					}
 				}
 				echo "</td></tr>";
+				$counter++;
 			}
 			if (checklogin()) {
 				if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {

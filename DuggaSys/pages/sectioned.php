@@ -66,7 +66,7 @@ checklogin();
 					if (readaccess==true) {
 						returnedSection(data);
 					} else {
-						changeURL('404');
+						changeURL('noid');
 					}
 				}
 				function AJAXServiceSection(opt,para)
