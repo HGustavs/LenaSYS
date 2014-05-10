@@ -28,22 +28,43 @@ pdoConnect();
 			//Sets $color to either true or false (different colors) depending on row counter.
 			$color=($counter % 2 == 0) ? '#f0f0f0' : '#e3e3e3';
 			$counter++;
-				echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
-				echo "<td style='width:2%;' onclick='showSettingRow(".$row['id'].")' ><img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
-				echo "</td></tr>";
-				echo "<tr class='settings-tr' id='settings_".$row['id']."'>";
-				echo "<td class='settings-td'>Edit name:<input type='text' value='".$row['coursename']."' />";
-				echo "Visibility:<select><option value='".$row['visibility']."'>";
-				if($row['visibility'] != 0){
-					echo "Public</option>";
-					echo "<option value='0'>Hidden</option>";
-				}else{
-					echo "Hidden</option>";
-					echo "<option value='1'>Public</option>";
+			if ($row['visibility'] == 0) {
+				if (checklogin()) {
+					if (hasAccess($_SESSION["uid"], $row['id'], 'r') && !hasAccess($_SESSION["uid"], $row['id'], 'w')) {
+						echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
+						echo "</td></tr>";
+					} else if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
+						echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
+						echo "<td style='width:2%;' onclick='showSettingRow(".$row['id'].")' ><img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+						echo "</td></tr>";
+					}
 				}
-				echo "</select>";
-				echo "<input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;'/><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
+			} else {
+				echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
+				if (checklogin())  {
+					if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
+						echo "<td style='width:2%;' onclick='showSettingRow(".$row['id'].")' ><img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+					}
+				}
 				echo "</td></tr>";
+			}
+			if (checklogin()) {
+				if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
+					echo "<tr class='settings-tr' id='settings_".$row['id']."'>";
+					echo "<td class='settings-td'>Edit name:<input type='text' value='".$row['coursename']."' />";
+					echo "Visibility:<select><option value='".$row['visibility']."'>";
+					if($row['visibility'] != 0){
+						echo "Public</option>";
+						echo "<option value='0'>Hidden</option>";
+					}else{
+						echo "Hidden</option>";
+						echo "<option value='1'>Public</option>";
+					}
+					echo "</select>";
+					echo "<input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;'/><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
+					echo "</td></tr>";
+				}
+			}
 		}	
 	?>
 </table>

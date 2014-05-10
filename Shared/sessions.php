@@ -128,7 +128,7 @@ function getAccessType($userId, $courseId)
 		pdoConnect();
 	}
 
-	require_once "../Shared/courses.php";
+	require_once "courses.php";
 	if(!is_numeric($courseId)) {
 		$courseId = getCourseId($courseId);
 	}

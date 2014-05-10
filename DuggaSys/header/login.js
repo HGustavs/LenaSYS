@@ -137,6 +137,7 @@ function makeLogin() {
 					else {
 						createDeleteLogin();
 					}
+					page.show();
 				} else {
 					console.log("Failed to log in.");
 				}
