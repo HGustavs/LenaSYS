@@ -323,7 +323,6 @@ table.list tr.red {
 #Sectionlist .hidden {
 	padding:6px;
 	padding-left:15px;
-	opacity: 0.5;
     display: block;
     background-color: #d0cfd0;
 }

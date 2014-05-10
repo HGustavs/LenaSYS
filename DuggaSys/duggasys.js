@@ -47,8 +47,15 @@ function returnedSection(data)
 							str+="<span>"+data['entries'][i]['entryname']+"</span>";
 							str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 						} else {
-							str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
-							str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";	
+							if (parseInt(data['entries'][i]['visible']) === 0) {
+								//Adding the opacity here instead for visible = 0
+								str+="<span><a id='section-list' style='opacity:0.5;' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+							
+							} else{
+								str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+							}
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' value='"+data['entries'][i]['entryname']+"' />";
@@ -102,9 +109,10 @@ function returnedSection(data)
 							str+="<option value='1'>Public</option>";
 						}
 						str+="</select>";
+						str+="<div style='float:right;'>";
 						str+="<input class='submit-button' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
 						str+="<input class='submit-button' type='button' value='Save' onclick='' />";
-						str+="</div>";
+						str+="</div></div>";
 						str+="</span>";
 					} else {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
