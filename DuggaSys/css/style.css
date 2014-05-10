@@ -361,9 +361,12 @@ table.list tr.red {
 }
 
 .sectionlist-change-div {
+	font-family: Arial;
+	font-size:10pt;
 	display:none;
 	background-color:#fff;
 	color:#000;
+	margin-top: 5px;
 	padding:10px;
 }
 
