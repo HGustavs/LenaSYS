@@ -77,9 +77,9 @@ function returnedSection(data)
 				}
 			}
 		} else {
-			str+="<span class='bigg'>";
+			str+="<div class='bigg'>";
 			str+="<span>There is currently no content in this course</span>";
-			str+="</span>";
+			str+="</div>";
 		}
 			
 			var slist=document.getElementById('Sectionlist');
