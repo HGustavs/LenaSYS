@@ -58,7 +58,7 @@ if (checklogin()) {
 			if (checklogin()) {
 				if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
 					echo "<tr class='settings-tr' id='settings_".$row['id']."'>";
-					echo "<td class='settings-td'>Edit name:<input type='text' value='".$row['coursename']."' />";
+					echo "<td class='settings-td' style='float:left;'>Edit name:<input type='text' value='".$row['coursename']."' />";
 					echo "Visibility:<select><option value='".$row['visibility']."'>";
 					if($row['visibility'] != 0){
 						echo "Public</option>";
@@ -68,8 +68,8 @@ if (checklogin()) {
 						echo "<option value='1'>Public</option>";
 					}
 					echo "</select>";
-					echo "<input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;'/><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
-					echo "</td></tr>";
+					echo "<td class='settings-td-buttons'><input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;'/><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
+					echo "</td></td></tr>";
 				}
 			}
 		}	

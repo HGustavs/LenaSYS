@@ -50,7 +50,6 @@ function returnedSection(data)
 							str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 							str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";	
 						}
-						
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' value='"+data['entries'][i]['entryname']+"' />";
 						str+="Edit type:<select><option value='"+parseInt(data['entries'][i]['kind'])+"'>";

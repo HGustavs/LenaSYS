@@ -26,7 +26,7 @@ function courseSettingsService(ID)
 		changeURL("menulist");
 		var dragtimer = null;
 		dragtimer = setTimeout(function() {
-			if(response = null) {
+			if(!response) {
 				$("#dragupdate-menulist").html('Could not update course');
 			} else {
 				$("#dragupdate-menulist").html('Updated course');

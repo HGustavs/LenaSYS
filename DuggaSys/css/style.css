@@ -391,16 +391,19 @@ table.list tr.red {
 	display:none;
 	height:40px;
 	float:left;
+	width:100%;
 }
-
-.course-table td.settings-td:hover {
-	background-color:#fff;
-}
-
 .course-table td.settings-td {
 	font-size:12pt;
+	float:left;
+}
+.course-table td.settings-td-buttons {
+	float:right;
 }
 
+.course-table td.settings-td:hover, .course-table td.settings-td-buttons:hover {
+	background-color:#fff;
+}
 
 .course-table td{
     color:#434343;
