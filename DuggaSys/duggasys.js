@@ -58,8 +58,8 @@ function returnedSection(data)
 							}
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
-						str+="Edit name:<input type='text' value='"+data['entries'][i]['entryname']+"' />";
-						str+="Edit type:<select><option value='"+parseInt(data['entries'][i]['kind'])+"'>";
+						str+="Edit name:<input type='text' name='sectionname' value='"+data['entries'][i]['entryname']+"' />";
+						str+="Edit type:<select name='type'><option value='"+parseInt(data['entries'][i]['kind'])+"'>";
 						switch(parseInt(data['entries'][i]['kind'])){
 							case 0:
 								str+="Header</option>";
@@ -99,8 +99,8 @@ function returnedSection(data)
 								break;
 						}
 						str+="</select>";
-						str+="Edit link:<input type='text' value='"+data['entries'][i]['link']+"' />";
-						str+="Visibility:<select><option value='"+data['entries'][i]['visible']+"'>";
+						str+="Edit link:<input type='text' name='link' value='"+data['entries'][i]['link']+"' />";
+						str+="Visibility:<select name='visibility'><option value='"+data['entries'][i]['visible']+"'>";
 						if(data['entries'][i]['visible'] != 0){
 							str+="Public</option>";
 							str+="<option value='0'>Hidden</option>";
@@ -111,7 +111,7 @@ function returnedSection(data)
 						str+="</select>";
 						str+="<div style='float:right;'>";
 						str+="<input class='submit-button' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
-						str+="<input class='submit-button' type='button' value='Save' onclick='' />";
+						str+="<input class='submit-button' type='button' value='Save' onclick='sectionSettingsService("+data['entries'][i]['lid']+")' />";
 						str+="</div></div>";
 						str+="</span>";
 					} else {

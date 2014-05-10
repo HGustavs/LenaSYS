@@ -58,8 +58,8 @@ if (checklogin()) {
 			if (checklogin()) {
 				if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
 					echo "<tr class='settings-tr' id='settings_".$row['id']."'>";
-					echo "<td class='settings-td' style='float:left;'>Edit name:<input type='text' value='".$row['coursename']."' />";
-					echo "Visibility:<select><option value='".$row['visibility']."'>";
+					echo "<td class='settings-td' style='float:left;'>Edit name:<input type='text' name='coursename' value='".$row['coursename']."' />";
+					echo "Visibility:<select name='visibility'><option value='".$row['visibility']."'>";
 					if($row['visibility'] != 0){
 						echo "Public</option>";
 						echo "<option value='0'>Hidden</option>";
