@@ -113,7 +113,7 @@
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
 		//------------------------------------------------------------------------------------------------
-		$ha = (checklogin() && hasAccess($_SESSION['uid'], $courseid, 'w'));
+		$ha = (checklogin() && (hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"])));
 		$entries=array();
 		$query = $pdo->prepare("SELECT lid,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid ORDER BY pos");
 		$query->bindParam(':cid', $courseid);
