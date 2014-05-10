@@ -63,7 +63,7 @@ function returnedSection(data)
 							str+="<option value='1'>Public</option>";
 						}
 						str+="</select>";
-						str+="<input class='submit-button' type='button' value='Delete' onclick='' style='margin-left:10px;margin-right:10px;' />";
+						str+="<input class='submit-button' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
 						str+="<input class='submit-button' type='button' value='Save' onclick='' />";
 						str+="</div>";
 						str+="</span>";
