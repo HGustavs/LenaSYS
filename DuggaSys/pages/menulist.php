@@ -8,7 +8,7 @@ pdoConnect();
 <?php
 if (checklogin()) {
 	if (isSuperUser($_SESSION["uid"])) {
-		echo "<div style='margin-bottom:7px; float:right;'><input style='cursor:pointer;' onclick='changeURL('newCourseForm')' class='submit-button' type='button' value='Add course'></div>";
+		echo "<div style='margin-bottom:7px; float:right;'><input style='cursor:pointer;' onclick='changeURL(\"newCourseForm\")' class='submit-button' type='button' value='Add course'></div>";
 	}
 }
 ?>
