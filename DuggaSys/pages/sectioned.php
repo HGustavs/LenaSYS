@@ -59,10 +59,15 @@ checklogin();
 
 				function serviceOnSuccess(data) {
 					sessionkind=data.writeaccess;
+					readaccess=data.readaccess;
 					if(sessionkind==true) {
 						$(document).makesortable();
 					}
-					returnedSection(data);
+					if (readaccess==true) {
+						returnedSection(data);
+					} else {
+						changeURL('404');
+					}
 				}
 				function AJAXServiceSection(opt,para)
 				{

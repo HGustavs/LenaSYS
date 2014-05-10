@@ -113,6 +113,12 @@
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
 		//------------------------------------------------------------------------------------------------
+		$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:1");
+		$query->bindParam(':1', $courseid);
+		$result = $query->execute();
+		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+			$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0 || isSuperUser($_SESSION["uid"]));
+		}
 		$ha = (checklogin() && (hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"])));
 		$entries=array();
 		$query = $pdo->prepare("SELECT lid,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid ORDER BY pos");
@@ -138,6 +144,7 @@
 			'entries' => $entries,
 			"debug" => $debug,
 			'writeaccess' => $ha,
+			'readaccess' => $hr,
 			'coursename' => getCourseName($courseid),
 			'courseid' => $courseid,
 			'success' => $success
