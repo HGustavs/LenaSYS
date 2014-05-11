@@ -41,17 +41,13 @@ checklogin();
 										$.post("SectionedService.php", array, function(theResponse){
 											var data = $.parseJSON(theResponse);
 											if(data.success) {
-												$("#dragupdate-section").html('Saved list elements');
+												noticeBox(data.coursename, "Updates saved", 50);
 											} else {
-												$("#dragupdate-section").html('Could not save list elements');
+												warningBox(data.coursename, "Could not save list elements", 50);
 											}
-											$("#dragupdate-section").slideDown('slow');
-											setTimeout(function(){
-												$("#dragupdate-section").slideUp("slow", function () { });
-											}, 2500);
 											dragtimer = null;
 										});
-									}, 2000);
+									}, 3000);
 
 								}
 						});
@@ -83,6 +79,5 @@ checklogin();
 				AJAXServiceSection("List", '');
 			</script>
 	</head>
-	<div id="dragupdate-section"></div>
 	<div id="Sectionlist"></div>
 </html>
