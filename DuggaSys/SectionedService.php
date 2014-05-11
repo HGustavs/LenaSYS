@@ -57,6 +57,7 @@
 							$stmt->bindParam(':name', $sectname);
 							$stmt->bindParam(':uid', $_SESSION['uid']);
 							if(!$stmt->execute()) {
+								// TODO: Remove these debug prints
 								print_r($stmt->errorInfo());
 							} else {
 								// Get example id
@@ -69,6 +70,7 @@
 								$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
 								$sinto->bindParam(':eid', $eid[0]);
 								if(!$sinto->execute()) {
+									// TODO: Remove these debug prints
 									print_r($sinto->errorInfo());
 								}
 							}

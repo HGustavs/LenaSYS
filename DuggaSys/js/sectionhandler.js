@@ -34,10 +34,9 @@ function submitNewSection() {
 				'sectname': sectionname,
 				'link': link,
 				'kind': type,
-				'visibility': visibility ? 1 : 0
+				'visibility': visibility == 1 ? 1 : 0
 			},
 			success: function() {
-				alert('Yay')
 				changeURL('sectioned?courseid=' + courseid);
 			}
 		});
