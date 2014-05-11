@@ -154,8 +154,8 @@ function makeLogout() {
 		success:function(data) {
 			$("#user label").html("");
 			$("#user img").removeClass("loggedin");
-			page.show();
 			createDeleteLogin();
+			changeURL("menulist");
 		},
 		error:function() {
 			console.log("error");
