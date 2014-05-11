@@ -38,12 +38,15 @@ function login($username, $password, $savelogin)
 		pdoConnect();
 	}
 
+	// Are we dealing with emails or usernames?
 	if(strpos($username, '@') === false) { 
 		$query = $pdo->prepare('SELECT uid,username,password,newpassword,superuser FROM user WHERE username=:username LIMIT 1');
 	} else {
-		$query = $pdo->prepare('SELECT uid,username,password,newpassword,superuser FROM user WHERE username LIKE CONCAT(:username, \'%\')');
+		$query = $pdo->prepare("SELECT uid,username,password,newpassword,superuser FROM user WHERE username LIKE CONCAT(:username, '@', '%') OR username=:username"); 
 	}
 
+	// Try to split the string no matter what since explode will return the 
+	// whole string in the first element if there's nothing to split on.
 	$user = explode('@', $username, 2);
 
 	$query->bindParam(':username', $user[0]);
