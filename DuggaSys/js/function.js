@@ -151,6 +151,10 @@ function successBox(title, text, delay, element) {
 		    $("html").unbind('click');
 		});
   	}, 500));
+	
+	setTimeout(function(){
+		$(".alert").fadeOut(300, function() { $(this).remove(); });		
+	}, 2500);
 }
 function noticeBox(title, text, delay, element) {
 	if(delay == undefined) { delay = 0 }
@@ -172,6 +176,10 @@ function noticeBox(title, text, delay, element) {
 		    $("html").unbind('click');
 		});
   	}, 500));
+	
+	setTimeout(function(){
+		$(".alert").fadeOut(300, function() { $(this).remove(); });		
+	}, 2500)
 }
 function warningBox(title, text, delay, element) {
 	if(delay == undefined) { delay = 0 }
@@ -193,6 +201,10 @@ function warningBox(title, text, delay, element) {
 		    $("html").unbind('click');
 		});
   	}, 500));
+	
+	setTimeout(function(){
+		$(".alert").fadeOut(300, function() { $(this).remove(); });		
+	}, 2500)
 }
 function dangerBox(title, text, delay, element) {
 	if(delay == undefined) { delay = 0 }
@@ -214,5 +226,9 @@ function dangerBox(title, text, delay, element) {
 		    $("html").unbind('click');
 		});
   	}, 500));
+	
+	setTimeout(function(){
+		$(".alert").fadeOut(300, function() { $(this).remove(); });		
+	}, 2500)
 }
 // ALERT BOXES END //

@@ -30,7 +30,7 @@ function courseSettingsService(ID)
 			if(!response){
 				warningBox("Menulist", "Updates not saved", 50);
 			}else{
-				noticeBox("Menulist", "Updates saved", 50);
+				successBox("Menulist", "Updates saved", 50);
 			}
 		});
 	}
@@ -63,7 +63,7 @@ function sectionSettingsService(ID)
 			if(!response) {
 				warningBox(data['sectionname'], "Updates not saved", 50);
 			}else {
-				noticeBox(data['sectionname'], "Updates saved", 50);
+				successBox(data['sectionname'], "Updates saved", 50);
 			}
 		});
 	}
