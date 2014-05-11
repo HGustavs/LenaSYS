@@ -4,7 +4,7 @@ include_once(dirname(__FILE__) . "/../../Shared/database.php");
 include_once(dirname(__FILE__) . "/../../Shared/courses.php");
 include_once(dirname(__FILE__) . "/../../Shared/sessions.php");	
 
-dbConnect();
+pdoConnect();
 session_start();
 checklogin();
 ?>
