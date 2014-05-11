@@ -155,6 +155,11 @@ header {
     margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 4px;
+    -webkit-animation: fadein 1s; /* Safari and Chrome */
+       -moz-animation: fadein 1s; /* Firefox */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera */
+            animation: fadein 1s;
 }  
     .alert-success {
         background-color: #dff0d8;
