@@ -156,7 +156,7 @@ function noticeBox(title, text, delay, element) {
 	if(delay == undefined) { delay = 0 }
 	if(element == undefined) { element = "#content" }
 
-	var output = '<div class="alert alert-notice">';
+	var output = '<div class="alert alert-info">';
 			output += '<strong>'+title+'</strong>';
 			output += '<p>'+text+'</p>';
 		output += '</div>';
