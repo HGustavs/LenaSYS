@@ -46,8 +46,8 @@ CREATE TABLE course(
 		FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO course(coursecode,coursename,created,creator) values ("DV12G","Webbprogrammering",NOW(),1);
-INSERT INTO course(coursecode,coursename,created,creator) values ("DV13G","Futhark",NOW(),1);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV13G","Futhark",NOW(),1,0);
 
 /* User access to the application*/
 CREATE TABLE user_course(
