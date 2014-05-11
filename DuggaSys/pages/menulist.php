@@ -4,6 +4,9 @@ include_once(dirname(__file__)."/../../Shared/sessions.php");
 
 pdoConnect();
 ?>
+<head>
+	<script type="text/javascript" src="js/verificationFunctions.js"></script>
+</head>
 <div id="dragupdate-menulist"></div>
 <?php
 if (checklogin()) {

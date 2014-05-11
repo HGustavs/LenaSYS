@@ -13,6 +13,7 @@ checklogin();
 	<head>
             <link type="text/css" href="css/style.css" rel="stylesheet" />
 			<script type="text/javascript" src="duggasys.js"></script>
+			<script type="text/javascript" src="js/verificationFunctions.js"></script>
             <!--<script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>-->
 			<script>
 				var sessionkind=0;
