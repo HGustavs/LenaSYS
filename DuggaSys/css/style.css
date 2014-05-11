@@ -442,17 +442,19 @@ input.submit-button:hover {
 
 /* DRAG AND DROP MESSAGE */
 #dragupdate-section, #dragupdate-menulist {
-	top:40px;
+	top:50px;
 	background-color:#c75050;
 	display:none;
-	z-index:10;
-	position:absolute;
+	z-index: 9000;
+	position: fixed;
+	left:50%;
+	margin-left: -178px;
 	font-family:arial;
 	font-size:10pt;
 	font-weight:bold;
 	color:#FFF;
 	text-align:center;
-	width:30%;
+	width:300px;
 	padding:10px;
 }
 
