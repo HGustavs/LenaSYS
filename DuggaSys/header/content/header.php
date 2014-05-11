@@ -10,7 +10,7 @@ $loggedin = checklogin();
 	<img onclick="changeURL('')" src="css/svg/Up.svg">
 	<img onclick="historyBack()" src="css/svg/SkipB.svg">
 </nav>
-<div id="title" onclick="warningBox('Test1', 'text')">
+<div id="title">
 	<h1></h1>
 </div>
 <nav id="user">
