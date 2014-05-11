@@ -38,8 +38,15 @@ function login($username, $password, $savelogin)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare('SELECT * FROM user WHERE username=:username LIMIT 1');
-	$query->bindParam(':username', $username);
+	if(strpos($username, '@') === false) { 
+		$query = $pdo->prepare('SELECT uid,username,password,newpassword,superuser FROM user WHERE username=:username LIMIT 1');
+	} else {
+		$query = $pdo->prepare('SELECT uid,username,password,newpassword,superuser FROM user WHERE username LIKE CONCAT(:username, \'%\')');
+	}
+
+	$user = explode('@', $username, 2);
+
+	$query->bindParam(':username', $user[0]);
 	$query->execute();
 
 	if($query->rowCount() > 0) {

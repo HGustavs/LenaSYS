@@ -18,7 +18,7 @@ $res = array("login" => "failed");
 if(login($username, $password, $savelogin)) {
 	// Successfully logged in, return this.
 	$res["login"] = "success";
-	$res["username"] = $username;
+	$res["username"] = $_SESSION['loginname'];
 
 	// If the user hasn't set a new password after getting a randomly generated
 	// one, notify the login script of this.
