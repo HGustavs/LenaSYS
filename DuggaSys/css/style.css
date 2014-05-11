@@ -160,7 +160,10 @@ header {
         -ms-animation: fadein 1s; /* Internet Explorer */
          -o-animation: fadein 1s; /* Opera */
             animation: fadein 1s;
-}  
+}
+    .alert strong {
+        font-size: 1.1em;
+    }  
     .alert-success {
         background-color: #dff0d8;
         border-color: #d6e9c6;
