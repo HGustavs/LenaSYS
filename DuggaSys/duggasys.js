@@ -15,7 +15,14 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				if (parseInt(data['entries'][i]['visible']) === 1 || sessionkind === true) {
 					if (parseInt(data['entries'][i]['visible']) === 0) {
-						str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						//checks if it is a header, section and hidden.
+						if(parseInt(data['entries'][i]['kind']) === 0 ){
+							str+="<span class='bigg' id='Entry_"+data['entries'][i]['lid']+"'>";
+						} else if(parseInt(data['entries'][i]['kind']) === 1 ){
+							str+="<span class='butt' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}else {
+							str+="<span class='hidden' id='Entry_"+data['entries'][i]['lid']+"'>";
+						}
 					} else {
 						switch(parseInt(data['entries'][i]['kind'])) {
 							case 0:
@@ -44,8 +51,13 @@ function returnedSection(data)
 					
 					if(sessionkind) {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
-							str+="<span>"+data['entries'][i]['entryname']+"</span>";
-							str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+							if (parseInt(data['entries'][i]['visible']) === 0) {
+								str+="<span style='Opacity:0.5;'>"+data['entries'][i]['entryname']+"</span>";
+								str+="<img style='opacity:0.5;'onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+							} else {
+								str+="<span>"+data['entries'][i]['entryname']+"</span>";
+								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+							}
 						} else {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
