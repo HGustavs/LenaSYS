@@ -25,19 +25,13 @@ function courseSettingsService(ID)
 		}
 		$.post("ajax/updateCourses.php", "courseid="+ID+"&coursename="+data['coursename']+"&visibility="+data['visibility'], function(response) {
 			page.show();
-			var dragtimer = null;
-			dragtimer = setTimeout(function() {
-				if(!response) {
-					$("#dragupdate-menulist").html('Could not update course');
-				} else {
-					$("#dragupdate-menulist").html('Updated course');
-				}
-				$("#dragupdate-menulist").slideDown('slow');
-				setTimeout(function(){
-					$("#dragupdate-menulist").slideUp("slow", function () { });
-				}, 2500);
-				dragtimer = null;
-			}, 500);
+			
+			//Calls function to notice user of changes
+			if(!response){
+				warningBox("Menulist", "Updates not saved", 50);
+			}else{
+				noticeBox("Menulist", "Updates saved", 50);
+			}
 		});
 	}
 }
@@ -65,19 +59,12 @@ function sectionSettingsService(ID)
 		courseID = courseID.split('&')[0];
 		$.post("ajax/updateSections.php", "sectionid="+ID+"&courseid="+courseID+"&sectionname="+data['sectionname']+"&type="+data['type']+"&link="+data['link']+"&visibility="+data['visibility'], function(response) {
 			page.show();
-			var dragtimer = null;
-			dragtimer = setTimeout(function() {
-				if(!response) {
-					$("#dragupdate-menulist").html('Could not update course');
-				} else {
-					$("#dragupdate-menulist").html('Updated course');
-				}
-				$("#dragupdate-menulist").slideDown('slow');
-				setTimeout(function(){
-					$("#dragupdate-menulist").slideUp("slow", function () { });
-				}, 2500);
-				dragtimer = null;
-			}, 500);
+			//Calls function to notice user of changes
+			if(!response) {
+				warningBox(data['sectionname'], "Updates not saved", 50);
+			}else {
+				noticeBox(data['sectionname'], "Updates saved", 50);
+			}
 		});
 	}
 }
