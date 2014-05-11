@@ -141,7 +141,9 @@ function successBox(title, text, delay, element) {
 		output += '</div>';
 
 	if($(".alert").length == 0) {
-		$(element).prepend(output).delay(delay);
+		setTimeout(function(){
+			$(element).prepend(output);
+		}, delay);	
 	}
 	$.when(this).done(setTimeout(function() {
 		$('html').click(function() {
@@ -160,7 +162,9 @@ function noticeBox(title, text, delay, element) {
 		output += '</div>';
 
 	if($(".alert").length == 0) {
-		$(element).prepend(output).delay(delay);
+		setTimeout(function(){
+			$(element).prepend(output);
+		}, delay);	
 	}
 	$.when(this).done(setTimeout(function() {
 		$('html').click(function() {
@@ -179,7 +183,9 @@ function warningBox(title, text, delay, element) {
 		output += '</div>';
 
 	if($(".alert").length == 0) {
-		$(element).prepend(output).delay(delay);
+		setTimeout(function(){
+			$(element).prepend(output);
+		}, delay);	
 	}
 	$.when(this).done(setTimeout(function() {
 		$('html').click(function() {
@@ -198,7 +204,9 @@ function dangerBox(title, text, delay, element) {
 		output += '</div>';
 
 	if($(".alert").length == 0) {
-		$(element).prepend(output).delay(delay);
+		setTimeout(function(){
+			$(element).prepend(output);
+		}, delay);	
 	}
 	$.when(this).done(setTimeout(function() {
 		$('html').click(function() {
