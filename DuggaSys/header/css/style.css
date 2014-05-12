@@ -1,0 +1,194 @@
+#overlay {
+	position: fixed;
+	top: 0;
+	background-color: #000;
+	opacity: 0.6;
+	width: 100%;
+	height: 100%;
+	z-index: 8000;
+}
+#loginBox {
+	background-color: #ccc;
+	border: 2px solid #999;
+	width: 350px;
+	min-height: 100px;
+	z-index: 9000;
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	margin-top: -100px;
+	margin-left: -178px;
+}
+#loginBox .header {
+	height: 25px;
+	background-color: #614875;
+	vertical-align: bottom;
+	padding-top: 15px;
+	padding-left: 10px;
+}
+#loginBox .header h3 {
+	margin: 0;
+	line-height: 0.5em;
+    color: #fff;
+    float: left;
+    width: 50%;
+}
+#loginBox .header div {
+	padding: 2px 20px 2px 20px;
+	position: absolute;
+	top: 0px;
+	right: 5px;
+    color: #fff;
+    cursor: default;
+	background-color: #c75050;
+	font-family: arial;
+	font-weight: bold;
+}
+#loginBox .header div:hover {
+	background-color: #ce3d3d;
+}
+#loginBox form {
+	padding: 10px;
+}
+#loginBox .text {
+	font-weight: bold;
+	font-size: 0.8em;
+}
+#loginBox .submit {
+	width: 80px;
+	height: 25px;
+	color: #fff;
+	background-color: #614875;
+	border: 0px;
+	border-radius: 4px;
+	margin-left: 1px;
+}
+#loginBox .cancel {
+	width: 80px;
+	height: 25px;
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+	border: 1px;
+	border-radius: 4px;
+	margin-left: 1px;
+}
+#loginBox .forgotPw {
+	font-family: arial;
+	font-size: 10pt;
+	font-weight: bold;
+	text-decoration: underline;
+	cursor: pointer;
+	padding-left: 10px;
+}
+#loginBox .form-control {
+	margin: 3px 0px 3px 0px;
+}
+#loginBox .hide {
+	display: none;
+}
+.textinput {
+	display: block;
+	width: 100%;
+	height: 30px;
+	padding: 6px 12px;
+	font-size: 15px;
+	line-height: 1.42857143;
+	color: #6f6f6f;
+	background-color: #ffffff;
+	background-image: none;
+	border: 1px solid #cccccc;
+	border-radius: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	padding: 5px;
+	font-size: 12px;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text-transform: none;
+	text-indent: 0px;
+	text-shadow: none;
+	display: inline-block;
+	text-align: start;
+	border-radius: 0px;
+	
+}
+.btn-login {
+	display: block;
+	padding-left: 0;
+	padding-right: 0;
+	color: #ffffff;
+	background-color: #614875;
+	border-color: #3c9a5f;
+}
+.btn-forgot{
+	color: #ffffff;
+	background-color: #e99002;
+	border-color: #d08002;
+}
+.btn-login:hover {
+	color: #ffffff;
+	background-color: #7B5A96;
+	border-color: #2b6e44;
+}
+.btn-forgot:hover {
+	color: #ffffff;
+	background-color: #c17702;
+	border-color: #935b01
+
+}
+.btn {
+	width: 50%;
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	white-space: nowrap;
+	padding: 6px 12px;
+	font-size: 15px;
+	line-height: 1.42857143;
+	border-radius: 0;
+	-webkit-user-select: none;
+}
+.btn-next {
+	width:40%;
+}
+.btn-cancel {
+	width:40%;
+	background-color:#c75050;
+}
+.btn-cancel:hover {
+	background-color:#DF4F4F;
+}
+
+tr td{
+	padding-bottom:5px;
+}
+.table-wrap {
+	padding:10px;
+}
+table {
+	margin:0 auto;
+	width:95%;
+	padding:10px 10px 10px 0px;
+	margin-left:0px;
+	margin-right:0px;
+}
+.text {
+	font-weight:300;
+}
+nav#user img.loggedin {
+	background-color: #c75050;
+	padding: 13px;
+}
+
+nav#user img.loggedin:hover {
+	background-color: #ce3d3d;
+	padding: 13px;
+}

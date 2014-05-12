@@ -1,9 +1,14 @@
 <?php
-require_once('../Shared/external/password.php');
-require_once('../Shared/database.php');
+require_once(dirname(__FILE__) . '/../Shared/external/password.php');
+require_once(dirname(__FILE__) . '/../Shared/database.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
+
+/**
+ * Check whether or not the user is logged in.
+ * @return bool Returns true if the user is logged in and false if they aren't
+ */
 function checklogin()
 {
 	// If neither session nor post return not logged in
@@ -16,6 +21,15 @@ function checklogin()
 	}
 }	
 
+/**
+ * Log in the user with the specified username and password and
+ * optionally set cookies for the user to be remembered until next
+ * time they visit the site.
+ * @param string $username Username of the user to log in
+ * @param string $password Password of the user to log in
+ * @param bool $savelogin Whether or not to save the information in a cookie
+ * @return bool True on success (the user was logged in), false on failure.
+ */ 
 function login($username, $password, $savelogin)
 {
 	global $pdo;
@@ -23,13 +37,6 @@ function login($username, $password, $savelogin)
 	if($pdo == null) {
 		pdoConnect();
 	}
-
-	if(!array_key_exists('username', $_POST) || !array_key_exists('password', $_POST)) {
-		return false;
-	}
-
-	$username=$_POST["username"];
-	$password=$_POST['password'];
 
 	$query = $pdo->prepare('SELECT * FROM user WHERE username=:username LIMIT 1');
 	$query->bindParam(':username', $username);
@@ -47,8 +54,8 @@ function login($username, $password, $savelogin)
 
 			// Save some login details in cookies.
 			if($savelogin) {
-				setcookie('username', $row['username'], time()+60*60*24*30);
-				setcookie('password', sha1($row['password']), time()+60*60*24*30);
+				setcookie('username', $row['username'], time()+60*60*24*30, '/');
+				setcookie('password', sha1($row['password']), time()+60*60*24*30, '/');
 			}
 			return true;
 		} else {
@@ -59,6 +66,15 @@ function login($username, $password, $savelogin)
 	}
 }
 
+/**
+ * Check if a specified user ID has the requested access on a specified course
+ * @param int $userId User ID of the user to look up
+ * @param int $courseId ID of the course to look up access for
+ * @param string $access_type A single letter denoting read or write access 
+ * (r and w respectively)
+ * @return bool Returns true if the user has the requested access on the course
+ * and false if they don't.
+ */
 function hasAccess($userId, $courseId, $access_type)
 {
 	$access = getAccessType($userId, $courseId);
@@ -73,6 +89,12 @@ function hasAccess($userId, $courseId, $access_type)
 	}
 }
 
+/**
+ * Returns the access a specified user has on the specified course
+ * @param int $userId User ID of the user to look up
+ * @param int $courseId Course ID of the course to look up access on
+ * @return string Returns the access for the user on the selected course (r or w)
+ */
 function getAccessType($userId, $courseId)
 {
 	global $pdo;
@@ -82,24 +104,22 @@ function getAccessType($userId, $courseId)
 	}
 
 	require_once "../Shared/courses.php";
-	if(is_string($courseId)) {
+	if(!is_numeric($courseId)) {
 		$courseId = getCourseId($courseId);
 	}
 
 	$query = $pdo->prepare('SELECT access FROM user_course WHERE uid=:uid AND cid=:cid LIMIT 1');
 	$query->bindParam(':uid', $userId);
 	$query->bindParam(':cid', $courseId);
+	$query->execute();
 
-	if(!$query->execute()) {
-		return false;
+	// Fetch data from the database
+	if($query->rowCount() > 0) {
+		$access = $query->fetch(PDO::FETCH_ASSOC);
+		return strtolower($access['access']);
 	} else {
-		// Fetch data from the database
-		if($query->rowCount() > 0) {
-			$access = $query->fetch(PDO::FETCH_ASSOC);
-			return strtolower($access['access']);
-		}
+		return false;
 	}
-	return false;
 }
 
 
@@ -127,7 +147,7 @@ function logout()
 	session_destroy();
 
 	// Remove the cookies.
-	setcookie('username', '', 0);
-	setcookie('password', '', 0);
+	setcookie('username', '', 0, '/');
+	setcookie('password', '', 0, '/');
 }
 ?>
