@@ -58,7 +58,23 @@ function sectionSettingsService(ID)
 		var courseID = document.URL.split('courseid=')[1];
 		courseID = courseID.split('&')[0];
 		$.post("ajax/updateSections.php", "sectionid="+ID+"&courseid="+courseID+"&sectionname="+data['sectionname']+"&type="+data['type']+"&link="+data['link']+"&visibility="+data['visibility'], function(response) {
-			page.show();
+			element = document.getElementById('Entry_'+ID);
+			settingsChildren = element.childNodes;
+			for(i = 0; i < settingsChildren.length; i++) {
+				var children = settingsChildren[i].childNodes;
+				switch (i) {
+					case 0:
+						children[0].textContent = data['sectionname'];
+						break;
+					case 1:
+						children.nodeValue = data['sectionname'];
+						break;
+					case 2:
+						console.log(children);
+						break;
+				}
+			}
+			$('#sectioned_'+ID).hide();
 			//Calls function to notice user of changes
 			if(!response) {
 				warningBox(data['sectionname'], "Updates not saved", 50);
