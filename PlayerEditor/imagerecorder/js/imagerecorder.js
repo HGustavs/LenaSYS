@@ -522,7 +522,7 @@ function imagerecorder(canvas)
 			// Show previous image
 			var prevImage = getPrevImage();
 			// Are there any possible undo points?
-			if (undoPoints.length > 1) {
+			if (undoPoints.length > 2) {
 				// Remove last point
 				undoPoints.pop();
 				// Fetch point
