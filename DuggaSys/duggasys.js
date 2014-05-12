@@ -71,6 +71,9 @@ function returnedSection(data)
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' name='sectionname' value='"+data['entries'][i]['entryname']+"' />";
+						str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
+						str+="<option value='-1'>None</option>";
+						str+="</select>";
 						str+="Edit type:<select name='type'><option value='"+parseInt(data['entries'][i]['kind'])+"'>";
 						switch(parseInt(data['entries'][i]['kind'])){
 							case 0:
@@ -122,7 +125,7 @@ function returnedSection(data)
 						}
 						str+="</select>";
 						str+="<div style='float:right;'>";
-						str+="<input class='submit-button-red' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
+						str+="<input class='submit-button' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
 						str+="<input class='submit-button' type='button' value='Save' onclick='sectionSettingsService("+data['entries'][i]['lid']+")' />";
 						str+="</div></div>";
 					} else {
@@ -146,5 +149,60 @@ function returnedSection(data)
 
 
 		  if(data['debug']!="NONE!") alert(data['debug']);
+		  
+		  // The holy shit function (placeholder function)
+		  // Needs to be cleaned up
+		  (function($) {
+				var disabled = {'background-color': '#ddd'};
+				var enabled = {'background-color': '#fff'};
+				for(i=0;i<data['entries'].length;i++){
+					$("#sectioned_"+data["entries"][i]['lid']+" select[name=type]").change({
+						data: data['entries'][i],
+						id: data.courseid
+					}, function(event) {
+						$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").find('option').remove();
+						var selectOption = document.createElement('option');
+						selectOption.value = "-1";
+						selectOption.innerHTML = "Select";
+						$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").append(selectOption);
+						var type = $(this).val();
+
+						if(type == 0 || type == 1 || type == 2 || type == 3) {
+							$('#linklabel input').val('');
+							$("#linklabel input").prop("disabled", true).css(disabled);
+						} else if(type == "4") {
+							$("#linklabel input").removeAttr("disabled").css(enabled);
+						}
+						
+						if (type == 0 || type == 1 ||type == 4) {
+							$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").prop("disabled", true).css(disabled);
+						} else if (type == 2 || type == 3) {
+							$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").removeAttr("disabled").css(enabled);
+							if (type == 2) {
+								var opt = "example";
+							} else {
+								var opt = "test";
+							}
+							$.ajax({
+								dataType: 'json',
+								url: 'ajax/testduggaService.php',
+								method: 'post',
+								data: {
+									'courseid': event.data.id,
+									'opt': opt
+								},
+								success: function(returnData) {
+									for (i=0; i<returnData['entries'].length; i++) {
+										var option = document.createElement('option');
+										option.value = returnData['entries'][i]['id'];
+										option.innerHTML = returnData['entries'][i]['name'];
+										$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").append(option);
+									}
+								}
+							});
+						}
+					});
+				}
+			})(jQuery);
 
 }

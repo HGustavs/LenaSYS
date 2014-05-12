@@ -33,7 +33,7 @@
 		if(isset($_POST['pos'])) $pos=htmlEntities($_POST['pos']);
 		if(isset($_POST['newname'])) $newname=htmlEntities($_POST['newname']);
 		if(isset($_POST['kind'])) $kind=htmlEntities($_POST['kind']);
-		if(isset($_POST['testdugga'])) $kind=htmlEntities($_POST['testdugga']);
+		if(isset($_POST['testdugga'])) $testdugga=htmlEntities($_POST['testdugga']);
 		if(array_key_exists('link', $_POST)) $link=htmlEntities($_POST['link']);
 		if(array_key_exists('visibility', $_POST)) $visibility = $_POST['visibility'];
 		
@@ -56,29 +56,36 @@
 						$query = $pdo->prepare("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible,code_id) VALUES(:cid, :name, :link, :kind, :pos, :uid, :visible,:code_id)");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':name', $sectname);
-						if($kind == 2 && $link == '') {
-							$stmt = $pdo->prepare("INSERT INTO codeexample (cid, examplename, wordlist, runlink,uid) VALUES(:cid, :name, 'JS', '<none>',:uid)");
-							$stmt->bindParam(':cid', $courseid);
-							$stmt->bindParam(':name', $sectname);
-							$stmt->bindParam(':uid', $_SESSION['uid']);
-							if(!$stmt->execute()) {
-								// TODO: Remove these debug prints
-								print_r($stmt->errorInfo());
-							} else {
-								// Get example id
-								$eidq = $pdo->query("SELECT LAST_INSERT_ID() as code_id");
-								$eidq->execute();
-								$eid = $eidq->fetch(PDO::FETCH_NUM);
-								$code_id = $eid[0];
-
-								// Create file list
-								$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
-								$sinto->bindParam(':eid', $eid[0]);
-								if(!$sinto->execute()) {
+						if($kind == 2) {
+							if ($testdugga == "-1") {
+								$stmt = $pdo->prepare("INSERT INTO codeexample (cid, examplename, wordlist, runlink,uid) VALUES(:cid, :name, 'JS', '<none>',:uid)");
+								$stmt->bindParam(':cid', $courseid);
+								$stmt->bindParam(':name', $sectname);
+								$stmt->bindParam(':uid', $_SESSION['uid']);
+								if(!$stmt->execute()) {
 									// TODO: Remove these debug prints
-									print_r($sinto->errorInfo());
+									print_r($stmt->errorInfo());
+								} else {
+									// Get example id
+									$eidq = $pdo->query("SELECT LAST_INSERT_ID() as code_id");
+									$eidq->execute();
+									$eid = $eidq->fetch(PDO::FETCH_NUM);
+									$code_id = $eid[0];
+									$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$code_id."&courseid=".getCourseName($courseid)."";
+
+									// Create file list
+									$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
+									$sinto->bindParam(':eid', $eid[0]);
+									if(!$sinto->execute()) {
+										// TODO: Remove these debug prints
+										print_r($sinto->errorInfo());
+									}
 								}
+							} else {
+								$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$testdugga."&courseid=".getCourseName($courseid)."";
 							}
+						} else if ($kind == 3) {
+						
 						}
 						$query->bindParam(':link', $link);
 						$query->bindParam(':kind', $kind);

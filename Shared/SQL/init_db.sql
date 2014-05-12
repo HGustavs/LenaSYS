@@ -249,7 +249,7 @@ CREATE TABLE listentries (
 	lid int UNSIGNED NOT NULL AUTO_INCREMENT,
 	cid int UNSIGNED NOT NULL,
 	entryname varchar(64),
-	link varchar(80),
+	link varchar(200),
 	kind int unsigned,
 	pos int,
 	creator int unsigned not null,
@@ -284,17 +284,3 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALU
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "http://nyan.cat/", 2, 10, 7, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "http://nyan.cat/", 2, 11, 8, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 12, 9, 1, 1);
-
-DROP TABLE IF EXISTS eventlog;
-CREATE TABLE eventlog(
-	eid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	address VARCHAR(45) NOT NULL,
-	user INT UNSIGNED NULL,
-	eventtext TEXT NOT NULL,
-	PRIMARY KEY(eid),
-	FOREIGN KEY(user)
-		REFERENCES user(uid)
-		ON UPDATE CASCADE
-		ON DELETE NO ACTION
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;

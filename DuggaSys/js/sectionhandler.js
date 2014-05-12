@@ -11,6 +11,7 @@
 		var type = $(this).val();
 
 		if(type == 0 || type == 1 || type == 2 || type == 3) {
+			$('#linklabel input').val('');
 			$("#linklabel input").prop("disabled", true).css(disabled);
 		} else if(type == "4") {
 			$("#linklabel input").removeAttr("disabled").css(enabled);
@@ -38,8 +39,8 @@
 				success: function(data) {
 					for (i=0; i<data['entries'].length; i++) {
 						var option = document.createElement('option');
-						option.value = data['entries'][i]['exampleid'];
-						option.innerHTML = data['entries'][i]['examplename'];
+						option.value = data['entries'][i]['id'];
+						option.innerHTML = data['entries'][i]['name'];
 						$("#testdugga").append(option);
 					}
 				}
@@ -51,6 +52,7 @@
 function submitNewSection() {
 	if (validateNewSectionSubmit()) {
 		var qs = getUrlVars();
+
 
 		var courseid = qs.courseid;
 		var sectionname = $("#create input[name=sectionname]").val();

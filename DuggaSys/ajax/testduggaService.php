@@ -28,7 +28,7 @@
 			if($ha){
 				$entries=array();
 				if (strcmp("example", $opt) === 0) {
-					$query = $pdo->prepare("SELECT exampleid, examplename FROM codeexample");
+					$query = $pdo->prepare("SELECT exampleid AS id, examplename AS name FROM codeexample");
 				} else {
 					// Create a query for tests
 				}
@@ -38,8 +38,8 @@
 					array_push(
 						$entries,
 						array(
-							'exampleid' => $row['exampleid'],
-							'examplename' => $row['examplename'],
+							'id' => $row['id'],
+							'name' => $row['name'],
 						)
 					);
 				}
