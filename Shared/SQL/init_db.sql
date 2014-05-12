@@ -273,3 +273,11 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALU
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "http://nyan.cat/", 2, 10, 7, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "http://nyan.cat/", 2, 11, 8, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 12, 9, 1, 1);
+
+
+CREATE TABLE playereditor_playbacks(
+    id  VARCHAR(32) NOT NULL,
+    type    SMALLINT(1) NOT NULL,
+    path    VARCHAR(256) NOT NULL,
+    PRIMARY KEY(id, type)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
