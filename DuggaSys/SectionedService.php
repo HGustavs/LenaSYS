@@ -3,6 +3,10 @@
 		//---------------------------------------------------------------------------------------------------------------
 		// editorService - Saves and Reads content for Code Editor
 		//---------------------------------------------------------------------------------------------------------------
+		
+		
+		
+		// TODO: Change section link according to the test/codeexample added in the section form
 	
 		// Check if example exists and then do operation
 	
@@ -29,12 +33,13 @@
 		if(isset($_POST['pos'])) $pos=htmlEntities($_POST['pos']);
 		if(isset($_POST['newname'])) $newname=htmlEntities($_POST['newname']);
 		if(isset($_POST['kind'])) $kind=htmlEntities($_POST['kind']);
+		if(isset($_POST['testdugga'])) $kind=htmlEntities($_POST['testdugga']);
 		if(array_key_exists('link', $_POST)) $link=htmlEntities($_POST['link']);
 		if(array_key_exists('visibility', $_POST)) $visibility = $_POST['visibility'];
 		
 		$debug="NONE!";
 		if(checklogin()){
-			$ha = hasAccess($_SESSION['uid'], $courseid, 'w');
+			$ha = hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"]);
 			if($ha){
 				if (strcmp("sectionNew",$opt) === 0) {
 					// Find out the last position in the list

@@ -11,6 +11,10 @@
 			<label id="linklabel">Link:
 				<input type="text" name="link" class="form-control" disabled style="background-color:#dfdfdf">
 			</label>
+			<label>Select test/dugga</label>
+				<select name="testduggaselect" id="testdugga" class='form-control' disabled style="background-color:#dfdfdf">
+					<option value="-1">Select</option>
+				</select>
 			<label>Type
 				<select name="type" class="form-control" id="typeselect">
 					<option value="-1">Select</option>
@@ -36,3 +40,4 @@
 	</form>
 </div>
 <script type="text/javascript" src="js/sectionhandler.js"></script>
+<script type="text/javascript" src="js/verificationFunctions.js"></script>
