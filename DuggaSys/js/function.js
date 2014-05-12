@@ -72,22 +72,22 @@ function getPage() {
 		}
 		//PRINT PAGE IF FILE FOUND OR PRINT 404 //
 		if(found) {
+			console.log("page "+this.page+" was loaded");
 			$("#content").load(path);
-			console.log(this.page+ " was found!");
-			$("#title h1").html(title+" - "+this.page.capitalize());
-			document.title = title+" | "+this.page.capitalize();
 		}
 		else {
-			$("#content").load("pages/404.php");
 			console.log(this.page+ " not found!");
-			$("#title h1").html(title+" - 404");
-			document.title = title+" | "+"404";
 			this.page = "404";
+			$("#content").load("pages/404.php");
 		}
 	}
 	//Returning homepage title and page title //
-	this.title = function() {
-		return(title+" - "+this.page.capitalize());
+	this.title = function(headline) {
+		if(headline) {
+			this.page = headline;
+		}
+		$("#title h1").html(title+" - "+this.page.capitalize());
+		document.title = title+" | "+this.page.capitalize();
 	}
 	// Grabing a list of pages existing in the pages folder //
 	this.load = function() {
