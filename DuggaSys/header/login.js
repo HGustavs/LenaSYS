@@ -113,16 +113,16 @@ function chekIfEmptyLoginField(){
 	var username = $("#login #username").val();
 	var password = $("#login #password").val();
 	if((username == "") && (password == "")){
-		$("#login #message").html("<div class='alert alert-danger'>Please fill in a username and password!</div>");
+		$("#login #message").html("<div class='alert danger'>Please fill in a username and password!</div>");
 		$("input#username").css("background-color", "#ff7c6a");
 		$("input#password").css("background-color", "#ff7c6a");
 	}else if((username == "") || (password == "")){
 		if(username == ""){
-			$("#login #message").html("<div class='alert alert-danger'>Please fill in a username!</div>");
+			$("#login #message").html("<div class='alert danger'>Please fill in a username!</div>");
 			$("input#username").css("background-color", "#ff7c6a");
 			$("input#password").css("background-color", "#fff");
 		} else if(password == ""){
-			$("#login #message").html("<div class='alert alert-danger'>Please fill in a password!</div>");
+			$("#login #message").html("<div class='alert danger'>Please fill in a password!</div>");
 			$("input#password").css("background-color", "#ff7c6a");
 			$("input#username").css("background-color", "#fff");
 		}
@@ -159,7 +159,7 @@ function makeLogin() {
 					page.show();
 				} else {
 					console.log("Failed to log in.");
-					$("#login #message").html("<div class='alert alert-danger'>Wrong username or password!</div>");
+					$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
 					$("input#username").css("background-color", "#ff7c6a");
 					$("input#password").css("background-color", "#ff7c6a");
 				}
@@ -203,7 +203,7 @@ function showQuestion() {
 					$("#forgotPwAnswer #forgetfuluser").val(username)
 				}
 				else {
-					$("#forgotPw #message").html("<div class='alert alert-danger'>"+res.error+"!</div>");
+					$("#forgotPw #message").html("<div class='alert danger'>"+res.error+"!</div>");
 				}
 			},
 			error:function() {
@@ -237,7 +237,7 @@ function checkAnswer() {
 			} else {
 				// If we failed to change the user's password then notify them of the
 				// reason why.
-				$("#forgotPwAnswer #message").html("<div class='alert alert-danger'>"+res.error+"!</div>");
+				$("#forgotPwAnswer #message").html("<div class='alert danger'>"+res.error+"!</div>");
 				console.log("Failed to change password. " + res.error);
 			}
 		},
@@ -274,7 +274,7 @@ function newPasswordAndQuestion() {
 				} else {
 					// Otherwise, tell the user that we couldn't update their password
 					// and tell them why.
-					$("#createPassword #message").html("<div class='alert alert-danger'>"+res.errormsg+"!</div>")
+					$("#createPassword #message").html("<div class='alert danger'>"+res.errormsg+"!</div>")
 					console.log("Failed to set new password, " + res.errormsg);
 				}
 			},
