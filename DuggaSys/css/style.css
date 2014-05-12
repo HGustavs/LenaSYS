@@ -103,6 +103,9 @@ header {
             font-size: 0.8em;
             padding: 5px;
             float: left;
+			color:#fff;
+			font-size:10pt;
+			margin-top:24px;
         }
         nav#user img {
             padding: 12px;

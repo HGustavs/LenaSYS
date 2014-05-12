@@ -6,6 +6,8 @@ pdoConnect();
 ?>
 <head>
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
+    <!--This is for adding the correct title to this page-->
+    <script>page.title("Menulist");</script>
 </head>
 
 <?php
@@ -15,6 +17,7 @@ if (checklogin()) {
 	}
 }
 ?>
+
 <table class="course-table" cellspacing="0">
 	<tr>
 		<th colspan="2">Course Example Organization System</th>
