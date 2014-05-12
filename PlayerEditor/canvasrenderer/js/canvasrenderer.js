@@ -33,6 +33,7 @@ function Canvasrenderer()
 	this.recordedCanvasWidth;
 	this.recordedCanvasHeight;
     this.downscaled = false;
+	this.mImageData;
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -66,7 +67,7 @@ function Canvasrenderer()
 								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
 								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
 								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'canvasSize',
-								'mousemove', 'mouseclick', 'picture', 'recordedCanvasSize'];
+								'mousemove', 'mouseclick', 'picture', 'recordedCanvasSize', 'imageData'];
 	
 	$(document).ready(function(){
 		$(window).on('resize', function(){
@@ -619,10 +620,10 @@ function Canvasrenderer()
 	}
 	
 	this.putImageData = function(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight){		
-		ctx.putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
+		ctx.putImageData(this.mImageData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight);
 	}
 	this.putImageData = function(imgData, x, y){
-		ctx.putImageData(imgData, x, y);
+		ctx.putImageData(this.mImageData,x,y);
 	}
 	this.save = function(){
 		ctx.save();
@@ -797,6 +798,24 @@ function Canvasrenderer()
 		c.width = width;
 		c.height = height;
 	}
+	
+	this.imageData = function(width, height, numberStr){
+
+		console.log("Creating imageData");
+
+		var numArray = numberStr.split(" ");
+
+		console.log(numArray.length);
+
+		this.mImageData = ctx.createImageData(width, height);
+
+		if(this.mImageData.data.length != numArray.length){ alert("ERROR: Failed to create new image data. Length mismatch."); }
+
+		for(i = 0; i < numArray.length; ++i){
+
+			this.mImageData.data[i] = parseInt(numArray[i]);
+		}	
+	}	
 
 	/*
 	 * Image drawing functions
