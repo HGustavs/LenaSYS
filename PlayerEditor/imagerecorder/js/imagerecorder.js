@@ -204,8 +204,12 @@ function imagerecorder(canvas)
 			alert("Saving");
 			$.ajax({
 				type: 'POST',
-				url: 'logfile.php?lib=' + libraryName,
-				data: { string: logStr + "\n</script>" }
+				url: 'logfile.php',
+				data: { 
+					string: logStr + "\n</script>",
+					lib: libraryName,
+					files: imagelibrary
+				}
 			});
 		});
 
