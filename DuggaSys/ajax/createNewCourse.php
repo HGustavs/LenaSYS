@@ -39,7 +39,7 @@ if (checklogin()) {
 			$stmt -> bindParam(':4', $_POST["visib"]);
 			$stmt -> execute();
 
-			// 
+			// get created row data to return
 			$stmt = $pdo -> prepare('SELECT cid FROM course WHERE coursecode=:1');
 			$stmt -> bindParam(':1', $_POST["coursecode"]);
 			$stmt -> execute();

@@ -16,7 +16,6 @@
 function submitNewSection() {
 	var qs = getUrlVars();
 
-
 	var courseid = qs.courseid;
 	var sectionname = $("#create input[name=sectionname]").val();
 	var link = $("#create #linklabel input").val();

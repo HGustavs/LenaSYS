@@ -184,25 +184,22 @@ button {
     vertical-align: middle;
     cursor: pointer;
     background-image: none;
-    border: 1px solid transparent;
+    border: 0;
     white-space: nowrap;
     padding: 6px 12px;
     font-size: 14px;
     line-height: 1.42857143;
-    border-radius: 4px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
 }
     button.default {
-        color: #333;
-        background-color: #fff;
-        border-color: #ccc;
+        color: #fff;
+        background-color: #614875;
         margin: 0px;
     }
         button.default:hover {
-            background-color: #ebebeb;
-            border-color: #adadad;
+            background-color: #73558b;
         }
     button.submit {
         color: #fff;

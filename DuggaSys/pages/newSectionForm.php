@@ -23,7 +23,7 @@
 			</label>
 			<label>Select visibility for entry</label>
 				<select name="visib" class='form-control'>
-					<option id="select-opt" value="0">Select</option>
+					<option id="select-opt" value="-1">Select</option>
 					<option class="select-opt" value="0">Hidden</option>
 					<option class="select-opt" value="1">Shown</option>
 				</select>
@@ -32,7 +32,7 @@
 					Hidden is only visible to users with write access to the course
 				</sub>
 		</div>
-		<button type="button" onclick="submitNewSection()">Create new entry</button>
+		<button type="button" class="default" onclick="submitNewSection()">Create new entry</button>
 	</form>
 </div>
 <script type="text/javascript" src="js/sectionhandler.js"></script>
