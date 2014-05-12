@@ -445,6 +445,17 @@ input.submit-button {
 input.submit-button:hover {
 	background-color:#7B5A96;
 }
+input.submit-button-red {
+	background-color:#c75050;
+	border:0px;
+	width:100px;
+	height:30px;
+	color:#fff;
+	cursor:pointer;
+}
+input.submit-button-red:hover {
+	background-color:#DF4F4F;
+}
 
 /* ANIMATIONS START */
 @keyframes fadein {
