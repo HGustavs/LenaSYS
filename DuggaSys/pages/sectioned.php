@@ -41,7 +41,7 @@ checklogin();
 										$.post("SectionedService.php", array, function(theResponse){
 											var data = $.parseJSON(theResponse);
 											if(data.success) {
-												noticeBox(data.coursename, "Updates saved", 50);
+												successBox(data.coursename, "Updates saved", 50);
 											} else {
 												warningBox(data.coursename, "Could not save list elements", 50);
 											}

@@ -39,10 +39,13 @@ session_start();
 						<lable class="text">Remember me</lable>
 					</td>
 				</tr>
-				
+				<tr>
+					<td id="message">
+					</td>
+				</tr>
 				<tr>
 					<td>
-						<input type='button' class='btn btn-login active' onclick="makeLogin()" value='Login'>
+						<input type='button' class='btn btn-login active' onclick="chekIfEmptyLoginField();makeLogin();" value='Login'>
 						<lable class='forgotPw' onclick='showForgontPw();'>Forgot password?</lable>
 					</td>
 				</tr>

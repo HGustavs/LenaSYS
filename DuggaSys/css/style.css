@@ -311,6 +311,16 @@ table.list tr.red {
     background-color: #927b9e;
 }
 
+#Sectionlist .bigg {
+    font-size: 16pt;
+	padding:6px;
+	color:#fff;
+    text-align: center;
+    font-family: Cambria, Georgia, serif;
+    display: block;
+    background-color: #775886;
+}
+
 #Sectionlist .norm {
 	padding:6px;
 	padding-left:15px;
@@ -337,15 +347,6 @@ table.list tr.red {
 	padding-left:15px;
     display: block;
     background-color: #dad8db;
-}
-#Sectionlist .bigg {
-    font-size: 16pt;
-	padding:4px;
-	color:#fff;
-    text-align: center;
-    font-family: Cambria, Georgia, serif;
-    display: block;
-    background-color: #775886;
 }
 
 #Sectionlist .course {
