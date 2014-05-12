@@ -8,7 +8,7 @@
 		if(isset($_POST['string'])){
 
 			function random_password( $length = 12 ) {
-			    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?<>/";
+			    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?/";
 			    $password1 = substr( str_shuffle( $chars ), 0, $length );
 			    return $password1;
 			}
@@ -40,8 +40,8 @@
 					try {
 						$stmt->execute();
 						//echo "<script type='text/javascript'>alert('Användare är tillagd globalt')</script>";
-						$test=array($username,$name,$password1);
-						$array[]=$test;
+						$array1=array($username,$name,$password1);
+						$array[]=$array1;
 					} catch (PDOException $e) {
 						if ($e->getCode()=="23000") {
 						//	echo "Användare finns redan globalt";

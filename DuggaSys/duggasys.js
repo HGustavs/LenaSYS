@@ -190,8 +190,12 @@ $.ajax({
 		document.getElementById('light').style.visibility = "visible";
 		document.getElementById('fade').style.visibility = "visible";
 
-
-	  var output = "<table class='showpassword'>";
+		if (returnedData.length == 0){
+   	 		var output = "Användaren/användarna du registrerade finns redan inlagda globalt och har nu lagts till på kursen";
+   		}
+   		else {
+	  var output = "<div id='printArea'>";
+	  output += "<table class='list'>";
       output += "<tr><th>Namn</th>";
       output += "<th>Användarnamn</th>";
       output += "<th>Lösenord</th></tr>";
@@ -202,6 +206,9 @@ $.ajax({
       output += "<td>"+this[2]+"</td></tr>";
 		})
        output += "</table>";
+       output += "</div>";
+	   output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
+   }
       var div = document.getElementById('light');
       div.innerHTML = output;
 	}
@@ -209,4 +216,15 @@ $.ajax({
 		document.getElementById('light').style.visibility = "hidden";
 		document.getElementById('fade').style.visibility = "hidden";	
 	}
+}
+
+function printDiv(){
+	var printArea = document.getElementById('printArea').innerHTML;
+	var originalContents = document.body.innerHTML;
+
+	document.body.innerHTML = printArea;
+
+	window.print();
+
+	document.body.innerHTML = originalContents;
 }

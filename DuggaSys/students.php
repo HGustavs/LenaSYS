@@ -32,7 +32,7 @@
 		<a href="addstudent.php"><input type="submit" id="submit-button" value="Lägg till student"/></a>
 	<form action="" method="post">
 	<div id='students'>
-	<table style='border:1px solid black;'>
+	<table class='list'>
 	<tr><th>Name</th>
 	<th>UserID</th>
 	<th>Dugga</th>
