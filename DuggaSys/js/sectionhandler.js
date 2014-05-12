@@ -51,9 +51,9 @@
 
 function submitNewSection() {
 	if (validateNewSectionSubmit()) {
+	
+		// Redirect user to new test form if test?
 		var qs = getUrlVars();
-
-
 		var courseid = qs.courseid;
 		var sectionname = $("#create input[name=sectionname]").val();
 		var link = $("#create #linklabel input").val();

@@ -83,7 +83,7 @@
 								}
 							}
 						} else if ($kind == 3) {
-						
+							// Insert new test
 						}
 						$query->bindParam(':link', $link);
 						$query->bindParam(':kind', $kind);

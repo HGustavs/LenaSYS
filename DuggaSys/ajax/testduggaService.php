@@ -28,10 +28,12 @@
 			if($ha){
 				$entries=array();
 				if (strcmp("example", $opt) === 0) {
-					$query = $pdo->prepare("SELECT exampleid AS id, examplename AS name FROM codeexample");
+					$query = $pdo->prepare("SELECT exampleid AS id, examplename AS name FROM codeexample WHERE cid = :1");
 				} else {
-					// Create a query for tests
+					// Implement this in test database
+					$query = $pdo->prepare("SELECT * FROM test WHERE cid = :1");
 				}
+				$query -> bindParam(':1', $courseid);
 				$result=$query->execute();
 				if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
 				foreach($query->fetchAll() as $row) {
