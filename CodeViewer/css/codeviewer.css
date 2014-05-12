@@ -221,10 +221,10 @@
 .imgdrop {
     /*  left: 354px; */
     right: 0px;
-    width: -moz-calc(35.0%);
-    width: -webkit-calc(35.0%);
-    height: -webkit-calc(65.0%);
-    height: -moz-calc(65.0%);
+    width: -moz-calc(30.0%);
+    width: -webkit-calc(30.0%);
+    height: -webkit-calc(45.0%);
+    height: -moz-calc(45.0%);
     background-color: #614875;
     background: rgb(0, 0, 0) transparent;
 }
