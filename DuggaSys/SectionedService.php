@@ -81,8 +81,6 @@
 										print_r($sinto->errorInfo());
 									}
 								}
-							} else {
-								$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$testdugga."&courseid=".getCourseName($courseid)."";
 							}
 						} else if ($kind == 3) {
 						
@@ -97,6 +95,22 @@
 						// Insert it.
 						if(!$query->execute()) {
 							echo "Error updating entries";
+						}
+						
+						if ($testdugga != "-1" && $kind == 2) {
+							$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$testdugga."&courseid=".getCourseName($courseid)."";
+							$eidq = $pdo->query("SELECT LAST_INSERT_ID() as code_id");
+							$eidq->execute();
+							$eid = $eidq->fetch(PDO::FETCH_NUM);
+							$lid = $eid[0];
+							$stmt = $pdo->prepare("UPDATE listentries SET code_id = :cid, link = :link WHERE lid = :lid");
+							$stmt->bindParam(':cid', $testdugga);
+							$stmt->bindParam(':lid', $lid);
+							$stmt->bindParam(':link', $link);
+							if(!$stmt->execute()) {
+								// TODO: Remove these debug prints
+								print_r($stmt->errorInfo());
+							}
 						}
 					}
 				} else if (strcmp("sectionDel",$opt) === 0) {

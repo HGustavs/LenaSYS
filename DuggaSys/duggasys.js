@@ -61,18 +61,18 @@ function returnedSection(data)
 						} else {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<span><a id='section-list' style='opacity:0.5;' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<a id='section-list' style='opacity:0.5;' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
 								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							
 							} else{
-								str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
 								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							}
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' name='sectionname' value='"+data['entries'][i]['entryname']+"' />";
 						str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
-						str+="<option value='-1'>None</option>";
+						str+="<option value='-1'>Select</option>";
 						str+="</select>";
 						str+="Edit type:<select name='type'><option value='"+parseInt(data['entries'][i]['kind'])+"'>";
 						switch(parseInt(data['entries'][i]['kind'])){
@@ -152,6 +152,8 @@ function returnedSection(data)
 		  
 		  // The holy shit function (placeholder function)
 		  // Needs to be cleaned up
+		  
+		  // Used to populate dugga/test selection
 		  (function($) {
 				var disabled = {'background-color': '#ddd'};
 				var enabled = {'background-color': '#fff'};
