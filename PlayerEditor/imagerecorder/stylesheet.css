@@ -70,6 +70,22 @@ ul {
 	box-shadow: 3px 3px 3px #000;
 }
 
+#export-feedback {
+	display: none;
+	width: 250px;
+	font-family:'Raleway Thin';
+	padding: 10px;
+	z-index: 2;
+	position: absolute;
+	left:0;
+	right:0;
+	top: 25%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #fff;
+	box-shadow: 3px 3px 3px #000;
+}
+
 /* control buttons */
 
 #controls {

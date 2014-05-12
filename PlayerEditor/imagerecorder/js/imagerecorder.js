@@ -212,7 +212,6 @@ function imagerecorder(canvas)
 		$("#controls").append("<input type='button' class='controlbutton' id='imagerecorder-save' value='Export XML' >");
 		// Save log when "Save log" button is clicked
 		$("#imagerecorder-save").click(function(){	
-			alert("Saving");
 			$.ajax({
 				type: 'POST',
 				url: 'logfile.php',
@@ -220,8 +219,20 @@ function imagerecorder(canvas)
 					string: logStr + "\n</script>",
 					lib: libraryName,
 					files: imagelibrary
+				},
+				success: function() {
+				
+					$("#export-feedback").html("<h3><strong>Successfully exported!</storng></h3><p><a href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>click</p>");
+				
+					$("#export-feedback").show(250);
 				}
 			});
+			
+
+			
+
+			
+			// $("#export-feedback").html("Exported!");
 		});
 
 		// Add undo button to body
@@ -474,11 +485,11 @@ function imagerecorder(canvas)
 	function logMouseEvents(str){
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
-		// Add image path (substr 9 removes "librarys" from path)
+		// Add image path (substr 9 removes "../canvasrenderer/" from path)
 		if (chrome !== null && vendorName === 'Google Inc.') {
-			str += '\n<picture src="'+imagelibrary[activeImage].substr(9)+ '"/>';
+			str += '\n<picture src="'+imagelibrary[activeImage].substr(18)+ '"/>';
 		}else{
-			str += '\n<picture src="'+imagelibrary[activeImage].substr(9)+ '"/>';
+			str += '\n<picture src="'+imagelibrary[activeImage].substr(18)+ '"/>';
 		}
 			
 		console.log(str);

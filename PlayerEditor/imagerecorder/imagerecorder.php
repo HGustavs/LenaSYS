@@ -17,6 +17,12 @@
 			<input type="button" id="library-name-button" value="OK">
 		</div>
 		
+		<div id="export-feedback">
+			qweqweqew
+		</div>
+		
+		
+		
 		<div id="thumbMenu"></div>
 		
 		<div class="wrapper">
