@@ -64,10 +64,6 @@ function login($username, $password, $savelogin)
 		pdoConnect();
 	}
 
-	// TODO: Constant to allow configuration of max failed attempts per half hour?
-	if(failedLoginCount($_SERVER['REMOTE_ADDR']) >= 10) 
-		return false;
-
 	// Are we dealing with emails or usernames?
 	if(strpos($username, '@') === false) { 
 		$query = $pdo->prepare('SELECT uid,username,password,newpassword,superuser FROM user WHERE username=:username LIMIT 1');
