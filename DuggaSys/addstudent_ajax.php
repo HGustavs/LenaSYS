@@ -1,7 +1,10 @@
 <?php 
+		include_once "../Shared/external/password.php";
+		include_once("../../coursesyspw.php");	
+		include_once("../Shared/basic.php");
+		pdoConnect();
 
-include_once("addstudent.php");
-
+		$array=array();
 		if(isset($_POST['string'])){
 
 			function random_password( $length = 12 ) {
@@ -36,12 +39,12 @@ include_once("addstudent.php");
 					$stmt->bindParam(':password', $password);
 					try {
 						$stmt->execute();
-						echo "<script type='text/javascript'>alert('Användare är tillagd globalt')</script>";
-						$array=array($username,$name,$password1);
-						echo json_encode($array);
+						//echo "<script type='text/javascript'>alert('Användare är tillagd globalt')</script>";
+						$test=array($username,$name,$password1);
+						$array[]=$test;
 					} catch (PDOException $e) {
 						if ($e->getCode()=="23000") {
-							echo "Användare finns redan globalt";
+						//	echo "Användare finns redan globalt";
 						}
 					}
 				}
@@ -54,13 +57,14 @@ include_once("addstudent.php");
 					$stmt->bindParam(':uid', $userid);
 					try {
 						$stmt->execute();
-						echo "<script type='text/javascript'>alert('Användare är tillagd på kursen')</script>";
+						//echo "<script type='text/javascript'>alert('Användare är tillagd på kursen')</script>";
 					} catch (PDOException $e) {
 						if ($e->getCode()=="23000") {
-						echo "Användare finns redan på kursen";
+						//echo "Användare finns redan på kursen";
 						}
 					}
 				}
 			}
+						echo json_encode($array);
 		}
 	?>

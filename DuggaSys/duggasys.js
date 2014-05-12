@@ -171,35 +171,37 @@ $(function() {
 
 function passPopUp(){
 
-	 $.ajax({
-          type: 'POST',
-          url: 'addstudent_ajax.php',
-          data: {
-              string: $("#string").val()
-          },
-	 	success: function (data) {
-	 		console.log(data);
-	 		showPopUp('show')
-	 	},
-      });
+$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: 'addstudent_ajax.php',
+		data: {
+			string: $("#string").val()
+		},
+		success: function (returnedData) {
+		console.log(returnedData);
+		showPopUp('show', returnedData)
+		},
+	});
 	}
 
-	function showPopUp(showhidePop,data){
+	function showPopUp(showhidePop, returnedData){
 		if(showhidePop == "show"){
 		document.getElementById('light').style.visibility = "visible";
 		document.getElementById('fade').style.visibility = "visible";
 
 
-		var output = "<table>";
+	  var output = "<table class='showpassword'>";
       output += "<tr><th>Namn</th>";
       output += "<th>Användarnamn</th>";
       output += "<th>Lösenord</th></tr>";
 
-      output += "<tr><td>"+data. + "</td>";
-      output += "<td>Användarnamn</td>";
-      output += "<td>Lösenord</td></tr>";
-
-       output += "</table>"
+      $.each(returnedData, function(){
+      output += "<tr><td>"+this[1]+"</td>";
+      output += "<td>"+this[0]+"</td>";
+      output += "<td>"+this[2]+"</td></tr>";
+		})
+       output += "</table>";
       var div = document.getElementById('light');
       div.innerHTML = output;
 	}

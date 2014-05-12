@@ -10,7 +10,7 @@
 <?php
 
 	include_once("../../coursesyspw.php");	
-	include_once("basic.php");
+		include_once("../Shared/basic.php");
 
 		pdoConnect();
 

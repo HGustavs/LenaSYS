@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-			<link type="text/css" href="css/style.css" rel="stylesheet">
-					<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<link type="text/css" href="css/style.css" rel="stylesheet">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="duggasys.js"></script>
 	</head>
 <body>
@@ -31,17 +31,10 @@
 
 
 		<div id="light" class="white_content">
-<?php	
-		include_once "../Shared/external/password.php";
-		include_once("../../coursesyspw.php");	
-		include_once("basic.php");
-		pdoConnect();
-
-		?>
 		</div>
-		<div id="fade" class="black_overlay" onclick="javascript:passPopUp('hide');"></div>
 </div>
 </div>
+		<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 
 </body>
 </html>
