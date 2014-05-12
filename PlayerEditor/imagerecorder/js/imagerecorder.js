@@ -29,12 +29,19 @@ function imagerecorder(canvas)
 	var files;						// store files thats being uploaded
 	var rect = canvas.getBoundingClientRect();
 
+	// List of log string points where an undo action is possible
+	// (Used for splitting the log string where an undo is made)
+	var undoPoints = [];
+
 	mHeight = (rect.bottom - rect.top);
 	mWidth = (rect.right-rect.left);
 
 	addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');	
 	canvas.width = mWidth;
-	canvas.height = mHeight;	
+	canvas.height = mHeight;
+
+	// Set default undo point (for resetting log to its original value)
+	undoPoints.push(new UndoPoint(logStr.length, null));	
 
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
@@ -106,7 +113,8 @@ function imagerecorder(canvas)
 						});
 					});
 				}
-			
+
+				// Show next image
 				showImage(getNextImage());
 			
 				// Update scale ratio (for correct mouse positions)
@@ -126,6 +134,9 @@ function imagerecorder(canvas)
 				document.getElementById('yCord').innerHTML=yMouse;
 
 				logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+
+				// Add undo point
+				createUndoPoint();
 			} else {
 				alert("You need to upload at least one image before you can start recording.");
 			}
@@ -502,17 +513,29 @@ function imagerecorder(canvas)
 		logStr += str;
 	}
 
+	// Create an undo point, making it possible to step back in recording
+	function createUndoPoint(){
+		// Add undo point with current log string position an image
+		undoPoints.push(new UndoPoint(logStr.length, activeImage));
+	}
+
 	// Will undo the last click
 	function undo(){
 		// Check if an undo is possible
 		if (clicked > 0) {
-			// TODO: Undo log string
-
 			// Show previous image
 			var prevImage = getPrevImage();
-			if (prevImage >= 0) {
-				// Show previous
-				showImage(prevImage);
+			// Are there any possible undo points?
+			if (undoPoints.length > 1) {
+				// Remove last point
+				undoPoints.pop();
+				// Fetch point
+				var point = undoPoints[undoPoints.length - 1];
+
+				// Show previous image
+				showImage(point.imageID);
+				// Undo log string
+				logStr = logStr.substr(0, point.stringPosition);
 			}
 			else {
 				// No previous, should reset
@@ -530,8 +553,12 @@ function imagerecorder(canvas)
 		nextImage = 0;
 		currentImageRatio = 1;
 
-		// Clear logged data
-		logStr = "";
+		// Clear all undo points but the first
+		while (undoPoints.length > 1) {
+			undoPoints.pop();
+		}
+		// Clear log string (keeping header and script tag)
+		logStr = logStr.substr(0, undoPoints[0].stringPosition);
 
 		// Remove undo button
 		$("#imagerecorder-undo").hide();
@@ -568,4 +595,16 @@ function imagerecorder(canvas)
 	this.reset = function() {
 		reset();
 	}
+
+
+	/*
+	 * Object for storing undo positions
+	 *
+	 *
+	 */
+	 function UndoPoint(strPosition, imgID)
+	 {
+	 	this.stringPosition = strPosition;
+	 	this.imageID = imgID;
+	 }
 }
