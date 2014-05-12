@@ -131,104 +131,54 @@ function getTest() {
 	console.log("complete");
 }
 // ALERT BOXES START //
-function successBox(title, text, delay, element) {
+function successBox(title, text, delay) {
+	if(title == undefined) { title = "Success!" }
+	if(text == undefined) { text = "You won..." }
 	if(delay == undefined) { delay = 0 }
-	if(element == undefined) { element = "#content" }
+	createRemoveAlert(title, text, delay, "success");
+}
+function noticeBox(title, text, delay) {
+	if(title == undefined) { title = "Notice!" }
+	if(text == undefined) { text = "Think about it..." }
+	if(delay == undefined) { delay = 0 }
+	createRemoveAlert(title, text, delay, "info");
+}
+function warningBox(title, text, delay) {
+	if(title == undefined) { title = "Warning!" }
+	if(text == undefined) { text = "Can be dangerous..." }
+	if(delay == undefined) { delay = 0 }
+	createRemoveAlert(title, text, delay, "warning");
+}
+function dangerBox(title, text, delay) {
+	if(title == undefined) { title = "Warning!" }
+	if(text == undefined) { text = "Serious error..." }
+	createRemoveAlert(title, text, delay, "danger");
+}
 
-	var output = '<div class="alert alert-success">';
-			output += '<strong>'+title+'</strong>';
-			output += '<p>'+text+'</p>';
-		output += '</div>';
+function createRemoveAlert(title, text, delay, type) {
+	if(delay == undefined) { delay = 0 }
+	var output = '<div class="alert slide-down '+type+'">';
+		output += '<strong>'+title+'</strong>';
+		output += '<p>'+text+'</p>';
+		output += '<span>x</span>';
+	output += '</div>';
 
 	if($(".alert").length == 0) {
-		setTimeout(function(){
-			$(element).prepend(output);
-		}, delay);	
+	setTimeout(function(){
+		$("#content").prepend(output).children(':first').hide();
+		var elemHeight = $('.alert').height();
+		$('.alert').css({ display: "block", height: "0px" });
+		$(".alert").animate({height: elemHeight}, 300);
+	}, delay);	
 	}
 	$.when(this).done(setTimeout(function() {
-		$('html').click(function() {
-		    $(".alert").fadeOut(300, function() { $(this).remove(); });
-		    $("html").unbind('click');
-		});
-  	}, 500));
-	
-	setTimeout(function(){
-		$(".alert").fadeOut(300, function() { $(this).remove(); });		
-	}, 6000);
+	$('html').click(function() {
+	    $(".alert").animate({height: 0}, 300,"linear",function() {
+			$(this).remove();
+		})
+	    $("html").unbind('click');
+	});
+	}, 1000));
 }
-function noticeBox(title, text, delay, element) {
-	if(delay == undefined) { delay = 0 }
-	if(element == undefined) { element = "#content" }
 
-	var output = '<div class="alert alert-info">';
-			output += '<strong>'+title+'</strong>';
-			output += '<p>'+text+'</p>';
-		output += '</div>';
-
-	if($(".alert").length == 0) {
-		setTimeout(function(){
-			$(element).prepend(output);
-		}, delay);	
-	}
-	$.when(this).done(setTimeout(function() {
-		$('html').click(function() {
-		    $(".alert").fadeOut(300, function() { $(this).remove(); });
-		    $("html").unbind('click');
-		});
-  	}, 500));
-	
-	setTimeout(function(){
-		$(".alert").fadeOut(300, function() { $(this).remove(); });		
-	}, 6000)
-}
-function warningBox(title, text, delay, element) {
-	if(delay == undefined) { delay = 0 }
-	if(element == undefined) { element = "#content" }
-
-	var output = '<div class="alert alert-warning">';
-			output += '<strong>'+title+'</strong>';
-			output += '<p>'+text+'</p>';
-		output += '</div>';
-
-	if($(".alert").length == 0) {
-		setTimeout(function(){
-			$(element).prepend(output);
-		}, delay);	
-	}
-	$.when(this).done(setTimeout(function() {
-		$('html').click(function() {
-		    $(".alert").fadeOut(300, function() { $(this).remove(); });
-		    $("html").unbind('click');
-		});
-  	}, 500));
-	
-	setTimeout(function(){
-		$(".alert").fadeOut(300, function() { $(this).remove(); });		
-	}, 6000)
-}
-function dangerBox(title, text, delay, element) {
-	if(delay == undefined) { delay = 0 }
-	if(element == undefined) { element = "#content" }
-
-	var output = '<div class="alert alert-danger">';
-			output += '<strong>'+title+'</strong>';
-			output += '<p>'+text+'</p>';
-		output += '</div>';
-
-	if($(".alert").length == 0) {
-		setTimeout(function(){
-			$(element).prepend(output);
-		}, delay);	
-	}
-	$.when(this).done(setTimeout(function() {
-		$('html').click(function() {
-		    $(".alert").fadeOut(300, function() { $(this).remove(); });
-		    $("html").unbind('click');
-		});
-  	}, 500));
-	
-	setTimeout(function(){
-		$(".alert").fadeOut(300, function() { $(this).remove(); });		
-	}, 6000)
-}
 // ALERT BOXES END //
