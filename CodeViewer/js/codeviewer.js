@@ -813,23 +813,24 @@ function returned(data)
 			// Check what tab in general settings menu should be displayed, otherwise the same tabmenu will be displayed after every update.
 			if(tabmenuvalue == "wordlist"){
 				displayWordlist();
-			}else if(tabmenuvalue == "playlink"){
-				displayPlaylink();	
+			}else if(tabmenuvalue == "security"){
+				displaySecurity();	
 			}else if(tabmenuvalue == "templates"){
 				displayTemplates();
 			}					
 		}
 }
-function displayPlaylink(){
-	tabmenuvalue = "playlink";
+function displaySecurity(){
+	tabmenuvalue = "Security";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li class='activeSetMenuLink'>Playlink</li>";
+		str+="<li class='activeSetMenuLink'>Security</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 				
 	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
 	str+="<span id='playlinkErrorMsg' class='playlinkErrorMsgStyle'></span>";
+	str+="<br/> Checkbox: <input type='checkbox' id='checkbox' onChange='changedSecurity();'/>"
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
 }
@@ -838,7 +839,7 @@ function displayTemplates()
 	tabmenuvalue = "templates";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink()'>Playlink</li>";
+		str+="<li onclick='displaySecurity()'>Security</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
@@ -856,7 +857,7 @@ function displayWordlist(){
 	tabmenuvalue = "wordlist";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink();'>Playlink</li>";
+		str+="<li onclick='displaySecurity();'>Security</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 	
@@ -1797,4 +1798,9 @@ function setTheme()
 			alert("no theme");
 		}
 	}
+}
+
+function changedSecurity(){
+	var cb = document.getElementById('checkbox');
+	
 }
