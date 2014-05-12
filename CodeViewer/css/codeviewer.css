@@ -531,7 +531,6 @@ a {
 }
 
 .warning {
-    box-shadow: 10px 10px 14px #000;
     color: #fff;
     position: absolute;
     top: 200px;
@@ -543,7 +542,7 @@ a {
     font-size: 14px;
     font-weight: normal;
     padding: 4px;
-    background-color: #000;
+    background-color: #5D5D5D;
 }
 
 .smallbutt {
