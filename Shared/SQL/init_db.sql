@@ -46,8 +46,8 @@ CREATE TABLE course(
 		FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO course(coursecode,coursename,created,creator) values ("DV12G","Webbprogrammering",NOW(),1);
-INSERT INTO course(coursecode,coursename,created,creator) values ("DV13G","Futhark",NOW(),1);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV13G","Futhark",NOW(),1,0);
 
 /* User access to the application*/
 CREATE TABLE user_course(
@@ -156,27 +156,39 @@ INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);
 
 
 CREATE TABLE descriptionsection(
-		descid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		exampleid			MEDIUMINT UNSIGNED NOT NULL,
+		exampleno			INTEGER,
 		segment				VARCHAR(64000),
-		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INTEGER UNSIGNED NOT NULL,
-		pos					MEDIUMINT UNSIGNED NOT NULL,
-		PRIMARY KEY(descid),
-		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
-		FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+		pos						INTEGER,
+		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		appuser				VARCHAR(64),
+		descno		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
+		PRIMARY KEY(descno)		
+);
+/* TRIGGER IF WE WANT &nbsp; AND <br> TO BE REPLACED AUTOMATICALLY
+delimiter //
+CREATE TRIGGER nbsp_br_desc_check BEFORE UPDATE ON descriptionsection
+FOR EACH ROW
+BEGIN
+     IF NEW.segment LIKE "%&nbsp;%" THEN
+         SET NEW.segment = replace(NEW.segment, "&nbsp;", " ");
+     END IF;
+     IF NEW.segment LIKE "%<br>%" THEN
+         SET NEW.segment = replace(NEW.segment, "<br>", "\n");
+     END IF;
+ END;//
+ delimiter ;
+*/	
 	
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (3,"<b>Callback 1</b>This is the first section of the description<b>More</b>This is more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (4,"<b>Callback 2 S2</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (5,"<b>Callback 3</b>This is the first section of the description<b>More</b>This is more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (6,"<b>Callback 4</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (7,"<b>Design 1</b>This is the first section of the description<b>More</b>This is more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (8,"<b>Design 2</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (9,"<b>Design 3</b>This is the first section of the description<b>More</b>This is more text",1);
-INSERT INTO descriptionsection(exampleid,segment,uid) VALUES (10,"<b>Design 4</b>This is the seond section of the description<b>Even More</b>This is even more text",1);
+INSERT INTO descriptionsection(exampleno,segment) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (3,"<b>Callback 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (4,"<b>Callback 2 S2</b>This is the seond section of the description<b>Even More</b>This is even more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (5,"<b>Callback 3</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (6,"<b>Callback 4</b>This is the seond section of the description<b>Even More</b>This is even more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (7,"<b>Design 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (8,"<b>Design 2</b>This is the seond section of the description<b>Even More</b>This is even more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (9,"<b>Design 3</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionsection(exampleno,segment) VALUES (10,"<b>Design 4</b>This is the seond section of the description<b>Even More</b>This is even more text");
 
 
 /* boxes with information in a certain example */
@@ -189,7 +201,6 @@ CREATE TABLE box(
 		settings			VARCHAR(1024),
 		PRIMARY KEY(boxid, exampleid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
-		FOREIGN KEY (descid) REFERENCES descriptionsection (descid),
 		FOREIGN KEY (fileid) references filelist (fileid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -273,3 +284,17 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALU
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "http://nyan.cat/", 2, 10, 7, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "http://nyan.cat/", 2, 11, 8, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 12, 9, 1, 1);
+
+DROP TABLE IF EXISTS eventlog;
+CREATE TABLE eventlog(
+	eid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	address VARCHAR(45) NOT NULL,
+	user INT UNSIGNED NULL,
+	eventtext TEXT NOT NULL,
+	PRIMARY KEY(eid),
+	FOREIGN KEY(user)
+		REFERENCES user(uid)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;

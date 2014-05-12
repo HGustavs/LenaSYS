@@ -155,7 +155,15 @@ header {
     margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 4px;
-}  
+    -webkit-animation: fadein 1s; /* Safari and Chrome */
+       -moz-animation: fadein 1s; /* Firefox */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera */
+            animation: fadein 1s;
+}
+    .alert strong {
+        font-size: 1.1em;
+    }  
     .alert-success {
         background-color: #dff0d8;
         border-color: #d6e9c6;
@@ -288,10 +296,10 @@ table.list tr.red {
 
 #Sectionlist{
 	margin:0px auto;
-	padding: 5px;
     background-color: #fff;
     color:#434343;
     display: block;
+	padding-top:1px;
 }
 #Sectionlist .butt {
     padding-left: 8px;
@@ -302,7 +310,6 @@ table.list tr.red {
     font-family: Calibri,Sans-Serif;
     background-color: #927b9e;
 }
-
 
 #Sectionlist .norm {
 	padding:6px;
@@ -321,7 +328,6 @@ table.list tr.red {
 #Sectionlist .hidden {
 	padding:6px;
 	padding-left:15px;
-	opacity: 0.5;
     display: block;
     background-color: #d0cfd0;
 }
@@ -358,7 +364,15 @@ table.list tr.red {
     color: #000;
 }
 
-
+.sectionlist-change-div {
+	font-family: Arial;
+	font-size:10pt;
+	display:none;
+	background-color:#fff;
+	color:#000;
+	margin-top: 5px;
+	padding:10px;
+}
 
 #add-course-button-div {
 	float:right;
@@ -381,16 +395,19 @@ table.list tr.red {
 	display:none;
 	height:40px;
 	float:left;
+	width:100%;
 }
-
-.course-table td.settings-td:hover {
-	background-color:#fff;
-}
-
 .course-table td.settings-td {
 	font-size:12pt;
+	float:left;
+}
+.course-table td.settings-td-buttons {
+	float:right;
 }
 
+.course-table td.settings-td:hover, .course-table td.settings-td-buttons:hover {
+	background-color:#fff;
+}
 
 .course-table td{
     color:#434343;
@@ -412,6 +429,7 @@ img#table-img-coggwheel {
 	width:15px;
 	height:15px;
 	margin-top:4px;
+	cursor: pointer;
 }
 /* courselistmenu END */
 
@@ -426,22 +444,6 @@ input.submit-button {
 input.submit-button:hover {
 	background-color:#7B5A96;
 }
-
-/* DRAG AND DROP MESSAGE */
-#dragupdate {
-	padding:10px;
-	background-color:#614875;
-	display:none;
-	z-index:5;
-	position:absolute;
-	font-family:arial;
-	font-size:10pt;
-	font-weight:bold;
-	color:#FFFFFF;
-	width:40%;
-	margin:inherit;
-}
-
 
 /* ANIMATIONS START */
 @keyframes fadein {

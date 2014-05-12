@@ -3,3 +3,5 @@
 *.db
 .metadata
 /PlayerEditor/CanvasWrapper/Tests/*
+
+*.xml
