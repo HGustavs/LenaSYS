@@ -205,10 +205,25 @@ CREATE TABLE box(
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,2,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,3,"[viktig=1]");
-
-
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Code",1,2,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (2,"Document",2,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (2,"CODE",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (3,"Document",3,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (3,"CODE",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (4,"Document",4,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (4,"CODE",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (5,"Document",5,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (5,"CODE",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (6,"Document",6,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (6,"CODE",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (7,"Document",7,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (7,"CODE",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (8,"Document",8,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (8,"CODE",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (9,"Document",9,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (9,"CODE",1,1,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (10,"Document",10,3,"[viktig=1]");
+INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (10,"CODE",1,1,"[viktig=1]");
 /* Wordlist contains a list of keywords for a certain programming language or file type */
 CREATE TABLE wordlist(
 		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -221,12 +236,12 @@ CREATE TABLE wordlist(
 		FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","for",1);
-INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","if",1);
-INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","var",1);
-INSERT INTO wordlist(wordlist,word,uid) VALUES ("JS","function",2);
-INSERT INTO wordlist(wordlist,word,uid) VALUES ("GLSL","vec3",2);
-INSERT INTO wordlist(wordlist,word,uid) VALUES ("GLSL","dot",2);
+INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("JS","for","A",1);
+INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("JS","if","B",1);
+INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("JS","var","C",1);
+INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("JS","function","D",2);
+INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("GLSL","vec3","A",2);
+INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("GLSL","dot","B",2);
 
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(

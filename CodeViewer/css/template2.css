@@ -1,3 +1,4 @@
+/*
 #docucontent{
     padding-left: 4px;
     position: absolute;
@@ -5,17 +6,45 @@
     left: 0px;
     right: 0px;
     height: 250px;
-    /*background-color: #272822;*/
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
-   /* color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
 }
-
+*/
+#box1{
+    padding-left: 4px;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    height: 250px;
+    background-color: #272822;
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    outline: 0 none;
+}
+/*
 #codebox {
+    position: absolute;
+    float: left;
+    top: 250px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+*/
+#box2 {
     position: absolute;
     float: left;
     top: 250px;
@@ -29,9 +58,11 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
-#temp3{
-	display: none;
-}
-#temp4{
-	display: none;
+.buttomenu2{
+	z-index:2;
+	position: absolute;
+    background-color: #5D5D5D;
+    height: 50px;
+    width: -moz-calc(26%);
+    width: -webkit-calc(26%);
 }

@@ -1,6 +1,5 @@
 #docucontent h1 {
 
-  //color: white;
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -14,6 +13,24 @@
     font-family: Arial,Sans-Serif;
     font-style: italic;
 }
+
+#box1 h1 {
+
+    display: block;
+    font-family: Arial,Sans-Serif;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#box1 span.codestyle{
+    color: grey;
+    font-family: Arial,Sans-Serif;
+    font-style: italic;
+}
+
+
 
 /* --- */
 
@@ -268,6 +285,9 @@
 }
 
 #docucontent img{
+    width: 80%;
+}
+#box1 img{
     width: 80%;
 }
 

@@ -104,9 +104,8 @@ function styleCode()
             }
         }
         
-    	 range = renderdesccode(range);
-    //    document.execCommand("insertHTML",false,rendercode2(range,"docucontent"));
-		document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
+    	range = renderdesccode(range);
+   		document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
 }
 
 
@@ -172,11 +171,11 @@ function editedDescription()
 		// What is allowed here?
 }
 
-function Save()
-{		
+function Save(id)
+{
 	// remove all formatting before saving
 	$('.codestyle span').contents().unwrap();
-	var editable=document.getElementById('docucontent');
+	var editable=document.getElementById(id);
 	var desc=editable.innerHTML;
 	AJAXService2("editDescription", desc);
 }
@@ -608,9 +607,7 @@ function sendOut(kind, sectid)
 */			
 
 function changetemplate(templateid){
-	templateid = parseInt(templateid);
-	AJAXService("chooseTemplate","&templateid="+templateid);
-//	location.reload();
+	AJAXService("changetemplate","&templateid="+templateid);
 }
 
 function choosetemplate(){
@@ -640,6 +637,7 @@ function choosetemplate(){
 	}
 }
 
+
 function returned(data)
 {
 		retdata=data;
@@ -647,11 +645,60 @@ function returned(data)
 		if(!choosetemplate()){
 			return;
 		}
-		// remove templatebox if it still exist
+		// remove templatebox if it still exists
 		if(document.getElementById("picktemplate")){
 			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
 		}
+		
+		// create boxes
+		for(i=0;i<data['box'].length;i++){
+			// create a templatebox
+			alert(i+1);
+			addTemplatebox("box"+(i+1));
+			// Print out code example in a code box
+			if((data['box'][i][1]) == "CODE"){
+				rendercode(data['box'][i][2],"box"+(i+1));
+			}
 			
+			// Print out description in a document box
+			if((data['box'][i][1]) == "DOCUMENT"){
+
+				var desc = data['box'][i][2];
+				desc = replaceAll("<span&nbsp;","<span ",desc);
+				desc =  replaceAll("<img&nbsp;","<img ",desc);
+				
+				var docuwindow = document.getElementById("box"+(i+1));
+				docuwindow.innerHTML=desc;
+				//  Fill description with code using tokenizer.
+				var cs = docuwindow.getElementsByClassName("codestyle");
+				for(var i=0; i<cs.length; i++){
+					desc = desc.replace(cs[i].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML))));
+				}
+				docuwindow.innerHTML = desc;
+				
+				if(sessionkind == "w"){
+					docuwindow.setAttribute("contenteditable","true");
+					if(!document.getElementById("box"+(i+1)+"menu")){
+					
+						var boxmenu = document.createElement("div");
+						document.getElementById("div2").appendChild(boxmenu);
+						boxmenu.setAttribute("class", "buttomenu2");
+						boxmenu.setAttribute("id", "box"+(i+1)+"menu");
+						
+						var str = '<table cellspacing="2"><tr>';
+						str+= '<td class="butto2" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
+						str+=  '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
+						str+='<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
+						str+= "<td class='butto2' id='hideimage' title='Select image' onclick=''><img src='new icons/picture_button.svg' /></td>";
+						str+= "<td class='butto2' title='Save' onclick='Save(\""+"box"+(i+1)+"\");'><img src='new icons/save_button.svg' /></td>";
+						str+= '</tr></table></div>';
+						
+						boxmenu.innerHTML=str;
+					}
+				}
+			}		
+		}
+
 		changeCSS("css/"+data['template'][0][1]);
 		
 				//----------------------------------------------------
@@ -746,6 +793,7 @@ function returned(data)
 	//	docuwindow.innerHTML = desc;
 	/* 	STOP */	
 	
+	/* START 
 		var desc = data['desc'];
 		desc = replaceAll("<span&nbsp;","<span ",desc);
 		desc =  replaceAll("<img&nbsp;","<img ",desc);
@@ -758,10 +806,10 @@ function returned(data)
 			desc = desc.replace(cs[i].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML))));
 		}
 		docuwindow.innerHTML = desc;
-		
+		STOP */
 		
 		// Fill Code Viewer with Code using Tokenizer
-		rendercode(data['code'],"infobox");
+	//	rendercode(data['code'],"infobox");
 
 		// Fill Section Name and Example Name
 		var examplenme=document.getElementById('exampleName');
@@ -841,11 +889,11 @@ function displayTemplates()
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
-	str+="<div class='templateicon' onclick='changeCSS(\""+'css/template1.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
-	str+="<div class='templateicon' onclick='changeCSS(\""+'css/template2.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
-	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
-	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
-	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'1'+"\");'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'2'+"\");'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'3'+"\");'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'4'+"\");'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'5'+"\");'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
 
 		
 	docurec=document.getElementById('docudrop');
@@ -977,9 +1025,10 @@ function setupEditable()
 		if(sessionkind=="w"){
 				var editable=document.getElementById('exampleName');
 				editable.addEventListener("blur", function(){editedExamplename();}, true);
-		
+		/*
 				var fditable=document.getElementById('docucontent');
 				fditable.addEventListener("blur", function(){editedDescription();}, true);
+		*/
 		}
 }
 function editedExamplename()
@@ -1590,6 +1639,7 @@ function linenumbers()
 {	
 	if(localStorage.getItem("linenumbers") == "false"){	
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg'); 
+		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton2.svg');
 		$( ".no" ).css("display","none");	
 	}
 }
@@ -1597,31 +1647,29 @@ function fadelinenumbers()
 {
 	if ( $( ".no" ).is( ":hidden" ) ) {
 		$( ".no" ).fadeIn( "slow" );
+		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton.svg');
 		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
 		$( ".no" ).fadeOut("slow");
+		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton2.svg');
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
 }
 function addTemplatebox(id)
-{	
-	var temps = id.split(",");
-	
-	
+{
 	var content = document.getElementById("div2");
 	
-	for(i=0; i<temps.length; i++){
-		if(document.getElementById(temps[i])){
-			continue;
-		}
-		var div = document.createElement("div");
-		content.appendChild(div);
-		div.id = temps[i];
-		div.className = temps[i]+"Style";
-		div.setAttribute("contenteditable", "true");
-	}	
+	// don't create box if it already exists
+	if(document.getElementById(id)){
+		return;
+	}
+		
+	var div = document.createElement("div");
+	content.appendChild(div);
+	div.id = id;
+	div.className = id+"Style";		
 }
 
 function changeCSS(cssFile, index)

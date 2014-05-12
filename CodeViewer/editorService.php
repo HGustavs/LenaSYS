@@ -117,6 +117,8 @@
 								$query = "UPDATE filelist SET filename='$filename' WHERE exampleid='$exampleid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
+								
+								/* Need to update file id in box-talble here. */
 					}else if(strcmp("createNewExample",$opt)===0){
 								// Create new codeExample - create new file with same id.
 								$newpos=$position+1;
@@ -137,15 +139,40 @@
 								// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
 								$description = str_replace("&nbsp;"," ",$_POST['description']);
 								$description = str_replace("<br>","\n",$description);
-								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleno='$exampleid';";
+								$query = "UPDATE descriptionsection SET segment='$description', appuser='$appuser' WHERE exampleno='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
-					}
-					else if(strcmp("chooseTemplate",$opt)===0){
+					
+					}else if(strcmp("changetemplate",$opt)===0){
+								
+								/*  Codeexample resets when changing templates  */
+						
 								$templateid=$_POST['templateid'];
-								$query = "UPDATE codeexample SET templateid='$templateid' WHERE exampleid='$exampleid';";
+								// Reset and update codeexample
+								$query = "UPDATE codeexample SET wordlist='',runlink='', templateid='$templateid', uid='$appuser' WHERE exampleid='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
+								
+						/*		// Reset descriptions
+								$query = "UPDATE descriptionsection SET segment='', appuser='$appuser' WHERE exampleno='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating descriptionsection!");	
+								
+								// Reset filelist
+								$query = "UPDATE filelist SET filename='', uid='$appuser' WHERE exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating filelist!");
+								
+								// Reset improw
+								$query = "UPDATE improw SET istart='', iend='', uid='$appuser' WHERE exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating improw!");
+								
+								// Reset imp.wordlist
+								$query = "UPDATE impwordlist SET word='', uid='$appuser' WHERE exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating impwordlist!");
+						*/
 					}
 			}
 	
@@ -264,7 +291,7 @@
 			}
 				
 			// Read File
-			$code="";
+		/*	$code="";
 			$filename="";
 			$query = "SELECT filename FROM filelist WHERE exampleid='$exampleid' ORDER BY pos ASC LIMIT 1;";
 			$result=mysql_query($query);
@@ -290,7 +317,7 @@
 							$filename=$row['filename'];
 					}
 		  }
-		  
+	*/	  
 		  // Read important lines
 			$imp=array();
 			$query = "SELECT istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
@@ -366,16 +393,67 @@
 			
 
 
-        // Read Directory - Images
-        $images=array();
-        $img_dir = opendir('./imgupload');
-        while (($img_file = readdir($img_dir)) !== false) {
-            if(endsWith($img_file,".png")){
-                array_push($images,$img_file);
-            }
-        }
+	        // Read Directory - Images
+	        $images=array();
+	        $img_dir = opendir('./imgupload');
+	        while (($img_file = readdir($img_dir)) !== false) {
+	            if(endsWith($img_file,".png")){
+	                array_push($images,$img_file);
+	            }
+	        }
 
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images);
+			// Get boxes and its information
+			$box=array();
+			
+			$desc2=array();
+			$file2=array();
+			
+			$query = "SELECT * FROM box WHERE exampleid=$exampleid;";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+					$boxcontent=strtoupper($row['boxcontent']);
+					$boxid=$row['boxid'];
+					
+				if(strcmp("DOCUMENT",$boxcontent)===0){
+					$descid=$row['descid'];
+					$query2 = "SELECT segment FROM descriptionsection WHERE descno=$descid;";
+					$result2=mysql_query($query2);
+					if (!$result2) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+					while ($row2 = mysql_fetch_assoc($result2)){
+						// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment']))
+							array_push($box,array($boxid,$boxcontent,str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment']))));
+					} 
+				}else if(strcmp("CODE",$boxcontent)===0){
+					$fileid=$row['fileid'];
+					
+					$query3 = "SELECT filename FROM filelist WHERE fileid=$fileid;";
+					$result3=mysql_query($query3);
+					if (!$result3) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+					while ($row3 = mysql_fetch_assoc($result3)){
+						$filename=$row3['filename'];
+						$code="";
+						$filename="./codeupload/".$filename;
+							$handle = @fopen($filename, "r");
+							if ($handle) {
+							    while (($buffer = fgets($handle, 1024)) !== false) {
+									$code=$code.$buffer;
+								}
+							    if (!feof($handle)) {
+					        		$code.="Error: Unexpected end of file ".$filename."\n";			    
+							    }
+							    fclose($handle);
+							}else{
+					        $code.="Error: could not open file".$filename."\n";
+							}
+							array_push($box,array($boxid,$boxcontent,$code));
+					} 
+				}	
+					
+			}
+
+
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images);
 			echo json_encode($array);
 
 

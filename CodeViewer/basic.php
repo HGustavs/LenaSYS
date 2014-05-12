@@ -21,7 +21,7 @@ include "../Shared/basic.php";
 						echo '<tr><td class="mbutto mbuttoStyle " title="Show code" onclick="" colspan="4">Code<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
  						echo '<tr><td class="mbutto mbuttoStyle " title="Show description" onclick="" colspan="4">Description<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
  						echo '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
- 						echo '<tr><td class="mbutto mbuttoStyle " title="Show rownumbers" onclick="" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
+ 						echo '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="" colspan="4">Desktop site</td></tr>';
 					echo '</table>';
@@ -57,27 +57,26 @@ include "../Shared/basic.php";
 				echo '<div id="div2" style="width:100%; position: absolute; top: 50px; bottom: 0px; background-color:#def">';
 
 				if($kind){
-                    echo '<div id="buttomenu2">';
+             /*       echo '<div id="buttomenu2">';
                     echo '<table cellspacing="2"><tr>';
                     echo '<td class="butto2" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
                     echo '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
                     echo '<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
                     echo '<td class="butto2" id="hideimage" title="Select image"><img src="new icons/picture_button.svg" /></td>';
                     echo '<td class="butto2" title="Save" onclick="Save();"><img src="new icons/save_button.svg" /></td>';
-                    echo '</tr></table></div>';
-                    echo '<div id="docucontent" class="docucontentStyle" contenteditable="true">';
+                    echo '</tr></table></div>';  */
+           //      echo '<div id="docucontent" class="docucontentStyle" contenteditable="true">';
 				}
             else{
-                echo '<div id="docucontent" class="docucontentStyle">';
+            //   echo '<div id="docucontent" class="docucontentStyle">';
             }
-            echo '<div style="left:20px" class="warning">';
+        		/*    echo '<div style="left:20px" class="warning">';
 						echo 'Please wait while content loads<br/>';
 						echo '<img src="new icons/loadingJS.gif" /><br/>';
 						echo 'Do not forget to enable Javascript<br/>';
 						echo '</div>';
 						echo '</div>';
 						echo '<div id="codebox" class="codeboxStyle">';
-				//		echo '<span id="playlinkErrorMsg" onclick="$(this).hide();"></span>';
 						echo '<div id="infobox" class="codeview">';
 						echo '<div style="left:300px" class="warning warningStyle">';
 							echo 'Please wait while content loads<br/>';
@@ -86,6 +85,6 @@ include "../Shared/basic.php";
 					echo '</div>';
 				echo '</div>';
 		echo '</div>';
-		echo '</div>';
+	*/	echo '</div>';
 		}
 ?>
