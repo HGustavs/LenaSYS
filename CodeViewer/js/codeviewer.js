@@ -1396,20 +1396,6 @@ function fadelinenumbers()
 		localStorage.setItem("linenumbers", "false");
 	 }
 }
-function addTemplatebox(id)
-{
-	var content = document.getElementById("div2");
-	
-	// don't create box if it already exists
-	if(document.getElementById(id)){
-		return;
-	}
-		
-	var div = document.createElement("div");
-	content.appendChild(div);
-	div.id = id;
-	div.className = id+"Style";		
-}
 
 function changeCSS(cssFile, index)
 {

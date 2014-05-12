@@ -29,7 +29,20 @@ function choosetemplate(){
 		return true;
 	}
 }
-
+function addTemplatebox(id)
+{
+	var content = document.getElementById("div2");
+	
+	// don't create box if it already exists
+	if(document.getElementById(id)){
+		return;
+	}
+		
+	var div = document.createElement("div");
+	content.appendChild(div);
+	div.id = id;
+	div.className = id+"Style";		
+}
 
 function returned(data)
 {
@@ -46,7 +59,6 @@ function returned(data)
 		// create boxes
 		for(i=0;i<data['box'].length;i++){
 			// create a templatebox
-			alert(i+1);
 			addTemplatebox("box"+(i+1));
 			// Print out code example in a code box
 			if((data['box'][i][1]) == "CODE"){
@@ -228,7 +240,6 @@ function returned(data)
             // Fill imagelist
             str="";
             for(i=0;i<data['images'].length;i++){
-
                     //str+="<span class='dropdownitem' id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' onmouseover='highlightMenu(\"DDII"+i+"\");' onmouseout='dehighlightMenu(\"DDII"+i+"\");'>"+data['images'][i]+"</span>";
                 str+="<img id='DDII"+i+"' onclick='insertImage(\"imgupload/"+data['images'][i]+"\");' title=\""+data['images'][i]+"\" src=\"imgupload/"+data['images'][i]+"\"></img>";
 

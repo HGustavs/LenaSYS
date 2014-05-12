@@ -76,10 +76,10 @@ CREATE TABLE template(
 
 INSERT INTO template (templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template1.css",2);
-INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template1.css",3);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template2.css",3);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template2.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2);
+INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
 
 /* Code Example contains a list of the code examples for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
@@ -99,6 +99,7 @@ CREATE TABLE codeexample(
 		FOREIGN KEY (templateid) REFERENCES template (templateid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+INSERT INTO codeexample(exampleid,cid,examplename,wordlist,runlink,uid,cversion) values (0,1,"Events 1","JS","",1,2013);
 INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Events 1","JS","",1,2013);
 INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Events 2","JS","",1,2013);
 INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Callback 1","GLSL","Culf.html",1,2013);
@@ -142,7 +143,8 @@ CREATE TABLE filelist(
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-	
+
+INSERT INTO filelist(fileid,uid,exampleid) VALUES (0,1,0);	
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (1,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (2,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (3,"js1.js",1,1);
@@ -178,7 +180,8 @@ BEGIN
  END;//
  delimiter ;
 */	
-	
+
+INSERT INTO descriptionsection(exampleno,descno) VALUES (0,0);	
 INSERT INTO descriptionsection(exampleno,segment) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 INSERT INTO descriptionsection(exampleno,segment) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text");
 INSERT INTO descriptionsection(exampleno,segment) VALUES (3,"<b>Callback 1</b>This is the first section of the description<b>More</b>This is more text");
@@ -203,6 +206,23 @@ CREATE TABLE box(
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (fileid) references filelist (fileid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+/* TRIGGER IF WE WANT &nbsp; AND <br> TO BE REPLACED AUTOMATICALLY
+delimiter //
+CREATE TRIGGER nbsp_br_desc_check BEFORE UPDATE ON descriptionsection
+FOR EACH ROW
+BEGIN
+     IF NEW.segment LIKE "%&nbsp;%" THEN
+         SET NEW.segment = replace(NEW.segment, "&nbsp;", " ");
+     END IF;
+     IF NEW.segment LIKE "%<br>%" THEN
+         SET NEW.segment = replace(NEW.segment, "<br>", "\n");
+     END IF;
+ END;//
+ delimiter ;
+*/
+
 
 INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,1,"[viktig=1]");
 INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Code",1,2,"[viktig=1]");

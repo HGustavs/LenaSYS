@@ -146,33 +146,37 @@
 					}else if(strcmp("changetemplate",$opt)===0){
 								
 								/*  Codeexample resets when changing templates  */
-						
 								$templateid=$_POST['templateid'];
 								// Reset and update codeexample
-								$query = "UPDATE codeexample SET wordlist='',runlink='', templateid='$templateid', uid='$appuser' WHERE exampleid='$exampleid';";
+								$query = "UPDATE codeexample SET templateid='$templateid', uid='$appuser' WHERE exampleid='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 								
-						/*		// Reset descriptions
-								$query = "UPDATE descriptionsection SET segment='', appuser='$appuser' WHERE exampleno='$exampleid';";
+								$query = "Select numbox from template where templateid=(select templateid from codeexample where exampleid='$exampleid');";
 								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating descriptionsection!");	
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+								while ($row = mysql_fetch_assoc($result)){
+										$required_boxes = $row['numbox'];
+								}
 								
-								// Reset filelist
-								$query = "UPDATE filelist SET filename='', uid='$appuser' WHERE exampleid='$exampleid';";
+								$query = "Select * from box where exampleid='$exampleid';";
 								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating filelist!");
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+								$existing_boxes = mysql_num_rows($result);
+								$new_boxes = $required_boxes-$existing_boxes;
+																
+								if($new_boxes != 0){
+									for($i=0; $i<$new_boxes; $i++){
+										$query = "INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES ('$exampleid','NOT DEFINED', '0','0', 'NOT DEFINED');";		
+										$result=mysql_query($query);
+										if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
+									}
+								}
 								
-								// Reset improw
-								$query = "UPDATE improw SET istart='', iend='', uid='$appuser' WHERE exampleid='$exampleid';";
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating improw!");
 								
-								// Reset imp.wordlist
-								$query = "UPDATE impwordlist SET word='', uid='$appuser' WHERE exampleid='$exampleid';";
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating impwordlist!");
-						*/
+								
+								
+								
 					}
 			}
 	
@@ -404,10 +408,6 @@
 
 			// Get boxes and its information
 			$box=array();
-			
-			$desc2=array();
-			$file2=array();
-			
 			$query = "SELECT * FROM box WHERE exampleid=$exampleid;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
@@ -423,7 +423,7 @@
 					while ($row2 = mysql_fetch_assoc($result2)){
 						// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment']))
 							array_push($box,array($boxid,$boxcontent,str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment']))));
-					} 
+					}		
 				}else if(strcmp("CODE",$boxcontent)===0){
 					$fileid=$row['fileid'];
 					
@@ -448,6 +448,8 @@
 							}
 							array_push($box,array($boxid,$boxcontent,$code));
 					} 
+				}else if (strcmp("NOT DEFINED",$boxcontent)===0){
+					array_push($box,array($boxid,$boxcontent));
 				}	
 					
 			}
