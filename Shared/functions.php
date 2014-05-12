@@ -53,7 +53,7 @@ function jsvarsession($getname,$varname){
  * be logged to the table each time the function is run.
  * @
  */
-function log_message($user, $message) 
+function log_message($user, $type='notice', $message) 
 {
 	global $pdo;
 
@@ -62,9 +62,10 @@ function log_message($user, $message)
 	}
 
 	// TODO: Add support for types of events?
-	$query = $pdo->prepare("INSERT INTO eventlog(address, user, eventtext) VALUES(:address, :user, :eventtext)");
+	$query = $pdo->prepare("INSERT INTO eventlog(address, type, user, eventtext) VALUES(:address, :type, :user, :eventtext)");
 
 	$query->bindParam(':user', $user);
+	$query->bindParam(':type', $type);
 
 	// TODO: Proxy checks?
 	$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);

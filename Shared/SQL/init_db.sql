@@ -288,6 +288,7 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visi
 DROP TABLE IF EXISTS eventlog;
 CREATE TABLE eventlog(
 	eid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	type ENUM('notice', 'warning', 'fatal', 'loginerr') DEFAULT 'notice',
 	ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address VARCHAR(45) NOT NULL,
 	user INT UNSIGNED NULL,
