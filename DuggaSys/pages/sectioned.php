@@ -4,7 +4,7 @@ include_once(dirname(__FILE__) . "/../../Shared/database.php");
 include_once(dirname(__FILE__) . "/../../Shared/courses.php");
 include_once(dirname(__FILE__) . "/../../Shared/sessions.php");	
 
-dbConnect();
+pdoConnect();
 session_start();
 checklogin();
 ?>
@@ -13,6 +13,7 @@ checklogin();
 	<head>
             <link type="text/css" href="css/style.css" rel="stylesheet" />
 			<script type="text/javascript" src="duggasys.js"></script>
+			<script type="text/javascript" src="js/verificationFunctions.js"></script>
             <!--<script type="text/javascript" src="../CodeViewer/js/tooltips.js"></script>-->
 			<script>
 				var sessionkind=0;
@@ -40,17 +41,13 @@ checklogin();
 										$.post("SectionedService.php", array, function(theResponse){
 											var data = $.parseJSON(theResponse);
 											if(data.success) {
-												$("#dragupdate").html('Sparade listelementen');
+												noticeBox(data.coursename, "Updates saved", 50);
 											} else {
-												$("#dragupdate").html('Kunde inte spara listan');
+												warningBox(data.coursename, "Could not save list elements", 50);
 											}
-											$("#dragupdate").slideDown('slow');
-											setTimeout(function(){
-												$("#dragupdate").slideUp("slow", function () { });
-											}, 2000);
 											dragtimer = null;
 										});
-									}, 4000);
+									}, 3000);
 
 								}
 						});
@@ -59,10 +56,15 @@ checklogin();
 
 				function serviceOnSuccess(data) {
 					sessionkind=data.writeaccess;
+					readaccess=data.readaccess;
 					if(sessionkind==true) {
 						$(document).makesortable();
 					}
-					returnedSection(data);
+					if (readaccess==true) {
+						returnedSection(data);
+					} else {
+						changeURL('noid');
+					}
 				}
 				function AJAXServiceSection(opt,para)
 				{
@@ -76,23 +78,6 @@ checklogin();
 				}
 				AJAXServiceSection("List", '');
 			</script>
-
-            <!--Linkans fula meddelande som kommer upp när du har gjort en dragNdrop-->
 	</head>
-	<div id="dragupdate"></div>
-	<div id="Sectionlist">
-	</div>
+	<div id="Sectionlist"></div>
 </html>
-
-
-<!--Place tooltips on all objects with a title
-
-Do we want to tooltips?
-
- <script>
-    $( document ).ready(function() {
-        setTimeout(function() {
-            $("*[title]").tooltips();
-        }, 800);
-    });
-</script>-->

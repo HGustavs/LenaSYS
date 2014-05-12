@@ -9,7 +9,6 @@
 		date_default_timezone_set("Europe/Stockholm");
 	
 		// Include basic application services!
-		include_once("../../coursesyspw.php");
 		include_once("../Shared/sessions.php");
 		include_once("../Shared/courses.php");
 	
@@ -58,6 +57,7 @@
 							$stmt->bindParam(':name', $sectname);
 							$stmt->bindParam(':uid', $_SESSION['uid']);
 							if(!$stmt->execute()) {
+								// TODO: Remove these debug prints
 								print_r($stmt->errorInfo());
 							} else {
 								// Get example id
@@ -70,6 +70,7 @@
 								$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
 								$sinto->bindParam(':eid', $eid[0]);
 								if(!$sinto->execute()) {
+									// TODO: Remove these debug prints
 									print_r($sinto->errorInfo());
 								}
 							}
@@ -113,7 +114,18 @@
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
 		//------------------------------------------------------------------------------------------------
-		$ha = (checklogin() && hasAccess($_SESSION['uid'], $courseid, 'w'));
+		$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:1");
+		$query->bindParam(':1', $courseid);
+		$result = $query->execute();
+		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+			$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0);
+			if (!$hr) {
+				if (checklogin()) {
+					$hr = isSuperUser($_SESSION['uid']);
+				}
+			}
+		}
+		$ha = (checklogin() && (hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"])));
 		$entries=array();
 		$query = $pdo->prepare("SELECT lid,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid ORDER BY pos");
 		$query->bindParam(':cid', $courseid);
@@ -138,6 +150,7 @@
 			'entries' => $entries,
 			"debug" => $debug,
 			'writeaccess' => $ha,
+			'readaccess' => $hr,
 			'coursename' => getCourseName($courseid),
 			'courseid' => $courseid,
 			'success' => $success

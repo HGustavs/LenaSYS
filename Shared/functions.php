@@ -47,4 +47,29 @@ function jsvarsession($getname,$varname){
 		echo 'var '.$varname.'="NONE!";';												
 	}
 }	
+
+/**
+ * Log a message to the eventlog in the database. Use sparingly since it will
+ * be logged to the table each time the function is run.
+ * @
+ */
+function log_message($user, $message) 
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	// TODO: Add support for types of events?
+	$query = $pdo->prepare("INSERT INTO eventlog(address, user, eventtext) VALUES(:address, :user, :eventtext)");
+
+	$query->bindParam(':user', $user);
+
+	// TODO: Proxy checks?
+	$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);
+	$query->bindParam(':eventtext', $message);
+	$query->execute();
+	return $query->rowCount() > 0;
+}
 ?>

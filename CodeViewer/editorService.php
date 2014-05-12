@@ -31,7 +31,7 @@
 	$cnt=0;
 	$query = "SELECT exampleid,examplename,cid,cversion FROM codeexample WHERE exampleid='$exampleid';";		
 	$result=mysql_query($query);
-	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 	while ($row = mysql_fetch_assoc($result)){
 			$cnt++;
 			$exampleid=$row['exampleid'];
@@ -53,7 +53,8 @@
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
 								$wordlist=htmlEntities($_POST['wordlist']);
-								$query = "INSERT INTO wordlist(wordlist,word,uid) VALUES ('$wordlist','$word','$appuser');";		
+								$label=htmlEntities($_POST['label']);
+								$query = "INSERT INTO wordlist(wordlist,word,description,appuser) VALUES ('$wordlist','$word','$label','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delWordlistWord',$opt)===0){
@@ -238,7 +239,7 @@
 			// Get entryname
 			$query = "SELECT entryname FROM listentries WHERE code_id='$exampleid';";		
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 					$entryname = $row['entryname'];
 			}
@@ -252,7 +253,7 @@
 			$playlink="";
 			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE exampleid=$exampleid and cid='$courseID'";		
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 					$examplename=$row['examplename'];
 					$exampleno=$row['exampleid'];
@@ -265,7 +266,7 @@
 			$filename="";
 			$query = "SELECT filename FROM filelist WHERE exampleid='$exampleid' ORDER BY pos ASC LIMIT 1;";
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 					$filename=$row['filename'];
 					if(strcmp($filename,"<none>")===0){
@@ -292,25 +293,25 @@
 			$imp=array();
 			$query = "SELECT istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($imp,array($row['istart'],$row['iend']));					
 			}  
 		
 		  // Read wordlist
 			$wordlist=array();
-			$query = "SELECT wordlist,word FROM wordlist ORDER BY word;";
+			$query = "SELECT wordlist,word,description FROM wordlist ORDER BY word;";
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-		  		array_push($wordlist,array($row['wordlist'],$row['word']));					
+		  		array_push($wordlist,array($row['wordlist'],$row['word'],$row['description']));					
 			}  
 		
 		  // Read wordlists
 			$wordlists=array();
 			$query = "SELECT distinct(wordlist) FROM wordlist ORDER BY wordlist;";
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($wordlists,$row['wordlist']);					
 			}  
@@ -319,21 +320,32 @@
 			$impwordlist=array();
 			$query = "SELECT word,description FROM impwordlist WHERE exampleid=$exampleid ORDER BY word;";
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($impwordlist,$row['word']);					
 			}  
 		
 			// Read Description Segments
 			$desc="";
-			$query = "SELECT segment FROM descriptionsection WHERE exampleid=$exampleid ORDER BY pos LIMIT  1;";
+			$query = "SELECT segment FROM descriptionsection WHERE exampleno=$exampleid ORDER BY pos LIMIT  1;";
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-					$desc.=$row['segment'];
+				// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox
+					$desc=str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row['segment']));
+				//	$desc = $row['segment'];
 			}  
-		
-			// Read Directory
+			
+			// Read sectionname 
+			$sectionname="";
+			$query = "SELECT entryname FROM listentries WHERE pos=$previuous";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+					$sectionname=$row['entryname'];
+			} 
+			
+			// Read Directory - Codeexamples
 			$directory=array();
 			$dir = opendir('./codeupload');
 		  while (($file = readdir($dir)) !== false) {
@@ -345,12 +357,23 @@
 			$template=array();
 			$query = "SELECT * FROM template WHERE templateid = (SELECT templateid FROM codeexample WHERE exampleid=$exampleid) ";
 			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!");	
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 					array_push($template,array($row['templateid'],$row['stylesheet'],$row['numbox']));	
 			}
 			
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist);
+
+
+        // Read Directory - Images
+        $images=array();
+        $img_dir = opendir('./imgupload');
+        while (($img_file = readdir($img_dir)) !== false) {
+            if(endsWith($img_file,".png")){
+                array_push($images,$img_file);
+            }
+        }
+
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images);
 			echo json_encode($array);
 
 
