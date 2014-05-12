@@ -76,12 +76,8 @@ function Canvasrenderer()
 	$(document).ready(function(){
 		$(window).on('resize', function(){
 			// Scale ratio update (for correct mouse positions)
-			var rect = c.getBoundingClientRect();
-			mHeight = (rect.bottom - rect.top);
-			mWidth = (rect.right-rect.left);
-			this.scaleRatioX = (mWidth/c.width);
-			this.scaleRatioY = (mHeight/c.height);
-		
+			canvas.updateScaleRatio();
+			
 		});	
 
 
@@ -209,7 +205,6 @@ function Canvasrenderer()
 			}
 
 			// Pause all timesteps
-			//this.pauseTimesteps();
 			this.pauseTimesteps();
 
 			// Do not wind to own position
@@ -272,7 +267,10 @@ function Canvasrenderer()
 			this.runningTimesteps[this.runningTimesteps.length-1].pause();
 		}
 	}
-
+	/**
+	 * This function removes all function calls from the XML
+	 * that are not found in the valid functions-list
+	 **/
 	this.removeNonvalidCalls = function(nodes){
 		var retnodes = new Array();
 		for(a = 0; a < nodes.length; ++a){
@@ -802,7 +800,14 @@ function Canvasrenderer()
 		c.width = width;
 		c.height = height;
 	}
-	
+	/**
+	 * This function is used for loading stored image data from the xml.  
+	 * It is not part interface for HTML canvas.
+	 * It basically loads all the RGBA values for each pixel as integers
+	 * from the XML and stores them in a newly created image data object.
+	 * This image data object is then used by putImageData whenever that function
+	 * is called. 
+	**/
 	this.imageData = function(width, height, numberStr){
 
 		var numArray = numberStr.split(" ");
@@ -850,7 +855,7 @@ function Canvasrenderer()
 
 		// Draw mouse click (if any)
 		this.drawMouseClick();
-		// Draw mouse pointer. The width and height is multiplied by the recorded scale ratio to scale the cursor by the same amount as the image.
+		// Draw mouse pointer. The width and height is multiplied by the mouse cursor scale ratio to scale the cursor by the same amount as the image.
 		ctx.drawImage(this.mouseCursor, x, y, this.mouseCursor.width*(this.mouseCursorScale), this.mouseCursor.height*(this.mouseCursorScale));
 		
 	}
@@ -947,8 +952,16 @@ function Canvasrenderer()
 			
 		}
 	}
+	/**
+	 * This method calculates the recorded scale ratio by dividing the
+	 * current canvas size by the recorded canvas size. 
+	 **/
 	this.updateScaleRatio = function(){
-		
+		// Gets the actual current canvas size. Here we could've used
+		// c.width and c.height instead, but the width and height
+		// on the canvas are not always up to date. Getting the value
+		// from getBoundingClientRect guarantees that we get the actual
+		// size of the canvas on screen. 	
 		var rect = c.getBoundingClientRect();
 		mHeight = (rect.bottom - rect.top);
 		mWidth = (rect.right-rect.left);
@@ -972,8 +985,6 @@ function Canvasrenderer()
 	*
 	*/
 	var c = document.getElementById('Canvas');
-	//c.width = 1280;
-	//c.height = 720;
 	var ctx = c.getContext("2d");
 	// Set canvas size to fit screen size
 	this.canvasSize(window.innerWidth - 20, window.innerHeight - 75);
@@ -1029,20 +1040,6 @@ function TimestepTimeout(delay, args)
 		// Execute
 		window.executeTimestep(args);
 	}
-/*
-	// Set delay (will pause)
-	this.setDelay = function(delay)
-	{
-		this.pause();
-		remaining = delay;
-	}
-
-	// Get delay
-	this.getDelay = function()
-	{
-		return remaining;
-	}
-*/
 	// Has to be initialized, and ID to be set
 	// Pause right after start
 	this.pause();
