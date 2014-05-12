@@ -105,7 +105,6 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				}
 				echo "var sessionkind='" . $kind . "';";			
 ?>				
-				console.log(courseID);
 
 				function AJAXService(sname,param)
 				{	

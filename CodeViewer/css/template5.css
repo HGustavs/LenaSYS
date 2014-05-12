@@ -1,4 +1,13 @@
-#docucontent {
+#box1menu{
+	z-index:2;
+	position: absolute;
+    background-color: #5D5D5D;
+    height: 50px;
+    width: -moz-calc(26%);
+    width: -webkit-calc(26%);
+}
+
+#box1 {
 	padding-left: 4px;
     border-style: solid;
     border-width: 1px;
@@ -18,7 +27,14 @@
     outline: 0 none;
 }
 
-#codebox {
+#box2menu{
+	position: absolute;
+	z-index: 2;
+	right:0px;
+	top:0px;
+}
+
+#box2 {
     padding-right: 4px;
     border-style: solid;
     border-width: 1px;
@@ -38,7 +54,14 @@
     outline: 0 none;
 }
 
-#temp3 {
+#box3menu{
+	top: 400px;
+	left:0px;
+	z-index: 2;
+	position:absolute;
+}
+
+#box3 {
     padding-left: 4px;
     border-style: solid;
     border-width: 1px;
@@ -60,7 +83,13 @@
     outline: 0 none;
 }
 
-#temp4 {
+#box4menu{
+	top: 400px;
+	right:0px;
+	z-index: 2;
+	position:absolute;
+}
+#box4 {
     padding-right: 4px;
     border-style: solid;
     border-width: 1px;
