@@ -118,6 +118,8 @@ function imagerecorder(canvas)
 					// Show first image
 					showImage(getNextImage());
 					clicked = 1;
+					// Save undo point
+					createUndoPoint();
 				}
 				else {
 					// Show next image
