@@ -114,7 +114,11 @@ function returnedSection(data)
 								break;
 						}
 						str+="</select>";
-						str+="Edit link:<input type='text' name='link' value='"+data['entries'][i]['link']+"' />";
+						if(data['entries'][i]['kind'] != 4){
+							str+="Edit link:<input type='text' name='link' value='' disabled style='background-color:#dfdfdf'/>";
+						} else {
+							str+="Edit link:<input type='text' name='link' value='"+data['entries'][i]['link']+"' />";
+						}
 						str+="Visibility:<select name='visibility' id='visib'><option value='"+data['entries'][i]['visible']+"'>";
 						if(data['entries'][i]['visible'] != 0){
 							str+="Public</option>";
@@ -170,10 +174,11 @@ function returnedSection(data)
 						var type = $(this).val();
 
 						if(type == 0 || type == 1 || type == 2 || type == 3) {
-							$('#linklabel input').val('');
-							$("#linklabel input").prop("disabled", true).css(disabled);
+							$("#sectioned_"+event.data.data['lid']+" input[name=link]").val('');
+							$("#sectioned_"+event.data.data['lid']+" input[name=link]").prop("disabled", true).css(disabled);
 						} else if(type == "4") {
-							$("#linklabel input").removeAttr("disabled").css(enabled);
+							$("#sectioned_"+event.data.data['lid']+" input[name=link]").val(event.data.data['link']);
+							$("#sectioned_"+event.data.data['lid']+" input[name=link]").removeAttr("disabled").css(enabled);
 						}
 						
 						if (type == 0 || type == 1 ||type == 4) {
