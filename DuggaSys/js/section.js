@@ -55,14 +55,33 @@ function sectionSettingsService(ID)
 				}
 			}
 		}
-		var courseID = document.URL.split('courseid=')[1];
-		courseID = courseID.split('&')[0];
+		var qs = getUrlVars();
+		var courseID = qs.courseid;
 		$.post("ajax/updateSections.php", "sectionid="+ID+"&courseid="+courseID+"&sectionname="+data['sectionname']+"&type="+data['type']+"&link="+data['link']+"&visibility="+data['visibility'], function(response) {
 			$('#testdugga').find('option').remove();
 			element = document.getElementById('Entry_'+ID);
 			settingsChildren = element.childNodes;
 			var children = settingsChildren[0].childNodes;
 			children[0].textContent = data['sectionname'];
+			
+			switch(parseInt(data['type'])){
+				case 0:
+					element.className = "bigg";
+					break;
+				case 1:
+					element.className = "butt";
+					break;
+				case 2:
+					element.className = "example";
+					break;
+				case 3:
+					element.className = "test";
+					break;
+				default:
+				case 4:
+					element.className = "norm";
+					break;
+			}
 			
 			if(data['visibility'] != 0){
 				element.style.opacity = "1";
