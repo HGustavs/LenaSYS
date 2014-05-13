@@ -114,31 +114,36 @@ function imagerecorder(canvas)
 							"opacity": "0.65"
 						});
 					});
+
+					// Show first image
+					showImage(getNextImage());
+					clicked = 1;
 				}
+				else {
+					// Show next image
+					showImage(getNextImage());
+				
+					// Update scale ratio (for correct mouse positions)
+					updateScaleRatio();
 
-				// Show next image
-				showImage(getNextImage());
-			
-				// Update scale ratio (for correct mouse positions)
-				updateScaleRatio();
+					var rect = canvas.getBoundingClientRect();
 
-				clicked = 1;
-				var rect = canvas.getBoundingClientRect();
+					mHeight = (rect.bottom - rect.top);
+					mWidth = (rect.right-rect.left);
+					var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
+					var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+					//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+					//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
+				
+					document.getElementById('xCord').innerHTML=xMouse;
+					document.getElementById('yCord').innerHTML=yMouse;
 
-				mHeight = (rect.bottom - rect.top);
-				mWidth = (rect.right-rect.left);
-				var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-				var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-				//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-				//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-			
-				document.getElementById('xCord').innerHTML=xMouse;
-				document.getElementById('yCord').innerHTML=yMouse;
+					logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
 
-				logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
-
-				// Add undo point
-				createUndoPoint();
+					// Add undo point
+					createUndoPoint();
+				}
+				
 			} else {
 				alert("You need to upload at least one image before you can start recording.");
 			}
