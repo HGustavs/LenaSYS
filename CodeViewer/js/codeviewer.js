@@ -200,20 +200,20 @@ function Up()
 
 function gotoPosition(exampleid)
 {
-		location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+exampleid;
+		location="EditorV30.php?exampleid="+exampleid+"&courseid="+courseID;
 }
 
 function SkipB()
 {		
 		if(issetDrop("backwdrop")&&isdropped==false){
 			position=parseInt(position)-1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&position="+position;
 		}else if(issetDrop("backwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 			// get previous example in the hierarchy
 			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
-			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+prevexampleid;
+			location="EditorV30.php?exampleid="+prevexampleid+"&courseid="+courseID;
 		}
 }
 
@@ -240,14 +240,14 @@ function SkipF()
 {
 		if(issetDrop("forwdrop")&&isdropped==false){
 				position=parseInt(position)+1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&position="+position;
 		}
 		else if(issetDrop("forwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 			// get next example in the hierarchy
 			var nextexampleid=parseInt(retdata['after'][0][1]);
-			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+nextexampleid;
+			location="EditorV30.php?exampleid="+nextexampleid+"&courseid="+courseID;
 		}
 }
 $(document).click(function (e)
