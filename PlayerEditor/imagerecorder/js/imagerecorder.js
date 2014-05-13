@@ -115,8 +115,9 @@ function imagerecorder(canvas)
 						});
 					});
 
-					// Show first image
+					// Show and log first image
 					showImage(getNextImage());
+					logMouseEvents();
 					clicked = 1;
 					// Save undo point
 					createUndoPoint();
@@ -491,6 +492,11 @@ function imagerecorder(canvas)
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function logMouseEvents(str){
+		// Set default string value
+		if (str == undefined || str == null) {
+			str = "";
+		}
+
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
 		// Add image path (substr 9 removes "../canvasrenderer/" from path)
