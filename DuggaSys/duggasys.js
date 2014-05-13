@@ -115,7 +115,7 @@ function returnedSection(data)
 						}
 						str+="</select>";
 						str+="Edit link:<input type='text' name='link' value='"+data['entries'][i]['link']+"' />";
-						str+="Visibility:<select name='visibility'><option value='"+data['entries'][i]['visible']+"'>";
+						str+="Visibility:<select name='visibility' id='visib'><option value='"+data['entries'][i]['visible']+"'>";
 						if(data['entries'][i]['visible'] != 0){
 							str+="Public</option>";
 							str+="<option value='0'>Hidden</option>";
