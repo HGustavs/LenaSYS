@@ -79,6 +79,7 @@
 .normtext {
     color: #fff;
     background-color: #272822;
+    white-space:nowrap;
 }
 
 .impo {
