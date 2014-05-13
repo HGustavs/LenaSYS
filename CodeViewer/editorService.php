@@ -168,11 +168,14 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 								$existing_boxes = mysql_num_rows($result);
+								
 								$new_boxes = $required_boxes-$existing_boxes;
 																
 								if($new_boxes != 0){
 									for($i=0; $i<$new_boxes; $i++){
-										$query = "INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES ('$exampleid','NOT DEFINED', '0','0', 'NOT DEFINED');";		
+										// Set correct ID no. for new box.
+										$existing_boxes++;
+										$query = "INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES ('$existing_boxes','$exampleid','NOT DEFINED','[viktig=1]');";		
 										$result=mysql_query($query);
 										if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 									}
@@ -180,8 +183,8 @@
 					}else if(strcmp("changeboxcontent",$opt)===0){
 								$content=$_POST['boxcontent'];
 								$boxid=$_POST['boxid'];
-								// Reset and update codeexample
-								$query = "UPDATE box SET boxcontent='$content' WHERE boxid='$boxid';";
+								// Update content in a box.
+								$query = "UPDATE box SET boxcontent='$content' WHERE boxid='$boxid' AND exampleid='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating box!");	
 					}
@@ -415,7 +418,7 @@
 
 			// Get boxes and its information
 			$box=array();   // get the primary keys for all types kind of boxes.
-			$query = "SELECT boxid,boxcontent FROM box WHERE exampleid=$exampleid;";
+			$query = "SELECT boxid,boxcontent FROM box WHERE exampleid=$exampleid ORDER BY boxid;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){

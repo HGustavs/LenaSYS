@@ -167,20 +167,25 @@ CREATE TABLE box(
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-/*
+/*  AND (NEW.boxid != (Select boxid FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid))
+
+ AND (NEW.boxid != (Select boxid FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid))
+
+ */
+
 delimiter //
-CREATE TRIGGER changeboxcontent BEFORE UPDATE ON box
+CREATE TRIGGER checkBoxContents BEFORE UPDATE ON box
 FOR EACH ROW
 BEGIN
-     IF NEW.boxcontent LIKE UPPER("DOCUMENT") THEN
-         SET NEW.fileid = "0";
+     IF ((UPPER(NEW.boxcontent) LIKE "DOCUMENT") AND ((Select count(*) FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid) <>"1"))THEN       
+        	INSERT INTO descriptionBox (boxid, exampleid, segment) VALUES (NEW.boxid, NEW.exampleid, "");
      END IF;
-     IF NEW.boxcontent LIKE UPPER("CODE") THEN
-         SET NEW.descid = "0";
+     IF ((UPPER(NEW.boxcontent) LIKE "CODE")AND ((Select count(*) FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid) <>"1")) THEN       
+        	INSERT INTO codeBox (boxid, exampleid, filename) VALUES (NEW.boxid, NEW.exampleid, "");
      END IF;
  END;//
  delimiter ;
-*/
+
 
 INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,1,"Code","[viktig=1]");
 INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,1,"Document","[viktig=1]");
