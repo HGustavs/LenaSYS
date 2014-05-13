@@ -864,15 +864,15 @@ function Canvasrenderer()
 	{
    		// If the image was downscaled when the history was recorded, we have to multiply by the 
 		// recorded scale ratio, not the current scale ratio
-       		if(this.downscaled){
-           		y *= canvas.recordedScaleRatio;
-           		x *= canvas.recordedScaleRatio;
-       		}
-       		// If not, we just multiply by current scale ratio 
-        	else{
-            		y *= canvas.scaleRatio;
-            		x *= canvas.scaleRatio;
-        	}
+   		if(this.downscaled){
+       		y *= canvas.recordedScaleRatio;
+       		x *= canvas.recordedScaleRatio;
+   		}
+   		// If not, we just multiply by current scale ratio 
+    	else{
+    		y *= canvas.scaleRatio;
+    		x *= canvas.scaleRatio;
+    	}
 		// Calculate positions using the proper scale ratio
 		this.mouseClickX = x;
 		this.mouseClickY = y;
@@ -887,8 +887,8 @@ function Canvasrenderer()
 		setTimeout(function(){
 			canvas.mouseClick = false;
 		}, 1000);
-		
 	}
+
 	/**
 	 *  This method get called when a new picture is supposed to be shown	
  	 *  It calculates what scaling ratio should be used, and then draws the 
@@ -896,41 +896,39 @@ function Canvasrenderer()
 	**/
 	this.picture = function(src)
 	{
-	
 		// Load image
 		var image = new Image();
 		// Draw image when loaded
-			image.onload = function() {
-       	        	canvas.updateScaleRatio();
-        		var widthRatio = 1;
+		image.onload = function() {
+			canvas.updateScaleRatio();
+			var widthRatio = 1;
 			var heightRatio = 1;
 			// Calculate scale ratios
-              		widthRatio = c.width / (image.width);
+			widthRatio = c.width / (image.width);
 			heightRatio = c.height / (image.height);
 			// Set scale ratio
-                	canvas.downscaled = false;
+			canvas.downscaled = false;
 			(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
-          		canvas.scaleRatio > 1 ? canvas.scaleRatio = 1 : canvas.scaleRatio; 
+			canvas.scaleRatio > 1 ? canvas.scaleRatio = 1 : canvas.scaleRatio; 
 			canvas.mouseCursorScale = canvas.scaleRatio;
 			// If the image size is larger than the recorded canvas width or height, it means that
 			// the image was downscaled when the history was recorded. This means that we have to 
 			// use the recorded scale ratio instead of the one normally used.
-                	if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight)
+			if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight)
 			{
 				canvas.downscaled = true;
 				canvas.mouseCursorScale = canvas.recordedScaleRatio;
 			}
-            		ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
+			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
 			// New mouse click background
 			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - 20, canvas.mouseClickY - 20, 40, 40);
 			// Render mouse click
 			canvas.drawMouseClick();
-                	canvas.updateScaleRatio();
+			canvas.updateScaleRatio();
 		}
 		image.src = src;
-		
 	} 
 
 	this.drawMouseClick = function() 
@@ -971,7 +969,6 @@ function Canvasrenderer()
 		(this.scaleRatioX < this.scaleRatioY) ? this.recordedScaleRatio = this.scaleRatioX : this.recordedScaleRatio = this.scaleRatioY;
 
         //if (this.scaleRatioX < this.scaleRatioY) this.scaleRatioY = this.scaleRatioX;
-		
 	}
 
 	this.recordedCanvasSize = function(width, height) {
