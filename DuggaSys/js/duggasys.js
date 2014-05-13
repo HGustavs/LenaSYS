@@ -225,6 +225,7 @@ function testDuggaService(courseID, opt, sectionID, link) {
 				if (opt == "example") {
 					if (link.length > 0) {
 						var string = link.split("&");
+						link += link[1];
 						if (string[0]) {
 							string = string[0].split("?");
 							if (string[1]) {

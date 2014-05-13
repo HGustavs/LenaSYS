@@ -61,9 +61,9 @@ function sectionSettingsService(ID)
 		var courseID = qs.courseid;
 		if (data['testdugga'] != "-1") {
 			if (data['type'] == 2) {
-				data['link'] = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID;
+				data['link'] = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID+"";
 			} else if (data['type'] == 3) {
-				data['link'] = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID;
+				data['link'] = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID+"";
 			}
 		}
 		$.post("ajax/updateSections.php", "sectionid="+ID+"&courseid="+courseID+"&sectionname="+data['sectionname']+"&type="+data['type']+"&link="+data['link']+"&visibility="+data['visibility'], function(response) {
@@ -72,6 +72,7 @@ function sectionSettingsService(ID)
 			settingsChildren = element.childNodes;
 			var children = settingsChildren[0].childNodes;
 			children[0].textContent = data['sectionname'];
+			settingsChildren[0].href = JSON.parse(response);
 			
 			switch(parseInt(data['type'])){
 				case 0:
