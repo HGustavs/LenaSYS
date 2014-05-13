@@ -63,7 +63,7 @@ function submitNewSection() {
 
 		$.ajax({
 			dataType: 'json',
-			url: 'SectionedService.php',
+			url: 'ajax/SectionedService.php',
 			method: 'post',
 			data: {
 				'courseid': courseid,
