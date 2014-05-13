@@ -269,7 +269,10 @@ function Canvasrenderer()
 		this.numValidTimesteps = this.runningTimesteps.length;
 		this.timestepElements = null;
 	}
-
+	/**
+	 * This method iterates through the nodelist and adds interpolated mouse positions between all 
+	 * the "mousemove" tags. The number of added nodes depends of the desired frames per second.
+	**/
 	this.interpolateMousePositions = function(nodes, FPS){
 		var retnodes = [];
 		var currentX = null;
@@ -279,33 +282,31 @@ function Canvasrenderer()
 			
 			childNode = [].slice.call(nodes[j].childNodes, 0); 
         		currentDelay = parseInt(nodes[j].getAttribute("delay"));
-            		if (currentDelay < 1000.0/ FPS){
+            		if (currentDelay < 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
                 		retnodes.push(nodes[j]);
                 		continue; 
             		} 
-			var multiple = currentDelay / (1000/FPS);
-			var delay = currentDelay/multiple;
-			var amount = Math.floor(currentDelay/ delay)
-			var rest = nodes[j].getAttribute("delay")%multiple;
-			if(rest != 0){
-				nodes[j].setAttribute("delay", delay+rest);
-			} else {
-				nodes[j].setAttribute("delay", delay);
-			}
-            
+			var multiple = currentDelay / (1000/FPS);		
+			var delay = currentDelay/multiple;			// The delay in milliseconds 
+			var amount = Math.floor(currentDelay/ delay);		// Number of new positions that should be added 
+			var rest = nodes[j].getAttribute("delay")%multiple;	 
+			
+			nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
           
 			for(a = 0; a < childNode.length; ++a){
 				if(childNode[a].nodeName == "mousemove"){
+					
 					newX = parseFloat(childNode[a].getAttribute("x"));
 					newY = parseFloat(childNode[a].getAttribute("y"));
 					if(currentX != null && currentY != null){
+						// Add as many mousemove tags as needed
 						for(i = 0; i < amount; i++){
 							var iNode = nodes[j].cloneNode(true);
-                      
+                      					// The interpolated position is calculated and added to the new node
 							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - i*((currentX - newX) / multiple)) );
 							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - i*((currentY - newY) / multiple)) );
-							iNode.setAttribute("delay", delay);
-							retnodes.push(iNode);
+							iNode.setAttribute("delay", delay);	
+							retnodes.push(iNode);	// Adding the newly created node 
 						        currentX = newX;
 						        currentY = newY;
 						}
