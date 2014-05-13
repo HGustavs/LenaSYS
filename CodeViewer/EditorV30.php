@@ -123,6 +123,17 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 	</head>
 	
 <?php
+
+	$exampleid = $_GET['exampleid'];
+	//get the visibility
+	$query = "SELECT visible FROM listentries WHERE code_id='$exampleid';";
+	$result=mysql_query($query);
+	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+	$row = mysql_fetch_assoc($result);
+	Print "<b>Visible:</b> ".$row['visible'] . " "; 
+	
+					
+	
 		if(isset($_GET['courseid'])){
 				$courseID=$_GET['courseid'];
 				if(courseexists($courseID)){

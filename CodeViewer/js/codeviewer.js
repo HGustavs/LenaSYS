@@ -1802,5 +1802,10 @@ function setTheme()
 
 function changedSecurity(){
 	var cb = document.getElementById('checkbox');
+	if(cb.checked){
+		alert("is checked");
+	}else{
+		alert("is not checked");
+	}
 	
 }
