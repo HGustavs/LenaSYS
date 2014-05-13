@@ -9,7 +9,7 @@ session_start();
 checklogin();
 ?>
 	<link type="text/css" href="css/style.css" rel="stylesheet" />
-	<script type="text/javascript" src="duggasys.js"></script>
+	<script type="text/javascript" src="js/duggasys.js"></script>
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
 	<script>
 		var sessionkind=0;
@@ -34,7 +34,7 @@ checklogin();
 							dragtimer = setTimeout(function(){
 								// Pass course ID to check write access
 								var array = serialized + "&courseid=" + querystring.courseid + "&opt=updateEntries";
-								$.post("SectionedService.php", array, function(theResponse){
+								$.post("ajax/SectionedService.php", array, function(theResponse){
 									var data = $.parseJSON(theResponse);
 									if(data.success) {
 										successBox(data.coursename, "Updates saved", 50);
@@ -63,7 +63,7 @@ checklogin();
 		function AJAXServiceSection(opt,para)
 		{
 			$.ajax({
-				url: "SectionedService.php",
+				url: "ajax/SectionedService.php",
 				type: "POST",
 				data: "courseid="+querystring.courseid+"&opt="+opt+para,
 				dataType: "json",
