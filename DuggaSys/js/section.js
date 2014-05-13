@@ -82,14 +82,15 @@ function sectionSettingsService(ID)
 					element.className = "norm";
 					break;
 			}
-			
-			if(data['visibility'] != 0){
-				element.style.opacity = "1";
+			if(data['visibility'] != 0) {
+				settingsChildren[0].style.opacity = "1";
 				settingsChildren[1].style.opacity = "1";
 			} else {
-				element.style.opacity = "0.5";
+				
+				settingsChildren[0].style.opacity = "0.5";
 				settingsChildren[1].style.opacity = "0.5";
 			}
+			$("input[name*='sectionname']").css("background-color", "#fff");
 			$('#sectioned_'+ID).hide();
 			//Calls function to notice user of changes
 			if(!response) {
