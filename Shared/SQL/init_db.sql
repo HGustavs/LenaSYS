@@ -131,7 +131,7 @@ INSERT INTO improw(exampleid,istart,iend,uid) VALUES (5,15,19,1);
 INSERT INTO improw(exampleid,istart,iend,uid) VALUES (7,10,12,2);
 
 
-/*filelist contains a list of shortcuts to files */
+/*filelist contains a list of shortcuts to files
 CREATE TABLE filelist(
 		fileid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		exampleid			MEDIUMINT UNSIGNED NOT NULL,
@@ -154,18 +154,111 @@ INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (6,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (7,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (8,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (9,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);
+INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);*/
 
 
-CREATE TABLE descriptionsection(
-		exampleno			INTEGER,
-		segment				VARCHAR(64000),
-		pos						INTEGER,
+/* boxes with information in a certain example */
+CREATE TABLE box(
+		boxid				INTEGER UNSIGNED NOT NULL,
+		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
+		boxcontent			VARCHAR(39),
+		settings			VARCHAR(1024),
+		PRIMARY KEY(boxid, exampleid),
+		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+/*
+delimiter //
+CREATE TRIGGER changeboxcontent BEFORE UPDATE ON box
+FOR EACH ROW
+BEGIN
+     IF NEW.boxcontent LIKE UPPER("DOCUMENT") THEN
+         SET NEW.fileid = "0";
+     END IF;
+     IF NEW.boxcontent LIKE UPPER("CODE") THEN
+         SET NEW.descid = "0";
+     END IF;
+ END;//
+ delimiter ;
+*/
+
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,1,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,1,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,2,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,2,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,3,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,3,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,4,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,4,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,5,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,5,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,6,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,6,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,7,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,7,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,8,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,8,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,9,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,9,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,10,"Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,10,"Document","[viktig=1]");
+
+
+
+
+
+CREATE TABLE codeBox(
+		boxid         INTEGER UNSIGNED NOT NULL,
+		exampleid     MEDIUMINT UNSIGNED NOT NULL,
+		filename			VARCHAR(1024),
 		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		appuser				VARCHAR(64),
-		descno		  		MEDIUMINT NOT NULL AUTO_INCREMENT,
-		PRIMARY KEY(descno)		
+
+		PRIMARY KEY(boxid, exampleid),
+		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
 );
+
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,1,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,2,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,3,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,4,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,5,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,6,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,7,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,8,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,9,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,10,"js1.js");
+
+
+
+
+
+
+
+
+CREATE TABLE descriptionBox(
+		boxid         INTEGER UNSIGNED NOT NULL,
+		exampleid     MEDIUMINT UNSIGNED NOT NULL,
+		segment				VARCHAR(64000),
+		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		appuser				VARCHAR(64),
+
+		PRIMARY KEY(boxid, exampleid),
+		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
+);
+
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,2,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,3,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,4,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,5,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,6,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,7,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,8,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,9,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,10,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+
+
 /* TRIGGER IF WE WANT &nbsp; AND <br> TO BE REPLACED AUTOMATICALLY
 delimiter //
 CREATE TRIGGER nbsp_br_desc_check BEFORE UPDATE ON descriptionsection
@@ -179,94 +272,36 @@ BEGIN
      END IF;
  END;//
  delimiter ;
-*/	
-
-INSERT INTO descriptionsection(exampleno,descno) VALUES (0,0);	
-INSERT INTO descriptionsection(exampleno,segment) VALUES (1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (2,"<b>Events 2</b>This is the seond section of the description<b>Even More</b>This is even more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (3,"<b>Callback 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (4,"<b>Callback 2 S2</b>This is the seond section of the description<b>Even More</b>This is even more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (5,"<b>Callback 3</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (6,"<b>Callback 4</b>This is the seond section of the description<b>Even More</b>This is even more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (7,"<b>Design 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (8,"<b>Design 2</b>This is the seond section of the description<b>Even More</b>This is even more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (9,"<b>Design 3</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionsection(exampleno,segment) VALUES (10,"<b>Design 4</b>This is the seond section of the description<b>Even More</b>This is even more text");
+*/
 
 
-/* boxes with information in a certain example */
-CREATE TABLE box(
-		boxid				INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
-		boxcontent			VARCHAR(39),
-		descid				MEDIUMINT UNSIGNED DEFAULT '0',
-		fileid				MEDIUMINT UNSIGNED DEFAULT '0',					
-		settings			VARCHAR(1024),
-		PRIMARY KEY(boxid, exampleid),
-		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
-		FOREIGN KEY (fileid) references filelist (fileid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-delimiter //
-CREATE TRIGGER changeboxcontent BEFORE UPDATE ON box
-FOR EACH ROW
-BEGIN
-     IF NEW.boxcontent LIKE UPPER("DOCUMENT") THEN
-         SET NEW.fileid = "0";
-     END IF;
-     IF NEW.boxcontent LIKE UPPER("CODE") THEN
-         SET NEW.descid = "0";
-     END IF;
- END;//
- delimiter ;
-
-
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Code",1,2,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (2,"Document",2,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (2,"CODE",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (3,"Document",3,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (3,"CODE",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (4,"Document",4,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (4,"CODE",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (5,"Document",5,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (5,"CODE",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (6,"Document",6,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (6,"CODE",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (7,"Document",7,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (7,"CODE",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (8,"Document",8,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (8,"CODE",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (9,"Document",9,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (9,"CODE",1,1,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (10,"Document",10,3,"[viktig=1]");
-INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (10,"CODE",1,1,"[viktig=1]");
 /* Wordlist contains a list of keywords for a certain programming language or file type */
 CREATE TABLE wordlist(
 		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		wordlist			VARCHAR(64),
 		word 				VARCHAR(64),
-		description			VARCHAR(256),
+		label			VARCHAR(256),
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
 		PRIMARY KEY(wordid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("JS","for","A",1);
-INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("JS","if","B",1);
-INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("JS","var","C",1);
-INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("JS","function","D",2);
-INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("GLSL","vec3","A",2);
-INSERT INTO wordlist(wordlist,word,description,uid) VALUES ("GLSL","dot","B",2);
+INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","for","A",1);
+INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","if","B",1);
+INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","var","C",1);
+INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","function","D",2);
+INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("GLSL","vec3","A",2);
+INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("GLSL","dot","B",2);
 
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(
 		wordid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		exampleid		MEDIUMINT UNSIGNED NOT NULL,
 		word 			VARCHAR(64),
-		description		VARCHAR(256),
+		label		VARCHAR(256),
 		UPDATED 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid				INTEGER UNSIGNED NOT NULL,
 		PRIMARY KEY(wordid),
