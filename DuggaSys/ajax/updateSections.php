@@ -53,6 +53,12 @@ if (checklogin()) {
 			} else if ($_POST["type"] == 3) {
 				// Update test
 			}
+		} else {
+			if ($_POST["type"] == 2) {
+				$split = explode('=', $link);
+				$split = explode('&', $split[1]);
+				$code_id = intval($split[0]);
+			}
 		}
 		$stmt -> bindParam(':5', $link);
 		$stmt -> bindParam(':6', $code_id);
