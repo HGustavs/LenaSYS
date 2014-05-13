@@ -194,8 +194,8 @@ function dehighlightop(otherop,thisop)
 }
 				
 function Up()
-{						
-		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
+{					
+		location="../DuggaSys/#sectioned?courseid="+courseIDNum;
 }				
 
 function gotoPosition(exampleid)

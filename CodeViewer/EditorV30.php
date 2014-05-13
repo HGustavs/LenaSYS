@@ -94,6 +94,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				jsvarget("position","position");
 				jsvarget("version","version");
 				jsvarget("exampleid","exampleid");
+				echo "var courseIDNum=" . getCourseId($_GET['courseid']) . ";";
 				
 				$kind = "r";
 				if(array_key_exists('uid', $_SESSION)) {
