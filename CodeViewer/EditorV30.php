@@ -94,7 +94,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				jsvarget("position","position");
 				jsvarget("version","version");
 				jsvarget("exampleid","exampleid");
-				
+
 				$kind = "r";
 				if(array_key_exists('uid', $_SESSION)) {
 					$type = getAccessType($_SESSION['uid'], $_GET['courseid']);
@@ -103,7 +103,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 						$kind = $type;
 				}
 				echo "var sessionkind='" . $kind . "';";
-				echo "var courseID=" . getCourseName($_GET['courseid']) . ";";
+				echo "var courseID='" . getCourseName($_GET['courseid']) . "';";
 ?>				
 				console.log(courseID);
 
