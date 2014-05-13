@@ -52,9 +52,17 @@
 				
 				foreach($pdo->query( "SELECT * FROM user WHERE username='$username'" ) as $row){
 					$userid = $row['uid'];
-					$querystring='INSERT INTO user_course (uid, cid, access) VALUES(:uid, 1, "R");';	
+					$useraccess = $row['username'];
+					if (preg_match("/[0-9]+/", $useraccess)){
+						$access='R';
+					}
+					else {
+						$access='W';
+					}
+					$querystring='INSERT INTO user_course (uid, cid, access) VALUES(:uid, 1,:access);';	
 					$stmt = $pdo->prepare($querystring);
 					$stmt->bindParam(':uid', $userid);
+					$stmt->bindParam(':access', $access);
 					try {
 						$stmt->execute();
 						//echo "<script type='text/javascript'>alert('Användare är tillagd på kursen')</script>";
