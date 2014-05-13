@@ -146,6 +146,12 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}
+					else if(strcmp("updateSecurity",$opt)===0){
+								$security=$_POST['public'];
+								$query = "UPDATE codeexample SET public='$security' WHERE exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Security!");
+					}
 			}
 	
 			//------------------------------------------------------------------------------------------------

@@ -820,17 +820,18 @@ function returned(data)
 			}					
 		}
 }
-function displaySecurity(){
-	tabmenuvalue = "Security";
+function displaySettings(){
+	tabmenuvalue = "Settings";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li class='activeSetMenuLink'>Security</li>";
+		str+="<li class='activeSetMenuLink'>Settings</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 				
 	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
 	str+="<span id='playlinkErrorMsg' class='playlinkErrorMsgStyle'></span>";
-	str+="<br/> Checkbox: <input type='checkbox' id='checkbox' onChange='changedSecurity();'/>"
+	str+="<br>Check box to open the example for public:";
+	str+="<input type='checkbox' id='checkbox' onChange='changedSecurity();'/>"
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
 }
@@ -839,7 +840,7 @@ function displayTemplates()
 	tabmenuvalue = "templates";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li onclick='displaySecurity()'>Security</li>";
+		str+="<li onclick='displaySettings()'>Settings</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
@@ -857,7 +858,7 @@ function displayWordlist(){
 	tabmenuvalue = "wordlist";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
-		str+="<li onclick='displaySecurity();'>Security</li>";
+		str+="<li onclick='displaySettings();'>Settings</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 	
@@ -1802,10 +1803,11 @@ function setTheme()
 
 function changedSecurity(){
 	var cb = document.getElementById('checkbox');
+	var option;
 	if(cb.checked){
-		alert("is checked");
+		option = "1";
 	}else{
-		alert("is not checked");
+		option = "0";
 	}
-	
+	AJAXService("updateSecurity","$public="+option);
 }
