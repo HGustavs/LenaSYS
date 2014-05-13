@@ -208,20 +208,18 @@ CREATE TABLE box(
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-/* TRIGGER IF WE WANT &nbsp; AND <br> TO BE REPLACED AUTOMATICALLY
 delimiter //
-CREATE TRIGGER nbsp_br_desc_check BEFORE UPDATE ON descriptionsection
+CREATE TRIGGER changeboxcontent BEFORE UPDATE ON box
 FOR EACH ROW
 BEGIN
-     IF NEW.segment LIKE "%&nbsp;%" THEN
-         SET NEW.segment = replace(NEW.segment, "&nbsp;", " ");
+     IF NEW.boxcontent LIKE UPPER("DOCUMENT") THEN
+         SET NEW.fileid = "0";
      END IF;
-     IF NEW.segment LIKE "%<br>%" THEN
-         SET NEW.segment = replace(NEW.segment, "<br>", "\n");
+     IF NEW.boxcontent LIKE UPPER("CODE") THEN
+         SET NEW.descid = "0";
      END IF;
  END;//
  delimiter ;
-*/
 
 
 INSERT INTO box(exampleid,boxcontent,descid,fileid,settings) VALUES (1,"Document",1,1,"[viktig=1]");

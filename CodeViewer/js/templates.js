@@ -44,18 +44,7 @@ function addTemplatebox(id)
 	div.className = id+"Style";		
 }
 
-function displaytemplatecontents(boxID)
-{
-	var templatecontents = document.createElement("div");
-	document.getElementById(boxID).appendChild(templatecontents);
-	templatecontents.setAttribute(id, "dialog");
-	str="<div id='dialog'>";
-	str+="<span onclick='changetemplatecontent()'>Description</span>";
-	str+="<span onclick='changetemplatecontent()'>Description</span>";
-	str+="</div>";
-	templatecontents.innerHTML = str;
-}
-function createboxmenu(contentid, type){
+function createboxmenu(contentid, boxid, type){
 	if(!document.getElementById(contentid+"menu")){
 		var boxmenu = document.createElement("div");
 		document.getElementById("div2").appendChild(boxmenu);
@@ -65,24 +54,52 @@ function createboxmenu(contentid, type){
 		if(type=="DOCUMENT"){
 			var str = '<table cellspacing="2"><tr>';
 			str+= '<td class="butto2" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
-			str+=  '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
-			str+='<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
-			str+= "<td class='butto2' id='hideimage' title='Select image' onclick=''><img src='new icons/picture_button.svg' /></td>";
+			str+= '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
+			str+= '<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
+			str+= "<td class='butto2' id='hideimage' title='Select image'><img src='new icons/picture_button.svg' /></td>";
 			str+= "<td class='butto2' title='Save' onclick='Save(\""+contentid+"\");'><img src='new icons/save_button.svg' /></td>";
-			str+=  "<td class='butto2' title='Select content' onclick='displaytemplatecontents(\""+contentid+"\");'><img src='new icons/boldtext_button.svg' /></td>";
-			str+= '</tr></table>';
+			str+= "<td class='butto2'>";
+			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+					str+= "<option value='DOCUMENT'>Description section</option>";
+					str+= "<option value='CODE'>Code example</option>";
+				str+= "</select>";
+			str+= '</td></tr></table>';
+		}else if(type=="CODE"){
+			var str = '<table cellspacing="2"><tr>';
+			str+="<td class='butto2'>";
+			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+					str+= "<option value='CODE'>Code example</option>";
+					str+= "<option value='DOCUMENT'>Description section</option>";
+				str+= "</select>";
+			str+= '</td></tr></table>';
 		}else{
 			var str = '<table cellspacing="2"><tr>';
-			str+=  "<td class='butto2' title='Select content' onclick='displaytemplatecontents(\""+contentid+"\");'><img src='new icons/boldtext_button.svg' /></td>";
-			str+= '</tr></table>';
-		}						
+			str+="<td class='butto2'>";
+			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+				str+= "<option>Choose content</option>";
+					str+= "<option value='CODE'>Code example</option>";
+					str+= "<option value='DOCUMENT'>Description section</option>";
+				str+= "</select>";
+			str+= '</td></tr></table>';
+		}					
 		boxmenu.innerHTML=str;
 	}
 }
+function removeboxmenu(menuid){
+	var menu = document.getElementById(menuid);
+	menu.remove();
+}
+function changeboxcontent(boxcontent,boxid){
+	
+	AJAXService("changeboxcontent","&boxid="+boxid+"&boxcontent="+boxcontent);
+//	var menu = document.getElementById(contentid+"menu");
+	
+}
+
 function returned(data)
 {
 		retdata=data;
-		
+
 		if(!choosetemplate()){
 			return;
 		}
@@ -98,15 +115,14 @@ function returned(data)
 			// Print out code example in a code box
 			if((data['box'][i][1]) == "CODE"){
 				if(sessionkind == "w"){
-					createboxmenu("box"+(i+1),data['box'][i][1]);
-
+					createboxmenu("box"+(i+1),data['box'][i][0],data['box'][i][1]);
 				}
 				rendercode(data['box'][i][2],"box"+(i+1));
 			}
 			
 			// Print out description in a document box
 			if((data['box'][i][1]) == "DOCUMENT"){
-
+			
 				var desc = data['box'][i][2];
 				desc = replaceAll("<span&nbsp;","<span ",desc);
 				desc =  replaceAll("<img&nbsp;","<img ",desc);
@@ -115,19 +131,19 @@ function returned(data)
 				docuwindow.innerHTML=desc;
 				//  Fill description with code using tokenizer.
 				var cs = docuwindow.getElementsByClassName("codestyle");
-				for(var i=0; i<cs.length; i++){
-					desc = desc.replace(cs[i].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML))));
+				for(y=0; y<cs.length; y++){
+					desc = desc.replace(cs[y].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[y].innerHTML))));
 				}
 				docuwindow.innerHTML = desc;
 				
 				if(sessionkind == "w"){
 					docuwindow.setAttribute("contenteditable","true");
-					createboxmenu("box"+(i+1),data['box'][i][1]);
+					createboxmenu("box"+(i+1),data['box'][i][0],data['box'][i][1]);
 				}
 			}
 			if((data['box'][i][1]) == "NOT DEFINED"){
 				if(sessionkind == "w"){
-					createboxmenu("box"+(i+1),data['box'][i][1]);
+					createboxmenu("box"+(i+1),data['box'][i][0],data['box'][i][1]);
 				}
 			}		
 		}

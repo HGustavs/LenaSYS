@@ -172,11 +172,13 @@
 										if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 									}
 								}
-								
-								
-								
-								
-								
+					}else if(strcmp("changeboxcontent",$opt)===0){
+								$content=$_POST['boxcontent'];
+								$boxid=$_POST['boxid'];
+								// Reset and update codeexample
+								$query = "UPDATE box SET boxcontent='$content' WHERE boxid='$boxid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating box!");	
 					}
 			}
 	
@@ -434,19 +436,19 @@
 						$filename=$row3['filename'];
 						$code="";
 						$filename="./codeupload/".$filename;
-							$handle = @fopen($filename, "r");
-							if ($handle) {
-							    while (($buffer = fgets($handle, 1024)) !== false) {
-									$code=$code.$buffer;
-								}
-							    if (!feof($handle)) {
-					        		$code.="Error: Unexpected end of file ".$filename."\n";			    
-							    }
-							    fclose($handle);
-							}else{
-					        $code.="Error: could not open file".$filename."\n";
+						$handle = @fopen($filename, "r");
+						if ($handle) {
+						    while (($buffer = fgets($handle, 1024)) !== false) {
+								$code=$code.$buffer;
 							}
-							array_push($box,array($boxid,$boxcontent,$code));
+						    if (!feof($handle)) {
+					       		$code.="Error: Unexpected end of file ".$filename."\n";			    
+						    }
+						    fclose($handle);
+						}else{
+					    	$code.="Error: could not open file".$filename."\n";
+						}
+						array_push($box,array($boxid,$boxcontent,$code));
 					} 
 				}else if (strcmp("NOT DEFINED",$boxcontent)===0){
 					array_push($box,array($boxid,$boxcontent));
@@ -455,7 +457,7 @@
 			}
 
 
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images);
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images);
 			echo json_encode($array);
 
 
