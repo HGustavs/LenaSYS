@@ -159,7 +159,11 @@ function makeLogin() {
 					page.show();
 				} else {
 					console.log("Failed to log in.");
-					$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
+					if(typeof result.reason != "undefined") {
+						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
+					} else {
+						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
+					}
 					$("input#username").css("background-color", "#ff7c6a");
 					$("input#password").css("background-color", "#ff7c6a");
 				}
