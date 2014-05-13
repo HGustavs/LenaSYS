@@ -61,9 +61,9 @@ function sectionSettingsService(ID)
 		var courseID = qs.courseid;
 		if (data['testdugga'] != "-1") {
 			if (data['type'] == 2) {
-				data['link'] = "../CodeViewer/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID;
+				data['link'] = "../CodeViewer/EditorV30.php?exampleid="+data['testdugga']+"&courseid="+courseID;
 			} else if (data['type'] == 3) {
-				data['link'] = "../CodeViewer/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID;
+				data['link'] = "../CodeViewer/EditorV30.php?exampleid="+data['testdugga']+"&courseid="+courseID;
 			}
 		}
 		$.post("ajax/updateSections.php",
