@@ -303,7 +303,7 @@ CREATE TABLE eventlog(
 /* Quiz tables */
 
 DROP TABLE IF EXISTS `quiz`;
-CREATE TABLE `test` (
+CREATE TABLE `quiz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `courseID` int(11) NOT NULL,
   `autograde` tinyint(1) NOT NULL, /* bool */
@@ -311,7 +311,7 @@ CREATE TABLE `test` (
   `answer` varchar(2000) NOT NULL,
   `name` varchar(255) NOT NULL,
   `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `deadline` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `deadline` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -329,7 +329,7 @@ INSERT INTO grades(gradeID, grade) VALUES(5, "4");
 INSERT INTO grades(gradeID, grade) VALUES(6, "5");
 
 DROP TABLE IF EXISTS `userAnswer`;
-CREATE TABLE `answer` (
+CREATE TABLE `userAnswer` (
   `testID` int(11) NOT NULL,
   /*`variantID` int(11) NOT NULL,*/
   /*`version` int(11) NOT NULL,*/
