@@ -195,12 +195,12 @@ function dehighlightop(otherop,thisop)
 				
 function Up()
 {						
-		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
+		location="../DuggaSys/Sectioned.php?courseid="+courseIDNum+"&vers="+version;
 }				
 
 function gotoPosition(exampleid)
 {
-		location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+exampleid;
+		location="EditorV30.php?courseid="+courseIDNum+"&version="+version+"&exampleid="+exampleid;
 }
 
 function SkipB()
@@ -213,7 +213,7 @@ function SkipB()
 		}else{
 			// get previous example in the hierarchy
 			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
-			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+prevexampleid;
+			location="EditorV30.php?courseid="+courseIDNum+"&exampleid="+prevexampleid;
 		}
 }
 
@@ -247,7 +247,7 @@ function SkipF()
 		}else{
 			// get next example in the hierarchy
 			var nextexampleid=parseInt(retdata['after'][0][1]);
-			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+nextexampleid;
+			location="EditorV30.php?courseid="+courseIDNum+"&exampleid="+nextexampleid;
 		}
 }
 $(document).click(function (e)

@@ -12,7 +12,7 @@ function courseexists($coursename)
 		pdoConnect();
 	}
 
-	if(is_string($coursename)) {
+	if(!is_numeric($coursename)) {
 		$coursename = getCourseId($coursename);
 	}
 
