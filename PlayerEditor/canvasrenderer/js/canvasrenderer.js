@@ -57,7 +57,7 @@ function Canvasrenderer()
 		xmlDoc=xmlhttp.responseXML;
 		
 		// Load timesteps
-		this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
+		//this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
 
 		this.scheduleTimesteps();
 	}
@@ -239,18 +239,17 @@ function Canvasrenderer()
 		// Fetch timestep elements
 		this.timestepElements = xmlDoc.getElementsByTagName("timestep");
 		Elements = [].slice.call(this.timestepElements);
-		console.log("timestep elements " + this.timestepElements.length);
-        if(this.mouseInterpolation){
-            Elements = this.interpolateMousePositions(Elements, 60);
-        }
+
+		this.timesteps = Elements.length;
+      		if(this.mouseInterpolation){
+      		      Elements = this.interpolateMousePositions(Elements, 60);
+ 	        }
 			// Step through timesteps
-		for(i = 0; i < this.timesteps.length; i++){
-			//	console.log("timestep elements" + Elements.length);
+		for(i = 0; i < Elements.length; i++){
 
 			// Check for elements
 			if(Elements[i]){
 				// Fetch delay
-				//console.log(this.timestepElements[i]);
 				delay = Elements[i].getAttribute("delay");
 				// Ignore timesteps with non numeric or negative delay
 				if (!isNaN(delay) && delay >= 0){
@@ -259,8 +258,6 @@ function Canvasrenderer()
 					nodes = [].slice.call(Elements[i].childNodes, 0); 
 					nodes = this.removeNonvalidCalls(nodes);
 					
-					//nodes = this.interpolateMousePositions(nodes, this.desiredMouseFPS);
-				//	console.log("length after interpolation:" + nodes.length);
 					// Execute timestep nodes after specified delay
 					this.runningTimesteps.push(new TimestepTimeout(delay, nodes));
 				}
@@ -281,15 +278,17 @@ function Canvasrenderer()
 		for(j = 0; j < nodes.length; ++j){
 			
 			childNode = [].slice.call(nodes[j].childNodes, 0); 
-			//if(nodes[j]){
         		currentDelay = parseInt(nodes[j].getAttribute("delay"));
-            		if (currentDelay < 1000.0/FPS){
+            		if (currentDelay < 1000.0/ FPS){
                 		retnodes.push(nodes[j]);
                 		continue; 
             		} 
-        		delay = parseInt(nodes[j].getAttribute("delay"))/2;
-			if(nodes[j].getAttribute("delay")%2 != 0){
-				nodes[j].setAttribute("delay", delay+1);
+			var multiple = currentDelay / (1000/FPS);
+			var delay = currentDelay/multiple;
+			var amount = Math.floor(currentDelay/ delay)
+			var rest = nodes[j].getAttribute("delay")%multiple;
+			if(rest != 0){
+				nodes[j].setAttribute("delay", delay+rest);
 			} else {
 				nodes[j].setAttribute("delay", delay);
 			}
@@ -300,14 +299,16 @@ function Canvasrenderer()
 					newX = parseFloat(childNode[a].getAttribute("x"));
 					newY = parseFloat(childNode[a].getAttribute("y"));
 					if(currentX != null && currentY != null){
-						var iNode = nodes[j].cloneNode(true);
+						for(i = 0; i < amount; i++){
+							var iNode = nodes[j].cloneNode(true);
                       
-						iNode.childNodes[a].setAttribute("x", parseFloat(currentX - (currentX - newX) / 2) );
-						iNode.childNodes[a].setAttribute("y", parseFloat(currentY - (currentY - newY) / 2) );
-						iNode.setAttribute("delay", delay);
-						retnodes.push(iNode);
-					        currentX = newX;
-					        currentY = newY;
+							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - i*((currentX - newX) / multiple)) );
+							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - i*((currentY - newY) / multiple)) );
+							iNode.setAttribute("delay", delay);
+							retnodes.push(iNode);
+						        currentX = newX;
+						        currentY = newY;
+						}
 					}
 					else{
 						currentX = newX;
@@ -317,7 +318,6 @@ function Canvasrenderer()
 			}
           		retnodes.push(nodes[j]);
 			
-		//}
 		}
 		return retnodes;
 	}
