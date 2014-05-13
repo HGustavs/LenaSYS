@@ -160,6 +160,7 @@ function imagerecorder(canvas)
 				case 39:
 					if(clicked == 1) {
 						showImage(getNextImage());
+						logMouseEvents();
 					}
 				break;
 				
@@ -167,6 +168,7 @@ function imagerecorder(canvas)
 				case 37:
 					if(clicked == 1) {
 						showImage(getPrevImage());
+						logMouseEvents();
 					}
 				break;		
 			}
@@ -280,6 +282,9 @@ function imagerecorder(canvas)
 			html:		"Clone image",
 			href: 		"#",
 			click:		function(e) {
+				// Make the browser not go to the top of the page.
+				e.preventDefault();
+				
 				// Select li-element by index
 				var selectedli = $("#sortableThumbs .tli").eq(index);
 				var imgPath = $("img", selectedli).attr("src");
