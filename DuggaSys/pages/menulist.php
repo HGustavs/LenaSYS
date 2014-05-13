@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once(dirname(__file__)."/../../../coursesyspw.php");	
-include_once(dirname(__file__)."/../../shared/database.php");
+include_once(dirname(__file__)."/../../Shared/database.php");
 
 pdoConnect();
 ?>
