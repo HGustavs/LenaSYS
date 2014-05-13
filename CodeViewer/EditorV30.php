@@ -126,13 +126,13 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
 	$exampleid = $_GET['exampleid'];
 	//get the visibility
-	$query = "SELECT visible FROM listentries WHERE code_id='$exampleid';";
+	$query = "SELECT public FROM codeexample WHERE exampleid='$exampleid';";
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 	$row = mysql_fetch_assoc($result);
 	//Print "<b>Visible:</b> ".$row['visible'] . " "; 
-	$visible=$row['visible'];
-	Print "<b>Visible:</b> ".$visible . " ";		
+	$public=$row['public'];
+	Print "<b>Visible:</b> ".$public . " ";		
 	
 		if(isset($_GET['courseid'])){
 				$courseID=$_GET['courseid'];
@@ -150,7 +150,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 								editcodemenu(false);
 							}
 						}else{
-							if($visible == 0){
+							if($public == 0){
 								test();
 							}else{
 								editcodemenu(false);
