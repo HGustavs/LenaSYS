@@ -47,14 +47,17 @@
 			<div id="controls">
 				<input id="uploadButton" type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image(s)">
 			</div>
-
-			<!--creating the small imageviewer, on the right side of the screen-->
+			
+			<!--<div id="information">-->
+					<!--This box will display information about rightclick settings on thumbs-->
+			<!--</div>-->
+				
+			<!--creating the small imageviewer, on the bottom of the screen-->
 			<div id="thumbnails" class="thumbnails">
-				<ul style="overflow-x: hidden; margin-right:10px" id="sortableThumbs">
+				<ul  style="overflow-x: hidden; margin-right:10px" id="sortableThumbs">
 					<!-- Uploaded images will be appended in this list -->
 				</ul>
 			</div>
-			
 			<!-- Hidden upload form, this is called from controls -->
 			<div class="uploadForm" style="visibility:hidden;">
 				<form method='post' action="#" id="uploadForm" enctype="multipart/form-data">
