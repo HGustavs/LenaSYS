@@ -130,19 +130,19 @@ function getTest() {
 	console.log("complete");
 }
 // ALERT BOXES START //
-function successBox(title, text, delay) {
+function successBox(title, text, delay, confirm) {
 	if(title == undefined || 0 === title.length) { title = "Success!" }
 	if(text == undefined || 0 === text.length) { text = "You won..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
 	createRemoveAlert(title, text, delay, confirm, "success");
 }
-function noticeBox(title, text, delay) {
+function noticeBox(title, text, delay, confirm) {
 	if(title == undefined || 0 === title.length) { title = "Notice!" }
 	if(text == undefined || 0 === text.length) { text = "Think about it..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
 	createRemoveAlert(title, text, delay, confirm, "info");
 }
-function warningBox(title, text, delay) {
+function warningBox(title, text, delay, confirm) {
 	if(title == undefined) { title = "Warning!" }
 	if(text == undefined || 0 === text.length) { text = "Can be dangerous..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
@@ -156,6 +156,7 @@ function dangerBox(title, text, delay, confirm) {
 }
 
 function createRemoveAlert(title, text, delay, confirm, type) {
+	console.log(confirm);
 	var result = false;
 	if(delay == undefined) { delay = 0 }
 	var output = '<div class="alert slide-down '+type+'">';
