@@ -109,7 +109,7 @@ function checkIfEmpty(textInput){
         $(textInput).addClass("isValid");                                                                                    
     }                                                                                                               
 }
-function chekIfEmptyLoginField(){
+function checkIfEmptyLoginField(){
 	var username = $("#login #username").val();
 	var password = $("#login #password").val();
 	if((username == "") && (password == "")){
