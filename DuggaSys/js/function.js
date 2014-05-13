@@ -3,9 +3,6 @@ $( document ).ready(function() {
 	page.load();
 	page.show();
 });
-
-
-
 // Running page object funktions if browser back/forward buttons get pressed //
 window.onhashchange = function() {
 	page.show();
@@ -137,19 +134,19 @@ function successBox(title, text, delay) {
 	if(title == undefined || 0 === title.length) { title = "Success!" }
 	if(text == undefined || 0 === text.length) { text = "You won..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
-	createRemoveAlert(title, text, delay, "success");
+	createRemoveAlert(title, text, delay, confirm, "success");
 }
 function noticeBox(title, text, delay) {
 	if(title == undefined || 0 === title.length) { title = "Notice!" }
 	if(text == undefined || 0 === text.length) { text = "Think about it..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
-	createRemoveAlert(title, text, delay, "info");
+	createRemoveAlert(title, text, delay, confirm, "info");
 }
 function warningBox(title, text, delay) {
 	if(title == undefined) { title = "Warning!" }
 	if(text == undefined || 0 === text.length) { text = "Can be dangerous..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
-	createRemoveAlert(title, text, delay, "warning");
+	createRemoveAlert(title, text, delay, confirm, "warning");
 }
 function dangerBox(title, text, delay, confirm) {
 	if(title == undefined || 0 === title.length) { title = "Warning!" }
