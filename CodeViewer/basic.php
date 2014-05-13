@@ -88,4 +88,14 @@ include "../Shared/basic.php";
 		echo '</div>';
 		echo '</div>';
 		}
+
+function test(){
+	echo '<div>You are not supposed to be here. ';
+	//echo '<button type="button" onClick="Up();">Go Back!</button>';				
+		//echo '<div id="buttomenu" class="buttomenuStyle">';
+				echo '<table cellspacing="2"><tr>';
+				echo '<td class="mbutto mbuttoStyle showdesktop" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
+
+				echo '</table></div>';
+				}
 ?>

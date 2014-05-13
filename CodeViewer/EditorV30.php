@@ -130,9 +130,9 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 	$row = mysql_fetch_assoc($result);
-	Print "<b>Visible:</b> ".$row['visible'] . " "; 
-	
-					
+	//Print "<b>Visible:</b> ".$row['visible'] . " "; 
+	$visible=$row['visible'];
+	Print "<b>Visible:</b> ".$visible . " ";		
 	
 		if(isset($_GET['courseid'])){
 				$courseID=$_GET['courseid'];
@@ -150,7 +150,12 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 								editcodemenu(false);
 							}
 						}else{
+							if($visible == 0){
+								test();
+							}else{
 								editcodemenu(false);
+							}
+								
 						}
 						
 				}else{
