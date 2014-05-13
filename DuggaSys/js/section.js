@@ -61,12 +61,20 @@ function sectionSettingsService(ID)
 		var courseID = qs.courseid;
 		if (data['testdugga'] != "-1") {
 			if (data['type'] == 2) {
-				data['link'] = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID+"";
+				data['link'] = "../CodeViewer/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID;
 			} else if (data['type'] == 3) {
-				data['link'] = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID+"";
+				data['link'] = "../CodeViewer/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID;
 			}
 		}
-		$.post("ajax/updateSections.php", "sectionid="+ID+"&courseid="+courseID+"&sectionname="+data['sectionname']+"&type="+data['type']+"&link="+data['link']+"&visibility="+data['visibility'], function(response) {
+		$.post("ajax/updateSections.php",
+		{
+			'sectionid': ID,
+			'courseid': courseID,
+			'sectionname': data['sectionname'],
+			'type': data['type'],
+			'link': data['link'],
+			'visibility': data['visibility']
+		}, function(response) {
 			$('#testdugga').find('option').remove();
 			element = document.getElementById('Entry_'+ID);
 			settingsChildren = element.childNodes;

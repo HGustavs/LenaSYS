@@ -209,6 +209,11 @@ function returnedSection(data)
 
 function testDuggaService(courseID, opt, sectionID, link) {
 	link = link || "";
+	$("#sectioned_"+sectionID+" select[name=testduggaselect]").find('option').remove();
+	var selectOption = document.createElement('option');
+	selectOption.value = "-1";
+	selectOption.innerHTML = "Select";
+	$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(selectOption);
 	$.ajax({
 		dataType: 'json',
 		url: 'ajax/testduggaService.php',
@@ -225,11 +230,11 @@ function testDuggaService(courseID, opt, sectionID, link) {
 				if (opt == "example") {
 					if (link.length > 0) {
 						var string = link.split("&");
-						link += link[1];
 						if (string[0]) {
 							string = string[0].split("?");
 							if (string[1]) {
 								string = string[1].split("=");
+								
 								if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
 									option.setAttribute('selected', true);
 								}

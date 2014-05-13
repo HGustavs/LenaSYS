@@ -40,7 +40,7 @@ if (checklogin()) {
 					$eidq->execute();
 					$eid = $eidq->fetch(PDO::FETCH_NUM);
 					$code_id = $eid[0];
-					$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$code_id."&courseid=".getCourseName($courseid);
+					$link = "../CodeViewer/EditorV30.php?exampleno=".$code_id."&courseid=".$courseid;
 
 					// Create file list
 					$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
