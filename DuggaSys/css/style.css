@@ -157,6 +157,10 @@ header {
     border-radius: 4px;
     padding: 8px;
 }
+    .alert .btn {
+        width: 100px !important;
+        margin: 0px 10px 10px 10px;
+    }
     .alert p {
         padding: 2px 10px 10px 10px;
     }
