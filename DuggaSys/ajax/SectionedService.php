@@ -3,15 +3,18 @@
 		//---------------------------------------------------------------------------------------------------------------
 		// editorService - Saves and Reads content for Code Editor
 		//---------------------------------------------------------------------------------------------------------------
+		
+		
+		
+		// TODO: Change section link according to the test/codeexample added in the section form
 	
 		// Check if example exists and then do operation
 	
 		date_default_timezone_set("Europe/Stockholm");
 	
 		// Include basic application services!
-		include_once("../../coursesyspw.php");
-		include_once("../Shared/sessions.php");
-		include_once("../Shared/courses.php");
+		include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
+		include_once(dirname(__FILE__) . "/../../Shared/courses.php");
 	
 		// Connect to database and start session
 		pdoConnect();
@@ -30,12 +33,13 @@
 		if(isset($_POST['pos'])) $pos=htmlEntities($_POST['pos']);
 		if(isset($_POST['newname'])) $newname=htmlEntities($_POST['newname']);
 		if(isset($_POST['kind'])) $kind=htmlEntities($_POST['kind']);
+		if(isset($_POST['testdugga'])) $testdugga=htmlEntities($_POST['testdugga']);
 		if(array_key_exists('link', $_POST)) $link=htmlEntities($_POST['link']);
 		if(array_key_exists('visibility', $_POST)) $visibility = $_POST['visibility'];
 		
 		$debug="NONE!";
 		if(checklogin()){
-			$ha = hasAccess($_SESSION['uid'], $courseid, 'w');
+			$ha = hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"]);
 			if($ha){
 				if (strcmp("sectionNew",$opt) === 0) {
 					// Find out the last position in the list
@@ -52,27 +56,36 @@
 						$query = $pdo->prepare("INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible,code_id) VALUES(:cid, :name, :link, :kind, :pos, :uid, :visible,:code_id)");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':name', $sectname);
-						if($kind == 2 && $link == '') {
-							$stmt = $pdo->prepare("INSERT INTO codeexample (cid, examplename, wordlist, runlink,uid) VALUES(:cid, :name, 'JS', '<none>',:uid)");
-							$stmt->bindParam(':cid', $courseid);
-							$stmt->bindParam(':name', $sectname);
-							$stmt->bindParam(':uid', $_SESSION['uid']);
-							if(!$stmt->execute()) {
-								print_r($stmt->errorInfo());
-							} else {
-								// Get example id
-								$eidq = $pdo->query("SELECT LAST_INSERT_ID() as code_id");
-								$eidq->execute();
-								$eid = $eidq->fetch(PDO::FETCH_NUM);
-								$code_id = $eid[0];
+						if($kind == 2) {
+							if ($testdugga == "-1") {
+								$stmt = $pdo->prepare("INSERT INTO codeexample (cid, examplename, wordlist, runlink,uid) VALUES(:cid, :name, 'JS', '<none>',:uid)");
+								$stmt->bindParam(':cid', $courseid);
+								$stmt->bindParam(':name', $sectname);
+								$stmt->bindParam(':uid', $_SESSION['uid']);
+								if(!$stmt->execute()) {
+									// TODO: Remove these debug prints
+									print_r($stmt->errorInfo());
+								} else {
+									// Get example id
+									$eidq = $pdo->query("SELECT LAST_INSERT_ID() as code_id");
+									$eidq->execute();
+									$eid = $eidq->fetch(PDO::FETCH_NUM);
+									$code_id = $eid[0];
+									$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$code_id."&courseid=".getCourseName($courseid)."";
 
-								// Create file list
-								$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
-								$sinto->bindParam(':eid', $eid[0]);
-								if(!$sinto->execute()) {
-									print_r($sinto->errorInfo());
+									// Create file list
+									$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
+									$sinto->bindParam(':eid', $eid[0]);
+									if(!$sinto->execute()) {
+										// TODO: Remove these debug prints
+										print_r($sinto->errorInfo());
+									}
 								}
+							} else {
+								$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$testdugga ."&courseid=".getCourseName($courseid)."";
 							}
+						} else if ($kind == 3) {
+							// Insert new test
 						}
 						$query->bindParam(':link', $link);
 						$query->bindParam(':kind', $kind);
@@ -113,7 +126,18 @@
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
 		//------------------------------------------------------------------------------------------------
-		$ha = (checklogin() && hasAccess($_SESSION['uid'], $courseid, 'w'));
+		$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:1");
+		$query->bindParam(':1', $courseid);
+		$result = $query->execute();
+		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+			$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0);
+			if (!$hr) {
+				if (checklogin()) {
+					$hr = isSuperUser($_SESSION['uid']);
+				}
+			}
+		}
+		$ha = (checklogin() && (hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"])));
 		$entries=array();
 		$query = $pdo->prepare("SELECT lid,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid ORDER BY pos");
 		$query->bindParam(':cid', $courseid);
@@ -138,6 +162,7 @@
 			'entries' => $entries,
 			"debug" => $debug,
 			'writeaccess' => $ha,
+			'readaccess' => $hr,
 			'coursename' => getCourseName($courseid),
 			'courseid' => $courseid,
 			'success' => $success

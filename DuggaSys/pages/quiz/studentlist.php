@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 
-<?php if($_SESSION['user']) { ?>
+
     <table class="list">
         <tr>
             <th>Student ID</th>
@@ -141,8 +141,7 @@
             <td><a href="#">Gå till dugga</a></td>
         </tr>
     </table>
-<?php }else {?>
-    <script type="text/javascript">
-        changeURL('noid');
-    </script>
-<?php } ?>
+    <section>
+        <button type='button' onclick="alert('yes!')" class='default'>assign course to all</button>
+        <button type='button' onclick="alert('ohhh!')" class='default'>random asign course to all</button>
+    </section>
