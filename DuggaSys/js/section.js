@@ -83,13 +83,28 @@ function sectionSettingsService(ID)
 					break;
 			}
 			if(data['visibility'] != 0) {
+				
 				settingsChildren[0].style.opacity = "1";
 				settingsChildren[1].style.opacity = "1";
+				
 			} else {
 				
 				settingsChildren[0].style.opacity = "0.5";
 				settingsChildren[1].style.opacity = "0.5";
+				
 			}
+			
+			if(data['type'] < 2){
+					settingsChildren[0].style.color = "white";
+					settingsChildren[0].style.fontSize = "14pt";
+					settingsChildren[1].src="css/images/general_settings_button_white.svg";
+			}else {
+					settingsChildren[0].style.color = "#434343";
+					settingsChildren[0].style.fontSize = "10pt";
+					settingsChildren[1].src="css/images/general_settings_button_darkgrey.svg";
+			}
+			
+			
 			$("input[name*='sectionname']").css("background-color", "#fff");
 			$('#sectioned_'+ID).hide();
 			//Calls function to notice user of changes

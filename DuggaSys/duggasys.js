@@ -51,23 +51,12 @@ function returnedSection(data)
 					
 					if(sessionkind) {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
-							if (parseInt(data['entries'][i]['visible']) === 0) {
-								str+="<span style='Opacity:0.5;'>"+data['entries'][i]['entryname']+"</span>";
-								str+="<img style='opacity:0.5;'onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
-							} else {
-								str+="<span>"+data['entries'][i]['entryname']+"</span>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
-							}
+							str+="<span>"+data['entries'][i]['entryname']+"</span>";
+							str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 						} else {
-							if (parseInt(data['entries'][i]['visible']) === 0) {
-								//Adding the opacity here instead for visible = 0
-								str+="<a id='section-list' style='opacity:0.5;' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
-								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
-							
-							} else{
-								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
-							}
+							str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
+							str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' name='sectionname' value='"+data['entries'][i]['entryname']+"' />";
@@ -129,7 +118,7 @@ function returnedSection(data)
 						}
 						str+="</select>";
 						str+="<div style='float:right;'>";
-						str+="<input class='submit-button' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
+						str+="<input class='submit-button-red' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
 						str+="<input class='submit-button' type='button' value='Save' onclick='sectionSettingsService("+data['entries'][i]['lid']+")' />";
 						str+="</div></div>";
 					} else {

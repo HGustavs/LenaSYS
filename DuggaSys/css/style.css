@@ -60,9 +60,11 @@ a#courses:hover{
 	color:#666;
 }
 a#section-list {
+/*
 	color:#434343;
 	font-family:arial;
 	font-size:10pt;
+	*/
 	text-decoration:none;
 }
 header {
@@ -338,11 +340,11 @@ table.list tr.red {
 }
 
 #Sectionlist .bigg {
-    font-size: 16pt;
 	padding:6px;
-	color:#fff;
     text-align: center;
-    font-family: Cambria, Georgia, serif;
+	color:#fff;
+	font-size: 14pt;
+    font-family: Calibri,Sans-Serif;
     display: block;
     background-color: #775886;
 }
@@ -352,6 +354,9 @@ table.list tr.red {
 	padding-left:15px;
     display: block;
     background-color: #f0f0f0;
+	color:#434343;
+	font-family:arial;
+	font-size:10pt;
 }
 
 #Sectionlist .test {
@@ -359,6 +364,9 @@ table.list tr.red {
 	padding-left:15px;
     display: block;
     background-color: #e3e3e3;
+	color:#434343;
+	font-family:arial;
+	font-size:10pt;
 }
 
 #Sectionlist .hidden {
@@ -366,6 +374,9 @@ table.list tr.red {
 	padding-left:15px;
     display: block;
     background-color: #d0cfd0;
+		color:#434343;
+	font-family:arial;
+	font-size:10pt;
 }
 
 #Sectionlist .example {
@@ -373,6 +384,9 @@ table.list tr.red {
 	padding-left:15px;
     display: block;
     background-color: #dad8db;
+		color:#434343;
+	font-family:arial;
+	font-size:10pt;
 }
 
 #Sectionlist .course {
