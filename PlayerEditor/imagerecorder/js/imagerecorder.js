@@ -96,6 +96,8 @@ function imagerecorder(canvas)
 			if(imagelibrary.length > 0) {
 				// Lock thumbs & custom context menu on the first picture shown
 				if(clicked == 0) {
+					// Set lastEvent to now so playback doesnt start with a big delay
+					lastEvent = Date.now();
 					// Disable sorting thumbs
 					$("#sortableThumbs").sortable("destroy");
 
@@ -222,7 +224,7 @@ function imagerecorder(canvas)
 				},
 				success: function() {
 				
-					$("#export-feedback").html("<h3><strong>Successfully exported!</storng></h3><p><a href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>click</p>");
+					$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</p>.");
 				
 					$("#export-feedback").show(250);
 				}
@@ -409,7 +411,6 @@ function imagerecorder(canvas)
 	}
 	
 	// Uploads image
-	// TODO: Check file extensions
 	function uploadImage(event) {
 		files = event.target.files;
 		event.stopPropagation();

@@ -50,6 +50,7 @@ function canvasSize()
 	var ctx = c.getContext("2d");
 	var canvas = new Canvasrenderer();
 <?php
+	// Load XML
 	if(isset($xmlpath)) {
 		echo "this.canvas.loadXML('".$xmlpath."');";
 	}
