@@ -12,8 +12,8 @@
     position: absolute;
     top: 50px;
     left: 0px;
-    height: -webkit-calc(30% - 50px);
-    height: -moz-calc(30% - 50px);
+    height: -webkit-calc(40% - 50px);
+    height: -moz-calc(40% - 50px);
     width: -webkit-calc(50.0% - 4px);
     width: -moz-calc(50.0% - 4px);
     overflow: scroll;
@@ -29,8 +29,8 @@
     position: absolute;
     top: 0px;
 	right: 0px;
-	height: -webkit-calc(30.0%);
-    height: -moz-calc(30.0%);
+	height: -webkit-calc(40.0%);
+    height: -moz-calc(40.0%);
     width: -webkit-calc(50.0% - 4px);
     width: -moz-calc(50.0% - 4px);
     overflow: scroll;
@@ -46,8 +46,8 @@
     position: absolute;
     bottom: 0px;
     right: 0px;
-    height: -webkit-calc(70%);
-    height: -moz-calc(70%);
+    height: -webkit-calc(60%);
+    height: -moz-calc(60%);
     width: -webkit-calc(100%);
     width: -moz-calc(100%);
     font-family: Arial,Sans-Serif;
