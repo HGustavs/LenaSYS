@@ -52,11 +52,20 @@ function sectionSettingsService(ID)
 					data['link'] = settingsChildren[i].value;
 				} else if (settingsChildren[i].getAttribute("name") == "visibility") {
 					data['visibility'] = settingsChildren[i].value;
+				} else if (settingsChildren[i].getAttribute("name") == "testduggaselect") {
+					data['testdugga'] = settingsChildren[i].value;
 				}
 			}
 		}
 		var qs = getUrlVars();
 		var courseID = qs.courseid;
+		if (data['testdugga'] != "-1") {
+			if (data['type'] == 2) {
+				data['link'] = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID;
+			} else if (data['type'] == 3) {
+				data['link'] = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno="+data['testdugga']+"&courseid="+courseID;
+			}
+		}
 		$.post("ajax/updateSections.php", "sectionid="+ID+"&courseid="+courseID+"&sectionname="+data['sectionname']+"&type="+data['type']+"&link="+data['link']+"&visibility="+data['visibility'], function(response) {
 			$('#testdugga').find('option').remove();
 			element = document.getElementById('Entry_'+ID);
@@ -88,7 +97,6 @@ function sectionSettingsService(ID)
 				settingsChildren[1].style.opacity = "1";
 				
 			} else {
-				
 				settingsChildren[0].style.opacity = "0.5";
 				settingsChildren[1].style.opacity = "0.5";
 				
@@ -112,6 +120,11 @@ function sectionSettingsService(ID)
 				warningBox(data['sectionname'], "Updates not saved", 50);
 			}else {
 				successBox(data['sectionname'], "Updates saved", 50);
+				if (data['type'] == 2) {
+					testDuggaService(courseID, "example", ID, JSON.parse(response));
+				} else if (data['type'] == 3) {
+					testDuggaService(courseID, "test", ID, JSON.parse(response));
+				}
 			}
 		});
 	}

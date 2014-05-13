@@ -13,8 +13,8 @@
 		date_default_timezone_set("Europe/Stockholm");
 	
 		// Include basic application services!
-		include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
-		include_once(dirname(__FILE__) . "/../../Shared/courses.php");
+		include_once("../Shared/sessions.php");
+		include_once("../Shared/courses.php");
 	
 		// Connect to database and start session
 		pdoConnect();
@@ -82,7 +82,7 @@
 									}
 								}
 							} else {
-								$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$testdugga ."&courseid=".getCourseName($courseid)."";
+								$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$testdugga ."&courseid=".getCourseName($courseid);
 							}
 						} else if ($kind == 3) {
 							// Insert new test
@@ -104,20 +104,6 @@
 					$query->bindParam(':lid', $sectid);
 					if(!$query->execute()) {
 						echo "Error updating entries";
-					}
-				} else if(strcmp("updateEntries", $opt) === 0) {
-					$sectionArray = $_POST['Entry'];
-
-					$counter = 0;
-					foreach ($sectionArray as $entryID) {
-						$query = $pdo->prepare("UPDATE listentries SET pos=:pos WHERE lid =:lid");
-						$query->bindParam(':pos', $counter);
-						$query->bindParam(':lid', $entryID);
-						if(!$query->execute()) {
-							echo "Error updating entries";
-						} else {
-							$counter = $counter + 1;
-						}
 					}
 				}
 			}

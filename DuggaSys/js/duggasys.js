@@ -72,7 +72,15 @@ function returnedSection(data)
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' name='sectionname' value='"+data['entries'][i]['entryname']+"' />";
-						str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
+						if (data['entries'][i]['kind'] == 2) {
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
+							testDuggaService(data.courseid, "example", data['entries'][i]['lid'], data['entries'][i]['link']);
+						} else if (data['entries'][i]['kind'] == 3) { 
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
+							testDuggaService(data.courseid, "test", data['entries'][i]['lid'], data['entries'][i]['link']);
+						} else {
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
+						}
 						str+="<option value='-1'>Select</option>";
 						str+="</select>";
 						str+="Edit type:<select name='type'><option value='"+parseInt(data['entries'][i]['kind'])+"'>";
@@ -191,26 +199,45 @@ function returnedSection(data)
 							} else {
 								var opt = "test";
 							}
-							$.ajax({
-								dataType: 'json',
-								url: 'ajax/testduggaService.php',
-								method: 'post',
-								data: {
-									'courseid': event.data.id,
-									'opt': opt
-								},
-								success: function(returnData) {
-									for (i=0; i<returnData['entries'].length; i++) {
-										var option = document.createElement('option');
-										option.value = returnData['entries'][i]['id'];
-										option.innerHTML = returnData['entries'][i]['name'];
-										$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").append(option);
-									}
-								}
-							});
+							testDuggaService(event.data.id, opt, event.data.data['lid']);
 						}
 					});
 				}
 			})(jQuery);
 
+}
+
+function testDuggaService(courseID, opt, sectionID, link) {
+	link = link || "";
+	$.ajax({
+		dataType: 'json',
+		url: 'ajax/testduggaService.php',
+		method: 'post',
+		data: {
+			'courseid': courseID,
+			'opt': opt
+		},
+		success: function(returnData) {
+			for (i=0; i<returnData['entries'].length; i++) {
+				var option = document.createElement('option');
+				option.value = returnData['entries'][i]['id'];
+				option.innerHTML = returnData['entries'][i]['name'];
+				if (opt == "example") {
+					if (link.length > 0) {
+						var string = link.split("&");
+						if (string[0]) {
+							string = string[0].split("?");
+							if (string[1]) {
+								string = string[1].split("=");
+								if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
+									option.setAttribute('selected', true);
+								}
+							}
+						}
+					}
+				}
+				$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(option);
+			}
+		}
+	});
 }
