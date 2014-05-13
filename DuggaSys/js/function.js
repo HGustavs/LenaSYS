@@ -130,33 +130,32 @@ function getTest() {
 	console.log("complete");
 }
 // ALERT BOXES START //
-function successBox(title, text, delay, confirm) {
+function successBox(title, text, delay, confirm, data) {
 	if(title == undefined || 0 === title.length) { title = "Success!" }
 	if(text == undefined || 0 === text.length) { text = "You won..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
-	createRemoveAlert(title, text, delay, confirm, "success");
+	createRemoveAlert(title, text, delay, confirm, data, "success");
 }
-function noticeBox(title, text, delay, confirm) {
+function noticeBox(title, text, delay, confirm, data) {
 	if(title == undefined || 0 === title.length) { title = "Notice!" }
 	if(text == undefined || 0 === text.length) { text = "Think about it..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
-	createRemoveAlert(title, text, delay, confirm, "info");
+	createRemoveAlert(title, text, delay, confirm, data, "info");
 }
-function warningBox(title, text, delay, confirm) {
+function warningBox(title, text, delay, confirm, data) {
 	if(title == undefined) { title = "Warning!" }
 	if(text == undefined || 0 === text.length) { text = "Can be dangerous..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
-	createRemoveAlert(title, text, delay, confirm, "warning");
+	createRemoveAlert(title, text, delay, confirm, data, "warning");
 }
-function dangerBox(title, text, delay, confirm) {
+function dangerBox(title, text, delay, confirm, data) {
 	if(title == undefined || 0 === title.length) { title = "Warning!" }
 	if(text == undefined || 0 === text.length) { text = "Serious error..." }
 	if(delay == undefined || 0 === delay.length) { delay = 0 }
-	createRemoveAlert(title, text, delay, confirm, "danger");
+	createRemoveAlert(title, text, delay, confirm, data, "danger");
 }
 
-function createRemoveAlert(title, text, delay, confirm, type) {
-	console.log(confirm);
+function createRemoveAlert(title, text, delay, confirm, data, type) {
 	var result = false;
 	if(delay == undefined) { delay = 0 }
 	var output = '<div class="alert slide-down '+type+'">';
@@ -179,7 +178,7 @@ function createRemoveAlert(title, text, delay, confirm, type) {
 	if(typeof confirm == 'function') {
 		$.when(this).done(setTimeout(function() {
 			$( "#alertSubmit" ).click(function() {
-				confirm();
+				confirm(data);
 				$(".alert").animate({height: 0}, 300,"linear",function() {
 					$(this).remove();
 				})
