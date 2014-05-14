@@ -52,18 +52,103 @@ function sectionSettingsService(ID)
 					data['link'] = settingsChildren[i].value;
 				} else if (settingsChildren[i].getAttribute("name") == "visibility") {
 					data['visibility'] = settingsChildren[i].value;
+				} else if (settingsChildren[i].getAttribute("name") == "testduggaselect") {
+					data['testdugga'] = settingsChildren[i].value;
 				}
 			}
 		}
-		var courseID = document.URL.split('courseid=')[1];
-		courseID = courseID.split('&')[0];
-		$.post("ajax/updateSections.php", "sectionid="+ID+"&courseid="+courseID+"&sectionname="+data['sectionname']+"&type="+data['type']+"&link="+data['link']+"&visibility="+data['visibility'], function(response) {
-			page.show();
+		var qs = getUrlVars();
+		var courseID = qs.courseid;
+		if (data['testdugga'] != "-1") {
+			if (data['type'] == 2) {
+				data['link'] = "../CodeViewer/EditorV30.php?exampleid="+data['testdugga']+"&courseid="+courseID;
+			} else if (data['type'] == 3) {
+				data['link'] = "startDugga?duggaid="+data['testdugga']+"&courseid="+courseID;
+			}
+		}
+		$.post("ajax/updateSections.php",
+		{
+			'sectionid': ID,
+			'courseid': courseID,
+			'sectionname': data['sectionname'],
+			'type': data['type'],
+			'link': data['link'],
+			'visibility': data['visibility']
+		}, function(response)
+		{
+			$('#testdugga').find('option').remove();
+			element = document.getElementById('Entry_'+ID);
+			settingsChildren = element.childNodes;
+			var children = settingsChildren[0].childNodes;
+			children[0].textContent = data['sectionname'];
+			
+			if (data['type'] == 2) {
+				settingsChildren[0].href = JSON.parse(response);
+				settingsChildren[0].onclick = null;
+			} else if (data['type'] == 3) {
+				console.log(JSON.parse(response));
+				settingsChildren[0].removeAttribute("href");
+				if (settingsChildren[0].addEventListener) {  // all browsers except IE before version 9
+					settingsChildren[0].addEventListener("click", function() { changeURL(JSON.parse(response)); }, false);
+				} else {
+					if (settingsChildren[0].attachEvent) {   // IE before version 9
+						settingsChildren[0].attachEvent("click", function() { changeURL(JSON.parse(response)); });
+					}
+				}
+			}
+			
+			switch(parseInt(data['type'])){
+				case 0:
+					element.className = "bigg";
+					break;
+				case 1:
+					element.className = "butt";
+					break;
+				case 2:
+					element.className = "example";
+					break;
+				case 3:
+					element.className = "test";
+					break;
+				default:
+				case 4:
+					element.className = "norm";
+					break;
+			}
+			if(data['visibility'] != 0) {
+				
+				settingsChildren[0].style.opacity = "1";
+				settingsChildren[1].style.opacity = "1";
+				
+			} else {
+				settingsChildren[0].style.opacity = "0.5";
+				settingsChildren[1].style.opacity = "0.5";
+				
+			}
+			
+			if(data['type'] < 2){
+					settingsChildren[0].style.color = "white";
+					settingsChildren[0].style.fontSize = "14pt";
+					settingsChildren[1].src="css/images/general_settings_button_white.svg";
+			}else {
+					settingsChildren[0].style.color = "#434343";
+					settingsChildren[0].style.fontSize = "10pt";
+					settingsChildren[1].src="css/images/general_settings_button_darkgrey.svg";
+			}
+			
+			
+			$("input[name*='sectionname']").css("background-color", "#fff");
+			$('#sectioned_'+ID).hide();
 			//Calls function to notice user of changes
 			if(!response) {
 				warningBox(data['sectionname'], "Updates not saved", 50);
 			}else {
 				successBox(data['sectionname'], "Updates saved", 50);
+				if (data['type'] == 2) {
+					testDuggaService(courseID, "example", ID, JSON.parse(response));
+				} else if (data['type'] == 3) {
+					testDuggaService(courseID, "test", ID, JSON.parse(response));
+				}
 			}
 		});
 	}

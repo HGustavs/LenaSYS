@@ -16,7 +16,10 @@ pdoConnect();
 // Default values
 $res = array("login" => "failed");
 
-if(login($username, $password, $savelogin)) {
+if(failedLoginCount($_SERVER['REMOTE_ADDR']) >= 10) {
+	$res["login"] = "failed";
+	$res["reason"] = "Too many failed attempts, try again later";
+} else if(login($username, $password, $savelogin)) {
 	// Successfully logged in, return this.
 	$res["login"] = "success";
 	$res["username"] = $_SESSION['loginname'];
@@ -29,6 +32,7 @@ if(login($username, $password, $savelogin)) {
 	// There's no user logged in so there's no user to associate this event with.
 	log_message(
 		NULL,
+		'loginerr',
 		sprintf("Failed login attempt for user %s",
 			htmlentities($username)
 		)

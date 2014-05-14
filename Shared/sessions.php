@@ -14,12 +14,38 @@ function checklogin()
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
-	} else if(array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
+	} else if(failedLoginCount($_SERVER['REMOTE_ADDR']) < 10 && array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
 		return login($_COOKIE['username'], $_COOKIE['password'], false);
 	} else {		
 		return false;
 	}
 }	
+
+/**
+ * Returns the number of failed logins from this IP address in the
+ * last 30 minutes.
+ * @param string $addr Address to look up
+ * @return int
+ */
+function failedLoginCount($addr)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare('SELECT COUNT(1) FROM eventlog WHERE address=:addr AND type=\'loginerr\' AND ts > (CURRENT_TIMESTAMP() - interval 30 minute)');
+	// TODO: Proxy detection?
+	$query->bindParam(':addr', $addr);
+
+	if($query->execute() && $query->rowCount() > 0) {
+		$count = $query->fetch(PDO::FETCH_NUM);
+		return $count[0];
+	} else {
+		return 0;
+	}
+}
 
 /**
  * Log in the user with the specified username and password and

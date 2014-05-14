@@ -41,6 +41,13 @@ function validateNewSectionSubmit()
 	} else {
 		$("select[name*='visib']").css("background-color", "#89ff7b");
 	}
+	
+	if( document.newSection.type.value == 4 &&  document.newSection.link.value == "") {
+		$("input[name*='link']").css("background-color", "#ff7c6a");
+		return false;
+	} else if ( document.newSection.type.value == 4 &&  document.newSection.link.value != "" ) {
+		$("input[name*='link']").css("background-color", "#89ff7b");
+	}
 	return true;
 }
 

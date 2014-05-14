@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 
-<?php if($_SESSION['user']) { ?>
+
 	<script>
 		$(function() {
 			$( ".datepicker" ).datepicker({
@@ -38,40 +38,29 @@
 		<form role='form'>
 			<div class='form-group'>
 				<label>Dugganame</label>
-				<textarea class='form-control' rows='2'></textarea>
-			</div>
-			<div style='float:left' class='form-group'>
-				<select class='form-control'>
-					<option>Variant</option>
-					<option>1</option>
-					<option>2</option>
-				</select>
-			</div>
-			<button style='float:left' onclick="showVariant()" type="button">+</button>
-			<button style='float:right' type='submit' class='default'>Submit</button>
-
-			<div class="variant1" style="display:none">
-				<hr style='clear:both'>
+				<input type="text" class='form-control' />
 				<div class='form-group'>
-					<label>Question</label>
-					<textarea class='form-control' rows='2'></textarea>
-				</div>
-				<div class='form-group'>
-					<select class='form-control'>
-						<option>Template</option>
-						<option>Kryss</option>
-						<option>Solsystem</option>
-					</select>
-				</div>
-				<div class='form-group'>
-					<label>Template parameters</label>
-					<textarea class='form-control' rows='4'></textarea>
+					<label>Template parameters (?)</label>
+					<textarea class='form-control' rows='5'></textarea>
 				</div>
 				<div class='form-group'>
 					<label>Answer</label>
 						<div class="input-append">
 		                    <div id="field"><input autocomplete="off" class='option form-control' id="field1" name="prof1" type="text" data-items="8"/><button id="b1" class="option add-more" type="button">+</button></div>
 		                </div>
+				</div>
+				<div class='form-group'>		
+					<label>
+						<input type='checkbox'> Autograde
+					</label>
+				</div>
+				<div class='form-group'>
+					<select class='form-control'>
+						<option>grade system</option>
+						<option>U-G</option>
+						<option>U-G-VG</option>
+						<option>3-5</option>
+					</select>
 				</div>
 				<div class='form-group'>
 					<label>Releasedate</label>
@@ -83,19 +72,11 @@
 				</div>
 				<div class='form-group'>		
 					<label>
-						<input type='checkbox'> Activate
+						<input type='checkbox'> Activate on submit
 					</label>
 				</div>
-				<div class='form-group'>		
-					<label>
-						<input type='checkbox'> Autograde
-					</label>
-				</div>
+				
 			</div>
+			<button onclick="alert('create')" class='default'>Submit</button>
 		</form>
 	</div>
-<?php }else {?>
-	<script type="text/javascript">
-		changeURL('noid');
-	</script>
-<?php } ?>

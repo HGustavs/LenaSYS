@@ -6,6 +6,8 @@ pdoConnect();
 ?>
 <head>
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
+    <!--This is for adding the correct title to this page-->
+    <script>page.title("Menulist");</script>
 </head>
 
 <?php
@@ -15,6 +17,7 @@ if (checklogin()) {
 	}
 }
 ?>
+
 <table class="course-table" cellspacing="0">
 	<tr>
 		<th colspan="2">Course Example Organization System</th>
@@ -38,13 +41,26 @@ if (checklogin()) {
 			if ($row['visibility'] == 0) {
 				if (checklogin()) {
 					if (hasAccess($_SESSION["uid"], $row['id'], 'r') && !hasAccess($_SESSION["uid"], $row['id'], 'w')) {
-						echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
-						echo "</td></tr>";
+						//Checks the visibility, changes the opacity for hidden.
+						if($row['visibility'] != 0){
+							echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
+							echo "</td></tr>";
+						} else {
+							echo "<tr style='background-color:".$color.";opacity:0.5;'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
+							echo "</td></tr>";
+						}
 						$counter++;
 					} else if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
-						echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
-						echo "<td style='width:2%;' onclick='showSettingRow(".$row['id'].")' ><img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
-						echo "</td></tr>";
+						//Checks the visibility, changes the opacity for hidden.
+						if($row['visibility'] != 0){
+							echo "<tr style='background-color:".$color.";'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
+							echo "<td style='width:2%;' onclick='showSettingRow(".$row['id'].")' ><img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+							echo "</td></tr>";
+						}else {
+							echo "<tr style='background-color:".$color.";opacity:0.5;'><td style='width:98%;' onclick='changeURL(\"sectioned?courseid=". $row['id']. "&coursename=" . $row['coursename'] . "\")'>".$row['coursename']."</td>";
+							echo "<td style='width:2%;' onclick='showSettingRow(".$row['id'].")' ><img id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+							echo "</td></tr>";
+						}
 						$counter++;
 					}
 				}

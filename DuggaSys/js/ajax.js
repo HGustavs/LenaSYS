@@ -15,6 +15,9 @@
 					changeURL("sectioned?courseid="+data.cid);	
 				} else if(data==="no access") {
 					alert("ap ap ap!");	
+				} else if(data==="no write access") {
+					alert("You dont have rights to create course.");	
+					changeURL("menulist");
 				}
 				
 			},
