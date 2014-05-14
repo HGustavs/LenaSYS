@@ -41,7 +41,7 @@ background-color: #614875;
 
 .bar{
 	height: 25px;
-	width: 100%;
+	width: 0%;
 	background-image: url('images/Loadingbar.gif'); 
 	background-repeat: repeat-x;
 	background-size: 64px 100%;
