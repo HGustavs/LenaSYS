@@ -1826,3 +1826,8 @@ function changedSecurity(){
 	
 	AJAXService("updateSecurity","&public="+ option);
 }
+
+function mobileTheme(){
+	document.getElementById("mobileThemeSelect").style.display= "show";
+
+}
