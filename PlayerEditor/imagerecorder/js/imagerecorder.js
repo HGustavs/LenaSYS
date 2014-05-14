@@ -365,7 +365,11 @@ function imagerecorder(canvas)
 				if (widthRatio < heightRatio) ratio = widthRatio;
 				else ratio = heightRatio;
 			}
-			ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+			
+			// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
+			imageData.onload = function() {
+				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+			}
 		} else {
 			alert("No more images to show");
 		}
