@@ -345,8 +345,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 		if(this.paused==0){
 			if(this.step<this.timesteps.length){
 				if(this.fastforward==0){
-					var fract=this.step/this.timesteps.length;
-					document.getElementById("bar").style.width=Math.round(fract*392);
+					this.updateSearchBar();
 					console.log(this.step);							
 				}
 					
@@ -457,8 +456,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 						this.pause();
 					} 
 					
-					var fract=this.step/this.timesteps.length;
-					document.getElementById("bar").style.width=Math.round(fract*392);							
+					this.updateSearchBar();							
 					
 					this.renderTiles();
 				}		
@@ -499,7 +497,16 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 				}
 			}
 		}
-	}					
+	}				
+
+	//-------------------------------------------------------------------------------------------
+	// Update search bar
+	//-------------------------------------------------------------------------------------------	
+	this.updateSearchBar = function()
+	{
+		var fract=this.step/this.timesteps.length;
+		document.getElementById("bar").style.width = (Math.round(100*fract) + '%');
+	}
 	
 	//-------------------------------------------------------------------------------------------
 	// renderCaret
