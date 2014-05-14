@@ -414,6 +414,7 @@ table.list tr.red {
 	display:none;
 	background-color:#fff;
 	color:#000;
+	border:2px solid #000;
 	margin-top: 5px;
 	padding:10px;
 }
