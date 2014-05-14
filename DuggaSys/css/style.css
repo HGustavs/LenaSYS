@@ -464,6 +464,7 @@ table.list tr.red {
 .course-table td:hover {
 	background-color:#c6b8cd;
 }
+
 /*	This could be used in the future *//*
 .course-table tr:nth-child(even) {background-color: #e3e3e3; }
 .course-table tr:nth-child(odd) {background-color: #f0f0f0; }
@@ -580,4 +581,35 @@ input.submit-button-red:hover {
     background-color: white;
     z-index:1002;
     overflow: auto;
+}
+
+table.list {
+    color: #333;
+    width: 100%;
+    font-size:  0.9em;
+}
+table.list th {
+    padding: 8px;
+    font-weight: bold;
+    border-bottom: 5px solid #ddd;
+    text-align: left;
+}
+table.list tr {
+    line-height: 1.428571429;
+    border-top: 1px solid #ddd;
+    background: #fff;
+}
+table.list tr:first-child {
+    border-top: 0px;
+}
+table.list td {
+    padding: 8px;
+}
+table.list tr.green {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+table.list tr.red {
+    background-color: #f2dede;
+    border-color: #eed3d7;
 }
