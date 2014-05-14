@@ -153,9 +153,9 @@ function returnedSection(data)
 						str+="</div></div>";
 					} else {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
-							str+="<span>"+data['entries'][i]['entryname']+"</span>";
+							str+="<span style='padding-left:5px;'>"+data['entries'][i]['entryname']+"</span>";
 						} else {
-							str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+							str+="<span><a style='margin-left:15px;'id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 						}
 					}
 					str+="</span>";
