@@ -167,12 +167,8 @@ CREATE TABLE box(
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-/*  AND (NEW.boxid != (Select boxid FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid))
 
- AND (NEW.boxid != (Select boxid FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid))
-
- */
-
+/* Creates a subclass if it doesn't exsist when updating contents in a box. */
 delimiter //
 CREATE TRIGGER checkBoxContents BEFORE UPDATE ON box
 FOR EACH ROW

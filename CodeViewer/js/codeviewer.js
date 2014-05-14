@@ -171,13 +171,13 @@ function editedDescription()
 		// What is allowed here?
 }
 
-function Save(id)
-{
+function Save(contentid, boxid)
+{	
 	// remove all formatting before saving
 	$('.codestyle span').contents().unwrap();
-	var editable=document.getElementById(id);
+	var editable=document.getElementById(contentid);
 	var desc=editable.innerHTML;
-	AJAXService2("editDescription", desc);
+	AJAXService2("editDescription", desc, boxid);
 }
 
 function highlightop(otherop,thisop)
@@ -322,10 +322,10 @@ function Plus()
 		AJAXService("createNewExample","");						
 }
 
-function chosenFile(filename)
+function chosenFile(filename,boxid)
 {
 		var filename=encodeURIComponent(filename);
-		AJAXService("selectFile","&filename="+filename);
+		AJAXService("selectFile","&filename="+filename+"&boxid="+boxid);
 }
 
 function chosenWordlist()
@@ -1439,9 +1439,9 @@ $(function() {
    		event.stopPropagation();
 	});
 });
-
+/*
 $(function() {
-	$('#hidecode').click(function() {
+	$('.hidecode').click(function() {
 		$('.codedrop').slideToggle("fast");
 		$('.docudrop').hide();
 		$('#hotdogdrop').hide();
@@ -1458,7 +1458,7 @@ $(function() {
    		event.stopPropagation();
 	});
 });
-
+*/
 $(function() {
 	$('#hidehotdog').click(function() {
 		$('#hotdogdrop').slideToggle("fast");
@@ -1496,7 +1496,7 @@ $(function() {
    		event.stopPropagation();
 	});
 });
-
+/*
 $(function() {
 	$('#hideimage').click(function() {
 		$('.imgdrop').slideToggle("fast");
@@ -1515,6 +1515,22 @@ $(function() {
    		event.stopPropagation();
 	});
 });
+
+
+
+	$('#imgdrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		$('.themedrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		return false;
+	});
+*/
+
+
+
 
 function Theme()
 {

@@ -48,6 +48,7 @@
     width: -webkit-calc(50.0% - 1px);
    /* background-color: #272822;*/
     overflow: scroll;
+    color: white;
     /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
@@ -65,7 +66,7 @@
     padding-left: 4px;
     border-style: solid;
     border-width: 1px;
-     border-color: black;
+    border-color: black;
     position: absolute;
     bottom: 0px;
     left: 0px;
@@ -81,6 +82,8 @@
    font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
+    background-color: #272822;
+    color: #FFFFFF;
 }
 
 #box4menu{
@@ -109,4 +112,6 @@
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
+    background-color: #272822;
+    color: #FFFFFF;
 }

@@ -56,16 +56,17 @@ function createboxmenu(contentid, boxid, type){
 			str+= '<td class="butto2" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
 			str+= '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
 			str+= '<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
-			str+= "<td class='butto2' id='hideimage' title='Select image'><img src='new icons/picture_button.svg' /></td>";
-			str+= "<td class='butto2' title='Save' onclick='Save(\""+contentid+"\");'><img src='new icons/save_button.svg' /></td>";
-			str+= "<td class='butto2'>";
+			str+= "<td class='butto2' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
+			str+= "<td class='butto2' title='Save' onclick='Save(\""+contentid+"\",\""+boxid+"\");'><img src='new icons/save_button.svg' /></td>";
+			str+= "<td  class='butto2'>";
 			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 					str+= "<option value='DOCUMENT'>Description section</option>";
 					str+= "<option value='CODE'>Code example</option>";
 				str+= "</select>";
 			str+= '</td></tr></table>';
 		}else if(type=="CODE"){
-			var str = '<table cellspacing="2"><tr>';
+			var str = "<table cellspacing='2'><tr>";
+			str+="<td class='butto2' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/list_codefiles.svg' /></td>";
 			str+="<td class='butto2'>";
 			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 					str+= "<option value='CODE'>Code example</option>";
@@ -73,7 +74,7 @@ function createboxmenu(contentid, boxid, type){
 				str+= "</select>";
 			str+= '</td></tr></table>';
 		}else{
-			var str = '<table cellspacing="2"><tr>';
+			var str = "<table cellspacing='2'><tr>";
 			str+="<td class='butto2'>";
 			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 				str+= "<option>Choose content</option>";
@@ -85,16 +86,46 @@ function createboxmenu(contentid, boxid, type){
 		boxmenu.innerHTML=str;
 	}
 }
-function removeboxmenu(menuid){
-	var menu = document.getElementById(menuid);
-	menu.remove();
+
+function removeboxmenu(menuid)
+{
+	document.getElementById(menuid).remove();
 }
-function changeboxcontent(boxcontent,boxid){
-	
-	AJAXService("changeboxcontent","&boxid="+boxid+"&boxcontent="+boxcontent);
-//	var menu = document.getElementById(contentid+"menu");
-	
+function changeboxcontent(boxcontent,boxid)
+{
+	AJAXService("changeboxcontent","&boxid="+boxid+"&boxcontent="+boxcontent);	
 }
+function displayDrop(dropid)
+{	
+	drop = document.getElementById(dropid);
+	if($(drop).is(":hidden")){
+		drop.style.display="block";
+	}else{
+		drop.style.display="none";
+	}	
+}
+function createcodedrop(contentid,boxid)
+{ 
+	var content = document.getElementById(contentid);
+	var codedrop = document.createElement("div"); 
+	codedrop.setAttribute("id", contentid+"codedrop");
+	codedrop.setAttribute("class", "dropdown dropdownStyle codedrop codedropStyle");
+	document.getElementById("div2").appendChild(codedrop);
+	
+	str="";
+	for(i=0;i<retdata['directory'].length;i++){
+		if(retdata['directory'][i]==retdata['filename']){
+			/* SET BGCOLOR HERE TO LET THE USER KNOW WHICH FILE IS CHOSEN */
+			str+="<span class='dropdownitem dropdownitemStyle menuch' style='background-color:#fff' id='DDI"+i+"'>"+retdata['directory'][i]+"HEJ</span>";						
+		}else{
+			str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+retdata['directory'][i]+"\",\""+boxid+"\");''>"+retdata['directory'][i]+"</span>";														
+		}
+	}
+	if(codedrop!=null){
+		codedrop.innerHTML=str;
+	}
+}
+
 
 function returned(data)
 {
@@ -116,6 +147,7 @@ function returned(data)
 			if((data['box'][i][1]) == "CODE"){
 				if(sessionkind == "w"){
 					createboxmenu("box"+(i+1),data['box'][i][0],data['box'][i][1]);
+					createcodedrop("box"+(i+1),data['box'][i][0]);
 				}
 				rendercode(data['box'][i][2],"box"+(i+1));
 			}
@@ -229,7 +261,7 @@ function returned(data)
 		after.innerHTML=str;
 
 		// Fill Description
-		var docuwindow=document.getElementById("docucontent");
+	//	var docuwindow=document.getElementById("docucontent");
 		
 		// replacing span&nsbp; so it is perceived as a tagname for codestyle
 	
@@ -268,7 +300,7 @@ function returned(data)
 		
 		if(sessionkind=="w"){
 				// Fill file requester with file names
-				str="";
+		/*		str="";
 				for(i=0;i<data['directory'].length;i++){
 						if(data['directory'][i]==data['filename']){
 								str+="<span class='dropdownitem dropdownitemStyle menuch' id='DDI"+i+"'>"+data['directory'][i]+"</span>";						
@@ -278,7 +310,7 @@ function returned(data)
 				}
 				var filereq=document.getElementById('codedrop');
 				if(filereq!=null) filereq.innerHTML=str;
-
+		*/
 
             // Fill imagelist
             str="";
@@ -288,10 +320,10 @@ function returned(data)
 
             }
 
-            var filereq=document.getElementById('imgdrop');
-            if(filereq!=null) filereq.innerHTML=str;
-
-
+            var imgdrop=document.getElementById('imgdrop');
+            if(imgdrop!=null){
+            	imgdrop.innerHTML=str;
+            } 
 
 
 

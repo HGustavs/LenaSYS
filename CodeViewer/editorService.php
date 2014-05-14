@@ -114,7 +114,8 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("selectFile",$opt)===0){
 								$filename=htmlEntities($_POST['filename']);
-								$query = "UPDATE filelist SET filename='$filename' WHERE exampleid='$exampleid';";		
+								$boxid=$_POST['boxid'];
+								$query = "UPDATE codebox SET filename='$filename' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 								
@@ -144,7 +145,8 @@
 								// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
 								$description = str_replace("&nbsp;"," ",$_POST['description']);
 								$description = str_replace("<br>","\n",$description);
-								$query = "UPDATE descriptionBox SET segment='$description', appuser='$appuser' WHERE exampleno='$exampleid' AND boxid='$boxid';";
+								$boxid=$_POST['boxid'];
+								$query = "UPDATE descriptionBox SET segment='$description', appuser='$appuser' WHERE exampleid='$exampleid' AND boxid='$boxid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					

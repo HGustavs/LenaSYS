@@ -84,6 +84,7 @@
     background-color: #5D5D5D;
 }
 
+
 .butto:hover{
 	background-color: #7D5CA0;
     cursor: pointer;
@@ -209,6 +210,7 @@
     height: -webkit-calc(40.0%);
     height: -moz-calc(40.0%);
     padding-left:7px;
+    overflow: auto;
     /*background-color: #614875;*/
     border-color: rgb(0,0,0) transparent;	
 }

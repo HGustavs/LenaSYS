@@ -113,9 +113,9 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				}
 
 <!--                Alternative function used only when editing codeexample-descriptionbox-->
-                function AJAXService2(sname,param)
+                function AJAXService2(sname,param,boxid)
                 {
-                	$.ajax({url: "editorService.php", type: "POST", data: {exampleid:exampleid,opt:sname,description:param}, dataType: "json", success: returned});
+                	$.ajax({url: "editorService.php", type: "POST", data: {exampleid:exampleid,opt:sname,description:param,boxid:boxid}, dataType: "json", success: returned});
                 }
 
 		
