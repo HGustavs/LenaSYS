@@ -26,7 +26,7 @@ include "../Shared/basic.php";
 						echo '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="" colspan="4">Desktop site</td></tr>';
 						//echo '<tr><td class="mbutto mbuttoStyle " title="Chose themes" onclick="" colspan="4">Theme <div id="mobileThemeSelect"><br><br><select ><option value="">Black</option><option value="">White</option><option value="">Colorblindnes</option></select></div></td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle themebutton" title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
-							echo '<tr><td class="themebutton mobileThemeSelect" colspan="4"><br><div class="themeicon" onclick="selectTheme(&quot;black&quot;);">  <img src="new icons/theme_black.svg"><span>Black<span></span></span></div>';
+							echo '<tr><td class="mbuttoStyleLight themebutton" id="mobileThemeSelect" colspan="4"><br><div class="themeicon" onclick="selectTheme(&quot;black&quot;);">  <img src="new icons/theme_black.svg"><span>Black<span></span></span></div>';
 							echo '<div class="themeicon" onclick="selectTheme(&quot;white&quot;);">  <img src="new icons/theme_white.svg"><span>White<span></span></span></div>';
 							echo '<div class="themeicon" onclick="selectTheme(&quot;colorblind&quot;);"> <img src="new icons/theme_blind.svg"><span>Colorblind<span></span></span></div>';
 							echo '</td></tr>';
