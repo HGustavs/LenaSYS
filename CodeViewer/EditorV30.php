@@ -90,12 +90,11 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				dbConnect();
 				
                 echo'<script>';
-				jsvarget("courseid","courseID");				
+				jsvarget("courseid","courseIDNum");				
 				jsvarget("position","position");
 				jsvarget("version","version");
 				jsvarget("exampleid","exampleid");
-				echo "var courseIDNum=" . getCourseId($_GET['courseid']) . ";";
-				
+
 				$kind = "r";
 				if(array_key_exists('uid', $_SESSION)) {
 					$type = getAccessType($_SESSION['uid'], $_GET['courseid']);
@@ -103,7 +102,8 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 					if($type)
 						$kind = $type;
 				}
-				echo "var sessionkind='" . $kind . "';";			
+				echo "var sessionkind='" . $kind . "';";
+				echo "var courseID='" . getCourseName($_GET['courseid']) . "';";
 ?>				
 				console.log(courseID);
 

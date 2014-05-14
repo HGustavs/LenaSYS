@@ -200,7 +200,7 @@ function Up()
 
 function gotoPosition(exampleid)
 {
-		location="EditorV30.php?exampleid="+exampleid+"&courseid="+courseID;
+		location="EditorV30.php?exampleid="+exampleid+"&courseid="+courseIDNum;
 }
 
 function SkipB()
@@ -213,7 +213,7 @@ function SkipB()
 		}else{
 			// get previous example in the hierarchy
 			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
-			location="EditorV30.php?exampleid="+prevexampleid+"&courseid="+courseID;
+			location="EditorV30.php?courseid="+courseIDNum+"&exampleid="+prevexampleid;
 		}
 }
 
@@ -247,7 +247,7 @@ function SkipF()
 		}else{
 			// get next example in the hierarchy
 			var nextexampleid=parseInt(retdata['after'][0][1]);
-			location="EditorV30.php?exampleid="+nextexampleid+"&courseid="+courseID;
+			location="EditorV30.php?courseid="+courseIDNum+"&exampleid="+nextexampleid;
 		}
 }
 $(document).click(function (e)
