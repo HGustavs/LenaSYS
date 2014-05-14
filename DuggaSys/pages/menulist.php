@@ -87,7 +87,7 @@ if (checklogin()) {
 						echo "<option value='1'>Public</option>";
 					}
 					echo "</select>";
-					echo "<td class='settings-td-buttons'><input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;' onclick=\"changeURL('studentlist?courseid=" . $row['id'] . "')\" /><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
+					echo "<td class='settings-td-buttons'><input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;' onclick=\"changeURL('students?courseid=" . $row['id'] . "')\" /><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
 					echo "</td></td></tr>";
 				}
 			}
