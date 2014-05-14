@@ -1,33 +1,27 @@
 
 function changetemplate(templateid){
 	AJAXService("changetemplate","&templateid="+templateid);
+	location.reload();
 }
 
 function choosetemplate(){
-	if(sessiondkind = "w"){
-		if(parseInt(retdata['template'][0][0]) == 0){
-			var div2 = document.getElementById("div2");
-			var templateholder = document.createElement("div");
-			templateholder.setAttribute("id", "picktemplate");
-			templateholder.style.zIndex='2';
-			var examplenme=document.getElementById('exampleName');
-			var examplesect=document.getElementById("exampleSection");
-			examplenme.innerHTML=retdata['examplename'];
-			examplesect.innerHTML=retdata['entryname'];
+	var templateholder = document.createElement("div");
+	templateholder.setAttribute("id", "picktemplate");
+	templateholder.style.zIndex='2';
+	var examplenme=document.getElementById('exampleName');
+	var examplesect=document.getElementById("exampleSection");
+	examplenme.innerHTML=retdata['examplename'];
+	examplesect.innerHTML=retdata['entryname'];
 			
 			
-			str="<h1>Pick a template for your example!</h1>";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'1'+"\");' src='new icons/template1_butt.svg' />";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'2'+"\");' src='new icons/template2_butt.svg' />";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'3'+"\");' src='new icons/template3_butt.svg' />";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'4'+"\");' src='new icons/template4_butt.svg' />";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'5'+"\");' src='new icons/template5_butt.svg' />";
-			templateholder.innerHTML = str;
-			div2.appendChild(templateholder);
-			return false;
-		}
-		return true;
-	}
+	str="<h1>Pick a template for your example!</h1>";
+	str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'1'+"\");' src='new icons/template1_butt.svg' />";
+	str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'2'+"\");' src='new icons/template2_butt.svg' />";
+	str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'3'+"\");' src='new icons/template3_butt.svg' />";
+	str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'4'+"\");' src='new icons/template4_butt.svg' />";
+	str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'5'+"\");' src='new icons/template5_butt.svg' />";
+	templateholder.innerHTML = str;
+	div2.appendChild(templateholder);
 }
 function addTemplatebox(id)
 {
@@ -130,10 +124,13 @@ function createcodedrop(contentid,boxid)
 function returned(data)
 {
 		retdata=data;
-
-		if(!choosetemplate()){
+		
+		// User can choose template if no template has been choosen and the user have write access.
+		if((data['template'][0][0] == 0) && (sessionkind == "w")){
+			choosetemplate();
 			return;
 		}
+		
 		// remove templatebox if it still exists
 		if(document.getElementById("picktemplate")){
 			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
@@ -141,25 +138,30 @@ function returned(data)
 		
 		// create boxes
 		for(i=0;i<retdata['template'][0][2];i++){
+	
+			var contentid="box"+(i+1);
+			var boxid=data['box'][i][0];
+			var boxtype=data['box'][i][1];
+			var boxcontent=data['box'][i][2];
 			// create a templatebox
 			addTemplatebox("box"+(i+1));
 			// Print out code example in a code box
-			if((data['box'][i][1]) == "CODE"){
+			if(boxtype == "CODE"){
 				if(sessionkind == "w"){
-					createboxmenu("box"+(i+1),data['box'][i][0],data['box'][i][1]);
-					createcodedrop("box"+(i+1),data['box'][i][0]);
+					createboxmenu(contentid,boxid,boxtype);
+					createcodedrop(contentid,boxid);
 				}
-				rendercode(data['box'][i][2],"box"+(i+1));
+				rendercode(boxcontent,contentid);
 			}
 			
 			// Print out description in a document box
-			if((data['box'][i][1]) == "DOCUMENT"){
+			if(boxtype == "DOCUMENT"){
 			
-				var desc = data['box'][i][2];
+				var desc = boxcontent;
 				desc = replaceAll("<span&nbsp;","<span ",desc);
 				desc =  replaceAll("<img&nbsp;","<img ",desc);
 				
-				var docuwindow = document.getElementById("box"+(i+1));
+				var docuwindow = document.getElementById(contentid);
 				docuwindow.innerHTML=desc;
 				//  Fill description with code using tokenizer.
 				var cs = docuwindow.getElementsByClassName("codestyle");
@@ -170,12 +172,12 @@ function returned(data)
 				
 				if(sessionkind == "w"){
 					docuwindow.setAttribute("contenteditable","true");
-					createboxmenu("box"+(i+1),data['box'][i][0],data['box'][i][1]);
+					createboxmenu(contentid,boxid,boxtype);
 				}
 			}
 			if((data['box'][i][1]) == "NOT DEFINED"){
 				if(sessionkind == "w"){
-					createboxmenu("box"+(i+1),data['box'][i][0],data['box'][i][1]);
+					createboxmenu(contentid,boxid,boxtype);
 				}
 			}		
 		}
