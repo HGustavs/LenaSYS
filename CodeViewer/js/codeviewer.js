@@ -185,6 +185,66 @@ function Save()
 		}
 	}
 }
+function successBox(title, text, delay, confirm, data) {
+	if(title == undefined || 0 === title.length) { title = "Success!" }
+	if(text == undefined || 0 === text.length) { text = "You won..." }
+	if(delay == undefined || 0 === delay.length) { delay = 0 }
+	createRemoveAlert(title, text, delay, confirm, data, "success");
+}
+function warningBox(title, text, delay, confirm, data) {
+	if(title == undefined) { title = "Warning!" }
+	if(text == undefined || 0 === text.length) { text = "Can be dangerous..." }
+	if(delay == undefined || 0 === delay.length) { delay = 0 }
+	createRemoveAlert(title, text, delay, confirm, data, "warning");
+}
+function createRemoveAlert(title, text, delay, confirm, data, type) {
+	var result = false;
+	if(delay == undefined) { delay = 0 }
+	var output = '<div class="alert slide-down '+type+'">';
+			output += '<span class="alertCancel">x</span>';
+		output += '<strong>'+title+'</strong>';
+		output += '<p>'+text+'</p>';
+
+		if(typeof confirm == 'function') {
+			output += '<input type="button" id="alertSubmit" class="btn btn-login btn-next" value="Submit">';	
+			output += '<input type="button" class="btn btn-forgot btn-cancel alertCancel" value="Cancel">';	
+		}
+	output += '</div>';
+	if($(".alert").length == 0) {
+		$("#feedbacksection").prepend(output);
+		var elemHeight = $('.alert').height();
+		
+		$('.alert').css({ display: "block", height: "0px" });
+		$(".alert").animate({height: elemHeight}, 300);
+	}
+/*	if(typeof confirm == 'function') {
+	
+		$.when(this).done(setTimeout(function() {
+			$( "#alertSubmit" ).click(function() {
+				confirm(data);
+				$(".alert").animate({height: 0}, 300,"linear",function() {
+					$(this).remove();
+				})
+			});
+			$( ".alertCancel" ).click(function() {
+				$(".alert").animate({height: 0}, 300,"linear",function() {
+					$(this).remove();
+				})
+			});
+		}, 1000));
+	}
+	else {
+*/		
+		$.when(this).done(setTimeout(function() {
+			$('html').click(function(event) {
+			 	$(".alert").animate({height: 0}, 300,"linear",function() {
+					$(this).remove();
+				});
+				$("html").unbind('click');
+			});
+		},- 1000));
+	//}
+}
 
 function highlightop(otherop,thisop)
 {

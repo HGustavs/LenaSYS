@@ -82,6 +82,8 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
         <script type="text/javascript" src="js/templates.js"></script>
         <script type="text/javascript" src="js/tooltips.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    
 
 
 <?php
@@ -115,7 +117,14 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 <!--                Alternative function used only when editing codeexample-descriptionbox-->
                 function AJAXService2(sname,param,boxid)
                 {
-                	$.ajax({url: "editorService.php", type: "POST", data: {exampleid:exampleid,opt:sname,description:param,boxid:boxid}, dataType: "json", success: returned});
+                	$.ajax({url: "editorService.php", type: "POST", data: {exampleid:exampleid,opt:sname,description:param,boxid:boxid}, dataType: "json", success:function(data){
+                		successBox("Success!", "All descriptions where saved.");
+                		returned(data);
+                	},error: function(data){
+                		warningBox("Warning!", "Description might not have been saved.");
+                		returned(data);
+                	} });
+                	
                 }
 
 		
