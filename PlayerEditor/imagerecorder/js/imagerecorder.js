@@ -109,7 +109,6 @@ function imagerecorder(canvas)
 				
 		// Make thumbnails sortable
 		$("#sortableThumbs").sortable({
-			revert: 300,
 			update: function() {
 				rebuildImgLibrary();
 			}
@@ -329,6 +328,9 @@ function imagerecorder(canvas)
 			html:		"Delete image",
 			href: 		"#",
 			click:		function(e) {
+				// Make the browser not go to the top of the page.
+				e.preventDefault();
+			
 				var selectedli = $("#sortableThumbs .tli").eq(index);
 				var imgPath = $("img", selectedli).attr("src");
 				
@@ -626,7 +628,6 @@ function imagerecorder(canvas)
 
 		// Make thumbnails sortable
 		$("#sortableThumbs").sortable({
-			revert: 300,
 			update: function() {
 				rebuildImgLibrary();
 			}
