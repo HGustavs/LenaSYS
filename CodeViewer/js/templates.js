@@ -50,7 +50,7 @@ function createboxmenu(contentid, boxid, type){
 		document.getElementById("div2").appendChild(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2");
 		boxmenu.setAttribute("id", contentid+"menu");
-		
+
 		if(type=="DOCUMENT"){
 			var str = '<table cellspacing="2"><tr>';
 			str+= '<td class="butto2" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
@@ -140,7 +140,7 @@ function returned(data)
 		}
 		
 		// create boxes
-		for(i=0;i<data['box'].length;i++){
+		for(i=0;i<retdata['template'][0][2];i++){
 			// create a templatebox
 			addTemplatebox("box"+(i+1));
 			// Print out code example in a code box
