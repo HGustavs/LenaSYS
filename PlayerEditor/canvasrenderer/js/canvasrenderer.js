@@ -973,26 +973,31 @@ function Canvasrenderer()
 		var image = new Image();
 		// Draw image when loaded
 		image.onload = function() {
-       	       		canvas.updateScaleRatio();
-        		var widthRatio = 1;
+			canvas.updateScaleRatio();
+			var widthRatio = 1;
 			var heightRatio = 1;
 			// Calculate scale ratios
-      			widthRatio = c.width / (image.width);
+			widthRatio = c.width / (image.width);
 			heightRatio = c.height / (image.height);
 			// Set scale ratio
-        		canvas.downscaled = false;
+			canvas.downscaled = false;
 			(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
-      			(canvas.scaleRatio) > 1 ? canvas.scaleRatio = 1 : canvas.scaleRatio; 
+			(canvas.scaleRatio) > 1 ? canvas.scaleRatio = 1 : canvas.scaleRatio; 
 			canvas.mouseCursorScale = canvas.scaleRatio;
 			// If the image size is larger than the recorded canvas width or height, it means that
 			// the image was downscaled when the history was recorded. This means that we have to 
 			// use the recorded scale ratio instead of the one normally used.
-        		if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight)
-			{
+        	if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight) {
 				canvas.downscaled = true;
-				canvas.mouseCursorScale = canvas.recordedScaleRatio;
+				// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
+				if (canvas.recordedScaleRatio < 1) {
+					canvas.mouseCursorScale = canvas.recordedScaleRatio;
+				}
+				else {
+					canvas.mouseCursorScale = 1;
+				}
 			}
-    			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
+    		ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
 			//console.log(canvas.mouseCursorX + ", " + canvas.mouseCursorY);
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
