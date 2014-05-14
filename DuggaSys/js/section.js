@@ -95,6 +95,9 @@ function sectionSettingsService(ID)
 						settingsChildren[0].attachEvent("click", function() { changeURL(JSON.parse(response)); });
 					}
 				}
+			} else {
+				settingsChildren[0].onclick = null;
+				settingsChildren[0].removeAttribute("href");
 			}
 			
 			switch(parseInt(data['type'])){
