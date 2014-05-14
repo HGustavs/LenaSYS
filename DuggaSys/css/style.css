@@ -237,6 +237,13 @@ button {
         button.default:hover {
             background-color: #73558b;
         }
+	button.default-red{
+		color: #fff;
+        background-color:#c75050;
+	}
+		button.default-red:hover {
+			background-color:#DF4F4F;
+		}
     button.submit {
         color: #fff;
         background-color: #428bca;
