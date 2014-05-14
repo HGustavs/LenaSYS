@@ -474,7 +474,7 @@ function Canvasrenderer()
 	this.updateSearchBar = function(){
 		var fract = this.currentPosition() / this.numValidTimesteps;
 		if((fract - this.lastUpdateSearchBar) > 0.015){
-			document.getElementById("bar").style.width=(fract*392 + 'px');
+			document.getElementById("bar").style.width=(100*fract+'%');
 			this.lastUpdateSearchBar = fract;
 		}
 	}
