@@ -214,3 +214,65 @@ function returnedSection(data)
 			})(jQuery);
 
 }
+  function studentDelete(showhide) {
+      if (showhide == "show") {
+          document.getElementById('deletebox').style.visibility = "visible";
+          document.getElementById('deletebutton').style.visibility = "visible";
+      } else if (showhide == "hide") {
+          document.getElementById('deletebox').style.visibility = "hidden";
+          document.getElementById('deletebutton').style.visibility = "hidden";
+      }
+  }
+
+
+$(function() {
+       $('#hide').click(function() {
+                $('td:nth-child(4)').hide();                
+       });
+
+	   $('#show').click(function() {
+                $('td:nth-child(4)').show();                
+       });
+    });
+
+function passPopUp(){
+
+$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: 'addstudent_ajax.php',
+		data: {
+			string: $("#string").val()
+		},
+		success: function (returnedData) {
+		console.log(returnedData);
+		showPopUp('show', returnedData)
+		},
+	});
+	}
+
+	function showPopUp(showhidePop, returnedData){
+		if(showhidePop == "show"){
+		document.getElementById('light').style.visibility = "visible";
+		document.getElementById('fade').style.visibility = "visible";
+
+
+	  var output = "<table class='showpassword'>";
+      output += "<tr><th>Namn</th>";
+      output += "<th>Användarnamn</th>";
+      output += "<th>Lösenord</th></tr>";
+
+      $.each(returnedData, function(){
+      output += "<tr><td>"+this[1]+"</td>";
+      output += "<td>"+this[0]+"</td>";
+      output += "<td>"+this[2]+"</td></tr>";
+		})
+       output += "</table>";
+      var div = document.getElementById('light');
+      div.innerHTML = output;
+	}
+	else if(showhidePop == "hide"){
+		document.getElementById('light').style.visibility = "hidden";
+		document.getElementById('fade').style.visibility = "hidden";	
+	}
+}

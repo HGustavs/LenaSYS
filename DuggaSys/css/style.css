@@ -530,3 +530,50 @@ input.submit-button-red:hover {
     }
 }
 /* ANIMATIONS END */
+#student-box{
+    width:350px;
+    height:auto;
+    background-color:#ccc;
+    border:1px solid #000;
+    margin:0px auto;
+    margin-top:40px;
+}
+
+#student-header{
+    height:40px;
+    background-color:#614875;
+    text-align:center;
+    color: #FFF;
+    font-family:arial;
+    font-size:20pt;
+    font-weight:bold;
+    border:1px solid #000;
+}
+
+.black_overlay{
+    visibility: hidden;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:1001;
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=80);
+}
+
+.white_content {
+    visibility: hidden;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: auto;
+    padding: 16px;
+    border: 16px solid #614875;
+    background-color: white;
+    z-index:1002;
+    overflow: auto;
+}
