@@ -17,7 +17,7 @@
 				</select>
 				<sub style="font-size:.8em; font-style:itelic;">Open if accessible to the public. Closed if only accessible by course-registered users</sub>
 			</div>
-			<button type='button' onclick="submitNewCourse()" class='default'>Create Course</button>
+			<button type='button' onclick="noticeBox('Confirm deletion', 'Do you want to delete the row?', 0, submitNewCourse)" class='default'>Create Course</button>
 
 		</form>
 	</div>
