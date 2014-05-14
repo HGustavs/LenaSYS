@@ -24,6 +24,11 @@ include "../Shared/basic.php";
  						echo '<tr><td class="mbutto mbuttoStyle " title="Show rownumbers" onclick="" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="" colspan="4">Desktop site</td></tr>';
+						echo '<tr><td class="mbutto mbuttoStyle themebutton" title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
+							echo '<tr><td class="mbuttoStyleLight " id="mobileThemeSelect" colspan="4"><div class="mbuttoStyleLight themeicon" onclick="selectTheme(&quot;black&quot;);">  <img src="new icons/theme_black.svg"><span>Black<span></span></span></div>';
+							echo '<div class="mbuttoStyleLight themeicon" onclick="selectTheme(&quot;white&quot;);">  <img src="new icons/theme_white.svg"><span>White<span></span></span></div>';
+							echo '<div class="mbuttoStyleLight themeicon" onclick="selectTheme(&quot;colorblind&quot;);"> <img src="new icons/theme_blind.svg"><span>Colorblind<span></span></span></div>';
+							echo '</td></tr>';
 					echo '</table>';
 			echo '</span>';				
 				if($kind){
@@ -38,7 +43,7 @@ include "../Shared/basic.php";
 				echo '<td class="mbutto mbuttoStyle showdesktop" title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
 				if($kind){
 								echo '<td class="buttospacer">&nbsp;</td>';
-								echo '<td class="menutext menutextStyle"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName" contenteditable="true">Example Code Page</td>';
+								echo '<td class="menutext menutextStyle"><span id="exampleSection">Foo </span><span id="exampleName" contenteditable="true">Example Code Page</td>';
 								echo '<td class="mbutto mbuttoStyle showdesktop" title="Settings" id="hidesettings"><img src="new icons/general_settings_button.svg" /></td>';
 								echo '<td class="mbutto mbuttoStyle showdesktop" title="Select codesource" id="hidecode"><img src="new icons/list_codefiles.svg" /></td>';
 								echo '<td class="mbutto mbuttoStyle showdesktop" title="Themes" id="hidetheme" onclick="Theme();"><img src="new icons/switchColorTemp.svg" /></td>';
@@ -51,6 +56,7 @@ include "../Shared/basic.php";
 						echo '<td class="mbutto mbuttoStyle beforebutton showdesktop" id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle afterbutton showdesktop" id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();"><img src="new icons/forward_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle playbutton showdesktop" id="playbutton" title="Open demo" onclick="Play();"><img src="new icons/play_button.svg" /></td>';
+
 						echo '<td class="buttospacer">&nbsp;</td>';
 
 				echo '</table></div>';

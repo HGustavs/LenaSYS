@@ -25,16 +25,24 @@ function imagerecorder(canvas)
 	
 	var bodyMouseX;
 	var bodyMouseY;
+	this.scrollAmountY = 0;
 	
 	var files;						// store files thats being uploaded
 	var rect = canvas.getBoundingClientRect();
+
+	// List of log string points where an undo action is possible
+	// (Used for splitting the log string where an undo is made)
+	var undoPoints = [];
 
 	mHeight = (rect.bottom - rect.top);
 	mWidth = (rect.right-rect.left);
 
 	addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');	
 	canvas.width = mWidth;
-	canvas.height = mHeight;	
+	canvas.height = mHeight;
+
+	// Set default undo point (for resetting log to its original value)
+	undoPoints.push(new UndoPoint(logStr.length, null));	
 
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
@@ -51,12 +59,39 @@ function imagerecorder(canvas)
 				var regExp = /[^a-z0-9]/i;
 				if(!regExp.test(libName)) {
 					libraryName = libName;
-					// Hide dialog and show wrapper
-					$("#library-name-dialog").fadeOut(350);
-					$(".wrapper").fadeIn(355);
 					
-					// Print "click to start rec" image on canvas
-					ctx.drawImage(initImage,0,0, width = 1280, height = 720);
+					// Check so library dont already exist in DB
+					$.ajax({
+						url: "check_duplicate.php",
+						type: "POST",
+						data: {
+							lib: libraryName
+						},
+						cache: false,
+						dataType: "json",
+						success: function(data) {
+							// Duplicate found, give error
+							if(data.DUPLICATE == "true") {
+								alert("There's already a library named '"+libraryName+"'.");
+							}
+							// No duplicate, hide dialog and show recorder
+							else {
+								$("#library-name-dialog").fadeOut(350);
+								$(".wrapper").fadeIn(355);
+								
+								// Print "click to start rec" image on canvas
+								ctx.drawImage(initImage,0,0, width = 1280, height = 720);
+							}
+						},
+						error: function() {
+							console.log("Error on AJAX call (No JSON respond)");
+						}
+					});
+					
+				
+					
+					
+					
 				}
 				else {
 					alert("The library name can only contain characters A-Z and 0-9.");
@@ -75,7 +110,6 @@ function imagerecorder(canvas)
 				
 		// Make thumbnails sortable
 		$("#sortableThumbs").sortable({
-			revert: 300,
 			update: function() {
 				rebuildImgLibrary();
 			}
@@ -89,11 +123,17 @@ function imagerecorder(canvas)
 			if(imagelibrary.length > 0) {
 				// Lock thumbs & custom context menu on the first picture shown
 				if(clicked == 0) {
+					// Set lastEvent to now so playback doesnt start with a big delay
+					lastEvent = Date.now();
+					// Disable sorting thumbs
 					$("#sortableThumbs").sortable("destroy");
 
 					// Change upload button to 'reset'
 					$("#uploadButton").attr('value', 'Reset');
 					$("#uploadButton").attr('onclick', 'imgrecorder.reset();');
+
+					// Show undo button
+					$("#imagerecorder-undo").show();
 
 					$(".thumbnail").hover(function() {
 						$(this).css({
@@ -101,27 +141,39 @@ function imagerecorder(canvas)
 							"opacity": "0.65"
 						});
 					});
+
+					// Show and log first image
+					showImage(getNextImage());
+					logMouseEvents();
+					clicked = 1;
+					// Save undo point
+					createUndoPoint();
 				}
-			
-				showImage(getNextImage());
-			
-				// Update scale ratio (for correct mouse positions)
-				updateScaleRatio();
+				else {
+					// Show next image
+					showImage(getNextImage());
+				
+					// Update scale ratio (for correct mouse positions)
+					updateScaleRatio();
 
-				clicked = 1;
-				var rect = canvas.getBoundingClientRect();
+					var rect = canvas.getBoundingClientRect();
 
-				mHeight = (rect.bottom - rect.top);
-				mWidth = (rect.right-rect.left);
-				var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-				var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-				//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-				//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-			
-				document.getElementById('xCord').innerHTML=xMouse;
-				document.getElementById('yCord').innerHTML=yMouse;
+					mHeight = (rect.bottom - rect.top);
+					mWidth = (rect.right-rect.left);
+					var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
+					var yMouse = Math.round((event.clientY-imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+					//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+					//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
+				
+					document.getElementById('xCord').innerHTML=xMouse;
+					document.getElementById('yCord').innerHTML=yMouse;
 
-				logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+					logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+
+					// Add undo point
+					createUndoPoint();
+				}
+				
 			} else {
 				alert("You need to upload at least one image before you can start recording.");
 			}
@@ -135,6 +187,7 @@ function imagerecorder(canvas)
 				case 39:
 					if(clicked == 1) {
 						showImage(getNextImage());
+						logMouseEvents();
 					}
 				break;
 				
@@ -142,11 +195,15 @@ function imagerecorder(canvas)
 				case 37:
 					if(clicked == 1) {
 						showImage(getPrevImage());
+						logMouseEvents();
 					}
 				break;		
 			}
 		});
 		
+		$(window).scroll(function(){
+			imgrecorder.scrollAmountY = parseInt($(window).scrollTop());
+		});	
 		/*
 		 *checks the mouse-position in realtime.
 		 */
@@ -158,8 +215,10 @@ function imagerecorder(canvas)
 			var rect = canvas.getBoundingClientRect();
 			mHeight = (rect.bottom - rect.top);
 			mWidth = (rect.right-rect.left);
+			offsetTop = ImageCanvas.offsetTop;
+		
 			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-			yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+			yMouseReal = Math.round((event.clientY + imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
 			//xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
 			//yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 			document.getElementById('xCordReal').innerHTML=xMouseReal;
@@ -197,13 +256,34 @@ function imagerecorder(canvas)
 		$("#controls").append("<input type='button' class='controlbutton' id='imagerecorder-save' value='Export XML' >");
 		// Save log when "Save log" button is clicked
 		$("#imagerecorder-save").click(function(){	
-			alert("Saving");
 			$.ajax({
 				type: 'POST',
-				url: 'logfile.php?lib=' + libraryName,
-				data: { string: logStr + "\n</script>" }
+				url: 'logfile.php',
+				data: { 
+					string: logStr + "\n</script>",
+					lib: libraryName,
+					files: imagelibrary
+				},
+				success: function() {
+				
+					$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</p>.");
+				
+					$("#export-feedback").show(250);
+				}
 			});
+			
+
+			
+
+			
+			// $("#export-feedback").html("Exported!");
 		});
+
+		// Add undo button to body
+		// Mapped to undo function, hidden by default
+		$("#controls").append("<input type='button' class='controlbutton' id='imagerecorder-undo' value='Undo' >");
+		$("#imagerecorder-undo").click(undo);
+		$("#imagerecorder-undo").hide();
 	});
 	
 	// Fetch mouse movement over body to use when spawning thumbnail men
@@ -234,6 +314,9 @@ function imagerecorder(canvas)
 			html:		"Clone image",
 			href: 		"#",
 			click:		function(e) {
+				// Make the browser not go to the top of the page.
+				e.preventDefault();
+				
 				// Select li-element by index
 				var selectedli = $("#sortableThumbs .tli").eq(index);
 				var imgPath = $("img", selectedli).attr("src");
@@ -251,6 +334,9 @@ function imagerecorder(canvas)
 			html:		"Delete image",
 			href: 		"#",
 			click:		function(e) {
+				// Make the browser not go to the top of the page.
+				e.preventDefault();
+			
 				var selectedli = $("#sortableThumbs .tli").eq(index);
 				var imgPath = $("img", selectedli).attr("src");
 				
@@ -314,7 +400,11 @@ function imagerecorder(canvas)
 				if (widthRatio < heightRatio) ratio = widthRatio;
 				else ratio = heightRatio;
 			}
-			ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+			
+			// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
+			imageData.onload = function() {
+				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+			}
 		} else {
 			alert("No more images to show");
 		}
@@ -373,7 +463,6 @@ function imagerecorder(canvas)
 	}
 	
 	// Uploads image
-	// TODO: Check file extensions
 	function uploadImage(event) {
 		files = event.target.files;
 		event.stopPropagation();
@@ -408,7 +497,7 @@ function imagerecorder(canvas)
 							imagelibrary[imageid] = imgPath;
 				
 							// Add thumbnail
-							var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail'></li>";
+							var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail' title='Right click to duplicate and/or remove image'></li>";
 							$("#sortableThumbs").append(imgStr);
 							
 							imageid++;
@@ -447,13 +536,18 @@ function imagerecorder(canvas)
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function logMouseEvents(str){
+		// Set default string value
+		if (str == undefined || str == null) {
+			str = "";
+		}
+
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
-		// Add image path (substr 9 removes "librarys" from path)
+		// Add image path (substr 9 removes "../canvasrenderer/" from path)
 		if (chrome !== null && vendorName === 'Google Inc.') {
-			str += '\n<picture src="'+imagelibrary[activeImage].substr(9)+ '"/>';
+			str += '\n<picture src="'+imagelibrary[activeImage].substr(18)+ '"/>';
 		}else{
-			str += '\n<picture src="'+imagelibrary[activeImage].substr(9)+ '"/>';
+			str += '\n<picture src="'+imagelibrary[activeImage].substr(18)+ '"/>';
 		}
 			
 		console.log(str);
@@ -488,12 +582,39 @@ function imagerecorder(canvas)
 		logStr += str;
 	}
 
-	/*
-	 * Public function for resetting the recorder
-	 * Will reset the recording
-	 *
-	 */
-	this.reset = function(){
+	// Create an undo point, making it possible to step back in recording
+	function createUndoPoint(){
+		// Add undo point with current log string position an image
+		undoPoints.push(new UndoPoint(logStr.length, activeImage));
+	}
+
+	// Will undo the last click
+	function undo(){
+		// Check if an undo is possible
+		if (clicked > 0) {
+			// Show previous image
+			var prevImage = getPrevImage();
+			// Are there any possible undo points?
+			if (undoPoints.length > 2) {
+				// Remove last point
+				undoPoints.pop();
+				// Fetch point
+				var point = undoPoints[undoPoints.length - 1];
+
+				// Show previous image
+				showImage(point.imageID);
+				// Undo log string
+				logStr = logStr.substr(0, point.stringPosition);
+			}
+			else {
+				// No previous, should reset
+				reset();
+			}
+		}
+	}
+
+	// Reset recording session
+	function reset(){
 		// Reset variables
 		clicked = 0;
 		lastEvent = Date.now();
@@ -501,12 +622,18 @@ function imagerecorder(canvas)
 		nextImage = 0;
 		currentImageRatio = 1;
 
-		// Clear logged data
-		logStr = "";
+		// Clear all undo points but the first
+		while (undoPoints.length > 1) {
+			undoPoints.pop();
+		}
+		// Clear log string (keeping header and script tag)
+		logStr = logStr.substr(0, undoPoints[0].stringPosition);
+
+		// Remove undo button
+		$("#imagerecorder-undo").hide();
 
 		// Make thumbnails sortable
 		$("#sortableThumbs").sortable({
-			revert: 300,
 			update: function() {
 				rebuildImgLibrary();
 			}
@@ -527,4 +654,25 @@ function imagerecorder(canvas)
 		$("#uploadButton").attr('value', 'Upload image');
 		$("#uploadButton").attr('onclick', 'document.getElementById("imageLoader").click();');
 	}
+
+	/*
+	 * Public function for resetting the recorder
+	 * Will reset the recording
+	 *
+	 */
+	this.reset = function() {
+		reset();
+	}
+
+
+	/*
+	 * Object for storing undo positions
+	 *
+	 *
+	 */
+	 function UndoPoint(strPosition, imgID)
+	 {
+	 	this.stringPosition = strPosition;
+	 	this.imageID = imgID;
+	 }
 }
