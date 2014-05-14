@@ -24,6 +24,8 @@ include "../Shared/basic.php";
  						echo '<tr><td class="mbutto mbuttoStyle " title="Show rownumbers" onclick="" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="" colspan="4">Desktop site</td></tr>';
+						echo '<tr><td class="mbutto mbuttoStyle " title="Chose themes" onclick="mobileTheme()" colspan="4">Theme <div id="mobileThemeSelect"><br><br><select ><option value="">Black</option><option value="">White</option><option value="">Colorblindnes</option></select></div></td></tr>';
+						
 					echo '</table>';
 			echo '</span>';				
 				if($kind){
@@ -51,6 +53,7 @@ include "../Shared/basic.php";
 						echo '<td class="mbutto mbuttoStyle beforebutton showdesktop" id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle afterbutton showdesktop" id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();"><img src="new icons/forward_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle playbutton showdesktop" id="playbutton" title="Open demo" onclick="Play();"><img src="new icons/play_button.svg" /></td>';
+
 						echo '<td class="buttospacer">&nbsp;</td>';
 
 				echo '</table></div>';
@@ -88,5 +91,4 @@ include "../Shared/basic.php";
 		echo '</div>';
 		echo '</div>';
 		}
-
 ?>
