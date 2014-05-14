@@ -1828,6 +1828,11 @@ function changedSecurity(){
 }
 
 function mobileTheme(){
-	document.getElementById("mobileThemeSelect").style.display= "show";
+	if ($("#mobileThemeSelect").is(":hidden")){
+			document.getElementById("mobileThemeSelect").style.display= "block";
+	}
+	else{
+			document.getElementById("mobileThemeSelect").style.display= "none";
+	}
 
 }

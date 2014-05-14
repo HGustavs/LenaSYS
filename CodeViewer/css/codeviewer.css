@@ -873,6 +873,9 @@ a {
 	padding-left: 6px;
 	font-size:16px;
 }
+.themeicon:hover{
+    background-color: black;
+}
 
 .showdesktop{
     display: table-cell;
@@ -882,6 +885,12 @@ a {
 }
 #mobileThemeSelect{
     display: none;
+    /*padding: 0;
+    background-color: black;
+    */
+    background-color: #9868bd;
+}
+.themebutton{
 }
 
 @media only screen and (max-width: 700px){
