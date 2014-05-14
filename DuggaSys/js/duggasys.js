@@ -59,7 +59,7 @@ function returnedSection(data)
 								str+="<span>"+data['entries'][i]['entryname']+"</span>";
 								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 							}
-						} else {
+						} else if (parseInt(data['entries'][i]['kind']) == 2 || parseInt(data['entries'][i]['kind']) >= 4) {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
 								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
@@ -69,11 +69,29 @@ function returnedSection(data)
 								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
 								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							}
+						} else {
+							if (parseInt(data['entries'][i]['visible']) === 0) {
+								//Adding the opacity here instead for visible = 0
+								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+							
+							} else{
+								str+="<a id='section-list' style='cursor: pointer;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+							}
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' name='sectionname' value='"+data['entries'][i]['entryname']+"' />";
-						str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
-						str+="<option value='-1'>Select</option>";
+						if (data['entries'][i]['kind'] == 2) {
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
+							testDuggaService(data.courseid, "example", data['entries'][i]['lid'], data['entries'][i]['link']);
+						} else if (data['entries'][i]['kind'] == 3) { 
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
+							testDuggaService(data.courseid, "test", data['entries'][i]['lid'], data['entries'][i]['link']);
+						} else {
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
+						}
+						str+="<option value='-1'>Create new</option>";
 						str+="</select>";
 						str+="Edit type:<select name='type'><option value='"+parseInt(data['entries'][i]['kind'])+"'>";
 						switch(parseInt(data['entries'][i]['kind'])){
@@ -170,10 +188,10 @@ function returnedSection(data)
 						$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").find('option').remove();
 						var selectOption = document.createElement('option');
 						selectOption.value = "-1";
-						selectOption.innerHTML = "Select";
+						selectOption.innerHTML = "Create new";
 						$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").append(selectOption);
+						
 						var type = $(this).val();
-
 						if(type == 0 || type == 1 || type == 2 || type == 3) {
 							$("#sectioned_"+event.data.data['lid']+" input[name=link]").val('');
 							$("#sectioned_"+event.data.data['lid']+" input[name=link]").prop("disabled", true).css(disabled);
@@ -191,23 +209,7 @@ function returnedSection(data)
 							} else {
 								var opt = "test";
 							}
-							$.ajax({
-								dataType: 'json',
-								url: 'ajax/testduggaService.php',
-								method: 'post',
-								data: {
-									'courseid': event.data.id,
-									'opt': opt
-								},
-								success: function(returnData) {
-									for (i=0; i<returnData['entries'].length; i++) {
-										var option = document.createElement('option');
-										option.value = returnData['entries'][i]['id'];
-										option.innerHTML = returnData['entries'][i]['name'];
-										$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").append(option);
-									}
-								}
-							});
+							testDuggaService(event.data.id, opt, event.data.data['lid']);
 						}
 					});
 				}
@@ -275,4 +277,44 @@ $.ajax({
 		document.getElementById('light').style.visibility = "hidden";
 		document.getElementById('fade').style.visibility = "hidden";	
 	}
+}
+
+function testDuggaService(courseID, opt, sectionID, link) {
+	link = link || "";
+	$("#sectioned_"+sectionID+" select[name=testduggaselect]").find('option').remove();
+	var selectOption = document.createElement('option');
+	selectOption.value = "-1";
+	selectOption.innerHTML = "Create new";
+	$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(selectOption);
+	$.ajax({
+		dataType: 'json',
+		url: 'ajax/testduggaService.php',
+		method: 'post',
+		data: {
+			'courseid': courseID,
+			'opt': opt
+		},
+		success: function(returnData) {
+			for (i=0; i<returnData['entries'].length; i++) {
+				var option = document.createElement('option');
+				option.value = returnData['entries'][i]['id'];
+				option.innerHTML = returnData['entries'][i]['name'];
+				if (opt == "example") {
+					if (link.length > 0) {
+						var string = link.split("&");
+						if (string[0]) {
+							string = string[0].split("?");
+							if (string[1]) {
+								string = string[1].split("=");
+								if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
+									option.setAttribute('selected', true);
+								}
+							}
+						}
+					}
+				}
+				$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(option);
+			}
+		}
+	});
 }

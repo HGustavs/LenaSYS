@@ -71,7 +71,7 @@
 									$eidq->execute();
 									$eid = $eidq->fetch(PDO::FETCH_NUM);
 									$code_id = $eid[0];
-									$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$code_id."&courseid=".getCourseName($courseid)."";
+									$link = "../CodeViewer/EditorV30.php?exampleid=".$code_id."&courseid=".$courseid;
 
 									// Create file list
 									$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
@@ -82,10 +82,14 @@
 									}
 								}
 							} else {
-								$link = "http://webblabb.iki.his.se/duggasys/EditorV30.php?exampleno=".$testdugga ."&courseid=".getCourseName($courseid)."";
+								$link = "../CodeViewer/EditorV30.php?exampleid=".$testdugga ."&courseid=".$courseid;
 							}
 						} else if ($kind == 3) {
-							// Insert new test
+							if ($testdugga == "-1") {
+								// Insert new test
+							} else {
+								$link = "startDugga?duggaid=".$testdugga."&courseid=".$courseid;
+							}
 						}
 						$query->bindParam(':link', $link);
 						$query->bindParam(':kind', $kind);
@@ -106,20 +110,20 @@
 						echo "Error updating entries";
 					}
 				} else if(strcmp("updateEntries", $opt) === 0) {
-					$sectionArray = $_POST['Entry'];
-
-					$counter = 0;
-					foreach ($sectionArray as $entryID) {
-						$query = $pdo->prepare("UPDATE listentries SET pos=:pos WHERE lid =:lid");
-						$query->bindParam(':pos', $counter);
-						$query->bindParam(':lid', $entryID);
-						if(!$query->execute()) {
+ 					$sectionArray = $_POST['Entry'];
+ 
+ 					$counter = 0;
+ 					foreach ($sectionArray as $entryID) {
+ 						$query = $pdo->prepare("UPDATE listentries SET pos=:pos WHERE lid =:lid");
+ 						$query->bindParam(':pos', $counter);
+ 						$query->bindParam(':lid', $entryID);
+ 						if(!$query->execute()) {
 							echo "Error updating entries";
-						} else {
-							$counter = $counter + 1;
-						}
-					}
-				}
+ 						} else {
+ 							$counter = $counter + 1;
+ 						}
+ 					}
+  				}
 			}
 		}
 

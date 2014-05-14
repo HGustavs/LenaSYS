@@ -7,6 +7,6 @@ secsripts();
 <script type="text/javascript">inParamter(param1);</script>
 
 <!-- Put ontent here -->
-<div id="content"></div>
+<div id="quizOutput"></div>
 
-<button onclikc="submitQuiz(varibale)"></button>
+<button onclikc="submitQuiz(variabel)"></button>
