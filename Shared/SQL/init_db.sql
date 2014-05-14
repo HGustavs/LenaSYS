@@ -176,7 +176,7 @@ BEGIN
      IF ((UPPER(NEW.boxcontent) LIKE "DOCUMENT") AND ((Select count(*) FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid) <>"1"))THEN       
         	INSERT INTO descriptionBox (boxid, exampleid, segment) VALUES (NEW.boxid, NEW.exampleid, "");
      END IF;
-     IF ((UPPER(NEW.boxcontent) LIKE "CODE")AND ((Select count(*) FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid) <>"1")) THEN       
+     IF ((UPPER(NEW.boxcontent) LIKE "CODE") AND ((Select count(*) FROM codeBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid) <>"1")) THEN       
         	INSERT INTO codeBox (boxid, exampleid, filename) VALUES (NEW.boxid, NEW.exampleid, "");
      END IF;
  END;//
