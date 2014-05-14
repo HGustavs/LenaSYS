@@ -63,7 +63,7 @@ function sectionSettingsService(ID)
 			if (data['type'] == 2) {
 				data['link'] = "../CodeViewer/EditorV30.php?exampleid="+data['testdugga']+"&courseid="+courseID;
 			} else if (data['type'] == 3) {
-				data['link'] = "../CodeViewer/EditorV30.php?exampleid="+data['testdugga']+"&courseid="+courseID;
+				data['link'] = "startDugga?duggaid="+data['testdugga']+"&courseid="+courseID;
 			}
 		}
 		$.post("ajax/updateSections.php",
@@ -74,13 +74,28 @@ function sectionSettingsService(ID)
 			'type': data['type'],
 			'link': data['link'],
 			'visibility': data['visibility']
-		}, function(response) {
+		}, function(response)
+		{
 			$('#testdugga').find('option').remove();
 			element = document.getElementById('Entry_'+ID);
 			settingsChildren = element.childNodes;
 			var children = settingsChildren[0].childNodes;
 			children[0].textContent = data['sectionname'];
-			settingsChildren[0].href = JSON.parse(response);
+			
+			if (data['type'] == 2) {
+				settingsChildren[0].href = JSON.parse(response);
+				settingsChildren[0].onclick = null;
+			} else if (data['type'] == 3) {
+				console.log(JSON.parse(response));
+				settingsChildren[0].removeAttribute("href");
+				if (settingsChildren[0].addEventListener) {  // all browsers except IE before version 9
+					settingsChildren[0].addEventListener("click", function() { changeURL(JSON.parse(response)); }, false);
+				} else {
+					if (settingsChildren[0].attachEvent) {   // IE before version 9
+						settingsChildren[0].attachEvent("click", function() { changeURL(JSON.parse(response)); });
+					}
+				}
+			}
 			
 			switch(parseInt(data['type'])){
 				case 0:

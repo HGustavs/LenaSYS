@@ -85,7 +85,11 @@
 								$link = "../CodeViewer/EditorV30.php?exampleid=".$testdugga ."&courseid=".$courseid;
 							}
 						} else if ($kind == 3) {
-							// Insert new test
+							if ($testdugga == "-1") {
+								// Insert new test
+							} else {
+								$link = "startDugga?duggaid=".$testdugga."&courseid=".$courseid;
+							}
 						}
 						$query->bindParam(':link', $link);
 						$query->bindParam(':kind', $kind);
