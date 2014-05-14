@@ -176,14 +176,20 @@ function Save()
 	// remove all formatting before saving
 	$('.codestyle span').contents().unwrap();
 	
+	var updates = 0;
 	// Get all description boxes and save their contents.
 	for(i=0;i<retdata['template'][0][2];i++){
 		if(retdata['box'][i][1].toUpperCase() == "DOCUMENT"){
+			updates++;
 			var editable=document.getElementById("box"+retdata['box'][i][0]);
 			var desc=editable.innerHTML;
 			AJAXService2("editDescription", desc, retdata['box'][i][0]);
 		}
 	}
+	if(updates==0){
+		warningBox("Warning!", "There's no description to save.");
+	}
+
 }
 function successBox(title, text, delay, confirm, data) {
 	if(title == undefined || 0 === title.length) { title = "Success!" }

@@ -420,6 +420,7 @@ a {
 
 */
 
+/*  NOT IN USE
 .warning {
     box-shadow: 10px 10px 14px #000;
     color: #fff;
@@ -435,6 +436,7 @@ a {
     padding: 4px;
     background-color: #000;
 }
+*/
 
 /* NOT IN USE!!
 .smallbutt {
@@ -785,11 +787,6 @@ a {
 	border-color:#D6E9C6;
 	color:#3C763D;
 }
-.alert.danger {
-	background-color: #f2dede;
-	border-color: #ebccd1;
-	color: #a94442;
-}
 .alert.warning{
 	background-color: #fcf8e3;
     border-color: #faebcc;
@@ -809,7 +806,7 @@ a {
   z-index:3000;
   
 }
-.slide-down strong, .slide-down p{
+.alert strong, .alert p{
 	margin:0px;
 	padding: 0px;
 }
