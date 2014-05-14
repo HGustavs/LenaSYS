@@ -25,6 +25,7 @@ function imagerecorder(canvas)
 	
 	var bodyMouseX;
 	var bodyMouseY;
+	this.scrollAmountY = 0;
 	
 	var files;						// store files thats being uploaded
 	var rect = canvas.getBoundingClientRect();
@@ -134,7 +135,7 @@ function imagerecorder(canvas)
 					mHeight = (rect.bottom - rect.top);
 					mWidth = (rect.right-rect.left);
 					var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-					var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+					var yMouse = Math.round((event.clientY-imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
 					//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
 					//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 				
@@ -174,6 +175,9 @@ function imagerecorder(canvas)
 			}
 		});
 		
+		$(window).scroll(function(){
+			imgrecorder.scrollAmountY = parseInt($(window).scrollTop());
+		});	
 		/*
 		 *checks the mouse-position in realtime.
 		 */
@@ -185,8 +189,10 @@ function imagerecorder(canvas)
 			var rect = canvas.getBoundingClientRect();
 			mHeight = (rect.bottom - rect.top);
 			mWidth = (rect.right-rect.left);
+			offsetTop = ImageCanvas.offsetTop;
+		
 			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-			yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+			yMouseReal = Math.round((event.clientY + imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
 			//xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
 			//yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
 			document.getElementById('xCordReal').innerHTML=xMouseReal;
