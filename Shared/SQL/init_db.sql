@@ -312,7 +312,8 @@ CREATE TABLE `quiz` (
   `name` varchar(255) NOT NULL,
   `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `deadline` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (courseID) REFERENCES course(cid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `grades`;
@@ -330,12 +331,21 @@ INSERT INTO grades(gradeID, grade) VALUES(6, "5");
 
 DROP TABLE IF EXISTS `userAnswer`;
 CREATE TABLE `userAnswer` (
-  `testID` int(11) NOT NULL,
+  `quizID` int(11) NOT NULL,
   /*`variantID` int(11) NOT NULL,*/
   /*`version` int(11) NOT NULL,*/
-  `grade` tinyint(2) NOT NULL,
+  `gradeID` tinyint(2) NOT NULL,
   `uid` int(11) NOT NULL,
   `answer` varchar(2000) NOT NULL,
   `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`testID`,`uid`)
+  PRIMARY KEY (`testID`,`uid`),
+  FOREIGN KEY (gradeID) REFERENCES grade(gradeID),
+  FOREIGN KEY (uid) REFERENCES user(uid),
+  FOREIGN KEY (quizID) REFERENCES quiz(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
+
