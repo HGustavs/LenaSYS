@@ -35,6 +35,7 @@ if (checklogin()) {
 			// Should this really be here? This is information leakage.
 			err("SQL Query Error: ". $error_sqlcode . " :" . $error_myerr . " " . $errormsg);
 		}
+		$visiblecourses = 0;
 		while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 			//Sets $color to either true or false (different colors) depending on row counter.
 			$color=($counter % 2 == 0) ? '#f0f0f0' : '#e3e3e3';
@@ -50,6 +51,7 @@ if (checklogin()) {
 							echo "</td></tr>";
 						}
 						$counter++;
+						$visiblecourses++;
 					} else if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
 						//Checks the visibility, changes the opacity for hidden.
 						if($row['visibility'] != 0){
@@ -62,6 +64,7 @@ if (checklogin()) {
 							echo "</td></tr>";
 						}
 						$counter++;
+						$visiblecourses++;
 					}
 				}
 			} else {
@@ -73,6 +76,7 @@ if (checklogin()) {
 				}
 				echo "</td></tr>";
 				$counter++;
+				$visiblecourses++;
 			}
 			if (checklogin()) {
 				if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
@@ -91,6 +95,12 @@ if (checklogin()) {
 					echo "</td></td></tr>";
 				}
 			}
-		}	
+		}
+		
+		if ($visiblecourses == 0) {
+			echo "<tr>";
+			echo "<th colspan='2'>There are currently no courses available</th>";
+			echo "</tr>";
+		}
 	?>
 </table>
