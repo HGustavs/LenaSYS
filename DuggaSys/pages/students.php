@@ -5,6 +5,7 @@
 			<link type="text/css" href="css/style.css" rel="stylesheet">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/duggasys.js"></script>
+		<script>page.title("Studentview");</script>
 	</head>
 <body>
 <?php
@@ -47,8 +48,6 @@
 		
 		}
 	</script>
-	<div id="content">
-
 	<div id="student-box">
 		<div id="student-header">Studentvy</div>
 		<button onclick="changeURL('addstudent?courseid=' + qs.courseid)">
@@ -66,18 +65,6 @@
     <tbody>
 	
     <!-- Här hamnar allt från appendStudents() -->
-   
-	<?php
-	/*
-	foreach($pdo->query( "SELECT * FROM user, user_course WHERE cid='1' and user.uid=user_course.uid" ) as $row){
-		$userid = $row['uid'];
-	   echo "<tr><td>".$row['username']."</td>";
-	   echo "<td>".$row['uid']."</td>";
-	   echo "<td>FAIL</td>";
-	   echo "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='".$userid."'/></td></tr>";
-	}
-	*/ 
-	?>
 	
 	</tbody>
 	</table>
@@ -103,7 +90,6 @@
 		?>
 		</form>
 		</div>
-	</div>
 	</div>
 </body>
 </html>
