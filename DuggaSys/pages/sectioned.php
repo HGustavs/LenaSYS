@@ -14,8 +14,6 @@ checklogin();
 	<script>
 		var sessionkind=0;
 		var querystring=getUrlVars();
-		var coursename=querystring.coursename;
-		page.title(coursename);
 		$.fn.extend({
 			makesortable: function() {
 				// Initialize timer object
@@ -59,6 +57,7 @@ checklogin();
 			} else {
 				changeURL('noid');
 			}
+			page.title(data.coursename);
 		}
 		function AJAXServiceSection(opt,para)
 		{
