@@ -5,7 +5,9 @@ USE Imperious;
 /* user contains the users of the system and related  information */
 CREATE TABLE user(
 		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		username		VARCHAR(80) NOT NULL UNIQUE, 
+		username		VARCHAR(80) NOT NULL UNIQUE,
+		firstname		VARCHAR(50) NULL,
+		lastname		VARCHAR(50) NULL,
 		ssn				VARCHAR(20) NULL,
 		password		VARCHAR(225) NOT NULL,
 		lastupdated		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -46,8 +48,8 @@ CREATE TABLE course(
 		FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO course(coursecode,coursename,created,creator) values ("DV12G","Webbprogrammering",NOW(),1);
-INSERT INTO course(coursecode,coursename,created,creator) values ("DV13G","Futhark",NOW(),1);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV13G","Futhark",NOW(),1,0);
 
 /* User access to the application*/
 CREATE TABLE user_course(
@@ -249,7 +251,7 @@ CREATE TABLE listentries (
 	lid int UNSIGNED NOT NULL AUTO_INCREMENT,
 	cid int UNSIGNED NOT NULL,
 	entryname varchar(64),
-	link varchar(80),
+	link varchar(200),
 	kind int unsigned,
 	pos int,
 	creator int unsigned not null,
@@ -273,14 +275,69 @@ CREATE TABLE listentries (
 
 INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Etapp 1", NULL, 0, 0, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Kodexempel", NULL, 1, 1, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic HTML", "http://nyan.cat/", 2, 2, 1, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic CSS", "http://nyan.cat/", 2, 3, 2, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 4, 3, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic HTML", "../CodeViewer/EditorV30.php?exampleid=1&courseid=1", 2, 2, 1, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic CSS", "../CodeViewer/EditorV30.php?exampleid=2&courseid=1", 2, 3, 2, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic JS", "../CodeViewer/EditorV30.php?exampleid=3&courseid=1", 2, 4, 3, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Avancerade Kodexempel", NULL, 1, 5, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced HTML", "http://nyan.cat/", 2, 6, 4, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced CSS", "http://nyan.cat/", 2, 7, 5, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 8, 6, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced HTML", "../CodeViewer/EditorV30.php?exampleid=4&courseid=1", 2, 6, 4, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced CSS", "../CodeViewer/EditorV30.php?exampleid=5&courseid=1", 2, 7, 5, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced JS", "../CodeViewer/EditorV30.php?exampleid=6&courseid=1", 2, 8, 6, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Expert Kodexempel", NULL, 1, 9, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "http://nyan.cat/", 2, 10, 7, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "http://nyan.cat/", 2, 11, 8, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 2, 12, 9, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "../CodeViewer/EditorV30.php?exampleid=7&courseid=1", 2, 10, 7, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "../CodeViewer/EditorV30.php?exampleid=8&courseid=1", 2, 11, 8, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "../CodeViewer/EditorV30.php?exampleid=9&courseid=1", 2, 12, 9, 1, 1);
+
+DROP TABLE IF EXISTS eventlog;
+CREATE TABLE eventlog(
+	eid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	type ENUM('notice', 'warning', 'fatal', 'loginerr') DEFAULT 'notice',
+	ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	address VARCHAR(45) NOT NULL,
+	user INT UNSIGNED NULL,
+	eventtext TEXT NOT NULL,
+	PRIMARY KEY(eid),
+	FOREIGN KEY(user)
+		REFERENCES user(uid)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/* Quiz tables */
+
+DROP TABLE IF EXISTS `quiz`;
+CREATE TABLE `quiz` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `courseID` int(11) NOT NULL,
+  `autograde` tinyint(1) NOT NULL, /* bool */
+  `gradesystem` tinyint(1) NOT NULL, /* U-G-VG & U-G & U-3-5 */
+  `answer` varchar(2000) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `deadline` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS `grades`;
+CREATE TABLE `grades` (
+  `gradeID` int(11) NOT NULL,
+  `grade` varchar(5) NOT NULL,
+  PRIMARY KEY (`gradeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO grades(gradeID, grade) VALUES(1, "U");
+INSERT INTO grades(gradeID, grade) VALUES(2, "G");
+INSERT INTO grades(gradeID, grade) VALUES(3, "VG");
+INSERT INTO grades(gradeID, grade) VALUES(4, "3");
+INSERT INTO grades(gradeID, grade) VALUES(5, "4");
+INSERT INTO grades(gradeID, grade) VALUES(6, "5");
+
+DROP TABLE IF EXISTS `userAnswer`;
+CREATE TABLE `userAnswer` (
+  `testID` int(11) NOT NULL,
+  /*`variantID` int(11) NOT NULL,*/
+  /*`version` int(11) NOT NULL,*/
+  `grade` tinyint(2) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `answer` varchar(2000) NOT NULL,
+  `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`testID`,`uid`)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
