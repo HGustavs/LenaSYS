@@ -14,12 +14,38 @@ function checklogin()
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
-	} else if(array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
+	} else if(failedLoginCount($_SERVER['REMOTE_ADDR']) < 10 && array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
 		return login($_COOKIE['username'], $_COOKIE['password'], false);
 	} else {		
 		return false;
 	}
 }	
+
+/**
+ * Returns the number of failed logins from this IP address in the
+ * last 30 minutes.
+ * @param string $addr Address to look up
+ * @return int
+ */
+function failedLoginCount($addr)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare('SELECT COUNT(1) FROM eventlog WHERE address=:addr AND type=\'loginerr\' AND ts > (CURRENT_TIMESTAMP() - interval 30 minute)');
+	// TODO: Proxy detection?
+	$query->bindParam(':addr', $addr);
+
+	if($query->execute() && $query->rowCount() > 0) {
+		$count = $query->fetch(PDO::FETCH_NUM);
+		return $count[0];
+	} else {
+		return 0;
+	}
+}
 
 /**
  * Log in the user with the specified username and password and
@@ -38,8 +64,18 @@ function login($username, $password, $savelogin)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare('SELECT * FROM user WHERE username=:username LIMIT 1');
-	$query->bindParam(':username', $username);
+	// Are we dealing with emails or usernames?
+	if(strpos($username, '@') === false) { 
+		$query = $pdo->prepare('SELECT uid,username,password,newpassword,superuser FROM user WHERE username=:username LIMIT 1');
+	} else {
+		$query = $pdo->prepare("SELECT uid,username,password,newpassword,superuser FROM user WHERE username LIKE CONCAT(:username, '@', '%') OR username=:username"); 
+	}
+
+	// Try to split the string no matter what since explode will return the 
+	// whole string in the first element if there's nothing to split on.
+	$user = explode('@', $username, 2);
+
+	$query->bindParam(':username', $user[0]);
 	$query->execute();
 
 	if($query->rowCount() > 0) {
@@ -90,6 +126,31 @@ function hasAccess($userId, $courseId, $access_type)
 }
 
 /**
+ * Returns superuser status of user
+ * @param int $userId User ID of the user to look up
+ * @return true false. True if superuser false if not
+ */
+function isSuperUser($userId)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare('SELECT count(uid) AS count FROM user WHERE uid=:1 AND superuser=1');
+	$query->bindParam(':1', $userId);
+	$query->execute();
+	$result = $query->fetch();
+
+	if ($result["count"]==1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
  * Returns the access a specified user has on the specified course
  * @param int $userId User ID of the user to look up
  * @param int $courseId Course ID of the course to look up access on
@@ -103,7 +164,7 @@ function getAccessType($userId, $courseId)
 		pdoConnect();
 	}
 
-	require_once "../Shared/courses.php";
+	require_once "courses.php";
 	if(!is_numeric($courseId)) {
 		$courseId = getCourseId($courseId);
 	}

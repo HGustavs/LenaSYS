@@ -11,7 +11,7 @@ function historyBack() {
 }
 function printHeader () {
 	$("header").load(getScriptPath("header.js")+"/content/header.php", function() {
-		$("#title h1").html(page.title());
+		page.title();
 	});
 }
 //Function to load new links to head dynamically
