@@ -12,7 +12,7 @@ function validateNewCourseSubmit()
   } else {
     $("input[name*='coursecode']").css("background-color", "#89ff7b");
   }
-  if( document.newCourse.visib.value == "0") {
+  if( document.newCourse.visib.value == "-1") {
     $("select").css("background-color", "#ff7c6a");
     return false;
   } else {

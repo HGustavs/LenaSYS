@@ -11,9 +11,9 @@
 			<div class='form-group'>
 				<label>Select visibility for course</label>
 				<select name="visib" class='form-control'>
-					<option id="select-opt" value="0">Select</option>
-					<option class="select-opt" value="1">Open</option>
-					<option class="select-opt" value="2">Closed</option>
+					<option id="select-opt" value="-1">Select</option>
+					<option class="select-opt" value="0">Hidden</option>
+					<option class="select-opt" value="1">Public</option>
 				</select>
 				<sub style="font-size:.8em; font-style:itelic;">Open if accessible to the public. Closed if only accessible by course-registered users</sub>
 			</div>
