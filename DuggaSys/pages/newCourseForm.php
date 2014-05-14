@@ -23,3 +23,4 @@
 	</div>
 	<script type="text/javascript" src="js/ajax.js"></script>
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
+	<script type="text/javascript">page.title("Create new course");</script>

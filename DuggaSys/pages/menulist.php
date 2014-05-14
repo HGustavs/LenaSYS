@@ -7,7 +7,7 @@ pdoConnect();
 <head>
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
     <!--This is for adding the correct title to this page-->
-    <script>page.title("Menulist");</script>
+    <script>page.title("Course List");</script>
 </head>
 
 <?php

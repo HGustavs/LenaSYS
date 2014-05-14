@@ -39,5 +39,6 @@
 		<button type="button" class="default" onclick="submitNewSection()">Create new entry</button>
 	</form>
 </div>
+<script type="text/javascript">page.title("Create new entry")</script>
 <script type="text/javascript" src="js/sectionhandler.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
