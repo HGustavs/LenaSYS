@@ -489,7 +489,7 @@ function imagerecorder(canvas)
 							imagelibrary[imageid] = imgPath;
 				
 							// Add thumbnail
-							var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail'></li>";
+							var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail' title='Right click to duplicate and/or remove image'></li>";
 							$("#sortableThumbs").append(imgStr);
 							
 							imageid++;
