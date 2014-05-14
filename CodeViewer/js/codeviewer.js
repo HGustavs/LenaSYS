@@ -1826,3 +1826,13 @@ function changedSecurity(){
 	
 	AJAXService("updateSecurity","&public="+ option);
 }
+
+function mobileTheme(){
+	if ($("#mobileThemeSelect").is(":hidden")){
+			document.getElementById("mobileThemeSelect").style.display= "block";
+	}
+	else{
+			document.getElementById("mobileThemeSelect").style.display= "none";
+	}
+
+}

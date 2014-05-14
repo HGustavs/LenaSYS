@@ -32,6 +32,11 @@
     background-color: #000;
 }
 
+.mbuttoStyleLight {
+    background-color: #ccc;
+    color: black;
+}
+
 .mbuttoStyle:hover{
 	background-color: #4d4d4d;
 }
