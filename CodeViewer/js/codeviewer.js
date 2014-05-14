@@ -171,13 +171,19 @@ function editedDescription()
 		// What is allowed here?
 }
 
-function Save(contentid, boxid)
+function Save()
 {	
 	// remove all formatting before saving
 	$('.codestyle span').contents().unwrap();
-	var editable=document.getElementById(contentid);
-	var desc=editable.innerHTML;
-	AJAXService2("editDescription", desc, boxid);
+	
+	// Get all description boxes and save their contents.
+	for(i=0;i<retdata['template'][0][2];i++){
+		if(retdata['box'][i][1].toUpperCase() == "DOCUMENT"){
+			var editable=document.getElementById("box"+retdata['box'][i][0]);
+			var desc=editable.innerHTML;
+			AJAXService2("editDescription", desc, retdata['box'][i][0]);
+		}
+	}
 }
 
 function highlightop(otherop,thisop)

@@ -112,24 +112,6 @@ INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1
 INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Design 4","JS","Julf.html",1,2013);
  
 
-/* improw contains a list of the important rows for a certain example */
-CREATE TABLE improw(
-		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
-		istart				INTEGER,
-		iend				INTEGER,
-		irowdesc			VARCHAR(1024),
-		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT UNSIGNED NOT NULL,
-		PRIMARY KEY(impid),
-		FOREIGN KEY (uid) REFERENCES user (uid),
-		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-	
-INSERT INTO improw(exampleid,istart,iend,uid) VALUES (3,6,8,1);
-INSERT INTO improw(exampleid,istart,iend,uid) VALUES (5,15,19,1);
-INSERT INTO improw(exampleid,istart,iend,uid) VALUES (7,10,12,2);
-
 
 /*filelist contains a list of shortcuts to files
 CREATE TABLE filelist(
@@ -258,6 +240,31 @@ INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,7,"<b>Events 1</b>
 INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,8,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,9,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,10,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+
+
+
+/* improw contains a list of the important rows for a certain example */
+CREATE TABLE improw(
+		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		codeBoxid         	INTEGER UNSIGNED NOT NULL,
+		exampleid    		MEDIUMINT UNSIGNED NOT NULL,				
+		istart				INTEGER,
+		iend				INTEGER,
+		irowdesc			VARCHAR(1024),
+		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		uid					INT UNSIGNED NOT NULL,
+		PRIMARY KEY(impid, exampleid, codeBoxid),
+		FOREIGN KEY (uid) REFERENCES user (uid),
+		FOREIGN KEY (codeBoxid, exampleid) REFERENCES codeBox (boxid, exampleid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+	
+INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (3,1,16,8,1);
+INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (5,1,15,19,1);
+INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (7,1,10,12,2);
+
+
+
+
 
 
 /* TRIGGER IF WE WANT &nbsp; AND <br> TO BE REPLACED AUTOMATICALLY

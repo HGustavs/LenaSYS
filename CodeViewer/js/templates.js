@@ -51,7 +51,7 @@ function createboxmenu(contentid, boxid, type){
 			str+= '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
 			str+= '<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
 			str+= "<td class='butto2' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
-			str+= "<td class='butto2' title='Save' onclick='Save(\""+contentid+"\",\""+boxid+"\");'><img src='new icons/save_button.svg' /></td>";
+		//	str+= "<td class='butto2' title='Save' onclick='Save(\""+contentid+"\",\""+boxid+"\");'><img src='new icons/save_button.svg' /></td>";
 			str+= "<td  class='butto2'>";
 			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 					str+= "<option value='DOCUMENT'>Description section</option>";
@@ -136,13 +136,19 @@ function returned(data)
 			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
 		}
 		
+		var arraybox = new Array();
 		// create boxes
 		for(i=0;i<retdata['template'][0][2];i++){
-	
-			var contentid="box"+(i+1);
+			
+			var contentid="box"+data['box'][i][0];
 			var boxid=data['box'][i][0];
 			var boxtype=data['box'][i][1];
 			var boxcontent=data['box'][i][2];
+			
+			
+			temparray = [contentid, boxid, boxtype];
+			arraybox.push(temparray);
+			
 			// create a templatebox
 			addTemplatebox("box"+(i+1));
 			// Print out code example in a code box
@@ -160,6 +166,7 @@ function returned(data)
 				var desc = boxcontent;
 				desc = replaceAll("<span&nbsp;","<span ",desc);
 				desc =  replaceAll("<img&nbsp;","<img ",desc);
+			
 				
 				var docuwindow = document.getElementById(contentid);
 				docuwindow.innerHTML=desc;
