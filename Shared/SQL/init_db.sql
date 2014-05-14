@@ -90,6 +90,7 @@ CREATE TABLE codeexample(
 		wordlist			VARCHAR(64),
 		runlink			  	VARCHAR(64),
 		cversion			INTEGER,
+		public 				tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
 		templateid			INT UNSIGNED NOT NULL DEFAULT '0',
