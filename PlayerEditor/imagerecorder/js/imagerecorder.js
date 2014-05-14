@@ -58,12 +58,39 @@ function imagerecorder(canvas)
 				var regExp = /[^a-z0-9]/i;
 				if(!regExp.test(libName)) {
 					libraryName = libName;
-					// Hide dialog and show wrapper
-					$("#library-name-dialog").fadeOut(350);
-					$(".wrapper").fadeIn(355);
 					
-					// Print "click to start rec" image on canvas
-					ctx.drawImage(initImage,0,0, width = 1280, height = 720);
+					// Check so library dont already exist in DB
+					$.ajax({
+						url: "check_duplicate.php",
+						type: "POST",
+						data: {
+							lib: libraryName
+						},
+						cache: false,
+						dataType: "json",
+						success: function(data) {
+							// Duplicate found, give error
+							if(data.DUPLICATE == "true") {
+								alert("There's already a library named '"+libraryName+"'.");
+							}
+							// No duplicate, hide dialog and show recorder
+							else {
+								$("#library-name-dialog").fadeOut(350);
+								$(".wrapper").fadeIn(355);
+								
+								// Print "click to start rec" image on canvas
+								ctx.drawImage(initImage,0,0, width = 1280, height = 720);
+							}
+						},
+						error: function() {
+							console.log("Error on AJAX call (No JSON respond)");
+						}
+					});
+					
+				
+					
+					
+					
 				}
 				else {
 					alert("The library name can only contain characters A-Z and 0-9.");
