@@ -18,7 +18,7 @@
 				<sub style="font-size:.8em; font-style:itelic;">Open if accessible to the public. Closed if only accessible by course-registered users</sub>
 			</div>
 			<button type='button' onclick="warningBox('Confirm creation', 'Do you want to create the course?', 0, submitNewCourse)" class='default'>Create Course</button>
-            <button type='button' onclick='historyBack()' class='default-red'>Cancle</button>
+            <button type='button' onclick='historyBack()' class='default-red'>Cancel</button>
 
 		</form>
 	</div>

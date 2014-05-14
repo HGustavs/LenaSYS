@@ -37,7 +37,7 @@
 				</sub>
 		</div>
 		<button type="button" class="default" onclick="submitNewSection()">Create new entry</button>
-        <button type="button" class="default-red" onclick="historyBack()">Cancle</button>
+        <button type="button" class="default-red" onclick="historyBack()">Cancel</button>
 	</form>
 </div>
 <script type="text/javascript">page.title("Create new entry")</script>
