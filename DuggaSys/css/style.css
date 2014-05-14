@@ -401,8 +401,7 @@ table.list tr.red {
 	font-size:18pt;
     background-color: #614875;
 	margin-top:40px;
-	padding-top:5px;
-	min-height:25px;
+	padding:6px;
 }
 
 #Sectionlist .norm:hover, #Sectionlist .example:hover, #Sectionlist .test:hover, #Sectionlist .hidden:hover{

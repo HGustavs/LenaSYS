@@ -148,7 +148,7 @@ function returnedSection(data)
 						}
 						str+="</select>";
 						str+="<div style='float:right;'>";
-						str+="<input class='submit-button-red' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
+						str+="<input class='submit-button-red' type='button' value='Delete' onclick='warningBox(\"Confirm Delete\", \"Would you like to delete this?\", 0, deleteFromSectionlist, "+data['entries'][i]['lid']+")' style='margin-left:10px;margin-right:10px;' />";
 						str+="<input class='submit-button' type='button' value='Save' onclick='sectionSettingsService("+data['entries'][i]['lid']+")' />";
 						str+="</div></div>";
 					} else {
@@ -334,4 +334,9 @@ function printDiv(){
 	window.print();
 
 	document.body.innerHTML = originalContents;
+}
+
+
+function deleteFromSectionlist(ID){
+	AJAXServiceSection("sectionDel","&sectid="+ID);
 }
