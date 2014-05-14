@@ -242,7 +242,7 @@ function passPopUp(){
 $.ajax({
 		dataType: "json",
 		type: "POST",
-		url: 'addstudent_ajax.php',
+		url: 'ajax/addstudent_ajax.php',
 		data: {
 			string: $("#string").val()
 		},
@@ -259,14 +259,14 @@ $.ajax({
 		document.getElementById('fade').style.visibility = "visible";
 
 		if (returnedData.length == 0){
-   	 		var output = "Användaren/användarna du registrerade finns redan inlagda globalt och har nu lagts till på kursen";
+			var output = "The users you were adding already existed globally and were added to the course";
    		}
    		else {
 	  var output = "<div id='printArea'>";
 	  output += "<table class='list'>";
-      output += "<tr><th>Namn</th>";
-      output += "<th>Användarnamn</th>";
-      output += "<th>Lösenord</th></tr>";
+      output += "<tr><th>Name</th>";
+      output += "<th>Username</th>";
+      output += "<th>Password</th></tr>";
 
       $.each(returnedData, function(){
       output += "<tr><td>"+this[1]+"</td>";

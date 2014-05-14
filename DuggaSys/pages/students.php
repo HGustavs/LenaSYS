@@ -4,32 +4,27 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 			<link type="text/css" href="css/style.css" rel="stylesheet">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<script type="text/javascript" src="duggasys.js"></script>
+		<script type="text/javascript" src="js/duggasys.js"></script>
 	</head>
 <body>
 <?php
 
-	include_once("../../coursesyspw.php");	
-		include_once("../Shared/basic.php");
+	include_once(dirname(__FILE__). "/../../../coursesyspw.php");	
+	include_once(dirname(__FILE__) . "/../../Shared/basic.php");
 
 		pdoConnect();
 
 ?>
-		<header>
-		<nav id="navigate">
-			<img src="css/svg/Up.svg">
-			<img onclick="menuDugga()" src="css/svg/SkipB.svg">
-		</nav>
-		<nav id="user">
-			Emil & Martina
-			<img src="css/svg/Man.svg">
-		</nav>
-	</header>
+	<script type="text/javascript">
+		var qs = getUrlVars();
+	</script>
 	<div id="content">
 
 	<div id="student-box">
 		<div id="student-header">Studentvy</div>
-		<a href="addstudent.php"><input type="submit" id="submit-button" value="Lägg till student"/></a>
+		<button onclick="changeURL('addstudent?courseid=' + qs.courseid)">
+			Add students 
+		</button>
 	<form action="" method="post">
 	<div id='students'>
 	<table class='list'>
