@@ -83,7 +83,6 @@ function imagerecorder(canvas)
 								
 								// Print "click to start rec" image on canvas
 								ctx.drawImage(initImage,0,0, mWidth, mHeight);
-								updateScaleRatio();
 							}
 						},
 						error: function() {
@@ -248,7 +247,6 @@ function imagerecorder(canvas)
 				canvas.width = mWidth;
 				canvas.height = mHeight; 
 				updateScaleRatio();
-				showImage(activeImage);
 				console.log("On Resize\n");
 				console.log("canvas: " + canvas.width + ", " + canvas.height);
 			if(clicked == 1) {
