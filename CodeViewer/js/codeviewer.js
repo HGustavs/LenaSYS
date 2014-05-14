@@ -1803,11 +1803,10 @@ function setTheme()
 
 function changedSecurity(){
 	var cb = document.getElementById('checkbox');
-	var option;
+	var option = 0;
 	if(cb.checked){
-		option = "1";
-	}else{
-		option = "0";
+		option = 1;
 	}
-	AJAXService("updateSecurity","$public="+option);
+	
+	AJAXService("updateSecurity","&public="+ option);
 }
