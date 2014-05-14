@@ -27,6 +27,7 @@
 			  output += "<td>FAIL</td>";
 		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td></tr>";
 		   });
+		   $("table.list tbody").empty();
 		   $("table.list tbody").append(output);
 		   
 		}
@@ -63,9 +64,9 @@
 	<th id='deletebox' style='visibility: hidden'>Delete</th></tr>
 	</thead>
     <tbody>
-	
-    <!-- Här hamnar allt från appendStudents() -->
-	
+		<tr>
+			<td>Loading...</td>
+		</tr>
 	</tbody>
 	</table>
 
