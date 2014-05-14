@@ -23,6 +23,7 @@
 
 	$exampleid = $_POST['exampleid'];
 	
+	
 //	$version=$_POST['version'];
 	$opt=$_POST['opt'];
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
@@ -144,6 +145,12 @@
 								$query = "UPDATE codeexample SET templateid='$templateid' WHERE exampleid='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
+					}
+					else if(strcmp("updateSecurity",$opt)===0){
+								$security=$_POST['public'];
+								$query = "UPDATE codeexample SET public='$security' WHERE exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Security!");
 					}
 			}
 	
@@ -372,8 +379,17 @@
                 array_push($images,$img_file);
             }
         }
+		
+		// Get templates
+			$public=array();
+			$query = "SELECT public FROM codeexample WHERE exampleid=$exampleid";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+					array_push($public,array($row['public']));	
+			}
 
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images);
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images, 'public' => $public);
 			echo json_encode($array);
 
 

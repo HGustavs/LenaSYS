@@ -194,26 +194,26 @@ function dehighlightop(otherop,thisop)
 }
 				
 function Up()
-{						
-		location="../DuggaSys/Sectioned.php?courseid="+courseID+"&vers="+version;
+{					
+		location="../DuggaSys/#sectioned?courseid="+courseIDNum;
 }				
 
 function gotoPosition(exampleid)
 {
-		location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+exampleid;
+		location="EditorV30.php?exampleid="+exampleid+"&courseid="+courseIDNum;
 }
 
 function SkipB()
 {		
 		if(issetDrop("backwdrop")&&isdropped==false){
 			position=parseInt(position)-1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&position="+position;
 		}else if(issetDrop("backwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 			// get previous example in the hierarchy
 			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
-			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+prevexampleid;
+			location="EditorV30.php?courseid="+courseIDNum+"&exampleid="+prevexampleid;
 		}
 }
 
@@ -240,14 +240,14 @@ function SkipF()
 {
 		if(issetDrop("forwdrop")&&isdropped==false){
 				position=parseInt(position)+1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&version="+version+"&position="+position;
+				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&position="+position;
 		}
 		else if(issetDrop("forwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 			// get next example in the hierarchy
 			var nextexampleid=parseInt(retdata['after'][0][1]);
-			location="EditorV30.php?courseid="+courseID+"&version="+version+"&exampleid="+nextexampleid;
+			location="EditorV30.php?courseid="+courseIDNum+"&exampleid="+nextexampleid;
 		}
 }
 $(document).click(function (e)
@@ -768,7 +768,7 @@ function returned(data)
 		var examplenme=document.getElementById('exampleName');
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
-		examplesect.innerHTML=data['entryname'];
+		examplesect.innerHTML=data['entryname']+"&nbsp;:&nbsp;";
 		
 		
 		if(sessionkind=="w"){
@@ -797,9 +797,9 @@ function returned(data)
             var filereq=document.getElementById('imgdrop');
             if(filereq!=null) filereq.innerHTML=str;
 
-
-
-
+			
+			
+			
 
 
 		}
@@ -813,23 +813,41 @@ function returned(data)
 			// Check what tab in general settings menu should be displayed, otherwise the same tabmenu will be displayed after every update.
 			if(tabmenuvalue == "wordlist"){
 				displayWordlist();
-			}else if(tabmenuvalue == "playlink"){
-				displayPlaylink();	
+			}else if(tabmenuvalue == "security"){
+				displaySecurity();	
 			}else if(tabmenuvalue == "templates"){
 				displayTemplates();
 			}					
 		}
+		
+
 }
-function displayPlaylink(){
-	tabmenuvalue = "playlink";
+function displaySettings(){
+	tabmenuvalue = "Settings";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li class='activeSetMenuLink'>Playlink</li>";
+		str+="<li class='activeSetMenuLink'>Settings</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 				
 	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
 	str+="<span id='playlinkErrorMsg' class='playlinkErrorMsgStyle'></span>";
+	str+="<br>Check box to open the example for public:";
+	var test = retdata['public'][0];
+			//alert(test);
+			if(test == 0){
+				str+="<input type='checkbox' id='checkbox' onChange='changedSecurity();'/>"
+				//alert("not checked");
+		//		var cb =  document.getElementById('checkbox');
+		//		alert(cb.checked);
+			}else if ( test == 1){
+				str+="<input type='checkbox' checked id='checkbox' onChange='changedSecurity();'/>"
+				//alert("checked");
+		//		var cb =  document.getElementById('checkbox');
+		//		alert(cb.checked);
+				//cb.checked="checked";
+			}
+//	str+="<input type='checkbox' id='checkbox' onChange='changedSecurity();'/>"
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
 }
@@ -838,7 +856,7 @@ function displayTemplates()
 	tabmenuvalue = "templates";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink()'>Playlink</li>";
+		str+="<li onclick='displaySettings()'>Settings</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
@@ -856,7 +874,7 @@ function displayWordlist(){
 	tabmenuvalue = "wordlist";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink();'>Playlink</li>";
+		str+="<li onclick='displaySettings();'>Settings</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 	
@@ -1797,4 +1815,24 @@ function setTheme()
 			alert("no theme");
 		}
 	}
+}
+
+function changedSecurity(){
+	var cb = document.getElementById('checkbox');
+	var option = 0;
+	if(cb.checked){
+		option = 1;
+	}
+	
+	AJAXService("updateSecurity","&public="+ option);
+}
+
+function mobileTheme(){
+	if ($("#mobileThemeSelect").is(":hidden")){
+			document.getElementById("mobileThemeSelect").style.display= "block";
+	}
+	else{
+			document.getElementById("mobileThemeSelect").style.display= "none";
+	}
+
 }

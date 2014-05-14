@@ -41,6 +41,7 @@ function Canvasrenderer()
     	this.downscaled = false;
 	this.mImageData;
 	this.currentPicture = null;
+	this.preloadImages = new Array();
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -59,6 +60,8 @@ function Canvasrenderer()
 		// Load timesteps
 		//this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
 
+		this.preloadImages();
+		
 		this.scheduleTimesteps();
 	}
 	
@@ -1029,6 +1032,21 @@ function Canvasrenderer()
 			ctx.restore();
 		}
 	}
+	
+	
+	/**
+	*	Preload images by loading them into preloadImages-array. Browser will cache these and not reload them later on.
+	**/
+	this.preloadImages = function()
+	{
+		this.pictureTags = xmlDoc.getElementsByTagName("picture");
+		
+		for(i=0;i<this.pictureTags.length;i++) {
+			this.preloadImages[i] = new Image();
+			this.preloadImages[i].src = this.pictureTags[i].getAttribute("src");
+		}
+	}
+	
 	/**
 	 * This method calculates the recorded scale ratio by dividing the
 	 * current canvas size by the recorded canvas size. 

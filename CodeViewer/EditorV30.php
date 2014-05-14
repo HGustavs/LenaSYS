@@ -90,11 +90,11 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				dbConnect();
 				
                 echo'<script>';
-				jsvarget("courseid","courseID");				
+				jsvarget("courseid","courseIDNum");				
 				jsvarget("position","position");
 				jsvarget("version","version");
 				jsvarget("exampleid","exampleid");
-				
+
 				$kind = "r";
 				if(array_key_exists('uid', $_SESSION)) {
 					$type = getAccessType($_SESSION['uid'], $_GET['courseid']);
@@ -102,7 +102,8 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 					if($type)
 						$kind = $type;
 				}
-				echo "var sessionkind='" . $kind . "';";			
+				echo "var sessionkind='" . $kind . "';";
+				echo "var courseID='" . getCourseName($_GET['courseid']) . "';";
 ?>				
 				console.log(courseID);
 
@@ -123,6 +124,16 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 	</head>
 	
 <?php
+
+	$exampleid = $_GET['exampleid'];
+	//get the visibility
+	$query = "SELECT public FROM codeexample WHERE exampleid='$exampleid';";
+	$result=mysql_query($query);
+	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+	$row = mysql_fetch_assoc($result);
+	//Print "<b>Visible:</b> ".$row['visible'] . " "; 
+	$public=$row['public'];	
+	
 		if(isset($_GET['courseid'])){
 				$courseID=$_GET['courseid'];
 				if(courseexists($courseID)){
@@ -139,7 +150,12 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 								editcodemenu(false);
 							}
 						}else{
+							if($public == 0){
+								echo '<script type="text/javascript">','alert("you dont have access");', 'Up();', '</script>';
+							}else{
 								editcodemenu(false);
+							}
+								
 						}
 						
 				}else{

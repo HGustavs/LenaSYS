@@ -152,3 +152,32 @@ ul {
 .tli {
 	display: inline-block;
 }
+
+#instructionwindow{
+    overflow: auto;
+ 	overflow-y: scroll;
+	position: relative;
+	z-index: 2;
+	width: 1000px;
+	height: 500px;
+	background-color: white;
+	background-image: url("img/instructions.png");
+	border-radius: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 1050;
+	display: none;
+	margin-top: 3%;
+}
+#instructionopacity{
+	background-color: rgba(0,0,0,0.4);
+	cursor: default;
+	width: 100%;
+	height: 100%;
+	-webkit-background-size:cover;
+  	background-size:cover;
+ 	z-index: 1040;
+ 	position: fixed;
+ 	display: none;
+ 	margin-top: -12px;
+}
