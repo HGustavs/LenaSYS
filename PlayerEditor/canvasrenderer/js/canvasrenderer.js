@@ -438,6 +438,8 @@ function Canvasrenderer()
 				// Check if done and not trying to stop at a zero-delay timestep
 				if ((this.numValidTimesteps - this.runningTimesteps.length) >= this.windpos){
 					this.windpos = -1;
+					this.updateSearchBar();
+
 					// Check if we should pause or resume
 					(this.playafterwind) ? this.play() : this.pause();
 				}
