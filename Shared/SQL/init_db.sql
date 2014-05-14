@@ -5,7 +5,9 @@ USE Imperious;
 /* user contains the users of the system and related  information */
 CREATE TABLE user(
 		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		username		VARCHAR(80) NOT NULL UNIQUE, 
+		username		VARCHAR(80) NOT NULL UNIQUE,
+		firstname		VARCHAR(50) NULL,
+		lastname		VARCHAR(50) NULL,
 		ssn				VARCHAR(20) NULL,
 		password		VARCHAR(225) NOT NULL,
 		lastupdated		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
