@@ -129,7 +129,7 @@ function imagerecorder(canvas)
 					lastEvent = Date.now();
 					// Disable sorting thumbs
 					$("#sortableThumbs").sortable("destroy");
-
+					$("#instructbutton").hide();
 					// Change upload button to 'reset'
 					$("#uploadButton").attr('value', 'Reset');
 					$("#uploadButton").attr('onclick', 'imgrecorder.reset();');
