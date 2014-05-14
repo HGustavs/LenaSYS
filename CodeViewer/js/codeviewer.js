@@ -797,9 +797,9 @@ function returned(data)
             var filereq=document.getElementById('imgdrop');
             if(filereq!=null) filereq.innerHTML=str;
 
-
-
-
+			
+			
+			
 
 
 		}
@@ -819,6 +819,8 @@ function returned(data)
 				displayTemplates();
 			}					
 		}
+		
+
 }
 function displaySettings(){
 	tabmenuvalue = "Settings";
@@ -831,7 +833,21 @@ function displaySettings(){
 	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
 	str+="<span id='playlinkErrorMsg' class='playlinkErrorMsgStyle'></span>";
 	str+="<br>Check box to open the example for public:";
-	str+="<input type='checkbox' id='checkbox' onChange='changedSecurity();'/>"
+	var test = retdata['public'][0];
+			//alert(test);
+			if(test == 0){
+				str+="<input type='checkbox' id='checkbox' onChange='changedSecurity();'/>"
+				//alert("not checked");
+		//		var cb =  document.getElementById('checkbox');
+		//		alert(cb.checked);
+			}else if ( test == 1){
+				str+="<input type='checkbox' checked id='checkbox' onChange='changedSecurity();'/>"
+				//alert("checked");
+		//		var cb =  document.getElementById('checkbox');
+		//		alert(cb.checked);
+				//cb.checked="checked";
+			}
+//	str+="<input type='checkbox' id='checkbox' onChange='changedSecurity();'/>"
 	docurec=document.getElementById('docudrop');
 	docurec.innerHTML=str;
 }
