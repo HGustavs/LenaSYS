@@ -351,10 +351,5 @@ CREATE TABLE `userAnswer` (
   FOREIGN KEY (quizID) 
   		REFERENCES quiz(id)
 		ON UPDATE CASCADE
+		ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-
-
-
-
