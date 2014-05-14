@@ -1,8 +1,21 @@
-DROP DATABASE IF EXISTS Imperious;
-CREATE DATABASE Imperious;
-USE Imperious;
-
 /* user contains the users of the system and related  information */
+DROP TABLE IF EXISTS `userAnswer`;
+DROP TABLE IF EXISTS `grades`;
+DROP TABLE IF EXISTS `quiz`;
+DROP TABLE IF EXISTS eventlog;
+DROP TABLE IF EXISTS listentries;
+DROP TABLE IF EXISTS impwordlist;
+DROP TABLE IF EXISTS wordlist;
+DROP TABLE IF EXISTS box;
+DROP TABLE IF EXISTS descriptionsection;
+DROP TABLE IF EXISTS filelist;
+DROP TABLE IF EXISTS improw;
+DROP TABLE IF EXISTS codeexample;
+DROP TABLE IF EXISTS template;
+DROP TABLE IF EXISTS user_course;
+DROP TABLE IF EXISTS course;
+DROP TABLE IF EXISTS user_question;
+DROP TABLE IF EXISTS user;
 CREATE TABLE user(
 		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
@@ -83,8 +96,9 @@ INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template1.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template2.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template2.css",4);
 
-/* Code Example contains a list of the code examples for a version of a course in the database */
-/* Version of sections and examples corresponds roughly to year or semester that the course was given. */
+/* Code Example contains a list of the code examples for a version of a course in the database 
+ Version of sections and examples corresponds roughly to year or semester that the course was given. */
+
 CREATE TABLE codeexample(
 		exampleid			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		cid					INT UNSIGNED NOT NULL,
@@ -156,7 +170,6 @@ INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (7,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (8,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (9,"js1.js",1,1);
 INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);
-
 
 CREATE TABLE descriptionsection(
 		exampleno			INTEGER,
@@ -288,7 +301,6 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visi
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "../CodeViewer/EditorV30.php?exampleid=8&courseid=1", 2, 11, 8, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "../CodeViewer/EditorV30.php?exampleid=9&courseid=1", 2, 12, 9, 1, 1);
 
-DROP TABLE IF EXISTS eventlog;
 CREATE TABLE eventlog(
 	eid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	type ENUM('notice', 'warning', 'fatal', 'loginerr') DEFAULT 'notice',
@@ -305,7 +317,6 @@ CREATE TABLE eventlog(
 
 /* Quiz tables */
 
-DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE `quiz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `courseID` int(11) NOT NULL,
@@ -318,7 +329,6 @@ CREATE TABLE `quiz` (
   PRIMARY KEY (`id`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `grades`;
 CREATE TABLE `grades` (
   `gradeID` int(11) NOT NULL,
   `grade` varchar(5) NOT NULL,
@@ -331,7 +341,6 @@ INSERT INTO grades(gradeID, grade) VALUES(4, "3");
 INSERT INTO grades(gradeID, grade) VALUES(5, "4");
 INSERT INTO grades(gradeID, grade) VALUES(6, "5");
 
-DROP TABLE IF EXISTS `userAnswer`;
 CREATE TABLE `userAnswer` (
   `testID` int(11) NOT NULL,
   /*`variantID` int(11) NOT NULL,*/
