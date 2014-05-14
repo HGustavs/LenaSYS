@@ -7,6 +7,9 @@
 		<script>page.title("Add student");</script>
 	</head>
 <body>
+	<script type="text/javascript">
+		var qs = getUrlVars();
+		</script>
 		<div id="student-box">
 	<form action="" method="post">
 		<div id="student-header">Lägg till student!</div>
@@ -15,7 +18,7 @@
 		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="30"></textarea>
 		<br>
 		<input type="button" value="Lägg till student" class="btn btn-login" onclick="passPopUp();"/>
-		<a href="students.php"><input type="button" class="btn btn-cancel" value="Cancel"/></a>
+		<input type="button" class="btn btn-cancel"  onclick="changeURL('students?courseid=' + qs.courseid)" value="Cancel"/>
 	</form>
 
 
