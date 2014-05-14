@@ -242,7 +242,7 @@ function Canvasrenderer()
 
 		this.timesteps = Elements.length;
       		if(this.mouseInterpolation){
-      		      Elements = this.interpolateMousePositions(Elements, 60);
+      		      Elements = this.interpolateMousePositions(Elements, 30);
  	        }
 			// Step through timesteps
 		for(i = 0; i < Elements.length; i++){
@@ -274,6 +274,7 @@ function Canvasrenderer()
 	 * the "mousemove" tags. The number of added nodes depends of the desired frames per second.
 	**/
 	this.interpolateMousePositions = function(nodes, FPS){
+		if(FPS < 0) return nodes;
 		var retnodes = [];
 		var currentX = null;
 		var currentY = null;
@@ -282,7 +283,7 @@ function Canvasrenderer()
 			
 			childNode = [].slice.call(nodes[j].childNodes, 0); 
         		currentDelay = parseInt(nodes[j].getAttribute("delay"));
-            		if (currentDelay < 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
+            		if (currentDelay <= 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
                 		retnodes.push(nodes[j]);
                 		continue; 
             		} 
@@ -290,25 +291,26 @@ function Canvasrenderer()
 			var delay = currentDelay/multiple;			// The delay in milliseconds 
 			var amount = Math.floor(currentDelay/ delay);		// Number of new positions that should be added 
 			var rest = nodes[j].getAttribute("delay")%multiple;	 
-			
-			nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
-          
+			var hasChanged = false;
+			//nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
+          		
 			for(a = 0; a < childNode.length; ++a){
 				if(childNode[a].nodeName == "mousemove"){
 					
 					newX = parseFloat(childNode[a].getAttribute("x"));
 					newY = parseFloat(childNode[a].getAttribute("y"));
 					if(currentX != null && currentY != null){
+						hasChanged = true;
 						// Add as many mousemove tags as needed
 						for(i = 0; i < amount; i++){
 							var iNode = nodes[j].cloneNode(true);
-                      					// The interpolated position is calculated and added to the new node
+                      		// The interpolated position is calculated and added to the new node
 							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - i*((currentX - newX) / multiple)) );
 							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - i*((currentY - newY) / multiple)) );
 							iNode.setAttribute("delay", delay);	
 							retnodes.push(iNode);	// Adding the newly created node 
-						        currentX = newX;
-						        currentY = newY;
+						    currentX = newX;
+						    currentY = newY;
 						}
 					}
 					else{
@@ -317,8 +319,10 @@ function Canvasrenderer()
 					}
 				}
 			}
-          		retnodes.push(nodes[j]);
-			
+		if(hasChanged){
+			nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
+		}
+          	retnodes.push(nodes[j]);	
 		}
 		return retnodes;
 	}
@@ -968,7 +972,7 @@ function Canvasrenderer()
 		// Load image
 		var image = new Image();
 		// Draw image when loaded
-			image.onload = function() {
+		image.onload = function() {
        	        	canvas.updateScaleRatio();
         		var widthRatio = 1;
 			var heightRatio = 1;
