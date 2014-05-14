@@ -53,31 +53,31 @@ function returnedSection(data)
 						if (parseInt(data['entries'][i]['kind']) < 2) {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<span style='color:rgba(255,255,255,0.5);'>"+data['entries'][i]['entryname']+"</span>";
-								str+="<img style='opacity:0.5;'onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+								str+="<span style='padding-left:5px;color:rgba(255,255,255,0.5);'>"+data['entries'][i]['entryname']+"</span>";
+								str+="<img style='padding-right:5px;opacity:0.5;'onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 							} else {
-								str+="<span>"+data['entries'][i]['entryname']+"</span>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+								str+="<span style='padding-left:5px;'>"+data['entries'][i]['entryname']+"</span>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 							}
 						} else if (parseInt(data['entries'][i]['kind']) == 2 || parseInt(data['entries'][i]['kind']) >= 4) {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
-								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);margin-left:15px;' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							
 							} else{
-								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a style='margin-left:15px;' id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							}
 						} else {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
-								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							
 							} else{
-								str+="<a id='section-list' style='cursor: pointer;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a id='section-list' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							}
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
