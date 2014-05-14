@@ -27,6 +27,8 @@ function imagerecorder(canvas)
 	var bodyMouseY;
 	this.scrollAmountY = 0;
 	
+	var mouseFPS = 30;
+	
 	var files;						// store files thats being uploaded
 	var rect = canvas.getBoundingClientRect();
 
@@ -80,7 +82,8 @@ function imagerecorder(canvas)
 								$(".wrapper").fadeIn(355);
 								
 								// Print "click to start rec" image on canvas
-								ctx.drawImage(initImage,0,0, width = 1280, height = 720);
+								ctx.drawImage(initImage,0,0, mWidth, mHeight);
+								updateScaleRatio();
 							}
 						},
 						error: function() {
@@ -229,7 +232,7 @@ function imagerecorder(canvas)
 			}
 			timer = window.setInterval(function() {
 				appendEvString(xMouseReal,yMouseReal);
-			}, 33,33333);
+			}, parseFloat(1000/mouseFPS));
 				interval = true;		
 		});
 
@@ -237,7 +240,6 @@ function imagerecorder(canvas)
 		 * Update scale ratio when the window is resized
 		 */
 		$(window).on('resize', function(){
-			if(clicked == 1) {
 				// Scale ratio update (for correct mouse positions)
 				var rect = canvas.getBoundingClientRect();
 				mHeight = (rect.bottom - rect.top);
@@ -249,6 +251,11 @@ function imagerecorder(canvas)
 				showImage(activeImage);
 				console.log("On Resize\n");
 				console.log("canvas: " + canvas.width + ", " + canvas.height);
+			if(clicked == 1) {
+				showImage(activeImage);
+			}
+			else{
+				ctx.drawImage(initImage,0,0, mWidth, mHeight);
 			}
 		});
 		
