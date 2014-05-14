@@ -83,6 +83,7 @@ function imagerecorder(canvas)
 								
 								// Print "click to start rec" image on canvas
 								ctx.drawImage(initImage,0,0, mWidth, mHeight);
+								updateScaleRatio();
 							}
 						},
 						error: function() {
