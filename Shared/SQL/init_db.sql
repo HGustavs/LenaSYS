@@ -305,7 +305,7 @@ CREATE TABLE eventlog(
 DROP TABLE IF EXISTS `quiz`;
 CREATE TABLE `quiz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `courseID` int(11) NOT NULL,
+  `cid` int UNSIGNED NOT NULL,
   `autograde` tinyint(1) NOT NULL, /* bool */
   `gradesystem` tinyint(1) NOT NULL, /* U-G-VG & U-G & U-3-5 */
   `answer` varchar(2000) NOT NULL,
@@ -313,12 +313,15 @@ CREATE TABLE `quiz` (
   `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `deadline` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (courseID) REFERENCES course(cid)
+  FOREIGN KEY(`cid`)
+		REFERENCES course(cid)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `grades`;
 CREATE TABLE `grades` (
-  `gradeID` int(11) NOT NULL,
+  `gradeID` tinyint(2) NOT NULL,
   `grade` varchar(5) NOT NULL,
   PRIMARY KEY (`gradeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -335,13 +338,19 @@ CREATE TABLE `userAnswer` (
   /*`variantID` int(11) NOT NULL,*/
   /*`version` int(11) NOT NULL,*/
   `gradeID` tinyint(2) NOT NULL,
-  `uid` int(11) NOT NULL,
+  `uid` INT UNSIGNED NOT NULL,
   `answer` varchar(2000) NOT NULL,
   `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`testID`,`uid`),
-  FOREIGN KEY (gradeID) REFERENCES grade(gradeID),
-  FOREIGN KEY (uid) REFERENCES user(uid),
-  FOREIGN KEY (quizID) REFERENCES quiz(id)
+  PRIMARY KEY (`quizID`,`uid`),
+  FOREIGN KEY (`gradeID`) 
+  		REFERENCES grades(`gradeID`)
+  		ON UPDATE CASCADE,
+  FOREIGN KEY(uid) 
+  		REFERENCES user(uid)
+		ON UPDATE CASCADE,
+  FOREIGN KEY (quizID) 
+  		REFERENCES quiz(id)
+		ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
