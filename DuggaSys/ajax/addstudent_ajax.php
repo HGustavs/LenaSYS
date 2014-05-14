@@ -1,7 +1,7 @@
 <?php 
-		include_once "../Shared/external/password.php";
-		include_once("../../coursesyspw.php");	
-		include_once("../Shared/basic.php");
+		include_once dirname(__FILE__) . "/../../Shared/external/password.php";
+		include_once(dirname(__FILE__) . "/../../../coursesyspw.php");	
+		include_once(dirname(__FILE__) . "/../../Shared/basic.php");
 		pdoConnect();
 
 		$array=array();
