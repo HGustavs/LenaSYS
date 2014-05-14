@@ -2,9 +2,9 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-			<link type="text/css" href="css/style.css" rel="stylesheet">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/duggasys.js"></script>
+		<script>page.title("Studentview");</script>
 	</head>
 <body>
 <?php
@@ -12,13 +12,13 @@
 	include_once(dirname(__FILE__). "/../../../coursesyspw.php");	
 	include_once(dirname(__FILE__) . "/../../Shared/basic.php");
 
+
 		pdoConnect();
 
 ?>
 	<script type="text/javascript">
 		var qs = getUrlVars();
 	</script>
-	<div id="content">
 
 	<div id="student-box">
 		<div id="student-header">Studentvy</div>
@@ -45,9 +45,9 @@
 	?>
 	</table>
 
-		<input id="hide" type="button" value="Tillbaka" onclick="javascript:studentDelete('hide');"/>
-		<input id="show" type="button" value="Redigera" onclick="javascript:studentDelete('show');"/>
-		<input id="deletebutton" type="submit" style='visibility: hidden' value="Delete" name="delete"/>
+		<input id="hide" type="button" class="submit-button" value="Tillbaka" onclick="javascript:studentDelete('hide');"/>
+		<input id="show" type="button" class="submit-button" value="Redigera" onclick="javascript:studentDelete('show');"/>
+		<input id="deletebutton" type="submit" class="submit-button" style='visibility: hidden' value="Delete" name="delete"/>
 
 
 		<?php
@@ -66,7 +66,6 @@
 		?>
 		</form>
 		</div>
-	</div>
 	</div>
 </body>
 </html>

@@ -2,12 +2,11 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<link type="text/css" href="css/style.css" rel="stylesheet">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/duggasys.js"></script>
+		<script>page.title("Add student");</script>
 	</head>
 <body>
-	<div id="content">
 		<div id="student-box">
 	<form action="" method="post">
 		<div id="student-header">Lägg till student!</div>
@@ -22,7 +21,6 @@
 
 		<div id="light" class="white_content">
 		</div>
-</div>
 </div>
 		<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 
