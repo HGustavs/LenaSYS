@@ -150,7 +150,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 							}
 						}else{
 							if($public == 0){
-								echo '<script type="text/javascript">', 'Up();', '</script>';
+								echo '<script type="text/javascript">','alert("you dont have access");', 'Up();', '</script>';
 							}else{
 								editcodemenu(false);
 							}
