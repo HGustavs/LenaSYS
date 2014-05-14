@@ -114,31 +114,39 @@ function imagerecorder(canvas)
 							"opacity": "0.65"
 						});
 					});
+
+					// Show and log first image
+					showImage(getNextImage());
+					logMouseEvents();
+					clicked = 1;
+					// Save undo point
+					createUndoPoint();
 				}
+				else {
+					// Show next image
+					showImage(getNextImage());
+				
+					// Update scale ratio (for correct mouse positions)
+					updateScaleRatio();
 
-				// Show next image
-				showImage(getNextImage());
-			
-				// Update scale ratio (for correct mouse positions)
-				updateScaleRatio();
+					var rect = canvas.getBoundingClientRect();
 
-				clicked = 1;
-				var rect = canvas.getBoundingClientRect();
+					mHeight = (rect.bottom - rect.top);
+					mWidth = (rect.right-rect.left);
+					var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
+					var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+					//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+					//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
+				
+					document.getElementById('xCord').innerHTML=xMouse;
+					document.getElementById('yCord').innerHTML=yMouse;
 
-				mHeight = (rect.bottom - rect.top);
-				mWidth = (rect.right-rect.left);
-				var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-				var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-				//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-				//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-			
-				document.getElementById('xCord').innerHTML=xMouse;
-				document.getElementById('yCord').innerHTML=yMouse;
+					logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
 
-				logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
-
-				// Add undo point
-				createUndoPoint();
+					// Add undo point
+					createUndoPoint();
+				}
+				
 			} else {
 				alert("You need to upload at least one image before you can start recording.");
 			}
@@ -152,6 +160,7 @@ function imagerecorder(canvas)
 				case 39:
 					if(clicked == 1) {
 						showImage(getNextImage());
+						logMouseEvents();
 					}
 				break;
 				
@@ -159,6 +168,7 @@ function imagerecorder(canvas)
 				case 37:
 					if(clicked == 1) {
 						showImage(getPrevImage());
+						logMouseEvents();
 					}
 				break;		
 			}
@@ -272,6 +282,9 @@ function imagerecorder(canvas)
 			html:		"Clone image",
 			href: 		"#",
 			click:		function(e) {
+				// Make the browser not go to the top of the page.
+				e.preventDefault();
+				
 				// Select li-element by index
 				var selectedli = $("#sortableThumbs .tli").eq(index);
 				var imgPath = $("img", selectedli).attr("src");
@@ -352,7 +365,11 @@ function imagerecorder(canvas)
 				if (widthRatio < heightRatio) ratio = widthRatio;
 				else ratio = heightRatio;
 			}
-			ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+			
+			// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
+			imageData.onload = function() {
+				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
+			}
 		} else {
 			alert("No more images to show");
 		}
@@ -484,6 +501,11 @@ function imagerecorder(canvas)
 	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
 	 */
 	function logMouseEvents(str){
+		// Set default string value
+		if (str == undefined || str == null) {
+			str = "";
+		}
+
 		var logTest;
 		var chrome = window.chrome, vendorName = window.navigator.vendor;
 		// Add image path (substr 9 removes "../canvasrenderer/" from path)
