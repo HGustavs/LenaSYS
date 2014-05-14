@@ -9,7 +9,11 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-	
+		<div id="instructionopacity">
+				<div id="instructionwindow">
+				</div>
+			</div>	
+			
 		<div id="library-name-dialog" title="Library name">
 			<h3><strong>Library name?</strong></h3>
 			<p>Please choose your library name.</p>
@@ -48,9 +52,8 @@
 				<input id="uploadButton" type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image(s)">
 			</div>
 			
-			<!--<div id="information">-->
-					<!--This box will display information about rightclick settings on thumbs-->
-			<!--</div>-->
+			<input type="button" class="controlbutton" value="Instructions" onClick="showinstruction();"/>
+		
 				
 			<!--creating the small imageviewer, on the bottom of the screen-->
 			<div id="thumbnails" class="thumbnails">

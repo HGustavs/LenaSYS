@@ -682,4 +682,11 @@ function imagerecorder(canvas)
 	 	this.stringPosition = strPosition;
 	 	this.imageID = imgID;
 	 }
+	 
 }
+
+	 function showinstruction(){
+		 $("#instructionopacity").fadeIn("fast");
+         $("#instructionwindow").fadeIn("fast");
+		 
+	 }
