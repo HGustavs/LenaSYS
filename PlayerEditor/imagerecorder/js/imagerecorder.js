@@ -27,6 +27,8 @@ function imagerecorder(canvas)
 	var bodyMouseY;
 	this.scrollAmountY = 0;
 	
+	var mouseFPS = 30;
+	
 	var files;						// store files thats being uploaded
 	var rect = canvas.getBoundingClientRect();
 
@@ -229,7 +231,7 @@ function imagerecorder(canvas)
 			}
 			timer = window.setInterval(function() {
 				appendEvString(xMouseReal,yMouseReal);
-			}, 33,33333);
+			}, parseFloat(1000/mouseFPS));
 				interval = true;		
 		});
 
