@@ -16,22 +16,22 @@ if(checklogin()) {
 	</head>
 <body>
 	<script type="text/javascript">
-		var qs = getUrlVars();
-		</script>
-		<div id="student-box">
-	<form action="" method="post">
-		<div id="student-header">Add students</div>
-		<br>
-		<br>
-		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="40" rows="10"></textarea>
-		<br>
-		<input type="button" value="Add students" class="btn btn-login" onclick="passPopUp();"/>
-		<input type="button" class="btn btn-cancel" value="Cancel" onclick="historyBack();"/>
-	</form>
-		<div id="light" class="white_content">
-		</div>
+	var qs = getUrlVars();
+	</script>
+	<div id="student-box">
+		<form action="" method="post">
+			<div id="student-header">Add students</div>
+			<br>
+			<br>
+			<textarea placeholder="SSN, Name, email" name="string" id="string" cols="40" rows="10"></textarea>
+			<br>
+			<input type="button" value="Add students" class="btn btn-login" onclick="passPopUp();"/>
+			<input type="button" class="btn btn-cancel" value="Cancel" onclick="historyBack();"/>
+		</form>
+	<div id="light" class="white_content">
 	</div>
-		<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
+	</div>
+	<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 </body>
 </html>
 <?php
