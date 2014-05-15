@@ -38,13 +38,13 @@ function dehighlightKeyword(kw)
 			});	
 }
 
-// Callback for highlighting back/forward menu item
+// Callback for highlighting back/forward menu item. NOT IN USE FOR NOW.
 function highlightMenu(keywid)
 {
 		$("#"+keywid).addClass("menuhi");
 }
 
-// Callback for highlighting back/forward menu item
+// Callback for highlighting back/forward menu item. NOT IN USE FOR NOW
 function dehighlightMenu(keywid)
 {		
 		$("#"+keywid).removeClass("menuhi");					
@@ -104,9 +104,8 @@ function styleCode()
             }
         }
         
-    	 range = renderdesccode(range);
-    //    document.execCommand("insertHTML",false,rendercode2(range,"docucontent"));
-		document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
+    	range = renderdesccode(range);
+   		document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
 }
 
 
@@ -173,12 +172,84 @@ function editedDescription()
 }
 
 function Save()
-{		
+{	
 	// remove all formatting before saving
 	$('.codestyle span').contents().unwrap();
-	var editable=document.getElementById('docucontent');
-	var desc=editable.innerHTML;
-					AJAXService2("editDescription", desc);
+	
+	var updates = 0;
+	// Get all description boxes and save their contents.
+	for(i=0;i<retdata['template'][0][2];i++){
+		if(retdata['box'][i][1].toUpperCase() == "DOCUMENT"){
+			updates++;
+			var editable=document.getElementById("box"+retdata['box'][i][0]);
+			var desc=editable.innerHTML;
+			AJAXService2("editDescription", desc, retdata['box'][i][0]);
+		}
+	}
+	if(updates==0){
+		warningBox("Warning!", "There's no description to save.");
+	}
+
+}
+function successBox(title, text, delay, confirm, data) {
+	if(title == undefined || 0 === title.length) { title = "Success!" }
+	if(text == undefined || 0 === text.length) { text = "You won..." }
+	if(delay == undefined || 0 === delay.length) { delay = 0 }
+	createRemoveAlert(title, text, delay, confirm, data, "success");
+}
+function warningBox(title, text, delay, confirm, data) {
+	if(title == undefined) { title = "Warning!" }
+	if(text == undefined || 0 === text.length) { text = "Can be dangerous..." }
+	if(delay == undefined || 0 === delay.length) { delay = 0 }
+	createRemoveAlert(title, text, delay, confirm, data, "warning");
+}
+function createRemoveAlert(title, text, delay, confirm, data, type) {
+	var result = false;
+	if(delay == undefined) { delay = 0 }
+	var output = '<div class="alert slide-down '+type+'">';
+			output += '<span class="alertCancel">x</span>';
+		output += '<strong>'+title+'</strong>';
+		output += '<p>'+text+'</p>';
+
+		if(typeof confirm == 'function') {
+			output += '<input type="button" id="alertSubmit" class="btn btn-login btn-next" value="Submit">';	
+			output += '<input type="button" class="btn btn-forgot btn-cancel alertCancel" value="Cancel">';	
+		}
+	output += '</div>';
+	if($(".alert").length == 0) {
+		$("#feedbacksection").prepend(output);
+		var elemHeight = $('.alert').height();
+		
+		$('.alert').css({ display: "block", height: "0px" });
+		$(".alert").animate({height: elemHeight}, 300);
+	}
+/*	if(typeof confirm == 'function') {
+	
+		$.when(this).done(setTimeout(function() {
+			$( "#alertSubmit" ).click(function() {
+				confirm(data);
+				$(".alert").animate({height: 0}, 300,"linear",function() {
+					$(this).remove();
+				})
+			});
+			$( ".alertCancel" ).click(function() {
+				$(".alert").animate({height: 0}, 300,"linear",function() {
+					$(this).remove();
+				})
+			});
+		}, 1000));
+	}
+	else {
+*/		
+		$.when(this).done(setTimeout(function() {
+			$('html').click(function(event) {
+			 	$(".alert").animate({height: 0}, 300,"linear",function() {
+					$(this).remove();
+				});
+				$("html").unbind('click');
+			});
+		},- 1000));
+	//}
 }
 
 function highlightop(otherop,thisop)
@@ -194,26 +265,26 @@ function dehighlightop(otherop,thisop)
 }
 				
 function Up()
-{					
-		location="../DuggaSys/#sectioned?courseid="+courseIDNum;
+{		
+		location="../DuggaSys/#sectioned?courseid="+courseID;
 }				
 
 function gotoPosition(exampleid)
 {
-		location="EditorV30.php?exampleid="+exampleid+"&courseid="+courseIDNum;
+		location="EditorV30.php?courseid="+courseID+"&exampleid="+exampleid;
 }
 
 function SkipB()
 {		
 		if(issetDrop("backwdrop")&&isdropped==false){
-			position=parseInt(position)-1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&position="+position;
+			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
+			location="EditorV30.php?courseid="+courseID+"&exampleid="+prevexampleid;
 		}else if(issetDrop("backwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 			// get previous example in the hierarchy
 			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
-			location="EditorV30.php?courseid="+courseIDNum+"&exampleid="+prevexampleid;
+			location="EditorV30.php?courseid="+courseID+"&exampleid="+prevexampleid;
 		}
 }
 
@@ -239,15 +310,15 @@ function SkipBUp()
 function SkipF()
 {
 		if(issetDrop("forwdrop")&&isdropped==false){
-				position=parseInt(position)+1;
-				location="EditorV30.php?courseid="+courseID+"&sectionid="+sectionID+"&position="+position;
+			var nextexampleid=parseInt(retdata['after'][0][1]);
+			location="EditorV30.php?courseid="+courseID+"&exampleid="+nextexampleid;
 		}
 		else if(issetDrop("forwdrop")&&isdropped==true){
 				isdropped=false;
 		}else{
 			// get next example in the hierarchy
 			var nextexampleid=parseInt(retdata['after'][0][1]);
-			location="EditorV30.php?courseid="+courseIDNum+"&exampleid="+nextexampleid;
+			location="EditorV30.php?courseid="+courseID+"&exampleid="+nextexampleid;
 		}
 }
 $(document).click(function (e)
@@ -302,13 +373,12 @@ function SkipFUp()
 
 function setup()
 {
-//		$.ajax({url: "editorService.php", type: "POST", data: "coursename="+courseID+"&version="+version+"&sectionid="+sectionID+"&position="+position+"&opt=List", dataType: "json", success: returned});											
 	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
 			
-		if(sessionkind=="w"){
-				setupEditable();						
-		}
-		setTheme();
+	if(sessionkind=="w"){
+		setupEditable();						
+	}
+	setTheme();
 }
 
 
@@ -324,10 +394,10 @@ function Plus()
 		AJAXService("createNewExample","");						
 }
 
-function chosenFile(filename)
+function chosenFile(filename,boxid)
 {
 		var filename=encodeURIComponent(filename);
-		AJAXService("selectFile","&filename="+filename);
+		AJAXService("selectFile","&filename="+filename+"&boxid="+boxid);
 }
 
 function chosenWordlist()
@@ -363,10 +433,10 @@ function delImpword()
 		AJAXService("delImpWord","&word="+word);
 }
 
-function addImpline()
+function addImpline(boxid)
 {
-		from=document.getElementById('implistfrom');
-		to=document.getElementById('implistto');
+		from=document.getElementById(boxid+"from");
+		to=document.getElementById(boxid+"to");
 		errormsg = document.getElementById('impLinesError');
 		
 		// reset the color of input boxes
@@ -389,7 +459,7 @@ function addImpline()
 		}
 		// add important lines
 		if(fromValue<=toValue){
-				AJAXService("addImpLine","&from="+fromValue+"&to="+toValue);
+				AJAXService("addImpLine","&boxid="+boxid+"&from="+fromValue+"&to="+toValue);
 		}
 		// Error message if from>to
 		else{
@@ -399,11 +469,11 @@ function addImpline()
 		}
 }
 
-function delImpline()
+function delImpline(boxid)
 {
-		from=parseInt(document.getElementById('implistfrom').value);
-		to=parseInt(document.getElementById('implistto').value);
-		AJAXService("delImpLine","&from="+from+"&to="+to);
+		from=parseInt(document.getElementById(boxid+"from").value);
+		to=parseInt(document.getElementById(boxid+"to").value);
+		AJAXService("delImpLine","&boxid="+boxid+"&from="+from+"&to="+to);
 }
 
 function addWordlistWord()
@@ -608,220 +678,8 @@ function sendOut(kind, sectid)
 }
 */			
 
-function changetemplate(templateid){
-	templateid = parseInt(templateid);
-	AJAXService("chooseTemplate","&templateid="+templateid);
-//	location.reload();
-}
-
-function choosetemplate(){
-	if(sessiondkind = "w"){
-		if(parseInt(retdata['template'][0][0]) == 0){
-			var div2 = document.getElementById("div2");
-			var templateholder = document.createElement("div");
-			templateholder.setAttribute("id", "picktemplate");
-			templateholder.style.zIndex='2';
-			var examplenme=document.getElementById('exampleName');
-			var examplesect=document.getElementById("exampleSection");
-			examplenme.innerHTML=retdata['examplename'];
-			examplesect.innerHTML=retdata['entryname'];
-			
-			
-			str="<h1>Pick a template for your example!</h1>";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'1'+"\");' src='new icons/template1_butt.svg' />";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'2'+"\");' src='new icons/template2_butt.svg' />";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'3'+"\");' src='new icons/template3_butt.svg' />";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'4'+"\");' src='new icons/template4_butt.svg' />";
-			str+="<img class='templatethumbicon wiggle' onclick='changetemplate(\""+'5'+"\");' src='new icons/template5_butt.svg' />";
-			templateholder.innerHTML = str;
-			div2.appendChild(templateholder);
-			return false;
-		}
-		return true;
-	}
-}
-
-function returned(data)
-{
-		retdata=data;
-		
-		if(!choosetemplate()){
-			return;
-		}
-		// remove templatebox if it still exist
-		if(document.getElementById("picktemplate")){
-			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
-		}
-			
-		changeCSS("css/"+data['template'][0][1]);
-		
-				//----------------------------------------------------
-		// Populate interface with returned data (all relevant data is returned)
-		//----------------------------------------------------
-
-		// Make before dropdown
-		str="<div class='dropdownback dropdownbackStyle'>Skip Backward</div>";
-		for(i=0;i<data['before'].length;i++){
-				str+="<span id='F"+data['before'][i][1]+"' onmouseover='highlightMenu(\"F"+data['before'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['before'][i][1]+"\");' onclick='gotoPosition(\""+data['before'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['before'][i][0]+"</span>";
-		}
-		var before=document.getElementById('backwdrop');
-		before.innerHTML=str;
-		
-		// If we have no items before the current item - hide before button and dropdown
-		var before=document.getElementsByClassName('beforebutton');
-		if(data['before'].length==0){
-			for(var i=0; i<before.length; i++){
-				before[i].childNodes[0].style.opacity="0.2";
-				before[i].onclick="";
-			}
-		}else{
-			for(var i=0; i<before.length; i++){
-				before[i].style.opacity="1";	
-		//		before[i].onclick ="SkipF();";													
-			}	
-		}
-		
-
-		// If we have no items before the current item - hide before button and dropdown
-		var after=document.getElementsByClassName('afterbutton');
-		if(data['after'].length==0){
-			for(var i=0; i<after.length; i++){
-				after[i].childNodes[0].style.opacity="0.2";
-				after[i].onclick="";
-			}
-		}
-		
-		
-	
-			var url = getPlaylinkURL();
-			var playbutton=document.getElementsByClassName('playbutton');
-			checkPlaylinkURL(url,
-				function(status) { 
-					if(status){ 
-						for(var i=0; i<playbutton.length; i++){
-							playbutton[i].childNodes[0].style.opacity="1";
-							playbutton[i].onclick=function(){Play();};
-						}			
-					}else{
-						for(var i=0; i<playbutton.length; i++){
-							playbutton[i].childNodes[0].style.opacity="0.2";
-							playbutton[i].onclick=function(){};
-						}
-					}
-				}
-			);
-	
-		
-		// Playbutton Either Hidden or Shown depending on if there is any play link or not
-	/*	var playbutton=document.getElementsByClassName('playbutton');
-		if(data['playlink']==""){
-			for(var i=0; i<playbutton.length; i++){
-				playbutton[i].childNodes[0].style.opacity="0.2";
-				playbutton[i].onclick=function(){};
-			}
-		}else{
-			for(var i=0; i<playbutton.length; i++){
-				playbutton[i].childNodes[0].style.opacity="1";
-				playbutton[i].onclick=function(){Play();};
-			}									
-		}
-	*/	
-		// Make after dropdown
-		str="<div class='dropdownback dropdownbackStyle'>Skip Forward</div>";
-		for(i=0;i<data['after'].length;i++){
-				str+="<span id='F"+data['after'][i][1]+"' onmouseover='highlightMenu(\"F"+data['after'][i][1]+"\");' onmouseout='dehighlightMenu(\"F"+data['after'][i][1]+"\");' onclick='gotoPosition(\""+data['after'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['after'][i][0]+"</span>";
-		}
-		var after=document.getElementById('forwdrop');
-		after.innerHTML=str;
-
-		// Fill Description
-		var docuwindow=document.getElementById("docucontent");
-		
-		// replacing span&nsbp; so it is perceived as a tagname for codestyle
-	
-	/* START code for first function made START */
-	//	var desc = data['desc'];
-	//	desc = replaceAll("<span&nbsp;","<span ",data['desc']);
-	//	desc = replaceAll('"&nbsp;','" ', desc);
-	//	desc = replaceAll('&nbsp;"',' "', desc);
-	//	docuwindow.innerHTML = desc;
-	/* 	STOP */	
-	
-		var desc = data['desc'];
-		desc = replaceAll("<span&nbsp;","<span ",desc);
-		desc =  replaceAll("<img&nbsp;","<img ",desc);
-		
-		docuwindow.innerHTML = desc;
-		
-		//  Fill description with code using tokenizer.
-		var cs = docuwindow.getElementsByClassName("codestyle");
-		for(var i=0; i<cs.length; i++){
-			desc = desc.replace(cs[i].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML))));
-		}
-		docuwindow.innerHTML = desc;
-		
-		
-		// Fill Code Viewer with Code using Tokenizer
-		rendercode(data['code'],"infobox");
-
-		// Fill Section Name and Example Name
-		var examplenme=document.getElementById('exampleName');
-		examplenme.innerHTML=data['examplename'];
-		var examplesect=document.getElementById("exampleSection");
-		examplesect.innerHTML=data['entryname']+"&nbsp;:&nbsp;";
-		
-		
-		if(sessionkind=="w"){
-				// Fill file requester with file names
-				str="";
-				for(i=0;i<data['directory'].length;i++){
-						if(data['directory'][i]==data['filename']){
-								str+="<span class='dropdownitem dropdownitemStyle menuch' id='DDI"+i+"' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";						
-						}else{
-								str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+data['directory'][i]+"\");' onmouseover='highlightMenu(\"DDI"+i+"\");' onmouseout='dehighlightMenu(\"DDI"+i+"\");'>"+data['directory'][i]+"</span>";														
-						}
-				}
-				var filereq=document.getElementById('codedrop');
-				if(filereq!=null) filereq.innerHTML=str;
-
-
-            // Fill imagelist
-            str="";
-            for(i=0;i<data['images'].length;i++){
-
-                    //str+="<span class='dropdownitem' id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' onmouseover='highlightMenu(\"DDII"+i+"\");' onmouseout='dehighlightMenu(\"DDII"+i+"\");'>"+data['images'][i]+"</span>";
-                str+="<img id='DDII"+i+"' onclick='insertImage(\"imgupload/"+data['images'][i]+"\");' title=\""+data['images'][i]+"\" src=\"imgupload/"+data['images'][i]+"\"></img>";
-
-            }
-
-            var filereq=document.getElementById('imgdrop');
-            if(filereq!=null) filereq.innerHTML=str;
-
-			
-			
-			
-
-
-		}
-		
-		//----------------------------------------------------
-		// Fill wordlist part of document dialog
-		//----------------------------------------------------
-
-		if(sessionkind=="w"){
-			
-			// Check what tab in general settings menu should be displayed, otherwise the same tabmenu will be displayed after every update.
-			if(tabmenuvalue == "wordlist"){
-				displayWordlist();
-			}else if(tabmenuvalue == "security"){
-				displaySecurity();	
-			}else if(tabmenuvalue == "templates"){
-				displayTemplates();
-			}					
-		}
-		
-
-}
+function displayPlaylink(){
+	tabmenuvalue = "playlink";
 function displaySettings(){
 	tabmenuvalue = "Settings";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
@@ -860,11 +718,11 @@ function displayTemplates()
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
-	str+="<div class='templateicon' onclick='changeCSS(\""+'css/template1.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
-	str+="<div class='templateicon' onclick='changeCSS(\""+'css/template2.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
-	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template3.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
-	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3'+"\");changeCSS(\""+'css/template4.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
-	str+="<div class='templateicon' onclick='addTemplatebox(\""+'temp3,temp4'+"\");changeCSS(\""+'css/template5.css'+"\", 0);'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'1'+"\");'><img class='templatethumbicon wiggle' src='new icons/template1_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'2'+"\");'><img class='templatethumbicon wiggle' src='new icons/template2_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'3'+"\");'><img class='templatethumbicon wiggle' src='new icons/template3_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'4'+"\");'><img class='templatethumbicon wiggle' src='new icons/template4_butt.svg' /></div>";
+	str+="<div class='templateicon' onclick='changetemplate(\""+'5'+"\");'><img class='templatethumbicon wiggle' src='new icons/template5_butt.svg' /></div>";
 
 		
 	docurec=document.getElementById('docudrop');
@@ -919,19 +777,7 @@ function displayWordlist(){
 				str+="<input type='button' value='add' onclick='addImpword();' />";
 				str+="<input type='button' value='del' onclick='delImpword();'/>";													
 		
-				//----------------------------------------------------
-				// Fill important line list part of document dialog
-				//----------------------------------------------------
-				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
-				for(i=0;i<retdata['improws'].length;i++){
-						str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+retdata['improws'][i][0]+"-"+retdata['improws'][i][1]+"</option>";										
-				}
-				str+="</select><br/>"
-				str+="<div id='impLinesError' class='errormsg'></div>";
-				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
-				str+="<input type='button' value='add' onclick='addImpline();' />";
-				str+="<input type='button' value='del' onclick='delImpline();' />";
-				
+
 				var docurec=document.getElementById('docudrop');
 				docurec.innerHTML=str;
 }
@@ -996,9 +842,10 @@ function setupEditable()
 		if(sessionkind=="w"){
 				var editable=document.getElementById('exampleName');
 				editable.addEventListener("blur", function(){editedExamplename();}, true);
-		
+		/*
 				var fditable=document.getElementById('docucontent');
 				fditable.addEventListener("blur", function(){editedDescription();}, true);
+		*/
 		}
 }
 function editedExamplename()
@@ -1323,8 +1170,9 @@ while (c) {		// c == first character in each word
 // Requires tokens created by a cockford-type tokenizer
 //----------------------------------------------------------------------------------
 
-function rendercode(codestring,destinationdiv)
+function rendercode(codestring,boxid)
 {
+    var destinationdiv = "box" + boxid;
 		tokens = [];
 		
 		important = [];
@@ -1339,10 +1187,13 @@ function rendercode(codestring,destinationdiv)
 						keywords.push(temp);
 				}
 		}			
-		
+
 		improws=[];
 		for(var i=0;i<retdata.improws.length;i++){
-				improws.push(retdata.improws[i]);
+
+            if ((retdata['improws'][i][0]) == boxid){
+            improws.push(retdata.improws[i]);
+}
 		}
 		tokenize(codestring,"<>+-&","=>&:");
 				
@@ -1463,7 +1314,7 @@ function rendercode(codestring,destinationdiv)
 								str+="<div class='normtext'>";
 						}else{
 								for(var kp=0;kp<improws.length;kp++){
-										if(lineno>=parseInt(improws[kp][0])&&lineno<=parseInt(improws[kp][1])){
+										if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
 												str+="<div class='impo'>";
 												break;
 										}else{
@@ -1609,6 +1460,7 @@ function linenumbers()
 {	
 	if(localStorage.getItem("linenumbers") == "false"){	
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg'); 
+		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton2.svg');
 		$( ".no" ).css("display","none");	
 	}
 }
@@ -1616,31 +1468,15 @@ function fadelinenumbers()
 {
 	if ( $( ".no" ).is( ":hidden" ) ) {
 		$( ".no" ).fadeIn( "slow" );
+		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton.svg');
 		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
 		$( ".no" ).fadeOut("slow");
+		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton2.svg');
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
-}
-function addTemplatebox(id)
-{	
-	var temps = id.split(",");
-	
-	
-	var content = document.getElementById("div2");
-	
-	for(i=0; i<temps.length; i++){
-		if(document.getElementById(temps[i])){
-			continue;
-		}
-		var div = document.createElement("div");
-		content.appendChild(div);
-		div.id = temps[i];
-		div.className = temps[i]+"Style";
-		div.setAttribute("contenteditable", "true");
-	}	
 }
 
 function changeCSS(cssFile, index)
@@ -1685,9 +1521,9 @@ $(function() {
    		event.stopPropagation();
 	});
 });
-
+/*
 $(function() {
-	$('#hidecode').click(function() {
+	$('.hidecode').click(function() {
 		$('.codedrop').slideToggle("fast");
 		$('.docudrop').hide();
 		$('#hotdogdrop').hide();
@@ -1704,7 +1540,7 @@ $(function() {
    		event.stopPropagation();
 	});
 });
-
+*/
 $(function() {
 	$('#hidehotdog').click(function() {
 		$('#hotdogdrop').slideToggle("fast");
@@ -1742,7 +1578,7 @@ $(function() {
    		event.stopPropagation();
 	});
 });
-
+/*
 $(function() {
 	$('#hideimage').click(function() {
 		$('.imgdrop').slideToggle("fast");
@@ -1761,6 +1597,22 @@ $(function() {
    		event.stopPropagation();
 	});
 });
+
+
+
+	$('#imgdrop').slideToggle("fast");
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('#hotdogdrop').hide();
+		$('.themedrop').hide();
+		$('.backwdrop').hide();
+		$('.forwdrop').hide();
+		return false;
+	});
+*/
+
+
+
 
 function Theme()
 {

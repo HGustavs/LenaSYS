@@ -1,21 +1,22 @@
-#buttomenu2{
-    z-index:2;
-    position: absolute;
+#box1menu{
+	z-index:2;
+	position: absolute;
+	top:0px;
+	left:0px;
     background-color: #5D5D5D;
     height: 50px;
-    width: -moz-calc(100%);
-    width: -webkit-calc(100%);
+    width: -moz-calc(26%);
+    width: -webkit-calc(26%);
 }
-
-#docucontent{
-	padding-left: 4px;
+#box1{
+    padding-left: 4px;
     position: absolute;
     top: 50px;
     left: 0px;
-    height: -webkit-calc(40% - 50px);
-    height: -moz-calc(40% - 50px);
-    width: -webkit-calc(100% - 4px);
-    width: -moz-calc(100% - 4px);
+    right: 0px;
+    height: 250px;
+    background-color: #272822;
+    overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
     font-family: Arial,Sans-Serif;
@@ -23,7 +24,13 @@
     outline: 0 none;
 }
 
-#codebox {
+#box2menu{
+	position: absolute;
+	z-index: 2;
+	right:0px;
+	top:0px;
+}
+#box2 {
     position: absolute;
     bottom: 0px;
     right: 0px;
@@ -38,9 +45,4 @@
     overflow-x: auto;
     outline: 0 none;
 }
-#temp3{
-	display: none;
-}
-#temp4{
-	display: none;
-}
+
