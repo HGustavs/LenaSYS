@@ -54,7 +54,7 @@
 	</script>
 	<div id="student-box">
 		<div id="student-header">Studentview</div>
-		<button onclick="changeURL('addstudent?courseid=' + qs.courseid)">
+		<button onclick="changeURL('addstudent?courseid=' + qs.courseid + '&name=' + qs.name)">
 			Add students 
 		</button>
 	<form action="" method="post">

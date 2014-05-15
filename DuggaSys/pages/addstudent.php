@@ -4,7 +4,10 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/duggasys.js"></script>
-		<script>page.title("Add student");</script>
+		<script>		
+		qs = getUrlVars();
+		page.title(qs.name);
+		</script>
 	</head>
 <body>
 	<script type="text/javascript">
