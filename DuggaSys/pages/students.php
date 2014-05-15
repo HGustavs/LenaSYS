@@ -50,7 +50,7 @@
 		}
 	</script>
 	<div id="student-box">
-		<div id="student-header">Studentvy</div>
+		<div id="student-header">Studentview</div>
 		<button onclick="changeURL('addstudent?courseid=' + qs.courseid)">
 			Add students 
 		</button>
@@ -60,7 +60,7 @@
 	<thead>
 	<tr><th>Name</th>
 	<th>UserID</th>
-	<th>Dugga</th>
+	<th>Quiz</th>
 	<th id='deletebox' style='visibility: hidden'>Delete</th></tr>
 	</thead>
     <tbody>
@@ -70,8 +70,8 @@
 	</tbody>
 	</table>
 
-		<input id="hide" type="button" value="Tillbaka" class="submit-button" onclick="javascript:studentDelete('hide');"/>
-		<input id="show" type="button" value="Redigera" class="submit-button" onclick="javascript:studentDelete('show');"/>
+		<input id="hide" type="button" value="Back" class="submit-button" onclick="javascript:studentDelete('hide');"/>
+		<input id="show" type="button" value="Edit" class="submit-button" onclick="javascript:studentDelete('show');"/>
 		<input id="deletebutton" type="submit" class="submit-button" style='visibility: hidden' value="Delete" name="delete"/>
 
 
