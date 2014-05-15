@@ -21,7 +21,7 @@
 		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="30"></textarea>
 		<br>
 		<input type="button" value="Add students" class="btn btn-login" onclick="passPopUp();"/>
-		<input type="button" class="btn btn-cancel"  onclick="changeURL('students?courseid=' + qs.courseid)" value="Cancel"/>
+		<input type="button" class="btn btn-cancel"  onclick="changeURL('students?courseid=' + qs.courseid+ '&name=' + qs.name)" value="Cancel"/>
 	</form>
 
 

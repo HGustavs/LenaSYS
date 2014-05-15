@@ -239,7 +239,6 @@ $(function() {
 
 function passPopUp(){
     var qs = getUrlVars();
-	alert(qs.courseid);
     $.ajax({
 		dataType: "json",
 		type: "POST",
