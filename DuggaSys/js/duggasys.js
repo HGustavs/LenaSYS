@@ -229,11 +229,11 @@ function returnedSection(data)
 
 $(function() {
        $('#hide').click(function() {
-                $('td:nth-child(4)').hide();                
+                $('td:nth-child(5)').hide();                
        });
 
 	   $('#show').click(function() {
-                $('td:nth-child(4)').show();                
+                $('td:nth-child(5)').show();                
        });
     });
 

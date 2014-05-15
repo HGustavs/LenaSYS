@@ -34,6 +34,15 @@
 		      output += "<tr><td>"+this.username+"</td>";
 			  output += "<td>"+this.uid+"</td>";
 			  output += "<td>"+access+"</td>";
+			  output += "<td>";
+			  output += "<form id='accesschange'>";
+			  output += "<select id='access' name='access' onChange='updateDb();'>";
+			  output += "<option value='0'>Access</option>";
+			  output += "<option value='W'>Teacher</option>";
+			  output += "<option value='R'>Student</option>";
+			  output += "</select>";
+			  output += "</form>";
+				output += "</td>";
 		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td></tr>";
 		   });
 		   $("table.list tbody").empty();
@@ -56,6 +65,22 @@
 			}
           });
 		}
+
+		function updateDb() {
+			$.ajax({
+            type: "POST",
+            url: "./ajax/updateAccess.php", 
+            data: $("#accesschange").serialize(),
+			dataType: "JSON",
+            success: function(data){
+                appendStudents(data);
+            },
+			error: function() {
+	            alert("Could not retrieve students");	
+			}
+          });
+		}
+
 	</script>
 	<div id="student-box">
 		<div id="student-header">Studentview</div>
@@ -69,6 +94,7 @@
 	<tr><th>Name</th>
 	<th>UserID</th>
 	<th>Access</th>
+	<th>Change Access</th>
 	<th id='deletebox' style='visibility: hidden'>Delete</th></tr>
 	</thead>
     <tbody>
