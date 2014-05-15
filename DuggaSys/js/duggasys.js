@@ -1,3 +1,35 @@
+function saveSort() {
+	var serialized = $("#Sectionlist").sortable("serialize");
+	// Pass course ID to check write access
+	var array = serialized + "&courseid=" + querystring.courseid + "&opt=updateEntries";
+	$.post("ajax/SectionedService.php", array, function(theResponse) {
+		var data = $.parseJSON(theResponse);
+		if(data.success) {
+			successBox(data.coursename, "Updates saved", 50);
+		} else {
+			warningBox(data.coursename, "Could not save list elements", 50);
+		}
+	});
+}
+
+function setupSort() {
+	var sort = document.getElementById('setupsort');
+	if (sort.value == "Enable sorting") {
+		sort.value = "Disable sorting";
+		document.getElementById('savesort').style.display = 'initial';
+		noticeBox("Sorting enabled!", "Sections are now draggable");
+		$("#Sectionlist").sortable("enable");
+		sort.className = "submit-button-red";
+	} else {
+		sort.value = "Enable sorting";
+		document.getElementById('savesort').style.display = 'none';
+		noticeBox("Sorting disabled!", "Sections are not draggable any longer");
+		$("#Sectionlist").sortable("disable");
+		sort.className = "submit-button";
+	}
+	
+}
+
 function returnedSection(data)
 {
 		retdata=data;
@@ -5,7 +37,14 @@ function returnedSection(data)
 		// Fill section list with information
 		str="";
 		if(sessionkind) {
-			str+="<div style='float:right;'><input class='submit-button' type='button' value='Add' onclick='changeURL(\"newSectionForm?courseid=" + data.courseid + "\")'/></div>";	
+			str+="<div style='float:right;'>";
+			str+="<input class='submit-button' type='button' value='Add' onclick='changeURL(\"newSectionForm?courseid=" + data.courseid + "\")'/>";
+			str+="</div>";
+			
+			str+="<div style='float:left;'>";
+			str+="<input class='submit-button' style='margin-right:5px;' id='setupsort' type='button' value='Enable sorting' onclick='setupSort()'/>";
+			str+="<input class='submit-button' style='display:none;' padding id='savesort' type='button' value='Save' onclick='saveSort()'/>";
+			str+="</div>";
 		}
 		// Course Name
 		str+="<div class='course'>"+data.coursename+"</div>";
@@ -53,31 +92,31 @@ function returnedSection(data)
 						if (parseInt(data['entries'][i]['kind']) < 2) {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<span style='color:rgba(255,255,255,0.5);'>"+data['entries'][i]['entryname']+"</span>";
-								str+="<img style='opacity:0.5;'onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+								str+="<span style='padding-left:5px;color:rgba(255,255,255,0.5);'>"+data['entries'][i]['entryname']+"</span>";
+								str+="<img style='padding-right:5px;opacity:0.5;'onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 							} else {
-								str+="<span>"+data['entries'][i]['entryname']+"</span>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+								str+="<span style='padding-left:5px;'>"+data['entries'][i]['entryname']+"</span>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 							}
 						} else if (parseInt(data['entries'][i]['kind']) == 2 || parseInt(data['entries'][i]['kind']) >= 4) {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
-								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);margin-left:15px;' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							
 							} else{
-								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a style='margin-left:15px;' id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							}
 						} else {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
-								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							
 							} else{
-								str+="<a id='section-list' style='cursor: pointer;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a id='section-list' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							}
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
@@ -148,14 +187,14 @@ function returnedSection(data)
 						}
 						str+="</select>";
 						str+="<div style='float:right;'>";
-						str+="<input class='submit-button-red' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
+						str+="<input class='submit-button-red' type='button' value='Delete' onclick='warningBox(\"Confirm Delete\", \"Would you like to delete this?\", 0, deleteFromSectionlist, "+data['entries'][i]['lid']+")' style='margin-left:10px;margin-right:10px;' />";
 						str+="<input class='submit-button' type='button' value='Save' onclick='sectionSettingsService("+data['entries'][i]['lid']+")' />";
 						str+="</div></div>";
 					} else {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
-							str+="<span>"+data['entries'][i]['entryname']+"</span>";
+							str+="<span style='padding-left:5px;'>"+data['entries'][i]['entryname']+"</span>";
 						} else {
-							str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+							str+="<span><a style='margin-left:15px;' id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 						}
 					}
 					str+="</span>";
@@ -335,4 +374,9 @@ function printDiv(){
 	window.print();
 
 	document.body.innerHTML = originalContents;
+}
+
+
+function deleteFromSectionlist(ID){
+	AJAXServiceSection("sectionDel","&sectid="+ID);
 }

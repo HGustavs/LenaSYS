@@ -1,65 +1,61 @@
-#docucontent{
-    padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #272822;
+#buttomenu2{
+    z-index:2;
     position: absolute;
-    top: 0px;
-    left: 0px;
-      width: -moz-calc(50.0%);
-	  width: -webkit-calc(50.0%);
-	  
-      height: -webkit-calc(35.0%);
-      height: -moz-calc(35.0%);
-    /* background-color: #272822;*/
-    overflow: scroll;
-    /*color: white;*/
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
+    background-color: #5D5D5D;
+    height: 50px;
+    width: -moz-calc(50%);
+    width: -webkit-calc(50%);
 }
-#temp3{
+
+#docucontent {
 	padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-     border-color: black;
     position: absolute;
-    top: 0px;
-    right: 0px;
-      width: -moz-calc(50.0%);
-	  width: -webkit-calc(50.0%);
-	  
-      height: -webkit-calc(35.0%);
-      height: -moz-calc(35.0%);
-     /*background-color: #272822;*/
+    top: 50px;
+    left: 0px;
+    height: -webkit-calc(40% - 50px);
+    height: -moz-calc(40% - 50px);
+    width: -webkit-calc(50.0% - 4px);
+    width: -moz-calc(50.0% - 4px);
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
-    /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
 }
 
-#codebox {
-    border-style: solid;
-    border-width: 1px;
+#temp3{
+	padding-left: 4px;
     position: absolute;
-    float: left;
-      width: -moz-calc(100.0%);
-	  width: -webkit-calc(100.0%);
-	  
-      height: -webkit-calc(65.0%);
-      height: -moz-calc(65.0%);
-    left: 0px;
-    right: 0px;
+    top: 0px;
+	right: 0px;
+	height: -webkit-calc(40.0%);
+    height: -moz-calc(40.0%);
+    width: -webkit-calc(50.0% - 4px);
+    width: -moz-calc(50.0% - 4px);
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    outline: 0 none;
+    z-index: 2;
+}
+
+#codebox {
+    position: absolute;
     bottom: 0px;
-     /*background-color: #272822;*/
-     font-family: Arial,Sans-Serif;
+    right: 0px;
+    height: -webkit-calc(60%);
+    height: -moz-calc(60%);
+    width: -webkit-calc(100%);
+    width: -moz-calc(100%);
+    font-family: Arial,Sans-Serif;
     font-size: 14px;
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
+    outline: 0 none;
     z-index: 2;
 }
 

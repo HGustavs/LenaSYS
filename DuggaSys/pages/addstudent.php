@@ -1,3 +1,8 @@
+﻿<?php
+include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
+session_start();
+if(checklogin()) {
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -21,13 +26,14 @@
 		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="40" rows="10"></textarea>
 		<br>
 		<input type="button" value="Add students" class="btn btn-login" onclick="passPopUp();"/>
-		<input type="button" class="btn btn-cancel"  onclick="changeURL('students?courseid=' + qs.courseid+ '&name=' + qs.name)" value="Cancel"/>
+		<input type="button" class="btn btn-cancel" value="Cancel" onclick="historyBack();"/>
 	</form>
-
-
 		<div id="light" class="white_content">
 		</div>
 	</div>
 		<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 </body>
 </html>
+<?php
+}
+?>
