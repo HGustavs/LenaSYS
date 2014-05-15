@@ -684,6 +684,9 @@ function imagerecorder(canvas)
 			});
 		});
 
+		// Show instruction button
+		$("#instructbutton").show();
+
 		// Clear canvas
 		canvas.width = canvas.width;
 
