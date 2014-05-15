@@ -12,14 +12,13 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 	$query->execute();
 
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		array_push(
-			$entries,
-			array(
-				'uid' => $row['uid'],
-				'username' => $row['username'],
-				'access' => $row['access']
-			)
+		$entry = array(
+			'uid' => $row['uid'],
+			'username' => $row['username'],
+			'access' => $row['access']
 		);
+
+		array_push($entries, $entry);
 	}
 	$array = array(
 		'entries' => $entries,
