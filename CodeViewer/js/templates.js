@@ -25,12 +25,11 @@ function choosetemplate(){
 }
 function addTemplatebox(id)
 {
-	var content = document.getElementById("div2");
-	
 	// don't create box if it already exists
 	if(document.getElementById(id)){
 		return;
 	}
+	var content = document.getElementById("div2");
 		
 	var div = document.createElement("div");
 	content.appendChild(div);
@@ -141,8 +140,6 @@ function createcodedrop(contentid,boxid)
 
 
 	codedrop.innerHTML=str;
-
-
 }
 
 
@@ -151,9 +148,15 @@ function returned(data)
 		retdata=data;
 		
 		// User can choose template if no template has been choosen and the user have write access.
-		if((data['template'][0][0] == 0) && (sessionkind == "w")){
-			choosetemplate();
-			return;
+		if((data['template'][0][0] == 0)){
+			if(sessionkind == "w"){
+				choosetemplate();
+				return;
+			}else{
+				/* Create an error message to user or send user back to duggasys */
+				return;
+			}
+			
 		}
 		
 		// remove templatebox if it still exists
@@ -161,7 +164,6 @@ function returned(data)
 			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
 		}
 		
-		var arraybox = new Array();
 		// create boxes
 		for(i=0;i<retdata['template'][0][2];i++){
 			
@@ -169,15 +171,16 @@ function returned(data)
 			var boxid=data['box'][i][0];
 			var boxtype=data['box'][i][1];
 			var boxcontent=data['box'][i][2];
-			
-			
-			temparray = [contentid, boxid, boxtype];
-			arraybox.push(temparray);
+		
 			
 			// create a templatebox
-			addTemplatebox("box"+(i+1));
+			addTemplatebox(contentid);
 			// Print out code example in a code box
 			if(boxtype == "CODE"){
+				
+				document.getElementById(contentid).removeAttribute("contenteditable");
+					
+					// Create a boxmenu for users with write access.	
 				if(sessionkind == "w"){
 					createboxmenu(contentid,boxid,boxtype);
 					createcodedrop(contentid,boxid);
@@ -191,7 +194,6 @@ function returned(data)
 				var desc = boxcontent;
 				desc = replaceAll("<span&nbsp;","<span ",desc);
 				desc =  replaceAll("<img&nbsp;","<img ",desc);
-			
 				
 				var docuwindow = document.getElementById(contentid);
 				docuwindow.innerHTML=desc;
@@ -213,6 +215,7 @@ function returned(data)
 				}
 			}		
 		}
+		
 		changeCSS("css/"+data['template'][0][1]);
 		
 				//----------------------------------------------------
@@ -237,10 +240,8 @@ function returned(data)
 		}else{
 			for(var i=0; i<before.length; i++){
 				before[i].style.opacity="1";	
-		//		before[i].onclick ="SkipF();";													
 			}	
 		}
-		
 
 		// If we have no items before the current item - hide before button and dropdown
 		var after=document.getElementsByClassName('afterbutton');
@@ -250,9 +251,8 @@ function returned(data)
 				after[i].onclick="";
 			}
 		}
-		
-		
 	
+			/* Create and check URL in playlink */
 			var url = getPlaylinkURL();
 			var playbutton=document.getElementsByClassName('playbutton');
 			checkPlaylinkURL(url,
@@ -270,22 +270,7 @@ function returned(data)
 					}
 				}
 			);
-	
-		
-		// Playbutton Either Hidden or Shown depending on if there is any play link or not
-	/*	var playbutton=document.getElementsByClassName('playbutton');
-		if(data['playlink']==""){
-			for(var i=0; i<playbutton.length; i++){
-				playbutton[i].childNodes[0].style.opacity="0.2";
-				playbutton[i].onclick=function(){};
-			}
-		}else{
-			for(var i=0; i<playbutton.length; i++){
-				playbutton[i].childNodes[0].style.opacity="1";
-				playbutton[i].onclick=function(){Play();};
-			}									
-		}
-	*/	
+
 		// Make after dropdown
 		str="<div class='dropdownback dropdownbackStyle'>Skip Forward</div>";
 		for(i=0;i<data['after'].length;i++){
@@ -293,37 +278,6 @@ function returned(data)
 		}
 		var after=document.getElementById('forwdrop');
 		after.innerHTML=str;
-
-		// Fill Description
-	//	var docuwindow=document.getElementById("docucontent");
-		
-		// replacing span&nsbp; so it is perceived as a tagname for codestyle
-	
-	/* START code for first function made START */
-	//	var desc = data['desc'];
-	//	desc = replaceAll("<span&nbsp;","<span ",data['desc']);
-	//	desc = replaceAll('"&nbsp;','" ', desc);
-	//	desc = replaceAll('&nbsp;"',' "', desc);
-	//	docuwindow.innerHTML = desc;
-	/* 	STOP */	
-	
-	/* START 
-		var desc = data['desc'];
-		desc = replaceAll("<span&nbsp;","<span ",desc);
-		desc =  replaceAll("<img&nbsp;","<img ",desc);
-		
-		docuwindow.innerHTML = desc;
-		
-		//  Fill description with code using tokenizer.
-		var cs = docuwindow.getElementsByClassName("codestyle");
-		for(var i=0; i<cs.length; i++){
-			desc = desc.replace(cs[i].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[i].innerHTML))));
-		}
-		docuwindow.innerHTML = desc;
-		STOP */
-		
-		// Fill Code Viewer with Code using Tokenizer
-	//	rendercode(data['code'],"infobox");
 
 		// Fill Section Name and Example Name
 		var examplenme=document.getElementById('exampleName');
@@ -333,35 +287,17 @@ function returned(data)
 		
 		
 		if(sessionkind=="w"){
-				// Fill file requester with file names
-		/*		str="";
-				for(i=0;i<data['directory'].length;i++){
-						if(data['directory'][i]==data['filename']){
-								str+="<span class='dropdownitem dropdownitemStyle menuch' id='DDI"+i+"'>"+data['directory'][i]+"</span>";						
-						}else{
-								str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+data['directory'][i]+"\");''>"+data['directory'][i]+"</span>";														
-						}
-				}
-				var filereq=document.getElementById('codedrop');
-				if(filereq!=null) filereq.innerHTML=str;
-		*/
-
             // Fill imagelist
             str="";
             for(i=0;i<data['images'].length;i++){
                     //str+="<span class='dropdownitem' id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' onmouseover='highlightMenu(\"DDII"+i+"\");' onmouseout='dehighlightMenu(\"DDII"+i+"\");'>"+data['images'][i]+"</span>";
                 str+="<img id='DDII"+i+"' onclick='insertImage(\"imgupload/"+data['images'][i]+"\");' title=\""+data['images'][i]+"\" src=\"imgupload/"+data['images'][i]+"\"></img>";
-
             }
 
             var imgdrop=document.getElementById('imgdrop');
             if(imgdrop!=null){
             	imgdrop.innerHTML=str;
             } 
-
-
-
-
 		}
 		
 		//----------------------------------------------------
