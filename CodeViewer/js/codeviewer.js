@@ -1829,7 +1829,7 @@ function changedSecurity(){
 
 function mobileTheme(id){
 	if ($(".mobilethemebutton").is(":hidden")){
-		  $(".mobilethemebutton").css("display","block");
+		  $(".mobilethemebutton").css("display","table-cell");
 
 	}
 	else{

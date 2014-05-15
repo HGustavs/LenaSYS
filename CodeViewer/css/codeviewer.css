@@ -860,9 +860,6 @@ a {
 	padding:5px;
 
 }
-.mobilethemebutton{
-    display: none;
-}
 
 .themeicon:hover {
 	cursor: pointer;
@@ -881,17 +878,18 @@ a {
     background-color: black;
 }
 
+.mobilethemebutton{
+    display: none;
+}
+.subbutton span{
+    font-size: 12px;
+}
+
 .showdesktop{
     display: table-cell;
 }
 .showmobile{
     display: none;
-}
-#mobileThemeSelect{
-    display: none;
-    /*padding: 0;
-    background-color: black;
-    */
 }
 
 
