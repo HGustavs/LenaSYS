@@ -25,10 +25,10 @@ include "../Shared/basic.php";
 						echo '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="" colspan="4">Desktop site</td></tr>';
 						echo '<tr><td class="mbutto mbuttoStyle themebutton" title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
-							echo '<tr><td class="mbuttoStyleLight " id="mobileThemeSelect" colspan="4"><div class="mbuttoStyleLight themeicon" onclick="selectTheme(&quot;black&quot;);">  <img src="new icons/theme_black.svg"><span>Black<span></span></span></div>';
-							echo '<div class="mbuttoStyleLight themeicon" onclick="selectTheme(&quot;white&quot;);">  <img src="new icons/theme_white.svg"><span>White<span></span></span></div>';
-							echo '<div class="mbuttoStyleLight themeicon" onclick="selectTheme(&quot;colorblind&quot;);"> <img src="new icons/theme_blind.svg"><span>Colorblind<span></span></span></div>';
-							echo '</td></tr>';
+							echo '<tr><td class="mbuttoStyleLight mobilethemebutton"  colspan="4"><div class="mbuttoStyleLight themeicon " onclick="selectTheme(&quot;black&quot;);">  <img src="new icons/theme_black.svg"><span>Black<span></span></div></td></tr>';
+							echo '<tr><td class="mbuttoStyleLight mobilethemebutton"  colspan="4"><div class="mbuttoStyleLight themeicon " onclick="selectTheme(&quot;white&quot;);">  <img src="new icons/theme_white.svg"><span>White<span></span></div></td></tr>';
+							echo '<tr><td class="mbuttoStyleLight mobilethemebutton"  colspan="4"><div class="mbuttoStyleLight themeicon " onclick="selectTheme(&quot;colorblind&quot;);"> <img src="new icons/theme_blind.svg"><span>Colorblind<span></span></div></td></tr>';
+							//echo '</td></tr>';
 					echo '</table>';
 			echo '</span>';				
 				if($kind){

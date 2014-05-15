@@ -858,6 +858,10 @@ a {
 .themeicon {
 	height:20px;
 	padding:5px;
+
+}
+.mobilethemebutton{
+    display: none;
 }
 
 .themeicon:hover {
