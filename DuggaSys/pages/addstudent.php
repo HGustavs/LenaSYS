@@ -1,3 +1,8 @@
+﻿<?php
+include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
+session_start();
+if(checklogin()) {
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -16,9 +21,9 @@
 		<br>
 		<input type="button" value="Lägg till student" class="btn btn-login" onclick="passPopUp();"/>
 		<input type="button" class="btn btn-cancel" value="Cancel" onclick="historyBack();"/>
+		<input type="button" value="Add student" class="btn btn-login" onclick="passPopUp();"/>
+		<a href="students.php"><input type="button" class="btn btn-cancel" value="Cancel"/></a>
 	</form>
-
-
 		<div id="light" class="white_content">
 		</div>
 </div>
@@ -26,3 +31,6 @@
 
 </body>
 </html>
+<?php
+}
+?>

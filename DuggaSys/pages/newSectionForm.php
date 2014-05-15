@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
+session_start();
+if(checklogin()) {
+?>
 <div id="create">
 	<form role="form" name="newSection">
 		<div class="form-group">
@@ -43,3 +47,4 @@
 <script type="text/javascript">page.title("Create new entry")</script>
 <script type="text/javascript" src="js/sectionhandler.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
+<?php } ?>
