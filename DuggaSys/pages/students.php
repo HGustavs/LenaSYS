@@ -39,7 +39,6 @@ if(checklogin()) {
 			  output += "<input type='hidden' name='username' value='" + this.username + "'>";
 			  output += "<input type='hidden' name='uid' value='" + this.uid + "'>";
 			  output += "<select id='access' name='access' onChange='updateDb(this);'>";
-			  output += "<option value='0'>Access</option>";
 			  output += "<option " + ((this.access == 'W') ? 'selected' : '') + " value='W'>Teacher</option>";
 			  output += "<option " + ((this.access == 'R') ? 'selected' : '') + " value='R'>Student</option>";
 			  output += "</select>";
