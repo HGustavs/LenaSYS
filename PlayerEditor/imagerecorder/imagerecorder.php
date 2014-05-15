@@ -9,13 +9,14 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
+		<!--Div that shows the opacity behind the instructionwindow-->
 		<div id="instructionopacity">
-				<div id="instructionwindow">
-					<img src="img/instructions.png" width="100%">
-					<div class="closebutton" onClick="hideinstruction();">
-					</div>
-				</div>
-			</div>	
+			<!--Div that stores the instructions-->
+			<div id="instructionwindow">
+				<img src="img/instructions.png" width="100%">
+				<div class="closebutton" onClick="hideinstruction();"></div>
+			</div>
+		</div>	
 			
 		<div id="library-name-dialog" title="Library name">
 			<h3><strong>Library name?</strong></h3>

@@ -186,6 +186,8 @@ ul {
 	height: 35px;
 	background-color: red;
 	background-image: url("img/quit.png");
+	margin-top:5px;
+	margin-right:5px;
 }
 .closebutton:hover{
 	cursor:pointer;

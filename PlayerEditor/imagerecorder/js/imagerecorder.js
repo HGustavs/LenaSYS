@@ -39,7 +39,8 @@ function imagerecorder(canvas)
 	mHeight = (rect.bottom - rect.top);
 	mWidth = (rect.right-rect.left);
 
-	addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');	
+	addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
+	addTimestep('\n<recordedMouseFPS value="' + mouseFPS + '"/>');
 	canvas.width = mWidth;
 	canvas.height = mHeight;
 
@@ -691,12 +692,16 @@ function imagerecorder(canvas)
 			});
 		});
 
+		// Show instruction button
+		$("#instructbutton").show();
+
 		// Clear canvas
 		canvas.width = canvas.width;
 
 		// Change button name and action
 		$("#uploadButton").attr('value', 'Upload image');
 		$("#uploadButton").attr('onclick', 'document.getElementById("imageLoader").click();');
+		$("#instructbutton").show();
 	}
 
 	/*
