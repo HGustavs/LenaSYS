@@ -25,9 +25,15 @@
 		   var output = "";
 		   // Loopar igenom all data vi från tillbaka ifrån getstudent_ajax.php.
 		   $.each(data['entries'], function(){
+			   if (this.access == 'R') {
+			   		access='Student';
+			   }
+			   else {
+			   		access='Teacher';
+			   }
 		      output += "<tr><td>"+this.username+"</td>";
 			  output += "<td>"+this.uid+"</td>";
-			  output += "<td>FAIL</td>";
+			  output += "<td>"+access+"</td>";
 		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td></tr>";
 		   });
 		   $("table.list tbody").empty();
@@ -49,7 +55,6 @@
                 alert("Could not retrieve students");			
 			}
           });
-		
 		}
 	</script>
 	<div id="student-box">
@@ -63,7 +68,7 @@
 	<thead>
 	<tr><th>Name</th>
 	<th>UserID</th>
-	<th>Quiz</th>
+	<th>Access</th>
 	<th id='deletebox' style='visibility: hidden'>Delete</th></tr>
 	</thead>
     <tbody>
