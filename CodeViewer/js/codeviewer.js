@@ -266,7 +266,7 @@ function dehighlightop(otherop,thisop)
 				
 function Up()
 {		
-		location="../DuggaSys/#sectioned?courseid="+courseID;
+		location="../DuggaSys/#sectioned?courseid="+courseid;
 }				
 
 function gotoPosition(exampleid)
@@ -680,6 +680,7 @@ function sendOut(kind, sectid)
 
 function displayPlaylink(){
 	tabmenuvalue = "playlink";
+}	
 function displaySettings(){
 	tabmenuvalue = "Settings";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
@@ -1190,10 +1191,9 @@ function rendercode(codestring,boxid)
 
 		improws=[];
 		for(var i=0;i<retdata.improws.length;i++){
-
             if ((retdata['improws'][i][0]) == boxid){
-            improws.push(retdata.improws[i]);
-}
+            	improws.push(retdata.improws[i]);
+			}
 		}
 		tokenize(codestring,"<>+-&","=>&:");
 				
@@ -1686,5 +1686,4 @@ function mobileTheme(){
 	else{
 			document.getElementById("mobileThemeSelect").style.display= "none";
 	}
-
 }

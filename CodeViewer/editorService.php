@@ -34,7 +34,7 @@
 
 	// Make sure there is an exaple
 	$cnt=0;
-	$query = "SELECT exampleid,examplename,cid,cversion FROM codeexample WHERE exampleid='$exampleid';";		
+	$query = "SELECT exampleid,examplename,cid,cversion,public FROM codeexample WHERE exampleid='$exampleid';";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 	while ($row = mysql_fetch_assoc($result)){
@@ -43,6 +43,7 @@
 			$examplename=$row['examplename'];
 			$courseID=$row['cid'];
 			$cversion=$row['cversion'];
+			$public=$row['public'];
 	}
 	
 	
@@ -415,7 +416,6 @@
 					array_push($template,array($row['templateid'],$row['stylesheet'],$row['numbox']));	
 			}
 			
-
 
 	        // Read Directory - Images
 	        $images=array();
