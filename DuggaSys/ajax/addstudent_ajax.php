@@ -5,14 +5,15 @@
 		pdoConnect();
 
 		$array=array();
+		
 		if(isset($_POST['string'])){
-
+         
 			function random_password( $length = 12 ) {
 			    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?/";
 			    $password1 = substr( str_shuffle( $chars ), 0, $length );
 			    return $password1;
 			}
-
+            $courseid = $_POST['courseid'];
 			$str = $_POST['string'];
 
 			$row=explode("\n", $str);
@@ -59,9 +60,10 @@
 					else {
 						$access='W';
 					}
-					$querystring='INSERT INTO user_course (uid, cid, access) VALUES(:uid, 1,:access);';	
+					$querystring='INSERT INTO user_course (uid, cid, access) VALUES(:uid, :cid,:access);';	
 					$stmt = $pdo->prepare($querystring);
 					$stmt->bindParam(':uid', $userid);
+					$stmt->bindParam(':cid', $courseid);
 					$stmt->bindParam(':access', $access);
 					try {
 						$stmt->execute();

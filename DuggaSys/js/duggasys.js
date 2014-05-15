@@ -238,13 +238,15 @@ $(function() {
     });
 
 function passPopUp(){
-
-$.ajax({
+    var qs = getUrlVars();
+	alert(qs.courseid);
+    $.ajax({
 		dataType: "json",
 		type: "POST",
 		url: 'ajax/addstudent_ajax.php',
 		data: {
-			string: $("#string").val()
+			string: $("#string").val(),
+			courseid: qs.courseid
 		},
 		success: function (returnedData) {
 		console.log(returnedData);
