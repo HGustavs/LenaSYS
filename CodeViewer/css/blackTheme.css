@@ -35,6 +35,10 @@
     background-color: #614875;
 }
 
+.mbuttoStyleLight {
+    background-color: #9868bd;
+}
+
 .mbuttoStyle:hover{
 	background-color: #7D5CA0;
 }
@@ -82,6 +86,7 @@
 .normtext {
     color: #fff;
     background-color: #272822;
+    white-space:nowrap;
 }
 
 .impo {

@@ -6,7 +6,7 @@
 		// TODO: Sanitize $libName  <-------------
 		$libName = $_GET['lib'];
 		
-		$uploaddir = "librarys/".$libName;
+		$uploaddir = "../canvasrenderer/libs/".$libName;
 		if(!file_exists($uploaddir)) {
 			try { 
 				if(!@mkdir($uploaddir, 0777)) {

@@ -3,25 +3,22 @@
 	position: absolute;
     background-color: #5D5D5D;
     height: 50px;
-    width: -moz-calc(26%);
-    width: -webkit-calc(26%);
+    width: -moz-calc(50%);
+    width: -webkit-calc(50%);
 }
 
 #box1 {
 	padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
     position: absolute;
-    top: 0px;
+    top: 50px;
     left: 0px;
-    height: -webkit-calc(50.0% - 1px);
-    height: -moz-calc(50.0% - 1px);
-    width: -webkit-calc(50.0% - 1px);
-    width: -moz-calc(50.0% - 1px);
-    /*background-color: #272822;*/
+    height: -webkit-calc(50.0% - 50px);
+    height: -moz-calc(50.0% - 50px);
+    width: -webkit-calc(50.0% - 4px);
+    width: -moz-calc(50.0% - 4px);
     overflow: scroll;
-   /* color: white;*/
+    overflow-y: auto;
+    overflow-x: hidden;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
@@ -38,21 +35,22 @@
     padding-right: 4px;
     border-style: solid;
     border-width: 1px;
-     border-color: black;
+    border-color: black;
     position: absolute;
     top: 0px;
 	right: 0px;
-	height: -moz-calc(50.0% - 1px);
-    height: -webkit-calc(50.0% - 1px);
-    width: -moz-calc(50.0% - 1px);
-    width: -webkit-calc(50.0% - 1px);
-   /* background-color: #272822;*/
+	height: -webkit-calc(50.0%);
+    height: -moz-calc(50.0%);
+    width: -webkit-calc(50.0%);
+    width: -moz-calc(50.0%);
     overflow: scroll;
     color: white;
-    /*color: white;*/
+    overflow-y: auto;
+    overflow-x: hidden;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
+    z-index: 2;
 }
 
 #box3menu{
@@ -64,22 +62,17 @@
 
 #box3 {
     padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
     position: absolute;
     bottom: 0px;
     left: 0px;
-    width: -moz-calc(50.0% - 1px);
-    width: -webkit-calc(50.0% - 1px);
-    height: -moz-calc(50.0% - 1px);
-    height: -webkit-calc(50.0% - 1px);
-   /* background-color: #272822;*/
+    height: -webkit-calc(50.0%);
+    height: -moz-calc(50.0%);
+    width: -webkit-calc(50.0% - 4px);
+    width: -moz-calc(50.0% - 4px);
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
-    /*color: white;*/
-   font-family: Arial,Sans-Serif;
+    font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
     background-color: #272822;
@@ -93,22 +86,17 @@
 	position:absolute;
 }
 #box4 {
-    padding-right: 4px;
-    border-style: solid;
-    border-width: 1px;
-     border-color: black;
+    padding-left: 4px;
     position: absolute;
     bottom: 0px;
     right: 0px;
-	width: -moz-calc(50.0% - 1px);
-    width: -webkit-calc(50.0% - 1px);
-    height: -moz-calc(50.0% - 1px);
-    height: -webkit-calc(50.0% - 1px);
-    /*background-color: #272822;*/
+	height: -webkit-calc(50.0%);
+    height: -moz-calc(50.0%);
+    width: -webkit-calc(50.0% - 4px);
+    width: -moz-calc(50.0% - 4px);
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
-    /*color: white;*/
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;

@@ -1,4 +1,5 @@
 <?php
+include_once(dirname(__file__)."/../../coursesyspw.php");
 //---------------------------------------------------------------------------------------------------------------
 // dbconnect - Makes database connection
 //---------------------------------------------------------------------------------------------------------------
@@ -43,27 +44,5 @@ function pdoConnect()
 		DB_USER,
 		DB_PASSWORD
 	);
-}
-
-function makequery($querystring,$errormessage)
-{
-		$result=mysql_query($querystring);
-		if (!$result) err("SQL Query Error: ".mysql_error(),$errormessage);
-}
-
-//---------------------------------------------------------------------------------------------------------------
-// getqueryvalue - Using a query string returns the value generated from that query
-//---------------------------------------------------------------------------------------------------------------
-
-function getqueryvalue($querystring)
-{
-	$pos=-1;
-	$result=mysql_query($querystring);
-	if (!$result) err("SQL Query Error: ".mysql_error(),"Section Position Reading Error");
-	while ($row = mysql_fetch_assoc($result)){
-			$pos=$row['pos'];
-	}
-
-	return $pos;
 }
 ?>

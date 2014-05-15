@@ -13,10 +13,10 @@
     top: 50px;
     padding-top:4px;
     left: 0px;
- 	width: -moz-calc(25.0%);
-	width: -webkit-calc(25.0%);
-    height: -webkit-calc(100.0% - 55px);
-    height: -moz-calc(100.0% - 55px);
+ 	width: -moz-calc(25.0% - 4px);
+	width: -webkit-calc(25.0% - 4px);
+    height: -webkit-calc(100.0% - 54px);
+    height: -moz-calc(100.0% - 54px);
     overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
@@ -35,8 +35,8 @@
     position: absolute;
     top: 0px;
     bottom: 0px;
- 	width: -moz-calc(75% - 4px);	/*had to adjust 4px to fix overlap*/
-	width: -webkit-calc(75% - 4px); /*had to adjust 4px to fix overlap*/
+ 	width: -moz-calc(75%);
+	width: -webkit-calc(75%);
     right: 0px;
     font-family: Arial,Sans-Serif;
     font-size: 14px;

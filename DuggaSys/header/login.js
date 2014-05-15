@@ -100,19 +100,38 @@ document.onkeydown = function (evt) {
 			return(false);
 		}
 	}
-function checkIfEmpty(textInput){                                                                                                                                                                                                 
+function checkIfEmpty(textInput){
+	                                                  
     if(textInput.value=="") {
         $(textInput).removeClass("isValid");                                                                                     
     }
-    else {                                                                                                                                    
-        $(textInput).addClass("isValid");                                                                                                    
+    else {
+        $(textInput).addClass("isValid");                                                                                    
     }                                                                                                               
+}
+function checkIfEmptyLoginField(){
+	var username = $("#login #username").val();
+	var password = $("#login #password").val();
+	if((username == "") && (password == "")){
+		$("#login #message").html("<div class='alert danger'>Please fill in a username and password!</div>");
+		$("input#username").css("background-color", "#ff7c6a");
+		$("input#password").css("background-color", "#ff7c6a");
+	}else if((username == "") || (password == "")){
+		if(username == ""){
+			$("#login #message").html("<div class='alert danger'>Please fill in a username!</div>");
+			$("input#username").css("background-color", "#ff7c6a");
+			$("input#password").css("background-color", "#fff");
+		} else if(password == ""){
+			$("#login #message").html("<div class='alert danger'>Please fill in a password!</div>");
+			$("input#password").css("background-color", "#ff7c6a");
+			$("input#username").css("background-color", "#fff");
+		}
+	}
 }
 // VALIDATE INPUT FUNCTIONS END //
 // LOGIN AJAX FUNCTIONS START //
 function makeLogin() {
 	if(validate('login')) {
-		
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
@@ -137,8 +156,16 @@ function makeLogin() {
 					else {
 						createDeleteLogin();
 					}
+					page.show();
 				} else {
 					console.log("Failed to log in.");
+					if(typeof result.reason != "undefined") {
+						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
+					} else {
+						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
+					}
+					$("input#username").css("background-color", "#ff7c6a");
+					$("input#password").css("background-color", "#ff7c6a");
 				}
 			},
 			error:function() {
@@ -153,8 +180,8 @@ function makeLogout() {
 		success:function(data) {
 			$("#user label").html("");
 			$("#user img").removeClass("loggedin");
-			page.show();
 			createDeleteLogin();
+			changeURL("menulist");
 		},
 		error:function() {
 			console.log("error");
@@ -180,7 +207,7 @@ function showQuestion() {
 					$("#forgotPwAnswer #forgetfuluser").val(username)
 				}
 				else {
-					$("#forgotPw #message").html("<div class='alert alert-danger'>"+res.error+"!</div>");
+					$("#forgotPw #message").html("<div class='alert danger'>"+res.error+"!</div>");
 				}
 			},
 			error:function() {
@@ -214,7 +241,7 @@ function checkAnswer() {
 			} else {
 				// If we failed to change the user's password then notify them of the
 				// reason why.
-				$("#forgotPwAnswer #message").html("<div class='alert alert-danger'>"+res.error+"!</div>");
+				$("#forgotPwAnswer #message").html("<div class='alert danger'>"+res.error+"!</div>");
 				console.log("Failed to change password. " + res.error);
 			}
 		},
@@ -251,7 +278,7 @@ function newPasswordAndQuestion() {
 				} else {
 					// Otherwise, tell the user that we couldn't update their password
 					// and tell them why.
-					$("#createPassword #message").html("<div class='alert alert-danger'>"+res.errormsg+"!</div>")
+					$("#createPassword #message").html("<div class='alert danger'>"+res.errormsg+"!</div>")
 					console.log("Failed to set new password, " + res.errormsg);
 				}
 			},

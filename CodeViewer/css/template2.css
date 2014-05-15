@@ -32,16 +32,17 @@
 }
 #box2 {
     position: absolute;
-    float: left;
-    top: 250px;
-    left: 0px;
-    right: 0px;
     bottom: 0px;
+    right: 0px;
+    height: -webkit-calc(60%);
+    height: -moz-calc(60%);
+    width: -webkit-calc(100%);
+    width: -moz-calc(100%);
     font-family: Arial,Sans-Serif;
     font-size: 14px;
-   /*  background-color: #272822;*/
     overflow: scroll;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
+    outline: 0 none;
 }
 
