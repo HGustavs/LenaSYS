@@ -52,9 +52,9 @@
 			
 			<div id="controls">
 				<input id="uploadButton" type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image(s)">
+				<input type="button" id="instructbutton" class="controlbutton" value="Instructions" onClick="showinstruction();"/>
 			</div>
 			
-			<input type="button" id="instructbutton" class="controlbutton" value="Instructions" onClick="showinstruction();"/>
 		
 				
 			<!--creating the small imageviewer, on the bottom of the screen-->

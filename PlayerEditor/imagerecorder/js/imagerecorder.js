@@ -658,6 +658,7 @@ function imagerecorder(canvas)
 		// Change button name and action
 		$("#uploadButton").attr('value', 'Upload image');
 		$("#uploadButton").attr('onclick', 'document.getElementById("imageLoader").click();');
+		$("#instructbutton").show();
 	}
 
 	/*
