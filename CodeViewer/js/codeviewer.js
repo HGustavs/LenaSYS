@@ -621,6 +621,8 @@ function changedPlayLink()
 					playbutton[i].onclick=function(){Play();};
 				}
 				setPlayLinkURL();
+				var span = document.getElementById("playlinkErrorMsg");
+				span.style.display = "none";
 			}else{
 				var playbutton=document.getElementsByClassName('playbutton');
 				for(var i=0; i<playbutton.length; i++){
