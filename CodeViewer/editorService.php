@@ -120,7 +120,7 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("selectFile",$opt)===0){
 								$filename=htmlEntities($_POST['filename']);
-								$query = "UPDATE codebox SET filename='$filename' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
+								$query = "UPDATE codeBox SET filename='$filename' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 								

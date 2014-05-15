@@ -25,10 +25,6 @@ function choosetemplate(){
 }
 function addTemplatebox(id)
 {
-	// don't create box if it already exists
-	if(document.getElementById(id)){
-		return;
-	}
 	var content = document.getElementById("div2");
 		
 	var div = document.createElement("div");
@@ -169,18 +165,20 @@ function returned(data)
 			
 			var contentid="box"+data['box'][i][0];
 			var boxid=data['box'][i][0];
-			var boxtype=data['box'][i][1];
+			var boxtype=data['box'][i][1].toUpperCase();
 			var boxcontent=data['box'][i][2];
 		
 			
-			// create a templatebox
-			addTemplatebox(contentid);
+			// don't create templatebox if it already exists
+			if(!document.getElementById(contentid)){
+				addTemplatebox(contentid);
+			}
+			
 			// Print out code example in a code box
 			if(boxtype == "CODE"){
-				
 				document.getElementById(contentid).removeAttribute("contenteditable");
 					
-					// Create a boxmenu for users with write access.	
+			// Create a boxmenu for users with write access.	
 				if(sessionkind == "w"){
 					createboxmenu(contentid,boxid,boxtype);
 					createcodedrop(contentid,boxid);
@@ -209,7 +207,8 @@ function returned(data)
 					createboxmenu(contentid,boxid,boxtype);
 				}
 			}
-			if((data['box'][i][1]) == "NOT DEFINED"){
+			
+			if(boxtype == "NOT DEFINED"){
 				if(sessionkind == "w"){
 					createboxmenu(contentid,boxid,boxtype);
 				}
