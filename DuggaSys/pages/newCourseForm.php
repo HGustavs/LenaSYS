@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
+session_start();
+if(checklogin()) {
+?>
 
 	<div id='create'>
 		<form role="form" name='newCourse'>
@@ -25,3 +29,6 @@
 	<script type="text/javascript" src="js/ajax.js"></script>
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
 	<script type="text/javascript">page.title("Create new course");</script>
+<?php
+}
+?>

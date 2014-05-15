@@ -1,3 +1,10 @@
+<?php
+include_once(dirname(__FILE__). "/../../../coursesyspw.php");	
+include_once(dirname(__FILE__) . "/../../Shared/basic.php");
+pdoConnect();
+session_start();
+if(checklogin()) {
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,13 +15,6 @@
 		<script>page.title("Studentview");</script>
 	</head>
 <body>
-<?php
-
-	include_once(dirname(__FILE__). "/../../../coursesyspw.php");	
-	include_once(dirname(__FILE__) . "/../../Shared/basic.php");
-    pdoConnect();
-
-?>
 	<script type="text/javascript">
 		var qs = getUrlVars();
 		
@@ -94,3 +94,6 @@
 	</div>
 </body>
 </html>
+<?php
+}
+?>
