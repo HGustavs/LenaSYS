@@ -1,6 +1,5 @@
 <?php 
 		include_once dirname(__FILE__) . "/../../Shared/external/password.php";
-		include_once(dirname(__FILE__) . "/../../../coursesyspw.php");	
 		include_once(dirname(__FILE__) . "/../../Shared/basic.php");
 		pdoConnect();
 
@@ -23,10 +22,10 @@
 				list($username, $grabage)=(explode("@",$username1));
 
 				
-				$stmt = $pdo->prepare("SELECT * FROM user WHERE username='$username'");
-				$stmt->execute(array($username));
+				$userquery = $pdo->prepare("SELECT * FROM user WHERE username=:username");
+				$userquery->bindParam(':username', $username);
 
-				if ( $stmt->rowCount() <= 0 ) {
+				if ($userquery->execute() && $userquery->rowCount() <= 0) {
 				
 					$password1 = random_password(12);
 					$password = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 12));
@@ -51,9 +50,10 @@
 				}
 
 				
-				foreach($pdo->query( "SELECT * FROM user WHERE username='$username'" ) as $row){
-					$userid = $row['uid'];
-					$useraccess = $row['username'];
+				if($userquery->execute() && $userquery->rowCount() > 0) {
+					$user = $userquery->fetch(PDO::FETCH_ASSOC);
+					$userid = $user['uid'];
+					$useraccess = $user['username'];
 					if (preg_match("/[0-9]+/", $useraccess)){
 						$access='R';
 					}
@@ -65,6 +65,7 @@
 					$stmt->bindParam(':uid', $userid);
 					$stmt->bindParam(':cid', $courseid);
 					$stmt->bindParam(':access', $access);
+
 					try {
 						$stmt->execute();
 						//echo "<script type='text/javascript'>alert('Användare är tillagd på kursen')</script>";
@@ -75,6 +76,6 @@
 					}
 				}
 			}
-						echo json_encode($array);
+			echo json_encode($array);
 		}
 	?>

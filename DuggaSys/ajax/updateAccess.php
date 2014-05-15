@@ -1,9 +1,16 @@
 <?php
-		include_once(dirname(__file__)."/../../../coursesyspw.php");
 		include_once(dirname(__file__)."/../../Shared/database.php");
 		pdoConnect();
 		$access = $_POST['access'];
-		$stmt = $pdo -> prepare("UPDATE `user_course` SET `access` = '$access'");
-		$stmt -> bindParam(':access', $access);
-		$stmt -> execute();
+		$uid = $_POST['uid'];
+		$stmt = $pdo->prepare('UPDATE `user_course` SET `access`=:access WHERE uid=:uid');
+		$stmt->bindParam(':access', $access);
+		$stmt->bindParam(':uid', $uid);
+		if($stmt->execute() && $stmt->rowCount() > 0) {
+			$array = array("success" => true);
+		} else {
+			$array = array("success" => false);
+		}
+
+		echo json_encode($array);
 ?>

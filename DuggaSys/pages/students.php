@@ -36,10 +36,12 @@ if(checklogin()) {
 			  output += "<td>"+access+"</td>";
 			  output += "<td>";
 			  output += "<form id='accesschange'>";
-			  output += "<select id='access' name='access' onChange='updateDb();'>";
+			  output += "<input type='hidden' name='username' value='" + this.username + "'>";
+			  output += "<input type='hidden' name='uid' value='" + this.uid + "'>";
+			  output += "<select id='access' name='access' onChange='updateDb(this);'>";
 			  output += "<option value='0'>Access</option>";
-			  output += "<option value='W'>Teacher</option>";
-			  output += "<option value='R'>Student</option>";
+			  output += "<option " + ((this.access == 'W') ? 'selected' : '') + " value='W'>Teacher</option>";
+			  output += "<option " + ((this.access == 'R') ? 'selected' : '') + " value='R'>Student</option>";
 			  output += "</select>";
 			  output += "</form>";
 				output += "</td>";
@@ -66,14 +68,19 @@ if(checklogin()) {
           });
 		}
 
-		function updateDb() {
+		function updateDb(o) {
 			$.ajax({
             type: "POST",
             url: "./ajax/updateAccess.php", 
-            data: $("#accesschange").serialize(),
+            data: $(o).parent().serialize(),
 			dataType: "JSON",
-            success: function(data){
-                appendStudents(data);
+			success: function(data){
+				if(data.success == true) {
+					successBox('Updated user successfully', 'The user has been updated with the selected access');
+					getStudents();
+				} else {
+					dangerBox('Failed to update user', 'Failed to update the user to the permission you selected');
+				}
             },
 			error: function() {
 	            alert("Could not retrieve students");	

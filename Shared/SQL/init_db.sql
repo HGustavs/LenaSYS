@@ -70,8 +70,12 @@ CREATE TABLE user_course(
 		cid				INT UNSIGNED NOT NULL, 
 		access			VARCHAR(10) NOT NULL,
 		PRIMARY KEY(uid, cid),
-		FOREIGN KEY (uid) REFERENCES user (uid),
+		FOREIGN KEY (uid)REFERENCES user (uid)
+			ON DELETE CASCADE
+			ON UPDATE CASCADE,
 		FOREIGN KEY (cid) REFERENCES course (cid)
+			ON DELETE CASCADE
+			ON UPDATE CASCADE
 		
 );
 
