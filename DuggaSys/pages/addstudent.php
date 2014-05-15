@@ -15,7 +15,7 @@
 		<textarea placeholder="SSN, Name, email" name="string" id="string" cols="30"></textarea>
 		<br>
 		<input type="button" value="Lägg till student" class="btn btn-login" onclick="passPopUp();"/>
-		<a href="students.php"><input type="button" class="btn btn-cancel" value="Cancel"/></a>
+		<input type="button" class="btn btn-cancel" value="Cancel" onclick="historyBack();"/>
 	</form>
 
 

@@ -1,3 +1,19 @@
+function setupSort() {
+	var sort = document.getElementById('setupsort');
+	if (sort.value == "Enable sorting") {
+		sort.value = "Disable sorting";
+		noticeBox("Sorting enabled!", "Sections are now draggable");
+		$("#Sectionlist").sortable("enable");
+		sort.className = "submit-button-red";
+	} else {
+		sort.value = "Enable sorting";
+		noticeBox("Sorting disabled!", "Sections are not draggable any longer");
+		$("#Sectionlist").sortable("disable");
+		sort.className = "submit-button";
+	}
+	
+}
+
 function returnedSection(data)
 {
 		retdata=data;
@@ -5,7 +21,13 @@ function returnedSection(data)
 		// Fill section list with information
 		str="";
 		if(sessionkind) {
-			str+="<div style='float:right;'><input class='submit-button' type='button' value='Add' onclick='changeURL(\"newSectionForm?courseid=" + data.courseid + "\")'/></div>";	
+			str+="<div style='float:right;'>";
+			str+="<input class='submit-button' type='button' value='Add' onclick='changeURL(\"newSectionForm?courseid=" + data.courseid + "\")'/>";
+			str+="</div>";
+			
+			str+="<div style='float:left;'>";
+			str+="<input class='submit-button' id='setupsort' type='button' value='Enable sorting' onclick='setupSort()'/>";
+			str+="</div>";	
 		}
 		// Course Name
 		str+="<div class='course'>"+data.coursename+"</div>";
