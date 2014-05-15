@@ -9,8 +9,11 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
+		<!--Div that shows the opacity behind the instructionwindow-->
 		<div id="instructionopacity">
+				<!--Div that stores the instructions-->
 				<div id="instructionwindow">
+					<!--The cancel button-->
 					<div id="closeinstruction" onClick="hideinstruction();">
 					</div>
 				</div>

@@ -188,6 +188,8 @@ ul {
 	background-color: red;
 	float:right;
 	background-image: url("img/quit.png");
+	margin-top:5px;
+	margin-right:5px;
 }
 #closeinstruction:hover{
 	cursor:pointer;
