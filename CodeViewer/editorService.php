@@ -187,7 +187,7 @@
 			
 				// Remember to check offsets and set the previous and next section
 				// position.
-				if($offset-1 > 0) {
+				if($offset-1 >= 0) {
 					$previuous = $positions[$offset-1];
 				} else {
 					$previuous = 0;
@@ -241,16 +241,7 @@
 				$res = mysql_fetch_assoc($forwexamplequery);
 				array_push($forward_examples,array($res['examplename'],$example[0]));
 			}
-							
-			
-			// Get entryname
-			$query = "SELECT entryname FROM listentries WHERE code_id='$exampleid';";		
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-					$entryname = $row['entryname'];
-			}
-				
+								
 				
 						
 			// Open file and read name of Example
@@ -344,12 +335,12 @@
 			}  
 			
 			// Read sectionname 
-			$sectionname="";
+			$entryname="";
 			$query = "SELECT entryname FROM listentries WHERE pos=$previuous";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-					$sectionname=$row['entryname'];
+					$entryname=$row['entryname'];
 			} 
 			
 			// Read Directory - Codeexamples
