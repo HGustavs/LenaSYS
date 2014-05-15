@@ -262,34 +262,32 @@ function imagerecorder(canvas)
 		$("#controls").append("<input type='button' class='controlbutton' id='imagerecorder-save' value='Export XML' >");
 		// Save log when "Save log" button is clicked
 		$("#imagerecorder-save").click(function(){	
-			$.ajax({
-				type: 'POST',
-				url: 'logfile.php',
-				data: { 
-					string: logStr + "\n</script>",
-					lib: libraryName,
-					files: imagelibrary
-				},
-				success: function() {
-				
-					$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>.");
-					$("#export-feedback").append($('<div>', {
-						"class":	"closebutton",
-						html:		"",
-						click:		function(e) {
-							$("#export-feedback").hide();
-						}
-					}));
-				
-					$("#export-feedback").show(250);
-				}
-			});
-			
-
-			
-
-			
-			// $("#export-feedback").html("Exported!");
+			if(clicked == 1) {
+				$.ajax({
+					type: 'POST',
+					url: 'logfile.php',
+					data: { 
+						string: logStr + "\n</script>",
+						lib: libraryName,
+						files: imagelibrary
+					},
+					success: function() {
+					
+						$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>.");
+						$("#export-feedback").append($('<div>', {
+							"class":	"closebutton",
+							html:		"",
+							click:		function(e) {
+								$("#export-feedback").hide();
+							}
+						}));
+					
+						$("#export-feedback").show(250);
+					}
+				});
+			} else {
+				alert("You must start recording before you can export.");
+			}
 		});
 
 		// Add undo button to body
