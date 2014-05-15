@@ -1305,7 +1305,7 @@ function rendercode(codestring,boxid)
 
 						// Make line number										
 						if(lineno<10){
-								num="<span class='no'>"+lineno+"&nbsp;&nbsp;&nbsp;</span>";
+								num="<span class='no'>"+lineno+"&nbsp;&nbsp;&nbsp;&nbsp;</span>";
 						}else if(lineno>=10 && lineno<100){
 								num="<span class='no'>"+lineno+"&nbsp;&nbsp;</span>";
 						}else{
@@ -1642,7 +1642,7 @@ function selectTheme(color)
 function setTheme()
 {
 	var storedTheme = localStorage.getItem("storedTheme");
-	if(storedTheme != "" && storedTheme != null){
+	if(storedTheme != "" || storedTheme != null){
 		var colorTheme = storedTheme;
 
 		if(colorTheme === "black"){

@@ -26,18 +26,21 @@ function choosetemplate(){
 function addTemplatebox(id)
 {
 	var content = document.getElementById("div2");
-		
-	var div = document.createElement("div");
-	content.appendChild(div);
-	div.id = id;
-	div.className = id+"Style";		
+	var outerdiv = document.createElement("div");
+	content.appendChild(outerdiv);
+	outerdiv.id = id+"wrapper";
+	
+	var innerdiv = document.createElement("div");
+	outerdiv.appendChild(innerdiv);
+	innerdiv.id = id;
+	innerdiv.className= "box";
 }
 
 function createboxmenu(contentid, boxid, type){
 	if(!document.getElementById(contentid+"menu")){
 		var boxmenu = document.createElement("div");
-		document.getElementById("div2").appendChild(boxmenu);
-		boxmenu.setAttribute("class", "buttomenu2");
+		document.getElementById(contentid+"wrapper").appendChild(boxmenu);
+		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid+"menu");
 
 		if(type=="DOCUMENT"){
@@ -98,13 +101,11 @@ function createcodedrop(contentid,boxid)
 
     if(document.getElementById(contentid+"codedrop")){
         var codedrop = document.getElementById(contentid+"codedrop");
-    }
-
-    else {
-    var codedrop = document.createElement("div");
-	codedrop.setAttribute("id", contentid+"codedrop");
-	codedrop.setAttribute("class", "dropdown dropdownStyle codedrop codedropStyle");
-	document.getElementById("div2").appendChild(codedrop);
+    }else {
+	    var codedrop = document.createElement("div");
+		codedrop.setAttribute("id", contentid+"codedrop");
+		codedrop.setAttribute("class", "dropdown dropdownStyle codedrop codedropStyle");
+		document.getElementById("div2").appendChild(codedrop);
     }
 
 	str="";
@@ -182,6 +183,12 @@ function returned(data)
 				if(sessionkind == "w"){
 					createboxmenu(contentid,boxid,boxtype);
 					createcodedrop(contentid,boxid);
+				
+					// Make room for the menu by setting padding-top equals to height of menubox
+					
+					var boxmenuheight= $("#"+contentid+"menu").height();
+					$("#"+contentid).css("padding-top", boxmenuheight);
+					
 				}
 				rendercode(boxcontent,boxid);
 			}
@@ -205,14 +212,19 @@ function returned(data)
 				if(sessionkind == "w"){
 					docuwindow.setAttribute("contenteditable","true");
 					createboxmenu(contentid,boxid,boxtype);
+					var boxmenuheight= $("#"+contentid+"menu").height();
+					$("#"+contentid).css("padding-top", boxmenuheight);
 				}
 			}
 			
 			if(boxtype == "NOT DEFINED"){
 				if(sessionkind == "w"){
 					createboxmenu(contentid,boxid,boxtype);
+					var boxmenuheight= $("#"+contentid+"menu").height();
+					$("#"+contentid).css("padding-top", boxmenuheight);
 				}
 			}		
+			
 		}
 		
 		changeCSS("css/"+data['template'][0][1]);

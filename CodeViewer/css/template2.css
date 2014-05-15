@@ -1,48 +1,24 @@
-#box1menu{
-	z-index:2;
-	position: absolute;
-	top:0px;
-	left:0px;
-    background-color: #5D5D5D;
-    height: 50px;
-    width: -moz-calc(26%);
-    width: -webkit-calc(26%);
-}
-#box1{
-    padding-left: 4px;
+
+#box1wrapper{
     position: absolute;
-    top: 50px;
     left: 0px;
     right: 0px;
-    height: 250px;
-    background-color: #272822;
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
+ 	height: -moz-calc(30.0%);
+	height: -webkit-calc(30.0%);
+	width: -moz-calc(100.0%);
+	width: -webkit-calc(100.0%);
 }
 
-#box2menu{
-	position: absolute;
-	z-index: 2;
-	right:0px;
-	top:0px;
-}
-#box2 {
+
+#box2wrapper {
     position: absolute;
     bottom: 0px;
     right: 0px;
-    height: -webkit-calc(60%);
-    height: -moz-calc(60%);
-    width: -webkit-calc(100%);
-    width: -moz-calc(100%);
+    left: 0px;
+    height: -moz-calc(70.0%);
+	height: -webkit-calc(70.0%);
+	width: -moz-calc(100.0%);
+	width: -webkit-calc(100.0%);
     font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: auto;
-    outline: 0 none;
 }
 
