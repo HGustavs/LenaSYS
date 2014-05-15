@@ -11,6 +11,8 @@
 	<body>
 		<div id="instructionopacity">
 				<div id="instructionwindow">
+					<div id="closeinstruction" onClick="hideinstruction();">
+					</div>
 				</div>
 			</div>	
 			

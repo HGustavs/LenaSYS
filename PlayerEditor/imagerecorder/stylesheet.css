@@ -181,3 +181,15 @@ ul {
  	display: none;
  	margin-top: -12px;
 }
+
+#closeinstruction{
+	width:35px;
+	height: 35px;
+	background-color: red;
+	float:right;
+	background-image: url("img/quit.png");
+}
+#closeinstruction:hover{
+	cursor:pointer;
+	background-image: url("img/quithover.png");
+}

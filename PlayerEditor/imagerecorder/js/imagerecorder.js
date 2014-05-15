@@ -688,3 +688,8 @@ function imagerecorder(canvas)
          $("#instructionwindow").fadeIn("fast");
 		 
 	 }
+	 
+	 function hideinstruction(){
+		$("#instructionopacity").fadeOut("fast");
+         $("#instructionwindow").fadeOut("fast");
+	 }
