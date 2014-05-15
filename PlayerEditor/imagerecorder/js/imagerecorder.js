@@ -39,7 +39,8 @@ function imagerecorder(canvas)
 	mHeight = (rect.bottom - rect.top);
 	mWidth = (rect.right-rect.left);
 
-	addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');	
+	addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
+	addTimestep('\n<recordedMouseFPS value="' + mouseFPS + '"/>');
 	canvas.width = mWidth;
 	canvas.height = mHeight;
 
