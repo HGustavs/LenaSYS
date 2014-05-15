@@ -55,6 +55,7 @@ function imagerecorder(canvas)
 		// Get library name when user clicks OK
 		$("#library-name-button").click(function(){
 			var libName = $("#library-name-input").val();
+			var libEntered = 1;
 			
 			// Check that name length >0 && <=32
 			if(libName.length > 0 && libName.length <= 32) { 
@@ -240,6 +241,7 @@ function imagerecorder(canvas)
 		 * Update scale ratio when the window is resized
 		 */
 		$(window).on('resize', function(){
+				if(libEntered == 1){
 				// Scale ratio update (for correct mouse positions)
 				var rect = canvas.getBoundingClientRect();
 				mHeight = (rect.bottom - rect.top);
@@ -250,6 +252,7 @@ function imagerecorder(canvas)
 				updateScaleRatio();
 				console.log("On Resize\n");
 				console.log("canvas: " + canvas.width + ", " + canvas.height);
+				}
 			if(clicked == 1) {
 				showImage(activeImage);
 			}
