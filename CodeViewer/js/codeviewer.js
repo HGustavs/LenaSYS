@@ -433,10 +433,10 @@ function delImpword()
 		AJAXService("delImpWord","&word="+word);
 }
 
-function addImpline()
+function addImpline(boxid)
 {
-		from=document.getElementById('implistfrom');
-		to=document.getElementById('implistto');
+		from=document.getElementById(boxid+"from");
+		to=document.getElementById(boxid+"to");
 		errormsg = document.getElementById('impLinesError');
 		
 		// reset the color of input boxes
@@ -459,7 +459,7 @@ function addImpline()
 		}
 		// add important lines
 		if(fromValue<=toValue){
-				AJAXService("addImpLine","&from="+fromValue+"&to="+toValue);
+				AJAXService("addImpLine","&boxid="+boxid+"&from="+fromValue+"&to="+toValue);
 		}
 		// Error message if from>to
 		else{
@@ -469,11 +469,11 @@ function addImpline()
 		}
 }
 
-function delImpline()
+function delImpline(boxid)
 {
-		from=parseInt(document.getElementById('implistfrom').value);
-		to=parseInt(document.getElementById('implistto').value);
-		AJAXService("delImpLine","&from="+from+"&to="+to);
+		from=parseInt(document.getElementById(boxid+"from").value);
+		to=parseInt(document.getElementById(boxid+"to").value);
+		AJAXService("delImpLine","&boxid="+boxid+"&from="+from+"&to="+to);
 }
 
 function addWordlistWord()
@@ -759,19 +759,7 @@ function displayWordlist(){
 				str+="<input type='button' value='add' onclick='addImpword();' />";
 				str+="<input type='button' value='del' onclick='delImpword();'/>";													
 		
-				//----------------------------------------------------
-				// Fill important line list part of document dialog
-				//----------------------------------------------------
-				str+="<br/><br/>Important lines: <br/><select size='4'>"; 
-				for(i=0;i<retdata['improws'].length;i++){
-						str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+retdata['improws'][i][0]+"-"+retdata['improws'][i][1]+"</option>";										
-				}
-				str+="</select><br/>"
-				str+="<div id='impLinesError' class='errormsg'></div>";
-				str+="<input type='text' size='4' id='implistfrom' />-<input type='text' size='4' id='implistto' />";
-				str+="<input type='button' value='add' onclick='addImpline();' />";
-				str+="<input type='button' value='del' onclick='delImpline();' />";
-				
+
 				var docurec=document.getElementById('docudrop');
 				docurec.innerHTML=str;
 }
@@ -1164,8 +1152,9 @@ while (c) {		// c == first character in each word
 // Requires tokens created by a cockford-type tokenizer
 //----------------------------------------------------------------------------------
 
-function rendercode(codestring,destinationdiv)
+function rendercode(codestring,boxid)
 {
+    var destinationdiv = "box" + boxid;
 		tokens = [];
 		
 		important = [];
@@ -1180,10 +1169,13 @@ function rendercode(codestring,destinationdiv)
 						keywords.push(temp);
 				}
 		}			
-		
+
 		improws=[];
 		for(var i=0;i<retdata.improws.length;i++){
-				improws.push(retdata.improws[i]);
+
+            if ((retdata['improws'][i][0]) == boxid){
+            improws.push(retdata.improws[i]);
+}
 		}
 		tokenize(codestring,"<>+-&","=>&:");
 				
@@ -1304,7 +1296,7 @@ function rendercode(codestring,destinationdiv)
 								str+="<div class='normtext'>";
 						}else{
 								for(var kp=0;kp<improws.length;kp++){
-										if(lineno>=parseInt(improws[kp][0])&&lineno<=parseInt(improws[kp][1])){
+										if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
 												str+="<div class='impo'>";
 												break;
 										}else{

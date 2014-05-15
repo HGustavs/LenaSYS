@@ -22,6 +22,10 @@
 //	$position=mysql_real_escape_string($_POST['position']);
 
 	$exampleid = $_POST['exampleid'];
+
+    if (isset ($_POST['boxid'])){
+    $boxid=$_POST['boxid'];
+    }
 	
 //	$version=$_POST['version'];
 	$opt=$_POST['opt'];
@@ -87,14 +91,14 @@
 								// Add word to wordlist
 								$from=htmlEntities($_POST['from']);
 								$to=htmlEntities($_POST['to']);						
-								$query = "INSERT INTO improw(exampleid,istart,iend,uid) VALUES ('$exampleid','$from','$to','$appuser');";		
+								$query = "INSERT INTO improw(codeBoxid,exampleid,istart,iend,uid) VALUES ('$boxid','$exampleid','$from','$to','$appuser');";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delImpLine',$opt)===0){
 								// Add word to wordlist
 								$from=htmlEntities($_POST['from']);
 								$to=htmlEntities($_POST['to']);						
-								$query = "DELETE FROM improw WHERE exampleid='$exampleid' and istart='$from' and iend='$to';";		
+								$query = "DELETE FROM improw WHERE exampleid='$exampleid' AND codeBoxid='$boxid' and istart='$from' and iend='$to';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('selectWordlist',$opt)===0){
@@ -114,7 +118,6 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("selectFile",$opt)===0){
 								$filename=htmlEntities($_POST['filename']);
-								$boxid=$_POST['boxid'];
 								$query = "UPDATE codebox SET filename='$filename' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
@@ -145,7 +148,6 @@
 								// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
 								$description = str_replace("&nbsp;"," ",$_POST['description']);
 								$description = str_replace("<br>","\n",$description);
-								$boxid=$_POST['boxid'];
 								$query = "UPDATE descriptionBox SET segment='$description', appuser='$appuser' WHERE exampleid='$exampleid' AND boxid='$boxid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
@@ -184,7 +186,6 @@
 								}
 					}else if(strcmp("changeboxcontent",$opt)===0){
 								$content=$_POST['boxcontent'];
-								$boxid=$_POST['boxid'];
 								// Update content in a box.
 								$query = "UPDATE box SET boxcontent='$content' WHERE boxid='$boxid' AND exampleid='$exampleid';";
 								$result=mysql_query($query);
@@ -336,11 +337,11 @@
 	*/	  
 		  // Read important lines
 			$imp=array();
-			$query = "SELECT istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
+			$query = "SELECT codeBoxid,istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-		  		array_push($imp,array($row['istart'],$row['iend']));					
+		  		array_push($imp,array($row['codeBoxid'],$row['istart'],$row['iend']));
 			}  
 		
 		  // Read wordlist

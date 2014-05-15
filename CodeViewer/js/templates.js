@@ -100,12 +100,18 @@ function displayDrop(dropid)
 }
 function createcodedrop(contentid,boxid)
 { 
-	var content = document.getElementById(contentid);
-	var codedrop = document.createElement("div"); 
+
+    if(document.getElementById(contentid+"codedrop")){
+        var codedrop = document.getElementById(contentid+"codedrop");
+    }
+
+    else {
+    var codedrop = document.createElement("div");
 	codedrop.setAttribute("id", contentid+"codedrop");
 	codedrop.setAttribute("class", "dropdown dropdownStyle codedrop codedropStyle");
 	document.getElementById("div2").appendChild(codedrop);
-	
+    }
+
 	str="";
 	for(i=0;i<retdata['directory'].length;i++){
 		if(retdata['directory'][i]==retdata['filename']){
@@ -115,9 +121,28 @@ function createcodedrop(contentid,boxid)
 			str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+retdata['directory'][i]+"\",\""+boxid+"\");''>"+retdata['directory'][i]+"</span>";														
 		}
 	}
-	if(codedrop!=null){
-		codedrop.innerHTML=str;
-	}
+
+
+    //----------------------------------------------------
+    // Fill important line list part of document dialog
+    //----------------------------------------------------
+    str+="<br/><br/>Important lines: <br/><select size='4'>";
+    for(i=0;i<retdata['improws'].length;i++){
+
+        if ((retdata['improws'][i][0]) == boxid){
+        str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+retdata['improws'][i][1]+"-"+retdata['improws'][i][2]+"</option>";
+        }
+    }
+    str+="</select><br/>"
+    str+="<div id='impLinesError' class='errormsg'></div>";
+    str+="<input type='text' size='4' id=\""+boxid+"from\" /> - <input type='text' size='4' id=\""+boxid+"to\"/>";
+    str+="<input type='button' value='add' onclick='addImpline(\""+boxid+"\")'/>";
+    str+="<input type='button' value='del' onclick='delImpline(\""+boxid+"\")'/>";
+
+
+	codedrop.innerHTML=str;
+
+
 }
 
 
@@ -157,7 +182,7 @@ function returned(data)
 					createboxmenu(contentid,boxid,boxtype);
 					createcodedrop(contentid,boxid);
 				}
-				rendercode(boxcontent,contentid);
+				rendercode(boxcontent,boxid);
 			}
 			
 			// Print out description in a document box
