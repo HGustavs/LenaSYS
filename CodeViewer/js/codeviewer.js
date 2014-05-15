@@ -1681,11 +1681,12 @@ function changedSecurity(){
 	AJAXService("updateSecurity","&public="+ option);
 }
 
-function mobileTheme(){
-	if ($("#mobileThemeSelect").is(":hidden")){
-			document.getElementById("mobileThemeSelect").style.display= "block";
+function mobileTheme(id){
+	if ($(".mobilethemebutton").is(":hidden")){
+		  $(".mobilethemebutton").css("display","table-cell");
+
 	}
 	else{
-			document.getElementById("mobileThemeSelect").style.display= "none";
+		  $(".mobilethemebutton").css("display","none");
 	}
 }

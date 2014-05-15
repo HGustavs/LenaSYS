@@ -744,6 +744,7 @@ a {
 .themeicon {
 	height:20px;
 	padding:5px;
+
 }
 
 .themeicon:hover {
@@ -762,17 +763,18 @@ a {
     background-color: black;
 }
 
+.mobilethemebutton{
+    display: none;
+}
+.subbutton span{
+    font-size: 12px;
+}
+
 .showdesktop{
     display: table-cell;
 }
 .showmobile{
     display: none;
-}
-#mobileThemeSelect{
-    display: none;
-    /*padding: 0;
-    background-color: black;
-    */
 }
 
 
