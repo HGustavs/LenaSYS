@@ -128,10 +128,8 @@ function Canvasrenderer()
 	this.pause = function()
 	{
 		this.paused = 1;
-
 		// Pause all timesteps
 		this.pauseTimesteps();
-
 		// Set icon
 		document.getElementById("play").innerHTML="<img src='images/play_button.svg'/>";
 	}
@@ -141,7 +139,8 @@ function Canvasrenderer()
 	{
 		// Calculating search percentage (0%-100%)
 		var rect = document.getElementById("barcontainer").getBoundingClientRect();
-		var percentage = (event.clientX - rect.left) / rect.right;
+		var width = document.getElementById("barcontainer").offsetWidth;
+		var percentage = (event.clientX - rect.left) / width;
 
 		// Move to new position
 		this.windto(Math.floor((this.numValidTimesteps-1) * percentage));
@@ -150,7 +149,6 @@ function Canvasrenderer()
 	// Reset canvas
 	this.reset = function()
 	{
-		
 		this.lastUpdateSearchBar = 0;
 		// Clear canvas
 		ctx.clearRect(0, 0, c.width, c.height);
