@@ -415,6 +415,38 @@ function imagerecorder(canvas)
 		}
 	}
 	
+	// Resize the canvas
+	function resizeCanvas() {
+		
+		setCanvasWidth("100%");
+		setCanvasWidth("100%"); // <- problems here
+		
+		// Resize <canvas> element in imagerecorder.php if image < canvas
+		if(imageData.width <= getCanvasWidth()) {
+			setCanvasWidth(imageData.width);
+		}
+		
+		if(imageData.height <= getCanvasHeight()) {
+			setCanvasHeight(imageData.height);
+		}
+	}
+	function setCanvasWidth(width) {
+		$("#" + imageCanvas).width(width);
+		canvas.width = getCanvasWidth();	
+	}
+	
+	function getCanvasWidth() {
+		return $("#" + imageCanvas).width();
+	}
+
+	function setCanvasHeight(height) {
+		$("#" + imageCanvas).height(height);
+		canvas.height = getCanvasHeight();
+	}
+	function getCanvasHeight() {
+		return $("#" + imageCanvas).height();
+	}
+	
 	// calculate what the next image will be
 	function getNextImage() {
 		// check so we dont try to fetch fields that doesnt exist
@@ -651,6 +683,9 @@ function imagerecorder(canvas)
 				"opacity": "1"
 			});
 		});
+
+		// Show instruction button
+		$("#instructbutton").show();
 
 		// Clear canvas
 		canvas.width = canvas.width;

@@ -54,8 +54,6 @@
 				<input id="uploadButton" type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image(s)">
 				<input type="button" id="instructbutton" class="controlbutton" value="Instructions" onClick="showinstruction();"/>
 			</div>
-			
-		
 				
 			<!--creating the small imageviewer, on the bottom of the screen-->
 			<div id="thumbnails" class="thumbnails">
