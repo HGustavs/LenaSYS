@@ -5,7 +5,10 @@
 			<link type="text/css" href="css/style.css" rel="stylesheet">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/duggasys.js"></script>
-		<script>page.title("Studentview");</script>
+		<script>
+		qs = getUrlVars();
+		page.title(qs.name);
+		</script>
 	</head>
 <body>
 <?php
