@@ -271,7 +271,14 @@ function imagerecorder(canvas)
 				},
 				success: function() {
 				
-					$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</p>.");
+					$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>.");
+					$("#export-feedback").append($('<div>', {
+						"class":	"closebutton",
+						html:		"",
+						click:		function(e) {
+							$("#export-feedback").hide();
+						}
+					}));
 				
 					$("#export-feedback").show(250);
 				}

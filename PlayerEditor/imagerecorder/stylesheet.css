@@ -74,7 +74,7 @@ ul {
 
 #export-feedback {
 	display: none;
-	width: 250px;
+	width: 300px;
 	font-family:'Raleway Thin';
 	padding: 10px;
 	z-index: 2;
@@ -154,14 +154,10 @@ ul {
 }
 
 #instructionwindow{
-    overflow: auto;
- 	overflow-y: scroll;
 	position: relative;
 	z-index: 2;
-	width: 1000px;
-	height: 500px;
+	width: 50%;
 	background-color: white;
-	background-image: url("img/instructions.png");
 	border-radius: 5px;
 	margin-left: auto;
 	margin-right: auto;
@@ -182,14 +178,16 @@ ul {
  	margin-top: -12px;
 }
 
-#closeinstruction{
+.closebutton {
+	position: absolute;
+	top: 0;
+	right: 0;
 	width:35px;
 	height: 35px;
 	background-color: red;
-	float:right;
 	background-image: url("img/quit.png");
 }
-#closeinstruction:hover{
+.closebutton:hover{
 	cursor:pointer;
 	background-image: url("img/quithover.png");
 }

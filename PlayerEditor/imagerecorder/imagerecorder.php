@@ -11,7 +11,8 @@
 	<body>
 		<div id="instructionopacity">
 				<div id="instructionwindow">
-					<div id="closeinstruction" onClick="hideinstruction();">
+					<img src="img/instructions.png" width="100%">
+					<div class="closebutton" onClick="hideinstruction();">
 					</div>
 				</div>
 			</div>	
