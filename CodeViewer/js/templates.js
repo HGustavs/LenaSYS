@@ -1,7 +1,6 @@
 
 function changetemplate(templateid){
 	AJAXService("changetemplate","&templateid="+templateid);
-	location.reload();
 }
 
 function choosetemplate(){
@@ -49,7 +48,6 @@ function createboxmenu(contentid, boxid, type){
 			str+= '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
 			str+= '<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
 			str+= "<td class='butto2' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
-		//	str+= "<td class='butto2' title='Save' onclick='Save(\""+contentid+"\",\""+boxid+"\");'><img src='new icons/save_button.svg' /></td>";
 			str+= "<td  class='butto2'>";
 			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 					str+= "<option value='DOCUMENT'>Description section</option>";
@@ -105,7 +103,7 @@ function createcodedrop(contentid,boxid)
 	    var codedrop = document.createElement("div");
 		codedrop.setAttribute("id", contentid+"codedrop");
 		codedrop.setAttribute("class", "dropdown dropdownStyle codedrop codedropStyle");
-		document.getElementById("div2").appendChild(codedrop);
+		document.getElementById(contentid+"wrapper").appendChild(codedrop);
     }
 
 	str="";
@@ -139,6 +137,12 @@ function createcodedrop(contentid,boxid)
 	codedrop.innerHTML=str;
 }
 
+function removeTemplatebox(){
+	
+	for(var i=document.getElementsByClassName("box").length; i>retdata['template'][0][2]; i--){
+		document.getElementById("div2").removeChild(document.getElementById("box"+i+"wrapper"));
+	}
+}
 
 function returned(data)
 {
@@ -155,11 +159,19 @@ function returned(data)
 			}
 			
 		}
-		
 		// remove templatebox if it still exists
 		if(document.getElementById("picktemplate")){
 			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
 		}
+		
+		
+	//	alert(retdata['box'].length);
+		
+	//	for(i=retdata['template'][0][2]; i<retdata['box'].length; i--){
+		
+	//	}
+		
+		
 		
 		// create boxes
 		for(i=0;i<retdata['template'][0][2];i++){
@@ -185,9 +197,12 @@ function returned(data)
 					createcodedrop(contentid,boxid);
 				
 					// Make room for the menu by setting padding-top equals to height of menubox
-					
-					var boxmenuheight= $("#"+contentid+"menu").height();
-					$("#"+contentid).css("padding-top", boxmenuheight);
+					if($("#"+contentid+"menu").height() == null){
+						var boxmenuheight = 0;
+					}else{
+						var boxmenuheight= $("#"+contentid+"menu").height();
+					}
+					$("#"+contentid).css("margin-top", boxmenuheight);
 					
 				}
 				rendercode(boxcontent,boxid);
@@ -212,20 +227,33 @@ function returned(data)
 				if(sessionkind == "w"){
 					docuwindow.setAttribute("contenteditable","true");
 					createboxmenu(contentid,boxid,boxtype);
-					var boxmenuheight= $("#"+contentid+"menu").height();
-					$("#"+contentid).css("padding-top", boxmenuheight);
+					
+					// Make room for the menu by setting padding-top equals to height of menubox
+					if($("#"+contentid+"menu").height() == null){
+						var boxmenuheight = 0;
+					}else{
+						var boxmenuheight= $("#"+contentid+"menu").height();
+					}
+					$("#"+contentid).css("margin-top", boxmenuheight);
 				}
 			}
 			
 			if(boxtype == "NOT DEFINED"){
 				if(sessionkind == "w"){
 					createboxmenu(contentid,boxid,boxtype);
-					var boxmenuheight= $("#"+contentid+"menu").height();
-					$("#"+contentid).css("padding-top", boxmenuheight);
+					
+					// Make room for the menu by setting padding-top equals to height of menubox
+					if($("#"+contentid+"menu").height() == null){
+						var boxmenuheight = 0;
+					}else{
+						var boxmenuheight= $("#"+contentid+"menu").height();
+					}
+					$("#"+contentid).css("margin-top", boxmenuheight);
 				}
 			}		
-			
 		}
+		/* Remove unnecessary template boxes*/
+		removeTemplatebox();
 		
 		changeCSS("css/"+data['template'][0][1]);
 		
