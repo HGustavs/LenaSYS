@@ -322,7 +322,7 @@ function returned(data)
 		var examplenme=document.getElementById('exampleName');
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
-		examplesect.innerHTML=data['entryname'];
+		examplesect.innerHTML=data['entryname']+"&nbsp;:&nbsp;";
 		
 		
 		if(sessionkind=="w"){

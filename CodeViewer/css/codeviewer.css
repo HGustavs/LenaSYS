@@ -771,6 +771,9 @@ a {
     .showdesktop{
         display: none;
     }
+    #exampleSection{
+        display: none;
+    }
 
 }
 
