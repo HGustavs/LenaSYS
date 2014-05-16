@@ -1303,15 +1303,16 @@ function rendercode(codestring,boxid)
 					if(cont != ""){
 						lineno++;
 
-						// Make line number										
-						if(lineno<10){
-								num="<span class='no'>"+lineno+"&nbsp;&nbsp;&nbsp;&nbsp;</span>";
+						// Make line number		
+						num="<div class='no'>"+lineno+"</div>";								
+				/*		if(lineno<10){
+								num="<div class='no'>"+lineno+"</div>";
 						}else if(lineno>=10 && lineno<100){
-								num="<span class='no'>"+lineno+"&nbsp;&nbsp;</span>";
+								num="<div class='no'>"+lineno+"</div>";
 						}else{
-								num="<span class='no'>"+lineno+"&nbsp;</span>";
+								num="<div class='no'>"+lineno+"</div>";
 						}
-						
+				*/		
 						if(improws.length==0){
 								str+="<div class='normtext'>";
 						}else{

@@ -93,10 +93,13 @@
 }
 
 .normtext .no {
-    border-right: 2px #444;
     color: white;
-    padding-left: 3px; 
     background-color: #000;
+    padding-left: 4px;
+    padding-right: 6px;
+    width: 22px;
+    float: left;
+    text-align: right;
 }
 
 .impo .no {
