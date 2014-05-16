@@ -184,6 +184,23 @@
 	/*color: white;*/
 }
 
+/* Scroll hotdog menu */
+#table-wrapper {
+  position:relative;
+}
+#table-scroll {
+  height:auto;
+  overflow:auto;  
+  margin-top:20px;
+}
+#table-wrapper table {
+  width:100%;
+    
+}
+#table-wrapper table * {
+  color:black;
+}
+
 /* All dropdrowns (codeexample, images, general settings) */
 .dropdown {
     display: none;
