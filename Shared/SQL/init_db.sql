@@ -431,3 +431,11 @@ CREATE TABLE `userAnswer` (
   `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`testID`,`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+
+CREATE TABLE playereditor_playbacks(
+    id  VARCHAR(32) NOT NULL,
+    type    SMALLINT(1) NOT NULL,
+    path    VARCHAR(256) NOT NULL,
+    PRIMARY KEY(id, type)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
