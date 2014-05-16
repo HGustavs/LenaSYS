@@ -3,7 +3,7 @@ $( document ).ready(function() {
 	page.load();
 	page.show();
 });
-// Running page object funktions if browser back/forward buttons get pressed //
+// Running page object functions if browser back/forward buttons get pressed //
 window.onhashchange = function() {
 	page.show();
 }
@@ -12,7 +12,7 @@ function changeURL(url) {
 	history.pushState(null, null, "#"+url);
 	page.show();
 }
-// Grabing URL values //
+// Grabbing URL values //
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -35,7 +35,7 @@ function getPage() {
 		var hashtagsplit = url.split('#').pop();
 		if(window.location.hash && hashtagsplit.length > 0) {
 			var slashsplit = hashtagsplit.split('/');
-			for (var i = 1 - 1; i <= slashsplit.length-1; i++) {
+			for (var i = 0; i <= slashsplit.length-1; i++) {
 				//CHECK IF A FILE OR A FOLDER ELSE LAST ONE IS A FILE //
 				if(!slashsplit[i].match(/^\s*$/)) {
 					//CHECK IF A FOLDER //
@@ -88,7 +88,7 @@ function getPage() {
 		$("#title h1").html(title+" - "+this.page.capitalize());
 		document.title = title+" | "+this.page.capitalize();
 	}
-	// Grabing a list of pages existing in the pages folder //
+	// Grabbing a list of pages existing in the pages folder //
 	this.load = function() {
 		console.log("loading pages...");
 		var result;

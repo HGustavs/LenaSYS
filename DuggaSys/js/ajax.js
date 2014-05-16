@@ -27,3 +27,26 @@
 		});
  	};
  }
+
+function submitNewPassword()
+{
+	if(validateNewPasswordSubmit()) {
+		$.ajax({
+			dataType: 'json',
+			type: 'post',
+			url: 'ajax/newpassword.php',
+			data: $("form[name=newPassword]").serialize(),
+			success: function(data) {
+				if(data.success == true) {
+					successBox('Password changed!', 'Successfully changed password');
+					setTimeout(function() { historyBack(); }, 1500);
+				} else {
+					warningBox('Password change failed', 'Failed to change password');
+				}
+			},
+			error: function() {
+				console.log('Something went horribly wrong');
+			}
+		});
+	}
+}

@@ -14,51 +14,30 @@ checklogin();
 	<script>
 		var sessionkind=0;
 		var querystring=getUrlVars();
-		var coursename=querystring.coursename;
-		page.title(coursename);
 		$.fn.extend({
 			makesortable: function() {
 				// Initialize timer object
-				var dragtimer = null;
 				$( "#Sectionlist" ).sortable({
 					opacity: 0.5,
-						cursor: "move",
-						items: "> span",
-						update: function() {
-							// Check if timer was initialized
-							if (dragtimer != null) {
-								// Clear the timer
-								clearInterval(dragtimer);
-							}
-							var serialized = $(this).sortable("serialize");
-							dragtimer = setTimeout(function(){
-								// Pass course ID to check write access
-								var array = serialized + "&courseid=" + querystring.courseid + "&opt=updateEntries";
-								$.post("ajax/SectionedService.php", array, function(theResponse){
-									var data = $.parseJSON(theResponse);
-									if(data.success) {
-										successBox(data.coursename, "Updates saved", 50);
-									} else {
-										warningBox(data.coursename, "Could not save list elements", 50);
-									}
-									dragtimer = null;
-								});
-							}, 3000);
-						}
+					cursor: "move",
+					items: "> span"
 				});
 			}
 		})
+		
 		function serviceOnSuccess(data) {
 			sessionkind=data.writeaccess;
 			readaccess=data.readaccess;
 			if(sessionkind==true) {
 				$(document).makesortable();
+				$("#Sectionlist").sortable("disable");
 			}
 			if (readaccess==true) {
 				returnedSection(data);
 			} else {
 				changeURL('noid');
 			}
+			page.title(data.coursename);
 		}
 		function AJAXServiceSection(opt,para)
 		{
