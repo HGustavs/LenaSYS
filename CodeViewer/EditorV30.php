@@ -79,8 +79,11 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 		<link type="text/css" href="css/blackTheme.css" rel="stylesheet" />		
 		<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
         <script type="text/javascript" src="js/codeviewer.js"></script>
+        <script type="text/javascript" src="js/templates.js"></script>
         <script type="text/javascript" src="js/tooltips.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+    
 
 
 <?php
@@ -90,7 +93,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				dbConnect();
 				
                 echo'<script>';
-				jsvarget("courseid","courseIDNum");				
+				jsvarget("courseid","courseid");				
 				jsvarget("position","position");
 				jsvarget("version","version");
 				jsvarget("exampleid","exampleid");
@@ -103,9 +106,8 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 						$kind = $type;
 				}
 				echo "var sessionkind='" . $kind . "';";
-				echo "var courseID='" . getCourseName($_GET['courseid']) . "';";
+			//	echo "var courseID='" . getCourseName($_GET['courseid']) . "';";
 ?>				
-				console.log(courseID);
 
 				function AJAXService(sname,param)
 				{	
@@ -114,9 +116,17 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 				}
 
 <!--                Alternative function used only when editing codeexample-descriptionbox-->
-                function AJAXService2(sname,param)
+                function AJAXService2(sname,param,boxid)
                 {
-                	$.ajax({url: "editorService.php", type: "POST", data: {coursename:courseID,version:version,sectionid:sectionID,position:position,opt:sname,description:param}, dataType: "json", success: returned});
+                	$.ajax({url: "editorService.php", type: "POST", data: {exampleid:exampleid,opt:sname,description:param,boxid:boxid}, dataType: "json",
+                	success:function(data){
+                		successBox("Success!", "All descriptions where saved.");
+                		returned(data);
+                	},error: function(data){
+                		warningBox("Warning!", "Description might not have been saved.");
+                		returned(data);
+                	} });
+                	
                 }
 
 		

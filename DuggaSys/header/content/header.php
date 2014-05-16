@@ -24,6 +24,7 @@ $loggedin = checklogin();
 		<?php 
 			if($loggedin) { 
 				echo'<img class="loggedin" onclick="createDeleteLogin()" src="css/svg/Man.svg">';
+				echo '<img id="pwsettings" onclick="changeURL(\'newpassword\')" src="css/images/general_settings_button_white_small.svg" width="40" height="40"/>';
 			}
 			else {
 				echo'<img onclick="createDeleteLogin()" src="css/svg/Man.svg">';

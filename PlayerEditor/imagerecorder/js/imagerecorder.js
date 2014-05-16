@@ -159,27 +159,28 @@ function imagerecorder(canvas)
 				}
 				else {
 					// Show next image
-					showImage(getNextImage());
-				
-					// Update scale ratio (for correct mouse positions)
-					updateScaleRatio();
+					// If image doesn't change, do not log the mouse click
+					if (showImage(getNextImage())) {
+						// Update scale ratio (for correct mouse positions)
+						updateScaleRatio();
 
-					var rect = canvas.getBoundingClientRect();
+						var rect = canvas.getBoundingClientRect();
 
-					mHeight = (rect.bottom - rect.top);
-					mWidth = (rect.right-rect.left);
-					var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-					var yMouse = Math.round((event.clientY-imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-					//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-					//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-				
-					document.getElementById('xCord').innerHTML=xMouse;
-					document.getElementById('yCord').innerHTML=yMouse;
+						mHeight = (rect.bottom - rect.top);
+						mWidth = (rect.right-rect.left);
+						var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
+						var yMouse = Math.round((event.clientY-imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+						//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+						//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
+					
+						document.getElementById('xCord').innerHTML=xMouse;
+						document.getElementById('yCord').innerHTML=yMouse;
 
-					logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+						logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
 
-					// Add undo point
-					createUndoPoint();
+						// Add undo point
+						createUndoPoint();	
+					}
 				}
 				
 			} else {
@@ -404,21 +405,21 @@ function imagerecorder(canvas)
 	// Prints image as canvas
 	function showImage(id) {
 		if(id >= 0) {
+			// Set image
 			activeImage = id;
 			imageData = new Image();
 			imageData.src = imagelibrary[id];
-			
-			// Clears screen. May need a better solution.
-			canvas.width = canvas.width; 
-			
-			var ratio = 1;
-			// Picture need to be scaled down
 					
-			// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
 			imageData.onload = function() {
+				// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
 				imgrecorder.currentImageWidth = imageData.width;
 				imgrecorder.currentImageHeight = imageData.height;
 				resizeCanvas();	
+				// Clears screen. May need a better solution.
+				canvas.width = canvas.width; 
+				var ratio = 1;
+				// When image has been loaded calculate ratios and print it on the canvas
+				// Picture need to be scaled down
 				if (imageData.width > canvas.width || imageData.height > canvas.height) {
 					// Calculate scale ratios
 					var widthRatio = canvas.width / imageData.width;
@@ -428,10 +429,17 @@ function imagerecorder(canvas)
 					if (widthRatio < heightRatio) ratio = widthRatio;
 					else ratio = heightRatio;
 				}
+				// Daw to canvas
 				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
 			}
+
+			// Successful image change
+			return true;
 		} else {
 			alert("No more images to show");
+
+			// Didn't change image
+			return false;
 		}
 	}
 	

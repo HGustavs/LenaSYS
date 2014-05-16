@@ -1,60 +1,14 @@
-/*#docucontent {
-    padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
+#box1wrapper {
     position: absolute;
     top: 0px;
-    bottom: 0px;
     left: 0px;
-    width: 296px;
-    background-color: #ddd;
-    overflow: scroll;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    font-size: 16px;
-    outline: 0 none;
-}
-
-#codebox {
-    border-style: solid;
-    border-width: 1px;
-    position: absolute;
-    top: 0px;
     bottom: 0px;
-    left: 300px;
-    right: 0px;
-    background-color: #fff;
-    overflow: scroll;
-}*/
-
-#buttomenu2{
-	z-index:2;
-	position: absolute;
-    background-color: #5D5D5D;
-    height: 50px;
-    width: -moz-calc(26%);
-    width: -webkit-calc(26%);
-}
-#docucontent {
-    padding-left: 4px;
-    position: absolute;
-    top: 50px;
-    padding-top:4px;
-    left: 0px;
- 	width: -moz-calc(25.0% - 4px);
-	width: -webkit-calc(25.0% - 4px);
-    height: -webkit-calc(100.0% - 54px);
-    height: -moz-calc(100.0% - 54px);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
+ 	width: -moz-calc(25.0%);
+	width: -webkit-calc(25.0%);
 }
 
 
-#codebox {
+#box2wrapper {
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -68,4 +22,3 @@
     overflow-x: hidden;
     z-index: 2;
 }
- 

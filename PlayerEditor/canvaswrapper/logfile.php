@@ -4,5 +4,4 @@
 	$content = $_POST['string'];
 	echo("creating file");
 	file_put_contents("logs/".$filename, $content, FILE_APPEND);
-	echo chunk_split($content,5000,".");
 ?>
