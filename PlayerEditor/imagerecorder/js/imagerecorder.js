@@ -26,7 +26,8 @@ function imagerecorder(canvas)
 	var bodyMouseX;
 	var bodyMouseY;
 	this.scrollAmountY = 0;
-	
+	this.currentImageWidth;
+	this.currentImageHeight;
 	var mouseFPS = 30;
 	
 	var files;						// store files thats being uploaded
@@ -38,6 +39,9 @@ function imagerecorder(canvas)
 
 	mHeight = (rect.bottom - rect.top);
 	mWidth = (rect.right-rect.left);
+
+	this.maxCanvasWidth = mWidth;
+	this.maxCanvasHeight = mHeight;
 
 	addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
 	addTimestep('\n<recordedMouseFPS value="' + mouseFPS + '"/>');
@@ -241,18 +245,23 @@ function imagerecorder(canvas)
 		 * Update scale ratio when the window is resized
 		 */
 		$(window).on('resize', function(){
-				if(libEntered == 1){
+				//if(libEntered == 1){		// libEntered is undefined...?
 				// Scale ratio update (for correct mouse positions)
 				var rect = canvas.getBoundingClientRect();
 				mHeight = (rect.bottom - rect.top);
 				mWidth = (rect.right-rect.left);
+				
 				addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
 				canvas.width = mWidth;
 				canvas.height = mHeight; 
+				imgrecorder.maxCanvasWidth = mWidth;
+				imgrecorder.maxCanvasHeight = mHeight;
+				imgrecorder.resizeCanvas();
 				updateScaleRatio();
+				
 				console.log("On Resize\n");
 				console.log("canvas: " + canvas.width + ", " + canvas.height);
-				}
+			//	}
 			if(clicked == 1) {
 				showImage(activeImage);
 			}
@@ -396,7 +405,6 @@ function imagerecorder(canvas)
 	function showImage(id) {
 		if(id >= 0) {
 			activeImage = id;
-			
 			imageData = new Image();
 			imageData.src = imagelibrary[id];
 			
@@ -405,18 +413,21 @@ function imagerecorder(canvas)
 			
 			var ratio = 1;
 			// Picture need to be scaled down
-			if (imageData.width > canvas.width || imageData.height > canvas.height) {
-				// Calculate scale ratios
-				var widthRatio = canvas.width / imageData.width;
-				var heightRatio = canvas.height / imageData.height;
-
-				// Set scale ratio
-				if (widthRatio < heightRatio) ratio = widthRatio;
-				else ratio = heightRatio;
-			}
-			
+					
 			// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
 			imageData.onload = function() {
+				imgrecorder.currentImageWidth = imageData.width;
+				imgrecorder.currentImageHeight = imageData.height;
+				resizeCanvas();	
+				if (imageData.width > canvas.width || imageData.height > canvas.height) {
+					// Calculate scale ratios
+					var widthRatio = canvas.width / imageData.width;
+					var heightRatio = canvas.height / imageData.height;
+
+					// Set scale ratio
+					if (widthRatio < heightRatio) ratio = widthRatio;
+					else ratio = heightRatio;
+				}
 				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
 			}
 		} else {
@@ -427,17 +438,20 @@ function imagerecorder(canvas)
 	// Resize the canvas
 	function resizeCanvas() {
 		
+		var scaleRatio = imgrecorder.currentImageHeight / imgrecorder.currentImageWidth; 
+	
+
+		setCanvasWidth(imgrecorder.maxCanvasWidth);
+		setCanvasHeight(imgrecorder.maxCanvasWidth*scaleRatio);
+		if(imgrecorder.currentImageWidth <= getCanvasWidth()) {
+			setCanvasWidth(imgrecorder.currentImageWidth);
+		}
+		
+		if(imgrecorder.currentImageHeight <= getCanvasHeight()) {
+			setCanvasHeight(imgrecorder.currentImageHeight);
+		}
 		setCanvasWidth("100%");
-		setCanvasWidth("100%"); // <- problems here
-		
-		// Resize <canvas> element in imagerecorder.php if image < canvas
-		if(imageData.width <= getCanvasWidth()) {
-			setCanvasWidth(imageData.width);
-		}
-		
-		if(imageData.height <= getCanvasHeight()) {
-			setCanvasHeight(imageData.height);
-		}
+		setCanvasHeight("100%");
 	}
 	function setCanvasWidth(width) {
 		$("#" + imageCanvas).width(width);
