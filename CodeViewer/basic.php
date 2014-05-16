@@ -47,7 +47,7 @@ include "../Shared/basic.php";
 								echo '<td class="buttospacer">&nbsp;</td>';
 								echo '<td class="menutext menutextStyle"><span id="exampleSection">Foo</span>&nbsp;:&nbsp;<span id="exampleName" contenteditable="true">Example Code Page</td>';
 								echo '<td><span id="feedbacksection"></span></td>';
-								echo '<td class="mbutto mbuttoStyle" id="savebutton" title="Save" onclick="Save();"><img src="new icons/save_button.svg" /></td>';
+								echo '<td class="mbutto mbuttoStyle showdesktop" id="savebutton" title="Save" onclick="Save();"><img src="new icons/save_button.svg" /></td>';
 								echo '<td class="mbutto mbuttoStyle showdesktop" title="Settings" id="hidesettings"><img src="new icons/general_settings_button.svg" /></td>';
 								
 								echo '<td class="mbutto mbuttoStyle showdesktop" title="Themes" id="hidetheme" onclick="Theme();"><img src="new icons/switchColorTemp.svg" /></td>';
