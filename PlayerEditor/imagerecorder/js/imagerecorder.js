@@ -155,27 +155,28 @@ function imagerecorder(canvas)
 				}
 				else {
 					// Show next image
-					showImage(getNextImage());
-				
-					// Update scale ratio (for correct mouse positions)
-					updateScaleRatio();
+					// If image doesn't change, do not log the mouse click
+					if (showImage(getNextImage())) {
+						// Update scale ratio (for correct mouse positions)
+						updateScaleRatio();
 
-					var rect = canvas.getBoundingClientRect();
+						var rect = canvas.getBoundingClientRect();
 
-					mHeight = (rect.bottom - rect.top);
-					mWidth = (rect.right-rect.left);
-					var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-					var yMouse = Math.round((event.clientY-imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-					//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-					//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-				
-					document.getElementById('xCord').innerHTML=xMouse;
-					document.getElementById('yCord').innerHTML=yMouse;
+						mHeight = (rect.bottom - rect.top);
+						mWidth = (rect.right-rect.left);
+						var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
+						var yMouse = Math.round((event.clientY-imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
+						//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
+						//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
+					
+						document.getElementById('xCord').innerHTML=xMouse;
+						document.getElementById('yCord').innerHTML=yMouse;
 
-					logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+						logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
 
-					// Add undo point
-					createUndoPoint();
+						// Add undo point
+						createUndoPoint();	
+					}
 				}
 				
 			} else {
@@ -420,8 +421,14 @@ function imagerecorder(canvas)
 				// Daw to canvas
 				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
 			}
+
+			// Successful image change
+			return true;
 		} else {
 			alert("No more images to show");
+
+			// Didn't change image
+			return false;
 		}
 	}
 	
