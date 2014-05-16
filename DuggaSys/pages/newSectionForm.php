@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
+session_start();
+if(checklogin()) {
+?>
 <div id="create">
 	<form role="form" name="newSection">
 		<div class="form-group">
@@ -29,7 +33,7 @@
 				<select name="visib" class='form-control'>
 					<option id="select-opt" value="-1">Select</option>
 					<option class="select-opt" value="0">Hidden</option>
-					<option class="select-opt" value="1">Shown</option>
+					<option class="select-opt" value="1">Public</option>
 				</select>
 				<sub style="font-size:.8em; font-style:itelic;">
 					Shown is visible to anyone with access to the course. 
@@ -37,7 +41,10 @@
 				</sub>
 		</div>
 		<button type="button" class="default" onclick="submitNewSection()">Create new entry</button>
+        <button type="button" class="default-red" onclick="historyBack()">Cancel</button>
 	</form>
 </div>
+<script type="text/javascript">page.title("Create new entry")</script>
 <script type="text/javascript" src="js/sectionhandler.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
+<?php } ?>

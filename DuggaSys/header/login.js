@@ -140,7 +140,7 @@ function makeLogin() {
 			url: getScriptPath("login.js")+"/ajax/login.php",
 			data: {
 				username: username,
-				saveuserlogin: saveuserlogin,
+				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
 				password: password
 			},
 			success:function(data) {
