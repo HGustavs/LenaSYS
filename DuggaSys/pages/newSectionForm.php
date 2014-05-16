@@ -2,6 +2,12 @@
 include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
 session_start();
 if(checklogin()) {
+	if (isset($_GET["courseid"])) {
+		$ha = hasAccess($_SESSION['uid'], $_GET["courseid"], 'w') || isSuperUser($_SESSION["uid"]);
+	} else {
+		$ha = isSuperUser($_SESSION["uid"]);
+	}
+	if($ha) {
 ?>
 <div id="create">
 	<form role="form" name="newSection">
@@ -47,4 +53,4 @@ if(checklogin()) {
 <script type="text/javascript">page.title("Create new entry")</script>
 <script type="text/javascript" src="js/sectionhandler.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
-<?php } ?>
+<?php }} ?>
