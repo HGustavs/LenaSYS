@@ -6,7 +6,7 @@
 		$('#testdugga').find('option').remove();
 		var selectOption = document.createElement('option');
 		selectOption.value = "-1";
-		selectOption.innerHTML = "Select";
+		selectOption.innerHTML = "New";
 		$("#testdugga").append(selectOption);
 		var type = $(this).val();
 

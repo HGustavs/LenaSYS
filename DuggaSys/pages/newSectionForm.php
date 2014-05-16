@@ -15,10 +15,6 @@ if(checklogin()) {
 			<label id="linklabel">Link:
 				<input type="text" name="link" class="form-control" disabled style="background-color:#dfdfdf">
 			</label>
-			<label>Select test/dugga</label>
-				<select name="testduggaselect" id="testdugga" class='form-control' disabled style="background-color:#dfdfdf">
-					<option value="-1">Select</option>
-				</select>
 			<label>Type
 				<select name="type" class="form-control" id="typeselect">
 					<option value="-1">Select</option>
@@ -29,6 +25,10 @@ if(checklogin()) {
 					<option value="4">Link</option>
 				</select>
 			</label>
+			<label>Select test/dugga</label>
+				<select name="testduggaselect" id="testdugga" class='form-control' disabled style="background-color:#dfdfdf">
+					<option value="-1">Select</option>
+				</select>
 			<label>Select visibility for entry</label>
 				<select name="visib" class='form-control'>
 					<option id="select-opt" value="-1">Select</option>
