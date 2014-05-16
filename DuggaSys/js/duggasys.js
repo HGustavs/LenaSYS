@@ -1,3 +1,35 @@
+function saveSort() {
+	var serialized = $("#Sectionlist").sortable("serialize");
+	// Pass course ID to check write access
+	var array = serialized + "&courseid=" + querystring.courseid + "&opt=updateEntries";
+	$.post("ajax/SectionedService.php", array, function(theResponse) {
+		var data = $.parseJSON(theResponse);
+		if(data.success) {
+			successBox(data.coursename, "Updates saved", 50);
+		} else {
+			warningBox(data.coursename, "Could not save list elements", 50);
+		}
+	});
+}
+
+function setupSort() {
+	var sort = document.getElementById('setupsort');
+	if (sort.value == "Enable sorting") {
+		sort.value = "Disable sorting";
+		document.getElementById('savesort').style.display = 'initial';
+		noticeBox("Sorting enabled!", "Sections are now draggable");
+		$("#Sectionlist").sortable("enable");
+		sort.className = "submit-button-red";
+	} else {
+		sort.value = "Enable sorting";
+		document.getElementById('savesort').style.display = 'none';
+		noticeBox("Sorting disabled!", "Sections are not draggable any longer");
+		$("#Sectionlist").sortable("disable");
+		sort.className = "submit-button";
+	}
+	
+}
+
 function returnedSection(data)
 {
 		retdata=data;
@@ -5,7 +37,14 @@ function returnedSection(data)
 		// Fill section list with information
 		str="";
 		if(sessionkind) {
-			str+="<div style='float:right;'><input class='submit-button' type='button' value='Add' onclick='changeURL(\"newSectionForm?courseid=" + data.courseid + "\")'/></div>";	
+			str+="<div style='float:right;'>";
+			str+="<input class='submit-button' type='button' value='Add' onclick='changeURL(\"newSectionForm?courseid=" + data.courseid + "\")'/>";
+			str+="</div>";
+			
+			str+="<div style='float:left;'>";
+			str+="<input class='submit-button' style='margin-right:5px;' id='setupsort' type='button' value='Enable sorting' onclick='setupSort()'/>";
+			str+="<input class='submit-button' style='display:none;' padding id='savesort' type='button' value='Save' onclick='saveSort()'/>";
+			str+="</div>";
 		}
 		// Course Name
 		str+="<div class='course'>"+data.coursename+"</div>";
@@ -53,27 +92,45 @@ function returnedSection(data)
 						if (parseInt(data['entries'][i]['kind']) < 2) {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<span style='color:rgba(255,255,255,0.5);'>"+data['entries'][i]['entryname']+"</span>";
-								str+="<img style='opacity:0.5;'onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+								str+="<span style='padding-left:5px;color:rgba(255,255,255,0.5);'>"+data['entries'][i]['entryname']+"</span>";
+								str+="<img style='padding-right:5px;opacity:0.5;'onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
 							} else {
-								str+="<span>"+data['entries'][i]['entryname']+"</span>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+								str+="<span style='padding-left:5px;'>"+data['entries'][i]['entryname']+"</span>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_white.svg' />";
+							}
+						} else if (parseInt(data['entries'][i]['kind']) == 2 || parseInt(data['entries'][i]['kind']) >= 4) {
+							if (parseInt(data['entries'][i]['visible']) === 0) {
+								//Adding the opacity here instead for visible = 0
+								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);margin-left:15px;' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+							
+							} else{
+								str+="<a style='margin-left:15px;' id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							}
 						} else {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
-								str+="<img style='opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							
 							} else{
-								str+="<a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a>";
-								str+="<img onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
+								str+="<a id='section-list' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<img style='padding-right:5px;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							}
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' name='sectionname' value='"+data['entries'][i]['entryname']+"' />";
-						str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
-						str+="<option value='-1'>Select</option>";
+						if (data['entries'][i]['kind'] == 2) {
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
+							testDuggaService(data.courseid, "example", data['entries'][i]['lid'], data['entries'][i]['link']);
+						} else if (data['entries'][i]['kind'] == 3) { 
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
+							testDuggaService(data.courseid, "test", data['entries'][i]['lid'], data['entries'][i]['link']);
+						} else {
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
+						}
+						str+="<option value='-1'>Create new</option>";
 						str+="</select>";
 						str+="Edit type:<select name='type'><option value='"+parseInt(data['entries'][i]['kind'])+"'>";
 						switch(parseInt(data['entries'][i]['kind'])){
@@ -130,14 +187,14 @@ function returnedSection(data)
 						}
 						str+="</select>";
 						str+="<div style='float:right;'>";
-						str+="<input class='submit-button-red' type='button' value='Delete' onclick='AJAXServiceSection(\"sectionDel\", \"&sectid="+data['entries'][i]['lid']+"\");' style='margin-left:10px;margin-right:10px;' />";
+						str+="<input class='submit-button-red' type='button' value='Delete' onclick='warningBox(\"Confirm Delete\", \"Would you like to delete this?\", 0, deleteFromSectionlist, "+data['entries'][i]['lid']+")' style='margin-left:10px;margin-right:10px;' />";
 						str+="<input class='submit-button' type='button' value='Save' onclick='sectionSettingsService("+data['entries'][i]['lid']+")' />";
 						str+="</div></div>";
 					} else {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
-							str+="<span>"+data['entries'][i]['entryname']+"</span>";
+							str+="<span style='padding-left:5px;'>"+data['entries'][i]['entryname']+"</span>";
 						} else {
-							str+="<span><a id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+							str+="<span><a style='margin-left:15px;' id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
 						}
 					}
 					str+="</span>";
@@ -170,10 +227,10 @@ function returnedSection(data)
 						$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").find('option').remove();
 						var selectOption = document.createElement('option');
 						selectOption.value = "-1";
-						selectOption.innerHTML = "Select";
+						selectOption.innerHTML = "Create new";
 						$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").append(selectOption);
+						
 						var type = $(this).val();
-
 						if(type == 0 || type == 1 || type == 2 || type == 3) {
 							$("#sectioned_"+event.data.data['lid']+" input[name=link]").val('');
 							$("#sectioned_"+event.data.data['lid']+" input[name=link]").prop("disabled", true).css(disabled);
@@ -191,26 +248,135 @@ function returnedSection(data)
 							} else {
 								var opt = "test";
 							}
-							$.ajax({
-								dataType: 'json',
-								url: 'ajax/testduggaService.php',
-								method: 'post',
-								data: {
-									'courseid': event.data.id,
-									'opt': opt
-								},
-								success: function(returnData) {
-									for (i=0; i<returnData['entries'].length; i++) {
-										var option = document.createElement('option');
-										option.value = returnData['entries'][i]['id'];
-										option.innerHTML = returnData['entries'][i]['name'];
-										$("#sectioned_"+event.data.data['lid']+" select[name=testduggaselect]").append(option);
-									}
-								}
-							});
+							testDuggaService(event.data.id, opt, event.data.data['lid']);
 						}
 					});
 				}
 			})(jQuery);
 
+}
+  function studentDelete(showhide) {
+      if (showhide == "show") {
+          document.getElementById('deletebox').style.visibility = "visible";
+          document.getElementById('deletebutton').style.visibility = "visible";
+      } else if (showhide == "hide") {
+          document.getElementById('deletebox').style.visibility = "hidden";
+          document.getElementById('deletebutton').style.visibility = "hidden";
+      }
+  }
+
+
+$(function() {
+       $('#hide').click(function() {
+                $('td:nth-child(5)').hide();                
+       });
+
+	   $('#show').click(function() {
+                $('td:nth-child(5)').show();                
+       });
+    });
+
+function passPopUp(){
+    var qs = getUrlVars();
+    $.ajax({
+		dataType: "json",
+		type: "POST",
+		url: 'ajax/addstudent_ajax.php',
+		data: {
+			string: $("#string").val(),
+			courseid: qs.courseid
+		},
+		success: function (returnedData) {
+		console.log(returnedData);
+		showPopUp('show', returnedData)
+		},
+	});
+	}
+
+	function showPopUp(showhidePop, returnedData){
+		if(showhidePop == "show"){
+		document.getElementById('light').style.visibility = "visible";
+		document.getElementById('fade').style.visibility = "visible";
+
+		if (returnedData.length == 0){
+			var output = "The users you were adding already existed globally and were added to the course";
+   		}
+   		else {
+	  var output = "<div id='printArea'>";
+	  output += "<table class='list'>";
+      output += "<tr><th>Name</th>";
+      output += "<th>Username</th>";
+      output += "<th>Password</th></tr>";
+
+      $.each(returnedData, function(){
+      output += "<tr><td>"+this[1]+"</td>";
+      output += "<td>"+this[0]+"</td>";
+      output += "<td>"+this[2]+"</td></tr>";
+		})
+       output += "</table>";
+       output += "</div>";
+	   output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
+   }
+      var div = document.getElementById('light');
+      div.innerHTML = output;
+	}
+	else if(showhidePop == "hide"){
+		document.getElementById('light').style.visibility = "hidden";
+		document.getElementById('fade').style.visibility = "hidden";	
+	}
+}
+
+function testDuggaService(courseID, opt, sectionID, link) {
+	link = link || "";
+	$("#sectioned_"+sectionID+" select[name=testduggaselect]").find('option').remove();
+	var selectOption = document.createElement('option');
+	selectOption.value = "-1";
+	selectOption.innerHTML = "Create new";
+	$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(selectOption);
+	$.ajax({
+		dataType: 'json',
+		url: 'ajax/testduggaService.php',
+		method: 'post',
+		data: {
+			'courseid': courseID,
+			'opt': opt
+		},
+		success: function(returnData) {
+			for (i=0; i<returnData['entries'].length; i++) {
+				var option = document.createElement('option');
+				option.value = returnData['entries'][i]['id'];
+				option.innerHTML = returnData['entries'][i]['name'];
+				if (opt == "example") {
+					if (link.length > 0) {
+						var string = link.split("&");
+						if (string[0]) {
+							string = string[0].split("?");
+							if (string[1]) {
+								string = string[1].split("=");
+								if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
+									option.setAttribute('selected', true);
+								}
+							}
+						}
+					}
+				}
+				$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(option);
+			}
+		}
+	});
+}
+function printDiv(){
+	var printArea = document.getElementById('printArea').innerHTML;
+	var originalContents = document.body.innerHTML;
+
+	document.body.innerHTML = printArea;
+
+	window.print();
+
+	document.body.innerHTML = originalContents;
+}
+
+
+function deleteFromSectionlist(ID){
+	AJAXServiceSection("sectionDel","&sectid="+ID);
 }

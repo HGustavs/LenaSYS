@@ -1,10 +1,9 @@
 $( document ).ready(function() {
 	page = 	new getPage();
-	page.load()
+	page.load();
 	page.show();
 });
-
-// Running page object funktions if browser back/forward buttons get pressed //
+// Running page object functions if browser back/forward buttons get pressed //
 window.onhashchange = function() {
 	page.show();
 }
@@ -13,7 +12,7 @@ function changeURL(url) {
 	history.pushState(null, null, "#"+url);
 	page.show();
 }
-// Grabing URL values //
+// Grabbing URL values //
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -36,7 +35,7 @@ function getPage() {
 		var hashtagsplit = url.split('#').pop();
 		if(window.location.hash && hashtagsplit.length > 0) {
 			var slashsplit = hashtagsplit.split('/');
-			for (var i = 1 - 1; i <= slashsplit.length-1; i++) {
+			for (var i = 0; i <= slashsplit.length-1; i++) {
 				//CHECK IF A FILE OR A FOLDER ELSE LAST ONE IS A FILE //
 				if(!slashsplit[i].match(/^\s*$/)) {
 					//CHECK IF A FOLDER //
@@ -89,7 +88,7 @@ function getPage() {
 		$("#title h1").html(title+" - "+this.page.capitalize());
 		document.title = title+" | "+this.page.capitalize();
 	}
-	// Grabing a list of pages existing in the pages folder //
+	// Grabbing a list of pages existing in the pages folder //
 	this.load = function() {
 		console.log("loading pages...");
 		var result;
@@ -131,54 +130,75 @@ function getTest() {
 	console.log("complete");
 }
 // ALERT BOXES START //
-function successBox(title, text, delay) {
-	if(title == undefined) { title = "Success!" }
-	if(text == undefined) { text = "You won..." }
-	if(delay == undefined) { delay = 0 }
-	createRemoveAlert(title, text, delay, "success");
+function successBox(title, text, delay, confirm, data) {
+	if(title == undefined || 0 === title.length) { title = "Success!" }
+	if(text == undefined || 0 === text.length) { text = "You won..." }
+	if(delay == undefined || 0 === delay.length) { delay = 0 }
+	createRemoveAlert(title, text, delay, confirm, data, "success");
 }
-function noticeBox(title, text, delay) {
-	if(title == undefined) { title = "Notice!" }
-	if(text == undefined) { text = "Think about it..." }
-	if(delay == undefined) { delay = 0 }
-	createRemoveAlert(title, text, delay, "info");
+function noticeBox(title, text, delay, confirm, data) {
+	if(title == undefined || 0 === title.length) { title = "Notice!" }
+	if(text == undefined || 0 === text.length) { text = "Think about it..." }
+	if(delay == undefined || 0 === delay.length) { delay = 0 }
+	createRemoveAlert(title, text, delay, confirm, data, "info");
 }
-function warningBox(title, text, delay) {
+function warningBox(title, text, delay, confirm, data) {
 	if(title == undefined) { title = "Warning!" }
-	if(text == undefined) { text = "Can be dangerous..." }
-	if(delay == undefined) { delay = 0 }
-	createRemoveAlert(title, text, delay, "warning");
+	if(text == undefined || 0 === text.length) { text = "Can be dangerous..." }
+	if(delay == undefined || 0 === delay.length) { delay = 0 }
+	createRemoveAlert(title, text, delay, confirm, data, "warning");
 }
-function dangerBox(title, text, delay) {
-	if(title == undefined) { title = "Warning!" }
-	if(text == undefined) { text = "Serious error..." }
-	createRemoveAlert(title, text, delay, "danger");
+function dangerBox(title, text, delay, confirm, data) {
+	if(title == undefined || 0 === title.length) { title = "Warning!" }
+	if(text == undefined || 0 === text.length) { text = "Serious error..." }
+	if(delay == undefined || 0 === delay.length) { delay = 0 }
+	createRemoveAlert(title, text, delay, confirm, data, "danger");
 }
 
-function createRemoveAlert(title, text, delay, type) {
+function createRemoveAlert(title, text, delay, confirm, data, type) {
+	var result = false;
 	if(delay == undefined) { delay = 0 }
 	var output = '<div class="alert slide-down '+type+'">';
 		output += '<strong>'+title+'</strong>';
 		output += '<p>'+text+'</p>';
-		output += '<span>x</span>';
+		output += '<span class="alertCancel">x</span>';
+		if(typeof confirm == 'function') {
+			output += '<input type="button" id="alertSubmit" class="btn btn-login btn-next" value="Submit">';	
+			output += '<input type="button" class="btn btn-forgot btn-cancel alertCancel" value="Cancel">';	
+		}
 	output += '</div>';
-
 	if($(".alert").length == 0) {
-	setTimeout(function(){
-		$("#content").prepend(output).children(':first').hide();
-		var elemHeight = $('.alert').height();
-		$('.alert').css({ display: "block", height: "0px" });
-		$(".alert").animate({height: elemHeight}, 300);
-	}, delay);	
+		setTimeout(function(){
+			$("#content").prepend(output).children(':first').hide();
+			var elemHeight = $('.alert').height();
+			$('.alert').css({ display: "block", height: "0px" });
+			$(".alert").animate({height: elemHeight}, 300);
+		}, delay);	
 	}
-	$.when(this).done(setTimeout(function() {
-	$('html').click(function() {
-	    $(".alert").animate({height: 0}, 300,"linear",function() {
-			$(this).remove();
-		})
-	    $("html").unbind('click');
-	});
-	}, 1000));
+	if(typeof confirm == 'function') {
+		$.when(this).done(setTimeout(function() {
+			$( "#alertSubmit" ).click(function() {
+				confirm(data);
+				$(".alert").animate({height: 0}, 300,"linear",function() {
+					$(this).remove();
+				})
+			});
+			$( ".alertCancel" ).click(function() {
+				$(".alert").animate({height: 0}, 300,"linear",function() {
+					$(this).remove();
+				})
+			});
+		}, 1000));
+	}
+	else {
+		$.when(this).done(setTimeout(function() {
+		$('html').click(function() {
+		    $(".alert").animate({height: 0}, 300,"linear",function() {
+				$(this).remove();
+			})
+		    $("html").unbind('click');
+		});
+		}, 1000));
+	}
 }
-
 // ALERT BOXES END //

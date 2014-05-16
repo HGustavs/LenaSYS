@@ -109,7 +109,7 @@ function checkIfEmpty(textInput){
         $(textInput).addClass("isValid");                                                                                    
     }                                                                                                               
 }
-function chekIfEmptyLoginField(){
+function checkIfEmptyLoginField(){
 	var username = $("#login #username").val();
 	var password = $("#login #password").val();
 	if((username == "") && (password == "")){
@@ -140,7 +140,7 @@ function makeLogin() {
 			url: getScriptPath("login.js")+"/ajax/login.php",
 			data: {
 				username: username,
-				saveuserlogin: saveuserlogin,
+				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
 				password: password
 			},
 			success:function(data) {

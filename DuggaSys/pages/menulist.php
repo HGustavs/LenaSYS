@@ -7,7 +7,7 @@ pdoConnect();
 <head>
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
     <!--This is for adding the correct title to this page-->
-    <script>page.title("Menulist");</script>
+    <script>page.title("Course List");</script>
 </head>
 
 <?php
@@ -35,6 +35,7 @@ if (checklogin()) {
 			// Should this really be here? This is information leakage.
 			err("SQL Query Error: ". $error_sqlcode . " :" . $error_myerr . " " . $errormsg);
 		}
+		$visiblecourses = 0;
 		while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 			//Sets $color to either true or false (different colors) depending on row counter.
 			$color=($counter % 2 == 0) ? '#f0f0f0' : '#e3e3e3';
@@ -50,6 +51,7 @@ if (checklogin()) {
 							echo "</td></tr>";
 						}
 						$counter++;
+						$visiblecourses++;
 					} else if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
 						//Checks the visibility, changes the opacity for hidden.
 						if($row['visibility'] != 0){
@@ -62,6 +64,7 @@ if (checklogin()) {
 							echo "</td></tr>";
 						}
 						$counter++;
+						$visiblecourses++;
 					}
 				}
 			} else {
@@ -73,6 +76,7 @@ if (checklogin()) {
 				}
 				echo "</td></tr>";
 				$counter++;
+				$visiblecourses++;
 			}
 			if (checklogin()) {
 				if (hasAccess($_SESSION["uid"], $row['id'], 'w') || isSuperUser($_SESSION["uid"])) {
@@ -87,10 +91,16 @@ if (checklogin()) {
 						echo "<option value='1'>Public</option>";
 					}
 					echo "</select>";
-					echo "<td class='settings-td-buttons'><input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;'/><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
+					echo "<td class='settings-td-buttons'><input class='submit-button' type='button' value='Access' style='margin-left:10px;margin-right:10px;' onclick=\"changeURL('students?courseid=" . $row['id'] . "&name=" .  $row['coursename'] . "')\" /><input class='submit-button' onclick='courseSettingsService(".$row['id'].")' type='button' value='Save' />";
 					echo "</td></td></tr>";
 				}
 			}
-		}	
+		}
+		
+		if ($visiblecourses == 0) {
+			echo "<tr>";
+			echo "<th colspan='2'>There are currently no courses available</th>";
+			echo "</tr>";
+		}
 	?>
 </table>

@@ -9,13 +9,26 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-	
+		<!--Div that shows the opacity behind the instructionwindow-->
+		<div id="instructionopacity">
+			<!--Div that stores the instructions-->
+			<div id="instructionwindow">
+				<img src="img/instructions.png" width="100%">
+				<div class="closebutton" onClick="hideinstruction();"></div>
+			</div>
+		</div>	
+			
 		<div id="library-name-dialog" title="Library name">
 			<h3><strong>Library name?</strong></h3>
 			<p>Please choose your library name.</p>
 			<input type="value" id="library-name-input" onClick="this.value='';" value="<?php echo date("YmdHis").rand(1,100); ?>">
 			<input type="button" id="library-name-button" value="OK">
 		</div>
+		
+		<div id="export-feedback">
+		</div>
+		
+		
 		
 		<div id="thumbMenu"></div>
 		
@@ -40,16 +53,16 @@
 			</script>
 			
 			<div id="controls">
-				<input id="uploadButton" type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image">
+				<input id="uploadButton" type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image(s)">
+				<input type="button" id="instructbutton" class="controlbutton" value="Instructions" onClick="showinstruction();"/>
 			</div>
-
-			<!--creating the small imageviewer, on the right side of the screen-->
+				
+			<!--creating the small imageviewer, on the bottom of the screen-->
 			<div id="thumbnails" class="thumbnails">
-				<ul style="overflow-x: hidden; margin-right:10px" id="sortableThumbs">
+				<ul  style="overflow-x: hidden; margin-right:10px" id="sortableThumbs">
 					<!-- Uploaded images will be appended in this list -->
 				</ul>
 			</div>
-			
 			<!-- Hidden upload form, this is called from controls -->
 			<div class="uploadForm" style="visibility:hidden;">
 				<form method='post' action="#" id="uploadForm" enctype="multipart/form-data">

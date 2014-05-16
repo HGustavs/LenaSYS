@@ -32,6 +32,11 @@
     background-color: #000;
 }
 
+.mbuttoStyleLight {
+    background-color: #ccc;
+    color: black;
+}
+
 .mbuttoStyle:hover{
 	background-color: #4d4d4d;
 }
@@ -79,6 +84,7 @@
 .normtext {
     color: #000;
     background-color: rgba(255, 255, 255, 1);
+    white-space:nowrap;
 }
 
 .impo {
@@ -105,32 +111,26 @@
 
 .normtext .oper {
     color: #000;
-   // font-weight: bold;
 }
 
 .impo .oper {
     color: #000;
-    //font-weight: bold;
 }
 
 .normtext .string {
     color: #000;
-    //font-weight: bold;
 }
 
 .impo .string {
     color: #000;
-    //font-weight: bold;
 }
 
 .normtext .number {
     color: #000;
-   // font-weight: bold;
 }
 
 .impo .number {
     color: #000;
-   // font-weight: bold;
 }
 
 .normtext .hi {
@@ -166,13 +166,11 @@
 .normtext .impword {
     color: #fff;
     background-color: #000;
-   // font-weight: bold;
 }
 
 .impo .impword {
     color: #fff;
     background-color: #000;
-  //  font-weight: bold;
 }
 
 .normtext .imphi {
@@ -214,3 +212,48 @@
 .themeicon:hover {
 	background-color: #4D4D4D;
 }
+
+
+
+
+
+
+
+
+.box{
+	padding-top: 4px;
+    padding-left: 4px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    outline: 0 none;
+    background-color: #F2F2F2;
+    color: black;
+}
+
+
+/* BOXMENU STYLING START */
+.buttomenu2Style{
+	background-color: #B5B5B5;
+}
+.buttomenu2Style select{
+   color: white;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #B5B5B5;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+.buttomenu2Style select:hover{
+  background-color: #757575;
+    cursor: pointer;
+}
+.butto2:hover{
+    background-color: #757575;
+    cursor: pointer;
+}
+/* BOXMENU STYLING STOP */

@@ -16,20 +16,20 @@
 	// Connect to database and start session
 	dbConnect();
 	session_start();
-	
-//	$coursename=getCourseId($_POST['coursename']);	
-	//$sectionid=mysql_real_escape_string($_POST['sectionid']);
-//	$position=mysql_real_escape_string($_POST['position']);
 
 	$exampleid = $_POST['exampleid'];
+
+    if (isset ($_POST['boxid'])){
+   		$boxid=$_POST['boxid'];
+    }
 	
-//	$version=$_POST['version'];
+	
 	$opt=$_POST['opt'];
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
 	// Make sure there is an exaple
 	$cnt=0;
-	$query = "SELECT exampleid,examplename,cid,cversion FROM codeexample WHERE exampleid='$exampleid';";		
+	$query = "SELECT exampleid,examplename,cid,cversion,public FROM codeexample WHERE exampleid='$exampleid';";		
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 	while ($row = mysql_fetch_assoc($result)){
@@ -38,6 +38,7 @@
 			$examplename=$row['examplename'];
 			$courseID=$row['cid'];
 			$cversion=$row['cversion'];
+			$public=$row['public'];
 	}
 	
 	
@@ -54,7 +55,7 @@
 								$word=htmlEntities($_POST['word']);
 								$wordlist=htmlEntities($_POST['wordlist']);
 								$label=htmlEntities($_POST['label']);
-								$query = "INSERT INTO wordlist(wordlist,word,description,appuser) VALUES ('$wordlist','$word','$label','$appuser');";		
+								$query = "INSERT INTO wordlist(wordlist,word,label,uid) VALUES ('$wordlist','$word','$label','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delWordlistWord',$opt)===0){
@@ -87,14 +88,14 @@
 								// Add word to wordlist
 								$from=htmlEntities($_POST['from']);
 								$to=htmlEntities($_POST['to']);						
-								$query = "INSERT INTO improw(exampleid,istart,iend,uid) VALUES ('$exampleid','$from','$to','$appuser');";		
+								$query = "INSERT INTO improw(codeBoxid,exampleid,istart,iend,uid) VALUES ('$boxid','$exampleid','$from','$to','$appuser');";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delImpLine',$opt)===0){
 								// Add word to wordlist
 								$from=htmlEntities($_POST['from']);
 								$to=htmlEntities($_POST['to']);						
-								$query = "DELETE FROM improw WHERE exampleid='$exampleid' and istart='$from' and iend='$to';";		
+								$query = "DELETE FROM improw WHERE exampleid='$exampleid' AND codeBoxid='$boxid' and istart='$from' and iend='$to';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('selectWordlist',$opt)===0){
@@ -114,10 +115,15 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("selectFile",$opt)===0){
 								$filename=htmlEntities($_POST['filename']);
-								$query = "UPDATE filelist SET filename='$filename' WHERE exampleid='$exampleid';";		
+								$query = "UPDATE codeBox SET filename='$filename' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
+								
+								/* Need to update file id in box-talble here. */
 					}else if(strcmp("createNewExample",$opt)===0){
+						
+						
+				/*		THIS FUNCTIONALITY IS NOT SUPPOSED TO BE IN CODEVIEWER
 								// Create new codeExample - create new file with same id.
 								$newpos=$position+1;
 								
@@ -125,6 +131,8 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Example!");	
 		
+		 
+		 			THIS FUNCTIONALITY IS NOT SUPPOSED TO BE IN CODEVIEWER
 								$query = "INSERT INTO filelist(exampleid,filename,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and cversion='$version'),'<none>','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
@@ -132,18 +140,60 @@
 								$query = "INSERT INTO descriptionsection(exampleid,segment,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and cversion='$version'),'Enter description here.','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
-								
+		*/					
 					}else if(strcmp("editDescription",$opt)===0){
-								$description=$_POST['description'];
-								$query = "UPDATE descriptionsection SET segment='$description' WHERE exampleid='$exampleid';";
+								// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
+								$description = str_replace("&nbsp;"," ",$_POST['description']);
+								$description = str_replace("<br>","\n",$description);
+								$query = "UPDATE descriptionBox SET segment='$description', appuser='$appuser' WHERE exampleid='$exampleid' AND boxid='$boxid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
-					}
-					else if(strcmp("chooseTemplate",$opt)===0){
+					
+					}else if(strcmp("changetemplate",$opt)===0){
+								
+								/*  Codeexample resets when changing templates  */
 								$templateid=$_POST['templateid'];
-								$query = "UPDATE codeexample SET templateid='$templateid' WHERE exampleid='$exampleid';";
+								// Reset and update codeexample
+								$query = "UPDATE codeexample SET templateid='$templateid', uid='$appuser' WHERE exampleid='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
+								
+								$query = "Select numbox from template where templateid=(select templateid from codeexample where exampleid='$exampleid');";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+								while ($row = mysql_fetch_assoc($result)){
+										$required_boxes = $row['numbox'];
+								}
+								
+								$query = "Select * from box where exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+								$existing_boxes = mysql_num_rows($result);
+								
+								$new_boxes = $required_boxes-$existing_boxes;
+								
+								/* Create new boxes if it's needed */								
+								if($new_boxes != 0){
+									for($i=0; $i<$new_boxes; $i++){
+										// Set correct ID number for new box.
+										$existing_boxes++;
+										$query = "INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES ('$existing_boxes','$exampleid','NOT DEFINED','[viktig=1]');";		
+										$result=mysql_query($query);
+										if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
+									}
+								}
+					}else if(strcmp("changeboxcontent",$opt)===0){
+								$content=$_POST['boxcontent'];
+								// Update content in a box.
+								$query = "UPDATE box SET boxcontent='$content' WHERE boxid='$boxid' AND exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating box!");	
+					}
+					else if(strcmp("updateSecurity",$opt)===0){
+								$security=$_POST['public'];
+								$query = "UPDATE codeexample SET public='$security' WHERE exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Security!");
 					}
 			}
 	
@@ -180,7 +230,7 @@
 			
 				// Remember to check offsets and set the previous and next section
 				// position.
-				if($offset-1 > 0) {
+				if($offset-1 >= 0) {
 					$previuous = $positions[$offset-1];
 				} else {
 					$previuous = 0;
@@ -234,16 +284,7 @@
 				$res = mysql_fetch_assoc($forwexamplequery);
 				array_push($forward_examples,array($res['examplename'],$example[0]));
 			}
-							
-			
-			// Get entryname
-			$query = "SELECT entryname FROM listentries WHERE code_id='$exampleid';";		
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-					$entryname = $row['entryname'];
-			}
-				
+								
 				
 						
 			// Open file and read name of Example
@@ -260,51 +301,23 @@
 					$chosenwordlist=$row['wordlist'];
 					$playlink=$row['runlink'];
 			}
-				
-			// Read File
-			$code="";
-			$filename="";
-			$query = "SELECT filename FROM filelist WHERE exampleid='$exampleid' ORDER BY pos ASC LIMIT 1;";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-					$filename=$row['filename'];
-					if(strcmp($filename,"<none>")===0){
-							// If file name is <none> this is a new file which does not yet have a file name
-					}else{
-							$filename="./codeupload/".$filename;
-							$handle = @fopen($filename, "r");
-							if ($handle) {
-							    while (($buffer = fgets($handle, 1024)) !== false) {
-											$code=$code.$buffer;
-									}
-							    if (!feof($handle)) {
-					        		$code.="Error: Unexpected end of file ".$filename."\n";			    
-							    }
-							    fclose($handle);
-							}else{
-					        $code.="Error: could not open file".$filename."\n";
-							}
-							$filename=$row['filename'];
-					}
-		  }
-		  
+				  
 		  // Read important lines
 			$imp=array();
-			$query = "SELECT istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
+			$query = "SELECT codeBoxid,istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-		  		array_push($imp,array($row['istart'],$row['iend']));					
+		  		array_push($imp,array($row['codeBoxid'],$row['istart'],$row['iend']));
 			}  
 		
 		  // Read wordlist
 			$wordlist=array();
-			$query = "SELECT wordlist,word,description FROM wordlist ORDER BY word;";
+			$query = "SELECT wordlist,word,label FROM wordlist ORDER BY word;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-		  		array_push($wordlist,array($row['wordlist'],$row['word'],$row['description']));					
+		  		array_push($wordlist,array($row['wordlist'],$row['word'],$row['label']));					
 			}  
 		
 		  // Read wordlists
@@ -318,31 +331,20 @@
 		
 		  // Read important wordlist
 			$impwordlist=array();
-			$query = "SELECT word,description FROM impwordlist WHERE exampleid=$exampleid ORDER BY word;";
+			$query = "SELECT word,label FROM impwordlist WHERE exampleid=$exampleid ORDER BY word;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($impwordlist,$row['word']);					
 			}  
 		
-			// Read Description Segments
-			$desc="";
-			$query = "SELECT segment FROM descriptionsection WHERE exampleno=$exampleid ORDER BY pos LIMIT  1;";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-				// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox
-					$desc=str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row['segment']));
-				//	$desc = $row['segment'];
-			}  
-			
 			// Read sectionname 
-			$sectionname="";
+			$entryname="";
 			$query = "SELECT entryname FROM listentries WHERE pos=$previuous";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-					$sectionname=$row['entryname'];
+					$entryname=$row['entryname'];
 			} 
 			
 			// Read Directory - Codeexamples
@@ -363,17 +365,62 @@
 			}
 			
 
+	        // Read Directory - Images
+	        $images=array();
+	        $img_dir = opendir('./imgupload');
+	        while (($img_file = readdir($img_dir)) !== false) {
+	            if(endsWith($img_file,".png")){
+	                array_push($images,$img_file);
+	            }
+	        }
 
-        // Read Directory - Images
-        $images=array();
-        $img_dir = opendir('./imgupload');
-        while (($img_file = readdir($img_dir)) !== false) {
-            if(endsWith($img_file,".png")){
-                array_push($images,$img_file);
-            }
-        }
+			// Get boxes and its information
+			$box=array();   // get the primary keys for all types kind of boxes.
+			$query = "SELECT boxid,boxcontent FROM box WHERE exampleid=$exampleid ORDER BY boxid;";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+					$boxcontent=strtoupper($row['boxcontent']);
+					$boxid=$row['boxid'];
+				if(strcmp("DOCUMENT",$boxcontent)===0){
+					$query2 = "SELECT segment FROM descriptionBox WHERE exampleid='$exampleid' AND boxid='$boxid';";
+					$result2=mysql_query($query2);
+					if (!$result2) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+					while ($row2 = mysql_fetch_assoc($result2)){
+						
+						// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment']))
+							array_push($box,array($boxid,$boxcontent,str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment']))));
+					}		
+					
+				}else if(strcmp("CODE",$boxcontent)===0){					
+					$query3 = "SELECT filename FROM codeBox WHERE exampleid=$exampleid AND boxid=$boxid;";
+					$result3=mysql_query($query3);
+					if (!$result3) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+					while ($row3 = mysql_fetch_assoc($result3)){
+						$filename=$row3['filename'];
+						$code="";
+						$filename="./codeupload/".$filename;
+						$handle = @fopen($filename, "r");
+						if ($handle) {
+						    while (($buffer = fgets($handle, 1024)) !== false) {
+								$code=$code.$buffer;
+							}
+						    if (!feof($handle)) {
+					       		$code.="Error: Unexpected end of file ".$filename."\n";			    
+						    }
+						    fclose($handle);
+						}else{
+					    	$code.="Error: could not open file".$filename."\n";
+						}
+						array_push($box,array($boxid,$boxcontent,$code));
+					} 
+				}else if (strcmp("NOT DEFINED",$boxcontent)===0){
+					array_push($box,array($boxid,$boxcontent));
+				}						
+			}
 
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'code' => $code,'filename' => $filename,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'desc' => $desc,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images);
+
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images, 'public' => $public);
 			echo json_encode($array);
 
 

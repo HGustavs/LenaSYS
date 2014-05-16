@@ -1,3 +1,24 @@
+<?php
+	if(isset($_GET['lib'])) {
+	
+		$lib = $_GET['lib'];
+	
+		require_once("../../Shared/coursesyspw.php");
+		require_once("../../Shared/database.php");
+		
+		pdoConnect();
+		
+		$stmt = $pdo->prepare("SELECT path FROM playereditor_playbacks WHERE id = :id AND type=0 LIMIT 1");
+		$stmt->bindParam(":id", $lib, PDO::PARAM_STR);
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetch();
+		
+		$xmlpath = $result["path"];
+		
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,9 +49,15 @@ function canvasSize()
     var c = document.getElementById('Canvas');
 	var ctx = c.getContext("2d");
 	var canvas = new Canvasrenderer();
-	
-	// Load XML File
-	this.canvas.loadXML("data.xml");
+<?php
+	// Load XML
+	if(isset($xmlpath)) {
+		echo "this.canvas.loadXML('".$xmlpath."');";
+	}
+	else {
+		echo "this.canvas.loadXML('canvas.xml');";
+	}
+?>
     </script>
     <div id="wrapper">
     	<div id="bardesign">

@@ -35,18 +35,16 @@ background-color: #614875;
 	background-size: 64px 100%;
 	background-color: #FFFFFF;
 	padding:1px;
-	/*border-radius: 8px;´*/
 	border:solid 2px #000;
+	white-space: nowrap;
 }
 
 .bar{
-	position:absolute;
-	height: px;
-	width:0px;
+	height: 25px;
+	width: 0%;
 	background-image: url('images/Loadingbar.gif'); 
 	background-repeat: repeat-x;
 	background-size: 64px 100%;
-	/*border-radius: 8px;*/
 }					
 
 canvas {

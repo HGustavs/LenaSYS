@@ -45,7 +45,7 @@ session_start();
 				</tr>
 				<tr>
 					<td>
-						<input type='button' class='btn btn-login active' onclick="makeLogin();" value='Login'>
+						<input type='button' class='btn btn-login active' onclick="checkIfEmptyLoginField();makeLogin();" value='Login'>
 						<lable class='forgotPw' onclick='showForgontPw();'>Forgot password?</lable>
 					</td>
 				</tr>
