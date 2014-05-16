@@ -1,6 +1,5 @@
 #docucontent h1 {
 
-  //color: white;
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -15,6 +14,24 @@
     font-style: italic;
 }
 
+#box1 h1 {
+
+    display: block;
+    font-family: Arial,Sans-Serif;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#box1 span.codestyle{
+    color: grey;
+    font-family: Arial,Sans-Serif;
+    font-style: italic;
+}
+
+
+
 /* --- */
 
 
@@ -28,10 +45,6 @@
     border-color: rgb(0,0,0) transparent;
 }
 
-.beforebutton img{
-/*	opacity: 0.2;
-	filter: alpha(opacity=80); */
-}
 #picktemplate{
 	position: absolute;
 	top: 0px;
@@ -47,6 +60,7 @@
 	width: 250px;
 	height: 150px;
 }
+/*  LOOKS LIKE NOT IN USE!!!!
 .butto {
     text-align: center;
     font-family: Verdana,Serif;
@@ -56,27 +70,18 @@
     height: 44px;
     background-color: #614875;
 }
+*/
 
-.butto2 {
-    text-align: center;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 4px;
-    height: 44px;
-    background-color: #5D5D5D;
-}
 
+
+/* LOOKS LIKE NOT IN USE!!!!
 .butto:hover{
 	background-color: #7D5CA0;
     cursor: pointer;
 }
+*/
 
-.butto2:hover{
-    background-color: #757575;
-    cursor: pointer;
-}
-
+/* MENU BUTTONS */
 .mbutto {
     text-align: center;
     font-family: Verdana,Serif;
@@ -84,13 +89,32 @@
     font-weight: normal;
     padding: 4px;
     height: 44px;
-    /*background-color: #614875;*/
 }
 
 .mbutto:hover{
-	/*background-color: #7D5CA0;*/
     cursor: pointer;
 }
+
+/* Example title in menu */
+.menutext {
+    overflow: hidden;
+    height: 46px;
+    vertical-align: middle;
+    /*color: white;*/
+    width: 100%;
+    border-radius: 12px;
+    font-family: Verdana,Serif;
+    font-size: 24px;
+    font-weight: normal;
+    padding: 4px;
+}
+
+/* Extra spaces */
+.buttospacer {
+    width: 20px;
+}
+
+/* LOOKS LIKE NOT IN USE!!!!!
 .buttogray {
     border: 1px inset #888;
     text-align: center;
@@ -104,10 +128,8 @@
     color: white;
     background-color: #BBB;
 }
+*/
 
-.buttospacer {
-    width: 20px;
-}
 
 /*
 .warning {
@@ -123,19 +145,7 @@
     background-color: #5D5D5D;
 }*/
 
-.menutext {
-    overflow: hidden;
-    height: 46px;
-    vertical-align: middle;
-    /*color: white;*/
-    width: 100%;
-    border-radius: 12px;
-    font-family: Verdana,Serif;
-    font-size: 24px;
-    font-weight: normal;
-    padding: 4px;
-}
-
+/* Hotdrog menu */
 #hotdogdrop{
 	display: none;
 	right: 0px;
@@ -160,18 +170,15 @@
 	/*color: white;*/
 }
 
-
+/* All dropdrowns (codeexample, images, general settings) */
 .dropdown {
     display: none;
     position: fixed;
     top: 50px;
     z-index: 4000;
-/*    background: #614875; */
-    /*border: solid 2px #000;*/
- /*   box-shadow: 6px 6px 8px #444; */
+
     font-size: 14px;
     font-family: Arial,Sans-serif;
-    /*color: #fff;*/
 }
 
 .dropdownback {
@@ -184,18 +191,20 @@
     font-weight: normal;
 }
 
+/* Codedrop with code files */
 .codedrop {
- /*   left: 314px;  */
 	right: 0px;
     width: -moz-calc(20.0%);
 	width: -webkit-calc(20.0%);  
     height: -webkit-calc(40.0%);
     height: -moz-calc(40.0%);
     padding-left:7px;
+    overflow: auto;
     /*background-color: #614875;*/
     border-color: rgb(0,0,0) transparent;	
 }
 
+/* GENERAL SETTINGS (NEED TO CHANGE NAME!!) */
 .docudrop {
   /*  left: 354px; */
  	right: 0px;
@@ -209,8 +218,8 @@
 	border-color: rgb(0,0,0) transparent;
 }
 
+/* Different themes */
 .themedrop {
- /*   left: 314px;  */
 	right: 0px;
     width: -moz-calc(20.0%);
 	width: -webkit-calc(20.0%);  
@@ -218,6 +227,8 @@
     height: -moz-calc(40.0%);
 	/*background-color: #614875;*/
 }	
+
+/* Images for descriptions */
 .imgdrop {
     /*  left: 354px; */
     right: 0px;
@@ -228,6 +239,11 @@
     background-color: #614875;
     background: rgb(0, 0, 0) transparent;
 }
+
+.imgdrop img{
+    width: 25%;
+}
+
 
 .forwdrop {
     right: 20px;
@@ -252,50 +268,43 @@
     font-size: 14px;
     font-family: Verdana,Arial,Sans-serif;
     cursor: default;
-    padding-left: 7px;
+    padding-left: 5px;
 	border-bottom: solid 1px #2A120A;
 	color: white;
 	background: #614875;
 }
-
-#imgdrop img{
-
-    width: 25%;
-
+.dropdownitem:hover {
+	background-color: #7D5CA0;
 }
 
-
-#docucontent img{
-
-    width: 80%;
-}
-
+/* NOT IN USE !!!
 .menuhi {
-	font-family: Arial,Serif;
- 	font-size: 16px;
- 	color: white;
- 	text-shadow: 1px 1px 2px #000;
  	background-color: #7D5CA0;
 }
-
+*/
+/* NOT IN USE!!!
 .menuch {
     background: #5D5D5D;
     color: #fff;
     text-shadow: 1px 1px 2px #000;
     background-color: #614875;
 }
+*/
 
+/*  NOT IN USE!!!
 a {
     text-decoration: none;
     color: #000;
 }
+*/
 
+/* REPLACED WITH normtext 
 .codeview {
     display: block;
     font-size: 14px;
     font-family: Courier,Courier New,Monospace;
 }
-
+*/
 .norm {
     color: #fff;
     background-color: #272822;
@@ -396,140 +405,8 @@ a {
 }
 
 */
-#Sectionlist {
-    padding: 2px;
-    width: 800px;
-    box-shadow: 7px 7px 7px #000;
-    background-color: #fff;
-    color: black;
-    display: block;
-    border: 2px outset #888;
-    text-align: left;
-    border-radius: 6px;
-}
 
-#Sectionlist .butt {
-    border-radius: 3px;
-    margin-right: 4px;
-    box-shadow: 2px 1px 3px #000;
-    margin-bottom: 4px;
-    padding-left: 8px;
-    height: 24px;
-    text-shadow: 2px 2px 2px #000;
-    color: #fff;
-    display: block;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
-    color: white;
-    background-color: #BBB;
-}
-
-#Sectionlist .norm {
-    margin-left: 8px;
-    padding-left: 8px;
-    border-left: 4px solid #DDD;
-    height: 24px;
-    color: #000;
-    display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    background-color: #FFF;
-}
-
-#Sectionlist .test {
-    margin-left: 8px;
-    padding-left: 8px;
-    border-left: 4px solid #DDD;
-    height: 24px;
-    color: #fff;
-    display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: white;
-    font-family: Calibri,Sans-Serif;
-    background-color: #F6FFBA;
-}
-
-#Sectionlist .hidden {
-    margin-left: 8px;
-    padding-left: 8px;
-    border-left: 4px solid #DDD;
-    height: 24px;
-    color: #000;
-	opacity: 0.5;
-    display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    background-color: #C7C7C7;
-}
-
-#Sectionlist .example {
-    margin-left: 8px;
-    padding-left: 8px;
-    border-left: 4px solid #DDD;
-    height: 24px;
-    color: #000;
-    display: block;
-    font-family: Calibri,Sans-Serif;
-    text-align: left;
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    background-color: #FBFFDE;
-}
-
-
-
-#Sectionlist .bigg {
-    font-size: 26px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    text-align: center;
-    font-family: Cambria, Georgia, serif;
-    color: #000;
-    display: block;
-    background-color: #FFF;
-}
-
-#Sectionlist .course {
-    margin-bottom: 4px;
-    background: linear-gradient(to right, #888 0%,#AAA 99%);
-    border-radius: 3px;
-    box-shadow: 3px 3px 6px #000 inset;
-    text-align: center;
-    font-size: 26px;
-    padding-left: 8px;
-    height: 36px;
-    text-shadow: 2px 2px 2px #000;
-    color: #fff;
-    display: block;
-    font-style: italic;
-    color: black;
-    font-family: Calibri,Sans-Serif;
-    background-color: #888;
-    color: #fff;
-}
-
+/*  NOT IN USE
 .warning {
     color: #fff;
     position: absolute;
@@ -544,7 +421,9 @@ a {
     padding: 4px;
     background-color: #5D5D5D;
 }
+*/
 
+/* NOT IN USE!!
 .smallbutt {
     float: right;
 }
@@ -561,7 +440,7 @@ a {
     margin-top: 8px;
     margin-left: 4px;
 }
-
+ 
 #buttomenus {
     width: 100%;
     height: 50px;
@@ -683,6 +562,8 @@ a {
 .genSettingsSection{
 	display:none;
 }
+
+*/
 /*
 .errormsg{
 	color: red;
@@ -690,11 +571,13 @@ a {
 */
 #playlinkErrorMsg{
 	display: none;
-	//color: red;
 }
+
+/* Tab-menu in general settings */
 #settingsTabMenu{	
 	border-bottom: solid 2px;
 	padding-left:0px;
+	padding-bottom:0px;
 }
 #settingsTabMenu li{
 	display: inline;
@@ -702,28 +585,24 @@ a {
 	margin: 5px;
 	padding: 5px 5px 0px 5px;
 	border-style:solid;
-	border-width: 2px;
+	border-top-width: 2px;
+	border-left-width: 2px;
+	border-right-width: 2px;
+	
 	-webkit-border-top-left-radius: 5px;
 	-webkit-border-top-right-radius: 5px;
 	-moz-border-radius-topleft: 5px;
 	-moz-border-radius-topright: 5px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-	/*background-color: #7D5CA0;*/
 }
-/*
-#settingsTabMenu .activeSetMenuLink{
-	border-bottom-color: #614875;
-	background-color: #614875;
-}
-*/
 
 
-/*Tooltips*/
+
+/*TOOLTIPS START*/
 
 .tooltip, .arrow:after, .arrow2:after {
     background: black;
-    /*border: 1px solid white;*/
 }
 
 .tooltip {
@@ -748,23 +627,17 @@ a {
     height: 18px;
     overflow: hidden;
     position: absolute;
-    left: 50%;
-    margin-left: -35px;
-    bottom: -16px;
+   bottom: -16px;
 }
-.arrow:after {
+
+.arrow::after {
     content: "";
     position: absolute;
-    /*left: 20px;*/
     top: -20px;
     width: 25px;
     height: 25px;
-    /*-webkit-box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;
-    -moz-box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;
-    box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;*/
+    /* 22.5 to place the arrow in the middle. arrowwidth/2 - arrow:afterwidth/2=22.5 */
+    left:22.5;
     -webkit-transform: rotate(45deg);
     -moz-transform:    rotate(45deg);
     -ms-transform:     rotate(45deg);
@@ -776,23 +649,17 @@ a {
     height: 18px;
     overflow: hidden;
     position: absolute;
-    left: 50%;
-    margin-left: -35px;
     top: -16px;
 }
-.arrow2:after {
+.arrow2::after {
     content: "";
     position: absolute;
-    /*left: 22px;*/
     bottom: -20px;
     width: 25px;
     height: 25px;
-    /*-webkit-box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;
-    -moz-box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;
-    box-shadow: 3px 2px 4px -4px black,
-    2px 3px 4px -4px black;*/
+    
+    /* 22.5 to place the arrow in the middle. arrow2width/2 - arrow2:afterwidth/2=22.5 */
+    left:22.5;
     -webkit-transform: rotate(45deg);
     -moz-transform:    rotate(45deg);
     -ms-transform:     rotate(45deg);
@@ -833,6 +700,10 @@ a {
     margin-top: 15px;
     transition-delay: 0s !important;
 }
+/* TOOLTIPS STOP */
+
+
+
 
 /*Prevent new lines to entered (which creates screen-errors) when editing names in lists*/
 .norm > [contenteditable="true"] br,
@@ -840,6 +711,7 @@ a {
     display:none;
 }
 
+/* Icons for picking templates */
 .templateicon{
     width: 45%;
     margin: 0px;
@@ -851,18 +723,18 @@ a {
     padding: 5%;
 }
 .templatethumbicon:hover{
-   /* background-color: #7D5CA0;*/
     cursor: pointer;
 }
 
+/* Icons for picking themes */
 .themeicon {
 	height:20px;
 	padding:5px;
+
 }
 
 .themeicon:hover {
 	cursor: pointer;
-	font-size:20px;
 }
 
 .themeicon img{
@@ -877,17 +749,18 @@ a {
     background-color: black;
 }
 
+.mobilethemebutton{
+    display: none;
+}
+.subbutton span{
+    font-size: 12px;
+}
+
 .showdesktop{
     display: table-cell;
 }
 .showmobile{
     display: none;
-}
-#mobileThemeSelect{
-    display: none;
-    /*padding: 0;
-    background-color: black;
-    */
 }
 
 
@@ -898,8 +771,97 @@ a {
     .showdesktop{
         display: none;
     }
-    #exampleSection {
-        display: none;
-    }
-    
+
 }
+
+
+
+
+
+
+.alert.success {
+	background-color:#DFF0D8;
+	border-color:#D6E9C6;
+	color:#3C763D;
+}
+.alert.warning{
+	background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
+}
+.slide-down {
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+  border-left-width:0;
+  border-right-width:0;
+  border-top-left-radius:0;
+  border-top-right-radius:0;
+  border-top-width:0;
+  height:40px;
+  overflow:hidden;
+  width:100%;
+  z-index:3000;
+  
+}
+.alert strong, .alert p{
+	margin:0px;
+	padding: 0px;
+}
+
+.alert span {
+	margin:0px;
+	padding: 0px;
+	position: absolute;
+    right: 5px;
+    top: 0px;
+    font-weight: bold;
+    cursor: default;
+}
+
+.alert {
+  border:1px solid transparent;
+  border-bottom-left-radius:4px;
+  border-bottom-right-radius:4px;
+  border-top-left-radius:4px;
+  border-top-right-radius:4px;
+  margin: 0px;
+  padding:0px;
+  width: 300px;
+  position: relative;
+}
+
+
+
+
+
+
+
+
+
+
+/* BOXMENU STYLING START */
+.buttomenu2{
+	position: absolute;
+    top:0px;
+    width: -moz-calc(100%);
+    width: -webkit-calc(100%);
+    margin: 0;
+}
+.buttomenu2 table td img{
+	height: 25px;
+	width: 25px;
+}
+.buttomenu2 select{
+	top: 0px;
+   	bottom:0px;
+   	width: 150px;
+   	margin:0px;
+   	padding: 3px;
+   	-webkit-appearance: none;
+   	-moz-appearance: none;
+   	text-overflow: '';
+   	text-indent: 1px;
+   	outline: none;
+}
+
+/* BOXMENU STYLING STOP */

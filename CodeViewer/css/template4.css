@@ -1,64 +1,31 @@
-#buttomenu2{
-    z-index:2;
-    position: absolute;
-    background-color: #5D5D5D;
-    height: 50px;
-    width: -moz-calc(50%);
-    width: -webkit-calc(50%);
-}
 
-#docucontent {
-	padding-left: 4px;
-    position: absolute;
-    top: 50px;
-    left: 0px;
-    height: -webkit-calc(40% - 50px);
-    height: -moz-calc(40% - 50px);
-    width: -webkit-calc(50.0% - 4px);
-    width: -moz-calc(50.0% - 4px);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
-}
-
-#temp3{
-	padding-left: 4px;
+#box1wrapper{
     position: absolute;
     top: 0px;
-	right: 0px;
-	height: -webkit-calc(40.0%);
-    height: -moz-calc(40.0%);
-    width: -webkit-calc(50.0% - 4px);
-    width: -moz-calc(50.0% - 4px);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
-    z-index: 2;
+    left: 0px;
+    width: -moz-calc(50.0%);
+	width: -webkit-calc(50.0%);
+    height: -webkit-calc(40%);
+    height: -moz-calc(40%);
 }
 
-#codebox {
-    position: absolute;
-    bottom: 0px;
+#box2wrapper {
+	position: absolute;
+    top: 0px;
     right: 0px;
+    width: -moz-calc(50.0%);
+	width: -webkit-calc(50.0%);
+    height: -webkit-calc(40%);
+    height: -moz-calc(40%);
+}
+
+#box3wrapper {
+   	position: absolute;
+   	right: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: -moz-calc(100.0%);
+	width: -webkit-calc(100.0%);
     height: -webkit-calc(60%);
     height: -moz-calc(60%);
-    width: -webkit-calc(100%);
-    width: -moz-calc(100%);
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: hidden;
-    outline: 0 none;
-    z-index: 2;
-}
-
-#temp4{
-	display: none;
 }
