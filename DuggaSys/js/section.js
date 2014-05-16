@@ -95,6 +95,9 @@ function sectionSettingsService(ID)
 						settingsChildren[0].attachEvent("click", function() { changeURL(JSON.parse(response)); });
 					}
 				}
+			} else {
+				settingsChildren[0].onclick = null;
+				settingsChildren[0].removeAttribute("href");
 			}
 			
 			switch(parseInt(data['type'])){
@@ -129,10 +132,14 @@ function sectionSettingsService(ID)
 			if(data['type'] < 2){
 					settingsChildren[0].style.color = "white";
 					settingsChildren[0].style.fontSize = "14pt";
+					settingsChildren[0].style.marginLeft = "0px";
+					settingsChildren[0].style.paddingLeft = "5px";
 					settingsChildren[1].src="css/images/general_settings_button_white.svg";
 			}else {
 					settingsChildren[0].style.color = "#434343";
 					settingsChildren[0].style.fontSize = "10pt";
+					settingsChildren[0].style.marginLeft = "15px";
+					settingsChildren[0].style.paddingLeft = "0px";
 					settingsChildren[1].src="css/images/general_settings_button_darkgrey.svg";
 			}
 			

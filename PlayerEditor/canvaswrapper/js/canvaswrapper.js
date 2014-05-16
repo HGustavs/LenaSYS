@@ -6,7 +6,6 @@
 	 */ 
 	function captureCanvas(canvas){
 		// Add save button to BODY
-			
 		$("body").append("<input type='button' id='CanvasWrapper-save' value='Save log' style='position:absolute;right:5px;top:35px;'>");
 		// Save log when "Save log" button is clicked
 		$("#CanvasWrapper-save").click(function(){
@@ -27,25 +26,17 @@
 		$("body").append("<input type='button' id='XML_type' value='Make optimized XML' style='position:absolute;right:5px;top:5px'>");
 		
 		$("#XML_type").click(function(){
-		
 			if(optimize == false){
-			
 				optimize = true;
-				
 				this.value = "Make normal XML";
-				
 				console.log(optimize);
-				
-			}else{
-			
+			}
+			else{
 				optimize = false;
-				
 				this.value = "Make optimized XML";
-				
 				console.log(optimize);
 			}			
 		});
-			
 
 		var str='<?xml version="1.0" encoding="UTF-8"?>\n';
 		var lastTimestep = new Date().getTime();
@@ -75,8 +66,8 @@
 		this.font = this.ctx.font;
 		this.textAlign = this.ctx.textAlign;
 		this.textBaseline = this.ctx.textBaseline;
+
 		//PixelManipulation property.
-		
 		this.canvas = function(){
 			this.width = this.ctx.width;
 			this.height = this.ctx.height;
@@ -93,7 +84,6 @@
 
 			// Calculate delay
 			var delay = timestep - lastTimestep;
-
 			// Update timestep
 			lastTimestep = timestep;
 			
@@ -445,15 +435,17 @@
 			string += this.updateContextCssState();
 			string += this.updateContextTextState();
 			string += this.updateContextCompositingState();
+
+			// Check if update is necessary
 			if(string.length > 0){
 				var timestep = new Date().getTime();
 				
 				// Calculate delay
 				var delay = timestep - lastTimestep;
-				
 				// Update timestep
 				lastTimestep = timestep;
 				
+				// Keep a low amount of timesteps
 				if(delay == 0){
 					if(inTimestepDelay){
 						str += string;
@@ -473,11 +465,10 @@
 					str += '<timestep delay="' + delay + '">' + '\n';
 					str += string;
 					str += '</timestep>' + '\n';
-				}
-				
-				
+				}	
 			}
 		}
+
 		this.updateContextLineState = function(){
 			var string = "";
 			// Check for updates
@@ -550,8 +541,8 @@
 				string += this.updateContextProperty('globalCompositeOperation');
 			} 
 			return string;
-		
 		}
+
 		/**
 		This method logs an imageData object to the log file. This method gets
 		called when a method that uses imagedata gets called, for example
@@ -609,6 +600,5 @@
 			return (attribute);
 		}
 		this.log('<canvasSize width="'+canvas.width+'" height="'+canvas.height+'"/>');
-		
 	}
  	

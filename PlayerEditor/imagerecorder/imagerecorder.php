@@ -9,7 +9,15 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-	
+		<!--Div that shows the opacity behind the instructionwindow-->
+		<div id="instructionopacity">
+			<!--Div that stores the instructions-->
+			<div id="instructionwindow">
+				<img src="img/instructions.png" width="100%">
+				<div class="closebutton" onClick="hideinstruction();"></div>
+			</div>
+		</div>	
+			
 		<div id="library-name-dialog" title="Library name">
 			<h3><strong>Library name?</strong></h3>
 			<p>Please choose your library name.</p>
@@ -46,11 +54,8 @@
 			
 			<div id="controls">
 				<input id="uploadButton" type="button" class='controlbutton' onClick="document.getElementById('imageLoader').click();" value="Upload image(s)">
+				<input type="button" id="instructbutton" class="controlbutton" value="Instructions" onClick="showinstruction();"/>
 			</div>
-			
-			<!--<div id="information">-->
-					<!--This box will display information about rightclick settings on thumbs-->
-			<!--</div>-->
 				
 			<!--creating the small imageviewer, on the bottom of the screen-->
 			<div id="thumbnails" class="thumbnails">

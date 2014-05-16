@@ -12,7 +12,7 @@ function validateNewCourseSubmit()
   } else {
     $("input[name*='coursecode']").css("background-color", "#89ff7b");
   }
-  if( document.newCourse.visib.value == "0") {
+  if( document.newCourse.visib.value == "-1") {
     $("select").css("background-color", "#ff7c6a");
     return false;
   } else {
@@ -90,4 +90,33 @@ function validateUpdateSections(ID)
 		}
 	}
 	return true;
+}
+
+function validateNewPasswordSubmit()
+{
+	var parent = $("form[name=newPassword]");
+	var curpw = parent.find('input[name=currentpassword]'),
+		newp1 = parent.find('input[name=password]'),
+		newp2 = parent.find('input[name=password2]');
+	var errnum = 0;
+
+	var elems = [curpw, newp1, newp2];
+
+	for(var i = 0; i < elems.length; i++) {
+		if(elems[i].val().length < 1) {
+			elems[i].css("background-color", "#ff7c6a");
+			errnum++;
+		} else {
+			elems[i].css("background-color", "#89ff7b");
+		}
+	}
+
+	if(newp1.val() != newp2.val()) {
+		errnum++;
+		newp1.css("background-color", "#ff7c6a");
+		newp2.css("background-color", "#ff7c6a");
+	}
+
+
+	return errnum < 1;
 }
