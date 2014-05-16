@@ -395,28 +395,29 @@ function imagerecorder(canvas)
 	// Prints image as canvas
 	function showImage(id) {
 		if(id >= 0) {
+			// Set image
 			activeImage = id;
-			
 			imageData = new Image();
 			imageData.src = imagelibrary[id];
 			
-			// Clears screen. May need a better solution.
-			canvas.width = canvas.width; 
-			
-			var ratio = 1;
-			// Picture need to be scaled down
-			if (imageData.width > canvas.width || imageData.height > canvas.height) {
-				// Calculate scale ratios
-				var widthRatio = canvas.width / imageData.width;
-				var heightRatio = canvas.height / imageData.height;
-
-				// Set scale ratio
-				if (widthRatio < heightRatio) ratio = widthRatio;
-				else ratio = heightRatio;
-			}
-			
-			// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
+			// When image has been loaded calculate ratios and print it on the canvas
 			imageData.onload = function() {
+				// Clears screen. May need a better solution.
+				canvas.width = canvas.width; 
+				
+				var ratio = 1;
+				// Picture need to be scaled down
+				if (imageData.width > canvas.width || imageData.height > canvas.height) {
+					// Calculate scale ratios
+					var widthRatio = canvas.width / imageData.width;
+					var heightRatio = canvas.height / imageData.height;
+
+					// Set scale ratio
+					if (widthRatio < heightRatio) ratio = widthRatio;
+					else ratio = heightRatio;
+				}
+
+				// Daw to canvas
 				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
 			}
 		} else {
