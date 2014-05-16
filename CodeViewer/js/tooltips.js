@@ -29,7 +29,6 @@
 
             else {
                 var $tooltip = $('<div class="tooltip" data-tooltip="' + i + '">' + $el.attr('title') + '<div class="arrow"></div></div>').appendTo("body");
-
             }
 
 
@@ -41,7 +40,6 @@
                 .hover(function() {
 
                     $el = $(this);
-
                     var scrollTop     = $(window).scrollTop(),
                         elementOffsetTop = $($el).offset().top,
                         elementOffsetLeft = $($el).offset().left,
@@ -53,9 +51,6 @@
   				 
                     // Reposition tooltip, in case of page movement e.g. screen resize
                     var linkPosition = $el.offset();
-
-
-
                     //Collect the target objects height which is used to adjust the tooltips position
                     var targetHeight = $el.height();
 
@@ -65,34 +60,82 @@
                     // Show tooltip below object if there is no room above
                     if (distanceTop < 25 && elementOffsetLeft > ($tooltip.width()/2)) {
 
-
-
+					
+						// width of the target
+						var twidth=parseInt($el.width());
+						// position of the target
+						var tpos=parseInt(linkPosition.left);
+						// position of the tooltip
+						var toolpos = parseInt(linkPosition.left - ($tooltip.width()/2));
+						// width of arrow
+						var awidth=$tooltip.children(".arrow2").width();
+						
+						// The targets middle position from left.
+						var targetmid = tpos+(twidth/2);
+						
+						// makes the arrow centered by the target
+						var arrowpos = targetmid-toolpos-(awidth/2);
+					
+						// Prevents the arrow to have a position which is bigger than the size of the tooltip
+						if(toolpos+arrowpos+(awidth/2) > toolpos+$tooltip.width()){
+							arrowpos=$tooltip.width()-(awidth/2);
+						}
+						// prevents the arrow to have a position which is smaller than the size of the tooltip
+						if(toolpos+arrowpos+(awidth/2) < toolpos){
+							arrowpos=-awidth/2+12.5;   // 12.5 to make room for the whole arrow
+						}
+						
                         $tooltip.css({
                             top: distanceTop + targetHeight + 15,
                             left: linkPosition.left - ($tooltip.width()/2)
 
                         });
-
+						$tooltip.children(".arrow2").css({
+                            left: arrowpos+3
+                        });
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active2");
+
                     }
 
                     // Show tooltip below object if there is no room above + align to the right if there's no space on the left side
                     else if (distanceTop < 25 && elementOffsetLeft < ($tooltip.width()/2)) {
-
-
-
+						// width of the target
+						var twidth=parseInt($el.width());
+						// position of the target
+						var tpos=parseInt(linkPosition.left);
+						// position of the tooltip
+						var toolpos = parseInt(linkPosition.left);
+						// width of arrow
+						var awidth=$tooltip.children(".arrow2").width();
+						
+						// The targets middle position from left.
+						var targetmid = tpos+(twidth/2);
+						
+						// makes the arrow centered by the target
+						var arrowpos = targetmid-toolpos-(awidth/2);
+						
+						// Prevents the arrow to have a position which is bigger than the size of the tooltip
+						if(toolpos+arrowpos+(awidth/2) > toolpos+$tooltip.width()){
+							arrowpos=$tooltip.width()-(awidth/2);
+						}
+						// prevents the arrow to have a position which is smaller than the size of the tooltip
+						if(toolpos+arrowpos+(awidth/2) < toolpos){
+							arrowpos=-awidth/2+12.5;   // 12.5 to make room for the whole arrow
+						}
+						
                         $tooltip.css({
                             top: distanceTop + targetHeight + 15,
                             left: linkPosition.left
 
                         });
-
+						$tooltip.children(".arrow2").css({
+                            left: arrowpos+3
+                        });
 
 
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active2");
-
                     }
 
 
@@ -102,12 +145,40 @@
                         //Change to correct arrow
                         $tooltip.children(".arrow2").removeClass("arrow2").addClass("arrow");
 
+						// width of the target
+						var twidth=parseInt($el.width());
+						// position of the target
+						var tpos=parseInt(linkPosition.left);
+						// position of the tooltip
+						var toolpos = parseInt(linkPosition.left);
+						// width of arrow
+						var awidth=$tooltip.children(".arrow").width();
+						
+						// The targets middle position from left.
+						var targetmid = tpos+(twidth/2);
+						
+						// makes the arrow centered by the target
+						var arrowpos = targetmid-toolpos-(awidth/2);
+						
+						
+						// Prevents the arrow to have a position which is bigger than the size of the tooltip
+						if(toolpos+arrowpos+(awidth/2) > toolpos+$tooltip.width()){
+							arrowpos=$tooltip.width()-(awidth/2);
+						}
+						// prevents the arrow to have a position which is smaller than the size of the tooltip
+						if(toolpos+arrowpos+(awidth/2) < toolpos){
+							arrowpos=-awidth/2+12.5;   // 12.5 to make room for the whole arrow
+						}
+						
                         $tooltip.css({
                             top: distanceTop - ($tooltip.outerHeight() + 13),
                             left: linkPosition.left
 
                         });
-
+						$tooltip.children(".arrow").css({
+                            left: arrowpos+3
+                        });
+						
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active2");
 
@@ -117,13 +188,38 @@
 
                         //Change to correct arrow
                         $tooltip.children(".arrow2").removeClass("arrow2").addClass("arrow");
-
-
+						
+						// width of the target
+						var twidth=parseInt($el.width());
+						// position of the target
+						var tpos=parseInt(linkPosition.left);
+						// position of the tooltip
+						var toolpos = parseInt(linkPosition.left - ($tooltip.width()/2));
+						// width of arrow
+						var awidth=$tooltip.children(".arrow").width();
+						
+						// The targets middle position from left.
+						var targetmid = tpos+(twidth/2);
+						// makes the arrow centered by the target
+						var arrowpos = targetmid-toolpos-(awidth/2);
+					
+						// Prevents the arrow to have a position which is bigger than the size of the tooltip
+						if(toolpos+arrowpos+(awidth/2) > toolpos+$tooltip.width()){
+							arrowpos=$tooltip.width()-(awidth/2);
+						}
+						// prevents the arrow to have a position which is smaller than the size of the tooltip
+						if(toolpos+arrowpos+(awidth/2) < toolpos){
+							arrowpos=-awidth/2+12.5;   // 12.5 to make room for the whole arrow
+						}
                         $tooltip.css({
                             top: distanceTop - ($tooltip.outerHeight() + 13),
                             left: linkPosition.left - ($tooltip.width()/2)
                         });
-
+                        
+                        $tooltip.children(".arrow").css({
+                            left: arrowpos+3
+                        });
+                        
                         // Adding class handles animation through CSS
                         $tooltip.addClass("active");
 

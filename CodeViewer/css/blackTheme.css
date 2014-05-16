@@ -3,8 +3,15 @@
      color: white;
     
 }
-
+.box1Style {
+     background-color: #272822;
+     color: white;   
+}
 .codeboxStyle {
+    background-color: #272822;
+}
+
+.box2Style {
     background-color: #272822;
 }
 
@@ -17,10 +24,6 @@
 }
 
 .docucontentStyle h1 {
-    color: white;
-}
-
-.docucontentStyle span {
     color: white;
 }
 
@@ -203,6 +206,7 @@
 }
 .settingsTabMenuStyle .activeSetMenuLink{
 	border-bottom-color: #614875;
+	border-bottom-width:3px;
 	background-color: #614875;
 }
 
@@ -213,3 +217,43 @@
 .themeicon:hover {
 	background-color: #7D5CA0;
 }
+
+
+.box{
+	padding-top: 4px;
+    padding-left: 4px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    outline: 0 none;
+    background-color: #272822;
+    color: white;
+}
+
+
+/* BOXMENU STYLING START */
+.buttomenu2Style{
+	background-color: #B5B5B5;
+}
+.buttomenu2Style select{
+   color: white;
+   
+   background: url("../new icons/expand_button.svg") no-repeat 120px #B5B5B5;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+.buttomenu2Style select:hover{
+  background-color: #757575;
+    cursor: pointer;
+}
+.butto2:hover{
+    background-color: #757575;
+    cursor: pointer;
+}
+/* BOXMENU STYLING STOP */
