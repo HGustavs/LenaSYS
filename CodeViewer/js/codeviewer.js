@@ -1666,7 +1666,7 @@ function setTheme()
 		}
 		else{
 			//theme doesnt exist, make default
-			alert("no theme");
+			selectTheme("black");
 		}
 	}
 }
