@@ -27,3 +27,24 @@
 		});
  	};
  }
+
+  function submitNewQuiz(cid, access) 
+ {
+ 		$.ajax({
+ 			dataType: "json",
+			type: "POST",
+			url: "ajax/createQuiz.php",
+			data: {
+				cid: cid,
+				access: access
+			},
+			success:function(data) {
+				console.log(data);
+			},
+			error:function() {
+				console.log("Something went wrong");
+			}
+		});
+ }
+
+ 
