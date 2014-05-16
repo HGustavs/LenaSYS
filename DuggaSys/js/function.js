@@ -171,6 +171,8 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 		setTimeout(function(){
 			$("#content").prepend(output).children(':first').hide();
 			var elemHeight = $('.alert').height();
+			var top = $(document).scrollTop()+50;
+			$('.slide-down').css({ top: top+"px" });	
 			$('.alert').css({ display: "block", height: "0px" });
 			$(".alert").animate({height: elemHeight}, 300);
 		}, delay);	
@@ -181,7 +183,7 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 				confirm(data);
 				$(".alert").animate({height: 0}, 300,"linear",function() {
 					$(this).remove();
-				})
+				})		
 			});
 			$( ".alertCancel" ).click(function() {
 				$(".alert").animate({height: 0}, 300,"linear",function() {
@@ -200,5 +202,9 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 		});
 		}, 1000));
 	}
+	$(window).scroll(function() {
+		var top = $(document).scrollTop()+50;
+		$('.slide-down').css({ top: top+"px" });	
+	});
 }
 // ALERT BOXES END //
