@@ -81,9 +81,12 @@
     color: #fff;
 }
 
+.dropdownitemStyle:hover{
+	background: #4d4d4d;
+}
 .normtext {
     color: #000;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: #F8F8F8;
     white-space:nowrap;
 }
 
@@ -233,27 +236,27 @@
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
-    background-color: #F2F2F2;
+    background-color: #F8F8F8;
     color: black;
 }
 
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #B5B5B5;
+	background-color: #5C5A5A;
 }
 .buttomenu2Style select{
    color: white;
-   background: url("../new icons/expand_button.svg") no-repeat 120px #B5B5B5;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
    border: 1px solid #ccc;
 }
 .buttomenu2Style select:hover{
-  background-color: #757575;
+  background-color: #000;
     cursor: pointer;
 }
 .butto2:hover{
-    background-color: #757575;
+    background-color: #000;
     cursor: pointer;
 }
 /* BOXMENU STYLING STOP */
