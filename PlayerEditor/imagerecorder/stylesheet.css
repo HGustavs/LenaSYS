@@ -48,7 +48,9 @@ ul {
 	margin-bottom: 10px;
 	margin-right: 15px;
 	display: inline;
-	width: 160px;
+	/*width: 160px;*/
+	max-width: 160px;
+	max-height: 90px;
 	opacity: 0.65;
 }
 .thumbnail:hover {
@@ -74,7 +76,7 @@ ul {
 
 #export-feedback {
 	display: none;
-	width: 250px;
+	width: 300px;
 	font-family:'Raleway Thin';
 	padding: 10px;
 	z-index: 2;
@@ -151,4 +153,48 @@ ul {
 }
 .tli {
 	display: inline-block;
+}
+
+#instructionwindow{
+
+    overflow: auto;
+ 	overflow-y: hidden;
+	position: relative;
+	z-index: 2;
+	width: 50%;
+	background-color: white;
+	border-radius: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 1050;
+	display: none;
+	margin-top: 3%;
+}
+#instructionopacity{
+	background-color: rgba(0,0,0,0.4);
+	cursor: default;
+	width: 100%;
+	height: 100%;
+	-webkit-background-size:cover;
+  	background-size:cover;
+ 	z-index: 1040;
+ 	position: fixed;
+ 	display: none;
+ 	margin-top: -12px;
+}
+
+.closebutton {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width:35px;
+	height: 35px;
+	background-color: red;
+	background-image: url("img/quit.png");
+	margin-top:5px;
+	margin-right:5px;
+}
+.closebutton:hover{
+	cursor:pointer;
+	background-image: url("img/quithover.png");
 }
