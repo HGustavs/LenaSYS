@@ -2,11 +2,7 @@
 include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
 session_start();
 if(checklogin()) {
-	if (isset($_GET["courseid"])) {
-		$ha = hasAccess($_SESSION['uid'], $_GET["courseid"], 'w') || isSuperUser($_SESSION["uid"]);
-	} else {
-		$ha = isSuperUser($_SESSION["uid"]);
-	}
+	$ha = hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || isSuperUser($_SESSION["uid"]);
 	if($ha) {
 ?>
 <div id="create">
