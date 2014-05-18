@@ -1,58 +1,22 @@
 <?php session_start(); ?>
 
-
-	
-	<div id='create'>
-		<form role='form'>
-			<div class='form-group'>
-				<label>Dugganame</label>
-				<input type="text" class='form-control' />
-				<div class='form-group'>
-					<label>Template parameters, saves as string (max 2000 characters)</label>
-					<textarea class='form-control' rows='5'></textarea>
-				</div>
-				<div class='form-group'>
-					<label>Answer</label>
-						<div class="input-append">
-		                    <div id="field"><input autocomplete="off" class='option form-control' id="field1" name="prof1" type="text" data-items="8"/></div>
-		                </div>
-				</div>
-				<div class='form-group'>		
-					<label>
-						<input type='checkbox'> Autograde
-					</label>
-				</div>
-				<div class='form-group'>
-					<select class='form-control'>
-						<option>grade system</option>
-						<option>U-G</option>
-						<option>U-G-VG</option>
-						<option>3-5</option>
-					</select>
-				</div>
-				<div class='form-group'>
-					<label>Releasedate</label>
-					<input type="text" class='form-control datetimepicker' />
-				</div>
-				<div class='form-group'>
-					<label>Deadline</label>
-					<input type="text" class='form-control datetimepicker' />
-				</div>
-				<div class='form-group'>		
-					<label>
-						<input type='checkbox'> Activate on submit
-					</label>
-				</div>
-				
-			</div>
-			<button onclick="submitNewQuiz(1, 'w')" class='default'>Submit</button>
-		</form>
-	</div>
 <script>
+	/*
+	function toggleanswer() {
+		if ($("#quizAnswerInput").attr("disabled")) {
+		    $("#quizAnswerInput").removeAttr("disabled");
+		    $("#quizAnswerInput").removeClass("disabledInput");
+
+		} else {
+		    $("#quizAnswerInput").attr("disabled", "disabled");
+		    $("#quizAnswerInput").removeClass("disabledInput").addClass("disabledInput");
+		}
+	}
+	
 	$(function() {
 		
 	    var next = 1;
-	    /*
+	    
 	    $(".add-more").click(function(e){
 	        e.preventDefault();
 	        var addto = "#field" + next;
@@ -75,14 +39,65 @@
 	                $(fieldID).remove();
 	            });
 	    });
-		*/
+		
 	});
 	function showVariant() {
 		$(".variant1").css('display','block');
 	}
+	*/
 </script>
+	
+	<div id='create'>
+		<form id="newQuizForm" name="newQuizForm" role='form'>
+			<div class='form-group'>
+				<label>Dugganame *</label>
+				<input type="text" class='form-control' name="quizname" />
+				<div class='form-group'>
+					<label>Template parameters, saves as string (max 2000 characters)</label>
+					<textarea class='form-control' name="parameterinput" rows='5'></textarea>
+				</div>
+				<div class='form-group'>
+					<label>Answer</label>
+                    <input class='option form-control' id="quizAnswerInput" name="answerinput" type="text" />
+				</div>
+				<div class='form-group'>		
+					<label>
+						<input name="autogradebox" type='checkbox' value="1" /> Autograde
+					</label>
+				</div>
+				<div class='form-group'>
+					<label>Grade system * 
+						<select name="gradesysselect" id="gradeSysSelect" class='form-control'>
+							<option value="-1">Select</option>
+							<option value="1">U-G</option>
+							<option value="2">U-G-VG</option>
+							<option value="3">3-5</option>
+						</select>
+					</label>
+				</div>
+				<div class='form-group'>
+					<label>Releasedate</label>
+					<input name="releasedateinput" type="text" class='form-control datetimepicker' />
+				</div>
+				<div class='form-group'>
+					<label>Deadline</label>
+					<input name="deadlineinput" type="text" class='form-control datetimepicker' />
+				</div>
+				<div class='form-group'>		
+					<label>
+						<input name="acivateonsubmitbox" type='checkbox' value="1"> Activate on submit
+					</label>
+				</div>
+				
+			</div>
+			<button type="button" onclick="submitNewQuiz('courseID', 'read/write')" class='default'>Submit</button>
+		</form>
+	</div>
+
 <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
 <script src="js/ajax.js"></script>
+<script type="text/javascript" src="js/verificationFunctions.js"></script>
+<script type="text/javascript">page.title("Create new quiz");</script>
 <script src="js/jquery.js"></script>
 <script src="js/jquery.datetimepicker.js"></script>
 <script type="text/javascript">

@@ -262,6 +262,10 @@ button {
     margin: 2px 0px 2px 0px;
 }
 
+.disabledInput {
+    background-color: #DDDDDD !important;
+}
+
 #create textarea.form-control {
     margin: 2px 0px 2px 0px;
 }
