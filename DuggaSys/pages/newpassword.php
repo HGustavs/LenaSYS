@@ -20,6 +20,7 @@ if(checklogin()) {
 				</label>
 			</div>
 			<button type='button' onclick="noticeBox('Confirm password change', 'Are you sure you want to change password?', 0, submitNewPassword)" class='default'>Save password</button>
+            <button type='button' class='default-red' onclick='historyBack()'>Cancel</button>
 
 		</form>
 	</div>
