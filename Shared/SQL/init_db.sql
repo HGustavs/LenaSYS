@@ -407,8 +407,8 @@ CREATE TABLE `quiz` (
   `gradesystem` tinyint(1) NOT NULL, /* U-G-VG & U-G & U-3-5 */
   `answer` varchar(2000) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `deadline` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `deadline` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY(`cid`)
 		REFERENCES course(cid)
@@ -436,7 +436,7 @@ CREATE TABLE `userAnswer` (
   `gradeID` tinyint(2) NOT NULL,
   `uid` INT UNSIGNED NOT NULL,
   `answer` varchar(2000) NOT NULL,
-  `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `submitted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`quizID`,`uid`),
   FOREIGN KEY (`gradeID`) 
   		REFERENCES grades(`gradeID`)
