@@ -1,4 +1,5 @@
 /* user contains the users of the system and related  information */
+
 DROP TABLE IF EXISTS `userAnswer`;
 DROP TABLE IF EXISTS `grades`;
 DROP TABLE IF EXISTS `quiz`;
@@ -6,15 +7,18 @@ DROP TABLE IF EXISTS eventlog;
 DROP TABLE IF EXISTS listentries;
 DROP TABLE IF EXISTS impwordlist;
 DROP TABLE IF EXISTS wordlist;
-DROP TABLE IF EXISTS box;
+DROP TABLE IF EXISTS playereditor_playbacks;
 DROP TABLE IF EXISTS descriptionsection;
 DROP TABLE IF EXISTS filelist;
 DROP TABLE IF EXISTS improw;
+DROP TABLE IF EXISTS user_course;
+DROP TABLE IF EXISTS user_question;
+DROP TABLE IF EXISTS descriptionBox;
+DROP TABLE IF EXISTS codeBox;
+DROP TABLE IF EXISTS box;
 DROP TABLE IF EXISTS codeexample;
 DROP TABLE IF EXISTS template;
-DROP TABLE IF EXISTS user_course;
 DROP TABLE IF EXISTS course;
-DROP TABLE IF EXISTS user_question;
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
 		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -426,7 +430,7 @@ INSERT INTO grades(gradeID, grade) VALUES(6, "5");
 
 
 CREATE TABLE `userAnswer` (
-  `testID` int(11) NOT NULL,
+  `quizID` int(11) NOT NULL,
   /*`variantID` int(11) NOT NULL,*/
   /*`version` int(11) NOT NULL,*/
   `gradeID` tinyint(2) NOT NULL,
