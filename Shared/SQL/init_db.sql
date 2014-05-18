@@ -433,7 +433,7 @@ CREATE TABLE `userAnswer` (
   `uid` int(11) NOT NULL,
   `answer` varchar(2000) NOT NULL,
   `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`testID`,`uid`)
+  PRIMARY KEY (`quizID`,`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 
