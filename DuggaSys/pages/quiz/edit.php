@@ -52,10 +52,10 @@
 			<div class='form-group'>
 				<label>Dugganame *</label>
 				<input type="text" class='form-control' name="quizname" />
-				<div class='form-group'>
+				<!--<div class='form-group'>
 					<label>Template parameters, saves as string (max 2000 characters)</label>
 					<textarea class='form-control' name="parameterinput" rows='5'></textarea>
-				</div>
+				</div>-->
 				<div class='form-group'>
 					<label>Answer</label>
                     <input class='option form-control' id="quizAnswerInput" name="answerinput" type="text" />
@@ -90,7 +90,7 @@
 				</div>
 				
 			</div>
-			<button type="button" onclick="submitNewQuiz('courseID', 'read/write')" class='default'>Submit</button>
+			<button type="button" onclick="submitNewQuiz('courseID', 'edit')" class='default'>Submit</button>
 		</form>
 	</div>
 

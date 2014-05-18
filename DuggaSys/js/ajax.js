@@ -28,7 +28,7 @@
  	};
  }
 
-  function submitNewQuiz(cid, access) 
+  function submitNewQuiz(cid, action) 
  {
  	if (validateNewQuizSubmit()) {
  		$.ajax({
@@ -37,9 +37,9 @@
 			url: "ajax/createQuiz.php",
 			data: {
 				cid: 1,
-				access: "w",
+				action: action, // edit/create
 				quizname: document.newQuizForm.quizname.value,
-				parameters: document.newQuizForm.parameterinput.value,
+				//parameters: document.newQuizForm.parameterinput.value,
 				answer: document.newQuizForm.answerinput.value,
 				autograde: document.newQuizForm.autogradebox.checked,
 				gradesys: document.newQuizForm.gradesysselect.value,
@@ -51,12 +51,16 @@
 				console.log(data);
 				if (data.cid>0) {
 					console.log("Edit successfull");
+					$(".xdsoft_noselect").remove();
 					changeURL("quiz/menu");
 					//changeURL("sectioned?courseid="+data.cid);	
 				} else if(data==="no access") {
 					alert("ap ap ap!");	
+					$(".xdsoft_noselect").remove();
+					changeURL("quiz/menu");
 				} else if(data==="no write access") {
 					alert("You dont have rights to edit quiz.");	
+					$(".xdsoft_noselect").remove();
 					changeURL("quiz/menu");
 				}
 			},
