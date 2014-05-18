@@ -14,7 +14,7 @@ $loggedin = checklogin();
 	<h1></h1>
 </div>
 <nav id="user">
-	<label id="userName">
+	<label id="userName" onclick="showUserSettings()">
 		<?php 
 			if($loggedin) { 
 				echo $_SESSION['loginname']; 
@@ -24,10 +24,16 @@ $loggedin = checklogin();
 		<?php 
 			if($loggedin) { 
 				echo'<img class="loggedin" onclick="createDeleteLogin()" src="css/svg/Man.svg">';
-				echo '<img id="pwsettings" onclick="changeURL(\'newpassword\')" src="css/images/general_settings_button_white_small.svg" width="40" height="40"/>';
 			}
 			else {
 				echo'<img onclick="createDeleteLogin()" src="css/svg/Man.svg">';
 			}
 		?>
 </nav>
+<div id="userSettings">
+	<ul>
+    	<!--Add more to the usersettings list here within new <li> elements-->
+		<li onclick="changeURL('newpassword')">Change password</li>
+   	</ul>
+</div>
+
