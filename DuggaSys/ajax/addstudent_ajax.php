@@ -19,9 +19,15 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 
 		$row=explode("\n", $str);
 		foreach ($row as $row1) {
-			list($ssn, $name, $username1)=(explode("\t",$row1));
-			list($lastname, $firstname)=(explode(", ",$name));
-			list($username, $grabage)=(explode("@",$username1));
+			@list($ssn, $name, $username1)=(explode("\t",$row1));
+			if (empty($username1)) {
+				list($lastname, $firstname, $username1)=(preg_split('/[\ \,]+/', $name));
+			}
+			else {
+				list($lastname, $firstname)=(explode(", ",$name));
+			}
+
+			list($username, $garbage)=(explode("@",$username1));
 
 
 			$userquery = $pdo->prepare("SELECT * FROM user WHERE username=:username");
@@ -42,7 +48,7 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 				try {
 					$stmt->execute();
 					//echo "<script type='text/javascript'>alert('Användare är tillagd globalt')</script>";
-					$array1=array($username,$name,$password1);
+					$array1=array($username,$lastname . ", " . $firstname,$password1);
 					$array[]=$array1;
 				} catch (PDOException $e) {
 					if ($e->getCode()=="23000") {
