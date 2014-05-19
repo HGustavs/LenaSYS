@@ -243,7 +243,7 @@ function Canvasrenderer()
 
 		this.timesteps = Elements.length;
       		if(this.mouseInterpolation){
-      		      Elements = this.interpolateMousePositions(Elements, 30);
+      		      Elements = this.interpolateMousePositions(Elements, 60);
  	        }
 			// Step through timesteps
 		for(i = 0; i < Elements.length; i++){
@@ -896,13 +896,15 @@ function Canvasrenderer()
 		// Calculate positions using the proper scale ratio
    		// If the image was downscaled when the history was recorded, we have to multiply by the 
 		// recorded scale ratio, not the current scale ratio
-    	if(this.downscaled){
+    		if(this.downscaled){
         		y *= canvas.recordedScaleRatio;
         		x *= canvas.recordedScaleRatio;
+			//x *= canvas.scaleRatio;
+			//y *= canvas.scaleRatio;
    		}	
         
    		// If not, we just multiply by current scale ratio 
-        else{
+     		else{
 			if(!isNaN(canvas.scaleRatio)){
 				y *= canvas.scaleRatio;
 	   	 		x *= canvas.scaleRatio;
@@ -990,17 +992,17 @@ function Canvasrenderer()
 			// If the image size is larger than the recorded canvas width or height, it means that
 			// the image was downscaled when the history was recorded. This means that we have to 
 			// use the recorded scale ratio instead of the one normally used.
-        	if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight) {
-				canvas.downscaled = true;
-				// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
-				if (canvas.recordedScaleRatio < 1) {
-					canvas.mouseCursorScale = canvas.recordedScaleRatio;
+			if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight) {
+					canvas.downscaled = true;
+					// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
+					if (canvas.recordedScaleRatio < 1) {
+						canvas.mouseCursorScale = canvas.recordedScaleRatio;
+					}
+					else {
+						canvas.mouseCursorScale = 1;
+					}
 				}
-				else {
-					canvas.mouseCursorScale = 1;
-				}
-			}
-    		ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
+    			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
 			//console.log(canvas.mouseCursorX + ", " + canvas.mouseCursorY);
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
@@ -1062,6 +1064,7 @@ function Canvasrenderer()
 		this.scaleRatioX = parseFloat(mWidth/this.recordedCanvasWidth);
 		this.scaleRatioY = parseFloat(mHeight/this.recordedCanvasHeight);
 		(this.scaleRatioX < this.scaleRatioY) ? this.recordedScaleRatio = this.scaleRatioX : this.recordedScaleRatio = this.scaleRatioY;
+		//this.recordedScaleRatio = this.scaleRatioX;
 
         //if (this.scaleRatioX < this.scaleRatioY) this.scaleRatioY = this.scaleRatioX;
 		
