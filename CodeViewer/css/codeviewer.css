@@ -606,6 +606,7 @@ a {
 	padding: 5px 5px 0px 5px;
 	border-style:solid;
 	border-top-width: 2px;
+	border-bottom-width: 2px;
 	border-left-width: 2px;
 	border-right-width: 2px;
 	
@@ -617,7 +618,9 @@ a {
 	border-top-right-radius: 5px;
 }
 
-
+#settingsTabMenu .activeSetMenuLink{
+	border-bottom-width:3px;
+}
 
 /*TOOLTIPS START*/
 
