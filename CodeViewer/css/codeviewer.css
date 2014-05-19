@@ -330,6 +330,13 @@ a {
     background-color: #272822;
 }
 
+.normtextend{
+    height: 100%;
+    background-color: red;
+    z-index: -1;
+    position: absolute;
+    top: 0px;
+}
 
 /*
 .normtext {
