@@ -111,7 +111,7 @@ function returnedSection(data)
 						} else {
 							if (parseInt(data['entries'][i]['visible']) === 0) {
 								//Adding the opacity here instead for visible = 0
-								str+="<a id='section-list' style='color:rgba(67,67,67,0.5);margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
+								str+="<a id='section-list' style='cursor:pointer;color:rgba(67,67,67,0.5);margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
 								str+="<img style='padding-right:5px;opacity:0.5;' onclick='showSectionSettingRow("+data["entries"][i]['lid']+")' id='table-img-coggwheel' src='css/images/general_settings_button_darkgrey.svg' />";
 							
 							} else{
@@ -193,8 +193,10 @@ function returnedSection(data)
 					} else {
 						if (parseInt(data['entries'][i]['kind']) < 2) {
 							str+="<span style='padding-left:5px;'>"+data['entries'][i]['entryname']+"</span>";
-						} else {
+						} else if (parseInt(data['entries'][i]['kind']) == 2 || parseInt(data['entries'][i]['kind']) >= 4) {
 							str+="<span><a style='margin-left:15px;' id='section-list' href="+data['entries'][i]['link']+">"+data['entries'][i]['entryname']+"</a></span>";
+						} else {
+							str+="<a id='section-list' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\""+data['entries'][i]['link']+"\")'>"+data['entries'][i]['entryname']+"</a>";
 						}
 					}
 					str+="</span>";
