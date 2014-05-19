@@ -200,6 +200,7 @@ function imagerecorder(canvas)
 					if(clicked == 1) {
 						showImage(getNextImage());
 						logMouseEvents();
+						createUndoPoint();
 					}
 				break;
 				
@@ -208,6 +209,7 @@ function imagerecorder(canvas)
 					if(clicked == 1) {
 						showImage(getPrevImage());
 						logMouseEvents();
+						createUndoPoint();
 					}
 				break;		
 			}
