@@ -1691,3 +1691,15 @@ function mobileTheme(id){
 		  $(".mobilethemebutton").css("display","none");
 	}
 }
+
+//Retrive height for buliding menu.
+$(window).load(function() {
+	var windowHeight = $(window).height();
+	windowHeight= windowHeight-50;
+	$("#table-scroll").css("height", windowHeight);
+})
+$(window).resize(function() {
+	var windowHeight = $(window).height();
+	windowHeight= windowHeight-50;
+	$("#table-scroll").css("height", windowHeight);
+})
