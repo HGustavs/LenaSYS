@@ -264,12 +264,14 @@ function Canvasrenderer()
 		Elements = [].slice.call(this.timestepElements);
 
 		this.timesteps = Elements.length;
-      		if(this.mouseInterpolation){
-      		      Elements = this.interpolateMousePositions(Elements, 60);
- 	        }
-			// Step through timesteps
+		// Interpolate mouse positions
+		if(this.mouseInterpolation){
+			Elements = this.interpolateMousePositions(Elements, 60);
+			// Make sure to only do this once
+			this.mouseInterpolation = false;
+		}
+		// Step through timesteps
 		for(i = 0; i < Elements.length; i++){
-
 			// Check for elements
 			if(Elements[i]){
 				// Fetch delay
@@ -443,7 +445,6 @@ function Canvasrenderer()
 										node.attributes.item(8).nodeValue);
 				break;
 			}
-
 		}
 		
 		this.fDelta = Date.now() - this.fDelta;
@@ -899,7 +900,6 @@ function Canvasrenderer()
 	 * is called. 
 	**/
 	this.imageData = function(width, height, numberStr){
-
 		var numArray = numberStr.split(" ");
 		this.mImageData = ctx.createImageData(width, height);
 		if(this.mImageData.data.length != numArray.length){ alert("ERROR: Failed to create new image data. Length mismatch."); }
@@ -913,8 +913,6 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
-	
-		
 		// Calculate positions using the proper scale ratio
    		// If the image was downscaled when the history was recorded, we have to multiply by the 
 		// recorded scale ratio, not the current scale ratio
