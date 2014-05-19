@@ -978,7 +978,6 @@ function Canvasrenderer()
 	**/
 	this.picture = function(src)
 	{
-
 		if(!src) return; // no point in continueing if src is null
 
 		// Saves the source so that the current picture can be 
@@ -1017,7 +1016,7 @@ function Canvasrenderer()
 			//console.log(canvas.mouseCursorX + ", " + canvas.mouseCursorY);
 			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
 			// New mouse click background
-			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2, canvas.mouseClickRadius*2);
+			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+5, canvas.mouseClickRadius*2+5);
 			// Render mouse click
 			canvas.drawMouseClick();
 		}
@@ -1027,7 +1026,7 @@ function Canvasrenderer()
 	this.drawMouseClick = function() 
 	{
 		if(this.mouseClickX && this.mouseClickY){	
-			this.mouseClickBackground = ctx.getImageData(this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius, this.mouseClickRadius*2, this.mouseClickRadius*2);
+			this.mouseClickBackground = ctx.getImageData(this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius, this.mouseClickRadius*2+5, this.mouseClickRadius*2+5);
 		}
 		// Draw mouse click (yellow circle) if active
 		if (this.mouseClick) {
