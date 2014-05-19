@@ -87,7 +87,7 @@ function imagerecorder(canvas)
 							else {
 								$("#library-name-dialog").fadeOut(350);
 								$(".wrapper").fadeIn(355);
-								libEntered = 1;
+								libEntered = 1; //Says that the lib-screen has been closed
 
 								
 								// Print "click to start rec" image on canvas
@@ -251,7 +251,7 @@ function imagerecorder(canvas)
 		 * Update scale ratio when the window is resized
 		 */
 		$(window).on('resize', function(){
-				if(libEntered == 1){
+				if(libEntered == 1){ // checks if lib-name has been choosen
 				// Scale ratio update (for correct mouse positions)
 				var rect = canvas.getBoundingClientRect();
 				mHeight = (rect.bottom - rect.top);
@@ -268,7 +268,7 @@ function imagerecorder(canvas)
 				console.log("On Resize\n");
 				console.log("canvas: " + canvas.width + ", " + canvas.height);
 				}
-			if(clicked == 1) {
+			if(clicked == 1) { //Checks if any clicks has been made nad if the picture been clicked it will show the right pic
 				showImage(activeImage);
 			}
 			else{
