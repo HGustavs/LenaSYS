@@ -83,7 +83,17 @@ function Canvasrenderer()
 		$(window).on('resize', function(){
 			// Scale ratio update (for correct mouse positions)
 			canvas.picture(canvas.currentPicture);
-		});	
+		});
+		
+		$("#Canvas").click(function() {
+			canvas.switch();
+		});
+		
+		$("#Canvas").mouseover(function() {
+			$(this).css({
+				"cursor": "pointer"
+			});
+		});
 
 
 	});
@@ -341,7 +351,7 @@ function Canvasrenderer()
 		var retnodes = new Array();
 		for(a = 0; a < nodes.length; ++a){
 			if(validFunctions.indexOf(nodes[a].nodeName) >= 0) { retnodes.push(nodes[a]); }
-			else { console.log("removed call: " + nodes[a].nodeName ); }
+			// Debug: else { console.log("removed call: " + nodes[a].nodeName ); }
 		}
 		return retnodes;
 	}
