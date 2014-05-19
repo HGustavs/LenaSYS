@@ -239,7 +239,7 @@
     bottom: 0px;
     left: 0px;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;

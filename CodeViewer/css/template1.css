@@ -19,7 +19,7 @@
     font-size: 14px;
     overflow: scroll;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     z-index: 2;
 }
 
