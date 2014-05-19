@@ -1692,7 +1692,7 @@ function mobileTheme(id){
 }
 
 //Retrive height for buliding menu.
-$(window).load(function() {
+$(window).resize(function() {
 	var windowHeight = $(window).height();
 	windowHeight= windowHeight-50;
 	$("#table-scroll").css("height", windowHeight);
