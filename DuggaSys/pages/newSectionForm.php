@@ -2,6 +2,8 @@
 include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
 session_start();
 if(checklogin()) {
+	$ha = hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || isSuperUser($_SESSION["uid"]);
+	if($ha) {
 ?>
 <div id="create">
 	<form role="form" name="newSection">
@@ -15,10 +17,6 @@ if(checklogin()) {
 			<label id="linklabel">Link:
 				<input type="text" name="link" class="form-control" disabled style="background-color:#dfdfdf">
 			</label>
-			<label>Select test/dugga</label>
-				<select name="testduggaselect" id="testdugga" class='form-control' disabled style="background-color:#dfdfdf">
-					<option value="-1">Select</option>
-				</select>
 			<label>Type
 				<select name="type" class="form-control" id="typeselect">
 					<option value="-1">Select</option>
@@ -29,6 +27,10 @@ if(checklogin()) {
 					<option value="4">Link</option>
 				</select>
 			</label>
+			<label>Select test/dugga</label>
+				<select name="testduggaselect" id="testdugga" class='form-control' disabled style="background-color:#dfdfdf">
+					<option value="-1">Select</option>
+				</select>
 			<label>Select visibility for entry</label>
 				<select name="visib" class='form-control'>
 					<option id="select-opt" value="-1">Select</option>
@@ -47,4 +49,4 @@ if(checklogin()) {
 <script type="text/javascript">page.title("Create new entry")</script>
 <script type="text/javascript" src="js/sectionhandler.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
-<?php } ?>
+<?php }} ?>
