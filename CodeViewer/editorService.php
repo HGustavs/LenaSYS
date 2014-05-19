@@ -16,19 +16,14 @@
 	// Connect to database and start session
 	dbConnect();
 	session_start();
-	
-//	$coursename=getCourseId($_POST['coursename']);	
-	//$sectionid=mysql_real_escape_string($_POST['sectionid']);
-//	$position=mysql_real_escape_string($_POST['position']);
 
 	$exampleid = $_POST['exampleid'];
 
     if (isset ($_POST['boxid'])){
-    $boxid=$_POST['boxid'];
+   		$boxid=$_POST['boxid'];
     }
 	
 	
-//	$version=$_POST['version'];
 	$opt=$_POST['opt'];
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
@@ -176,10 +171,11 @@
 								$existing_boxes = mysql_num_rows($result);
 								
 								$new_boxes = $required_boxes-$existing_boxes;
-																
+								
+								/* Create new boxes if it's needed */								
 								if($new_boxes != 0){
 									for($i=0; $i<$new_boxes; $i++){
-										// Set correct ID no. for new box.
+										// Set correct ID number for new box.
 										$existing_boxes++;
 										$query = "INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES ('$existing_boxes','$exampleid','NOT DEFINED','[viktig=1]');";		
 										$result=mysql_query($query);
@@ -305,35 +301,7 @@
 					$chosenwordlist=$row['wordlist'];
 					$playlink=$row['runlink'];
 			}
-				
-			// Read File
-		/*	$code="";
-			$filename="";
-			$query = "SELECT filename FROM filelist WHERE exampleid='$exampleid' ORDER BY pos ASC LIMIT 1;";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-					$filename=$row['filename'];
-					if(strcmp($filename,"<none>")===0){
-							// If file name is <none> this is a new file which does not yet have a file name
-					}else{
-							$filename="./codeupload/".$filename;
-							$handle = @fopen($filename, "r");
-							if ($handle) {
-							    while (($buffer = fgets($handle, 1024)) !== false) {
-											$code=$code.$buffer;
-									}
-							    if (!feof($handle)) {
-					        		$code.="Error: Unexpected end of file ".$filename."\n";			    
-							    }
-							    fclose($handle);
-							}else{
-					        $code.="Error: could not open file".$filename."\n";
-							}
-							$filename=$row['filename'];
-					}
-		  }
-	*/	  
+				  
 		  // Read important lines
 			$imp=array();
 			$query = "SELECT codeBoxid,istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
@@ -370,17 +338,6 @@
 		  		array_push($impwordlist,$row['word']);					
 			}  
 		
-			// Read Description Segments
-		/*	$desc="";
-			$query = "SELECT segment FROM descriptionBox WHERE exampleid=$exampleid;";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-				// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox
-					$desc=str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row['segment']));
-				//	$desc = $row['segment'];
-			}  
-		*/	
 			// Read sectionname 
 			$entryname="";
 			$query = "SELECT entryname FROM listentries WHERE pos=$previuous";

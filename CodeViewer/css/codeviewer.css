@@ -30,6 +30,11 @@
     font-style: italic;
 }
 
+/* Base-size for images in descriptionboxes */
+.box img{
+    width: 70%;
+
+}
 
 
 /* --- */
@@ -72,21 +77,7 @@
 }
 */
 
-/* CONTENT-MENU BUTTONS */
-.butto2 {
-    text-align: center;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 4px;
-    height: 44px;
-    background-color: #5D5D5D;
-}
 
-.butto2:hover{
-    background-color: #757575;
-    cursor: pointer;
-}
 
 /* LOOKS LIKE NOT IN USE!!!!
 .butto:hover{
@@ -159,7 +150,7 @@
     background-color: #5D5D5D;
 }*/
 
-/* Hotdrog menu */
+/* Hotdog menu */
 #hotdogdrop{
 	display: none;
 	right: 0px;
@@ -266,7 +257,6 @@
     width: -webkit-calc(30.0%);
     height: -webkit-calc(45.0%);
     height: -moz-calc(45.0%);
-    background-color: #614875;
     background: rgb(0, 0, 0) transparent;
 }
 
@@ -801,6 +791,9 @@ a {
     .showdesktop{
         display: none;
     }
+    #exampleSection{
+        display: none;
+    }
 
 }
 
@@ -859,3 +852,39 @@ a {
   width: 300px;
   position: relative;
 }
+
+
+
+
+
+
+
+
+
+
+/* BOXMENU STYLING START */
+.buttomenu2{
+	position: absolute;
+    top:0px;
+    width: -moz-calc(100%);
+    width: -webkit-calc(100%);
+    margin: 0;
+}
+.buttomenu2 table td img{
+	height: 25px;
+	width: 25px;
+}
+.buttomenu2 select{
+	top: 0px;
+   	bottom:0px;
+   	width: 150px;
+   	margin:0px;
+   	padding: 3px;
+   	-webkit-appearance: none;
+   	-moz-appearance: none;
+   	text-overflow: '';
+   	text-indent: 1px;
+   	outline: none;
+}
+
+/* BOXMENU STYLING STOP */

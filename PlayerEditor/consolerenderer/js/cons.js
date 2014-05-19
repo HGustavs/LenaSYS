@@ -203,7 +203,8 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	{
 		// Calculating search percentage (0%-100%)
 		var rect = document.getElementById("barcontainer").getBoundingClientRect();
-		var percentage = (event.clientX - rect.left) / rect.right;
+		var width = document.getElementById("barcontainer").offsetWidth;
+		var percentage = (event.clientX - rect.left) / width;
 
 		// Move to new position
 		this.windto(Math.floor(this.timesteps.length * percentage));
@@ -345,9 +346,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 		if(this.paused==0){
 			if(this.step<this.timesteps.length){
 				if(this.fastforward==0){
-					var fract=this.step/this.timesteps.length;
-					document.getElementById("bar").style.width=Math.round(fract*392);
-					console.log(this.step);							
+					this.updateSearchBar();				
 				}
 					
 				childr=this.timesteps[this.step].childNodes;
@@ -457,8 +456,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 						this.pause();
 					} 
 					
-					var fract=this.step/this.timesteps.length;
-					document.getElementById("bar").style.width=Math.round(fract*392);							
+					this.updateSearchBar();							
 					
 					this.renderTiles();
 				}		
@@ -499,7 +497,16 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 				}
 			}
 		}
-	}					
+	}				
+
+	//-------------------------------------------------------------------------------------------
+	// Update search bar
+	//-------------------------------------------------------------------------------------------	
+	this.updateSearchBar = function()
+	{
+		var fract=this.step/this.timesteps.length;
+		document.getElementById("bar").style.width = (Math.round(100*fract) + '%');
+	}
 	
 	//-------------------------------------------------------------------------------------------
 	// renderCaret

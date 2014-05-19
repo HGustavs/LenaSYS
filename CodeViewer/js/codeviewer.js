@@ -1303,15 +1303,16 @@ function rendercode(codestring,boxid)
 					if(cont != ""){
 						lineno++;
 
-						// Make line number										
-						if(lineno<10){
-								num="<span class='no'>"+lineno+"&nbsp;&nbsp;&nbsp;</span>";
+						// Make line number		
+						num="<div class='no'>"+lineno+"</div>";								
+				/*		if(lineno<10){
+								num="<div class='no'>"+lineno+"</div>";
 						}else if(lineno>=10 && lineno<100){
-								num="<span class='no'>"+lineno+"&nbsp;&nbsp;</span>";
+								num="<div class='no'>"+lineno+"</div>";
 						}else{
-								num="<span class='no'>"+lineno+"&nbsp;</span>";
+								num="<div class='no'>"+lineno+"</div>";
 						}
-						
+				*/		
 						if(improws.length==0){
 								str+="<div class='normtext'>";
 						}else{
@@ -1642,7 +1643,7 @@ function selectTheme(color)
 function setTheme()
 {
 	var storedTheme = localStorage.getItem("storedTheme");
-	if(storedTheme != "" && storedTheme != null){
+	if(storedTheme != "" || storedTheme != null){
 		var colorTheme = storedTheme;
 
 		if(colorTheme === "black"){
@@ -1666,7 +1667,7 @@ function setTheme()
 		}
 		else{
 			//theme doesnt exist, make default
-			alert("no theme");
+			selectTheme("black");
 		}
 	}
 }

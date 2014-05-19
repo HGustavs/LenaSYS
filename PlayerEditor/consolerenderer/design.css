@@ -56,12 +56,12 @@ table {
 	background-color: #FFFFFF;
 	padding:1px;
 	border:solid 2px #000;
+	white-space: nowrap;
 }
 
 .bar{
-	position:absolute;
 	height: px;
-	width:0px;
+	width:0%;
 	background-image: url('images/loadingbar.gif'); 
 	background-repeat: repeat-x;
 	background-size: 64px 100%;

@@ -1,78 +1,36 @@
-#box1menu{
-	z-index:2;
-	position: absolute;
-	top: 0px;
-	left:0px;
-    background-color: #5D5D5D;
-    height: 50px;
-    width: -moz-calc(26%);
-    width: -webkit-calc(26%);
-}
-
-#box1 {
-	padding-top: 4px;
-    padding-left: 4px;
+#box1wrapper {
     position: absolute;
-    top: 50px;
+    top: 0px;
     left: 0px;
  	width: -moz-calc(25.0%);
 	width: -webkit-calc(25.0%);
-    height: -webkit-calc(60% - 54px);
-    height: -moz-calc(60% - 54px);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
+    height: -webkit-calc(60%);
+    height: -moz-calc(60%);
 }
 
-#box2menu{
-	top: 0px;
-	right:0px;
-	position: absolute;
-	z-index: 2;
+
+#box2wrapper {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+ 	width: -moz-calc(25.0%);
+	width: -webkit-calc(25.0%);
+    height: -webkit-calc(40%);
+    height: -moz-calc(40%);
 }
-#box2 {
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
+
+#box3wrapper{
     position: absolute;
     top: 0px;
+    right:0px;
     bottom: 0px;
-    /*left: 300px;*/
- 	  width: -moz-calc(75.0%);
-	  width: -webkit-calc(75.0%);
-    right: 0px;
-    /* background-color: #272822;*/
-     font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: hidden;
-    z-index: 2;
+ 	width: -moz-calc(75.0%);
+	width: -webkit-calc(75.0%);
+    height: -webkit-calc(100%);
+    height: -moz-calc(100%);
 }
 
-#box3menu{
-	top: 400px;
-	left:0px;
-	z-index: 2;
-	position:absolute;
-}
-#box3{
-    padding-left: 4px;
-    padding-top: 4px;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
- 	width: -moz-calc(25.0% - 4px);
-	width: -webkit-calc(25.0% - 4px);
-    height: -webkit-calc(40.0% - 4px);
-    height: -moz-calc(40.0% - 4px);
-    overflow: scroll;
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
+
+#box3 img {
+    width: 40% !important;
 }
