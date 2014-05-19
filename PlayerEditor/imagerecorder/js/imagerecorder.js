@@ -15,6 +15,8 @@ function imagerecorder(canvas)
 		
 	var imagelibrary = [];			// store all paths to uploaded images
 	var imageid = 0;				// used to keep track of uploaded images id
+	
+	var libEntered = 0;				// Check if "Ok" - Button has been pressed in the library screen
 
 	var activeImage=-1;				// active imageData display in main canvas
 	var nextImage=0;				// id of next image
@@ -59,7 +61,6 @@ function imagerecorder(canvas)
 		// Get library name when user clicks OK
 		$("#library-name-button").click(function(){
 			var libName = $("#library-name-input").val();
-			var libEntered = 1;
 			
 			// Check that name length >0 && <=32
 			if(libName.length > 0 && libName.length <= 32) { 
@@ -86,6 +87,8 @@ function imagerecorder(canvas)
 							else {
 								$("#library-name-dialog").fadeOut(350);
 								$(".wrapper").fadeIn(355);
+								libEntered = 1;
+
 								
 								// Print "click to start rec" image on canvas
 								ctx.drawImage(initImage,0,0, mWidth, mHeight);
@@ -246,7 +249,7 @@ function imagerecorder(canvas)
 		 * Update scale ratio when the window is resized
 		 */
 		$(window).on('resize', function(){
-				//if(libEntered == 1){		// libEntered is undefined...?
+				if(libEntered == 1){
 				// Scale ratio update (for correct mouse positions)
 				var rect = canvas.getBoundingClientRect();
 				mHeight = (rect.bottom - rect.top);
@@ -257,12 +260,12 @@ function imagerecorder(canvas)
 				canvas.height = mHeight; 
 				imgrecorder.maxCanvasWidth = mWidth;
 				imgrecorder.maxCanvasHeight = mHeight;
-				imgrecorder.resizeCanvas();
+				resizeCanvas();
 				updateScaleRatio();
 				
 				console.log("On Resize\n");
 				console.log("canvas: " + canvas.width + ", " + canvas.height);
-			//	}
+				}
 			if(clicked == 1) {
 				showImage(activeImage);
 			}
