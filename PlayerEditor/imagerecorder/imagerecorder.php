@@ -13,7 +13,7 @@
 		<div id="instructionopacity">
 			<!--Div that stores the instructions-->
 			<div id="instructionwindow">
-				<img src="img/instructions.png" width="100%">
+				<img src="img/instruction_new.png" width="100%">
 				<div class="closebutton" onClick="hideinstruction();"></div>
 			</div>
 		</div>	
