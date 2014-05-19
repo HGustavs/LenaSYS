@@ -1,7 +1,7 @@
 function imagerecorder(canvas)
 {
 	var initImage = new Image();	
-	initImage.src = "img/firstpic.png";	// This is the "Click here to start recording" image.
+	initImage.src = "img/firstpic.jpg";	// This is the "Click here to start recording" image.
 	
 	var clicked = 0;
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
