@@ -22,3 +22,8 @@
     overflow-x: hidden;
     z-index: 2;
 }
+
+#box2 img{
+    width: 50% !important;
+
+}

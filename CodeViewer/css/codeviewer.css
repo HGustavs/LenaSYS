@@ -30,6 +30,11 @@
     font-style: italic;
 }
 
+/* Base-size for images in descriptionboxes */
+#div2 img{
+    width: 70%;
+
+}
 
 
 /* --- */
@@ -145,7 +150,7 @@
     background-color: #5D5D5D;
 }*/
 
-/* Hotdrog menu */
+/* Hotdog menu */
 #hotdogdrop{
 	display: none;
 	right: 0px;

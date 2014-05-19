@@ -29,3 +29,9 @@
     height: -webkit-calc(60%);
     height: -moz-calc(60%);
 }
+
+
+
+#box3 img {
+    width: 25% !important;
+}
