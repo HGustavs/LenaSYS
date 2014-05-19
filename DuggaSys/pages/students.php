@@ -31,6 +31,9 @@ if(checklogin()) {
 			   else {
 			   		access='Teacher';
 			   }
+			 var sessName = <?php echo json_encode($_SESSION['loginname']) ?>;
+			 if (sessName!=this.username) {
+
 		      output += "<tr><td>"+this.username+"</td>";
 			  output += "<td>"+this.uid+"</td>";
 			  output += "<td>"+access+"</td>";
@@ -43,8 +46,9 @@ if(checklogin()) {
 			  output += "<option " + ((this.access == 'R') ? 'selected' : '') + " value='R'>Student</option>";
 			  output += "</select>";
 			  output += "</form>";
-				output += "</td>";
+			  output += "</td>";
 		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td></tr>";
+			 };
 		   });
 		   $("table.list tbody").empty();
 		   $("table.list tbody").append(output);
@@ -123,7 +127,6 @@ if(checklogin()) {
 			if(!empty($_POST['checkbox'])) {
    				foreach($_POST['checkbox'] as $check) {
 	    			$pdo->query( "DELETE FROM user_course WHERE uid='$check'" );
-	    			header("Location: students.php");
    				}
 			}
 		}
