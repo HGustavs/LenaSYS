@@ -257,7 +257,7 @@ function imagerecorder(canvas)
 				canvas.height = mHeight; 
 				imgrecorder.maxCanvasWidth = mWidth;
 				imgrecorder.maxCanvasHeight = mHeight;
-				imgrecorder.resizeCanvas();
+				resizeCanvas();
 				updateScaleRatio();
 				
 				console.log("On Resize\n");
@@ -444,22 +444,24 @@ function imagerecorder(canvas)
 	}
 	
 	// Resize the canvas
-	function resizeCanvas() {
+	function resizeCanvas(){
 		
 		var scaleRatio = imgrecorder.currentImageHeight / imgrecorder.currentImageWidth; 
-	
+		console.log("scaleRatio " + scaleRatio);	
 
-		setCanvasWidth(imgrecorder.maxCanvasWidth);
+		setCanvasWidth(imgrecorder.maxCanvasWidth*scaleRatio);
 		setCanvasHeight(imgrecorder.maxCanvasWidth*scaleRatio);
 		if(imgrecorder.currentImageWidth <= getCanvasWidth()) {
 			setCanvasWidth(imgrecorder.currentImageWidth);
+		}else {
+			setCanvasWidth("100%");
 		}
 		
 		if(imgrecorder.currentImageHeight <= getCanvasHeight()) {
 			setCanvasHeight(imgrecorder.currentImageHeight);
+		}else{
+			setCanvasHeight("100%");
 		}
-		setCanvasWidth("100%");
-		setCanvasHeight("100%");
 	}
 	function setCanvasWidth(width) {
 		$("#" + imageCanvas).width(width);
