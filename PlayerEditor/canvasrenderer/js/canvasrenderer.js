@@ -8,6 +8,7 @@ function Canvasrenderer()
 	this.finished=0;
 	this.repeat=0;
 	this.playafterwind=0;
+	this.firsttime = 1;
 	// Array of all delayed timesteps
 	this.runningTimesteps = new Array();
 	// The number of valid timesteps
@@ -38,7 +39,7 @@ function Canvasrenderer()
 	this.recordedCanvasHeight;
 	this.recordedScaleRatio = 1;
     this.mouseInterpolation = true; 
-    	this.downscaled = false;
+    this.downscaled = false;
 	this.mImageData;
 	this.currentPicture = null;
 	this.preloadImages = new Array();
@@ -64,8 +65,13 @@ function Canvasrenderer()
 
 		this.preloadImages();
 		
+		// Print "Click to play" image
+		this.picture("images/firstpic.png");
+		
 		this.scheduleTimesteps();
 	}
+	
+	
 	
 	// List of all valid canvas functions
 	// No other operation in the XML should be possible to run
@@ -119,6 +125,10 @@ function Canvasrenderer()
 	// Play canvas
 	this.play = function()
 	{
+		// First time running - clear welcome image.
+		if(this.firsttime == 1) {
+			ctx.clearRect(0, 0, c.width, c.height);
+		}
 		this.startTime = Date.now();
 		// Only play if we have a document
 		if(this.timesteps!=null){
