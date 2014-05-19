@@ -42,6 +42,8 @@ ul {
 	padding-left: 15px;
 	background-color: #fff;
 	margin-top: 10px;
+	box-shadow: 1px 1px 1px #000;
+	border-radius: 1px;
 }
 .thumbnail {
 	margin-top: 10px;
