@@ -8,6 +8,7 @@ function Canvasrenderer()
 	this.finished=0;
 	this.repeat=0;
 	this.playafterwind=0;
+	this.firsttime = 1;
 	// Array of all delayed timesteps
 	this.runningTimesteps = new Array();
 	// The number of valid timesteps
@@ -38,7 +39,7 @@ function Canvasrenderer()
 	this.recordedCanvasHeight;
 	this.recordedScaleRatio = 1;
     this.mouseInterpolation = true; 
-    	this.downscaled = false;
+    this.downscaled = false;
 	this.mImageData;
 	this.currentPicture = null;
 	this.preloadImages = new Array();
@@ -64,8 +65,13 @@ function Canvasrenderer()
 
 		this.preloadImages();
 		
+		// Print "Click to play" image
+		this.picture("images/firstpic.png");
+		
 		this.scheduleTimesteps();
 	}
+	
+	
 	
 	// List of all valid canvas functions
 	// No other operation in the XML should be possible to run
@@ -119,6 +125,10 @@ function Canvasrenderer()
 	// Play canvas
 	this.play = function()
 	{
+		// First time running - clear welcome image.
+		if(this.firsttime == 1) {
+			ctx.clearRect(0, 0, c.width, c.height);
+		}
 		this.startTime = Date.now();
 		// Only play if we have a document
 		if(this.timesteps!=null){
@@ -254,12 +264,14 @@ function Canvasrenderer()
 		Elements = [].slice.call(this.timestepElements);
 
 		this.timesteps = Elements.length;
-      		if(this.mouseInterpolation){
-      		      Elements = this.interpolateMousePositions(Elements, 60);
- 	        }
-			// Step through timesteps
+		// Interpolate mouse positions
+		if(this.mouseInterpolation){
+			Elements = this.interpolateMousePositions(Elements, 60);
+			// Make sure to only do this once
+			this.mouseInterpolation = false;
+		}
+		// Step through timesteps
 		for(i = 0; i < Elements.length; i++){
-
 			// Check for elements
 			if(Elements[i]){
 				// Fetch delay
@@ -434,7 +446,6 @@ function Canvasrenderer()
 										node.attributes.item(8).nodeValue);
 				break;
 			}
-
 		}
 		
 		this.fDelta = Date.now() - this.fDelta;
@@ -890,7 +901,6 @@ function Canvasrenderer()
 	 * is called. 
 	**/
 	this.imageData = function(width, height, numberStr){
-
 		var numArray = numberStr.split(" ");
 		this.mImageData = ctx.createImageData(width, height);
 		if(this.mImageData.data.length != numArray.length){ alert("ERROR: Failed to create new image data. Length mismatch."); }
@@ -904,8 +914,6 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
-	
-		
 		// Calculate positions using the proper scale ratio
    		// If the image was downscaled when the history was recorded, we have to multiply by the 
 		// recorded scale ratio, not the current scale ratio
