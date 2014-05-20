@@ -1705,31 +1705,19 @@ $(window).resize(function() {
 	textHeight= windowHeight-50;
 	$("#table-scroll").css("height", textHeight);
 
-	var textbottom = $(".normtextend").offset();
-	var objectheight = windowHeight-textbottom.top;
-	var objectheight = objectheight-2;
+});
 
-	console.log(objectheight);
+//Creating a extra box under codelines.
+$(window).resize(function() {
+	var textbottom = $(".normtextend").offset();
+	var windowHeight = $(window).height();
+	var objectheight = windowHeight-textbottom.top-2;
 	$(".normtextend").css("height", objectheight);
 });
 
 $(document).ajaxStop(function () {
 	var textbottom = $(".normtextend").offset();
 	var windowHeight = $(window).height();
-	var objectheight = windowHeight-textbottom.top;
-	var objectheight = objectheight-2;
-
-	console.log(objectheight);
+	var objectheight = windowHeight-textbottom.top-2;
 	$(".normtextend").css("height", objectheight);
-
-	// $.active == 0
-	// $(document).off(); // to prevent event later handling.
 });
-//$.when({rendercode()}).done(function() {	
-	//var textbottom = $(".normtextend").offset();
-	//console.log(textbottom.top);
-//});
-
-// $.when( { rendercode() } ).done(function() {
-// 	console.log(21);
-// });
