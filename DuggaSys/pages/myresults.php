@@ -7,8 +7,6 @@
             <th>Submitted</th>
             <th>Grade</th>
         </tr>
-    </table>
-	<div id='previous' style="display:inline-block; onClick='pagination.previous()'">Previous</div>
-	<div id='next' style="display:inline-block; onClick='pagination.next()'">Next</div> 
+    </table> 
 	<script type="text/javascript" src="js/pagination.js"></script>
 	<script type="text/javascript">page.title("My results");</script>

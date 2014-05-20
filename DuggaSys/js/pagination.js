@@ -16,9 +16,11 @@ function pagination() {
 	var currentPage = 0;
 	
 	this.next = function() {
-		this.currentPage++;
-		this.clearRows();
-		this.showContent();
+		if (((this.currentPage + 1) * this.show_per_page) < this.number_of_items) {
+			this.currentPage++;
+			this.clearRows();
+			this.showContent();
+		}
 	}
 	
 	this.previous = function() {
@@ -38,7 +40,7 @@ function pagination() {
 				// If item is defined
 				if (this.items.entries[i]) {
 					// Insert row below <th>
-					var row = table.insertRow(i + 1);
+					var row = table.insertRow(i % this.show_per_page + 1);
 					
 					if (parseInt(this.items.entries[i]["grade"]) >= 3) {
 						row.className = "green";
@@ -111,6 +113,10 @@ function getItems(pagination) {
 				pagination.cells = 5;
 				pagination.show_per_page = 5;
 				pagination.currentPage = 0;
+				//if (pagination.number_of_pages > 1) {
+					$('#content').append("<div class='paging_button' style='margin-right:10px;margin-top:15px;' onClick='pagination.previous()'>Previous</div>");
+					$('#content').append("<div class='paging_button' onClick='pagination.next()'>Next</div>");
+				//}
 			}
 		}
 	});
