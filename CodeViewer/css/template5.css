@@ -1,6 +1,11 @@
 
 #box1wrapper {
     position: absolute;
+    border-right-style: solid;
+    border-right-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    border-color: #5A5757;
     top: 0px;
     left: 0px;
     height: -webkit-calc(50.0%);
@@ -11,6 +16,11 @@
 
 #box2wrapper {
     position: absolute;
+    border-left-style: solid;
+    border-left-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    border-color: #5A5757;
     top: 0px;
     right: 0px;
     height: -webkit-calc(50.0%);
@@ -21,6 +31,11 @@
 
 #box3wrapper {
     position: absolute;
+    border-right-style: solid;
+    border-right-width: 3px;
+    border-top-style: solid;
+    border-top-width: 3px;
+    border-color: #5A5757;
     bottom: 0px;
     left: 0px;
     height: -webkit-calc(50.0%);
@@ -31,6 +46,11 @@
 
 #box4wrapper {
     position: absolute;
+    border-left-style: solid;
+    border-left-width: 3px;
+    border-top-style: solid;
+    border-top-width: 3px;
+    border-color: #5A5757;
     right: 0px;
     bottom: 0px;
     height: -webkit-calc(50.0%);
