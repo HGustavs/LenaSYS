@@ -788,7 +788,7 @@ a {
 
 
 @media only screen and (max-width: 1100px){
-    .showmobile{
+     .showmobile{
         display: table-cell;
     }
     .showdesktop{
@@ -800,8 +800,7 @@ a {
     
     
     .deactivatedbox{
-    	height: -moz-calc(26px) !important;
-        height: -webkit-calc(26px) !important;
+    	height: 26px !important;
     }
     .activebox{
     	height: -moz-calc(100.0%) !important;

@@ -30,18 +30,9 @@ function addTemplatebox(id)
 	outerdiv.id = id+"wrapper";
 
 	if(id==("box"+retdata['template'][0][2])){
-		outerdiv.className = "boxwrapper";
-		if($(window).width() < 1100){
-			outerdiv.className = "activebox";
-		//	$(outerdiv).css({height: "100%"});	
-		}		
+		outerdiv.className = "boxwrapper activebox";
 	}else{
-		outerdiv.className = "boxwrapper";
-		/* Size of templatebox menu +1px for border-bottom */
-		if($(window).width() < 1100){
-			outerdiv.className = "deactivatedbox";
-		//	$(outerdiv).css({height: "26px"});	
-		}	
+		outerdiv.className = "boxwrapper deactivatedbox";
 	}
 	
 	var innerdiv = document.createElement("div");
@@ -147,7 +138,7 @@ function createboxmenu(contentid, boxid, type){
 			
 			
 		$(boxmenu).click(function(event){
-			if($(window).width() <1100){
+			if($(window).width() <=1100){
 				if(event.target.nodeName == "DIV"){ 
 					toggleClass(document.getElementById(boxmenu.parentNode.getAttribute("id")).getAttribute("id"));
 				}	
@@ -159,7 +150,7 @@ function createboxmenu(contentid, boxid, type){
 function toggleClass(id)
 {
 	var className = $('#'+id).attr('class');
-	$(".boxwrapper").addClass("deactivatedbox").removeClass("activebox").animate({height: "26px"},100);	
+	$(".boxwrapper").addClass("deactivatedbox").removeClass("activebox");	
 	if(className.indexOf("activebox") >-1){
 		/* Height of the boxmenu + 1px for border-bottom */
 	//	$('#'+id).animate({height: "26px"}, 500);	
