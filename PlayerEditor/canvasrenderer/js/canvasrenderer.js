@@ -46,6 +46,7 @@ function Canvasrenderer()
 	this.preloadImages = new Array();
 	this.currentPictureWidth;
 	this.currentPictureHeight;
+	this.currentFile;
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -55,7 +56,7 @@ function Canvasrenderer()
 			  // code for IE6, IE5
 			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		  
+		this.currentFile = file;  
 		// Open XML
 		xmlhttp.open("GET",file,false);
 		xmlhttp.send();
@@ -182,7 +183,8 @@ function Canvasrenderer()
 		this.runningTimesteps = [];
 
 		// Reload timesteps
-		this.scheduleTimesteps();
+		this.loadXML(this.currentFile);		
+		//this.scheduleTimesteps();
 
 		this.finished = 0;
 	}
@@ -268,7 +270,7 @@ function Canvasrenderer()
 		this.timesteps = Elements.length;
 		// Interpolate mouse positions
 		if(this.mouseInterpolation){
-			Elements = this.interpolateMousePositions(Elements, 30);
+			Elements = this.interpolateMousePositions(Elements, 60);
 		}
 		// Step through timesteps
 		for(i = 0; i < Elements.length; i++){
@@ -304,22 +306,23 @@ function Canvasrenderer()
 		var retnodes = [];
 		var currentX = null;
 		var currentY = null;
-		
+		var currentDelay = 0;
+		var sumDelays = 0;
+		console.log("nodes length: " + nodes.length ) ;
 		for(j = 0; j < nodes.length; ++j){
 			childNode = [].slice.call(nodes[j].childNodes, 0); 
-    		currentDelay = parseInt(nodes[j].getAttribute("delay"));
-    		if (currentDelay <= 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
-        		retnodes.push(nodes[j]);
-        		continue; 
-    		} 
+			currentDelay = parseInt(nodes[j].getAttribute("delay"));
+			if (currentDelay <= 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
+				retnodes.push(nodes[j]);
+				continue; 
+			} 
 			var multiple = currentDelay / (1000/FPS);		
 			var delay = currentDelay/multiple;			// The delay in milliseconds 
 			var amount = Math.floor(currentDelay/ delay);		// Number of new positions that should be added 
 			var rest = nodes[j].getAttribute("delay")%multiple;	 
 			var hasChanged = false;
+			sumDelays += delay;
 			//nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
-          		currentX = null;
-			currentY = null;	
 			for(a = 0; a < childNode.length; ++a){
 				if(childNode[a].nodeName == "mousemove"){
 					
@@ -330,9 +333,11 @@ function Canvasrenderer()
 						// Add as many mousemove tags as needed
 						for(i = 0; i < amount; i++){
 							var iNode = nodes[j].cloneNode(true);
+							iNode.childNodes[a].nodeName = "mousemove";
                       					// The interpolated position is calculated and added to the new node
-							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - i*((currentX - newX) / multiple)) );
-							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - i*((currentY - newY) / multiple)) );
+						//	console.log(currentX - i*((currentX - newX) / multiple));
+							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - (amount-i)*((currentX - newX) / multiple)) );
+							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - (amount-i)*((currentY - newY) / multiple)) );
 							iNode.setAttribute("delay", delay);	
 							retnodes.push(iNode);	// Adding the newly created node 
 						    currentX = newX;
@@ -350,6 +355,7 @@ function Canvasrenderer()
 		}
           	retnodes.push(nodes[j]);	
 		}
+		console.log("sum delays: " + sumDelays);
 		return retnodes;
 	}
 	// Pause/stop all timesteps
