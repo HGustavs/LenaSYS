@@ -257,11 +257,16 @@ function returnedSection(data)
 }
   function studentDelete(showhide) {
       if (showhide == "show") {
-          document.getElementById('deletebox').style.visibility = "visible";
-          document.getElementById('deletebutton').style.visibility = "visible";
+
+          $("#deletebox").show();
+          $("#deletebutton").show();
+          $("#resetbox").show();
+
       } else if (showhide == "hide") {
-          document.getElementById('deletebox').style.visibility = "hidden";
-          document.getElementById('deletebutton').style.visibility = "hidden";
+
+          $("#deletebox").hide();
+          $("#deletebutton").hide();
+          $("#resetbox").hide();
       }
   }
 
@@ -270,9 +275,15 @@ $(function() {
        $('#hide').click(function() {
                 $('td:nth-child(5)').hide();                
        });
+       $('#hide').click(function() {
+                $('td:nth-child(6)').hide();                
+       });
 
 	   $('#show').click(function() {
                 $('td:nth-child(5)').show();                
+       });
+        $('#show').click(function() {
+                $('td:nth-child(6)').show();                
        });
     });
 

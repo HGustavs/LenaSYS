@@ -546,11 +546,13 @@ input.submit-button-red:hover {
 }
 /* ANIMATIONS END */
 #student-box{
-    width:400px;
+    width:auto;
+    margin:0 auto;
     height:auto;
     background-color:#ccc;
     border:1px solid #000;
-    margin:0px auto;
+    margin-left:450px;
+    margin-right:450px;
     margin-top:40px;
 }
 

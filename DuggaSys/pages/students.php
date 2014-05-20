@@ -47,7 +47,8 @@ if(checklogin()) {
 			  output += "</select>";
 			  output += "</form>";
 			  output += "</td>";
-		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td></tr>";
+		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
+		      output += "<td id='resetbox1' style='display:none'><button class='submit-button' name='reset_pw' value='"+this.uid+"'>Reset</button></td></tr>";
 			 };
 		   });
 		   $("table.list tbody").empty();
@@ -105,7 +106,9 @@ if(checklogin()) {
 	<th>UserID</th>
 	<th>Access</th>
 	<th>Change Access</th>
-	<th id='deletebox' style='visibility: hidden'>Delete</th></tr>
+	<th id='deletebox' style='display:none'>Delete</th>
+    <th id='resetbox' style='display:none'>Reset password</th>
+	</tr>
 	</thead>
     <tbody>
 		<tr>
