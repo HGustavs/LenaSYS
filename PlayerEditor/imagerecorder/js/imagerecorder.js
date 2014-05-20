@@ -454,10 +454,15 @@ function imagerecorder(canvas)
 		}
 	}
 	
-	// Resize the canvas
+	/*
+		This function scales the canvas to the same size as the image. 
+		If the image is larger than the maximum canvas size, the canvas
+		is set to maxCanvasWidth (which is updated everytime the window
+		is resized) and the height is set to the maxCanvasHeight*(maxCanvasWidth/currentImageWidth)
+		which means that the canvas gets the same aspect ratio as the image.
+	*/
 	function resizeCanvas(){
 		
-		//var scaleRatio = imgrecorder.currentImageHeight / imgrecorder.currentImageWidth; 
 		var scale = imgrecorder.maxCanvasWidth/imgrecorder.currentImageWidth;
 		setCanvasWidth(imgrecorder.maxCanvasWidth);
 			
