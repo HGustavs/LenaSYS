@@ -1692,6 +1692,7 @@ function mobileTheme(id){
 	}
 }
 
+
 // * Menutext * //
 
 $(window).resize(function(){	
@@ -1701,5 +1702,18 @@ $(window).resize(function(){
 		fontsize = 16;
 	}
 	$('.menutext').css('fontSize', fontsize);
+})
+
+
+//Retrive height for buliding menu.
+$(window).load(function() {
+	var windowHeight = $(window).height();
+	windowHeight= windowHeight-50;
+	$("#table-scroll").css("height", windowHeight);
+})
+$(window).resize(function() {
+	var windowHeight = $(window).height();
+	windowHeight= windowHeight-50;
+	$("#table-scroll").css("height", windowHeight);
 })
 
