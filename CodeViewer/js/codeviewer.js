@@ -1694,7 +1694,6 @@ function mobileTheme(id){
 
 
 // * Menutext * //
-
 $(window).resize(function(){	
 	var width = $(window).width();
 	var fontsize = $(window).width()*0.015;
@@ -1703,7 +1702,6 @@ $(window).resize(function(){
 	}
 	$('.menutext').css('fontSize', fontsize);
 })
-
 
 //Retrive height for buliding menu.
 $(window).load(function() {
