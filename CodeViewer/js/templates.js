@@ -275,7 +275,10 @@ function returned(data)
 			// Print out code example in a code box
 			if(boxtype == "CODE"){
 				document.getElementById(contentid).removeAttribute("contenteditable");
-					
+				//remove description class
+				var docuwindow = document.getElementById(contentid);
+				$(docuwindow).removeClass('description');
+				
 				createboxmenu(contentid,boxid,boxtype);
 				// Make room for the menu by setting padding-top equals to height of menubox
 				if($("#"+contentid+"menu").height() == null){
@@ -300,7 +303,8 @@ function returned(data)
 				
 				var docuwindow = document.getElementById(contentid);
 				docuwindow.innerHTML=desc;
-				
+				//add description class
+				$(docuwindow).addClass('description');
 				if($("#"+contentid+"menu").height() == null){
 					var boxmenuheight = 0;
 				}else{
