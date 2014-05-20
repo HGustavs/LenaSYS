@@ -1335,7 +1335,7 @@ function rendercode(codestring,boxid)
 					}					
 				}
 		}
-		str+="</div>";	
+		str+="</div><div class='normtextend no'></div>";	
 		printout.innerHTML=str;
 		linenumbers();
 }
@@ -1722,12 +1722,29 @@ $(window).resize(function(){
 //Retrive height for buliding menu.
 $(window).load(function() {
 	var windowHeight = $(window).height();
-	windowHeight= windowHeight-50;
-	$("#table-scroll").css("height", windowHeight);
-})
+	textHeight= windowHeight-50;
+	$("#table-scroll").css("height", textHeight);
+
+});
+
 $(window).resize(function() {
 	var windowHeight = $(window).height();
-	windowHeight= windowHeight-50;
-	$("#table-scroll").css("height", windowHeight);
-})
+	textHeight= windowHeight-50;
+	$("#table-scroll").css("height", textHeight);
 
+});
+
+//Creating a extra box under codelines.
+$(window).resize(function() {
+	var textbottom = $(".normtextend").offset();
+	var windowHeight = $(window).height();
+	var objectheight = windowHeight-textbottom.top-2;
+	$(".normtextend").css("height", objectheight);
+});
+
+$(document).ajaxStop(function () {
+	var textbottom = $(".normtextend").offset();
+	var windowHeight = $(window).height();
+	var objectheight = windowHeight-textbottom.top-2;
+	$(".normtextend").css("height", objectheight);
+});

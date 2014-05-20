@@ -330,6 +330,26 @@ a {
     background-color: #272822;
 }
 
+.normtextend{
+    height: 120px;
+    margin: 0 auto;
+    border-left: solid 32px #614875;
+    position: relative;
+}
+/*.normtextend:before{
+      display: inline-block; 
+  vertical-align: middle;
+}
+
+.normtextend:before { 
+  content: ''; 
+  display: inline-block; 
+  width: 0; 
+  height: 100%; 
+  vertical-align: middle; 
+  margin-left: -0.25em; 
+} 
+*/
 
 /*
 .normtext {
