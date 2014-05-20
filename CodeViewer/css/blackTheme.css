@@ -233,10 +233,14 @@
 	background-color: #7D5CA0;
 }
 
-
-.box{
+.codebox{
+	padding: 0px;
+}
+.descbox{
 	padding-top: 4px;
-    padding-left: 4px;
+	padding-left: 4px;
+}
+.box{
     position: absolute;
     top: 0px;
     right: 0px;

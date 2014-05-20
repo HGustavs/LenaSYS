@@ -251,15 +251,6 @@ function returned(data)
 			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
 		}
 		
-		
-	//	alert(retdata['box'].length);
-		
-	//	for(i=retdata['template'][0][2]; i<retdata['box'].length; i--){
-		
-	//	}
-		
-		
-		
 		// create boxes
 		for(i=0;i<retdata['template'][0][2];i++){
 			
@@ -277,7 +268,8 @@ function returned(data)
 			// Print out code example in a code box
 			if(boxtype == "CODE"){
 				document.getElementById(contentid).removeAttribute("contenteditable");
-					
+				$("#"+contentid).removeClass("descbox").addClass("codebox");
+
 				createboxmenu(contentid,boxid,boxtype);
 				// Make room for the menu by setting padding-top equals to height of menubox
 				if($("#"+contentid+"menu").height() == null){
@@ -295,7 +287,7 @@ function returned(data)
 			
 			// Print out description in a document box
 			if(boxtype == "DOCUMENT"){
-			
+				$("#"+contentid).removeClass("codebox").addClass("descbox");
 				var desc = boxcontent;
 				desc = replaceAll("<span&nbsp;","<span ",desc);
 				desc =  replaceAll("<img&nbsp;","<img ",desc);
