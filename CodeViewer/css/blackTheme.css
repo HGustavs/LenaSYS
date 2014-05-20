@@ -252,13 +252,13 @@
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #B5B5B5;
+	background-color: #5C5A5A;
 }
 
 .buttomenu2Style select{
    color: white;
    
-   background: url("../new icons/expand_button.svg") no-repeat 120px #B5B5B5;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
    border: 1px solid #ccc;
 }
@@ -273,5 +273,6 @@
 .boxtitle{
 	color: white;
 	cursor:text;
+    font-family: Arial, Sans-Serif;
 }
 /* BOXMENU STYLING STOP */
