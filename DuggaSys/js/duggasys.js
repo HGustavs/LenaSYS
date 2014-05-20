@@ -348,16 +348,14 @@ function testDuggaService(courseID, opt, sectionID, link) {
 				var option = document.createElement('option');
 				option.value = returnData['entries'][i]['id'];
 				option.innerHTML = returnData['entries'][i]['name'];
-				if (opt == "example") {
-					if (link.length > 0) {
-						var string = link.split("&");
-						if (string[0]) {
-							string = string[0].split("?");
-							if (string[1]) {
-								string = string[1].split("=");
-								if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
-									option.setAttribute('selected', true);
-								}
+				if (link.length > 0) {
+					var string = link.split("&");
+					if (string[0]) {
+						string = string[0].split("?");
+						if (string[1]) {
+							string = string[1].split("=");
+							if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
+								option.setAttribute('selected', true);
 							}
 						}
 					}
