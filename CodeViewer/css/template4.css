@@ -29,3 +29,31 @@
     height: -webkit-calc(60%);
     height: -moz-calc(60%);
 }
+
+
+
+@media only screen and (max-width: 700px){
+    #box1wrapper{
+    	position: relative;
+      	top: 0px;
+      	left: 0px;
+      	right: 0px;
+      	width: -moz-calc(100.0%);
+        width: -webkit-calc(100.0%);
+    }
+ 
+    #box2wrapper {
+    	position: relative;
+    	top: 0px;
+        width: -moz-calc(100.0%);
+        width: -webkit-calc(100.0%);
+       
+    }
+    #box3wrapper {
+    	position: relative;
+    	top: 0px;
+        width: -moz-calc(100.0%);
+        width: -webkit-calc(100.0%);
+       
+    }
+}

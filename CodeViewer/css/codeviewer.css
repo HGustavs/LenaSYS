@@ -774,8 +774,41 @@ a {
     #exampleSection{
         display: none;
     }
-
+    
+    
+    .deactivatedbox{
+    	height: -moz-calc(26px) !important;
+        height: -webkit-calc(26px) !important;
+    }
+    .activebox{
+    	height: -moz-calc(100.0%) !important;
+        height: -webkit-calc(100.0%) !important;
+    }
+    /* Template boxes behaviour for mobile version  START*/
+    .buttomenu2{
+  		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
+  		border-bottom: 1px solid #5D5D5D;
+  		color: #5D5D5D !important;
+  		height: 25px;
+  	}
+  	.buttomenu2:hover{
+  		background-color: #938C8C !important;
+  	}
+  	.deactivatedbox *{
+  		padding: 0px !important;
+  	}
+  	/* Change background image */
+    .activebox .buttomenu2{
+    	background: url("../new icons/tab_button_down.svg") no-repeat right #B5B5B5;
+		background-size: 20px 20px !important;
+    }
+  	.deactivatedbox .buttomenu2{
+  		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
+  		background-size: 20px 20px !important;
+  	}
+	 /* Template boxes behaviour for mobile version  STOP*/
 }
+
 
 
 

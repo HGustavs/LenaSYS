@@ -1070,7 +1070,8 @@ while (c) {		// c == first character in each word
 		        c=instring.charAt(i);
             if (c<' '){
         				if((c=='\n')||(c=='\r')||(c == '')) row++; 	// Add row if this white space is a row terminator				 																						
-            		error('Unterminated String: ',str,row);		                		
+            		error('Unterminated String: ',str,row);		
+            		break;                		
             }
 
             if (c==q) break;
@@ -1078,7 +1079,8 @@ while (c) {		// c == first character in each word
             if (c=='\\'){
                 i += 1;
                 if (i >= length) {
-                		error('Unterminated String: ',str,row);		                		
+                		error('Unterminated String: ',str,row);		
+                		break;                		
                 }
     		        c=instring.charAt(i);
                 
@@ -1089,11 +1091,13 @@ while (c) {		// c == first character in each word
                 if(c=='t'){ c='\t'; break; }
                 if(c=='u'){
                     if (i >= length) {
-		                		error('Unterminated String: ',str,row);		                		
+		             	error('Unterminated String: ',str,row);		
+		             	break;                		
                     }
                     c = parseInt(this.substr(i + 1, 4), 16);
                     if (!isFinite(c) || c < 0) {
-		                		error('Unterminated String: ',str,row);		                		
+		                		error('Unterminated String: ',str,row);		
+		                		break;                		
                     }
                     c = String.fromCharCode(c);
                     i+=4;
@@ -1104,7 +1108,7 @@ while (c) {		// c == first character in each word
             i++;
         }
         i++;
-        maketoken('string',str,from,i,row);
+        maketoken('string',c+str+c,from,i,row);
         c=instring.charAt(i);
 
     }else if (c=='/'&&instring.charAt(i+1)=='/'){	// Comment of // type ... does not cover block comments
@@ -1231,7 +1235,7 @@ function rendercode(codestring,boxid)
 				}else if(tokens[i].kind=="blockcomment"){
 						cont+="<span class='comment'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="string"){
-						cont+="<span class='string'>\""+tokenvalue+"\"</span>";
+						cont+="<span class='string'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="number"){
 						cont+="<span class='number'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="name"){
@@ -1517,6 +1521,15 @@ $(function() {
 		$('.imgdrop').hide();
 		return false;
 	});
+	
+	$(document).click(function(event) {
+		if($(event.target).parents('.docudrop').size() >0){
+			event.stopPropagation();
+		}else{
+			$('.docudrop').slideUp('fast');
+		}
+	});
+	
 	$(document).click(function() {
     	$('.docudrop').slideUp('fast');
 	});
@@ -1544,6 +1557,7 @@ $(function() {
 	});
 });
 */
+
 $(function() {
 	$('#hidehotdog').click(function() {
 		$('#hotdogdrop').slideToggle("fast");
@@ -1555,14 +1569,15 @@ $(function() {
 		$('.imgdrop').hide();
 		return false;
 	});
-	$(document).click(function() {
-    	$('#hotdogdrop').slideUp('fast');
-	});
-	$("#hotdogdrop").click(function(event) {
-   		event.stopPropagation();
+	$(document).click(function(event) {
+		if($(event.target).parents('#hotdogdrop').size() >0){
+			event.stopPropagation();
+		}else{
+			$('#hotdogdrop').slideUp('fast');
+		}
 	});
 });
-
+	
 $(function() {
 	$('#hidetheme').click(function() {
 		$('.themedrop').slideToggle("fast");
@@ -1574,11 +1589,12 @@ $(function() {
 		$('.imgdrop').hide();
 		return false;
 	});
-	$(document).click(function() {
-    	$('.themedrop').slideUp('fast');
-	});
-	$(".themedrop").click(function(event) {
-   		event.stopPropagation();
+	$(document).click(function(event) {
+		if($(event.target).parents('.themedrop').size() >0){
+			event.stopPropagation();
+		}else{
+			$('.themedrop').slideUp('fast');
+		}
 	});
 });
 /*

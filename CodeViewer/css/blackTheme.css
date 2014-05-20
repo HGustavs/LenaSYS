@@ -238,7 +238,9 @@
     background-color: #272822;
     color: white;
 }
-
+#div2{
+	background-color: #272822;
+}
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
@@ -258,5 +260,9 @@
 .butto2:hover{
     background-color: #757575;
     cursor: pointer;
+}
+.boxtitle{
+	color: white;
+	cursor:text;
 }
 /* BOXMENU STYLING STOP */

@@ -28,11 +28,73 @@ function addTemplatebox(id)
 	var outerdiv = document.createElement("div");
 	content.appendChild(outerdiv);
 	outerdiv.id = id+"wrapper";
+
+	if(id==("box"+retdata['template'][0][2])){
+		outerdiv.className = "boxwrapper";
+		if($(window).width() < 700){
+			outerdiv.className = "activebox";
+		//	$(outerdiv).css({height: "100%"});	
+		}		
+	}else{
+		outerdiv.className = "boxwrapper";
+		/* Size of templatebox menu +1px for border-bottom */
+		if($(window).width() < 700){
+			outerdiv.className = "deactivatedbox";
+		//	$(outerdiv).css({height: "26px"});	
+		}	
+	}
 	
 	var innerdiv = document.createElement("div");
 	outerdiv.appendChild(innerdiv);
 	innerdiv.id = id;
 	innerdiv.className= "box";
+}
+	
+
+function createhotdogmenu(){
+	var content = document.getElementById("div2");
+	if(document.getElementById("hotdogdrop")){
+		var hotdogmenu = document.getElementById("hotdogdrop");
+	}else{
+		var hotdogmenu = document.createElement("span");
+		content.appendChild(hotdogmenu);
+		hotdogmenu.id = "hotdogdrop";
+		hotdogmenu.className = "hotdogdropStyle dropdown dropdownStyle showmobile";
+	}
+	
+		str = '<table cellspacing="0" class="showmobile"><tr>';
+		str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="new icons/forward_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="new icons/play_button.svg" /></td>';
+		str += '</tr>';
+		for(i=0;i<retdata['template'][0][2];i++){
+		//	str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleClass(\"box"+(i+1)+"wrapper\");' colspan='4'>"+retdata['box'][i][3]+"<img src='new icons/hotdogTabButton2.svg' /></td></tr>";
+			str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retdata['box'][i][3]+"<img src='new icons/hotdogTabButton.svg' /></td></tr>";
+		}		
+ //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
+ 		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="" colspan="4">Desktop site</td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyle " title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;black&quot;);"><img src="new icons/theme_black.svg"><span>Black background</span></td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;white&quot;);"><img src="new icons/theme_white.svg"><span>White background</span></td></tr>';
+		str +='<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;colorblind&quot;);"><img src="new icons/theme_blind.svg"><span>Colorblind</span></td></tr>';
+							//echo '</td></tr>';
+		str += '</table>';
+	
+	hotdogmenu.innerHTML = str;
+}
+
+/* Toogle the tabs for mobile version */
+function toggleTabs(box,td){
+	if($("#"+box).is(":hidden")){
+		$("#"+box).css("display","block");
+		$( td ).children().attr('src', 'new icons/hotdogTabButton.svg'); 
+	}else{
+		$("#"+box).css("display","none");
+		$( td ).children().attr('src', 'new icons/hotdogTabButton2.svg'); 
+	}
 }
 
 function createboxmenu(contentid, boxid, type){
@@ -41,42 +103,73 @@ function createboxmenu(contentid, boxid, type){
 		document.getElementById(contentid+"wrapper").appendChild(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid+"menu");
-
-		if(type=="DOCUMENT"){
-			var str = '<table cellspacing="2"><tr>';
-			str+= '<td class="butto2" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
-			str+= '<td class="butto2" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
-			str+= '<td class="butto2" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
-			str+= "<td class='butto2' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
-			str+= "<td  class='butto2'>";
-			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
-					str+= "<option value='DOCUMENT'>Description section</option>";
-					str+= "<option value='CODE'>Code example</option>";
-				str+= "</select>";
-			str+= '</td></tr></table>';
-		}else if(type=="CODE"){
-			var str = "<table cellspacing='2'><tr>";
-			str+="<td class='butto2' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/list_codefiles.svg' /></td>";
-			str+="<td class='butto2'>";
-			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
-					str+= "<option value='CODE'>Code example</option>";
-					str+= "<option value='DOCUMENT'>Description section</option>";
-				str+= "</select>";
-			str+= '</td></tr></table>';
+		if(sessionkind == "w"){
+			if(type=="DOCUMENT"){
+				var str = '<table cellspacing="2"><tr>';
+				str+= '<td class="butto2" title="Change box title"><span class="boxtitle" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
+				str+= '<td class="butto2 showdesktop" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
+				str+= '<td class="butto2 showdesktop" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
+				str+= '<td class="butto2 showdesktop" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
+				str+= "<td class='butto2 showdesktop' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
+				str+= "<td  class='butto2 showdesktop'>";
+				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+						str+= "<option value='DOCUMENT'>Description section</option>";
+						str+= "<option value='CODE'>Code example</option>";
+					str+= "</select>";
+				str+= '</td></tr></table>';
+			}else if(type=="CODE"){
+				var str = "<table cellspacing='2'><tr>";
+				str+= '<td class="butto2" title="Change box title"><span class="boxtitle" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
+				str+="<td class='butto2 showdesktop' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/list_codefiles.svg' /></td>";
+				str+="<td class='butto2 showdesktop'>";
+				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+						str+= "<option value='CODE'>Code example</option>";
+						str+= "<option value='DOCUMENT'>Description section</option>";
+					str+= "</select>";
+				str+= '</td></tr></table>';
+			}else{
+				var str = "<table cellspacing='2'><tr>";
+				str+="<td class='butto2 showdesktop'>";
+				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+					str+= "<option>Choose content</option>";
+						str+= "<option value='CODE'>Code example</option>";
+						str+= "<option value='DOCUMENT'>Description section</option>";
+					str+= "</select>";
+				str+= '</td></tr></table>';
+			}					
+			boxmenu.innerHTML=str;	
 		}else{
-			var str = "<table cellspacing='2'><tr>";
-			str+="<td class='butto2'>";
-			str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
-				str+= "<option>Choose content</option>";
-					str+= "<option value='CODE'>Code example</option>";
-					str+= "<option value='DOCUMENT'>Description section</option>";
-				str+= "</select>";
-			str+= '</td></tr></table>';
-		}					
-		boxmenu.innerHTML=str;
+			var str = '<table cellspacing="2"><tr>';
+			str+= '<td class="butto2" title="Box title"><span class="boxtitle">'+retdata['box'][boxid-1][3]+'</span></td>';
+			str+='</tr></table>';
+			boxmenu.innerHTML=str;	
+		}
+			
+			
+		$(boxmenu).click(function(event){
+			if($(window).width() <700){
+				if(event.target.nodeName == "DIV"){ 
+					toggleClass(document.getElementById(boxmenu.parentNode.getAttribute("id")).getAttribute("id"));
+				}	
+			}
+		});
 	}
 }
 
+function toggleClass(id)
+{
+	var className = $('#'+id).attr('class');
+	$(".boxwrapper").addClass("deactivatedbox").removeClass("activebox").animate({height: "26px"},100);	
+	if(className.indexOf("activebox") >-1){
+		/* Height of the boxmenu + 1px for border-bottom */
+	//	$('#'+id).animate({height: "26px"}, 500);	
+		$("#"+id).removeClass("activebox").addClass("deactivatedbox");
+
+	}else{
+	//	$('#'+id).animate({height: "100%"}, 500);
+		$("#"+id).removeClass("deactivatedbox").addClass("activebox");	
+	}
+}
 function removeboxmenu(menuid)
 {
 	document.getElementById(menuid).remove();
@@ -84,6 +177,10 @@ function removeboxmenu(menuid)
 function changeboxcontent(boxcontent,boxid)
 {
 	AJAXService("changeboxcontent","&boxid="+boxid+"&boxcontent="+boxcontent);	
+}
+function changeboxtitle(title,boxid)
+{
+	AJAXService("updateboxtitle","&boxid="+boxid+"&boxtitle="+title.innerHTML);	
 }
 function displayDrop(dropid)
 {	
@@ -96,7 +193,6 @@ function displayDrop(dropid)
 }
 function createcodedrop(contentid,boxid)
 { 
-
     if(document.getElementById(contentid+"codedrop")){
         var codedrop = document.getElementById(contentid+"codedrop");
     }else {
@@ -116,7 +212,6 @@ function createcodedrop(contentid,boxid)
 		}
 	}
 
-
     //----------------------------------------------------
     // Fill important line list part of document dialog
     //----------------------------------------------------
@@ -132,7 +227,6 @@ function createcodedrop(contentid,boxid)
     str+="<input type='text' size='4' id=\""+boxid+"from\" /> - <input type='text' size='4' id=\""+boxid+"to\"/>";
     str+="<input type='button' value='add' onclick='addImpline(\""+boxid+"\")'/>";
     str+="<input type='button' value='del' onclick='delImpline(\""+boxid+"\")'/>";
-
 
 	codedrop.innerHTML=str;
 }
@@ -191,19 +285,17 @@ function returned(data)
 			if(boxtype == "CODE"){
 				document.getElementById(contentid).removeAttribute("contenteditable");
 					
-			// Create a boxmenu for users with write access.	
+				createboxmenu(contentid,boxid,boxtype);
+				// Make room for the menu by setting padding-top equals to height of menubox
+				if($("#"+contentid+"menu").height() == null){
+					var boxmenuheight = 0;
+				}else{
+					var boxmenuheight= $("#"+contentid+"menu").height();
+				}
+				$("#"+contentid).css("margin-top", boxmenuheight);
+			// Create a codedrop for users with write access.	
 				if(sessionkind == "w"){
-					createboxmenu(contentid,boxid,boxtype);
 					createcodedrop(contentid,boxid);
-				
-					// Make room for the menu by setting padding-top equals to height of menubox
-					if($("#"+contentid+"menu").height() == null){
-						var boxmenuheight = 0;
-					}else{
-						var boxmenuheight= $("#"+contentid+"menu").height();
-					}
-					$("#"+contentid).css("margin-top", boxmenuheight);
-					
 				}
 				rendercode(boxcontent,boxid);
 			}
@@ -217,6 +309,13 @@ function returned(data)
 				
 				var docuwindow = document.getElementById(contentid);
 				docuwindow.innerHTML=desc;
+				
+				if($("#"+contentid+"menu").height() == null){
+					var boxmenuheight = 0;
+				}else{
+					var boxmenuheight= $("#"+contentid+"menu").height();
+				}
+				$("#"+contentid).css("margin-top", boxmenuheight);
 				//  Fill description with code using tokenizer.
 				var cs = docuwindow.getElementsByClassName("codestyle");
 				for(y=0; y<cs.length; y++){
@@ -224,17 +323,16 @@ function returned(data)
 				}
 				docuwindow.innerHTML = desc;
 				
+				createboxmenu(contentid,boxid,boxtype);
+				
+				if($("#"+contentid+"menu").height() == null){
+					var boxmenuheight = 0;
+				}else{
+					var boxmenuheight= $("#"+contentid+"menu").height();
+				}
+				$("#"+contentid).css("margin-top", boxmenuheight);
 				if(sessionkind == "w"){
 					docuwindow.setAttribute("contenteditable","true");
-					createboxmenu(contentid,boxid,boxtype);
-					
-					// Make room for the menu by setting padding-top equals to height of menubox
-					if($("#"+contentid+"menu").height() == null){
-						var boxmenuheight = 0;
-					}else{
-						var boxmenuheight= $("#"+contentid+"menu").height();
-					}
-					$("#"+contentid).css("margin-top", boxmenuheight);
 				}
 			}
 			
@@ -254,7 +352,7 @@ function returned(data)
 		}
 		/* Remove unnecessary template boxes*/
 		removeTemplatebox();
-		
+		createhotdogmenu();
 		changeCSS("css/"+data['template'][0][1]);
 		
 				//----------------------------------------------------
