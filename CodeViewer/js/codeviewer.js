@@ -1331,7 +1331,7 @@ function rendercode(codestring,boxid)
 					}					
 				}
 		}
-		str+="</div><div class='normtextend'><div class='normtext'><div class='no'></div></div></div>";	
+		str+="</div><div class='normtextend no'></div>";	
 		printout.innerHTML=str;
 		linenumbers();
 }
