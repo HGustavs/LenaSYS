@@ -306,7 +306,8 @@ function Canvasrenderer()
 			var rest = nodes[j].getAttribute("delay")%multiple;	 
 			var hasChanged = false;
 			//nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
-          		
+          		currentX = null;
+			currentY = null;	
 			for(a = 0; a < childNode.length; ++a){
 				if(childNode[a].nodeName == "mousemove"){
 					
@@ -317,7 +318,7 @@ function Canvasrenderer()
 						// Add as many mousemove tags as needed
 						for(i = 0; i < amount; i++){
 							var iNode = nodes[j].cloneNode(true);
-                      		// The interpolated position is calculated and added to the new node
+                      					// The interpolated position is calculated and added to the new node
 							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - i*((currentX - newX) / multiple)) );
 							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - i*((currentY - newY) / multiple)) );
 							iNode.setAttribute("delay", delay);	
@@ -932,7 +933,6 @@ function Canvasrenderer()
 			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX-1, this.mouseCursorY-1);
 		}
 		// Save background
-    	//console.log(y);
 		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width+3)*this.mouseCursorScale, (this.mouseCursor.height+3)*this.mouseCursorScale);
 		// Save mouse position
 		this.mouseCursorX = x;
