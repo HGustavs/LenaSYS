@@ -60,10 +60,11 @@
 }
 #picktemplate h1{
 	text-align: center;
+    font-family: Arial, Sans-Serif;
 }
 #picktemplate img{
-	width: 250px;
-	height: 150px;
+	width: 140px;
+	height: 140px;
 }
 /*  LOOKS LIKE NOT IN USE!!!!
 .butto {
@@ -762,7 +763,7 @@ a {
 .templatethumbicon{
     width: 88%;
     margin: 2% 1% 2% 1%;
-    padding: 5%;
+    padding: 3%;
 }
 .templatethumbicon:hover{
     cursor: pointer;
