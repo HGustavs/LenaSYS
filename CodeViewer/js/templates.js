@@ -31,14 +31,14 @@ function addTemplatebox(id)
 
 	if(id==("box"+retdata['template'][0][2])){
 		outerdiv.className = "boxwrapper";
-		if($(window).width() < 700){
+		if($(window).width() < 1100){
 			outerdiv.className = "activebox";
 		//	$(outerdiv).css({height: "100%"});	
 		}		
 	}else{
 		outerdiv.className = "boxwrapper";
 		/* Size of templatebox menu +1px for border-bottom */
-		if($(window).width() < 700){
+		if($(window).width() < 1100){
 			outerdiv.className = "deactivatedbox";
 		//	$(outerdiv).css({height: "26px"});	
 		}	
@@ -147,7 +147,7 @@ function createboxmenu(contentid, boxid, type){
 			
 			
 		$(boxmenu).click(function(event){
-			if($(window).width() <700){
+			if($(window).width() <1100){
 				if(event.target.nodeName == "DIV"){ 
 					toggleClass(document.getElementById(boxmenu.parentNode.getAttribute("id")).getAttribute("id"));
 				}	
