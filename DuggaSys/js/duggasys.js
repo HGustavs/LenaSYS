@@ -275,7 +275,7 @@ function returnedSection(data)
 $(function() {
 	   $("#reset_pw_btn").on('click',function(){
 	   	alert("clcied");
-	   })
+	   });
        $('#hide').click(function() {
                 $('td:nth-child(5)').hide();                
        });

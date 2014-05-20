@@ -9,7 +9,7 @@ if(checklogin()) {
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-			<link type="text/css" href="css/style.css" rel="stylesheet">
+			
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/duggasys.js"></script>
 		<script>
@@ -48,7 +48,7 @@ if(checklogin()) {
 			  output += "</form>";
 			  output += "</td>";
 		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
-		      output += "<td id='resetbox1' style='display:none'><button class='submit-button' id='reset_pw_btn' value='s"+this.uid+"' return false;>Reset</button></td></tr>";
+		      output += "<td id='resetbox1' style='display:none'><input type='button' class='submit-button' id='reset_pw_btn' value='Reset'></inut></td></tr>";
 			 };
 		   });
 		   $("table.list tbody").empty();
