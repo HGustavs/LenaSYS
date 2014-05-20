@@ -563,7 +563,9 @@ function imagerecorder(canvas)
 		var fileName = document.getElementById("imageLoader").value;
 		var fileExt = fileName.split('.').pop();
 		
-		if(validExtension(fileExt)) {		
+		if(validExtension(fileExt)) {
+			// Show loading dialog
+			$("#loading-dialog").fadeIn(250);
 			// Upload the file.
 			$.ajax({
 				url: "upload.php?lib="+libraryName,
@@ -599,6 +601,8 @@ function imagerecorder(canvas)
 				}
 			
 			});
+			
+			$("#loading-dialog").fadeOut(250);
 		}
 		// Invalid file ext
 		else {

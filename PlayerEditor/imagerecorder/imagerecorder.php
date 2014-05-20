@@ -44,6 +44,8 @@
 				Y(realtime): <span class="cordFont"><span id="yCordReal"></span></span>&nbsp;	
 			</div>
 			
+			<div id="loading-dialog"><center><img src="img/loading.gif" alt="Loading"><br>Uploading images</center></div>
+			
 			<div class='thumbMenu'></div>
 			<!--Creating the big canvas, this canvas contains the big picture-->
 			<canvas id="ImageCanvas" class="canvasStyle" width="1280" height="720"></canvas>
