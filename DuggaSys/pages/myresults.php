@@ -1,54 +1,14 @@
 <?php session_start(); ?>
-<script>page.title("My results");</script>
-
-    <table class="list">
+    <table id="contentlist" class="list">
         <tr>
             <th>Course name</th>
+			<th>Course code</th>
             <th>Quiz name</th>
-            <th>Start</th>
-            <th>Deadline</th>
+            <th>Submitted</th>
             <th>Grade</th>
         </tr>
-        <tr>
-            <td>Webbprogrammering</td>
-            <td>Dugga 1</td>
-            <td>2014-04-16 23:00</td>
-            <td>2014-04-16 23:00</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Webbprogrammering</td>
-            <td>Dugga 1</td>
-            <td>2014-04-16 23:00</td>
-            <td>2014-04-16 23:00</td>
-            <td></td>
-        </tr>
-        <tr class="red">
-            <td>Webbprogrammering</td>
-            <td>Dugga 1</td>
-            <td>2014-04-16 23:00</td>
-            <td>2014-04-16 23:00</td>
-            <td>U</td>
-        </tr>
-        <tr class="red">
-            <td>Webbprogrammering</td>
-            <td>Dugga 1</td>
-            <td>2014-04-16 23:00</td>
-            <td>2014-04-16 23:00</td>
-            <td>U</td>
-        </tr>
-        <tr class="green">
-            <td>Webbprogrammering</td>
-            <td>Dugga 1</td>
-            <td>2014-04-16 23:00</td>
-            <td>2014-04-16 23:00</td>
-            <td>4</td>
-        </tr>
-        <tr class="green">
-            <td>Webbprogrammering</td>
-            <td>Dugga 1</td>
-            <td>2014-04-16 23:00</td>
-            <td>2014-04-16 23:00</td>
-            <td>3</td>
-        </tr>
     </table>
+	<div id='previous' style="display:inline-block; onClick='pagination.previous()'">Previous</div>
+	<div id='next' style="display:inline-block; onClick='pagination.next()'">Next</div> 
+	<script type="text/javascript" src="js/pagination.js"></script>
+	<script type="text/javascript">page.title("My results");</script>

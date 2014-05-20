@@ -27,7 +27,7 @@ if(checklogin()) {
 					<option value="4">Link</option>
 				</select>
 			</label>
-			<label>Select test/dugga</label>
+			<label>Select test/code example</label>
 				<select name="testduggaselect" id="testdugga" class='form-control' disabled style="background-color:#dfdfdf">
 					<option value="-1">Select</option>
 				</select>
