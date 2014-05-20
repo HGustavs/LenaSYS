@@ -322,7 +322,10 @@ function returned(data)
 					var boxmenuheight= $("#"+contentid+"menu").height();
 				}
 				$("#"+contentid).css("margin-top", boxmenuheight);
-				if(sessionkind == "w"){
+				
+				var	hotdog = document.getElementById("hidehotdog");
+				var	isDesktop = $(hotdog).is(":hidden")
+				if(sessionkind == "w" && isDesktop){
 					docuwindow.setAttribute("contenteditable","true");
 				}
 			}

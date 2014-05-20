@@ -1731,3 +1731,27 @@ $(window).resize(function() {
 	$("#table-scroll").css("height", windowHeight);
 })
 
+//Set boxes no be non-editable in mobile view
+$(window).resize(function() {
+	var	hotdog = document.getElementById("hidehotdog");
+	var	isDesktop = $(hotdog).is(":hidden")
+	
+	var boxArray =['box1', 'box2', 'box3', 'box4', 'box5'];
+	 
+	for(var i=0; i<boxArray.length; i++){
+		var box = document.getElementById(boxArray[i]);
+		var isDesc = $('#box2').hasClass('description');
+		
+		if(!isDesktop){
+			if(box!=null){
+	 			box.setAttribute("contenteditable", "false");
+	 		}
+	 	}else{
+	 		if(box!=null){
+	 			box.setAttribute("contenteditable", "true");
+	 		}
+	 	}
+	}
+	
+	
+})
