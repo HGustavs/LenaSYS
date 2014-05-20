@@ -337,32 +337,34 @@ function passPopUp(){
 	});
 	}
 
-	function showPopUp(showhidePop, returnedData){
-		if(showhidePop == "show"){
+function showPopUp(showhidePop, returnedData){
+	if(showhidePop == "show"){
 		document.getElementById('light').style.visibility = "visible";
 		document.getElementById('fade').style.visibility = "visible";
 
 		if (returnedData.length == 0){
 			var output = "The users you were adding already existed globally and were added to the course";
-   		}
-   		else {
-	  var output = "<div id='printArea'>";
-	  output += "<table class='list'>";
-      output += "<tr><th>Name</th>";
-      output += "<th>Username</th>";
-      output += "<th>Password</th></tr>";
+		} else {
+			var output = "<div id='printArea'>";
+			output += "<table class='list'>";
+			output += "<tr><th>Name</th>";
+			output += "<th>Username</th>";
+			output += "<th>Password</th></tr>";
 
-      $.each(returnedData, function(){
-      output += "<tr><td>"+this[1]+"</td>";
-      output += "<td>"+this[0]+"</td>";
-      output += "<td>"+this[2]+"</td></tr>";
-		})
-       output += "</table>";
-       output += "</div>";
-	   output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
-   }
-      var div = document.getElementById('light');
-      div.innerHTML = output;
+			$.each(returnedData, function(){
+				output += "<tr><td>"+this[1]+"</td>";
+				output += "<td>"+this[0]+"</td>";
+				output += "<td>"+this[2]+"</td></tr>";
+			})
+
+			output += "</table>";
+			output += returnedData.length + " users added to the system";
+			output += "</div>";
+
+			output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
+		}
+		var div = document.getElementById('light');
+		div.innerHTML = output;
 	}
 	else if(showhidePop == "hide"){
 		document.getElementById('light').style.visibility = "hidden";
