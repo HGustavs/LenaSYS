@@ -76,7 +76,8 @@ function pagination() {
 			}
 		} else {
 			$('#content').empty();
-			$('#content').append("<div class='no_results'>There are currently no results available</div>")
+			$('#content').append("<div class='no_results'>There are currently no results available</div>");
+			page.title("My results");
 		}
 	}
 
@@ -101,12 +102,16 @@ function getItems(pagination) {
 			'courseid': 1,
 		},
 		success: function(data) {
-			pagination.items = data;
-			pagination.number_of_items = pagination.items.entries.length;
-			pagination.number_of_pages = Math.ceil(pagination.number_of_items/pagination.show_per_page);
-			pagination.cells = 5;
-			pagination.show_per_page = 5;
-			pagination.currentPage = 0;
+			if (data == "No access") {
+				changeURL('noid');
+			} else {
+				pagination.items = data;
+				pagination.number_of_items = pagination.items.entries.length;
+				pagination.number_of_pages = Math.ceil(pagination.number_of_items/pagination.show_per_page);
+				pagination.cells = 5;
+				pagination.show_per_page = 5;
+				pagination.currentPage = 0;
+			}
 		}
 	});
 }
