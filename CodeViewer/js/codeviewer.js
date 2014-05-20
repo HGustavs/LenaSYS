@@ -1691,3 +1691,15 @@ function mobileTheme(id){
 		  $(".mobilethemebutton").css("display","none");
 	}
 }
+
+// * Menutext * //
+
+$(window).resize(function(){	
+	var width = $(window).width();
+	var fontsize = $(window).width()*0.015;
+	if(fontsize <= 16){
+		fontsize = 16;
+	}
+	$('.menutext').css('fontSize', fontsize);
+})
+
