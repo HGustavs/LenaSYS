@@ -941,7 +941,7 @@ function Canvasrenderer()
 			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX-1, this.mouseCursorY-1);
 		}
 		// Save background
-		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width+3)*this.mouseCursorScale, (this.mouseCursor.height+3)*this.mouseCursorScale);
+		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
 		// Save mouse position
 		this.mouseCursorX = x;
 		this.mouseCursorY = y;
