@@ -1495,66 +1495,54 @@ function changeCSS(cssFile, index)
     document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
-// function showhotdogmenu()
-// {
-// 
-	// var hotdogdrop = document.getElementById("hotdogdrop");
-	// if($(hotdogdrop).is(':hidden')){
-		// hotdogdrop.style.display = "block";
-	// }
-	// else{
-		// hotdogdrop.style.display = "none";	
-	// }
-// }
+/* HIDE/SHOW DROP MENUS --> START*/
 
+/* Open general settings */
 $(function() {
-	$('#hidesettings').click(function() {
+	$("#hidesettings").click(function(event){
 		$('.docudrop').slideToggle("fast");
-		$('.codedrop').hide();
+		$('#themedrop').hide();
 		$('#hotdogdrop').hide();
-		$('.themedrop').hide();
+		$('.codedrop').hide();
+		$('.imgdrop').hide();
+		$('#themedrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
-		$('.imgdrop').hide();
 		return false;
-	});
-	
+	}); // Hide docudrop if clicking outside
 	$(document).click(function(event) {
-		if($(event.target).parents('.docudrop').size() >0){
-			event.stopPropagation();
-		}else{
-			$('.docudrop').slideUp('fast');
-		}
-	});
-	
-	$(document).click(function() {
-    	$('.docudrop').slideUp('fast');
-	});
+		$('#docudrop').slideUp('fast');
+	});// Prevent hide event if user is clicking on docudrop.
 	$(".docudrop").click(function(event) {
    		event.stopPropagation();
 	});
+	
 });
-/*
+
+/* Open themes */
 $(function() {
-	$('.hidecode').click(function() {
-		$('.codedrop').slideToggle("fast");
-		$('.docudrop').hide();
+	$("#hidetheme").click(function(event){
+		$('#themedrop').slideToggle("fast");
 		$('#hotdogdrop').hide();
-		$('.themedrop').hide();
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('.imgdrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
-		$('.imgdrop').hide();
 		return false;
-	});
-	$(document).click(function() {
-    	$('.codedrop').slideUp('fast');
-	});
-	$(".codedrop").click(function(event) {
-   		event.stopPropagation();
+	});	// Stop themedrop to hide if clicking on it.
+	$(document).click(function(event) {
+		if(event.target.id ==  'themedrop'){
+			event.stopPropagation();
+		}else if(($(event.target).parents('#themedrop').size() >0)){
+			event.stopPropagation();
+		}else{
+			$('#themedrop').slideUp('fast');
+		}
 	});
 });
-*/
 
+/* OPEN/HIDE hotdog menu */
 $(function() {
 	$('#hidehotdog').click(function() {
 		$('#hotdogdrop').slideToggle("fast");
@@ -1565,7 +1553,7 @@ $(function() {
 		$('.forwdrop').hide();
 		$('.imgdrop').hide();
 		return false;
-	});
+	}); /* Prevent hotdog menu to hide while clicking on it */
 	$(document).click(function(event) {
 		if($(event.target).parents('#hotdogdrop').size() >0){
 			event.stopPropagation();
@@ -1574,58 +1562,56 @@ $(function() {
 		}
 	});
 });
-	
+
+
 $(function() {
-	$('#hidetheme').click(function() {
-		$('.themedrop').slideToggle("fast");
-		$('.docudrop').hide();
-		$('.codedrop').hide();
-		$('#hotdogdrop').hide();
-		$('.backwdrop').hide();
-		$('.forwdrop').hide();
-		$('.imgdrop').hide();
-		return false;
-	});
 	$(document).click(function(event) {
-		if($(event.target).parents('.themedrop').size() >0){
+		if(event.target.id ==  'themedrop'){
+			event.stopPropagation();
+		}else if(($(event.target).parents('#themedrop').size() >0)){
 			event.stopPropagation();
 		}else{
-			$('.themedrop').slideUp('fast');
+			$('#themedrop').slideUp('fast');
 		}
 	});
 });
-/*
+
+
+// Stop themedrop to hide if clicking on it,clicking on contenteditable element or clicking on imgdropbutton.
 $(function() {
-	$('#hideimage').click(function() {
-		$('.imgdrop').slideToggle("fast");
-		$('.docudrop').hide();
-		$('.codedrop').hide();
-		$('#hotdogdrop').hide();
-		$('.themedrop').hide();
-		$('.backwdrop').hide();
-		$('.forwdrop').hide();
-		return false;
-	});
-	$(document).click(function() {
-    	$('.imgdrop').slideUp('fast');
-	});
-	$(".imgdrop").click(function(event) {
-   		event.stopPropagation();
+	$(document).click(function(event) {
+		if(event.target.id ==  'imgdrop'){
+			event.stopPropagation();
+		}else if(($(event.target).parents('#imgdrop').size() >0)){
+			event.stopPropagation();
+		}else if(($(event.target).parents('.imgdropbutton').size() >0)){
+			event.stopPropagation();
+		
+		}else if($(event.target).attr("contenteditable") || $(event.target).parents().attr("contenteditable")){
+			event.stopPropagation();
+		 }else{
+			$('#imgdrop').slideUp('fast');
+		}
 	});
 });
 
 
 
-	$('#imgdrop').slideToggle("fast");
-		$('.docudrop').hide();
-		$('.codedrop').hide();
-		$('#hotdogdrop').hide();
-		$('.themedrop').hide();
-		$('.backwdrop').hide();
-		$('.forwdrop').hide();
-		return false;
+$(function() { /* Prevent codedrops to hide while clicking on it  */
+	$(document).click(function(event) {
+		if($(event.target).is('.codedrop')){
+			event.stopPropagation();
+		}else if(($(event.target).parents('.codedrop').size() >0)){
+			event.stopPropagation();
+		}else if(($(event.target).parents('.codedropbutton').size() >0)){
+			event.stopPropagation();
+		}else{
+			$('.codedrop').slideUp('fast');
+		}
 	});
-*/
+});
+
+/* HIDE/SHOW DROP MENUS --> STOP*/
 
 
 
