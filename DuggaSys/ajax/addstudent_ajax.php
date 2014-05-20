@@ -62,17 +62,9 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 				$user = $userquery->fetch(PDO::FETCH_ASSOC);
 				$userid = $user['uid'];
 				$useraccess = $user['username'];
-				if (preg_match("/[0-9]+/", $useraccess)){
-					$access='R';
-				}
-				else {
-					$access='W';
-				}
-				$querystring='INSERT INTO user_course (uid, cid, access) VALUES(:uid, :cid,:access);';	
-				$stmt = $pdo->prepare($querystring);
+				$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access) VALUES(:uid, :cid,'R')");
 				$stmt->bindParam(':uid', $userid);
 				$stmt->bindParam(':cid', $courseid);
-				$stmt->bindParam(':access', $access);
 
 				try {
 					$stmt->execute();
