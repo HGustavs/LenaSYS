@@ -1001,6 +1001,8 @@ function Canvasrenderer()
 		var image = new Image();
 		// Draw image when loaded
 		image.onload = function() {
+			// Clear canvas from old picture
+			ctx.clearRect(0, 0, c.width, c.height);
 			canvas.updateScaleRatio();
 			var widthRatio = 1;
 			var heightRatio = 1;
