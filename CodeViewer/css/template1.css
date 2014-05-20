@@ -19,10 +19,9 @@
     font-size: 14px;
     overflow: scroll;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     z-index: 2;
 }
-
 
 @media only screen and (max-width: 700px){
     #box1wrapper{
@@ -40,4 +39,5 @@
         width: -moz-calc(100.0%) !important;
         width: -webkit-calc(100.0%) !important;
     }
+
 }

@@ -30,6 +30,11 @@
     font-style: italic;
 }
 
+/* Base-size for images in descriptionboxes */
+.box img{
+    width: 70%;
+
+}
 
 
 /* --- */
@@ -145,7 +150,7 @@
     background-color: #5D5D5D;
 }*/
 
-/* Hotdrog menu */
+/* Hotdog menu */
 #hotdogdrop{
 	display: none;
 	right: 0px;
@@ -168,6 +173,22 @@
 	 	font-family: Arial,Serif;
 	font-size: 14px;
 	/*color: white;*/
+}
+
+/* Scroll hotdog menu */
+#table-wrapper {
+  position:relative;
+}
+#table-scroll {
+  height:100%;
+  overflow-y:scroll; 
+}
+#table-wrapper table {
+  width:100%;
+    
+}
+#table-wrapper table * {
+  color:white;
 }
 
 /* All dropdrowns (codeexample, images, general settings) */
@@ -236,7 +257,6 @@
     width: -webkit-calc(30.0%);
     height: -webkit-calc(45.0%);
     height: -moz-calc(45.0%);
-    background-color: #614875;
     background: rgb(0, 0, 0) transparent;
 }
 
@@ -586,6 +606,7 @@ a {
 	padding: 5px 5px 0px 5px;
 	border-style:solid;
 	border-top-width: 2px;
+	border-bottom-width: 2px;
 	border-left-width: 2px;
 	border-right-width: 2px;
 	
@@ -597,7 +618,9 @@ a {
 	border-top-right-radius: 5px;
 }
 
-
+#settingsTabMenu .activeSetMenuLink{
+	border-bottom-width:3px;
+}
 
 /*TOOLTIPS START*/
 
@@ -764,7 +787,7 @@ a {
 }
 
 
-@media only screen and (max-width: 700px){
+@media only screen and (max-width: 1100px){
     .showmobile{
         display: table-cell;
     }

@@ -1707,3 +1707,27 @@ function mobileTheme(id){
 		  $(".mobilethemebutton").css("display","none");
 	}
 }
+
+
+// * Menutext * //
+$(window).resize(function(){	
+	var width = $(window).width();
+	var fontsize = $(window).width()*0.015;
+	if(fontsize <= 16){
+		fontsize = 16;
+	}
+	$('.menutext').css('fontSize', fontsize);
+})
+
+//Retrive height for buliding menu.
+$(window).load(function() {
+	var windowHeight = $(window).height();
+	windowHeight= windowHeight-50;
+	$("#table-scroll").css("height", windowHeight);
+})
+$(window).resize(function() {
+	var windowHeight = $(window).height();
+	windowHeight= windowHeight-50;
+	$("#table-scroll").css("height", windowHeight);
+})
+
