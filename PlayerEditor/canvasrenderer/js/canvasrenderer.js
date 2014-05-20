@@ -128,6 +128,7 @@ function Canvasrenderer()
 		// First time running - clear welcome image.
 		if(this.firsttime == 1) {
 			ctx.clearRect(0, 0, c.width, c.height);
+			this.firsttime = 0;
 		}
 		this.startTime = Date.now();
 		// Only play if we have a document
