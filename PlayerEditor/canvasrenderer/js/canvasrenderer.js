@@ -128,6 +128,7 @@ function Canvasrenderer()
 		// First time running - clear welcome image.
 		if(this.firsttime == 1) {
 			ctx.clearRect(0, 0, c.width, c.height);
+			this.firsttime = 0;
 		}
 		this.startTime = Date.now();
 		// Only play if we have a document
@@ -941,7 +942,7 @@ function Canvasrenderer()
 			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX-1, this.mouseCursorY-1);
 		}
 		// Save background
-		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width+3)*this.mouseCursorScale, (this.mouseCursor.height+3)*this.mouseCursorScale);
+		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
 		// Save mouse position
 		this.mouseCursorX = x;
 		this.mouseCursorY = y;
@@ -1027,7 +1028,7 @@ function Canvasrenderer()
     			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
 			//console.log(canvas.mouseCursorX + ", " + canvas.mouseCursorY);
-			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
+			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX-1, canvas.mouseCursorY-1, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
 			// New mouse click background
 			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+5, canvas.mouseClickRadius*2+5);
 			// Render mouse click
