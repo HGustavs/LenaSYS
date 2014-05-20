@@ -38,8 +38,9 @@ function Canvasrenderer()
 	this.recordedCanvasWidth;
 	this.recordedCanvasHeight;
 	this.recordedScaleRatio = 1;
-    this.mouseInterpolation = true; 
-    this.downscaled = false;
+	this.recordedMouseFPSValue = 0;
+    	this.mouseInterpolation = true; 
+    	this.downscaled = false;
 	this.mImageData;
 	this.currentPicture = null;
 	this.preloadImages = new Array();
@@ -85,7 +86,7 @@ function Canvasrenderer()
 								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
 								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
 								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'canvasSize',
-								'mousemove', 'mouseclick', 'picture', 'recordedCanvasSize', 'imageData'];
+								'mousemove', 'mouseclick', 'picture', 'recordedCanvasSize', 'imageData', 'recordedMouseFPS'];
 	
 	$(document).ready(function(){
 		$(window).on('resize', function(){
@@ -267,7 +268,7 @@ function Canvasrenderer()
 		this.timesteps = Elements.length;
 		// Interpolate mouse positions
 		if(this.mouseInterpolation){
-			Elements = this.interpolateMousePositions(Elements, 60);
+			Elements = this.interpolateMousePositions(Elements, 30);
 			// Make sure to only do this once
 			this.mouseInterpolation = false;
 		}
@@ -301,6 +302,7 @@ function Canvasrenderer()
 	**/
 	this.interpolateMousePositions = function(nodes, FPS){
 		if(FPS < 0) return nodes;
+		if(FPS < this.recordedMouseFPSValue) return nodes;
 		var retnodes = [];
 		var currentX = null;
 		var currentY = null;
@@ -893,6 +895,10 @@ function Canvasrenderer()
 		c.width = width;
 		c.height = height;
 	}
+
+	this.recordedMouseFPS = function(value){
+		this.recordedMouseFPSValue = value;
+	}
 	/**
 	 * This function is used for loading stored image data from the xml.  
 	 * It is not part interface for HTML canvas.
@@ -932,7 +938,6 @@ function Canvasrenderer()
 	   	 		x *= canvas.scaleRatio;
 			}
 		}
-		console.log("coords: " + x + ", " + y);
 		if(this.mouseClickBackground){
 			// Restore mouse click background
 			ctx.putImageData(this.mouseClickBackground, this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius);
