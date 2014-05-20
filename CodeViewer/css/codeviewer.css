@@ -331,12 +331,25 @@ a {
 }
 
 .normtextend{
-    height: 100%;
-    background-color: red;
-    z-index: -1;
-    position: absolute;
-    top: 0px;
+    height: 120px;
+    margin: 0 auto;
+    border-left: solid 32px #614875;
+    position: relative;
 }
+/*.normtextend:before{
+      display: inline-block; 
+  vertical-align: middle;
+}
+
+.normtextend:before { 
+  content: ''; 
+  display: inline-block; 
+  width: 0; 
+  height: 100%; 
+  vertical-align: middle; 
+  margin-left: -0.25em; 
+} 
+*/
 
 /*
 .normtext {
