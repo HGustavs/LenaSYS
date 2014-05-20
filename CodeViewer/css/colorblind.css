@@ -109,6 +109,10 @@
     text-align: right;
 }
 
+.normtextend{
+    border-left: solid 32px #000;
+}
+
 .impo .no {
     border-right: 2px #444;
     color: white;

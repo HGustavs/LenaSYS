@@ -333,7 +333,6 @@ a {
 .normtextend{
     height: 120px;
     margin: 0 auto;
-    border-left: solid 32px #614875;
     position: relative;
 }
 /*.normtextend:before{
