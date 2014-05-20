@@ -212,6 +212,12 @@ function imagerecorder(canvas)
 						createUndoPoint();
 					}
 				break;		
+				
+				
+				case 27:
+					if(clicked == 1) {
+						reset();
+					}
 			}
 		});
 		
