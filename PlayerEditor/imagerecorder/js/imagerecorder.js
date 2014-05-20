@@ -252,21 +252,21 @@ function imagerecorder(canvas)
 		 */
 		$(window).on('resize', function(){
 				if(libEntered == 1){ // checks if lib-name has been choosen
-				// Scale ratio update (for correct mouse positions)
-				var rect = canvas.getBoundingClientRect();
-				mHeight = (rect.bottom - rect.top);
-				mWidth = (rect.right-rect.left);
-				
-				addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
-				canvas.width = mWidth;
-				canvas.height = mHeight; 
-				imgrecorder.maxCanvasWidth = mWidth;
-				imgrecorder.maxCanvasHeight = mHeight;
-				resizeCanvas();
-				updateScaleRatio();
-				
-				console.log("On Resize\n");
-				console.log("canvas: " + canvas.width + ", " + canvas.height);
+					// Scale ratio update (for correct mouse positions)
+					var rect = canvas.getBoundingClientRect();
+					mHeight = (rect.bottom - rect.top);
+					mWidth = (rect.right-rect.left);
+					
+					addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
+					canvas.width = mWidth;
+					canvas.height = mHeight; 
+					imgrecorder.maxCanvasWidth = mWidth;
+					imgrecorder.maxCanvasHeight = mHeight;
+					console.log(imgrecorder.maxCanvasHeight);	
+					resizeCanvas();
+					updateScaleRatio();
+					
+					console.log("canvas: " + canvas.width + ", " + canvas.height);
 				}
 			if(clicked == 1) { //Checks if any clicks has been made nad if the picture been clicked it will show the right pic
 				showImage(activeImage);
@@ -451,11 +451,12 @@ function imagerecorder(canvas)
 	// Resize the canvas
 	function resizeCanvas(){
 		
-		var scaleRatio = imgrecorder.currentImageHeight / imgrecorder.currentImageWidth; 
-		console.log("scaleRatio " + scaleRatio);	
+		//var scaleRatio = imgrecorder.currentImageHeight / imgrecorder.currentImageWidth; 
+		var scale = imgrecorder.maxCanvasWidth/imgrecorder.currentImageWidth;
+		setCanvasWidth(imgrecorder.maxCanvasWidth);
+			
+		setCanvasHeight((imgrecorder.currentImageHeight*scale));
 
-		setCanvasWidth(imgrecorder.maxCanvasWidth*scaleRatio);
-		setCanvasHeight(imgrecorder.maxCanvasWidth*scaleRatio);
 		if(imgrecorder.currentImageWidth <= getCanvasWidth()) {
 			setCanvasWidth(imgrecorder.currentImageWidth);
 		}else {
