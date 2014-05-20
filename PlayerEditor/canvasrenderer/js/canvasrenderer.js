@@ -269,8 +269,6 @@ function Canvasrenderer()
 		// Interpolate mouse positions
 		if(this.mouseInterpolation){
 			Elements = this.interpolateMousePositions(Elements, 30);
-			// Make sure to only do this once
-			this.mouseInterpolation = false;
 		}
 		// Step through timesteps
 		for(i = 0; i < Elements.length; i++){
@@ -308,13 +306,12 @@ function Canvasrenderer()
 		var currentY = null;
 		
 		for(j = 0; j < nodes.length; ++j){
-			
 			childNode = [].slice.call(nodes[j].childNodes, 0); 
-        		currentDelay = parseInt(nodes[j].getAttribute("delay"));
-            		if (currentDelay <= 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
-                		retnodes.push(nodes[j]);
-                		continue; 
-            		} 
+    		currentDelay = parseInt(nodes[j].getAttribute("delay"));
+    		if (currentDelay <= 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
+        		retnodes.push(nodes[j]);
+        		continue; 
+    		} 
 			var multiple = currentDelay / (1000/FPS);		
 			var delay = currentDelay/multiple;			// The delay in milliseconds 
 			var amount = Math.floor(currentDelay/ delay);		// Number of new positions that should be added 
