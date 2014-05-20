@@ -289,8 +289,37 @@ $(function() {
         $('#show').click(function() {
                 $('td:nth-child(6)').show();                
        });
+       $("#deletebutton").on('click',function(){
+           deleteStudent();
+       });
     });
 
+function deleteStudent(){
+
+	var delete_ids = $.map($('input:checkbox:checked'), function(checked, i) {
+		return +checked.value;
+	});
+	alert(delete_ids);
+	$.ajax({
+		
+		url: 'ajax/deletestudent_ajax.php',
+		dataType: "json",
+		type: "POST",
+		data: {
+			user_id: delete_ids
+		},
+		success: function (returnedData) {
+
+		  	successBox('Successfully deleted students', 'Deleted student(s): '+returnedData+'');
+			getStudents();
+            studentDelete("hide");
+		},
+		error: function(){
+            dangerBox('Problems deleting students', 'Could not delete students, make sure you selected students');
+ 
+		},
+	});
+}
 function passPopUp(){
     var qs = getUrlVars();
     $.ajax({

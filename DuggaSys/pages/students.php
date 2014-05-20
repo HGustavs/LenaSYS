@@ -57,7 +57,7 @@ if(checklogin()) {
 		}
 	    getStudents();
 		function getStudents(){
-		
+		  
 		  $.ajax({
             type: "POST",
             url: "./ajax/getstudent_ajax.php",
@@ -119,12 +119,12 @@ if(checklogin()) {
 
 		<input id="hide" type="button" value="Back" class="submit-button" onclick="javascript:studentDelete('hide');"/>
 		<input id="show" type="button" value="Edit" class="submit-button" onclick="javascript:studentDelete('show');"/>
-		<input id="deletebutton" type="submit" class="submit-button" style='display:none' value="Delete" name="delete"/>
+		<input id="deletebutton" class="submit-button" style='display:none' value="Delete" name="delete"/>
 
 
 		<?php
-
- 	
+        
+ 	    /* Removed this and made it into Ajax-call
 		if (isset($_POST['delete'])) {
 
 			if(!empty($_POST['checkbox'])) {
@@ -133,7 +133,7 @@ if(checklogin()) {
    				}
 			}
 		}
-
+        */
 		?>
 		</form>
 		</div>
