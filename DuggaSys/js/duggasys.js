@@ -255,6 +255,7 @@ function returnedSection(data)
 			})(jQuery);
 
 }
+
   function studentDelete(showhide) {
       if (showhide == "show") {
 
@@ -272,6 +273,9 @@ function returnedSection(data)
 
 
 $(function() {
+	   $("#reset_pw_btn").on('click',function(){
+	   	alert("clcied");
+	   })
        $('#hide').click(function() {
                 $('td:nth-child(5)').hide();                
        });

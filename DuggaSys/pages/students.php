@@ -48,7 +48,7 @@ if(checklogin()) {
 			  output += "</form>";
 			  output += "</td>";
 		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
-		      output += "<td id='resetbox1' style='display:none'><button class='submit-button' name='reset_pw' value='"+this.uid+"'>Reset</button></td></tr>";
+		      output += "<td id='resetbox1' style='display:none'><button class='submit-button' id='reset_pw_btn' value='s"+this.uid+"' return false;>Reset</button></td></tr>";
 			 };
 		   });
 		   $("table.list tbody").empty();
@@ -91,7 +91,7 @@ if(checklogin()) {
 			}
           });
 		}
-
+     
 	</script>
 	<div id="student-box">
 		<div id="student-header">Studentview</div>
@@ -119,7 +119,7 @@ if(checklogin()) {
 
 		<input id="hide" type="button" value="Back" class="submit-button" onclick="javascript:studentDelete('hide');"/>
 		<input id="show" type="button" value="Edit" class="submit-button" onclick="javascript:studentDelete('show');"/>
-		<input id="deletebutton" type="submit" class="submit-button" style='visibility: hidden' value="Delete" name="delete"/>
+		<input id="deletebutton" type="submit" class="submit-button" style='display:none' value="Delete" name="delete"/>
 
 
 		<?php
