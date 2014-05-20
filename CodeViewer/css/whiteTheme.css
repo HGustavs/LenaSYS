@@ -235,4 +235,8 @@
     background-color: #7D5CA0;
     cursor: pointer;
 }
+.boxtitle{
+	color: white;
+	cursor:text;
+}
 /* BOXMENU STYLING STOP */

@@ -266,4 +266,8 @@
     background-color: #000;
     cursor: pointer;
 }
+.boxtitle{
+	color: white;
+	cursor:text;
+}
 /* BOXMENU STYLING STOP */
