@@ -1028,7 +1028,7 @@ function Canvasrenderer()
     			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
 			//console.log(canvas.mouseCursorX + ", " + canvas.mouseCursorY);
-			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
+			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX-1, canvas.mouseCursorY-1, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
 			// New mouse click background
 			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+5, canvas.mouseClickRadius*2+5);
 			// Render mouse click
