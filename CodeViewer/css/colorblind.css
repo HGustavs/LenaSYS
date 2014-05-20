@@ -250,7 +250,7 @@
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #5C5A5A;
+	background-color: #5A5757;
 }
 .buttomenu2Style select{
    color: white;
@@ -265,5 +265,9 @@
 .butto2:hover{
     background-color: #000;
     cursor: pointer;
+}
+.boxtitle{
+	color: white;
+	cursor:text;
 }
 /* BOXMENU STYLING STOP */

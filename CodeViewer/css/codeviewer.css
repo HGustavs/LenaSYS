@@ -821,11 +821,11 @@ a {
   	}
   	/* Change background image */
     .activebox .buttomenu2{
-    	background: url("../new icons/tab_button_down.svg") no-repeat right #B5B5B5;
+    	background: url("../new icons/tab_button_down.svg") no-repeat right #5A5757;
 		background-size: 20px 20px !important;
     }
   	.deactivatedbox .buttomenu2{
-  		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
+  		background: url("../new icons/tab_button.svg") no-repeat right #5A5757;
   		background-size: 20px 20px !important;
   	}
 	 /* Template boxes behaviour for mobile version  STOP*/

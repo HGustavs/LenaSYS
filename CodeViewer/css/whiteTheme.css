@@ -218,7 +218,7 @@
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #5C5A5A;
+	background-color: #5A5757;
 }
 
 .buttomenu2Style select{
@@ -234,5 +234,9 @@
 .butto2:hover{
     background-color: #7D5CA0;
     cursor: pointer;
+}
+.boxtitle{
+	color: white;
+	cursor:text;
 }
 /* BOXMENU STYLING STOP */
