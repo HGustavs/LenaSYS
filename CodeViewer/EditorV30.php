@@ -76,8 +76,9 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 		<title>Code Viewer and Editor Version 3</title>
 		<link type="text/css" href="css/template1.css" rel="stylesheet" />
 		<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />
-		<link type="text/css" href="css/blackTheme.css" rel="stylesheet" />		
-		<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+        <link type="text/css" href="css/blackTheme.css" rel="stylesheet" />
+        <link type="text/css" href="css/responsive.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
         <script type="text/javascript" src="js/codeviewer.js"></script>
         <script type="text/javascript" src="js/templates.js"></script>
         <script type="text/javascript" src="js/tooltips.js"></script>

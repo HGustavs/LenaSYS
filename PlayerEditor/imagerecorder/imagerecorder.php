@@ -13,7 +13,7 @@
 		<div id="instructionopacity">
 			<!--Div that stores the instructions-->
 			<div id="instructionwindow">
-				<img src="img/instructions.png" width="100%">
+				<img src="img/instruction_new.png" width="100%">
 				<div class="closebutton" onClick="hideinstruction();"></div>
 			</div>
 		</div>	
@@ -43,6 +43,8 @@
 				X(realtime): <span class="cordFont"><span id="xCordReal"></span></span>&nbsp;
 				Y(realtime): <span class="cordFont"><span id="yCordReal"></span></span>&nbsp;	
 			</div>
+			
+			<div id="loading-dialog"><center><img src="img/loading.gif" alt="Loading"><br>Uploading images</center></div>
 			
 			<div class='thumbMenu'></div>
 			<!--Creating the big canvas, this canvas contains the big picture-->

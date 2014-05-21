@@ -14,7 +14,7 @@
     font-style: italic;
 }
 
-#box1 h1 {
+.box h1 {
 
     display: block;
     font-family: Arial,Sans-Serif;
@@ -24,16 +24,46 @@
     font-style: italic;
 }
 
-#box1 span.codestyle{
-    color: grey;
+
+.box span.codestyle{
+    color: #666;
     font-family: Arial,Sans-Serif;
-    font-style: italic;
+}
+
+/* Base-size for images in descriptionboxes */
+.box img{
+    width: 70%;
 }
 
 
 
 /* --- */
+/* BOXMENU STYLING START */
+.buttomenu2{
+	position: absolute;
+    top:0px;
+    width: -moz-calc(100%);
+    width: -webkit-calc(100%);
+    margin: 0;
+}
+.buttomenu2 table td img{
+	height: 25px;
+	width: 25px;
+}
+.buttomenu2 select{
+	top: 0px;
+   	bottom:0px;
+   	width: 150px;
+   	margin:0px;
+   	padding: 3px;
+   	-webkit-appearance: none;
+   	-moz-appearance: none;
+   	text-overflow: '';
+   	text-indent: 1px;
+   	outline: none;
+}
 
+/* BOXMENU STYLING STOP */
 
 #buttomenu {
     width: 100%;
@@ -55,10 +85,11 @@
 }
 #picktemplate h1{
 	text-align: center;
+    font-family: Arial, Sans-Serif;
 }
 #picktemplate img{
-	width: 250px;
-	height: 150px;
+	width: 140px;
+	height: 140px;
 }
 /*  LOOKS LIKE NOT IN USE!!!!
 .butto {
@@ -108,7 +139,6 @@
     font-weight: normal;
     padding: 4px;
 }
-
 /* Extra spaces */
 .buttospacer {
     width: 20px;
@@ -145,7 +175,7 @@
     background-color: #5D5D5D;
 }*/
 
-/* Hotdrog menu */
+/* Hotdog menu */
 #hotdogdrop{
 	display: none;
 	right: 0px;
@@ -168,6 +198,22 @@
 	 	font-family: Arial,Serif;
 	font-size: 14px;
 	/*color: white;*/
+}
+
+/* Scroll hotdog menu */
+#table-wrapper {
+  position:relative;
+}
+#table-scroll {
+  height:100%;
+  overflow-y:scroll; 
+}
+#table-wrapper table {
+  width:100%;
+    
+}
+#table-wrapper table * {
+  color:white;
 }
 
 /* All dropdrowns (codeexample, images, general settings) */
@@ -216,6 +262,7 @@
     background: rgb(0, 0, 0) transparent;*/
 	padding-left:7px;
 	border-color: rgb(0,0,0) transparent;
+    min-width: 270px;
 }
 
 /* Different themes */
@@ -236,7 +283,6 @@
     width: -webkit-calc(30.0%);
     height: -webkit-calc(45.0%);
     height: -moz-calc(45.0%);
-    background-color: #614875;
     background: rgb(0, 0, 0) transparent;
 }
 
@@ -310,6 +356,25 @@ a {
     background-color: #272822;
 }
 
+.normtextend{
+    height: 120px;
+    margin: 0 auto;
+    position: relative;
+}
+/*.normtextend:before{
+      display: inline-block; 
+  vertical-align: middle;
+}
+
+.normtextend:before { 
+  content: ''; 
+  display: inline-block; 
+  width: 0; 
+  height: 100%; 
+  vertical-align: middle; 
+  margin-left: -0.25em; 
+} 
+*/
 
 /*
 .normtext {
@@ -574,18 +639,19 @@ a {
 }
 
 /* Tab-menu in general settings */
-#settingsTabMenu{	
+.settingsTabMenu{	
 	border-bottom: solid 2px;
 	padding-left:0px;
 	padding-bottom:0px;
 }
-#settingsTabMenu li{
+.settingsTabMenu li{
 	display: inline;
 	cursor: default;
 	margin: 5px;
 	padding: 5px 5px 0px 5px;
 	border-style:solid;
 	border-top-width: 2px;
+	border-bottom-width: 2px;
 	border-left-width: 2px;
 	border-right-width: 2px;
 	
@@ -597,7 +663,9 @@ a {
 	border-top-right-radius: 5px;
 }
 
-
+.settingsTabMenu .activeSetMenuLink{
+	border-bottom-width:3px;
+}
 
 /*TOOLTIPS START*/
 
@@ -720,7 +788,7 @@ a {
 .templatethumbicon{
     width: 88%;
     margin: 2% 1% 2% 1%;
-    padding: 5%;
+    padding: 3%;
 }
 .templatethumbicon:hover{
     cursor: pointer;
@@ -763,16 +831,60 @@ a {
     display: none;
 }
 
+.codebox{
+	padding: 0px !important;
+}
+.descbox{
+	padding-top: 4px !important;
+	padding-left: 4px !important;
 
-@media only screen and (max-width: 700px){
-    .showmobile{
+@media only screen and (max-width: 1100px){
+     .showmobile{
         display: table-cell;
     }
     .showdesktop{
         display: none;
     }
+    #exampleSection{
+        display: none;
+    }
+    .boxwrapper{
+    	border:none !important;
+    }
+    .deactivatedbox{
+    	height: 25px !important;
+    	border-bottom: 1px solid #8C8C8C !important; 
+    }
+    .activebox{
+    	height: -moz-calc(100.0%) !important;
+        height: -webkit-calc(100.0%) !important;
+    }
+    /* Template boxes behaviour for mobile version  START*/
+    .buttomenu2{
+  		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
+  		color: #5D5D5D !important;
+  		height: 25px;
+  	}
+  	.deactivatedbox *{
+  		padding: 0px !important;
+  	}
+  	/* Change background image */
+    .activebox .buttomenu2{
+    	background: url("../new icons/tab_button_down.svg") no-repeat right #938C8C;
+		background-size: 20px 20px !important;
+    }
+  	.deactivatedbox .buttomenu2{
+  		background: url("../new icons/tab_button.svg") no-repeat right #5A5757;
+  		background-size: 20px 20px !important;
+  	}
+	 /* Template boxes behaviour for mobile version  STOP*/
 
 }
+
+
+
+
+
 
 
 
@@ -865,3 +977,5 @@ a {
 }
 
 /* BOXMENU STYLING STOP */
+
+

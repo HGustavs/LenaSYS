@@ -49,9 +49,17 @@
 	background-color: #614875;
 }
 
+.imgdropStyle{
+	background-color: #614875;
+}
+
 .dropdownitemStyle {
     background: #614875;
     color: #fff;
+}
+
+.dropdownitem:hover {
+	background-color: #7D5CA0;
 }
 
 .normtext {
@@ -66,10 +74,17 @@
 }
 
 .normtext .no {
-    border-right: 2px #444;
     color: white;
-    padding-left: 5px; 
     background-color: #614875;
+    padding-left: 4px;
+    padding-right: 6px;
+    width: 22px;
+    float: left;
+    text-align: right;
+}
+
+.normtextend{
+    border-left: solid 32px #614875;
 }
 
 .impo .no {
@@ -184,12 +199,15 @@
 }
 
 
-
-
+.codebox{
+    padding: 0px;
+}
+.descbox{
+    padding-top: 4px;
+    padding-left: 4px;
+}
 
 .box{
-	padding-top: 4px;
-    padding-left: 4px;
     position: absolute;
     top: 0px;
     right: 0px;
@@ -207,20 +225,32 @@
 
 /* BOXMENU STYLING START */
 .buttomenu2Style{
-	background-color: #B5B5B5;
+	background-color: #5A5757;
 }
+
 .buttomenu2Style select{
    color: white;
-   background: url("../new icons/expand_button.svg") no-repeat 120px #B5B5B5;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
    border: 1px solid #ccc;
 }
 .buttomenu2Style select:hover{
-  background-color: #757575;
+  background-color: #938C8C;
     cursor: pointer;
 }
 .butto2:hover{
-    background-color: #757575;
+    background-color: #938C8C;
     cursor: pointer;
+}
+.boxtitleEditable{
+	color: white;
+	cursor:text;
+    font-family: Arial, Sans-Serif;
+}
+.boxtitle{
+	font-family: Arial, Sans-Serif !important;
+	cursor:default !important;
+	color: white !important;
+}
 }
 /* BOXMENU STYLING STOP */
