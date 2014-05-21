@@ -51,7 +51,7 @@
 		<form id="newQuizForm" name="newQuizForm" role='form'>
 			<div class='form-group'>
 				<label>Dugganame *</label>
-				<input type="text" class='form-control' name="quizname" />
+				<input type="text" class='form-control' name="quizname" id />
 				<!--<div class='form-group'>
 					<label>Template parameters, saves as string (max 2000 characters)</label>
 					<textarea class='form-control' name="parameterinput" rows='5'></textarea>
@@ -72,6 +72,14 @@
 							<option value="1">U-G</option>
 							<option value="2">U-G-VG</option>
 							<option value="3">3-5</option>
+						</select>
+					</label>
+				</div>
+				<div class='form-group'>
+					<label>Quiz file 
+						<select name="quizfile" id="quizfile" class='form-control'>
+							<option value="-1">Select</option>
+
 						</select>
 					</label>
 				</div>
@@ -97,9 +105,12 @@
 <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
 <script src="js/ajax.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
-<script type="text/javascript">page.title("Create new quiz");</script>
+<script type="text/javascript">page.title("Edit quiz");</script>
 <script src="js/jquery.js"></script>
 <script src="js/jquery.datetimepicker.js"></script>
 <script type="text/javascript">
 	$('.datetimepicker').datetimepicker();
+	getQuizFiles();
+	getQuizData("quizid");
 </script>
+

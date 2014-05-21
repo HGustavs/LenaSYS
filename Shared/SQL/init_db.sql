@@ -403,10 +403,11 @@ CREATE TABLE eventlog(
 CREATE TABLE `quiz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cid` int UNSIGNED NOT NULL,
-  `autograde` tinyint(1) NOT NULL, /* bool */
-  `gradesystem` tinyint(1) NOT NULL, /* U-G-VG & U-G & U-3-5 */
-  `answer` varchar(2000) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `autograde` tinyint(1) NOT NULL DEFAULT 0, /* bool */
+  `gradesystem` tinyint(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
+  `answer` varchar(2000) NOT NULL DEFAULT 'no answer',
+  `name` varchar(255) NOT NULL DEFAULT 'no name',
+  `quizFile` varchar(255) NOT NULL DEFAULT 'default.js',
   `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deadline` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`),

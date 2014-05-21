@@ -72,6 +72,7 @@ function getPage() {
 		//PRINT PAGE IF FILE FOUND OR PRINT 404 //
 		if(found) {
 			console.log("page "+this.page+" was loaded");
+			removeDateTimePicker();
 			$("#content").load(path);
 		}
 		else {
@@ -208,3 +209,9 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 	});
 }
 // ALERT BOXES END //
+
+function removeDateTimePicker() {
+	if ($(".xdsoft_noselect").length) {
+		$(".xdsoft_noselect").remove();	
+	};
+}
