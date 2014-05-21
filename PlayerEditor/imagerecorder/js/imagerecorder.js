@@ -793,7 +793,7 @@ function imagerecorder(canvas)
 	 function UndoPoint(strPosition, imgID)
 	 {
 	 	this.stringPosition = strPosition;
-	 	this.imageID = imgID;m
+	 	this.imageID = imgID;
 	 }
 	 
 }
