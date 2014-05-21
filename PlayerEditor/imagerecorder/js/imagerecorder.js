@@ -79,23 +79,22 @@ function imagerecorder(canvas)
 						cache: false,
 						dataType: "json",
 						success: function(data) {
-							// Duplicate found, give error
+							// Duplicate found, load the old library
 							if(data.DUPLICATE == "true") {
-								alert("There's already a library named '"+libraryName+"'.");
+								alert("Library '"+libraryName+"' already exists. Program will load pictures so you can keep working.");
+								loadLibrary(data.PATH);
 							}
-							// No duplicate, hide dialog and show recorder
-							else {
-								$("#library-name-dialog").fadeOut(350);
-								$(".wrapper").fadeIn(355);
-								libEntered = 1; //Says that the lib-screen has been closed
+							// Hide dialog and show wrapper
+							$("#library-name-dialog").fadeOut(350);
+							$(".wrapper").fadeIn(355);
+							libEntered = 1; //Says that the lib-screen has been closed
 
-								
-								// Print "click to start rec" image on canvas
-								ctx.drawImage(initImage,0,0, mWidth, mHeight);
-							}
+							
+							// Print "click to start rec" image on canvas
+							ctx.drawImage(initImage,0,0, mWidth, mHeight);
 						},
 						error: function() {
-							console.log("Error on AJAX call (No JSON respond)");
+							alert("Error on AJAX call (No JSON respond)");
 						}
 					});
 					
@@ -268,11 +267,8 @@ function imagerecorder(canvas)
 					canvas.height = mHeight; 
 					imgrecorder.maxCanvasWidth = mWidth;
 					imgrecorder.maxCanvasHeight = mHeight;
-					console.log(imgrecorder.maxCanvasHeight);	
 					resizeCanvas();
 					updateScaleRatio();
-					
-					console.log("canvas: " + canvas.width + ", " + canvas.height);
 				}
 			if(clicked == 1) { //Checks if any clicks has been made nad if the picture been clicked it will show the right pic
 				showImage(activeImage);
@@ -340,6 +336,32 @@ function imagerecorder(canvas)
 		}
 	});
 	
+	// Load old library
+	function loadLibrary(path) {	
+		if (window.XMLHttpRequest){   
+		  // code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+		}else {	
+			  // code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		
+		// Open XML
+		xmlhttp.open("GET","../canvasrenderer/"+path,false);
+		xmlhttp.send();
+		xmlDoc=xmlhttp.responseXML;
+		
+		var tmpImgSrcs = xmlDoc.getElementsByTagName("picture");
+		
+		for(i=0;i<tmpImgSrcs.length;i++) {
+			var tmpSrc = tmpImgSrcs[i].getAttribute("src");
+			imagelibrary.push(tmpSrc);
+			
+			addThumb("../canvasrenderer/"+tmpSrc);
+		}
+		
+	}
+	
 	function showThumbMenu(index) {
 		// Clear old thumbMenu
 		$(".thumbMenu").html("");
@@ -357,10 +379,7 @@ function imagerecorder(canvas)
 				var imgPath = $("img", selectedli).attr("src");
 				imagelibrary[imageid] = imgPath;	
 				
-				// Add thumbnail
-				var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail'></li>";
-				$("#sortableThumbs").append(imgStr).slideDown(250);
-				imageid++;
+				addThumb(imgPath);
 			}
 		}));
 		// Delete thumb option
@@ -391,11 +410,8 @@ function imagerecorder(canvas)
 						},
 						cache: false,
 						dataType: "json",
-						success: function(data) {
-							console.log(data.SUCCESS);
-						},
 						error: function() {
-							console.log("Error on AJAX call");
+							alert("Error on AJAX call");
 						}
 					});
 				} 
@@ -549,6 +565,13 @@ function imagerecorder(canvas)
 		}
 	}
 	
+	// Add thumbnail 
+	function addThumb(imgPath) {
+		var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail' title='Right click to duplicate and/or remove image'></li>";
+		$("#sortableThumbs").append(imgStr);					
+		imageid++;
+	}
+	
 	// Uploads image
 	function uploadImage(event) {
 		files = event.target.files;
@@ -585,11 +608,7 @@ function imagerecorder(canvas)
 							// add imgpath to array
 							imagelibrary[imageid] = imgPath;
 				
-							// Add thumbnail
-							var imgStr = "<li class='tli'><img src='" + imgPath + "' class='thumbnail' title='Right click to duplicate and/or remove image'></li>";
-							$("#sortableThumbs").append(imgStr);
-							
-							imageid++;
+							addThumb(imgPath);
 						}
 					}
 					else {
@@ -640,9 +659,7 @@ function imagerecorder(canvas)
 		}else{
 			str += '\n<picture src="'+imagelibrary[activeImage].substr(18)+ '"/>';
 		}
-			
-		console.log(str);
-		
+
 		// Add as a timestep
 		addTimestep(str);
 	}
