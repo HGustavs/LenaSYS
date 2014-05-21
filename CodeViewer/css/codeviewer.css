@@ -238,6 +238,7 @@
     background: rgb(0, 0, 0) transparent;*/
 	padding-left:7px;
 	border-color: rgb(0,0,0) transparent;
+    min-width: 270px;
 }
 
 /* Different themes */
