@@ -48,7 +48,7 @@ if(checklogin()) {
 			  output += "</form>";
 			  output += "</td>";
 		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
-		      output += "<td id='resetbox1' style='display:none'><input type='button' class='submit-button' id='reset_pw_btn' value='Reset'></inut></td></tr>";
+		      output += "<td id='resetbox1' style='display:none'><input type='button' class='submit-button' id='reset_pw_btn' onclick='resetPassword("+this.uid+")' value='Reset'></inut></td></tr>";
 			 };
 		   });
 		   $("table.list tbody").empty();
@@ -137,7 +137,11 @@ if(checklogin()) {
 		?>
 		</form>
 		</div>
+
 	</div>
+			<div id="light" class="white_content">
+		</div>
+		<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 </body>
 </html>
 <?php
