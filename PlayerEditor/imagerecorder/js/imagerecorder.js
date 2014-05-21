@@ -724,6 +724,7 @@ function imagerecorder(canvas)
 	// Reset recording session
 	function reset(){
 		// Reset variables
+	
 		clicked = 0;
 		lastEvent = Date.now();
 		activeImage = -1;
@@ -760,6 +761,7 @@ function imagerecorder(canvas)
 
 		// Clear canvas
 		canvas.width = canvas.width;
+		ctx.drawImage(initImage,0,0, mWidth, mHeight);
 
 		// Change button name and action
 		$("#uploadButton").attr('value', 'Upload image');
