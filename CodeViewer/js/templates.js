@@ -65,7 +65,7 @@ function createhotdogmenu(){
 		}		
  //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
  		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
-		str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
+		//str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="" colspan="4">Desktop site</td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyle " title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;black&quot;);"><img src="new icons/theme_black.svg"><span>Black background</span></td></tr>';
@@ -267,6 +267,7 @@ function returned(data)
 			// Print out code example in a code box
 			if(boxtype == "CODE"){
 				document.getElementById(contentid).removeAttribute("contenteditable");
+
 				$("#"+contentid).removeClass("descbox").addClass("codebox");
 
 				createboxmenu(contentid,boxid,boxtype);
@@ -315,6 +316,7 @@ function returned(data)
 					var boxmenuheight= $("#"+contentid+"menu").height();
 				}
 				$("#"+contentid).css("margin-top", boxmenuheight);
+				
 				if(sessionkind == "w"){
 					docuwindow.setAttribute("contenteditable","true");
 				}
@@ -435,5 +437,12 @@ function returned(data)
 			}else if(tabmenuvalue == "templates"){
 				displayTemplates();
 			}					
+		}
+		
+		//Disable editing in mobile version
+		if($(window).width() <=1100){
+			 $("*[contenteditable]").attr("contenteditable","false"); 
+		}else{ 
+			$("*[contenteditable]").attr("contenteditable","true"); 
 		}
 }

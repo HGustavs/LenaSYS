@@ -376,9 +376,10 @@ function setup()
 	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
 			
 	if(sessionkind=="w"){
-		setupEditable();						
+		setupEditable();					
 	}
 	setTheme();
+	
 }
 
 
@@ -1730,6 +1731,15 @@ $(window).resize(function() {
 	
 });
 
+//Disable editing in mobile view
+$(window).resize(function() {
+	if($(window).width() <=1100){
+		 $("*[contenteditable]").attr("contenteditable","false"); 
+	}else{ 
+		$("*[contenteditable]").attr("contenteditable","true"); 
+	}
+	
+})
 //Creating a extra box under codelines.
 $(window).resize(function() {
 	var textbottom = $(".normtextend").offset();
