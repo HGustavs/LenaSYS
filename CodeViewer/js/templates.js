@@ -101,7 +101,7 @@ function createboxmenu(contentid, boxid, type){
 				str+= '<td class="butto2 showdesktop" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
 				str+= '<td class="butto2 showdesktop" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
 				str+= '<td class="butto2 showdesktop" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
-				str+= "<td class='butto2 showdesktop' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
+				str+= "<td class='butto2 showdesktop imgdropbutton' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
 				str+= "<td  class='butto2 showdesktop'>";
 				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 						str+= "<option value='DOCUMENT'>Description section</option>";
@@ -111,7 +111,7 @@ function createboxmenu(contentid, boxid, type){
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitle" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
-				str+="<td class='butto2 showdesktop' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/list_codefiles.svg' /></td>";
+				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/list_codefiles.svg' /></td>";
 				str+="<td class='butto2 showdesktop'>";
 				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 						str+= "<option value='CODE'>Code example</option>";
@@ -175,8 +175,10 @@ function changeboxtitle(title,boxid)
 }
 function displayDrop(dropid)
 {	
+	
 	drop = document.getElementById(dropid);
 	if($(drop).is(":hidden")){
+		$(".dropdown").css({display: "none"});
 		drop.style.display="block";
 	}else{
 		drop.style.display="none";
@@ -249,15 +251,6 @@ function returned(data)
 			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
 		}
 		
-		
-	//	alert(retdata['box'].length);
-		
-	//	for(i=retdata['template'][0][2]; i<retdata['box'].length; i--){
-		
-	//	}
-		
-		
-		
 		// create boxes
 		for(i=0;i<retdata['template'][0][2];i++){
 			
@@ -275,7 +268,9 @@ function returned(data)
 			// Print out code example in a code box
 			if(boxtype == "CODE"){
 				document.getElementById(contentid).removeAttribute("contenteditable");
-				
+
+				$("#"+contentid).removeClass("descbox").addClass("codebox");
+
 				createboxmenu(contentid,boxid,boxtype);
 				// Make room for the menu by setting padding-top equals to height of menubox
 				if($("#"+contentid+"menu").height() == null){
@@ -293,7 +288,7 @@ function returned(data)
 			
 			// Print out description in a document box
 			if(boxtype == "DOCUMENT"){
-			
+				$("#"+contentid).removeClass("codebox").addClass("descbox");
 				var desc = boxcontent;
 				desc = replaceAll("<span&nbsp;","<span ",desc);
 				desc =  replaceAll("<img&nbsp;","<img ",desc);

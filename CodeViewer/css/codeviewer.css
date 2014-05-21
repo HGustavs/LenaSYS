@@ -33,8 +33,8 @@
 /* Base-size for images in descriptionboxes */
 .box img{
     width: 70%;
-
 }
+
 
 
 /* --- */
@@ -60,10 +60,11 @@
 }
 #picktemplate h1{
 	text-align: center;
+    font-family: Arial, Sans-Serif;
 }
 #picktemplate img{
-	width: 250px;
-	height: 150px;
+	width: 140px;
+	height: 140px;
 }
 /*  LOOKS LIKE NOT IN USE!!!!
 .butto {
@@ -330,6 +331,25 @@ a {
     background-color: #272822;
 }
 
+.normtextend{
+    height: 120px;
+    margin: 0 auto;
+    position: relative;
+}
+/*.normtextend:before{
+      display: inline-block; 
+  vertical-align: middle;
+}
+
+.normtextend:before { 
+  content: ''; 
+  display: inline-block; 
+  width: 0; 
+  height: 100%; 
+  vertical-align: middle; 
+  margin-left: -0.25em; 
+} 
+*/
 
 /*
 .normtext {
@@ -743,7 +763,7 @@ a {
 .templatethumbicon{
     width: 88%;
     margin: 2% 1% 2% 1%;
-    padding: 5%;
+    padding: 3%;
 }
 .templatethumbicon:hover{
     cursor: pointer;
@@ -797,10 +817,12 @@ a {
     #exampleSection{
         display: none;
     }
-    
-    
+    .boxwrapper{
+    	border:none !important;
+    }
     .deactivatedbox{
-    	height: 26px !important;
+    	height: 25px !important;
+    	border-bottom: 1px solid #8C8C8C !important; 
     }
     .activebox{
     	height: -moz-calc(100.0%) !important;
@@ -809,7 +831,6 @@ a {
     /* Template boxes behaviour for mobile version  START*/
     .buttomenu2{
   		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
-  		border-bottom: 1px solid #5D5D5D;
   		color: #5D5D5D !important;
   		height: 25px;
   	}
@@ -821,11 +842,11 @@ a {
   	}
   	/* Change background image */
     .activebox .buttomenu2{
-    	background: url("../new icons/tab_button_down.svg") no-repeat right #B5B5B5;
+    	background: url("../new icons/tab_button_down.svg") no-repeat right #938C8C;
 		background-size: 20px 20px !important;
     }
   	.deactivatedbox .buttomenu2{
-  		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
+  		background: url("../new icons/tab_button.svg") no-repeat right #5A5757;
   		background-size: 20px 20px !important;
   	}
 	 /* Template boxes behaviour for mobile version  STOP*/

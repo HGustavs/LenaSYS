@@ -2,6 +2,7 @@ drop database Imperious;
 create database Imperious;
 use Imperious;
 /* user contains the users of the system and related  information */
+
 DROP TABLE IF EXISTS `userAnswer`;
 DROP TABLE IF EXISTS `grades`;
 DROP TABLE IF EXISTS `quiz`;
@@ -9,15 +10,18 @@ DROP TABLE IF EXISTS eventlog;
 DROP TABLE IF EXISTS listentries;
 DROP TABLE IF EXISTS impwordlist;
 DROP TABLE IF EXISTS wordlist;
-DROP TABLE IF EXISTS box;
+DROP TABLE IF EXISTS playereditor_playbacks;
 DROP TABLE IF EXISTS descriptionsection;
 DROP TABLE IF EXISTS filelist;
 DROP TABLE IF EXISTS improw;
+DROP TABLE IF EXISTS user_course;
+DROP TABLE IF EXISTS user_question;
+DROP TABLE IF EXISTS descriptionBox;
+DROP TABLE IF EXISTS codeBox;
+DROP TABLE IF EXISTS box;
 DROP TABLE IF EXISTS codeexample;
 DROP TABLE IF EXISTS template;
-DROP TABLE IF EXISTS user_course;
 DROP TABLE IF EXISTS course;
-DROP TABLE IF EXISTS user_question;
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
 		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -426,14 +430,14 @@ INSERT INTO grades(gradeID, grade) VALUES(5, "4");
 INSERT INTO grades(gradeID, grade) VALUES(6, "5");
 
 CREATE TABLE `userAnswer` (
-  `testID` int(11) NOT NULL,
+  `quizID` int(11) NOT NULL,
   /*`variantID` int(11) NOT NULL,*/
   /*`version` int(11) NOT NULL,*/
   `grade` tinyint(2) NOT NULL,
   `uid` int(11) NOT NULL,
   `answer` varchar(2000) NOT NULL,
   `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`testID`,`uid`)
+  PRIMARY KEY (`quizID`,`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 
