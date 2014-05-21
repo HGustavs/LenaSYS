@@ -614,12 +614,12 @@ a {
 }
 
 /* Tab-menu in general settings */
-#settingsTabMenu{	
+.settingsTabMenu{	
 	border-bottom: solid 2px;
 	padding-left:0px;
 	padding-bottom:0px;
 }
-#settingsTabMenu li{
+.settingsTabMenu li{
 	display: inline;
 	cursor: default;
 	margin: 5px;
@@ -638,7 +638,7 @@ a {
 	border-top-right-radius: 5px;
 }
 
-#settingsTabMenu .activeSetMenuLink{
+.settingsTabMenu .activeSetMenuLink{
 	border-bottom-width:3px;
 }
 
