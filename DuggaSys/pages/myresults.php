@@ -10,3 +10,8 @@
     </table> 
 	<script type="text/javascript" src="js/pagination.js"></script>
 	<script type="text/javascript">page.title("My results");</script>
+	<script type="test/javascript">
+		pagination = new pagination();
+		getResults(pagination);
+		pagination.showContent();
+	</script>

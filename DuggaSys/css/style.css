@@ -661,17 +661,32 @@ table.list tr.red {
     background-color: #775886;
 }
 
-.paging_button {
-	padding:6px;
-    text-align: center;
+.page {
+	display:inline-block;
+	color: #717171;
 	cursor: pointer;
-	color:#fff;
-	font-size: 14pt;
-    font-family: Calibri,Sans-Serif;
-    display:inline-block;
-    background-color: #775886;
+	background: #e9e9e9;
+	text-decoration: none;
+	padding: 5px 7px;
+	margin-right: 6px;
+	margin-top: 15px;
+	box-shadow: inset 0px 1px 0px rgba(255,255,255, .7), 0px 1px 3px rgba(0,0,0, .1);
+	text-shadow: 1px 1px 0px rgba(255,255,255, 0.7);
 }
 
-.paging_button:hover {
-	background-color: #533E5E;
+.page:hover, .page.selected:hover {
+	background: #8C8C8C;
+}
+
+.page.selected {
+	display:inline-block;
+	color: #717171;
+	cursor: pointer;
+	background: #D1D1D1;
+	text-decoration: none;
+	padding: 5px 7px;
+	margin-right: 6px;
+	margin-top: 15px;
+	box-shadow: inset 0px 1px 0px rgba(255,255,255, .7), 0px 1px 3px rgba(0,0,0, .1);
+	text-shadow: 1px 1px 0px rgba(255,255,255, 0.7);
 }
