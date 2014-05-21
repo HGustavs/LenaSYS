@@ -1,7 +1,7 @@
 //-------------------------------------------------------------------------------------------
-// Tile Class 		
+// Console renderer		
 //-------------------------------------------------------------------------------------------
-// Implements a console tile
+// Main console playback component
 //-------------------------------------------------------------------------------------------		
 function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 {
@@ -52,14 +52,12 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	
 	// Timeout storer
 	this.timeoutStore=null;
-	
-	var cx,cy;
 						
 	// Create screen and swap screen
 	for(var cy=0;cy<consoleheight;cy++){
 		this.rows[cy]=[];
 		this.altrows[cy]=[];
-		for(cx=0;cx<consolewidth;cx+=tilesize){
+		for(var cx=0;cx<consolewidth;cx+=tilesize){
 			this.rows[cy][Math.floor(cx/tilesize)] = new tile(cx,cy,tilesize,color,bgcolor);
 			this.altrows[cy][Math.floor(cx/tilesize)] = new tile(cx,cy,tilesize,color,bgcolor);
 		}
@@ -83,10 +81,11 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.clrscr = function()
 	{
-		// SCREENDEP
+		// Clear all rows
 		for(var ki=0;ki<this.consoleheight;ki++){
 			this.clearrow(ki);
 		}
+		// Reset position
 		this.gotoxy(0,0);
 	}
 
@@ -116,7 +115,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.showcursor = function()
 	{
-		this.carethidden=0;
+		this.carethidden=false;
 		this.updatecursorstate();
 	}
 
@@ -127,7 +126,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.hidecursor = function()
 	{
-		this.carethidden=1;
+		this.carethidden=true;
 		this.updatecursorstate();
 	}
 
@@ -187,9 +186,12 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	this.skip = function(skippos)
 	{
 		if(this.timesteps!=null){
+			// Calculate new position
 			var windpos=this.step+skippos;
+			// Make sure position is valid
 			if(windpos<0) windpos=0;
 			if(windpos>=this.timesteps.length) windpos=this.timesteps.length-1;
+
 			this.windto(windpos);
 		}							
 	}
@@ -330,6 +332,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.getcolorname = function(colnam)
 	{
+		// Search for color name
 		for(var i=0;i<colornames.length;i++){
 			if(colornames[i]==colnam) return i;
 		}
@@ -343,14 +346,19 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.advancestep = function ()
 	{
-		if(this.paused==0){
+		if(!this.paused){
+			// Only advance if there are timesteps left
 			if(this.step<this.timesteps.length){
-				if(this.fastforward==0){
+				// Do not update search bar when fast forwarding
+				if(!this.fastforward){
 					this.updateSearchBar();				
 				}
 					
+				// Fetch actions from timestep
 				childr=this.timesteps[this.step].childNodes;
+				// Calculate delay
 				delay=Math.round(this.timesteps[this.step].getAttribute('delay')*1000.0);
+				// Set next delay
 				if(this.step>=this.timesteps.length-2){
 					nextdelay=1;
 					delay=1;
@@ -358,12 +366,14 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					nextdelay=Math.round(this.timesteps[this.step+1].getAttribute('delay')*1000.0);									
 				}
 
+				// Run timestep actions
 				for(jj=0;jj<childr.length;jj++){
 					if(childr[jj].nodeName=="special"){
 						// Ignore "special" for now
 					}else if(childr[jj].nodeName=="#text"){
 						// Ignore #text as it should contain only white space
 					}else if(childr[jj].nodeName=="color"){
+						// Set text color
 						var col=childr[jj].getAttribute('foreground');
 						if(col!=null){
 							var coln=this.getcolorname(col);
@@ -372,6 +382,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 							this.color=parseInt(coln);
 						}
 						var bgcol=childr[jj].getAttribute('background');
+						// Set background color
 						if(bgcol!=null){
 							var bgcoln=this.getcolorname(bgcol);
 							if (bgcol=="normal-default") bgcoln=this.defaultbgcolor;
@@ -444,7 +455,6 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 						alert("Unknown Op Class: "+childr[jj].nodeName);
 					}
 				}
-
 				this.step++;
 				
 				// If we reach fastforward target, stop fastforward mode and render current tile
@@ -457,7 +467,6 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 					} 
 					
 					this.updateSearchBar();							
-					
 					this.renderTiles();
 				}		
 					
@@ -515,7 +524,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	{														
 		// Ignore caret outside of screen bounds (generates javascript error)
 		if(caretx<this.consolewidth&&carety<this.consoleheight){
-			// render html for caret layer using character chr (character decides if we render or un-render caret)
+			// Render html for caret layer using character chr (character decides if we render or un-render caret)
 			cx=(Math.floor(caretx/this.tilesize))*this.tilesize;
 			cy=carety;
 			cid="caret"+cy+":"+cx;
@@ -591,10 +600,9 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 		caretarea.innerHTML=caretstr;
 	}
 
-		//-------------------------------------------------------------------------------------------
-		// printtext
-		//-------------------------------------------------------------------------------------------
-
+	//-------------------------------------------------------------------------------------------
+	// printtext
+	//-------------------------------------------------------------------------------------------
 	this.printtext = function(tex)
 	{
 		var tx;
@@ -652,6 +660,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.gotoxy = function(xk,yk)
 	{
+		// Go to a new position in console
 		if(xk>=this.consolewidth) xk=this.consolewidth-1;
 		if(yk>=this.consoleheight) xy=this.consoleheight-1;
 		
@@ -707,6 +716,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	this.clearrow = function(rowy)
 	{
+		// Clear specified row
 		for(var cx=0;cx<this.consolewidth;cx+=this.tilesize){
 			if(this.currentbuffer==1){
 				t1=this.rows[rowy][Math.floor(cx/this.tilesize)];
