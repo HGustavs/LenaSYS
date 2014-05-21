@@ -761,6 +761,9 @@ function imagerecorder(canvas)
 
 		// Show instruction button
 		$("#instructbutton").show();
+		
+		// Hide export dialog
+		$("#export-feedback").hide();
 
 		// Clear canvas
 		canvas.width = canvas.width;
