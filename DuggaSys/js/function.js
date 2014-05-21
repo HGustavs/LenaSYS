@@ -33,6 +33,7 @@ function getPage() {
 		var path = "pages/";
 		var found= false;
 		var hashtagsplit = url.split('#').pop();
+		var data = getUrlVars();
 		if(window.location.hash && hashtagsplit.length > 0) {
 			var slashsplit = hashtagsplit.split('/');
 			for (var i = 0; i <= slashsplit.length-1; i++) {
@@ -72,9 +73,8 @@ function getPage() {
 		//PRINT PAGE IF FILE FOUND OR PRINT 404 //
 		if(found) {
 			console.log("page "+this.page+" was loaded");
-			$("#content").load(path);
-		}
-		else {
+			$("#content").load(path, data);
+		} else {
 			console.log(this.page+ " not found!");
 			this.page = "404";
 			$("#content").load("pages/404.php");
@@ -171,6 +171,8 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 		setTimeout(function(){
 			$("#content").prepend(output).children(':first').hide();
 			var elemHeight = $('.alert').height();
+			var top = $(document).scrollTop()+50;
+			$('.slide-down').css({ top: top+"px" });	
 			$('.alert').css({ display: "block", height: "0px" });
 			$(".alert").animate({height: elemHeight}, 300);
 		}, delay);	
@@ -181,7 +183,7 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 				confirm(data);
 				$(".alert").animate({height: 0}, 300,"linear",function() {
 					$(this).remove();
-				})
+				})		
 			});
 			$( ".alertCancel" ).click(function() {
 				$(".alert").animate({height: 0}, 300,"linear",function() {
@@ -200,5 +202,9 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 		});
 		}, 1000));
 	}
+	$(window).scroll(function() {
+		var top = $(document).scrollTop()+50;
+		$('.slide-down').css({ top: top+"px" });	
+	});
 }
 // ALERT BOXES END //

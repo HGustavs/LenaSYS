@@ -28,6 +28,52 @@
  	};
  }
 
+  function submitNewQuiz(cid, action) 
+ {
+ 	if (validateNewQuizSubmit()) {
+ 		$.ajax({
+ 			dataType: "json",
+			type: "POST",
+			url: "ajax/createQuiz.php",
+			data: {
+				cid: 1,
+				action: action, // edit/create
+				quizname: document.newQuizForm.quizname.value,
+				//parameters: document.newQuizForm.parameterinput.value,
+				answer: document.newQuizForm.answerinput.value,
+				autograde: document.newQuizForm.autogradebox.checked,
+				gradesys: document.newQuizForm.gradesysselect.value,
+				releasedate: document.newQuizForm.releasedateinput.value,
+				deadline: document.newQuizForm.deadlineinput.value,
+				activateonsubmit: document.newQuizForm.acivateonsubmitbox.checked
+			},
+			success:function(data) {
+				console.log(data);
+				if (data.cid>0) {
+					console.log("Edit successfull");
+					$(".xdsoft_noselect").remove();
+					changeURL("quiz/menu");
+					//changeURL("sectioned?courseid="+data.cid);	
+				} else if(data==="no access") {
+					alert("ap ap ap!");	
+					$(".xdsoft_noselect").remove();
+					changeURL("quiz/menu");
+				} else if(data==="no write access") {
+					alert("You dont have rights to edit quiz.");	
+					$(".xdsoft_noselect").remove();
+					changeURL("quiz/menu");
+				}
+			},
+			error:function() {
+				console.log("Something went wrong");
+			}
+		});
+ 	} else {
+ 		console.log("not valid input")
+ 	};
+ 		
+ }
+
 function submitNewPassword()
 {
 	if(validateNewPasswordSubmit()) {

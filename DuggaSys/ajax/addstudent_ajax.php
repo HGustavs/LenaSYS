@@ -19,16 +19,40 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 
 		$row=explode("\n", $str);
 		foreach ($row as $row1) {
-			list($ssn, $name, $username1)=(explode("\t",$row1));
+			$ssn = "";
+			$name = "";
+			$username1 = "";
+
+			$components = explode("\t", $row1);
+			$ssn = array_shift($components);
+
+			// If there's not enough pieces for us to assemble the information we need
+			// then we'll have to try splitting it on space instead.
+			if(count($components) < 2) {
+				$components2 = explode(" ", $components[0]);
+				if(count($components2) >= 2 && strpos(end($components2), '@') !== false) {
+					$username1 = array_pop($components2);
+					$name = implode(' ', $components2);
+				}
+			} else if(count($components) == 2) {
+				// Otherwise we'll just use the information available to us.
+				list($name, $username1) = $components;
+			} else {
+				continue;
+			}
+
+			// Assemble this into more useful bits.
 			list($lastname, $firstname)=(explode(", ",$name));
-			list($username, $grabage)=(explode("@",$username1));
+			list($username, $garbage)=(explode("@",$username1));
 
 
+			// Find out if there's already a user by this name.
 			$userquery = $pdo->prepare("SELECT * FROM user WHERE username=:username");
 			$userquery->bindParam(':username', $username);
 
+			// If there isn't we'll register a new user and give them a randomly
+			// assigned password which can be printed later.
 			if ($userquery->execute() && $userquery->rowCount() <= 0) {
-
 				$password1 = random_password(12);
 				$password = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 12));
 
@@ -39,35 +63,27 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 				$stmt->bindParam(':lastname', $lastname);
 				$stmt->bindParam(':ssn', $ssn);
 				$stmt->bindParam(':password', $password);
+
 				try {
 					$stmt->execute();
-					//echo "<script type='text/javascript'>alert('Användare är tillagd globalt')</script>";
-					$array1=array($username,$name,$password1);
+					$array1=array($username,$lastname . ", " . $firstname,$password1);
 					$array[]=$array1;
-				} catch (PDOException $e) {
-					if ($e->getCode()=="23000") {
-						//	echo "Användare finns redan globalt";
-					}
-				}
+				} catch (PDOException $e) { }
 			}
 
-
+			// Regardless whether or not we added a new user we'll want to add them to
+			// the course.
 			if($userquery->execute() && $userquery->rowCount() > 0) {
+				// Find out some information about the user that we'll use to add it to
+				// the database.
 				$user = $userquery->fetch(PDO::FETCH_ASSOC);
 				$userid = $user['uid'];
-				$useraccess = $user['username'];
-				if (preg_match("/[0-9]+/", $useraccess)){
-					$access='R';
-				}
-				else {
-					$access='W';
-				}
-				$querystring='INSERT INTO user_course (uid, cid, access) VALUES(:uid, :cid,:access);';	
-				$stmt = $pdo->prepare($querystring);
+
+				$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access) VALUES(:uid, :cid,'R')");
 				$stmt->bindParam(':uid', $userid);
 				$stmt->bindParam(':cid', $courseid);
-				$stmt->bindParam(':access', $access);
 
+				// Insert the user into the database.
 				try {
 					$stmt->execute();
 					//echo "<script type='text/javascript'>alert('Användare är tillagd på kursen')</script>";

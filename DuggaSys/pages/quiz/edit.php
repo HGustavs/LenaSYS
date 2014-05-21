@@ -1,82 +1,105 @@
 <?php session_start(); ?>
 
+<script>
+	/*
+	function toggleanswer() {
+		if ($("#quizAnswerInput").attr("disabled")) {
+		    $("#quizAnswerInput").removeAttr("disabled");
+		    $("#quizAnswerInput").removeClass("disabledInput");
 
-	<script>
-		$(function() {
-			$( ".datepicker" ).datepicker({
-				showButtonPanel: true
-			});
-		    var next = 1;
-		    $(".add-more").click(function(e){
-		        e.preventDefault();
-		        var addto = "#field" + next;
-		        var addRemove = "#field" + (next);
-		        next = next + 1;
-		        var newIn = '<input autocomplete="off" class="option form-control" id="field' + next + '" name="field' + next + '" type="text">';
-		        var newInput = $(newIn);
-		        var removeBtn = '<button id="remove' + (next - 1) + '" class="option remove-me" >-</button></div><div id="field">';
-		        var removeButton = $(removeBtn);
-		        $(addto).after(newInput);
-		        $(addRemove).after(removeButton);
-		        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
-		        $("#count").val(next);  
-		        
-		            $('.remove-me').click(function(e){
-		                e.preventDefault();
-		                var fieldNum = this.id.charAt(this.id.length-1);
-		                var fieldID = "#field" + fieldNum;
-		                $(this).remove();
-		                $(fieldID).remove();
-		            });
-		    });
-		});
-		function showVariant() {
-			$(".variant1").css('display','block');
+		} else {
+		    $("#quizAnswerInput").attr("disabled", "disabled");
+		    $("#quizAnswerInput").removeClass("disabledInput").addClass("disabledInput");
 		}
-	</script>
+	}
+	
+	$(function() {
+		
+	    var next = 1;
+	    
+	    $(".add-more").click(function(e){
+	        e.preventDefault();
+	        var addto = "#field" + next;
+	        var addRemove = "#field" + (next);
+	        next = next + 1;
+	        var newIn = '<input autocomplete="off" class="option form-control" id="field' + next + '" name="field' + next + '" type="text">';
+	        var newInput = $(newIn);
+	        var removeBtn = '<button id="remove' + (next - 1) + '" class="option remove-me" >-</button></div><div id="field">';
+	        var removeButton = $(removeBtn);
+	        $(addto).after(newInput);
+	        $(addRemove).after(removeButton);
+	        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
+	        $("#count").val(next);  
+	        
+	            $('.remove-me').click(function(e){
+	                e.preventDefault();
+	                var fieldNum = this.id.charAt(this.id.length-1);
+	                var fieldID = "#field" + fieldNum;
+	                $(this).remove();
+	                $(fieldID).remove();
+	            });
+	    });
+		
+	});
+	function showVariant() {
+		$(".variant1").css('display','block');
+	}
+	*/
+</script>
+	
 	<div id='create'>
-		<form role='form'>
+		<form id="newQuizForm" name="newQuizForm" role='form'>
 			<div class='form-group'>
-				<label>Dugganame</label>
-				<input type="text" class='form-control' />
-				<div class='form-group'>
-					<label>Template parameters (?)</label>
-					<textarea class='form-control' rows='5'></textarea>
-				</div>
+				<label>Dugganame *</label>
+				<input type="text" class='form-control' name="quizname" />
+				<!--<div class='form-group'>
+					<label>Template parameters, saves as string (max 2000 characters)</label>
+					<textarea class='form-control' name="parameterinput" rows='5'></textarea>
+				</div>-->
 				<div class='form-group'>
 					<label>Answer</label>
-						<div class="input-append">
-		                    <div id="field"><input autocomplete="off" class='option form-control' id="field1" name="prof1" type="text" data-items="8"/><button id="b1" class="option add-more" type="button">+</button></div>
-		                </div>
+                    <input class='option form-control' id="quizAnswerInput" name="answerinput" type="text" />
 				</div>
 				<div class='form-group'>		
 					<label>
-						<input type='checkbox'> Autograde
+						<input name="autogradebox" type='checkbox' value="1" /> Autograde
 					</label>
 				</div>
 				<div class='form-group'>
-					<select class='form-control'>
-						<option>grade system</option>
-						<option>U-G</option>
-						<option>U-G-VG</option>
-						<option>3-5</option>
-					</select>
+					<label>Grade system * 
+						<select name="gradesysselect" id="gradeSysSelect" class='form-control'>
+							<option value="-1">Select</option>
+							<option value="1">U-G</option>
+							<option value="2">U-G-VG</option>
+							<option value="3">3-5</option>
+						</select>
+					</label>
 				</div>
 				<div class='form-group'>
 					<label>Releasedate</label>
-					<input class='form-control datepicker'>
+					<input name="releasedateinput" type="text" class='form-control datetimepicker' />
 				</div>
 				<div class='form-group'>
 					<label>Deadline</label>
-					<input class='form-control datepicker'>
+					<input name="deadlineinput" type="text" class='form-control datetimepicker' />
 				</div>
 				<div class='form-group'>		
 					<label>
-						<input type='checkbox'> Activate on submit
+						<input name="acivateonsubmitbox" type='checkbox' value="1"> Activate on submit
 					</label>
 				</div>
 				
 			</div>
-			<button onclick="alert('create')" class='default'>Submit</button>
+			<button type="button" onclick="submitNewQuiz('courseID', 'edit')" class='default'>Submit</button>
 		</form>
 	</div>
+
+<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+<script src="js/ajax.js"></script>
+<script type="text/javascript" src="js/verificationFunctions.js"></script>
+<script type="text/javascript">page.title("Create new quiz");</script>
+<script src="js/jquery.js"></script>
+<script src="js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$('.datetimepicker').datetimepicker();
+</script>
