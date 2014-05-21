@@ -147,7 +147,7 @@ function getResults(pagination) {
 				pagination.currentPage = 0;
 				pagination.number_of_pages = Math.ceil(pagination.number_of_items/pagination.show_per_page);
 				if (pagination.number_of_pages > 1) {
-					$('#content').append("<div id='pages' style='display:inline-block;float:right;'></div>");
+					$('#content').append("<div id='pages'></div>");
 				}
 				pagination.renderPages();
 			}
