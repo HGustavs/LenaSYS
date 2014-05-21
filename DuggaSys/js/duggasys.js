@@ -258,21 +258,44 @@ function returnedSection(data)
 
 }
 
-  function studentDelete(showhide) {
-      if (showhide == "show") {
+function studentDelete(showhide) {
+  if (showhide == "show") {
 
-          $("#deletebox").show();
-          $("#deletebutton").show();
-          $("#resetbox").show();
+      $("#deletebox").show();
+      $("#deletebutton").show();
+      $("#resetbox").show();
 
-      } else if (showhide == "hide") {
+  } else if (showhide == "hide") {
 
-          $("#deletebox").hide();
-          $("#deletebutton").hide();
-          $("#resetbox").hide();
-      }
+      $("#deletebox").hide();
+      $("#deletebutton").hide();
+      $("#resetbox").hide();
   }
+}
+function resetPassword(uid){
+	$.ajax({
+		
+		url: 'ajax/resetpassword_ajax.php',
+		type: "POST",
+		dataType: "json",
+		data: {
+			user_id: uid
+		},
+		success: function (returnedData) {
+			if(returnedData != "false"){
 
+               showPopUp('reset',returnedData);
+
+            }else {
+              dangerBox('Problems reseting password', 'Could not reset password');
+
+            }
+		},
+		error: function(){
+            alert("error");
+		},
+	});
+}
 
 $(function() {
 	   $("#reset_pw_btn").on('click',function(){
@@ -294,6 +317,10 @@ $(function() {
        $("#deletebutton").on('click',function(){
            deleteStudent();
        });
+       $("#resetbox input").on('click',function(){
+           resetPassword();
+       });
+
     });
 
 function deleteStudent(){
@@ -340,6 +367,28 @@ function passPopUp(){
 	}
 
 function showPopUp(showhidePop, returnedData){
+    console.log(returnedData);
+	if(showhidePop == "reset"){
+       	document.getElementById('light').style.visibility = "visible";
+		document.getElementById('fade').style.visibility = "visible";
+		var output = "<div id='printArea'>";
+		output += "<table class='list'>";
+		output += "<tr><th>Name</th>";
+		output += "<th>Username</th>";
+		output += "<th>New password</th></tr>";
+        output += "<tr><td>"+returnedData['firstname']+ " "+returnedData['lastname']+"</td>";
+		output += "<td>"+returnedData['username']+"</td>";
+		output += "<td>"+returnedData['pw']+"</td></tr>";
+
+		output += "</table>";
+		//output += returnedData.length + " users added to the system";
+		output += "</div>";
+		//output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
+		
+		var div = document.getElementById('light');
+		div.innerHTML = output;
+
+	}
 	if(showhidePop == "show"){
 		document.getElementById('light').style.visibility = "visible";
 		document.getElementById('fade').style.visibility = "visible";
@@ -352,7 +401,7 @@ function showPopUp(showhidePop, returnedData){
 			output += "<tr><th>Name</th>";
 			output += "<th>Username</th>";
 			output += "<th>Password</th></tr>";
-
+             
 			$.each(returnedData, function(){
 				output += "<tr><td>"+this[1]+"</td>";
 				output += "<td>"+this[0]+"</td>";
