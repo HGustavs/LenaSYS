@@ -1709,14 +1709,25 @@ $(window).load(function() {
 	var windowHeight = $(window).height();
 	textHeight= windowHeight-50;
 	$("#table-scroll").css("height", textHeight);
-
 });
 
 $(window).resize(function() {
 	var windowHeight = $(window).height();
 	textHeight= windowHeight-50;
 	$("#table-scroll").css("height", textHeight);
-
+	
+	
+	// Keep right margin to boxes when user switch from mobile version to desktop version
+	if($(".buttomenu2").height() == null){
+		var boxmenuheight = 0;
+	}else{
+		var boxmenuheight= $(".buttomenu2").height();
+	}
+	$(".box").css("margin-top", boxmenuheight);
+	
+	
+	
+	
 });
 
 //Creating a extra box under codelines.
@@ -1733,3 +1744,4 @@ $(document).ajaxStop(function () {
 	var objectheight = windowHeight-textbottom.top-2;
 	$(".normtextend").css("height", objectheight);
 });
+

@@ -276,7 +276,7 @@ function returned(data)
 				}else{
 					var boxmenuheight= $("#"+contentid+"menu").height();
 				}
-				$("#"+contentid).css("margin-top", boxmenuheight);
+				$("#"+contentid).css("margin-top", boxmenuheight-1);
 			// Create a codedrop for users with write access.	
 				if(sessionkind == "w"){
 					createcodedrop(contentid,boxid);

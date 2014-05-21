@@ -806,6 +806,13 @@ a {
     display: none;
 }
 
+.codebox{
+	padding: 0px !important;
+}
+.descbox{
+	padding-top: 4px !important;
+	padding-left: 4px !important;
+}
 
 @media only screen and (max-width: 1100px){
      .showmobile{
