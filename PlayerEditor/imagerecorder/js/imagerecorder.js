@@ -360,6 +360,8 @@ function imagerecorder(canvas)
 			addThumb("../canvasrenderer/"+tmpSrc);
 		}
 		
+		rebuildImgLibrary()
+		
 	}
 	
 	function showThumbMenu(index) {
