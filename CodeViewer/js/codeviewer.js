@@ -1495,6 +1495,10 @@ function changeCSS(cssFile, index)
     document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
+
+
+
+
 /* HIDE/SHOW DROP MENUS --> START*/
 
 /* Open general settings */
@@ -1670,6 +1674,33 @@ function setTheme()
 		}
 	}
 }
+
+
+
+function disableResponsive(command)
+{
+
+    if(command != "" || command != null){
+
+        if(command === "on"){
+            //enable responsive css - Not currently used
+            changeCSS("css/responsive.css", 3);
+
+        }
+
+        else if(command === "off"){
+            //disable responsive css
+            changeCSS("css/blank.css", 3);
+
+
+        }
+
+        else{
+            alert("Error");
+        }
+    }
+}
+
 
 function changedSecurity(){
 	var cb = document.getElementById('checkbox');
