@@ -2,6 +2,7 @@
 include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
 session_start();
 if(checklogin()) {
+	if(isSuperUser($_SESSION["uid"])) {
 ?>
 
 	<div id='create'>
@@ -30,5 +31,6 @@ if(checklogin()) {
 	<script type="text/javascript" src="js/verificationFunctions.js"></script>
 	<script type="text/javascript">page.title("Create new course");</script>
 <?php
+	}
 }
 ?>

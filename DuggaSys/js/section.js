@@ -63,7 +63,8 @@ function sectionSettingsService(ID)
 			if (data['type'] == 2) {
 				data['link'] = "../CodeViewer/EditorV30.php?exampleid="+data['testdugga']+"&courseid="+courseID;
 			} else if (data['type'] == 3) {
-				data['link'] = "startDugga?duggaid="+data['testdugga']+"&courseid="+courseID;
+				//data['link'] = "startDugga?duggaid="+data['testdugga']+"&courseid="+courseID;
+				data['link'] = "quiz/menu?quizid="+data['testdugga']+"&courseid="+courseID;
 			}
 		}
 		$.post("ajax/updateSections.php",
@@ -86,8 +87,8 @@ function sectionSettingsService(ID)
 				settingsChildren[0].href = JSON.parse(response);
 				settingsChildren[0].onclick = null;
 			} else if (data['type'] == 3) {
-				console.log(JSON.parse(response));
 				settingsChildren[0].removeAttribute("href");
+				settingsChildren[0].style.cursor = "pointer";
 				if (settingsChildren[0].addEventListener) {  // all browsers except IE before version 9
 					settingsChildren[0].addEventListener("click", function() { changeURL(JSON.parse(response)); }, false);
 				} else {
