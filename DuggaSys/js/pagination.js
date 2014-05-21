@@ -22,9 +22,10 @@ function pagination() {
 			maxRange += diff;
 		}
 		
-		if (this.currentPage + 1 == this.number_of_pages) {
+		if (this.currentPage + 1 >= this.max_pages) {
 			$('#pages').append("<div class='page' onClick='pagination.goToPage("+0+")'>First page</div>");
 		}
+		
 		$('#pages').append("<div class='page' onClick='pagination.previous()'>Previous</div>");
 		
 		for (i = minRange; i <= maxRange; i++) {

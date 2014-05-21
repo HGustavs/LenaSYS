@@ -270,6 +270,13 @@ button {
         button.default:hover {
             background-color: #73558b;
         }
+	button.default-red {
+		color: #fff;
+		background-color:#c75050;
+	}
+		button.default-red:hover {
+			background-color:#DF4F4F;
+		}
     button.submit {
         color: #fff;
         background-color: #428bca;
@@ -370,63 +377,64 @@ table.list tr.red {
 	padding-top:1px;
 }
 #Sectionlist .butt {
-    padding-left: 8px;
-	padding:6px;
     display: block;
 	color:#fff;
     font-size: 14pt;
     font-family: Calibri,Sans-Serif;
     background-color: #927b9e;
+	padding-top:7px;
+	min-height:30px;
 }
 
 #Sectionlist .bigg {
-	padding:6px;
     text-align: center;
 	color:#fff;
 	font-size: 14pt;
     font-family: Calibri,Sans-Serif;
     display: block;
     background-color: #775886;
+	padding-top:7px;
+	min-height:30px;
 }
 
 #Sectionlist .norm {
-	padding:6px;
-	padding-left:15px;
     display: block;
     background-color: #f0f0f0;
 	color:#434343;
 	font-family:arial;
 	font-size:10pt;
+	padding-top:5px;
+	min-height:25px;
 }
 
 #Sectionlist .test {
-	padding:6px;
-	padding-left:15px;
     display: block;
     background-color: #e3e3e3;
 	color:#434343;
 	font-family:arial;
 	font-size:10pt;
+	padding-top:5px;
+	min-height:25px;
 }
 
 #Sectionlist .hidden {
-	padding:6px;
-	padding-left:15px;
     display: block;
     background-color: #d0cfd0;
-		color:#434343;
+	color:#434343;
 	font-family:arial;
 	font-size:10pt;
+	padding-top:5px;
+	min-height:25px;
 }
 
 #Sectionlist .example {
-	padding:6px;
-	padding-left:15px;
     display: block;
     background-color: #dad8db;
-		color:#434343;
+	color:#434343;
 	font-family:arial;
 	font-size:10pt;
+	padding-top:5px;
+	min-height:25px;
 }
 
 #Sectionlist .course {
@@ -451,8 +459,9 @@ table.list tr.red {
 	display:none;
 	background-color:#fff;
 	color:#000;
-	margin-top: 5px;
-	padding:10px;
+	margin-top: 8px;
+	text-align:left;
+	min-height:60px;
 }
 
 #add-course-button-div {
