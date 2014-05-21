@@ -14,7 +14,7 @@
     font-style: italic;
 }
 
-.box h1 {
+#box1 h1 {
 
     display: block;
     font-family: Arial,Sans-Serif;
@@ -24,10 +24,10 @@
     font-style: italic;
 }
 
-
-.box span.codestyle{
-    color: #666;
+#box1 span.codestyle{
+    color: grey;
     font-family: Arial,Sans-Serif;
+    font-style: italic;
 }
 
 /* Base-size for images in descriptionboxes */
@@ -614,12 +614,12 @@ a {
 }
 
 /* Tab-menu in general settings */
-.settingsTabMenu{	
+#settingsTabMenu{	
 	border-bottom: solid 2px;
 	padding-left:0px;
 	padding-bottom:0px;
 }
-.settingsTabMenu li{
+#settingsTabMenu li{
 	display: inline;
 	cursor: default;
 	margin: 5px;
@@ -638,7 +638,7 @@ a {
 	border-top-right-radius: 5px;
 }
 
-.settingsTabMenu .activeSetMenuLink{
+#settingsTabMenu .activeSetMenuLink{
 	border-bottom-width:3px;
 }
 
@@ -806,17 +806,6 @@ a {
     display: none;
 }
 
-.codebox{
-	padding: 0px !important;
-}
-.descbox{
-	padding-top: 4px !important;
-	padding-left: 4px !important;
-
-}
-
-
-
 
 
 
@@ -911,5 +900,3 @@ a {
 }
 
 /* BOXMENU STYLING STOP */
-
-
