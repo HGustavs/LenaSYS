@@ -47,6 +47,7 @@ function Canvasrenderer()
 	this.currentPictureWidth;
 	this.currentPictureHeight;
 	this.currentFile;
+	this.playimageIsShown = false;
 
 
 
@@ -98,7 +99,7 @@ function Canvasrenderer()
 		});
 		
 		$("#Canvas").click(function() {
-			canvas.switch();
+			canvas.switchPlayback();
 		});
 		
 		$("#Canvas").mouseover(function() {
@@ -115,7 +116,7 @@ function Canvasrenderer()
 	 *
 	 */
 	// Play/pause switch
-	this.switch = function()
+	this.switchPlayback = function()
 
 	{
 		if(this.paused == 1){
@@ -127,7 +128,12 @@ function Canvasrenderer()
 	}
 	
 	this.showPlayImage = function(){
+		this.playimageIsShown = true;
 		this.picture("images/firstpic.png");
+	}
+	this.hidePlayImage = function(){
+		this.playimageIsShown = false;
+		ctx.clearRect(0, 0, c.width, c.height);
 	}
 
 	// Play canvas
@@ -234,6 +240,11 @@ function Canvasrenderer()
 	// Fast forward or rewind to specific position
 	this.windto = function(pos)
 	{
+		if(this.playimageIsShown){
+			this.hidePlayImage();
+					
+
+		}
 		// Do not allow to change an already existing winding position
 		if (this.windpos < 0) {
 			// Check if it should play or pause after wind
@@ -956,10 +967,10 @@ function Canvasrenderer()
 		}
 		if(this.mouseCursorBackground){
 			// Restore background
-			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX-1, this.mouseCursorY-1);
+			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
 		}
 		// Save background so that it can be restored after the mouse is moved again.
-		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
+		this.mouseCursorBackground = ctx.getImageData(x, y, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
 		// Save mouse position
 		this.mouseCursorX = x;
 		this.mouseCursorY = y;
@@ -1020,6 +1031,8 @@ function Canvasrenderer()
 		image.onload = function() {
 			// Clear canvas from old picture
 			ctx.clearRect(0, 0, c.width, c.height);
+			canvas.currentPictureWidth = image.width;
+			canvas.currentPictureHeight = image.height;
 			canvas.updateScaleRatio();
 			var widthRatio = 1;
 			var heightRatio = 1;
@@ -1046,16 +1059,15 @@ function Canvasrenderer()
 				}
     			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
-			//console.log(canvas.mouseCursorX + ", " + canvas.mouseCursorY);
-			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX-1, canvas.mouseCursorY-1, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
+			if(canvas.mouseCursorX >= 0 && canvas.mouseCursorY >= 0){
+				canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, canvas.mousePointerSizeX, canvas.mousePointerSizeY);
 			// New mouse click background
-			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+5, canvas.mouseClickRadius*2+5);
+				canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+5, canvas.mouseClickRadius*2+5);
 			// Render mouse click
+			}
 			canvas.drawMouseClick();
 		}
 		image.src = src;	
-		this.currentPictureWidth = image.width;
-		this.currentPictureHeight = image.height;
 	}
 
 	this.drawMouseClick = function() 

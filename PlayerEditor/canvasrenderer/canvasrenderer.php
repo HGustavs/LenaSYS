@@ -65,7 +65,7 @@ function canvasSize()
  
     	<table>
 				<tr>
-					<td onclick="canvas.switch();" id="play" class="barbutton"><img src="images/play_button.svg"/></td>
+					<td onclick="canvas.switchPlayback();" id="play" class="barbutton"><img src="images/play_button.svg"/></td>
 					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick="canvas.search(event)"><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>					
 					<td onclick="canvas.skip(-1)" id="back" class="barbutton"><img src="images/backward_button.svg"/></td>					
 					<td onclick="canvas.skip(1);" id="forward" class="barbutton"><img src="images/forward_button.svg"/></td>					
