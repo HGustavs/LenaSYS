@@ -14,7 +14,7 @@
     font-style: italic;
 }
 
-#box1 h1 {
+.box h1 {
 
     display: block;
     font-family: Arial,Sans-Serif;
@@ -24,10 +24,9 @@
     font-style: italic;
 }
 
-#box1 span.codestyle{
-    color: grey;
+.box1 span.codestyle{
+    color: #666;
     font-family: Arial,Sans-Serif;
-    font-style: italic;
 }
 
 /* Base-size for images in descriptionboxes */
