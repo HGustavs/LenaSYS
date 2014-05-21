@@ -114,7 +114,6 @@
     font-weight: normal;
     padding: 4px;
 }
-
 /* Extra spaces */
 .buttospacer {
     width: 20px;
@@ -840,9 +839,6 @@ a {
   		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
   		color: #5D5D5D !important;
   		height: 25px;
-  	}
-  	.buttomenu2:hover{
-  		background-color: #938C8C !important;
   	}
   	.deactivatedbox *{
   		padding: 0px !important;

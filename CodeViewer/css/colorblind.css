@@ -272,9 +272,14 @@
     background-color: #000;
     cursor: pointer;
 }
-.boxtitle{
+.boxtitleEditable{
 	color: white;
 	cursor:text;
     font-family: Arial, Sans-Serif;
+}
+.boxtitle{
+	font-family: Arial, Sans-Serif !important;
+	cursor:default !important;
+	color: white !important;
 }
 /* BOXMENU STYLING STOP */

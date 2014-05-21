@@ -1737,7 +1737,7 @@ $(window).resize(function() {
 //Disable editing in mobile view
 $(window).resize(function() {
 	if($(window).width() <=1100){
-		 $("*[contenteditable]").attr("contenteditable","false"); 
+		 $("*[contenteditable]").attr("contenteditable","false"); 		 
 	}else{ 
 		$("*[contenteditable]").attr("contenteditable","true"); 
 	}

@@ -97,7 +97,7 @@ function createboxmenu(contentid, boxid, type){
 		if(sessionkind == "w"){
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
-				str+= '<td class="butto2" title="Change box title"><span class="boxtitle" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
+				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
 				str+= '<td class="butto2 showdesktop" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
 				str+= '<td class="butto2 showdesktop" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
 				str+= '<td class="butto2 showdesktop" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
@@ -110,7 +110,7 @@ function createboxmenu(contentid, boxid, type){
 				str+= '</td></tr></table>';
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
-				str+= '<td class="butto2" title="Change box title"><span class="boxtitle" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
+				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
 				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/general_settings_button.svg' /></td>";
 				str+="<td class='butto2 showdesktop'>";
 				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
@@ -131,7 +131,7 @@ function createboxmenu(contentid, boxid, type){
 			boxmenu.innerHTML=str;	
 		}else{
 			var str = '<table cellspacing="2"><tr>';
-			str+= '<td class="butto2" title="Box title"><span class="boxtitle">'+retdata['box'][boxid-1][3]+'</span></td>';
+			str+= '<td ><span class="boxtitle">'+retdata['box'][boxid-1][3]+'</span></td>';
 			str+='</tr></table>';
 			boxmenu.innerHTML=str;	
 		}
@@ -139,9 +139,7 @@ function createboxmenu(contentid, boxid, type){
 			
 		$(boxmenu).click(function(event){
 			if($(window).width() <=1100){
-				if(event.target.nodeName == "DIV"){ 
-					toggleClass(document.getElementById(boxmenu.parentNode.getAttribute("id")).getAttribute("id"));
-				}	
+				toggleClass(document.getElementById(boxmenu.parentNode.getAttribute("id")).getAttribute("id"));
 			}
 		});
 	}

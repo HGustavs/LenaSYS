@@ -264,16 +264,22 @@
    border: 1px solid #ccc;
 }
 .buttomenu2Style select:hover{
-  background-color: #7D5CA0;
+  background-color: #938C8C;
     cursor: pointer;
 }
 .butto2:hover{
-    background-color: #7D5CA0;
+    background-color: #938C8C;
     cursor: pointer;
 }
-.boxtitle{
+.boxtitleEditable{
 	color: white;
 	cursor:text;
     font-family: Arial, Sans-Serif;
+}
+.boxtitle{
+	font-family: Arial, Sans-Serif !important;
+	cursor:default !important;
+	color: white !important;
+}
 }
 /* BOXMENU STYLING STOP */
