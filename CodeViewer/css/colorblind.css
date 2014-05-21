@@ -230,13 +230,15 @@
 
 
 
-
-
-
+.codebox{
+    padding: 0px;
+}
+.descbox{
+    padding-top: 4px;
+    padding-left: 4px;
+}
 
 .box{
-	padding-top: 4px;
-    padding-left: 4px;
     position: absolute;
     top: 0px;
     right: 0px;
