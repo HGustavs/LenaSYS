@@ -184,8 +184,6 @@ function Canvasrenderer()
 
 		// Reload timesteps
 		this.loadXML(this.currentFile);		
-		//this.scheduleTimesteps();
-
 		this.finished = 0;
 	}
 
@@ -307,22 +305,20 @@ function Canvasrenderer()
 		var currentX = null;
 		var currentY = null;
 		var currentDelay = 0;
-		var sumDelays = 0;
-		console.log("nodes length: " + nodes.length ) ;
 		for(j = 0; j < nodes.length; ++j){
 			childNode = [].slice.call(nodes[j].childNodes, 0); 
 			currentDelay = parseInt(nodes[j].getAttribute("delay"));
+
 			if (currentDelay <= 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
 				retnodes.push(nodes[j]);
 				continue; 
 			} 
+
 			var multiple = currentDelay / (1000/FPS);		
 			var delay = currentDelay/multiple;			// The delay in milliseconds 
 			var amount = Math.floor(currentDelay/ delay);		// Number of new positions that should be added 
 			var rest = nodes[j].getAttribute("delay")%multiple;	 
 			var hasChanged = false;
-			sumDelays += delay;
-			//nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
 			for(a = 0; a < childNode.length; ++a){
 				if(childNode[a].nodeName == "mousemove"){
 					
@@ -334,8 +330,8 @@ function Canvasrenderer()
 						for(i = 0; i < amount; i++){
 							var iNode = nodes[j].cloneNode(true);
 							iNode.childNodes[a].nodeName = "mousemove";
+
                       					// The interpolated position is calculated and added to the new node
-						//	console.log(currentX - i*((currentX - newX) / multiple));
 							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - (amount-i)*((currentX - newX) / multiple)) );
 							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - (amount-i)*((currentY - newY) / multiple)) );
 							iNode.setAttribute("delay", delay);	
@@ -344,18 +340,17 @@ function Canvasrenderer()
 						    currentY = newY;
 						}
 					}
-					else{
+					else{	// If currentX and currentY is null we simply assign the values of the first mousemove position.
 						currentX = newX;
 						currentY = newY;
 					}
 				}
 			}
-		if(hasChanged){
+		if(hasChanged){	// If we added any extra timesteps, we need to change the delay on the original timestep as well
 			nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
 		}
           	retnodes.push(nodes[j]);	
 		}
-		console.log("sum delays: " + sumDelays);
 		return retnodes;
 	}
 	// Pause/stop all timesteps
@@ -366,16 +361,16 @@ function Canvasrenderer()
 	}
 	/**
 	 * This function removes all function calls from the XML
-	 * that are not found in the valid functions-list
+	 * that are not found in the "valid functions"-list
 	 **/
 	this.removeNonvalidCalls = function(nodes){
 		var retnodes = new Array();
 		for(a = 0; a < nodes.length; ++a){
 			if(validFunctions.indexOf(nodes[a].nodeName) >= 0) { retnodes.push(nodes[a]); }
-			// Debug: else { console.log("removed call: " + nodes[a].nodeName ); }
 		}
 		return retnodes;
 	}
+
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
 		// Step through nodes
@@ -562,7 +557,7 @@ function Canvasrenderer()
 	this.createRadialGradient = function(x, y,r, x1,y1,r1){   
 	    ctx.createRadialGradient(x, y,r, x1,y1,r1);
 	}	
-		// Rectangle functions
+	// Rectangle functions
 	this.rec = function(x, y, w, h){
 		ctx.rect(x, y, w, h);
 	}
@@ -902,9 +897,10 @@ function Canvasrenderer()
 	this.recordedMouseFPS = function(value){
 		this.recordedMouseFPSValue = value;
 	}
+
 	/**
 	 * This function is used for loading stored image data from the xml.  
-	 * It is not part interface for HTML canvas.
+	 * this is not part of the interface for the HTML canvas.
 	 * It basically loads all the RGBA values for each pixel as integers
 	 * from the XML and stores them in a newly created image data object.
 	 * This image data object is then used by putImageData whenever that function
@@ -949,7 +945,7 @@ function Canvasrenderer()
 			// Restore background
 			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX-1, this.mouseCursorY-1);
 		}
-		// Save background
+		// Save background so that it can be restored after the mouse is moved again.
 		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
 		// Save mouse position
 		this.mouseCursorX = x;
