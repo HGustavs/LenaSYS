@@ -569,12 +569,14 @@ input.submit-button-red:hover {
 }
 /* ANIMATIONS END */
 #student-box{
-    width:350px;
+    width:auto;
+    margin:0 auto;
     height:auto;
     background-color:#ccc;
     border:1px solid #000;
-    margin:0px auto;
-    margin-top:40px;
+    margin-left:450px;
+    margin-right:450px;
+    margin-top:60px;
 }
 
 #student-header{
