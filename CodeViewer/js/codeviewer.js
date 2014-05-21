@@ -8,7 +8,8 @@ var retdata;
 var tokens = [];            // Array to hold the tokens.
 var dmd=0;
 var isdropped=false;
-var tabmenuvalue = "wordlist";				
+var genSettingsTabMenuValue = "wordlist";
+var codeSettingsTabMenuValue = "implines";				
 
 /********************************************************************************
 
@@ -376,9 +377,10 @@ function setup()
 	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
 			
 	if(sessionkind=="w"){
-		setupEditable();						
+		setupEditable();					
 	}
 	setTheme();
+	
 }
 
 
@@ -533,11 +535,11 @@ function selectImpWord(word)
 }
 
 function selectImpLines(word)
-{
+{		
 		lines=word.split(",");
-		if(lines.length=2){
-				document.getElementById('implistfrom').value=lines[0];
-				document.getElementById('implistto').value=lines[1];
+		if(lines.length=3){
+				document.getElementById(lines[0]+'from').value=lines[1];
+				document.getElementById(lines[0]+'to').value=lines[2];
 		}
 }
 
@@ -681,10 +683,10 @@ function sendOut(kind, sectid)
 */			
 
 function displayPlaylink(){
-	tabmenuvalue = "playlink";
-	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
+	genSettingsTabMenuValue = "playlink";
+	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li class='activeSetMenuLink'>Playlink & General</li>";
+		str+="<li class='activeSetMenuLink'>General</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 				
@@ -711,10 +713,10 @@ function displayPlaylink(){
 }
 function displayTemplates()
 {
-	tabmenuvalue = "templates";
-	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
+	genSettingsTabMenuValue = "templates";
+	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink()'>Playlink & General</li>";
+		str+="<li onclick='displayPlaylink()'>General</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
@@ -729,10 +731,10 @@ function displayTemplates()
 	docurec.innerHTML=str;
 }
 function displayWordlist(){
-	tabmenuvalue = "wordlist";
-	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
+	genSettingsTabMenuValue = "wordlist";
+	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink();'>Playlink & General</li>";
+		str+="<li onclick='displayPlaylink();'>General</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 	
@@ -1609,6 +1611,8 @@ $(function() { /* Prevent codedrops to hide while clicking on it  */
 			event.stopPropagation();
 		}else if(($(event.target).parents('.codedropbutton').size() >0)){
 			event.stopPropagation();
+		}else if(($(event.target).parents('.settingsTabMenu').size() >0)){
+			event.stopPropagation();
 		}else{
 			$('.codedrop').slideUp('fast');
 		}
@@ -1740,16 +1744,36 @@ $(window).load(function() {
 	var windowHeight = $(window).height();
 	textHeight= windowHeight-50;
 	$("#table-scroll").css("height", textHeight);
-
 });
 
 $(window).resize(function() {
 	var windowHeight = $(window).height();
 	textHeight= windowHeight-50;
 	$("#table-scroll").css("height", textHeight);
-
+	
+	
+	// Keep right margin to boxes when user switch from mobile version to desktop version
+	if($(".buttomenu2").height() == null){
+		var boxmenuheight = 0;
+	}else{
+		var boxmenuheight= $(".buttomenu2").height();
+	}
+	$(".box").css("margin-top", boxmenuheight);
+	
+	
+	
+	
 });
 
+//Disable editing in mobile view
+$(window).resize(function() {
+	if($(window).width() <=1100){
+		 $("*[contenteditable]").attr("contenteditable","false"); 
+	}else{ 
+		$("*[contenteditable]").attr("contenteditable","true"); 
+	}
+	
+})
 //Creating a extra box under codelines.
 $(window).resize(function() {
 	var textbottom = $(".normtextend").offset();
@@ -1764,3 +1788,4 @@ $(document).ajaxStop(function () {
 	var objectheight = windowHeight-textbottom.top-2;
 	$(".normtextend").css("height", objectheight);
 });
+

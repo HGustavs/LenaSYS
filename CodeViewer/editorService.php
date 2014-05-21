@@ -379,7 +379,16 @@
 	                array_push($images,$img_file);
 	            }
 	        }
-
+			
+			//get public value
+			$public=array();
+			$query = "SELECT public FROM codeexample WHERE exampleid=$exampleid";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+					array_push($public,array($row['public']));	
+			}
+			
 			// Get boxes and its information
 			$box=array();   // get the primary keys for all types kind of boxes.
 			$query = "SELECT boxid,boxcontent,boxtitle FROM box WHERE exampleid=$exampleid ORDER BY boxid;";
