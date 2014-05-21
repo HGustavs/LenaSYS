@@ -376,9 +376,10 @@ function setup()
 	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
 			
 	if(sessionkind=="w"){
-		setupEditable();						
+		setupEditable();					
 	}
 	setTheme();
+	
 }
 
 
@@ -1731,29 +1732,12 @@ $(window).resize(function() {
 	$("#table-scroll").css("height", windowHeight);
 })
 
-//Set boxes no be non-editable in mobile view
+//Disable editing in mobile view
 $(window).resize(function() {
-	var boxArray =['box1', 'box2', 'box3', 'box4', 'box5'];
-	 
-	for(var i=0; i<boxArray.length; i++){
-		var box = document.getElementById(boxArray[i]);
-		
-		//change editable attribute only if its a descriptionbox
-		var isDescription = $(box).hasClass('description');
-		if(isDescription && sessionkind == "w"){
-			var	hotdog = document.getElementById("hidehotdog");
-			var	isDesktop = $(hotdog).is(":hidden")
-			if(!isDesktop){
-				if(box!=null){
-		 			box.setAttribute("contenteditable", "false");
-		 		}
-		 	}else{
-		 		if(box!=null){
-		 			box.setAttribute("contenteditable", "true");
-		 		}
-		 	}
-		 }
+	if($(window).width() <=1100){
+		 $("*[contenteditable]").attr("contenteditable","false"); 
+	}else{ 
+		$("*[contenteditable]").attr("contenteditable","true"); 
 	}
-	
 	
 })

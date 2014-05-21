@@ -275,9 +275,6 @@ function returned(data)
 			// Print out code example in a code box
 			if(boxtype == "CODE"){
 				document.getElementById(contentid).removeAttribute("contenteditable");
-				//remove description class
-				var docuwindow = document.getElementById(contentid);
-				$(docuwindow).removeClass('description');
 				
 				createboxmenu(contentid,boxid,boxtype);
 				// Make room for the menu by setting padding-top equals to height of menubox
@@ -303,8 +300,7 @@ function returned(data)
 				
 				var docuwindow = document.getElementById(contentid);
 				docuwindow.innerHTML=desc;
-				//add description class
-				$(docuwindow).addClass('description');
+				
 				if($("#"+contentid+"menu").height() == null){
 					var boxmenuheight = 0;
 				}else{
@@ -327,9 +323,7 @@ function returned(data)
 				}
 				$("#"+contentid).css("margin-top", boxmenuheight);
 				
-				var	hotdog = document.getElementById("hidehotdog");
-				var	isDesktop = $(hotdog).is(":hidden")
-				if(sessionkind == "w" && isDesktop){
+				if(sessionkind == "w"){
 					docuwindow.setAttribute("contenteditable","true");
 				}
 			}
@@ -449,5 +443,12 @@ function returned(data)
 			}else if(tabmenuvalue == "templates"){
 				displayTemplates();
 			}					
+		}
+		
+		//Disable editing in mobile version
+		if($(window).width() <=1100){
+			 $("*[contenteditable]").attr("contenteditable","false"); 
+		}else{ 
+			$("*[contenteditable]").attr("contenteditable","true"); 
 		}
 }
