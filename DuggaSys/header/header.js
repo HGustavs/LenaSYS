@@ -44,3 +44,16 @@ function getScriptPath(name) {
         }
     }
 }
+
+// This is for displaying the dropdown when clicking the username
+function showUserSettings(){
+	$('#userSettings').slideToggle();
+}
+// This closes the #userSettings box when clicking outside
+$(function(){
+	$(document).bind('click', function(e) {
+		if($(e.target).closest('#userName').length == 0) {
+			$('#userSettings').slideUp();
+		}
+	});
+});
