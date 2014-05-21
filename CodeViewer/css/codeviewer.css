@@ -688,7 +688,6 @@ a {
     text-decoration: none;
     text-transform: uppercase;
     z-index: 10000;
-    /*box-shadow: 0 0 3px black;*/
 }
 .arrow {
     width: 70px;
@@ -837,6 +836,7 @@ a {
 .descbox{
 	padding-top: 4px !important;
 	padding-left: 4px !important;
+}
 
 @media only screen and (max-width: 1100px){
      .showmobile{
@@ -883,13 +883,7 @@ a {
 
 
 
-
-
-
-
-
-
-
+/* USER FEEDBACK BOX ---> START  */
 
 .alert.success {
 	background-color:#DFF0D8;
@@ -942,8 +936,7 @@ a {
   position: relative;
 }
 
-
-
+/* USER FEEDBACK BOX ---> STOP*/
 
 
 

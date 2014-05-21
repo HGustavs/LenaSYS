@@ -84,9 +84,6 @@ function styleHeader()
 		}
 	}
 	document.execCommand("insertHTML", false, "<h1>"+range+"</h1>");
-	
-	/* This solution sets heading on the whole row*/
-//    document.execCommand('formatBlock', false, "H1");
 }
 
 
