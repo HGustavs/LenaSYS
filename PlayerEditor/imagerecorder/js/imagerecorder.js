@@ -3,7 +3,8 @@ function imagerecorder(canvas)
 	var initImage = new Image();	
 	initImage.src = "img/firstpic.jpg";	// This is the "Click here to start recording" image.
 	
-	var clicked = 0;
+	var clicked = 0;					// Check if the user has clicked to the next picture
+	var clicked = 0;					// Check if the user has clicked to the next picture
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
 	var imageCanvas = canvas;
 	var canvas = document.getElementById('ImageCanvas');
@@ -30,7 +31,7 @@ function imagerecorder(canvas)
 	this.scrollAmountY = 0;
 	this.currentImageWidth;
 	this.currentImageHeight;
-	var mouseFPS = 30;
+	var mouseFPS = 30;				// The amount of times a second the mousemovement will be recorded
 	
 	var files;						// store files thats being uploaded
 	var rect = canvas.getBoundingClientRect();
@@ -270,7 +271,7 @@ function imagerecorder(canvas)
 					resizeCanvas();
 					updateScaleRatio();
 				}
-			if(clicked == 1) { //Checks if any clicks has been made nad if the picture been clicked it will show the right pic
+			if(clicked == 1) { //Checks if any clicks has been made and if the pictures been clicked it will show the right pic
 				showImage(activeImage);
 			}
 			else{
@@ -789,11 +790,10 @@ function imagerecorder(canvas)
 	 function UndoPoint(strPosition, imgID)
 	 {
 	 	this.stringPosition = strPosition;
-	 	this.imageID = imgID;
+	 	this.imageID = imgID;m
 	 }
 	 
 }
-
 	 function showinstruction(){
 		 $("#instructionopacity").fadeIn("fast");
          $("#instructionwindow").fadeIn("fast");
