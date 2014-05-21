@@ -65,8 +65,10 @@ function createhotdogmenu(){
 		}		
  //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
  		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
+
 		str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
-		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="" colspan="4">Desktop site</td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;off&quot;);" colspan="4">Desktop site</td></tr>';
+
 		str += '<tr><td class="mbutto mbuttoStyle " title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;black&quot;);"><img src="new icons/theme_black.svg"><span>Black background</span></td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;white&quot;);"><img src="new icons/theme_white.svg"><span>White background</span></td></tr>';
@@ -111,7 +113,7 @@ function createboxmenu(contentid, boxid, type){
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitle" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
-				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/list_codefiles.svg' /></td>";
+				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/general_settings_button.svg' /></td>";
 				str+="<td class='butto2 showdesktop'>";
 				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 						str+= "<option value='CODE'>Code example</option>";
@@ -194,8 +196,51 @@ function createcodedrop(contentid,boxid)
 		codedrop.setAttribute("class", "dropdown dropdownStyle codedrop codedropStyle");
 		document.getElementById(contentid+"wrapper").appendChild(codedrop);
     }
+	
+	codedropid = $(codedrop).attr("id");
+	
+	if(codeSettingsTabMenuValue == "implines"){
+		displayImplines(codedropid, boxid);
+	}else if(codeSettingsTabMenuValue == "filelist"){
+		displayFilelist(codedropid, boxid);	
+	}	
+}
 
-	str="";
+function displayImplines(codedropid, boxid){
+	codeSettingsTabMenuValue = "implines";
+	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
+		str+="<li class='activeSetMenuLink' >Imp. lines</li>";
+		str+="<li onclick='displayFilelist(\""+codedropid+"\",\""+boxid+"\");'>Filelist</li>";
+	str+="</ul>";
+	
+    //----------------------------------------------------
+    // Fill important line list part of document dialog
+    //----------------------------------------------------
+    str+="<br/><br/>Important lines: <br/><select size='4'>";
+    for(i=0;i<retdata['improws'].length;i++){
+
+        if ((retdata['improws'][i][0]) == boxid){
+      		str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+retdata['improws'][i][1]+"-"+retdata['improws'][i][2]+"</option>";
+        }
+    }
+    str+="</select><br/>";
+    str+="<div id='impLinesError' class='errormsg'></div>";
+    str+="<input type='text' size='4' id=\""+boxid+"from\" /> - <input type='text' size='4' id=\""+boxid+"to\"/>";
+    str+="<input type='button' value='add' onclick='addImpline(\""+boxid+"\")'/>";
+    str+="<input type='button' value='del' onclick='delImpline(\""+boxid+"\")'/>";
+	
+	
+	document.getElementById(codedropid).innerHTML = str;
+}
+
+function displayFilelist(codedropid, boxid)
+{
+	codeSettingsTabMenuValue = "filelist";
+	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
+		str+="<li onclick='displayImplines(\""+codedropid+"\",\""+boxid+"\");'>Imp. lines</li>";
+		str+="<li class='activeSetMenuLink'>Filelist</li>";
+	str+="</ul>";
+	
 	for(i=0;i<retdata['directory'].length;i++){
 		if(retdata['directory'][i]==retdata['filename']){
 			/* SET BGCOLOR HERE TO LET THE USER KNOW WHICH FILE IS CHOSEN */
@@ -204,24 +249,8 @@ function createcodedrop(contentid,boxid)
 			str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+retdata['directory'][i]+"\",\""+boxid+"\");''>"+retdata['directory'][i]+"</span>";														
 		}
 	}
-
-    //----------------------------------------------------
-    // Fill important line list part of document dialog
-    //----------------------------------------------------
-    str+="<br/><br/>Important lines: <br/><select size='4'>";
-    for(i=0;i<retdata['improws'].length;i++){
-
-        if ((retdata['improws'][i][0]) == boxid){
-        str+="<option onclick='selectImpLines(\""+retdata['improws'][i]+"\");'>"+retdata['improws'][i][1]+"-"+retdata['improws'][i][2]+"</option>";
-        }
-    }
-    str+="</select><br/>"
-    str+="<div id='impLinesError' class='errormsg'></div>";
-    str+="<input type='text' size='4' id=\""+boxid+"from\" /> - <input type='text' size='4' id=\""+boxid+"to\"/>";
-    str+="<input type='button' value='add' onclick='addImpline(\""+boxid+"\")'/>";
-    str+="<input type='button' value='del' onclick='delImpline(\""+boxid+"\")'/>";
-
-	codedrop.innerHTML=str;
+	
+	document.getElementById(codedropid).innerHTML = str;
 }
 
 function removeTemplatebox(){
@@ -268,6 +297,7 @@ function returned(data)
 			// Print out code example in a code box
 			if(boxtype == "CODE"){
 				document.getElementById(contentid).removeAttribute("contenteditable");
+
 				$("#"+contentid).removeClass("descbox").addClass("codebox");
 
 				createboxmenu(contentid,boxid,boxtype);
@@ -277,7 +307,7 @@ function returned(data)
 				}else{
 					var boxmenuheight= $("#"+contentid+"menu").height();
 				}
-				$("#"+contentid).css("margin-top", boxmenuheight);
+				$("#"+contentid).css("margin-top", boxmenuheight-1);
 			// Create a codedrop for users with write access.	
 				if(sessionkind == "w"){
 					createcodedrop(contentid,boxid);
@@ -316,6 +346,7 @@ function returned(data)
 					var boxmenuheight= $("#"+contentid+"menu").height();
 				}
 				$("#"+contentid).css("margin-top", boxmenuheight);
+				
 				if(sessionkind == "w"){
 					docuwindow.setAttribute("contenteditable","true");
 				}
@@ -429,12 +460,19 @@ function returned(data)
 		if(sessionkind=="w"){
 			
 			// Check what tab in general settings menu should be displayed, otherwise the same tabmenu will be displayed after every update.
-			if(tabmenuvalue == "wordlist"){
+			if(genSettingsTabMenuValue == "wordlist"){
 				displayWordlist();
-			}else if(tabmenuvalue == "playlink"){
+			}else if(genSettingsTabMenuValue == "playlink"){
 				displayPlaylink();	
-			}else if(tabmenuvalue == "templates"){
+			}else if(genSettingsTabMenuValue == "templates"){
 				displayTemplates();
 			}					
+		}
+		
+		//Disable editing in mobile version
+		if($(window).width() <=1100){
+			 $("*[contenteditable]").attr("contenteditable","false"); 
+		}else{ 
+			$("*[contenteditable]").attr("contenteditable","true"); 
 		}
 }
