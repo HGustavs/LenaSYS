@@ -188,6 +188,12 @@
 								$query = "UPDATE box SET boxcontent='$content' WHERE boxid='$boxid' AND exampleid='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating box!");	
+					}else if(strcmp("updateboxtitle",$opt)===0){
+								$boxtitle=$_POST['boxtitle'];
+								// Update content in a box.
+								$query = "UPDATE box SET boxtitle='$boxtitle' WHERE boxid='$boxid' AND exampleid='$exampleid';";
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating box!");	
 					}
 					else if(strcmp("updateSecurity",$opt)===0){
 								$security=$_POST['public'];
@@ -373,15 +379,25 @@
 	                array_push($images,$img_file);
 	            }
 	        }
-
+			
+			//get public value
+			$public=array();
+			$query = "SELECT public FROM codeexample WHERE exampleid=$exampleid";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+					array_push($public,array($row['public']));	
+			}
+			
 			// Get boxes and its information
 			$box=array();   // get the primary keys for all types kind of boxes.
-			$query = "SELECT boxid,boxcontent FROM box WHERE exampleid=$exampleid ORDER BY boxid;";
+			$query = "SELECT boxid,boxcontent,boxtitle FROM box WHERE exampleid=$exampleid ORDER BY boxid;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 					$boxcontent=strtoupper($row['boxcontent']);
 					$boxid=$row['boxid'];
+					$boxtitle=$row['boxtitle'];
 				if(strcmp("DOCUMENT",$boxcontent)===0){
 					$query2 = "SELECT segment FROM descriptionBox WHERE exampleid='$exampleid' AND boxid='$boxid';";
 					$result2=mysql_query($query2);
@@ -389,7 +405,7 @@
 					while ($row2 = mysql_fetch_assoc($result2)){
 						
 						// replace spaces and breakrows to &nbsp; and <br> for nice formatting in descriptionbox str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment']))
-							array_push($box,array($boxid,$boxcontent,str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment']))));
+							array_push($box,array($boxid,$boxcontent,str_replace(" ", "&nbsp;",str_replace("\n","<br>",$row2['segment'])),$boxtitle));
 					}		
 					
 				}else if(strcmp("CODE",$boxcontent)===0){					
@@ -412,7 +428,7 @@
 						}else{
 					    	$code.="Error: could not open file".$filename."\n";
 						}
-						array_push($box,array($boxid,$boxcontent,$code));
+						array_push($box,array($boxid,$boxcontent,$code,$boxtitle));
 					} 
 				}else if (strcmp("NOT DEFINED",$boxcontent)===0){
 					array_push($box,array($boxid,$boxcontent));
