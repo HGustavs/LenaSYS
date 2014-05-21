@@ -1,7 +1,7 @@
 function pagination() {
 	var items = [];
 	// Amount of cells in a row
-	var cells = 5;
+	var cells = 6;
 	var show_per_page = 5;
 	
 	var number_of_items = 0;
@@ -74,8 +74,9 @@ function pagination() {
 				if (this.items.entries[i]) {
 					// Insert row below <th>
 					var row = table.insertRow(i % this.show_per_page + 1);
-					
-					if (parseInt(this.items.entries[i]["grade"]) >= 3) {
+					if (this.items.entries[i]["expired"]) {
+						row.className = "yellow";
+					} else if (parseInt(this.items.entries[i]["grade"]) >= 3) {
 						row.className = "green";
 					} else if (parseInt(this.items.entries[i]["grade"]) < 3) {
 						row.className = "red";
@@ -96,6 +97,9 @@ function pagination() {
 								cell.innerHTML = this.items.entries[i]["submitted"];
 								break;
 							case 4:
+								cell.innerHTML = this.items.entries[i]["deadline"];
+								break;
+							case 5:
 								if (parseInt(this.items.entries[i]["grade"]) >= 3) {
 									cell.innerHTML = this.items.entries[i]["grade"];
 								} else if (parseInt(this.items.entries[i]["grade"]) < 3) {

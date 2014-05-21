@@ -5,6 +5,7 @@
 			<th>Course code</th>
             <th>Quiz name</th>
             <th>Submitted</th>
+			<th>Deadline</th>
             <th>Grade</th>
         </tr>
     </table> 
