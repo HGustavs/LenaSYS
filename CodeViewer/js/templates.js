@@ -204,7 +204,6 @@ function createcodedrop(contentid,boxid)
 			str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+retdata['directory'][i]+"\",\""+boxid+"\");''>"+retdata['directory'][i]+"</span>";														
 		}
 	}
-
     //----------------------------------------------------
     // Fill important line list part of document dialog
     //----------------------------------------------------

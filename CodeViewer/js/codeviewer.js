@@ -684,7 +684,7 @@ function displayPlaylink(){
 	tabmenuvalue = "playlink";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li class='activeSetMenuLink'>Playlink & General</li>";
+		str+="<li class='activeSetMenuLink'>General</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 				
@@ -714,7 +714,7 @@ function displayTemplates()
 	tabmenuvalue = "templates";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink()'>Playlink & General</li>";
+		str+="<li onclick='displayPlaylink()'>General</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
@@ -732,7 +732,7 @@ function displayWordlist(){
 	tabmenuvalue = "wordlist";
 	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink();'>Playlink & General</li>";
+		str+="<li onclick='displayPlaylink();'>General</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 	
