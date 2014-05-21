@@ -3,7 +3,8 @@ function imagerecorder(canvas)
 	var initImage = new Image();	
 	initImage.src = "img/firstpic.jpg";	// This is the "Click here to start recording" image.
 	
-	var clicked = 0;
+	var clicked = 0;					// Check if the user has clicked to the next picture
+	var clicked = 0;					// Check if the user has clicked to the next picture
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
 	var imageCanvas = canvas;
 	var canvas = document.getElementById('ImageCanvas');
@@ -30,7 +31,7 @@ function imagerecorder(canvas)
 	this.scrollAmountY = 0;
 	this.currentImageWidth;
 	this.currentImageHeight;
-	var mouseFPS = 30;
+	var mouseFPS = 30;				// The amount of times a second the mousemovement will be recorded
 	
 	var files;						// store files thats being uploaded
 	var rect = canvas.getBoundingClientRect();
@@ -170,15 +171,11 @@ function imagerecorder(canvas)
 
 						mHeight = (rect.bottom - rect.top);
 						mWidth = (rect.right-rect.left);
-						var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-						var yMouse = Math.round((event.clientY-imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-						//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-						//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-					
-						document.getElementById('xCord').innerHTML=xMouse;
-						document.getElementById('yCord').innerHTML=yMouse;
 
-						logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+						document.getElementById('xCord').innerHTML=xMouseReal;
+						document.getElementById('yCord').innerHTML=yMouseReal;
+
+						logMouseEvents('\n<mouseclick x="' + xMouseReal + '" y="' + yMouseReal + '"/>');
 
 						// Add undo point
 						createUndoPoint();	
@@ -270,7 +267,7 @@ function imagerecorder(canvas)
 					resizeCanvas();
 					updateScaleRatio();
 				}
-			if(clicked == 1) { //Checks if any clicks has been made nad if the picture been clicked it will show the right pic
+			if(clicked == 1) { //Checks if any clicks has been made and if the pictures been clicked it will show the right pic
 				showImage(activeImage);
 			}
 			else{
@@ -359,6 +356,8 @@ function imagerecorder(canvas)
 			
 			addThumb("../canvasrenderer/"+tmpSrc);
 		}
+		
+		rebuildImgLibrary()
 		
 	}
 	
@@ -724,6 +723,7 @@ function imagerecorder(canvas)
 	// Reset recording session
 	function reset(){
 		// Reset variables
+	
 		clicked = 0;
 		lastEvent = Date.now();
 		activeImage = -1;
@@ -757,9 +757,13 @@ function imagerecorder(canvas)
 
 		// Show instruction button
 		$("#instructbutton").show();
+		
+		// Hide export dialog
+		$("#export-feedback").hide();
 
 		// Clear canvas
 		canvas.width = canvas.width;
+		ctx.drawImage(initImage,0,0, mWidth, mHeight);
 
 		// Change button name and action
 		$("#uploadButton").attr('value', 'Upload image');
@@ -789,7 +793,6 @@ function imagerecorder(canvas)
 	 }
 	 
 }
-
 	 function showinstruction(){
 		 $("#instructionopacity").fadeIn("fast");
          $("#instructionwindow").fadeIn("fast");
