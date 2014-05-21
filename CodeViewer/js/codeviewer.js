@@ -8,7 +8,8 @@ var retdata;
 var tokens = [];            // Array to hold the tokens.
 var dmd=0;
 var isdropped=false;
-var tabmenuvalue = "wordlist";				
+var genSettingsTabMenuValue = "wordlist";
+var codeSettingsTabMenuValue = "implines";				
 
 /********************************************************************************
 
@@ -376,9 +377,10 @@ function setup()
 	$.ajax({url: "editorService.php", type: "POST", data: "exampleid="+exampleid+"&opt=List", dataType: "json", success: returned});											
 			
 	if(sessionkind=="w"){
-		setupEditable();						
+		setupEditable();					
 	}
 	setTheme();
+	
 }
 
 
@@ -533,11 +535,11 @@ function selectImpWord(word)
 }
 
 function selectImpLines(word)
-{
+{		
 		lines=word.split(",");
-		if(lines.length=2){
-				document.getElementById('implistfrom').value=lines[0];
-				document.getElementById('implistto').value=lines[1];
+		if(lines.length=3){
+				document.getElementById(lines[0]+'from').value=lines[1];
+				document.getElementById(lines[0]+'to').value=lines[2];
 		}
 }
 
@@ -681,19 +683,16 @@ function sendOut(kind, sectid)
 */			
 
 function displayPlaylink(){
-	tabmenuvalue = "playlink";
-}	
-function displaySettings(){
-	tabmenuvalue = "Settings";
-	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
+	genSettingsTabMenuValue = "playlink";
+	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li class='activeSetMenuLink'>Settings</li>";
+		str+="<li class='activeSetMenuLink'>General</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 				
-	str+="<br/><br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
+	str+="<br/>Insert local url-adress on the row below:<br/>Play Link: <input type='text' size='32' id='playlink' onblur='changedPlayLink();' value='"+retdata['playlink']+"' />";
 	str+="<span id='playlinkErrorMsg' class='playlinkErrorMsgStyle'></span>";
-	str+="<br>Check box to open the example for public:";
+	str+="<br/><br/>Check box to open the example for public:";
 	var test = retdata['public'][0];
 			//alert(test);
 			if(test == 0){
@@ -714,10 +713,10 @@ function displaySettings(){
 }
 function displayTemplates()
 {
-	tabmenuvalue = "templates";
-	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
+	genSettingsTabMenuValue = "templates";
+	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
 		str+="<li onclick='displayWordlist();'>Wordlist</li>";
-		str+="<li onclick='displaySettings()'>Settings</li>";
+		str+="<li onclick='displayPlaylink()'>General</li>";
 		str+="<li class='activeSetMenuLink'>Templates</li>";
 	str+="</ul>";
 	str+="<h1>Pick a template for your example!</h1>";
@@ -732,10 +731,10 @@ function displayTemplates()
 	docurec.innerHTML=str;
 }
 function displayWordlist(){
-	tabmenuvalue = "wordlist";
-	str="<ul id='settingsTabMenu' class='settingsTabMenuStyle'>";
+	genSettingsTabMenuValue = "wordlist";
+	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
 		str+="<li class='activeSetMenuLink'>Wordlist</li>";
-		str+="<li onclick='displaySettings();'>Settings</li>";
+		str+="<li onclick='displayPlaylink();'>General</li>";
 		str+="<li onclick='displayTemplates();'>Templates</li>";
 	str+="</ul>";
 	
@@ -1070,7 +1069,8 @@ while (c) {		// c == first character in each word
 		        c=instring.charAt(i);
             if (c<' '){
         				if((c=='\n')||(c=='\r')||(c == '')) row++; 	// Add row if this white space is a row terminator				 																						
-            		error('Unterminated String: ',str,row);		                		
+            		error('Unterminated String: ',str,row);		
+            		break;                		
             }
 
             if (c==q) break;
@@ -1078,7 +1078,8 @@ while (c) {		// c == first character in each word
             if (c=='\\'){
                 i += 1;
                 if (i >= length) {
-                		error('Unterminated String: ',str,row);		                		
+                		error('Unterminated String: ',str,row);		
+                		break;                		
                 }
     		        c=instring.charAt(i);
                 
@@ -1089,11 +1090,13 @@ while (c) {		// c == first character in each word
                 if(c=='t'){ c='\t'; break; }
                 if(c=='u'){
                     if (i >= length) {
-		                		error('Unterminated String: ',str,row);		                		
+		             	error('Unterminated String: ',str,row);		
+		             	break;                		
                     }
                     c = parseInt(this.substr(i + 1, 4), 16);
                     if (!isFinite(c) || c < 0) {
-		                		error('Unterminated String: ',str,row);		                		
+		                		error('Unterminated String: ',str,row);		
+		                		break;                		
                     }
                     c = String.fromCharCode(c);
                     i+=4;
@@ -1104,7 +1107,7 @@ while (c) {		// c == first character in each word
             i++;
         }
         i++;
-        maketoken('string',str,from,i,row);
+        maketoken('string',c+str+c,from,i,row);
         c=instring.charAt(i);
 
     }else if (c=='/'&&instring.charAt(i+1)=='/'){	// Comment of // type ... does not cover block comments
@@ -1231,7 +1234,7 @@ function rendercode(codestring,boxid)
 				}else if(tokens[i].kind=="blockcomment"){
 						cont+="<span class='comment'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="string"){
-						cont+="<span class='string'>\""+tokenvalue+"\"</span>";
+						cont+="<span class='string'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="number"){
 						cont+="<span class='number'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="name"){
@@ -1303,15 +1306,16 @@ function rendercode(codestring,boxid)
 					if(cont != ""){
 						lineno++;
 
-						// Make line number										
-						if(lineno<10){
-								num="<span class='no'>"+lineno+"&nbsp;&nbsp;&nbsp;&nbsp;</span>";
+						// Make line number		
+						num="<div class='no'>"+lineno+"</div>";								
+				/*		if(lineno<10){
+								num="<div class='no'>"+lineno+"</div>";
 						}else if(lineno>=10 && lineno<100){
-								num="<span class='no'>"+lineno+"&nbsp;&nbsp;</span>";
+								num="<div class='no'>"+lineno+"</div>";
 						}else{
-								num="<span class='no'>"+lineno+"&nbsp;</span>";
+								num="<div class='no'>"+lineno+"</div>";
 						}
-						
+				*/		
 						if(improws.length==0){
 								str+="<div class='normtext'>";
 						}else{
@@ -1330,7 +1334,7 @@ function rendercode(codestring,boxid)
 					}					
 				}
 		}
-		str+="</div>";	
+		str+="</div><div class='normtextend no'></div>";	
 		printout.innerHTML=str;
 		linenumbers();
 }
@@ -1493,56 +1497,58 @@ function changeCSS(cssFile, index)
     document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
-// function showhotdogmenu()
-// {
-// 
-	// var hotdogdrop = document.getElementById("hotdogdrop");
-	// if($(hotdogdrop).is(':hidden')){
-		// hotdogdrop.style.display = "block";
-	// }
-	// else{
-		// hotdogdrop.style.display = "none";	
-	// }
-// }
 
+
+
+
+/* HIDE/SHOW DROP MENUS --> START*/
+
+/* Open general settings */
 $(function() {
-	$('#hidesettings').click(function() {
+	$("#hidesettings").click(function(event){
 		$('.docudrop').slideToggle("fast");
-		$('.codedrop').hide();
+		$('#themedrop').hide();
 		$('#hotdogdrop').hide();
-		$('.themedrop').hide();
+		$('.codedrop').hide();
+		$('.imgdrop').hide();
+		$('#themedrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
-		$('.imgdrop').hide();
 		return false;
-	});
-	$(document).click(function() {
-    	$('.docudrop').slideUp('fast');
-	});
+	}); // Hide docudrop if clicking outside
+	$(document).click(function(event) {
+		$('#docudrop').slideUp('fast');
+	});// Prevent hide event if user is clicking on docudrop.
 	$(".docudrop").click(function(event) {
    		event.stopPropagation();
 	});
+	
 });
-/*
+
+/* Open themes */
 $(function() {
-	$('.hidecode').click(function() {
-		$('.codedrop').slideToggle("fast");
-		$('.docudrop').hide();
+	$("#hidetheme").click(function(event){
+		$('#themedrop').slideToggle("fast");
 		$('#hotdogdrop').hide();
-		$('.themedrop').hide();
+		$('.docudrop').hide();
+		$('.codedrop').hide();
+		$('.imgdrop').hide();
 		$('.backwdrop').hide();
 		$('.forwdrop').hide();
-		$('.imgdrop').hide();
 		return false;
-	});
-	$(document).click(function() {
-    	$('.codedrop').slideUp('fast');
-	});
-	$(".codedrop").click(function(event) {
-   		event.stopPropagation();
+	});	// Stop themedrop to hide if clicking on it.
+	$(document).click(function(event) {
+		if(event.target.id ==  'themedrop'){
+			event.stopPropagation();
+		}else if(($(event.target).parents('#themedrop').size() >0)){
+			event.stopPropagation();
+		}else{
+			$('#themedrop').slideUp('fast');
+		}
 	});
 });
-*/
+
+/* OPEN/HIDE hotdog menu */
 $(function() {
 	$('#hidehotdog').click(function() {
 		$('#hotdogdrop').slideToggle("fast");
@@ -1553,65 +1559,67 @@ $(function() {
 		$('.forwdrop').hide();
 		$('.imgdrop').hide();
 		return false;
-	});
-	$(document).click(function() {
-    	$('#hotdogdrop').slideUp('fast');
-	});
-	$("#hotdogdrop").click(function(event) {
-   		event.stopPropagation();
+	}); /* Prevent hotdog menu to hide while clicking on it */
+	$(document).click(function(event) {
+		if($(event.target).parents('#hotdogdrop').size() >0){
+			event.stopPropagation();
+		}else{
+			$('#hotdogdrop').slideUp('fast');
+		}
 	});
 });
+
 
 $(function() {
-	$('#hidetheme').click(function() {
-		$('.themedrop').slideToggle("fast");
-		$('.docudrop').hide();
-		$('.codedrop').hide();
-		$('#hotdogdrop').hide();
-		$('.backwdrop').hide();
-		$('.forwdrop').hide();
-		$('.imgdrop').hide();
-		return false;
-	});
-	$(document).click(function() {
-    	$('.themedrop').slideUp('fast');
-	});
-	$(".themedrop").click(function(event) {
-   		event.stopPropagation();
+	$(document).click(function(event) {
+		if(event.target.id ==  'themedrop'){
+			event.stopPropagation();
+		}else if(($(event.target).parents('#themedrop').size() >0)){
+			event.stopPropagation();
+		}else{
+			$('#themedrop').slideUp('fast');
+		}
 	});
 });
-/*
+
+
+// Stop themedrop to hide if clicking on it,clicking on contenteditable element or clicking on imgdropbutton.
 $(function() {
-	$('#hideimage').click(function() {
-		$('.imgdrop').slideToggle("fast");
-		$('.docudrop').hide();
-		$('.codedrop').hide();
-		$('#hotdogdrop').hide();
-		$('.themedrop').hide();
-		$('.backwdrop').hide();
-		$('.forwdrop').hide();
-		return false;
-	});
-	$(document).click(function() {
-    	$('.imgdrop').slideUp('fast');
-	});
-	$(".imgdrop").click(function(event) {
-   		event.stopPropagation();
+	$(document).click(function(event) {
+		if(event.target.id ==  'imgdrop'){
+			event.stopPropagation();
+		}else if(($(event.target).parents('#imgdrop').size() >0)){
+			event.stopPropagation();
+		}else if(($(event.target).parents('.imgdropbutton').size() >0)){
+			event.stopPropagation();
+		
+		}else if($(event.target).attr("contenteditable") || $(event.target).parents().attr("contenteditable")){
+			event.stopPropagation();
+		 }else{
+			$('#imgdrop').slideUp('fast');
+		}
 	});
 });
 
 
 
-	$('#imgdrop').slideToggle("fast");
-		$('.docudrop').hide();
-		$('.codedrop').hide();
-		$('#hotdogdrop').hide();
-		$('.themedrop').hide();
-		$('.backwdrop').hide();
-		$('.forwdrop').hide();
-		return false;
+$(function() { /* Prevent codedrops to hide while clicking on it  */
+	$(document).click(function(event) {
+		if($(event.target).is('.codedrop')){
+			event.stopPropagation();
+		}else if(($(event.target).parents('.codedrop').size() >0)){
+			event.stopPropagation();
+		}else if(($(event.target).parents('.codedropbutton').size() >0)){
+			event.stopPropagation();
+		}else if(($(event.target).parents('.settingsTabMenu').size() >0)){
+			event.stopPropagation();
+		}else{
+			$('.codedrop').slideUp('fast');
+		}
 	});
-*/
+});
+
+/* HIDE/SHOW DROP MENUS --> STOP*/
 
 
 
@@ -1671,6 +1679,33 @@ function setTheme()
 	}
 }
 
+
+
+function disableResponsive(command)
+{
+
+    if(command != "" || command != null){
+
+        if(command === "on"){
+            //enable responsive css - Not currently used
+            changeCSS("css/responsive.css", 3);
+
+        }
+
+        else if(command === "off"){
+            //disable responsive css
+            changeCSS("css/blank.css", 3);
+
+
+        }
+
+        else{
+            alert("Error");
+        }
+    }
+}
+
+
 function changedSecurity(){
 	var cb = document.getElementById('checkbox');
 	var option = 0;
@@ -1690,3 +1725,67 @@ function mobileTheme(id){
 		  $(".mobilethemebutton").css("display","none");
 	}
 }
+
+
+// * Menutext * //
+$(window).resize(function(){	
+	var width = $(window).width();
+	var fontsize = $(window).width()*0.018;
+	if(fontsize <= 16){
+		fontsize = 16;
+	}else if(fontsize >= 24){
+		fontsize = 24;
+	}
+	$('.menutext').css('fontSize', fontsize);
+})
+
+//Retrive height for buliding menu.
+$(window).load(function() {
+	var windowHeight = $(window).height();
+	textHeight= windowHeight-50;
+	$("#table-scroll").css("height", textHeight);
+});
+
+$(window).resize(function() {
+	var windowHeight = $(window).height();
+	textHeight= windowHeight-50;
+	$("#table-scroll").css("height", textHeight);
+	
+	
+	// Keep right margin to boxes when user switch from mobile version to desktop version
+	if($(".buttomenu2").height() == null){
+		var boxmenuheight = 0;
+	}else{
+		var boxmenuheight= $(".buttomenu2").height();
+	}
+	$(".box").css("margin-top", boxmenuheight);
+	
+	
+	
+	
+});
+
+//Disable editing in mobile view
+$(window).resize(function() {
+	if($(window).width() <=1100){
+		 $("*[contenteditable]").attr("contenteditable","false"); 		 
+	}else{ 
+		$("*[contenteditable]").attr("contenteditable","true"); 
+	}
+	
+})
+//Creating a extra box under codelines.
+$(window).resize(function() {
+	var textbottom = $(".normtextend").offset();
+	var windowHeight = $(window).height();
+	var objectheight = windowHeight-textbottom.top-2;
+	$(".normtextend").css("height", objectheight);
+});
+
+$(document).ajaxStop(function () {
+	var textbottom = $(".normtextend").offset();
+	var windowHeight = $(window).height();
+	var objectheight = windowHeight-textbottom.top-2;
+	$(".normtextend").css("height", objectheight);
+});
+

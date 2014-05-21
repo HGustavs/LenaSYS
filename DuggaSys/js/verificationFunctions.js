@@ -21,6 +21,24 @@ function validateNewCourseSubmit()
   return true;
 }
 
+function validateNewQuizSubmit() 
+{
+  if( document.newQuizForm.quizname.value == "" ) {
+  	console.log("quizname not valid");
+    $("input[name*='quizname']").css("background-color", "#ff7c6a");
+    return false;
+  } else {
+    $("input[name*='quizname']").css("background-color", "#89ff7b");
+  }
+  if( document.newQuizForm.gradesysselect.value == "-1") {
+    $("#gradeSysSelect").css("background-color", "#ff7c6a");
+    return false;
+  } else {
+    $("#gradeSysSelect").css("background-color", "#89ff7b");
+  }
+  return true;
+}
+
 function validateNewSectionSubmit()
 {
 	if( document.newSection.sectionname.value == "" ) {

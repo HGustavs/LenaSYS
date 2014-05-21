@@ -1,4 +1,8 @@
+drop database Imperious;
+create database Imperious;
+use Imperious;
 /* user contains the users of the system and related  information */
+
 DROP TABLE IF EXISTS `userAnswer`;
 DROP TABLE IF EXISTS `grades`;
 DROP TABLE IF EXISTS `quiz`;
@@ -6,15 +10,18 @@ DROP TABLE IF EXISTS eventlog;
 DROP TABLE IF EXISTS listentries;
 DROP TABLE IF EXISTS impwordlist;
 DROP TABLE IF EXISTS wordlist;
-DROP TABLE IF EXISTS box;
+DROP TABLE IF EXISTS playereditor_playbacks;
 DROP TABLE IF EXISTS descriptionsection;
 DROP TABLE IF EXISTS filelist;
 DROP TABLE IF EXISTS improw;
+DROP TABLE IF EXISTS user_course;
+DROP TABLE IF EXISTS user_question;
+DROP TABLE IF EXISTS descriptionBox;
+DROP TABLE IF EXISTS codeBox;
+DROP TABLE IF EXISTS box;
 DROP TABLE IF EXISTS codeexample;
 DROP TABLE IF EXISTS template;
-DROP TABLE IF EXISTS user_course;
 DROP TABLE IF EXISTS course;
-DROP TABLE IF EXISTS user_question;
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
 		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -164,6 +171,7 @@ INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);*/
 CREATE TABLE box(
 		boxid				INTEGER UNSIGNED NOT NULL,
 		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
+		boxtitle			VARCHAR(20),
 		boxcontent			VARCHAR(39),
 		settings			VARCHAR(1024),
 		PRIMARY KEY(boxid, exampleid),
@@ -186,26 +194,26 @@ BEGIN
  delimiter ;
 
 
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,1,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,1,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,2,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,2,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,3,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,3,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,4,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,4,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,5,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,5,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,6,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,6,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,7,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,7,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,8,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,8,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,9,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,9,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,10,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,10,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,1,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,1,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,2,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,2,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,3,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,3,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,4,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,4,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,5,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,5,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,6,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,6,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,7,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,7,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,8,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,8,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,9,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,9,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,10,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,10,"Title","Document","[viktig=1]");
 
 
 
@@ -396,21 +404,24 @@ CREATE TABLE eventlog(
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Quiz tables */
-
 CREATE TABLE `quiz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `courseID` int(11) NOT NULL,
+  `cid` int UNSIGNED NOT NULL,
   `autograde` tinyint(1) NOT NULL, /* bool */
   `gradesystem` tinyint(1) NOT NULL, /* U-G-VG & U-G & U-3-5 */
   `answer` varchar(2000) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deadline` datetime NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY(`cid`)
+		REFERENCES course(cid)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE `grades` (
-  `gradeID` int(11) NOT NULL,
+  `gradeID` tinyint(2) NOT NULL,
   `grade` varchar(5) NOT NULL,
   PRIMARY KEY (`gradeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -421,15 +432,26 @@ INSERT INTO grades(gradeID, grade) VALUES(4, "3");
 INSERT INTO grades(gradeID, grade) VALUES(5, "4");
 INSERT INTO grades(gradeID, grade) VALUES(6, "5");
 
+
 CREATE TABLE `userAnswer` (
-  `testID` int(11) NOT NULL,
+  `quizID` int(11) NOT NULL,
   /*`variantID` int(11) NOT NULL,*/
   /*`version` int(11) NOT NULL,*/
-  `grade` tinyint(2) NOT NULL,
-  `uid` int(11) NOT NULL,
+  `gradeID` tinyint(2) NOT NULL,
+  `uid` INT UNSIGNED NOT NULL,
   `answer` varchar(2000) NOT NULL,
-  `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`testID`,`uid`)
+  `submitted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`quizID`,`uid`),
+  FOREIGN KEY (`gradeID`) 
+  		REFERENCES grades(`gradeID`)
+  		ON UPDATE CASCADE,
+  FOREIGN KEY(uid) 
+  		REFERENCES user(uid)
+		ON UPDATE CASCADE,
+  FOREIGN KEY (quizID) 
+  		REFERENCES quiz(id)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 

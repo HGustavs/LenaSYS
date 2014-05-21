@@ -12,15 +12,6 @@
 	
 		$courseid=$_POST['courseid'];
 		$opt=$_POST['opt'];	
-
-		if(isset($_POST['sectid'])) $sectid=htmlEntities($_POST['sectid']);
-		if(isset($_POST['sectpos'])) $sectpos=htmlEntities($_POST['sectpos']);
-		if(isset($_POST['sectname'])) $sectname=htmlEntities($_POST['sectname']);
-		if(isset($_POST['pos'])) $pos=htmlEntities($_POST['pos']);
-		if(isset($_POST['newname'])) $newname=htmlEntities($_POST['newname']);
-		if(isset($_POST['kind'])) $kind=htmlEntities($_POST['kind']);
-		if(array_key_exists('link', $_POST)) $link=htmlEntities($_POST['link']);
-		if(array_key_exists('visibility', $_POST)) $visibility = $_POST['visibility'];
 		
 		$debug="NONE!";
 		if(checklogin()){
@@ -31,7 +22,7 @@
 					$query = $pdo->prepare("SELECT exampleid AS id, examplename AS name FROM codeexample WHERE cid = :1");
 				} else {
 					// Implement this in test database
-					$query = $pdo->prepare("SELECT * FROM test WHERE cid = :1");
+					$query = $pdo->prepare("SELECT * FROM quiz WHERE courseID = :1");
 				}
 				$query -> bindParam(':1', $courseid);
 				$result=$query->execute();

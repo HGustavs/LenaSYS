@@ -51,7 +51,20 @@ if (checklogin()) {
 					}
 				}
 			} else if ($_POST["type"] == 3) {
-				// Update test
+				$query = $pdo->prepare("INSERT INTO quiz (courseID, name) VALUES(:cid, :name)");
+				$query->bindParam(':cid', $courseid);
+				$query->bindParam(':name', $_POST["sectionname"]);
+				if(!$query->execute()) {
+					// TODO: Remove these debug prints
+					print_r($query->errorInfo());
+				} else {
+					// Get example id
+					$eidq = $pdo->query("SELECT LAST_INSERT_ID() as quiz_id");
+					$eidq->execute();
+					$eid = $eidq->fetch(PDO::FETCH_NUM);
+					$quiz_id = $eid[0];
+					$link = "quiz/menu?quizid=".$quiz_id."&courseid=".$courseid;
+				}
 			}
 		} else {
 			if ($_POST["type"] == 2) {
