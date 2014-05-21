@@ -52,10 +52,10 @@ function canvasSize()
 <?php
 	// Load XML
 	if(isset($xmlpath)) {
-		echo "this.canvas.loadXML('".$xmlpath."');";
+		echo "this.canvas.init('".$xmlpath."');";
 	}
 	else {
-		echo "this.canvas.loadXML('canvas.xml');";
+		echo "this.canvas.init('canvas.xml');";
 	}
 ?>
     </script>

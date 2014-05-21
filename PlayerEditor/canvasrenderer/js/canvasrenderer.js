@@ -47,6 +47,14 @@ function Canvasrenderer()
 	this.currentPictureWidth;
 	this.currentPictureHeight;
 	this.currentFile;
+
+
+
+	this.init = function(file){
+		this.currentFile = file;
+		this.reset();
+	}
+
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -61,17 +69,11 @@ function Canvasrenderer()
 		xmlhttp.open("GET",file,false);
 		xmlhttp.send();
 		xmlDoc=xmlhttp.responseXML;
-		
+		this.firsttime = 1;	
 		// Load timesteps
 		//this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
 
-		this.preloadImages();
-		
-		// Print "Click to play" image
-		this.picture("images/firstpic.png");
-		
-		this.scheduleTimesteps();
-	}
+		}
 	
 	
 	
@@ -123,12 +125,17 @@ function Canvasrenderer()
 			this.pause();
 		}
 	}
+	
+	this.showPlayImage = function(){
+		this.picture("images/firstpic.png");
+	}
 
 	// Play canvas
 	this.play = function()
 	{
 		// First time running - clear welcome image.
 		if(this.firsttime == 1) {
+			
 			ctx.clearRect(0, 0, c.width, c.height);
 			this.firsttime = 0;
 		}
@@ -184,6 +191,12 @@ function Canvasrenderer()
 
 		// Reload timesteps
 		this.loadXML(this.currentFile);		
+		this.preloadImages();
+		
+		// Print "Click to play" image
+		
+		this.scheduleTimesteps();
+
 		this.finished = 0;
 	}
 
@@ -1125,6 +1138,7 @@ function Canvasrenderer()
 	this.mouseCursorY = 1;
 	this.mouseCursorBackground = ctx.getImageData(1, 1, 1, 1);
 	this.updateScaleRatio();
+	this.showPlayImage();
 }
 
 
