@@ -86,7 +86,7 @@
 							}
 						} else if ($kind == 3) {
 							if ($testdugga == "-1") {
-								$stmt = $pdo->prepare("INSERT INTO quiz (courseID, name) VALUES(:cid, :name)");
+								$stmt = $pdo->prepare("INSERT INTO quiz (cid, name) VALUES(:cid, :name)");
 								$stmt->bindParam(':cid', $courseid);
 								$stmt->bindParam(':name', $sectname);
 								if(!$stmt->execute()) {
