@@ -1,4 +1,5 @@
 /* user contains the users of the system and related  information */
+
 DROP TABLE IF EXISTS `userAnswer`;
 DROP TABLE IF EXISTS `grades`;
 DROP TABLE IF EXISTS `quiz`;
@@ -6,15 +7,18 @@ DROP TABLE IF EXISTS eventlog;
 DROP TABLE IF EXISTS listentries;
 DROP TABLE IF EXISTS impwordlist;
 DROP TABLE IF EXISTS wordlist;
-DROP TABLE IF EXISTS box;
+DROP TABLE IF EXISTS playereditor_playbacks;
 DROP TABLE IF EXISTS descriptionsection;
 DROP TABLE IF EXISTS filelist;
 DROP TABLE IF EXISTS improw;
+DROP TABLE IF EXISTS user_course;
+DROP TABLE IF EXISTS user_question;
+DROP TABLE IF EXISTS descriptionBox;
+DROP TABLE IF EXISTS codeBox;
+DROP TABLE IF EXISTS box;
 DROP TABLE IF EXISTS codeexample;
 DROP TABLE IF EXISTS template;
-DROP TABLE IF EXISTS user_course;
 DROP TABLE IF EXISTS course;
-DROP TABLE IF EXISTS user_question;
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
 		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -396,21 +400,24 @@ CREATE TABLE eventlog(
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Quiz tables */
-
 CREATE TABLE `quiz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `courseID` int(11) NOT NULL,
+  `cid` int UNSIGNED NOT NULL,
   `autograde` tinyint(1) NOT NULL, /* bool */
   `gradesystem` tinyint(1) NOT NULL, /* U-G-VG & U-G & U-3-5 */
   `answer` varchar(2000) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deadline` datetime NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY(`cid`)
+		REFERENCES course(cid)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE `grades` (
-  `gradeID` int(11) NOT NULL,
+  `gradeID` tinyint(2) NOT NULL,
   `grade` varchar(5) NOT NULL,
   PRIMARY KEY (`gradeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -421,15 +428,26 @@ INSERT INTO grades(gradeID, grade) VALUES(4, "3");
 INSERT INTO grades(gradeID, grade) VALUES(5, "4");
 INSERT INTO grades(gradeID, grade) VALUES(6, "5");
 
+
 CREATE TABLE `userAnswer` (
-  `testID` int(11) NOT NULL,
+  `quizID` int(11) NOT NULL,
   /*`variantID` int(11) NOT NULL,*/
   /*`version` int(11) NOT NULL,*/
-  `grade` tinyint(2) NOT NULL,
-  `uid` int(11) NOT NULL,
+  `gradeID` tinyint(2) NOT NULL,
+  `uid` INT UNSIGNED NOT NULL,
   `answer` varchar(2000) NOT NULL,
-  `submitted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`testID`,`uid`)
+  `submitted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`quizID`,`uid`),
+  FOREIGN KEY (`gradeID`) 
+  		REFERENCES grades(`gradeID`)
+  		ON UPDATE CASCADE,
+  FOREIGN KEY(uid) 
+  		REFERENCES user(uid)
+		ON UPDATE CASCADE,
+  FOREIGN KEY (quizID) 
+  		REFERENCES quiz(id)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 
