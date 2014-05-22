@@ -33,7 +33,6 @@ if(checklogin()) {
 			 if (sessName!=this.username) {
 
 		      output += "<tr><td>"+this.username+"</td>";
-			  output += "<td>"+this.uid+"</td>";
 			  output += "<td>"+this.firstname+"</td>";
 			  output += "<td>"+this.lastname+"</td>";
 			  output += "<td>"+access+"</td>";
@@ -102,7 +101,6 @@ if(checklogin()) {
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>UserID</th>
 					<th>Firstname</th>
 					<th>Lastname</th>
 					<th>Access</th>
