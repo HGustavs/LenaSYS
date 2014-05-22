@@ -585,26 +585,9 @@ input.submit-button-red:hover {
     }
 }
 /* ANIMATIONS END */
-#student-box{
-    width:auto;
-    margin:0 auto;
-    height:auto;
-    background-color:#ccc;
-    border:1px solid #000;
-    margin-left:450px;
-    margin-right:450px;
-    margin-top:60px;
-}
-
-#student-header{
-    height:40px;
-    background-color:#614875;
-    text-align:center;
-    color: #FFF;
-    font-family:arial;
-    font-size:20pt;
-    font-weight:bold;
-    border:1px solid #000;
+.addstudent {
+    height: 300px;
+    width: 100%;
 }
 
 .black_overlay{

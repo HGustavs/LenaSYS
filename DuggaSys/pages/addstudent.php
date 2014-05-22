@@ -18,18 +18,15 @@ if(checklogin()) {
 	<script type="text/javascript">
 	var qs = getUrlVars();
 	</script>
-	<div id="student-box">
 		<form action="" method="post">
-			<div id="student-header">Add students</div>
+			Add students
 			<br>
+			<textarea placeholder="SSN		Name		email" name="string" id="string" class="addstudent"></textarea>
 			<br>
-			<textarea placeholder="SSN, Name, email" name="string" id="string" cols="52" rows="10"></textarea>
-			<br>
-			<input type="button" value="Add students" class="btn btn-login" onclick="passPopUp();"/>
-			<input type="button" class="btn btn-cancel" value="Cancel" onclick="historyBack();"/>
+			<input type="button" value="Add students" class="submit-button" onclick="passPopUp();"/>
+			<button onclick="historyBack();">Back</button>
 		</form>
 	<div id="light" class="white_content">
-	</div>
 	</div>
 	<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 </body>
