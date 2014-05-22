@@ -3,7 +3,10 @@ include_once(dirname(__FILE__). "/../../../coursesyspw.php");
 include_once(dirname(__FILE__) . "/../../Shared/basic.php");
 pdoConnect();
 session_start();
-if(checklogin()) {
+if(!array_key_exists('courseid', $_POST)) {
+	die('No course set');
+}
+if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') || isSuperUser($_SESSION['uid'])) {
 ?>
 <!DOCTYPE html>
 <html>
