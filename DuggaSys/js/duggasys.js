@@ -258,20 +258,6 @@ function returnedSection(data)
 
 }
 
-function studentDelete(showhide) {
-  if (showhide == "show") {
-
-      $("#deletebox").show();
-      $("#deletebutton").show();
-      $("#resetbox").show();
-
-  } else if (showhide == "hide") {
-
-      $("#deletebox").hide();
-      $("#deletebutton").hide();
-      $("#resetbox").hide();
-  }
-}
 function resetPassword(uid){
 	$.ajax({
 		
@@ -328,9 +314,7 @@ function deleteStudent(){
 	var delete_ids = $.map($('input:checkbox:checked'), function(checked, i) {
 		return +checked.value;
 	});
-	alert(delete_ids);
 	$.ajax({
-		
 		url: 'ajax/deletestudent_ajax.php',
 		dataType: "json",
 		type: "POST",
@@ -338,14 +322,15 @@ function deleteStudent(){
 			user_id: delete_ids
 		},
 		success: function (returnedData) {
-
-		  	successBox('Successfully deleted students', 'Deleted student(s): '+returnedData+'');
-			getStudents();
-            studentDelete("hide");
+			if(typeof returnedData.success == "undefined" || returnedData.success) {
+			  	successBox('Successfully removed students', 'Removed student(s): '+returnedData+' from the course.');
+				getStudents();
+			} else {
+				dangerBox('Problems removing students', 'Could not remove the students from the course. Make sure you selected at least one student.');
+			}
 		},
 		error: function(){
-            dangerBox('Problems deleting students', 'Could not delete students, make sure you selected students');
- 
+			dangerBox('Problems removing students', 'Could not remove the students from the course. Make sure you selected at least one student.');
 		},
 	});
 }

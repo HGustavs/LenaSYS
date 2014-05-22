@@ -14,7 +14,7 @@ if(checklogin()) {
 		<script type="text/javascript" src="js/duggasys.js"></script>
 		<script>
 		qs = getUrlVars();
-		page.title(qs.name);
+		page.title(qs.name + " - Student list");
 		</script>
 	</head>
 <body>
@@ -47,8 +47,8 @@ if(checklogin()) {
 			  output += "</select>";
 			  output += "</form>";
 			  output += "</td>";
-		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
-		      output += "<td id='resetbox1' style='display:none'><input type='button' class='submit-button' id='reset_pw_btn' onclick='resetPassword("+this.uid+")' value='Reset'></inut></td></tr>";
+		      output += "<td id='deletebox1'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
+		      output += "<td id='resetbox1'><input type='button' class='submit-button' id='reset_pw_btn' onclick='resetPassword("+this.uid+")' value='Reset'></inut></td></tr>";
 			 };
 		   });
 		   $("table.list tbody").empty();
@@ -93,48 +93,31 @@ if(checklogin()) {
 		}
      
 	</script>
-	<div id="student-box">
-		<div id="student-header">Studentview</div>
-		<button onclick="changeURL('addstudent?courseid=' + qs.courseid + '&name=' + qs.name)">
-			Add students 
-		</button>
+	<button onclick="changeURL('addstudent?courseid=' + qs.courseid + '&name=' + qs.name)">
+		Add students 
+	</button>
 	<form action="" method="post">
 	<div id='students'>
-	<table class='list'>
-	<thead>
-	<tr><th>Name</th>
-	<th>UserID</th>
-	<th>Access</th>
-	<th>Change Access</th>
-	<th id='deletebox' style='display:none'>Delete</th>
-    <th id='resetbox' style='display:none'>Reset password</th>
-	</tr>
-	</thead>
-    <tbody>
-		<tr>
-			<td>Loading...</td>
-		</tr>
-	</tbody>
-	</table>
-
-		<input id="hide" type="button" value="Back" class="submit-button" onclick="javascript:studentDelete('hide');"/>
-		<input id="show" type="button" value="Edit" class="submit-button" onclick="javascript:studentDelete('show');"/>
-		<input id="deletebutton" class="submit-button" style='display:none' value="Delete" name="delete"/>
+		<table class='list'>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>UserID</th>
+					<th>Access</th>
+					<th>Change Access</th>
+					<th id='deletebox'>Delete</th>
+					<th id='resetbox'>Reset password</th>
+				</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Loading...</td>
+			</tr>
+		</tbody>
+		</table>
+		<input id="deletebutton" class="submit-button" value="Delete" name="delete" type="button" />
 
 
-		<?php
-        
- 	    /* Removed this and made it into Ajax-call
-		if (isset($_POST['delete'])) {
-
-			if(!empty($_POST['checkbox'])) {
-   				foreach($_POST['checkbox'] as $check) {
-	    			$pdo->query( "DELETE FROM user_course WHERE uid='$check'" );
-   				}
-			}
-		}
-        */
-		?>
 		</form>
 		</div>
 
