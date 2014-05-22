@@ -2,7 +2,7 @@ function pagination() {
 	this.items = [];
 	// Amount of cells in a row
 	this.cells = 6;
-	this.show_per_page = 5;
+	this.show_per_page = 10;
 	
 	this.number_of_items = 0;
 	this.number_of_pages = 0;
@@ -149,8 +149,8 @@ function getResults(pagination) {
 				pagination.number_of_pages = Math.ceil(pagination.number_of_items/pagination.show_per_page);
 				if (pagination.number_of_pages > 1) {
 					$('#content').append("<div id='pages'></div>");
+					pagination.renderPages();
 				}
-				pagination.renderPages();
 			}
 		}
 	});
