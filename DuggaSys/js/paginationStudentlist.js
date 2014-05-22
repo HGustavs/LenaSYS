@@ -137,14 +137,14 @@ function pagination() {
 	}
 }
 
-function getResults(pagination) {
+function getResults(pagination, course) {
 	$.ajax({
 		dataType: 'json',
 		async: false,
 		url: 'ajax/studentlist_results.php',
 		method: 'post',
 		data: {
-			'courseid': 1,
+			'courseid': course,
 		},
 		success: function(data) {
 			if (data == "No access") {

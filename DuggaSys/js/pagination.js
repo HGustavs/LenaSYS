@@ -137,9 +137,7 @@ function getResults(pagination) {
 		async: false,
 		url: 'ajax/user_results.php',
 		method: 'post',
-		data: {
-			'courseid': 1,
-		},
+		data: {},
 		success: function(data) {
 			if (data == "No access") {
 				changeURL('noid');

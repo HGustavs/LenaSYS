@@ -14,7 +14,8 @@
 <script type="text/javascript" src="js/paginationStudentlist.js"></script>
 <script type="text/javascript">page.title("Student list");</script>
 <script type="test/javascript">
+	var course = <?php echo ($_POST['courseid'] ? $_POST['courseid'] : '1'); ?>;
 	pagination = new pagination();
-	getResults(pagination);
+	getResults(pagination, course);
 	pagination.showContent();
 </script>
