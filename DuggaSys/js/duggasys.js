@@ -348,6 +348,9 @@ function passPopUp(){
 		console.log(returnedData);
 		showPopUp('show', returnedData)
 		},
+		error: function(){
+			dangerBox('Problems adding students', 'Could not add the students from the course. Make sure you add at least one student.');
+		},
 	});
 	}
 

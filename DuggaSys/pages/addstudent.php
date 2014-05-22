@@ -11,7 +11,7 @@ if(checklogin()) {
 		<script type="text/javascript" src="js/duggasys.js"></script>
 		<script>		
 		qs = getUrlVars();
-		page.title(qs.name);
+		page.title(qs.name + " - Add students");
 		</script>
 	</head>
 <body>
