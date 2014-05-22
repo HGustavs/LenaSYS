@@ -259,7 +259,6 @@ function imagerecorder(canvas)
 					mHeight = (rect.bottom - rect.top);
 					mWidth = (rect.right-rect.left);
 					
-					addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
 					canvas.width = mWidth;
 					canvas.height = mHeight; 
 					imgrecorder.maxCanvasWidth = mWidth;
@@ -494,6 +493,9 @@ function imagerecorder(canvas)
 		}else{
 			setCanvasHeight("100%");
 		}
+		addTimestep('\n<recordedCanvasSize x="' + getCanvasWidth() + '" y="' + getCanvasHeight() + '"/>');
+
+		
 	}
 	function setCanvasWidth(width) {
 		$("#" + imageCanvas).width(width);
