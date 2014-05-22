@@ -1,15 +1,15 @@
 function pagination() {
-	var items = [];
+	this.items = [];
 	// Amount of cells in a row
-	var cells = 5;
-	var show_per_page = 5;
+	this.cells = 6;
+	this.show_per_page = 5;
 	
-	var number_of_items = 0;
-	var number_of_pages = 0;
+	this.number_of_items = 0;
+	this.number_of_pages = 0;
 	
-	var max_pages = 5;
+	this.max_pages = 5;
 	
-	var currentPage = 0;
+	this.currentPage = 0;
 	
 	this.renderPages = function() {
 		$('#pages').empty();
@@ -22,9 +22,10 @@ function pagination() {
 			maxRange += diff;
 		}
 		
-		if (this.currentPage + 1 == this.number_of_pages) {
+		if (this.currentPage + 1 >= this.max_pages) {
 			$('#pages').append("<div class='page' onClick='pagination.goToPage("+0+")'>First page</div>");
 		}
+		
 		$('#pages').append("<div class='page' onClick='pagination.previous()'>Previous</div>");
 		
 		for (i = minRange; i <= maxRange; i++) {
@@ -39,7 +40,7 @@ function pagination() {
 			}
 		}
 		$('#pages').append("<div class='page' onClick='pagination.next()'>Next</div>");
-		if (this.max_pages < this.number_of_pages) {
+		if (this.max_pages < this.number_of_pages && this.currentPage + 1 != this.number_of_pages) {
 			$('#pages').append("<div class='page' onClick='pagination.goToPage("+(this.number_of_pages-1)+")'>Last page</div>");
 		}
 	}
@@ -73,13 +74,14 @@ function pagination() {
 				if (this.items.entries[i]) {
 					// Insert row below <th>
 					var row = table.insertRow(i % this.show_per_page + 1);
-					
-					if (parseInt(this.items.entries[i]["grade"]) >= 3) {
+					if (this.items.entries[i]["expired"]) {
+						row.className = "yellow";
+					} else if (parseInt(this.items.entries[i]["grade"]) >= 3) {
 						row.className = "green";
 					} else if (parseInt(this.items.entries[i]["grade"]) < 3) {
 						row.className = "red";
 					}
-					for (j = 0; j < cells; j++) {
+					for (j = 0; j < this.cells; j++) {
 						var cell = row.insertCell(j);
 						switch (j) {
 							case 0:
@@ -95,6 +97,9 @@ function pagination() {
 								cell.innerHTML = this.items.entries[i]["submitted"];
 								break;
 							case 4:
+								cell.innerHTML = this.items.entries[i]["deadline"];
+								break;
+							case 5:
 								if (parseInt(this.items.entries[i]["grade"]) >= 3) {
 									cell.innerHTML = this.items.entries[i]["grade"];
 								} else if (parseInt(this.items.entries[i]["grade"]) < 3) {
@@ -141,10 +146,6 @@ function getResults(pagination) {
 			} else {
 				pagination.items = data;
 				pagination.number_of_items = pagination.items.entries.length;
-				pagination.cells = 5;
-				pagination.max_pages = 5;
-				pagination.show_per_page = 5;
-				pagination.currentPage = 0;
 				pagination.number_of_pages = Math.ceil(pagination.number_of_items/pagination.show_per_page);
 				if (pagination.number_of_pages > 1) {
 					$('#content').append("<div id='pages'></div>");
