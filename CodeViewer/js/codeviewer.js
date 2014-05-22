@@ -1683,13 +1683,13 @@ function disableResponsive(command)
 
     if(command != "" || command != null){
 
-        if(command === "on"){
+        if(command === "no"){
             //enable responsive css - Not currently used
             changeCSS("css/responsive.css", 3);
 
         }
 
-        else if(command === "off"){
+        else if(command === "yes"){
             //disable responsive css
             changeCSS("css/blank.css", 3);
 

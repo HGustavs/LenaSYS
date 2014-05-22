@@ -838,48 +838,7 @@ a {
 	padding-left: 4px !important;
 }
 
-@media only screen and (max-width: 1100px){
-     .showmobile{
-        display: table-cell;
-    }
-    .showdesktop{
-        display: none;
-    }
-    #exampleSection{
-        display: none;
-    }
-    .boxwrapper{
-    	border:none !important;
-    }
-    .deactivatedbox{
-    	height: 25px !important;
-    	border-bottom: 1px solid #8C8C8C !important; 
-    }
-    .activebox{
-    	height: -moz-calc(100.0%) !important;
-        height: -webkit-calc(100.0%) !important;
-    }
-    /* Template boxes behaviour for mobile version  START*/
-    .buttomenu2{
-  		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
-  		color: #5D5D5D !important;
-  		height: 25px;
-  	}
-  	.deactivatedbox *{
-  		padding: 0px !important;
-  	}
-  	/* Change background image */
-    .activebox .buttomenu2{
-    	background: url("../new icons/tab_button_down.svg") no-repeat right #938C8C;
-		background-size: 20px 20px !important;
-    }
-  	.deactivatedbox .buttomenu2{
-  		background: url("../new icons/tab_button.svg") no-repeat right #5A5757;
-  		background-size: 20px 20px !important;
-  	}
-	 /* Template boxes behaviour for mobile version  STOP*/
 
-}
 
 
 

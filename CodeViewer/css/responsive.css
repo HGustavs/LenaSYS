@@ -41,4 +41,35 @@
         background-size: 20px 20px !important;
     }
     /* Template boxes behaviour for mobile version  STOP*/
+
+    #box1wrapper{
+        position: relative;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        width: -moz-calc(100.0%);
+        width: -webkit-calc(100.0%);
+    }
+    #box2wrapper {
+        position: relative;
+        top: 0px;
+        width: -moz-calc(100.0%);
+        width: -webkit-calc(100.0%);
+
+    }
+    #box3wrapper {
+        position: relative;
+        top: 0px;
+        width: -moz-calc(100.0%);
+        width: -webkit-calc(100.0%);
+
+    }
+    #box4wrapper {
+        position: relative;
+        top: 0px;
+        width: -moz-calc(100.0%);
+        width: -webkit-calc(100.0%);
+
+    }
+
 }
