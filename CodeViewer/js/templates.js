@@ -470,9 +470,11 @@ function returned(data)
 		}
 		
 		//Disable editing in mobile version
-		if($(window).width() <=1100){
-			 $("*[contenteditable]").attr("contenteditable","false"); 
+		var	hotdog = document.getElementById("hidehotdog");
+		var	isDesktop = $(hotdog).is(":hidden");
+		if(isDesktop){
+			 $("*[contenteditable]").attr("contenteditable","true"); 
 		}else{ 
-			$("*[contenteditable]").attr("contenteditable","true"); 
+			$("*[contenteditable]").attr("contenteditable","false"); 
 		}
 }
