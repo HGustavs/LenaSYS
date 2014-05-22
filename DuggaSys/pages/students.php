@@ -100,7 +100,7 @@ if(checklogin()) {
 		<table class='list'>
 			<thead>
 				<tr>
-					<th>Name</th>
+					<th>Username</th>
 					<th>Firstname</th>
 					<th>Lastname</th>
 					<th>Access</th>
