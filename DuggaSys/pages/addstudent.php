@@ -24,7 +24,7 @@ if(checklogin()) {
 			<textarea placeholder="SSN		Name		email" name="string" id="string" class="addstudent"></textarea>
 			<br>
 			<input type="button" value="Add students" class="submit-button" onclick="passPopUp();"/>
-			<button onclick="historyBack();">Back</button>
+			<button onclick="changeURL('students?courseid=' + qs.courseid + '&name=' + qs.name)">Back</button>
 		</form>
 	<div id="light" class="white_content">
 	</div>
