@@ -33,8 +33,8 @@ if(checklogin()) {
 			 if (sessName!=this.username) {
 
 		      output += "<tr><td>"+this.username+"</td>";
-			  output += "<td>"+this.firstname+"</td>";
-			  output += "<td>"+this.lastname+"</td>";
+			  output += "<td>"+(this.firstname != null ? this.firstname : '')+"</td>";
+			  output += "<td>"+(this.lastname != null ? this.lastname : '')+"</td>";
 			  output += "<td>"+access+"</td>";
 			  output += "<td>";
 			  output += "<form id='accesschange'>";
