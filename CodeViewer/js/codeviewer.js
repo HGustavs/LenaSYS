@@ -1176,165 +1176,188 @@ while (c) {		// c == first character in each word
 function rendercode(codestring,boxid)
 {
     var destinationdiv = "box" + boxid;
-		tokens = [];
-		
-		important = [];
-		for(var i=0;i<retdata.impwords.length;i++){
-				important.push(retdata.impwords[i]);		
+	tokens = [];
+	
+	important = [];
+	for(var i=0;i<retdata.impwords.length;i++){
+		important.push(retdata.impwords[i]);		
+	}
+
+	keywords=[];
+	for(var i=0;i<retdata.wordlist.length;i++){
+		if(retdata.wordlist[i][0]==retdata.chosenwordlist){
+			temp=[retdata.wordlist[i][1],retdata.wordlist[i][2]];
+			keywords.push(temp);
 		}
+	}			
 
-		keywords=[];
-		for(var i=0;i<retdata.wordlist.length;i++){
-				if(retdata.wordlist[i][0]==retdata.chosenwordlist){
-					temp=[retdata.wordlist[i][1],retdata.wordlist[i][2]];
-						keywords.push(temp);
+	improws=[];
+	for(var i=0;i<retdata.improws.length;i++){
+        if ((retdata['improws'][i][0]) == boxid){
+       		improws.push(retdata.improws[i]);
+		}
+	}
+	tokenize(codestring,"<>+-&","=>&:");
+			
+	// Iterate over token objects and print kind of each token and token type in window 
+	printout=document.getElementById(destinationdiv);
+	str="";
+	cont="";
+
+	lineno=0;
+	
+	str+="<div class='normtextwrapper'>";
+	
+	
+	pcount=0;
+	parenthesis=new Array();
+	bcount=0;
+	bracket=new Array();
+	cbcount=0;
+	cbracket=new Array();
+
+	pid="";
+	
+	var iwcounter=0;
+	
+	for(i=0;i<tokens.length;i++){
+			
+		tokenvalue=String(tokens[i].val);
+			
+		// Make white space characters
+		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
+		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
+			
+		if(tokens[i].kind=="rowcomment"){
+			cont+="<span class='comment'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="blockcomment"){
+			cont+="<span class='comment'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="string"){
+			cont+="<span class='string'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="number"){
+			cont+="<span class='number'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="name"){
+			var foundkey=0;
+					
+			for(var ind in keywords){
+				word=keywords[ind][0];
+				label=keywords[ind][1]
+				if(word==tokenvalue){
+					foundkey=1;
+					break;		
 				}
-		}			
+			}								
+					
+			for(var ind in important){
+				word=important[ind];
+				if(word==tokenvalue){
+					foundkey=2;
+					break;		
+				}
+			}
+					
+			if(foundkey==1){
+				cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
+			}else if(foundkey==2){
+				iwcounter++;
+							
+				highlightKeyword("scrollTop")
+							
+				cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
+			}else{
+				cont+=tokenvalue;
+			}
+					
+		}else if(tokens[i].kind=="operator"){
+			if(tokenvalue=="("){
+				pid="PA"+pcount;
+				pcount++;
+				parenthesis.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue==")"){
+				pid=parenthesis.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}else if(tokenvalue=="["){
+				pid="BR"+bcount;
+				bcount++;
+				bracket.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue=="]"){
+				pid=bracket.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}else if(tokenvalue=="{"){
+				pid="CBR"+cbcount;
+					cbcount++;
+					cbracket.push(pid);
+					cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+				}else if(tokenvalue=="}"){
+					pid=cbracket.pop();
+					cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+				}else{
+					cont+="<span class='oper'>"+tokenvalue+"</span>";										
+				}
+		}else{
+			cont+=tokenvalue;
+		}
+				// tokens.length-1 so the last line will be printed out
+		if(tokens[i].kind=="newline" || i==tokens.length-1){  
+			// Prevent empty lines to be printed out
+			if(cont != ""){
+				
+				// count how many linenumbers that'll be needed
+				lineno++;
 
-		improws=[];
-		for(var i=0;i<retdata.improws.length;i++){
-            if ((retdata['improws'][i][0]) == boxid){
-            	improws.push(retdata.improws[i]);
+			// Print out normal rows if no important exists
+				if(improws.length==0){
+					str+="<div class='normtext'>";
+				}else{	
+					// Print out important lines
+					for(var kp=0;kp<improws.length;kp++){
+						if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
+							str+="<div class='impo'>";
+							break;
+						}else{
+							str+="<div class='normtext'>";
+						}						
+					}
+				}	
+				str+=cont+"</div>";
+				cont="";
+			}	
+		}
+	}
+	str+="</div>";
+		
+		// Print out rendered code and border with numbers
+	printout.innerHTML = createCodeborder(lineno,improws) + str;
+		
+	linenumbers();
+}
+
+// function to create a border with line numbers
+function createCodeborder(lineno,improws){
+	
+	var str="<div class='codeborder'>";
+	for(var i=1; i<=lineno; i++){
+		// Print out normal numbers
+		if(improws.length ==0){
+			str+="<div class='no'>"+(i)+"</div>";	
+		}else{
+			// Print out numbers for an important row
+			for(var kp=0;kp<improws.length;kp++){
+				if(i>=parseInt(improws[kp][1])&&i<=parseInt(improws[kp][2])){
+					str+="<div class='impono'>"+(i)+"</div>";	
+					break;
+				}else{
+					str+="<div class='no'>"+(i)+"</div>";
+				}						
 			}
 		}
-		tokenize(codestring,"<>+-&","=>&:");
-				
-		// Iterate over token objects and print kind of each token and token type in window 
-		printout=document.getElementById(destinationdiv);
-		str="";
-		cont="";
-
-		lineno=0;
-		str+="<div class='normtext'>";
-		
-		pcount=0;
-		parenthesis=new Array();
-		bcount=0;
-		bracket=new Array();
-		cbcount=0;
-		cbracket=new Array();
-
-		pid="";
-		
-		var iwcounter=0;
-		
-		for(i=0;i<tokens.length;i++){
-				
-				tokenvalue=String(tokens[i].val);
-				
-				// Make white space characters
-				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
-				tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
-				
-				if(tokens[i].kind=="rowcomment"){
-						cont+="<span class='comment'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="blockcomment"){
-						cont+="<span class='comment'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="string"){
-						cont+="<span class='string'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="number"){
-						cont+="<span class='number'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="name"){
-						var foundkey=0;
-						
-						for(var ind in keywords){
-								word=keywords[ind][0];
-								label=keywords[ind][1]
-								if(word==tokenvalue){
-										foundkey=1;
-										break;		
-								}
-						}								
-						
-						for(var ind in important){
-								word=important[ind];
-								if(word==tokenvalue){
-										foundkey=2;
-										break;		
-								}
-						}
-						
-						if(foundkey==1){
-								cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
-						}else if(foundkey==2){
-								iwcounter++;
-								
-								highlightKeyword("scrollTop")
-								
-								cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
-						}else{
-								cont+=tokenvalue;
-						}
-						
-				}else if(tokens[i].kind=="operator"){
-						if(tokenvalue=="("){
-								pid="PA"+pcount;
-								pcount++;
-								parenthesis.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue==")"){
-								pid=parenthesis.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else if(tokenvalue=="["){
-								pid="BR"+bcount;
-								bcount++;
-								bracket.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue=="]"){
-								pid=bracket.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else if(tokenvalue=="{"){
-								pid="CBR"+cbcount;
-								cbcount++;
-								cbracket.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue=="}"){
-								pid=cbracket.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else{
-								cont+="<span class='oper'>"+tokenvalue+"</span>";										
-						}
-				}else{
-						cont+=tokenvalue;
-				}
-						// tokens.length-1 so the last line will be printed out
-				if(tokens[i].kind=="newline" || i==tokens.length-1){  
-					// Prevent empty lines to be printed out
-					if(cont != ""){
-						lineno++;
-
-						// Make line number		
-						num="<div class='no'>"+lineno+"</div>";								
-				/*		if(lineno<10){
-								num="<div class='no'>"+lineno+"</div>";
-						}else if(lineno>=10 && lineno<100){
-								num="<div class='no'>"+lineno+"</div>";
-						}else{
-								num="<div class='no'>"+lineno+"</div>";
-						}
-				*/		
-						if(improws.length==0){
-								str+="<div class='normtext'>";
-						}else{
-								for(var kp=0;kp<improws.length;kp++){
-										if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
-												str+="<div class='impo'>";
-												break;
-										}else{
-												str+="<div class='normtext'>";
-										}						
-								}
-						}	
-						str+=num+cont;
-						cont="";
-						str+="</div>";	
-					}					
-				}
-		}
-		str+="</div><div class='normtextend no'></div>";	
-		printout.innerHTML=str;
-		linenumbers();
+	}
+	str+="</div>";
+	return str;
 }
+
 function renderdesccode(codestring){
 	tokens = [];
 
@@ -1464,18 +1487,18 @@ function linenumbers()
 	if(localStorage.getItem("linenumbers") == "false"){	
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg'); 
 		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton2.svg');
-		$( ".no" ).css("display","none");	
+		$( ".codeborder" ).css("display","none");	
 	}
 }
 function fadelinenumbers()
 {
-	if ( $( ".no" ).is( ":hidden" ) ) {
-		$( ".no" ).fadeIn( "slow" );
+	if ( $( ".codeborder" ).is( ":hidden" ) ) {
+		$( ".codeborder" ).fadeIn( "slow" );
 		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton.svg');
 		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
-		$( ".no" ).fadeOut("slow");
+		$( ".codeborder" ).fadeOut("slow");
 		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton2.svg');
 		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
@@ -1773,7 +1796,8 @@ $(window).resize(function() {
 	}
 	
 })
-//Creating a extra box under codelines.
+//Creating a extra box under codelines. 
+/*
 $(window).resize(function() {
 	var textbottom = $(".normtextend").offset();
 	var windowHeight = $(window).height();
@@ -1784,9 +1808,10 @@ $(window).resize(function() {
 		$(".normtextend").css("height", objectheight);
 	}
 });
+*/
 
 $(document).ajaxStop(function () {
-	var textbottom = $(".normtextend").offset();
+	/*var textbottom = $(".normtextend").offset();
 	var windowHeight = $(window).height();
 	var objectheight = windowHeight-textbottom.top-2;
 	if (objectheight<1) {
@@ -1794,5 +1819,5 @@ $(document).ajaxStop(function () {
 	} else {
 		$(".normtextend").css("height", objectheight);
 	}
+*/
 });
-
