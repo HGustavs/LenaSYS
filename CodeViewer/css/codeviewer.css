@@ -38,7 +38,32 @@
 
 
 /* --- */
+/* BOXMENU STYLING START */
+.buttomenu2{
+	position: absolute;
+    top:0px;
+    width: -moz-calc(100%);
+    width: -webkit-calc(100%);
+    margin: 0;
+}
+.buttomenu2 table td img{
+	height: 25px;
+	width: 25px;
+}
+.buttomenu2 select{
+	top: 0px;
+   	bottom:0px;
+   	width: 150px;
+   	margin:0px;
+   	padding: 3px;
+   	-webkit-appearance: none;
+   	-moz-appearance: none;
+   	text-overflow: '';
+   	text-indent: 1px;
+   	outline: none;
+}
 
+/* BOXMENU STYLING STOP */
 
 #buttomenu {
     width: 100%;
@@ -114,7 +139,6 @@
     font-weight: normal;
     padding: 4px;
 }
-
 /* Extra spaces */
 .buttospacer {
     width: 20px;
@@ -238,6 +262,7 @@
     background: rgb(0, 0, 0) transparent;*/
 	padding-left:7px;
 	border-color: rgb(0,0,0) transparent;
+    min-width: 270px;
 }
 
 /* Different themes */
@@ -663,7 +688,6 @@ a {
     text-decoration: none;
     text-transform: uppercase;
     z-index: 10000;
-    /*box-shadow: 0 0 3px black;*/
 }
 .arrow {
     width: 70px;
@@ -812,18 +836,54 @@ a {
 .descbox{
 	padding-top: 4px !important;
 	padding-left: 4px !important;
+}
+
+@media only screen and (max-width: 1100px){
+     .showmobile{
+        display: table-cell;
+    }
+    .showdesktop{
+        display: none;
+    }
+    #exampleSection{
+        display: none;
+    }
+    .boxwrapper{
+    	border:none !important;
+    }
+    .deactivatedbox{
+    	height: 25px !important;
+    	border-bottom: 1px solid #8C8C8C !important; 
+    }
+    .activebox{
+    	height: -moz-calc(100.0%) !important;
+        height: -webkit-calc(100.0%) !important;
+    }
+    /* Template boxes behaviour for mobile version  START*/
+    .buttomenu2{
+  		background: url("../new icons/tab_button.svg") no-repeat right #B5B5B5;
+  		color: #5D5D5D !important;
+  		height: 25px;
+  	}
+  	.deactivatedbox *{
+  		padding: 0px !important;
+  	}
+  	/* Change background image */
+    .activebox .buttomenu2{
+    	background: url("../new icons/tab_button_down.svg") no-repeat right #938C8C;
+		background-size: 20px 20px !important;
+    }
+  	.deactivatedbox .buttomenu2{
+  		background: url("../new icons/tab_button.svg") no-repeat right #5A5757;
+  		background-size: 20px 20px !important;
+  	}
+	 /* Template boxes behaviour for mobile version  STOP*/
 
 }
 
 
 
-
-
-
-
-
-
-
+/* USER FEEDBACK BOX ---> START  */
 
 .alert.success {
 	background-color:#DFF0D8;
@@ -876,8 +936,7 @@ a {
   position: relative;
 }
 
-
-
+/* USER FEEDBACK BOX ---> STOP*/
 
 
 

@@ -84,9 +84,6 @@ function styleHeader()
 		}
 	}
 	document.execCommand("insertHTML", false, "<h1>"+range+"</h1>");
-	
-	/* This solution sets heading on the whole row*/
-//    document.execCommand('formatBlock', false, "H1");
 }
 
 
@@ -1781,13 +1778,21 @@ $(window).resize(function() {
 	var textbottom = $(".normtextend").offset();
 	var windowHeight = $(window).height();
 	var objectheight = windowHeight-textbottom.top-2;
-	$(".normtextend").css("height", objectheight);
+	if (objectheight<1) {
+		$(".normtextend").css("height", "0");
+	} else {
+		$(".normtextend").css("height", objectheight);
+	}
 });
 
 $(document).ajaxStop(function () {
 	var textbottom = $(".normtextend").offset();
 	var windowHeight = $(window).height();
 	var objectheight = windowHeight-textbottom.top-2;
-	$(".normtextend").css("height", objectheight);
+	if (objectheight<1) {
+		$(".normtextend").css("height", "0");
+	} else {
+		$(".normtextend").css("height", objectheight);
+	}
 });
 
