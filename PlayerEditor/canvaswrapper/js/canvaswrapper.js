@@ -16,8 +16,22 @@
 			
 			$.ajax({
 				type: 'POST',
+				dataType: "json",
 				url: 'logfile.php',
-				data: { string: str + "</script>" }
+				data: { string: str + "</script>" },
+				
+				success: function(data) {
+					// script ran successfully
+					if(typeof data.SUCCESS !== "undefined") {
+						$("body").append("<div style='position:absolute;right:5px;top:65px;'><a href='../canvasrenderer/canvasrenderer.php?file=" + data.SUCCESS + "' target='_blank'>Go to playback</a></div>");
+					}
+					else {
+						alert(data.ERROR);
+					}
+				},
+				error: function(data) {
+					alert("Error on AJAX call");
+				}
 			});
 		});
 		

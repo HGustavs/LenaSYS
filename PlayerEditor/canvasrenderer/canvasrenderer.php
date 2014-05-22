@@ -1,4 +1,5 @@
 <?php
+	// Load imageRecordings from database
 	if(isset($_GET['lib'])) {
 	
 		$lib = $_GET['lib'];
@@ -15,8 +16,11 @@
 		
 		$result = $stmt->fetch();
 		
-		$xmlpath = $result["path"];
-		
+		$xmlpath = $result["path"];	
+	}
+	// Load .xml file
+	elseif(isset($_GET['file'])) {
+		$xmlpath = "libs/canvas/".$_GET['file'].".xml";
 	}
 ?>
 <!DOCTYPE html>
@@ -24,7 +28,7 @@
 <head>
 <meta charset="utf-8" />
 <title>Untitled Document</title>
-<link rel="stylesheet" type="text/css" href="design.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <script src="js/canvasrenderer.js"></script>
 <script language="javascript" src="../js/jquery-1.11.0.min.js"></script>
 <script>
