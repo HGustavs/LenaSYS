@@ -301,7 +301,7 @@ $(function() {
                 $('td:nth-child(6)').show();                
        });
        $("#deletebutton").on('click',function(){
-           deleteStudent();
+           warningBox('Confirm removal', 'Are you sure you want to remove the selected students from the current course?', 0, deleteStudent);
        });
        $("#resetbox input").on('click',function(){
            resetPassword();
