@@ -7,7 +7,6 @@ if(checklogin()) {
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/duggasys.js"></script>
 		<script>		
 		qs = getUrlVars();
@@ -19,8 +18,16 @@ if(checklogin()) {
 	var qs = getUrlVars();
 	</script>
 		<form action="" method="post">
-			Add students
-			<br>
+			<h3>Add students</h3>
+			<p>Paste the student information into the text area below to add them to 
+				the current course.</p> 
+<p style="tab-size: 9; white-space: pre-wrap">
+The format required for the student information is the following:
+<strong>SSN&lt;TAB&gt;NAME&lt;TAB&gt;EMAIL</strong>
+e.g.:
+<strong>000000-0000	LastName, FirstName	a12firla@student.his.se</strong>
+</p>
+				
 			<textarea placeholder="SSN		Name		email" name="string" id="string" class="addstudent"></textarea>
 			<br>
 			<input type="button" value="Add students" class="submit-button" onclick="passPopUp();"/>

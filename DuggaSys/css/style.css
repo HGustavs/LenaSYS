@@ -63,6 +63,15 @@ a#section-list {
 	color:#434343;
 	text-decoration:none;
 }
+
+strong {
+	font-weight: bold;
+}
+
+p {
+	margin: .5em auto .5em auto;
+}
+
 header {
     overflow: hidden;
     color: #fff;
