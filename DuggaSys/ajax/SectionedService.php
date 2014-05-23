@@ -86,9 +86,23 @@
 							}
 						} else if ($kind == 3) {
 							if ($testdugga == "-1") {
-								// Insert new test
+								$stmt = $pdo->prepare("INSERT INTO quiz (cid, name) VALUES(:cid, :name)");
+								$stmt->bindParam(':cid', $courseid);
+								$stmt->bindParam(':name', $sectname);
+								if(!$stmt->execute()) {
+									// TODO: Remove these debug prints
+									print_r($stmt->errorInfo());
+								} else {
+									// Get example id
+									$eidq = $pdo->query("SELECT LAST_INSERT_ID() as quiz_id");
+									$eidq->execute();
+									$eid = $eidq->fetch(PDO::FETCH_NUM);
+									$quiz_id = $eid[0];
+									$link = "quiz/menu?quizid=".$quiz_id."&courseid=".$courseid;
+								}
 							} else {
-								$link = "startDugga?duggaid=".$testdugga."&courseid=".$courseid;
+								//$link = "startDugga?duggaid=".$testdugga."&courseid=".$courseid;
+								$link = "quiz/menu?quizid=".$testdugga."&courseid=".$courseid;
 							}
 						}
 						$query->bindParam(':link', $link);

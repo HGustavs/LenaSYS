@@ -8,6 +8,7 @@ function Canvasrenderer()
 	this.finished=0;
 	this.repeat=0;
 	this.playafterwind=0;
+	this.firsttime = 1;
 	// Array of all delayed timesteps
 	this.runningTimesteps = new Array();
 	// The number of valid timesteps
@@ -37,11 +38,15 @@ function Canvasrenderer()
 	this.recordedCanvasWidth;
 	this.recordedCanvasHeight;
 	this.recordedScaleRatio = 1;
-    this.mouseInterpolation = true; 
+	this.recordedMouseFPSValue = 0;
+    	this.mouseInterpolation = true; 
     	this.downscaled = false;
 	this.mImageData;
 	this.currentPicture = null;
 	this.preloadImages = new Array();
+	this.currentPictureWidth;
+	this.currentPictureHeight;
+	this.currentFile;
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -51,7 +56,7 @@ function Canvasrenderer()
 			  // code for IE6, IE5
 			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		  
+		this.currentFile = file;  
 		// Open XML
 		xmlhttp.open("GET",file,false);
 		xmlhttp.send();
@@ -62,8 +67,13 @@ function Canvasrenderer()
 
 		this.preloadImages();
 		
+		// Print "Click to play" image
+		this.picture("images/firstpic.png");
+		
 		this.scheduleTimesteps();
 	}
+	
+	
 	
 	// List of all valid canvas functions
 	// No other operation in the XML should be possible to run
@@ -77,13 +87,23 @@ function Canvasrenderer()
 								'st_lC', 'state_lineCap', 'st_lJ', 'state_lineJoin', 'st_lW', 'state_lineWidth', 'st_miterLimit', 'state_miterLimit', 'st_font', 
 								'state_font', 'st_txtAlign', 'state_textAlign', 'st_txtBaseline', 'state_textBaseline', 'st_w', 'state_width', 'st_h', 'state_height', 
 								'st_data', 'state_data', 'st_gA', 'state_globalAlpha', 'st_gCO', 'state_globalCompositeOperation', 'canvasSize',
-								'mousemove', 'mouseclick', 'picture', 'recordedCanvasSize', 'imageData'];
+								'mousemove', 'mouseclick', 'picture', 'recordedCanvasSize', 'imageData', 'recordedMouseFPS'];
 	
 	$(document).ready(function(){
 		$(window).on('resize', function(){
 			// Scale ratio update (for correct mouse positions)
 			canvas.picture(canvas.currentPicture);
-		});	
+		});
+		
+		$("#Canvas").click(function() {
+			canvas.switch();
+		});
+		
+		$("#Canvas").mouseover(function() {
+			$(this).css({
+				"cursor": "pointer"
+			});
+		});
 
 
 	});
@@ -107,6 +127,11 @@ function Canvasrenderer()
 	// Play canvas
 	this.play = function()
 	{
+		// First time running - clear welcome image.
+		if(this.firsttime == 1) {
+			ctx.clearRect(0, 0, c.width, c.height);
+			this.firsttime = 0;
+		}
 		this.startTime = Date.now();
 		// Only play if we have a document
 		if(this.timesteps!=null){
@@ -158,8 +183,7 @@ function Canvasrenderer()
 		this.runningTimesteps = [];
 
 		// Reload timesteps
-		this.scheduleTimesteps();
-
+		this.loadXML(this.currentFile);		
 		this.finished = 0;
 	}
 
@@ -242,12 +266,12 @@ function Canvasrenderer()
 		Elements = [].slice.call(this.timestepElements);
 
 		this.timesteps = Elements.length;
-      		if(this.mouseInterpolation){
-      		      Elements = this.interpolateMousePositions(Elements, 30);
- 	        }
-			// Step through timesteps
+		// Interpolate mouse positions
+		if(this.mouseInterpolation){
+			Elements = this.interpolateMousePositions(Elements, 60);
+		}
+		// Step through timesteps
 		for(i = 0; i < Elements.length; i++){
-
 			// Check for elements
 			if(Elements[i]){
 				// Fetch delay
@@ -276,25 +300,25 @@ function Canvasrenderer()
 	**/
 	this.interpolateMousePositions = function(nodes, FPS){
 		if(FPS < 0) return nodes;
+		if(FPS < this.recordedMouseFPSValue) return nodes;
 		var retnodes = [];
 		var currentX = null;
 		var currentY = null;
-		
+		var currentDelay = 0;
 		for(j = 0; j < nodes.length; ++j){
-			
 			childNode = [].slice.call(nodes[j].childNodes, 0); 
-        		currentDelay = parseInt(nodes[j].getAttribute("delay"));
-            		if (currentDelay <= 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
-                		retnodes.push(nodes[j]);
-                		continue; 
-            		} 
+			currentDelay = parseInt(nodes[j].getAttribute("delay"));
+
+			if (currentDelay <= 1000.0/ FPS){	// If delay is smaller than the targeted delay we skip this timestep completely 
+				retnodes.push(nodes[j]);
+				continue; 
+			} 
+
 			var multiple = currentDelay / (1000/FPS);		
 			var delay = currentDelay/multiple;			// The delay in milliseconds 
 			var amount = Math.floor(currentDelay/ delay);		// Number of new positions that should be added 
 			var rest = nodes[j].getAttribute("delay")%multiple;	 
 			var hasChanged = false;
-			//nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
-          		
 			for(a = 0; a < childNode.length; ++a){
 				if(childNode[a].nodeName == "mousemove"){
 					
@@ -305,22 +329,24 @@ function Canvasrenderer()
 						// Add as many mousemove tags as needed
 						for(i = 0; i < amount; i++){
 							var iNode = nodes[j].cloneNode(true);
-                      		// The interpolated position is calculated and added to the new node
-							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - i*((currentX - newX) / multiple)) );
-							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - i*((currentY - newY) / multiple)) );
+							iNode.childNodes[a].nodeName = "mousemove";
+
+                      					// The interpolated position is calculated and added to the new node
+							iNode.childNodes[a].setAttribute("x", parseFloat(currentX - (amount-i)*((currentX - newX) / multiple)) );
+							iNode.childNodes[a].setAttribute("y", parseFloat(currentY - (amount-i)*((currentY - newY) / multiple)) );
 							iNode.setAttribute("delay", delay);	
 							retnodes.push(iNode);	// Adding the newly created node 
 						    currentX = newX;
 						    currentY = newY;
 						}
 					}
-					else{
+					else{	// If currentX and currentY is null we simply assign the values of the first mousemove position.
 						currentX = newX;
 						currentY = newY;
 					}
 				}
 			}
-		if(hasChanged){
+		if(hasChanged){	// If we added any extra timesteps, we need to change the delay on the original timestep as well
 			nodes[j].setAttribute("delay", delay+rest)	// Add any rest value to the first timestep
 		}
           	retnodes.push(nodes[j]);	
@@ -335,16 +361,16 @@ function Canvasrenderer()
 	}
 	/**
 	 * This function removes all function calls from the XML
-	 * that are not found in the valid functions-list
+	 * that are not found in the "valid functions"-list
 	 **/
 	this.removeNonvalidCalls = function(nodes){
 		var retnodes = new Array();
 		for(a = 0; a < nodes.length; ++a){
 			if(validFunctions.indexOf(nodes[a].nodeName) >= 0) { retnodes.push(nodes[a]); }
-			else { console.log("removed call: " + nodes[a].nodeName ); }
 		}
 		return retnodes;
 	}
+
 	// Execute timestep nodes
 	this.executeTimestep = function(nodes){
 		// Step through nodes
@@ -421,7 +447,6 @@ function Canvasrenderer()
 										node.attributes.item(8).nodeValue);
 				break;
 			}
-
 		}
 		
 		this.fDelta = Date.now() - this.fDelta;
@@ -532,7 +557,7 @@ function Canvasrenderer()
 	this.createRadialGradient = function(x, y,r, x1,y1,r1){   
 	    ctx.createRadialGradient(x, y,r, x1,y1,r1);
 	}	
-		// Rectangle functions
+	// Rectangle functions
 	this.rec = function(x, y, w, h){
 		ctx.rect(x, y, w, h);
 	}
@@ -868,16 +893,20 @@ function Canvasrenderer()
 		c.width = width;
 		c.height = height;
 	}
+
+	this.recordedMouseFPS = function(value){
+		this.recordedMouseFPSValue = value;
+	}
+
 	/**
 	 * This function is used for loading stored image data from the xml.  
-	 * It is not part interface for HTML canvas.
+	 * this is not part of the interface for the HTML canvas.
 	 * It basically loads all the RGBA values for each pixel as integers
 	 * from the XML and stores them in a newly created image data object.
 	 * This image data object is then used by putImageData whenever that function
 	 * is called. 
 	**/
 	this.imageData = function(width, height, numberStr){
-
 		var numArray = numberStr.split(" ");
 		this.mImageData = ctx.createImageData(width, height);
 		if(this.mImageData.data.length != numArray.length){ alert("ERROR: Failed to create new image data. Length mismatch."); }
@@ -891,18 +920,18 @@ function Canvasrenderer()
 	 */
 	this.mousemove = function(x, y)
 	{
-	
-		
 		// Calculate positions using the proper scale ratio
    		// If the image was downscaled when the history was recorded, we have to multiply by the 
 		// recorded scale ratio, not the current scale ratio
-    	if(this.downscaled){
+    		if(this.downscaled){
         		y *= canvas.recordedScaleRatio;
         		x *= canvas.recordedScaleRatio;
+			x *= canvas.scaleRatio;
+			y *= canvas.scaleRatio;
    		}	
         
    		// If not, we just multiply by current scale ratio 
-        else{
+     		else{
 			if(!isNaN(canvas.scaleRatio)){
 				y *= canvas.scaleRatio;
 	   	 		x *= canvas.scaleRatio;
@@ -914,11 +943,10 @@ function Canvasrenderer()
 		}
 		if(this.mouseCursorBackground){
 			// Restore background
-			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX, this.mouseCursorY);
+			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX-1, this.mouseCursorY-1);
 		}
-		// Save background
-    	//console.log(y);
-		this.mouseCursorBackground = ctx.getImageData(x, y, (this.mouseCursor.width+3)*this.mouseCursorScale, (this.mouseCursor.height+3)*this.mouseCursorScale);
+		// Save background so that it can be restored after the mouse is moved again.
+		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
 		// Save mouse position
 		this.mouseCursorX = x;
 		this.mouseCursorY = y;
@@ -937,6 +965,8 @@ function Canvasrenderer()
    		if(this.downscaled){
        		y *= canvas.recordedScaleRatio;
        		x *= canvas.recordedScaleRatio;
+		x *= canvas.scaleRatio;
+		y *= canvas.scaleRatio;
    		}
    		// If not, we just multiply by current scale ratio 
     	else{
@@ -966,7 +996,6 @@ function Canvasrenderer()
 	**/
 	this.picture = function(src)
 	{
-
 		if(!src) return; // no point in continueing if src is null
 
 		// Saves the source so that the current picture can be 
@@ -976,13 +1005,15 @@ function Canvasrenderer()
 		var image = new Image();
 		// Draw image when loaded
 		image.onload = function() {
+			// Clear canvas from old picture
+			ctx.clearRect(0, 0, c.width, c.height);
 			canvas.updateScaleRatio();
 			var widthRatio = 1;
 			var heightRatio = 1;
 			// Calculate scale ratios
 			widthRatio = c.width / (image.width);
 			heightRatio = c.height / (image.height);
-			// Set scale ratio
+					// Set scale ratio
 			canvas.downscaled = false;
 			(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
 			(canvas.scaleRatio) > 1 ? canvas.scaleRatio = 1 : canvas.scaleRatio; 
@@ -990,32 +1021,34 @@ function Canvasrenderer()
 			// If the image size is larger than the recorded canvas width or height, it means that
 			// the image was downscaled when the history was recorded. This means that we have to 
 			// use the recorded scale ratio instead of the one normally used.
-        	if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight) {
-				canvas.downscaled = true;
-				// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
-				if (canvas.recordedScaleRatio < 1) {
-					canvas.mouseCursorScale = canvas.recordedScaleRatio;
+			if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight) {
+					canvas.downscaled = true;
+					// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
+					if (canvas.recordedScaleRatio < 1) {
+						canvas.mouseCursorScale = canvas.recordedScaleRatio;
+					}
+					else {
+						canvas.mouseCursorScale = 1;
+					}
 				}
-				else {
-					canvas.mouseCursorScale = 1;
-				}
-			}
-    		ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
+    			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
 			//console.log(canvas.mouseCursorX + ", " + canvas.mouseCursorY);
-			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX, canvas.mouseCursorY, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
+			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX-1, canvas.mouseCursorY-1, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
 			// New mouse click background
-			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2, canvas.mouseClickRadius*2);
+			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+5, canvas.mouseClickRadius*2+5);
 			// Render mouse click
 			canvas.drawMouseClick();
 		}
 		image.src = src;	
+		this.currentPictureWidth = image.width;
+		this.currentPictureHeight = image.height;
 	}
 
 	this.drawMouseClick = function() 
 	{
 		if(this.mouseClickX && this.mouseClickY){	
-			this.mouseClickBackground = ctx.getImageData(this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius, this.mouseClickRadius*2, this.mouseClickRadius*2);
+			this.mouseClickBackground = ctx.getImageData(this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius, this.mouseClickRadius*2+5, this.mouseClickRadius*2+5);
 		}
 		// Draw mouse click (yellow circle) if active
 		if (this.mouseClick) {
@@ -1059,9 +1092,10 @@ function Canvasrenderer()
 		mHeight = (rect.bottom - rect.top);
 		mWidth = (rect.right-rect.left);
 		
-		this.scaleRatioX = parseFloat(mWidth/this.recordedCanvasWidth);
-		this.scaleRatioY = parseFloat(mHeight/this.recordedCanvasHeight);
+		this.scaleRatioX = parseFloat(this.currentPictureWidth/this.recordedCanvasWidth);
+		this.scaleRatioY = parseFloat(this.currentPictureHeight/this.recordedCanvasHeight);
 		(this.scaleRatioX < this.scaleRatioY) ? this.recordedScaleRatio = this.scaleRatioX : this.recordedScaleRatio = this.scaleRatioY;
+		//this.recordedScaleRatio = this.scaleRatioX;
 
         //if (this.scaleRatioX < this.scaleRatioY) this.scaleRatioY = this.scaleRatioX;
 		

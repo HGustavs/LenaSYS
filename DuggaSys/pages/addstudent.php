@@ -23,7 +23,7 @@ if(checklogin()) {
 			<div id="student-header">Add students</div>
 			<br>
 			<br>
-			<textarea placeholder="SSN, Name, email" name="string" id="string" cols="40" rows="10"></textarea>
+			<textarea placeholder="SSN, Name, email" name="string" id="string" cols="52" rows="10"></textarea>
 			<br>
 			<input type="button" value="Add students" class="btn btn-login" onclick="passPopUp();"/>
 			<input type="button" class="btn btn-cancel" value="Cancel" onclick="historyBack();"/>

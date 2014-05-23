@@ -257,27 +257,71 @@ function returnedSection(data)
 			})(jQuery);
 
 }
+
   function studentDelete(showhide) {
       if (showhide == "show") {
-          document.getElementById('deletebox').style.visibility = "visible";
-          document.getElementById('deletebutton').style.visibility = "visible";
+
+          $("#deletebox").show();
+          $("#deletebutton").show();
+          $("#resetbox").show();
+
       } else if (showhide == "hide") {
-          document.getElementById('deletebox').style.visibility = "hidden";
-          document.getElementById('deletebutton').style.visibility = "hidden";
+
+          $("#deletebox").hide();
+          $("#deletebutton").hide();
+          $("#resetbox").hide();
       }
   }
 
 
 $(function() {
+	   $("#reset_pw_btn").on('click',function(){
+	   	alert("clcied");
+	   });
        $('#hide').click(function() {
                 $('td:nth-child(5)').hide();                
+       });
+       $('#hide').click(function() {
+                $('td:nth-child(6)').hide();                
        });
 
 	   $('#show').click(function() {
                 $('td:nth-child(5)').show();                
        });
+        $('#show').click(function() {
+                $('td:nth-child(6)').show();                
+       });
+       $("#deletebutton").on('click',function(){
+           deleteStudent();
+       });
     });
 
+function deleteStudent(){
+
+	var delete_ids = $.map($('input:checkbox:checked'), function(checked, i) {
+		return +checked.value;
+	});
+	alert(delete_ids);
+	$.ajax({
+		
+		url: 'ajax/deletestudent_ajax.php',
+		dataType: "json",
+		type: "POST",
+		data: {
+			user_id: delete_ids
+		},
+		success: function (returnedData) {
+
+		  	successBox('Successfully deleted students', 'Deleted student(s): '+returnedData+'');
+			getStudents();
+            studentDelete("hide");
+		},
+		error: function(){
+            dangerBox('Problems deleting students', 'Could not delete students, make sure you selected students');
+ 
+		},
+	});
+}
 function passPopUp(){
     var qs = getUrlVars();
     $.ajax({
@@ -295,32 +339,34 @@ function passPopUp(){
 	});
 	}
 
-	function showPopUp(showhidePop, returnedData){
-		if(showhidePop == "show"){
+function showPopUp(showhidePop, returnedData){
+	if(showhidePop == "show"){
 		document.getElementById('light').style.visibility = "visible";
 		document.getElementById('fade').style.visibility = "visible";
 
 		if (returnedData.length == 0){
 			var output = "The users you were adding already existed globally and were added to the course";
-   		}
-   		else {
-	  var output = "<div id='printArea'>";
-	  output += "<table class='list'>";
-      output += "<tr><th>Name</th>";
-      output += "<th>Username</th>";
-      output += "<th>Password</th></tr>";
+		} else {
+			var output = "<div id='printArea'>";
+			output += "<table class='list'>";
+			output += "<tr><th>Name</th>";
+			output += "<th>Username</th>";
+			output += "<th>Password</th></tr>";
 
-      $.each(returnedData, function(){
-      output += "<tr><td>"+this[1]+"</td>";
-      output += "<td>"+this[0]+"</td>";
-      output += "<td>"+this[2]+"</td></tr>";
-		})
-       output += "</table>";
-       output += "</div>";
-	   output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
-   }
-      var div = document.getElementById('light');
-      div.innerHTML = output;
+			$.each(returnedData, function(){
+				output += "<tr><td>"+this[1]+"</td>";
+				output += "<td>"+this[0]+"</td>";
+				output += "<td>"+this[2]+"</td></tr>";
+			})
+
+			output += "</table>";
+			output += returnedData.length + " users added to the system";
+			output += "</div>";
+
+			output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
+		}
+		var div = document.getElementById('light');
+		div.innerHTML = output;
 	}
 	else if(showhidePop == "hide"){
 		document.getElementById('light').style.visibility = "hidden";
@@ -348,16 +394,14 @@ function testDuggaService(courseID, opt, sectionID, link) {
 				var option = document.createElement('option');
 				option.value = returnData['entries'][i]['id'];
 				option.innerHTML = returnData['entries'][i]['name'];
-				if (opt == "example") {
-					if (link.length > 0) {
-						var string = link.split("&");
-						if (string[0]) {
-							string = string[0].split("?");
-							if (string[1]) {
-								string = string[1].split("=");
-								if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
-									option.setAttribute('selected', true);
-								}
+				if (link.length > 0) {
+					var string = link.split("&");
+					if (string[0]) {
+						string = string[0].split("?");
+						if (string[1]) {
+							string = string[1].split("=");
+							if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
+								option.setAttribute('selected', true);
 							}
 						}
 					}

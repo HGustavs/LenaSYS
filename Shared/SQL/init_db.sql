@@ -1,3 +1,6 @@
+drop database Imperious;
+create database Imperious;
+use Imperious;
 /* user contains the users of the system and related  information */
 
 DROP TABLE IF EXISTS `userAnswer`;
@@ -168,6 +171,7 @@ INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);*/
 CREATE TABLE box(
 		boxid				INTEGER UNSIGNED NOT NULL,
 		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
+		boxtitle			VARCHAR(20),
 		boxcontent			VARCHAR(39),
 		settings			VARCHAR(1024),
 		PRIMARY KEY(boxid, exampleid),
@@ -190,26 +194,26 @@ BEGIN
  delimiter ;
 
 
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,1,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,1,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,2,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,2,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,3,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,3,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,4,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,4,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,5,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,5,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,6,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,6,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,7,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,7,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,8,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,8,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,9,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,9,"Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (1,10,"Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES (2,10,"Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,1,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,1,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,2,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,2,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,3,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,3,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,4,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,4,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,5,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,5,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,6,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,6,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,7,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,7,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,8,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,8,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,9,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,9,"Title","Document","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,10,"Title","Code","[viktig=1]");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,10,"Title","Document","[viktig=1]");
 
 
 
