@@ -146,7 +146,7 @@ function imagerecorder(canvas)
 					// Show undo button
 					$("#imagerecorder-undo").show();
 
-					$(".thumbnail").hover(function() {
+					$(".thumbnail").mouseover(function() {
 						$(this).css({
 							"cursor": "default",
 							"opacity": "0.65"
@@ -750,10 +750,16 @@ function imagerecorder(canvas)
 		});
 		
 		// Readd hover effect to thumbnails
-		$(".thumbnail").hover(function() {
+		$(".thumbnail").mouseover(function() {
 			$(this).css({
 				"cursor": "move",
 				"opacity": "1"
+			});
+		});
+		$(".thumbnail").mouseleave(function() {
+			$(this).css({
+				"cursor": "move",
+				"opacity": "0.65"
 			});
 		});
 
