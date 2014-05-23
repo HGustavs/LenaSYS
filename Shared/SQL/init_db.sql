@@ -409,8 +409,8 @@ CREATE TABLE `quiz` (
   `cid` int UNSIGNED NOT NULL,
   `autograde` tinyint(1) NOT NULL DEFAULT 0, /* bool */
   `gradesystem` tinyint(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
-  `answer` varchar(2000) NOT NULL DEFAULT 'no answer',
-  `name` varchar(255) NOT NULL DEFAULT 'no name',
+  `answer` varchar(2000) NOT NULL DEFAULT '',
+  `name` varchar(255) NOT NULL DEFAULT '',
   `quizFile` varchar(255) NOT NULL DEFAULT 'default.js',
   `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deadline` datetime NULL DEFAULT NULL,
@@ -426,12 +426,12 @@ CREATE TABLE `grades` (
   `grade` varchar(5) NOT NULL,
   PRIMARY KEY (`gradeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO grades(gradeID, grade) VALUES(1, "U");
-INSERT INTO grades(gradeID, grade) VALUES(2, "G");
-INSERT INTO grades(gradeID, grade) VALUES(3, "VG");
-INSERT INTO grades(gradeID, grade) VALUES(4, "3");
-INSERT INTO grades(gradeID, grade) VALUES(5, "4");
-INSERT INTO grades(gradeID, grade) VALUES(6, "5");
+INSERT INTO grades(gradeID, grade) VALUES(0, "U");
+INSERT INTO grades(gradeID, grade) VALUES(1, "G");
+INSERT INTO grades(gradeID, grade) VALUES(2, "VG");
+INSERT INTO grades(gradeID, grade) VALUES(3, "3");
+INSERT INTO grades(gradeID, grade) VALUES(4, "4");
+INSERT INTO grades(gradeID, grade) VALUES(5, "5");
 
 
 CREATE TABLE `userAnswer` (
