@@ -326,8 +326,10 @@ function imagerecorder(canvas)
 	
 	// Add menu options to images
 	$(document).on("contextmenu", ".tli", function(e) {
+		// Prevent default right click menu
+		e.preventDefault();
 		if(clicked == 0) {
-			e.preventDefault();
+			// Show thumbnail menu
 			showThumbMenu($(this).index());
 		}
 	});
@@ -476,7 +478,6 @@ function imagerecorder(canvas)
 		which means that the canvas gets the same aspect ratio as the image.
 	*/
 	function resizeCanvas(){
-		
 		var scale = imgrecorder.maxCanvasWidth/imgrecorder.currentImageWidth;
 		setCanvasWidth(imgrecorder.maxCanvasWidth);
 			
@@ -725,7 +726,6 @@ function imagerecorder(canvas)
 	// Reset recording session
 	function reset(){
 		// Reset variables
-	
 		clicked = 0;
 		lastEvent = Date.now();
 		activeImage = -1;
