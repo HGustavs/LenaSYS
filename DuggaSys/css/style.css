@@ -594,6 +594,12 @@ input.submit-button-red:hover {
     }
 }
 /* ANIMATIONS END */
+
+.addstudent {
+    height: 300px;
+    width: 100%;
+}
+
 .black_overlay{
     visibility: hidden;
     position: absolute;
