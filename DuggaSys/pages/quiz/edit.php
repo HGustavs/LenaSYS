@@ -1,50 +1,7 @@
 <?php session_start(); ?>
 
 <script>
-	/*
-	function toggleanswer() {
-		if ($("#quizAnswerInput").attr("disabled")) {
-		    $("#quizAnswerInput").removeAttr("disabled");
-		    $("#quizAnswerInput").removeClass("disabledInput");
-
-		} else {
-		    $("#quizAnswerInput").attr("disabled", "disabled");
-		    $("#quizAnswerInput").removeClass("disabledInput").addClass("disabledInput");
-		}
-	}
-	
-	$(function() {
-		
-	    var next = 1;
-	    
-	    $(".add-more").click(function(e){
-	        e.preventDefault();
-	        var addto = "#field" + next;
-	        var addRemove = "#field" + (next);
-	        next = next + 1;
-	        var newIn = '<input autocomplete="off" class="option form-control" id="field' + next + '" name="field' + next + '" type="text">';
-	        var newInput = $(newIn);
-	        var removeBtn = '<button id="remove' + (next - 1) + '" class="option remove-me" >-</button></div><div id="field">';
-	        var removeButton = $(removeBtn);
-	        $(addto).after(newInput);
-	        $(addRemove).after(removeButton);
-	        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
-	        $("#count").val(next);  
-	        
-	            $('.remove-me').click(function(e){
-	                e.preventDefault();
-	                var fieldNum = this.id.charAt(this.id.length-1);
-	                var fieldID = "#field" + fieldNum;
-	                $(this).remove();
-	                $(fieldID).remove();
-	            });
-	    });
-		
-	});
-	function showVariant() {
-		$(".variant1").css('display','block');
-	}
-	*/
+	var qs=getUrlVars();
 </script>
 	
 	<div id='create'>
@@ -52,10 +9,10 @@
 			<div class='form-group'>
 				<label>Dugganame *</label>
 				<input type="text" class='form-control' name="quizname" id />
-				<!--<div class='form-group'>
+				<div class='form-group'>
 					<label>Template parameters, saves as string (max 2000 characters)</label>
 					<textarea class='form-control' name="parameterinput" rows='5'></textarea>
-				</div>-->
+				</div>
 				<div class='form-group'>
 					<label>Answer</label>
                     <input class='option form-control' id="quizAnswerInput" name="answerinput" type="text" />
@@ -98,7 +55,8 @@
 				</div>
 				
 			</div>
-			<button type="button" onclick="submitNewQuiz('courseID', 'edit')" class='default'>Submit</button>
+			<button type="button" onclick="submitNewQuiz(qs.courseid, 'edit')" class='default'>Submit</button>
+			<button type="button" onclick="historyBack()" class='default-red'>Cancel</button>
 		</form>
 	</div>
 
@@ -111,6 +69,6 @@
 <script type="text/javascript">
 	$('.datetimepicker').datetimepicker();
 	getQuizFiles();
-	getQuizData("quizid");
+	getQuizData(qs.quizid);
 </script>
 

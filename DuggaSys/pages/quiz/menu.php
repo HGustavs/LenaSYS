@@ -5,6 +5,6 @@ var qs = getUrlVars();
 <div class='middle center'>
 	<p>Admin Menu</p>
 	<button class='default' onclick="changeURL('quiz/quiz');">Test</button>
-	<button class='default' onclick="changeURL('quiz/edit');">Edit</button>
+	<button class='default' onclick="changeURL('quiz/edit?courseid=' + qs.courseid + '&quizid='+qs.quizid);">Edit</button>
 	<button class='default' onclick="changeURL('quiz/studentlist?courseid=' + qs.courseid);">Studentlist</button>
 </div>
