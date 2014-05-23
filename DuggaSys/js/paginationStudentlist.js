@@ -1,7 +1,7 @@
 function pagination() {
 	this.items = [];
 	// Amount of cells in a row
-	this.cells = 6;
+	this.cells = 8;
 	this.show_per_page = 10;
 	
 	this.number_of_items = 0;
@@ -85,19 +85,19 @@ function pagination() {
 						var cell = row.insertCell(j);
 						switch (j) {
 							case 0:
-								cell.innerHTML = this.items.entries[i]["coursename"];
+								cell.innerHTML = this.items.entries[i]["uid"];
 								break;
 							case 1:
-								cell.innerHTML = this.items.entries[i]["coursecode"];
-								break;
-							case 2:
 								cell.innerHTML = this.items.entries[i]["name"];
 								break;
+							case 2:
+								cell.innerHTML = this.items.entries[i]["start"];
+								break;
 							case 3:
-								cell.innerHTML = this.items.entries[i]["submitted"];
+								cell.innerHTML = this.items.entries[i]["deadline"];
 								break;
 							case 4:
-								cell.innerHTML = this.items.entries[i]["deadline"];
+								cell.innerHTML = this.items.entries[i]["submitted"];
 								break;
 							case 5:
 								if (parseInt(this.items.entries[i]["grade"]) >= 3) {
@@ -105,6 +105,12 @@ function pagination() {
 								} else if (parseInt(this.items.entries[i]["grade"]) < 3) {
 									cell.innerHTML = "U";
 								}
+								break;
+							case 6:
+								cell.innerHTML = this.items.entries[i]["answer"];
+								break;
+							case 7:
+								cell.innerHTML = this.items.entries[i]["link"];
 								break;
 						}
 					}
@@ -131,13 +137,15 @@ function pagination() {
 	}
 }
 
-function getResults(pagination) {
+function getResults(pagination, course) {
 	$.ajax({
 		dataType: 'json',
 		async: false,
-		url: 'ajax/user_results.php',
+		url: 'ajax/studentlist_results.php',
 		method: 'post',
-		data: {},
+		data: {
+			'courseid': course,
+		},
 		success: function(data) {
 			if (data == "No access") {
 				changeURL('noid');

@@ -50,7 +50,7 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') || isSup
 			  output += "</form>";
 			  output += "</td>";
 		      output += "<td id='deletebox1'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
-		      output += "<td id='resetbox1'><input type='button' class='submit-button' id='reset_pw_btn' onclick='warningBox(\"Confirm removal\", \"Are you sure you want to reset the password for this user?\", 0, resetPassword," + this.uid + ")' value='Reset'></inut></td></tr>";
+		      output += "<td id='resetbox1'><input type='button' class='submit-button' id='reset_pw_btn' onclick='warningBox(\"Confirm removal\", \"Are you sure you want to reset the password for this user?\", 0, resetPassword," + this.uid + ")' value='Reset'/></td></tr>";
 			 };
 		   });
 		   $("table.list tbody").empty();

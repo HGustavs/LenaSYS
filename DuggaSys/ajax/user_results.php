@@ -19,17 +19,14 @@
 			$result=$query->execute();
 			if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
 			
-			$cachedQuiz = null;
 			$courseName = null;
 			$courseCode = null;
 			$deadline = null;
 			$quizName = null;
 			foreach($query->fetchAll() as $row) {
-				if ($cachedQuiz == null || $cachedQuiz != $row['testID']) {
-					$cachedQuiz = $row['testID'];
-					array_push($completed, $cachedQuiz);
+					array_push($completed, $row['testID']);
 					$quizQuery = $pdo->prepare("SELECT * FROM quiz WHERE id = :1");
-					$quizQuery -> bindParam(':1', $cachedQuiz);
+					$quizQuery -> bindParam(':1', $row['testID']);
 					$tests=$quizQuery->execute();
 					foreach($quizQuery->fetchAll() as $quizRow) {
 						$quizName = $quizRow['name'];
@@ -41,7 +38,6 @@
 						$courseName = $courses['coursename'];
 						$courseCode = $courses['coursecode'];
 					}
-				}
 				
 			
 				array_push(
