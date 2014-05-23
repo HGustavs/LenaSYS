@@ -229,7 +229,6 @@ function getQuiz(quizId) {
 				console.log("success");
 				console.log(data);
 				if(data != "error") {
-					changeURL("quiz/quiz?quizId="+quizId);
 					console.log(data['template']+".js template loaded");
 					loadHeaderLink("templates/"+data['template']+".js", "js");
 
