@@ -7,17 +7,27 @@ include_once(dirname(__file__)."/../../../coursesyspw.php");
 include_once(dirname(__file__)."/../../Shared/database.php");
 pdoConnect();
 
+$error = false;
+
 if (checklogin()) {
 	if (isSuperUser($_SESSION["uid"])==true) {
-		
 		if(isset($_POST['quizid'])){
-			getQuiz($_POST['quizid']);
+			$quiz = getQuiz($_POST['quizid']);
 		}else {
-			echo "No quizid";
+			$error = true;
 		}
-
+	}
+	else {
+		$error = true;	
 	}
 }
+if(!$error) {
+	print (json_encode($quiz));
+}
+else {
+	print (json_encode(array("error")));
+}
+
 function getQuiz($quizid){
     global $pdo;
     $query = "SELECT * FROM quiz WHERE id = :id";
@@ -25,15 +35,13 @@ function getQuiz($quizid){
     $stmt->bindParam(':id', $quizid);
       $stmt->execute();
     $result = $stmt->fetch();
-    returnQuiz($result);
-
+    return(returnQuiz($result));
 }
+
 function returnQuiz($quiz){
-    
-	$error = false;
 	$template = $quiz['template'];
 
-	$quizArray = array(
+	$quizData = array(
 	    "name" => $quiz['name'],
 	    "parameters" => $quiz['parameters'],
 	    "question" => $quiz['question'],
@@ -42,20 +50,9 @@ function returnQuiz($quiz){
 	$templatePath = '../templates/'.$template.'.js';
 
 	if (file_exists($templatePath)) {
-		$quizArray["template"] = $template;
+		$quizData["template"] = $template;
 	}
 
-	foreach ($quizArray as $value) {
-		if($value == "false") {
-			$error = true;
-		}
-	}
-
-	if(!$error) {
-		print (json_encode($quizArray));
-	}
-	else {
-		print (json_encode(array("error")));
-	}
+	return $quizData;
 }
 ?>
