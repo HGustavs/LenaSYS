@@ -33,7 +33,7 @@ if(failedLoginCount($_SERVER['REMOTE_ADDR']) >= 10) {
 	log_message(
 		NULL,
 		'loginerr',
-		sprintf("Failed login attempt for user %s",
+		sprintf("Failed login attempt for username %s",
 			htmlentities($username)
 		)
 	);

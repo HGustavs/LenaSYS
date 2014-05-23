@@ -61,16 +61,13 @@ function log_message($user, $type='notice', $message)
 		pdoConnect();
 	}
 
-	// TODO: Add support for types of events?
 	$query = $pdo->prepare("INSERT INTO eventlog(address, type, user, eventtext) VALUES(:address, :type, :user, :eventtext)");
 
 	$query->bindParam(':user', $user);
 	$query->bindParam(':type', $type);
 
-	// TODO: Proxy checks?
 	$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);
 	$query->bindParam(':eventtext', $message);
-	$query->execute();
-	return $query->rowCount() > 0;
+	return ($query->execute() && $query->rowCount() > 0);
 }
 ?>
