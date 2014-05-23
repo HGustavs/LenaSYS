@@ -433,31 +433,12 @@ function imagerecorder(canvas)
 		if(id >= 0) {
 			// Set image
 			activeImage = id;
-			imageData = new Image();
+			
+			// Create image
+			imageData = new Image();		
 			imageData.src = imagelibrary[id];
-					
-			imageData.onload = function() {
-				// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
-				imgrecorder.currentImageWidth = imageData.width;
-				imgrecorder.currentImageHeight = imageData.height;
-				resizeCanvas();	
-				// Clears screen. May need a better solution.
-				canvas.width = canvas.width; 
-				var ratio = 1;
-				// When image has been loaded calculate ratios and print it on the canvas
-				// Picture need to be scaled down
-				if (imageData.width > canvas.width || imageData.height > canvas.height) {
-					// Calculate scale ratios
-					var widthRatio = canvas.width / imageData.width;
-					var heightRatio = canvas.height / imageData.height;
-
-					// Set scale ratio
-					if (widthRatio < heightRatio) ratio = widthRatio;
-					else ratio = heightRatio;
-				}
-				// Daw to canvas
-				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
-			}
+			// Show image in canvas
+			showImageData();
 
 			// Successful image change
 			return true;
@@ -466,6 +447,32 @@ function imagerecorder(canvas)
 
 			// Didn't change image
 			return false;
+		}
+	}
+
+	// Show image from the variable imageData in canvas
+	function showImageData() {
+		imageData.onload = function() {
+			// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
+			imgrecorder.currentImageWidth = imageData.width;
+			imgrecorder.currentImageHeight = imageData.height;
+			resizeCanvas();	
+			// Clears screen. May need a better solution.
+			canvas.width = canvas.width; 
+			var ratio = 1;
+			// When image has been loaded calculate ratios and print it on the canvas
+			// Picture need to be scaled down
+			if (imageData.width > canvas.width || imageData.height > canvas.height) {
+				// Calculate scale ratios
+				var widthRatio = canvas.width / imageData.width;
+				var heightRatio = canvas.height / imageData.height;
+
+				// Set scale ratio
+				if (widthRatio < heightRatio) ratio = widthRatio;
+				else ratio = heightRatio;
+			}
+			// Daw to canvas
+			ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
 		}
 	}
 	
@@ -530,7 +537,6 @@ function imagerecorder(canvas)
 	}
 	
 	function getPrevImage() {
-		
 		if((activeImage - 1) >= 0) {
 			return activeImage - 1;
 		}
@@ -772,7 +778,12 @@ function imagerecorder(canvas)
 
 		// Clear canvas
 		canvas.width = canvas.width;
-		ctx.drawImage(initImage,0,0, mWidth, mHeight);
+
+		// Set init image
+		imageData = new Image();
+		imageData.src = "img/firstpic.jpg";
+		showImageData();
+		updateScaleRatio();
 
 		// Change button name and action
 		$("#uploadButton").attr('value', 'Upload image');
