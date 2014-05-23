@@ -1,3 +1,4 @@
+
 //
 // THIS IS A QUIZTAMPLATE
 // DO NOT CHANGE THE QUIZ MAIN FUNCTION NAME AND PARAMETERS, IT SHOULD ALWAYS BE THE SAME.
@@ -7,19 +8,16 @@ function quiz(parameters, question) {
 	console.log("pram:" + parameters);
 	var inputSplit = parameters.split(",");
 	var answerValue;
-	var answerAlt;
-
+	var answerID;
 	var app = "<h2>";
 	app += question + "<br>";
 	app += "</h2>";
 
 	for(var i = 0;i < inputSplit.length;i++){
 	    var splited = inputSplit[i].split("=");
-		//answerValue = inputSplit[i].charAt(inputSplit[i].lengeth-1); // tar sista karaktären i strängen (a=2, answerValue = 2)
-		//answerAlt = inputSplit[i].charAt(0); // tar första karaktären
 		answerValue = splited[1];
-		answerAlt = splited[0];
-		app += "<input type='checkbox' value='"+answerValue+"' id='"+answerAlt+"' onchange='displayCheckedBoxes();'>"+answerValue+"</input>";
+		answerID= splited[0];
+		app += "<input type='checkbox' value='"+answerValue+"' id='"+answerID+"' onchange='displayCheckedBoxes();'>"+answerValue+"</input>";
 		app += "<br>";
 	}
 	app += "<span id='displayAnswers'></span>";
@@ -32,9 +30,10 @@ function quiz(parameters, question) {
 function getCheckedBoxes(){
 	// $.map() loopar igenom objekt (checkboxes i vårt fall) och gör funktioner utav de. Nu returnerar vi värdet(value) på varje checkbox som är i-bockad.
 	var answers = $.map($('input:checkbox:checked'), function(checked, i) {
-		return +checked.value;
+		return checked.value;
 	});
 	return answers; // returnerar de värden på de checkboxes som är i-bockade.
+
 }
 // Visar upp de svaren som är i-bockade
 function displayCheckedBoxes() {
