@@ -26,9 +26,9 @@ if(checklogin() && isSuperUser($_SESSION['uid'])) {
 		<tr>
 			<th>Type</th>
 			<th>Date</th>
-			<th>IP-address</th>
-			<th>UserID</th>
-			<th>Eventtext</th>
+			<th>IP Address</th>
+			<th>User</th>
+			<th>Event Description</th>
 		</tr>
 
 <?php
