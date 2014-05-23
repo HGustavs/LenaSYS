@@ -22,7 +22,7 @@
 					$query = $pdo->prepare("SELECT exampleid AS id, examplename AS name FROM codeexample WHERE cid = :1");
 				} else {
 					// Implement this in test database
-					$query = $pdo->prepare("SELECT * FROM quiz WHERE cid = :1");
+					$query = $pdo->prepare("SELECT * FROM quiz WHERE courseID = :1");
 				}
 				$query -> bindParam(':1', $courseid);
 				$result=$query->execute();

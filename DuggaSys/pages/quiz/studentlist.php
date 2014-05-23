@@ -1,7 +1,7 @@
 <?php session_start(); ?>
     <table id="contentlist" class="list">
         <tr>
-            <th>Student ID</th>
+            <th>Student</th>
             <th>Dugga name</th>
             <th>Start</th>
             <th>Deadline</th>
