@@ -1,6 +1,7 @@
 <?php session_start(); ?>
 <script>
 var qs = getUrlVars();
+page.title("Quiz menu");
 </script>
 <div class='middle center'>
 	<p>Admin Menu</p>
