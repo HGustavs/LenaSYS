@@ -28,7 +28,7 @@
  	};
  }
 
-  function submitNewQuiz(cid, action) 
+  function editQuiz(cid, action, qid) 
  {
  	if (validateNewQuizSubmit()) {
  		$.ajax({
@@ -38,8 +38,10 @@
 			data: {
 				cid: 1,
 				action: action, // edit/create
+				qid: qid,
 				quizname: document.newQuizForm.quizname.value,
 				//parameters: document.newQuizForm.parameterinput.value,
+				parameter: document.newQuizForm.parameterinput.value,
 				answer: document.newQuizForm.answerinput.value,
 				autograde: document.newQuizForm.autogradebox.checked,
 				quizfile: document.newQuizForm.quizfile.value,
@@ -107,7 +109,33 @@
 			cid: 1
 		},
 		success:function(data) {
-			console.log(data);
+			//console.log(data);
+			console.log("A OK");
+			$("#quizname").val(data.name);
+			$("#parameterinput").val(data.parameter);
+			$("#quizAnswerInput").val(data.answer);
+			$("#autogradecheck").prop('checked', !!data.autograde);
+			$("#releasedateinput").val(data.release);
+			$("#deadlineinput").val(data.deadline);
+
+			$.each($("#gradeSysSelect option"), function( index, value ) {
+			  console.log(value.value);
+			  if (value.value==data.gradesystem) {
+			  	value.setAttribute('selected', true);	
+			  };
+			  
+			});
+			$.each($("#quizfile option"), function( index, value ) {
+			  console.log(value.value);
+			  if (value.value==data.gradesystem) {
+			  	value.setAttribute('selected', true);	
+			  };
+			  
+			});
+
+			
+			
+
 		},
 		error:function() {
 			console.log("Something went wrong");

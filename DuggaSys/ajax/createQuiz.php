@@ -1,7 +1,6 @@
 <?php 
 session_start(); 
 include_once(dirname(__file__)."/../../Shared/sessions.php");
-
 if (checklogin()) {
 
 	if (hasAccess($_SESSION["uid"], $_POST["cid"], "w")) {
@@ -27,8 +26,9 @@ if (checklogin()) {
 			if ($varCheck=="") {
 				
 				//check if course info exists in DB
-				$stmt = $pdo -> prepare('SELECT count(name) as count FROM quiz WHERE name=:1');
+				$stmt = $pdo -> prepare('SELECT count(name) as count FROM quiz WHERE name=:1 AND id!=:qid');
 				$stmt -> bindParam(':1', $quizname);
+				$stmt -> bindParam(':qid', $_POST["qid"]);
 				$stmt -> execute();	
 				$quizNameCheck = $stmt->fetch();
 
@@ -40,6 +40,11 @@ if (checklogin()) {
 						$answer = $_POST["answer"];
 					} else {
 						$answer = "";
+					}
+					if (isset($_POST["parameter"]) && $_POST["parameter"] !="") {
+						$parameter = $_POST["parameter"];
+					} else {
+						$parameter = "";
 					}
 					if (isset($_POST["quizfile"]) && $_POST["quizfile"] !="") {
 						$dir    = '../templates';
@@ -79,7 +84,20 @@ if (checklogin()) {
 						$deadline = "0000-00-00 00:00:00";
 					}
 					
-					$stmt = $pdo -> prepare('INSERT INTO `quiz`(`cid`, `autograde`, `gradesystem`, `answer`, `name`, `release`, `deadline`, `quizFile`) VALUES (:1, :2, :3, :4, :5, :6, :7, :8)');
+					$stmt = $pdo -> prepare('UPDATE `quiz` SET 
+						`id`=:qid,
+						`cid`=:1,
+						`autograde`=:2,
+						`gradesystem`=:3,
+						`answer`=:4,
+						`parameter`=:9,
+						`name`=:5,
+						`quizFile`=:8,
+						`release`=:6,
+						`deadline`=:7 
+						WHERE id=:qid');
+					
+					$stmt -> bindParam(':qid', settype($_POST["qid"] , integer));
 					$stmt -> bindParam(':1', $_POST["cid"]);
 					$stmt -> bindParam(':2', $autograde);
 					$stmt -> bindParam(':3', $gradesys);
@@ -88,16 +106,18 @@ if (checklogin()) {
 					$stmt -> bindParam(':6', $releasedate);
 					$stmt -> bindParam(':7', $deadline);
 					$stmt -> bindParam(':8', $quizfile);
+					$stmt -> bindParam(':9', $parameter);
 					
 					if ($stmt -> execute()) {
+						/*
 						$id = $pdo->lastInsertId();
 
 						$stmt = $pdo -> prepare('SELECT `id`, `cid`, `autograde`, `gradesystem`, `answer`, `name`, `release`, `deadline` FROM quiz WHERE id=:1');
 						$stmt -> bindParam(':1', $id);
 						$stmt -> execute();	
 						$data = $stmt->fetch();
-
-						echo json_encode($data);
+*/
+						echo json_encode($_POST["cid"]);
 
 					} else {
 						//print_r($releasedate);

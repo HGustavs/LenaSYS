@@ -2,16 +2,17 @@
 
 <script>
 	var qs=getUrlVars();
+	console.log(qs);
 </script>
 	
 	<div id='create'>
 		<form id="newQuizForm" name="newQuizForm" role='form'>
 			<div class='form-group'>
 				<label>Dugganame *</label>
-				<input type="text" class='form-control' name="quizname" id />
+				<input type="text" class='form-control' name="quizname" id="quizname" />
 				<div class='form-group'>
 					<label>Template parameters, saves as string (max 2000 characters)</label>
-					<textarea class='form-control' name="parameterinput" rows='5'></textarea>
+					<textarea class='form-control' name="parameterinput" rows='5' id="parameterinput"></textarea>
 				</div>
 				<div class='form-group'>
 					<label>Answer</label>
@@ -19,7 +20,7 @@
 				</div>
 				<div class='form-group'>		
 					<label>
-						<input name="autogradebox" type='checkbox' value="1" /> Autograde
+						<input name="autogradebox" type='checkbox' value="1" id="autogradecheck" /> Autograde
 					</label>
 				</div>
 				<div class='form-group'>
@@ -42,20 +43,20 @@
 				</div>
 				<div class='form-group'>
 					<label>Releasedate</label>
-					<input name="releasedateinput" type="text" class='form-control datetimepicker' />
+					<input name="releasedateinput" id="releasedateinput" type="text" class='form-control datetimepicker' />
 				</div>
 				<div class='form-group'>
 					<label>Deadline</label>
-					<input name="deadlineinput" type="text" class='form-control datetimepicker' />
+					<input name="deadlineinput" id="deadlineinput" type="text" class='form-control datetimepicker' />
 				</div>
 				<div class='form-group'>		
 					<label>
-						<input name="acivateonsubmitbox" type='checkbox' value="1"> Activate on submit
+						<input name="acivateonsubmitbox" id="acivateonsubmitbox" type='checkbox' value="1"> Activate on submit
 					</label>
 				</div>
 				
 			</div>
-			<button type="button" onclick="submitNewQuiz(qs.courseid, 'edit')" class='default'>Submit</button>
+			<button type="button" onclick="editQuiz(qs.courseid, 'edit', qs.quizid)" class='default'>Submit</button>
 			<button type="button" onclick="historyBack()" class='default-red'>Cancel</button>
 		</form>
 	</div>
