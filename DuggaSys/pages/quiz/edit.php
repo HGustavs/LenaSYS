@@ -113,4 +113,8 @@
 	getQuizFiles();
 	getQuizData("quizid");
 </script>
-
+<script type="text/javascript">page.title("Create new quiz");</script>
+<script src="js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$('.datetimepicker').datetimepicker();
+</script>

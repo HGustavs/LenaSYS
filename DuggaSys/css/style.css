@@ -63,6 +63,15 @@ a#section-list {
 	color:#434343;
 	text-decoration:none;
 }
+
+strong {
+	font-weight: bold;
+}
+
+p {
+	margin: .5em auto .5em auto;
+}
+
 header {
     overflow: hidden;
     color: #fff;
@@ -382,63 +391,63 @@ table.list tr.yellow {
 }
 #Sectionlist .butt {
     display: block;
+    padding-left: 8px;
+	padding:6px;
+    display: block;
 	color:#fff;
     font-size: 14pt;
     font-family: Calibri,Sans-Serif;
     background-color: #927b9e;
-	padding-top:7px;
-	min-height:30px;
 }
 
 #Sectionlist .bigg {
+	padding:6px;
     text-align: center;
 	color:#fff;
-	font-size: 14pt;
+    font-size: 14pt;
     font-family: Calibri,Sans-Serif;
     display: block;
     background-color: #775886;
-	padding-top:7px;
-	min-height:30px;
 }
 
 #Sectionlist .norm {
+	padding:6px;
+	padding-left:15px;
     display: block;
     background-color: #f0f0f0;
 	color:#434343;
 	font-family:arial;
 	font-size:10pt;
-	padding-top:5px;
-	min-height:25px;
 }
 
 #Sectionlist .test {
+	padding:6px;
+	padding-left:15px;
     display: block;
     background-color: #e3e3e3;
 	color:#434343;
 	font-family:arial;
 	font-size:10pt;
-	padding-top:5px;
-	min-height:25px;
 }
 
 #Sectionlist .hidden {
+	padding:6px;
+	padding-left:15px;
     display: block;
     background-color: #d0cfd0;
-	color:#434343;
+		color:#434343;
 	font-family:arial;
 	font-size:10pt;
-	padding-top:5px;
-	min-height:25px;
 }
 
 #Sectionlist .example {
+	padding:6px;
+	padding-left:15px;
     display: block;
     background-color: #dad8db;
-	color:#434343;
+		color:#434343;
 	font-family:arial;
 	font-size:10pt;
-	padding-top:5px;
-	min-height:25px;
 }
 
 #Sectionlist .course {
@@ -585,28 +594,6 @@ input.submit-button-red:hover {
     }
 }
 /* ANIMATIONS END */
-#student-box{
-    width:auto;
-    margin:0 auto;
-    height:auto;
-    background-color:#ccc;
-    border:1px solid #000;
-    margin-left:450px;
-    margin-right:450px;
-    margin-top:60px;
-}
-
-#student-header{
-    height:40px;
-    background-color:#614875;
-    text-align:center;
-    color: #FFF;
-    font-family:arial;
-    font-size:20pt;
-    font-weight:bold;
-    border:1px solid #000;
-}
-
 .black_overlay{
     visibility: hidden;
     position: absolute;
@@ -665,7 +652,6 @@ table.list tr.red {
     background-color: #f2dede;
     border-color: #eed3d7;
 }
-
 .no_results {
 	padding:6px;
     text-align: center;
