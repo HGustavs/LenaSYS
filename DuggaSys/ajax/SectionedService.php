@@ -176,8 +176,6 @@
 			);
 		}
 		
-		$_SESSION['courseid'] = $courseid;
-
 		$array = array(
 			'entries' => $entries,
 			"debug" => $debug,

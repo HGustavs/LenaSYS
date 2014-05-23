@@ -7,7 +7,7 @@ pdoConnect();
 if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSuperUser($_SESSION['uid'])) {
 	$array=array();
 
-	if(isset($_POST['string'])){
+	if(array_key_exists('string', $_POST) && !empty($_POST['string'])){
 
 		function random_password( $length = 12 ) {
 			$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?/";

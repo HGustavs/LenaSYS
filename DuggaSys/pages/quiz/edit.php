@@ -98,7 +98,6 @@
 <script src="js/ajax.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
 <script type="text/javascript">page.title("Create new quiz");</script>
-<script src="js/jquery.js"></script>
 <script src="js/jquery.datetimepicker.js"></script>
 <script type="text/javascript">
 	$('.datetimepicker').datetimepicker();
