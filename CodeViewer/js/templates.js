@@ -64,10 +64,10 @@ function createhotdogmenu(){
 			str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retdata['box'][i][3]+"<img src='new icons/hotdogTabButton.svg' /></td></tr>";
 		}		
  //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
- 		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
+ //		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
 
 		str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
-		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;off&quot;);" colspan="4">Desktop site</td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;);" colspan="4">Desktop site</td></tr>';
 
 		str += '<tr><td class="mbutto mbuttoStyle " title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;black&quot;);"><img src="new icons/theme_black.svg"><span>Black background</span></td></tr>';
@@ -273,6 +273,7 @@ function returned(data)
 			}
 			
 		}
+		changeCSS("css/"+data['template'][0][1]);
 		// remove templatebox if it still exists
 		if(document.getElementById("picktemplate")){
 			document.getElementById("div2").removeChild(document.getElementById("picktemplate"));
@@ -362,12 +363,16 @@ function returned(data)
 					}
 					$("#"+contentid).css("margin-top", boxmenuheight);
 				}
-			}		
+			}
+			
 		}
 		/* Remove unnecessary template boxes*/
 		removeTemplatebox();
 		createhotdogmenu();
-		changeCSS("css/"+data['template'][0][1]);
+		
+		
+		
+		
 		
 				//----------------------------------------------------
 		// Populate interface with returned data (all relevant data is returned)
@@ -468,9 +473,11 @@ function returned(data)
 		}
 		
 		//Disable editing in mobile version
-		if($(window).width() <=1100){
-			 $("*[contenteditable]").attr("contenteditable","false"); 
+		var	hotdog = document.getElementById("hidehotdog");
+		var	isDesktop = $(hotdog).is(":hidden");
+		if(isDesktop){
+			 $("*[contenteditable]").attr("contenteditable","true"); 
 		}else{ 
-			$("*[contenteditable]").attr("contenteditable","true"); 
+			$("*[contenteditable]").attr("contenteditable","false"); 
 		}
 }
