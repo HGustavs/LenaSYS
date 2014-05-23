@@ -140,6 +140,7 @@
     background-color: #3C3C3C;
     white-space:nowrap;
     margin-left: 32px;
+    min-width: 660px;
 }
 
 
