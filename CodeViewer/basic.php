@@ -32,7 +32,7 @@ include "../Shared/basic.php";
 				}		
 						echo '<td class="mbutto mbuttoStyle showmobile" title="Menu" id="hidehotdog"><img src="new icons/hotdog_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle showdesktop" title="Themes" id="hidetheme" onclick="Theme();"><img src="new icons/switchColorTemp.svg" /></td>';
-						echo '<td class="mbutto mbuttoStyle showdesktop" id="numberbutton" title="Show/hide linenumbers" onclick="fadelinenumbers();"><img src="new icons/numbers_button.svg" /></td>';
+			//			echo '<td class="mbutto mbuttoStyle showdesktop" id="numberbutton" title="Show/hide linenumbers" onclick="fadelinenumbers();"><img src="new icons/numbers_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle beforebutton showdesktop" id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle afterbutton showdesktop" id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();"><img src="new icons/forward_button.svg" /></td>';
 						echo '<td class="mbutto mbuttoStyle playbutton showdesktop" id="playbutton" title="Open demo" onclick="Play();"><img src="new icons/play_button.svg" /></td>';

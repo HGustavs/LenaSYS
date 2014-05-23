@@ -4,7 +4,6 @@ function imagerecorder(canvas)
 	initImage.src = "img/firstpic.jpg";	// This is the "Click here to start recording" image.
 	
 	var clicked = 0;					// Check if the user has clicked to the next picture
-	var clicked = 0;					// Check if the user has clicked to the next picture
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
 	var imageCanvas = canvas;
 	var canvas = document.getElementById('ImageCanvas');
@@ -289,7 +288,7 @@ function imagerecorder(canvas)
 					},
 					success: function() {
 					
-						$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>.");
+						$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>");
 						$("#export-feedback").append($('<div>', {
 							"class":	"closebutton",
 							html:		"",
@@ -298,7 +297,7 @@ function imagerecorder(canvas)
 							}
 						}));
 					
-						$("#export-feedback").show(250);
+						$("#export-feedback").fadeIn("fast");	
 					}
 				});
 			} else {
@@ -326,8 +325,10 @@ function imagerecorder(canvas)
 	
 	// Add menu options to images
 	$(document).on("contextmenu", ".tli", function(e) {
+		// Prevent default right click menu
+		e.preventDefault();
 		if(clicked == 0) {
-			e.preventDefault();
+			// Show thumbnail menu
 			showThumbMenu($(this).index());
 		}
 	});
@@ -476,7 +477,6 @@ function imagerecorder(canvas)
 		which means that the canvas gets the same aspect ratio as the image.
 	*/
 	function resizeCanvas(){
-		
 		var scale = imgrecorder.maxCanvasWidth/imgrecorder.currentImageWidth;
 		setCanvasWidth(imgrecorder.maxCanvasWidth);
 			
@@ -542,6 +542,7 @@ function imagerecorder(canvas)
 	// Rebuild imagelibrary
 	function rebuildImgLibrary() {
 		imagelibrary = [];
+		activeImage = -1;
 		// Loop through all li in the ul
 		$("li", "#sortableThumbs").each(function(index) {
 			var src = $("img", this).attr("src");
@@ -605,9 +606,9 @@ function imagerecorder(canvas)
 						for(var i = 0; i < data.SUCCESS.length; i++) {
 							// data.SUCCESS contains the path to the image
 							var imgPath = data.SUCCESS[i];
-							
+
 							// add imgpath to array
-							imagelibrary[imageid] = imgPath;
+							imagelibrary.push(imgPath);
 				
 							addThumb(imgPath);
 						}
@@ -711,7 +712,7 @@ function imagerecorder(canvas)
 				var point = undoPoints[undoPoints.length - 1];
 
 				// Show previous image
-				showImage(point.imageID);
+				showImage(point.imageid);
 				// Undo log string
 				logStr = logStr.substr(0, point.stringPosition);
 			}
@@ -725,10 +726,10 @@ function imagerecorder(canvas)
 	// Reset recording session
 	function reset(){
 		// Reset variables
-	
 		clicked = 0;
 		lastEvent = Date.now();
 		activeImage = -1;
+
 		nextImage = 0;
 		currentImageRatio = 1;
 
@@ -797,7 +798,7 @@ function imagerecorder(canvas)
 	 function UndoPoint(strPosition, imgID)
 	 {
 	 	this.stringPosition = strPosition;
-	 	this.imageID = imgID;
+	 	this.imageid = imgID;
 	 }
 	 
 }
