@@ -3,18 +3,19 @@ include_once(dirname(__FILE__). "/../../../coursesyspw.php");
 include_once(dirname(__FILE__) . "/../../Shared/basic.php");
 pdoConnect();
 session_start();
-if(checklogin()) {
+if(!array_key_exists('courseid', $_POST)) {
+	die('No course set');
+}
+if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') || isSuperUser($_SESSION['uid'])) {
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-			
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script type="text/javascript" src="js/duggasys.js"></script>
 		<script>
 		qs = getUrlVars();
-		page.title(qs.name);
+		page.title(qs.name + " - Student list");
 		</script>
 	</head>
 <body>
@@ -35,7 +36,8 @@ if(checklogin()) {
 			 if (sessName!=this.username) {
 
 		      output += "<tr><td>"+this.username+"</td>";
-			  output += "<td>"+this.uid+"</td>";
+			  output += "<td>"+(this.firstname != null ? this.firstname : '')+"</td>";
+			  output += "<td>"+(this.lastname != null ? this.lastname : '')+"</td>";
 			  output += "<td>"+access+"</td>";
 			  output += "<td>";
 			  output += "<form id='accesschange'>";
@@ -47,8 +49,8 @@ if(checklogin()) {
 			  output += "</select>";
 			  output += "</form>";
 			  output += "</td>";
-		      output += "<td id='deletebox1' style='display:none'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
-		      output += "<td id='resetbox1' style='display:none'><input type='button' class='submit-button' id='reset_pw_btn' value='Reset'></inut></td></tr>";
+		      output += "<td id='deletebox1'><input type='checkbox' name='checkbox[]' value='"+this.uid+"'/></td>";
+		      output += "<td id='resetbox1'><input type='button' class='submit-button' id='reset_pw_btn' onclick='warningBox(\"Confirm removal\", \"Are you sure you want to reset the password for this user?\", 0, resetPassword," + this.uid + ")' value='Reset'/></td></tr>";
 			 };
 		   });
 		   $("table.list tbody").empty();
@@ -93,51 +95,39 @@ if(checklogin()) {
 		}
      
 	</script>
-	<div id="student-box">
-		<div id="student-header">Studentview</div>
-		<button onclick="changeURL('addstudent?courseid=' + qs.courseid + '&name=' + qs.name)">
-			Add students 
-		</button>
+	<button onclick="changeURL('addstudent?courseid=' + qs.courseid + '&name=' + qs.name)">
+		Add students 
+	</button>
 	<form action="" method="post">
 	<div id='students'>
-	<table class='list'>
-	<thead>
-	<tr><th>Name</th>
-	<th>UserID</th>
-	<th>Access</th>
-	<th>Change Access</th>
-	<th id='deletebox' style='display:none'>Delete</th>
-    <th id='resetbox' style='display:none'>Reset password</th>
-	</tr>
-	</thead>
-    <tbody>
-		<tr>
-			<td>Loading...</td>
-		</tr>
-	</tbody>
-	</table>
+		<table class='list'>
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>Firstname</th>
+					<th>Lastname</th>
+					<th>Access</th>
+					<th>Change Access</th>
+					<th id='deletebox'>Delete</th>
+					<th id='resetbox'>Reset password</th>
+				</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Loading...</td>
+			</tr>
+		</tbody>
+		</table>
+		<input id="deletebutton" class="submit-button" value="Delete" name="delete" type="button" />
 
-		<input id="hide" type="button" value="Back" class="submit-button" onclick="javascript:studentDelete('hide');"/>
-		<input id="show" type="button" value="Edit" class="submit-button" onclick="javascript:studentDelete('show');"/>
-		<input id="deletebutton" class="submit-button" style='display:none' value="Delete" name="delete"/>
 
-
-		<?php
-        
- 	    /* Removed this and made it into Ajax-call
-		if (isset($_POST['delete'])) {
-
-			if(!empty($_POST['checkbox'])) {
-   				foreach($_POST['checkbox'] as $check) {
-	    			$pdo->query( "DELETE FROM user_course WHERE uid='$check'" );
-   				}
-			}
-		}
-        */
-		?>
 		</form>
 		</div>
+
 	</div>
+			<div id="light" class="white_content">
+		</div>
+		<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 </body>
 </html>
 <?php

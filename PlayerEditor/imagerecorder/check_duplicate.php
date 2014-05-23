@@ -9,14 +9,15 @@
 	
 	if(isset($lib)) {
 		
-		$stmt = $pdo->prepare("SELECT id FROM playereditor_playbacks WHERE id = :id AND type=0 LIMIT 1");
+		$stmt = $pdo->prepare("SELECT id,path FROM playereditor_playbacks WHERE id = :id AND type=0 LIMIT 1");
 		$stmt->bindParam(":id", $lib, PDO::PARAM_STR);
 		
 		$stmt->execute();
+		$row = $stmt->fetch();		
 		
-		
-		if($stmt->fetch(PDO::FETCH_NUM) > 0) {
-			$result = array("DUPLICATE" => "true");
+		if($row['path']) {
+
+			$result = array("DUPLICATE" => "true", "PATH" => $row['path']);
 		} 
 		else {
 			$result = array("DUPLICATE" => "false");
