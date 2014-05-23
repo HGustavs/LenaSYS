@@ -33,6 +33,7 @@ function getPage() {
 		var path = "pages/";
 		var found= false;
 		var hashtagsplit = url.split('#').pop();
+		var data = getUrlVars();
 		if(window.location.hash && hashtagsplit.length > 0) {
 			var slashsplit = hashtagsplit.split('/');
 			for (var i = 0; i <= slashsplit.length-1; i++) {
@@ -72,7 +73,8 @@ function getPage() {
 		//PRINT PAGE IF FILE FOUND OR PRINT 404 //
 		if(found) {
 			console.log("page "+this.page+" was loaded");
-			$("#content").load(path);
+			removeDateTimePicker();
+			$("#content").load(path, data);
 		}
 		else {
 			console.log(this.page+ " not found!");
@@ -254,3 +256,9 @@ function getQuiz(quizId) {
 	}
 }
 // QUIZ FUNCTIONS END //
+
+function removeDateTimePicker() {
+	if ($(".xdsoft_noselect").length) {
+		$(".xdsoft_noselect").remove();	
+	};
+}

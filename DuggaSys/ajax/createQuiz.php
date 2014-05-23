@@ -41,6 +41,20 @@ if (checklogin()) {
 					} else {
 						$answer = "";
 					}
+					if (isset($_POST["quizfile"]) && $_POST["quizfile"] !="") {
+						$dir    = '../templates';
+						$files = scandir($dir);
+						
+						if (in_array($_POST["quizfile"], $files)) {
+							$quizfile = "default.js";
+							//echo json_encode("file does not exist");
+						} else {
+							$quizfile = $_POST["quizfile"];
+						}
+						
+					} else {
+						$answer = "";
+					}
 					$autograde = "0";
 					if (isset($_POST["autograde"]) && $_POST["autograde"] =="true") {
 						$autograde = "1";
@@ -65,7 +79,7 @@ if (checklogin()) {
 						$deadline = "0000-00-00 00:00:00";
 					}
 					
-					$stmt = $pdo -> prepare('INSERT INTO `quiz`(`cid`, `autograde`, `gradesystem`, `answer`, `name`, `release`, `deadline`) VALUES (:1, :2, :3, :4, :5, :6, :7)');
+					$stmt = $pdo -> prepare('INSERT INTO `quiz`(`cid`, `autograde`, `gradesystem`, `answer`, `name`, `release`, `deadline`, `quizFile`) VALUES (:1, :2, :3, :4, :5, :6, :7, :8)');
 					$stmt -> bindParam(':1', $_POST["cid"]);
 					$stmt -> bindParam(':2', $autograde);
 					$stmt -> bindParam(':3', $gradesys);
@@ -73,6 +87,7 @@ if (checklogin()) {
 					$stmt -> bindParam(':5', $quizname);
 					$stmt -> bindParam(':6', $releasedate);
 					$stmt -> bindParam(':7', $deadline);
+					$stmt -> bindParam(':8', $quizfile);
 					
 					if ($stmt -> execute()) {
 						$id = $pdo->lastInsertId();
@@ -98,7 +113,25 @@ if (checklogin()) {
 
 		} elseif($_POST["action"]=="create") {
 
-			if (isset($_POST["cid"]) && $_POST["cid"] !="") {
+			$stmt = $pdo -> prepare('INSERT INTO `quiz`(`cid`) VALUES (:cid)');
+			$stmt -> bindParam(':cid', $_POST["cid"]);
+			
+			if ($stmt -> execute()) {
+				$id = $pdo->lastInsertId();
+
+				$stmt = $pdo -> prepare('SELECT `id`, `cid`, `autograde`, `gradesystem`, `answer`, `name`, `release`, `deadline` FROM quiz WHERE id=:1');
+				$stmt -> bindParam(':1', $id);
+				$stmt -> execute();	
+				$data = $stmt->fetch();
+
+				echo json_encode($data);
+
+			} else {
+				//print_r($releasedate);
+				print_r($stmt -> errorInfo());						
+			}
+
+			/*if (isset($_POST["cid"]) && $_POST["cid"] !="") {
 				$cid = $_POST["cid"];
 			} else {
 				$varCheck .= "cid/";
@@ -147,7 +180,7 @@ if (checklogin()) {
 				$activateonsubmit = $_POST["activateonsubmit"];
 			} else {
 				$varCheck .= "activateonsubmit/";
-			}
+			}*/
 		} else {
 			echo json_encode("no action submitted");
 		}
