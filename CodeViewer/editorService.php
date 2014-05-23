@@ -177,7 +177,7 @@
 									for($i=0; $i<$new_boxes; $i++){
 										// Set correct ID number for new box.
 										$existing_boxes++;
-										$query = "INSERT INTO box(boxid,exampleid,boxcontent,settings) VALUES ('$existing_boxes','$exampleid','NOT DEFINED','[viktig=1]');";		
+										$query = "INSERT INTO box(boxid,exampleid,boxcontent,boxtitle,settings) VALUES ('$existing_boxes','$exampleid','NOT DEFINED','Box title','[viktig=1]');";		
 										$result=mysql_query($query);
 										if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 									}
