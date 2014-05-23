@@ -1,12 +1,6 @@
-<?php session_start(); 
-
-secsripts();
-
-?>
-
-<script type="text/javascript">inParamter(param1);</script>
-
+<?php session_start(); ?>
+<script>
+	page.title();
+</script>
 <!-- Put ontent here -->
-<div id="quizOutput"></div>
-
-<button onclikc="submitQuiz(variabel)"></button>
+<div id="output"></div>
