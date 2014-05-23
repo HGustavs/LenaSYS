@@ -29,22 +29,3 @@
     overflow-x: auto;
     z-index: 2;
 }
-
-@media only screen and (max-width: 1100px){
-    #box1wrapper{
-    	position: relative;
-      	top: 0px;
-      	left: 0px;
-      	right: 0px;
-      	width: -moz-calc(100.0%) !important;
-        width: -webkit-calc(100.0%) !important;
-    }
-  
-  	#box2wrapper {
-    	position: relative;
-    	top: 0px;
-        width: -moz-calc(100.0%) !important;
-        width: -webkit-calc(100.0%) !important;
-    }
-
-}

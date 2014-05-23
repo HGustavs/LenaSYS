@@ -402,6 +402,14 @@ function Canvasrenderer()
 		var node;
 		for(x = 0; x < nodes.length; x++) {
 			node = nodes[x];
+			// We must check for inter explorer users, since IE
+			// for some reason switches places of all the node values
+			var ua = window.navigator.userAgent;
+            		var msie = ua.indexOf("MSIE ");
+		
+			// If the user runs IE, we iterate through the array and switches
+			// all the node values before calling the correct function
+			if(msie > 0 || !!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) this.switchParameters(node);
 			// Check number of arguments and call canvas function
 			switch(node.attributes.length){
 				case 0:
@@ -508,6 +516,14 @@ function Canvasrenderer()
 		}
 	}
 	
+	this.switchParameters = function(node){
+		for(var i = 0; i < node.attributes.length/2; ++i){
+			var temp = node.attributes.item(i).nodeValue;
+			node.attributes.item(i).nodeValue = node.attributes.item(node.attributes.length-(i+1)).nodeValue;
+			node.attributes.item(node.attributes.length-(i+1)).nodeValue = temp;
+		}
+	}	
+
 	this.restart = function() {
 		this.reset();
 		this.play();
@@ -552,6 +568,7 @@ function Canvasrenderer()
 	}
 
 	this.lineTo = function(x, y){
+		console.log(x + ", " + y);
 		ctx.lineTo(x, y);
 	}
 	this.stroke = function(){
@@ -677,7 +694,7 @@ function Canvasrenderer()
 	    ctx.translate(x, y);
 	}
 	this.transform = function(a,b,c,d,e,f){
-        ctx.transform(a,b,c,d,e,f);
+		ctx.transform(a,b,c,d,e,f);
 	}
 		
 	this.setTransform = function(a,b,c,d,e,f){	      
@@ -985,8 +1002,6 @@ function Canvasrenderer()
 		// Check for negative coordinates
 		(mX < 0) ? mX = 0 : mX;
 		(mY < 0) ? mY = 0 : mY;	
-		//x < 1 ? 1 : x;
-		//y < 1 ? 1 : y;	
 		// Save background so that it can be restored after the mouse is moved again.
 		this.mouseCursorBackground = ctx.getImageData( mX, mY, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
 		// Save mouse position

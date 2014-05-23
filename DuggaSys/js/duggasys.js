@@ -258,21 +258,30 @@ function returnedSection(data)
 
 }
 
-  function studentDelete(showhide) {
-      if (showhide == "show") {
+function resetPassword(uid){
+	$.ajax({
+		
+		url: 'ajax/resetpassword_ajax.php',
+		type: "POST",
+		dataType: "json",
+		data: {
+			user_id: uid
+		},
+		success: function (returnedData) {
+			if(returnedData != "false"){
 
-          $("#deletebox").show();
-          $("#deletebutton").show();
-          $("#resetbox").show();
+               showPopUp('reset',returnedData);
 
-      } else if (showhide == "hide") {
+            }else {
+              dangerBox('Problems reseting password', 'Could not reset password');
 
-          $("#deletebox").hide();
-          $("#deletebutton").hide();
-          $("#resetbox").hide();
-      }
-  }
-
+            }
+		},
+		error: function(){
+            alert("error");
+		},
+	});
+}
 
 $(function() {
 	   $("#reset_pw_btn").on('click',function(){
@@ -292,8 +301,12 @@ $(function() {
                 $('td:nth-child(6)').show();                
        });
        $("#deletebutton").on('click',function(){
-           deleteStudent();
+           warningBox('Confirm removal', 'Are you sure you want to remove the selected students from the current course?', 0, deleteStudent);
        });
+       $("#resetbox input").on('click',function(){
+           resetPassword();
+       });
+
     });
 
 function deleteStudent(){
@@ -301,9 +314,7 @@ function deleteStudent(){
 	var delete_ids = $.map($('input:checkbox:checked'), function(checked, i) {
 		return +checked.value;
 	});
-	alert(delete_ids);
 	$.ajax({
-		
 		url: 'ajax/deletestudent_ajax.php',
 		dataType: "json",
 		type: "POST",
@@ -311,14 +322,15 @@ function deleteStudent(){
 			user_id: delete_ids
 		},
 		success: function (returnedData) {
-
-		  	successBox('Successfully deleted students', 'Deleted student(s): '+returnedData+'');
-			getStudents();
-            studentDelete("hide");
+			if(typeof returnedData.success == "undefined" || returnedData.success) {
+			  	successBox('Successfully removed students', 'Removed student(s): '+returnedData+' from the course.');
+				getStudents();
+			} else {
+				dangerBox('Problems removing students', 'Could not remove the students from the course. Make sure you selected at least one student.');
+			}
 		},
 		error: function(){
-            dangerBox('Problems deleting students', 'Could not delete students, make sure you selected students');
- 
+			dangerBox('Problems removing students', 'Could not remove the students from the course. Make sure you selected at least one student.');
 		},
 	});
 }
@@ -336,10 +348,35 @@ function passPopUp(){
 		console.log(returnedData);
 		showPopUp('show', returnedData)
 		},
+		error: function(){
+			dangerBox('Problems adding students', 'Could not add the students from the course. Make sure you add at least one student.');
+		},
 	});
 	}
 
 function showPopUp(showhidePop, returnedData){
+    console.log(returnedData);
+	if(showhidePop == "reset"){
+       	document.getElementById('light').style.visibility = "visible";
+		document.getElementById('fade').style.visibility = "visible";
+		var output = "<div id='printArea'>";
+		output += "<table class='list'>";
+		output += "<tr><th>Name</th>";
+		output += "<th>Username</th>";
+		output += "<th>New password</th></tr>";
+        output += "<tr><td>"+returnedData['firstname']+ " "+returnedData['lastname']+"</td>";
+		output += "<td>"+returnedData['username']+"</td>";
+		output += "<td>"+returnedData['pw']+"</td></tr>";
+
+		output += "</table>";
+		//output += returnedData.length + " users added to the system";
+		output += "</div>";
+		//output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
+		
+		var div = document.getElementById('light');
+		div.innerHTML = output;
+
+	}
 	if(showhidePop == "show"){
 		document.getElementById('light').style.visibility = "visible";
 		document.getElementById('fade').style.visibility = "visible";
@@ -352,7 +389,7 @@ function showPopUp(showhidePop, returnedData){
 			output += "<tr><th>Name</th>";
 			output += "<th>Username</th>";
 			output += "<th>Password</th></tr>";
-
+             
 			$.each(returnedData, function(){
 				output += "<tr><td>"+this[1]+"</td>";
 				output += "<td>"+this[0]+"</td>";
