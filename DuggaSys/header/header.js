@@ -47,7 +47,9 @@ function getScriptPath(name) {
 
 // This is for displaying the dropdown when clicking the username
 function showUserSettings(){
-	$('#userSettings').slideToggle();
+	$("#userSettings").load(getScriptPath("header.js")+"/content/menu.php", function() {
+		$('#userSettings').slideToggle();
+	});
 }
 // This closes the #userSettings box when clicking outside
 $(function(){

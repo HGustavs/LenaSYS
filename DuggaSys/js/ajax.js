@@ -28,7 +28,7 @@
  	};
  }
 
-  function submitNewQuiz(cid, action) 
+  function editQuiz(cid, action, qid) 
  {
  	if (validateNewQuizSubmit()) {
  		$.ajax({
@@ -38,10 +38,13 @@
 			data: {
 				cid: 1,
 				action: action, // edit/create
+				qid: qid,
 				quizname: document.newQuizForm.quizname.value,
 				//parameters: document.newQuizForm.parameterinput.value,
+				parameter: document.newQuizForm.parameterinput.value,
 				answer: document.newQuizForm.answerinput.value,
 				autograde: document.newQuizForm.autogradebox.checked,
+				quizfile: document.newQuizForm.quizfile.value,
 				gradesys: document.newQuizForm.gradesysselect.value,
 				releasedate: document.newQuizForm.releasedateinput.value,
 				deadline: document.newQuizForm.deadlineinput.value,
@@ -51,7 +54,8 @@
 				console.log(data);
 				if (data.cid>0) {
 					console.log("Edit successfull");
-					$(".xdsoft_noselect").remove();
+
+					
 					changeURL("quiz/menu");
 					//changeURL("sectioned?courseid="+data.cid);	
 				} else if(data==="no access") {
@@ -72,6 +76,96 @@
  		console.log("not valid input")
  	};
  		
+ }
+
+ function createDefaultQuiz(cid) 
+ {
+ 	
+	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "ajax/createQuiz.php",
+		data: {
+			cid: 1,
+			action: "create" // edit/create
+		},
+		success:function(data) {
+			//console.log(data);
+			changeURL("quiz/edit");
+			$("#")
+		},
+		error:function() {
+			changeURL("quiz/menu");
+		}
+	});
+ }
+
+ function getQuizData(quizid) {
+ 	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "ajax/getQuizData.php",
+		data: {
+			cid: 1
+		},
+		success:function(data) {
+			//console.log(data);
+			console.log("A OK");
+			$("#quizname").val(data.name);
+			$("#parameterinput").val(data.parameter);
+			$("#quizAnswerInput").val(data.answer);
+			$("#autogradecheck").prop('checked', !!data.autograde);
+			$("#releasedateinput").val(data.release);
+			$("#deadlineinput").val(data.deadline);
+
+			$.each($("#gradeSysSelect option"), function( index, value ) {
+			  console.log(value.value);
+			  if (value.value==data.gradesystem) {
+			  	value.setAttribute('selected', true);	
+			  };
+			  
+			});
+			$.each($("#quizfile option"), function( index, value ) {
+			  console.log(value.value);
+			  if (value.value==data.gradesystem) {
+			  	value.setAttribute('selected', true);	
+			  };
+			  
+			});
+
+			
+			
+
+		},
+		error:function() {
+			console.log("Something went wrong");
+		}
+	});
+ }
+
+  function getQuizFiles(cid) 
+ {
+	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "ajax/getQuizFiles.php",
+		data: {
+			cid: 1
+		},
+		success:function(data) {
+			//console.log(data);
+
+			$.each( data, function( key, value ) {
+			  console.log( key + ": " + value );
+			  if (value!="." && value!="..") {
+			  	$("#quizfile").append("<option value='"+value+"'>"+value+"</option>")
+			  };
+			});
+		},
+		error:function() {
+			console.log("Something went wrong");
+		}
+	});
  }
 
 function submitNewPassword()

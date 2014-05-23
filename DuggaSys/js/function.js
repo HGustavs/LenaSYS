@@ -73,8 +73,10 @@ function getPage() {
 		//PRINT PAGE IF FILE FOUND OR PRINT 404 //
 		if(found) {
 			console.log("page "+this.page+" was loaded");
+			removeDateTimePicker();
 			$("#content").load(path, data);
-		} else {
+		}
+		else {
 			console.log(this.page+ " not found!");
 			this.page = "404";
 			$("#content").load("pages/404.php");
@@ -111,23 +113,6 @@ function getPage() {
 // Modifying first letter in a string to a capital letter //
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
-}
-function getTest() {
-	console.log("loading Test...");
-
-	$.ajax({
-		type:"POST",
-		url:"ajax/getTest.php",
-		async: false,
-		data: "testid="+getUrlVars()["testid"]+"&courseid="+getUrlVars()["courseid"],
-		success:function(data) {
-			console.log("success");
-		},
-		error:function() {
-			console.log("error");
-		}
-	});
-	console.log("complete");
 }
 // ALERT BOXES START //
 function successBox(title, text, delay, confirm, data) {
@@ -208,3 +193,71 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 	});
 }
 // ALERT BOXES END //
+
+//Function to load new links to head dynamically
+function loadHeaderLink(filename, filetype){
+	//if filename is a external JavaScript file
+	if (filetype=="js"){
+		var fileref=document.createElement('script')
+		fileref.setAttribute("type","text/javascript")
+		fileref.setAttribute("src", filename)
+	}
+	//if filename is an external CSS file
+	else if (filetype=="css"){
+		var fileref=document.createElement("link")
+		fileref.setAttribute("rel", "stylesheet")
+		fileref.setAttribute("type", "text/css")
+		fileref.setAttribute("href", filename)
+	}
+	if (typeof fileref!="undefined") {
+		document.getElementsByTagName("head")[0].appendChild(fileref)
+	}
+}
+// QUIZ FUNCTIONS START //
+function getQuiz(quizId) {
+	console.log(quizId);
+	if(quizId != undefined) {
+		console.log("loading quiz");
+		addRemoveLoad(true);
+		$.ajax({
+			type:"POST",
+			url:"ajax/getQuiz.php",
+			async: false,
+			data: "quizid="+quizId,
+			success:function(data) {
+				data = JSON.parse(data);
+				console.log("success");
+				console.log(data);
+				if(data != "error") {
+					console.log(data['template']+".js template loaded");
+					loadHeaderLink("templates/"+data['template']+".js", "js");
+
+					setTimeout(function(){
+						quiz(data['parameters'], data['question']);
+						addRemoveLoad(false);
+					}, 500);
+				}
+				else {
+					console.log(data[0]);
+					dangerBox("Ooops you got an error!","This may mean that the system can not find a quiz or that you dont have permission to the quiz you want to run.<br/>Contact admin for support or try again.")
+					addRemoveLoad(false);
+				}
+			},
+			error:function() {
+				console.log("error");
+				addRemoveLoad(false);
+			}
+		});
+		console.log("complete");
+	}
+	else {
+		dangerBox("Ooops you got an error!","There is an ID missing to reach a quiz...<br/>Contact admin for support or try again.");
+	}
+}
+// QUIZ FUNCTIONS END //
+
+function removeDateTimePicker() {
+	if ($(".xdsoft_noselect").length) {
+		$(".xdsoft_noselect").remove();	
+	};
+}

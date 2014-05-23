@@ -31,11 +31,5 @@ $loggedin = checklogin();
 		?>
 </nav>
 <div id="userSettings">
-	<ul>
-    	<!--Add more to the usersettings list here within new <li> elements-->
-		<li onclick="changeURL('newpassword')">Change password</li>
-        <li onclick="changeURL('myresults')">My results</li>
-        <li onclick="changeURL('eventlog')">Eventlog</li>
-   	</ul>
 </div>
 
