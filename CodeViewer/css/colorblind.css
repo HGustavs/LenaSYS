@@ -1,0 +1,310 @@
+.docucontentStyle {
+     background-color: rgba(255, 255, 255, 1);
+     color: black;
+    
+}
+
+.codeboxStyle {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.temp3Style{
+	background-color: rgba(255, 255, 255, 1);
+}
+
+.temp4Style{
+	background-color: rgba(255, 255, 255, 1);
+}
+
+.docucontentStyle h1 {
+    color: black;
+}
+
+.docucontentStyle span {
+    color: black;
+}
+
+.buttomenuStyle {
+    background-color: #000;
+}
+
+.mbuttoStyle {
+    background-color: #000;
+}
+
+.mbuttoStyleLight {
+    background-color: #ccc;
+    color: black;
+}
+
+.mbuttoStyle:hover{
+	background-color: #4d4d4d;
+}
+
+.menutextStyle {
+   	color: white;
+}
+
+.hotdogdropStyle{
+	color: white;
+}
+.hotdogdropStyle table td{
+	color: white;
+}
+
+.dropdownStyle {
+    color: white;
+    /*background: #614875;*/
+}
+
+.dropdownbackStyle {
+	background-color: #000;
+    color: white;
+}
+
+.codedropStyle {
+    background-color: #000;
+    border-color: rgb(0,0,0) transparent;	
+}
+
+.docudropStyle {
+    background-color: #000; 
+    background: rgb(0, 0, 0) transparent;
+}
+
+.themedropStyle {
+	background-color: #000;
+}
+
+.imgdropStyle{
+	background-color: #000;
+}
+
+.dropdownitemStyle {
+    background: #000;
+    color: #fff;
+}
+
+.dropdownitemStyle:hover{
+	background: #4d4d4d;
+}
+
+
+
+.codeborder{
+	position: absolute;
+	top:0px;
+	bottom: 0px;
+	left:0px;
+	margin: 0px !important;
+	padding: 0px !important;
+	background-color: #000000;
+	text-align: right;
+	
+	/* Width of .no and .impo */
+	width: 32px !important;
+	
+}
+
+.codeborder .no {
+    color: #D8D8D8;
+    padding-left: 4px;
+    padding-right: 6px;
+    width: 22px;
+    float: left; 
+	background-color: #000000;
+    
+}
+
+.codeborder .impono {
+    color: white;
+    width: 22px;
+    background-color: #5D5D5D;
+    padding-left: 4px;
+    padding-right: 6px;
+}
+
+
+
+.normtext {
+    color: #000;
+    background-color: #F8F8F8;
+    white-space:nowrap;
+    
+    /* Width of codeborder */
+  	margin-left: 32px;
+}
+
+.impo {
+    color: #000;
+    background-color: rgba(204, 203, 203, 0.28);
+    white-space:nowrap;
+    /* Width of codeborder */
+    margin-left: 32px;
+}
+
+
+.comment {
+    color: rgba(72, 68, 101, 0.83);
+}
+
+.normtext .oper {
+    color: #000;
+}
+
+.impo .oper {
+    color: #000;
+}
+
+.normtext .string {
+    color: #000;
+}
+
+.impo .string {
+    color: #000;
+}
+
+.normtext .number {
+    color: #000;
+}
+
+.impo .number {
+    color: #000;
+}
+
+.normtext .hi {
+    background-color: #CCCBCB;
+    color: #000;
+}
+
+.impo .hi {
+    background-color: #fff;
+    color: #000;
+}
+
+.keywordA {
+    color: #000;
+    font-weight: bold;
+}
+
+.keywordB {
+    color: #0004ff;
+    font-weight: bold;
+}
+
+.keywordC {
+    color: rgba(15, 4, 191, 1);
+    font-weight: bold;
+}
+
+.keywordD {
+    color: rgba(171, 87, 7, 1);
+    font-weight: bold;
+}
+
+.normtext .impword {
+    color: #fff;
+    background-color: #000;
+}
+
+.impo .impword {
+    color: #fff;
+    background-color: #000;
+}
+
+.normtext .imphi {
+    background-color: #CCCBCB;
+    color: #000;
+    
+}
+
+.impo .imphi {
+    background-color: #fff;
+    color: #000;
+}
+
+.tooltip{
+	color:white;
+}
+
+.errormsg{
+	color: rgba(37, 132, 255, 1);
+}
+
+.playlinkErrorMsgStyle{
+	color: rgba(37, 132, 255, 1);
+}
+
+
+.settingsTabMenuStyle li{
+	background-color: #000;
+}
+.settingsTabMenuStyle .activeSetMenuLink{
+	border-bottom-color: #4d4d4d;
+	background-color: #4d4d4d;
+}
+
+.templatethumbicon:hover{
+    background-color: #4D4D4D;
+}
+
+.themeicon:hover {
+	background-color: #4D4D4D;
+}
+
+
+
+
+.codebox{
+    padding: 0px;
+}
+.descbox{
+    padding-top: 4px;
+    padding-left: 4px;
+}
+
+.box{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    overflow-y: auto;
+    overflow-x: auto;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    outline: 0 none;
+    background-color: #F8F8F8;
+    color: black;
+}
+
+
+/* BOXMENU STYLING START */
+.buttomenu2Style{
+	background-color: #5A5757;
+}
+.buttomenu2Style select{
+   color: white;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+.buttomenu2Style select:hover{
+  background-color: #000;
+    cursor: pointer;
+}
+.butto2:hover{
+    background-color: #000;
+    cursor: pointer;
+}
+.boxtitleEditable{
+	color: white;
+	cursor:text;
+    font-family: Arial, Sans-Serif;
+}
+.boxtitle{
+	font-family: Arial, Sans-Serif !important;
+	cursor:default !important;
+	color: white !important;
+}
+/* BOXMENU STYLING STOP */

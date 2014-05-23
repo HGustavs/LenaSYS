@@ -1,37 +1,66 @@
 <?php
+require_once(dirname(__FILE__) . '/../Shared/database.php');
+
 //---------------------------------------------------------------------------------------------------------------
 // courseexists - Checks if a cerain course exists or not
 //---------------------------------------------------------------------------------------------------------------
 function courseexists($coursename)
-{		
-	$guf=false;
-	$querystring="SELECT * FROM course WHERE coursename='$coursename';";
-	$result=mysql_query($querystring);
-	if (!$result) err("SQL Query Error: ".mysql_error(),"Database Password Check Error");
-	while ($row = mysql_fetch_assoc($result)){
-		$guf=true;
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
 	}
-	
-	return $guf;
+
+	if(!is_numeric($coursename)) {
+		$coursename = getCourseId($coursename);
+	}
+
+	$query = $pdo->prepare('SELECT COUNT(cid) FROM course WHERE cid=:course');
+	$query->bindParam(':course', $coursename);
+	if($query->execute() && $query->rowCount() > 0) {
+		$res = $query->fetch(PDO::FETCH_NUM);
+		return $res[0] > 0;
+	} else {
+		return false;
+	}
 }
 
 function getCourseId($coursename)
 {
-	$querystring = sprintf("SELECT cid FROM course WHERE coursename='%s' LIMIT 1",
-		mysql_real_escape_string($coursename)
-	);
+	global $pdo;
 
-	$result = mysql_query($querystring);
+	if($pdo == null) {
+		pdoConnect();
+	}
 
-	if(!$result) {
-		return false;
+	$query = $pdo->prepare('SELECT cid FROM course WHERE coursename=:course LIMIT 1');
+	$query->bindParam(':course', $coursename);
+
+	if($query->execute() && $query->rowCount() > 0) {
+		$course = $query->fetch();
+		return $course['cid'];
 	} else {
-		if(mysql_num_rows($result) > 0) {
-			$course = mysql_fetch_assoc($result);
-			return $course['cid'];
-		} else {
-			return false;
-		}
+		return false;
+	}
+}
+
+function getCourseName($courseid)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
+	$query->bindParam(':cid', $courseid);
+
+	if($query->execute() && $query->rowCount() > 0) {
+		$course = $query->fetch();
+		return $course["coursename"];
+	} else {
+		return false;
 	}
 }
 ?>

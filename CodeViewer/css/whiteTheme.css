@@ -1,0 +1,292 @@
+.buttomenuStyle {
+    background-color: #614875;
+}
+
+.mbuttoStyle {
+    background-color: #614875;
+}
+
+.mbuttoStyleLight {
+    background-color: #9868bd;
+}
+
+.mbuttoStyle:hover{
+	background-color: #7D5CA0;
+}
+
+.menutextStyle {
+   	color: white;
+}
+
+.hotdogdropStyle{
+	color: white;
+}
+.hotdogdropStyle table td{
+	color: white;
+}
+
+.dropdownStyle {
+    color: white;
+    /*background: #614875;*/
+}
+
+.dropdownbackStyle {
+	background-color: #614875;
+    color: white;
+}
+
+.codedropStyle {
+    background-color: #614875;
+    border-color: rgb(0,0,0) transparent;	
+}
+
+.docudropStyle {
+    background-color: #614875; 
+    background: rgb(0, 0, 0) transparent;
+}
+
+.themedropStyle {
+	background-color: #614875;
+}
+
+.imgdropStyle{
+	background-color: #614875;
+}
+
+.dropdownitemStyle {
+    background: #614875;
+    color: #fff;
+}
+
+.dropdownitem:hover {
+	background-color: #7D5CA0;
+}
+
+.codeborder{
+	position: absolute;
+	top:0px;
+	bottom: 0px;
+	left:0px;
+	margin: 0px !important;
+	padding: 0px !important;
+	background-color: #614875;
+	text-align: right;
+	
+	/* Width of .no and .impo */
+	width: 32px !important;
+	
+}
+
+.codeborder .no {
+    color: #D8D8D8;
+    padding-left: 4px;
+    padding-right: 6px;
+    width: 22px;
+    float: left; 
+	background-color: #614875;
+    
+}
+
+.codeborder .impono {
+    color: white;
+    width: 22px;
+    background-color: #9569BD;
+    padding-left: 4px;
+    padding-right: 6px;
+}
+
+
+.normtext {
+    color: #000;
+    background-color: #F2F2F2;
+    white-space:nowrap;
+    
+    /* Width of codeborder */
+  	margin-left: 32px;
+}
+
+.impo {
+    color: #000;
+      background-color: rgba(186, 96, 255, 0.09);
+    white-space:nowrap;
+    margin-left: 32px;
+}
+
+.normtext .no {
+    color: white;
+    background-color: #614875;
+    padding-left: 4px;
+    padding-right: 6px;
+    width: 22px;
+    float: left;
+    text-align: right;
+}
+
+
+.impo .no {
+    border-right: 2px #444;
+    color: white;
+    background-color: #9569BD;
+}
+
+.comment {
+    color: rgba(72, 68, 101, 0.83);
+}
+
+.normtext .oper {
+    color: #000;
+}
+
+.impo .oper {
+    color: #000;
+}
+
+.normtext .string {
+    color: #000;
+}
+
+.impo .string {
+    color: #000;
+}
+
+.normtext .number {
+    color: #000;
+}
+
+.impo .number {
+    color: #000;
+}
+
+.normtext .hi {
+    background-color: #D3BEE3;
+    color: #000;
+}
+
+.impo .hi {
+    background-color: #fff;
+    color: #000;
+}
+
+.keywordA {
+    color: #e90000;
+}
+
+.keywordB {
+    color: #0004ff;
+}
+
+.keywordC {
+    color: rgba(6, 129, 19, 1);
+}
+
+.keywordD {
+    color: rgba(231, 0, 255, 1);
+}
+
+
+
+.normtext .impword {
+    color: #fff;
+    background-color: #614875;
+}
+
+.impo .impword {
+    color: #fff;
+    background-color: #614875;
+}
+
+.normtext .imphi {
+    background-color: #D3BEE3;
+    color: #000;
+    
+}
+
+.impo .imphi {
+    background-color: #fff;
+    color: #000;
+}
+
+.tooltip{
+	color:white;
+}
+
+.errormsg{
+	color: red;
+}
+
+.playlinkErrorMsgStyle{
+	color: red;
+}
+
+.settingsTabMenuStyle li{
+	background-color: #7D5CA0;
+}
+.settingsTabMenuStyle .activeSetMenuLink{
+	border-bottom-color: #614875;
+	background-color: #614875;
+}
+
+.templatethumbicon:hover{
+    background-color: #7D5CA0;
+}
+
+.themeicon:hover {
+	background-color: #7D5CA0;
+}
+
+
+.codebox{
+    padding: 0px;
+}
+.descbox{
+    padding-top: 4px;
+    padding-left: 4px;
+}
+
+.box{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    outline: 0 none;
+    background-color: #F2F2F2; 
+}
+
+
+
+/* BOXMENU STYLING START */
+.buttomenu2Style{
+	background-color: #5A5757;
+}
+
+.buttomenu2Style select{
+   color: white;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+.buttomenu2Style select:hover{
+  background-color: #938C8C;
+    cursor: pointer;
+}
+.butto2:hover{
+    background-color: #938C8C;
+    cursor: pointer;
+}
+.boxtitleEditable{
+	color: white;
+	cursor:text;
+    font-family: Arial, Sans-Serif;
+}
+.boxtitle{
+	font-family: Arial, Sans-Serif !important;
+	cursor:default !important;
+	color: white !important;
+}
+}
+/* BOXMENU STYLING STOP */

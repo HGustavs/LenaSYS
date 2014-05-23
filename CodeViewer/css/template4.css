@@ -1,64 +1,46 @@
-#docucontent{
-    padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #272822;
+
+#box1wrapper{
     position: absolute;
+    border-right-style: solid;
+    border-right-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    border-color: #5A5757;
     top: 0px;
     left: 0px;
-      width: -moz-calc(50.0%);
-	  width: -webkit-calc(50.0%);
-	  
-      height: -webkit-calc(35.0%);
-      height: -moz-calc(35.0%);
-     background-color: #272822;
-    overflow: scroll;
-    color: white;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
-}
-#temp3{
-	padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-     border-color: black;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-      width: -moz-calc(50.0%);
-	  width: -webkit-calc(50.0%);
-	  
-      height: -webkit-calc(35.0%);
-      height: -moz-calc(35.0%);
-     background-color: #272822;
-    overflow: scroll;
-    color: white;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
+    width: -moz-calc(50.0%);
+	width: -webkit-calc(50.0%);
+    height: -webkit-calc(35%);
+    height: -moz-calc(35%);
 }
 
-#codebox {
-    border-style: solid;
-    border-width: 1px;
-    position: absolute;
-    float: left;
-      width: -moz-calc(100.0%);
-	  width: -webkit-calc(100.0%);
-	  
-      height: -webkit-calc(65.0%);
-      height: -moz-calc(65.0%);
-    left: 0px;
+#box2wrapper {
+	position: absolute;
+	border-left-style: solid;
+    border-left-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    border-color: #5A5757;
+    top: 0px;
     right: 0px;
+    width: -moz-calc(50.0%);
+	width: -webkit-calc(50.0%);
+    height: -webkit-calc(35%);
+    height: -moz-calc(35%);
+}
+
+#box3wrapper {
+   	position: absolute;
+   	border-top-style: solid;
+    border-top-width: 3px;
+    border-color: #5A5757;
+   	right: 0px;
     bottom: 0px;
-     background-color: #272822;
-     font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    overflow: scroll;
-    z-index: 2;
+    left: 0px;
+    width: -moz-calc(100.0%);
+	width: -webkit-calc(100.0%);
+    height: -webkit-calc(65%);
+    height: -moz-calc(65%);
 }
 
-#temp4{
-	display: none;
-}
+

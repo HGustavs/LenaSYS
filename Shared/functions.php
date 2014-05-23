@@ -1,19 +1,7 @@
 <?php
-include_once "database.php";
-include_once "courses.php";
-include_once "sessions.php";
-//---------------------------------------------------------------------------------------------------------------
-// err - Displays nicely formatted error and exits
-//---------------------------------------------------------------------------------------------------------------
-function err ($errmsg,$hdr='')
-{
-	if(!empty($hdr)){
-			echo($hdr);
-	}
-	print "<p><span class=\"err\">Serious Error: <br /><i>$errmsg</i>.";
-	print "</span></p>\n";
-	exit;
-}
+include_once dirname(__FILE__) . "/database.php";
+include_once dirname(__FILE__) . "/courses.php";
+include_once dirname(__FILE__) . "/sessions.php";
 
 //---------------------------------------------------------------------------------------------------------------
 // endsWith - Tests if a string ends with another string - defaults to being non-case sensitive
@@ -59,4 +47,30 @@ function jsvarsession($getname,$varname){
 		echo 'var '.$varname.'="NONE!";';												
 	}
 }	
+
+/**
+ * Log a message to the eventlog in the database. Use sparingly since it will
+ * be logged to the table each time the function is run.
+ * @
+ */
+function log_message($user, $type='notice', $message) 
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	// TODO: Add support for types of events?
+	$query = $pdo->prepare("INSERT INTO eventlog(address, type, user, eventtext) VALUES(:address, :type, :user, :eventtext)");
+
+	$query->bindParam(':user', $user);
+	$query->bindParam(':type', $type);
+
+	// TODO: Proxy checks?
+	$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);
+	$query->bindParam(':eventtext', $message);
+	$query->execute();
+	return $query->rowCount() > 0;
+}
 ?>

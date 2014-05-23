@@ -1,66 +1,45 @@
-
-#docucontent {
-    padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #272822;
+#box1wrapper {
     position: absolute;
+    border-right-style: solid;
+    border-right-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    border-color: #5A5757;
     top: 0px;
     left: 0px;
-    /*width: 296px;*/
- 	  width: -moz-calc(25.0%);
-	  width: -webkit-calc(25.0%);
-	  
-      height: -webkit-calc(65.0%);
-      height: -moz-calc(65.0%);
-     background-color: #272822;
-    overflow: scroll;
-    color: white;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
+ 	width: -moz-calc(25.0%);
+	width: -webkit-calc(25.0%);
+    height: -webkit-calc(60%);
+    height: -moz-calc(60%);
 }
 
-#temp3{
-    padding-left: 4px;
-    border-style: solid;
-    border-width: 1px;
-     border-color: black;
+
+#box2wrapper {
     position: absolute;
-    bottom: 0px;
+    border-right-style: solid;
+    border-right-width: 3px;
+    border-top-style: solid;
+    border-top-width: 3px;
+    border-color: #5A5757;
     left: 0px;
-    /*width: 296px;*/
- 	  width: -moz-calc(25.0%);
-	  width: -webkit-calc(25.0%);
-	  
-      height: -webkit-calc(35.0%);
-      height: -moz-calc(35.0%);
-      background-color: #272822;
-    overflow: scroll;
-    color: white;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
-}
-
-#codebox {
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-    position: absolute;
-    top: 0px;
     bottom: 0px;
-    /*left: 300px;*/
- 	  width: -moz-calc(75.0%);
-	  width: -webkit-calc(75.0%);
-    right: 0px;
-     background-color: #272822;
-     font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    overflow: scroll;
-    z-index: 2;
+ 	width: -moz-calc(25.0%);
+	width: -webkit-calc(25.0%);
+    height: -webkit-calc(40%);
+    height: -moz-calc(40%);
 }
 
-#temp4{
-	display: none;
+#box3wrapper{
+    position: absolute;
+    border-left-style: solid;
+    border-left-width: 3px;
+    border-color: #5A5757;
+    top: 0px;
+    right:0px;
+    bottom: 0px;
+ 	width: -moz-calc(75.0%);
+	width: -webkit-calc(75.0%);
+    height: -webkit-calc(100%);
+    height: -moz-calc(100%);
 }
+
