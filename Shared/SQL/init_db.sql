@@ -410,6 +410,7 @@ CREATE TABLE `quiz` (
   `autograde` tinyint(1) NOT NULL DEFAULT 0, /* bool */
   `gradesystem` tinyint(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
   `answer` varchar(2000) NOT NULL DEFAULT '',
+  `parameter` varchar(2000) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
   `quizFile` varchar(255) NOT NULL DEFAULT 'default.js',
   `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
