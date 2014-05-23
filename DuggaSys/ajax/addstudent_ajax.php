@@ -7,7 +7,7 @@ pdoConnect();
 if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSuperUser($_SESSION['uid'])) {
 	$array=array();
 
-	if(isset($_POST['string'])){
+	if(array_key_exists('string', $_POST) && !empty($_POST['string'])){
 
 		function random_password( $length = 12 ) {
 			$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?/";
@@ -15,6 +15,7 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 			return $password1;
 		}
 		$courseid = $_POST['courseid'];
+		$coursename = getCourseName($courseid);
 		$str = $_POST['string'];
 
 		$row=explode("\n", $str);
@@ -23,21 +24,18 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 			$name = "";
 			$username1 = "";
 
-			$components = explode("\t", $row1);
-			$ssn = array_shift($components);
+			// Split on whitespace.
+			$components = preg_split('/[\s]+/', $row1);
 
-			// If there's not enough pieces for us to assemble the information we need
-			// then we'll have to try splitting it on space instead.
-			if(count($components) < 2) {
-				$components2 = explode(" ", $components[0]);
-				if(count($components2) >= 2 && strpos(end($components2), '@') !== false) {
-					$username1 = array_pop($components2);
-					$name = implode(' ', $components2);
-				}
-			} else if(count($components) == 2) {
-				// Otherwise we'll just use the information available to us.
-				list($name, $username1) = $components;
+			// If there's 3 or more components (it will be 4 in most cases)
+			// then continue with extracting data.
+			if(count($components) >= 3) {
+				$ssn = array_shift($components);
+				$username1 = array_pop($components);
+				$name = trim(implode(' ', $components));
 			} else {
+				// If there's not enough data to work with on this row, continue to the
+				// next one.
 				continue;
 			}
 
@@ -47,12 +45,12 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 
 
 			// Find out if there's already a user by this name.
-			$userquery = $pdo->prepare("SELECT * FROM user WHERE username=:username");
+			$userquery = $pdo->prepare("SELECT uid,username FROM user WHERE username=:username");
 			$userquery->bindParam(':username', $username);
 
 			// If there isn't we'll register a new user and give them a randomly
 			// assigned password which can be printed later.
-			if ($userquery->execute() && $userquery->rowCount() <= 0) {
+			if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
 				$password1 = random_password(12);
 				$password = password_hash($password1, PASSWORD_BCRYPT, array("cost" => 12));
 
@@ -68,6 +66,7 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 					$stmt->execute();
 					$array1=array($username,$lastname . ", " . $firstname,$password1);
 					$array[]=$array1;
+					log_message($_SESSION['uid'], 'notice', sprintf('Added user %s to the system', $username));
 				} catch (PDOException $e) { }
 			}
 
@@ -86,6 +85,8 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 				// Insert the user into the database.
 				try {
 					$stmt->execute();
+					log_message($_SESSION['uid'], 'notice', 
+						sprintf('Added user %s to the course %s', $user['username'], $coursename));
 					//echo "<script type='text/javascript'>alert('Användare är tillagd på kursen')</script>";
 				} catch (PDOException $e) {
 					if ($e->getCode()=="23000") {
