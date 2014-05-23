@@ -107,6 +107,7 @@ ul {
 	margin-right: auto;
 	background-color: #fff;
 	box-shadow: 3px 3px 3px #000;
+	border: 1px solid black;
 }
 
 /* control buttons */
@@ -206,8 +207,8 @@ ul {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width:35px;
-	height: 35px;
+	width:25px;
+	height: 25px;
 	background-color: red;
 	background-image: url("img/quit.png");
 	margin-top:5px;
