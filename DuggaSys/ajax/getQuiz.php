@@ -1,39 +1,61 @@
 <?php
+
+
 session_start(); 
 include_once(dirname(__file__)."/../../Shared/sessions.php");
+include_once(dirname(__file__)."/../../../coursesyspw.php");
+include_once(dirname(__file__)."/../../Shared/database.php");
+pdoConnect();
 
 if (checklogin()) {
 	if (isSuperUser($_SESSION["uid"])==true) {
-		include_once(dirname(__file__)."/../../../coursesyspw.php");
-		include_once(dirname(__file__)."/../../Shared/database.php");
-		pdoConnect();
-		$error = false;
-		$template = "kryss";
-
-		$quiz = array(
-		    "name" => "Ett quiznamn?",
-		    "parameters" => "6,5,4,3,2,1",
-		    "question" => "Hur bra är Zlatan?",
-		    "template" => "false"
-		);
-		$templatePath = '../templates/'.$template.'.js';
-
-		if (file_exists($templatePath)) {
-			$quiz["template"] = $template;
+		
+		if(isset($_POST['quizid'])){
+			getQuiz($_POST['quizid']);
+		}else {
+			echo "No quizid";
 		}
 
-		foreach ($quiz as $value) {
-			if($value == "false") {
-				$error = true;
-			}
-		}
+	}
+}
+function getQuiz($quizid){
+    global $pdo;
+    $query = "SELECT * FROM quiz WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $quizid);
+      $stmt->execute();
+    $result = $stmt->fetch();
+    returnQuiz($result);
 
-		if(!$error) {
-			print (json_encode($quiz));
+}
+function returnQuiz($quiz){
+    
+	$error = false;
+	$template = $quiz['template'];
+
+	$quizArray = array(
+	    "name" => $quiz['name'],
+	    "parameters" => $quiz['parameters'],
+	    "question" => $quiz['question'],
+	    "template" => "false"
+	);
+	$templatePath = '../templates/'.$template.'.js';
+
+	if (file_exists($templatePath)) {
+		$quizArray["template"] = $template;
+	}
+
+	foreach ($quizArray as $value) {
+		if($value == "false") {
+			$error = true;
 		}
-		else {
-			print (json_encode(array("error")));
-		}
+	}
+
+	if(!$error) {
+		print (json_encode($quizArray));
+	}
+	else {
+		print (json_encode(array("error")));
 	}
 }
 ?>

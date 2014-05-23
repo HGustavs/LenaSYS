@@ -4,6 +4,7 @@
 // quiz(parameters, question)
 //
 function quiz(parameters, question) { 
+	console.log("pram:" + parameters);
 	var inputSplit = parameters.split(",");
 	var answerValue;
 	var answerAlt;
@@ -13,9 +14,11 @@ function quiz(parameters, question) {
 	app += "</h2>";
 
 	for(var i = 0;i < inputSplit.length;i++){
-	  
-		answerValue = inputSplit[i].charAt(inputSplit[i].lengeth-1); // tar sista karaktären i strängen (a=2, answerValue = 2)
-		answerAlt = inputSplit[i].charAt(0); // tar första karaktären
+	    var splited = inputSplit[i].split("=");
+		//answerValue = inputSplit[i].charAt(inputSplit[i].lengeth-1); // tar sista karaktären i strängen (a=2, answerValue = 2)
+		//answerAlt = inputSplit[i].charAt(0); // tar första karaktären
+		answerValue = splited[1];
+		answerAlt = splited[0];
 		app += "<input type='checkbox' value='"+answerValue+"' id='"+answerAlt+"' onchange='displayCheckedBoxes();'>"+answerValue+"</input>";
 		app += "<br>";
 	}
