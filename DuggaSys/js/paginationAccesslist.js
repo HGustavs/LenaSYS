@@ -109,7 +109,7 @@ function pagination() {
 				}
 				n++;
 			}
-			$("table.list tbody").empty();
+			this.clearRows();
 			$("table.list tbody").append(output);
 		} else {
 			$('#content').empty();
@@ -143,14 +143,14 @@ function pagination() {
 	}
 }
 
-function getResults(pagination, course) {
+function getResults(pagination) {
 	$.ajax({
 		dataType: 'json',
 		async: false,
 		url: "./ajax/getstudent_ajax.php",
 		method: 'post',
 		data: {
-			'courseid': course,
+			'courseid': courseid,
 		},
 		success: function(data) {
 			pagination.items = data;
@@ -168,21 +168,24 @@ function getResults(pagination, course) {
 }
 
 function updateDb(o) {
+	console.log($(o).parent().serialize());
 	$.ajax({
 	type: "POST",
 	url: "./ajax/updateAccess.php", 
-	data: $(o).parent().serialize(),
+	data: $(o).parent().serialize() + "&courseid=" + courseid,
 	dataType: "JSON",
 	success: function(data){
 		if(data.success == true) {
 			successBox('Updated user successfully', 'The user has been updated with the selected access');
 			pagination.items = data;
-			pagination.number_of_items = pagination.items.entries.length;
-			pagination.calculatePages();
-			pagination.clearRows();
-			pagination.showContent();
-			if (pagination.number_of_pages > 1) {
+			if ($("#searchbox").val().length > 0) {
+				pagination.showContent($("#searchbox").val());
+				pagination.renderPages($("#searchbox").val());
+				pagination.calculatePages($("#searchbox").val());
+			} else {
+				pagination.showContent();
 				pagination.renderPages();
+				pagination.calculatePages()
 			}
 		} else {
 			dangerBox('Failed to update user', 'Failed to update the user to the permission you selected');

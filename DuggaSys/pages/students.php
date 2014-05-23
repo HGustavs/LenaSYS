@@ -22,9 +22,10 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') || isSup
 <body>
 	<script type="text/javascript">
 		var qs = getUrlVars();
+		var courseid = qs.courseid;
 		var sessName = <?php echo json_encode($_SESSION['loginname']) ?>;
 		pagination = new pagination();
-		getResults(pagination, qs.courseid);
+		getResults(pagination);
 		pagination.showContent();
 
 		$("#searchbox").on("propertychange change keyup paste input", function(){
