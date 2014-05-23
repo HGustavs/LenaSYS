@@ -4,7 +4,6 @@ function imagerecorder(canvas)
 	initImage.src = "img/firstpic.jpg";	// This is the "Click here to start recording" image.
 	
 	var clicked = 0;					// Check if the user has clicked to the next picture
-	var clicked = 0;					// Check if the user has clicked to the next picture
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
 	var imageCanvas = canvas;
 	var canvas = document.getElementById('ImageCanvas');
@@ -543,6 +542,7 @@ function imagerecorder(canvas)
 	// Rebuild imagelibrary
 	function rebuildImgLibrary() {
 		imagelibrary = [];
+		activeImage = -1;
 		// Loop through all li in the ul
 		$("li", "#sortableThumbs").each(function(index) {
 			var src = $("img", this).attr("src");
@@ -606,9 +606,9 @@ function imagerecorder(canvas)
 						for(var i = 0; i < data.SUCCESS.length; i++) {
 							// data.SUCCESS contains the path to the image
 							var imgPath = data.SUCCESS[i];
-							
+
 							// add imgpath to array
-							imagelibrary[imageid] = imgPath;
+							imagelibrary.push(imgPath);
 				
 							addThumb(imgPath);
 						}
@@ -712,7 +712,7 @@ function imagerecorder(canvas)
 				var point = undoPoints[undoPoints.length - 1];
 
 				// Show previous image
-				showImage(point.imageID);
+				showImage(point.imageid);
 				// Undo log string
 				logStr = logStr.substr(0, point.stringPosition);
 			}
@@ -729,6 +729,7 @@ function imagerecorder(canvas)
 		clicked = 0;
 		lastEvent = Date.now();
 		activeImage = -1;
+
 		nextImage = 0;
 		currentImageRatio = 1;
 
@@ -797,7 +798,7 @@ function imagerecorder(canvas)
 	 function UndoPoint(strPosition, imgID)
 	 {
 	 	this.stringPosition = strPosition;
-	 	this.imageID = imgID;
+	 	this.imageid = imgID;
 	 }
 	 
 }
