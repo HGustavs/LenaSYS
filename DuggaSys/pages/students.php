@@ -130,3 +130,6 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') || isSup
 		<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 </body>
 </html>
+<?php
+}
+?>
