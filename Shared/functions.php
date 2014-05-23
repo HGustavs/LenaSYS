@@ -2,6 +2,7 @@
 include_once dirname(__FILE__) . "/database.php";
 include_once dirname(__FILE__) . "/courses.php";
 include_once dirname(__FILE__) . "/sessions.php";
+include_once dirname(__FILE__) . "/constants.php";
 
 //---------------------------------------------------------------------------------------------------------------
 // endsWith - Tests if a string ends with another string - defaults to being non-case sensitive
@@ -69,5 +70,20 @@ function log_message($user, $type='notice', $message)
 	$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);
 	$query->bindParam(':eventtext', $message);
 	return ($query->execute() && $query->rowCount() > 0);
+}
+
+/**
+ * Looks up the meaning of a logging constant.
+ * @param int Log level to get a string representation of.
+ */
+function loglevelToString($level) {
+	$lookup = array(
+		EVENT_NOTICE   => "notice",
+		EVENT_WARNING  => "warning",
+		EVENT_LOGINERR => "login error",
+		EVENT_FATAL    => "fatal error"
+	);
+
+	return (array_key_exists($level, $lookup) ? $lookup[$level] : false);
 }
 ?>
