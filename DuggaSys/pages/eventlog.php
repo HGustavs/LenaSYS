@@ -74,7 +74,9 @@ if(checklogin() && isSuperUser($_SESSION['uid'])) {
 	<script type="text/javascript">
 	page.title("Event log");
 	var qs = getUrlVars();
-	$("#severityfilter").val(qs.severity);
+	if(qs.severity) {
+		$("#severityfilter").val(qs.severity);
+	}
 	$("#severityfilter").on('change', function() {
 		if(qs.severity != $(this).val()) {
 			changeURL('eventlog?severity=' + $(this).val());
