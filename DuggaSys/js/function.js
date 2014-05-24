@@ -10,16 +10,17 @@ $(document).keydown(function(e) {
 
 function WEREGOINGTODISNEYLAND() {
 	var enormousSandwich = Math.floor(Math.random() * 4) + 0;
+	console.log(enormousSandwich);
 	switch (enormousSandwich) {
 		case 0:
-			return "//www.youtube.com/embed/AjPau5QYtYs?autoplay=1";
+			return "//www.youtube.com/embed/bLqwK00Ob4w?autoplay=1";
 		default:
 		case 1:
 			return "//www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
 		case 2:
 			return "//www.youtube.com/embed/OIfLyMSuAMA?autoplay=1";
 		case 3:
-			return "//www.youtube.com/embed/o7BzDFWYgXM?autoplay=1";
+			return "//www.youtube.com/embed/QH2-TGUlwu4?autoplay=1";
 	}
 	
 }
