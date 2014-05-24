@@ -14,6 +14,9 @@ checklogin();
 	<script>
 		var sessionkind=0;
 		var querystring=getUrlVars();
+		database = new getDatabase();
+		database.populateData(querystring.courseid, "example");
+		database.populateData(querystring.courseid, "test");
 		$.fn.extend({
 			makesortable: function() {
 				// Initialize timer object
