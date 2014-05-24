@@ -275,12 +275,13 @@ function returnedSection(data)
 					});
 				}
 			})(jQuery);
-			
-			for (k = 0; k<data['entries'].length; k++) {
-				if (data['entries'][k]['kind'] == "2") {
-					populateSelect("example", data['entries'][k]['lid'], data['entries'][k]['link']);
-				} else if (data['entries'][k]['kind'] == "3") {
-					populateSelect("test", data['entries'][k]['lid'], data['entries'][k]['link']);
+			if(sessionkind) {
+				for (k = 0; k<data['entries'].length; k++) {
+					if (data['entries'][k]['kind'] == "2") {
+						populateSelect("example", data['entries'][k]['lid'], data['entries'][k]['link']);
+					} else if (data['entries'][k]['kind'] == "3") {
+						populateSelect("test", data['entries'][k]['lid'], data['entries'][k]['link']);
+					}
 				}
 			}
 

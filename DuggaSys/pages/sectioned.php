@@ -14,9 +14,6 @@ checklogin();
 	<script>
 		var sessionkind=0;
 		var querystring=getUrlVars();
-		database = new getDatabase();
-		database.populateData(querystring.courseid, "example");
-		database.populateData(querystring.courseid, "test");
 		$.fn.extend({
 			makesortable: function() {
 				// Initialize timer object
@@ -34,6 +31,9 @@ checklogin();
 			if(sessionkind==true) {
 				$(document).makesortable();
 				$("#Sectionlist").sortable("disable");
+				database = new getDatabase();
+				database.populateData(querystring.courseid, "example");
+				database.populateData(querystring.courseid, "test");
 			}
 			if (readaccess==true) {
 				returnedSection(data);
