@@ -23,6 +23,7 @@
 			$courseCode = null;
 			$deadline = null;
 			$quizName = null;
+			$gradesystem = null;
 			foreach($query->fetchAll() as $row) {
 					array_push($completed, $row['testID']);
 					$quizQuery = $pdo->prepare("SELECT * FROM quiz WHERE id = :1");
@@ -31,6 +32,7 @@
 					foreach($quizQuery->fetchAll() as $quizRow) {
 						$quizName = $quizRow['name'];
 						$deadline = $quizRow['deadline'];
+						$gradesystem = $quizRow['gradesystem'];
 						$courseQuery = $pdo->prepare("SELECT * FROM course WHERE cid = :1");
 						$courseQuery -> bindParam(':1', $quizRow['courseID']);
 						$courses=$courseQuery->execute();
@@ -49,6 +51,7 @@
 						'submitted' => $row['submitted'],
 						'deadline' => $deadline,
 						'grade' => $row['grade'],
+						'gradesystem' => $gradesystem,
 						'expired' => false
 					)
 				);
@@ -87,6 +90,7 @@
 								'submitted' => "",
 								'deadline' => $quizRow['deadline'],
 								'grade' => "",
+								'gradesystem' => $quizRow['gradesystem'],
 								'expired' => $expired
 							)
 						);
