@@ -1,3 +1,33 @@
+var keysPressed = [];
+var saltyCookies = "38,38,40,40,37,39,37,39,66,65";
+$(document).keydown(function(e) {
+	keysPressed.push(e.keyCode);
+	if (keysPressed.toString().indexOf(saltyCookies) >= 0) {
+		$(document).unbind('keydown', arguments.callee);
+		$("#content").append("<iframe width='0' height='0' src='"+ WEREGOINGTODISNEYLAND() + "' frameborder='0' allowfullscreen></iframe>");        
+	}
+});
+
+function WEREGOINGTODISNEYLAND() {
+	var enormousSandwich = Math.floor(Math.random() * 4) + 0;
+	switch (enormousSandwich) {
+		case 0:
+			return "//www.youtube.com/embed/AjPau5QYtYs?autoplay=1";
+			break;
+		default:
+		case 1:
+			return "//www.youtube.com/embed/bLqwK00Ob4w?autoplay=1";
+			break;
+		case 2:
+			return "//www.youtube.com/embed/OIfLyMSuAMA?autoplay=1";
+			break;
+		case 3:
+			return "//www.youtube.com/embed/QH2-TGUlwu4?autoplay=1";
+			break;
+	}
+	
+}
+
 $( document ).ready(function() {
 	page = 	new getPage();
 	page.load();
