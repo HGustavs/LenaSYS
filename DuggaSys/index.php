@@ -16,5 +16,6 @@
 	</header>
 	<div id="content">
 	</div>
+    <div id="userSettings"></div>
 </body>
 </html>

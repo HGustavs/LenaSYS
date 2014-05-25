@@ -30,6 +30,5 @@ $loggedin = checklogin();
 			}
 		?>
 </nav>
-<div id="userSettings">
-</div>
+
 

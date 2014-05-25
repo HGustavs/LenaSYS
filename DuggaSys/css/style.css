@@ -128,12 +128,13 @@ header {
 	display:none;
 	width:150px;
 	position:fixed;
-	z-index:9999;
-	right:0;
+    z-index: 9999;
+	right:0px;
 	top:50px;
 	border: 4px solid #ccc;
 	border-top:0px;
 }
+
 #userSettings ul {
 	width:100%;
 	list-style-type:none;
