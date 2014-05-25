@@ -28,15 +28,19 @@
  	};
  }
 
-  function editQuiz(cid, action, qid) 
+  function editQuiz(dataArray) 
  {
+ 	var cid = dataArray[0];
+ 	var action = dataArray[1];
+ 	var qid = dataArray[2];
+
  	if (validateNewQuizSubmit()) {
  		$.ajax({
  			dataType: "json",
 			type: "POST",
 			url: "ajax/createQuiz.php",
 			data: {
-				cid: 1,
+				cid: cid,
 				action: action, // edit/create
 				qid: qid,
 				quizname: document.newQuizForm.quizname.value,
@@ -106,7 +110,7 @@
 		type: "POST",
 		url: "ajax/getQuizData.php",
 		data: {
-			cid: 1
+			cid: quizid
 		},
 		success:function(data) {
 			//console.log(data);
@@ -133,7 +137,11 @@
 			  
 			});
 
-			
+			if ($('#autogradecheck').prop('checked')) {
+				$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters) *");
+			} else {
+				$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters)");
+			};
 			
 
 		},

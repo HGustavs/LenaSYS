@@ -3,6 +3,8 @@
 <script>
 	var qs=getUrlVars();
 	console.log(qs);
+	var submitArray = new Array(qs.courseid, 'edit', qs.quizid);
+	//editQuiz(qs.courseid, 'edit', qs.quizid)
 </script>
 	
 	<div id='create'>
@@ -15,7 +17,7 @@
 					<textarea class='form-control' name="parameterinput" rows='5' id="parameterinput"></textarea>
 				</div>
 				<div class='form-group'>
-					<label>Answer</label>
+					<label id="quizAnswerInputLabel">Answer, saves as string (max 2000 characters)</label>
                     <input class='option form-control' id="quizAnswerInput" name="answerinput" type="text" />
 				</div>
 				<div class='form-group'>		
@@ -56,7 +58,8 @@
 				</div>
 				
 			</div>
-			<button type="button" onclick="editQuiz(qs.courseid, 'edit', qs.quizid)" class='default'>Submit</button>
+			<button type="button" onclick="successBox('Edit quiz', 'Are you sure you want to edit quiz', '', editQuiz, submitArray)" class='default'>Submit</button>
+			
 			<button type="button" onclick="historyBack()" class='default-red'>Cancel</button>
 		</form>
 	</div>
@@ -71,5 +74,14 @@
 	$('.datetimepicker').datetimepicker();
 	getQuizFiles();
 	getQuizData(qs.quizid);
+	$("#autogradecheck").change(function () {
+		if ($('#autogradecheck').prop('checked')) {
+			$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters) *");
+		} else {
+			$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters)");
+		};
+	})
+
+	
 </script>
 

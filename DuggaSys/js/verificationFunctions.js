@@ -28,14 +28,27 @@ function validateNewQuizSubmit()
     $("input[name*='quizname']").css("background-color", "#ff7c6a");
     return false;
   } else {
-    $("input[name*='quizname']").css("background-color", "#89ff7b");
   }
   if( document.newQuizForm.gradesysselect.value == "-1") {
     $("#gradeSysSelect").css("background-color", "#ff7c6a");
     return false;
   } else {
-    $("#gradeSysSelect").css("background-color", "#89ff7b");
   }
+  if (document.newQuizForm.autogradebox.checked && document.newQuizForm.answerinput.value=="") {
+  	$("#quizAnswerInput").css("background-color", "#ff7c6a");
+  	return false;
+  } else {
+  	
+  };
+
+  	var releasedateinput = new Date(document.newQuizForm.releasedateinput.value);
+	var deadlineinput = new Date(document.newQuizForm.deadlineinput.value);
+
+	if (releasedateinput >= deadlineinput) {
+	    $("#deadlineinput").css("background-color", "#ff7c6a");
+	    return false;
+	}
+
   return true;
 }
 
