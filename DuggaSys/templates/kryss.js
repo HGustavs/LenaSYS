@@ -1,9 +1,22 @@
+/*
+THIS IS A QUIZTAMPLATE
+DO NOT CHANGE THE QUIZ MAIN FUNCTION NAME AND PARAMETER, IT SHOULD ALWAYS BE THE SAME.
+quiz(parameters)
 
-//
-// THIS IS A QUIZTAMPLATE
-// DO NOT CHANGE THE QUIZ MAIN FUNCTION NAME AND PARAMETERS, IT SHOULD ALWAYS BE THE SAME.
-// quiz(parameters, question)
-//
+In the description tags below, you can give a description of how to use the template parameters. 
+This description will be visible on the interface for adding or change a quiz.
+
+[DESCRIPTION] 
+	This template spearerar each parameter between commas.
+	You write "question = quiz question" in order to present a text that describes the question.
+	You write answer = description to create possible answers for the quiz. 
+	Answer is the value that becomes the student's answers while the description is what appears on the screen.
+	
+	An example of the correct parameters can look like this: 
+	"question = Who is Sweden's best soccer player?, A = Zlatan, B = Hysen, C = Robin, D = Aslan"
+	if A = Zlatan is the correct answers so shall also the value of A be written as the correct answer in the answer field.
+[/DESCRIPTION]
+*/
 function quiz(parameters) { 
 	console.log("pram:" + parameters);
 	var inputSplit = parameters.split(",");

@@ -251,7 +251,7 @@ function loadHeaderLink(filename, filetype){
 function getQuiz(quizId) {
 	console.log(quizId);
 	if(quizId != "undefined") {
-		console.log("loading quiz");
+		console.log("loading quiz...");
 		addRemoveLoad(true);
 		$.ajax({
 			type:"POST",
@@ -292,6 +292,31 @@ function getQuiz(quizId) {
 	}
 }
 // QUIZ FUNCTIONS END //
+
+function getTemplateInfo(template) {
+	if(template != "undefined") {
+		addRemoveLoad(true);
+		console.log("loading template info...");
+		$.ajax({
+			type:"POST",
+			url:"ajax/getTemplateInfo.php",
+			async: false,
+			data: "template="+template,
+			success:function(data) {
+				if($('#templateDescription').length > 0) {
+					$('#templateDescription').remove();
+				}
+				$("#quizParameters").before("<div id='templateDescription' class='alert info'><strong>Parameter description</strong><p>"+data+"</p></div>");
+				console.log("success");
+				addRemoveLoad(false);
+			},
+			error:function() {
+				console.log("error");
+				addRemoveLoad(false);
+			}
+		});
+	}
+}
 
 function removeDateTimePicker() {
 	if ($(".xdsoft_noselect").length) {
