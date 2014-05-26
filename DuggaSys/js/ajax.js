@@ -45,7 +45,6 @@
 				action: action, // edit/create
 				qid: qid,
 				//quizname: document.newQuizForm.quizname.value,
-				//parameters: document.newQuizForm.parameterinput.value,
 				parameter: document.newQuizForm.parameterinput.value,
 				answer: document.newQuizForm.answerinput.value,
 				autograde: document.newQuizForm.autogradebox.checked,
@@ -106,17 +105,18 @@
 	});
  }
 
- function getQuizNameForMenu(quizid) {
+ function getQuizNameForMenu(quizid, cid) {
  	$.ajax({
 		dataType: "json",
 		type: "POST",
 		url: "ajax/getQuizData.php",
 		data: {
-			cid: quizid
+			qid: quizid,
+			cid: cid
 		},
 		success:function(data) {
 			//console.log(data);
-			console.log("A OK");
+			console.log(data);
 			$("#admin_title").html("Admin Menu - "+data.name);
 		},
 		error:function() {
