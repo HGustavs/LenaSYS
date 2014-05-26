@@ -125,23 +125,22 @@
     padding-right: 6px;
 }
 
-
+.normtextwrapper{
+	 /* Width of codeborder */
+  	 margin-left: 32px;
+}
 .normtext {
     color: #fff;
     background-color: #272822;
     white-space:nowrap;
-    
-    /* Width of codeborder */
-  	margin-left: 32px;
 }
 
 .impo {
     color: #fff;
     background-color: #3C3C3C;
     white-space:nowrap;
-    margin-left: 32px;
+    min-width: 660px;
 }
-
 
 .comment {
     color: #888;

@@ -125,22 +125,22 @@
 }
 
 
+.normtextwrapper{
+	 /* Width of codeborder */
+  	margin-left: 32px;
+}
 
 .normtext {
     color: #000;
     background-color: #F8F8F8;
     white-space:nowrap;
-    
-    /* Width of codeborder */
-  	margin-left: 32px;
 }
 
 .impo {
     color: #000;
     background-color: rgba(204, 203, 203, 0.28);
     white-space:nowrap;
-    /* Width of codeborder */
-    margin-left: 32px;
+    min-width: 660px;
 }
 
 

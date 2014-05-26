@@ -66,8 +66,8 @@ function createhotdogmenu(){
  //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
  //		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
 
-		str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
-		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;);" colspan="4">Desktop site</td></tr>';
+		// str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
 
 		str += '<tr><td class="mbutto mbuttoStyle " title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;black&quot;);"><img src="new icons/theme_black.svg"><span>Black background</span></td></tr>';
@@ -472,12 +472,6 @@ function returned(data)
 			}					
 		}
 		
-		//Disable editing in mobile version
-		var	hotdog = document.getElementById("hidehotdog");
-		var	isDesktop = $(hotdog).is(":hidden");
-		if(isDesktop){
-			 $("*[contenteditable]").attr("contenteditable","true"); 
-		}else{ 
-			$("*[contenteditable]").attr("contenteditable","false"); 
-		}
+		//Set the editing properties for mobile and desktop version
+		setEditing();
 }

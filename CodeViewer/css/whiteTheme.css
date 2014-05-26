@@ -95,21 +95,22 @@
     padding-right: 6px;
 }
 
+.normtextwrapper{
+	 /* Width of codeborder */
+  	margin-left: 32px;
+}
 
 .normtext {
     color: #000;
     background-color: #F2F2F2;
     white-space:nowrap;
-    
-    /* Width of codeborder */
-  	margin-left: 32px;
 }
 
 .impo {
     color: #000;
-      background-color: rgba(186, 96, 255, 0.09);
+    background-color: rgba(186, 96, 255, 0.09);
     white-space:nowrap;
-    margin-left: 32px;
+    min-width: 660px;
 }
 
 .normtext .no {
