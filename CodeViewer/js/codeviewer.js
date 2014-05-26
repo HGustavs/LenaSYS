@@ -1746,6 +1746,16 @@ function mobileTheme(id){
 	}
 }
 
+//Set the editing properties for mobile and desktop version
+function setEditing(){
+	var	hotdog = document.getElementById("hidehotdog");
+	var	isDesktop = $(hotdog).is(":hidden");
+	if(isDesktop){
+		 $("*[contenteditable]").attr("contenteditable","true"); 
+	}else{ 
+		$("*[contenteditable]").attr("contenteditable","false"); 
+	}
+}
 
 // * Menutext * //
 $(window).resize(function(){	
@@ -1785,16 +1795,9 @@ $(window).resize(function() {
 	
 });
 
-//Disable editing in mobile view
+//Set the editing properties for mobile and desktop version
 $(window).resize(function() {
-	var	hotdog = document.getElementById("hidehotdog");
-	var	isDesktop = $(hotdog).is(":hidden");
-	if(isDesktop){
-		 $("*[contenteditable]").attr("contenteditable","true"); 
-	}else{ 
-		$("*[contenteditable]").attr("contenteditable","false"); 
-	}
-	
+	setEditing();
 })
 //Creating a extra box under codelines. 
 /*
