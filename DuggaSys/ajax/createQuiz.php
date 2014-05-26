@@ -89,8 +89,6 @@ if (checklogin()) {
 					
 					if ($deadline!=false) {
 						$stmt = $pdo -> prepare('UPDATE `quiz` SET 
-							`id`=:qid,
-							`cid`=:1,
 							`autograde`=:2,
 							`gradesystem`=:3,
 							`answer`=:4,
@@ -99,8 +97,7 @@ if (checklogin()) {
 							`release`=:6,
 							`deadline`=:7 
 							WHERE id=:qid');
-						$stmt -> bindParam(':qid', settype($_POST["qid"] , integer));
-						$stmt -> bindParam(':1', $_POST["cid"]);
+						$stmt -> bindParam(':qid', settype($_POST["qid"] , "integer"));
 						$stmt -> bindParam(':2', $autograde);
 						$stmt -> bindParam(':3', $gradesys);
 						$stmt -> bindParam(':4', $answer);
@@ -111,7 +108,8 @@ if (checklogin()) {
 						$stmt -> bindParam(':9', $parameter);
 						
 						if ($stmt -> execute()) {
-							echo json_encode("success");
+							print_r($_POST);
+							//echo json_encode("success");
 						} else {
 							//print_r($releasedate);
 							print_r($stmt -> errorInfo());						
