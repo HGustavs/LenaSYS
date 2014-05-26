@@ -189,6 +189,12 @@ function imagerecorder(canvas)
 		// keyboard controls
 		$("body").keydown(function(event) {	
 			switch(event.which) {
+				// Enter
+				case 13:
+					// When user press enter make click on "OK" button if "Select library name" hasnt been closed yet.
+					if(libEntered == 0) {
+						$("#library-name-button").click();
+					}
 			
 				// Arrow right
 				case 39:
