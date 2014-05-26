@@ -246,7 +246,7 @@ function loadHeaderLink(filename, filetype){
 // QUIZ FUNCTIONS START //
 function getQuiz(quizId) {
 	console.log(quizId);
-	if(quizId != undefined) {
+	if(quizId != "undefined") {
 		console.log("loading quiz");
 		addRemoveLoad(true);
 		$.ajax({
