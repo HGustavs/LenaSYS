@@ -446,6 +446,7 @@ function showPopUp(showhidePop, returnedData){
 			$("#light").hide();
 			$("#overlay").remove();
 		}
+
 	}
 }
 
