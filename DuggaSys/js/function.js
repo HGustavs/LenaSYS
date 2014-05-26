@@ -149,7 +149,7 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 			output += '<input type="button" class="btn btn-forgot btn-cancel alertCancel" value="Cancel">';	
 		}
 	output += '</div>';
-	if($(".alert").length == 0) {
+	if($(".alert slide-down").length == 0) {
 		setTimeout(function(){
 			$("#content").prepend(output).children(':first').hide();
 			var elemHeight = $('.alert').height();
@@ -163,12 +163,12 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 		$.when(this).done(setTimeout(function() {
 			$( "#alertSubmit" ).click(function() {
 				confirm(data);
-				$(".alert").animate({height: 0}, 300,"linear",function() {
+				$(".slide-down").animate({height: 0}, 300,"linear",function() {
 					$(this).remove();
 				})		
 			});
 			$( ".alertCancel" ).click(function() {
-				$(".alert").animate({height: 0}, 300,"linear",function() {
+				$(".slide-down").animate({height: 0}, 300,"linear",function() {
 					$(this).remove();
 				})
 			});
