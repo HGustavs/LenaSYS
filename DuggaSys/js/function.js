@@ -30,7 +30,6 @@ function WEREGOINGTODISNEYLAND() {
 
 $( document ).ready(function() {
 	page = new getPage();
-	page.load();
 	page.show();
 });
 // Running page object functions if browser back/forward buttons get pressed //
@@ -55,6 +54,7 @@ function getUrlVars() {
     return vars;
 }
 // Page handler object //
+// Page handler object //
 function getPage() {
 	var title = "Lenasys";
 	var startpage = "menulist";
@@ -66,55 +66,34 @@ function getPage() {
 		var nodes = this.pages;
 		var path = "pages/";
 		var found= false;
-		var hashtagsplit = url.split('#').pop();
+		var urlsplit = url.split("#");
+
+		// If there's no # then we'll default to menulist
+		if(urlsplit.length == 2) {
+			var hashtagsplit = urlsplit.pop();
+			if(hashtagsplit.length < 1)
+				hashtagsplit = "menulist";
+		} else {
+			var hashtagsplit = "menulist";
+		}
+
+		// Data to send to the views
 		var data = getUrlVars();
-		if(window.location.hash && hashtagsplit.length > 0) {
-			var slashsplit = hashtagsplit.split('/');
-			for (var i = 0; i <= slashsplit.length-1; i++) {
-				//CHECK IF A FILE OR A FOLDER ELSE LAST ONE IS A FILE //
-				if(!slashsplit[i].match(/^\s*$/)) {
-					//CHECK IF A FOLDER //
-					if(i>0) {
-						if(slashsplit[i-1] in nodes) {
-							name = slashsplit[i-1].split('?')[0];
-							nodes = nodes[name];
-							path +=name+"/";
-						}
-					}
-					//CHECK IF A FILE //
-					if(i==slashsplit.length-1) {
-						this.page = slashsplit[i].split('?')[0];
-					}
-				}
-				else {
-					this.page = slashsplit[i-1].split('?')[0];
-					i=slashsplit.length;
-				}
-			};
-		}
-		else {
-			this.page = startpage;
-		}
-		//CHECK IF FILE EXISTS IN FOLDER //
-		for (var filename in nodes) {
-			if (typeof nodes[filename] != 'object') {
-				if(nodes[filename].replace(/\..+$/, '') == this.page) {
-					path +=nodes[filename];
-					found=true;
-				}
+
+		// URL we're looking for
+		this.page = "pages/" + hashtagsplit.split('?')[0];
+		$.ajax({
+			url: this.page + ".php",
+			method: 'POST',
+			data: data,
+			success: function(returnedData) {
+				console.log("Loaded" + this.page);
+				$("#content").html(returnedData);
+			},
+			error: function() {
+				$("#content").load("pages/404.php");
 			}
-		}
-		//PRINT PAGE IF FILE FOUND OR PRINT 404 //
-		if(found) {
-			console.log("page "+this.page+" was loaded");
-			removeDateTimePicker();
-			$("#content").load(path, data);
-		}
-		else {
-			console.log(this.page+ " not found!");
-			this.page = "404";
-			$("#content").load("pages/404.php");
-		}
+		})
 	}
 	//Returning homepage title and page title //
 	this.title = function(headline) {
@@ -124,26 +103,8 @@ function getPage() {
 		$("#title h1").html(title+" - "+this.page.capitalize());
 		document.title = title+" | "+this.page.capitalize();
 	}
-	// Grabbing a list of pages existing in the pages folder //
-	this.load = function() {
-		console.log("loading pages...");
-		var result;
-		$.ajax({
-			url:"ajax/getPages.php",
-			async: false,
-			success:function(data) {
-				result = JSON.parse(data);
-				console.log("success");
-			},
-			error:function() {
-				result = "404";
-				console.log("error");
-			}
-		});
-		console.log("complete");
-		this.pages = result;
-	}
 }
+
 // Modifying first letter in a string to a capital letter //
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
