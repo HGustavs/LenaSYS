@@ -4,21 +4,26 @@
 // DO NOT CHANGE THE QUIZ MAIN FUNCTION NAME AND PARAMETERS, IT SHOULD ALWAYS BE THE SAME.
 // quiz(parameters, question)
 //
-function quiz(parameters, question) { 
+function quiz(parameters) { 
 	console.log("pram:" + parameters);
 	var inputSplit = parameters.split(",");
 	var answerValue;
 	var answerID;
-	var app = "<h2>";
-	app += question + "<br>";
-	app += "</h2>";
+	var app;
 
 	for(var i = 0;i < inputSplit.length;i++){
 	    var splited = inputSplit[i].split("=");
 		answerValue = splited[1];
 		answerID= splited[0];
-		app += "<input type='radio' name='answers' value='"+answerValue+"' id='"+answerID+"' onchange='displayCheckedBoxes();'>"+answerValue+"</input>";
-		app += "<br>";
+		if(answerID == "question") {
+			var app = "<h2>";
+			app += answerValue + "<br>";
+			app += "</h2>";
+		}
+		else {
+			app += "<input type='radio' name='answers' value='"+answerValue+"' id='"+answerID+"' onchange='displayCheckedBoxes();'>"+answerValue+"</input>";
+			app += "<br>";
+		}
 	}
 	app += "<span id='displayAnswers'></span>";
 	app += "<br>";
@@ -64,5 +69,5 @@ function checkAnswer(){
 // Visar upp de svaren som är i-bockade
 function displayCheckedBoxes() {
     var answers = getCheckedBoxes();
-    $('#displayAnswers').text('You choose answer(s): ' + answers);	
+    $('#displayAnswers').text('You choose answer: ' + answers);	
 }
