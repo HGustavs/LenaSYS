@@ -140,6 +140,7 @@
     background-color: #3C3C3C;
     white-space:nowrap;
     min-width: 660px;
+    margin-left: 32px;
 }
 
 .comment {
