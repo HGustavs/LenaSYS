@@ -93,12 +93,10 @@ function styleCode()
 {
         if (window.getSelection) {  // all browsers, except IE before version 9
             var range = window.getSelection().toString();
-            
         }
         else {
             if (document.selection.createRange) { // Internet Explorer
                 var range = document.selection.createRange().toString();
-
             }
         }
         
@@ -1270,7 +1268,7 @@ function rendercode(codestring,boxid)
 					
 		}else if(tokens[i].kind=="operator"){
 			if(tokenvalue=="("){
-				pid="PA"+pcount;
+				pid="PA"+pcount+boxid; 
 				pcount++;
 				parenthesis.push(pid);
 				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
@@ -1286,7 +1284,7 @@ function rendercode(codestring,boxid)
 				pid=bracket.pop();
 				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
 			}else if(tokenvalue=="{"){
-				pid="CBR"+cbcount;
+				pid="CBR"+cbcount+boxid;
 					cbcount++;
 					cbracket.push(pid);
 					cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
@@ -1444,6 +1442,10 @@ function renderdesccode(codestring){
 						}
 						
 				}else if(tokens[i].kind=="operator"){
+						
+						cont+="<span class='oper'>"+tokenvalue+"</span>";	
+					
+					/* OUTCOMMENT BECAUSE THIS WILL BE DIFFICULT TO FIX FOR MORE THAN 1 DESCRIPTION BOX 
 						if(tokenvalue=="("){
 								pid="PA2"+pcount;
 								pcount++;
@@ -1471,6 +1473,7 @@ function renderdesccode(codestring){
 						}else{	
 								cont+="<span class='oper'>"+tokenvalue+"</span>";		
 						}
+					*/	
 				}else{
 						cont+=tokenvalue;
 				}
