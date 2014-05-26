@@ -57,9 +57,7 @@
 			success:function(data) {
 				console.log(data);
 				if (data.cid>0) {
-					console.log("Edit successfull");
-
-					
+					console.log("Edit successfull");					
 					changeURL("quiz/menu");
 					//changeURL("sectioned?courseid="+data.cid);	
 				} else if(data==="no access") {
@@ -107,7 +105,7 @@
 	});
  }
 
- function getQuizNameForHeader(quizid) {
+ function getQuizNameForMenu(quizid) {
  	$.ajax({
 		dataType: "json",
 		type: "POST",

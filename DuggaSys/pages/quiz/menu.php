@@ -13,5 +13,5 @@ page.title("Quiz menu");
 </div>
 <script type="text/javascript">
 	var qs = getUrlVars();
-	getQuizNameForHeader(qs.quizid);
+	getQuizNameForMenu(qs.quizid);
 </script>
