@@ -149,14 +149,14 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 			output += '<input type="button" class="btn btn-forgot btn-cancel alertCancel" value="Cancel">';	
 		}
 	output += '</div>';
-	if($(".alert slide-down").length == 0) {
+	if($(".slide-down").length == 0) {
 		setTimeout(function(){
 			$("#content").prepend(output).children(':first').hide();
-			var elemHeight = $('.alert').height();
+			var elemHeight = $('.slide-down').height();
 			var top = $(document).scrollTop()+50;
 			$('.slide-down').css({ top: top+"px" });	
-			$('.alert').css({ display: "block", height: "0px" });
-			$(".alert").animate({height: elemHeight}, 300);
+			$('.slide-down').css({ display: "block", height: "0px" });
+			$(".slide-down").animate({height: elemHeight}, 300);
 		}, delay);	
 	}
 	if(typeof confirm == 'function') {
@@ -177,7 +177,7 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 	else {
 		$.when(this).done(setTimeout(function() {
 		$('html').click(function() {
-		    $(".alert").animate({height: 0}, 300,"linear",function() {
+		    $(".slide-down").animate({height: 0}, 300,"linear",function() {
 				$(this).remove();
 			})
 		    $("html").unbind('click');
