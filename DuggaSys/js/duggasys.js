@@ -406,8 +406,11 @@ function showPopUp(showhidePop, returnedData){
 		div.innerHTML = output;
 	}
 	else if(showhidePop == "hide"){
-		document.getElementById('light').style.visibility = "hidden";
-		document.getElementById('fade').style.visibility = "hidden";	
+		var answer = confirm("Are the passwords of new students printed?")
+		if(answer){
+			document.getElementById('light').style.visibility = "hidden";
+			document.getElementById('fade').style.visibility = "hidden";
+		}	
 	}
 }
 
@@ -462,12 +465,4 @@ function printDiv(){
 
 function deleteFromSectionlist(ID){
 	AJAXServiceSection("sectionDel","&sectid="+ID);
-}
-
-function confirmExit(){
-	var answer = confirm("Have you printed the new students?")
-	if(answer)
-		showPopUp('hide');
-	
-	return
 }
