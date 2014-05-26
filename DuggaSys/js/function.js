@@ -89,9 +89,11 @@ function getPage() {
 			data: data,
 			success: function(returnedData) {
 				$("#content").html(returnedData);
+				removeDateTimePicker();
 			},
 			error: function() {
 				$("#content").load("pages/404.php");
+				removeDateTimePicker();
 			}
 		})
 	}
