@@ -121,10 +121,10 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
                 {
                 	$.ajax({url: "editorService.php", type: "POST", data: {exampleid:exampleid,opt:sname,description:param,boxid:boxid}, dataType: "json",
                 	success:function(data){
-                		successBox("Success!", "All descriptions where saved.");
+                		successBox("Success!", "Descriptions saved");
                 		returned(data);
                 	},error: function(data){
-                		warningBox("Warning!", "Description might not have been saved.");
+                		warningBox("Warning!", "Save failed");
                 		returned(data);
                 	} });
                 	
