@@ -1,6 +1,4 @@
 <?php
-
-
 session_start(); 
 include_once(dirname(__file__)."/../../Shared/sessions.php");
 include_once(dirname(__file__)."/../../../coursesyspw.php");
@@ -39,20 +37,18 @@ function getQuiz($quizid){
 }
 
 function returnQuiz($quiz){
-	$template = $quiz['template'];
+	$template = $quiz['quizFile'];
 
 	$quizData = array(
 	    "name" => $quiz['name'],
-	    "parameters" => $quiz['parameters'],
-	    "question" => $quiz['question'],
-	    "template" => "false"
+	    "parameters" => $quiz['parameter'],
+	    "template" => false
 	);
 	$templatePath = '../templates/'.$template.'.js';
 
 	if (file_exists($templatePath)) {
 		$quizData["template"] = $template;
 	}
-
 	return $quizData;
 }
 ?>
