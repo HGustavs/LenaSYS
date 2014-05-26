@@ -7,7 +7,7 @@ In the description tags below, you can give a description of how to use the temp
 This description will be visible on the interface for adding or change a quiz.
 
 [DESCRIPTION] 
-	This template spearerar each parameter between commas.
+	This template separates each parameter between commas.
 	You write "question = quiz question" in order to present a text that describes the question.
 	You write answer = description to create possible answers for the quiz. 
 	Answer is the value that becomes the student's answers while the description is what appears on the screen.
