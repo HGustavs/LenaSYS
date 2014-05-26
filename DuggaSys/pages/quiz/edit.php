@@ -75,14 +75,19 @@
 <script type="text/javascript">
 	$('.datetimepicker').datetimepicker();
 	getQuizFiles();
-	getQuizData(qs.quizid);
+	getQuizData(qs.quizid, qs.courseid);
 	$("#autogradecheck").change(function () {
-		if ($('#autogradecheck').prop('checked')) {
+		if ($('#autogradecheck').prop(':checked')) {
 			$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters) *");
 		} else {
 			$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters)");
 		};
 	})
+
+	$("#quizfile").change(function() {
+		getTemplateInfo(this.value);	
+	})
+	
 
 	
 </script>
