@@ -110,6 +110,7 @@
       background-color: rgba(186, 96, 255, 0.09);
     white-space:nowrap;
     margin-left: 32px;
+    min-width: 660px;
 }
 
 .normtext .no {

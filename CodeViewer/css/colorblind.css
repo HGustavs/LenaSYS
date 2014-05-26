@@ -139,6 +139,7 @@
     color: #000;
     background-color: rgba(204, 203, 203, 0.28);
     white-space:nowrap;
+    min-width: 660px;
     /* Width of codeborder */
     margin-left: 32px;
 }
