@@ -88,12 +88,12 @@ function getPage() {
 			method: 'POST',
 			data: data,
 			success: function(returnedData) {
-				$("#content").html(returnedData);
 				removeDateTimePicker();
+				$("#content").html(returnedData);
 			},
 			error: function() {
-				$("#content").load("pages/404.php");
 				removeDateTimePicker();
+				$("#content").load("pages/404.php");
 			}
 		})
 	}
