@@ -2,6 +2,7 @@
 include_once dirname(__FILE__) . "/database.php";
 include_once dirname(__FILE__) . "/courses.php";
 include_once dirname(__FILE__) . "/sessions.php";
+include_once dirname(__FILE__) . "/constants.php";
 
 //---------------------------------------------------------------------------------------------------------------
 // endsWith - Tests if a string ends with another string - defaults to being non-case sensitive
@@ -61,16 +62,28 @@ function log_message($user, $type='notice', $message)
 		pdoConnect();
 	}
 
-	// TODO: Add support for types of events?
 	$query = $pdo->prepare("INSERT INTO eventlog(address, type, user, eventtext) VALUES(:address, :type, :user, :eventtext)");
 
 	$query->bindParam(':user', $user);
 	$query->bindParam(':type', $type);
 
-	// TODO: Proxy checks?
 	$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);
 	$query->bindParam(':eventtext', $message);
-	$query->execute();
-	return $query->rowCount() > 0;
+	return ($query->execute() && $query->rowCount() > 0);
+}
+
+/**
+ * Looks up the meaning of a logging constant.
+ * @param int Log level to get a string representation of.
+ */
+function loglevelToString($level) {
+	$lookup = array(
+		EVENT_NOTICE   => "notice",
+		EVENT_WARNING  => "warning",
+		EVENT_LOGINERR => "login error",
+		EVENT_FATAL    => "fatal error"
+	);
+
+	return (array_key_exists($level, $lookup) ? $lookup[$level] : false);
 }
 ?>

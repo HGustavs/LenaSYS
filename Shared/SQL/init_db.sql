@@ -391,7 +391,7 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visi
 
 CREATE TABLE eventlog(
 	eid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	type ENUM('notice', 'warning', 'fatal', 'loginerr') DEFAULT 'notice',
+	type TINYINT DEFAULT 0,
 	ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address VARCHAR(45) NOT NULL,
 	user INT UNSIGNED NULL,
@@ -407,10 +407,12 @@ CREATE TABLE eventlog(
 CREATE TABLE `quiz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cid` int UNSIGNED NOT NULL,
-  `autograde` tinyint(1) NOT NULL, /* bool */
-  `gradesystem` tinyint(1) NOT NULL, /* U-G-VG & U-G & U-3-5 */
-  `answer` varchar(2000) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `autograde` tinyint(1) NOT NULL DEFAULT 0, /* bool */
+  `gradesystem` tinyint(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
+  `answer` varchar(2000) NOT NULL DEFAULT '',
+  `parameter` varchar(2000) NOT NULL DEFAULT '',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `quizFile` varchar(255) NOT NULL DEFAULT 'default.js',
   `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deadline` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -425,12 +427,12 @@ CREATE TABLE `grades` (
   `grade` varchar(5) NOT NULL,
   PRIMARY KEY (`gradeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO grades(gradeID, grade) VALUES(1, "U");
-INSERT INTO grades(gradeID, grade) VALUES(2, "G");
-INSERT INTO grades(gradeID, grade) VALUES(3, "VG");
-INSERT INTO grades(gradeID, grade) VALUES(4, "3");
-INSERT INTO grades(gradeID, grade) VALUES(5, "4");
-INSERT INTO grades(gradeID, grade) VALUES(6, "5");
+INSERT INTO grades(gradeID, grade) VALUES(0, "U");
+INSERT INTO grades(gradeID, grade) VALUES(1, "G");
+INSERT INTO grades(gradeID, grade) VALUES(2, "VG");
+INSERT INTO grades(gradeID, grade) VALUES(3, "3");
+INSERT INTO grades(gradeID, grade) VALUES(4, "4");
+INSERT INTO grades(gradeID, grade) VALUES(5, "5");
 
 
 CREATE TABLE `userAnswer` (

@@ -32,8 +32,8 @@ if(failedLoginCount($_SERVER['REMOTE_ADDR']) >= 10) {
 	// There's no user logged in so there's no user to associate this event with.
 	log_message(
 		NULL,
-		'loginerr',
-		sprintf("Failed login attempt for user %s",
+		EVENT_LOGINERR,
+		sprintf("Failed login attempt for username %s",
 			htmlentities($username)
 		)
 	);

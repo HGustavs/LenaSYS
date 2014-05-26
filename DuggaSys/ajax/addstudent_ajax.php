@@ -66,7 +66,7 @@ if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'W') || isSup
 					$stmt->execute();
 					$array1=array($username,$lastname . ", " . $firstname,$password1);
 					$array[]=$array1;
-					log_message($_SESSION['uid'], 'notice', sprintf('Added user %s to the system', $username));
+					log_message($_SESSION['uid'], EVENT_NOTICE, sprintf('Added user %s to the system', $username));
 				} catch (PDOException $e) { }
 			}
 

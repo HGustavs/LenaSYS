@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/../Shared/external/password.php');
 require_once(dirname(__FILE__) . '/../Shared/database.php');
+require_once(dirname(__FILE__) . '/constants.php');
 //---------------------------------------------------------------------------------------------------------------
 // checklogin - Checks Login Credentials and initiates the kind session variable that holds the credentials
 //---------------------------------------------------------------------------------------------------------------
@@ -35,9 +36,10 @@ function failedLoginCount($addr)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare('SELECT COUNT(1) FROM eventlog WHERE address=:addr AND type=\'loginerr\' AND ts > (CURRENT_TIMESTAMP() - interval 30 minute)');
+	$query = $pdo->prepare('SELECT COUNT(1) FROM eventlog WHERE address=:addr AND type=:type AND ts > (CURRENT_TIMESTAMP() - interval 30 minute)');
 	// TODO: Proxy detection?
 	$query->bindParam(':addr', $addr);
+	$query->bindValue(':type', EVENT_LOGINERR);
 
 	if($query->execute() && $query->rowCount() > 0) {
 		$count = $query->fetch(PDO::FETCH_NUM);
