@@ -121,10 +121,10 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
                 {
                 	$.ajax({url: "editorService.php", type: "POST", data: {exampleid:exampleid,opt:sname,description:param,boxid:boxid}, dataType: "json",
                 	success:function(data){
-                		successBox("Success!", "All descriptions where saved.");
+                		successBox("Success!", "Descriptions saved");
                 		returned(data);
                 	},error: function(data){
-                		warningBox("Warning!", "Description might not have been saved.");
+                		warningBox("Warning!", "Save failed");
                 		returned(data);
                 	} });
                 	
@@ -184,16 +184,27 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
         <!--Place tooltips on all objects with a title-->
         <script>
-
     $( document ).ready(function() {
+        if (window.matchMedia("(min-width: 1100px)").matches) {
 
-        setTimeout(function() {
+            <!--Place tooltips on all objects with a title-->
+            $( document ).ready(function() {
 
-            $("*[title]").tooltips();
+                setTimeout(function() {
 
-        }, 800);
+                    $("*[title]").tooltips();
+
+                }, 800);
 
 
+            });
+
+
+        }
+
+        else {
+            <!--Do nothing-->
+
+            }
     });
-
-        </script>
+ </script>
