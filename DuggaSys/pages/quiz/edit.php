@@ -12,7 +12,9 @@
 			<div class='form-group'>
 				<label>Dugganame *</label>
 				<input type="text" class='form-control' name="quizname" id="quizname" />
+
 				<div id="quizParameters" class='form-group'>
+				<div class='form-group'>
 					<label>Template parameters, saves as string (max 2000 characters)</label>
 					<textarea class='form-control' name="parameterinput" rows='5' id="parameterinput"></textarea>
 				</div>

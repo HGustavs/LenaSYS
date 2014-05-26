@@ -43,7 +43,7 @@
 				cid: cid,
 				action: action, // edit/create
 				qid: qid,
-				quizname: document.newQuizForm.quizname.value,
+				//quizname: document.newQuizForm.quizname.value,
 				//parameters: document.newQuizForm.parameterinput.value,
 				parameter: document.newQuizForm.parameterinput.value,
 				answer: document.newQuizForm.answerinput.value,
@@ -70,6 +70,9 @@
 					alert("You dont have rights to edit quiz.");	
 					$(".xdsoft_noselect").remove();
 					changeURL("quiz/menu");
+				} else if(data==="false_deadline") {
+					$("#deadlineinput").css("background-color", "#ff7c6a");
+					console.log(data);
 				}
 			},
 			error:function() {
@@ -104,6 +107,25 @@
 	});
  }
 
+ function getQuizNameForHeader(quizid) {
+ 	$.ajax({
+		dataType: "json",
+		type: "POST",
+		url: "ajax/getQuizData.php",
+		data: {
+			cid: quizid
+		},
+		success:function(data) {
+			//console.log(data);
+			console.log("A OK");
+			$("#admin_title").html("Admin Menu - "+data.name);
+		},
+		error:function() {
+			console.log("Something went wrong");
+		}
+	});
+ }
+
  function getQuizData(quizid) {
  	$.ajax({
 		dataType: "json",
@@ -115,7 +137,7 @@
 		success:function(data) {
 			//console.log(data);
 			console.log("A OK");
-			$("#quizname").val(data.name);
+			//$("#quizname").val(data.name);
 			$("#parameterinput").val(data.parameter);
 			$("#quizAnswerInput").val(data.answer);
 			$("#autogradecheck").prop('checked', !!data.autograde);
@@ -131,7 +153,7 @@
 			});
 			$.each($("#quizfile option"), function( index, value ) {
 			  console.log(value.value);
-			  if (value.value==data.gradesystem) {
+			  if (value.value==data.quizFile) {
 			  	value.setAttribute('selected', true);	
 			  };
 			  

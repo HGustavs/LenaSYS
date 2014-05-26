@@ -23,22 +23,24 @@ function validateNewCourseSubmit()
 
 function validateNewQuizSubmit() 
 {
-  if( document.newQuizForm.quizname.value == "" ) {
+  /*if( document.newQuizForm.quizname.value == "" ) {
   	console.log("quizname not valid");
     $("input[name*='quizname']").css("background-color", "#ff7c6a");
     return false;
   } else {
-  }
+  	$("input[name*='quizname']").css("background-color", "#ffffff");
+  }*/
   if( document.newQuizForm.gradesysselect.value == "-1") {
     $("#gradeSysSelect").css("background-color", "#ff7c6a");
     return false;
   } else {
+  	$("#gradeSysSelect").css("background-color", "#ffffff");
   }
   if (document.newQuizForm.autogradebox.checked && document.newQuizForm.answerinput.value=="") {
   	$("#quizAnswerInput").css("background-color", "#ff7c6a");
   	return false;
   } else {
-  	
+  	$("#quizAnswerInput").css("background-color", "#ffffff");
   };
 
   	var releasedateinput = new Date(document.newQuizForm.releasedateinput.value);
@@ -47,6 +49,8 @@ function validateNewQuizSubmit()
 	if (releasedateinput >= deadlineinput) {
 	    $("#deadlineinput").css("background-color", "#ff7c6a");
 	    return false;
+	} else {
+		$("#deadlineinput").css("background-color", "#ffffff");
 	}
 
   return true;
