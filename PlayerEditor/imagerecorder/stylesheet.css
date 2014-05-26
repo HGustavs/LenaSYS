@@ -107,6 +107,7 @@ ul {
 	margin-right: auto;
 	background-color: #fff;
 	box-shadow: 3px 3px 3px #000;
+	border: 1px solid black;
 }
 
 /* control buttons */
@@ -175,12 +176,12 @@ ul {
 }
 
 #instructionwindow{
-
     overflow: auto;
  	overflow-y: hidden;
 	position: relative;
-	z-index: 2;
 	width: 50%;
+	max-width: 1000px;
+	max-height: 700px;
 	background-color: white;
 	border-radius: 5px;
 	margin-left: auto;
@@ -189,6 +190,7 @@ ul {
 	display: none;
 	margin-top: 3%;
 }
+
 #instructionopacity{
 	background-color: rgba(0,0,0,0.4);
 	cursor: default;
@@ -206,8 +208,8 @@ ul {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width:35px;
-	height: 35px;
+	width:25px;
+	height: 25px;
 	background-color: red;
 	background-image: url("img/quit.png");
 	margin-top:5px;

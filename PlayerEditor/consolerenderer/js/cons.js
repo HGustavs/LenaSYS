@@ -252,7 +252,7 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 	//-------------------------------------------------------------------------------------------
 	// Switching play/pause
 	//-------------------------------------------------------------------------------------------
-	this.switch = function()
+	this.switchPlayback = function()
 	{
 		if(this.paused==1){
 			this.play();

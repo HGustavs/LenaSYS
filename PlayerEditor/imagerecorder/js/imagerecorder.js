@@ -1,9 +1,9 @@
 function imagerecorder(canvas)
 {
-	var initImage = new Image();	
+	var initImage = new Image();
 	initImage.src = "img/firstpic.jpg";	// This is the "Click here to start recording" image.
 	
-	var clicked = 0;
+	var clicked = 0;					// Check if the user has clicked to the next picture
 	var logStr = '<?xml version="1.0" encoding="UTF-8"?>\n<script type="canvas">';
 	var imageCanvas = canvas;
 	var canvas = document.getElementById('ImageCanvas');
@@ -30,7 +30,7 @@ function imagerecorder(canvas)
 	this.scrollAmountY = 0;
 	this.currentImageWidth;
 	this.currentImageHeight;
-	var mouseFPS = 30;
+	var mouseFPS = 30;				// The amount of times a second the mousemovement will be recorded
 	
 	var files;						// store files thats being uploaded
 	var rect = canvas.getBoundingClientRect();
@@ -56,7 +56,6 @@ function imagerecorder(canvas)
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
 		$(".wrapper").hide();
-			
 		
 		// Get library name when user clicks OK
 		$("#library-name-button").click(function(){
@@ -91,7 +90,8 @@ function imagerecorder(canvas)
 
 							
 							// Print "click to start rec" image on canvas
-							ctx.drawImage(initImage,0,0, mWidth, mHeight);
+							showInitImage();
+							updateScaleRatio();
 						},
 						error: function() {
 							alert("Error on AJAX call (No JSON respond)");
@@ -145,7 +145,7 @@ function imagerecorder(canvas)
 					// Show undo button
 					$("#imagerecorder-undo").show();
 
-					$(".thumbnail").hover(function() {
+					$(".thumbnail").mouseover(function() {
 						$(this).css({
 							"cursor": "default",
 							"opacity": "0.65"
@@ -170,15 +170,11 @@ function imagerecorder(canvas)
 
 						mHeight = (rect.bottom - rect.top);
 						mWidth = (rect.right-rect.left);
-						var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
-						var yMouse = Math.round((event.clientY-imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-						//var xMouse = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-						//var yMouse = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-					
-						document.getElementById('xCord').innerHTML=xMouse;
-						document.getElementById('yCord').innerHTML=yMouse;
 
-						logMouseEvents('\n<mouseclick x="' + xMouse + '" y="' + yMouse+ '"/>');
+						document.getElementById('xCord').innerHTML=xMouseReal;
+						document.getElementById('yCord').innerHTML=yMouseReal;
+
+						logMouseEvents('\n<mouseclick x="' + xMouseReal + '" y="' + yMouseReal + '"/>');
 
 						// Add undo point
 						createUndoPoint();	
@@ -193,6 +189,13 @@ function imagerecorder(canvas)
 		// keyboard controls
 		$("body").keydown(function(event) {	
 			switch(event.which) {
+				// Enter
+				case 13:
+					// When user press enter make click on "OK" button if "Select library name" hasnt been closed yet.
+					if(libEntered == 0) {
+						$("#library-name-button").click();
+					}
+				break;
 			
 				// Arrow right
 				case 39:
@@ -212,11 +215,12 @@ function imagerecorder(canvas)
 					}
 				break;		
 				
-				
+				// Escape
 				case 27:
 					if(clicked == 1) {
 						reset();
 					}
+				break;
 			}
 		});
 		
@@ -262,7 +266,6 @@ function imagerecorder(canvas)
 					mHeight = (rect.bottom - rect.top);
 					mWidth = (rect.right-rect.left);
 					
-					addTimestep('\n<recordedCanvasSize x="' + mWidth + '" y="' + mHeight + '"/>');
 					canvas.width = mWidth;
 					canvas.height = mHeight; 
 					imgrecorder.maxCanvasWidth = mWidth;
@@ -270,7 +273,7 @@ function imagerecorder(canvas)
 					resizeCanvas();
 					updateScaleRatio();
 				}
-			if(clicked == 1) { //Checks if any clicks has been made nad if the picture been clicked it will show the right pic
+			if(clicked == 1) { //Checks if any clicks has been made and if the pictures been clicked it will show the right pic
 				showImage(activeImage);
 			}
 			else{
@@ -293,7 +296,7 @@ function imagerecorder(canvas)
 					},
 					success: function() {
 					
-						$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>.");
+						$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>");
 						$("#export-feedback").append($('<div>', {
 							"class":	"closebutton",
 							html:		"",
@@ -302,7 +305,7 @@ function imagerecorder(canvas)
 							}
 						}));
 					
-						$("#export-feedback").show(250);
+						$("#export-feedback").fadeIn("fast");	
 					}
 				});
 			} else {
@@ -330,8 +333,10 @@ function imagerecorder(canvas)
 	
 	// Add menu options to images
 	$(document).on("contextmenu", ".tli", function(e) {
+		// Prevent default right click menu
+		e.preventDefault();
 		if(clicked == 0) {
-			e.preventDefault();
+			// Show thumbnail menu
 			showThumbMenu($(this).index());
 		}
 	});
@@ -359,6 +364,8 @@ function imagerecorder(canvas)
 			
 			addThumb("../canvasrenderer/"+tmpSrc);
 		}
+		
+		rebuildImgLibrary()
 		
 	}
 	
@@ -434,31 +441,12 @@ function imagerecorder(canvas)
 		if(id >= 0) {
 			// Set image
 			activeImage = id;
-			imageData = new Image();
+			
+			// Create image
+			imageData = new Image();		
 			imageData.src = imagelibrary[id];
-					
-			imageData.onload = function() {
-				// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
-				imgrecorder.currentImageWidth = imageData.width;
-				imgrecorder.currentImageHeight = imageData.height;
-				resizeCanvas();	
-				// Clears screen. May need a better solution.
-				canvas.width = canvas.width; 
-				var ratio = 1;
-				// When image has been loaded calculate ratios and print it on the canvas
-				// Picture need to be scaled down
-				if (imageData.width > canvas.width || imageData.height > canvas.height) {
-					// Calculate scale ratios
-					var widthRatio = canvas.width / imageData.width;
-					var heightRatio = canvas.height / imageData.height;
-
-					// Set scale ratio
-					if (widthRatio < heightRatio) ratio = widthRatio;
-					else ratio = heightRatio;
-				}
-				// Daw to canvas
-				ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
-			}
+			// Show image in canvas
+			showImageData();
 
 			// Successful image change
 			return true;
@@ -467,6 +455,41 @@ function imagerecorder(canvas)
 
 			// Didn't change image
 			return false;
+		}
+	}
+
+	// Prints the default/init image to canvas
+	function showInitImage() {
+		// Set init image
+		imageData = new Image();
+		imageData.src = "img/firstpic.jpg";
+		showImageData();
+		updateScaleRatio();
+	}
+
+	// Show image from the variable imageData in canvas
+	function showImageData() {
+		imageData.onload = function() {
+			// When image has been loaded print it on the canvas. Should fix issue with Chrome not printing the image.
+			imgrecorder.currentImageWidth = imageData.width;
+			imgrecorder.currentImageHeight = imageData.height;
+			resizeCanvas();	
+			// Clears screen. May need a better solution.
+			canvas.width = canvas.width; 
+			var ratio = 1;
+			// When image has been loaded calculate ratios and print it on the canvas
+			// Picture need to be scaled down
+			if (imageData.width > canvas.width || imageData.height > canvas.height) {
+				// Calculate scale ratios
+				var widthRatio = canvas.width / imageData.width;
+				var heightRatio = canvas.height / imageData.height;
+
+				// Set scale ratio
+				if (widthRatio < heightRatio) ratio = widthRatio;
+				else ratio = heightRatio;
+			}
+			// Daw to canvas
+			ctx.drawImage(imageData,0,0, width = imageData.width*ratio, height = imageData.height*ratio);
 		}
 	}
 	
@@ -478,7 +501,6 @@ function imagerecorder(canvas)
 		which means that the canvas gets the same aspect ratio as the image.
 	*/
 	function resizeCanvas(){
-		
 		var scale = imgrecorder.maxCanvasWidth/imgrecorder.currentImageWidth;
 		setCanvasWidth(imgrecorder.maxCanvasWidth);
 			
@@ -495,6 +517,9 @@ function imagerecorder(canvas)
 		}else{
 			setCanvasHeight("100%");
 		}
+		addTimestep('\n<recordedCanvasSize x="' + getCanvasWidth() + '" y="' + getCanvasHeight() + '"/>');
+
+		
 	}
 	function setCanvasWidth(width) {
 		$("#" + imageCanvas).width(width);
@@ -529,7 +554,6 @@ function imagerecorder(canvas)
 	}
 	
 	function getPrevImage() {
-		
 		if((activeImage - 1) >= 0) {
 			return activeImage - 1;
 		}
@@ -541,6 +565,7 @@ function imagerecorder(canvas)
 	// Rebuild imagelibrary
 	function rebuildImgLibrary() {
 		imagelibrary = [];
+		activeImage = -1;
 		// Loop through all li in the ul
 		$("li", "#sortableThumbs").each(function(index) {
 			var src = $("img", this).attr("src");
@@ -604,9 +629,9 @@ function imagerecorder(canvas)
 						for(var i = 0; i < data.SUCCESS.length; i++) {
 							// data.SUCCESS contains the path to the image
 							var imgPath = data.SUCCESS[i];
-							
+
 							// add imgpath to array
-							imagelibrary[imageid] = imgPath;
+							imagelibrary.push(imgPath);
 				
 							addThumb(imgPath);
 						}
@@ -710,7 +735,7 @@ function imagerecorder(canvas)
 				var point = undoPoints[undoPoints.length - 1];
 
 				// Show previous image
-				showImage(point.imageID);
+				showImage(point.imageid);
 				// Undo log string
 				logStr = logStr.substr(0, point.stringPosition);
 			}
@@ -727,6 +752,7 @@ function imagerecorder(canvas)
 		clicked = 0;
 		lastEvent = Date.now();
 		activeImage = -1;
+
 		nextImage = 0;
 		currentImageRatio = 1;
 
@@ -748,18 +774,31 @@ function imagerecorder(canvas)
 		});
 		
 		// Readd hover effect to thumbnails
-		$(".thumbnail").hover(function() {
+		$(".thumbnail").mouseover(function() {
 			$(this).css({
 				"cursor": "move",
 				"opacity": "1"
 			});
 		});
+		$(".thumbnail").mouseleave(function() {
+			$(this).css({
+				"cursor": "move",
+				"opacity": "0.65"
+			});
+		});
 
 		// Show instruction button
 		$("#instructbutton").show();
+		
+		// Hide export dialog
+		$("#export-feedback").hide();
 
 		// Clear canvas
 		canvas.width = canvas.width;
+
+		// Set init image
+		showInitImage();
+		updateScaleRatio();
 
 		// Change button name and action
 		$("#uploadButton").attr('value', 'Upload image');
@@ -785,18 +824,17 @@ function imagerecorder(canvas)
 	 function UndoPoint(strPosition, imgID)
 	 {
 	 	this.stringPosition = strPosition;
-	 	this.imageID = imgID;
+	 	this.imageid = imgID;
 	 }
 	 
 }
+function showinstruction(){
+ $("#instructionopacity").fadeIn("fast");
+ $("#instructionwindow").fadeIn("fast");
+ 
+}
 
-	 function showinstruction(){
-		 $("#instructionopacity").fadeIn("fast");
-         $("#instructionwindow").fadeIn("fast");
-		 
-	 }
-	 
-	 function hideinstruction(){
-		$("#instructionopacity").fadeOut("fast");
-         $("#instructionwindow").fadeOut("fast");
-	 }
+function hideinstruction(){
+$("#instructionopacity").fadeOut("fast");
+ $("#instructionwindow").fadeOut("fast");
+}
