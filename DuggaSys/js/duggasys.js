@@ -365,6 +365,15 @@ function deleteStudent(){
 }
 function passPopUp(){
     var qs = getUrlVars();
+
+	if($("#string").val().length < 1)
+		return;
+	
+	$("body").prepend("<div id='overlay'></div>");
+	$("#light").html("Saving students...");
+	$("#light").show();
+	document.getElementById('light').style.visibility = "visible";
+
     $.ajax({
 		dataType: "json",
 		type: "POST",
@@ -374,10 +383,12 @@ function passPopUp(){
 			courseid: qs.courseid
 		},
 		success: function (returnedData) {
-		console.log(returnedData);
-		showPopUp('show', returnedData)
+			$('#overlay').on('click', function() { showPopUp('hide') });
+			console.log(returnedData);
+			showPopUp('show', returnedData)
 		},
 		error: function(){
+			showPopUp('hide');
 			dangerBox('Problems adding students', 'Could not add the students from the course. Make sure you add at least one student.');
 		},
 	});
@@ -386,8 +397,6 @@ function passPopUp(){
 function showPopUp(showhidePop, returnedData){
     console.log(returnedData);
 	if(showhidePop == "reset"){
-       	document.getElementById('light').style.visibility = "visible";
-		document.getElementById('fade').style.visibility = "visible";
 		var output = "<div id='printArea'>";
 		output += "<table class='list'>";
 		output += "<tr><th>Name</th>";
@@ -407,8 +416,6 @@ function showPopUp(showhidePop, returnedData){
 
 	}
 	if(showhidePop == "show"){
-		document.getElementById('light').style.visibility = "visible";
-		document.getElementById('fade').style.visibility = "visible";
 
 		if (returnedData.length == 0){
 			var output = "The users you were adding already existed globally and were added to the course";
@@ -435,8 +442,10 @@ function showPopUp(showhidePop, returnedData){
 		div.innerHTML = output;
 	}
 	else if(showhidePop == "hide"){
-		document.getElementById('light').style.visibility = "hidden";
-		document.getElementById('fade').style.visibility = "hidden";	
+		if(confirm('Have you printed the passwords?')) {
+			$("#light").hide();
+			$("#overlay").remove();
+		}
 	}
 }
 

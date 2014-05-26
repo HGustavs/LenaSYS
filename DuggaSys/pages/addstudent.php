@@ -38,7 +38,6 @@ e.g.:
 		</form>
 	<div id="light" class="white_content">
 	</div>
-	<div id="fade" class="black_overlay" onclick="javascript:showPopUp('hide');"></div>
 </body>
 </html>
 <?php

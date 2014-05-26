@@ -60,7 +60,7 @@
 				</div>
 				
 			</div>
-			<button type="button" onclick="successBox('Edit quiz', 'Are you sure you want to edit quiz', '', editQuiz, submitArray)" class='default'>Submit</button>
+			<button type="button" onclick="successBox('Edit quiz', 'Are you sure you want to edit quiz', undefined, editQuiz, submitArray)" class='default'>Submit</button>
 			
 			<button type="button" onclick="historyBack()" class='default-red'>Cancel</button>
 		</form>
