@@ -10,8 +10,9 @@
 	<div id='create'>
 		<form id="newQuizForm" name="newQuizForm" role='form'>
 			<div class='form-group'>
-				<label>Dugganame *</label>
+				<!--<label>Dugganame *</label>
 				<input type="text" class='form-control' name="quizname" id="quizname" />
+				-->
 				<div class='form-group'>
 					<label>Template parameters, saves as string (max 2000 characters)</label>
 					<textarea class='form-control' name="parameterinput" rows='5' id="parameterinput"></textarea>
@@ -65,11 +66,11 @@
 	</div>
 
 <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+<script src="js/jquery.datetimepicker.js"></script>
 <script src="js/ajax.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
 <script type="text/javascript">page.title("Edit quiz");</script>
-<script src="js/jquery.js"></script>
-<script src="js/jquery.datetimepicker.js"></script>
+<!--<script src="js/jquery.js"></script>-->
 <script type="text/javascript">
 	$('.datetimepicker').datetimepicker();
 	getQuizFiles();
