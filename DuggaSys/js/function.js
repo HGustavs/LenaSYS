@@ -82,12 +82,12 @@ function getPage() {
 
 		// URL we're looking for
 		this.page = "pages/" + hashtagsplit.split('?')[0];
+		console.log("Loading... " + this.page);
 		$.ajax({
 			url: this.page + ".php",
 			method: 'POST',
 			data: data,
 			success: function(returnedData) {
-				console.log("Loaded" + this.page);
 				$("#content").html(returnedData);
 			},
 			error: function() {

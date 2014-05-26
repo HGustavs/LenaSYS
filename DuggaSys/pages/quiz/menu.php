@@ -1,9 +1,7 @@
 <?php session_start(); ?>
-<script src="js/ajax.js">
-
-
+<script src="js/ajax.js"></script>
+<script>
 page.title("Quiz menu");
-
 </script>
 <div class='middle center'>
 	<p id="admin_title"></p>
