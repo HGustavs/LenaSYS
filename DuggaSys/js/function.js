@@ -29,7 +29,7 @@ function WEREGOINGTODISNEYLAND() {
 }
 
 $( document ).ready(function() {
-	page = 	new getPage();
+	page = new getPage();
 	page.load();
 	page.show();
 });
@@ -41,6 +41,10 @@ window.onhashchange = function() {
 function changeURL(url) {
 	history.pushState(null, null, "#"+url);
 	page.show();
+}
+// Simple go back history function //
+function historyBack() {
+	window.history.back()
 }
 // Grabbing URL values //
 function getUrlVars() {
@@ -281,7 +285,10 @@ function getQuiz(quizId) {
 		console.log("complete");
 	}
 	else {
-		dangerBox("Ooops you got an error!","There is an ID missing to reach a quiz...<br/>Contact admin for support or try again.");
+		historyBack();
+		setTimeout(function(){
+			dangerBox("Ooops you got an error!","There is an ID missing to reach a quiz...<br/>Contact admin for support or try again.");
+		}, 100);
 	}
 }
 // QUIZ FUNCTIONS END //

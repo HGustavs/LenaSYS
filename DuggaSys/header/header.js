@@ -5,10 +5,6 @@ $( document ).ready(function() {
 	loadHeaderLink(getScriptPath("header.js")+"/css/style.css", "css")
 	printHeader();
 });
-// Simple go back history function //
-function historyBack() {
-	window.history.back()
-}
 function printHeader () {
 	$("header").load(getScriptPath("header.js")+"/content/header.php", function() {
 		page.title();

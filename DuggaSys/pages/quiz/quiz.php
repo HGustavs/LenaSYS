@@ -3,7 +3,7 @@
 	page.title();
 	setTimeout(function(){
 		getQuiz(getUrlVars().quizid);
-	}, 10);
+	}, 50);
 </script>
 <!-- Put ontent here -->
 <div id="output"></div>
