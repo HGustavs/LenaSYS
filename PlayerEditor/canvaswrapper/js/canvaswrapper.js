@@ -38,7 +38,7 @@
 		var optimize = false;
 
 		$("body").append("<input type='button' id='XML_type' value='Make optimized XML' style='position:absolute;right:5px;top:5px'>");
-		
+		//Optimize the xml.
 		$("#XML_type").click(function(){
 			if(optimize == false){
 				optimize = true;
@@ -485,7 +485,7 @@
 
 		this.updateContextLineState = function(){
 			var string = "";
-			// Check for updates
+			// Check for updates on propert
 			if (this.ctx.lineWidth !== this.lineWidth && !(this.lineWidth === undefined)) {
 				string += this.updateContextProperty('lineWidth');
 			}
@@ -504,7 +504,7 @@
 		
 		// Update state
 		this.updateContextCssState = function(){
-			// Check for updates
+			// Check for updates on propert
 			var string = "";
 			if (this.ctx.fillStyle !== this.fillStyle && !(this.fillStyle === undefined)) {
 				string += this.updateContextProperty('fillStyle');
@@ -530,7 +530,7 @@
 		// Update state
 		this.updateContextTextState = function(){
 			var string = "";
-			// Check for updates
+			// Check for updates on propert
 			if (this.ctx.font !== this.font && !(this.font === undefined)) {
 				string += this.updateContextProperty('font');
 			}
@@ -547,7 +547,7 @@
 		// Update state
 		this.updateContextCompositingState = function(){
 			var string = "";
-			// Check for updates
+			// Check for updates on property
 			if (this.ctx.globalAlpha !== this.globalAlpha && !(this.globalAlpha === undefined)) {
 				string += this.updateContextProperty('globalAlpha');
 			}
@@ -561,7 +561,7 @@
 		This method logs an imageData object to the log file. This method gets
 		called when a method that uses imagedata gets called, for example
 		putImageData. 
-		**/   	
+		**/
 		this.logImageData = function(imgData){
 			var imgstr = "<imageData width=\"" + imgData.width + "\"" + " height=\"" + imgData.height + "\"" + " values =\"";
 			valueStr = "";
@@ -593,10 +593,9 @@
 								globalCompositeOperation:"gCO"	
 								}; 
 		
-		// Update a specific property
+		// Update a specific property with updateContextProperty.
 		this.updateContextProperty = function(property) {
-			// Update property
-			// Set string
+			// Update property and set a string.
 			var attribute = "";
 			this.ctx[property] = this[property];
 			if(optimize == true){
