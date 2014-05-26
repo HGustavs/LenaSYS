@@ -1309,19 +1309,20 @@ function rendercode(codestring,boxid)
 
 			// Print out normal rows if no important exists
 				if(improws.length==0){
-					str+="<div class='normtext'>";
+					str+="<div class='normtext'>"+cont+"</div>";
 				}else{	
 					// Print out important lines
 					for(var kp=0;kp<improws.length;kp++){
 						if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
-							str+="<div class='impo'>";
+							str+="<div class='impo'>"+cont+"</div>";
 							break;
 						}else{
-							str+="<div class='normtext'>";
+							if(kp == (improws.length-1)){
+								str+="<div class='normtext'>"+cont+"</div>";
+							}
 						}						
 					}
 				}	
-				str+=cont+"</div>";
 				cont="";
 			}	
 		}
@@ -1336,8 +1337,9 @@ function rendercode(codestring,boxid)
 
 // function to create a border with line numbers
 function createCodeborder(lineno,improws){
-	
 	var str="<div class='codeborder'>";
+	var x= 0;
+	
 	for(var i=1; i<=lineno; i++){
 		// Print out normal numbers
 		if(improws.length ==0){
@@ -1345,15 +1347,20 @@ function createCodeborder(lineno,improws){
 		}else{
 			// Print out numbers for an important row
 			for(var kp=0;kp<improws.length;kp++){
+				console.log(i + " " + kp);
 				if(i>=parseInt(improws[kp][1])&&i<=parseInt(improws[kp][2])){
 					str+="<div class='impono'>"+(i)+"</div>";	
-					break;
+					break;	
+					
 				}else{
-					str+="<div class='no'>"+(i)+"</div>";
-				}						
+					if(kp==(improws.length-1)){
+						str+="<div class='no'>"+(i)+"</div>";					
+					}
+				}			
 			}
 		}
 	}
+	
 	str+="</div>";
 	return str;
 }
@@ -1403,7 +1410,7 @@ function renderdesccode(codestring){
 				}else if(tokens[i].kind=="blockcomment"){ 
 							cont+="<span class='comment'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="string"){ 
-							cont+="<span class='string'>\""+tokenvalue+"\"</span>";
+							cont+="<span class='string'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="number"){
 						cont+="<span class='number'>"+tokenvalue+"</span>";
 				}else if(tokens[i].kind=="name"){

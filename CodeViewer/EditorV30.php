@@ -184,16 +184,27 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
         <!--Place tooltips on all objects with a title-->
         <script>
-
     $( document ).ready(function() {
+        if (window.matchMedia("(min-width: 1100px)").matches) {
 
-        setTimeout(function() {
+            <!--Place tooltips on all objects with a title-->
+            $( document ).ready(function() {
 
-            $("*[title]").tooltips();
+                setTimeout(function() {
 
-        }, 800);
+                    $("*[title]").tooltips();
+
+                }, 800);
 
 
+            });
+
+
+        }
+
+        else {
+            <!--Do nothing-->
+
+            }
     });
-
-        </script>
+ </script>
