@@ -195,6 +195,7 @@ function imagerecorder(canvas)
 					if(libEntered == 0) {
 						$("#library-name-button").click();
 					}
+				break;
 			
 				// Arrow right
 				case 39:
@@ -214,11 +215,12 @@ function imagerecorder(canvas)
 					}
 				break;		
 				
-				
+				// Escape
 				case 27:
 					if(clicked == 1) {
 						reset();
 					}
+				break;
 			}
 		});
 		
@@ -826,13 +828,13 @@ function imagerecorder(canvas)
 	 }
 	 
 }
-	 function showinstruction(){
-		 $("#instructionopacity").fadeIn("fast");
-         $("#instructionwindow").fadeIn("fast");
-		 
-	 }
-	 
-	 function hideinstruction(){
-		$("#instructionopacity").fadeOut("fast");
-         $("#instructionwindow").fadeOut("fast");
-	 }
+function showinstruction(){
+ $("#instructionopacity").fadeIn("fast");
+ $("#instructionwindow").fadeIn("fast");
+ 
+}
+
+function hideinstruction(){
+$("#instructionopacity").fadeOut("fast");
+ $("#instructionwindow").fadeOut("fast");
+}
