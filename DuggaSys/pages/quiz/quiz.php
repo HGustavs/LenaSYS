@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <script>
-	page.title();
+	page.title("Quiz");
 	setTimeout(function(){
 		getQuiz(getUrlVars().quizid);
 	}, 50);
