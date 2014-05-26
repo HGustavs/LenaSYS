@@ -141,7 +141,6 @@ function Canvasrenderer()
 	{
 		// First time running - clear welcome image.
 		if(this.firsttime == 1) {
-			
 			ctx.clearRect(0, 0, c.width, c.height);
 			this.firsttime = 0;
 		}
@@ -240,7 +239,7 @@ function Canvasrenderer()
 	// Fast forward or rewind to specific position
 	this.windto = function(pos)
 	{
-		if(this.playimageIsShown){
+		if(this.playimageIsShown && this.windpos > pos){
 			this.hidePlayImage();
 					
 
@@ -264,6 +263,7 @@ function Canvasrenderer()
 				if (pos < this.currentPosition()) {
 					// Will need to start from the beginning
 					this.reset();
+					this.firsttime = 0;
 				}
 
 				// Calculate usable windpos (reversed array)
@@ -1074,7 +1074,7 @@ function Canvasrenderer()
 			// Calculate scale ratios
 			widthRatio = c.width / (image.width);
 			heightRatio = c.height / (image.height);
-					// Set scale ratio
+			// Set scale ratio
 			canvas.downscaled = false;
 			(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
 			(canvas.scaleRatio) > 1 ? canvas.scaleRatio = 1 : canvas.scaleRatio; 
@@ -1099,8 +1099,8 @@ function Canvasrenderer()
 				var mX = canvas.mouseCursorX-1;		
 				var mY = canvas.mouseCursorY-1;
 				// Checks for negative coordinates
-				(mX < 1) ? mX = 1 : mX;
-				(mY < 1) ? mY = 1 : mY;
+				(mX < 0) ? mX = 0 : mX;
+				(mY < 0) ? mY = 0 : mY;
 				canvas.mouseCursorBackground = ctx.getImageData(mX, mY, canvas.mousePointerSizeX, canvas.mousePointerSizeY);
 				// New mouse click background
 				var clickPosX = ((canvas.mouseClickX - canvas.mouseClickRadius) < 0)  ? 0 : (canvas.mouseClickX - canvas.mouseClickRadius);
