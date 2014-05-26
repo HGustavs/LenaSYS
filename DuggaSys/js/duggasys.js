@@ -463,3 +463,11 @@ function printDiv(){
 function deleteFromSectionlist(ID){
 	AJAXServiceSection("sectionDel","&sectid="+ID);
 }
+
+function confirmExit(){
+	var answer = confirm("Have you printed the new students?")
+	if(answer)
+		showPopUp('hide');
+	
+	return
+}
