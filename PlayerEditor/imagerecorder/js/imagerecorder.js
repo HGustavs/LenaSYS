@@ -1,6 +1,6 @@
 function imagerecorder(canvas)
 {
-	var initImage = new Image();	
+	var initImage = new Image();
 	initImage.src = "img/firstpic.jpg";	// This is the "Click here to start recording" image.
 	
 	var clicked = 0;					// Check if the user has clicked to the next picture
@@ -56,7 +56,6 @@ function imagerecorder(canvas)
 	$(document).ready(function(){
 		// Hide the wrapper until library name is entered
 		$(".wrapper").hide();
-			
 		
 		// Get library name when user clicks OK
 		$("#library-name-button").click(function(){
@@ -91,7 +90,8 @@ function imagerecorder(canvas)
 
 							
 							// Print "click to start rec" image on canvas
-							ctx.drawImage(initImage,0,0, mWidth, mHeight);
+							showInitImage();
+							updateScaleRatio();
 						},
 						error: function() {
 							alert("Error on AJAX call (No JSON respond)");
@@ -450,6 +450,15 @@ function imagerecorder(canvas)
 		}
 	}
 
+	// Prints the default/init image to canvas
+	function showInitImage() {
+		// Set init image
+		imageData = new Image();
+		imageData.src = "img/firstpic.jpg";
+		showImageData();
+		updateScaleRatio();
+	}
+
 	// Show image from the variable imageData in canvas
 	function showImageData() {
 		imageData.onload = function() {
@@ -780,9 +789,7 @@ function imagerecorder(canvas)
 		canvas.width = canvas.width;
 
 		// Set init image
-		imageData = new Image();
-		imageData.src = "img/firstpic.jpg";
-		showImageData();
+		showInitImage();
 		updateScaleRatio();
 
 		// Change button name and action
