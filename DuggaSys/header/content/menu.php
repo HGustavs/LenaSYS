@@ -7,6 +7,6 @@
 	<li onclick="changeURL('newpassword')">Change password</li>
     <li onclick="changeURL('myresults')">My results</li>
     <?php if(isSuperUser($_SESSION['uid'])) { ?>
-    	<li onclick="changeURL('myresults')">Märtas knapp här</li>
+    	<li onclick="changeURL('eventlog')">Eventlog</li>
     <?php } ?>
 </ul>
