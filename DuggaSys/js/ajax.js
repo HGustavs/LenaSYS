@@ -183,7 +183,7 @@
 		type: "POST",
 		url: "ajax/getQuizFiles.php",
 		data: {
-			cid: 1
+			cid: cid
 		},
 		success:function(data) {
 			//console.log(data);
