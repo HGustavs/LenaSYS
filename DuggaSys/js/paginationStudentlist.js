@@ -107,49 +107,49 @@ function pagination() {
 									break;
 								case 5:
 									var failure = false;
-									if (parseInt(this.items.entries[i]["grade"]) == ""){
+									if (parseInt(this.items.entries[i]["grade"]) == null){
 										cell.innerHTML = "";
 									} else {
 										if (parseInt(this.items.entries[i]["gradesystem"]) == 1) {
 											if (parseInt(this.items.entries[i]["grade"]) > 0) {
-												cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='1'>G</option><option value='0'>U</option></select>";
+												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='1'>G</option><option value='0'>U</option></select>";
 											} else {
 												if (this.items.entries[i]["expired"]) {
-													cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='0'>U</option><option value='1'>G</option></select>";
+													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='1'>G</option></select>";
 												} else if (this.items.entries[i]["grade"] != "") {
 													failure = true;
 												}
-												cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='0'>U</option><option value='1'>G</option></select>";
+												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='1'>G</option></select>";
 											}
 										} else if (parseInt(this.items.entries[i]["gradesystem"]) == 2) {
 											if (parseInt(this.items.entries[i]["grade"]) == 1) {
-												cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='1'>G</option><option value='0'>U</option><option value='2'>VG</option></select>";
+												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='1'>G</option><option value='0'>U</option><option value='2'>VG</option></select>";
 											} else if (parseInt(this.items.entries[i]["grade"]) >= 2) {
-												cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='2'>VG</option><option value='0'>U</option><option value='1'>G</option></select>";
+												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='2'>VG</option><option value='0'>U</option><option value='1'>G</option></select>";
 											} else {
 												if (this.items.entries[i]["expired"]) {
-													cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
+													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
 												} else if (this.items.entries[i]["grade"] != "") {
 													failure = true;
 												}
-												cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
+												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
 											}
 										} else {
 											if (parseInt(this.items.entries[i]["grade"]) >= 3) {
 												if (parseInt(this.items.entries[i]["grade"]) == 3) {
-													cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
+													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 												} else if (parseInt(this.items.entries[i]["grade"]) == 4) {
-													cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='4'>4</option><option value='0'>U</option><option value='3'>3</option><option value='5'>5</option></select>";
+													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='4'>4</option><option value='0'>U</option><option value='3'>3</option><option value='5'>5</option></select>";
 												} else {
-													cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='5'>5</option><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option></select>";
+													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='5'>5</option><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option></select>";
 												}
 											} else {
 												if (this.items.entries[i]["expired"]) {
-													cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
+													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 												} else if (this.items.entries[i]["grade"] != "") {
 													failure = true;
 												}
-												cell.innerHTML = "<select onchange='updateStudentGrade("+this.items.entries[n]['quizid']+", "+this.items.entries[n]['uid']+", "+this.value+")'><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
+												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 											}
 										}
 									}
@@ -247,8 +247,9 @@ function getResults(pagination, course, quiz) {
 
 
 // this is not connected yet. 
-function updateStudentGrade(quizid, uid, grade) { 
-	alert(grade);
+function updateStudentGrade(uid) {
+	var grade = document.getElementById('gradevalue_'+uid).value;
+	var quizid = getUrlVars().quizid; 
 	$.ajax({
 	type: "POST",
 	url: "./ajax/updateStudentGrade.php",
@@ -260,6 +261,7 @@ function updateStudentGrade(quizid, uid, grade) {
 	},
 	success: function(data){
 		if(data.success == true) {
+			console.log(data);
 			successBox('Updated user grade successfully', 'The user grade is now changed');
 			pagination.items = data;
 			if ($("#searchbox").val().length > 0) {
