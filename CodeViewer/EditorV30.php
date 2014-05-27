@@ -184,6 +184,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 
         <!--Place tooltips on all objects with a title-->
         <script>
+
     $( document ).ready(function() {
         if (window.matchMedia("(min-width: 1100px)").matches) {
 
@@ -205,6 +206,8 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
         else {
             <!--Do nothing-->
 
-            }
+        }
     });
- </script>
+
+
+        </script>
