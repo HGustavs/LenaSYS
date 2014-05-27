@@ -108,29 +108,38 @@ function pagination() {
 								case 5:
 									if (parseInt(this.items.entries[i]["gradesystem"]) == 1) {
 										if (parseInt(this.items.entries[i]["grade"]) > 0) {
-											cell.innerHTML = "G";
+											cell.innerHTML = "<select><option value='1'>G</option><option value='0'>U</option></select>";
 										} else {
 											if (this.items.entries[i]["expired"]) {
-												cell.innerHTML = "U";
+												cell.innerHTML = "<select><option value='0'>U</option><option value='1'>G</option></select>";
 											}
+											cell.innerHTML = "<select><option value='0'>U</option><option value='1'>G</option></select>";
 										}
 									} else if (parseInt(this.items.entries[i]["gradesystem"]) == 2) {
 										if (parseInt(this.items.entries[i]["grade"]) == 1) {
-											cell.innerHTML = "G";
+											cell.innerHTML = "<select><option value='1'>G</option><option value='0'>U</option><option value='2'>VG</option></select>";
 										} else if (parseInt(this.items.entries[i]["grade"]) >= 2) {
-											cell.innerHTML = "VG";
+											cell.innerHTML = "<select><option value='2'>VG</option><option value='0'>U</option><option value='1'>G</option></select>";
 										} else {
 											if (this.items.entries[i]["expired"]) {
-												cell.innerHTML = "U";
+												cell.innerHTML = "<select><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
 											}
+											cell.innerHTML = "<select><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
 										}
 									} else {
 										if (parseInt(this.items.entries[i]["grade"]) >= 3) {
-											cell.innerHTML = this.items.entries[i]["grade"];
+											if (parseInt(this.items.entries[i]["grade"]) == 3) {
+												cell.innerHTML = "<select><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
+											} else if (parseInt(this.items.entries[i]["grade"]) == 4) {
+												cell.innerHTML = "<select><option value='4'>4</option><option value='0'>U</option><option value='3'>3</option><option value='5'>5</option></select>";
+											} else {
+												cell.innerHTML = "<select><option value='5'>5</option><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option></select>";
+											}
 										} else {
 											if (this.items.entries[i]["expired"]) {
-												cell.innerHTML = "U";
+												cell.innerHTML = "<select><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 											}
+											cell.innerHTML = "<select><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 										}
 									}
 									break;
@@ -201,6 +210,35 @@ function getResults(pagination, course, quiz) {
 		data: {
 			'courseid': course,
 			'quizid': quiz
+		},
+		success: function(data) {
+			if (data == "No access") {
+				changeURL('noid');
+			} else {
+				pagination.items = data;
+				pagination.number_of_items = pagination.items.entries.length;
+				pagination.calculatePages();
+				if (pagination.number_of_pages > 1) {
+					$('#content').append("<div id='pages'></div>");
+					pagination.renderPages();
+				}
+			}
+		}
+	});
+}
+
+
+// this is not connected yet. 
+function updateStudentGrade(quizid, uid, grade) {
+	$.ajax({
+		dataType: 'json',
+		async: false,
+		url: 'ajax/updateStudentGrade.php',
+		method: 'post',
+		data: {
+			'quizid': quizid,
+			'uid': uid,
+			'grade': grade
 		},
 		success: function(data) {
 			if (data == "No access") {
