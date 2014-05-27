@@ -81,6 +81,13 @@
 .imgdropStyle{
 	background-color: #614875;
 }
+.imgdropStyle img:hover{
+	border-style:solid;
+	border-width:1px;
+	border-color: white;
+	padding: 4px;
+}
+
 
 .dropdownitemStyle {
     background: #614875;
@@ -125,23 +132,22 @@
     padding-right: 6px;
 }
 
-
+.normtextwrapper{
+	 /* Width of codeborder */
+  	 margin-left: 32px;
+}
 .normtext {
     color: #fff;
     background-color: #272822;
     white-space:nowrap;
-    
-    /* Width of codeborder */
-  	margin-left: 32px;
 }
 
 .impo {
     color: #fff;
     background-color: #3C3C3C;
     white-space:nowrap;
-    margin-left: 32px;
+    min-width: 660px;
 }
-
 
 .comment {
     color: #888;
@@ -173,7 +179,7 @@
 }
 
 .impo .number {
-    color: #000;
+    color: #fff;
     font-weight: bold;
 }
 
@@ -291,10 +297,12 @@
    background-size:15px 15px;
    border: 1px solid #ccc;
 }
+
 .buttomenu2Style select:hover{
   background-color: #938C8C;
-    cursor: pointer;
+  cursor: pointer;
 }
+
 .butto2:hover{
     background-color: #938C8C;
     cursor: pointer;

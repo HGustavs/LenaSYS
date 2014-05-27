@@ -66,8 +66,8 @@ function createhotdogmenu(){
  //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
  //		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
 
-		str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
-		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;);" colspan="4">Desktop site</td></tr>';
+		// str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
+		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
 
 		str += '<tr><td class="mbutto mbuttoStyle " title="Chose themes" onclick="mobileTheme()" colspan="4">Theme </td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyleLight mobilethemebutton themeicon subbutton" colspan="4" onclick="selectTheme(&quot;black&quot;);"><img src="new icons/theme_black.svg"><span>Black background</span></td></tr>';
@@ -104,6 +104,7 @@ function createboxmenu(contentid, boxid, type){
 				str+= '<td class="butto2 showdesktop" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
 				str+= '<td class="butto2 showdesktop" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
 				str+= "<td class='butto2 showdesktop imgdropbutton' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
+				
 				str+= "<td  class='butto2 showdesktop'>";
 				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 						str+= "<option value='DOCUMENT'>Description section</option>";
@@ -119,6 +120,8 @@ function createboxmenu(contentid, boxid, type){
 						str+= "<option value='CODE'>Code example</option>";
 						str+= "<option value='DOCUMENT'>Description section</option>";
 					str+= "</select>";
+					
+					
 				str+= '</td></tr></table>';
 			}else{
 				var str = "<table cellspacing='2'><tr>";
@@ -239,10 +242,17 @@ function displayFilelist(codedropid, boxid)
 		str+="<li class='activeSetMenuLink'>Filelist</li>";
 	str+="</ul>";
 	
+	
+	// Get the filename for current codebox
+	for(i=0; i<retdata['filename'].length; i++){
+		if((retdata['filename'][i][0]) == boxid){
+			var filename = retdata['filename'][i][1];
+		}
+	}
 	for(i=0;i<retdata['directory'].length;i++){
-		if(retdata['directory'][i]==retdata['filename']){
+		if(retdata['directory'][i]==filename){
 			/* SET BGCOLOR HERE TO LET THE USER KNOW WHICH FILE IS CHOSEN */
-			str+="<span class='dropdownitem dropdownitemStyle menuch' style='background-color:#fff' id='DDI"+i+"'>"+retdata['directory'][i]+"HEJ</span>";						
+			str+="<span class='dropdownitem dropdownitemStyle menuch' style='background-color:#7D5CA0' id='DDI"+i+"'>"+retdata['directory'][i]+"</span>";						
 		}else{
 			str+="<span class='dropdownitem dropdownitemStyle' id='DDI"+i+"' onclick='chosenFile(\""+retdata['directory'][i]+"\",\""+boxid+"\");''>"+retdata['directory'][i]+"</span>";														
 		}
@@ -472,12 +482,6 @@ function returned(data)
 			}					
 		}
 		
-		//Disable editing in mobile version
-		var	hotdog = document.getElementById("hidehotdog");
-		var	isDesktop = $(hotdog).is(":hidden");
-		if(isDesktop){
-			 $("*[contenteditable]").attr("contenteditable","true"); 
-		}else{ 
-			$("*[contenteditable]").attr("contenteditable","false"); 
-		}
+		//Set the editing properties for mobile and desktop version
+		setEditing();
 }

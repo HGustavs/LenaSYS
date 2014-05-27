@@ -121,10 +121,10 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
                 {
                 	$.ajax({url: "editorService.php", type: "POST", data: {exampleid:exampleid,opt:sname,description:param,boxid:boxid}, dataType: "json",
                 	success:function(data){
-                		successBox("Success!", "All descriptions where saved.");
+                		successBox("Success!", "Descriptions saved");
                 		returned(data);
                 	},error: function(data){
-                		warningBox("Warning!", "Description might not have been saved.");
+                		warningBox("Warning!", "Save failed");
                 		returned(data);
                 	} });
                 	
@@ -162,7 +162,7 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
 							}
 						}else{
 							if($public == 0){
-								echo '<script type="text/javascript">','alert("you dont have access");', 'Up();', '</script>';
+								echo '<script type="text/javascript">','alert("You need to be logged in to get access to this code example");', 'Up();', '</script>';
 							}else{
 								editcodemenu(false);
 							}
@@ -186,14 +186,22 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
         <script>
 
     $( document ).ready(function() {
+		$( document ).ready(function() {
 
-        setTimeout(function() {
-
-            $("*[title]").tooltips();
-
-        }, 800);
-
+        	setTimeout(function() {
+		        
+		        $("*[title]").tooltips();
+		        
+		        // Hide tooltips in mobile version
+		        if (window.matchMedia("(min-width: 1100px)").matches) {
+					$(".tooltip").css("display", "block");
+				}else {
+		        	$(".tooltip").css("display", "none");
+		        }    
+			}, 800);
+		});
 
     });
+
 
         </script>
