@@ -25,9 +25,9 @@
 			$quizName = null;
 			$gradesystem = null;
 			foreach($query->fetchAll() as $row) {
-					array_push($completed, $row['testID']);
+					array_push($completed, $row['quizID']);
 					$quizQuery = $pdo->prepare("SELECT * FROM quiz WHERE id = :1");
-					$quizQuery -> bindParam(':1', $row['testID']);
+					$quizQuery -> bindParam(':1', $row['quizID']);
 					$tests=$quizQuery->execute();
 					foreach($quizQuery->fetchAll() as $quizRow) {
 						$quizName = $quizRow['name'];

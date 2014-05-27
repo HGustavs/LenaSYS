@@ -74,13 +74,6 @@ function pagination() {
 				if (this.items.entries[i]) {
 					// Insert row below <th>
 					var row = table.insertRow(i % this.show_per_page + 1);
-					if (this.items.entries[i]["expired"]) {
-						row.className = "yellow";
-					} else if (parseInt(this.items.entries[i]["grade"]) >= 3) {
-						row.className = "green";
-					} else if (parseInt(this.items.entries[i]["grade"]) < 3) {
-						row.className = "red";
-					}
 					for (j = 0; j < this.cells; j++) {
 						var cell = row.insertCell(j);
 						switch (j) {
@@ -100,12 +93,14 @@ function pagination() {
 								cell.innerHTML = this.items.entries[i]["deadline"];
 								break;
 							case 5:
+								var failure = false;
 								if (parseInt(this.items.entries[i]["gradesystem"]) == 1) {
 									if (parseInt(this.items.entries[i]["grade"]) > 0) {
 										cell.innerHTML = "G";
 									} else {
 										if (this.items.entries[i]["expired"]) {
 											cell.innerHTML = "U";
+											failure = true;
 										}
 									}
 								} else if (parseInt(this.items.entries[i]["gradesystem"]) == 2) {
@@ -116,6 +111,7 @@ function pagination() {
 									} else {
 										if (this.items.entries[i]["expired"]) {
 											cell.innerHTML = "U";
+											failure = true;
 										}
 									}
 								} else {
@@ -124,8 +120,16 @@ function pagination() {
 									} else {
 										if (this.items.entries[i]["expired"]) {
 											cell.innerHTML = "U";
+											failure = true;
 										}
 									}
+								}
+								if (failure) {
+									row.className = "red";
+								} else if (this.items.entries[i]["expired"]) {
+									row.className = "yellow";
+								} else if (this.items.entries[i]["grade"] != "") {
+									row.className = "green";
 								}
 								break;
 						}
