@@ -78,7 +78,7 @@
 									$sinto->bindParam(':eid', $eid[0]);
 									if(!$sinto->execute()) {
 										// TODO: Remove these debug prints
-										print_r($sinto->errorInfo());
+										//print_r($sinto->errorInfo());
 									}
 								}
 							} else {
