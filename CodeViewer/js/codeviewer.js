@@ -1345,7 +1345,6 @@ function createCodeborder(lineno,improws){
 		}else{
 			// Print out numbers for an important row
 			for(var kp=0;kp<improws.length;kp++){
-				console.log(i + " " + kp);
 				if(i>=parseInt(improws[kp][1])&&i<=parseInt(improws[kp][2])){
 					str+="<div class='impono'>"+(i)+"</div>";	
 					break;	
@@ -1762,8 +1761,10 @@ function setEditing(){
 	var	isDesktop = $(hotdog).is(":hidden");
 	if(isDesktop){
 		 $("*[contenteditable]").attr("contenteditable","true"); 
+		 $(".tooltip").css("display", "block");
 	}else{ 
 		$("*[contenteditable]").attr("contenteditable","false"); 
+		$(".tooltip").css("display", "none");
 	}
 }
 
@@ -1808,29 +1809,13 @@ $(window).resize(function() {
 //Set the editing properties for mobile and desktop version
 $(window).resize(function() {
 	setEditing();
-})
-//Creating a extra box under codelines. 
-/*
-$(window).resize(function() {
-	var textbottom = $(".normtextend").offset();
-	var windowHeight = $(window).height();
-	var objectheight = windowHeight-textbottom.top-2;
-	if (objectheight<1) {
-		$(".normtextend").css("height", "0");
-	} else {
-		$(".normtextend").css("height", objectheight);
+	
+	// Hide tooltip in mobile version
+	if($(window).width() <= 1100){
+		$(".tooltip").css("display", "none");
+	}else{
+		$(".tooltip").css("display", "block");
 	}
 });
-*/
 
-$(document).ajaxStop(function () {
-	/*var textbottom = $(".normtextend").offset();
-	var windowHeight = $(window).height();
-	var objectheight = windowHeight-textbottom.top-2;
-	if (objectheight<1) {
-		$(".normtextend").css("height", "0");
-	} else {
-		$(".normtextend").css("height", objectheight);
-	}
-*/
-});
+

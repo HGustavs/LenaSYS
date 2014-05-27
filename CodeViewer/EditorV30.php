@@ -185,26 +185,21 @@ EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&posit
         <!--Place tooltips on all objects with a title-->
         <script>
     $( document ).ready(function() {
-        if (window.matchMedia("(min-width: 1100px)").matches) {
+		$( document ).ready(function() {
 
-            <!--Place tooltips on all objects with a title-->
-            $( document ).ready(function() {
-
-                setTimeout(function() {
-
-                    $("*[title]").tooltips();
-
-                }, 800);
-
-
-            });
-
-
-        }
-
-        else {
-            <!--Do nothing-->
-
-            }
+        	setTimeout(function() {
+		        
+		        $("*[title]").tooltips();
+		        
+		        // Hide tooltips in mobile version
+		        if (window.matchMedia("(min-width: 1100px)").matches) {
+					$(".tooltip").css("display", "block");
+				}else {
+		        	$(".tooltip").css("display", "none");
+		        }    
+			}, 800);
+		});
+		
+		
     });
  </script>
