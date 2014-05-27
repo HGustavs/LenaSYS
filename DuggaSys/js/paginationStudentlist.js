@@ -104,7 +104,7 @@ function pagination() {
 									break;
 								case 5:
 									var failure = false;
-									if (parseInt(this.items.entries[n]["grade"]) == null){
+									if (this.items.entries[n]["grade"] == ""){
 										cell.innerHTML = "";
 									} else {
 										if (parseInt(this.items.entries[n]["gradesystem"]) == 1) {
