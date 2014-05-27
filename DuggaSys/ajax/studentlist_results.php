@@ -93,7 +93,6 @@
 								array(
 									'uid' => $userRow['uid'],
 									'username' => $userRow['username'],
-									'quizid' => $row['id'],
 									'name' => $dugganame,
 									'start' => $start,
 									'deadline' => $deadline,
