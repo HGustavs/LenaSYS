@@ -196,7 +196,14 @@ function imagerecorder(canvas)
 						$("#library-name-button").click();
 					}
 				break;
-			
+				
+				// Escape
+				case 27:
+					if(clicked == 1) {
+						reset();
+					}
+				break;
+				
 				// Arrow right
 				case 39:
 					if(clicked == 1) {
@@ -213,12 +220,17 @@ function imagerecorder(canvas)
 						logMouseEvents();
 						createUndoPoint();
 					}
-				break;		
+				break;
 				
-				// Escape
-				case 27:
-					if(clicked == 1) {
-						reset();
+				// CHAR "e" (export)
+				case 69:
+					exportLibrary();
+				break;
+				
+				// CHAR "u" (upload)
+				case 85:
+					if(clicked == 0) {
+						document.getElementById('imageLoader').click();
 					}
 				break;
 			}
@@ -283,34 +295,10 @@ function imagerecorder(canvas)
 		
 		// Add save button to body
 		$("#controls").append("<input type='button' class='controlbutton' id='imagerecorder-save' value='Export XML' >");
+		
 		// Save log when "Save log" button is clicked
 		$("#imagerecorder-save").click(function(){	
-			if(clicked == 1) {
-				$.ajax({
-					type: 'POST',
-					url: 'logfile.php',
-					data: { 
-						string: logStr + "\n</script>",
-						lib: libraryName,
-						files: imagelibrary
-					},
-					success: function() {
-					
-						$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>");
-						$("#export-feedback").append($('<div>', {
-							"class":	"closebutton",
-							html:		"",
-							click:		function(e) {
-								$("#export-feedback").hide();
-							}
-						}));
-					
-						$("#export-feedback").fadeIn("fast");	
-					}
-				});
-			} else {
-				alert("You must start recording before you can export.");
-			}
+			exportLibrary();
 		});
 
 		// Add undo button to body
@@ -340,6 +328,35 @@ function imagerecorder(canvas)
 			showThumbMenu($(this).index());
 		}
 	});
+	
+	function exportLibrary() {
+		if(clicked == 1) {
+			$.ajax({
+				type: 'POST',
+				url: 'logfile.php',
+				data: { 
+					string: logStr + "\n</script>",
+					lib: libraryName,
+					files: imagelibrary
+				},
+				success: function() {
+				
+					$("#export-feedback").html("<h3><strong>Successfully exported!</strong></h3><p>View your library <a target='_blank' href='../canvasrenderer/canvasrenderer.php?lib="+libraryName+"'>here</a></p>");
+					$("#export-feedback").append($('<div>', {
+						"class":	"closebutton",
+						html:		"",
+						click:		function(e) {
+							$("#export-feedback").hide();
+						}
+					}));
+				
+					$("#export-feedback").fadeIn("fast");	
+				}
+			});
+		} else {
+			alert("You must start recording before you can export.");
+		}
+	}
 	
 	// Load old library
 	function loadLibrary(path) {	
@@ -451,7 +468,8 @@ function imagerecorder(canvas)
 			// Successful image change
 			return true;
 		} else {
-			alert("No more images to show");
+			// Make a click on the "Export XML" to make the library automatically export once all images has been shown
+			exportLibrary();
 
 			// Didn't change image
 			return false;
