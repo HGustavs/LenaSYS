@@ -48,7 +48,8 @@ function Canvasrenderer()
 	this.currentPictureHeight;
 	this.currentFile;
 	this.playimageIsShown = false;
-
+	this.lastSavedClickPosX = null;
+	this.lastSavedClickPosY = null;
 
 
 	this.init = function(file){
@@ -979,11 +980,8 @@ function Canvasrenderer()
 			}
 		}
 		if(this.mouseClickBackground){
-			var clickPosX = ((canvas.mouseClickX - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickX - canvas.mouseClickRadius);
-			var clickPosY = ((canvas.mouseClickY - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickY - canvas.mouseClickRadius);
-
 			// Restore mouse click background
-			ctx.putImageData(this.mouseClickBackground, (clickPosX), (clickPosY));
+			ctx.putImageData(this.mouseClickBackground, (this.lastSavedClickPosX), (this.lastSavedClickPosY));
 		}
 		
 		if(this.mouseCursorBackground){
@@ -1011,7 +1009,7 @@ function Canvasrenderer()
 
 		// Draw mouse click (if any)
 		this.drawMouseClick();
-		
+		console.log("scale: " + this.mouseCursorScale);	
 		// Draw mouse pointer. The width and height is multiplied by the mouse cursor scale ratio to scale the cursor by the same amount as the image.
 		ctx.drawImage(this.mouseCursor, x, y, this.mouseCursor.width*(this.mouseCursorScale), this.mouseCursor.height*(this.mouseCursorScale));
 		
@@ -1078,19 +1076,15 @@ function Canvasrenderer()
 			canvas.downscaled = false;
 			(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
 			(canvas.scaleRatio) > 1 ? canvas.scaleRatio = 1 : canvas.scaleRatio; 
-			canvas.mouseCursorScale = canvas.scaleRatio;
+			// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
+			canvas.mouseCursorScale = canvas.scaleRatio*2;
+			if(canvas.mouseCursorScale > 1) canvas.mouseCursorScale = 1;
+
 			// If the image size is larger than the recorded canvas width or height, it means that
 			// the image was downscaled when the history was recorded. This means that we have to 
 			// use the recorded scale ratio instead of the one normally used.
 			if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight) {
 				canvas.downscaled = true;
-				// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
-				if (canvas.recordedScaleRatio < 1) {
-					canvas.mouseCursorScale = canvas.recordedScaleRatio;
-				}
-				else {
-					canvas.mouseCursorScale = 1;
-				}
 			}
     			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
@@ -1116,9 +1110,10 @@ function Canvasrenderer()
 	this.drawMouseClick = function() 
 	{
 		if(this.mouseClickX && this.mouseClickY){	
-			var clickPosX = ((canvas.mouseClickX - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickX - canvas.mouseClickRadius);
-			var clickPosY = ((canvas.mouseClickY - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickY - canvas.mouseClickRadius);
-			this.mouseClickBackground = ctx.getImageData(clickPosX, clickPosY, this.mouseClickRadius*2+5, this.mouseClickRadius*2+5);
+			this.lastSavedClickPosX = ((canvas.mouseClickX - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickX - canvas.mouseClickRadius);
+			this.lastSavedClickPosY = ((canvas.mouseClickY - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickY - canvas.mouseClickRadius);
+			
+			this.mouseClickBackground = ctx.getImageData(this.lastClickPosX, this.lastClickPosY, this.mouseClickRadius*2+5, this.mouseClickRadius*2+5);
 		}
 		// Draw mouse click (yellow circle) if active
 		if (this.mouseClick) {
