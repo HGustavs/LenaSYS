@@ -8,14 +8,24 @@ pdoConnect();
 $error = false;
 
 if (checklogin()) {
-	if (isSuperUser($_SESSION["uid"])==true) {
+	if(array_key_exists('quizid', $_POST)) {
+		$stmt = $pdo->prepare("SELECT cid FROM quiz WHERE id=:qid");
+		$stmt->bindValue(':qid', $_POST['quizid']);
+		$stmt->execute();
+		$res = $stmt->fetch(PDO::FETCH_ASSOC);
+		$courseid = $res['cid'];
+	}
+
+	if (isset($courseid) && hasAccess($_SESSION['uid'], $courseid, 'r')) {
 		if(isset($_POST['quizid'])){
 			$quiz = getQuiz($_POST['quizid']);
+			// Is the quiz released?
+			if(strtotime($quiz['release']) > time()) 
+				$error = true;
 		}else {
 			$error = true;
 		}
-	}
-	else {
+	} else {
 		$error = true;	
 	}
 }
@@ -28,27 +38,11 @@ else {
 
 function getQuiz($quizid){
     global $pdo;
-    $query = "SELECT * FROM quiz WHERE id = :id";
+    $query = "SELECT name, parameter as parameters, quizFile as template, `release`, deadline FROM quiz WHERE id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $quizid);
       $stmt->execute();
-    $result = $stmt->fetch();
-    return(returnQuiz($result));
-}
-
-function returnQuiz($quiz){
-	$template = $quiz['quizFile'];
-
-	$quizData = array(
-	    "name" => $quiz['name'],
-	    "parameters" => $quiz['parameter'],
-	    "template" => false
-	);
-	$templatePath = dirname(__FILE__) . '/../templates/'.$template.".js";
-
-	if (file_exists($templatePath)) {
-		$quizData["template"] = $template;
-	}
-	return $quizData;
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result;
 }
 ?>
