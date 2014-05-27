@@ -284,10 +284,12 @@
     height: -webkit-calc(45.0%);
     height: -moz-calc(45.0%);
     background: rgb(0, 0, 0) transparent;
+    padding: 5px;
 }
 
 .imgdrop img{
-    width: 25%;
+    width: 20%;
+    padding: 5px;
 }
 
 
