@@ -142,15 +142,15 @@ function pagination() {
 										}
 									}
 								}
-								if (failure) {
-									row.className = "red";
-								} else if (this.items.entries[i]["expired"]) {
-									row.className = "yellow";
-								} else if (this.items.entries[i]["grade"] != "") {
-									row.className = "green";
-								}
 								break;
 						}
+					}
+					if (failure) {
+						row.className = "red";
+					} else if (this.items.entries[i]["expired"]) {
+						row.className = "yellow";
+					} else if (this.items.entries[i]["grade"] != "") {
+						row.className = "green";
 					}
 				} else {
 					// No more items to print

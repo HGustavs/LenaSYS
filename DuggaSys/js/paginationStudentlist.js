@@ -80,13 +80,6 @@ function pagination() {
 					if (data == null || this.items.entries[n]['username'].toLowerCase().indexOf(data.toLowerCase()) > -1) {
 						// Insert row below <th>
 						var row = table.insertRow(modulo % this.show_per_page + 1);
-						if (this.items.entries[n]["expired"]) {
-							row.className = "yellow";
-						} else if (parseInt(this.items.entries[n]["grade"]) >= 3) {
-							row.className = "green";
-						} else if (parseInt(this.items.entries[n]["grade"]) < 3) {
-							row.className = "red";
-						}
 						for (j = 0; j < this.cells; j++) {
 							var cell = row.insertCell(j);
 							switch (j) {
@@ -107,58 +100,51 @@ function pagination() {
 									break;
 								case 5:
 									var failure = false;
-									if (parseInt(this.items.entries[i]["grade"]) == null){
+									if (parseInt(this.items.entries[n]["grade"]) == null){
 										cell.innerHTML = "";
 									} else {
-										if (parseInt(this.items.entries[i]["gradesystem"]) == 1) {
-											if (parseInt(this.items.entries[i]["grade"]) > 0) {
+										if (parseInt(this.items.entries[n]["gradesystem"]) == 1) {
+											if (parseInt(this.items.entries[n]["grade"]) > 0) {
 												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='1'>G</option><option value='0'>U</option></select>";
 											} else {
-												if (this.items.entries[i]["expired"]) {
+												if (this.items.entries[n]["expired"]) {
 													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='1'>G</option></select>";
-												} else if (this.items.entries[i]["grade"] != "") {
+												} else if (this.items.entries[n]["grade"] != "") {
 													failure = true;
 												}
 												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='1'>G</option></select>";
 											}
-										} else if (parseInt(this.items.entries[i]["gradesystem"]) == 2) {
-											if (parseInt(this.items.entries[i]["grade"]) == 1) {
+										} else if (parseInt(this.items.entries[n]["gradesystem"]) == 2) {
+											if (parseInt(this.items.entries[n]["grade"]) == 1) {
 												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='1'>G</option><option value='0'>U</option><option value='2'>VG</option></select>";
-											} else if (parseInt(this.items.entries[i]["grade"]) >= 2) {
+											} else if (parseInt(this.items.entries[n]["grade"]) >= 2) {
 												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='2'>VG</option><option value='0'>U</option><option value='1'>G</option></select>";
 											} else {
-												if (this.items.entries[i]["expired"]) {
+												if (this.items.entries[n]["expired"]) {
 													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
-												} else if (this.items.entries[i]["grade"] != "") {
+												} else if (this.items.entries[n]["grade"] != "") {
 													failure = true;
 												}
 												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
 											}
 										} else {
-											if (parseInt(this.items.entries[i]["grade"]) >= 3) {
-												if (parseInt(this.items.entries[i]["grade"]) == 3) {
-													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
-												} else if (parseInt(this.items.entries[i]["grade"]) == 4) {
+											if (parseInt(this.items.entries[n]["grade"]) >= 3) {
+												if (parseInt(this.items.entries[n]["grade"]) == 3) {
+													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='3'>3<option value='0'>U</option></option><option value='4'>4</option><option value='5'>5</option></select>";
+												} else if (parseInt(this.items.entries[n]["grade"]) == 4) {
 													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='4'>4</option><option value='0'>U</option><option value='3'>3</option><option value='5'>5</option></select>";
 												} else {
 													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='5'>5</option><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option></select>";
 												}
 											} else {
-												if (this.items.entries[i]["expired"]) {
+												if (this.items.entries[n]["expired"]) {
 													cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
-												} else if (this.items.entries[i]["grade"] != "") {
+												} else if (this.items.entries[n]["grade"] != "") {
 													failure = true;
 												}
 												cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 											}
 										}
-									}
-									if (failure) {
-										row.className = "red";
-									} else if (this.items.entries[i]["expired"]) {
-										row.className = "yellow";
-									} else if (this.items.entries[i]["grade"] != "") {
-										row.className = "green";
 									}
 									break;
 								case 6:
@@ -171,6 +157,13 @@ function pagination() {
 									cell.innerHTML = this.items.entries[n]["link"];
 									break;
 							}
+						}
+						if (failure) {
+							row.className = "red";
+						} else if (this.items.entries[n]["expired"]) {
+							row.className = "yellow";
+						} else if (this.items.entries[n]["grade"] != "") {
+							row.className = "green";
 						}
 						modulo++;
 						i++;
@@ -249,7 +242,8 @@ function getResults(pagination, course, quiz) {
 // this is not connected yet. 
 function updateStudentGrade(uid) {
 	var grade = document.getElementById('gradevalue_'+uid).value;
-	var quizid = getUrlVars().quizid; 
+	var quizid = getUrlVars().quizid;
+	var courseid = getUrlVars().courseid;
 	$.ajax({
 	type: "POST",
 	url: "./ajax/updateStudentGrade.php",
@@ -257,6 +251,7 @@ function updateStudentGrade(uid) {
 	data: {
 		'quizid': quizid,
 		'uid': uid,
+		'courseid' : courseid,
 		'grade': grade
 	},
 	success: function(data){
@@ -265,13 +260,15 @@ function updateStudentGrade(uid) {
 			successBox('Updated user grade successfully', 'The user grade is now changed');
 			pagination.items = data;
 			if ($("#searchbox").val().length > 0) {
+				pagination.clearRows();
 				pagination.showContent($("#searchbox").val());
 				pagination.renderPages($("#searchbox").val());
 				pagination.calculatePages($("#searchbox").val());
 			} else {
+				pagination.clearRows();
 				pagination.showContent();
 				pagination.renderPages();
-				pagination.calculatePages()
+				pagination.calculatePages();
 			}
 		} else {
 			dangerBox('Failed to update user grade', 'Failed to update user grade!');
