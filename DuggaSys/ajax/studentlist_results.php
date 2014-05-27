@@ -51,7 +51,7 @@
 								array(
 									'uid' => $userRow['uid'],
 									'username' => $userRow['username'],
-									'quizid' => $quizRow['id'],
+									'quizid' => $row['id'],
 									'name' => $row['name'],
 									'start' => $row['release'],
 									'deadline' => $row['deadline'],
@@ -93,7 +93,7 @@
 								array(
 									'uid' => $userRow['uid'],
 									'username' => $userRow['username'],
-									'quizid' => $quizRow['id'],
+									'quizid' => $row['id'],
 									'name' => $dugganame,
 									'start' => $start,
 									'deadline' => $deadline,
