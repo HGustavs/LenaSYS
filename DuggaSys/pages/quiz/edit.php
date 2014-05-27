@@ -3,19 +3,23 @@
 <script>
 	var qs=getUrlVars();
 	console.log(qs);
+	var submitArray = new Array(qs.courseid, 'edit', qs.quizid);
+	//editQuiz(qs.courseid, 'edit', qs.quizid)
 </script>
 	
 	<div id='create'>
 		<form id="newQuizForm" name="newQuizForm" role='form'>
 			<div class='form-group'>
-				<label>Dugganame *</label>
+				<!--<label>Dugganame *</label>
 				<input type="text" class='form-control' name="quizname" id="quizname" />
+				-->
+				<div id="quizParameters" class='form-group'>
 				<div class='form-group'>
 					<label>Template parameters, saves as string (max 2000 characters)</label>
 					<textarea class='form-control' name="parameterinput" rows='5' id="parameterinput"></textarea>
 				</div>
 				<div class='form-group'>
-					<label>Answer</label>
+					<label id="quizAnswerInputLabel">Answer, saves as string (max 2000 characters)</label>
                     <input class='option form-control' id="quizAnswerInput" name="answerinput" type="text" />
 				</div>
 				<div class='form-group'>		
@@ -56,7 +60,8 @@
 				</div>
 				
 			</div>
-			<button type="button" onclick="editQuiz(qs.courseid, 'edit', qs.quizid)" class='default'>Submit</button>
+			<button type="button" onclick="successBox('Edit quiz', 'Are you sure you want to edit quiz', undefined, editQuiz, submitArray)" class='default'>Submit</button>
+			
 			<button type="button" onclick="historyBack()" class='default-red'>Cancel</button>
 		</form>
 	</div>
@@ -65,11 +70,25 @@
 <script src="js/ajax.js"></script>
 <script type="text/javascript" src="js/verificationFunctions.js"></script>
 <script type="text/javascript">page.title("Edit quiz");</script>
-<script src="js/jquery.js"></script>
+<!--<script src="js/jquery.js"></script>-->
 <script src="js/jquery.datetimepicker.js"></script>
 <script type="text/javascript">
 	$('.datetimepicker').datetimepicker();
 	getQuizFiles();
-	getQuizData(qs.quizid);
+	getQuizData(qs.quizid, qs.courseid);
+	$("#autogradecheck").change(function () {
+		if ($('#autogradecheck').prop(':checked')) {
+			$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters) *");
+		} else {
+			$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters)");
+		};
+	})
+
+	$("#quizfile").change(function() {
+		getTemplateInfo(this.value);	
+	})
+	
+
+	
 </script>
 

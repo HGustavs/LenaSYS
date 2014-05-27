@@ -1,11 +1,15 @@
 <?php session_start(); ?>
+<script src="js/ajax.js"></script>
 <script>
-var qs = getUrlVars();
 page.title("Quiz menu");
 </script>
 <div class='middle center'>
-	<p>Admin Menu</p>
+	<p id="admin_title"></p>
 	<button class='default' onclick="changeURL('quiz/quiz?quizid='+getUrlVars().quizid);">Test</button>
 	<button class='default' onclick="changeURL('quiz/edit?courseid=' + qs.courseid + '&quizid='+qs.quizid);">Edit</button>
 	<button class='default' onclick="changeURL('quiz/studentlist?courseid=' + qs.courseid + '&quizid=' + qs.quizid);">Studentlist</button>
 </div>
+<script type="text/javascript">
+	var qs = getUrlVars();
+	getQuizNameForMenu(qs.quizid, qs.courseid);
+</script>

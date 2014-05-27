@@ -5,10 +5,6 @@ $( document ).ready(function() {
 	loadHeaderLink(getScriptPath("header.js")+"/css/style.css", "css")
 	printHeader();
 });
-// Simple go back history function //
-function historyBack() {
-	window.history.back()
-}
 function printHeader () {
 	$("header").load(getScriptPath("header.js")+"/content/header.php", function() {
 		page.title();
@@ -45,17 +41,19 @@ function getScriptPath(name) {
     }
 }
 
+
 // This is for displaying the dropdown when clicking the username
 function showUserSettings(){
 	$("#userSettings").load(getScriptPath("header.js")+"/content/menu.php", function() {
-		$('#userSettings').slideToggle();
+		$('#userSettings').slideToggle('fast');
 	});
 }
+
 // This closes the #userSettings box when clicking outside
 $(function(){
 	$(document).bind('click', function(e) {
 		if($(e.target).closest('#userName').length == 0) {
-			$('#userSettings').slideUp();
+			$('#userSettings').slideUp('fast');
 		}
 	});
 });

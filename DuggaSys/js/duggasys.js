@@ -30,6 +30,34 @@ function setupSort() {
 	
 }
 
+function getDatabase() {
+	this.exampleData = null;
+	this.quizData = null;
+	
+	this.populateData = function(courseID, opt) {
+		var result;
+		$.ajax({
+			dataType: 'json',
+			url: 'ajax/testduggaService.php',
+			async: false,
+			method: 'post',
+			data: {
+				'courseid': courseID,
+				'opt': opt
+			},
+			success: function(returnData) {
+				result = returnData;
+			}
+		});
+		
+		if (opt == "example") {
+			this.exampleData = result;
+		} else {
+			this.quizData = result;
+		}
+	}
+}
+
 function returnedSection(data)
 {
 		retdata=data;
@@ -121,14 +149,10 @@ function returnedSection(data)
 						}
 						str+="<div class='sectionlist-change-div' id='sectioned_"+data["entries"][i]['lid']+"'>";
 						str+="Edit name:<input type='text' name='sectionname' value='"+data['entries'][i]['entryname']+"' />";
-						if (data['entries'][i]['kind'] == 2) {
-							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
-							testDuggaService(data.courseid, "example", data['entries'][i]['lid'], data['entries'][i]['link']);
-						} else if (data['entries'][i]['kind'] == 3) { 
-							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
-							testDuggaService(data.courseid, "test", data['entries'][i]['lid'], data['entries'][i]['link']);
-						} else {
+						if (data['entries'][i]['kind'] != 2 && data['entries'][i]['kind'] != 3) {
 							str+="Select test/dugga:<select name='testduggaselect' id='testdugga' disabled style='background-color:#dfdfdf'>";
+						} else {
+							str+="Select test/dugga:<select name='testduggaselect' id='testdugga'>";
 						}
 						str+="<option value='-1'>Create new</option>";
 						str+="</select>";
@@ -214,10 +238,6 @@ function returnedSection(data)
 
 		  if(data['debug']!="NONE!") alert(data['debug']);
 		  
-		  // The holy shit function (placeholder function)
-		  // Needs to be cleaned up
-		  
-		  // Used to populate dugga/test selection
 		  (function($) {
 				var disabled = {'background-color': '#ddd'};
 				var enabled = {'background-color': '#fff'};
@@ -250,11 +270,20 @@ function returnedSection(data)
 							} else {
 								var opt = "test";
 							}
-							testDuggaService(event.data.id, opt, event.data.data['lid']);
+							populateSelect(opt, event.data.data['lid'], event.data.data['link']);
 						}
 					});
 				}
 			})(jQuery);
+			if(sessionkind) {
+				for (k = 0; k<data['entries'].length; k++) {
+					if (data['entries'][k]['kind'] == "2") {
+						populateSelect("example", data['entries'][k]['lid'], data['entries'][k]['link']);
+					} else if (data['entries'][k]['kind'] == "3") {
+						populateSelect("test", data['entries'][k]['lid'], data['entries'][k]['link']);
+					}
+				}
+			}
 
 }
 
@@ -336,6 +365,15 @@ function deleteStudent(){
 }
 function passPopUp(){
     var qs = getUrlVars();
+
+	if($("#string").val().length < 1)
+		return;
+	
+	$("body").prepend("<div id='overlay'></div>");
+	$("#light").html("Saving students...");
+	$("#light").show();
+	document.getElementById('light').style.visibility = "visible";
+
     $.ajax({
 		dataType: "json",
 		type: "POST",
@@ -345,10 +383,12 @@ function passPopUp(){
 			courseid: qs.courseid
 		},
 		success: function (returnedData) {
-		console.log(returnedData);
-		showPopUp('show', returnedData)
+			$('#overlay').on('click', function() { showPopUp('hide') });
+			console.log(returnedData);
+			showPopUp('show', returnedData)
 		},
 		error: function(){
+			showPopUp('hide');
 			dangerBox('Problems adding students', 'Could not add the students from the course. Make sure you add at least one student.');
 		},
 	});
@@ -357,8 +397,6 @@ function passPopUp(){
 function showPopUp(showhidePop, returnedData){
     console.log(returnedData);
 	if(showhidePop == "reset"){
-       	document.getElementById('light').style.visibility = "visible";
-		document.getElementById('fade').style.visibility = "visible";
 		var output = "<div id='printArea'>";
 		output += "<table class='list'>";
 		output += "<tr><th>Name</th>";
@@ -378,8 +416,6 @@ function showPopUp(showhidePop, returnedData){
 
 	}
 	if(showhidePop == "show"){
-		document.getElementById('light').style.visibility = "visible";
-		document.getElementById('fade').style.visibility = "visible";
 
 		if (returnedData.length == 0){
 			var output = "The users you were adding already existed globally and were added to the course";
@@ -406,47 +442,60 @@ function showPopUp(showhidePop, returnedData){
 		div.innerHTML = output;
 	}
 	else if(showhidePop == "hide"){
-		document.getElementById('light').style.visibility = "hidden";
-		document.getElementById('fade').style.visibility = "hidden";	
+		if(confirm('Have you printed the passwords?')) {
+			$("#light").hide();
+			$("#overlay").remove();
+		}
+
 	}
 }
 
-function testDuggaService(courseID, opt, sectionID, link) {
+function populateSelect(opt, sectionID, link) {
 	link = link || "";
 	$("#sectioned_"+sectionID+" select[name=testduggaselect]").find('option').remove();
 	var selectOption = document.createElement('option');
 	selectOption.value = "-1";
 	selectOption.innerHTML = "Create new";
 	$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(selectOption);
-	$.ajax({
-		dataType: 'json',
-		url: 'ajax/testduggaService.php',
-		method: 'post',
-		data: {
-			'courseid': courseID,
-			'opt': opt
-		},
-		success: function(returnData) {
-			for (i=0; i<returnData['entries'].length; i++) {
-				var option = document.createElement('option');
-				option.value = returnData['entries'][i]['id'];
-				option.innerHTML = returnData['entries'][i]['name'];
-				if (link.length > 0) {
-					var string = link.split("&");
-					if (string[0]) {
-						string = string[0].split("?");
-						if (string[1]) {
-							string = string[1].split("=");
-							if (string[1] && (returnData['entries'][i]['id'] == string[1])) {
-								option.setAttribute('selected', true);
-							}
+	if (opt == "example") {
+		for (j=0; j<database.exampleData['entries'].length; j++) {
+			var option = document.createElement('option');
+			option.value = database.exampleData['entries'][j]['id'];
+			option.innerHTML = database.exampleData['entries'][j]['name'];
+			if (link.length > 0) {
+				var string = link.split("&");
+				if (string[0]) {
+					string = string[0].split("?");
+					if (string[1]) {
+						string = string[1].split("=");
+						if (string[1] && (database.exampleData['entries'][j]['id'] == string[1])) {
+							option.setAttribute('selected', true);
 						}
 					}
 				}
-				$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(option);
 			}
+			$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(option);
 		}
-	});
+	} else {
+		for (j=0; j<database.quizData['entries'].length; j++) {
+			var option = document.createElement('option');
+			option.value = database.quizData['entries'][j]['id'];
+			option.innerHTML = database.quizData['entries'][j]['name'];
+			if (link.length > 0) {
+				var string = link.split("&");
+				if (string[0]) {
+					string = string[0].split("?");
+					if (string[1]) {
+						string = string[1].split("=");
+						if (string[1] && (database.quizData['entries'][j]['id'] == string[1])) {
+							option.setAttribute('selected', true);
+						}
+					}
+				}
+			}
+			$("#sectioned_"+sectionID+" select[name=testduggaselect]").append(option);
+		}
+	}
 }
 function printDiv(){
 	var printArea = document.getElementById('printArea').innerHTML;

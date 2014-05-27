@@ -63,7 +63,6 @@ function sectionSettingsService(ID)
 			if (data['type'] == 2) {
 				data['link'] = "../CodeViewer/EditorV30.php?exampleid="+data['testdugga']+"&courseid="+courseID;
 			} else if (data['type'] == 3) {
-				//data['link'] = "startDugga?duggaid="+data['testdugga']+"&courseid="+courseID;
 				data['link'] = "quiz/menu?quizid="+data['testdugga']+"&courseid="+courseID;
 			}
 		}
@@ -153,9 +152,11 @@ function sectionSettingsService(ID)
 			}else {
 				successBox(data['sectionname'], "Updates saved", 50);
 				if (data['type'] == 2) {
-					testDuggaService(courseID, "example", ID, JSON.parse(response));
+					database.populateData(courseID, "example");
+					populateSelect("example", ID, JSON.parse(response));
 				} else if (data['type'] == 3) {
-					testDuggaService(courseID, "test", ID, JSON.parse(response));
+					database.populateData(courseID, "test");
+					populateSelect("test", ID, JSON.parse(response));
 				}
 			}
 		});
