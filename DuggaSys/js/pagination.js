@@ -106,8 +106,8 @@ function pagination() {
 										} else {
 											if (this.items.entries[i]["grade"] != "") {
 												failure = true;
+												cell.innerHTML = "U";
 											}
-											cell.innerHTML = "U";
 										}
 									}
 								} else if (parseInt(this.items.entries[i]["gradesystem"]) == 2) {
@@ -124,8 +124,8 @@ function pagination() {
 										} else {
 											if (this.items.entries[i]["grade"] != "") {
 												failure = true;
+												cell.innerHTML = "U";
 											}
-											cell.innerHTML = "U";
 										}	
 									}
 								} else {
@@ -137,8 +137,8 @@ function pagination() {
 										} else {
 											if (this.items.entries[i]["grade"] != "") {
 												failure = true;
+												cell.innerHTML = "U";
 											}
-											cell.innerHTML = "U";
 										}
 									}
 								}
