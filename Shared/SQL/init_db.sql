@@ -413,7 +413,7 @@ CREATE TABLE `quiz` (
   `parameter` varchar(2000) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
   `quizFile` varchar(255) NOT NULL DEFAULT 'default.js',
-  `release` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `release` datetime NOT NULL DEFAULT '9999-12-31 23:59:59',
   `deadline` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY(`cid`)
