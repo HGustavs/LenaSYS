@@ -1,4 +1,5 @@
 <?php
+	// Load imageRecordings from database
 	if(isset($_GET['lib'])) {
 	
 		$lib = $_GET['lib'];
@@ -15,8 +16,11 @@
 		
 		$result = $stmt->fetch();
 		
-		$xmlpath = $result["path"];
-		
+		$xmlpath = $result["path"];	
+	}
+	// Load .xml file
+	elseif(isset($_GET['file'])) {
+		$xmlpath = "libs/canvas/".$_GET['file'].".xml";
 	}
 ?>
 <!DOCTYPE html>
@@ -24,7 +28,7 @@
 <head>
 <meta charset="utf-8" />
 <title>Untitled Document</title>
-<link rel="stylesheet" type="text/css" href="design.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <script src="js/canvasrenderer.js"></script>
 <script language="javascript" src="../js/jquery-1.11.0.min.js"></script>
 <script>
@@ -52,10 +56,10 @@ function canvasSize()
 <?php
 	// Load XML
 	if(isset($xmlpath)) {
-		echo "this.canvas.loadXML('".$xmlpath."');";
+		echo "this.canvas.init('".$xmlpath."');";
 	}
 	else {
-		echo "this.canvas.loadXML('canvas.xml');";
+		echo "this.canvas.init('canvas.xml');";
 	}
 ?>
     </script>
@@ -65,7 +69,7 @@ function canvasSize()
  
     	<table>
 				<tr>
-					<td onclick="canvas.switch();" id="play" class="barbutton"><img src="images/play_button.svg"/></td>
+					<td onclick="canvas.switchPlayback();" id="play" class="barbutton"><img src="images/play_button.svg"/></td>
 					<td width="400" height="38"><div id="barcontainer" class="barcontainer" onclick="canvas.search(event)"><span class="bar" id="bar">&nbsp;</span>&nbsp;</div></td>					
 					<td onclick="canvas.skip(-1)" id="back" class="barbutton"><img src="images/backward_button.svg"/></td>					
 					<td onclick="canvas.skip(1);" id="forward" class="barbutton"><img src="images/forward_button.svg"/></td>					

@@ -3,8 +3,8 @@ include_once(dirname(__FILE__) . "/../../Shared/sessions.php");
 session_start();
 if(checklogin() 
 	&& array_key_exists('courseid', $_POST) 
-	&& hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') 
-	|| isSuperUser($_SESSION['uid'])) {
+	&& (hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') 
+	|| isSuperUser($_SESSION['uid']))) {
 ?>
 <!DOCTYPE html>
 <html>

@@ -11,7 +11,7 @@
 		// TODO: Sanitize the POST-data
 		$library = $_POST['lib'];
 	
-		$path = "libs/".$library."/data.xml";
+		$path = "libs/image/".$library."/data.xml";
 
 		if(isset($content)) {
 			file_put_contents("../canvasrenderer/".$path, $content);

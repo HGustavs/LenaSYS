@@ -47,6 +47,16 @@ function Canvasrenderer()
 	this.currentPictureWidth;
 	this.currentPictureHeight;
 	this.currentFile;
+	this.playimageIsShown = false;
+	this.lastSavedClickPosX = null;
+	this.lastSavedClickPosY = null;
+
+
+	this.init = function(file){
+		this.currentFile = file;
+		this.reset();
+	}
+
 	// Function for loading XML-file
 	this.loadXML = function(file) {
 		if (window.XMLHttpRequest){   
@@ -61,17 +71,11 @@ function Canvasrenderer()
 		xmlhttp.open("GET",file,false);
 		xmlhttp.send();
 		xmlDoc=xmlhttp.responseXML;
-		
+		this.firsttime = 1;	
 		// Load timesteps
 		//this.timesteps = xmlDoc.getElementsByTagName("script")[0].childNodes;
 
-		this.preloadImages();
-		
-		// Print "Click to play" image
-		this.picture("images/firstpic.png");
-		
-		this.scheduleTimesteps();
-	}
+		}
 	
 	
 	
@@ -96,7 +100,7 @@ function Canvasrenderer()
 		});
 		
 		$("#Canvas").click(function() {
-			canvas.switch();
+			canvas.switchPlayback();
 		});
 		
 		$("#Canvas").mouseover(function() {
@@ -113,7 +117,7 @@ function Canvasrenderer()
 	 *
 	 */
 	// Play/pause switch
-	this.switch = function()
+	this.switchPlayback = function()
 
 	{
 		if(this.paused == 1){
@@ -122,6 +126,15 @@ function Canvasrenderer()
 		else{
 			this.pause();
 		}
+	}
+	
+	this.showPlayImage = function(){
+		this.playimageIsShown = true;
+		this.picture("images/firstpic.png");
+	}
+	this.hidePlayImage = function(){
+		this.playimageIsShown = false;
+		ctx.clearRect(0, 0, c.width, c.height);
 	}
 
 	// Play canvas
@@ -184,6 +197,12 @@ function Canvasrenderer()
 
 		// Reload timesteps
 		this.loadXML(this.currentFile);		
+		this.preloadImages();
+		
+		// Print "Click to play" image
+		
+		this.scheduleTimesteps();
+
 		this.finished = 0;
 	}
 
@@ -221,6 +240,11 @@ function Canvasrenderer()
 	// Fast forward or rewind to specific position
 	this.windto = function(pos)
 	{
+		if(this.playimageIsShown && this.windpos > pos){
+			this.hidePlayImage();
+					
+
+		}
 		// Do not allow to change an already existing winding position
 		if (this.windpos < 0) {
 			// Check if it should play or pause after wind
@@ -240,6 +264,7 @@ function Canvasrenderer()
 				if (pos < this.currentPosition()) {
 					// Will need to start from the beginning
 					this.reset();
+					this.firsttime = 0;
 				}
 
 				// Calculate usable windpos (reversed array)
@@ -378,6 +403,14 @@ function Canvasrenderer()
 		var node;
 		for(x = 0; x < nodes.length; x++) {
 			node = nodes[x];
+			// We must check for inter explorer users, since IE
+			// for some reason switches places of all the node values
+			var ua = window.navigator.userAgent;
+            		var msie = ua.indexOf("MSIE ");
+		
+			// If the user runs IE, we iterate through the array and switches
+			// all the node values before calling the correct function
+			if(msie > 0 || !!navigator.userAgent.match(/Trident.*rv[ :]*11\./)) this.switchParameters(node);
 			// Check number of arguments and call canvas function
 			switch(node.attributes.length){
 				case 0:
@@ -484,6 +517,14 @@ function Canvasrenderer()
 		}
 	}
 	
+	this.switchParameters = function(node){
+		for(var i = 0; i < node.attributes.length/2; ++i){
+			var temp = node.attributes.item(i).nodeValue;
+			node.attributes.item(i).nodeValue = node.attributes.item(node.attributes.length-(i+1)).nodeValue;
+			node.attributes.item(node.attributes.length-(i+1)).nodeValue = temp;
+		}
+	}	
+
 	this.restart = function() {
 		this.reset();
 		this.play();
@@ -528,6 +569,7 @@ function Canvasrenderer()
 	}
 
 	this.lineTo = function(x, y){
+		console.log(x + ", " + y);
 		ctx.lineTo(x, y);
 	}
 	this.stroke = function(){
@@ -653,7 +695,7 @@ function Canvasrenderer()
 	    ctx.translate(x, y);
 	}
 	this.transform = function(a,b,c,d,e,f){
-        ctx.transform(a,b,c,d,e,f);
+		ctx.transform(a,b,c,d,e,f);
 	}
 		
 	this.setTransform = function(a,b,c,d,e,f){	      
@@ -939,20 +981,35 @@ function Canvasrenderer()
 		}
 		if(this.mouseClickBackground){
 			// Restore mouse click background
-			ctx.putImageData(this.mouseClickBackground, this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius);
+			ctx.putImageData(this.mouseClickBackground, (this.lastSavedClickPosX), (this.lastSavedClickPosY));
 		}
+		
 		if(this.mouseCursorBackground){
+			// Subtracting 1 on mouse coordinates since the mouse cursor is drawn one pixel to the left of the given coords in some browsers 
+			var mX = canvas.mouseCursorX-1;		
+			var mY = canvas.mouseCursorY-1;
+			// Check for negative coordinates
+			(mX < 0) ? mX = 0 : mX;
+			(mY < 0) ? mY = 0 : mY;	
+
 			// Restore background
-			ctx.putImageData(this.mouseCursorBackground, this.mouseCursorX-1, this.mouseCursorY-1);
+			ctx.putImageData(this.mouseCursorBackground, mX, mY);
 		}
+		var mX = x-1;		
+		var mY = y-1;
+		// Check for negative coordinates
+		(mX < 0) ? mX = 0 : mX;
+		(mY < 0) ? mY = 0 : mY;	
 		// Save background so that it can be restored after the mouse is moved again.
-		this.mouseCursorBackground = ctx.getImageData(x-1, y-1, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
+		this.mouseCursorBackground = ctx.getImageData( mX, mY, (this.mouseCursor.width)*this.mouseCursorScale+5, (this.mouseCursor.height)*this.mouseCursorScale+5);
 		// Save mouse position
+		
 		this.mouseCursorX = x;
 		this.mouseCursorY = y;
 
 		// Draw mouse click (if any)
 		this.drawMouseClick();
+		console.log("scale: " + this.mouseCursorScale);	
 		// Draw mouse pointer. The width and height is multiplied by the mouse cursor scale ratio to scale the cursor by the same amount as the image.
 		ctx.drawImage(this.mouseCursor, x, y, this.mouseCursor.width*(this.mouseCursorScale), this.mouseCursor.height*(this.mouseCursorScale));
 		
@@ -1007,48 +1064,56 @@ function Canvasrenderer()
 		image.onload = function() {
 			// Clear canvas from old picture
 			ctx.clearRect(0, 0, c.width, c.height);
+			canvas.currentPictureWidth = image.width;
+			canvas.currentPictureHeight = image.height;
 			canvas.updateScaleRatio();
 			var widthRatio = 1;
 			var heightRatio = 1;
 			// Calculate scale ratios
 			widthRatio = c.width / (image.width);
 			heightRatio = c.height / (image.height);
-					// Set scale ratio
+			// Set scale ratio
 			canvas.downscaled = false;
 			(widthRatio < heightRatio) ? canvas.scaleRatio = widthRatio : canvas.scaleRatio = heightRatio;
 			(canvas.scaleRatio) > 1 ? canvas.scaleRatio = 1 : canvas.scaleRatio; 
-			canvas.mouseCursorScale = canvas.scaleRatio;
+			// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
+			canvas.mouseCursorScale = canvas.scaleRatio*2;
+			if(canvas.mouseCursorScale > 1) canvas.mouseCursorScale = 1;
+
 			// If the image size is larger than the recorded canvas width or height, it means that
 			// the image was downscaled when the history was recorded. This means that we have to 
 			// use the recorded scale ratio instead of the one normally used.
 			if (image.width > canvas.recordedCanvasWidth || image.height > canvas.recordedCanvasHeight) {
-					canvas.downscaled = true;
-					// Mouse cursor downscaling (make sure cursor/click doesn't upscale)
-					if (canvas.recordedScaleRatio < 1) {
-						canvas.mouseCursorScale = canvas.recordedScaleRatio;
-					}
-					else {
-						canvas.mouseCursorScale = 1;
-					}
-				}
+				canvas.downscaled = true;
+			}
     			ctx.drawImage(image , 0, 0, (image.width*canvas.scaleRatio), (image.height*canvas.scaleRatio));
 			// New mouse cursor background 
-			//console.log(canvas.mouseCursorX + ", " + canvas.mouseCursorY);
-			canvas.mouseCursorBackground = ctx.getImageData(canvas.mouseCursorX-1, canvas.mouseCursorY-1, canvas.mousePointerSizeX*canvas.recordedScaleRatio, canvas.mousePointerSizeY*canvas.recordedScaleRatio);
-			// New mouse click background
-			canvas.mouseClickBackground = ctx.getImageData(canvas.mouseClickX - canvas.mouseClickRadius, canvas.mouseClickY - canvas.mouseClickRadius, canvas.mouseClickRadius*2+5, canvas.mouseClickRadius*2+5);
-			// Render mouse click
+			if(canvas.mouseCursorX >= 0 && canvas.mouseCursorY >= 0){
+				// Subtracting 1 on mouse coordinates since the mouse cursor is drawn one pixel to the left of the given coords in some browsers 
+				var mX = canvas.mouseCursorX-1;		
+				var mY = canvas.mouseCursorY-1;
+				// Checks for negative coordinates
+				(mX < 0) ? mX = 0 : mX;
+				(mY < 0) ? mY = 0 : mY;
+				canvas.mouseCursorBackground = ctx.getImageData(mX, mY, canvas.mousePointerSizeX, canvas.mousePointerSizeY);
+				// New mouse click background
+				var clickPosX = ((canvas.mouseClickX - canvas.mouseClickRadius) < 0)  ? 0 : (canvas.mouseClickX - canvas.mouseClickRadius);
+				var clickPosY = ((canvas.mouseClickY - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickY - canvas.mouseClickRadius);
+				canvas.mouseClickBackground = ctx.getImageData(clickPosX, clickPosY, canvas.mouseClickRadius*2+5, canvas.mouseClickRadius*2+5);
+				// Render mouse click
+			}
 			canvas.drawMouseClick();
 		}
 		image.src = src;	
-		this.currentPictureWidth = image.width;
-		this.currentPictureHeight = image.height;
 	}
 
 	this.drawMouseClick = function() 
 	{
 		if(this.mouseClickX && this.mouseClickY){	
-			this.mouseClickBackground = ctx.getImageData(this.mouseClickX - this.mouseClickRadius, this.mouseClickY - this.mouseClickRadius, this.mouseClickRadius*2+5, this.mouseClickRadius*2+5);
+			this.lastSavedClickPosX = ((canvas.mouseClickX - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickX - canvas.mouseClickRadius);
+			this.lastSavedClickPosY = ((canvas.mouseClickY - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickY - canvas.mouseClickRadius);
+			
+			this.mouseClickBackground = ctx.getImageData(this.lastSavedClickPosX, this.lastSavedClickPosY, this.mouseClickRadius*2+5, this.mouseClickRadius*2+5);
 		}
 		// Draw mouse click (yellow circle) if active
 		if (this.mouseClick) {
@@ -1095,7 +1160,7 @@ function Canvasrenderer()
 		this.scaleRatioX = parseFloat(this.currentPictureWidth/this.recordedCanvasWidth);
 		this.scaleRatioY = parseFloat(this.currentPictureHeight/this.recordedCanvasHeight);
 		(this.scaleRatioX < this.scaleRatioY) ? this.recordedScaleRatio = this.scaleRatioX : this.recordedScaleRatio = this.scaleRatioY;
-		//this.recordedScaleRatio = this.scaleRatioX;
+		this.recordedScaleRatio = this.scaleRatioX;
 
         //if (this.scaleRatioX < this.scaleRatioY) this.scaleRatioY = this.scaleRatioX;
 		
@@ -1125,6 +1190,7 @@ function Canvasrenderer()
 	this.mouseCursorY = 1;
 	this.mouseCursorBackground = ctx.getImageData(1, 1, 1, 1);
 	this.updateScaleRatio();
+	this.showPlayImage();
 }
 
 
