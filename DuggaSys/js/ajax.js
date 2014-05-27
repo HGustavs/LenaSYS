@@ -28,8 +28,8 @@
  	};
  }
 
-  function editQuiz(dataArray) 
- {
+function editQuiz(dataArray) 
+{
  	console.log(dataArray);
  	var cid = dataArray[0];
  	var action = dataArray[1];
@@ -56,9 +56,9 @@
 			},
 			success:function(data) {
 				console.log(data);
-				if (data.cid>0) {
+				if (data == "success") {
 					console.log("Edit successfull");					
-					changeURL("quiz/menu");
+					changeURL("quiz/menu?courseid=" + cid + "&quizid=" + qid);
 					//changeURL("sectioned?courseid="+data.cid);	
 				} else if(data==="no access") {
 					alert("ap ap ap!");	
