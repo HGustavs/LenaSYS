@@ -49,7 +49,9 @@
 							array_push(
 								$entries,
 								array(
+									'uid' => $userRow['uid'],
 									'username' => $userRow['username'],
+									'quizid' => $quizRow['id'],
 									'name' => $row['name'],
 									'start' => $row['release'],
 									'deadline' => $row['deadline'],
@@ -89,7 +91,9 @@
 							array_push(
 								$entries,
 								array(
+									'uid' => $userRow['uid'],
 									'username' => $userRow['username'],
+									'quizid' => $quizRow['id'],
 									'name' => $dugganame,
 									'start' => $start,
 									'deadline' => $deadline,

@@ -108,38 +108,38 @@ function pagination() {
 								case 5:
 									if (parseInt(this.items.entries[i]["gradesystem"]) == 1) {
 										if (parseInt(this.items.entries[i]["grade"]) > 0) {
-											cell.innerHTML = "<select><option value='1'>G</option><option value='0'>U</option></select>";
+											cell.innerHTML = "<select id='selectvalue'><option value='1'>G</option><option value='0'>U</option></select>";
 										} else {
 											if (this.items.entries[i]["expired"]) {
-												cell.innerHTML = "<select><option value='0'>U</option><option value='1'>G</option></select>";
+												cell.innerHTML = "<select id='selectvalue'><option value='0'>U</option><option value='1'>G</option></select>";
 											}
-											cell.innerHTML = "<select><option value='0'>U</option><option value='1'>G</option></select>";
+											cell.innerHTML = "<select id='selectvalue'><option value='0'>U</option><option value='1'>G</option></select>";
 										}
 									} else if (parseInt(this.items.entries[i]["gradesystem"]) == 2) {
 										if (parseInt(this.items.entries[i]["grade"]) == 1) {
-											cell.innerHTML = "<select><option value='1'>G</option><option value='0'>U</option><option value='2'>VG</option></select>";
+											cell.innerHTML = "<select id='selectvalue'><option value='1'>G</option><option value='0'>U</option><option value='2'>VG</option></select>";
 										} else if (parseInt(this.items.entries[i]["grade"]) >= 2) {
-											cell.innerHTML = "<select><option value='2'>VG</option><option value='0'>U</option><option value='1'>G</option></select>";
+											cell.innerHTML = "<select id='selectvalue'><option value='2'>VG</option><option value='0'>U</option><option value='1'>G</option></select>";
 										} else {
 											if (this.items.entries[i]["expired"]) {
-												cell.innerHTML = "<select><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
+												cell.innerHTML = "<select id='selectvalue'><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
 											}
-											cell.innerHTML = "<select><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
+											cell.innerHTML = "<select id='selectvalue'><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
 										}
 									} else {
 										if (parseInt(this.items.entries[i]["grade"]) >= 3) {
 											if (parseInt(this.items.entries[i]["grade"]) == 3) {
-												cell.innerHTML = "<select><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
+												cell.innerHTML = "<select id='selectvalue'><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 											} else if (parseInt(this.items.entries[i]["grade"]) == 4) {
-												cell.innerHTML = "<select><option value='4'>4</option><option value='0'>U</option><option value='3'>3</option><option value='5'>5</option></select>";
+												cell.innerHTML = "<select id='selectvalue'><option value='4'>4</option><option value='0'>U</option><option value='3'>3</option><option value='5'>5</option></select>";
 											} else {
-												cell.innerHTML = "<select><option value='5'>5</option><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option></select>";
+												cell.innerHTML = "<select id='selectvalue'><option value='5'>5</option><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option></select>";
 											}
 										} else {
 											if (this.items.entries[i]["expired"]) {
-												cell.innerHTML = "<select><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
+												cell.innerHTML = "<select id='selectvalue'><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 											}
-											cell.innerHTML = "<select><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
+											cell.innerHTML = "<select id='selectvalue'><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
 										}
 									}
 									break;
@@ -229,29 +229,37 @@ function getResults(pagination, course, quiz) {
 
 
 // this is not connected yet. 
-function updateStudentGrade(quizid, uid, grade) {
+function updateStudentGrade(quizid, uid) {
+	var grade = document.getElementById('#selectvalue').value; 
+	alert(grade);
 	$.ajax({
-		dataType: 'json',
-		async: false,
-		url: 'ajax/updateStudentGrade.php',
-		method: 'post',
-		data: {
-			'quizid': quizid,
-			'uid': uid,
-			'grade': grade
-		},
-		success: function(data) {
-			if (data == "No access") {
-				changeURL('noid');
+	type: "POST",
+	url: "./ajax/updateStudentGrade.php",
+	dataType: "JSON", 
+	data: {
+		'quizid': quizid,
+		'uid': uid,
+		'grade': grade
+	},
+	success: function(data){
+		if(data.success == true) {
+			successBox('Updated user grade successfully', 'The user grade is now changed');
+			pagination.items = data;
+			if ($("#searchbox").val().length > 0) {
+				pagination.showContent($("#searchbox").val());
+				pagination.renderPages($("#searchbox").val());
+				pagination.calculatePages($("#searchbox").val());
 			} else {
-				pagination.items = data;
-				pagination.number_of_items = pagination.items.entries.length;
-				pagination.calculatePages();
-				if (pagination.number_of_pages > 1) {
-					$('#content').append("<div id='pages'></div>");
-					pagination.renderPages();
-				}
+				pagination.showContent();
+				pagination.renderPages();
+				pagination.calculatePages()
 			}
+		} else {
+			dangerBox('Failed to update user grade', 'Failed to update user grade!');
 		}
-	});
+	},
+	error: function() {
+		alert('Could not retrieve students');	
+	}
+  });
 }
