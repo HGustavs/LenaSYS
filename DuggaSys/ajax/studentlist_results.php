@@ -34,7 +34,7 @@
 					$gradesystem = $row['gradesystem'];
 					$correctAnswer = $row['answer'];
 				
-					$quizQuery = $pdo->prepare("SELECT * FROM userAnswer WHERE testID = :1");
+					$quizQuery = $pdo->prepare("SELECT * FROM userAnswer WHERE quizID = :1");
 					$quizQuery -> bindParam(':1', $row['id']);
 					$answers=$quizQuery->execute();
 					foreach($quizQuery->fetchAll() as $quizRow) {
