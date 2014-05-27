@@ -422,31 +422,15 @@ CREATE TABLE `quiz` (
 		ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-CREATE TABLE `grades` (
-  `gradeID` tinyint(2) NOT NULL,
-  `grade` varchar(5) NOT NULL,
-  PRIMARY KEY (`gradeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO grades(gradeID, grade) VALUES(0, "U");
-INSERT INTO grades(gradeID, grade) VALUES(1, "G");
-INSERT INTO grades(gradeID, grade) VALUES(2, "VG");
-INSERT INTO grades(gradeID, grade) VALUES(3, "3");
-INSERT INTO grades(gradeID, grade) VALUES(4, "4");
-INSERT INTO grades(gradeID, grade) VALUES(5, "5");
-
-
 CREATE TABLE `userAnswer` (
   `quizID` int(11) NOT NULL,
   /*`variantID` int(11) NOT NULL,*/
   /*`version` int(11) NOT NULL,*/
-  `gradeID` tinyint(2) NOT NULL,
+  `grade` tinyint(2) NOT NULL,
   `uid` INT UNSIGNED NOT NULL,
   `answer` varchar(2000) NOT NULL,
   `submitted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`quizID`,`uid`),
-  FOREIGN KEY (`gradeID`) 
-  		REFERENCES grades(`gradeID`)
-  		ON UPDATE CASCADE,
   FOREIGN KEY(uid) 
   		REFERENCES user(uid)
 		ON UPDATE CASCADE,
