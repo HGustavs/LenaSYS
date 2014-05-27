@@ -21,7 +21,7 @@ page.title("Quiz menu");
 	getQuizNameForMenu(qs.quizid, qs.courseid);
 </script>
 <?php
-else {
+} else {
 	include(dirname(__file__)."/../404.php");
 }
 ?>
