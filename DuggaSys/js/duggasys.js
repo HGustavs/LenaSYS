@@ -442,7 +442,7 @@ function showPopUp(showhidePop, returnedData){
 		div.innerHTML = output;
 	}
 	else if(showhidePop == "hide"){
-		if (returnedData.length == 0) {
+		if (typeof returnedData == "undefined" || returnedData.length == 0) {
 			$("#light").hide();
 			$("#overlay").remove();
 		} else {
