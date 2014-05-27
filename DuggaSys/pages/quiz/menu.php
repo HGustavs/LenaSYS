@@ -1,6 +1,6 @@
 <?php session_start(); 
 include_once(dirname(__file__)."/../../../Shared/sessions.php");	
-if (checklogin() && isset($_POST["courseid"])) {	
+if (checklogin() && isset($_POST["courseid"]) && isset($_POST["quizid"])) {	
 ?>
 <script src="js/ajax.js"></script>
 <script>
