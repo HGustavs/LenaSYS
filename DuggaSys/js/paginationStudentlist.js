@@ -69,6 +69,8 @@ function pagination() {
 	this.showContent = function(data) {
 		data = data || null;
 		var table = document.getElementById("contentlist");
+		var tb = $(table).children("tbody");
+		tb.empty();
 		// If there are any items to print
 		if (this.number_of_items > 0) {
 			// Print items currentPage * show_per_page to show_per_page * (currentPage + 1)
@@ -77,9 +79,10 @@ function pagination() {
 			for (i = modulo; i < (this.show_per_page * (this.currentPage + 1));) {
 				// If item is defined
 				if (this.items.entries[n]) {
+					console.log(this.items.entries[n]);
 					if (data == null || this.items.entries[n]['username'].toLowerCase().indexOf(data.toLowerCase()) > -1) {
 						// Insert row below <th>
-						var row = table.insertRow(modulo % this.show_per_page + 1);
+						var row = tb.get(0).insertRow(modulo % this.show_per_page);
 						if (this.items.entries[n]["expired"]) {
 							row.className = "yellow";
 						} else if (parseInt(this.items.entries[n]["grade"]) >= 3) {
@@ -237,7 +240,8 @@ function getResults(pagination, course, quiz) {
 				pagination.number_of_items = pagination.items.entries.length;
 				pagination.calculatePages();
 				if (pagination.number_of_pages > 1) {
-					$('#content').append("<div id='pages'></div>");
+					if($("#pages").length == 0)
+						$('#content').append("<div id='pages'></div>");
 					pagination.renderPages();
 				}
 			}
@@ -262,8 +266,10 @@ function updateStudentGrade(uid) {
 	success: function(data){
 		if(data.success == true) {
 			console.log(data);
+			var qs = getUrlVars();
+			getResults(pagination, qs.courseid, qs.quizid);
+			pagination.goToPage(pagination.currentPage);
 			successBox('Updated user grade successfully', 'The user grade is now changed');
-			pagination.items = data;
 			if ($("#searchbox").val().length > 0) {
 				pagination.showContent($("#searchbox").val());
 				pagination.renderPages($("#searchbox").val());
