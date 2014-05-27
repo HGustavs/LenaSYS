@@ -434,9 +434,18 @@
 					array_push($box,array($boxid,$boxcontent));
 				}						
 			}
+				
+			
+			$filename=array();
+				$query = "SELECT boxid,filename FROM codeBox WHERE exampleid=$exampleid";
+				$result=mysql_query($query);
+				if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+				while ($row = mysql_fetch_assoc($result)){
+					array_push($filename,array($row['boxid'],$row['filename']));
+				}	
+				
 
-
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images, 'public' => $public);
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'filename' => $filename,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images, 'public' => $public);
 			echo json_encode($array);
 
 

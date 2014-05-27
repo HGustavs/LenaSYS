@@ -81,6 +81,13 @@
 .imgdropStyle{
 	background-color: #614875;
 }
+.imgdropStyle img:hover{
+	border-style:solid;
+	border-width:1px;
+	border-color: white;
+	padding: 4px;
+}
+
 
 .dropdownitemStyle {
     background: #614875;
@@ -172,7 +179,7 @@
 }
 
 .impo .number {
-    color: #000;
+    color: #fff;
     font-weight: bold;
 }
 
@@ -290,10 +297,12 @@
    background-size:15px 15px;
    border: 1px solid #ccc;
 }
+
 .buttomenu2Style select:hover{
   background-color: #938C8C;
-    cursor: pointer;
+  cursor: pointer;
 }
+
 .butto2:hover{
     background-color: #938C8C;
     cursor: pointer;

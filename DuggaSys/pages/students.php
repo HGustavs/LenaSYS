@@ -6,7 +6,7 @@ session_start();
 if(!array_key_exists('courseid', $_POST)) {
 	die('No course set');
 }
-if(checklogin() && hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') || isSuperUser($_SESSION['uid'])) {
+if(checklogin() && (hasAccess($_SESSION['uid'], $_POST['courseid'], 'w') || isSuperUser($_SESSION['uid']))) {
 ?>
 <!DOCTYPE html>
 <html>

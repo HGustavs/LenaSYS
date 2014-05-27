@@ -79,6 +79,12 @@
 .imgdropStyle{
 	background-color: #000;
 }
+.imgdropStyle img:hover{
+	border-style:solid;
+	border-width:1px;
+	border-color: white;
+	padding: 4px;
+}
 
 .dropdownitemStyle {
     background: #000;

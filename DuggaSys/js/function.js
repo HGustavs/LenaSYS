@@ -29,8 +29,7 @@ function WEREGOINGTODISNEYLAND() {
 }
 
 $( document ).ready(function() {
-	page = 	new getPage();
-	page.load();
+	page = new getPage();
 	page.show();
 });
 // Running page object functions if browser back/forward buttons get pressed //
@@ -42,6 +41,10 @@ function changeURL(url) {
 	history.pushState(null, null, "#"+url);
 	page.show();
 }
+// Simple go back history function //
+function historyBack() {
+	window.history.back()
+}
 // Grabbing URL values //
 function getUrlVars() {
     var vars = {};
@@ -50,6 +53,7 @@ function getUrlVars() {
     });
     return vars;
 }
+// Page handler object //
 // Page handler object //
 function getPage() {
 	var title = "Lenasys";
@@ -62,55 +66,36 @@ function getPage() {
 		var nodes = this.pages;
 		var path = "pages/";
 		var found= false;
-		var hashtagsplit = url.split('#').pop();
+		var urlsplit = url.split("#");
+
+		// If there's no # then we'll default to menulist
+		if(urlsplit.length == 2) {
+			var hashtagsplit = urlsplit.pop();
+			if(hashtagsplit.length < 1)
+				hashtagsplit = "menulist";
+		} else {
+			var hashtagsplit = "menulist";
+		}
+
+		// Data to send to the views
 		var data = getUrlVars();
-		if(window.location.hash && hashtagsplit.length > 0) {
-			var slashsplit = hashtagsplit.split('/');
-			for (var i = 0; i <= slashsplit.length-1; i++) {
-				//CHECK IF A FILE OR A FOLDER ELSE LAST ONE IS A FILE //
-				if(!slashsplit[i].match(/^\s*$/)) {
-					//CHECK IF A FOLDER //
-					if(i>0) {
-						if(slashsplit[i-1] in nodes) {
-							name = slashsplit[i-1].split('?')[0];
-							nodes = nodes[name];
-							path +=name+"/";
-						}
-					}
-					//CHECK IF A FILE //
-					if(i==slashsplit.length-1) {
-						this.page = slashsplit[i].split('?')[0];
-					}
-				}
-				else {
-					this.page = slashsplit[i-1].split('?')[0];
-					i=slashsplit.length;
-				}
-			};
-		}
-		else {
-			this.page = startpage;
-		}
-		//CHECK IF FILE EXISTS IN FOLDER //
-		for (var filename in nodes) {
-			if (typeof nodes[filename] != 'object') {
-				if(nodes[filename].replace(/\..+$/, '') == this.page) {
-					path +=nodes[filename];
-					found=true;
-				}
+
+		// URL we're looking for
+		this.page = "pages/" + hashtagsplit.split('?')[0];
+		console.log("Loading... " + this.page);
+		$.ajax({
+			url: this.page + ".php",
+			method: 'POST',
+			data: data,
+			success: function(returnedData) {
+				removeDateTimePicker();
+				$("#content").html(returnedData);
+			},
+			error: function() {
+				removeDateTimePicker();
+				$("#content").load("pages/404.php");
 			}
-		}
-		//PRINT PAGE IF FILE FOUND OR PRINT 404 //
-		if(found) {
-			console.log("page "+this.page+" was loaded");
-			removeDateTimePicker();
-			$("#content").load(path, data);
-		}
-		else {
-			console.log(this.page+ " not found!");
-			this.page = "404";
-			$("#content").load("pages/404.php");
-		}
+		})
 	}
 	//Returning homepage title and page title //
 	this.title = function(headline) {
@@ -120,26 +105,8 @@ function getPage() {
 		$("#title h1").html(title+" - "+this.page.capitalize());
 		document.title = title+" | "+this.page.capitalize();
 	}
-	// Grabbing a list of pages existing in the pages folder //
-	this.load = function() {
-		console.log("loading pages...");
-		var result;
-		$.ajax({
-			url:"ajax/getPages.php",
-			async: false,
-			success:function(data) {
-				result = JSON.parse(data);
-				console.log("success");
-			},
-			error:function() {
-				result = "404";
-				console.log("error");
-			}
-		});
-		console.log("complete");
-		this.pages = result;
-	}
 }
+
 // Modifying first letter in a string to a capital letter //
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -182,26 +149,26 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 			output += '<input type="button" class="btn btn-forgot btn-cancel alertCancel" value="Cancel">';	
 		}
 	output += '</div>';
-	if($(".alert").length == 0) {
+	if($(".slide-down").length == 0) {
 		setTimeout(function(){
 			$("#content").prepend(output).children(':first').hide();
-			var elemHeight = $('.alert').height();
+			var elemHeight = $('.slide-down').height();
 			var top = $(document).scrollTop()+50;
 			$('.slide-down').css({ top: top+"px" });	
-			$('.alert').css({ display: "block", height: "0px" });
-			$(".alert").animate({height: elemHeight}, 300);
+			$('.slide-down').css({ display: "block", height: "0px" });
+			$(".slide-down").animate({height: elemHeight}, 300);
 		}, delay);	
 	}
 	if(typeof confirm == 'function') {
 		$.when(this).done(setTimeout(function() {
 			$( "#alertSubmit" ).click(function() {
 				confirm(data);
-				$(".alert").animate({height: 0}, 300,"linear",function() {
+				$(".slide-down").animate({height: 0}, 300,"linear",function() {
 					$(this).remove();
 				})		
 			});
 			$( ".alertCancel" ).click(function() {
-				$(".alert").animate({height: 0}, 300,"linear",function() {
+				$(".slide-down").animate({height: 0}, 300,"linear",function() {
 					$(this).remove();
 				})
 			});
@@ -210,7 +177,7 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 	else {
 		$.when(this).done(setTimeout(function() {
 		$('html').click(function() {
-		    $(".alert").animate({height: 0}, 300,"linear",function() {
+		    $(".slide-down").animate({height: 0}, 300,"linear",function() {
 				$(this).remove();
 			})
 		    $("html").unbind('click');
@@ -246,8 +213,8 @@ function loadHeaderLink(filename, filetype){
 // QUIZ FUNCTIONS START //
 function getQuiz(quizId) {
 	console.log(quizId);
-	if(quizId != undefined) {
-		console.log("loading quiz");
+	if(quizId != "undefined") {
+		console.log("loading quiz...");
 		addRemoveLoad(true);
 		$.ajax({
 			type:"POST",
@@ -281,10 +248,38 @@ function getQuiz(quizId) {
 		console.log("complete");
 	}
 	else {
-		dangerBox("Ooops you got an error!","There is an ID missing to reach a quiz...<br/>Contact admin for support or try again.");
+		historyBack();
+		setTimeout(function(){
+			dangerBox("Ooops you got an error!","There is an ID missing to reach a quiz...<br/>Contact admin for support or try again.");
+		}, 100);
 	}
 }
 // QUIZ FUNCTIONS END //
+
+function getTemplateInfo(template) {
+	if(template != "undefined") {
+		addRemoveLoad(true);
+		console.log("loading template info...");
+		$.ajax({
+			type:"POST",
+			url:"ajax/getTemplateInfo.php",
+			async: false,
+			data: "template="+template,
+			success:function(data) {
+				if($('#templateDescription').length > 0) {
+					$('#templateDescription').remove();
+				}
+				$("#quizParameters").before("<div id='templateDescription' class='alert info'><strong>Parameter description</strong><p>"+data+"</p></div>");
+				console.log("success");
+				addRemoveLoad(false);
+			},
+			error:function() {
+				console.log("error");
+				addRemoveLoad(false);
+			}
+		});
+	}
+}
 
 function removeDateTimePicker() {
 	if ($(".xdsoft_noselect").length) {

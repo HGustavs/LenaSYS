@@ -111,8 +111,8 @@ header {
             float: left;
 			color:#fff;
 			font-size:10pt;
-			margin-top:20px;
-			padding:8px;
+			margin-top:28px;
+			margin-right:8px;
 			cursor:pointer;
 			text-decoration:underline;
         }
@@ -128,12 +128,13 @@ header {
 	display:none;
 	width:150px;
 	position:fixed;
-	z-index:9999;
-	right:0;
+    z-index: 9999;
+	right:0px;
 	top:50px;
 	border: 4px solid #ccc;
 	border-top:0px;
 }
+
 #userSettings ul {
 	width:100%;
 	list-style-type:none;
@@ -195,7 +196,8 @@ header {
     width: 100%;
 }
 .alert {
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     border: 1px solid transparent;
     border-radius: 4px;
     padding: 8px;
@@ -594,7 +596,6 @@ input.submit-button-red:hover {
     }
 }
 /* ANIMATIONS END */
-
 .addstudent {
     height: 300px;
     width: 100%;
@@ -624,7 +625,7 @@ input.submit-button-red:hover {
     padding: 16px;
     border: 16px solid #614875;
     background-color: white;
-    z-index:1002;
+    z-index:8001;
     overflow: auto;
 }
 

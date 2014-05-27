@@ -31,6 +31,9 @@ checklogin();
 			if(sessionkind==true) {
 				$(document).makesortable();
 				$("#Sectionlist").sortable("disable");
+				database = new getDatabase();
+				database.populateData(querystring.courseid, "example");
+				database.populateData(querystring.courseid, "test");
 			}
 			if (readaccess==true) {
 				returnedSection(data);

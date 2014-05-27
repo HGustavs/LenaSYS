@@ -104,7 +104,9 @@ function pagination() {
 									if (parseInt(this.items.entries[i]["grade"]) > 0) {
 										cell.innerHTML = "G";
 									} else {
-										cell.innerHTML = "U";
+										if (this.items.entries[i]["expired"]) {
+											cell.innerHTML = "U";
+										}
 									}
 								} else if (parseInt(this.items.entries[i]["gradesystem"]) == 2) {
 									if (parseInt(this.items.entries[i]["grade"]) == 1) {
@@ -112,13 +114,17 @@ function pagination() {
 									} else if (parseInt(this.items.entries[i]["grade"]) >= 2) {
 										cell.innerHTML = "VG";
 									} else {
-										cell.innerHTML = "U";
+										if (this.items.entries[i]["expired"]) {
+											cell.innerHTML = "U";
+										}
 									}
 								} else {
 									if (parseInt(this.items.entries[i]["grade"]) >= 3) {
 										cell.innerHTML = this.items.entries[i]["grade"];
-									} else if (parseInt(this.items.entries[i]["grade"]) < 3) {
-										cell.innerHTML = "U";
+									} else {
+										if (this.items.entries[i]["expired"]) {
+											cell.innerHTML = "U";
+										}
 									}
 								}
 								break;
