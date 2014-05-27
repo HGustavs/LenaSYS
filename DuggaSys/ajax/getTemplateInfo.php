@@ -7,20 +7,29 @@ if(isset($_POST['template'])){
 		$endTag = "[/DESCRIPTION]";
 		$print = false;
 		$descriptionExists = false;
+		$description = "";
 		foreach ($lines as $line) {
 			if(strpos(" ".$line, $endTag)) {
+				$endTag = "exists";
 				break;
 			}
 			if($print) {
-				print trim(preg_replace('/\t+/', '', $line))."</br>";
+				$description .= trim(preg_replace('/\t+/', '', $line))."</br>";
 				$descriptionExists = true;
 			}
 			if(strpos(" ".$line, $startTag)) {
+				$startTag = "exists";
 				$print = true;
 			}
 		}
-		if(!$descriptionExists) {
-			print "There is no description for ".$_POST['template'].".</br> Please contact the template author for right parameter description.";
+		if($startTag == "exists" && $endTag == "exists") {
+			print $description;
+		}
+		elseif(!$descriptionExists) {
+			print "There is no description for ".$_POST['template'].".</br> Please contact the template author for correct parameter description.";
+		}
+		else {
+			print "Can not find any description for ".$_POST['template'].".</br> Please contact the template author for correct parameter description.";			
 		}
 	}
 	else {
