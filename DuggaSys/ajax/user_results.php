@@ -34,7 +34,7 @@
 						$deadline = $quizRow['deadline'];
 						$gradesystem = $quizRow['gradesystem'];
 						$courseQuery = $pdo->prepare("SELECT * FROM course WHERE cid = :1");
-						$courseQuery -> bindParam(':1', $quizRow['courseID']);
+						$courseQuery -> bindParam(':1', $quizRow['cid']);
 						$courses=$courseQuery->execute();
 						$courses=$courseQuery->fetch();
 						$courseName = $courses['coursename'];
@@ -62,7 +62,7 @@
 			$result=$query->execute();
 			if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
 			foreach($query->fetchAll() as $row) {
-				$quizQuery = $pdo->prepare("SELECT * FROM quiz WHERE courseID = :1");
+				$quizQuery = $pdo->prepare("SELECT * FROM quiz WHERE cid = :1");
 				$quizQuery -> bindParam(':1', $row['cid']);
 				$tests=$quizQuery->execute();
 				foreach($quizQuery->fetchAll() as $quizRow) {
@@ -75,7 +75,7 @@
 							$expired = true;
 						}
 						$courseQuery = $pdo->prepare("SELECT * FROM course WHERE cid = :1");
-						$courseQuery -> bindParam(':1', $quizRow['courseID']);
+						$courseQuery -> bindParam(':1', $quizRow['cid']);
 						$courses=$courseQuery->execute();
 						$courses=$courseQuery->fetch();
 						$courseName = $courses['coursename'];
