@@ -1,6 +1,6 @@
 <?php session_start(); 
 include_once(dirname(__file__)."/../../../Shared/sessions.php");	
-if (checklogin()) {	
+if (checklogin() && isset($_POST["courseid"] && isset($_SESSION["uid"]))) {	
 ?>
 <script src="js/ajax.js"></script>
 <script>
@@ -21,7 +21,7 @@ page.title("Quiz menu");
 	getQuizNameForMenu(qs.quizid, qs.courseid);
 </script>
 <?php
-} else {
-include(dirname(__file__)."/../404.php");
+else {
+	include(dirname(__file__)."/../404.php");
 }
 ?>
