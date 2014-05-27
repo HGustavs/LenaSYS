@@ -1113,7 +1113,7 @@ function Canvasrenderer()
 			this.lastSavedClickPosX = ((canvas.mouseClickX - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickX - canvas.mouseClickRadius);
 			this.lastSavedClickPosY = ((canvas.mouseClickY - canvas.mouseClickRadius) < 0) ? 0 : (canvas.mouseClickY - canvas.mouseClickRadius);
 			
-			this.mouseClickBackground = ctx.getImageData(this.lastClickPosX, this.lastClickPosY, this.mouseClickRadius*2+5, this.mouseClickRadius*2+5);
+			this.mouseClickBackground = ctx.getImageData(this.lastSavedClickPosX, this.lastSavedClickPosY, this.mouseClickRadius*2+5, this.mouseClickRadius*2+5);
 		}
 		// Draw mouse click (yellow circle) if active
 		if (this.mouseClick) {
