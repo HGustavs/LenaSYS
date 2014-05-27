@@ -44,7 +44,7 @@ function returnQuiz($quiz){
 	    "parameters" => $quiz['parameter'],
 	    "template" => false
 	);
-	$templatePath = '../templates/'.$template.'.js';
+	$templatePath = dirname(__FILE__) . '/../templates/'.$template.".js";
 
 	if (file_exists($templatePath)) {
 		$quizData["template"] = $template;
