@@ -26,8 +26,8 @@ function quiz(parameters) {
 
 	for(var i = 0;i < inputSplit.length;i++){
 	    var splited = inputSplit[i].split("=");
-		answerValue = splited[1];
-		answerID= splited[0];
+		answerValue = splited[1].trim();
+		answerID= splited[0].trim();
 		if(answerID == "question") {
 			var app = "<h2>";
 			app += answerValue + "<br>";
@@ -56,7 +56,6 @@ function getCheckedBoxes(){
 function checkAnswer(){
 	var answers = getCheckedBoxes();
 	var quiz_id = getUrlVars().quizid;
-	alert(answers);
 	if(quiz_id != "undefined"){
 		$.ajax({
 			url: './ajax/checkanswers_ajax.php',
@@ -66,14 +65,10 @@ function checkAnswer(){
 				quiz_id: quiz_id
 			},
 			success: function (returned) {
-				if(returned == "true"){
-				   alert("rätt svar");
-				}else {
-				   alert("fel svar");
-				}
+				changeURL("myresults");	
 			},
 			error: function(){
-				dangerBox('Problems removing students', 'Could not remove the students from the course. Make sure you selected at least one student.');
+				dangerBox('Problem submitting test', 'Something went wrong while trying to submit the test');
 			},
 		});
 	}
