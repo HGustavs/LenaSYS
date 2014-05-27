@@ -104,7 +104,7 @@ if (checklogin()) {
 								`release`=:6,
 								`deadline`=:7 
 								WHERE id=:qid');
-							$stmt -> bindParam(':qid', settype($_POST["qid"] , "integer"));
+							$stmt -> bindParam(':qid', $_POST["qid"], PDO::PARAM_INT);
 							$stmt -> bindParam(':2', $autograde);
 							$stmt -> bindParam(':3', $gradesys);
 							$stmt -> bindParam(':4', $answer);
