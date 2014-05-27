@@ -8,13 +8,12 @@ page.title("Quiz menu");
 </script>
 <div class='middle center'>
 	<p id="admin_title"></p>
-	<button class='default' onclick="changeURL('quiz/quiz?quizid='+getUrlVars().quizid);">Test</button>
+	<button class='default' onclick="changeURL('quiz/quiz?quizid='+getUrlVars().quizid);">Start Test</button>
 	
 	<?php if (hasAccess($_SESSION["uid"], $_POST["courseid"], "w")) { ?>
 	<button class='default' onclick="changeURL('quiz/edit?courseid=' + qs.courseid + '&quizid='+qs.quizid);">Edit</button>
-	<?php } ?>
-	
 	<button class='default' onclick="changeURL('quiz/studentlist?courseid=' + qs.courseid + '&quizid=' + qs.quizid);">Studentlist</button>
+	<?php } ?>
 </div>
 <script type="text/javascript">
 	var qs = getUrlVars();

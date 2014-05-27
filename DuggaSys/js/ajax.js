@@ -117,7 +117,7 @@
 		success:function(data) {
 			//console.log(data);
 			console.log(data);
-			$("#admin_title").html("Admin Menu - "+data.name);
+			$("#admin_title").html(data.name);
 		},
 		error:function() {
 			console.log("Something went wrong");

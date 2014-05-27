@@ -236,7 +236,7 @@ function getQuiz(quizId) {
 				}
 				else {
 					console.log(data[0]);
-					dangerBox("Ooops you got an error!","This may mean that the system can not find a quiz or that you dont have permission to the quiz you want to run.<br/>Contact admin for support or try again.")
+					dangerBox("Ooops you got an error!","This may mean that the system couldn't find the quiz you specified or that you don't have permission to the quiz you want to start.<br/>Contact an admin for support or try again later.")
 					addRemoveLoad(false);
 				}
 			},
