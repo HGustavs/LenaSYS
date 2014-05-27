@@ -12,6 +12,7 @@ if (checklogin()) {
 		pdoConnect();
 		$success = true;
 		$stmt = $pdo -> prepare('UPDATE `userAnswer` SET `grade` = :3 WHERE `quizID` = :1 AND `uid` = :2  ');
+
 		$stmt -> bindParam(':1', $_POST["quizid"]);
 		$stmt -> bindParam(':2', $_POST["uid"]);
 		$stmt -> bindParam(':3', $_POST["grade"]);

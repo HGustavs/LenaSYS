@@ -1,16 +1,20 @@
 <?php session_start(); ?>
-    <table id="contentlist" class="list">
-        <tr>
-            <th>Student</th>
-            <th>Quiz name</th>
-            <th>Start</th>
-            <th>Deadline</th>
-            <th>Submitted</th>
-            <th>Grade</th>
-            <th>Answer</th>
-			<th>Correct answer</th>
-            <th>Go to</th>
-        </tr>
+	    <table id="contentlist" class="list">
+		<thead>
+			<tr>
+				<th>Student</th>
+				<th>Quiz name</th>
+				<th>Start</th>
+				<th>Deadline</th>
+				<th>Submitted</th>
+				<th>Grade</th>
+				<th>Answer</th>
+				<th>Correct answer</th>
+				<th>Go to</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
     </table>
 	<div style="overflow: hidden;">
 	<input type="text" id="searchbox" name="search" placeholder="Search by username" style='float:right; width: 10%;'>
