@@ -2,7 +2,7 @@
     <table id="contentlist" class="list">
         <tr>
             <th>Student</th>
-            <th>Dugga name</th>
+            <th>Quiz name</th>
             <th>Start</th>
             <th>Deadline</th>
             <th>Submitted</th>
