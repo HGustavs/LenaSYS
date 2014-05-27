@@ -429,7 +429,7 @@ CREATE TABLE `userAnswer` (
   `grade` tinyint(2) NOT NULL,
   `uid` INT UNSIGNED NOT NULL,
   `answer` varchar(2000) NOT NULL,
-  `submitted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `submitted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`quizID`,`uid`),
   FOREIGN KEY(uid) 
   		REFERENCES user(uid)

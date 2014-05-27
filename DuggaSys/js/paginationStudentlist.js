@@ -83,13 +83,6 @@ function pagination() {
 					if (data == null || this.items.entries[n]['username'].toLowerCase().indexOf(data.toLowerCase()) > -1) {
 						// Insert row below <th>
 						var row = tb.get(0).insertRow(modulo % this.show_per_page);
-						if (this.items.entries[n]["expired"]) {
-							row.className = "yellow";
-						} else if (parseInt(this.items.entries[n]["grade"]) >= 3) {
-							row.className = "green";
-						} else if (parseInt(this.items.entries[n]["grade"]) < 3) {
-							row.className = "red";
-						}
 						for (j = 0; j < this.cells; j++) {
 							var cell = row.insertCell(j);
 							switch (j) {
@@ -269,7 +262,6 @@ function updateStudentGrade(uid) {
 			var qs = getUrlVars();
 			getResults(pagination, qs.courseid, qs.quizid);
 			pagination.goToPage(pagination.currentPage);
-			successBox('Updated user grade successfully', 'The user grade is now changed');
 			if ($("#searchbox").val().length > 0) {
 				pagination.showContent($("#searchbox").val());
 				pagination.renderPages($("#searchbox").val());
