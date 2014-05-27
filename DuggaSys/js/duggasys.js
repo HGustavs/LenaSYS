@@ -445,14 +445,12 @@ function showPopUp(showhidePop, returnedData){
 		if (returnedData.length == 0) {
 			$("#light").hide();
 			$("#overlay").remove();
-		}
-		else {
+		} else {
 			if(confirm('Have you printed the passwords?')) {
-			$("#light").hide();
-			$("#overlay").remove();
+				$("#light").hide();
+				$("#overlay").remove();
+			}
 		}
-		}
-
 	}
 }
 
@@ -512,6 +510,7 @@ function printDiv(){
 	window.print();
 
 	document.body.innerHTML = originalContents;
+	$('#overlay').on('click', function() { showPopUp('hide', {}) });
 }
 
 
