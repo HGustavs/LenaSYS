@@ -74,7 +74,7 @@
 <script src="js/jquery.datetimepicker.js"></script>
 <script type="text/javascript">
 	$('.datetimepicker').datetimepicker();
-	getQuizFiles();
+	getQuizFiles(qs.courseid);
 	getQuizData(qs.quizid, qs.courseid);
 	$("#autogradecheck").change(function () {
 		if ($('#autogradecheck').prop(':checked')) {
