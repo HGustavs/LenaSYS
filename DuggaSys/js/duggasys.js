@@ -383,7 +383,7 @@ function passPopUp(){
 			courseid: qs.courseid
 		},
 		success: function (returnedData) {
-			$('#overlay').on('click', function() { showPopUp('hide') });
+			$('#overlay').on('click', function() { showPopUp('hide', returnedData) });
 			console.log(returnedData);
 			showPopUp('show', returnedData)
 		},
@@ -442,9 +442,15 @@ function showPopUp(showhidePop, returnedData){
 		div.innerHTML = output;
 	}
 	else if(showhidePop == "hide"){
-		if(confirm('Have you printed the passwords?')) {
+		if (returnedData.length == 0) {
 			$("#light").hide();
 			$("#overlay").remove();
+		}
+		else {
+			if(confirm('Have you printed the passwords?')) {
+			$("#light").hide();
+			$("#overlay").remove();
+		}
 		}
 
 	}
