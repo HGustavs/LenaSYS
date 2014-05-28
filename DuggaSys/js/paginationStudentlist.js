@@ -106,6 +106,14 @@ function pagination() {
 									var failure = false;
 									if (this.items.entries[n]["grade"] == ""){
 										cell.innerHTML = "";
+									} else if (this.items.entries[n]["grade"] == '-1') {
+										if (parseInt(this.items.entries[n]["gradesystem"]) == 1) {
+											cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='' disable='disabled'>Select...</option><option value='0'>U</option><option value='1'>G</option></select>";
+										} else if (parseInt(this.items.entries[n]["gradesystem"]) == 2) {
+											cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='' disable='disabled'>Select...</option><option value='0'>U</option><option value='1'>G</option><option value='2'>VG</option></select>";
+										} else {
+											cell.innerHTML = "<select id='gradevalue_"+this.items.entries[n]['uid']+"' onchange='updateStudentGrade("+this.items.entries[n]['uid']+")'><option value='' disable='disabled'>Select...</option><option value='0'>U</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select>";
+										}
 									} else {
 										if (parseInt(this.items.entries[n]["gradesystem"]) == 1) {
 											if (parseInt(this.items.entries[n]["grade"]) > 0) {
@@ -163,6 +171,8 @@ function pagination() {
 							row.className = "red";
 						} else if (this.items.entries[n]["expired"]) {
 							row.className = "yellow";
+						} else if (this.items.entries[n]["grade"] == "-1") {
+							row.className = "white";
 						} else if (this.items.entries[n]["grade"] != "") {
 							row.className = "green";
 						}
