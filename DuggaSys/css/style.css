@@ -708,8 +708,10 @@ table.list tr.red {
     left: 10%;
     -webkit-animation: nyanRun 10s; /* Chrome, Safari, Opera */
     -webkit-animation-timing-function: linear;
+    -moz-animation: nyanRun 10s; /* Chrome, Safari, Opera */
+    -moz-animation-timing-function: linear;
     animation-timing-function: linear;
-    animation: nyanRunForLife 10s;
+    animation: nyanRun 10s;
 
 }
 #nyanKillCat {
@@ -723,12 +725,23 @@ table.list tr.red {
     -webkit-animation: nyanRun 7s; /* Chrome, Safari, Opera */
     -webkit-animation-timing-function: linear;
     -webkit-animation-delay: 3s;
+    -moz-animation: nyanRun 7s; /* Chrome, Safari, Opera */
+    -moz-animation-timing-function: linear;
+    -moz-animation-delay: 3s;
     animation-delay: 3s;
     animation-timing-function: linear;
-    animation: nyanRunForLife 10s;
+    animation: nyanRun 10s;
 }
 /* Chrome, Safari, Opera */
 @-webkit-keyframes nyanRun
+{
+    0%   {left: 10%; top:-400px;}
+    12%  {left: 10%; top:100%;}
+    14%  {left: 10%; top:95%;}
+    16%  {left: 10%; top:100%;}
+    100% {left: 200%; top:100%;}
+}
+@-moz-keyframes nyanRun
 {
     0%   {left: 10%; top:-400px;}
     12%  {left: 10%; top:100%;}
