@@ -14,7 +14,7 @@ This description will be visible on the interface for adding or change a quiz.
 	
 	An example of the correct parameters can look like this: 
 	"question = Who is Sweden's best soccer player?, A = Zlatan, B = Hysen, C = Robin, D = Aslan"
-	if A = Zlatan is the correct answers so shall also the value of A be written as the correct answer in the answer field.
+	if A = Zlatan is the correct answers so shall also <strong>the value of A</strong> be written as the correct answer in the answer field.
 [/DESCRIPTION]
 */
 function quiz(parameters) {
