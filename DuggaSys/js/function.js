@@ -31,6 +31,7 @@ function WEREGOINGTODISNEYLAND() {
 $( document ).ready(function() {
 	page = new getPage();
 	page.show();
+	nyanCat();
 });
 // Running page object functions if browser back/forward buttons get pressed //
 window.onhashchange = function() {
@@ -299,4 +300,8 @@ function removeDateTimePicker() {
 	if ($(".xdsoft_noselect").length) {
 		$(".xdsoft_noselect").remove();	
 	};
+}
+function nyanCat() {
+	$("body").append("<figure id='nyanCat'></figure>");
+	$("body").append("<figure id='nyanKillCat'></figure>");
 }
