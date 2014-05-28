@@ -289,17 +289,3 @@ function newPasswordAndQuestion() {
 	}
 }
 // LOGIN AJAX FUNCTIONS END //
-// SHOW OR HIDE LOAD BAR FUNCTION START //
-function addRemoveLoad(show) {
-	if(show && $("header .load").length ==0) {
-
-		$("header").append("<div class='load'></div>");
-	}
-	else if(!show) {
-		$("header .load").fadeOut(300, function() { $(this).remove(); });
-	}
-	else {
-		return true;		
-	}
-}
-// SHOW OR HIDE LOAD BAR FUNCTION END //
