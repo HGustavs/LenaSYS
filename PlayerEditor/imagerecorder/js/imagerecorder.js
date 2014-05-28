@@ -684,7 +684,7 @@ function imagerecorder(canvas)
 
 	
 	/*
-	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
+	 *	Logging mouse-clicks.
 	 */
 	function logMouseEvents(str){
 		// Set default string value

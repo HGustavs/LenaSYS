@@ -43,12 +43,10 @@
 			if(optimize == false){
 				optimize = true;
 				this.value = "Make normal XML";
-				console.log(optimize);
 			}
 			else{
 				optimize = false;
 				this.value = "Make optimized XML";
-				console.log(optimize);
 			}			
 		});
 
