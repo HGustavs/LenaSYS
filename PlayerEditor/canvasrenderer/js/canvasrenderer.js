@@ -32,7 +32,6 @@ function Canvasrenderer()
 	this.scaleRatioX = 1;
 	this.scaleRatioY = 1;
 	this.scaleRatio = 1;
-	this.startTime;
 	this.fDelta;
 	this.mouseClickRadius = 20;	
 	this.recordedCanvasWidth;
@@ -145,7 +144,6 @@ function Canvasrenderer()
 			ctx.clearRect(0, 0, c.width, c.height);
 			this.firsttime = 0;
 		}
-		this.startTime = Date.now();
 		// Only play if we have a document
 		if(this.timesteps!=null){
 			this.paused=0;
@@ -532,7 +530,6 @@ function Canvasrenderer()
 	
 	this.finish = function(){
 		this.pause();
-		alert("Finished Script in " + (Date.now() - this.startTime) + " milliseconds");
 		this.finished = 1;
 	}
 	
@@ -569,7 +566,6 @@ function Canvasrenderer()
 	}
 
 	this.lineTo = function(x, y){
-		console.log(x + ", " + y);
 		ctx.lineTo(x, y);
 	}
 	this.stroke = function(){
@@ -1009,7 +1005,6 @@ function Canvasrenderer()
 
 		// Draw mouse click (if any)
 		this.drawMouseClick();
-		console.log("scale: " + this.mouseCursorScale);	
 		// Draw mouse pointer. The width and height is multiplied by the mouse cursor scale ratio to scale the cursor by the same amount as the image.
 		ctx.drawImage(this.mouseCursor, x, y, this.mouseCursor.width*(this.mouseCursorScale), this.mouseCursor.height*(this.mouseCursorScale));
 		

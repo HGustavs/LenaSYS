@@ -20,7 +20,6 @@
 				$result=$query->execute();
 				if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
 				
-				$link = null;
 				$dugganame = null;
 				$start = null;
 				$deadline = null;
@@ -34,7 +33,7 @@
 					$gradesystem = $row['gradesystem'];
 					$correctAnswer = $row['answer'];
 				
-					$quizQuery = $pdo->prepare("SELECT * FROM userAnswer WHERE testID = :1");
+					$quizQuery = $pdo->prepare("SELECT * FROM userAnswer WHERE quizID = :1");
 					$quizQuery -> bindParam(':1', $row['id']);
 					$answers=$quizQuery->execute();
 					foreach($quizQuery->fetchAll() as $quizRow) {
@@ -49,7 +48,9 @@
 							array_push(
 								$entries,
 								array(
+									'uid' => $userRow['uid'],
 									'username' => $userRow['username'],
+									'quizid' => $row['id'],
 									'name' => $row['name'],
 									'start' => $row['release'],
 									'deadline' => $row['deadline'],
@@ -58,7 +59,6 @@
 									'gradesystem' => $row['gradesystem'],
 									'answer' => $quizRow['answer'],
 									'correctAnswer' => $row['answer'],
-									'link' => $link,
 									'expired' => false
 								)
 							);
@@ -89,6 +89,7 @@
 							array_push(
 								$entries,
 								array(
+									'uid' => $userRow['uid'],
 									'username' => $userRow['username'],
 									'name' => $dugganame,
 									'start' => $start,
@@ -98,7 +99,6 @@
 									'gradesystem' => $gradesystem,
 									'answer' => "",
 									'correctAnswer' => $correctAnswer,
-									'link' => $link,
 									'expired' => $expired
 								)
 							);

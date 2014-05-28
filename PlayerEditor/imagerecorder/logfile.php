@@ -1,6 +1,4 @@
 <?php
-
-	require_once("../../Shared/coursesyspw.php");
 	require_once("../../Shared/database.php");
 	
 	pdoConnect();

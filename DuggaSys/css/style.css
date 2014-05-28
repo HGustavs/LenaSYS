@@ -698,3 +698,64 @@ table.list tr.red {
 	box-shadow: inset 0px 1px 0px rgba(255,255,255, .7), 0px 1px 3px rgba(0,0,0, .1);
 	text-shadow: 1px 1px 0px rgba(255,255,255, 0.7);
 }
+#nyanCat {
+    width: 251px;
+    height: 175px;
+    background:url('images/nyan.gif') no-repeat left 0;
+    position: fixed;
+    margin-top: -175px;
+    top:-400px;
+    left: 10%;
+    -webkit-animation: nyanRun 10s; /* Chrome, Safari, Opera */
+    -webkit-animation-timing-function: linear;
+    -moz-animation: nyanRun 10s;
+    -moz-animation-timing-function: linear;
+    animation-timing-function: linear;
+    animation: nyanRun 10s;
+
+}
+#nyanKillCat {
+    width: 408px;
+    height: 175px;
+    background:url('images/nyankill.gif') no-repeat left 0;
+    position: fixed;
+    margin-top: -175px;
+    top: -400px;
+    left: 10%;
+    -webkit-animation: nyanRun 7s; /* Chrome, Safari, Opera */
+    -webkit-animation-timing-function: linear;
+    -moz-animation: nyanRun 7s;
+    -moz-animation-timing-function: linear;
+    animation-timing-function: linear;
+    animation: nyanRun 3s;
+    -moz-animation-delay: 3s;
+    -webkit-animation-delay: 3s;
+    -o-animation-delay: 3s;
+    animation-delay: 3s;
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes nyanRun
+{
+    0%   {left: 10%; top:-400px;}
+    12%  {left: 10%; top:100%;}
+    14%  {left: 10%; top:95%;}
+    16%  {left: 10%; top:100%;}
+    100% {left: 200%; top:100%;}
+}
+@-moz-keyframes nyanRun
+{
+    0%   {left: 10%; top:-400px;}
+    12%  {left: 10%; top:100%;}
+    14%  {left: 10%; top:95%;}
+    16%  {left: 10%; top:100%;}
+    100% {left: 200%; top:100%;}
+}
+/* Standard syntax */
+@keyframes nyanRun
+{
+    0%   {left: 10%; top:-400px;}
+    12%  {left: 10%; top:100%;}
+    14%  {left: 10%; top:95%;}
+    16%  {left: 10%; top:100%;}
+    100% {left: 200%; top:100%;}
+}

@@ -28,8 +28,8 @@
  	};
  }
 
-  function editQuiz(dataArray) 
- {
+function editQuiz(dataArray) 
+{
  	console.log(dataArray);
  	var cid = dataArray[0];
  	var action = dataArray[1];
@@ -44,7 +44,7 @@
 				cid: cid,
 				action: action, // edit/create
 				qid: qid,
-				//quizname: document.newQuizForm.quizname.value,
+				quizname: document.newQuizForm.quizname.value,
 				parameter: document.newQuizForm.parameterinput.value,
 				answer: document.newQuizForm.answerinput.value,
 				autograde: document.newQuizForm.autogradebox.checked,
@@ -56,18 +56,24 @@
 			},
 			success:function(data) {
 				console.log(data);
-				if (data.cid>0) {
+				if (data == "success") {
 					console.log("Edit successfull");					
-					changeURL("quiz/menu");
+					//changeURL("quiz/menu?courseid=" + cid + "&quizid=" + qid);
 					//changeURL("sectioned?courseid="+data.cid);	
+					
+					// SUPER-HAX-WORKAROUND-DELUX-ULTRA
+					setTimeout(function() {
+						successBox("Dugga egit", "Edit success!!!");
+					}, 500);
+					
 				} else if(data==="no access") {
 					alert("ap ap ap!");	
 					$(".xdsoft_noselect").remove();
-					changeURL("quiz/menu");
+					//changeURL("quiz/menu");
 				} else if(data==="no write access") {
 					alert("You dont have rights to edit quiz.");	
 					$(".xdsoft_noselect").remove();
-					changeURL("quiz/menu");
+					//changeURL("quiz/menu");
 				} else if(data==="false_deadline") {
 					$("#deadlineinput").css("background-color", "#ff7c6a");
 					console.log(data);
@@ -115,9 +121,14 @@
 			cid: cid
 		},
 		success:function(data) {
-			//console.log(data);
-			console.log(data);
-			$("#admin_title").html("Admin Menu - "+data.name);
+			$("#admin_title").html(data.name);
+			if (data.release > data[9].date) {
+				$("#dateinfo").html("Released: " + data.release);
+			} else if (data.deadline > data[9].date) {
+				$("#dateinfo").html("Deadline: " + data.deadline);
+			} else {
+				$("#dateinfo").html("The deadline has passed");
+			}
 		},
 		error:function() {
 			console.log("Something went wrong");
@@ -126,6 +137,7 @@
  }
 
  function getQuizData(quizid, cid) {
+ 	addRemoveLoad(true);
  	$.ajax({
 		dataType: "json",
 		type: "POST",
@@ -137,7 +149,7 @@
 		success:function(data) {
 			//console.log(data);
 			console.log("A OK");
-			//$("#quizname").val(data.name);
+			$("#quizname").val(data.name);
 			$("#parameterinput").val(data.parameter);
 			$("#quizAnswerInput").val(data.answer);
 			//$("#autogradecheck").prop('checked', !!data.autograde);
@@ -158,20 +170,22 @@
 			$.each($("#quizfile option"), function( index, value ) {
 			  if (value.value==data.quizFile) {
 			  	value.setAttribute('selected', true);	
+			  	getTemplateInfo(data.quizFile);
 			  };
-			  
 			});
+
+
 
 			if ($('#autogradecheck').prop('checked')) {
 				$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters) *");
 			} else {
 				$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters)");
 			};
-			
-
+			addRemoveLoad(false);
 		},
 		error:function() {
 			console.log("Something went wrong");
+			addRemoveLoad(false);
 		}
 	});
  }
@@ -183,7 +197,7 @@
 		type: "POST",
 		url: "ajax/getQuizFiles.php",
 		data: {
-			cid: 1
+			cid: cid
 		},
 		success:function(data) {
 			//console.log(data);
