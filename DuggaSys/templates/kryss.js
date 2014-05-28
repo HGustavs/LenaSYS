@@ -18,7 +18,7 @@ This description will be visible on the interface for adding or change a quiz.
 [/DESCRIPTION]
 */
 function quiz(parameters) {
-	if(parameters == undefined) {
+	if(parameters != undefined) {
 		console.log("pram:" + parameters);
 		var inputSplit = parameters.split(",");
 		var answerValue;
@@ -41,7 +41,7 @@ function quiz(parameters) {
 		}
 		app += "<span id='displayAnswers'></span>";
 		app += "<br>";
-		app += "<button class='submit' onClick='checkAnswer();'>Submit</button>";
+		app += "<button class='submit' onclick='checkQuizAnswer();'>Submit</button>";
 
 		$("#output").html(app);
 	}
@@ -52,7 +52,9 @@ function quiz(parameters) {
 		}, 500);
 	}
 
-	function getCheckedBoxes(){
+	
+}
+function getCheckedBoxes(){
 		// $.map() loopar igenom objekt (checkboxes i vårt fall) och gör funktioner utav de. Nu returnerar vi värdet(value) på varje checkbox som är i-bockad.
 		var answers = $.map($('input:radio[name=answers]:checked'), function(checked, i) {
 			return checked.value;
@@ -60,8 +62,8 @@ function quiz(parameters) {
 		return answers; // returnerar de värden på de checkboxes som är i-bockade.
 
 	}
-	function checkAnswer(){
-		var answers = getCheckedBoxes();
+	function checkQuizAnswer(){
+		var answers = $('input:radio[name=answers]:checked').attr('id');
 		var quiz_id = getUrlVars().quizid;
 		if(quiz_id != "undefined"){
 			$.ajax({
@@ -80,9 +82,8 @@ function quiz(parameters) {
 			});
 		}
 	}
-}
 // Visar upp de svaren som är i-bockade
 function displayCheckedBoxes() {
-    var answers = getCheckedBoxes();
+    var answers = $('input:radio[name=answers]:checked').val();
     $('#displayAnswers').text('You choose answer: ' + answers);	
 }
