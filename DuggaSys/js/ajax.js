@@ -115,9 +115,14 @@ function editQuiz(dataArray)
 			cid: cid
 		},
 		success:function(data) {
-			//console.log(data);
-			console.log(data);
 			$("#admin_title").html(data.name);
+			if (data.release > data[9].date) {
+				$("#dateinfo").html("Released: " + data.release);
+			} else if (data.deadline > data[9].date) {
+				$("#dateinfo").html("Deadline: " + data.deadline);
+			} else {
+				$("#dateinfo").html("The deadline has passed");
+			}
 		},
 		error:function() {
 			console.log("Something went wrong");

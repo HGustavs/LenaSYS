@@ -7,6 +7,7 @@ if (checklogin() && isset($_POST["courseid"]) && isset($_POST["quizid"])) {
 page.title("Quiz menu");
 </script>
 <div class='middle center'>
+	<p id="dateinfo"><p>
 	<p id="admin_title"></p>
 	<button class='default' onclick="changeURL('quiz/quiz?courseid=' + qs.courseid + '&quizid='+qs.quizid);">Start Test</button>
 	

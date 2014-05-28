@@ -11,6 +11,8 @@ if (checklogin()) {
 		$stmt -> bindParam(':cid', $_POST["cid"]);
 		$stmt -> execute();	
 		$data = $stmt->fetch();
+		$now = new DateTime("now");
+		array_push($data, $now);
 
 		echo json_encode($data);
 	} else {
