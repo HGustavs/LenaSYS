@@ -111,10 +111,6 @@ function pagination() {
 			}
 			this.clearRows();
 			$("table.list tbody").append(output);
-		} else {
-			$('#content').empty();
-			$('#content').append("<div class='no_results'>There is currently no content available in the database</div>");
-			page.title("No content");
 		}
 	}
 
