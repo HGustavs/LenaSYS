@@ -26,14 +26,12 @@ if(checklogin() && isset($_POST['answers']) && $_POST['answers'] != ""){
 			}
 
 			$stmt->execute();
-			echo print_r($stmt->errorInfo());
 		} else {
-			$stmt = $pdo->prepare("INSERT INTO `userAnswer` (quizID, grade, uid, answer) VALUES(:qid, NULL, :uid, :answer)");
+			$stmt = $pdo->prepare("INSERT INTO `userAnswer` (quizID, grade, uid, answer) VALUES(:qid, -1, :uid, :answer)");
 			$stmt->bindParam(':qid', $quiz_id);
 			$stmt->bindParam(':uid', $_SESSION['uid']);
 			$stmt->bindParam(':answer', $answers);
-			echo 'gao';
-			var_dump($stmt->execute());
+			$stmt->execute();
 		}
 
 	}
