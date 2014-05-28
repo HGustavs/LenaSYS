@@ -708,7 +708,7 @@ table.list tr.red {
     left: 10%;
     -webkit-animation: nyanRun 10s; /* Chrome, Safari, Opera */
     -webkit-animation-timing-function: linear;
-    -moz-animation: nyanRun 10s; /* Chrome, Safari, Opera */
+    -moz-animation: nyanRun 10s;
     -moz-animation-timing-function: linear;
     animation-timing-function: linear;
     animation: nyanRun 10s;
@@ -724,13 +724,14 @@ table.list tr.red {
     left: 10%;
     -webkit-animation: nyanRun 7s; /* Chrome, Safari, Opera */
     -webkit-animation-timing-function: linear;
-    -webkit-animation-delay: 3s;
-    -moz-animation: nyanRun 7s; /* Chrome, Safari, Opera */
+    -moz-animation: nyanRun 7s;
     -moz-animation-timing-function: linear;
-    -moz-animation-delay: 3s;
-    animation-delay: 3s;
     animation-timing-function: linear;
-    animation: nyanRun 10s;
+    animation: nyanRun 3s;
+    -moz-animation-delay: 3s;
+    -webkit-animation-delay: 3s;
+    -o-animation-delay: 3s;
+    animation-delay: 3s;
 }
 /* Chrome, Safari, Opera */
 @-webkit-keyframes nyanRun
@@ -752,9 +753,9 @@ table.list tr.red {
 /* Standard syntax */
 @keyframes nyanRun
 {
-    0%   {left:0px; top:0px;}
-    25%  {left:200px; top:0px;}
-    50%  {left:200px; top:200px;}
-    75%  {left:0px; top:200px;}
-    100% {left:0px; top:0px;}
+    0%   {left: 10%; top:-400px;}
+    12%  {left: 10%; top:100%;}
+    14%  {left: 10%; top:95%;}
+    16%  {left: 10%; top:100%;}
+    100% {left: 200%; top:100%;}
 }
