@@ -157,9 +157,6 @@ function pagination() {
 								case 7:
 									cell.innerHTML = this.items.entries[n]["correctAnswer"];
 									break;
-								case 8:
-									cell.innerHTML = this.items.entries[n]["link"];
-									break;
 							}
 						}
 						if (failure) {

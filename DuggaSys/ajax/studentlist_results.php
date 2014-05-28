@@ -20,7 +20,6 @@
 				$result=$query->execute();
 				if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
 				
-				$link = null;
 				$dugganame = null;
 				$start = null;
 				$deadline = null;
@@ -60,7 +59,6 @@
 									'gradesystem' => $row['gradesystem'],
 									'answer' => $quizRow['answer'],
 									'correctAnswer' => $row['answer'],
-									'link' => $link,
 									'expired' => false
 								)
 							);
@@ -101,7 +99,6 @@
 									'gradesystem' => $gradesystem,
 									'answer' => "",
 									'correctAnswer' => $correctAnswer,
-									'link' => $link,
 									'expired' => $expired
 								)
 							);

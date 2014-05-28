@@ -10,7 +10,6 @@
 				<th>Grade</th>
 				<th>Answer</th>
 				<th>Correct answer</th>
-				<th>Go to</th>
 			</tr>
 		</thead>
 		<tbody>

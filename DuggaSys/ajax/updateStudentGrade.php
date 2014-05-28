@@ -45,7 +45,6 @@ if (checklogin()) {
 		$result=$query->execute();
 		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
 		
-		$link = null;
 		$dugganame = null;
 		$start = null;
 		$deadline = null;
@@ -84,7 +83,6 @@ if (checklogin()) {
 							'gradesystem' => $row['gradesystem'],
 							'answer' => $quizRow['answer'],
 							'correctAnswer' => $row['answer'],
-							'link' => $link,
 							'expired' => false
 						)
 					);
@@ -125,7 +123,6 @@ if (checklogin()) {
 							'gradesystem' => $gradesystem,
 							'answer' => "",
 							'correctAnswer' => $correctAnswer,
-							'link' => $link,
 							'expired' => $expired
 						)
 					);
