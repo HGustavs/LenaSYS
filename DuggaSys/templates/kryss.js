@@ -63,7 +63,7 @@ function getCheckedBoxes(){
 
 	}
 	function checkQuizAnswer(){
-		var answers = $('input:radio[name=answers]:checked').attr('id');
+		var answers = $('input:radio[name=answers]:checked').val();
 		var quiz_id = getUrlVars().quizid;
 		if(quiz_id != "undefined"){
 			$.ajax({

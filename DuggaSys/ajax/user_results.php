@@ -24,6 +24,7 @@
 			$deadline = null;
 			$quizName = null;
 			$gradesystem = null;
+			$userAnswer = $query['answer'];
 			foreach($query->fetchAll() as $row) {
 					array_push($completed, $row['quizID']);
 					$quizQuery = $pdo->prepare("SELECT * FROM quiz WHERE id = :1");

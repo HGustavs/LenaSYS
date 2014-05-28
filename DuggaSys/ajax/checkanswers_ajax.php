@@ -4,7 +4,7 @@ include_once(dirname(__FILE__) . "/../../Shared/basic.php");
 if(checklogin() && isset($_POST['answers']) && $_POST['answers'] != ""){
 
 	pdoConnect();
-	$answers = implode('|', $_POST['answers']);
+	$answers = $_POST['answers'];
 	$quiz_id = $_POST['quiz_id'];
 
 	// Get test information
