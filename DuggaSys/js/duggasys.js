@@ -289,7 +289,6 @@ function returnedSection(data)
 
 function resetPassword(uid){
 	$.ajax({
-		
 		url: 'ajax/resetpassword_ajax.php',
 		type: "POST",
 		dataType: "json",
@@ -298,16 +297,15 @@ function resetPassword(uid){
 		},
 		success: function (returnedData) {
 			if(returnedData != "false"){
-
-               showPopUp('reset',returnedData);
-
-            }else {
-              dangerBox('Problems reseting password', 'Could not reset password');
-
-            }
+				createPlaceholder();
+				showPopUp('reset', returnedData);
+				$('#overlay').on('click', function() { showPopUp('hide', returnedData) });
+			} else {
+				dangerBox('Problems reseting password', 'Could not reset password');
+			}
 		},
 		error: function(){
-            alert("error");
+			alert("error");
 		},
 	});
 }
@@ -353,7 +351,8 @@ function deleteStudent(){
 		success: function (returnedData) {
 			if(typeof returnedData.success == "undefined" || returnedData.success) {
 			  	successBox('Successfully removed students', 'Removed student(s): '+returnedData+' from the course.');
-				getStudents();
+				getResults(pagination);
+				pagination.goToPage(pagination.currentPage);
 			} else {
 				dangerBox('Problems removing students', 'Could not remove the students from the course. Make sure you selected at least one student.');
 			}
@@ -363,16 +362,22 @@ function deleteStudent(){
 		},
 	});
 }
+
+function createPlaceholder()
+{
+	$("body").prepend("<div id='overlay'></div>");
+	$("#light").html("Saving students...");
+	$("#light").show();
+	document.getElementById('light').style.visibility = "visible";
+}
+
 function passPopUp(){
     var qs = getUrlVars();
 
 	if($("#string").val().length < 1)
 		return;
 	
-	$("body").prepend("<div id='overlay'></div>");
-	$("#light").html("Saving students...");
-	$("#light").show();
-	document.getElementById('light').style.visibility = "visible";
+	createPlaceholder();
 
     $.ajax({
 		dataType: "json",
@@ -409,7 +414,7 @@ function showPopUp(showhidePop, returnedData){
 		output += "</table>";
 		//output += returnedData.length + " users added to the system";
 		output += "</div>";
-		//output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
+		output += "<input type='button' onclick='printDiv()' value='Print passwords' />";
 		
 		var div = document.getElementById('light');
 		div.innerHTML = output;
