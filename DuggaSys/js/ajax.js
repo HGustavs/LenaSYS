@@ -44,7 +44,7 @@ function editQuiz(dataArray)
 				cid: cid,
 				action: action, // edit/create
 				qid: qid,
-				//quizname: document.newQuizForm.quizname.value,
+				quizname: document.newQuizForm.quizname.value,
 				parameter: document.newQuizForm.parameterinput.value,
 				answer: document.newQuizForm.answerinput.value,
 				autograde: document.newQuizForm.autogradebox.checked,
@@ -58,16 +58,22 @@ function editQuiz(dataArray)
 				console.log(data);
 				if (data == "success") {
 					console.log("Edit successfull");					
-					changeURL("quiz/menu?courseid=" + cid + "&quizid=" + qid);
+					//changeURL("quiz/menu?courseid=" + cid + "&quizid=" + qid);
 					//changeURL("sectioned?courseid="+data.cid);	
+					
+					// SUPER-HAX-WORKAROUND-DELUX-ULTRA
+					setTimeout(function() {
+						successBox("Dugga egit", "Edit success!!!");
+					}, 500);
+					
 				} else if(data==="no access") {
 					alert("ap ap ap!");	
 					$(".xdsoft_noselect").remove();
-					changeURL("quiz/menu");
+					//changeURL("quiz/menu");
 				} else if(data==="no write access") {
 					alert("You dont have rights to edit quiz.");	
 					$(".xdsoft_noselect").remove();
-					changeURL("quiz/menu");
+					//changeURL("quiz/menu");
 				} else if(data==="false_deadline") {
 					$("#deadlineinput").css("background-color", "#ff7c6a");
 					console.log(data);
@@ -138,7 +144,7 @@ function editQuiz(dataArray)
 		success:function(data) {
 			//console.log(data);
 			console.log("A OK");
-			//$("#quizname").val(data.name);
+			$("#quizname").val(data.name);
 			$("#parameterinput").val(data.parameter);
 			$("#quizAnswerInput").val(data.answer);
 			//$("#autogradecheck").prop('checked', !!data.autograde);
@@ -159,9 +165,11 @@ function editQuiz(dataArray)
 			$.each($("#quizfile option"), function( index, value ) {
 			  if (value.value==data.quizFile) {
 			  	value.setAttribute('selected', true);	
+			  	getTemplateInfo(data.quizFile);
 			  };
-			  
 			});
+
+
 
 			if ($('#autogradecheck').prop('checked')) {
 				$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters) *");
