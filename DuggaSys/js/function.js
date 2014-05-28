@@ -228,7 +228,6 @@ function getQuiz(quizId) {
 				if(data != "error") {
 					console.log(data['template']+".js template loaded");
 					$("#content").prepend("<script type='text/javascript' src='templates/"+data['template']+".js'></script>");
-
 					setTimeout(function(){
 						quiz(data['parameters']);
 						addRemoveLoad(false);
@@ -236,7 +235,10 @@ function getQuiz(quizId) {
 				}
 				else {
 					console.log(data[0]);
-					dangerBox("Ooops you got an error!","This may mean that the system couldn't find the quiz you specified or that you don't have permission to the quiz you want to start.<br/>Contact an admin for support or try again later.")
+					historyBack();
+					setTimeout(function(){
+						dangerBox("Ooops you got an error!","This may mean that the system couldn't find the quiz you specified or that you don't have permission to the quiz you want to start.<br/>Contact an admin for support or try again later.")
+					}, 500);
 					addRemoveLoad(false);
 				}
 			},

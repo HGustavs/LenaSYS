@@ -126,6 +126,7 @@ function editQuiz(dataArray)
  }
 
  function getQuizData(quizid, cid) {
+ 	addRemoveLoad(true);
  	$.ajax({
 		dataType: "json",
 		type: "POST",
@@ -167,11 +168,11 @@ function editQuiz(dataArray)
 			} else {
 				$("#quizAnswerInputLabel").html("Answer, saves as string (max 2000 characters)");
 			};
-			
-
+			addRemoveLoad(false);
 		},
 		error:function() {
 			console.log("Something went wrong");
+			addRemoveLoad(false);
 		}
 	});
  }
