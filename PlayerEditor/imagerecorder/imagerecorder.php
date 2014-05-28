@@ -29,14 +29,7 @@
 		
 		<div class="wrapper">
 			<div class="header">Image Recorder</div>
-			<!--Div that stores the cords-information-->
-			<div class="cords">
-				<!--Creating the cordinates-field. These id are used in the .js file to write out the cordinates first when clicking, last two realtime-->
-				X(click): <span class="cordFont"><span id="xCord"></span></span>&nbsp;
-				Y(click): <span class="cordFont"><span id="yCord"></span></span>&nbsp;
-				X(realtime): <span class="cordFont"><span id="xCordReal"></span></span>&nbsp;
-				Y(realtime): <span class="cordFont"><span id="yCordReal"></span></span>&nbsp;	
-			</div>
+
 			<div id="export-feedback">
 			</div>
 			<div id="loading-dialog"><center><img src="img/loading.gif" alt="Loading"><br>Uploading images</center></div>

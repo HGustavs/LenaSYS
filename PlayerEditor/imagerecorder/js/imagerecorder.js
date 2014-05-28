@@ -171,9 +171,6 @@ function imagerecorder(canvas)
 						mHeight = (rect.bottom - rect.top);
 						mWidth = (rect.right-rect.left);
 
-						document.getElementById('xCord').innerHTML=xMouseReal;
-						document.getElementById('yCord').innerHTML=yMouseReal;
-
 						logMouseEvents('\n<mouseclick x="' + xMouseReal + '" y="' + yMouseReal + '"/>');
 
 						// Add undo point
@@ -254,10 +251,6 @@ function imagerecorder(canvas)
 		
 			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
 			yMouseReal = Math.round((event.clientY + imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-			//xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-			//yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-			document.getElementById('xCordReal').innerHTML=xMouseReal;
-			document.getElementById('yCordReal').innerHTML=yMouseReal;
 			
 			if (interval) {
 				return;
