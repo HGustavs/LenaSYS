@@ -82,7 +82,7 @@ function pagination() {
 							access='Teacher';
 						}
 						
-						if (sessName!=this.username) {
+						if (sessName!=this.items.entries[n]['username']) {
 
 							output += "<tr><td>"+this.items.entries[n]['username']+"</td>";
 							output += "<td>"+(this.items.entries[n]['firstname'] != null ? this.items.entries[n]['firstname']: '')+"</td>";
@@ -111,10 +111,6 @@ function pagination() {
 			}
 			this.clearRows();
 			$("table.list tbody").append(output);
-		} else {
-			$('#content').empty();
-			$('#content').append("<div class='no_results'>There is currently no content available in the database</div>");
-			page.title("No content");
 		}
 	}
 

@@ -4,35 +4,34 @@ include_once(dirname(__file__)."/../../Shared/sessions.php");
 if (checklogin()) {
 
 	if (hasAccess($_SESSION["uid"], $_POST["cid"], "w")) {
-
+		
 		include_once(dirname(__file__)."/../../../coursesyspw.php");
 		include_once(dirname(__file__)."/../../Shared/database.php");
 		pdoConnect();
 
-		$varCheck = "";
-		if ($_POST["action"]=="edit") {
+		$stmt = $pdo -> prepare('SELECT count(id) as count FROM quiz WHERE cid=:cid AND id=:qid');
+		$stmt -> bindParam(':qid', $_POST["qid"]);
+		$stmt -> bindParam(':cid', $_POST["cid"]);
+		$stmt -> execute();	
+		$data = $stmt->fetch();
 
-			/*if (isset($_POST["quizname"]) && $_POST["quizname"] !="") {
-				$quizname = $_POST["quizname"];
-			} else {
-				$varCheck .= "quizname/";
-			}*/
-			if (isset($_POST["gradesys"]) && $_POST["gradesys"] !="") {
-				$gradesys = $_POST["gradesys"];
-			} else {
-				$varCheck .= "gradesys/";
-			}
-
-			if ($varCheck=="") {
-				
-				//check if course info exists in DB
-				/*$stmt = $pdo -> prepare('SELECT count(name) as count FROM quiz WHERE name=:1 AND id!=:qid');
-				$stmt -> bindParam(':1', $quizname);
-				$stmt -> bindParam(':qid', $_POST["qid"]);
-				$stmt -> execute();	
-				$quizNameCheck = $stmt->fetch();*/
-
-
+		if ($data[0]>0) {
+			$varCheck = "";
+			if ($_POST["action"]=="edit") {
+	
+				if (isset($_POST["quizname"]) && $_POST["quizname"] !="") {
+					$quizname = $_POST["quizname"];
+				} else {
+					$varCheck .= "quizname/";
+				}
+				if (isset($_POST["gradesys"]) && $_POST["gradesys"] !="") {
+					$gradesys = $_POST["gradesys"];
+				} else {
+					$varCheck .= "gradesys/";
+				}
+	
+				if ($varCheck=="") {
+					
 					if (isset($_POST["answer"]) && $_POST["answer"] !="") {
 						$answer = $_POST["answer"];
 					} else {
@@ -92,24 +91,24 @@ if (checklogin()) {
 							`autograde`=:2,
 							`gradesystem`=:3,
 							`answer`=:4,
+							`name`=:5,
 							`parameter`=:9,
 							`quizFile`=:8,
 							`release`=:6,
 							`deadline`=:7 
 							WHERE id=:qid');
-						$stmt -> bindParam(':qid', settype($_POST["qid"] , "integer"));
+						$stmt -> bindParam(':qid', $_POST["qid"], PDO::PARAM_INT);
 						$stmt -> bindParam(':2', $autograde);
 						$stmt -> bindParam(':3', $gradesys);
 						$stmt -> bindParam(':4', $answer);
-						//$stmt -> bindParam(':5', $quizname);
+						$stmt -> bindParam(':5', $quizname);
 						$stmt -> bindParam(':6', $releasedate);
 						$stmt -> bindParam(':7', $deadline);
 						$stmt -> bindParam(':8', $quizfile);
 						$stmt -> bindParam(':9', $parameter);
 						
 						if ($stmt -> execute()) {
-							print_r($_POST);
-							//echo json_encode("success");
+							echo json_encode("success");
 						} else {
 							//print_r($releasedate);
 							print_r($stmt -> errorInfo());						
@@ -117,45 +116,45 @@ if (checklogin()) {
 					} else {
 						echo json_encode("false_deadline");
 					}
+				} else {
+					echo json_encode($varCheck);
+				}
+
+			} elseif($_POST["action"]=="create") {
+	
+				$stmt = $pdo -> prepare('INSERT INTO `quiz`(`cid`) VALUES (:cid)');
+				$stmt -> bindParam(':cid', $_POST["cid"]);
+				
+				if ($stmt -> execute()) {
+					$id = $pdo->lastInsertId();
+	
+					$stmt = $pdo -> prepare('SELECT `id`, `cid`, `autograde`, `gradesystem`, `answer`, `name`, `release`, `deadline` FROM quiz WHERE id=:1');
+					$stmt -> bindParam(':1', $id);
+					$stmt -> execute();	
+					$data = $stmt->fetch();
+	
+					echo json_encode($data);
+	
+				} else {
+					//print_r($releasedate);
+					print_r($stmt -> errorInfo());						
+				}
 			} else {
-				echo json_encode($varCheck);
+				echo json_encode("no action submitted");
+			}
+			if ($varCheck!="") {
+	
+				//echo json_encode($varCheck);	
+			} else {
+				//echo json_encode("all data present");		
 			}
 			
-
 			
-
-		} elseif($_POST["action"]=="create") {
-
-			$stmt = $pdo -> prepare('INSERT INTO `quiz`(`cid`) VALUES (:cid)');
-			$stmt -> bindParam(':cid', $_POST["cid"]);
-			
-			if ($stmt -> execute()) {
-				$id = $pdo->lastInsertId();
-
-				$stmt = $pdo -> prepare('SELECT `id`, `cid`, `autograde`, `gradesystem`, `answer`, `name`, `release`, `deadline` FROM quiz WHERE id=:1');
-				$stmt -> bindParam(':1', $id);
-				$stmt -> execute();	
-				$data = $stmt->fetch();
-
-				echo json_encode($data);
-
-			} else {
-				//print_r($releasedate);
-				print_r($stmt -> errorInfo());						
-			}
 		} else {
-			echo json_encode("no action submitted");
+			echo json_encode("no write access on quiz");
 		}
-		if ($varCheck!="") {
-
-			//echo json_encode($varCheck);	
-		} else {
-			//echo json_encode("all data present");		
-		}
-		
-		
 	} else {
-		echo json_encode("no write access");
+
 	}
 } else {
 	echo json_encode("no access");
