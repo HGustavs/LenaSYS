@@ -19,11 +19,11 @@ if (checklogin()) {
 			$varCheck = "";
 			if ($_POST["action"]=="edit") {
 	
-				/*if (isset($_POST["quizname"]) && $_POST["quizname"] !="") {
+				if (isset($_POST["quizname"]) && $_POST["quizname"] !="") {
 					$quizname = $_POST["quizname"];
 				} else {
 					$varCheck .= "quizname/";
-				}*/
+				}
 				if (isset($_POST["gradesys"]) && $_POST["gradesys"] !="") {
 					$gradesys = $_POST["gradesys"];
 				} else {
@@ -32,97 +32,90 @@ if (checklogin()) {
 	
 				if ($varCheck=="") {
 					
-					//check if course info exists in DB
-					/*$stmt = $pdo -> prepare('SELECT count(name) as count FROM quiz WHERE name=:1 AND id!=:qid');
-					$stmt -> bindParam(':1', $quizname);
-					$stmt -> bindParam(':qid', $_POST["qid"]);
-					$stmt -> execute();	
-					$quizNameCheck = $stmt->fetch();*/
-	
-	
-						if (isset($_POST["answer"]) && $_POST["answer"] !="") {
-							$answer = $_POST["answer"];
+					if (isset($_POST["answer"]) && $_POST["answer"] !="") {
+						$answer = $_POST["answer"];
+					} else {
+						$answer = "";
+					}
+					if (isset($_POST["parameter"]) && $_POST["parameter"] !="") {
+						$parameter = $_POST["parameter"];
+					} else {
+						$parameter = "";
+					}
+					if (isset($_POST["quizfile"]) && $_POST["quizfile"] !="") {
+						$dir    = '../templates';
+						$files = scandir($dir);
+						
+						if (in_array($_POST["quizfile"].".js", $files)) {
+							$quizfile = $_POST["quizfile"];
+							//echo json_encode("file does not exist");
 						} else {
-							$answer = "";
-						}
-						if (isset($_POST["parameter"]) && $_POST["parameter"] !="") {
-							$parameter = $_POST["parameter"];
-						} else {
-							$parameter = "";
-						}
-						if (isset($_POST["quizfile"]) && $_POST["quizfile"] !="") {
-							$dir    = '../templates';
-							$files = scandir($dir);
-							
-							if (in_array($_POST["quizfile"].".js", $files)) {
-								$quizfile = $_POST["quizfile"];
-								//echo json_encode("file does not exist");
-							} else {
-								$quizfile = "default.js";
-							}
-							
-						} else {
-							$answer = "";
-						}
-						$autograde = "0";
-						if (isset($_POST["autograde"]) && $_POST["autograde"] =="true") {
-							$autograde = "1";
-						} elseif (isset($_POST["autograde"]) && $_POST["autograde"] =="false") {
-							$autograde = "0";
-						}
-	
-						if (isset($_POST["activateonsubmit"]) && $_POST["activateonsubmit"] =="true") {
-							date_default_timezone_set('Europe/Stockholm');
-	 						$now= date('Y-m-d H:i:s');
-							$releasedate = $now;
-						} else {
-							if (isset($_POST["releasedate"]) && $_POST["releasedate"] !="") {
-								$releasedate = $_POST["releasedate"];
-							} else {
-								$releasedate = "0000-00-00 00:00:00";
-							}
-						}
-						if (isset($_POST["deadline"]) && $_POST["deadline"] !="") {
-							date_default_timezone_set("Europe/Stockholm");
-							if (strtotime($_POST["deadline"])<strtotime($releasedate)) {
-								$deadline = false;
-							} else {
-								$deadline = $_POST["deadline"];
-							};
-							
-						} else {
-							$deadline = "0000-00-00 00:00:00";
+							$quizfile = "default.js";
 						}
 						
-						if ($deadline!=false) {
-							$stmt = $pdo -> prepare('UPDATE `quiz` SET 
-								`autograde`=:2,
-								`gradesystem`=:3,
-								`answer`=:4,
-								`parameter`=:9,
-								`quizFile`=:8,
-								`release`=:6,
-								`deadline`=:7 
-								WHERE id=:qid');
-							$stmt -> bindParam(':qid', $_POST["qid"], PDO::PARAM_INT);
-							$stmt -> bindParam(':2', $autograde);
-							$stmt -> bindParam(':3', $gradesys);
-							$stmt -> bindParam(':4', $answer);
-							//$stmt -> bindParam(':5', $quizname);
-							$stmt -> bindParam(':6', $releasedate);
-							$stmt -> bindParam(':7', $deadline);
-							$stmt -> bindParam(':8', $quizfile);
-							$stmt -> bindParam(':9', $parameter);
-							
-							if ($stmt -> execute()) {
-								echo json_encode("success");
-							} else {
-								//print_r($releasedate);
-								print_r($stmt -> errorInfo());						
-							}
+					} else {
+						$answer = "";
+					}
+					$autograde = "0";
+					if (isset($_POST["autograde"]) && $_POST["autograde"] =="true") {
+						$autograde = "1";
+					} elseif (isset($_POST["autograde"]) && $_POST["autograde"] =="false") {
+						$autograde = "0";
+					}
+
+					if (isset($_POST["activateonsubmit"]) && $_POST["activateonsubmit"] =="true") {
+						date_default_timezone_set('Europe/Stockholm');
+ 						$now= date('Y-m-d H:i:s');
+						$releasedate = $now;
+					} else {
+						if (isset($_POST["releasedate"]) && $_POST["releasedate"] !="") {
+							$releasedate = $_POST["releasedate"];
 						} else {
-							echo json_encode("false_deadline");
+							$releasedate = "0000-00-00 00:00:00";
 						}
+					}
+					if (isset($_POST["deadline"]) && $_POST["deadline"] !="") {
+						date_default_timezone_set("Europe/Stockholm");
+						if (strtotime($_POST["deadline"])<strtotime($releasedate)) {
+							$deadline = false;
+						} else {
+							$deadline = $_POST["deadline"];
+						};
+						
+					} else {
+						$deadline = "0000-00-00 00:00:00";
+					}
+					
+					if ($deadline!=false) {
+						$stmt = $pdo -> prepare('UPDATE `quiz` SET 
+							`autograde`=:2,
+							`gradesystem`=:3,
+							`answer`=:4,
+							`name`=:5,
+							`parameter`=:9,
+							`quizFile`=:8,
+							`release`=:6,
+							`deadline`=:7 
+							WHERE id=:qid');
+						$stmt -> bindParam(':qid', $_POST["qid"], PDO::PARAM_INT);
+						$stmt -> bindParam(':2', $autograde);
+						$stmt -> bindParam(':3', $gradesys);
+						$stmt -> bindParam(':4', $answer);
+						$stmt -> bindParam(':5', $quizname);
+						$stmt -> bindParam(':6', $releasedate);
+						$stmt -> bindParam(':7', $deadline);
+						$stmt -> bindParam(':8', $quizfile);
+						$stmt -> bindParam(':9', $parameter);
+						
+						if ($stmt -> execute()) {
+							echo json_encode("success");
+						} else {
+							//print_r($releasedate);
+							print_r($stmt -> errorInfo());						
+						}
+					} else {
+						echo json_encode("false_deadline");
+					}
 				} else {
 					echo json_encode($varCheck);
 				}
