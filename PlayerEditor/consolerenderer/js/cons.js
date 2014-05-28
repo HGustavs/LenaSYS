@@ -501,9 +501,6 @@ function cons(consolewidth,consoleheight,tilesize,color,bgcolor)
 				if (this.repeat == 1) {
 					this.play();
 				}
-				else {
-					alert("Finished Script!");
-				}
 			}
 		}
 	}				

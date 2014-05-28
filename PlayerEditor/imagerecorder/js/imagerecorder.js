@@ -171,9 +171,6 @@ function imagerecorder(canvas)
 						mHeight = (rect.bottom - rect.top);
 						mWidth = (rect.right-rect.left);
 
-						document.getElementById('xCord').innerHTML=xMouseReal;
-						document.getElementById('yCord').innerHTML=yMouseReal;
-
 						logMouseEvents('\n<mouseclick x="' + xMouseReal + '" y="' + yMouseReal + '"/>');
 
 						// Add undo point
@@ -254,10 +251,6 @@ function imagerecorder(canvas)
 		
 			xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)*(canvas.width/mWidth));
 			yMouseReal = Math.round((event.clientY + imgrecorder.scrollAmountY - ImageCanvas.offsetTop)*(canvas.height/mHeight));
-			//xMouseReal = Math.round((event.clientX - ImageCanvas.offsetLeft)/currentImageRatio);
-			//yMouseReal = Math.round((event.clientY - ImageCanvas.offsetTop)/currentImageRatio);
-			document.getElementById('xCordReal').innerHTML=xMouseReal;
-			document.getElementById('yCordReal').innerHTML=yMouseReal;
 			
 			if (interval) {
 				return;
@@ -272,24 +265,16 @@ function imagerecorder(canvas)
 		 * Update scale ratio when the window is resized
 		 */
 		$(window).on('resize', function(){
-				if(libEntered == 1){ // checks if lib-name has been choosen
-					// Scale ratio update (for correct mouse positions)
-					var rect = canvas.getBoundingClientRect();
-					mHeight = (rect.bottom - rect.top);
-					mWidth = (rect.right-rect.left);
-					
-					canvas.width = mWidth;
-					canvas.height = mHeight; 
-					imgrecorder.maxCanvasWidth = mWidth;
-					imgrecorder.maxCanvasHeight = mHeight;
-					resizeCanvas();
-					updateScaleRatio();
-				}
 			if(clicked == 1) { //Checks if any clicks has been made and if the pictures been clicked it will show the right pic
 				showImage(activeImage);
 			}
 			else{
-				ctx.drawImage(initImage,0,0, mWidth, mHeight);
+				showInitImage();
+			}
+
+			if(libEntered == 1){ // checks if lib-name has been choosen
+				resizeCanvas();
+				updateScaleRatio();
 			}
 		});
 		
@@ -519,6 +504,19 @@ function imagerecorder(canvas)
 		which means that the canvas gets the same aspect ratio as the image.
 	*/
 	function resizeCanvas(){
+		// Reset canvas size
+		setCanvasWidth("100%");
+		setCanvasHeight("100%");
+		// Correct scale
+		var rect = canvas.getBoundingClientRect();
+		mHeight = (rect.bottom - rect.top);
+		mWidth = (rect.right-rect.left);
+		canvas.width = mWidth;
+		canvas.height = mHeight; 
+		imgrecorder.maxCanvasWidth = mWidth;
+		imgrecorder.maxCanvasHeight = mHeight;
+
+
 		var scale = imgrecorder.maxCanvasWidth/imgrecorder.currentImageWidth;
 		setCanvasWidth(imgrecorder.maxCanvasWidth);
 			
@@ -686,7 +684,7 @@ function imagerecorder(canvas)
 
 	
 	/*
-	 *	Logging mouse-clicks. Writes the XML to the console.log in firebug.
+	 *	Logging mouse-clicks.
 	 */
 	function logMouseEvents(str){
 		// Set default string value
