@@ -9,29 +9,24 @@ $(document).keydown(function(e) {
 });
 
 function WEREGOINGTODISNEYLAND() {
-	var enormousSandwich = Math.floor(Math.random() * 4) + 0;
-	switch (enormousSandwich) {
-		case 0:
-			return "//www.youtube.com/embed/AjPau5QYtYs?autoplay=1";
-			break;
-		default:
-		case 1:
-			return "//www.youtube.com/embed/bLqwK00Ob4w?autoplay=1";
-			break;
-		case 2:
-			return "//www.youtube.com/embed/OIfLyMSuAMA?autoplay=1";
-			break;
-		case 3:
-			return "//www.youtube.com/embed/QH2-TGUlwu4?autoplay=1";
-			break;
+	var candyStore = [
+		"//www.youtube.com/embed/AjPau5QYtYs?autoplay=1",
+		"//www.youtube.com/embed/bLqwK00Ob4w?autoplay=1",
+		"//www.youtube.com/embed/OIfLyMSuAMA?autoplay=1",
+		"//www.youtube.com/embed/QH2-TGUlwu4?autoplay=1",
+		"//www.youtube.com/embed/2a4gyJsY0mc?autoplay=1",
+	];
+	var enormousSandwich = Math.floor(Math.random() * candyStore.length);
+
+	if(enormousSandwich == 3) {
+		kittySpree();
 	}
-	
+	return candyStore[enormousSandwich];
 }
 
 $( document ).ready(function() {
 	page = new getPage();
 	page.show();
-	nyanCat();
 });
 // Running page object functions if browser back/forward buttons get pressed //
 window.onhashchange = function() {
@@ -226,19 +221,24 @@ function getQuiz(quizId) {
 				data = JSON.parse(data);
 				console.log("success");
 				console.log(data);
-				if(data != "error") {
+				if(typeof data.error == "undefined") {
 					console.log(data['template']+".js template loaded");
 					$("#content").prepend("<script type='text/javascript' src='templates/"+data['template']+".js'></script>");
 					setTimeout(function(){
 						quiz(data['parameters']);
 						addRemoveLoad(false);
 					}, 500);
-				}
-				else {
+				} else {
 					console.log(data[0]);
 					historyBack();
 					setTimeout(function(){
-						dangerBox("Ooops you got an error!","This may mean that the system couldn't find the quiz you specified or that you don't have permission to the quiz you want to start.<br/>Contact an admin for support or try again later.")
+						dangerBox(
+							"Ooops you got an error!",
+							"This may mean that the system couldn't find the quiz " + 
+							"you specified or that you don't have permission to the " + 
+							"quiz you want to start.<br/>Contact an admin for " +
+							"support or try again later.<br/><br/>" + 
+							"The error reported was: " + data.error)
 					}, 500);
 					addRemoveLoad(false);
 				}
@@ -301,7 +301,7 @@ function removeDateTimePicker() {
 		$(".xdsoft_noselect").remove();	
 	};
 }
-function nyanCat() {
+function kittySpree() {
 	$("body").append("<figure id='nyanCat'></figure>");
 	$("body").append("<figure id='nyanKillCat'></figure>");
 }

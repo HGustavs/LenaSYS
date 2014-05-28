@@ -5,6 +5,7 @@ include_once(dirname(__file__)."/../../../coursesyspw.php");
 include_once(dirname(__file__)."/../../Shared/database.php");
 pdoConnect();
 $error = false;
+$quiz = "";
 function getQuiz($quizid){
     global $pdo;
     $query = "SELECT name, parameter as parameters, quizFile as template, `release`, deadline FROM quiz WHERE id = :id";
@@ -12,8 +13,6 @@ function getQuiz($quizid){
     $stmt->bindParam(':id', $quizid);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    //print_r($result);
-    //var_dump($result);
     return $result;
 }
 
@@ -33,33 +32,28 @@ if (checklogin()) {
 			$stmt->bindValue(':uid', $_SESSION['uid']);
 			$stmt->execute();
 			$count = $stmt->fetch();
-			//print (json_encode($quiz));
 			if ($count["count"]==0) {
 				$quiz = getQuiz($_POST["quizid"]);
-				//print_r($quiz);
 				// Is the quiz released?
 				if(strtotime($quiz['release']) > time()) 
 					$error = "not released";
 			} else {
-				$error = "already done";
+				$error = "You have already done this test";
 			}
 			
-		}else {
-			$error = "no quizID set";
+		} else {
+			$error = "No QuizID set";
 		}
 	} else {
-		$error = "no access";	
+		$error = "Access denied";	
 	}
-
-if($error!==false) {
-	print (json_encode($quiz));
-}
-else {
-	print (json_encode($error));
-}
-
-
 } else {
-	echo (json_encode("no access"));
+	$error = "Access denied";
+}
+
+if($error === false) {
+	print (json_encode($quiz));
+} else {
+	print (json_encode(array("error" => $error)));
 }
 ?>
