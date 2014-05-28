@@ -413,8 +413,8 @@ CREATE TABLE `quiz` (
   `parameter` varchar(2000) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
   `quizFile` varchar(255) NOT NULL DEFAULT 'default',
-  `release` datetime NOT NULL DEFAULT '9999-12-31 23:59:59',
-  `deadline` datetime NULL DEFAULT NULL,
+  `release` datetime NOT NULL DEFAULT '9999-12-31 23:59:58',
+  `deadline` datetime NULL DEFAULT '9999-12-31 23:59:59',
   PRIMARY KEY (`id`),
   FOREIGN KEY(`cid`)
 		REFERENCES course(cid)
