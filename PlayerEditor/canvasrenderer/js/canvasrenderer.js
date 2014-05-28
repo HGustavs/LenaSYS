@@ -32,7 +32,6 @@ function Canvasrenderer()
 	this.scaleRatioX = 1;
 	this.scaleRatioY = 1;
 	this.scaleRatio = 1;
-	this.startTime;
 	this.fDelta;
 	this.mouseClickRadius = 20;	
 	this.recordedCanvasWidth;
@@ -145,7 +144,6 @@ function Canvasrenderer()
 			ctx.clearRect(0, 0, c.width, c.height);
 			this.firsttime = 0;
 		}
-		this.startTime = Date.now();
 		// Only play if we have a document
 		if(this.timesteps!=null){
 			this.paused=0;
