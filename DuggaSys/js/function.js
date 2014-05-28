@@ -227,10 +227,10 @@ function getQuiz(quizId) {
 				console.log(data);
 				if(data != "error") {
 					console.log(data['template']+".js template loaded");
-					loadHeaderLink("templates/"+data['template']+".js", "js");
+					$("#content").prepend("<script type='text/javascript' src='templates/"+data['template']+".js'></script>");
 
 					setTimeout(function(){
-						quiz(data['parameters'], data['question']);
+						quiz(data['parameters']);
 						addRemoveLoad(false);
 					}, 500);
 				}
@@ -255,7 +255,6 @@ function getQuiz(quizId) {
 	}
 }
 // QUIZ FUNCTIONS END //
-
 function getTemplateInfo(template) {
 	if(template != "undefined") {
 		addRemoveLoad(true);
@@ -280,7 +279,20 @@ function getTemplateInfo(template) {
 		});
 	}
 }
+// SHOW OR HIDE LOAD BAR FUNCTION START //
+function addRemoveLoad(show) {
+	if(show && $("header .load").length ==0) {
 
+		$("header").append("<div class='load'></div>");
+	}
+	else if(!show) {
+		$("header .load").fadeOut(300, function() { $(this).remove(); });
+	}
+	else {
+		return true;		
+	}
+}
+// SHOW OR HIDE LOAD BAR FUNCTION END //
 function removeDateTimePicker() {
 	if ($(".xdsoft_noselect").length) {
 		$(".xdsoft_noselect").remove();	
