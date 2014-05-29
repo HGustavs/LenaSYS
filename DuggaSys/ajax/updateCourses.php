@@ -4,7 +4,7 @@ session_start();
 include_once(dirname(__file__)."/../../Shared/sessions.php");
 
 if (checklogin()) {
-	if (isSuperUser($_SESSION["uid"])) {
+	if (isSuperUser($_SESSION["uid"]) || hasAccess($_SESSION['uid'], $_POST['courseid'], 'w')) {
 		include_once(dirname(__file__)."/../../../coursesyspw.php");
 		include_once(dirname(__file__)."/../../Shared/database.php");
 		pdoConnect();
