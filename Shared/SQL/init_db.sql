@@ -114,7 +114,7 @@ CREATE TABLE codeexample(
 		exampleid			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		cid					INT UNSIGNED NOT NULL,
 		examplename			VARCHAR(64),
-		wordlist			VARCHAR(64),
+--		wordlist			VARCHAR(64),
 		runlink			  	VARCHAR(64),
 		cversion			INTEGER,
 		public 				tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
@@ -127,44 +127,79 @@ CREATE TABLE codeexample(
 		FOREIGN KEY (templateid) REFERENCES template (templateid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO codeexample(exampleid,cid,examplename,wordlist,runlink,uid,cversion) values (0,1,"Events 1","JS","",1,2013);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Events 1","JS","",1,2013);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Events 2","JS","",1,2013);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Callback 1","GLSL","Culf.html",1,2013);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion,templateid) values (1,"Callback 2","GLSL","Dulf.html",1,2013,1);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion,templateid) values (1,"Callback 3","GLSL","",2,2013,1);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion,templateid) values (1,"Callback 4","JS","Fulf.html",2,2013,1);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion,templateid) values (1,"Design 1","GLSL","Gulf.html",2,2013,1);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Design 2","JS","Hulf.html",2,2013);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Design 3","JS","Iulf.html",1,2013);
-INSERT INTO codeexample(cid,examplename,wordlist,runlink,uid,cversion) values (1,"Design 4","JS","Julf.html",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 2","",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Callback 1","Culf.html",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 2","Dulf.html",1,2013,1);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 3","",2,2013,1);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 4","Fulf.html",2,2013,1);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 1","Gulf.html",2,2013,1);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 2","Hulf.html",2,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 3","Iulf.html",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
  
 
 
-/*filelist contains a list of shortcuts to files
-CREATE TABLE filelist(
-		fileid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		exampleid			MEDIUMINT UNSIGNED NOT NULL,
-		filename			VARCHAR(1024),
-		pos					INTEGER UNSIGNED,
-		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+
+
+
+/* improw contains a list of the important rows for a certain example */
+CREATE TABLE wordlist(
+		wordlistid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,		
+		wordlistname 		VARCHAR(24),
+		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
-		PRIMARY KEY(fileid),
-		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
+		PRIMARY KEY(wordlistid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+	
+INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
 
-INSERT INTO filelist(fileid,uid,exampleid) VALUES (0,1,0);	
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (1,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (2,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (3,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (4,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (5,"js1.js",1,2);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (6,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (7,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (8,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (9,"js1.js",1,1);
-INSERT INTO filelist(exampleid,filename,pos,uid) VALUES (10,"js1.js",1,1);*/
+
+
+/* Delete and update all foreign keys before deleting a wordlist */
+delimiter //
+CREATE TRIGGER checkwordlists BEFORE DELETE ON wordlist
+FOR EACH ROW
+BEGIN
+	 DELETE FROM word WHERE wordlistid = OLD.wordlistid;    
+     IF ((Select count(*) FROM codeBox WHERE wordlistid=OLD.wordlistid)>"0")THEN   
+     		UPDATE codeBox SET wordlistid = (SELECT MIN(wordlistid) FROM wordlist WHERE wordlistid != OLD.wordlistid) WHERE wordlistid=OLD.wordlistid;
+     END IF;
+ END;//
+ delimiter ;
+
+
+CREATE TABLE word(
+		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		wordlistid			MEDIUMINT UNSIGNED NOT NULL,			
+		word 				VARCHAR(64),
+		label				VARCHAR(256),
+		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		uid					INT UNSIGNED NOT NULL,
+		PRIMARY KEY(wordid, wordlistid),
+		FOREIGN KEY (uid) REFERENCES user (uid),
+		FOREIGN KEY(wordlistid) REFERENCES wordlist(wordlistid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"if","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"var","D",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"echo","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"function","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"if","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"else","D",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
+
 
 
 /* boxes with information in a certain example */
@@ -188,7 +223,7 @@ BEGIN
         	INSERT INTO descriptionBox (boxid, exampleid, segment) VALUES (NEW.boxid, NEW.exampleid, "");
      END IF;
      IF ((UPPER(NEW.boxcontent) LIKE "CODE") AND ((Select count(*) FROM codeBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid) <>"1")) THEN       
-        	INSERT INTO codeBox (boxid, exampleid, filename) VALUES (NEW.boxid, NEW.exampleid, "");
+        	INSERT INTO codeBox (boxid, exampleid, filename,wordlistid) VALUES (NEW.boxid, NEW.exampleid, "", (select MIN(wordlistid) from wordlist));
      END IF;
  END;//
  delimiter ;
@@ -225,21 +260,23 @@ CREATE TABLE codeBox(
 		filename			VARCHAR(1024),
 		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		appuser				VARCHAR(64),
+		wordlistid			MEDIUMINT UNSIGNED NOT NULL,
 
 		PRIMARY KEY(boxid, exampleid),
-		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
+		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid),
+		FOREIGN KEY (wordlistid) REFERENCES wordlist(wordlistid)
 );
 
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,1,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,2,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,3,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,4,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,5,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,6,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,7,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,8,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,9,"js1.js");
-INSERT INTO codeBox(boxid,exampleid,filename) VALUES (1,10,"js1.js");
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,1,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,2,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,3,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,4,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,5,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,6,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,7,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,8,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,9,"js1.js",1);
+INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,10,"js1.js",1);
 
 
 
@@ -314,6 +351,7 @@ BEGIN
 
 
 /* Wordlist contains a list of keywords for a certain programming language or file type */
+/*
 CREATE TABLE wordlist(
 		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		wordlist			VARCHAR(64),
@@ -331,6 +369,14 @@ INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","var","C",1);
 INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","function","D",2);
 INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("GLSL","vec3","A",2);
 INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("GLSL","dot","B",2);
+*/
+
+
+
+
+
+
+
 
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(
