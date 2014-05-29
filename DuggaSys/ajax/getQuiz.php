@@ -36,7 +36,9 @@ if (checklogin()) {
 				$quiz = getQuiz($_POST["quizid"]);
 				// Is the quiz released?
 				if(strtotime($quiz['release']) > time()) 
-					$error = "not released";
+					$error = "This test has not been released yet";
+				if(strtotime($quiz['deadline']) <= time())
+					$error = "Deadline has passed.";
 			} else {
 				$error = "You have already done this test";
 			}
