@@ -296,12 +296,16 @@ function resetPassword(uid){
 			user_id: uid
 		},
 		success: function (returnedData) {
-			if(returnedData != "false"){
+			if(returnedData != false){
 				createPlaceholder();
 				showPopUp('reset', returnedData);
 				$('#overlay').on('click', function() { showPopUp('hide', returnedData) });
 			} else {
-				dangerBox('Problems reseting password', 'Could not reset password');
+				setTimeout(function() {
+						dangerBox('Problems resetting password', 'Could not reset password. Only super users can reset passwords.');
+					},
+					500
+				);
 			}
 		},
 		error: function(){
