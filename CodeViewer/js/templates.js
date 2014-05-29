@@ -102,11 +102,21 @@ function createboxmenu(contentid, boxid, type){
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
 				str+= '<td class="butto2 showdesktop" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
 				str+= '<td class="butto2 showdesktop" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
-				str+= '<td class="butto2 showdesktop" title="Code example" onclick="styleCode();"><img src="new icons/quote_button.svg" /></td>';
 				str+= "<td class='butto2 showdesktop imgdropbutton' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
 				
+				
+				/* Select-element to change wordlist to this specific box */
+				str+="<td class='butto2 showdesktop'>";
+				str+="<select id='wordlistselect"+boxid+"' class='wordlistselect' >";	
+				str+="<option selected='selected' disabled >Code</option>";		
+				for(i=0;i<retdata['wordlists'].length;i++){
+					str+="<option onclick='styleCode("+retdata['wordlists'][i][0]+");'>"+retdata['wordlists'][i][1]+"</option>";										
+				}
+				str+="</td>";
+				
+				/* Select-element to change content of this specific box */
 				str+= "<td  class='butto2 showdesktop'>";
-				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+				str+= "<select class='boxcontentselect' onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 						str+= "<option value='DOCUMENT'>Description section</option>";
 						str+= "<option value='CODE'>Code example</option>";
 					str+= "</select>";
@@ -115,8 +125,25 @@ function createboxmenu(contentid, boxid, type){
 				var str = "<table cellspacing='2'><tr>";
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
 				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayDrop(\""+contentid+"codedrop\");' title='Select codesource' ><img src='new icons/general_settings_button.svg' /></td>";
+				
+				
+				
+				/* Select-element to change wordlist to this specific box */
 				str+="<td class='butto2 showdesktop'>";
-				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+				str+="<select id='wordlistselect"+boxid+"' class='wordlistselect' onchange='chosenWordlist("+boxid+");' >";	
+				for(i=0;i<retdata['wordlists'].length;i++){
+					if(retdata['wordlists'][i][0] == getChosenwordlist(boxid)){
+						str+="<option selected='selected'  value='"+retdata['wordlists'][i][0]+"'>"+retdata['wordlists'][i][1]+"</option>";		
+					}else{
+						str+="<option value='"+retdata['wordlists'][i][0]+"'>"+retdata['wordlists'][i][1]+"</option>";										
+					}
+				}
+				str+="</td>";
+				
+				
+				/* Select-element to change content of this specific box */
+				str+="<td class='butto2 showdesktop'>";
+				str+= "<select class='boxcontentselect' onchange='changeboxcontent(this.value,\""+boxid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 						str+= "<option value='CODE'>Code example</option>";
 						str+= "<option value='DOCUMENT'>Description section</option>";
 					str+= "</select>";
@@ -126,7 +153,7 @@ function createboxmenu(contentid, boxid, type){
 			}else{
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
-				str+= "<select onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+				str+= "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
 					str+= "<option>Choose content</option>";
 						str+= "<option value='CODE'>Code example</option>";
 						str+= "<option value='DOCUMENT'>Description section</option>";
@@ -213,6 +240,39 @@ function displayImplines(codedropid, boxid){
 		str+="<li class='activeSetMenuLink' >Imp. lines</li>";
 		str+="<li onclick='displayFilelist(\""+codedropid+"\",\""+boxid+"\");'>Filelist</li>";
 	str+="</ul>";
+
+	
+	// var chosenwordlist = getChosenwordlist(boxid);
+// 
+	// str+="<br/>Selected Wordlist: <br/><select id='wordlistselect"+boxid+"' onchange='chosenWordlist("+boxid+");' >";
+				// for(i=0;i<retdata['wordlists'].length;i++){
+						// if(retdata['wordlists'][i][0]==chosenwordlist){
+							// var chosenwordlistname=retdata['wordlists'][i][1];
+								// str+="<option selected='selected'>"+retdata['wordlists'][i][1]+"</option>";										
+						// }else{
+								// str+="<option value='"+retdata['wordlists'][i][0]+"'>"+retdata['wordlists'][i][1]+"</option>";										
+						// }
+				// }
+				// str+="</select><br/>Wordlist: "+chosenwordlistname+"<br/><select size='8' style='width:200px;'>";
+				// for(i=0;i<retdata['words'].length;i++){
+						// if(retdata['words'][i][0]==chosenwordlist){
+								// str+="<option onclick='selectWordlistWord(\""+retdata['words'][i][1]+"\",\""+boxid+"\");'>"+retdata['words'][i][1]+"</option>";										
+						// }
+				// }
+				// str+="</select><br/>";
+				// str+="<div id='wordlistError' class='errormsg'></div>";
+				// str+="<input type='text' size='24' id='wordlisttextbox"+boxid+"' maxlength='60' />";
+				// str+="<select id='wordslabel"+boxid+"'>";
+					// str+="<option value='A'>Label 1</option>";
+					// str+="<option value='B'>Label 2</option>";
+					// str+="<option value='C'>Label 3</option>";
+					// str+="<option value='D'>Label 4</option>";
+				// str+="</select>";
+				// str+="<input type='button' value='add' onclick='addWordlistWord("+boxid+");' />";
+				// str+="<input type='button' value='del' onclick='delWordlistWord("+boxid+");' />";
+				// str+="<input type='button' value='new' onclick='newWordlist("+boxid+");'' />";
+// 				
+
 	
     //----------------------------------------------------
     // Fill important line list part of document dialog
@@ -328,11 +388,20 @@ function returned(data)
 			if(boxtype == "DOCUMENT"){
 				$("#"+contentid).removeClass("codebox").addClass("descbox");
 				var desc = boxcontent;
-				desc = replaceAll("<span&nbsp;","<span ",desc);
+				desc = replaceAll('<span&nbsp;class="codestyle&nbsp;','<span class="codestyle ',desc);
 				desc =  replaceAll("<img&nbsp;","<img ",desc);
-				
+
 				var docuwindow = document.getElementById(contentid);
 				docuwindow.innerHTML=desc;
+				
+				
+				//  Fill description with code using tokenizer.
+				var cs = docuwindow.getElementsByClassName("codestyle");
+				for(y=0; y<cs.length; y++){
+					desc = desc.replace(cs[y].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[y].innerHTML)),cs[y].className.split(' ')[1]));
+				}
+				docuwindow.innerHTML = desc;
+				
 				
 				if($("#"+contentid+"menu").height() == null){
 					var boxmenuheight = 0;
@@ -340,12 +409,7 @@ function returned(data)
 					var boxmenuheight= $("#"+contentid+"menu").height();
 				}
 				$("#"+contentid).css("margin-top", boxmenuheight);
-				//  Fill description with code using tokenizer.
-				var cs = docuwindow.getElementsByClassName("codestyle");
-				for(y=0; y<cs.length; y++){
-					desc = desc.replace(cs[y].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[y].innerHTML))));
-				}
-				docuwindow.innerHTML = desc;
+				
 				
 				createboxmenu(contentid,boxid,boxtype);
 				

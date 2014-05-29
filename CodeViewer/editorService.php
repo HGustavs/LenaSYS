@@ -53,25 +53,30 @@
 					if(strcmp('addWordlistWord',$opt)===0){
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
-								$wordlist=htmlEntities($_POST['wordlist']);
+								$wordlistid=htmlEntities($_POST['wordlist']);
 								$label=htmlEntities($_POST['label']);
-								$query = "INSERT INTO wordlist(wordlist,word,label,uid) VALUES ('$wordlist','$word','$label','$appuser');";		
+								$query = "INSERT INTO word(wordlistid,word,label,uid) VALUES ('$wordlistid','$word','$label','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('delWordlistWord',$opt)===0){
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
-								$wordlist=htmlEntities($_POST['wordlist']);
-								$query = "DELETE FROM wordlist WHERE wordlist='$wordlist' and word='$word';";		
+								$wordlistid=htmlEntities($_POST['wordlist']);
+								$query = "DELETE FROM word WHERE wordlistid='$wordlistid' and word='$word';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('newWordlist',$opt)===0){
-								// Add word to wordlist
-								$word="-new-";
-								$wordlist=htmlEntities($_POST['wordlist']);
-								$query = "INSERT INTO wordlist(wordlist,word,uid) VALUES ('$wordlist','$word','$appuser');";		
+								// Add new wordlist
+								$wordlistname=htmlEntities($_POST['wordlistname']);
+								$query = "INSERT INTO wordlist(wordlistname,uid) VALUES ('$wordlistname','$appuser');";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
+					}else if(strcmp('delWordlist',$opt)===0){
+								// Add new wordlist
+								$wordlistid=htmlEntities($_POST['wordlistid']);
+								$query = "DELETE FROM wordlist WHERE wordlistid='$wordlistid';";	
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error deleting Wordlist!");						
 					}else if(strcmp('addImpWord',$opt)===0){
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
@@ -99,8 +104,8 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 					}else if(strcmp('selectWordlist',$opt)===0){
-								$wordlist=htmlEntities($_POST['wordlist']);
-								$query = "UPDATE codeexample SET wordlist='$wordlist' WHERE exampleid='$exampleid';";		
+								$wordlistid=htmlEntities($_POST['wordlistid']);
+								$query = "UPDATE codeBox SET wordlistid='$wordlistid' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("editPlaylink",$opt)===0){
@@ -120,27 +125,6 @@
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 								
 								/* Need to update file id in box-talble here. */
-					}else if(strcmp("createNewExample",$opt)===0){
-						
-						
-				/*		THIS FUNCTIONALITY IS NOT SUPPOSED TO BE IN CODEVIEWER
-								// Create new codeExample - create new file with same id.
-								$newpos=$position+1;
-								
-								$query = "INSERT INTO codeexample(cid,examplename,wordlist,runlink,pos,uid,cversion) values ('$coursename','New Example','JS','<none>','$newpos','$appuser','$version');";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Example!");	
-		
-		 
-		 			THIS FUNCTIONALITY IS NOT SUPPOSED TO BE IN CODEVIEWER
-								$query = "INSERT INTO filelist(exampleid,filename,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and cversion='$version'),'<none>','$appuser');";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
-		
-								$query = "INSERT INTO descriptionsection(exampleid,segment,uid) VALUES ((SELECT exampleid FROM codeexample WHERE pos='$newpos' and cid='$coursename' and cversion='$version'),'Enter description here.','$appuser');";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
-		*/					
 					}else if(strcmp("editDescription",$opt)===0){
 								// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
 								$description = str_replace("&nbsp;"," ",$_POST['description']);
@@ -296,15 +280,15 @@
 			// Open file and read name of Example
 			$examplename="";
 			$exampleno=0;
-			$chosenwordlist="";
+		//	$chosenwordlist="";
 			$playlink="";
-			$query = "SELECT exampleid,examplename,wordlist,runlink FROM codeexample WHERE exampleid=$exampleid and cid='$courseID'";		
+			$query = "SELECT exampleid,examplename,runlink FROM codeexample WHERE exampleid=$exampleid and cid='$courseID'";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 					$examplename=$row['examplename'];
 					$exampleno=$row['exampleid'];
-					$chosenwordlist=$row['wordlist'];
+				//	$chosenwordlist=$row['wordlist'];
 					$playlink=$row['runlink'];
 			}
 				  
@@ -318,23 +302,42 @@
 			}  
 		
 		  // Read wordlist
-			$wordlist=array();
+		/*	$wordlist=array();
 			$query = "SELECT wordlist,word,label FROM wordlist ORDER BY word;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($wordlist,array($row['wordlist'],$row['word'],$row['label']));					
 			}  
-		
-		  // Read wordlists
+		*/
+			// Get all words for each wordlist
+			$words = array();
+			$query = "SELECT wordlistid,word,label FROM word ORDER BY wordlistid";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+		  		array_push($words,array($row['wordlistid'],$row['word'],$row['label']));					
+			}
+			
+			// Get all wordlists
 			$wordlists=array();
+			$query = "SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+		  		array_push($wordlists,array($row['wordlistid'],$row['wordlistname']));					
+			} 
+			
+			
+		  // Read wordlists
+		/*	$wordlists=array();
 			$query = "SELECT distinct(wordlist) FROM wordlist ORDER BY wordlist;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($wordlists,$row['wordlist']);					
 			}  
-		
+		*/
 		  // Read important wordlist
 			$impwordlist=array();
 			$query = "SELECT word,label FROM impwordlist WHERE exampleid=$exampleid ORDER BY word;";
@@ -398,6 +401,7 @@
 					$boxcontent=strtoupper($row['boxcontent']);
 					$boxid=$row['boxid'];
 					$boxtitle=$row['boxtitle'];
+					
 				if(strcmp("DOCUMENT",$boxcontent)===0){
 					$query2 = "SELECT segment FROM descriptionBox WHERE exampleid='$exampleid' AND boxid='$boxid';";
 					$result2=mysql_query($query2);
@@ -409,7 +413,7 @@
 					}		
 					
 				}else if(strcmp("CODE",$boxcontent)===0){					
-					$query3 = "SELECT filename FROM codeBox WHERE exampleid=$exampleid AND boxid=$boxid;";
+					$query3 = "SELECT filename,wordlistid FROM codeBox WHERE exampleid=$exampleid AND boxid=$boxid;";
 					$result3=mysql_query($query3);
 					if (!$result3) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 					while ($row3 = mysql_fetch_assoc($result3)){
@@ -428,7 +432,7 @@
 						}else{
 					    	$code.="Error: could not open file".$filename."\n";
 						}
-						array_push($box,array($boxid,$boxcontent,$code,$boxtitle));
+						array_push($box,array($boxid,$boxcontent,$code,$boxtitle,$row3['wordlistid']));
 					} 
 				}else if (strcmp("NOT DEFINED",$boxcontent)===0){
 					array_push($box,array($boxid,$boxcontent));
@@ -445,7 +449,7 @@
 				}	
 				
 
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'filename' => $filename,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'exampleno' => $exampleno,'wordlist' => $wordlist,'wordlists' => $wordlists,'chosenwordlist' => $chosenwordlist, 'images' => $images, 'public' => $public);
+			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'filename' => $filename,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'exampleno' => $exampleno,'words' => $words,'wordlists' => $wordlists, 'images' => $images, 'public' => $public);
 			echo json_encode($array);
 
 
