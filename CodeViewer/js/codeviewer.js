@@ -64,7 +64,7 @@ function dehighlightimp(keywid)
 	//	$("#"+keywid).removeClass("imphi");					
 }
 
-/* THIS FUNCTION IS REPLACED BY stylecode()*/
+/* THIS FUNCTION IS REPLACED BY styleHeader()*/
 function Bold()
 {
 		document.execCommand('Bold',false,'');
@@ -89,8 +89,8 @@ function styleHeader()
 
 
 /* style codeexample in desc.box */
-function styleCode()
-{
+function styleCode(wordlist)
+{	
         if (window.getSelection) {  // all browsers, except IE before version 9
             var range = window.getSelection().toString();
         }
@@ -99,9 +99,9 @@ function styleCode()
                 var range = document.selection.createRange().toString();
             }
         }
-        
-    	range = renderdesccode(range);
-   		document.execCommand("insertHTML", false, "<span class='codestyle'>"+range+"</span>");
+
+    	range = renderdesccode(range,wordlist);
+   		document.execCommand("insertHTML", false, "<span class='codestyle "+wordlist+"'>"+range+"</span>");
 }
 
 
@@ -219,33 +219,14 @@ function createRemoveAlert(title, text, delay, confirm, data, type) {
 		$('.alert').css({ display: "block", height: "0px" });
 		$(".alert").animate({height: elemHeight}, 300);
 	}
-/*	if(typeof confirm == 'function') {
-	
-		$.when(this).done(setTimeout(function() {
-			$( "#alertSubmit" ).click(function() {
-				confirm(data);
-				$(".alert").animate({height: 0}, 300,"linear",function() {
-					$(this).remove();
-				})
+	$.when(this).done(setTimeout(function() {
+		$('html').click(function(event) {
+		 	$(".alert").animate({height: 0}, 300,"linear",function() {
+				$(this).remove();
 			});
-			$( ".alertCancel" ).click(function() {
-				$(".alert").animate({height: 0}, 300,"linear",function() {
-					$(this).remove();
-				})
-			});
-		}, 1000));
-	}
-	else {
-*/		
-		$.when(this).done(setTimeout(function() {
-			$('html').click(function(event) {
-			 	$(".alert").animate({height: 0}, 300,"linear",function() {
-					$(this).remove();
-				});
-				$("html").unbind('click');
-			});
-		},- 1000));
-	//}
+			$("html").unbind('click');
+		});
+	},- 1000));
 }
 
 function highlightop(otherop,thisop)
@@ -397,10 +378,10 @@ function chosenFile(filename,boxid)
 		AJAXService("selectFile","&filename="+filename+"&boxid="+boxid);
 }
 
-function chosenWordlist()
+function chosenWordlist(boxid)
 {
-		var wordlist=encodeURIComponent(document.getElementById('wordlistselect').value);
-		AJAXService("selectWordlist","&wordlist="+wordlist);
+		var wordlist=encodeURIComponent(document.getElementById('wordlistselect'+boxid).value);
+		AJAXService("selectWordlist","&wordlistid="+wordlist+"&boxid="+boxid);
 }
 
 function addImpword()
@@ -473,9 +454,9 @@ function delImpline(boxid)
 		AJAXService("delImpLine","&boxid="+boxid+"&from="+from+"&to="+to);
 }
 
-function addWordlistWord()
+function addWordlistWord(chosenwordlist)
 { 
-	var label = $( "#wordslabel" ).val();
+	var label = $( "#wordslabel").val();
 	
 		word=document.getElementById('wordlisttextbox');
 		// check if UTF encoded
@@ -491,22 +472,21 @@ function addWordlistWord()
 	          	return;
 	        }
 	    }   
-	    wordlist=encodeURIComponent(retdata['chosenwordlist']);		
 		encodedWord=encodeURIComponent(word.value);
 
-		AJAXService("addWordlistWord","&wordlist="+wordlist+"&word="+encodedWord+"&label="+label);
+		AJAXService("addWordlistWord","&wordlist="+chosenwordlist+"&word="+encodedWord+"&label="+label);
 }
 
-function delWordlistWord()
+function delWordlistWord(chosenwordlist)
 {
 		word=encodeURIComponent(document.getElementById('wordlisttextbox').value);
-		wordlist=encodeURIComponent(retdata['chosenwordlist']);
-		AJAXService("delWordlistWord","&wordlist="+wordlist+"&word="+word);
+		AJAXService("delWordlistWord","&wordlist="+chosenwordlist+"&word="+word);
 }
 
 function newWordlist()
 {		
 		wordlist=document.getElementById('wordlisttextbox');
+
 		// check if UTF encoded
 		for(var i=0; i<wordlist.value.length; i++) {
 	        if(wordlist.value.charCodeAt(i) > 127){
@@ -516,7 +496,11 @@ function newWordlist()
 	        }
 	    }
 		wordlistEncoded = encodeURIComponent(wordlist.value);
-		AJAXService("newWordlist","&wordlist="+wordlistEncoded);
+		AJAXService("newWordlist","&wordlistname="+wordlistEncoded);
+}
+function delWordlist(wordlist){
+{}
+		AJAXService("delWordlist","&wordlistid="+wordlist);
 }
 				
 function selectWordlistWord(word)
@@ -734,34 +718,83 @@ function displayWordlist(){
 	str+="</ul>";
 	
 
-	str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
+	// str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
+				// for(i=0;i<retdata['wordlists'].length;i++){
+						// if(retdata['wordlists'][i]==retdata['chosenwordlist']){
+								// str+="<option selected='selected'>"+retdata['wordlists'][i]+"</option>";										
+						// }else{
+								// str+="<option>"+retdata['wordlists'][i]+"</option>";										
+						// }
+				// }
+				// str+="</select><br/>Wordlist: "+retdata['chosenwordlist']+"<br/><select size='8' style='width:200px;'>";
+				// for(i=0;i<retdata['wordlist'].length;i++){
+						// if(retdata['wordlist'][i][0]==retdata['chosenwordlist']){
+								// str+="<option onclick='selectWordlistWord(\""+retdata['wordlist'][i][1]+"\");'>"+retdata['wordlist'][i][1]+"</option>";										
+						// }
+				// }
+				// str+="</select><br/>";
+				// str+="<div id='wordlistError' class='errormsg'></div>";
+				// str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
+				// str+="<select id='wordslabel'>";
+					// str+="<option value='A'>Markup level 1??</option>";
+					// str+="<option value='B'>Markup level 2??</option>";
+					// str+="<option value='C'>Markup level 3??</option>";
+					// str+="<option value='D'>Markup level 4??</option>";
+				// str+="</select>";
+				// str+="<input type='button' value='add' onclick='addWordlistWord();' />";
+				// str+="<input type='button' value='del' onclick='delWordlistWord();' />";
+				// str+="<input type='button' value='new' onclick='newWordlist();'' />";
+				
+	
+			//	var chosenwordlist = getChosenwordlist(boxid);
+		
+			// Get the wordlist that are selected form the user, else get the first wordlist as default
+				if(document.getElementById('wordlistselect')){
+					var chosenwordlist=encodeURIComponent(document.getElementById('wordlistselect').value);
+				}
+				else{
+					var chosenwordlist = retdata['wordlists'][0][0];
+				}
+				
+				
+				str+="<br/>Select wordlist to edit: <br/><select id='wordlistselect'  onchange='displayWordlist();'  >";	
 				for(i=0;i<retdata['wordlists'].length;i++){
-						if(retdata['wordlists'][i]==retdata['chosenwordlist']){
-								str+="<option selected='selected'>"+retdata['wordlists'][i]+"</option>";										
-						}else{
-								str+="<option>"+retdata['wordlists'][i]+"</option>";										
-						}
+					if(retdata['wordlists'][i][0] == chosenwordlist){
+						str+="<option selected='selected'  value='"+retdata['wordlists'][i][0]+"'>"+retdata['wordlists'][i][1]+"</option>";		
+						var chosenwordlistname = retdata['wordlists'][i][1];
+					}else{
+						str+="<option value='"+retdata['wordlists'][i][0]+"'>"+retdata['wordlists'][i][1]+"</option>";										
+					}
 				}
-				str+="</select><br/>Wordlist: "+retdata['chosenwordlist']+"<br/><select size='8' style='width:200px;'>";
-				for(i=0;i<retdata['wordlist'].length;i++){
-						if(retdata['wordlist'][i][0]==retdata['chosenwordlist']){
-								str+="<option onclick='selectWordlistWord(\""+retdata['wordlist'][i][1]+"\");'>"+retdata['wordlist'][i][1]+"</option>";										
-						}
+				str+="</select>";
+				str+="<input type='button' value='Create wordlist' onclick='newWordlist();' />";
+				str+="<input type='button' value='Delete wordlist' onclick='delWordlist("+chosenwordlist+");' />";
+				
+				
+				
+				str+="<br/>Wordlist: "+chosenwordlistname+"<br/><select size='8' style='width:200px;'>";
+				for(i=0;i<retdata['words'].length;i++){
+					if(retdata['words'][i][0]==chosenwordlist){
+						str+="<option onclick='selectWordlistWord(\""+retdata['words'][i][1]+"\");'>"+retdata['words'][i][1]+"</option>";										
+					}
 				}
-				str+="</select><br/>";
+				str+="</select>";
+				
+
+				str+"<br/>";
 				str+="<div id='wordlistError' class='errormsg'></div>";
 				str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
 				str+="<select id='wordslabel'>";
-					str+="<option value='A'>Markup level 1??</option>";
-					str+="<option value='B'>Markup level 2??</option>";
-					str+="<option value='C'>Markup level 3??</option>";
-					str+="<option value='D'>Markup level 4??</option>";
+					str+="<option value='A'>Label 1</option>";
+					str+="<option value='B'>Label 2</option>";
+					str+="<option value='C'>Label 3</option>";
+					str+="<option value='D'>Label 4</option>";
 				str+="</select>";
-				str+="<input type='button' value='add' onclick='addWordlistWord();' />";
-				str+="<input type='button' value='del' onclick='delWordlistWord();' />";
-				str+="<input type='button' value='new' onclick='newWordlist();'' />";
+				str+="<input type='button' value='Add' onclick='addWordlistWord("+chosenwordlist+");' />";
+				str+="<input type='button' value='Del' onclick='delWordlistWord("+chosenwordlist+");' />";
 				
-				//----------------------------------------------------
+				
+				// //----------------------------------------------------
 				// Fill important word list	part of document dialog
 				//----------------------------------------------------
 				str+="</select><br/><br/>Important Word List: <br/><select size='8' style='width:200px;'>";
@@ -778,6 +811,7 @@ function displayWordlist(){
 				var docurec=document.getElementById('docudrop');
 				docurec.innerHTML=str;
 }
+
 /********************************************************************************
 
    HTML freeform editing code
@@ -1165,7 +1199,17 @@ while (c) {		// c == first character in each word
 		}
 	}
 }
-
+// function to get chosen wordlist for a specific box
+function getChosenwordlist(boxid){
+	var chosenwordlist = "";
+	// get chosen wordlist for this box
+	for(var i=0;i<retdata['box'].length;i++){
+		if(retdata['box'][i][0] == boxid){
+			chosenwordlist = retdata['box'][i][4];
+		}
+	}
+	return chosenwordlist;
+}
 //----------------------------------------------------------------------------------
 // Renders a set of tokens from a string into a code viewer div
 // Requires tokens created by a cockford-type tokenizer
@@ -1180,11 +1224,12 @@ function rendercode(codestring,boxid)
 	for(var i=0;i<retdata.impwords.length;i++){
 		important.push(retdata.impwords[i]);		
 	}
-
+	
+	var chosenwordlist = getChosenwordlist(boxid);
 	keywords=[];
-	for(var i=0;i<retdata.wordlist.length;i++){
-		if(retdata.wordlist[i][0]==retdata.chosenwordlist){
-			temp=[retdata.wordlist[i][1],retdata.wordlist[i][2]];
+	for(var i=0;i<retdata['words'].length;i++){
+		if(retdata['words'][i][0]==chosenwordlist){
+			temp=[retdata['words'][i][1],retdata['words'][i][2]];
 			keywords.push(temp);
 		}
 	}			
@@ -1362,20 +1407,24 @@ function createCodeborder(lineno,improws){
 	return str;
 }
 
-function renderdesccode(codestring){
+function renderdesccode(codestring,wordlist){
 	tokens = [];
 
 	important = [];
 	for(var i=0;i<retdata.impwords.length;i++){
 		important.push(retdata.impwords[i]);	
 	}
+	
+	
+
 	keywords=[];
-	for(var i=0;i<retdata.wordlist.length;i++){
-		if(retdata.wordlist[i][0]==retdata.chosenwordlist){
-			temp=[retdata.wordlist[i][1],retdata.wordlist[i][2]];
+	for(var i=0;i<retdata['words'].length;i++){
+		if(retdata['words'][i][0]==wordlist){
+			temp=[retdata['words'][i][1],retdata['words'][i][2]];
 			keywords.push(temp);
 		}
-	}	
+	}
+
 	
 	tokenize(codestring,"<>+-&","=>&:");
 	

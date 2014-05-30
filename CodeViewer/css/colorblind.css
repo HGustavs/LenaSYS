@@ -289,12 +289,28 @@
 .buttomenu2Style{
 	background-color: #5A5757;
 }
-.buttomenu2Style select{
+
+.buttomenu2Style .wordlistselect{
    color: white;
+   background: url("../new icons/expand_button.svg") no-repeat 50px #5C5A5A;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+
+.buttomenu2Style .boxcontentselect{
+    color: white;
    background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
    background-size:15px 15px;
    border: 1px solid #ccc;
 }
+
+.buttomenu2Style .chooseContentSelect{
+    color: white;
+   background: url("../new icons/expand_button.svg") no-repeat 120px #5C5A5A;
+   background-size:15px 15px;
+   border: 1px solid #ccc;
+}
+
 .buttomenu2Style select:hover{
   background-color: #000;
     cursor: pointer;
