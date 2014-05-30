@@ -27,7 +27,7 @@ if (checklogin()) {
 			$query = $query->fetch(PDO::FETCH_NUM);
 			$courseid = $query[0];
 			if ($_POST["type"] == 2) {
-				$query = $pdo->prepare("INSERT INTO codeexample (cid, examplename, wordlist, runlink,uid) VALUES(:cid, :name, 'JS', '<none>',:uid)");
+				$query = $pdo->prepare("INSERT INTO codeexample (cid, examplename, runlink,uid) VALUES(:cid, :name, '<none>', :uid)");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':name', $_POST["sectionname"]);
 				$query->bindParam(':uid', $_SESSION['uid']);
@@ -41,14 +41,6 @@ if (checklogin()) {
 					$eid = $eidq->fetch(PDO::FETCH_NUM);
 					$code_id = $eid[0];
 					$link = "../CodeViewer/EditorV30.php?exampleid=".$code_id."&courseid=".$courseid;
-
-					// Create file list
-					$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
-					$sinto->bindParam(':eid', $eid[0]);
-					if(!$sinto->execute()) {
-						// TODO: Remove these debug prints
-						print_r($sinto->errorInfo());
-					}
 				}
 			} else if ($_POST["type"] == 3) {
 				$query = $pdo->prepare("INSERT INTO quiz (courseID, name) VALUES(:cid, :name)");
