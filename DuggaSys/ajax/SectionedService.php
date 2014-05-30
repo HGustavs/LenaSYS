@@ -58,7 +58,7 @@
 						$query->bindParam(':name', $sectname);
 						if($kind == 2) {
 							if ($testdugga == "-1") {
-								$stmt = $pdo->prepare("INSERT INTO codeexample (cid, examplename, wordlist, runlink,uid) VALUES(:cid, :name, 'JS', '<none>',:uid)");
+								$stmt = $pdo->prepare("INSERT INTO codeexample (cid, examplename, runlink, uid) VALUES(:cid, :name, '<none>',:uid)");
 								$stmt->bindParam(':cid', $courseid);
 								$stmt->bindParam(':name', $sectname);
 								$stmt->bindParam(':uid', $_SESSION['uid']);
@@ -73,13 +73,6 @@
 									$code_id = $eid[0];
 									$link = "../CodeViewer/EditorV30.php?exampleid=".$code_id."&courseid=".$courseid;
 
-									// Create file list
-									$sinto = $pdo->prepare("INSERT INTO filelist(exampleid, filename, uid) SELECT exampleid,'<none>',uid FROM codeexample WHERE exampleid=:eid");
-									$sinto->bindParam(':eid', $eid[0]);
-									if(!$sinto->execute()) {
-										// TODO: Remove these debug prints
-										//print_r($sinto->errorInfo());
-									}
 								}
 							} else {
 								$link = "../CodeViewer/EditorV30.php?exampleid=".$testdugga ."&courseid=".$courseid;
