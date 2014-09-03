@@ -1,11 +1,12 @@
-drop database Imperious;
-create database Imperious;
-use Imperious;
+drop database Imperiouz; 
+create database Imperiouz;
+use Imperiouz;
 /* user contains the users of the system and related  information */
 
-DROP TABLE IF EXISTS `userAnswer`;
-DROP TABLE IF EXISTS `grades`;
-DROP TABLE IF EXISTS `quiz`;
+/*
+DROP TABLE IF EXISTS userAnswer;
+DROP TABLE IF EXISTS grades;
+DROP TABLE IF EXISTS quiz;
 DROP TABLE IF EXISTS eventlog;
 DROP TABLE IF EXISTS listentries;
 DROP TABLE IF EXISTS impwordlist;
@@ -23,15 +24,19 @@ DROP TABLE IF EXISTS codeexample;
 DROP TABLE IF EXISTS template;
 DROP TABLE IF EXISTS course;
 DROP TABLE IF EXISTS user;
+*/
+
 CREATE TABLE user(
-		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
 		firstname		VARCHAR(50) NULL,
 		lastname		VARCHAR(50) NULL,
-		ssn				VARCHAR(20) NULL,
+		ssn					VARCHAR(20) NULL,
 		password		VARCHAR(225) NOT NULL,
-		lastupdated		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		newpassword		TINYINT(1) NULL,
+		lastupdated	TIMESTAMP,
+		addedtime   TIMESTAMP,
+		lastvisit		TIMESTAMP,
+		newpassword	TINYINT(1) NULL,
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
 		PRIMARY KEY(uid)		
@@ -41,29 +46,17 @@ INSERT INTO user(username,password,newpassword,creator,superuser) values ("Griml
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
 INSERT INTO user(username,password,newpassword,creator) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1);
 
-CREATE TABLE user_question (
-	qid			INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	question	TEXT,
-	answer		TEXT,
-	owner		INT UNSIGNED NOT NULL,
-	PRIMARY KEY(qid, owner),
-	INDEX `owner_index` (owner),
-	FOREIGN KEY(owner) REFERENCES user(uid)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-INSERT INTO user_question (question, answer, owner) VALUES("What is the color of night?", "Sanguine, my brother.", 1);
-
 /* Course contains a list of the course names for each course in the database */
 CREATE TABLE course(
-		cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		coursecode		VARCHAR(45) NULL UNIQUE,
-		coursename		VARCHAR(80) NULL,
-		created			DATETIME,
-		creator			INT UNSIGNED NOT NULL,
-		visibility		TINYINT UNSIGNED NOT NULL DEFAULT 0,
-		updated			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+		cid								INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		coursecode				VARCHAR(45) NULL UNIQUE,
+		coursename				VARCHAR(80) NULL,
+		created						DATETIME,
+		creator						INT UNSIGNED NOT NULL,
+		visibility				TINYINT UNSIGNED NOT NULL DEFAULT 0,
+		updated						TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+		activeversion 		VARCHAR(8),
+		activeedversion 	VARCHAR(8),
 		PRIMARY KEY(cid),
 		FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -75,19 +68,110 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
 		cid				INT UNSIGNED NOT NULL, 
-		access			VARCHAR(10) NOT NULL,
-		PRIMARY KEY(uid, cid),
-		FOREIGN KEY (uid)REFERENCES user (uid)
-			ON DELETE CASCADE
-			ON UPDATE CASCADE,
-		FOREIGN KEY (cid) REFERENCES course (cid)
-			ON DELETE CASCADE
-			ON UPDATE CASCADE
+		modified 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		creator 	INTEGER,
+		access		VARCHAR(10) NOT NULL,
 		
+		PRIMARY KEY(uid, cid),
+		FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
+		FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO user_course(uid,cid,access) values (1,1,"W");
-INSERT INTO user_course(uid,cid,access) values (2,2,"W");
+INSERT INTO user_course(uid,cid,access) values (2,1,"R");
+INSERT INTO user_course(uid,cid,access) values (1,2,"R");
+
+CREATE TABLE listentries (
+	lid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	cid 					INT UNSIGNED NOT NULL,
+	entryname 		VARCHAR(64),
+	link 					VARCHAR(200),
+	kind 					INT unsigned,
+	pos 					INT,
+	creator 			INT unsigned not null,
+	ts						TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	code_id 			MEDIUMINT unsigned null default null,
+	visible 			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	vers					VARCHAR(8),
+  moment				INT UNSIGNED,
+  gradesystem 	TINYINT(1),
+	PRIMARY KEY(lid),
+	
+/*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
+	FOREIGN KEY(creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+	
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Etapp 1", NULL, 0, 0, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Kodexempel", NULL, 1, 1, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic HTML", "../CodeViewer/EditorV30.php?exampleid=1&courseid=1", 2, 2, 1, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic CSS", "../CodeViewer/EditorV30.php?exampleid=2&courseid=1", 2, 3, 2, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic JS", "../CodeViewer/EditorV30.php?exampleid=3&courseid=1", 2, 4, 3, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Avancerade Kodexempel", NULL, 1, 5, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced HTML", "../CodeViewer/EditorV30.php?exampleid=4&courseid=1", 2, 6, 4, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced CSS", "../CodeViewer/EditorV30.php?exampleid=5&courseid=1", 2, 7, 5, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced JS", "../CodeViewer/EditorV30.php?exampleid=6&courseid=1", 2, 8, 6, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Expert Kodexempel", NULL, 1, 9, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "../CodeViewer/EditorV30.php?exampleid=7&courseid=1", 2, 10, 7, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "../CodeViewer/EditorV30.php?exampleid=8&courseid=1", 2, 11, 8, 1, 1);
+INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "../CodeViewer/EditorV30.php?exampleid=9&courseid=1", 2, 12, 9, 1, 1);
+
+/* Quiz tables */
+CREATE TABLE quiz (
+  id						INT(11) NOT NULL AUTO_INCREMENT,
+  cid 					INTEGER UNSIGNED NOT NULL,
+  autograde 		TINYINT(1) NOT NULL DEFAULT 0, /* bool */
+  gradesystem 	TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
+  qname 				VARCHAR(255) NOT NULL DEFAULT '',
+  quizFile 			VARCHAR(255) NOT NULL DEFAULT 'default',
+  qrelease 			DATETIME,
+  deadline 			DATETIME,
+	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	creator 			INTEGER,
+		
+  PRIMARY KEY 	(id),
+  FOREIGN KEY		(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+CREATE TABLE variant(
+  vid						INT(11) NOT NULL AUTO_INCREMENT,
+	quizID				INT(11),
+	param					VARCHAR(2048),
+	answer				VARCHAR(2048),
+	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	creator 			INTEGER,
+  PRIMARY KEY 	(vid),
+  FOREIGN KEY 	(quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+CREATE TABLE userAnswer (
+  aid						INT(11) NOT NULL AUTO_INCREMENT,
+ 	cid						INT UNSIGNED NOT NULL, 
+  quiz 					INT(11),
+  variant				INT,
+  moment				INT UNSIGNED NOT NULL,
+  grade 				tinyint(2) NOT NULL,
+  uid 					INT UNSIGNED NOT NULL,
+  answer 				varchar(2000),
+  submitted 		timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	vers					VARCHAR(8),
+	creator 			INTEGER,
+  PRIMARY KEY 	(aid),
+	FOREIGN KEY   (cid) REFERENCES course (cid),
+  FOREIGN KEY		(uid) REFERENCES user(uid),
+  FOREIGN KEY 	(quiz) REFERENCES quiz(id),
+  FOREIGN KEY 	(moment) REFERENCES listentries(lid),
+	FOREIGN KEY  	(variant) REFERENCES variant(vid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+CREATE TABLE vers(
+		cid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		coursecode	VARCHAR(45) NOT NULL,
+		vers				VARCHAR(8) NOT NULL,
+		FOREIGN KEY (cid) REFERENCES course(cid),		
+		PRIMARY KEY(cid,coursecode,vers)
+);
+
 
 /* Section contains a list of the course sections for a version of a course in the database */
 /* Version of sections and examples corresponds roughly to year or semester that the course was given. */
@@ -139,12 +223,6 @@ INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 3","Iulf.html",1,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
  
-
-
-
-
-
-
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
 		wordlistid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,		
@@ -159,8 +237,6 @@ INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
 
-
-
 /* Delete and update all foreign keys before deleting a wordlist */
 delimiter //
 CREATE TRIGGER checkwordlists BEFORE DELETE ON wordlist
@@ -173,7 +249,6 @@ BEGIN
  END;//
  delimiter ;
 
-
 CREATE TABLE word(
 		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		wordlistid			MEDIUMINT UNSIGNED NOT NULL,			
@@ -185,7 +260,6 @@ CREATE TABLE word(
 		FOREIGN KEY (uid) REFERENCES user (uid),
 		FOREIGN KEY(wordlistid) REFERENCES wordlist(wordlistid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
 
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
@@ -201,7 +275,6 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
 
-
 /* boxes with information in a certain example */
 CREATE TABLE box(
 		boxid				INTEGER UNSIGNED NOT NULL,
@@ -212,7 +285,6 @@ CREATE TABLE box(
 		PRIMARY KEY(boxid, exampleid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
 
 /* Creates a subclass if it doesn't exsist when updating contents in a box. */
 delimiter //
@@ -227,7 +299,6 @@ BEGIN
      END IF;
  END;//
  delimiter ;
-
 
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,1,"Title","Code","[viktig=1]");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,1,"Title","Document","[viktig=1]");
@@ -249,10 +320,6 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,9,"Title
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,9,"Title","Document","[viktig=1]");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,10,"Title","Code","[viktig=1]");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,10,"Title","Document","[viktig=1]");
-
-
-
-
 
 CREATE TABLE codeBox(
 		boxid         INTEGER UNSIGNED NOT NULL,
@@ -278,12 +345,6 @@ INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,8,"js1.js",1)
 INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,9,"js1.js",1);
 INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,10,"js1.js",1);
 
-
-
-
-
-
-
 CREATE TABLE descriptionBox(
 		boxid         INTEGER UNSIGNED NOT NULL,
 		exampleid     MEDIUMINT UNSIGNED NOT NULL,
@@ -306,8 +367,6 @@ INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,8,"<b>Events 1</b>
 INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,9,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,10,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 
-
-
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
 		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -327,57 +386,6 @@ INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (3,1,16,8,1);
 INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (5,1,15,19,1);
 INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (7,1,10,12,2);
 
-
-
-
-
-
-/* TRIGGER IF WE WANT &nbsp; AND <br> TO BE REPLACED AUTOMATICALLY
-delimiter //
-CREATE TRIGGER nbsp_br_desc_check BEFORE UPDATE ON descriptionsection
-FOR EACH ROW
-BEGIN
-     IF NEW.segment LIKE "%&nbsp;%" THEN
-         SET NEW.segment = replace(NEW.segment, "&nbsp;", " ");
-     END IF;
-     IF NEW.segment LIKE "%<br>%" THEN
-         SET NEW.segment = replace(NEW.segment, "<br>", "\n");
-     END IF;
- END;//
- delimiter ;
-*/
-
-
-
-
-/* Wordlist contains a list of keywords for a certain programming language or file type */
-/*
-CREATE TABLE wordlist(
-		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		wordlist			VARCHAR(64),
-		word 				VARCHAR(64),
-		label			VARCHAR(256),
-		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT UNSIGNED NOT NULL,
-		PRIMARY KEY(wordid),
-		FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","for","A",1);
-INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","if","B",1);
-INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","var","C",1);
-INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("JS","function","D",2);
-INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("GLSL","vec3","A",2);
-INSERT INTO wordlist(wordlist,word,label,uid) VALUES ("GLSL","dot","B",2);
-*/
-
-
-
-
-
-
-
-
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(
 		wordid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -395,97 +403,16 @@ INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"elem",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"pageY",2);
 
-CREATE TABLE listentries (
-	lid int UNSIGNED NOT NULL AUTO_INCREMENT,
-	cid int UNSIGNED NOT NULL,
-	entryname varchar(64),
-	link varchar(200),
-	kind int unsigned,
-	pos int,
-	creator int unsigned not null,
-	ts timestamp default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-	code_id mediumint unsigned null default null,
-	visible tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-	PRIMARY KEY(lid),
-	FOREIGN KEY(code_id)
-		REFERENCES codeexample(exampleid)
-		ON UPDATE NO ACTION
-		ON DELETE SET NULL,
-	FOREIGN KEY(creator)
-		REFERENCES user(uid)
-		ON DELETE NO ACTION
-		ON UPDATE NO ACTION,
-	FOREIGN KEY(cid)
-		REFERENCES course(cid)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Etapp 1", NULL, 0, 0, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Kodexempel", NULL, 1, 1, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic HTML", "../CodeViewer/EditorV30.php?exampleid=1&courseid=1", 2, 2, 1, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic CSS", "../CodeViewer/EditorV30.php?exampleid=2&courseid=1", 2, 3, 2, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic JS", "../CodeViewer/EditorV30.php?exampleid=3&courseid=1", 2, 4, 3, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Avancerade Kodexempel", NULL, 1, 5, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced HTML", "../CodeViewer/EditorV30.php?exampleid=4&courseid=1", 2, 6, 4, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced CSS", "../CodeViewer/EditorV30.php?exampleid=5&courseid=1", 2, 7, 5, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced JS", "../CodeViewer/EditorV30.php?exampleid=6&courseid=1", 2, 8, 6, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Expert Kodexempel", NULL, 1, 9, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "../CodeViewer/EditorV30.php?exampleid=7&courseid=1", 2, 10, 7, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "../CodeViewer/EditorV30.php?exampleid=8&courseid=1", 2, 11, 8, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "../CodeViewer/EditorV30.php?exampleid=9&courseid=1", 2, 12, 9, 1, 1);
-
 CREATE TABLE eventlog(
-	eid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	type TINYINT DEFAULT 0,
-	ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	address VARCHAR(45) NOT NULL,
-	user INT UNSIGNED NULL,
-	eventtext TEXT NOT NULL,
+	eid 				BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	type 				TINYINT DEFAULT 0,
+	ts 					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	address 		VARCHAR(45) NOT NULL,
+	user 				INT UNSIGNED NULL,
+	eventtext 	TEXT NOT NULL,
 	PRIMARY KEY(eid),
-	FOREIGN KEY(user)
-		REFERENCES user(uid)
-		ON UPDATE CASCADE
-		ON DELETE NO ACTION
+	FOREIGN KEY(user) REFERENCES user(uid) ON UPDATE CASCADE ON DELETE NO ACTION
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-/* Quiz tables */
-CREATE TABLE `quiz` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cid` int UNSIGNED NOT NULL,
-  `autograde` tinyint(1) NOT NULL DEFAULT 0, /* bool */
-  `gradesystem` tinyint(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
-  `answer` varchar(2000) NOT NULL DEFAULT '',
-  `parameter` varchar(2000) NOT NULL DEFAULT '',
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `quizFile` varchar(255) NOT NULL DEFAULT 'default',
-  `release` datetime NOT NULL DEFAULT '9999-12-31 23:59:58',
-  `deadline` datetime NULL DEFAULT '9999-12-31 23:59:59',
-  PRIMARY KEY (`id`),
-  FOREIGN KEY(`cid`)
-		REFERENCES course(cid)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-CREATE TABLE `userAnswer` (
-  `quizID` int(11) NOT NULL,
-  /*`variantID` int(11) NOT NULL,*/
-  /*`version` int(11) NOT NULL,*/
-  `grade` tinyint(2) NOT NULL,
-  `uid` INT UNSIGNED NOT NULL,
-  `answer` varchar(2000) NOT NULL,
-  `submitted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`quizID`,`uid`),
-  FOREIGN KEY(uid) 
-  		REFERENCES user(uid)
-		ON UPDATE CASCADE,
-  FOREIGN KEY (quizID) 
-  		REFERENCES quiz(id)
-		ON UPDATE CASCADE
-		ON DELETE CASCADE
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
 
 CREATE TABLE playereditor_playbacks(
     id  VARCHAR(32) NOT NULL,
@@ -493,3 +420,23 @@ CREATE TABLE playereditor_playbacks(
     path    VARCHAR(256) NOT NULL,
     PRIMARY KEY(id, type)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+update user set firstname="Toddler", lastname="Kong" where username="Toddler";
+update user set firstname="Johan", lastname="Grimling" where username="Grimling";
+update user set ssn="810101-5567" where username="Grimling";
+update user set ssn="444444-5447" where username="Toddler";
+
+update user set password=password("Kong") where username="Toddler";
+
+insert into vers (cid,coursecode,vers) values(1,"DA551G","2012");
+insert into vers (cid,coursecode,vers) values(1,"DA551G","2013");
+insert into vers (cid,coursecode,vers) values(1,"DA551G","2014");
+
+insert into vers (cid,coursecode,vers) values(2,"DA112G","2013");
+insert into vers (cid,coursecode,vers) values(2,"DA112G","2014");
+
+
+update user set superuser=1 where username="Toddler";
+
+update listentries set vers="2013";
+
