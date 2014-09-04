@@ -23,6 +23,7 @@ pdoConnect();
 	
 	<?php 
 		$noup=true;
+		$loginvar="ACCESS"; 
 		include 'navheader.php';
 	?>
 		

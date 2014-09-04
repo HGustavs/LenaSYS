@@ -2,87 +2,7 @@ var sessionkind=0;
 var querystring=parseGet();
 var versions;
 
-AJAXServiceAccess("GET","&cid="+querystring['cid']);
-
-function randomstring()
-{
-		str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890![]#/()=+-_:;.,*";
-
-		var valu="";
-		for(i=0;i<9;i++){
-				valu+=str.substr(Math.round(Math.random()*78),1);
-		}
-
-		return valu;
-}
-
-//----------------------------------------
-// Service:
-//----------------------------------------
-
-function AJAXServiceAccess(opt,para)
-{
-	$.ajax({
-		url: "accessedservice.php",
-		type: "POST",
-		data: "opt="+opt+para,
-		dataType: "json",
-		success: returnedAccess
-	});
-}
-
-function processLogin() {
-		var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-		$.ajax({
-			type:"POST",
-			url: "login.php",
-			data: {
-				username: username,
-				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
-				password: password
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['login'] == "success") {
-					$("#user label").html(result['username']);
-					$("#user img").addClass("loggedin");
-					hideLoginPopup();
-					$("#loginbutton").html("<span id='loginbutton'><img class='loggedin' src='css/svg/Man.svg' onclick='processLogout();' /></span>");
-				}else{
-					console.log("Failed to log in.");
-					if(typeof result.reason != "undefined") {
-						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
-					}
-					$("input#username").css("background-color", "#ff7c6a");
-					$("input#password").css("background-color", "#ff7c6a");
-				}
-				AJAXServiceAccess("GET","&cid="+querystring['cid']);
-			},
-			error:function() {
-				console.log("error");
-			}
-		});
-}
-
-function processLogout() {
-	$.ajax({
-		type:"POST",
-		url: "logout.php",
-		success:function(data) {
-			$("#user label").html("Guest");
-			$("#user img").removeClass("loggedin");
-			$("#loginbutton").html("<span id='loginbutton'><img src='css/svg/Man.svg' onclick='showLoginPopup();' /></span>");
-			AJAXServiceAccess("GET","&cid="+querystring['cid']);
-		},
-		error:function() {
-			console.log("error");
-		}
-	});
-}
+AJAXService("GET",{cid:querystring['cid']},"ACCESS");
 
 //----------------------------------------
 // Commands:
@@ -90,7 +10,8 @@ function processLogout() {
 
 function addUsers()
 {
-		AJAXServiceAccess("ADDUSR","&cid="+querystring['cid']+"&newusers="+$("#import").val());
+		newusers=$("#import").val();
+		AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newusers},"ACCESS");
 		$("#createUsers").css("display","none");
 }
 
@@ -107,7 +28,8 @@ function hideCreateUsersPopup()
 
 function changeAccess(cid,uid,val)
 {
-		AJAXServiceAccess("ACCESS","&cid="+cid+"&uid="+uid+"&val="+val);
+		AJAXService("ACCESS",{cid:cid,uid:uid,val:val},"ACCESS");
+
 }
 
 function selectUser(uid,username,ssn,firstname,lastname,access)
@@ -131,7 +53,7 @@ function updateUser()
 		var lastname=$("#lastname").val();
 		var uid=$("#uid").val();
 		
-		AJAXServiceAccess("UPDATE","&ssn="+ussn+"&uid="+uid+"&firstname="+firstname+"&lastname="+lastname+"&username="+usrnme+"&cid="+querystring['cid']);
+		AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,cid:querystring['cid']},"ACCESS");
 		
 		$("#editUsers").css("display","none");
 }
@@ -147,20 +69,8 @@ function resetPw(uid,username)
 
 		window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
 		
-		AJAXServiceAccess("CHPWD","&cid="+querystring['cid']+"&uid="+uid+"&pw="+rnd);
+		AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd},"ACCESS");
 
-}
-
-function showLoginPopup()
-{
-		$("#loginBox").css("display","block");
-		$("#overlay").css("display","block");
-}
-
-function hideLoginPopup()
-{
-		$("#loginBox").css("display","none");
-		$("#overlay").css("display","none");
 }
 
 //----------------------------------------

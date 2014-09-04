@@ -2,81 +2,12 @@ var sessionkind=0;
 var querystring=parseGet();
 var filez;
 
-
-AJAXServiceDugga("GET","&cid="+querystring['cid']);
+AJAXService("GET",{cid:querystring['cid']},"DUGGA");
 
 $(function() {
   $( "#release" ).datepicker({dateFormat: "yy-mm-dd"});
     $( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});
 });
-
-//----------------------------------------
-// Service:
-//----------------------------------------
-
-function AJAXServiceDugga(opt,para)
-{
-	$.ajax({
-		url: "duggaedservice.php",
-		type: "POST",
-		data: "opt="+opt+para,
-		dataType: "json",
-		success: returnedDugga
-	});
-}
-
-function processLogin() {
-		var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-		$.ajax({
-			type:"POST",
-			url: "login.php",
-			data: {
-				username: username,
-				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
-				password: password
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['login'] == "success") {
-					$("#user label").html(result['username']);
-					$("#user img").addClass("loggedin");
-					hideLoginPopup();
-					$("#loginbutton").html("<span id='loginbutton'><img class='loggedin' src='css/svg/Man.svg' onclick='processLogout();' /></span>");
-				}else{
-					console.log("Failed to log in.");
-					if(typeof result.reason != "undefined") {
-						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
-					}
-					$("input#username").css("background-color", "#ff7c6a");
-					$("input#password").css("background-color", "#ff7c6a");
-				}
-				AJAXServiceDugga("GET","&cid="+querystring['cid']);
-			},
-			error:function() {
-				console.log("error");
-			}
-		});
-}
-
-function processLogout() {
-	$.ajax({
-		type:"POST",
-		url: "logout.php",
-		success:function(data) {
-			$("#user label").html("Guest");
-			$("#user img").removeClass("loggedin");
-			$("#loginbutton").html("<span id='loginbutton'><img src='css/svg/Man.svg' onclick='showLoginPopup();' /></span>");
-			AJAXServiceDugga("GET","&cid="+querystring['cid']);
-		},
-		error:function() {
-			console.log("error");
-		}
-	});
-}
 
 //----------------------------------------
 // Commands:
@@ -85,13 +16,13 @@ function processLogout() {
 function deleteVariant()
 {
 		var vid=$("#vid").val();
-		if(confirm("Do you really want to delete this Variant?")) AJAXServiceDugga("DELVARI","&cid="+querystring['cid']+"&vid="+vid);
+		if(confirm("Do you really want to delete this Variant?")) AJAXService("DELVARI",{cid:querystring['cid'],vid:vid},"DUGGA");
 		$("#editVariant").css("display","none");
 }
 
 function addVariant(cid,qid)
 {
-		AJAXServiceDugga("ADDVARI","&cid="+cid+"&qid="+qid);
+		AJAXService("ADDVARI",{cid:cid,qid:qid},"DUGGA");
 }
 
 function updateVariant()
@@ -102,7 +33,7 @@ function updateVariant()
 		var answer=$("#answer").val();
 		var parameter=$("#parameter").val();
 		
-		AJAXServiceDugga("SAVVARI","&cid="+querystring['cid']+"&vid="+vid+"&answer="+answer+"&parameter="+parameter);
+		AJAXService("ADDVARI",{cid:querystring['cid'],vid:vid,answer:answer,parameter:parameter},"DUGGA");
 }
 
 function closeEditVariant()
@@ -112,7 +43,8 @@ function closeEditVariant()
 
 function createDugga()
 {
-		AJAXServiceDugga("ADDUGGA","&cid="+querystring['cid']);
+		AJAXService("ADDUGGA",{cid:querystring['cid']},"DUGGA");
+
 }
 
 function updateDugga()
@@ -127,7 +59,7 @@ function updateDugga()
 		var release=$("#release").val();
 		var deadline=$("#deadline").val();
 		
-		AJAXServiceDugga("SAVDUGGA","&cid="+querystring['cid']+"&qid="+did+"&nme="+nme+"&autograde="+autograde+"&gradesys="+gradesys+"&template="+template+"&release="+release+"&deadline="+deadline );
+		AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline},"DUGGA");
 
 }
 

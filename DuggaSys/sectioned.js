@@ -1,75 +1,7 @@
 var querystring=parseGet();
 var retdata;
 
-AJAXServiceSection("get","all");
-
-//----------------------------------------
-// Service:
-//----------------------------------------
-
-function AJAXServiceSection(opt,para)
-{
-	$.ajax({
-		url: "sectionedservice.php",
-		type: "POST",
-		data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
-		dataType: "json",
-		success: returnedSection
-	});
-}
-
-function processLogin() {
-		var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-		$.ajax({
-			type:"POST",
-			url: "login.php",
-			data: {
-				username: username,
-				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
-				password: password
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['login'] == "success") {
-					$("#user label").html(result['username']);
-					$("#user img").addClass("loggedin");
-					hideLoginPopup();
-					$("#loginbutton").click(function(){processLogout();});
-					AJAXServiceSection("get","all");
-				}else{
-					console.log("Failed to log in.");
-					if(typeof result.reason != "undefined") {
-						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
-					}
-					$("input#username").css("background-color", "#ff7c6a");
-					$("input#password").css("background-color", "#ff7c6a");
-				}
-			},
-			error:function() {
-				console.log("error");
-			}
-		});
-}
-
-function processLogout() {
-	$.ajax({
-		type:"POST",
-		url: "logout.php",
-		success:function(data) {
-			$("#user label").html("Guest");
-			$("#user img").removeClass("loggedin");
-			$("#loginbutton").click(function(){showLoginPopup();});
-			AJAXServiceSection("get","all");			
-		},
-		error:function() {
-			console.log("error");
-		}
-	});
-}
+AJAXService("get",{},"SECTION");
 
 //----------------------------------------
 // Commands:
@@ -163,7 +95,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment)
 function deleteItem()
 {
 		lid=$("#lid").val();
-		AJAXServiceSection("DEL","&lid="+lid);
+		AJAXService("DEL",{lid:lid},"SECTION");
 }
 
 function updateItem()
@@ -175,7 +107,7 @@ function updateItem()
 		visibility=$("#visib").val();
 		moment=$("#moment").val();
 
-		AJAXServiceSection("UPDATE","&lid="+lid+"&kind="+kind+"&link="+link+"&sectname="+sectionname+"&visibility="+visibility+"&moment="+moment);
+		AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment},"SECTION");
 
 		$("#editSection").css("display","none");
 }
@@ -190,7 +122,7 @@ function createLink()
 function newItem()
 {
 		lid=$("#lid").val();
-		AJAXServiceSection("NEW","&lid="+lid);
+		AJAXService("NEW",{lid:lid},"SECTION");
 }
 
 function closeSelect()
@@ -198,18 +130,6 @@ function closeSelect()
 		$(".item").css("border","none");
 		$(".item").css("box-shadow","none");
 		$("#editSection").css("display","none");
-}
-
-function showLoginPopup()
-{
-		$("#loginBox").css("display","block");
-		$("#overlay").css("display","block");
-}
-
-function hideLoginPopup()
-{
-		$("#loginBox").css("display","none");
-		$("#overlay").css("display","none");
 }
 
 //----------------------------------------
@@ -331,7 +251,7 @@ function returnedSection(data)
 	  						str+=i+"XX"+ido.substr(1);
 							});
 							
-							AJAXServiceSection("REORDER","&order="+str);
+							AJAXService("REORDER",{order:str},"SECTION");
 	        		
 	        		return false;
 	        }										

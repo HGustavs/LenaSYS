@@ -2,75 +2,7 @@ var sessionkind=0;
 var querystring=parseGet();
 var versions;
 
-AJAXServiceCourse("GET","");
-
-//----------------------------------------
-// Service:
-//----------------------------------------
-
-function AJAXServiceCourse(opt,para)
-{
-	$.ajax({
-		url: "courseedservice.php",
-		type: "POST",
-		data: "opt="+opt+para,
-		dataType: "json",
-		success: returnedCourse
-	});
-}
-
-function processLogin() {
-		var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-		$.ajax({
-			type:"POST",
-			url: "login.php",
-			data: {
-				username: username,
-				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
-				password: password
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['login'] == "success") {
-					$("#user label").html(result['username']);
-					$("#user img").addClass("loggedin");
-					hideLoginPopup();
-					$("#loginbutton").click(function(){processLogout();});
-					AJAXServiceCourse("GET","");
-				}else{
-					console.log("Failed to log in.");
-					if(typeof result.reason != "undefined") {
-						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
-					}
-					$("input#username").css("background-color", "#ff7c6a");
-					$("input#password").css("background-color", "#ff7c6a");
-				}
-			},
-			error:function() {
-				console.log("error");
-			}
-		});
-}
-
-function processLogout() {
-	$.ajax({
-		type:"POST",
-		url: "logout.php",
-		success:function(data) {
-			$("#user label").html("Guest");
-			$("#user img").removeClass("loggedin");
-			$("#loginbutton").click(function(){showLoginPopup();});
-			AJAXServiceCourse("GET","");
-		},
-		error:function() {
-			console.log("error");
-		}
-	});
-}
+AJAXService("GET",{},"COURSE");
 
 //----------------------------------------
 // Commands:
@@ -89,7 +21,7 @@ function updateCourse()
 		// Show dialog
 		$("#editCourse").css("display","none");
 
-		AJAXServiceCourse("UPDATE","&cid="+cid+"&coursename="+coursename+"&visib="+visib+"&activevers="+activevers+"&activeedvers="+activeedvers);
+		AJAXService("UPDATE",{ cid: cid, coursename:coursename, visib: visib, activevers:activevers, activeedvers:activeedvers },"COURSE");
 
 }
 
@@ -105,21 +37,9 @@ function closeSelect()
 		$("#editCourse").css("display","none");
 }
 
-function showLoginPopup()
-{
-		$("#loginBox").css("display","block");
-		$("#overlay").css("display","block");
-}
-
-function hideLoginPopup()
-{
-		$("#loginBox").css("display","none");
-		$("#overlay").css("display","none");
-}
-
 function newCourse()
 {
-		AJAXServiceCourse("NEW","");
+		AJAXService("NEW",{},"COURSE");
 } 
 
 function selectCourse(cid,coursename,coursecode,visi,vers,edvers)

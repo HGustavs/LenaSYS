@@ -2,81 +2,12 @@ var sessionkind=0;
 var querystring=parseGet();
 var filez;
 
-
-AJAXServiceResults("GET","&cid="+querystring['cid']);
+AJAXService("GET",{cid:querystring['cid']},"RESULT");
 
 $(function() {
   $( "#release" ).datepicker({dateFormat: "yy-mm-dd"});
     $( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});
 });
-
-//----------------------------------------
-// Service:
-//----------------------------------------
-
-function AJAXServiceResults(opt,para)
-{
-	$.ajax({
-		url: "resultedservice.php",
-		type: "POST",
-		data: "opt="+opt+para,
-		dataType: "json",
-		success: returnedResults
-	});
-}
-
-function processLogin() {
-		var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-		$.ajax({
-			type:"POST",
-			url: "login.php",
-			data: {
-				username: username,
-				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
-				password: password
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['login'] == "success") {
-					$("#user label").html(result['username']);
-					$("#user img").addClass("loggedin");
-					hideLoginPopup();
-					$("#loginbutton").html("<span id='loginbutton'><img class='loggedin' src='css/svg/Man.svg' onclick='processLogout();' /></span>");
-				}else{
-					console.log("Failed to log in.");
-					if(typeof result.reason != "undefined") {
-						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
-					}
-					$("input#username").css("background-color", "#ff7c6a");
-					$("input#password").css("background-color", "#ff7c6a");
-				}
-				AJAXServiceResults("GET","&cid="+querystring['cid']);
-			},
-			error:function() {
-				console.log("error");
-			}
-		});
-}
-
-function processLogout() {
-	$.ajax({
-		type:"POST",
-		url: "logout.php",
-		success:function(data) {
-			$("#user label").html("Guest");
-			$("#user img").removeClass("loggedin");
-			$("#loginbutton").html("<span id='loginbutton'><img src='css/svg/Man.svg' onclick='showLoginPopup();' /></span>");
-			AJAXServiceResults("GET","&cid="+querystring['cid']);
-		},
-		error:function() {
-			console.log("error");
-		}
-	});
-}
 
 //----------------------------------------
 // Commands:
@@ -118,7 +49,7 @@ function makeSelect(gradesys,cid,vers,moment,uid,mark,ukind)
 function changeGrade(elem,gradesys,cid,vers,moment,uid,mark,ukind)
 {
 		mark=elem.value;
-		AJAXServiceResults("CHGR","&cid="+cid+"&vers="+vers+"&moment="+moment+"&uid="+uid+"&mark="+mark+"&ukind="+ukind);
+		AJAXService("CHGR",{cid:cid,vers:vers,moment:moment,uid:uid,mark:mark,ukind:ukind},"RESULT");
 }
 
 //----------------------------------------

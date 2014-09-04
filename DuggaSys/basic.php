@@ -9,7 +9,7 @@
 
 function getOP($name)
 {
-		if(isset($_POST[$name]))	return htmlEntities($_POST[$name]);
+		if(isset($_POST[$name]))	return urldecode($_POST[$name]);
 		else return "UNK";			
 }
 
