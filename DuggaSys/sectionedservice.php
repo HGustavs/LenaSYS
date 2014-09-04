@@ -4,21 +4,11 @@
 // editorService - Saves and Reads content for Code Editor
 //---------------------------------------------------------------------------------------------------------------
 
-// Missing Functionality
-//		New Code Example + New Dugga
-//		Graying link accordingly
-
-
-function getOP($name)
-{
-		if(isset($_POST[$name]))	return htmlEntities($_POST[$name]);
-		else return "UNK";			
-}
-
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
 include_once "../Shared/sessions.php";
+include_once "basic.php";
 
 // Connect to database and start session
 pdoConnect();

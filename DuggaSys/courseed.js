@@ -78,7 +78,19 @@ function processLogout() {
 
 function updateCourse()
 {
-		alert("Uppd!");
+		var coursename=$("#coursename").val();
+		var cid=$("#cid").val();
+		var coursecode=$("#coursecode").val();
+		var visib=$("#visib").val();
+
+		var activevers=$("#activeversion").val();
+		var activeedvers=$("#activeedversion").val();
+		
+		// Show dialog
+		$("#editCourse").css("display","none");
+
+		AJAXServiceCourse("UPDATE","&cid="+cid+"&coursename="+coursename+"&visib="+visib+"&activevers="+activevers+"&activeedvers="+activeedvers);
+
 }
 
 function accessCourse()
@@ -112,7 +124,6 @@ function newCourse()
 
 function selectCourse(cid,coursename,coursecode,visi,vers,edvers)
 {
-	
 		$(".item").css("border","none");
 		$(".item").css("box-shadow","none");
 		$("#C"+cid).css("border","2px dashed #FC5");
