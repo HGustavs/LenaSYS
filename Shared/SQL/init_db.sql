@@ -25,7 +25,6 @@ DROP TABLE IF EXISTS template;
 DROP TABLE IF EXISTS course;
 DROP TABLE IF EXISTS user;
 */
-
 CREATE TABLE user(
 		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
@@ -170,6 +169,15 @@ CREATE TABLE vers(
 		vers				VARCHAR(8) NOT NULL,
 		FOREIGN KEY (cid) REFERENCES course(cid),		
 		PRIMARY KEY(cid,coursecode,vers)
+);
+
+CREATE TABLE fileLink(
+	fileid				INT(11) NOT NULL AUTO_INCREMENT,
+	filename			VARCHAR(128) NOT NULL,
+	kind					INTEGER,	
+	cid						INT UNSIGNED NOT NULL,
+	PRIMARY KEY (fileid),
+	FOREIGN KEY (cid) REFERENCES course (cid)
 );
 
 

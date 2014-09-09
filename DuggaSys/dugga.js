@@ -108,7 +108,8 @@ function processLogin(kind) {
 					else if(kind=="ACCESS") AJAXService("GET",{cid:querystring['cid']},"ACCESS")
 					else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
 					else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
-					else if(kind=="SECTION") AJAXService("get",{},"SECTION");
+					else if(kind=="SECTION") AJAXService("get",{},"SECTION")
+					else if(kind=="LINK") alert('LINKT!');
 				
 				}else{
 					console.log("Failed to log in.");
@@ -140,7 +141,8 @@ function processLogout(kind) {
 			else if(kind=="ACCESS") AJAXService("GET",{cid:querystring['cid']},"ACCESS")
 			else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
 			else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
-			else if(kind=="SECTION") AJAXService("get",{},"SECTION");
+			else if(kind=="SECTION") AJAXService("get",{},"SECTION")
+			else if(kind=="LINK") alert('LINKT!');
 
 		},
 		error:function() {
