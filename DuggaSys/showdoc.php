@@ -5,6 +5,8 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "basic.php";
 include_once "../Shared/sessions.php";
+
+session_start();
 	
 ?>
 <!DOCTYPE html>
@@ -37,7 +39,6 @@ include_once "../Shared/sessions.php";
 
 			// Connect to database and start session
 			pdoConnect();
-			session_start();
 			
 			$cid=getOPG('cid');
 			$fid=getOPG('fid');
@@ -69,12 +70,17 @@ include_once "../Shared/sessions.php";
 					$query->bindParam(':fid', $fid);
 					$result = $query->execute();
 					if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-							echo $row['filename'];
-					  	readfile($row['filename']);
+				  	if(file_exists ( $row['filename'])){
+						  	readfile($row['filename']);
+					  }else{
+								echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exists!</div>";
+					  }
+					}else{
+							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 					}
 
 			}else{
-					echo "Bummer! You have reached a non-navigable link!";
+					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 			}
 	
 	?>
