@@ -22,7 +22,7 @@ pdoConnect();
 <body>
 	
 	<?php 
-		$noup=true;
+		$noup="SECTION";
 		$loginvar="DUGGA";
 		include 'navheader.php';
 	?>

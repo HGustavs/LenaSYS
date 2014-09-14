@@ -495,6 +495,7 @@ input.submit-button {
 	cursor:pointer;
 	margin-top:6px;
 	margin-bottom:2px;
+	margin-left:4px;
 	font-size:14px;
 }
 
@@ -520,7 +521,7 @@ input.submit-button-red:hover {
 .list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
 .list th {background:#614875; color:#fff;line-height:28px;}
 
-.innertable {background:#fff;box-shadow:2px 4px 6px #c0b0b8 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
+.innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
 .innertable td {color:#000;line-height:28px;border:none;}
 
 .list tr:hover { background-color: #dbd0d8; }

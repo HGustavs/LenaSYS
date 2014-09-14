@@ -1,3 +1,15 @@
+//----------------------------------------------------------------------------------
+// changeURL: Patch-in for changeURL from project 2014 code
+//----------------------------------------------------------------------------------
+
+function changeURL(thisurl)
+{
+		window.location.href = thisurl;
+}
+
+//----------------------------------------------------------------------------------
+// parseGet: reads the parameters from the get url and places content in an array
+//----------------------------------------------------------------------------------
 
 function parseGet(){
 
@@ -90,11 +102,12 @@ function processLogin(kind) {
 		var password = $("#login #password").val();
 		$.ajax({
 			type:"POST",
-			url: "login.php",
+			url: "loginlogout.php",
 			data: {
 				username: username,
 				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
-				password: password
+				password: password,
+				opt: "LOGIN"
 			},
 			success:function(data) {
 				var result = JSON.parse(data);
@@ -131,7 +144,7 @@ function processLogin(kind) {
 function processLogout(kind) {
 	$.ajax({
 		type:"POST",
-		url: "logout.php",
+		url: "loginlogout.php",
 		success:function(data) {
 			$("#user label").html("Guest");
 			$("#user img").removeClass("loggedin");

@@ -2,7 +2,16 @@
 	<header>
 			<nav id="navigate">
 				<?php
-					if(!$noup) echo "<a href='courseed.php'><img src='css/svg/Up.svg'></a>";
+					include_once "basic.php";
+					if($noup=="COURSE"){
+						echo "<a href='courseed.php'><img src='css/svg/Up.svg'></a>";
+					}else if($noup=="SECTION"){
+						$cid=getOPG('cid');
+						$coursevers=getOPG('coursevers');
+						echo "<a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='css/svg/Up.svg'></a>";
+					}else{
+							// None!
+					}
 				?>
 			</nav>
 			<div id="title">

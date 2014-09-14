@@ -23,7 +23,7 @@ pdoConnect();
 <body>
 
 	<?php 
-		$noup=true;
+		$noup="NONE";
 		$loginvar="COURSE"; 
 		include 'navheader.php';
 	?>

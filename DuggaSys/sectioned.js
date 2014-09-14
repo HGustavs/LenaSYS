@@ -146,6 +146,8 @@ function returnedSection(data)
 		if(data['writeaccess']) {
 			str+="<div style='float:right;'>";
 			str+="<input class='submit-button' type='button' value='New' onclick='newItem();'/>";
+			str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='Tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="</div>";
 		}
 		
