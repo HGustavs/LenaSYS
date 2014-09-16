@@ -53,10 +53,10 @@ pdoConnect();
 			<td colspan='2'><input type='hidden' id='lid' value='Toddler' />Name:<br/><input type='text' class='form-control textinput' id='sectionname' value='sectionname' style='width:448px;' /></td>
 		</tr>
 		<tr>
-			<td colspan='2'><span id='linklabel'>Link:<br/></span><input type='text' class='form-control textinput' id='link' value='link' style='width:448px;' /></td>
+			<td colspan='2'><span id='linklabel'>Link:&nbsp;<select id='link' ></select></span></td>
 		</tr>
 		<tr>
-			<td>Type:&nbsp;<select id='type' ></select></td>
+			<td>Type:&nbsp;<select id='type' onchange='changedType();'></select></td>
 			<td align='right'>Visibility:&nbsp;<select style='align:right;' id='visib'></select></td>
 		</tr>
 		<tr>

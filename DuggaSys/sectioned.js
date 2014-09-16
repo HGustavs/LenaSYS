@@ -68,28 +68,49 @@ function selectItem(lid,entryname,kind,evisible,elink,moment)
 
 		// Set Link
 		$("#link").val(elink);
-		
+
 		// Graying of Link
-		if(kind<2){
-				$("#link").css("opacity","0.3");		
-				$("#linklabel").css("opacity","0.3");	
-				$("#link").prop('disabled', true);					
-				$("#createbutton").css('visibility', 'hidden');					
-		}else{
-				$("#link").css("opacity","1.0");		
+		if((kind==5)||(kind==3)){
 				$("#linklabel").css("opacity","1.0");				
 				$("#link").prop('disabled', false);					
 
-				if(elink==""){
-						$("#createbutton").css('visibility', 'visible');					
-				}else{
-						$("#createbutton").css('visibility', 'hidden');					
+				iistr="";
+				if(kind==5){
+						for(var ii=0;ii<retdata['links'].length;ii++){
+								var iitem=retdata['links'][ii];
+								if(elink==iitem['fileid']){
+										iistr+="<option selected='selected' value='"+iitem['fileid']+"'>"+iitem['filename']+"</option>";								
+								}else{
+										iistr+="<option value='"+iitem['fileid']+"'>"+iitem['filename']+"</option>";																
+								}
+						}
+						$("#link").html(iistr);					
+				}else if(kind==3){
+						for(var ii=0;ii<retdata['duggor'].length;ii++){
+								var iitem=retdata['duggor'][ii];
+								if(elink==iitem['id']){
+										iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+								}else{
+										iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+								}
+						}
 				}
+				$("#link").html(iistr);					
+		}else{
+				$("#linklabel").css("opacity","0.3");	
+				$("#link").prop('disabled', true);					
+				$("#createbutton").css('visibility', 'hidden');					
 		}
 		
 		// Show dialog
 		$("#editSection").css("display","block");
 		
+}
+
+function changedType()
+{
+		kind=$("#type").val();		
+		alert(kind);
 }
 
 function deleteItem()
@@ -219,6 +240,9 @@ function returnedSection(data)
 							str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
 						} else if (parseInt(item['kind']) == 2 || parseInt(item['kind']) > 4) {
 							str+="<span><a style='margin-left:15px;' href="+item['link']+">"+item['entryname']+"</a></span>";
+						} else if (parseInt(item['kind']) == 3 ) {
+							//Dugga!
+							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"\");' >"+item['entryname']+"</a>";
 						} else {
 							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\""+item['link']+"\")'>"+item['entryname']+"</a>";
 						}	

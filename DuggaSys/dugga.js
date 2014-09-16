@@ -1,4 +1,18 @@
 //----------------------------------------------------------------------------------
+// saveDuggaResult: Saves the result of a dugga
+//----------------------------------------------------------------------------------
+
+function saveDuggaResult(resultstr)
+{
+		hexstr="";
+		for(i=0;i<bitstr.length;i++){
+				hexstr+=bitstr.charCodeAt(i).toString(16)+" ";
+		}
+		
+		alert("\""+hexstr+"\"\nThe text above is your receipt for this assignment question.\nKeep receipt in a secure place as this is the only proof that you have that you performed the task.");
+}
+
+//----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
 //----------------------------------------------------------------------------------
 
@@ -84,6 +98,14 @@ function AJAXService(opt,apara,kind)
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedSection
+			});
+	}else if(kind=="PDUGGA"){
+			$.ajax({
+				url: "showDuggaservice.php",
+				type: "POST",
+				data: "courseid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				dataType: "json",
+				success: returnedDugga
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({

@@ -44,4 +44,15 @@ function makeRandomString($length = 6) {
     return $result;
 }
 
+//---------------------------------------------------------------------------------------------------------------
+// endsWith - Tests if a string ends with another string - defaults to being non-case sensitive
+//---------------------------------------------------------------------------------------------------------------
+function endsWith($haystack,$needle,$case=true)
+{
+	if($case){
+		return (strcmp(substr($haystack, strlen($haystack) - strlen($needle)),$needle)===0);
+	}
+	return (strcasecmp(substr($haystack, strlen($haystack) - strlen($needle)),$needle)===0);
+}
+
 ?>

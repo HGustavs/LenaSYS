@@ -156,8 +156,13 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 
 		$dir    = './templates';
-		$files = scandir($dir);
-		
+		$giles = scandir($dir);
+		$files =array();
+		foreach ($giles as $value){
+				if(endsWith($value,".html")){
+						array_push($files,substr ( $value , 0, strlen($value)-5 ));
+				}		
+		}
 }
 		
 $array = array(

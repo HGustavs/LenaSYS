@@ -95,8 +95,9 @@ if(checklogin()){
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
-$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:1");
-$query->bindParam(':1', $courseid);
+
+$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
+$query->bindParam(':cid', $courseid);
 $result = $query->execute();
 if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 	$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0);
@@ -110,25 +111,28 @@ if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 $ha = (checklogin() && (hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"])));
 
 $entries=array();
-$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
-$query->bindParam(':cid', $courseid);
-$query->bindParam(':coursevers', $coursevers);
-$result=$query->execute();
-if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
-foreach($query->fetchAll() as $row) {
-	array_push(
-		$entries,
-		array(
-			'entryname' => $row['entryname'],
-			'lid' => $row['lid'],
-			'pos' => $row['pos'],
-			'kind' => $row['kind'],
-			'moment' => $row['moment'],
-			'link'=> $row['link'],
-			'visible'=> $row['visible'],
-			'code_id' => $row['code_id']
-		)
-	);
+// If user has read access!
+if($hr){
+		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
+		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':coursevers', $coursevers);
+		$result=$query->execute();
+		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+		foreach($query->fetchAll() as $row) {
+			array_push(
+				$entries,
+				array(
+					'entryname' => $row['entryname'],
+					'lid' => $row['lid'],
+					'pos' => $row['pos'],
+					'kind' => $row['kind'],
+					'moment' => $row['moment'],
+					'link'=> $row['link'],
+					'visible'=> $row['visible'],
+					'code_id' => $row['code_id']
+				)
+			);
+		}
 }
 
 $query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
@@ -142,6 +146,40 @@ if($query->execute()) {
 	$coursename = "Course not Found!";
 }
 
+$duggor=array();
+$links=array();
+
+if($ha){
+
+		$query = $pdo->prepare("SELECT id,qname FROM quiz WHERE cid=:cid ORDER BY qname");
+		$query->bindParam(':cid', $courseid);
+		$result=$query->execute();
+		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+		foreach($query->fetchAll() as $row) {
+			array_push(
+				$duggor,
+				array(
+					'id' => $row['id'],
+					'qname' => $row['qname']
+				)
+			);
+		}
+
+		$query = $pdo->prepare("SELECT fileid,filename FROM fileLink WHERE cid=:cid ORDER BY filename");
+		$query->bindParam(':cid', $courseid);
+		$result=$query->execute();
+		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+		foreach($query->fetchAll() as $row) {
+			array_push(
+				$links,
+				array(
+					'fileid' => $row['fileid'],
+					'filename' => $row['filename']
+				)
+			);
+		}
+}
+
 $array = array(
 	'entries' => $entries,
 	"debug" => $debug,
@@ -149,7 +187,9 @@ $array = array(
 	'readaccess' => $hr,
 	'coursename' => $coursename,
 	'coursevers' => $coursevers,
-	'courseid' => $courseid
+	'courseid' => $courseid,
+	'links' => $links,
+	'duggor' => $duggor
 );
 
 echo json_encode($array);
