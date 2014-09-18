@@ -118,13 +118,6 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 								$stmt->bindParam(':lastname', $lastname);
 								$stmt->bindParam(':ssn', $ssn);
 								$stmt->bindParam(':password', $rnd);
-/*				
-								try {
-									$stmt->execute();
-								} catch (PDOException $e) {
-								
-								}
-*/
 								if(!$stmt->execute()) {
 									$error=$stmt->errorInfo();
 									$debug.="Error updating entries".$error[2];
