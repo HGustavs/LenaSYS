@@ -109,21 +109,27 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 								// User does exist
 								$debug.="   ".$username."Does not Exist \n";
 
-								$rnd=randomString(9);
+								$rnd=makeRandomString(9);
 								
-								$querystring='INSERT INTO user (username, firstname, lastname, ssn, password,createddate) VALUES(:username,:firstname,:lastname,:ssn,password(:password),now());';	
+								$querystring='INSERT INTO user (username, firstname, lastname, ssn, password,addedtime) VALUES(:username,:firstname,:lastname,:ssn,password(:password),now());';	
 								$stmt = $pdo->prepare($querystring);
 								$stmt->bindParam(':username', $username);
 								$stmt->bindParam(':firstname', $firstname);
 								$stmt->bindParam(':lastname', $lastname);
 								$stmt->bindParam(':ssn', $ssn);
 								$stmt->bindParam(':password', $rnd);
-				
+/*				
 								try {
 									$stmt->execute();
 								} catch (PDOException $e) {
 								
 								}
+*/
+								if(!$stmt->execute()) {
+									$error=$stmt->errorInfo();
+									$debug.="Error updating entries".$error[2];
+								}
+
 								$uid=$pdo->lastInsertId();
 								
 								// Save uid and password in array, send to client for delegation!

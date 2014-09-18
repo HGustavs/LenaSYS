@@ -149,7 +149,7 @@ CREATE TABLE userAnswer (
   quiz 					INT(11),
   variant				INT,
   moment				INT UNSIGNED NOT NULL,
-  grade 				tinyint(2) NOT NULL,
+  grade 				tinyint(2),
   uid 					INT UNSIGNED NOT NULL,
   answer 				varchar(2000),
   submitted 		timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
