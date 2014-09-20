@@ -2,13 +2,18 @@
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 
-function saveDuggaResult(resultstr)
+function saveDuggaResult(citstr)
 {
+		citstr=querystring['moment']+" "+citstr;
+		citstr=querystring['coursevers']+" "+citstr;
+		citstr=querystring['cid']+" "+citstr;
+
 		hexstr="";
-		for(i=0;i<bitstr.length;i++){
-				hexstr+=bitstr.charCodeAt(i).toString(16)+" ";
+		for(i=0;i<citstr.length;i++){
+				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 		}
 		
+		alert(citstr);
 		alert("\""+hexstr+"\"\nThe text above is your receipt for this assignment question.\nKeep receipt in a secure place as this is the only proof that you have that you performed the task.");
 }
 

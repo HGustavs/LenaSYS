@@ -1,0 +1,68 @@
+<p>Uppgiften g&aring;r ut p&aring; att representera en f&auml;rg med ett hexadecimalt tal. De tre hexadecimala talen (sex positioner totalt)
+representerar f&auml;rgen med den r&ouml;da byten l&auml;ngst till v&auml;nster och den bl&aring; till h&ouml;ger.</p>
+<br/>
+<p>Svaret beh&ouml;ver inte vara exakt r&auml;tt, s&aring; l&auml;nge f&auml;rgen &auml;r snarlik &auml;r det godk&auml;nt.</p>
+<br/>
+<p>Exempelvis: Skall man representera f&auml;rgen vit s&auml;tter man samtliga sex hexadecimala tal till F.</p>
+<br/>
+<p>F&auml;rgen du skall representera &auml;r: <span id='fargnamn'>Rod</span><span id='fargen' style='position:relative;width:24px;height:24px;background:#f00'>&nbsp;</span></p>
+<br/>
+<table class='fouter' width="100%" style='margin-bottom:20px;' >
+		<tr height="100px">
+				<td class='outertd' style='border-top:2px dashed #fb8;border-left:2px dashed #fb8;border-bottom:2px dashed #fb8;'> 
+					<table width="100%" style="border-spacing: 4px;border-collapse: separate;">
+							<tr height="64px;">
+									<td id="H0" class='hexo'>0</td>
+									<td id="H1" class='hexo'>0</td>
+							</tr>
+					</table>												
+				</td>
+				<td style="width:8px;border-top:2px dashed #fb8;"></td>
+				<td class='outertd' style='border-top:2px dashed #fb8;border-bottom:2px dashed #fb8;'> 
+					<table width="100%" style="border-spacing: 4px;border-collapse: separate;">
+							<tr height="64px;">
+									<td id="H2" class='hexo'>0</td>
+									<td id="H3" class='hexo'>0</td>
+							</tr>
+					</table>												
+				</td>
+				<td style="width:8px;border-top:2px dashed #fb8;border-bottom:2px dashed #fb8;"></td>
+				<td class='outertd' style='border-top:2px dashed #fb8;border-right:2px dashed #fb8;border-bottom:2px dashed #fb8;'> 
+					<table width="100%" style="border-spacing: 4px;border-collapse: separate;">
+							<tr height="64px;">
+									<td id="H4" class='hexo'>0</td>
+									<td id="H5" class='hexo'>0</td>
+							</tr>
+					</table>												
+				</td>
+		</tr>
+</table>
+
+<div id="pop" class="popover arrow-topr" style='position:absolute;display:none;'>
+		<table width="100%" height="100%" style='border-collapse: separate;'>
+				<tr>
+						<td class='hexbutt' onclick="setval('0');">0</td>
+						<td class='hexbutt' onclick="setval('1');">1</td>
+						<td class='hexbutt' onclick="setval('2');">2</td>
+						<td class='hexbutt' onclick="setval('3');">3</td>
+				</tr>
+				<tr>
+						<td class='hexbutt' onclick="setval('4');">4</td>
+						<td class='hexbutt' onclick="setval('5');">5</td>
+						<td class='hexbutt' onclick="setval('6');">6</td>
+						<td class='hexbutt' onclick="setval('7');">7</td>
+				</tr>
+				<tr>
+						<td class='hexbutt' onclick="setval('8');">8</td>
+						<td class='hexbutt' onclick="setval('9');">9</td>
+						<td class='hexbutt' onclick="setval('A');">A</td>
+						<td class='hexbutt' onclick="setval('B');">B</td>
+				</tr>
+				<tr>
+						<td class='hexbutt' onclick="setval('C');">C</td>
+						<td class='hexbutt' onclick="setval('D');">D</td>
+						<td class='hexbutt' onclick="setval('E');">E</td>
+						<td class='hexbutt' onclick="setval('F');">F</td>
+				</tr>
+		</table>												
+</div>

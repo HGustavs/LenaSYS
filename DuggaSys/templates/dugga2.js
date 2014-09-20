@@ -72,16 +72,17 @@ function saveClick()
 {
 		// Loop through all bits
 		bitstr="";
-		$(".bit").each(function( index ) {
-				bitstr=bitstr+this.innerHTML;
-		});
-		
+
 		bitstr+=" "+$("#H0").html();
 		bitstr+=" "+$("#H1").html();
-		
+		bitstr+=" "+$("#H2").html();
+		bitstr+=" "+$("#H3").html();
+		bitstr+=" "+$("#H4").html();
+		bitstr+=" "+$("#H5").html();
+
 		bitstr+=" "+window.screen.width;
 		bitstr+=" "+window.screen.height;
-		
+	
 		bitstr+=" "+$(window).width();
 		bitstr+=" "+$(window).height();
 		
