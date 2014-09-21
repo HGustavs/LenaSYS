@@ -33,7 +33,7 @@ function updateVariant()
 		var answer=$("#answer").val();
 		var parameter=$("#parameter").val();
 		
-		AJAXService("ADDVARI",{cid:querystring['cid'],vid:vid,answer:answer,parameter:parameter},"DUGGA");
+		AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,answer:answer,parameter:parameter},"DUGGA");
 }
 
 function closeEditVariant()
@@ -131,10 +131,10 @@ function selectVariant(vid,param,answer)
 		$("#vid").val(vid);
 		
 		// Set Parameter (Exam Question)
-		$("#parameter").val(param);
+		$("#parameter").val(param.replace(/&quot;/g, '"'));
 
 		// Set Answer (Answer for Question - Optional)	
-		$("#answer").val(answer);
+		$("#answer").val(answer.replace(/&quot;/g, '"'));
 }
 
 //----------------------------------------
@@ -219,7 +219,7 @@ function returnedDugga(data)
 
 										str+="<td style='padding:4px;'>";
 												str+="<img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Cogwheel.svg' ";
-												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+itemz['param']+"\",\""+itemz['answer']+"\");' >";
+												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['answer'])+"\");' >";
 										str+="</td>";
 
 										str+="</tr>";

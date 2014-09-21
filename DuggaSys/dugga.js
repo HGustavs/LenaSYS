@@ -59,6 +59,9 @@ function htmlEntities(str) {
 				str=str.replace(/\Ä/g, '&Auml;');
 				str=str.replace(/\å/g, '&aring;');
 				str=str.replace(/\Å/g, '&Aring;');
+				str=str.replace(/\"/g, '&quot;');
+//				str=str.replace(/\{/g, '&#123;');
+//				str=str.replace(/\}/g, '&#125;');
 		}
 	
     return str;
@@ -149,8 +152,9 @@ function processLogin(kind) {
 					else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
 					else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
 					else if(kind=="SECTION") AJAXService("get",{},"SECTION")
-					else if(kind=="LINK") alert('LINKT!');
-				
+					else if(kind=="LINK"||kind=="PDUGGA"){
+							location.reload(); 		
+					}				
 				}else{
 					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
@@ -182,8 +186,9 @@ function processLogout(kind) {
 			else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
 			else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
 			else if(kind=="SECTION") AJAXService("get",{},"SECTION")
-			else if(kind=="LINK") alert('LINKT!');
-
+			else if(kind=="LINK"||kind=="PDUGGA"){
+					location.reload(); 		
+			}
 		},
 		error:function() {
 			console.log("error");

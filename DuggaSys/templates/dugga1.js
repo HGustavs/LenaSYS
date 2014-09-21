@@ -14,6 +14,7 @@ function setup()
 function returnedDugga(data)
 {
 	  if(data['debug']!="NONE!") alert(data['debug']);
+	  alert(data['param']);
 }
 
 function bitClick(divid)

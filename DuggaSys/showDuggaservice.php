@@ -48,9 +48,10 @@ if(checklogin()){
 							$query->bindParam(':lid', $sectid);
 							if(!$query->execute()) {
 								$debug="Error updating entries";
-							}
-*/
+						  }
 					}
+*/
+
 			}
 	}
 	
@@ -60,8 +61,7 @@ if(checklogin()){
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
-if($hr){
-		$debug="HR ";
+if($hr&&$userid!="UNK"){
 		// See if we already have a result i.e. a chosen variant.
 		$query = $pdo->prepare("SELECT aid,cid,quiz,variant,moment,vers,uid FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 		$query->bindParam(':cid', $courseid);
@@ -105,7 +105,6 @@ if($hr){
 						$query->bindParam(':uid', $userid);
 						$query->bindParam(':moment', $moment);
 						$query->bindParam(':variant', $newvariant);
-						$debug="U";
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
 							$debug="Error updating entries".$error[2];
@@ -117,7 +116,6 @@ if($hr){
 						$query->bindParam(':uid', $userid);
 						$query->bindParam(':moment', $moment);
 						$query->bindParam(':variant', $newvariant);
-						$debug="I";
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
 							$debug="Error updating entries".$error[2];
@@ -128,10 +126,8 @@ if($hr){
 		// Retrieve variant
 		$param="UNK";
 		foreach ($variants as $variant) {
-		    $debug.=" ".$savedvariant." ".$variant['vid'];
 		    if($variant['vid']==$savedvariant) $param=$variant['param'];
 		}
-
 }else{
 		$param="FORBIDDEN!!";
 }

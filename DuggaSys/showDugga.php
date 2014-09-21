@@ -85,7 +85,7 @@ session_start();
 
 	<?php 
 		$noup="SECTION";
-		$loginvar="LINK"; 
+		$loginvar="PDUGGA"; 
 		include 'navheader.php';
 	?>
 		
@@ -93,7 +93,7 @@ session_start();
 	<div id="content">
 <?php
 			// If we have access rights, read the file securely to document
-			if($duggafile!="UNK"){
+			if($duggafile!="UNK"&&$userid!="UNK"){
 			  	if(file_exists ( "Templates/".$duggafile.".html")){
 					  	readfile("Templates/".$duggafile.".html");
 				  
