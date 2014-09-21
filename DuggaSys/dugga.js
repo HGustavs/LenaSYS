@@ -49,6 +49,7 @@ function parseGet(){
 
 function htmlEntities(str) {
 													
+		befstr=str;
 		if(str!=undefined){
 				str=str.replace(/\&/g, '&amp;');
 				str=str.replace(/\</g, '&lt;');
@@ -63,8 +64,7 @@ function htmlEntities(str) {
 //				str=str.replace(/\{/g, '&#123;');
 //				str=str.replace(/\}/g, '&#125;');
 		}
-	
-    return str;
+   	return str;
 }
 
 

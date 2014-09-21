@@ -63,7 +63,7 @@ if(checklogin()){
 
 if($hr&&$userid!="UNK"){
 		// See if we already have a result i.e. a chosen variant.
-		$query = $pdo->prepare("SELECT aid,cid,quiz,variant,moment,vers,uid FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+		$query = $pdo->prepare("SELECT aid,cid,quiz,answer,variant,moment,vers,uid FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':coursevers', $coursevers);
 		$query->bindParam(':uid', $userid);
@@ -73,9 +73,11 @@ if($hr&&$userid!="UNK"){
 		$savedvariant="UNK";
 		$newvariant="";
 		$variants=array();
+		$savedanswer="UNK";
 
 		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 				$savedvariant=$row['variant'];
+				$savedanswer=$row['answer'];
 		}
 		
 		// Retrieve variant list
@@ -94,8 +96,14 @@ if($hr&&$userid!="UNK"){
 
 		// If there are any variants, randomize
 		if($savedvariant==""||$savedvariant=="UNK"){
-				if(sizeof($variants)>0) $newvariant=$variants[rand(0,sizeof($variants)-1)]['vid'];
+				$randomno=rand(0,sizeof($variants)-1);
+				$debug=$randomno;
+				if(sizeof($variants)>0) $newvariant=$variants[$randomno]['vid'];
+		}else{
+				
 		}
+
+//		$debug.=$savedvariant." ".$newvariant;
 
 		// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
 		if(($savedvariant=="")&&($newvariant!="")){
@@ -109,6 +117,7 @@ if($hr&&$userid!="UNK"){
 							$error=$query->errorInfo();
 							$debug="Error updating entries".$error[2];
 						}
+						$savedvariant=$newvariant;
 		}else if(($savedvariant=="UNK")&&($newvariant!="")){
 						$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,moment,vers,variant) VALUES(:uid,:cid,:moment,:coursevers,:variant);");
 						$query->bindParam(':cid', $courseid);
@@ -120,13 +129,14 @@ if($hr&&$userid!="UNK"){
 							$error=$query->errorInfo();
 							$debug="Error updating entries".$error[2];
 						}
+						$savedvariant=$newvariant;
 		}
-		if(($savedvariant=="")||($savedvariant=="UNK")) $savedvariant=$newvariant;
 
 		// Retrieve variant
 		$param="UNK";
 		foreach ($variants as $variant) {
 		    if($variant['vid']==$savedvariant) $param=$variant['param'];
+//		    $debug.=$variant['vid']." ".$savedvariant."\n";
 		}
 }else{
 		$param="FORBIDDEN!!";
@@ -134,7 +144,8 @@ if($hr&&$userid!="UNK"){
 
 $array = array(
 	"debug" => $debug,
-	"param" => $param
+	"param" => $param,
+	"answer" => $savedanswer
 );
 
 echo json_encode($array);

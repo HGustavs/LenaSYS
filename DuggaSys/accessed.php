@@ -8,7 +8,9 @@ pdoConnect();
 <html>
 <head>
 
-	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Access Editor</title>
+
 	<link type="text/css" href="css/style.css" rel="stylesheet">
   <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 

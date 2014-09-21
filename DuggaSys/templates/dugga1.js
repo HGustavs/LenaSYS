@@ -11,10 +11,18 @@ function setup()
 		AJAXService("GETPARAM",{ did: querystring['did'], moment: querystring['moment'] },"PDUGGA");
 }
 
+var retdata=null;
+
 function returnedDugga(data)
 {
 	  if(data['debug']!="NONE!") alert(data['debug']);
-	  alert(data['param']);
+
+		if(data['param']=="UNK"){
+				alert("UNKNOWN DUGGA!");
+		}else{
+			  retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+				$("#talet").html(retdata['tal']);
+		}
 }
 
 function bitClick(divid)

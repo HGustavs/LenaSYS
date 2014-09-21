@@ -13,7 +13,7 @@ session_start();
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Form editor</title>
+	<title>Dugga Viewer</title>
 		
 	<link type="text/css" href="css/style.css" rel="stylesheet">
 	<link type="text/css" href="Templates/dugga.css" rel="stylesheet">

@@ -1,8 +1,5 @@
 function setup()
 {
-		$('.bit').click(function(){
-				bitClick(this.id);
-		});
 
 		$('.hexo').click(function(){
 				hexClick(this.id);
@@ -14,25 +11,19 @@ function setup()
 function returnedDugga(data)
 {
 	  if(data['debug']!="NONE!") alert(data['debug']);
-}
 
-function bitClick(divid)
-{
-			if($("#"+divid).html()=="1"){
-					$("#"+divid).html("0");
-					$("#"+divid).removeClass("ett" );
-					$("#"+divid).addClass("noll" );
-			}else{
-					$("#"+divid).html("1");
-					$("#"+divid).addClass("ett" );
-					$("#"+divid).removeClass("noll" );
-			}
+		if(data['param']=="UNK"){
+				alert("UNKNOWN DUGGA!");
+		}else{
+			  retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+				$("#fargnamn").html(retdata['colorname']);
+				$("#fargen").css("background-color",retdata['color']);
+		}	  
 }
 
 var hc=null;
 function hexClick(divid)
 {
-
 	dw=$(window).width();
 	dpos=$("#"+divid).position();
 	dwid=$("#"+divid).width();
