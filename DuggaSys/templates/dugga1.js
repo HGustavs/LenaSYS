@@ -86,8 +86,8 @@ function saveClick()
 		bitstr+=" "+$("#H0").html();
 		bitstr+=" "+$("#H1").html();
 		
-		bitstr+=" "+window.screen.width;
-		bitstr+=" "+window.screen.height;
+		bitstr+=" "+screen.width;
+		bitstr+=" "+screen.height;
 		
 		bitstr+=" "+$(window).width();
 		bitstr+=" "+$(window).height();

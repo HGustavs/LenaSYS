@@ -1,14 +1,3 @@
-<?php
-
-date_default_timezone_set("Europe/Stockholm");
-
-// Include basic application services!
-include_once "basic.php";
-include_once "../Shared/sessions.php";
-
-session_start();
-	
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +15,14 @@ session_start();
 	<script>var querystring=parseGet();</script>
 
 <?php
+			date_default_timezone_set("Europe/Stockholm");
+			
+			// Include basic application services!
+			include_once "basic.php";
+			include_once "../Shared/sessions.php";
+			
+			session_start();
+
 			// Connect to database and start session
 			pdoConnect();
 			
@@ -81,7 +78,7 @@ session_start();
 
 </head>
 <!-- Any dugga must implement setup callback -->
-<body onload="setup();">
+<body onload="readDugga();setup();">
 
 	<?php 
 		$noup="SECTION";
