@@ -25,6 +25,7 @@ $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $moment=getOP('moment');
+$answer=getOP('answer');
 
 $debug="NONE!";	
 
@@ -40,18 +41,19 @@ if(checklogin()){
 	$result = $query->execute();
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 			$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0);
-			if($hr){
-/*		
+			if($hr&&$userid!="UNK"){
 					// The code for modification using sessions
-					if(strcmp($opt,"DEL")===0){
-							$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
-							$query->bindParam(':lid', $sectid);
+					if(strcmp($opt,"SAVDU")===0){
+							$query = $pdo->prepare("UPDATE userAnswer SET answer=:answer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+							$query->bindParam(':cid', $courseid);
+							$query->bindParam(':coursevers', $coursevers);
+							$query->bindParam(':uid', $userid);
+							$query->bindParam(':moment', $moment);
+							$query->bindParam(':answer', $answer);
 							if(!$query->execute()) {
-								$debug="Error updating entries";
+								$debug="Error updating answer";
 						  }
 					}
-*/
-
 			}
 	}
 	
@@ -97,7 +99,6 @@ if($hr&&$userid!="UNK"){
 		// If there are any variants, randomize
 		if($savedvariant==""||$savedvariant=="UNK"){
 				$randomno=rand(0,sizeof($variants)-1);
-				$debug=$randomno;
 				if(sizeof($variants)>0) $newvariant=$variants[$randomno]['vid'];
 		}else{
 				

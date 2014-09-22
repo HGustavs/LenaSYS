@@ -7,8 +7,6 @@ function setup()
 		$('.hexo').click(function(){
 				hexClick(this.id);
 		});
-
-		AJAXService("GETPARAM",{ did: querystring['did'], moment: querystring['moment'] },"PDUGGA");
 }
 
 var retdata=null;

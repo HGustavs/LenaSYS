@@ -13,8 +13,14 @@ function saveDuggaResult(citstr)
 				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 		}
 		
-		alert(citstr);
+		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
+
 		alert("\""+hexstr+"\"\nThe text above is your receipt for this assignment question.\nKeep receipt in a secure place as this is the only proof that you have that you performed the task.");
+}
+
+function readDugga()
+{
+		AJAXService("GETPARAM",{},"PDUGGA");
 }
 
 //----------------------------------------------------------------------------------
@@ -111,7 +117,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedDugga
 			});

@@ -5,7 +5,7 @@ function setup()
 				hexClick(this.id);
 		});
 
-		AJAXService("GETPARAM",{ did: querystring['did'], moment: querystring['moment'] },"PDUGGA");
+		AJAXService("GETPARAM",{ },"PDUGGA");
 }
 
 function returnedDugga(data)
