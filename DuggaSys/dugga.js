@@ -1,4 +1,21 @@
 //----------------------------------------------------------------------------------
+// randomstring: Generates a random password string
+//----------------------------------------------------------------------------------
+
+
+function randomstring()
+{
+		str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890![]#/()=+-_:;.,*";
+
+		var valu="";
+		for(i=0;i<9;i++){
+				valu+=str.substr(Math.round(Math.random()*78),1);
+		}
+
+		return valu;
+}
+
+//----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 
