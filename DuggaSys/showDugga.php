@@ -59,7 +59,7 @@
 			// if we have permit, and if file exists, include javascript file.			
 			if($hr){
 					if(isSuperUser($userid)){
-							$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");										
+							$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
 					}else{
 							$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");					
 					}
@@ -67,27 +67,29 @@
 					$query->bindParam(':vers', $vers);
 					$query->bindParam(':quizid', $quizid);
 					$result = $query->execute();
-					
-					if (!$result){
-						$error=$query->errorInfo();
-						$debug="Error updating entries".$error[2];
-					}
 
 					if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 							$duggatitle=$row['entryname'];
 							$duggafile=$row['quizFile'];
 							$duggarel=$row['qrelease'];
 							$duggadead=$row['deadline'];
-							// Dugga found
-							
+
 							echo "<script src='templates/".$duggafile.".js'></script>";
+
+							echo "</head>";
+							echo "<body onload='readDugga();setup();'>";
+
+					}else{
+							echo "</head>";
+							echo "<body>";							
 					}
-			}
+
+		}else{
+					echo "</head>";
+					echo "<body>";		
+		}
 ?>
 
-</head>
-<!-- Any dugga must implement setup callback -->
-<body onload="readDugga();setup();">
 
 	<?php 
 		$noup="SECTION";
@@ -98,6 +100,11 @@
 	<!-- content START -->
 	<div id="content">
 <?php
+
+			// Log USERID for Dugga Access
+			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			
+			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			if($duggafile!="UNK"&&$userid!="UNK"){
 			  	if(file_exists ( "templates/".$duggafile.".html")){

@@ -80,16 +80,15 @@ if($ha){
 
 $entries=array();
 if($ha){
-		$query=$pdo->query("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
+		$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
 }else{
-		$query=$pdo->query("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
+		$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
 }
-$result=$query->execute();
-if (!$result){
-			$error=$query->errorInfo();
-			$debug="Error updating entries".$error[2];
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses".$error[2];
 }else{
-		foreach($query->fetchAll() as $row) {
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			array_push(
 				$entries,
 				array(
@@ -105,14 +104,12 @@ if (!$result){
 } 
 
 $versions=array();
-$query=$pdo->query("SELECT cid,coursecode,vers FROM vers;");
-$result=$query->execute();
-if (!$result){
-		$error=$query->errorInfo();
-		$debug="Error reading versions ".$error[2];
-
+$query=$pdo->prepare("SELECT cid,coursecode,vers FROM vers;");
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses".$error[2];
 }else{
-		foreach($query->fetchAll() as $row) {
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			array_push(
 				$versions,
 				array(

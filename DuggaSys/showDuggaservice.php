@@ -40,10 +40,14 @@ if(checklogin()){
 	$query->bindParam(':cid', $courseid);
 	$result = $query->execute();
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-			$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0);
+			$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
 			if($hr&&$userid!="UNK"){
 					// The code for modification using sessions
 					if(strcmp($opt,"SAVDU")===0){
+							// Log the dugga write
+							makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
+
+							// Update Dugga!
 							$query = $pdo->prepare("UPDATE userAnswer SET answer=:answer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 							$query->bindParam(':cid', $courseid);
 							$query->bindParam(':coursevers', $coursevers);
@@ -103,8 +107,6 @@ if($hr&&$userid!="UNK"){
 		}else{
 				
 		}
-
-//		$debug.=$savedvariant." ".$newvariant;
 
 		// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
 		if(($savedvariant=="")&&($newvariant!="")){

@@ -416,10 +416,9 @@ CREATE TABLE eventlog(
 	type 				TINYINT DEFAULT 0,
 	ts 					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address 		VARCHAR(45) NOT NULL,
-	user 				INT UNSIGNED NULL,
+	user 				VARCHAR(128)
 	eventtext 	TEXT NOT NULL,
 	PRIMARY KEY(eid),
-	FOREIGN KEY(user) REFERENCES user(uid) ON UPDATE CASCADE ON DELETE NO ACTION
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE playereditor_playbacks(
@@ -448,3 +447,4 @@ update user set superuser=1 where username="Toddler";
 
 update listentries set vers="2013";
 
+alter table eventlog drop column user;
