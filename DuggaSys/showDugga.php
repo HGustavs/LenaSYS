@@ -67,6 +67,11 @@
 					$query->bindParam(':vers', $vers);
 					$query->bindParam(':quizid', $quizid);
 					$result = $query->execute();
+					
+					if (!$result){
+						$error=$query->errorInfo();
+						$debug="Error updating entries".$error[2];
+					}
 
 					if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 							$duggatitle=$row['entryname'];
