@@ -145,7 +145,7 @@ function returnedDugga(data)
 		filez = data['files'];
 		// Fill section list with information
 		str="";
-		if (data['entries'].length > 0) {
+		if (data['files'].length > 0) {
 
 				str+="<div style='float:right;'>";
 				str+="<input class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";

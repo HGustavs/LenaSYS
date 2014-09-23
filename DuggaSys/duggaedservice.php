@@ -37,7 +37,7 @@ $debug="NONE!";
 // Services
 //------------------------------------------------------------------------------------------------
 
-if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 		if(strcmp($opt,"ADDUGGA")===0){
 				$querystring='insert into quiz(cid,autograde,gradesystem,qname,quizFile,creator) values (:cid,1,1,"New Dugga","test.html",:uid)';	
@@ -107,7 +107,7 @@ $entries=array();
 
 $files=array();
 
-if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 		$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified FROM quiz WHERE cid=:cid ORDER BY id;");
 		$query->bindParam(':cid', $cid);
