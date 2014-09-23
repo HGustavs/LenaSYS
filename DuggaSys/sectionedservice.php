@@ -98,7 +98,10 @@ if(checklogin()){
 
 $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 $query->bindParam(':cid', $courseid);
-$result = $query->execute();
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading visibility ".$error[2];
+}
 if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 	$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0);
 	if (!$hr) {
@@ -117,7 +120,10 @@ if($hr){
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':coursevers', $coursevers);
 		$result=$query->execute();
-		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error reading entries".$error[2];
+		}
 		foreach($query->fetchAll() as $row) {
 			array_push(
 				$entries,
@@ -137,13 +143,14 @@ if($hr){
 
 $query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
 $query->bindParam(':cid', $courseid);
-	$coursename = "Course not Found!";
+$coursename = "Course not Found!";
 if($query->execute()) {
 	foreach($query->fetchAll() as $row) {
 			$coursename=$row['coursename'];		
 	}
 } else {
-	$coursename = "Course not Found!";
+			$error=$query->errorInfo();
+			$debug="Error reading entries".$error[2];
 }
 
 $duggor=array();
@@ -153,8 +160,10 @@ if($ha){
 
 		$query = $pdo->prepare("SELECT id,qname FROM quiz WHERE cid=:cid ORDER BY qname");
 		$query->bindParam(':cid', $courseid);
-		$result=$query->execute();
-		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error reading entries".$error[2];
+		}
 		foreach($query->fetchAll() as $row) {
 			array_push(
 				$duggor,
@@ -167,8 +176,10 @@ if($ha){
 
 		$query = $pdo->prepare("SELECT fileid,filename FROM fileLink WHERE cid=:cid ORDER BY filename");
 		$query->bindParam(':cid', $courseid);
-		$result=$query->execute();
-		if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error reading entries".$error[2];
+		}
 		foreach($query->fetchAll() as $row) {
 			array_push(
 				$links,
