@@ -16,6 +16,8 @@ if(isset($_SESSION['uid'])){
 		$userid="1";		
 } 
 
+
+$pw = getOP('pw');
 $cid = getOP('cid');
 $opt = getOP('opt');
 
@@ -60,7 +62,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}else if(strcmp($opt,"CHPWD")===0){
 				$query = $pdo->prepare("UPDATE user set password=password(:pwd) where uid=:uid;");
 				$query->bindParam(':uid', $uid);
-				$query->bindParam(':pwd', $cid);
+				$query->bindParam(':pwd', $pw);
 		
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
@@ -166,8 +168,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 		$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,modified FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 		$query->bindParam(':cid', $cid);
-		if ($query->execute()){
-				$debug="SQL Query Error: ".$pdo->errorInfo();
+
+		if(!$query->execute()){
+				$error=$query->errorInfo();
+				$debug="Error reading user entries".$error[2];
 		}
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$entry = array(
