@@ -5,7 +5,7 @@
 	<title>Dugga Viewer</title>
 		
 	<link type="text/css" href="css/style.css" rel="stylesheet">
-	<link type="text/css" href="Templates/dugga.css" rel="stylesheet">
+	<link type="text/css" href="templates/dugga.css" rel="stylesheet">
 
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery-ui-1.10.4.min.js"></script>
@@ -71,7 +71,7 @@
 							$duggadead=$row['deadline'];
 							// Dugga found
 							
-							echo "<script src='Templates/".$duggafile.".js'></script>";
+							echo "<script src='templates/".$duggafile.".js'></script>";
 					}
 			}
 ?>
@@ -91,8 +91,8 @@
 <?php
 			// If we have access rights, read the file securely to document
 			if($duggafile!="UNK"&&$userid!="UNK"){
-			  	if(file_exists ( "Templates/".$duggafile.".html")){
-					  	readfile("Templates/".$duggafile.".html");
+			  	if(file_exists ( "templates/".$duggafile.".html")){
+					  	readfile("templates/".$duggafile.".html");
 				  
 							echo "<table width='100%'>";
 							echo "<tr>";
