@@ -162,14 +162,13 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 $entries=array();
 
-$debug.=" C: ".checklogin()." A: ".hasAccess($userid, $cid, 'w')." S: ".isSuperUser($userid);
-
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 		$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,modified FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 		$query->bindParam(':cid', $cid);
-		$query->execute();
-		
+		if ($query->execute()){
+				$debug="SQL Query Error: ".$pdo->errorInfo();
+		}
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$entry = array(
 				'uid' => $row['uid'],
