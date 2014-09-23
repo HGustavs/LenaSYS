@@ -18,7 +18,7 @@ function returnedDugga(data)
 			  retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
 				$("#fargnamn").html(retdata['colorname']);
 				//$("#fargen").css("background-color",retdata['color']);
-				$("#fargen").attr("src", "Templates/color_"+retdata['color']+".png");
+				$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
 		}	  
 }
 
