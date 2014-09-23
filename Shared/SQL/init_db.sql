@@ -444,7 +444,3 @@ insert into vers (cid,coursecode,vers) values(2,"DA112G","2014");
 
 
 update user set superuser=1 where username="Toddler";
-
-update listentries set vers="2013";
-
-alter table eventlog drop column user;
