@@ -71,7 +71,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 					$debug="Error updating user".$error[2];
 				}	
 		}else if(strcmp($opt,"DELVARI")===0){
-				$query = $pdo->prepare("DELETE FROM VARIANT WHERE vid=:vid;");
+				$query = $pdo->prepare("DELETE FROM variant WHERE vid=:vid;");
 				$query->bindParam(':vid', $vid);
 
 				if(!$query->execute()) {
