@@ -106,7 +106,7 @@
 							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				  }
 			}else{
-					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
+					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!!</div>";
 			}								
 
 	?>
