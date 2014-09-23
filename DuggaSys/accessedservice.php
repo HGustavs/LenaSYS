@@ -162,7 +162,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 $entries=array();
 
-$debug." C: ".checklogin." A: ".hasAccess($userid, $cid, 'w')." S: ".isSuperUser($userid);
+$debug.=" C: ".checklogin()." A: ".hasAccess($userid, $cid, 'w')." S: ".isSuperUser($userid);
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
