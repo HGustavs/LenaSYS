@@ -86,7 +86,8 @@ if($ha){
 }
 $result=$query->execute();
 if (!$result){
-		$debug="SQL Query Error: ".$pdo->errorInfo();
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
 }else{
 		foreach($query->fetchAll() as $row) {
 			array_push(
@@ -104,23 +105,25 @@ if (!$result){
 } 
 
 $versions=array();
-$query=$pdo->query("SELECT course.cid as cid,coursename,vers FROM course LEFT OUTER JOIN listentries ON listentries.cid=course.cid GROUP BY vers;");
+$query=$pdo->query("SELECT cid,coursecode,vers FROM vers;");
 $result=$query->execute();
 if (!$result){
-		$debug="SQL Query Error: ".$pdo->errorInfo();
+		$error=$query->errorInfo();
+		$debug="Error reading versions ".$error[2];
+
 }else{
 		foreach($query->fetchAll() as $row) {
 			array_push(
 				$versions,
 				array(
 					'cid' => $row['cid'],
-					'coursename' => $row['coursename'],
+					'coursecode' => $row['coursecode'],
 					'vers' => $row['vers']
 				)
 			);
 		}
-} 
-			
+}
+
 $array = array(
 	'entries' => $entries,
 	'versions' => $versions,
