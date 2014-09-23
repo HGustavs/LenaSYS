@@ -5,3 +5,5 @@
 /PlayerEditor/CanvasWrapper/Tests/*
 
 *.xml
+
+.project
