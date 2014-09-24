@@ -32,7 +32,7 @@ function saveDuggaResult(citstr)
 		
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
-		alert("\""+hexstr+"\"\nThe text above is your receipt for this assignment question.\nKeep receipt in a secure place as this is the only proof that you have that you performed the task.");
+		alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\nSpara kvittot på ett säkert ställe.");
 }
 
 function readDugga()
