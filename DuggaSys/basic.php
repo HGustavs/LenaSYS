@@ -11,7 +11,7 @@ function makeLogEntry($userid,$entrytype,$pdo,$etext)
 {
 			$userag=$etext."|".$_SERVER['HTTP_USER_AGENT'];
 			if(strlen($userag)>1024) substr ($userag,0,1024);
-			$query = $pdo->prepare("INSERT INTO eventlog(address,radress, type, user, eventtext) VALUES(:address,:radress, :type, :user, :eventtext)");
+			$query = $pdo->prepare("INSERT INTO eventlog(address,radress, type, user, eventtext) VALUES(:address,:raddress, :type, :user, :eventtext)");
 		
 			$query->bindParam(':user', $userid);
 			$query->bindParam(':type', $entrytype);
@@ -19,7 +19,11 @@ function makeLogEntry($userid,$entrytype,$pdo,$etext)
 			$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);
 			$query->bindParam(':raddress', $_SERVER['HTTP_X_FORWARDED_FOR']);
 			$query->bindParam(':eventtext', $userag);
-			return ($query->execute() && $query->rowCount() > 0);
+			//return ($query->execute() && $query->rowCount() > 0);
+			if(!$query->execute()) {
+					$error=$query->errorInfo();
+					echo "Error updating entries".$error[2];
+			}
 }
 
 
