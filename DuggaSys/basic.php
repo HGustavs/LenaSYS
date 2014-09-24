@@ -17,13 +17,10 @@ function makeLogEntry($userid,$entrytype,$pdo,$etext)
 			$query->bindParam(':type', $entrytype);
 		
 			$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);
-			$query->bindParam(':raddress', $_SERVER['HTTP_X_FORWARDED_FOR']);
+			$query->bindParam(':raddress', $_SERVER['HTTP_CLIENT_IP']);
 			$query->bindParam(':eventtext', $userag);
-			//return ($query->execute() && $query->rowCount() > 0);
-			if(!$query->execute()) {
-					$error=$query->errorInfo();
-					echo "Error updating entries".$error[2];
-			}
+			
+			return ($query->execute() && $query->rowCount() > 0);
 }
 
 
