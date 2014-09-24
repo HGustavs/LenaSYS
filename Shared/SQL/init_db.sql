@@ -416,9 +416,9 @@ CREATE TABLE eventlog(
 	type 				TINYINT DEFAULT 0,
 	ts 					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address 		VARCHAR(45) NOT NULL,
-	user 				VARCHAR(128)
+	user 				VARCHAR(128),
 	eventtext 	TEXT NOT NULL,
-	PRIMARY KEY(eid),
+	PRIMARY KEY(eid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE playereditor_playbacks(
