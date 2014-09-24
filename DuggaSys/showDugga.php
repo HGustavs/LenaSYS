@@ -121,8 +121,10 @@
 				  }else{
 							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				  }
-			}else{
-					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!!</div>";
+			}else if ($userid=="UNK"){
+					echo "<div class='err'><span style='font-weight:bold;'>Inte inloggad!</span> Du måste logga in för att kunna se och genomföra duggor. Klicka på symbolen längst upp till höger.</div>";
+			}else {
+					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Något gick fel vid hämtningen av duggan. Kontakta LENASys-adminsitratör.</div>";
 			}								
 
 	?>
