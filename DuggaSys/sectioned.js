@@ -169,6 +169,7 @@ function returnedSection(data)
 			str+="<input class='submit-button' type='button' value='New' onclick='newItem();'/>";
 			str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='Tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="</div>";
 		}
 		

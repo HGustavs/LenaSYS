@@ -25,11 +25,14 @@ if($opt=="LOGIN"){
 		}else if(login($username, $password, $savelogin)){
 			// Successfully logged in, return user name
 			$res["login"] = "success";
-			$res["username"] = $_SESSION['loginname'];
-			
+			$res["username"] = $username;
+
+			// Log USERID for Dugga Access
+			makeLogEntry($username,3,$pdo,"");			
+
 		}else{
-			// There's no user logged in so there's no user to associate this event with.
-			// log_message( NULL, EVENT_LOGINERR, "Failed login attempt for username".htmlentities($username));
+			// As login has failed we log the attempt
+			makeLogEntry($username,4,$pdo,"");
 		}
 		
 		// Return the data as JSON

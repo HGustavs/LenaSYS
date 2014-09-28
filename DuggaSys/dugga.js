@@ -90,6 +90,9 @@ function htmlEntities(str) {
    	return str;
 }
 
+//----------------------------------------------------------------------------------
+// AJAX Service: Generic AJAX Calling Function with Prepared Parameters
+//----------------------------------------------------------------------------------
 
 function AJAXService(opt,apara,kind)
 {
@@ -114,6 +117,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedDugga
 			});
+		}else if(kind=="FILE"){
+			$.ajax({
+				url: "fileedservice.php",
+				type: "POST",
+				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				dataType: "json",
+				success: returnedFile
+			})
 	}else if(kind=="ACCESS"){
 			$.ajax({
 				url: "accessedservice.php",
@@ -174,6 +185,7 @@ function processLogin(kind) {
 					else if(kind=="ACCESS") AJAXService("GET",{cid:querystring['cid']},"ACCESS")
 					else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
 					else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
+					else if(kind=="FILE") AJAXService("GET",{cid:querystring['cid']},"FILE")
 					else if(kind=="SECTION") AJAXService("get",{},"SECTION")
 					else if(kind=="LINK"||kind=="PDUGGA"){
 							location.reload(); 		
@@ -208,6 +220,7 @@ function processLogout(kind) {
 			else if(kind=="ACCESS") AJAXService("GET",{cid:querystring['cid']},"ACCESS")
 			else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
 			else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
+			else if(kind=="FILE") AJAXService("GET",{cid:querystring['cid']},"FILE")
 			else if(kind=="SECTION") AJAXService("get",{},"SECTION")
 			else if(kind=="LINK"||kind=="PDUGGA"){
 					location.reload(); 		

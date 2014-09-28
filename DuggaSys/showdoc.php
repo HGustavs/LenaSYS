@@ -42,6 +42,7 @@ session_start();
 			
 			$cid=getOPG('cid');
 			$fid=getOPG('fid');
+			$fname=getOPG('fname');
 			
 			if(isset($_SESSION['uid'])){
 					$userid=$_SESSION['uid'];
@@ -65,18 +66,37 @@ session_start();
 			
 			// If we have access rights, read the file securely to document
 			if($hr){
-					$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and fileid=:fid;");
-					$query->bindParam(':cid', $cid);
-					$query->bindParam(':fid', $fid);
-					$result = $query->execute();
-					if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-				  	if(file_exists ( $row['filename'])){
-						  	readfile($row['filename']);
-					  }else{
-								echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exists!</div>";
-					  }
-					}else{
-							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
+					if(is_numeric($fid)){
+							// Check if it is a number or a filename, if so, 
+							$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and fileid=:fid;");
+							$query->bindParam(':cid', $cid);
+							$query->bindParam(':fid', $fid);
+							$result = $query->execute();
+							if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+						  	if(file_exists ( $row['filename'])){
+								  	readfile($row['filename']);
+							  }else{
+										echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exists!</div>";
+							  }
+							}else{
+									echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
+							}
+					}else if($fname!="UNK"){
+							// Check if it is a number or a filename, if so, 
+							$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) ORDER BY kind LIMIT 1;");
+							$query->bindParam(':cid', $cid);
+							$query->bindParam(':fname', $fname);
+							$result = $query->execute();
+							if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+						  	if(file_exists ( $row['filename'])){
+								  	readfile($row['filename']);
+							  }else{
+										echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exists!</div>";
+							  }
+							}else{
+									echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
+							}
+
 					}
 
 			}else{
