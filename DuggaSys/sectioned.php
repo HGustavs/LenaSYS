@@ -62,6 +62,7 @@ pdoConnect();
 		</tr>
 		<tr>
 			<td>Moment:&nbsp;<select id='moment' ></select></td>
+			<td>GradeSystem:&nbsp;<select id='gradesys' ></select></td>
 		</tr>
 	</table>
 	<table style='width:460px;'>

@@ -27,7 +27,7 @@ session_start();
 <body>
 
 	<?php 
-		$noup=false;
+		$noup="SECTION";
 		$loginvar="LINK"; 
 		include 'navheader.php';
 	?>
@@ -43,6 +43,7 @@ session_start();
 			$cid=getOPG('cid');
 			$fid=getOPG('fid');
 			$fname=getOPG('fname');
+			$coursevers=getOPG('coursevers');
 			
 			if(isset($_SESSION['uid'])){
 					$userid=$_SESSION['uid'];
@@ -88,11 +89,32 @@ session_start();
 							$query->bindParam(':fname', $fname);
 							$result = $query->execute();
 							if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-						  	if(file_exists ( $row['filename'])){
-								  	readfile($row['filename']);
-							  }else{
-										echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exists!</div>";
-							  }
+								$filekind=$row['kind'];
+								if($filekind==1){
+											// Link
+								}else if($filekind==2){
+											// Global
+									  	if(file_exists ( "templates/".$row['filename'])){
+											  	readfile("templates/".$row['filename']);
+										  }else{
+													echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
+										  }
+								}else if($filekind==3){
+											// Course Local
+									  	if(file_exists ( "./Courses/".$cid."/".$row['filename'])){
+											  	readfile("./Courses/".$cid."/".$row['filename']);
+										  }else{
+													echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
+										  }
+								}else if($filekind==4){
+											// Local
+									  	if(file_exists ("./Courses/".$cid."/".$coursevers."/".$row['filename'])){
+											  	readfile("./Courses/".$cid."/".$coursevers."/".$row['filename']);
+										  }else{
+													echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
+										  }
+								}
+
 							}else{
 									echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 							}

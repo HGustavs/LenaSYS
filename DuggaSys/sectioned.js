@@ -7,14 +7,31 @@ AJAXService("get",{},"SECTION");
 // Commands:
 //----------------------------------------
 
-function selectItem(lid,entryname,kind,evisible,elink,moment)
+var xelink;
+
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 {
+		
+		xelink=elink;
 		
 		// Display Select Marker
 		$(".item").css("border","none");
 		$(".item").css("box-shadow","none");
 		$("#I"+lid).css("border","2px dashed #FC5");
 		$("#I"+lid).css("box-shadow","1px 1px 3px #000 inset");
+		
+		// Set GradeSys
+		str="";
+		if(gradesys==null||gradesys==0) str+="<option selected='selected' value='0'>-</option>"
+		else str+="<option value='0'>-</option>";
+		if(gradesys==1) str+="<option selected='selected' value='1'>U-G-VG</option>"
+		else str+="<option value='1'>U-G-VG</option>";
+		if(gradesys==2) str+="<option selected='selected' value='2'>U-G</option>"
+		else str+="<option value='2'>U-G</option>";
+		if(gradesys==3) str+="<option selected='selected' value='3'>U-3-4-5</option>"
+		else str+="<option value='3'>U-3-4-5</option>";
+
+		$("#gradesys").html(str);
 		
 		// Set Moments
 		str="";
@@ -79,9 +96,9 @@ function selectItem(lid,entryname,kind,evisible,elink,moment)
 						for(var ii=0;ii<retdata['links'].length;ii++){
 								var iitem=retdata['links'][ii];
 								if(elink==iitem['fileid']){
-										iistr+="<option selected='selected' value='"+iitem['fileid']+"'>"+iitem['filename']+"</option>";								
+										iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
 								}else{
-										iistr+="<option value='"+iitem['fileid']+"'>"+iitem['filename']+"</option>";																
+										iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
 								}
 						}
 						$("#link").html(iistr);					
@@ -110,13 +127,48 @@ function selectItem(lid,entryname,kind,evisible,elink,moment)
 function changedType()
 {
 		kind=$("#type").val();		
-		alert(kind);
+
+		// Graying of Link
+		if((kind==5)||(kind==3)){
+				$("#linklabel").css("opacity","1.0");				
+				$("#link").prop('disabled', false);					
+
+				iistr="";
+				if(kind==5){
+						for(var ii=0;ii<retdata['links'].length;ii++){
+								var iitem=retdata['links'][ii];
+								if(xelink==iitem['fileid']){
+										iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
+								}else{
+										iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+								}
+						}
+						$("#link").html(iistr);					
+				}else if(kind==3){
+						for(var ii=0;ii<retdata['duggor'].length;ii++){
+								var iitem=retdata['duggor'][ii];
+								if(xelink==iitem['id']){
+										iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+								}else{
+										iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+								}
+						}
+				}
+				$("#link").html(iistr);					
+		}else{
+				$("#linklabel").css("opacity","0.3");	
+				$("#link").prop('disabled', true);					
+				$("#createbutton").css('visibility', 'hidden');					
+		}
+		
 }
 
 function deleteItem()
 {
 		lid=$("#lid").val();
 		AJAXService("DEL",{lid:lid},"SECTION");
+
+		$("#editSection").css("display","none");
 }
 
 function updateItem()
@@ -127,8 +179,9 @@ function updateItem()
 		sectionname=$("#sectionname").val();
 		visibility=$("#visib").val();
 		moment=$("#moment").val();
+		gradesys=$("#gradesys").val();
 
-		AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment},"SECTION");
+		AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys},"SECTION");
 
 		$("#editSection").css("display","none");
 }
@@ -239,16 +292,16 @@ function returnedSection(data)
 						
 						if (parseInt(item['kind']) < 2||parseInt(item['kind']) == 4) {
 							str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
-						} else if (parseInt(item['kind']) == 2 || parseInt(item['kind']) > 4) {
+						} else if (parseInt(item['kind']) == 2) {
 							str+="<span><a style='margin-left:15px;' href="+item['link']+">"+item['entryname']+"</a></span>";
 						} else if (parseInt(item['kind']) == 3 ) {
 							//Dugga!
 							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"\");' >"+item['entryname']+"</a>";
-						} else {
-							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\""+item['link']+"\")'>"+item['entryname']+"</a>";
+						} else if(parseInt(item['kind']) == 5){
+							str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showDoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 						}	
 
-						if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px' src='css/svg/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+item['moment']+"\");' />";
+						if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px' src='css/svg/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+item['moment']+"\",\""+item['gradesys']+"\");' />";
 											
 						str+="</span>";
 				}

@@ -31,6 +31,8 @@ $kind=getOP('kind');
 $link=getOP('link');
 $visibility=getOP('visibility');
 $order=getOP('order');
+$gradesys=getOP('gradesys');
+if($gradesys=="UNK") $gradesys=0;
 
 $debug="NONE!";	
 
@@ -72,7 +74,7 @@ if(checklogin()){
 							}
 					}
 			}else if(strcmp($opt,"UPDATE")===0){
-					$query = $pdo->prepare("UPDATE listentries set moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible WHERE lid=:lid;");
+					$query = $pdo->prepare("UPDATE listentries set moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
 					$query->bindParam(':lid', $sectid);
 					$query->bindParam(':entryname', $sectname);
 
@@ -82,6 +84,7 @@ if(checklogin()){
 					$query->bindParam(':kind', $kind);
 					$query->bindParam(':link', $link);
 					$query->bindParam(':visible', $visibility);
+					$query->bindParam(':gradesys', $gradesys);
 			
 					if(!$query->execute()) {
 						$error=$query->errorInfo();
@@ -116,7 +119,7 @@ $ha = (checklogin() && (hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUs
 $entries=array();
 // If user has read access!
 if($hr){
-		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
+		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,gradesystem FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':coursevers', $coursevers);
 		$result=$query->execute();
@@ -135,6 +138,7 @@ if($hr){
 					'moment' => $row['moment'],
 					'link'=> $row['link'],
 					'visible'=> $row['visible'],
+					'gradesys' => $row['gradesystem'],
 					'code_id' => $row['code_id']
 				)
 			);
@@ -174,13 +178,34 @@ if($ha){
 			);
 		}
 
-		$query = $pdo->prepare("SELECT fileid,filename FROM fileLink WHERE cid=:cid ORDER BY filename");
+		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
 		$query->bindParam(':cid', $courseid);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error reading entries".$error[2];
 		}
 		foreach($query->fetchAll() as $row) {
+			array_push(
+				$links,
+				array(
+					'fileid' => $row['fileid'],
+					'filename' => $row['filename']
+				)
+			);
+		}
+
+		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
+		$query->bindParam(':cid', $courseid);
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error reading entries".$error[2];
+		}
+		$oldkind=-1;
+		foreach($query->fetchAll() as $row) {
+			if($row['kind']!=$oldkind){
+					array_push($links,array('fileid' => -1,'filename' => "---===######===---"));
+			}
+			$oldkind=$row['kind'];
 			array_push(
 				$links,
 				array(
