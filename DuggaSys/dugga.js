@@ -32,7 +32,9 @@ function saveDuggaResult(citstr)
 		
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
-		alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
+		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
+		document.getElementById('kvittotext').value = "\n\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.";
+		showReceiptPopup();
 }
 
 function readDugga()
@@ -228,5 +230,17 @@ function showLoginPopup()
 function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
+		$("#overlay").css("display","none");
+}
+
+function showReceiptPopup()
+{
+		$("#receiptBox").css("display","block");
+		$("#overlay").css("display","block");
+}
+
+function hideReceiptPopup()
+{
+		$("#receiptBox").css("display","none");
 		$("#overlay").css("display","none");
 }

@@ -130,6 +130,33 @@
 	?>
 			
 	</div>
+
+	<!-- Login Box Start! -->
+
+  <div id='receiptBox' class="receiptBox" style="display:none">
+		<div id='receipt'>
+			<div class='receiptBoxheader'>
+				<h3>Kvitto - Duggasvar</h3>
+				<div onclick="hideReceiptPopup()">x</div>
+			</div>
+			  <div class="table-wrap">
+				<table>
+					<tr>
+						<td>
+							<textarea id="kvittotext" cols='20' rows='5' wrap='hard' style='width: 346px; height: 150px;' autofocus readonly></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type='button' class='submit-button' onclick="hideReceiptPopup();" value='Stäng'>
+						</td>
+					</tr>
+				</table>
+			  </div>
+		</div>
+	</div>
+	
+	<!-- Login Box End! -->
 				
 	<!-- content END -->
 
