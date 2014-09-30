@@ -143,7 +143,7 @@
 				<table>
 					<tr>
 						<td>
-							<textarea id="kvittotext" cols='20' rows='5' wrap='hard' style='width: 346px; height: 150px;' autofocus readonly></textarea>
+							<textarea id="kvittotext" cols='20' rows='5' wrap='hard' style='width: 346px; height: 150px; resize: none;' autofocus readonly></textarea>
 						</td>
 					</tr>
 					<tr>
