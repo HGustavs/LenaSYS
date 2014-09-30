@@ -1,6 +1,6 @@
 	<!-- Overlay -->
 
-  <div id="overlay" onclick="hideLoginPopup()" style="display:none"></div>
+  <div id="overlay" style="display:none"></div>
   
 	<!-- Login Box Start! -->
 

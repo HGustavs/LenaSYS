@@ -325,6 +325,71 @@ nav#user img.loggedin:hover {
 	z-index: 8000;
 }
 
+.receiptBox {
+	display:block;
+	padding:4px;
+	background-color: #ccc;
+	border: 2px solid #999;
+	width: 350px;
+	min-height: 100px;
+	z-index: 9000;
+	position: fixed;
+	top: 40%;
+	left: 50%;
+	margin-top: -100px;
+	margin-left: -178px;
+	
+	box-shadow:2px 2px 4px #000;
+}
+.receiptBox select {font-size:14px;float:right;margin-right:4px;}
+
+.receiptBoxheader {
+	height: 25px;
+	background-color: #614875;
+	vertical-align: bottom;
+	padding-left: 10px;
+/*  padding-top: 15px; */
+}
+.receiptBox h3 {
+font-size: 14px;
+	margin-top: 10px;
+	line-height: 0.5em;
+    color: #fff;
+    float: left;
+    width: 50%;
+}
+.receiptBoxheader div {
+	padding: 2px 20px 2px 20px;
+	position: absolute;
+	top: 4px;
+	right: 5px;
+    color: #fff;
+    cursor: default;
+	background-color: #c75050;
+	font-family: arial;
+	font-weight: bold;
+	height:20px;
+}
+.receiptBoxheader div:hover {
+	background-color: #ce3d3d;
+}
+.recepitBox form {
+	padding: 10px;
+}
+.recepitBox .text {
+	font-weight: bold;
+	font-size: 0.8em;
+}
+
+.receiptBox .submit {
+	width: 80px;
+	height: 25px;
+	color: #fff;
+	background-color: #614875;
+	border: 0px;
+	border-radius: 4px;
+	margin-left: 1px;
+}
  
 .loginBox {
 	display:block;
