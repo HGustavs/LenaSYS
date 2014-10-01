@@ -17,9 +17,26 @@ function returnedDugga(data)
 
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
-		}else{
-			  retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
-				$("#talet").html(retdata['tal']);
+		}else{			
+			retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+			$("#talet").html(retdata['tal']);
+			// Add our previous answer
+			var previous = data['answer'].split(' ');
+			if (previous.length >= 4){
+				var bitstring = previous[3];
+				var hexvalue1 = previous[4];
+				var hexvalue2 = previous[5]; 
+			}			
+			// NB: LSB is now on the highest string index
+			for (var i=bitstring.length;i>=0;i--){
+				if (bitstring[i]==1){
+					bitClick("B"+(7-i));
+					console.log("B"+(7-i)+":"+bitstring[i]);
+				}				
+			}
+			document.getElementById('H0').innerHTML=hexvalue1;
+			document.getElementById('H1').innerHTML=hexvalue2;
+			
 		}
 }
 
@@ -27,12 +44,12 @@ function bitClick(divid)
 {
 			if($("#"+divid).html()=="1"){
 					$("#"+divid).html("0");
-					$("#"+divid).removeClass("ett" );
+					$("#"+divid).removeClass("ett");
 					$("#"+divid).addClass("noll" );
 			}else{
 					$("#"+divid).html("1");
 					$("#"+divid).addClass("ett" );
-					$("#"+divid).removeClass("noll" );
+					$("#"+divid).removeClass("noll");
 			}
 }
 
@@ -74,6 +91,8 @@ function setval(sval)
 		}
 		$("#pop").css({display:"none"})
 }
+
+
 
 function saveClick()
 {
