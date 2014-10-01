@@ -21,7 +21,7 @@ function returnedDugga(data)
 			retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
-			if(!data['answer']){
+			if(data['answer'] != null){
 				var previous = data['answer'].split(' ');
 				if (previous.length >= 4){
 					var bitstring = previous[3];

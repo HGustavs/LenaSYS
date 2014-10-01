@@ -20,7 +20,7 @@ function returnedDugga(data)
 				//$("#fargen").css("background-color",retdata['color']);
 				$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
 							// Add our previous answer
-				if (!data['answer']){
+				if (data['answer'] != null){
 					var previous = data['answer'].split(' ');
 					if (previous.length >= 9){
 						document.getElementById('H0').innerHTML=previous[4];
