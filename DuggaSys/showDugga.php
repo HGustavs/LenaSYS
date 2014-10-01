@@ -148,7 +148,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="hideReceiptPopup();" value='Stäng'>
+							<input type='button' class='submit-button' style="float: right;" onclick="hideReceiptPopup();" value='Stäng'>
 						</td>
 					</tr>
 				</table>
