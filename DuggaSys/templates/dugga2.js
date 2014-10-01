@@ -19,6 +19,16 @@ function returnedDugga(data)
 				$("#fargnamn").html(retdata['colorname']);
 				//$("#fargen").css("background-color",retdata['color']);
 				$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
+							// Add our previous answer
+				var previous = data['answer'].split(' ');
+				if (previous.length >= 9){
+					document.getElementById('H0').innerHTML=previous[4];
+					document.getElementById('H1').innerHTML=previous[5];
+					document.getElementById('H2').innerHTML=previous[6];
+					document.getElementById('H3').innerHTML=previous[7];
+					document.getElementById('H4').innerHTML=previous[8];
+					document.getElementById('H5').innerHTML=previous[9];
+				}			
 		}	  
 }
 
