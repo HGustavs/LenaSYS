@@ -22,6 +22,7 @@ function returnedDugga(data)
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
 			if(data['answer'] != null){
+				resetBitstring();
 				var previous = data['answer'].split(' ');
 				if (previous.length >= 4){
 					var bitstring = previous[3];
@@ -39,6 +40,13 @@ function returnedDugga(data)
 				document.getElementById('H1').innerHTML=hexvalue2;
 			}
 		}
+}
+
+function resetBitstring(){
+	for (var i=0;i<8;i++){
+		document.getElementById("B"+i).innerHTML="0";
+		document.getElementById("B"+i).className="bit noll";		
+	}
 }
 
 function bitClick(divid)
