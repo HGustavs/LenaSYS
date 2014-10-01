@@ -31,7 +31,7 @@ function returnedDugga(data)
 			for (var i=bitstring.length;i>=0;i--){
 				if (bitstring[i]==1){
 					bitClick("B"+(7-i));
-					console.log("B"+(7-i)+":"+bitstring[i]);
+					//console.log("B"+(7-i)+":"+bitstring[i]);
 				}				
 			}
 			document.getElementById('H0').innerHTML=hexvalue1;
