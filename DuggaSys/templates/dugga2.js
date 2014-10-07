@@ -34,6 +34,28 @@ function returnedDugga(data)
 		}	  
 }
 
+function saveClick()
+{
+		// Loop through all bits
+		bitstr="";
+
+		bitstr+=" "+$("#H0").html();
+		bitstr+=" "+$("#H1").html();
+		bitstr+=" "+$("#H2").html();
+		bitstr+=" "+$("#H3").html();
+		bitstr+=" "+$("#H4").html();
+		bitstr+=" "+$("#H5").html();
+
+		bitstr+=" "+window.screen.width;
+		bitstr+=" "+window.screen.height;
+	
+		bitstr+=" "+$(window).width();
+		bitstr+=" "+$(window).height();
+		
+		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+		saveDuggaResult(bitstr);
+}
+
 var hc=null;
 function hexClick(divid)
 {
@@ -70,26 +92,4 @@ function setval(sval)
 				$("#"+hc).html(sval);		
 		}
 		$("#pop").css({display:"none"})
-}
-
-function saveClick()
-{
-		// Loop through all bits
-		bitstr="";
-
-		bitstr+=" "+$("#H0").html();
-		bitstr+=" "+$("#H1").html();
-		bitstr+=" "+$("#H2").html();
-		bitstr+=" "+$("#H3").html();
-		bitstr+=" "+$("#H4").html();
-		bitstr+=" "+$("#H5").html();
-
-		bitstr+=" "+window.screen.width;
-		bitstr+=" "+window.screen.height;
-	
-		bitstr+=" "+$(window).width();
-		bitstr+=" "+$(window).height();
-		
-		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		saveDuggaResult(bitstr);
 }

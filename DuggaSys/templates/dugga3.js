@@ -2,7 +2,14 @@ var retdata=null;
 
 function setup()
 {
+	  canvas = document.getElementById('a');
+		context = canvas.getContext("2d");
+	
+		setupClickHandling();
+
 		AJAXService("GETPARAM",{ },"PDUGGA");
+
+		setTimeout("render();", 50);
 }
 
 function returnedDugga(data)
@@ -19,7 +26,7 @@ function returnedDugga(data)
 			  	previous.shift();
 			  	previous.pop();
 			  	studentPreviousAnswer = previous.join();
-			  	// Clear operations
+			  	// Clear operations 
 		  		while (document.getElementById('operations').options.length > 0) {
 					document.getElementById('operations').remove(0);
 				}
@@ -58,15 +65,6 @@ var selectedPoint = 0;
  Also declares canvas globals
 
  *********************************************************************************/
-
-function setupcanvas() {
-	canvas = document.getElementById('a');
-	context = canvas.getContext("2d");
-
-	setTimeout("render();", 50);
-
-	setupClickHandling();
-}
 
 function setupClickHandling() {
 	// Mouse and Keyboard Events
@@ -464,7 +462,7 @@ function init(quizGoal, studentPreviousAnswer) {
 	goal = quizGoal.split(",");
 	startx = parseInt(goal.shift());
 	starty = parseInt(goal.shift());
-	canvas = document.getElementById('a');
+
 	var oplist = document.getElementById('operations');
 	
 	if (studentPreviousAnswer != ""){
@@ -487,12 +485,11 @@ function init(quizGoal, studentPreviousAnswer) {
 			}
 		}
 	}
-	
-	setupcanvas();
 
 }
 
 function fitToContainer() {
+
 	// Make it visually fill the positioned parent
 	if (window.innerWidth < window.innerHeight) {
 		canvas.width = window.innerWidth;
@@ -501,7 +498,8 @@ function fitToContainer() {
 		canvas.width = window.innerHeight;
 		canvas.height = canvas.width;
 	}
-
+	
+	sf = canvas.width / 100;
 }
 
 var startx = 10;
@@ -563,7 +561,6 @@ function drawPath() {
 function render() {
 
 	fitToContainer();
-	sf = canvas.width / 100;
 
 	context.clearRect(0, 0, 100 * sf, 100 * sf);
 	elapsedTime++;

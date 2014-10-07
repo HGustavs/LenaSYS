@@ -1,0 +1,51 @@
+    <div id="container">
+        <canvas id='a' style='border:2px solid black;float:left; cursor:none; display:block;'></canvas>
+    </div>
+
+		<div class='floatRightBox'>
+			Function:<br/>
+			<select id="function" name="function" >
+					<option value="T1">Translate 1</option>
+					<option value="T2">Translate 2</option>
+					<option value="T3">Translate 3</option>
+					<option value="T4">Translate 4</option>
+					<option value="T5">Translate 5</option>
+					<option value="T6">Translate 6</option>
+					<option value="T7">Translate 7</option>
+					<option value="T8">Translate 8</option>
+					<option value="R0">Rotate +3</option>
+					<option value="R1">Rotate +2</option>
+					<option value="R2">Rotate +1</option>
+					<option value="R3">Rotate +0.3</option>
+					<option value="R4">Rotate +0.2</option>
+					<option value="R5">Rotate -0.2</option>
+					<option value="R6">Rotate -0.3</option>
+					<option value="R7">Rotate -1</option>
+					<option value="R8">Rotate -2</option>
+					<option value="R9">Rotate -3</option>
+					<option value="S0">Scale 0.2</option>
+					<option value="S1">Scale 0.3</option>
+					<option value="S2">Scale 0.5</option>
+					<option value="S3">Scale 1.0</option>
+					<option value="S4">Scale 1.25</option>
+					<option value="D1">Draw R</option>
+					<option value="D2">Draw G</option>
+					<option value="D3">Draw B</option>
+					<option value="PUSH">Push (remember state)</option>
+					<option value="POP">Pop (jump back)</option>
+			</select>			
+
+			<input class='submit-button' type='button' value='New' onclick="newbutton();" />
+			
+			<br>Operations:<br> 
+			
+			<select style="width:185px;float:left;" size="20" id="operations" name="operations"></select>			
+
+			<br/>
+			
+			<input class='submit-button' type='button' value='MOVE UP' onclick="moveupbutton();" />
+			<input class='submit-button' type='button' value='MOVE DOWN' onclick="movedownbutton();" />
+			<input class='submit-button' type='button' value='DELETE' onclick="deletebutton();" />
+
+		</div>
+

@@ -22,7 +22,6 @@ function returnedDugga(data)
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
 			if(data['answer'] != null){
-				resetBitstring();
 				var previous = data['answer'].split(' ');
 				if (previous.length >= 4){
 					var bitstring = previous[3];
@@ -33,7 +32,6 @@ function returnedDugga(data)
 				for (var i=bitstring.length;i>=0;i--){
 					if (bitstring[i]==1){
 						bitClick("B"+(7-i));
-						//console.log("B"+(7-i)+":"+bitstring[i]);
 					}				
 				}
 				document.getElementById('H0').innerHTML=hexvalue1;
@@ -42,11 +40,25 @@ function returnedDugga(data)
 		}
 }
 
-function resetBitstring(){
-	for (var i=0;i<8;i++){
-		document.getElementById("B"+i).innerHTML="0";
-		document.getElementById("B"+i).className="bit noll";		
-	}
+function saveClick()
+{
+		// Loop through all bits
+		bitstr="";
+		$(".bit").each(function( index ) {
+				bitstr=bitstr+this.innerHTML;
+		});
+		
+		bitstr+=" "+$("#H0").html();
+		bitstr+=" "+$("#H1").html();
+		
+		bitstr+=" "+screen.width;
+		bitstr+=" "+screen.height;
+		
+		bitstr+=" "+$(window).width();
+		bitstr+=" "+$(window).height();
+		
+		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+		saveDuggaResult(bitstr);
 }
 
 function bitClick(divid)
@@ -99,27 +111,4 @@ function setval(sval)
 				$("#"+hc).html(sval);		
 		}
 		$("#pop").css({display:"none"})
-}
-
-
-
-function saveClick()
-{
-		// Loop through all bits
-		bitstr="";
-		$(".bit").each(function( index ) {
-				bitstr=bitstr+this.innerHTML;
-		});
-		
-		bitstr+=" "+$("#H0").html();
-		bitstr+=" "+$("#H1").html();
-		
-		bitstr+=" "+screen.width;
-		bitstr+=" "+screen.height;
-		
-		bitstr+=" "+$(window).width();
-		bitstr+=" "+$(window).height();
-		
-		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		saveDuggaResult(bitstr);
 }
