@@ -315,6 +315,39 @@ nav#user img.loggedin:hover {
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
 
+#resultpopover{
+		position:fixed;
+		left:50px;
+		top:70px;
+		right:50px;
+		bottom:50px;
+		z-index:9000;
+		box-shadow:2px 2px 4px #000;
+
+		padding:4px;
+		background-color: #ccc;
+		border: 2px solid #999;
+}
+
+.floatRightBox{
+
+		width:220px;
+		min-height:300px;
+		float:left;
+		margin-left:10px;
+		overflow:auto;
+		
+		float:right;
+		z-index:9000;
+		box-shadow:2px 2px 4px #000;
+
+		padding:4px;
+		background-color: #ccc;
+		border: 2px solid #999;
+}
+
+
+
 #overlay {
 	position: fixed;
 	top: 0;

@@ -1,14 +1,78 @@
+/*
+
+			}else if(cstr=="28"){
+				drawArrowDashcirc(0,0,10*sf,"#888",11.25,5.625,45.0,"L");
+			}else if(cstr=="29"){
+				drawArrowDashcirc(0,0,20*sf,"#888",11.25,5.625,45.0,"L");
+			}else if(cstr=="30"){
+				drawArrowDashcirc(0,0,30*sf,"#888",11.25,5.625,45.0,"L");
+			}else if(cstr=="31"){
+				drawArrowDashcirc(0,0,40*sf,"#888",11.25,5.625,45.0,"L");
+			}else if(cstr=="32"){
+				drawArrowDashcirc(0,0,50*sf,"#888",11.25,5.625,45.0,"L");
+			}else if(cstr=="33"){
+				drawArrowDashcirc(0,0,60*sf,"#888",11.25,5.625,45.0,"L");
+			}else if(cstr=="34"){
+				drawArrowDashcirc(0,0,70*sf,"#888",11.25,5.625,45.0,"L");
+			}else if(cstr=="35"){
+				drawArrowDashcirc(0,0,80*sf,"#888",11.25,5.625,45.0,"L");
+			}else if(cstr=="36"){
+				drawArrowDashcirc(0,0,10*sf,"#888",11.25,5.625,45.0,"R");
+			}else if(cstr=="37"){
+				drawArrowDashcirc(0,0,20*sf,"#888",11.25,5.625,45.0,"R");
+			}else if(cstr=="38"){
+				drawArrowDashcirc(0,0,30*sf,"#888",11.25,5.625,45.0,"R");
+			}else if(cstr=="39"){
+				drawArrowDashcirc(0,0,40*sf,"#888",11.25,5.625,45.0,"R");
+			}else if(cstr=="40"){
+				drawArrowDashcirc(0,0,50*sf,"#888",11.25,5.625,45.0,"R");
+			}else if(cstr=="41"){
+				drawArrowDashcirc(0,0,60*sf,"#888",11.25,5.625,45.0,"R");
+			}else if(cstr=="42"){
+				drawArrowDashcirc(0,0,70*sf,"#888",11.25,5.625,45.0,"R");
+			}else if(cstr=="43"){
+				drawArrowDashcirc(0,0,80*sf,"#888",11.25,5.625,45.0,"R");
+
+
+*/
+
+//------------==========########### GLOBALS ###########==========------------
+
 var retdata=null;
 var canvas=null;
+
+var sf=2.0;
+var speed=0.1;
+var v=0;
+var pushcount=0;
+
+// Level 1
+//var variant="33 R5 T6 R2 D2";
+//var variant="40 R2 T5 R9 D1";
+//var variant="39 R4 T4 R2 D1";
+//var variant="42 R3 T7 R8 D3";
+
+// Level 2
+//var variant="40 PUSH R2 T5 R9 S2 D1 POP 35 R5 T8 R7 S1 D2";
+//var variant="40 PUSH R2 T5 R9 S2 D2 POP 35 R5 T8 R7 S4 D3";
+//var variant="41 PUSH R2 T6 R9 S1 D1 POP 34 R5 T7 R7 S1 D3";
+//var variant="43 PUSH R4 T8 R2 S1 D3 POP 33 R5 T6 R7 S2 D2";
+
+// Level 3
+var variant ="PUSH 29 32 43 R3 T8 S2 PUSH 38 31 D2 R3 T3 R2 S1 D1 POP R7 T4 R9 S1 D3 POP PUSH R5 T2 R9 S2 D1 POP R6 T5 R1 S1 D3";
+//var variant ="PUSH 38 33 43 R6 T6 S2 PUSH 38 39 D2 R3 T3 R2 S1 D3 POP R2 T4 R9 S1 D2 POP PUSH R4 T3 R1 S1 D3 POP R4 T8 R9 S1 D1";
+//var variant ="PUSH 38 33 43 R6 T3 S2 PUSH 30 40 D1 R6 T3 R2 S1 D2 POP R0 T5 R6 S1 D3 POP PUSH R5 T6 R2 S1 D3 POP R4 T8 R8 S2 D1";
+//var variant ="PUSH 30 32 43 R3 T8 S2 PUSH 29 39 D2 R3 T4 R2 S1 D3 POP R7 T2 R9 S1 D1 POP PUSH R5 T3 R9 S2 D3 POP R7 T5 R7 S1 D2";
+
+
+//------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
 function setup()
 {
 	  canvas = document.getElementById('a');
 		context = canvas.getContext("2d");
-		setInterval("tick();",30);
+		setInterval("tick();",50);
 	
-//		setupClickHandling();
-
 		AJAXService("GETPARAM",{ },"PDUGGA");
 }
 
@@ -42,15 +106,31 @@ function returnedDugga(data)
 		}	  
 }
 
+function saveClick()
+{
+		// Loop through all bits
+	bitstr="";
+
+	$("#operations > option").each(function() {
+			bitstr+=this.value+" ";
+	});
+	
+	console.log(bitstr);		
+
+//		saveDuggaResult(bitstr);
+}
+
+//------------==========########### CONTROLLER FUNCTIONS ###########==========------------
+
 function fitToContainer() {
 	// Make it visually fill the positioned parent
 	divw=$("#content").width();
-	if(divw>500) divw-=280;	
+	if(divw>500) divw-=248;	
 	if (divw < window.innerHeight) {
 		canvas.width = divw;
 		canvas.height = divw;
 	} else {
-		canvas.width = window.innerHeight-65;
+		canvas.width = window.innerHeight-100;
 		canvas.height = canvas.width;
 	}
 	
@@ -134,7 +214,7 @@ function drawBall(cx,cy,radie,innerradie,ballradie,col1,inangle,inangleadd)
 
 function drawDashcirc(cx,cy,radie,col,inangle,inangle2)
 {
-			context.lineWidth=1.5;
+			context.lineWidth=2.5;
 			context.strokeStyle = col;					
 			context.beginPath();					
 			for(i=0;i<360;i+=inangle){
@@ -154,7 +234,7 @@ function drawArrowcirc(cx,cy,radie,col,inangle,inangle2,inangle3,direction)
 			context.beginPath();					
 			
 			angle=((inangle3/360.0)*2*Math.PI);
-			if(direction=="F"){
+			if(direction=="R"){
 					angle2=((inangle2/360.0)*2*Math.PI)+angle;					
 			}else{
 					angle2=angle-((inangle2/360.0)*2*Math.PI);
@@ -324,11 +404,6 @@ function drawCommand(cstr)
 			}							
 }
 
-var sf=2.0;
-var speed=0.1;
-var v=0;
-var pushcount=0;
-
 function tick()
 {
 		v+=speed;
@@ -344,7 +419,6 @@ function foo()
 	
 	context.globalAlpha = 0.3;
 
-	var variant="43 17 10 37 23 26 12 2 ";
 	variantset = variant.split(" ");
 
 	pushcount=0;
