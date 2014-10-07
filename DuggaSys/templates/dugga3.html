@@ -1,0 +1,72 @@
+<div>
+    <div id="container">
+        <canvas id='a' style='border:2px solid black;float:left; cursor:none; display:block;'></canvas>
+    </div>
+
+    <div style="border:2px solid black;background-color:#fed;width:20%;float:right;margin-left:10px;">
+
+        <div id="infobox" style="padding:4px;">
+            <div id="quizInstructions"></div>
+            <!--Change values in form to update curve and information box.<br>-->
+
+            <!--
+            <select id="function" name="function" >
+
+            <option value="L 10 20">Linje</option>
+            <option value="Q 20 30 40 20">Kvadratisk kurva</option>
+            <option value="C 50 10 20 50 30 50">Kubisk kurva</option>
+
+            </select>
+            -->
+            <div>
+                <button style="font-size: 0.6em" onclick="newOp('L 10 20', 'Linje');">
+                    Linje
+                </button>
+                <button style="font-size: 0.6em" onclick="newOp('Q 20 30 40 20','Kvadratisk kurva');">
+                    Kvadratisk kurva
+                </button>
+                <button style="font-size: 0.6em" onclick="newOp('C 50 10 20 50 30 50','Kubisk kurva');">
+                    Kubisk kurva
+                </button>
+            </div>
+            <!--
+            <button type="button" onclick="newbutton();">
+            LÄGG TILL
+            </button>
+            -->
+
+            <br>
+            Operations:
+            <br>
+            <select style="width:100%;" size="10" id="operations" name="operations"></select>
+
+            <br>
+            <button type="button" onclick="moveupbutton();">
+                FLYTTA UPP
+            </button>
+            <button type="button" onclick="movedownbutton();">
+                FLYTTA NER
+            </button>
+            <button type="button" onclick="deletebutton();">
+                TA BORT
+            </button>
+            <button type="button" onclick="submbutton();">
+                SKICKA SVAR
+            </button>
+            <br>
+
+            <div id="result"></div>
+        </div>
+
+    </div>
+</div>
+<div id="debug" style="display:none; font-size: 8px; position: fixed; bottom: 20px; left: 90%;">
+    <p>
+        cx:
+    </p>
+    <p>
+        cy:
+    </p>
+    <div id="debugCanvas" style="font-size: 8px; position: fixed; bottom: 60px; left: 90%;"></div>
+    <div id="debugActiveObj" style="font-size: 8px; position: fixed; bottom: 80px; left: 90%;"></div>
+</div>
