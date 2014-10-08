@@ -205,7 +205,7 @@ function populateOperationsList() {
 	}
 }
 
-function submbutton(){
+function saveClick(){
 		// Loop through all bits
 		bitstr=",";
 		var opList = document.getElementById("operations");
@@ -509,13 +509,13 @@ var previousSync = 0;
 
 function drawOp(sx, sy, opArr, lineColor, guideLines) {
 
-	if (opArr[0] == "L") {
+	if (opArr[0] == "L" || opArr[0] == "81") {
 		drawSLine(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), lineColor, guideLines);
 
-	} else if (opArr[0] == "Q") {
+	} else if (opArr[0] == "Q" || opArr[0] == "63") {
 		drawSQuadratic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), lineColor, guideLines);
 
-	} else if (opArr[0] == "C") {
+	} else if (opArr[0] == "C" || opArr[0] == "19") {
 		drawSCubic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), parseInt(opArr[5]), parseInt(opArr[6]), lineColor, guideLines);
 		sx = parseInt(opArr[5]);
 		sy = parseInt(opArr[6]);
