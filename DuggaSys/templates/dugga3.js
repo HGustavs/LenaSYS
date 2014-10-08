@@ -489,13 +489,14 @@ function init(quizGoal, studentPreviousAnswer) {
 }
 
 function fitToContainer() {
-
 	// Make it visually fill the positioned parent
-	if (window.innerWidth < window.innerHeight) {
-		canvas.width = window.innerWidth;
-		canvas.height = canvas.width;
+	divw=$("#content").width();
+	if(divw>500) divw-=248;	
+	if (divw < window.innerHeight) {
+		canvas.width = divw;
+		canvas.height = divw;
 	} else {
-		canvas.width = window.innerHeight;
+		canvas.width = window.innerHeight-100;
 		canvas.height = canvas.width;
 	}
 	
