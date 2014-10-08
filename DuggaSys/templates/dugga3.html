@@ -5,57 +5,25 @@
 
     <div style="border:2px solid black;background-color:#fed;width:20%;float:right;margin-left:10px;">
 
-        <div id="infobox" style="padding:4px;">
+        <div id="infobox" class="receiptBox" style="padding:4px;">
             <div id="quizInstructions"></div>
-            <!--Change values in form to update curve and information box.<br>-->
 
-            <!--
-            <select id="function" name="function" >
-
-            <option value="L 10 20">Linje</option>
-            <option value="Q 20 30 40 20">Kvadratisk kurva</option>
-            <option value="C 50 10 20 50 30 50">Kubisk kurva</option>
-
-            </select>
-            -->
-            <div>
-                <button style="font-size: 0.6em" onclick="newOp('L 10 20', 'Linje');">
-                    Linje
-                </button>
-                <button style="font-size: 0.6em" onclick="newOp('Q 20 30 40 20','Kvadratisk kurva');">
-                    Kvadratisk kurva
-                </button>
-                <button style="font-size: 0.6em" onclick="newOp('C 50 10 20 50 30 50','Kubisk kurva');">
-                    Kubisk kurva
-                </button>
+            <div class='receiptBoxheader'>
+                <h3>Ritverktyg:</h3>
             </div>
-            <!--
-            <button type="button" onclick="newbutton();">
-            LÄGG TILL
-            </button>
-            -->
 
-            <br>
-            Operations:
-            <br>
-            <select style="width:100%;" size="10" id="operations" name="operations"></select>
+            <div>
+                <p style="margin: 5px 0 0 4px;">Kurvor:</p>
+                <input type="button" class="submit-button" value="Linje" onclick="newOp('L 10 20','Linje');">
+                <input type="button" class="submit-button" value="Kvadratisk" onclick="newOp('Q 20 30 40 20','Kvadratisk kurva');">                    
+                <input type="button" class="submit-button" value="Kubisk" onclick="newOp('C 50 10 20 50 30 50','Kubisk kurva');">                    
+            </div>
 
-            <br>
-            <button type="button" onclick="moveupbutton();">
-                FLYTTA UPP
-            </button>
-            <button type="button" onclick="movedownbutton();">
-                FLYTTA NER
-            </button>
-            <button type="button" onclick="deletebutton();">
-                TA BORT
-            </button>
-            <button type="button" onclick="submbutton();">
-                SKICKA SVAR
-            </button>
-            <br>
+            <select style="width:100%; margin-left: 4px;" size="10" id="operations" name="operations"></select>
 
-            <div id="result"></div>
+            <input type="button" class="submit-button" value="FLYTTA UPP" onclick="moveupbutton();">                
+            <input type="button" class="submit-button" value="FLYTTA NER" onclick="movedownbutton();">                
+            <input type="button" class="submit-button" value="TA BORT" onclick="deletebutton();">
         </div>
 
     </div>
