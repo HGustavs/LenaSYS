@@ -13,6 +13,7 @@ var elapsedTime=0;
 
 function setup()
 {
+	showDuggaInfoPopup();
 	  canvas = document.getElementById('a');
 		context = canvas.getContext("2d");
 		setInterval("tick();",50);
@@ -27,7 +28,7 @@ function returnedDugga(data)
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
 		}else{
-				showDuggaInfoPopup();
+
 			  var studentPreviousAnswer="";
 
 
