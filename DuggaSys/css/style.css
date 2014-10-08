@@ -333,7 +333,7 @@ nav#user img.loggedin:hover {
 
 		width:220px;
 		min-height:300px;
-		float:left;
+
 		margin-left:10px;
 		overflow:auto;
 		
@@ -388,12 +388,12 @@ font-size: 14px;
 	margin-top: 10px;
 	line-height: 0.5em;
     color: #fff;
-    float: left;
+    float: right;
     width: 50%;
 }
 .receiptBoxheader div {
 	padding: 2px 20px 2px 20px;
-	position: absolute;
+	float:right;
 	top: 4px;
 	right: 5px;
     color: #fff;

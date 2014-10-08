@@ -2,6 +2,7 @@ var retdata=null;
 
 function setup()
 {
+	
 	  canvas = document.getElementById('a');
 		context = canvas.getContext("2d");
 	
@@ -19,6 +20,7 @@ function returnedDugga(data)
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
 		}else{
+			showDuggaInfoPopup();
 			  var studentPreviousAnswer="";
 			  retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
 			  if (data["answer"] != null){			  

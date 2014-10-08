@@ -27,6 +27,7 @@ function returnedDugga(data)
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
 		}else{
+				showDuggaInfoPopup();
 			  var studentPreviousAnswer="";
 
 
