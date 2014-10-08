@@ -143,9 +143,12 @@ function returnedDugga(data)
 					str += '<option value="S3">Scale 1.0</option>';
 						
 					}else if(cstr=="S4"||cstr=="25"){
-					str += '<option value="S4">Scale 1.25</option>';
-						
-					}
+					str += '<option value="S4">Scale 1.25</option>';						
+					}else if(cstr=="PUSH"||cstr=="26"){
+			            str += '<option value="PUSH">Push (remember state)</option>';            
+			        }else if(cstr=="POP"||cstr=="27"){
+			            str += '<option value="POP">Pop (jump back)</option>';            
+			        }					
 				}
 				document.getElementById('operations').innerHTML = str;
 			  }
