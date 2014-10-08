@@ -7,6 +7,7 @@ var sf=2.0;
 var speed=0.1;
 var v=0;
 var pushcount=0;
+var elapsedTime=0;
 
 // Level 1
 //var variant="33 R5 T6 R2 D2";
@@ -21,7 +22,7 @@ var pushcount=0;
 //var variant="43 PUSH R4 T8 R2 S1 D3 POP 33 R5 T6 R7 S2 D2";
 
 // Level 3
-var variant ="PUSH 29 32 43 R3 T8 S2 PUSH 38 31 D2 R3 T3 R2 S1 D1 POP R7 T4 R9 S1 D3 POP PUSH R5 T2 R9 S2 D1 POP R6 T5 R1 S1 D3";
+//var variant ="PUSH 29 32 43 R3 T8 S2 PUSH 38 31 D2 R3 T3 R2 S1 D1 POP R7 T4 R9 S1 D3 POP PUSH R5 T2 R9 S2 D1 POP R6 T5 R1 S1 D3";
 //var variant ="PUSH 38 33 43 R6 T6 S2 PUSH 38 39 D2 R3 T3 R2 S1 D3 POP R2 T4 R9 S1 D2 POP PUSH R4 T3 R1 S1 D3 POP R4 T8 R9 S1 D1";
 //var variant ="PUSH 38 33 43 R6 T3 S2 PUSH 30 40 D1 R6 T3 R2 S1 D2 POP R0 T5 R6 S1 D3 POP PUSH R5 T6 R2 S1 D3 POP R4 T8 R8 S2 D1";
 //var variant ="PUSH 30 32 43 R3 T8 S2 PUSH 29 39 D2 R3 T4 R2 S1 D3 POP R7 T2 R9 S1 D1 POP PUSH R5 T3 R9 S2 D3 POP R7 T5 R7 S1 D2";
@@ -47,10 +48,11 @@ function returnedDugga(data)
 		}else{
 			  var studentPreviousAnswer="";
 
-/*
+
 
 			  retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
-
+			  variant = retdata["variant"];
+/*
 			  if (data["answer"] != null){			  
 			  	var previous = data['answer'].split(',');
 			  	previous.shift();
@@ -71,15 +73,24 @@ function returnedDugga(data)
 function saveClick()
 {
 		// Loop through all bits
-	bitstr="";
+		bitstr=",";
+		var opList = document.getElementById("operations");
 
-	$("#operations > option").each(function() {
-			bitstr+=this.value+" ";
-	});
+		for (var i=0; i<document.getElementById('operations').length; i++){
+			bitstr+=opList[i].value;
+			if (i < document.getElementById('operations').length-1) bitstr+=",";	
+		}
+
+		bitstr += ",T " + elapsedTime;
+
+		bitstr+=" "+window.screen.width;
+		bitstr+=" "+window.screen.height;
 	
-	console.log(bitstr);		
+		bitstr+=" "+$(window).width();
+		bitstr+=" "+$(window).height();
 
-//		saveDuggaResult(bitstr);
+		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+		saveDuggaResult(bitstr);
 }
 
 //------------==========########### CONTROLLER FUNCTIONS ###########==========------------
@@ -374,6 +385,7 @@ function tick()
 function foo()
 {
 	fitToContainer();
+	elapsedTime++;
 	//acanvas.width = acanvas.width;				
 		
 	context.translate(100*sf,100*sf);
