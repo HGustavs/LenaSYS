@@ -9,6 +9,16 @@ var startString = '{"vertice":[{"x":"400","y":"400","z":"0"},{"x":"-400","y":"-4
 var goal = '{"vertice":[{"x":"400","y":"400","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"-800"}],"triangles":["0,1,2","1,2,3"]}';
 var goalObject;
 
+function toggleControl(){
+	if (document.getElementById('verticeControl').style.display == 'none'){
+		document.getElementById('verticeControl').style.display = 'block';
+		document.getElementById('triangleControl').style.display = 'none';
+	} else {
+		document.getElementById('verticeControl').style.display = 'none';
+		document.getElementById('triangleControl').style.display = 'block';		
+	}
+}
+
 function setup()
 {
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js", function(){
