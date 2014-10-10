@@ -1,4 +1,3 @@
-
 var camera, scene, renderer, rendererDOMElement;
 var object, line;
 var acanvas = document.getElementById("container");
@@ -16,7 +15,6 @@ function setup()
 	
 
 	   	acanvas = document.getElementById('container');
-//			context = canvas.getContext("2d");
 		//setInterval("tick();",50);
 		
 		AJAXService("GETPARAM",{ },"PDUGGA");
@@ -24,7 +22,6 @@ function setup()
 
 		acanvas.addEventListener('click', toggleRotate, false);
 
-   		// Here you can use anything you defined in the loaded script
 	});
 	
 }
@@ -37,14 +34,12 @@ function returnedDugga(data)
 				alert("UNKNOWN DUGGA!");
 		}else{
 
-			  var studentPreviousAnswer="";
+			var studentPreviousAnswer="";
 
-	init();
-	
-	populateLists(startString);
-	createGoalObject(goal);
-	
-	animate();
+			init();			
+			populateLists(startString);
+			createGoalObject(goal);			
+			animate();
 
 						  
 		}	  
@@ -322,6 +317,21 @@ function toggleWireframeMode() {
 		material.wireframe = true;
 }
 
+function fitToContainer() {
+	// Make it visually fill the positioned parent
+	divw=$("#content").width();
+	if(divw>500) divw-=248;	
+	if (divw < window.innerHeight) {
+		rendererDOMElement.width = divw;
+		rendererDOMElement.height = divw;
+	} else {
+		rendererDOMElement.width = window.innerHeight-100;
+		rendererDOMElement.height = rendererDOMElement.width;
+	}
+	//console.log(rendererDOMElement.width + " " + rendererDOMElement.height);
+	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);
+	
+}
 
 function init() {
 
@@ -331,14 +341,13 @@ function init() {
 	rendererDOMElement = renderer.domElement;
 	rendererDOMElement.width = $("#content").width()-250;
 	rendererDOMElement.height = $("#content").width()-250;
-	console.log(rendererDOMElement.width + " " + rendererDOMElement.height);
-	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);
+	fitToContainer();
 	//document.body.appendChild( rendererDOMElement );
 	acanvas.appendChild(rendererDOMElement);
 
 	camera = new THREE.PerspectiveCamera(60, rendererDOMElement.width / rendererDOMElement.height, 1, 10000);
 
-	camera.position.z = 1000;
+	camera.position.z = 1500;
 
 	scene = new THREE.Scene();
 
@@ -570,8 +579,8 @@ function addColorsToGeometry(geom) {
 
  }*/
 
-function rotateAllObjects() {
-	
+function rotateAllObjects() {	
+	// Note: this code assues object 0 is camera
 	//console.log(scene.children.length);
 	for (var i = 1; i < scene.children.length; i++) {
 		scene.children[i].rotation.x += 0.0005;
@@ -582,6 +591,7 @@ function rotateAllObjects() {
 
 function resetRotationForAllObjects() {
 	//console.log(scene.children.length);
+	// Note: this code assues object 0 is camera
 	for (var i = 1; i < scene.children.length; i++) {
 		scene.children[i].rotation.x = 0;
 		scene.children[i].rotation.y = 0;
@@ -590,6 +600,7 @@ function resetRotationForAllObjects() {
 }
 
 function animate() {
+	fitToContainer();
 	requestAnimationFrame(animate);
 
 	rotateAllObjects();
