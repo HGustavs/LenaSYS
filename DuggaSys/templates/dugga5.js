@@ -329,8 +329,8 @@ function init() {
 	
 	//acanvas.appendChild(renderer.domElement);
 	rendererDOMElement = renderer.domElement;
-	rendererDOMElement.width = $("#content").width();
-	rendererDOMElement.height = $("#content").width();
+	rendererDOMElement.width = $("#content").width()-250;
+	rendererDOMElement.height = $("#content").width()-250;
 	console.log(rendererDOMElement.width + " " + rendererDOMElement.height);
 	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);
 	//document.body.appendChild( rendererDOMElement );
@@ -573,7 +573,7 @@ function addColorsToGeometry(geom) {
 function rotateAllObjects() {
 	
 	//console.log(scene.children.length);
-	for (var i = 0; i < scene.children.length; i++) {
+	for (var i = 1; i < scene.children.length; i++) {
 		scene.children[i].rotation.x += 0.0005;
 		scene.children[i].rotation.y += 0.005;
 		scene.children[i].rotation.z += 0.00015;
@@ -582,7 +582,7 @@ function rotateAllObjects() {
 
 function resetRotationForAllObjects() {
 	//console.log(scene.children.length);
-	for (var i = 0; i < scene.children.length; i++) {
+	for (var i = 1; i < scene.children.length; i++) {
 		scene.children[i].rotation.x = 0;
 		scene.children[i].rotation.y = 0;
 		scene.children[i].rotation.z = 0;
