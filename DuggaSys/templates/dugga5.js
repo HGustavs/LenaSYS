@@ -255,7 +255,7 @@ function vertexUpdate() {
 function addVertexToVerticeList(vertexX, vertexY, vertexZ) {
 	var verticeList = document.getElementById('verticeList');
 	var newVertxLi = document.createElement('li');
-	newVertxLi.innerHTML = 'x:<input type="text" value="' + vertexX + '" style="width:40px;" onchange="vertexUpdate();" />' + ' y:<input type="text" value="' + vertexY + '" style="width:40px;" onchange="vertexUpdate();" />' + ' z:<input type="text" value="' + vertexZ + '" style="width:40px;" onchange="vertexUpdate();" />' + '<button onclick="moveVertexUp(this.parentNode);">&uarr;</button>' + '<button onclick="moveVertexDown(this.parentNode);">&darr;</button>' + '<button onclick="deleteVertex(this.parentNode);">X</button>';
+	newVertxLi.innerHTML = 'x:<input type="text" value="' + vertexX + '" style="width:20px;" onchange="vertexUpdate();" />' + ' y:<input type="text" value="' + vertexY + '" style="width:20px;" onchange="vertexUpdate();" />' + ' z:<input type="text" value="' + vertexZ + '" style="width:20px;" onchange="vertexUpdate();" />' + '<button onclick="moveVertexUp(this.parentNode);">&uarr;</button>' + '<button onclick="moveVertexDown(this.parentNode);">&darr;</button>' + '<button onclick="deleteVertex(this.parentNode);">X</button>';
 	verticeList.appendChild(newVertxLi);
 }
 
