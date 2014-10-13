@@ -1,4 +1,4 @@
-<div id='container'>
+<div id='container' style="float: left;">
     
 </div>
 
@@ -6,73 +6,61 @@
 
     <div id="infobox" class="floatRightBox">
         <div id="quizInstructions"></div>
-        <!--Change values in form to update curve and information box.<br>-->
 
-        <!--<form>-->
-
-        <!--<select id="function" name="function" >
-
-        <option value="L 100 100 200 360">Linje</option>
-        <option value="Q 200 300 140 260 400 200">Kvadratisk kurva</option>
-        <option value="C 160 220 440 120 220 440 360 500">Kubisk kurva</option>
-
-        </select>-->
-
-        <br />
-        <strong>Hörnlista:</strong>
-        <br />
-        <ol id="verticeList" start="0" style="margin-left:-8px;"></ol>
-        Nytt x:
-        <input type="text" id="vertexX" style="width:40px;"/>
-        y:
-        <input type="text" id="vertexY" style="width:40px;"/>
-        z:
-        <input type="text" id="vertexZ" style="width:40px;"/>
-        <button onclick="newVertex();">
-            LÄGG TILL
-        </button>
-        <p id="vertexMsg" style="min-height:18px"></p>
-
-        <!--<select style="width:150px;" size="10" id="verticeList2" name="verticeList2">
-        </select>           -->
-
-        <br />
-        <strong>Trianglar</strong>
-        <br />
-        Hörn:
-        <select id="tv1" onclick="updateVerticeDropdown(this)"></select>
-        <select id="tv2" onclick="updateVerticeDropdown(this)"></select>
-        <select id="tv3" onclick="updateVerticeDropdown(this)"></select>
-        <button onclick="newTriangle();">
-            LÄGG TILL
-        </button>
-        <br>
-        Indexlista:
-        <br>
-        <select style="width:150px;" size="10" id="triangleList" name="triangleList"></select>
-        <br />
-        <button onclick="moveTriangleUp();">
-            FLYTTA UPP
-        </button>
-        <button onclick="moveTriangleDown();">
-            FLYTTA NER
-        </button>
-        <br />
-        <button onclick="deleteTriangle();">
-            TA BORT
-        </button>
-        <!--<button type="button" onclick="updateGeometry();">test</button>-->
-        <button type="button" onclick="toggleRotate();">
-            ROTATION PÅ/AV
-        </button>
-        <button type="button" onclick="toggleWireframeMode();">
-            WF PÅ/AV
-        </button>
-        <br />
-        <button type="button" onclick="submbutton();">
-            SKICKA SVAR
-        </button>
-        <!--</form> -->
+        <div class='loginBoxheader'>
+            <h3>Ritverktyg</h3>
+        </div>
+        <input class='submit-button' type="button" style="float:left;" onclick="toggleControl();" value="Vertice"/>
+        <input class='submit-button' type="button" style="float:left;" onclick="toggleControl();" value="Triangle"/>
+        <div id="verticeControl" style="float:left; display: block;">
+            <p>Hörnlista: (<span style="color: red">X</span>,<span style="color: green">Y</span>,<span style="color: blue">Z</span>)</p>
+            <ol id="verticeList" start="0" style="margin-left:4px; list-style-type:none;"></ol>
+            Nytt x:
+            <input type="text" id="vertexX" style="width:30px;"/>
+            y:
+            <input type="text" id="vertexY" style="width:30px;"/>
+            z:
+            <input type="text" id="vertexZ" style="width:30px;"/>
+            <button onclick="newVertex();">
+                LÄGG TILL
+            </button>
+            <p id="vertexMsg" style="min-height:18px"></p>
+        </div>
+        <div id="triangleControl" style="float:left; display: none;">        
+            <p>Trianglar</p>
+            Hörn:
+            <select id="tv1" onclick="updateVerticeDropdown(this)"></select>
+            <select id="tv2" onclick="updateVerticeDropdown(this)"></select>
+            <select id="tv3" onclick="updateVerticeDropdown(this)"></select>
+            <button onclick="newTriangle();">
+                LÄGG TILL
+            </button>
+            <br>
+            Indexlista:
+            <br>
+            <select style="width:150px;" size="10" id="triangleList" name="triangleList"></select>
+            <br />
+            <button onclick="moveTriangleUp();">
+                FLYTTA UPP
+            </button>
+            <button onclick="moveTriangleDown();">
+                FLYTTA NER
+            </button>
+            <br />
+            <button onclick="deleteTriangle();">
+                TA BORT
+            </button>
+            <button type="button" onclick="toggleRotate();">
+                ROTATION PÅ/AV
+            </button>
+            <button type="button" onclick="toggleWireframeMode();">
+                WF PÅ/AV
+            </button>
+            <br />
+            <button type="button" onclick="submbutton();">
+                SKICKA SVAR
+            </button>
+        </div>
         <div id="result"></div>
     </div>
 
