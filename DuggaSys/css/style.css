@@ -333,7 +333,7 @@ nav#user img.loggedin:hover {
 
 		width:220px;
 		min-height:300px;
-
+		float:left;
 		margin-left:10px;
 		overflow:auto;
 		
@@ -388,12 +388,12 @@ font-size: 14px;
 	margin-top: 10px;
 	line-height: 0.5em;
     color: #fff;
-    float: right;
+    float: left;
     width: 50%;
 }
 .receiptBoxheader div {
 	padding: 2px 20px 2px 20px;
-	float:right;
+	position: absolute;
 	top: 4px;
 	right: 5px;
     color: #fff;
@@ -628,3 +628,22 @@ input.submit-button-red:hover {
 
 .innertable tr:hover { background-color: #ebe0e8; }
 
+.Trow{
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 8pt;
+}
+
+@media print {
+		.Trow {
+			page-break-inside : avoid
+		}
+		
+		header {display:none;}
+		
+		body {margin:0px}
+		
+		#content {margins:0px; padding:0px; border:none;}
+		
+		#mirth {display:none;}
+}
+ 

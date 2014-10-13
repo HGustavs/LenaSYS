@@ -41,7 +41,7 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 
 if(checklogin()){
-	$ha = hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"]);
+	$ha = hasAccess($userid, $courseid, 'w') || isSuperUser($userid);
 
 	if($ha){
 
@@ -106,15 +106,42 @@ if(!$query->execute()) {
 	$debug="Error reading visibility ".$error[2];
 }
 if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-	$hr = ((checklogin() && hasAccess($_SESSION['uid'], $courseid, 'r')) || $row['visibility'] != 0);
+	$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
 	if (!$hr) {
 		if (checklogin()) {
-			$hr = isSuperUser($_SESSION['uid']);
+			$hr = isSuperUser($userid);
 		}
 	}
 }
 
-$ha = (checklogin() && (hasAccess($_SESSION['uid'], $courseid, 'w') || isSuperUser($_SESSION["uid"])));
+$ha = (checklogin() && (hasAccess($userid, $courseid, 'w') || isSuperUser($userid)));
+
+$resulties=array();
+$query = $pdo->prepare("SELECT moment,grade,submitted,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':vers', $coursevers);
+$query->bindParam(':uid', $userid);
+
+$result=$query->execute();
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading results".$error[2];
+}
+foreach($query->fetchAll() as $row) {
+	array_push(
+		$resulties,
+		array(
+			'moment' => $row['moment'],
+			'grade' => $row['grade'],
+			'submitted' => $row['submitted'],
+			'marked' => $row['marked']
+		)
+	);
+}
+
+
+
+
 
 $entries=array();
 // If user has read access!
@@ -225,7 +252,8 @@ $array = array(
 	'coursevers' => $coursevers,
 	'courseid' => $courseid,
 	'links' => $links,
-	'duggor' => $duggor
+	'duggor' => $duggor,
+	'results' => $resulties
 );
 
 echo json_encode($array);

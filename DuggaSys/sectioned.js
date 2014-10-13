@@ -223,6 +223,7 @@ function returnedSection(data)
 			str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='Tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="</div>";
 		}
 		
@@ -302,6 +303,31 @@ function returnedSection(data)
 						}	
 
 						if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px' src='css/svg/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+item['moment']+"\",\""+item['gradesys']+"\");' />";
+
+						if(parseInt(item['kind']) === 3||parseInt(item['kind']) === 4){
+								var grady=-1;
+								for(jjj=0;jjj<data['results'].length;jjj++){
+										var lawtem=data['results'][jjj];
+										//alert("G: "+lawtem['grade']);
+										if((lawtem['moment']==item['lid'])){
+												grady=lawtem['grade'];
+										}
+								}
+							
+								if(grady==-1){
+										// Nothing submitted nor marked (White)
+										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Not Handed In' src='css/svg/StopN.svg' />";
+								}else if(grady==null){
+										//	Nothing marked yet (Yellow)
+										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+lawtem['submitted']+"' src='css/svg/StopY.svg' />";
+								}else if(grady==1){
+										//	Marked Fail! (Red)								
+										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Failed\nDate: "+lawtem['marked']+"' src='css/svg/StopR.svg' />";
+								}else if(grady>1){
+										//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Pass\nDate: "+lawtem['marked']+"' src='css/svg/StopG.svg' />";
+								}
+						}				
 											
 						str+="</span>";
 				}
