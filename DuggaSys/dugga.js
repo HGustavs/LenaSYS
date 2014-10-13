@@ -1,4 +1,30 @@
 //----------------------------------------------------------------------------------
+// loadJS: Using Jquery Dynamically Load external JS.
+//          Does not load again if previously loaded same file 
+//----------------------------------------------------------------------------------
+
+var JSFiles=[];
+
+function loadJS(src) {
+		if(JSFiles[src]!="Loaded"){
+		   var jsLink = $("<script type='text/javascript' src='"+src+"'>");
+		   $("head").append(jsLink); 
+		   JSFiles[src]="Loaded";
+		}else{
+				// Do nothing if already loaded 			
+		}
+}; 
+ 
+//----------------------------------------------------------------------------------
+// loadCSS: Using Jquery Dynamically Load external CSS
+//----------------------------------------------------------------------------------
+
+function loadCSS(href) {
+		var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
+		$("head").append(cssLink); 
+};
+
+//----------------------------------------------------------------------------------
 // randomstring: Generates a random password string
 //----------------------------------------------------------------------------------
 
@@ -102,7 +128,7 @@ function AJAXService(opt,apara,kind)
 	for (var key in apara) {
 			para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 	}
-	
+				
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
@@ -154,6 +180,14 @@ function AJAXService(opt,apara,kind)
 	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedResults
+			});
+	}else if(kind=="RESULTLIST"){
+			$.ajax({
+				url: "resultlistedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
@@ -255,16 +289,5 @@ function showReceiptPopup()
 function hideReceiptPopup()
 {
 		$("#receiptBox").css("display","none");
-		$("#overlay").css("display","none");
-}
-function showDuggaInfoPopup()
-{
-		$("#duggaInfoBox").css("display","block");
-		$("#overlay").css("display","block");
-}
-
-function hideDuggaInfoPopup()
-{
-		$("#duggaInfoBox").css("display","none");
 		$("#overlay").css("display","none");
 }

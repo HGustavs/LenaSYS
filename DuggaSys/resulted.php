@@ -12,6 +12,7 @@ pdoConnect();
 
 	<link type="text/css" href="css/style.css" rel="stylesheet">
   <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+  <link type="text/css" href="templates/dugga.css" rel="stylesheet">  
 
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery-ui-1.10.4.min.js"></script>
@@ -39,10 +40,24 @@ pdoConnect();
 		include 'loginbox.php';
 	?>
 	
+	<!--- Result Popover START --->
+
+	<div id='resultpopover' class='resultPopover' style='display:none' onmousemove='moveDist(event);'>
+
+		<div class='loginBoxheader'>
+				<h3 id='Nameof'>Show Results</h3>
+		</div>
+
+		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>
+	
+	</div>
+	
+	<!--- Result Popover END --->
+
 	<!--- Edit Variant Dialog START --->
 	
 	<div id='editVariant' class='loginBox' style='width:464px;display:none;'>
-
+		
 	<div class='loginBoxheader'>
 	<h3>Edit Variant</h3>
 	<div onclick='closeEditVariant();'>x</div>
