@@ -152,7 +152,8 @@ CREATE TABLE userAnswer (
   grade 				tinyint(2),
   uid 					INT UNSIGNED NOT NULL,
   answer 				varchar(2000),
-  submitted 		timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  marked				TIMESTAMP NULL,
 	vers					VARCHAR(8),
 	creator 			INTEGER,
   PRIMARY KEY 	(aid),
@@ -415,10 +416,11 @@ CREATE TABLE eventlog(
 	eid 				BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	type 				TINYINT DEFAULT 0,
 	ts 					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	address 		VARCHAR(45) NOT NULL,
+	address 		VARCHAR(45),
+	raddress 		VARCHAR(45),
 	user 				VARCHAR(128),
 	eventtext 	TEXT NOT NULL,
-	PRIMARY KEY(eid)
+	PRIMARY KEY(eid),
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE playereditor_playbacks(
@@ -444,3 +446,5 @@ insert into vers (cid,coursecode,vers) values(2,"DA112G","2014");
 
 
 update user set superuser=1 where username="Toddler";
+
+alter table address 
