@@ -20,8 +20,14 @@ function returnedDugga(data)
 		}else{			
 			retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
 			$("#talet").html(retdata['tal']);
+			
 			// Add our previous answer
 			if(data['answer'] != null){
+				// clear previous answer and write again
+				for (var i=0;i>=7;i++){
+					document.getElementById('B'+i).innerHTML=0;
+				}
+				
 				var previous = data['answer'].split(' ');
 				if (previous.length >= 4){
 					var bitstring = previous[3];

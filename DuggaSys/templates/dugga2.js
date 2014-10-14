@@ -1,62 +1,86 @@
+var dw,dpos,dwid,dhei,bw,lpos,popclass;
+var hc=null;
+
+/*
+ *
+ * Setup the dugga. Get paramters.
+ *
+ */
 function setup()
 {
 
-		$('.hexo').click(function(){
-				hexClick(this.id);
-		});
+	// Add eventhandler for click to all
+	// buttons that have the class 'hexo'
+	$('.hexo').click(function(){
+		hexClick(this.id);
+	});
 
-		AJAXService("GETPARAM",{ },"PDUGGA");
+	AJAXService("GETPARAM",{ },"PDUGGA");
 }
 
+
+/*
+ *
+ * When we get parameters for the dugga. Instanciate the dugga. 
+ *
+ */
 function returnedDugga(data)
 {
-	  if(data['debug']!="NONE!") alert(data['debug']);
+	if(data['debug']!="NONE!") alert(data['debug']);
 
-		if(data['param']=="UNK"){
-				alert("UNKNOWN DUGGA!");
-		}else{
-			  retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
-				$("#fargnamn").html(retdata['colorname']);
-				//$("#fargen").css("background-color",retdata['color']);
-				$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
-							// Add our previous answer
-				if (data['answer'] != null){
-					var previous = data['answer'].split(' ');
-					if (previous.length >= 9){
-						document.getElementById('H0').innerHTML=previous[4];
-						document.getElementById('H1').innerHTML=previous[5];
-						document.getElementById('H2').innerHTML=previous[6];
-						document.getElementById('H3').innerHTML=previous[7];
-						document.getElementById('H4').innerHTML=previous[8];
-						document.getElementById('H5').innerHTML=previous[9];
-					}
-				}			
-		}	  
+	if(data['param']=="UNK"){
+			alert("UNKNOWN DUGGA!");
+	}else{
+		retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+		$("#fargnamn").html(retdata['colorname']);
+		$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
+		// Add our previous answer
+		if (data['answer'] != null){
+			var previous = data['answer'].split(' ');
+			if (previous.length >= 9){
+				document.getElementById('H0').innerHTML=previous[4];
+				document.getElementById('H1').innerHTML=previous[5];
+				document.getElementById('H2').innerHTML=previous[6];
+				document.getElementById('H3').innerHTML=previous[7];
+				document.getElementById('H4').innerHTML=previous[8];
+				document.getElementById('H5').innerHTML=previous[9];
+			}
+		}			
+	}	  
 }
 
+/*
+ *
+ * Save the dugga and get a receipt
+ *
+ */
 function saveClick()
 {
-		// Loop through all bits
-		bitstr="";
-
-		bitstr+=" "+$("#H0").html();
-		bitstr+=" "+$("#H1").html();
-		bitstr+=" "+$("#H2").html();
-		bitstr+=" "+$("#H3").html();
-		bitstr+=" "+$("#H4").html();
-		bitstr+=" "+$("#H5").html();
-
-		bitstr+=" "+window.screen.width;
-		bitstr+=" "+window.screen.height;
+	// Loop through all bits
+	bitstr="";
 	
-		bitstr+=" "+$(window).width();
-		bitstr+=" "+$(window).height();
-		
-		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		saveDuggaResult(bitstr);
+	bitstr+=" "+$("#H0").html();
+	bitstr+=" "+$("#H1").html();
+	bitstr+=" "+$("#H2").html();
+	bitstr+=" "+$("#H3").html();
+	bitstr+=" "+$("#H4").html();
+	bitstr+=" "+$("#H5").html();
+	
+	bitstr+=" "+window.screen.width;
+	bitstr+=" "+window.screen.height;
+	
+	bitstr+=" "+$(window).width();
+	bitstr+=" "+$(window).height();
+	
+	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+	saveDuggaResult(bitstr);
 }
 
-var hc=null;
+/*
+ *
+ * Display HEX-values to select
+ *
+ */
 function hexClick(divid)
 {
 	dw=$(window).width();
@@ -86,10 +110,15 @@ function hexClick(divid)
 	hc=divid;
 }
 
+/*
+ *
+ * Set the actual selected HEX-value
+ *
+ */
 function setval(sval)
 {
-		if(hc!=null){
-				$("#"+hc).html(sval);		
-		}
-		$("#pop").css({display:"none"})
+	if(hc!=null){
+		$("#"+hc).html(sval);		
+	}
+	$("#pop").css({display:"none"})
 }

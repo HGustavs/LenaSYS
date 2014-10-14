@@ -5,8 +5,9 @@ var material, goalMaterial;
 var rotateObjects = false;
 var backsideCulling = false;
 
-var startString = '{"vertice":[{"x":"200","y":"200","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"}],"triangles":["0,1,2"]}';
-//var goal = '{"vertice":[{"x":"400","y":"400","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"-800"}],"triangles":["0,1,2","1,2,3"]}';
+//var startString = '{"vertice":[{"x":"200","y":"200","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"}],"triangles":["0,1,2"]}';
+var startString = '{"vertice":[],"triangles":[]}';
+//var goal = '{"vertice":[{"x":"400","y":"0","z":"0"},{"x":"-400","y":"0","z":"0"},{"x":"400","y":"0","z":"0"},{"x":"400","y":"0","z":"-800"}],"triangles":["0,1,2","1,2,3"]}';
 
 var goalObject;
 
@@ -334,6 +335,7 @@ function init() {
 	camera = new THREE.PerspectiveCamera(60, rendererDOMElement.width / rendererDOMElement.height, 1, 10000);
 
 	camera.position.z = 1500;
+	camera.position.y = 500;
 
 	scene = new THREE.Scene();
 
@@ -358,13 +360,13 @@ function init() {
 	 bump512.repeat.set(4,4);*/
 	material = new THREE.MeshBasicMaterial({
 		wireframe : false,
-		wireframeLinewidth : 10,
+		wireframeLinewidth : 1,
 		vertexColors : THREE.FaceColors,
 		side : THREE.DoubleSide
 	});
 	goalMaterial = new THREE.MeshBasicMaterial({
 		wireframe : true,
-		wireframeLinewidth : 10,
+		wireframeLinewidth : 1,
 		vertexColors : THREE.FaceColors,
 		side : THREE.DoubleSide
 	});
@@ -417,7 +419,7 @@ function init() {
 	var ambientLight = new THREE.AmbientLight(0xcccccc);
 	scene.add(ambientLight);
 
-	//Draw coords
+	//Draw X Y Z Axis
 	var xLineMat = new THREE.LineBasicMaterial({
 		color : new THREE.Color(0xff0000),
 		opacity : 1,
@@ -439,6 +441,7 @@ function init() {
 	var lineRGeom = new THREE.Geometry();
 	var lineGGeom = new THREE.Geometry();
 	var lineBGeom = new THREE.Geometry();
+	
 	//X
 	lineRGeom.vertices.push(new THREE.Vector3(0, 0, 0));
 	lineRGeom.vertices.push(new THREE.Vector3(200, 0, 0));

@@ -22,26 +22,26 @@ function makeSelect(gradesys,cid,vers,moment,uid,mark,ukind)
 		str+="<select onchange='changeGrade(this,\""+gradesys+"\",\""+cid+"\",\""+vers+"\",\""+moment+"\",\""+uid+"\",\""+mark+"\",\""+ukind+"\");'>";
 
 		// Irrespective of marking system we allways print - and U
-		if(mark==null||mark==0) str+="<option selected='selected' value='0'>-</option>"
+		if(mark==null||mark==0) str+="<option selected='selected' value='0'>-</option>";
 		else str+="<option value='0'>-</option>";
-		if(mark==1) str+="<option selected='selected' value='1'>U</option>"
+		if(mark==1) str+="<option selected='selected' value='1'>U</option>";
 		else str+="<option value='1'>U</option>";
 
 		// Gradesystem: 1== UGVG 2== UG 3== U345
 		if(gradesys==1){
-				if(mark==2) str+="<option selected='selected' value='2'>G</option>"
+				if(mark==2) str+="<option selected='selected' value='2'>G</option>";
 				else str+="<option value='2'>G</option>";
-				if(mark==3) str+="<option selected='selected' value='3'>VG</option>"
+				if(mark==3) str+="<option selected='selected' value='3'>VG</option>";
 				else str+="<option value='3'>VG</option>";
 		}else if(gradesys==2){
-				if(mark==2) str+="<option selected='selected' value='2'>G</option>"
+				if(mark==2) str+="<option selected='selected' value='2'>G</option>";
 				else str+="<option value='2'>G</option>";		
 		}else if(gradesys==3){
-				if(mark==4) str+="<option selected='selected' value='4'>3</option>"
+				if(mark==4) str+="<option selected='selected' value='4'>3</option>";
 				else str+="<option value='4'>3</option>";		
-				if(mark==5) str+="<option selected='selected' value='5'>4</option>"
+				if(mark==5) str+="<option selected='selected' value='5'>4</option>";
 				else str+="<option value='5'>4</option>";		
-				if(mark==6) str+="<option selected='selected' value='6'>5</option>"
+				if(mark==6) str+="<option selected='selected' value='6'>5</option>";
 				else str+="<option value='6'>5</option>";				
 		}else{
 				//alert("Unknown Grade System: "+gradesys);
@@ -96,7 +96,7 @@ function returnedResults(data)
 		if(data['dugganame']!=""){
 				$("#MarkCont").html(data['duggapage']);
 				$("#resultpopover").css("display","block");
-				alert(data['duggaanswer']);
+				//alert(data['duggaanswer']);
 		}else{
 
 				results=data['results'];
@@ -175,7 +175,7 @@ function returnedResults(data)
 																
 																// If the id of current item is same as moment of a dugga
 																if((dugga['moment']==moment['lid'])&&(dugga['kind']==3)){
-																		if(duggacnt>0) ttr+="<td style='border-left:2px solid #dbd0d8;'>"
+																		if(duggacnt>0) ttr+="<td style='border-left:2px solid #dbd0d8;'>";
 																		else ttr+="<td>";
 																			
 																		duggacnt++;
@@ -202,10 +202,10 @@ function returnedResults(data)
 														}
 														
 														if(duggacnt==0){
-																ttr+="<td>&nbsp;</td>"
-																str+="<td colspan='1'>"
+																ttr+="<td>&nbsp;</td>";
+																str+="<td colspan='1'>";
 														}else{
-																str+="<td colspan='"+duggacnt+"'>"
+																str+="<td colspan='"+duggacnt+"'>";
 														} 
 		
 														// We are now processing the moment entry in the moment object
