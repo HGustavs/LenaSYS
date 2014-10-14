@@ -1,43 +1,3 @@
-var retdata = null;
-
-function setup() {
-
-	canvas = document.getElementById('a');
-	context = canvas.getContext("2d");
-
-	setupClickHandling();
-
-	AJAXService("GETPARAM", { }, "PDUGGA");
-
-	setTimeout("render();", 50);
-}
-
-function returnedDugga(data) {
-	if (data['debug'] != "NONE!")
-		alert(data['debug']);
-
-	if (data['param'] == "UNK") {
-		alert("UNKNOWN DUGGA!");
-	} else {
-		showDuggaInfoPopup();
-		var studentPreviousAnswer = "";
-		retdata = jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
-		if (data["answer"] != null) {
-			var previous = data['answer'].split(',');
-			previous.shift();
-			previous.pop();
-			studentPreviousAnswer = previous.join();
-			// Clear operations
-			while (document.getElementById('operations').options.length > 0) {
-				document.getElementById('operations').remove(0);
-			}
-		}
-
-		init(retdata["linje"], studentPreviousAnswer);
-
-	}
-}
-
 /********************************************************************************
 
  Mouse coordinate and canvas globals
@@ -57,6 +17,49 @@ var debug = 0;
 var objectCounter = 0;
 var selectedObjId = "";
 var selectedPoint = 0;
+
+var retdata = null;
+
+function setup() {
+	canvas = document.getElementById('a');
+	if (canvas){
+		context = canvas.getContext("2d");
+		
+		setupClickHandling();
+	
+		AJAXService("GETPARAM", { }, "PDUGGA");
+	
+		setTimeout("render();", 50);
+	}
+}
+
+function returnedDugga(data) {
+	if (data['debug'] != "NONE!")
+		alert(data['debug']);
+
+	if (data['param'] == "UNK") {
+		alert("UNKNOWN DUGGA!");
+	} else {
+		if (canvas){
+			showDuggaInfoPopup();
+			var studentPreviousAnswer = "";
+			retdata = jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+			if (data["answer"] != null) {
+				var previous = data['answer'].split(',');
+				previous.shift();
+				previous.pop();
+				studentPreviousAnswer = previous.join();
+				// Clear operations
+				while (document.getElementById('operations').options.length > 0) {
+					document.getElementById('operations').remove(0);
+				}
+			}
+	
+			init(retdata["linje"], studentPreviousAnswer);
+		}
+	}
+}
+
 /********************************************************************************
 
  Canvas Setup and Click Handling Code
