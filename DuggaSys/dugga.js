@@ -82,6 +82,19 @@ function changeURL(thisurl)
 //----------------------------------------------------------------------------------
 
 function parseGet(){
+    var tmp = [];
+    var result=[];
+		sstr=location.search;
+    digs=sstr.substr(1).split("&");
+		for(var i=0;i<digs.length;i++){
+				tmp=digs[i].split("=");
+				result [tmp[0]] = decodeURIComponent(tmp[1]);
+		}
+    return result;
+}
+
+/*
+function parseGet(){
 
     var tmp = [];
     var result=[];
@@ -93,6 +106,7 @@ function parseGet(){
 
     return result;
 }
+*/
 
 //----------------------------------------------------------------------------------
 // htmlEntities: removes some non ASCII characters and replaces them with corresponding hmtl codes
