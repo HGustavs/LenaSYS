@@ -11,54 +11,51 @@ var startString = '{"vertice":[],"triangles":[]}';
 
 var goalObject;
 
-function toggleControl(){
-	if (document.getElementById('verticeControl').style.display == 'none'){
+function toggleControl() {
+	if (document.getElementById('verticeControl').style.display == 'none') {
 		document.getElementById('verticeControl').style.display = 'block';
 		document.getElementById('triangleControl').style.display = 'none';
 	} else {
 		document.getElementById('verticeControl').style.display = 'none';
-		document.getElementById('triangleControl').style.display = 'block';		
+		document.getElementById('triangleControl').style.display = 'block';
 	}
 }
 
-function setup()
-{
-	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js", function(){
-	
+function setup() {
+	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js", function() {
 
-	   	acanvas = document.getElementById('container');
+		acanvas = document.getElementById('container');
 		//setInterval("tick();",50);
-		
-		AJAXService("GETPARAM",{ },"PDUGGA");
-		//	showDuggaInfoPopup();
+
+		AJAXService("GETPARAM", { }, "PDUGGA");
 
 		acanvas.addEventListener('click', toggleRotate, false);
 
 	});
-	
+
 }
 
-function returnedDugga(data)
-{
-	  if(data['debug']!="NONE!") alert(data['debug']);
+function returnedDugga(data) {
+	if (data['debug'] != "NONE!")
+		alert(data['debug']);
 
-		if(data['param']=="UNK"){
-				alert("UNKNOWN DUGGA!");
-		}else{
+	if (data['param'] == "UNK") {
+		alert("UNKNOWN DUGGA!");
+	} else {
 
+		//	showDuggaInfoPopup();
+		var studentPreviousAnswer = "";
 
-			var studentPreviousAnswer="";
+		init();
+		populateLists(startString);
+		//			goalObject = jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+		goalObject = data['param'].replace(/&quot;/g, '"');
+		createGoalObject(goalObject);
+		animate();
 
-			init();			
-			populateLists(startString);
-//			goalObject = jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
-			goalObject = data['param'].replace(/&quot;/g, '"');
-			createGoalObject(goalObject);			
-			animate();
-
-						  
-		}	  
+	}
 }
+
 function submbutton() {
 	var answerString = "";
 	//var verticeObject=new Object;
@@ -310,25 +307,26 @@ function toggleWireframeMode() {
 
 function fitToContainer() {
 	// Make it visually fill the positioned parent
-	divw=$("#content").width();
-	if(divw>500) divw-=248;	
+	divw = $("#content").width();
+	if (divw > 500)
+		divw -= 248;
 	if (divw < window.innerHeight) {
 		rendererDOMElement.width = divw;
 		rendererDOMElement.height = divw;
 	} else {
-		rendererDOMElement.width = window.innerHeight-100;
+		rendererDOMElement.width = window.innerHeight - 100;
 		rendererDOMElement.height = rendererDOMElement.width;
 	}
-	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);	
+	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);
 }
 
 function init() {
 
 	renderer = new THREE.WebGLRenderer();
-	
+
 	rendererDOMElement = renderer.domElement;
-	rendererDOMElement.width = $("#content").width()-250;
-	rendererDOMElement.height = $("#content").width()-250;
+	rendererDOMElement.width = $("#content").width() - 250;
+	rendererDOMElement.height = $("#content").width() - 250;
 	fitToContainer();
 	acanvas.appendChild(rendererDOMElement);
 
@@ -380,7 +378,7 @@ function init() {
 	metal: false,
 	perPixel : true,*/
 	//                                          wireframe: true, wireframeLinewidth: 10, side: THREE.DoubleSide } );
-/*
+	/*
 	var geom = new THREE.Geometry();
 	var v1 = new THREE.Vector3(-300,-300,0);
 	var v2 = new THREE.Vector3(300,-300,0);
@@ -425,13 +423,13 @@ function init() {
 		opacity : 1,
 		linewidth : 3
 	});
-	
+
 	var yLineMat = new THREE.LineBasicMaterial({
 		color : new THREE.Color(0x00ff00),
 		opacity : 1,
 		linewidth : 3
 	});
-	
+
 	var zLineMat = new THREE.LineBasicMaterial({
 		color : new THREE.Color(0x0000ff),
 		opacity : 1,
@@ -441,7 +439,7 @@ function init() {
 	var lineRGeom = new THREE.Geometry();
 	var lineGGeom = new THREE.Geometry();
 	var lineBGeom = new THREE.Geometry();
-	
+
 	//X
 	lineRGeom.vertices.push(new THREE.Vector3(0, 0, 0));
 	lineRGeom.vertices.push(new THREE.Vector3(200, 0, 0));
@@ -468,7 +466,7 @@ function init() {
 	lineR = new THREE.Line(lineRGeom, xLineMat);
 	lineG = new THREE.Line(lineGGeom, yLineMat);
 	lineB = new THREE.Line(lineBGeom, zLineMat);
-	
+
 	scene.add(lineR);
 	scene.add(lineG);
 	scene.add(lineB);
@@ -504,8 +502,7 @@ function init() {
 	 //scene.add(textMesh1);
 	 //window.addEventListener( 'resize', onWindowResize, false );
 	 */
-		
-		
+
 }
 
 function createGoalObject(goalObjectDataString) {
@@ -577,7 +574,7 @@ function addColorsToGeometry(geom) {
 	return geom;
 }
 
-function rotateAllObjects() {	
+function rotateAllObjects() {
 	// Note: this code assues object 0 is camera
 	//console.log(scene.children.length);
 	for (var i = 1; i < scene.children.length; i++) {
@@ -602,7 +599,7 @@ function animate() {
 	requestAnimationFrame(animate);
 
 	rotateAllObjects();
-	
+
 	if (rotateObjects) {
 		rotateAllObjects();
 	} else {

@@ -1,42 +1,41 @@
-var retdata=null;
+var retdata = null;
 
-function setup()
-{
-	showDuggaInfoPopup();
-	  canvas = document.getElementById('a');
-		context = canvas.getContext("2d");
-	
-		setupClickHandling();
+function setup() {
 
-		AJAXService("GETPARAM",{ },"PDUGGA");
+	canvas = document.getElementById('a');
+	context = canvas.getContext("2d");
 
-		setTimeout("render();", 50);
+	setupClickHandling();
+
+	AJAXService("GETPARAM", { }, "PDUGGA");
+
+	setTimeout("render();", 50);
 }
 
-function returnedDugga(data)
-{
-	  if(data['debug']!="NONE!") alert(data['debug']);
+function returnedDugga(data) {
+	if (data['debug'] != "NONE!")
+		alert(data['debug']);
 
-		if(data['param']=="UNK"){
-				alert("UNKNOWN DUGGA!");
-		}else{
+	if (data['param'] == "UNK") {
+		alert("UNKNOWN DUGGA!");
+	} else {
+		showDuggaInfoPopup();
+		var studentPreviousAnswer = "";
+		retdata = jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+		if (data["answer"] != null) {
+			var previous = data['answer'].split(',');
+			previous.shift();
+			previous.pop();
+			studentPreviousAnswer = previous.join();
+			// Clear operations
+			while (document.getElementById('operations').options.length > 0) {
+				document.getElementById('operations').remove(0);
+			}
+		}
 
-			  var studentPreviousAnswer="";
-			  retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
-			  if (data["answer"] != null){			  
-			  	var previous = data['answer'].split(',');
-			  	previous.shift();
-			  	previous.pop();
-			  	studentPreviousAnswer = previous.join();
-			  	// Clear operations 
-		  		while (document.getElementById('operations').options.length > 0) {
-					document.getElementById('operations').remove(0);
-				}
-			  }
-			  
-			  init(retdata["linje"], studentPreviousAnswer);
-			  
-		}	  
+		init(retdata["linje"], studentPreviousAnswer);
+
+	}
 }
 
 /********************************************************************************
@@ -207,26 +206,27 @@ function populateOperationsList() {
 	}
 }
 
-function saveClick(){
-		// Loop through all bits
-		bitstr=",";
-		var opList = document.getElementById("operations");
+function saveClick() {
+	// Loop through all bits
+	bitstr = ",";
+	var opList = document.getElementById("operations");
 
-		for (var i=0; i<document.getElementById('operations').length; i++){
-			bitstr+=opList[i].value;
-			if (i < document.getElementById('operations').length-1) bitstr+=",";	
-		}
+	for (var i = 0; i < document.getElementById('operations').length; i++) {
+		bitstr += opList[i].value;
+		if (i < document.getElementById('operations').length - 1)
+			bitstr += ",";
+	}
 
-		bitstr += ",T " + elapsedTime;
+	bitstr += ",T " + elapsedTime;
 
-		bitstr+=" "+window.screen.width;
-		bitstr+=" "+window.screen.height;
-	
-		bitstr+=" "+$(window).width();
-		bitstr+=" "+$(window).height();
+	bitstr += " " + window.screen.width;
+	bitstr += " " + window.screen.height;
 
-		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		saveDuggaResult(bitstr);
+	bitstr += " " + $(window).width();
+	bitstr += " " + $(window).height();
+
+	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+	saveDuggaResult(bitstr);
 }
 
 function newOp(operation, operationText) {
@@ -466,22 +466,22 @@ function init(quizGoal, studentPreviousAnswer) {
 	starty = parseInt(goal.shift());
 
 	var oplist = document.getElementById('operations');
-	
-	if (studentPreviousAnswer != ""){
+
+	if (studentPreviousAnswer != "") {
 		var studentOp = studentPreviousAnswer.split(",");
 		for (var i = 0; i < studentOp.length; i++) {
 			var opArr = studentOp[i].split(" ");
 			if (opArr[0] == "L") {
 				oplist.innerHTML += "<option id='op" + (objectCounter++) + "' value='" + studentOp[i] + "'>Linje</option>";
-		
+
 			} else if (opArr[0] == "Q") {
 				oplist.innerHTML += "<option id='op" + (objectCounter++) + "' value='" + studentOp[i] + "'>Kvadratisk kurva</option>";
-		
+
 			} else if (opArr[0] == "C") {
 				oplist.innerHTML += "<option id='op" + (objectCounter++) + "' value='" + studentOp[i] + "'>Kubisk kurva</option>";
 				sx = parseInt(opArr[5]);
 				sy = parseInt(opArr[6]);
-		
+
 			} else {
 				alert("Unkown operation - don't know how to draw!\n" + opArr);
 			}
@@ -492,16 +492,17 @@ function init(quizGoal, studentPreviousAnswer) {
 
 function fitToContainer() {
 	// Make it visually fill the positioned parent
-	divw=$("#content").width();
-	if(divw>500) divw-=248;	
+	divw = $("#content").width();
+	if (divw > 500)
+		divw -= 248;
 	if (divw < window.innerHeight) {
 		canvas.width = divw;
 		canvas.height = divw;
 	} else {
-		canvas.width = window.innerHeight-100;
+		canvas.width = window.innerHeight - 100;
 		canvas.height = canvas.width;
 	}
-	
+
 	sf = canvas.width / 100;
 }
 
