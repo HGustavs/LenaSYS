@@ -40,25 +40,25 @@ if(checklogin()){
 	$query->bindParam(':cid', $courseid);
 	$result = $query->execute();
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-			$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
-			if($hr&&$userid!="UNK"){
-					// The code for modification using sessions
-					if(strcmp($opt,"SAVDU")===0){
-							// Log the dugga write
-							makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
+		$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
+		if($hr&&$userid!="UNK"){
+			// The code for modification using sessions
+			if(strcmp($opt,"SAVDU")===0){
+					// Log the dugga write
+					makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
-							// Update Dugga!
-							$query = $pdo->prepare("UPDATE userAnswer SET answer=:answer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-							$query->bindParam(':cid', $courseid);
-							$query->bindParam(':coursevers', $coursevers);
-							$query->bindParam(':uid', $userid);
-							$query->bindParam(':moment', $moment);
-							$query->bindParam(':answer', $answer);
-							if(!$query->execute()) {
-								$debug="Error updating answer";
-						  }
-					}
+					// Update Dugga!
+					$query = $pdo->prepare("UPDATE userAnswer SET answer=:answer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':coursevers', $coursevers);
+					$query->bindParam(':uid', $userid);
+					$query->bindParam(':moment', $moment);
+					$query->bindParam(':answer', $answer);
+					if(!$query->execute()) {
+						$debug="Error updating answer";
+				}
 			}
+		}
 	}
 	
 }
