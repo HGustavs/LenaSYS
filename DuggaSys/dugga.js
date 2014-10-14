@@ -305,3 +305,14 @@ function hideReceiptPopup()
 		$("#receiptBox").css("display","none");
 		$("#overlay").css("display","none");
 }
+function showDuggaInfoPopup()
+{
+		$("#duggaInfoBox").css("display","block");
+		$("#overlay").css("display","block");
+}
+
+function hideDuggaInfoPopup()
+{
+		$("#duggaInfoBox").css("display","none");
+		$("#overlay").css("display","none");
+}
