@@ -31,7 +31,7 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		if(strcmp($opt,"DELFILE")===0){
-				$querystring='DELETE FROM filelink WHERE fileid=:fid';	
+				$querystring='DELETE FROM fileLink WHERE fileid=:fid';	
 				$query = $pdo->prepare($querystring);
 				$query->bindParam(':fid', $fid);
 				if(!$query->execute()) {
@@ -51,7 +51,7 @@ $files=array();
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
-		$query = $pdo->prepare("SELECT fileid,filename,kind FROM filelink WHERE cid=:cid ORDER BY filename;");
+		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid ORDER BY filename;");
 		$query->bindParam(':cid', $cid);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
