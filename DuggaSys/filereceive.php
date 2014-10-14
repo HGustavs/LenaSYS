@@ -42,14 +42,14 @@
 			 				// Store Link
 			 				echo "STORING LINK!";
 
-							$query = $pdo->prepare("SELECT count(*) FROM filelink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
+							$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
 							$query->bindParam(':filename', $link);
 							$query->bindParam(':cid', $cid);
 							$query->execute(); 
 							$norows = $query->fetchColumn(); 
 
 							if($norows==0){
-									$query = $pdo->prepare("INSERT INTO filelink(filename,kind,cid) VALUES(:linkval,'1',:cid);");
+									$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'1',:cid);");
 									$query->bindParam(':cid', $cid);
 									$query->bindParam(':linkval', $link);
 							
@@ -109,9 +109,9 @@
 									if($selectedfile!="UNK"&&($kind=="GFILE"||$kind=="MFILE")){
 											// Store link to existing file
 											if($kind=="GFILE"){
-													$query = $pdo->prepare("SELECT count(*) FROM filelink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
+													$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
 											}else if($kind=="MFILE"){
-													$query = $pdo->prepare("SELECT count(*) FROM filelink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
+													$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
 											}
 											
 											$query->bindParam(':filename', $selectedfile);
@@ -123,9 +123,9 @@
 											
 											if($norows==0&&($kind=="GFILE"||$kind=="MFILE")){
 													if($kind=="GFILE"){
-															$query = $pdo->prepare("INSERT INTO filelink(filename,kind,cid) VALUES(:linkval,'2',:cid);");
+															$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'2',:cid);");
 													}else if($kind=="MFILE"){
-															$query = $pdo->prepare("INSERT INTO filelink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
+															$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
 													}
 
 													$query->bindParam(':cid', $cid);
@@ -161,11 +161,11 @@
 															if(move_uploaded_file($filea["tmp_name"],$movname)){
 																	// 1=Link 2=Global 3=Course Global 4=Local
 																	if($kind=="LFILE"){
-																			$query = $pdo->prepare("SELECT count(*) FROM filelink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=4;" );
+																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=4;" );
 																	}else if($kind=="MFILE"){
-																			$query = $pdo->prepare("SELECT count(*) FROM filelink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
+																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
 																	}else{
-																			$query = $pdo->prepare("SELECT count(*) FROM filelink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
+																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
 																	}
 																	
 																	$query->bindParam(':filename', $fname);
@@ -175,11 +175,11 @@
 																	
 																	if($norows==0){
 																			if($kind=="LFILE"){
-																					$query = $pdo->prepare("INSERT INTO filelink(filename,kind,cid) VALUES(:linkval,'4',:cid);");
+																					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'4',:cid);");
 																			}else if($kind=="MFILE"){
-																					$query = $pdo->prepare("INSERT INTO filelink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
+																					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
 																			}else{
-																					$query = $pdo->prepare("INSERT INTO filelink(filename,kind,cid) VALUES(:linkval,'2',:cid);");
+																					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'2',:cid);");
 																			}
 				
 																			$query->bindParam(':cid', $cid);

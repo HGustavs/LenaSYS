@@ -88,10 +88,11 @@ function hideLoginPopup()
 function returnedFile(data)
 {
 		filez = data;
+		console.log(data);
 		// Fill section list with information
 		str="";
 
-		if (data['entries'].length > 0) {
+//		if (data['entries'].length > 0) {
 
 				// 1=Link 2=Global 3=Course Global 4=Local
 
@@ -202,7 +203,7 @@ function returnedFile(data)
 				}
 				
 				str+="</table>";
-		}
+		//}
 
 		var slist=document.getElementById("content");
 		slist.innerHTML=str;
