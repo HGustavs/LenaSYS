@@ -53,7 +53,7 @@ if(checklogin()){
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
 					$query->bindParam(':moment', $moment);
-					$query->bindParam(':useranswer', $useranswer);
+					$query->bindParam(':useranswer', $answer);
 					if(!$query->execute()) {
 						$debug="Error updating answer";
 				}
@@ -69,7 +69,7 @@ if(checklogin()){
 
 if($hr&&$userid!="UNK"){
 		// See if we already have a result i.e. a chosen variant.
-		$query = $pdo->prepare("SELECT aid,cid,quiz,useranswer,variant,moment,vers,uid FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+		$query = $pdo->prepare("SELECT aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':coursevers', $coursevers);
 		$query->bindParam(':uid', $userid);
