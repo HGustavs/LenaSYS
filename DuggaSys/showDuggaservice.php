@@ -48,12 +48,12 @@ if(checklogin()){
 					makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
 					// Update Dugga!
-					$query = $pdo->prepare("UPDATE userAnswer SET answer=:answer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
 					$query->bindParam(':moment', $moment);
-					$query->bindParam(':answer', $answer);
+					$query->bindParam(':useranswer', $useranswer);
 					if(!$query->execute()) {
 						$debug="Error updating answer";
 				}
@@ -69,7 +69,7 @@ if(checklogin()){
 
 if($hr&&$userid!="UNK"){
 		// See if we already have a result i.e. a chosen variant.
-		$query = $pdo->prepare("SELECT aid,cid,quiz,answer,variant,moment,vers,uid FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+		$query = $pdo->prepare("SELECT aid,cid,quiz,useranswer,variant,moment,vers,uid FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':coursevers', $coursevers);
 		$query->bindParam(':uid', $userid);
@@ -83,7 +83,7 @@ if($hr&&$userid!="UNK"){
 
 		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 				$savedvariant=$row['variant'];
-				$savedanswer=$row['answer'];
+				$savedanswer=$row['useranswer'];
 		}
 		
 		// Retrieve variant list

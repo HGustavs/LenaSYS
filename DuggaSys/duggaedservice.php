@@ -22,7 +22,9 @@ $opt = getOP('opt');
 $vid = getOP('vid');
 
 $param = getOP('parameter');
-$answer = getOP('answer');
+$answer = getOP('variantanswer');
+
+$uid = getOP('uid');
 
 $name = getOP('nme');
 $autograde = getOP('autograde');
@@ -51,7 +53,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 						// Error handling to $debug		
 				}
 		}else if(strcmp($opt,"ADDVARI")===0){
-				$querystring='INSERT INTO variant(quizID,param,answer,creator) values (:qid,"New","Variant",:uid)';	
+				$querystring='INSERT INTO variant(quizID,param,variantanswer,creator) values (:qid,"New","Variant",:uid)';	
 				$stmt = $pdo->prepare($querystring);
 				$stmt->bindParam(':qid', $qid);
 				$stmt->bindParam(':uid', $userid);
@@ -61,10 +63,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 					$debug="Error updating entries".$error[2];
 				}
 		}else if(strcmp($opt,"SAVVARI")===0){
-				$query = $pdo->prepare("UPDATE variant SET param=:param, answer=:answer WHERE vid=:vid;");
+				$query = $pdo->prepare("UPDATE variant SET param=:param, variantanswer=:variantanswer WHERE vid=:vid;");
 				$query->bindParam(':vid', $vid);
 				$query->bindParam(':param', $param);
-				$query->bindParam(':answer', $answer);
+				$query->bindParam(':variantanswer', $answer);
 		
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
@@ -118,7 +120,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			
-			$queryz = $pdo->prepare("SELECT vid,quizID,param,answer,modified FROM variant WHERE quizID=:qid ORDER BY vid;");
+			$queryz = $pdo->prepare("SELECT vid,quizID,param,variantanswer,modified FROM variant WHERE quizID=:qid ORDER BY vid;");
 			$queryz->bindParam(':qid',  $row['id']);
 
 			if(!$queryz->execute()) {
@@ -132,7 +134,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				$entryz = array(
 					'vid' => $rowz['vid'],
 					'param' => $rowz['param'],
-					'answer' => $rowz['answer'],
+					'variantanswer' => $rowz['variantanswer'],
 					'modified' => $rowz['modified'],
 				);
 
