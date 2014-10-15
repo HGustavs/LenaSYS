@@ -1,3 +1,7 @@
+//--------------------================############================--------------------
+//                                  Master Functions
+//--------------------================############================--------------------
+
 function setup()
 {
 		$('.bit').click(function(){
@@ -20,14 +24,8 @@ function returnedDugga(data)
 		}else{			
 			retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
 			$("#talet").html(retdata['tal']);
-			
 			// Add our previous answer
 			if(data['answer'] != null){
-				// clear previous answer and write again
-				for (var i=0;i>=7;i++){
-					document.getElementById('B'+i).innerHTML=0;
-				}
-				
 				var previous = data['answer'].split(' ');
 				if (previous.length >= 4){
 					var bitstring = previous[3];
@@ -44,6 +42,11 @@ function returnedDugga(data)
 				document.getElementById('H1').innerHTML=hexvalue2;
 			}
 		}
+		
+		if(data['answer']!=null){
+				showFacit(data['answer']);
+		}
+
 }
 
 function saveClick()
@@ -66,6 +69,32 @@ function saveClick()
 		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 		saveDuggaResult(bitstr);
 }
+
+function showFacit(answer)
+{
+			retdata=jQuery.parseJSON(answer.replace(/&quot;/g, '"'));
+			$("#talet").html(retdata['tal']);
+			// Add our previous answer
+			var previous = data['answer'].split(' ');
+			if (previous.length >= 4){
+				var bitstring = previous[3];
+				var hexvalue1 = previous[4];
+				var hexvalue2 = previous[5]; 
+			}			
+			// NB: LSB is now on the highest string index
+			for (var i=bitstring.length;i>=0;i--){
+				if (bitstring[i]==1){
+					// Set border!
+					//bitClick("B"+(7-i));
+				}				
+			}
+			document.getElementById('H0').innerHTML=hexvalue1;
+			document.getElementById('H1').innerHTM		
+}
+
+//--------------------================############================--------------------
+//                                  Local Functions
+//--------------------================############================--------------------
 
 function bitClick(divid)
 {
