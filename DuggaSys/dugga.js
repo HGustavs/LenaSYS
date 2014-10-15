@@ -115,7 +115,7 @@ function parseGet(){
 function htmlEntities(str) {
 													
 		befstr=str;
-		if(str!=undefined){
+		if(str!=undefined && str != null){
 				str=str.replace(/\&/g, '&amp;');
 				str=str.replace(/\</g, '&lt;');
 				str=str.replace(/\>/g, '&gt;');

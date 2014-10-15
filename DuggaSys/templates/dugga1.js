@@ -21,11 +21,12 @@ function returnedDugga(data)
 
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
-		}else{			
+		}else{		
 			retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
-			if(data['answer'] != null){
+			if(data['answer'] != null && data['answer'] != "UNK"){
+				resetBitstring();
 				var previous = data['answer'].split(' ');
 				if (previous.length >= 4){
 					var bitstring = previous[3];
@@ -36,6 +37,7 @@ function returnedDugga(data)
 				for (var i=bitstring.length;i>=0;i--){
 					if (bitstring[i]==1){
 						bitClick("B"+(7-i));
+						//console.log("B"+(7-i)+":"+bitstring[i]);
 					}				
 				}
 				document.getElementById('H0').innerHTML=hexvalue1;
@@ -43,8 +45,8 @@ function returnedDugga(data)
 			}
 		}
 		
-		if(data['answer']!=null){
-				showFacit(data['answer']);
+		if(data['danswer']!=null){
+				showFacit(data['danswer']);
 		}
 
 }
@@ -70,12 +72,17 @@ function saveClick()
 		saveDuggaResult(bitstr);
 }
 
-function showFacit(answer)
+function showFacit(param, uanswer, danswer)
 {
-			retdata=jQuery.parseJSON(answer.replace(/&quot;/g, '"'));
-			$("#talet").html(retdata['tal']);
+			var p = jQuery.parseJSON(param.replace(/&quot;/g, '"'));
+			var daJSON = jQuery.parseJSON(danswer.replace(/&quot;/g, '"'));
+			
+			var da = daJSON['danswer'];
+			var danswer = da.split(' ');
+			
+			$("#talet").html(p['tal']);
 			// Add our previous answer
-			var previous = data['answer'].split(' ');
+			var previous = uanswer.split(' ');
 			if (previous.length >= 4){
 				var bitstring = previous[3];
 				var hexvalue1 = previous[4];
@@ -84,12 +91,33 @@ function showFacit(answer)
 			// NB: LSB is now on the highest string index
 			for (var i=bitstring.length;i>=0;i--){
 				if (bitstring[i]==1){
-					// Set border!
-					//bitClick("B"+(7-i));
+					bitClick("B"+(7-i));
 				}				
 			}
-			document.getElementById('H0').innerHTML=hexvalue1;
-			document.getElementById('H1').innerHTM		
+
+			
+			// NB: LSB is now on the highest string index
+			for (var i=danswer[0].length;i>=0;i--){
+				if (danswer[0][i]==1){
+					// Set border around correct bits
+					document.getElementById("B"+(7-i)).style.border = "2px dotted black";
+				}				
+			}
+			
+			if (hexvalue1 == danswer[1]) {
+				document.getElementById('H0').style.background = "green";
+				document.getElementById('H0').innerHTML=hexvalue1 + " == "+danswer[1];
+			} else {
+				document.getElementById('H0').style.background = "red";
+				document.getElementById('H0').innerHTML=hexvalue1 + " != "+danswer[1];			
+			}
+			if (hexvalue2 == danswer[2]) {
+				document.getElementById('H1').style.background = "green";
+				document.getElementById('H1').innerHTML=hexvalue2 + " == "+danswer[2];
+			} else {
+				document.getElementById('H1').style.background = "red";
+				document.getElementById('H1').innerHTML=hexvalue2 + " != "+danswer[2];			
+			}
 }
 
 //--------------------================############================--------------------
@@ -146,4 +174,11 @@ function setval(sval)
 				$("#"+hc).html(sval);		
 		}
 		$("#pop").css({display:"none"})
+}
+
+function resetBitstring(){
+	for (var i=0;i<8;i++){
+		document.getElementById("B"+i).innerHTML="0";
+		document.getElementById("B"+i).className="bit noll";		
+	}
 }
