@@ -43,12 +43,7 @@ function returnedDugga(data)
 				document.getElementById('H0').innerHTML=hexvalue1;
 				document.getElementById('H1').innerHTML=hexvalue2;
 			}
-		}
-		
-		if(data['danswer']!=null){
-				showFacit(data['danswer']);
-		}
-
+		}		
 }
 
 function saveClick()
