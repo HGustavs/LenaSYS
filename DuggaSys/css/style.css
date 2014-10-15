@@ -646,4 +646,30 @@ input.submit-button-red:hover {
 		
 		#mirth {display:none;}
 }
+
+#htmlfile {
+	margin-left: 15px;
+}
+
+#htmlfile ul { 
+  margin-left:0em; 
+  padding-left:0.8em; 
+  margin-bottom:1em; 
+}
+#htmlfile ul li { 
+  padding-left: 0.8em; 
+  list-style: disc; 
+}
  
+#htmlfile ol li { margin-bottom:0.5em; padding-left:0.8em; list-style:decimal; }
+
+#htmlfile ul li { margin-bottom:0.5em; padding-left:0.8em; list-style:disc; }
+ 
+#htmlfile ol { 
+  margin-left:1.5em; 
+  padding-left:0px; 
+}
+
+#htmlfile h1,h2,h3,h4 {
+    color: #000;
+}

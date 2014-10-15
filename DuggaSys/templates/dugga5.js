@@ -1,9 +1,11 @@
 var camera, scene, renderer, rendererDOMElement;
 var object, lineR, lineG, lineB;
+var highlightCubes = [];
 var acanvas = document.getElementById("container");
 var material, goalMaterial;
 var rotateObjects = false;
 var backsideCulling = false;
+var highlightVerticies = true; // Used to highlight vertices in the geometry
 
 //var startString = '{"vertice":[{"x":"200","y":"200","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"}],"triangles":["0,1,2"]}';
 var startString = '{"vertice":[],"triangles":[]}';
@@ -26,7 +28,8 @@ function setup() {
 
 		acanvas = document.getElementById('container');
 		//setInterval("tick();",50);
-
+		renderer = new THREE.WebGLRenderer();
+		
 		AJAXService("GETPARAM", { }, "PDUGGA");
 
 		acanvas.addEventListener('click', toggleRotate, false);
@@ -246,6 +249,7 @@ function addVertexToVerticeList(vertexX, vertexY, vertexZ) {
 	var newVertxLi = document.createElement('li');
 	newVertxLi.innerHTML = '(<input type="text" value="' + vertexX + '" style="width:30px;" onchange="vertexUpdate();" />' + ',<input type="text" value="' + vertexY + '" style="width:30px;" onchange="vertexUpdate();" />' + ',<input type="text" value="' + vertexZ + '" style="width:30px;" onchange="vertexUpdate();" />)' + '<button onclick="moveVertexUp(this.parentNode);">&uarr;</button>' + '<button onclick="moveVertexDown(this.parentNode);">&darr;</button>' + '<button onclick="deleteVertex(this.parentNode);">X</button>';
 	verticeList.appendChild(newVertxLi);
+	updateGeometry();
 }
 
 function deleteVertex(vertexLi) {
@@ -320,9 +324,7 @@ function fitToContainer() {
 	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);
 }
 
-function init() {
-
-	renderer = new THREE.WebGLRenderer();
+function init() {	
 
 	rendererDOMElement = renderer.domElement;
 	rendererDOMElement.width = $("#content").width() - 250;
@@ -357,10 +359,10 @@ function init() {
 	 bump512.wrapS = THREE.RepeatWrapping;
 	 bump512.repeat.set(4,4);*/
 	material = new THREE.MeshBasicMaterial({
-		wireframe : false,
+		wireframe : true,
 		wireframeLinewidth : 1,
 		vertexColors : THREE.FaceColors,
-		side : THREE.DoubleSide
+
 	});
 	goalMaterial = new THREE.MeshBasicMaterial({
 		wireframe : true,
@@ -554,9 +556,20 @@ function updateGeometry() {
 		object = new THREE.Mesh(geom, material);
 		object.geometry.__dirtyVertices = true;
 		scene.add(object);
+
+		
+			
 	} else {
 		document.getElementById("vertexMsg").innerHTML = "För få hörn";
 	}
+
+	// Clear previous highlightCubes array and remove them from scene
+	while (highlightCubes.length > 0) {scene.remove(highlightCubes.pop());}
+
+	if (highlightVerticies){
+		highlightVertices();
+	}	
+	console.log("No scene obj: "+scene.children.length);
 	resetRotationForAllObjects();
 }
 
@@ -591,6 +604,27 @@ function resetRotationForAllObjects() {
 		scene.children[i].rotation.x = 0;
 		scene.children[i].rotation.y = 0;
 		scene.children[i].rotation.z = 0;
+	}
+}
+
+function highlightVertices(){
+	
+	for (var i = 0; i < verticeList.childNodes.length; i++) {
+				
+		var cubeGeometry = new THREE.BoxGeometry(25, 25, 25);
+		var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x1ec876 });
+		var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+		var sphere = new THREE.Mesh(new THREE.SphereGeometry(25, 25, 25), new THREE.MeshNormalMaterial());
+		
+		sphere.position.x = verticeList.childNodes[i].childNodes[1].value;
+		sphere.position.y = verticeList.childNodes[i].childNodes[3].value;
+		sphere.position.z = verticeList.childNodes[i].childNodes[5].value;
+
+		// Store cube for reference
+		highlightCubes.push(sphere);
+
+		scene.add(sphere);
+
 	}
 }
 
