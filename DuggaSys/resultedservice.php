@@ -93,9 +93,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							$duggarel=$row['qrelease'];
 							$duggadead=$row['deadline'];
 							
-							$duggaanswer=$row['aws'];
+							$useranswer=$row['aws'];
 							$duggaparam=$row['param'];
-							$useranswer=$row['facit'];
+							$duggaanswer=$row['facit'];
 
 							$dugganame="templates/".$duggafile.".js";
 							
@@ -142,7 +142,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 
 		// All results from current course and vers?
-		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers from userAnswer where cid=:cid;");
+		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,marked from userAnswer where cid=:cid;");
 		$query->bindParam(':cid', $cid);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -162,7 +162,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					'uid' => $row['uid'],
 					'useranswer' => $row['useranswer'],
 					'submitted'=> $row['submitted'],
-					'vers'=> $row['vers']
+					'vers'=> $row['vers'],
+					'marked' => $row['marked']
 				)
 			);
 

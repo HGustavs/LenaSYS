@@ -121,7 +121,14 @@ function returnedResults(data) {
 	str = "";
 
 	if (data['dugganame'] != "") {
+		$.getScript(data['dugganame'], function() {
 		$("#MarkCont").html(data['duggapage']);
+
+//		alert(data['duggaparam']+"\n"+data['useranswer'] + "\n" + data['duggaanswer']);
+		showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer']);
+
+	});
+
 		$("#resultpopover").css("display", "block");
 		//alert(data['duggaanswer']);
 	} else {
