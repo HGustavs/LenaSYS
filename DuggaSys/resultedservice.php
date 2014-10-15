@@ -32,6 +32,7 @@ $duggapage="";
 $dugganame="";
 $duggaparam="";
 $duggaanswer="";
+$useranswer="";
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -48,13 +49,14 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						$query->bindParam(':cid', $cid);
 						$query->bindParam(':moment', $moment);
 						$query->bindParam(':vers', $vers);
-						$query->bindParam(':uid', $uid);
+						$query->bindParam(':uid', $luid);
 
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
 							$debug="Error updating entries".$error[2];
 						}				
 				}else if($ukind=="I"){
+											
 						$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid);");
 						$query->bindParam(':mark', $mark);
 						$query->bindParam(':cuser', $userid);
@@ -62,18 +64,18 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						$query->bindParam(':cid', $cid);
 						$query->bindParam(':moment', $moment);
 						$query->bindParam(':vers', $vers);
-						$query->bindParam(':uid', $uid);
+						$query->bindParam(':uid', $luid);
 
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
-							$debug="Error updating entries".$error[2];
+							$debug="Error updating entries\n".$error[2];
 						}								
 				}
 		}
 
 		if(strcmp($opt,"DUGGA")===0){
 
-					$query = $pdo->prepare("SELECT userAnswer.answer as aws,entryname,quizFile,qrelease,deadline,param FROM userAnswer,listentries,quiz,variant WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;");					
+					$query = $pdo->prepare("SELECT userAnswer.useranswer as aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer as facit FROM userAnswer,listentries,quiz,variant WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;");					
 
 					$query->bindParam(':cid', $cid);
 					$query->bindParam(':vers', $vers);
@@ -93,6 +95,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							
 							$duggaanswer=$row['aws'];
 							$duggaparam=$row['param'];
+							$useranswer=$row['facit'];
 
 							$dugganame="templates/".$duggafile.".js";
 							
@@ -139,7 +142,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 
 		// All results from current course and vers?
-		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,answer,submitted,vers from userAnswer where cid=:cid;");
+		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers from userAnswer where cid=:cid;");
 		$query->bindParam(':cid', $cid);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -157,7 +160,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					'moment' => $row['moment'],
 					'grade' => $row['grade'],
 					'uid' => $row['uid'],
-					'answer' => $row['answer'],
+					'useranswer' => $row['useranswer'],
 					'submitted'=> $row['submitted'],
 					'vers'=> $row['vers']
 				)
@@ -220,7 +223,8 @@ $array = array(
 	'duggapage' => $duggapage,
 	'dugganame' => $dugganame,
 	'duggaparam' => $duggaparam,
-	'duggaanswer' => $duggaanswer
+	'duggaanswer' => $duggaanswer,
+	'useranswer' => $useranswer
 );
 
 

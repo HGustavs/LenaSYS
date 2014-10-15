@@ -30,10 +30,10 @@ function updateVariant()
 		$("#editVariant").css("display","none");
 
 		var vid=$("#vid").val();
-		var answer=$("#answer").val();
+		var answer=$("#variantanswer").val();
 		var parameter=$("#parameter").val();
 		
-		AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,answer:answer,parameter:parameter},"DUGGA");
+		AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter},"DUGGA");
 }
 
 function closeEditVariant()
@@ -134,7 +134,7 @@ function selectVariant(vid,param,answer)
 		$("#parameter").val(param.replace(/&quot;/g, '"'));
 
 		// Set Answer (Answer for Question - Optional)	
-		$("#answer").val(answer.replace(/&quot;/g, '"'));
+		$("#variantanswer").val(answer.replace(/&quot;/g, '"'));
 }
 
 //----------------------------------------
@@ -213,13 +213,13 @@ function returnedDugga(data)
 										str+="<tr>";
 										str+="<td style='width:30px;'></td>"
 										str+="<td colspan='1'><div style='overflow:hidden;	max-width: 300px;	max-height: 20px;text-overflow: ellipsis;'>"+itemz['param']+"</div></td>";
-										str+="<td colspan='1'>"+itemz['answer']+"</td>";
+										str+="<td colspan='1'>"+itemz['variantanswer']+"</td>";
 
 										str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
 										str+="<td style='padding:4px;'>";
 												str+="<img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Cogwheel.svg' ";
-												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['answer'])+"\");' >";
+												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
 										str+="</td>";
 
 										str+="</tr>";

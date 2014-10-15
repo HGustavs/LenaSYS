@@ -21,11 +21,13 @@ function returnedDugga(data)
 
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
-		}else{			
+		}else{		
+			
 			retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
-			if(data['answer'] != null){
+			if(data['answer'] != null && data['answer'] != "UNK"){
+				resetBitstring();
 				var previous = data['answer'].split(' ');
 				if (previous.length >= 4){
 					var bitstring = previous[3];
@@ -36,6 +38,7 @@ function returnedDugga(data)
 				for (var i=bitstring.length;i>=0;i--){
 					if (bitstring[i]==1){
 						bitClick("B"+(7-i));
+						//console.log("B"+(7-i)+":"+bitstring[i]);
 					}				
 				}
 				document.getElementById('H0').innerHTML=hexvalue1;
@@ -43,8 +46,8 @@ function returnedDugga(data)
 			}
 		}
 		
-		if(data['answer']!=null){
-				showFacit(data['answer']);
+		if(data['danswer']!=null){
+				showFacit(data['danswer']);
 		}
 
 }
@@ -146,4 +149,11 @@ function setval(sval)
 				$("#"+hc).html(sval);		
 		}
 		$("#pop").css({display:"none"})
+}
+
+function resetBitstring(){
+	for (var i=0;i<8;i++){
+		document.getElementById("B"+i).innerHTML="0";
+		document.getElementById("B"+i).className="bit noll";		
+	}
 }
