@@ -165,6 +165,13 @@ function saveClick() {
 }
 
 function showFacit(param, uanswer, danswer) {
+	/* reset */
+	sf = 2.0;
+	speed = 0.1;
+	v = 0;
+	pushcount = 0;
+	elapsedTime = 0;
+
 	running = true;
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
@@ -283,6 +290,7 @@ function showFacit(param, uanswer, danswer) {
 }
 
 function closeFacit() {
+	clearInterval(tick);
 	running = false;
 }
 
