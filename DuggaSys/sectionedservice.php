@@ -117,7 +117,7 @@ if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 $ha = (checklogin() && (hasAccess($userid, $courseid, 'w') || isSuperUser($userid)));
 
 $resulties=array();
-$query = $pdo->prepare("SELECT moment,grade,submitted,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+$query = $pdo->prepare("SELECT moment,grade,submitted,marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
 $query->bindParam(':uid', $userid);
@@ -134,7 +134,8 @@ foreach($query->fetchAll() as $row) {
 			'moment' => $row['moment'],
 			'grade' => $row['grade'],
 			'submitted' => $row['submitted'],
-			'marked' => $row['marked']
+			'marked' => $row['marked'],
+			'useranswer' => $row['useranswer']
 		)
 	);
 }

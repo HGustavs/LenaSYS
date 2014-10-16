@@ -306,18 +306,20 @@ function returnedSection(data)
 
 						if(parseInt(item['kind']) === 3||parseInt(item['kind']) === 4){
 								var grady=-1;
+								var useransw = null;
 								for(jjj=0;jjj<data['results'].length;jjj++){
 										var lawtem=data['results'][jjj];
 										//alert("G: "+lawtem['grade']);
 										if((lawtem['moment']==item['lid'])){
 												grady=lawtem['grade'];
+												useransw = lawtem['useranswer'];
 										}
 								}
 							
-								if(grady==-1){
+								if((grady==-1)||(grady==null && useransw == null)){
 										// Nothing submitted nor marked (White)
 										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Not Handed In' src='css/svg/StopN.svg' />";
-								}else if(grady==null){
+								}else if(grady==null && useransw != null){
 										//	Nothing marked yet (Yellow)
 										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+lawtem['submitted']+"' src='css/svg/StopY.svg' />";
 								}else if(grady==1){
