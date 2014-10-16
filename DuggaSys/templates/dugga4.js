@@ -1,5 +1,5 @@
 //------------==========########### GLOBALS ###########==========------------
-
+var running;
 var retdata = null;
 var canvas = null;
 
@@ -12,12 +12,12 @@ var elapsedTime = 0;
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
 function setup() {
-
+	running = true;
 	canvas = document.getElementById('a');
-	if (canvas){
+	if (canvas) {
 		context = canvas.getContext("2d");
 		setInterval("tick();", 50);
-	
+
 		AJAXService("GETPARAM", { }, "PDUGGA");
 	}
 }
@@ -29,102 +29,102 @@ function returnedDugga(data) {
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		if (canvas){
+		if (canvas) {
 			showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
-	
+
 			retdata = jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
 			variant = retdata["variant"];
-	
+
 			if (data["answer"] != null) {
 				var previous = data['answer'].split(',');
 				previous.shift();
 				previous.pop();
 				// Clear operations
 				document.getElementById('operations').innerHTML = "";
-	
+
 				var str = "";
-	
+
 				var cstr = "";
 				// Add previous handed in dugga
 				for (var i = 0; i < previous.length; i++) {
 					cstr = previous[i];
 					if (cstr == "D1" || cstr == "0") {
-	
+
 						str += '<option value="D1">Draw R</option>';
-	
+
 					} else if (cstr == "D2" || cstr == "1") {
 						str += '<option value="D2">Draw G</option>';
-	
+
 					} else if (cstr == "D3" || cstr == "2") {
 						str += '<option value="D3">Draw B</option>';
-	
+
 					} else if (cstr == "T1" || cstr == "3") {
 						str += '<option value="T1">Translate 1</option>';
-	
+
 					} else if (cstr == "T2" || cstr == "4") {
 						str += '<option value="T2">Translate 2</option>';
-	
+
 					} else if (cstr == "T3" || cstr == "5") {
 						str += '<option value="T3">Translate 3</option>';
-	
+
 					} else if (cstr == "T4" || cstr == "6") {
 						str += '<option value="T4">Translate 4</option>';
-	
+
 					} else if (cstr == "T5" || cstr == "7") {
 						str += '<option value="T5">Translate 5</option>';
-	
+
 					} else if (cstr == "T6" || cstr == "8") {
 						str += '<option value="T6">Translate 6</option>';
-	
+
 					} else if (cstr == "T7" || cstr == "9") {
 						str += '<option value="T7">Translate 7</option>';
-	
+
 					} else if (cstr == "T8" || cstr == "10") {
 						str += '<option value="T8">Translate 8</option>';
-	
+
 					} else if (cstr == "R0" || cstr == "11") {
 						str += '<option value="R0">Rotate +3</option>';
-	
+
 					} else if (cstr == "R1" || cstr == "12") {
 						str += '<option value="R1">Rotate +2</option>';
-	
+
 					} else if (cstr == "R2" || cstr == "13") {
 						str += '<option value="R2">Rotate +1</option>';
-	
+
 					} else if (cstr == "R3" || cstr == "14") {
 						str += '<option value="R3">Rotate +0.3</option>';
-	
+
 					} else if (cstr == "R4" || cstr == "15") {
 						str += '<option value="R4">Rotate +0.2</option>';
-	
+
 					} else if (cstr == "R5" || cstr == "16") {
 						str += '<option value="R5">Rotate -0.2</option>';
-	
+
 					} else if (cstr == "R6" || cstr == "17") {
 						str += '<option value="R6">Rotate -0.3</option>';
-	
+
 					} else if (cstr == "R7" || cstr == "18") {
 						str += '<option value="R7">Rotate -1</option>';
-	
+
 					} else if (cstr == "R8" || cstr == "19") {
 						str += '<option value="R8">Rotate -2</option>';
-	
+
 					} else if (cstr == "R9" || cstr == "20") {
 						str += '<option value="R9">Rotate -3</option>';
-	
+
 					} else if (cstr == "S0" || cstr == "21") {
 						str += '<option value="S0">Scale 0.2</option>';
-	
+
 					} else if (cstr == "S1" || cstr == "22") {
 						str += '<option value="S1">Scale 0.3</option>';
-	
+
 					} else if (cstr == "S2" || cstr == "23") {
 						str += '<option value="S2">Scale 0.5</option>';
-	
+
 					} else if (cstr == "S3" || cstr == "24") {
 						str += '<option value="S3">Scale 1.0</option>';
-	
+
 					} else if (cstr == "S4" || cstr == "25") {
 						str += '<option value="S4">Scale 1.25</option>';
 					} else if (cstr == "PUSH" || cstr == "26") {
@@ -135,7 +135,7 @@ function returnedDugga(data) {
 				}
 				document.getElementById('operations').innerHTML = str;
 			}
-	
+
 			foo();
 		}
 	}
@@ -163,124 +163,127 @@ function saveClick() {
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
 }
-function showFacit(param, uanswer, danswer)
-{
-		canvas = document.getElementById('a');
-				context = canvas.getContext("2d");
-						setInterval("tick();", 50);
-			var studentPreviousAnswer = "";
-			if (uanswer != null) {
-			var studentPreviousAnswer = "";
-	
-			retdata = jQuery.parseJSON(param.replace(/&quot;/g, '"'));
-			variant = retdata["variant"];
-	
-			if (uanswer != null) {
-				var previous = uanswer.split(',');
-				previous.shift();
-				previous.pop();
-				// Clear operations
-				document.getElementById('operations').innerHTML = "";
-	
-				var str = "";
-	
-				var cstr = "";
-				// Add previous handed in dugga
-				for (var i = 0; i < previous.length; i++) {
-					cstr = previous[i];
-					if (cstr == "D1" || cstr == "0") {
-	
-						str += '<option value="D1">Draw R</option>';
-	
-					} else if (cstr == "D2" || cstr == "1") {
-						str += '<option value="D2">Draw G</option>';
-	
-					} else if (cstr == "D3" || cstr == "2") {
-						str += '<option value="D3">Draw B</option>';
-	
-					} else if (cstr == "T1" || cstr == "3") {
-						str += '<option value="T1">Translate 1</option>';
-	
-					} else if (cstr == "T2" || cstr == "4") {
-						str += '<option value="T2">Translate 2</option>';
-	
-					} else if (cstr == "T3" || cstr == "5") {
-						str += '<option value="T3">Translate 3</option>';
-	
-					} else if (cstr == "T4" || cstr == "6") {
-						str += '<option value="T4">Translate 4</option>';
-	
-					} else if (cstr == "T5" || cstr == "7") {
-						str += '<option value="T5">Translate 5</option>';
-	
-					} else if (cstr == "T6" || cstr == "8") {
-						str += '<option value="T6">Translate 6</option>';
-	
-					} else if (cstr == "T7" || cstr == "9") {
-						str += '<option value="T7">Translate 7</option>';
-	
-					} else if (cstr == "T8" || cstr == "10") {
-						str += '<option value="T8">Translate 8</option>';
-	
-					} else if (cstr == "R0" || cstr == "11") {
-						str += '<option value="R0">Rotate +3</option>';
-	
-					} else if (cstr == "R1" || cstr == "12") {
-						str += '<option value="R1">Rotate +2</option>';
-	
-					} else if (cstr == "R2" || cstr == "13") {
-						str += '<option value="R2">Rotate +1</option>';
-	
-					} else if (cstr == "R3" || cstr == "14") {
-						str += '<option value="R3">Rotate +0.3</option>';
-	
-					} else if (cstr == "R4" || cstr == "15") {
-						str += '<option value="R4">Rotate +0.2</option>';
-	
-					} else if (cstr == "R5" || cstr == "16") {
-						str += '<option value="R5">Rotate -0.2</option>';
-	
-					} else if (cstr == "R6" || cstr == "17") {
-						str += '<option value="R6">Rotate -0.3</option>';
-	
-					} else if (cstr == "R7" || cstr == "18") {
-						str += '<option value="R7">Rotate -1</option>';
-	
-					} else if (cstr == "R8" || cstr == "19") {
-						str += '<option value="R8">Rotate -2</option>';
-	
-					} else if (cstr == "R9" || cstr == "20") {
-						str += '<option value="R9">Rotate -3</option>';
-	
-					} else if (cstr == "S0" || cstr == "21") {
-						str += '<option value="S0">Scale 0.2</option>';
-	
-					} else if (cstr == "S1" || cstr == "22") {
-						str += '<option value="S1">Scale 0.3</option>';
-	
-					} else if (cstr == "S2" || cstr == "23") {
-						str += '<option value="S2">Scale 0.5</option>';
-	
-					} else if (cstr == "S3" || cstr == "24") {
-						str += '<option value="S3">Scale 1.0</option>';
-	
-					} else if (cstr == "S4" || cstr == "25") {
-						str += '<option value="S4">Scale 1.25</option>';
-					} else if (cstr == "PUSH" || cstr == "26") {
-						str += '<option value="PUSH">Push (remember state)</option>';
-					} else if (cstr == "POP" || cstr == "27") {
-						str += '<option value="POP">Pop (jump back)</option>';
-					}
+
+function showFacit(param, uanswer, danswer) {
+	running = true;
+	canvas = document.getElementById('a');
+	context = canvas.getContext("2d");
+	setInterval("tick();", 50);
+	var studentPreviousAnswer = "";
+	if (uanswer != null) {
+		var studentPreviousAnswer = "";
+
+		retdata = jQuery.parseJSON(param.replace(/&quot;/g, '"'));
+		variant = retdata["variant"];
+
+		if (uanswer != null) {
+			var previous = uanswer.split(',');
+			previous.shift();
+			previous.pop();
+			// Clear operations
+			document.getElementById('operations').innerHTML = "";
+
+			var str = "";
+
+			var cstr = "";
+			// Add previous handed in dugga
+			for (var i = 0; i < previous.length; i++) {
+				cstr = previous[i];
+				if (cstr == "D1" || cstr == "0") {
+
+					str += '<option value="D1">Draw R</option>';
+
+				} else if (cstr == "D2" || cstr == "1") {
+					str += '<option value="D2">Draw G</option>';
+
+				} else if (cstr == "D3" || cstr == "2") {
+					str += '<option value="D3">Draw B</option>';
+
+				} else if (cstr == "T1" || cstr == "3") {
+					str += '<option value="T1">Translate 1</option>';
+
+				} else if (cstr == "T2" || cstr == "4") {
+					str += '<option value="T2">Translate 2</option>';
+
+				} else if (cstr == "T3" || cstr == "5") {
+					str += '<option value="T3">Translate 3</option>';
+
+				} else if (cstr == "T4" || cstr == "6") {
+					str += '<option value="T4">Translate 4</option>';
+
+				} else if (cstr == "T5" || cstr == "7") {
+					str += '<option value="T5">Translate 5</option>';
+
+				} else if (cstr == "T6" || cstr == "8") {
+					str += '<option value="T6">Translate 6</option>';
+
+				} else if (cstr == "T7" || cstr == "9") {
+					str += '<option value="T7">Translate 7</option>';
+
+				} else if (cstr == "T8" || cstr == "10") {
+					str += '<option value="T8">Translate 8</option>';
+
+				} else if (cstr == "R0" || cstr == "11") {
+					str += '<option value="R0">Rotate +3</option>';
+
+				} else if (cstr == "R1" || cstr == "12") {
+					str += '<option value="R1">Rotate +2</option>';
+
+				} else if (cstr == "R2" || cstr == "13") {
+					str += '<option value="R2">Rotate +1</option>';
+
+				} else if (cstr == "R3" || cstr == "14") {
+					str += '<option value="R3">Rotate +0.3</option>';
+
+				} else if (cstr == "R4" || cstr == "15") {
+					str += '<option value="R4">Rotate +0.2</option>';
+
+				} else if (cstr == "R5" || cstr == "16") {
+					str += '<option value="R5">Rotate -0.2</option>';
+
+				} else if (cstr == "R6" || cstr == "17") {
+					str += '<option value="R6">Rotate -0.3</option>';
+
+				} else if (cstr == "R7" || cstr == "18") {
+					str += '<option value="R7">Rotate -1</option>';
+
+				} else if (cstr == "R8" || cstr == "19") {
+					str += '<option value="R8">Rotate -2</option>';
+
+				} else if (cstr == "R9" || cstr == "20") {
+					str += '<option value="R9">Rotate -3</option>';
+
+				} else if (cstr == "S0" || cstr == "21") {
+					str += '<option value="S0">Scale 0.2</option>';
+
+				} else if (cstr == "S1" || cstr == "22") {
+					str += '<option value="S1">Scale 0.3</option>';
+
+				} else if (cstr == "S2" || cstr == "23") {
+					str += '<option value="S2">Scale 0.5</option>';
+
+				} else if (cstr == "S3" || cstr == "24") {
+					str += '<option value="S3">Scale 1.0</option>';
+
+				} else if (cstr == "S4" || cstr == "25") {
+					str += '<option value="S4">Scale 1.25</option>';
+				} else if (cstr == "PUSH" || cstr == "26") {
+					str += '<option value="PUSH">Push (remember state)</option>';
+				} else if (cstr == "POP" || cstr == "27") {
+					str += '<option value="POP">Pop (jump back)</option>';
 				}
-				document.getElementById('operations').innerHTML = str;
 			}
-	
-			foo();
+			document.getElementById('operations').innerHTML = str;
+		}
 
-			}
+		foo();
 
+	}
 
-			
+}
+
+function closeFacit() {
+	running = false;
 }
 
 //--------------------================############================--------------------
@@ -608,7 +611,9 @@ function foo() {
 	context.rotate(-v * 0.6);
 	drawsun(10 * sf);
 
-	setTimeout("foo();", 50);
+	if (running) {
+		setTimeout("foo();", 50);
+	}
 
 }
 
