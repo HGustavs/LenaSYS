@@ -307,8 +307,11 @@ function hideReceiptPopup()
 }
 function showDuggaInfoPopup()
 {
-		$("#duggaInfoBox").css("display","block");
-		$("#overlay").css("display","block");
+
+		if ($("#receiptBox").css("display")!= "block"){
+			$("#duggaInfoBox").css("display","block");
+			$("#overlay").css("display","block");
+		}
 }
 
 function hideDuggaInfoPopup()
