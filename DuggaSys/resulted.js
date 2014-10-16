@@ -187,6 +187,7 @@ function returnedResults(data) {
 							// We are now processing the moment entry in the moment object
 							var foundgrade = null;
 							var useranswer = null;
+							var submitted = null;
 							if (studres != null) {
 								for (var l = 0; l < studres.length; l++) {
 									var resultitem = studres[l];
@@ -194,16 +195,26 @@ function returnedResults(data) {
 										// There is a result to print
 										foundgrade = resultitem['grade'];
 										useranswer = resultitem['useranswer'];
-
+										submitted = resultitem['submitted'];
+/*
 										if (foundgrade != null) {
 												str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
 										}
+										*/
 									}
 								}
 							}
 
-							if (foundgrade == null) {
-								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
+							// If no result is found i.e. No Fist
+							if (foundgrade == null && useranswer == null && submitted == null) {
+								str += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "I");
+								str += "##";
+							} else if (foundgrade != null) {
+								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], foundgrade, "U");								
+							}
+							else {
+								str += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");	
+								str += "**";									
 							}
 							if(useranswer!=null){
 									str += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
@@ -231,6 +242,7 @@ function returnedResults(data) {
 									// We now have number of listentry, student data, course information etc, are there any results?
 									var foundgrade = null;
 									var useranswer = null;
+									var submitted = null;
 									if (studres != null) {
 										for (var l = 0; l < studres.length; l++) {
 											var resultitem = studres[l];
@@ -239,20 +251,27 @@ function returnedResults(data) {
 												// There is a result to print
 												foundgrade = resultitem['grade'];
 												useranswer = resultitem['useranswer'];
+												submitted = resultitem['submitted'];
 												
+												/*
 												if (foundgrade != null) {
 													ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], resultitem['grade'], "U");													
-													ttr += "**";
-													if(useranswer!=null){
-															ttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";																										
-													}
+
+													console.log(useranswer);
 												}
+												*/
 											}
 										}
 									}
 									// If no result is found i.e. No Fist
-									if (foundgrade == null) {
+									if (foundgrade == null && useranswer == null && submitted == null) {
 										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "I");
+									} else if (foundgrade != null) {
+										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], foundgrade, "U");													
+
+									}
+									else {
+										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");										
 									}
 									if(useranswer!=null){
 											ttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";																										
