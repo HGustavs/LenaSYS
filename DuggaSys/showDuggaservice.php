@@ -121,6 +121,7 @@ if($hr&&$userid!="UNK"){
 							$debug="Error updating entries".$error[2];
 						}
 						$savedvariant=$newvariant;
+						$debug=$savedvariant."A";
 		}else if(($savedvariant=="UNK")&&($newvariant!="")){
 						$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,moment,vers,variant) VALUES(:uid,:cid,:moment,:coursevers,:variant);");
 						$query->bindParam(':cid', $courseid);
@@ -133,6 +134,7 @@ if($hr&&$userid!="UNK"){
 							$debug="Error updating entries".$error[2];
 						}
 						$savedvariant=$newvariant;
+						$debug=$savedvariant."A";
 		}
 
 		// Retrieve variant
