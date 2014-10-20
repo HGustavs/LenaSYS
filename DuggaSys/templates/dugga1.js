@@ -95,8 +95,14 @@ function showFacit(param, uanswer, danswer)
 			for (var i=danswer[0].length;i>=0;i--){
 				if (danswer[0][i]==1){
 					// Set border around correct bits
-					document.getElementById("B"+(7-i)).style.border = "2px dotted black";
+					document.getElementById("B"+(7-i)).style.border = "2px dotted pink";
 				}				
+
+				if (danswer[0][i] == document.getElementById("B"+(7-i)).innerHTML){
+					document.getElementById("B"+(7-i)).style.background = "green";
+				} else {
+					document.getElementById("B"+(7-i)).style.background = "red";
+				}
 			}
 			
 			if (hexvalue1 == danswer[1]) {
@@ -113,6 +119,10 @@ function showFacit(param, uanswer, danswer)
 				document.getElementById('H1').style.background = "red";
 				document.getElementById('H1').innerHTML=hexvalue2 + " != "+danswer[2];			
 			}
+}
+
+function closeFacit(){
+
 }
 
 //--------------------================############================--------------------
