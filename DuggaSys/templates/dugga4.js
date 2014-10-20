@@ -8,6 +8,7 @@ var speed = 0.1;
 var v = 0;
 var pushcount = 0;
 var elapsedTime = 0;
+var tickInterval;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
@@ -16,7 +17,7 @@ function setup() {
 	canvas = document.getElementById('a');
 	if (canvas) {
 		context = canvas.getContext("2d");
-		setInterval("tick();", 50);
+		tickInterval = setInterval("tick();", 50);
 
 		AJAXService("GETPARAM", { }, "PDUGGA");
 	}
@@ -175,7 +176,7 @@ function showFacit(param, uanswer, danswer) {
 	running = true;
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
-	setInterval("tick();", 50);
+	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
 	if (uanswer != null) {
 		var studentPreviousAnswer = "";
@@ -290,7 +291,7 @@ function showFacit(param, uanswer, danswer) {
 }
 
 function closeFacit() {
-	clearInterval(tick);
+	clearInterval(tickInterval);
 	running = false;
 }
 
