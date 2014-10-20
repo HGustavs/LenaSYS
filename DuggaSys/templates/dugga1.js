@@ -83,6 +83,7 @@ function showFacit(param, uanswer, danswer)
 				var hexvalue1 = previous[4];
 				var hexvalue2 = previous[5]; 
 			}			
+			resetBitstring();
 			// NB: LSB is now on the highest string index
 			for (var i=bitstring.length;i>=0;i--){
 				if (bitstring[i]==1){
@@ -92,16 +93,20 @@ function showFacit(param, uanswer, danswer)
 
 			
 			// NB: LSB is now on the highest string index
-			for (var i=danswer[0].length;i>=0;i--){
-				if (danswer[0][i]==1){
-					// Set border around correct bits
-					document.getElementById("B"+(7-i)).style.border = "2px dotted pink";
-				}				
+			for (var i=danswer[0].length;i>0;i--){
 
-				if (danswer[0][i] == document.getElementById("B"+(7-i)).innerHTML){
-					document.getElementById("B"+(7-i)).style.background = "green";
+				if (danswer[0][i-1]==1){
+					// Set border around correct bits
+					document.getElementById("B"+(8-i)).style.border = "4px dotted black";
+				}								 
+
+				if (danswer[0][i-1] == $("#B"+(8-i)).html()){
+					$("#B"+(8-i)).css("background","green");
+					document.getElementById('B'+(8-i)).innerHTML+= " == " + danswer[0][i-1];
+					
 				} else {
-					document.getElementById("B"+(7-i)).style.background = "red";
+					$("#B"+(8-i)).css("background","red");
+					document.getElementById('B'+(8-i)).innerHTML+= " != " + danswer[0][i-1];					
 				}
 			}
 			

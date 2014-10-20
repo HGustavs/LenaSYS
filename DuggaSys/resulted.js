@@ -110,6 +110,7 @@ function moveDist(e) {
 		if ((Math.abs(mmx - msx) + Math.abs(mmy - msy)) > 16) {
 			$("#resultpopover").css("display", "none");
 			closeFacit();
+			document.getElementById('MarkCont').innerHTML="";
 		}
 	}
 }
