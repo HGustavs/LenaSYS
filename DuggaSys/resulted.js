@@ -283,7 +283,7 @@ function returnedResults(data) {
 										if(useranswer){
 											// yellow background
 											ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
-											console.log("Yellow! "+ submitted + ">" + marked);
+											//console.log("Yellow! "+ submitted + ">" + marked);
 										}
 									}
 									if(useranswer!=null){
