@@ -42,7 +42,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 		if(strcmp($opt,"CHGR")===0){
 				if($ukind=="U"){
-						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+						$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW() WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 						$query->bindParam(':mark', $mark);
 						$query->bindParam(':cuser', $userid);
 
@@ -57,7 +57,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						}				
 				}else if($ukind=="I"){
 											
-						$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid);");
+						$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW());");
 						$query->bindParam(':mark', $mark);
 						$query->bindParam(':cuser', $userid);
 

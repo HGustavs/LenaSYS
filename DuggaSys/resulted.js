@@ -189,6 +189,7 @@ function returnedResults(data) {
 							var foundgrade = null;
 							var useranswer = null;
 							var submitted = null;
+							var marked = null;
 							if (studres != null) {
 								for (var l = 0; l < studres.length; l++) {
 									var resultitem = studres[l];
@@ -197,6 +198,7 @@ function returnedResults(data) {
 										foundgrade = resultitem['grade'];
 										useranswer = resultitem['useranswer'];
 										submitted = resultitem['submitted'];
+										marked = resultitem['marked'];
 /*
 										if (foundgrade != null) {
 												str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
@@ -244,6 +246,7 @@ function returnedResults(data) {
 									var foundgrade = null;
 									var useranswer = null;
 									var submitted = null;
+									var marked = null;
 									if (studres != null) {
 										for (var l = 0; l < studres.length; l++) {
 											var resultitem = studres[l];
@@ -253,6 +256,9 @@ function returnedResults(data) {
 												foundgrade = resultitem['grade'];
 												useranswer = resultitem['useranswer'];
 												submitted = resultitem['submitted'];
+												marked = resultitem['marked'];
+												
+												if (marked) console.log("S:" + submitted + " M:"+marked);
 												
 												/*
 												if (foundgrade != null) {
@@ -272,10 +278,22 @@ function returnedResults(data) {
 
 									}
 									else {
-										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");										
+										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");
+										// If user has submitted and has no grade
+										if(useranswer){
+											// yellow background
+											ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
+											console.log("Yellow! "+ submitted + ">" + marked);
+										}
 									}
 									if(useranswer!=null){
-											ttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";																										
+											ttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
+											// If user has submitted something after we have marked, we need to remark
+											if(submitted > marked) {
+												// yellow background
+												ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
+												
+											}				
 									}
 
 									ttr += "</td>";
