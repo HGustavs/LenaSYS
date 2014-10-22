@@ -54,12 +54,13 @@ pdoConnect();
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='cid' value='Toddler' /></td>
-			<td>Name: <input class='form-control textinput' type='text' id='coursename' value='Course Name' /></td>
+			<td>Course Name: <input class='form-control textinput' type='text' id='coursename' value='Course Name' /></td>
 			<!--TODO: add correct course code structure -->
 			<!--<td>Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>-->		
 		</tr>
 		<tr>
-			<td>New Version: <input size='8' class='form-control textinput' type='text' id='newversion' value='Version Name' /></td>		
+			<td>Vers ID: <input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></td>		
+			<td>Vers Name: <input size='8' class='form-control textinput' type='text' id='versname' value='Version Name' /></td>		
 			<input type='hidden' id='cid' value='Toddler' /></td>
 		</tr>
 		<tr>
