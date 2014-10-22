@@ -165,9 +165,12 @@ CREATE TABLE userAnswer (
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE vers(
-		cid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		coursecode	VARCHAR(45) NOT NULL,
-		vers				VARCHAR(8) NOT NULL,
+		cid					  INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		vers				  VARCHAR(8) NOT NULL,
+		versname		  VARCHAR(45) NOT NULL,
+		coursecode	  VARCHAR(45) NOT NULL,
+		coursename	  VARCHAR(45) NOT NULL,
+		coursenamealt	VARCHAR(45) NOT NULL,
 		FOREIGN KEY (cid) REFERENCES course(cid),		
 		PRIMARY KEY(cid,coursecode,vers)
 );
