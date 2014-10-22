@@ -42,6 +42,33 @@ function newCourse()
 		AJAXService("NEW",{},"COURSE");
 } 
 
+function copyVersion()
+{
+		svers=$("#copyversion").val();
+		dvers=$("#versid").val();
+		
+		sstr="Are you sure you want to copy from the version with id "+svers+" to a new version with the id "+dvers;
+		if(confirm(sstr)){
+				alert("TKONG!");
+		}
+}
+
+function createVersion()
+{
+		$(".item").css("border","none");
+		$(".item").css("box-shadow","none");
+		$(".item").css("background","#fff");
+
+		$("#editCourse").css("display","none");
+
+		// Set Name		
+		var versid=$("#versid").val();
+		var versname=$("#versname").val();
+		var cid=$("#cid").val();
+		
+		AJAXService("NEWVRS",{cid: cid,versid:versid,versname:versname},"COURSE");
+}
+
 function selectCourse(cid,coursename,coursecode,visi,vers,edvers)
 {
 		$(".item").css("border","none");
@@ -81,18 +108,19 @@ function selectCourse(cid,coursename,coursecode,visi,vers,edvers)
 						var item=versions[i];
 						if(cid==item['cid']){
 								var vvers=item['vers'];
+								var vname=item['versname'];
 								
 								if(vvers==vers){
-										sstr+="<option selected='selected' value='"+vvers+"'>"+vvers+"</option>";
+										sstr+="<option selected='selected' value='"+vvers+"'>"+vname+"</option>";
 								}else{
-										sstr+="<option value='"+vvers+"'>"+vvers+"</option>";
+										sstr+="<option value='"+vvers+"'>"+vname+"</option>";
 								}
 								if(vvers==edvers){
-										estr+="<option selected='selected' value='"+vvers+"'>"+vvers+"</option>";
+										estr+="<option selected='selected' value='"+vvers+"'>"+vname+"</option>";
 								}else{
-										estr+="<option value='"+vvers+"'>"+vvers+"</option>";
+										estr+="<option value='"+vvers+"'>"+vname+"</option>";
 								}
-								cstr+="<option value='"+vvers+"'>"+vvers+"</option>";
+								cstr+="<option value='"+vvers+"'>"+vname+"</option>";
 						}
 				}
 		}

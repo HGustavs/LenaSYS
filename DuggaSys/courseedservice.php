@@ -26,6 +26,11 @@ $visibility=getOP('visib');
 $activevers=getOP('activevers');
 $activeedvers=getOP('activeedvers');
 
+$versid=getOP('versid');
+$versname=getOP('versname');
+$coursenamealt=getOP('coursenamealt');
+$coursecode=getOP('coursecode');
+
 if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 }else{
@@ -57,6 +62,20 @@ if($ha){
 					$error=$query->errorInfo();
 					$debug="Error updating entries".$error[2];
 				}
+		}else if(strcmp($opt,"NEWVRS")===0){
+				$query = $pdo->prepare("INSERT INTO VERS(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':coursecode', $coursecode);
+				$query->bindParam(':vers', $versid);
+				$query->bindParam(':versname', $versname);				
+				$query->bindParam(':coursename', $coursename);
+				$query->bindParam(':coursenamealt', $coursenamealt);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating entries".$error[2];
+				}
 		}else if(strcmp($opt,"UPDATE")===0){
 				$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, activeversion=:activevers, activeedversion=:activeedvers WHERE cid=:cid;");
 				$query->bindParam(':cid', $cid);
@@ -70,7 +89,6 @@ if($ha){
 					$debug="Error updating entries".$error[2];
 				}
 		}
-
 
 }
 
@@ -104,7 +122,7 @@ if(!$query->execute()) {
 } 
 
 $versions=array();
-$query=$pdo->prepare("SELECT cid,coursecode,vers FROM vers;");
+$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
 if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading courses".$error[2];
@@ -115,7 +133,10 @@ if(!$query->execute()) {
 				array(
 					'cid' => $row['cid'],
 					'coursecode' => $row['coursecode'],
-					'vers' => $row['vers']
+					'vers' => $row['vers'],
+					'versname' => $row['versname'],
+					'coursename' => $row['coursename'],
+					'coursenamealt' => $row['coursenamealt']
 				)
 			);
 		}
