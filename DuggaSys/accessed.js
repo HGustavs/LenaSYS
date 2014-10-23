@@ -80,11 +80,12 @@ function returnedAccess(data)
 {
 		// Fill section list with information
 		str="";
+		str+="<div style='float:right;'>";
+		str+="<input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/>";
+		str+="</div>";
+
 		if (data['entries'].length > 0) {
 
-				str+="<div style='float:right;'>";
-				str+="<input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/>";
-				str+="</div>";
 				
 				str+="<table class='list'>";
 
