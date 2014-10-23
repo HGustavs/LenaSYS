@@ -213,7 +213,25 @@ function returnedResults(data) {
 								str += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "I");
 								str += "##";
 							} else if (foundgrade != null) {
-								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], foundgrade, "U");								
+								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], foundgrade, "U");					
+										if (submitted > marked) {
+											console.log("S:"+submitted + "M:"+marked + " New stuff");
+										} else if (marked > submitted){
+											console.log("S:"+submitted + "M:"+marked + " Nothing to mark");
+										} else {
+											console.log("S:"+submitted + "M:"+marked + " S == M");
+										}	
+								
+									if((submitted > marked ) && (parseInt(foundgrade) < 2) ) {
+										// yellow background
+										ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
+										alert("Plong");
+												
+									} else {
+										//ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopG.svg' />";
+																							
+									}									
+				
 							}
 							else {
 								str += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");	
@@ -221,6 +239,12 @@ function returnedResults(data) {
 							}
 							if(useranswer!=null){
 									str += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
+									
+									if((submitted > marked )  ) {
+										// yellow background
+										ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
+												
+									}									
 							}
 
 							str += "</td>";
@@ -258,8 +282,6 @@ function returnedResults(data) {
 												submitted = resultitem['submitted'];
 												marked = resultitem['marked'];
 												
-												if (marked) console.log("S:" + submitted + " M:"+marked);
-												
 												/*
 												if (foundgrade != null) {
 													ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], resultitem['grade'], "U");													
@@ -274,26 +296,34 @@ function returnedResults(data) {
 									if (foundgrade == null && useranswer == null && submitted == null) {
 										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "I");
 									} else if (foundgrade != null) {
-										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], foundgrade, "U");													
+										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], foundgrade, "U");			
+
+										//console.log("S:"+ submitted + "> M:" + marked);
+										if((submitted > marked ) ) {
+											// yellow background
+											ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
+												
+										} else if (foundgrade < 2){
+											//ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
+												
+										} else {
+											//ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopG.svg' />";
+																							
+										}									
 
 									}
 									else {
 										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");
 										// If user has submitted and has no grade
-										if(useranswer){
-											// yellow background
-											ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
-											//console.log("Yellow! "+ submitted + ">" + marked);
-										}
 									}
 									if(useranswer!=null){
-											ttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
-											// If user has submitted something after we have marked, we need to remark
-											if(submitted > marked) {
-												// yellow background
-												ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
-												
-											}				
+										ttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
+										// If user has submitted something after we have marked, we need to remark
+										if(submitted > marked) {
+											// yellow background
+											ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
+
+										}				
 									}
 
 									ttr += "</td>";

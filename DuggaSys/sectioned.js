@@ -22,13 +22,13 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 		
 		// Set GradeSys
 		str="";
-		if(gradesys==null||gradesys==0) str+="<option selected='selected' value='0'>-</option>"
+		if(gradesys==null||gradesys==0) str+="<option selected='selected' value='0'>-</option>";
 		else str+="<option value='0'>-</option>";
-		if(gradesys==1) str+="<option selected='selected' value='1'>U-G-VG</option>"
+		if(gradesys==1) str+="<option selected='selected' value='1'>U-G-VG</option>";
 		else str+="<option value='1'>U-G-VG</option>";
-		if(gradesys==2) str+="<option selected='selected' value='2'>U-G</option>"
+		if(gradesys==2) str+="<option selected='selected' value='2'>U-G</option>";
 		else str+="<option value='2'>U-G</option>";
-		if(gradesys==3) str+="<option selected='selected' value='3'>U-3-4-5</option>"
+		if(gradesys==3) str+="<option selected='selected' value='3'>U-3-4-5</option>";
 		else str+="<option value='3'>U-3-4-5</option>";
 
 		$("#gradesys").html(str);
@@ -38,7 +38,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 		if (retdata['entries'].length > 0) {		
 			
 			// Account for null
-			if(moment=="") str+="<option selected='selected' value='null'>&lt;None&gt;</option>"
+			if(moment=="") str+="<option selected='selected' value='null'>&lt;None&gt;</option>";
 			else str+="<option value='null'>&lt;None&gt;</option>";
 			
 			// Account for rest of moments!
@@ -61,25 +61,25 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 
 		// Set Kind
 		str="";
-		if(kind==0) str+="<option selected='selected' value='0'>Header</option>"
+		if(kind==0) str+="<option selected='selected' value='0'>Header</option>";
 		else str+="<option value='0'>Header</option>";
-		if(kind==1) str+="<option selected='selected' value='1'>Section</option>"
+		if(kind==1) str+="<option selected='selected' value='1'>Section</option>";
 		else str+="<option value='1'>Section</option>";
-		if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
+		if(kind==2) str+="<option selected='selected' value='2'>Code</option>";
 		else str+="<option value='2'>Code</option>";
-		if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
+		if(kind==3) str+="<option selected='selected' value='3'>Test</option>";
 		else str+="<option value='3'>Test</option>";
-		if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
+		if(kind==4) str+="<option selected='selected' value='4'>Moment</option>";
 		else str+="<option value='4'>Moment</option>";
-		if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
+		if(kind==5) str+="<option selected='selected' value='5'>Link</option>";
 		else str+="<option value='5'>Link</option>";
 		$("#type").html(str);
 						
 		// Set Visibiliy
 		str="";
-		if(evisible==0) str+="<option selected='selected' value='0'>Hidden</option>"
+		if(evisible==0) str+="<option selected='selected' value='0'>Hidden</option>";
 		else str+="<option value='0'>Hidden</option>";
-		if(evisible==1) str+="<option selected='selected' value='1'>Public</option>"
+		if(evisible==1) str+="<option selected='selected' value='1'>Public</option>";
 		else str+="<option value='1'>Public</option>";
 		$("#visib").html(str);
 
@@ -283,7 +283,7 @@ function returnedSection(data)
 						}
 
 						if(kk==1){
-								if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:8px; margin-left:4px;' "
+								if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:8px; margin-left:4px;' ";
 								else str+="style='box-shadow: 0px 3px 2px #aaa inset;' ";				
 						}else{
 								if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; border-radius:8px; margin-left:4px;' ";
@@ -322,9 +322,12 @@ function returnedSection(data)
 								}else if(grady==null && useransw != null){
 										//	Nothing marked yet (Yellow)
 										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+lawtem['submitted']+"' src='css/svg/StopY.svg' />";
-								}else if(grady==1){
+								}else if(grady==1 && (lawtem['submitted'] <= lawtem['marked'])){
 										//	Marked Fail! (Red)								
-										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Failed\nDate: "+lawtem['marked']+"' src='css/svg/StopR.svg' />";
+										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Failed\nDate: "+lawtem['marked']+"\n      S:"+lawtem['submitted']+"' src='css/svg/StopR.svg' />";										
+								}else if(grady==1 && (lawtem['submitted'] > lawtem['marked'])){
+										//	Marked Fail, but resubmitted (Yellow)								
+										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Re-submitted\nDate: "+lawtem['submitted']+"' src='css/svg/StopY.svg' />";
 								}else if(grady>1){
 										//	Marked Pass i.e. G/VG/3/4/5 (Green)		
 										str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Pass\nDate: "+lawtem['marked']+"' src='css/svg/StopG.svg' />";
