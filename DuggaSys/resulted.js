@@ -210,14 +210,12 @@ function returnedResults(data) {
 
 							// If no result is found i.e. No Fist
 							if (foundgrade == null && useranswer == null && submitted == null) {
-								str += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "I");
-								str += "##";
+								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
 							} else if (foundgrade != null) {
 								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], foundgrade, "U");								
 							}
 							else {
-								str += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");	
-								str += "**";									
+								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "U");	
 							}
 							if(useranswer!=null){
 									str += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
