@@ -37,6 +37,8 @@
 			 		
 			 		$storefile=false;
 
+					// Start at the "root-level"
+					chdir('../../');
 			 		$currcvd=getcwd();
 			 		if($kind=="LINK"&&$link!="UNK"){
 			 				// Store Link

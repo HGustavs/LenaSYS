@@ -31,13 +31,16 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		if(strcmp($opt,"DELFILE")===0){
+				// Remove from database
 				$querystring='DELETE FROM fileLink WHERE fileid=:fid';	
 				$query = $pdo->prepare($querystring);
 				$query->bindParam(':fid', $fid);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error updating file list ".$error[2];
-				}								
+				}						
+				// Remove from filesystem? Only for local files ... Course-wide and Global files could be used elsewhere
+				// TODO:		
 		}
 }
 
@@ -68,6 +71,11 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			array_push($entries, $entry);
 		}
 
+		// Start at the "root-level"
+		chdir('../../');
+		$currcvd=getcwd();
+
+
 		$dir    = './templates';
 		$gfiles =array();
 		if (file_exists($dir)){
@@ -77,12 +85,12 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				}
 		}
 
-		$dir    = "./Courses/".$cid."/";
+		$dir    = $currcvd."/Courses/".$cid."/";
 		$lfiles =array();
 		if (file_exists($dir)){
 				$giles = scandir($dir);
 				foreach ($giles as $value){
-						if(!is_dir("./Courses/".$cid."/".$value)){
+						if(!is_dir($currcvd."/Courses/".$cid."/".$value)){
 								array_push($lfiles,$value);
 						}
 				}
