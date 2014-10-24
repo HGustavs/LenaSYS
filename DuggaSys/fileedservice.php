@@ -68,6 +68,11 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			array_push($entries, $entry);
 		}
 
+		// Start at the "root-level"
+		chdir('../../');
+		$currcvd=getcwd();
+
+
 		$dir    = './templates';
 		$gfiles =array();
 		if (file_exists($dir)){
@@ -77,12 +82,12 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				}
 		}
 
-		$dir    = "./Courses/".$cid."/";
+		$dir    = $currcvd."/Courses/".$cid."/";
 		$lfiles =array();
 		if (file_exists($dir)){
 				$giles = scandir($dir);
 				foreach ($giles as $value){
-						if(!is_dir("./Courses/".$cid."/".$value)){
+						if(!is_dir($currcvd."/Courses/".$cid."/".$value)){
 								array_push($lfiles,$value);
 						}
 				}

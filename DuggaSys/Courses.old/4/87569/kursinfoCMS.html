@@ -1,0 +1,152 @@
+<h3>
+	<span style="font-size: 12px;">Kursm&aring;l</span></h3>
+<ul>
+	<li>
+		Genomf&ouml;ra samt redog&ouml;ra f&ouml;r konfiguration av en existerande webbservermilj&ouml; med h&ouml;g prestanda som m&aring;l i f&ouml;rberedelse f&ouml;r installation av ett CMS-system samt f&ouml;r installation och konfiguration av n&ouml;dv&auml;ndiga beroenden,</li>
+	<li>
+		Genomf&ouml;ra samt redog&ouml;ra f&ouml;r installation och konfiguration av ett CMS-system inklusive att skr&auml;ddarsy l&ouml;sningen f&ouml;r ett specifikt behov.</li>
+	<li>
+		Genomf&ouml;ra en prestandaoptimering samt redog&ouml;ra f&ouml;r prestandaoptimering av webbapplikationer</li>
+	<li>
+		identifiera s&auml;kerhetsbrister samt redog&ouml;ra f&ouml;r k&auml;nda s&auml;kerhetsbrister och tekniker f&ouml;r att minimera risk f&ouml;r s&auml;kerhetsbrister i en webbservermilj&ouml; samt</li>
+	<li>
+		Redog&ouml;ra f&ouml;r prestandam&auml;tning samt genomf&ouml;ra prestandam&auml;tningar och kritiskt analysera resultatet fr&aring;n prestandam&auml;tningar p&aring; en existerande servermilj&ouml;.</li>
+</ul>
+<h3>
+	Kursmoment</h3>
+<table border="1" cellpadding="1" cellspacing="1">
+	<tbody>
+		<tr>
+			<td rowspan="2">
+				v37</td>
+			<td>
+				&nbsp;</td>
+			<td>
+				&nbsp;Introduktion och Gruppindelning</td>
+		</tr>
+		<tr>
+			<td>
+				&nbsp;</td>
+			<td>
+				&nbsp;CMS Installation</td>
+		</tr>
+		<tr>
+			<td>
+				v38</td>
+			<td>
+				&nbsp;</td>
+			<td>
+				&nbsp;CMS Konfiguration</td>
+		</tr>
+		<tr>
+			<td>
+				v39</td>
+			<td>
+				&nbsp;</td>
+			<td>
+				&nbsp;Prestandam&auml;tning</td>
+		</tr>
+		<tr>
+			<td rowspan="2">
+				v40</td>
+			<td>
+				&nbsp;</td>
+			<td>
+				&nbsp;Prestandaoptimering</td>
+		</tr>
+		<tr>
+			<td>
+				&nbsp;</td>
+			<td>
+				&nbsp;S&auml;kerhet</td>
+		</tr>
+		<tr>
+			<td>
+				&nbsp;</td>
+			<td>
+				&nbsp;</td>
+			<td>
+				&nbsp;Slutseminarie</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	Det ing&aring;r &auml;ven vid behov ett antal handledningar i datorsal.</p>
+<h3>
+	Krav p&aring; CMS system</h3>
+<p>
+	Detta &auml;r de grundl&auml;ggande kraven som m&aring;ste m&ouml;tas f&ouml;r att CMS-systemet skall fungera i kursen</p>
+<ul>
+	<li>
+		Template system som g&ouml;r s&aring; att man kan &quot;skinna&quot; systemet p&aring; olika s&auml;tt</li>
+	<li>
+		S&ouml;kning p&aring; sidorna</li>
+	<li>
+		Open source s&aring; att programkoden kan inspekteras f&ouml;r s&auml;kerhetsbrister etc</li>
+	<li>
+		Databaskoppling skall finnas i n&aring;gon form</li>
+	<li>
+		Skall g&aring; att installera p&aring; kursens webbserver</li>
+</ul>
+<h3>
+	<b>Genomf&ouml;rande</b></h3>
+<p>
+	Varje Grupp skall pr&ouml;va p&aring; flera olika optimerings-strategier. Att exv endast byta ut Apache mot annan webbserver &auml;r allts&aring; inte tillr&auml;ckligt.</p>
+<p>
+	Alla grupperna skall evaluera n&aring;gon annan grupps CMS, dessutom skall flera olika exploits testas.</p>
+<ul>
+	<li>
+		Studenterna delas in i slumpvisa grupper om 2&nbsp;personer som tillsammans skall genomf&ouml;ra kursmomenten mot en webbserver.</li>
+	<li>
+		Arbetet skall delas upp mellan studenterna p&aring; ett r&auml;ttvist s&auml;tt och rapport-kapitlen skall tydligt markeras med namnet p&aring; respektive student som skrivit kapitlet.</li>
+	<li>
+		Fr&aring;n b&ouml;rjan &auml;r webbservern &quot;tom&quot; och olika CMS skall installeras p&aring; samma maskin mha Virtual Hosts och olika DNS adresser. Varje grupp av studenter skall s&auml;tta upp en DNS adress till servern.</li>
+	<li>
+		Grupperna m&aring;ste samarbeta kring konfigurationen s&aring; att en grupp inte kan f&ouml;rst&ouml;ra installationen f&ouml;r andra grupper.</li>
+	<li>
+		Fylla CMS-systemet med data, i storleksordningen tusentals sidor. Detta skall ske helst med ett program, men manuell ifyllning kan anv&auml;ndas.Realistisk text skall genereras. Exv skall texten inte best&aring; av ett enda ord upprepat m&aring;nga g&aring;nger eller helt slumpvisa listor med ord utan mening. Hundratals, men g&auml;rna tusentals s&ouml;kord skall finnas. Om texten genererats programatiskt kan frekvenserna hos s&ouml;korden med f&ouml;rdel styras dynamiskt.</li>
+	<li>
+		Servern skall analyseras fr&aring;n ett prestandaperspektiv (med hj&auml;lp av klassisk benchmarking) var flaskhalsarna sitter och vad som g&aring;r att g&ouml;ra.</li>
+	<li>
+		Prestandan skall Optimeras p&aring; s&auml;tt som &auml;r l&auml;mpliga f&ouml;r respektive CMS. I vissa fall kan detta inneb&auml;ra att alternativ webbserver eller&nbsp; databasserver eller annan mjukvara skall installeras i andra fall kan det betyda att programkoden i CMS applikationen skall f&ouml;r&auml;ndras. Gl&ouml;m inte att prestanda-m&auml;ta innan f&ouml;rb&auml;ttringar g&ouml;rs f&ouml;r att f&aring; ett startv&auml;rde.</li>
+	<li>
+		Varje CMS skall uts&auml;ttas f&ouml;r olika exploits och resultatet f&ouml;r respektive intr&aring;ngsf&ouml;rs&ouml;k/&ouml;verlastningsf&ouml;rs&ouml;k skall dokumenteras. Programkoden f&ouml;r hantering av exploits skall unders&ouml;kas och dokumenteras.</li>
+	<li>
+		Resultatet skall presenteras p&aring; en slutpresentation</li>
+	<li>
+		Samtliga kommandon som k&ouml;rs skall dokumenteras, Alla &auml;ndringar i konfigurationsfiler skall dokumenteras.</li>
+	<li>
+		I slutseminariet skall ovanst&aring;ende presenteras i presentationsform och fr&aring;gor skall st&auml;llas av auditoriet.</li>
+</ul>
+<h3>
+	Rapporten</h3>
+<p>
+	Rapporten skall inneh&aring;lla f&ouml;ljande</p>
+<ul>
+	<li>
+		F&ouml;rs&auml;ttsblad med studenternas namn och personnummer samt namnet p&aring; det CMS system som studenterna anv&auml;nt</li>
+	<li>
+		Kortfattad dokumentation av systemet, vem som tillverkat det, vilka dependencies det har, vilka licenser som anv&auml;nds etc</li>
+	<li>
+		Detaljerad beskrivning av installation och konfiguration, speciellt viktigt &auml;r beskrivningen av eventuella problem som uppst&aring;tt och ev friktion med andra gruppers installation p&aring; servern.</li>
+	<li>
+		Detaljerad dokumentation av genomf&ouml;rande av prestandaoptimering, vilka tekniker eller applikationer som anv&auml;nts etc</li>
+	<li>
+		Detaljerad prestanda-utv&auml;rdering med benchmarkingresultat i tydliga tabeller/grafer b&aring;de f&ouml;re och efter den optimering som genomf&ouml;rts</li>
+	<li>
+		Testning av ett antal k&auml;nda exploits och dokumentation av resultat av dessa samt dokumentation av vilka skyddsmekanismer som programkoden har till skydd mot exploits.</li>
+	<li>
+		Generella kommentarer och reflektioner exv. om n&aring;got om CMS systemet var speciellt &ouml;verraskande (exv ov&auml;ntat resultat p&aring; benchmark) eller speciellt sv&aring;rt.</li>
+</ul>
+<h3>
+	Betygs&auml;ttning</h3>
+<ul>
+	<li>
+		Studenterna i gruppen l&auml;mnar in en rapport tillsammans.</li>
+	<li>
+		F&ouml;r varje kapitel vara beskrivet vilken av studenterna som &auml;r ansvarig f&ouml;r kapitlet eller om det &auml;r skrivet helt gemensamt.</li>
+</ul>
+<div style="margin-left: 40px;">
+	U - Om inl&auml;mningen ej &auml;r komplett (exv ett moment saknas) eller om inneh&aring;llet eller formalian har stora brister.<br />
+	G - Samtliga delar &auml;r genomf&ouml;rda, med godk&auml;nd formalia och godk&auml;nt spr&aring;k. Analys och diskussion &auml;r dock ej av h&ouml;gsta klass<br />
+	VG - Ut&ouml;ver G-niv&aring;n. Analys och motivering visar p&aring; bredd och djup n&auml;r det g&auml;ller att identifera styrkor och svagheter hos l&ouml;sningen.</div>

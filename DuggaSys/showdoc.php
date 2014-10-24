@@ -88,6 +88,11 @@ session_start();
 							$query->bindParam(':cid', $cid);
 							$query->bindParam(':fname', $fname);
 							$result = $query->execute();
+							
+							// Start at the "root-level"
+							chdir('../../');
+			 				$currcvd=getcwd();
+							
 							if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 								$filekind=$row['kind'];
 								if($filekind==1){
@@ -101,15 +106,15 @@ session_start();
 										  }
 								}else if($filekind==3){
 											// Course Local
-									  	if(file_exists ( "./Courses/".$cid."/".$row['filename'])){
-											  	readfile("./Courses/".$cid."/".$row['filename']);
+									  	if(file_exists ($currcvd."/Courses/".$cid."/".$row['filename'])){
+											  	readfile($currcvd."/Courses/".$cid."/".$row['filename']);
 										  }else{
 													echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
 										  }
 								}else if($filekind==4){
 											// Local
-									  	if(file_exists ("./Courses/".$cid."/".$coursevers."/".$row['filename'])){
-											  	readfile("./Courses/".$cid."/".$coursevers."/".$row['filename']);
+									  	if(file_exists ($currcvd."/Courses/".$cid."/".$coursevers."/".$row['filename'])){
+											  	readfile($currcvd."/Courses/".$cid."/".$coursevers."/".$row['filename']);
 										  }else{
 													echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
 										  }
