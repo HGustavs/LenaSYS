@@ -31,13 +31,16 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		if(strcmp($opt,"DELFILE")===0){
+				// Remove from database
 				$querystring='DELETE FROM fileLink WHERE fileid=:fid';	
 				$query = $pdo->prepare($querystring);
 				$query->bindParam(':fid', $fid);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error updating file list ".$error[2];
-				}								
+				}						
+				// Remove from filesystem? Only for local files ... Course-wide and Global files could be used elsewhere
+				// TODO:		
 		}
 }
 
