@@ -3,6 +3,7 @@ var querystring = parseGet();
 var filez;
 var mmx = 0, mmy = 0;
 var msx = 0, msy = 0;
+var rProbe = null;
 
 AJAXService("GET", {
 	cid : querystring['cid']
@@ -115,12 +116,43 @@ function moveDist(e) {
 	}
 }
 
+function enterCell(thisObj)
+{
+		rProbe=$(thisObj).css('backgroundColor');
+		if(rProbe!="transparent"){
+				if(rProbe=="rgb(248, 232, 248)"){
+						cliffton="rgb(208,192,208)";
+				}else if(rProbe=="rgb(221, 255, 238)"){
+						cliffton="rgb(181,215,168)";		
+				}else if(rProbe=="rgb(255, 255, 221)"){
+						cliffton="rgb(215,215,181)";		
+				}else if(rProbe=="rgb(255, 238, 221)"){
+						cliffton="rgb(215,198,181)";		
+				}else if(rProbe=="rgb(255, 255, 255)"){
+						cliffton="rgb(215,215,215)";		
+				}else{
+						cliffton="#FFF";
+				}
+		
+				$(thisObj).css('backgroundColor',cliffton);
+		}
+}
+
+function leaveCell(thisObj)
+{
+		if(rProbe!=null&&rProbe!="transparent") $(thisObj).css('backgroundColor',rProbe);		
+}
+
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
 
 function returnedResults(data) {
-	str = "";
+	var str = "";
+	var zstr = "";
+	var ttr = "";
+	var zttr = "";
 
 	if (data['dugganame'] != "") {
 		$.getScript(data['dugganame'], function() {
@@ -170,7 +202,7 @@ function returnedResults(data) {
 
 					if ((moment['kind'] == 3 && moment['moment'] == null) || (moment['kind'] == 4)) {
 
-						str += "<td style='padding:0px'>";
+						str += "<td style='padding:0px;'>";
 
 						// We have data if there is a set of result elements for this student in this course... otherwise null
 						studres = results[user['uid']];
@@ -179,17 +211,19 @@ function returnedResults(data) {
 						str += "<table width='100%' class='innertable' >";
 						str += "<tr>";
 
-						// kind == 3 means dugga
-						// moment == null means no parent dugga
+						//----------------------------------------------------------------------------------------------------------- Start Standalone
+						// kind == 3 means dugga, moment == null means no parent dugga i.e. standalone
 						if (moment['kind'] == 3 && moment['moment'] == null) {
 
 							// Standalone Dugga -- we just need to make a dugga entry with the correct marking system.
-							str += "<td>&nbsp;</td></tr><tr  style='border-top:2px solid #dbd0d8;'><td>";
+							str += "<td>&nbsp;</td></tr><tr  style='border-top:2px solid #dbd0d8;' >";
+							
 							// We are now processing the moment entry in the moment object
 							var foundgrade = null;
 							var useranswer = null;
 							var submitted = null;
 							var marked = null;
+							var variant = null;
 							if (studres != null) {
 								for (var l = 0; l < studres.length; l++) {
 									var resultitem = studres[l];
@@ -199,30 +233,52 @@ function returnedResults(data) {
 										useranswer = resultitem['useranswer'];
 										submitted = resultitem['submitted'];
 										marked = resultitem['marked'];
-/*
-										if (foundgrade != null) {
-												str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
-										}
-										*/
+										variant = resultitem['variant'];
+										
+										if(submitted!=null) submitted=new Date(submitted);
+										if(marked!=null) marked=new Date(marked);
 									}
 								}
 							}
 
+							zstr = "";
+
 							// If no result is found i.e. No Fist
 							if (foundgrade == null && useranswer == null && submitted == null) {
-								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
+								zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
 							} else if (foundgrade != null) {
-								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], foundgrade, "U");								
+								zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], foundgrade, "U");								
 							}
 							else {
-								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "U");	
+								zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "U");	
 							}
+							
+							// Fist
 							if(useranswer!=null){
-									str += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
+									zstr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
 							}
+
+							// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
+							if((useranswer!=null&&foundgrade==null)||(foundgrade!=null&&submitted>marked)){
+									yomama="background-color:#ffd";							
+							}else if(foundgrade==1){
+									yomama="background-color:#fed";							
+							}else if(foundgrade>1){
+									yomama="background-color:#dfe";							
+							}else if(variant!=null&&useranswer==null){
+									yomama="background-color:#F8E8F8";														
+							}else{
+									yomama="background-color:#fff";														
+							}
+							
+							str += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>"+zstr;
 
 							str += "</td>";
 						}
+						//------------------------------------------------------------------------------------------------------------- End Standalone
+						
+
+						//----------------------------------------------------------------------------------------------------------- Start Moment
 						if (moment['kind'] == 4) {
 							// Moment - which may or may not have quizes
 
@@ -231,12 +287,9 @@ function returnedResults(data) {
 							for (var k = 0; k < data['moments'].length; k++) {
 								var dugga = data['moments'][k];
 
+								//--------------------------------------------------------------------------------------------------------- Start Dugga
 								// If the id of current item is same as moment of a dugga
 								if ((dugga['moment'] == moment['lid']) && (dugga['kind'] == 3)) {
-									if (duggacnt > 0)
-										ttr += "<td style='border-left:2px solid #dbd0d8;'>";
-									else
-										ttr += "<td>";
 
 									duggacnt++;
 
@@ -249,63 +302,63 @@ function returnedResults(data) {
 										for (var l = 0; l < studres.length; l++) {
 											var resultitem = studres[l];
 											if (resultitem['moment'] == dugga['lid']) {
-												
 												// There is a result to print
 												foundgrade = resultitem['grade'];
 												useranswer = resultitem['useranswer'];
 												submitted = resultitem['submitted'];
 												marked = resultitem['marked'];
-												
-												if (marked) console.log("S:" + submitted + " M:"+marked);
-												
-												/*
-												if (foundgrade != null) {
-													ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], resultitem['grade'], "U");													
+												variant = resultitem['variant'];
 
-													console.log(useranswer);
-												}
-												*/
+												if(submitted!=null) submitted=new Date(submitted);
+												if(marked!=null) marked=new Date(marked);
 											}
 										}
 									}
+
+									zttr="";
 									// If no result is found i.e. No Fist
 									if (foundgrade == null && useranswer == null && submitted == null) {
-										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "I");
-									} else if (foundgrade != null) {
-										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], foundgrade, "U");													
-
-									}
-									else {
-										ttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");
-										// If user has submitted and has no grade
-										if(useranswer){
-											// yellow background
-											ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
-											//console.log("Yellow! "+ submitted + ">" + marked);
-										}
+										zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "I");
+									}else if (foundgrade != null){
+										zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], foundgrade, "U");													
+									}else {
+										zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");
 									}
 									if(useranswer!=null){
-											ttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
-											// If user has submitted something after we have marked, we need to remark
-											if(submitted > marked) {
-												// yellow background
-												ttr+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+submitted+"' src='css/svg/StopY.svg' />";
-												
-											}				
+											zttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
 									}
 
+									// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
+									if((useranswer!=null&&foundgrade==null)||(foundgrade!=null&&submitted>marked)){
+											yomama="background-color:#ffd";							
+									}else if(foundgrade==1){
+											yomama="background-color:#fed";							
+									}else if(foundgrade>1){
+											yomama="background-color:#dfe";							
+									}else if(variant!=null&&useranswer==null){
+											yomama="background-color:#F8E8F8";														
+									}else{
+											yomama="background-color:#fff";														
+									}
+
+									if (duggacnt > 0){
+										ttr += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+									}else{
+										ttr += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+									}
+
+									ttr+=zttr;
+
 									ttr += "</td>";
+
+								//--------------------------------------------------------------------------------------------------------- End Dugga
+								
 								} else if ((dugga['moment'] == moment['lid']) && (dugga['kind'] == 4)) {
 									// Moment in moment
 								}
 							}
 
-							if (duggacnt == 0) {
-								ttr += "<td>&nbsp;</td>";
-								str += "<td colspan='1'>";
-							} else {
-								str += "<td colspan='" + duggacnt + "'>";
-							}
+							zttr="";
 
 							// We are now processing the moment entry in the moment object
 							var foundgrade = null;
@@ -317,19 +370,35 @@ function returnedResults(data) {
 										foundgrade = resultitem['grade'];
 
 										// gradesys cid vers moment uid mark
-										//																		str+="E";
-										str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
+										zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
 									}
 								}
 							}
 							if (foundgrade == null) {
-								//														str+="F";
-								str += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
+								zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
 							}
+
+							if(foundgrade==1){
+									yomama="background-color:#fed";							
+							}else if(foundgrade>1){
+									yomama="background-color:#dfe";							
+							}else{
+									yomama="background-color:#fff";														
+							}
+							
+							if (duggacnt == 0) {
+								ttr += "<td style='"+yomama+"'>&nbsp;</td>";
+								str += "<td style='"+yomama+"' colspan='1' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+							} else {
+								str += "<td style='"+yomama+"' colspan='" + duggacnt + "' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+							}
+							
+							str+=zttr;
 
 							str += "</td></tr><tr style='border-top:2px solid #dbd0d8;'>";
 							str += ttr;
 						}
+						//----------------------------------------------------------------------------------------------------------- End Moment
 
 						str += "</tr>";
 						str += "</table>";
