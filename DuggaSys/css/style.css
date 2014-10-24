@@ -626,8 +626,6 @@ input.submit-button-red:hover {
 
 .list tr:hover { background-color: #dbd0d8; }
 
-.innertable tr:hover { background-color: #ebe0e8; }
-
 .Trow{
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 8pt;
