@@ -25,7 +25,8 @@ function updateCourse() {
 		coursename : coursename,
 		visib : visib,
 		activevers : activevers,
-		activeedvers : activeedvers
+		activeedvers : activeedvers,
+		coursecode : coursecode
 	}, "COURSE");
 
 }

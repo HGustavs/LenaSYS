@@ -63,7 +63,7 @@ if($ha){
 					$debug="Error updating entries".$error[2];
 				}
 		}else if(strcmp($opt,"NEWVRS")===0){
-				$query = $pdo->prepare("INSERT INTO VERS(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+				$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
 
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':coursecode', $coursecode);
@@ -77,12 +77,13 @@ if($ha){
 					$debug="Error updating entries".$error[2];
 				}
 		}else if(strcmp($opt,"UPDATE")===0){
-				$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, activeversion=:activevers, activeedversion=:activeedvers WHERE cid=:cid;");
+				$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, activeversion=:activevers, activeedversion=:activeedvers, coursecode=:coursecode WHERE cid=:cid;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':coursename', $coursename);
 				$query->bindParam(':visibility', $visibility);
 				$query->bindParam(':activevers', $activevers);
 				$query->bindParam(':activeedvers', $activeedvers);
+				$query->bindParam(':coursecode', $coursecode);
 		
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
