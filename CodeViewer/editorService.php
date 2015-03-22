@@ -10,26 +10,32 @@
 
 	// Include basic application services!
 	include_once("../../coursesyspw.php");	
-	include_once("basic.php");
+
+	include_once "../Shared/sessions.php";
+	include_once "../Shared/basic.php";
+
+	include_once("../Shared/basic.php");
 	include_once("../Shared/courses.php");
 	
 	// Connect to database and start session
 	dbConnect();
 	session_start();
 
-	$exampleid = $_POST['exampleid'];
+	$writeaccess="";
+	
+	$exampleid=getOP('exampleid');
+	$boxid=getOP('boxid');
+	$opt=getOP('opt');
+	$cid=getOP('courseid');
+	$cvers=getOP('cvers');
+		
+	$debug="NONE!";	
 
-    if (isset ($_POST['boxid'])){
-   		$boxid=$_POST['boxid'];
-    }
-	
-	
-	$opt=$_POST['opt'];
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 
 	// Make sure there is an exaple
 	$cnt=0;
-	$query = "SELECT exampleid,examplename,cid,cversion,public FROM codeexample WHERE exampleid='$exampleid';";		
+	$query = "SELECT exampleid,examplename,cid,cversion,public FROM codeexample WHERE exampleid='$exampleid';";	
 	$result=mysql_query($query);
 	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 	while ($row = mysql_fetch_assoc($result)){
@@ -41,14 +47,15 @@
 			$public=$row['public'];
 	}
 	
-	
-	
 	if($cnt>0){
 
-			if(checklogin()){
-					//------------------------------------------------------------------------------------------------
-					// Perform Update Action
-					//------------------------------------------------------------------------------------------------
+				//------------------------------------------------------------------------------------------------
+				// Perform Update Action
+				//------------------------------------------------------------------------------------------------
+
+				if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+						$writeaccess="w";
+//			if(checklogin()){
 		
 					if(strcmp('addWordlistWord',$opt)===0){
 								// Add word to wordlist
@@ -133,7 +140,7 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					
-					}else if(strcmp("changetemplate",$opt)===0){
+					}else if(strcmp("CHTMPL",$opt)===0){
 								
 								/*  Codeexample resets when changing templates  */
 								$templateid=$_POST['templateid'];
@@ -191,13 +198,17 @@
 			// Retrieve Information			
 			//------------------------------------------------------------------------------------------------	
 				
-				
-		/* GET PREVIOUS AND NEXT EXAMPLE ID's AND NAMES */	
-			$posquery = mysql_query(
-				sprintf("SELECT pos FROM listentries WHERE code_id=%d",
-					mysql_real_escape_string($exampleid)
-				)
-			);
+			// Read ids and names from before/after list
+			$beforeafter = array();
+			$query = "select exampleid,sectionname,examplename from codeexample where cid='".$cid."' and cversion='".$cvers."' order by sectionname,examplename;";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+		  		array_push($beforeafter,array($row['exampleid'],$row['sectionname'],$row['examplename']));
+			}  
+			
+			/* GET PREVIOUS AND NEXT EXAMPLE ID's AND NAMES */	
+			$posquery = mysql_query(sprintf("SELECT pos FROM listentries WHERE code_id=%d",mysql_real_escape_string($exampleid)));
 			$res = mysql_fetch_assoc($posquery);
 			$pos = $res['pos'];
 			
@@ -364,24 +375,26 @@
 		    		array_push($directory,$file);		
 		    }
 		  }  
-			// Get templates
+
+			// Get templates -- Assuming there is at most one template
 			$template=array();
-			$query = "SELECT * FROM template WHERE templateid = (SELECT templateid FROM codeexample WHERE exampleid=$exampleid) ";
+			$query = "SELECT * FROM template,codeexample WHERE template.templateid=codeexample.templateid and exampleid=$exampleid;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-					array_push($template,array($row['templateid'],$row['stylesheet'],$row['numbox']));	
+					$template=array('templateid' => $row['templateid'],'stylesheet' => $row['stylesheet'],'numbox' => $row['numbox']);
+					//array_push($template,array('templateid' => $row['templateid'],'stylesheet' => $row['stylesheet'],'numbox' => $row['numbox']));	
 			}
 			
 
-	        // Read Directory - Images
-	        $images=array();
-	        $img_dir = opendir('./imgupload');
-	        while (($img_file = readdir($img_dir)) !== false) {
-	            if(endsWith($img_file,".png")){
-	                array_push($images,$img_file);
-	            }
-	        }
+      // Read Directory - Images
+      $images=array();
+      $img_dir = opendir('./imgupload');
+      while (($img_file = readdir($img_dir)) !== false) {
+          if(endsWith($img_file,".png")){
+              array_push($images,$img_file);
+          }
+      }
 			
 			//get public value
 			$public=array();
@@ -449,12 +462,38 @@
 				}	
 				
 
-			$array = array('before' => $backward_examples,'after' => $forward_examples,'template' => $template,'box' => $box,'improws' => $imp,'impwords' => $impwordlist,'directory' => $directory,'filename' => $filename,'examplename'=> $examplename,'entryname'=> $entryname,'playlink' => $playlink,'exampleno' => $exampleno,'words' => $words,'wordlists' => $wordlists, 'images' => $images, 'public' => $public);
+			$array = array(
+					'before' => $backward_examples,
+					'after' => $forward_examples,
+					'template' => $template,
+					'box' => $box,
+					'improws' => $imp,
+					'impwords' => $impwordlist,
+					'directory' => $directory,
+					'filename' => $filename,
+					'examplename'=> $examplename,
+					'entryname'=> $entryname,
+					'playlink' => $playlink,
+					'exampleno' => $exampleno,
+					'words' => $words,
+					'wordlists' => $wordlists, 
+					'images' => $images,
+					'writeaccess' => $writeaccess,
+					'debug' => $debug,
+					'beforeafter' => $beforeafter, 
+					'public' => $public
+			);
+			
 			echo json_encode($array);
 
 
 	}else{
-			echo "Example does not exist!";	
+			$array = array(
+					'debug' => "ID does not exist" 
+			);
+			
+			echo json_encode($array);
+
 	}
 
 	

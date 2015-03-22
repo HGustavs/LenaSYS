@@ -110,7 +110,6 @@ function hasAccess($userId, $courseId, $access_type)
 	if($access_type === 'w') {
 		return strtolower($access) == 'w';
 	} else if ($access_type === 'r') {
-		// w implies access r
 		return strtolower($access) == 'r' || strtolower($access) == 'w'; 
 	} else {
 		return false;

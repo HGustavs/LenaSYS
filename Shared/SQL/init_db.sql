@@ -136,22 +136,22 @@ CREATE TABLE variant(
   vid						INT(11) NOT NULL AUTO_INCREMENT,
 	quizID				INT(11),
 	param					VARCHAR(2048),
-	answer				VARCHAR(2048),
+	variantanswer	VARCHAR(2048),
 	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 			INTEGER,
   PRIMARY KEY 	(vid),
   FOREIGN KEY 	(quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
- 
+
 CREATE TABLE userAnswer (
   aid						INT(11) NOT NULL AUTO_INCREMENT,
  	cid						INT UNSIGNED NOT NULL, 
   quiz 					INT(11),
   variant				INT,
   moment				INT UNSIGNED NOT NULL,
-  grade 				tinyint(2),
+  grade 				TINYINT(2),
   uid 					INT UNSIGNED NOT NULL,
-  answer 				varchar(2000),
+  useranswer		varchar(2048),
   submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   marked				TIMESTAMP NULL,
 	vers					VARCHAR(8),
@@ -208,10 +208,12 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4)
 
 CREATE TABLE codeexample(
 		exampleid			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		cid					INT UNSIGNED NOT NULL,
-		examplename			VARCHAR(64),
---		wordlist			VARCHAR(64),
-		runlink			  	VARCHAR(64),
+		cid					  INT UNSIGNED NOT NULL,
+		examplename		VARCHAR(64),
+		sectionname		VARCHAR(64),
+		beforeid			INTEGER,
+		afterid				INTEGER,
+		runlink			  VARCHAR(64),
 		cversion			INTEGER,
 		public 				tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
