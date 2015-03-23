@@ -220,25 +220,6 @@ function returned(data)
 			}
 		}
 	
-			/* Create and check URL in playlink */
-			var url = getPlaylinkURL();
-			var playbutton=document.getElementsByClassName('playbutton');
-			checkPlaylinkURL(url,
-				function(status) { 
-					if(status){ 
-						for(var i=0; i<playbutton.length; i++){
-							playbutton[i].childNodes[0].style.opacity="1";
-							playbutton[i].onclick=function(){Play();};
-						}			
-					}else{
-						for(var i=0; i<playbutton.length; i++){
-							playbutton[i].childNodes[0].style.opacity="0.2";
-							playbutton[i].onclick=function(){};
-						}
-					}
-				}
-			);
-
 		// Make after dropdown
 		str="<div class='dropdownback dropdownbackStyle'>Skip Forward</div>";
 		for(i=0;i<data['after'].length;i++){
@@ -268,11 +249,11 @@ function returned(data)
 			
 			// Check what tab in general settings menu should be displayed, otherwise the same tabmenu will be displayed after every update.
 			if(genSettingsTabMenuValue == "wordlist"){
-				displayWordlist();
+//				displayWordlist();
 			}else if(genSettingsTabMenuValue == "playlink"){
-				displayPlaylink();	
+//				displayPlaylink();	
 			}else if(genSettingsTabMenuValue == "templates"){
-				displayTemplates();
+//				displayTemplates();
 			}					
 		}
 		
@@ -331,7 +312,7 @@ function displayEditExample(boxid)
 }
 
 //----------------------------------------------------------------------------------
-// displayEditExample: Displays the dialog box for editing a code example
+// displayEditContent: Displays the dialog box for editing a content pane
 //----------------------------------------------------------------------------------
 
 function displayEditContent(boxid)
@@ -535,22 +516,23 @@ function displayDrop(dropid)
 	}	
 }
 
+//----------------------------------------------------------------------------------
+// highlightop: Highlights an operator and corresponding operator in code window
+//----------------------------------------------------------------------------------
+
+function highlightop(otherop,thisop)
+{
+		$("#"+otherop).addClass("hi");					
+		$("#"+thisop).addClass("hi");					
+}
+
+function dehighlightop(otherop,thisop)
+{
+		$("#"+otherop).removeClass("hi");					
+		$("#"+thisop).removeClass("hi");					
+}
+
 // -------------==============######## Verified Functions End ###########==============-------------
-
-
-document.addEventListener("drop", function(e) {
-    // cancel drop
-    e.preventDefault();
-});
-
-document.addEventListener("paste", function(e) {
-    // cancel paste
-    e.preventDefault();
-    // get text representation of clipboard
-    var text = e.clipboardData.getData("text/plain");
-    // insert text manually
-    document.execCommand("insertText", false, text);
-});
 
 //Retrive height for buliding menu.
 $(window).load(function() {
@@ -575,16 +557,18 @@ $(window).resize(function() {
 
 });
 
-//Set the editing properties for mobile and desktop version
-$(window).resize(function() {
-	setEditing();
-	
-	// Hide tooltip in mobile version
-	if($(window).width() <= 1100){
-		$(".tooltip").css("display", "none");
-	}else{
-		$(".tooltip").css("display", "block");
-	}
+document.addEventListener("drop", function(e) {
+    // cancel drop
+    e.preventDefault();
+});
+
+document.addEventListener("paste", function(e) {
+    // cancel paste
+    e.preventDefault();
+    // get text representation of clipboard
+    var text = e.clipboardData.getData("text/plain");
+    // insert text manually
+    document.execCommand("insertText", false, text);
 });
 
 /********************************************************************************
@@ -1417,231 +1401,3 @@ function setEditing(){
    Non-Working or Questionable code
 
 *********************************************************************************/
-
-// Play link may or may not link to a code file.
-
-// Function to return the fully url-playlink that is inserted
-function getPlaylinkURL()
-{
-/*
-	var currentUrl = window.location.pathname.split('/');
-	var directories = "";
-	
-	if(document.getElementById('playlink') != null){
-		var link = document.getElementById('playlink').value;
-	}else{
-		var link = retdata['playlink'];
-	}
-	// Get the names of the current directories in url
-	for(i=1; i<currentUrl.length-1; i++){
-		directories += currentUrl[i]+"/";
-	}
-	return "http://"+location.hostname+":"+location.port+"/"+directories+link;	
-*/
-	console.log("ERR - getPlaylinkURL does not work!");
-}
-
-// set playlink into database
-function setPlayLinkURL()
-{
-/*
-	encodedplaylink=encodeURIComponent(document.getElementById('playlink').value);	
-	AJAXService("editPlaylink","&playlink="+encodedplaylink);
-*/
-	console.log("ERR - setPlaylinkURL does not work!");
-}
-
-// function to check the if the url of playlink exists
-function checkPlaylinkURL(url, callback)
-{
-/*
-	if(document.getElementById('playlink')){
-		var playlink = document.getElementById('playlink').value;
-	}
-	else{
-		var playlink = retdata['playlink'];
-	}
-	if(playlink==""){
-		callback(false);
-		return;
-	}
-		
-	// code for IE7+, Firefox, Chrome, Opera, Safari
-	if (window.XMLHttpRequest){
-		var xmlhttp=new XMLHttpRequest();
-	 }
-	 else{ // code for IE6, IE5
-	 	var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	
-	xmlhttp.open('GET', url, true);  			
-	xmlhttp.send(null);	
-
-	xmlhttp.onreadystatechange = function() {
-		// readyState 4 = the url has been fully loaded. status 404 = url doesn't exists.
-	    if (xmlhttp.readyState==4) {
-	    	if(xmlhttp.status == "404"){
-	    		if (typeof callback == "function"){
-	    			callback(false);
-	    		}
-	    	}else{
-	    		if (typeof callback == "function"){
-	    			callback(true);
-	    		}
-	    	} 
-	    }
-	}	
-
-*/
-	console.log("ERR - setPlaylinkURL does not work!");
-}
-// If playlink is changed this method will be called.
-function changedPlayLink()
-{
-/*
-	var url = getPlaylinkURL();
-
-// A callback function has to be used here because it takes some times to load the url 
-//  	when checking for errors.
-	checkPlaylinkURL(url,
-		function(status) {
-			if(status){
-				var playbutton=document.getElementsByClassName('playbutton');
-				for(var i=0; i<playbutton.length; i++){
-					playbutton[i].childNodes[0].style.opacity="1";
-					playbutton[i].onclick=function(){Play();};
-				}
-				setPlayLinkURL();
-				var span = document.getElementById("playlinkErrorMsg");
-				span.style.display = "none";
-			}else{
-				var playbutton=document.getElementsByClassName('playbutton');
-				for(var i=0; i<playbutton.length; i++){
-					playbutton[i].childNodes[0].style.opacity="0.2";
-					playbutton[i].onclick=function(){};
-				}
-				var span = document.getElementById("playlinkErrorMsg");
-				span.innerHTML = "Error. This link is invalid.";
-				span.style.display = "block";
-			}
-  		}
-	);		
-*/
-
-	console.log("ERR - changedPlaylinkURL does not work!");
-
-}
-
-//----------------------------------------------------------------------------------
-// displayWordlist: Called by returned function to make 
-//----------------------------------------------------------------------------------
-
-function displayWordlist(){
-
-	console.log("displayWordList");
-
-/*	
-	genSettingsTabMenuValue = "wordlist";
-	str="<ul class='settingsTabMenu settingsTabMenuStyle'>";
-		str+="<li class='activeSetMenuLink'>Wordlist</li>";
-		str+="<li onclick='displayPlaylink();'>General</li>";
-		str+="<li onclick='displayTemplates();'>Templates</li>";
-	str+="</ul>";
-	
-
-	// str+="<br/>Selected Wordlist: <br/><select id='wordlistselect' onchange='chosenWordlist();' >";
-				// for(i=0;i<retdata['wordlists'].length;i++){
-						// if(retdata['wordlists'][i]==retdata['chosenwordlist']){
-								// str+="<option selected='selected'>"+retdata['wordlists'][i]+"</option>";										
-						// }else{
-								// str+="<option>"+retdata['wordlists'][i]+"</option>";										
-						// }
-				// }
-				// str+="</select><br/>Wordlist: "+retdata['chosenwordlist']+"<br/><select size='8' style='width:200px;'>";
-				// for(i=0;i<retdata['wordlist'].length;i++){
-						// if(retdata['wordlist'][i][0]==retdata['chosenwordlist']){
-								// str+="<option onclick='selectWordlistWord(\""+retdata['wordlist'][i][1]+"\");'>"+retdata['wordlist'][i][1]+"</option>";										
-						// }
-				// }
-				// str+="</select><br/>";
-				// str+="<div id='wordlistError' class='errormsg'></div>";
-				// str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
-				// str+="<select id='wordslabel'>";
-					// str+="<option value='A'>Markup level 1??</option>";
-					// str+="<option value='B'>Markup level 2??</option>";
-					// str+="<option value='C'>Markup level 3??</option>";
-					// str+="<option value='D'>Markup level 4??</option>";
-				// str+="</select>";
-				// str+="<input type='button' value='add' onclick='addWordlistWord();' />";
-				// str+="<input type='button' value='del' onclick='delWordlistWord();' />";
-				// str+="<input type='button' value='new' onclick='newWordlist();'' />";
-				
-	
-			//	var chosenwordlist = getChosenwordlist(boxid);
-		
-			// Get the wordlist that are selected form the user, else get the first wordlist as default
-				if(document.getElementById('wordlistselect')){
-					var chosenwordlist=encodeURIComponent(document.getElementById('wordlistselect').value);
-				}
-				else{
-					var chosenwordlist = retdata['wordlists'][0][0];
-				}
-				
-				
-				str+="<br/>Select wordlist to edit: <br/><select id='wordlistselect'  onchange='displayWordlist();'  >";	
-				for(i=0;i<retdata['wordlists'].length;i++){
-					if(retdata['wordlists'][i][0] == chosenwordlist){
-						str+="<option selected='selected'  value='"+retdata['wordlists'][i][0]+"'>"+retdata['wordlists'][i][1]+"</option>";		
-						var chosenwordlistname = retdata['wordlists'][i][1];
-					}else{
-						str+="<option value='"+retdata['wordlists'][i][0]+"'>"+retdata['wordlists'][i][1]+"</option>";										
-					}
-				}
-				str+="</select>";
-				str+="<input type='button' value='Create wordlist' onclick='newWordlist();' />";
-				str+="<input type='button' value='Delete wordlist' onclick='delWordlist("+chosenwordlist+");' />";
-				
-				
-				
-				str+="<br/>Wordlist: "+chosenwordlistname+"<br/><select size='8' style='width:200px;'>";
-				for(i=0;i<retdata['words'].length;i++){
-					if(retdata['words'][i][0]==chosenwordlist){
-						str+="<option onclick='selectWordlistWord(\""+retdata['words'][i][1]+"\");'>"+retdata['words'][i][1]+"</option>";										
-					}
-				}
-				str+="</select>";
-				
-
-				str+"<br/>";
-				str+="<div id='wordlistError' class='errormsg'></div>";
-				str+="<input type='text' size='24' id='wordlisttextbox' maxlength='60' />";
-				str+="<select id='wordslabel'>";
-					str+="<option value='A'>Label 1</option>";
-					str+="<option value='B'>Label 2</option>";
-					str+="<option value='C'>Label 3</option>";
-					str+="<option value='D'>Label 4</option>";
-				str+="</select>";
-				str+="<input type='button' value='Add' onclick='addWordlistWord("+chosenwordlist+");' />";
-				str+="<input type='button' value='Del' onclick='delWordlistWord("+chosenwordlist+");' />";
-				
-				
-				// //----------------------------------------------------
-				// Fill important word list	part of document dialog
-				//----------------------------------------------------
-				str+="</select><br/><br/>Important Word List: <br/><select size='8' style='width:200px;'>";
-				for(i=0;i<retdata['impwords'].length;i++){
-						str+="<option onclick='selectImpWord(\""+retdata['impwords'][i]+"\");'>"+retdata['impwords'][i]+"</option>";										
-				}
-				str+="</select><br/>";
-				str+="<div id='impwordlistError' class='errormsg'></div>";
-				str+="<input type='text' size='24' id='impwordtextbox' maxlength='60' />";
-				str+="<input type='button' value='add' onclick='addImpword();' />";
-				str+="<input type='button' value='del' onclick='delImpword();'/>";													
-		
-
-				var docurec=document.getElementById('docudrop');
-				docurec.innerHTML=str;
-
-*/
-}
-
