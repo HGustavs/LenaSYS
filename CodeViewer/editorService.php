@@ -200,15 +200,37 @@
 				
 			// Read ids and names from before/after list
 			$beforeafter = array();
-			$query = "select exampleid,sectionname,examplename from codeexample where cid='".$cid."' and cversion='".$cvers."' order by sectionname,examplename;";
+			$query = "select exampleid,sectionname,examplename,beforeid,afterid from codeexample where cid='".$cid."' and cversion='".$cvers."' order by sectionname,examplename;";
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
-		  		array_push($beforeafter,array($row['exampleid'],$row['sectionname'],$row['examplename']));
+		  		$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
 			}  
 			
-			$backward_examples = array();	
+			// PHP Code to through iteration find after examples - We start with $exampleid and at most 5 are collected
+			$cnt=0;
 			$forward_examples = array();	
+			$currid=$exampleid;
+			do{
+					$currid=$beforeafter[$currid][4];
+					if($currid!=null){
+							array_push($forward_examples,$beforeafter[$currid]);
+							$cnt++;
+					}
+			}while($currid!=null&&$cnt<5);
+
+			// PHP Code to through iteration find before examples - We start with $exampleid and at most 5 are collected 
+			$backward_examples = array();	
+			$currid=$exampleid;
+			$cnt=0;
+			do{
+					$currid=$beforeafter[$currid][3];
+					if($currid!=null){
+							array_push($backward_examples,$beforeafter[$currid]);
+							$cnt++;
+					}
+			}while($currid!=null&&$cnt<5);
+						
 						
 			// Open file and read name of Example
 			$examplename="";
@@ -234,15 +256,6 @@
 		  		array_push($imp,array($row['codeBoxid'],$row['istart'],$row['iend']));
 			}  
 		
-		  // Read wordlist
-		/*	$wordlist=array();
-			$query = "SELECT wordlist,word,label FROM wordlist ORDER BY word;";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-		  		array_push($wordlist,array($row['wordlist'],$row['word'],$row['label']));					
-			}  
-		*/
 			// Get all words for each wordlist
 			$words = array();
 			$query = "SELECT wordlistid,word,label FROM word ORDER BY wordlistid";
@@ -261,16 +274,6 @@
 		  		array_push($wordlists,array($row['wordlistid'],$row['wordlistname']));					
 			} 
 			
-			
-		  // Read wordlists
-		/*	$wordlists=array();
-			$query = "SELECT distinct(wordlist) FROM wordlist ORDER BY wordlist;";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-		  		array_push($wordlists,$row['wordlist']);					
-			}  
-		*/
 		  // Read important wordlist
 			$impwordlist=array();
 			$query = "SELECT word,label FROM impwordlist WHERE exampleid=$exampleid ORDER BY word;";
