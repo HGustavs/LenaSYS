@@ -55,36 +55,8 @@
 
 				if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 						$writeaccess="w";
-//			if(checklogin()){
-		
-					if(strcmp('addWordlistWord',$opt)===0){
-								// Add word to wordlist
-								$word=htmlEntities($_POST['word']);
-								$wordlistid=htmlEntities($_POST['wordlist']);
-								$label=htmlEntities($_POST['label']);
-								$query = "INSERT INTO word(wordlistid,word,label,uid) VALUES ('$wordlistid','$word','$label','$appuser');";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
-					}else if(strcmp('delWordlistWord',$opt)===0){
-								// Add word to wordlist
-								$word=htmlEntities($_POST['word']);
-								$wordlistid=htmlEntities($_POST['wordlist']);
-								$query = "DELETE FROM word WHERE wordlistid='$wordlistid' and word='$word';";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
-					}else if(strcmp('newWordlist',$opt)===0){
-								// Add new wordlist
-								$wordlistname=htmlEntities($_POST['wordlistname']);
-								$query = "INSERT INTO wordlist(wordlistname,uid) VALUES ('$wordlistname','$appuser');";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
-					}else if(strcmp('delWordlist',$opt)===0){
-								// Add new wordlist
-								$wordlistid=htmlEntities($_POST['wordlistid']);
-								$query = "DELETE FROM wordlist WHERE wordlistid='$wordlistid';";	
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error deleting Wordlist!");						
-					}else if(strcmp('addImpWord',$opt)===0){
+					
+					if(strcmp('addImpWord',$opt)===0){
 								// Add word to wordlist
 								$word=htmlEntities($_POST['word']);
 								$query = "INSERT INTO impwordlist(exampleid,word,uid) values ('$exampleid','$word','$appuser');";		
@@ -110,19 +82,10 @@
 								$query = "DELETE FROM improw WHERE exampleid='$exampleid' AND codeBoxid='$boxid' and istart='$from' and iend='$to';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
+
 					}else if(strcmp('selectWordlist',$opt)===0){
 								$wordlistid=htmlEntities($_POST['wordlistid']);
 								$query = "UPDATE codeBox SET wordlistid='$wordlistid' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
-					}else if(strcmp("editPlaylink",$opt)===0){
-								$playlink=htmlEntities($_POST['playlink']);
-								$query = "UPDATE codeexample SET runlink='$playlink' WHERE exampleid='$exampleid';";		
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating codeexample!");	
-					}else if(strcmp("editExampleName",$opt)===0){
-								$examplename=htmlEntities($_POST['examplename']);
-								$query = "UPDATE codeexample SET examplename='$examplename' WHERE exampleid='$exampleid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 					}else if(strcmp("selectFile",$opt)===0){
@@ -130,7 +93,6 @@
 								$query = "UPDATE codeBox SET filename='$filename' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
-								
 								/* Need to update file id in box-talble here. */
 					}else if(strcmp("editDescription",$opt)===0){
 								// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
@@ -139,7 +101,6 @@
 								$query = "UPDATE descriptionBox SET segment='$description', appuser='$appuser' WHERE exampleid='$exampleid' AND boxid='$boxid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
-					
 					}else if(strcmp("CHTMPL",$opt)===0){
 								
 								/*  Codeexample resets when changing templates  */
@@ -173,24 +134,16 @@
 										if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating File List!");	
 									}
 								}
+					}else if(strcmp("editExample",$opt)===0){
+								$playlink=htmlEntities($_POST['playlink']);
+								$query = "UPDATE codeexample SET runlink='$playlink',public='$security',examplename='$examplename' WHERE exampleid='$exampleid';";		
+								$result=mysql_query($query);
+								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating codeexample!");	
 					}else if(strcmp("changeboxcontent",$opt)===0){
 								$content=$_POST['boxcontent'];
-								// Update content in a box.
-								$query = "UPDATE box SET boxcontent='$content' WHERE boxid='$boxid' AND exampleid='$exampleid';";
+								$query = "UPDATE box SET boxcontent='$content',boxtitle='$boxtitle' WHERE boxid='$boxid' AND exampleid='$exampleid';";
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating box!");	
-					}else if(strcmp("updateboxtitle",$opt)===0){
-								$boxtitle=$_POST['boxtitle'];
-								// Update content in a box.
-								$query = "UPDATE box SET boxtitle='$boxtitle' WHERE boxid='$boxid' AND exampleid='$exampleid';";
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating box!");	
-					}
-					else if(strcmp("updateSecurity",$opt)===0){
-								$security=$_POST['public'];
-								$query = "UPDATE codeexample SET public='$security' WHERE exampleid='$exampleid';";
-								$result=mysql_query($query);
-								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Security!");
 					}
 			}
 	
@@ -198,13 +151,16 @@
 			// Retrieve Information			
 			//------------------------------------------------------------------------------------------------	
 				
-			// Read exampleid, examplename and runlink etc from codeexample
+			// Read exampleid, examplename and runlink etc from codeexample and template
 			$examplename="";
+			$templateid="";
+			$stylesheet="";
+			$numbox="";
 			$exampleno=0;
 			$playlink="";
 			$public="";
 			$entryname="";
-			$query = "SELECT exampleid,examplename,sectionname,runlink,public FROM codeexample WHERE exampleid=$exampleid and cid='$courseID'";		
+			$query = "SELECT exampleid,examplename,sectionname,runlink,public,template.templateid as templateid,stylesheet,numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid=codeexample.templateid WHERE exampleid=$exampleid and cid='$courseID'";		
 			$result=mysql_query($query);
 			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
 			while ($row = mysql_fetch_assoc($result)){
@@ -213,7 +169,18 @@
 					$public=$row['public'];
 					$playlink=$row['runlink'];
 					$sectionname=$row['sectionname'];
+					$templateid=$row['templateid'];
+					$stylesheet=$row['stylesheet'];
+					$numbox=$row['numbox'];					
 			}
+			
+			$filename=array();
+			$query = "SELECT boxid,filename FROM codeBox WHERE exampleid=$exampleid";
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+				array_push($filename,array($row['boxid'],$row['filename']));
+			}	
 						
 			// Read ids and names from before/after list
 			$beforeafter = array();
@@ -224,7 +191,7 @@
 		  		$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
 			}  
 									
-			// PHP Code to through iteration find after examples - We start with $exampleid and at most 5 are collected
+			// iteration to find after examples - We start with $exampleid and at most 5 are collected
 			$cnt=0;
 			$forward_examples = array();	
 			$currid=$exampleid;
@@ -236,7 +203,7 @@
 					}
 			}while($currid!=null&&$cnt<5);
 
-			// PHP Code to through iteration find before examples - We start with $exampleid and at most 5 are collected 
+			// iteration to find before examples - We start with $exampleid and at most 5 are collected 
 			$backward_examples = array();	
 			$currid=$exampleid;
 			$cnt=0;
@@ -292,17 +259,6 @@
 		    		array_push($directory,$file);		
 		    }
 		  }  
-
-			// Get templates -- Assuming there is at most one template
-			$template=array();
-			$query = "SELECT * FROM template,codeexample WHERE template.templateid=codeexample.templateid and exampleid=$exampleid;";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-					$template=array('templateid' => $row['templateid'],'stylesheet' => $row['stylesheet'],'numbox' => $row['numbox']);
-					//array_push($template,array('templateid' => $row['templateid'],'stylesheet' => $row['stylesheet'],'numbox' => $row['numbox']));	
-			}
-			
 
       // Read Directory - Images
       $images=array();
@@ -360,20 +316,12 @@
 				}						
 			}
 				
-			
-			$filename=array();
-				$query = "SELECT boxid,filename FROM codeBox WHERE exampleid=$exampleid";
-				$result=mysql_query($query);
-				if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-				while ($row = mysql_fetch_assoc($result)){
-					array_push($filename,array($row['boxid'],$row['filename']));
-				}	
-				
-
 			$array = array(
 					'before' => $backward_examples,
 					'after' => $forward_examples,
-					'template' => $template,
+					'templateid' => $templateid,
+					'stylesheet' => $stylesheet,
+					'numbox' => $numbox,
 					'box' => $box,
 					'improws' => $imp,
 					'impwords' => $impwordlist,
@@ -403,6 +351,5 @@
 			echo json_encode($array);
 
 	}
-
 	
 ?>

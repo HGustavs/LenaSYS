@@ -70,7 +70,7 @@ function returned(data)
 		}
 		
 		// User can choose template if no template has been choosen and the user has write access.
-		if((retdata['template']['templateid'] == 0)){
+		if((retdata['templateid'] == 0)){
 			if(retdata['writeaccess'] == "w"){
 				choosetemplate();
 				return;
@@ -82,15 +82,15 @@ function returned(data)
 		}
 		
 		// If there is a template
-		changeCSS("css/"+retdata['template']['stylesheet']);
+		changeCSS("css/"+retdata['stylesheet']);
 
-		console.log("Setting Templatez: "+retdata['template']['stylesheet']);
+		console.log("Setting Template: "+retdata['stylesheet']);
 
 		// Clear div2
 		$("#div2").html("");
 			
 		// create boxes
-		for(i=0;i<retdata['template']['numbox'];i++){
+		for(i=0;i<retdata['numbox'];i++){
 			
 			var contentid="box"+retdata['box'][i][0];
 			var boxid=retdata['box'][i][0];
@@ -347,7 +347,7 @@ function addTemplatebox(id)
 	console.log("Addtemplatebox "+id);
 
 	str="<div id='"+id+"wrapper' ";
-	if(id==("box"+retdata['template']['numbox'])){
+	if(id==("box"+retdata['numbox'])){
 		str+="class='boxwrapper activebox'>";
 	}else{
 		str+="class='boxwrapper deactivatedbox'>";
@@ -433,7 +433,7 @@ function createboxmenu(contentid, boxid, type){
 
 function removeTemplatebox(){
 	
-	for(var i=document.getElementsByClassName("box").length; i>retdata['template']['numbox']; i--){
+	for(var i=document.getElementsByClassName("box").length; i>retdata['numbox']; i--){
 		document.getElementById("div2").removeChild(document.getElementById("box"+i+"wrapper"));
 	}
 }
@@ -464,7 +464,7 @@ function createhotdogmenu(){
 		str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="new icons/forward_button.svg" /></td>';
 		str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="new icons/play_button.svg" /></td>';
 		str += '</tr>';
-		for(i=0;i<retdata['template']['numbox'];i++){
+		for(i=0;i<retdata['numbox'];i++){
 		//	str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleClass(\"box"+(i+1)+"wrapper\");' colspan='4'>"+retdata['box'][i][3]+"<img src='new icons/hotdogTabButton2.svg' /></td></tr>";
 			str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retdata['box'][i][3]+"<img src='new icons/hotdogTabButton.svg' /></td></tr>";
 		}		
@@ -1387,17 +1387,3 @@ function setEditing(){
 }
 
 /* HIDE/SHOW DROP MENUS --> START*/
-
-
-
-
-
-
-
-
-
-/********************************************************************************
-
-   Non-Working or Questionable code
-
-*********************************************************************************/
