@@ -61,7 +61,7 @@ function returned(data)
 		var examplenme=document.getElementById('exampleName');
 		examplenme.innerHTML=data['examplename'];
 		var examplesect=document.getElementById("exampleSection");
-		examplesect.innerHTML=data['entryname']+"&nbsp;:&nbsp;";
+		examplesect.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
 
 		if(retdata['debug']!="NONE!") alert(retdata['debug']);
 

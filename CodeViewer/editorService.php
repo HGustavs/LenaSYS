@@ -198,6 +198,23 @@
 			// Retrieve Information			
 			//------------------------------------------------------------------------------------------------	
 				
+			// Read exampleid, examplename and runlink etc from codeexample
+			$examplename="";
+			$exampleno=0;
+			$playlink="";
+			$public="";
+			$entryname="";
+			$query = "SELECT exampleid,examplename,sectionname,runlink,public FROM codeexample WHERE exampleid=$exampleid and cid='$courseID'";		
+			$result=mysql_query($query);
+			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			while ($row = mysql_fetch_assoc($result)){
+					$examplename=$row['examplename'];
+					$exampleno=$row['exampleid'];
+					$public=$row['public'];
+					$playlink=$row['runlink'];
+					$sectionname=$row['sectionname'];
+			}
+						
 			// Read ids and names from before/after list
 			$beforeafter = array();
 			$query = "select exampleid,sectionname,examplename,beforeid,afterid from codeexample where cid='".$cid."' and cversion='".$cvers."' order by sectionname,examplename;";
@@ -206,7 +223,7 @@
 			while ($row = mysql_fetch_assoc($result)){
 		  		$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
 			}  
-			
+									
 			// PHP Code to through iteration find after examples - We start with $exampleid and at most 5 are collected
 			$cnt=0;
 			$forward_examples = array();	
@@ -230,22 +247,6 @@
 							$cnt++;
 					}
 			}while($currid!=null&&$cnt<5);
-						
-						
-			// Open file and read name of Example
-			$examplename="";
-			$exampleno=0;
-		//	$chosenwordlist="";
-			$playlink="";
-			$query = "SELECT exampleid,examplename,runlink FROM codeexample WHERE exampleid=$exampleid and cid='$courseID'";		
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-					$examplename=$row['examplename'];
-					$exampleno=$row['exampleid'];
-				//	$chosenwordlist=$row['wordlist'];
-					$playlink=$row['runlink'];
-			}
 				  
 		  // Read important lines
 			$imp=array();
@@ -282,16 +283,6 @@
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($impwordlist,$row['word']);					
 			}  
-		
-			// Read sectionname 
-			$previous="foo";
-			$entryname="";
-			$query = "SELECT entryname FROM listentries WHERE pos='$previous'";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-					$entryname=$row['entryname'];
-			} 
 			
 			// Read Directory - Codeexamples
 			$directory=array();
@@ -321,15 +312,6 @@
               array_push($images,$img_file);
           }
       }
-			
-			//get public value
-			$public=array();
-			$query = "SELECT public FROM codeexample WHERE exampleid=$exampleid";
-			$result=mysql_query($query);
-			if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = mysql_fetch_assoc($result)){
-					array_push($public,array($row['public']));	
-			}
 			
 			// Get boxes and its information
 			$box=array();   // get the primary keys for all types kind of boxes.
@@ -398,7 +380,7 @@
 					'directory' => $directory,
 					'filename' => $filename,
 					'examplename'=> $examplename,
-					'entryname'=> $entryname,
+					'sectionname'=> $sectionname,
 					'playlink' => $playlink,
 					'exampleno' => $exampleno,
 					'words' => $words,
