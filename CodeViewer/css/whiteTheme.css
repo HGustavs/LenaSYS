@@ -190,16 +190,22 @@
     color: rgba(231, 0, 255, 1);
 }
 
-
-
 .normtext .impword {
     color: #fff;
     background-color: #614875;
+		border: 1px solid #f44;
 }
 
 .impo .impword {
     color: #fff;
     background-color: #614875;
+    border: 1px solid #f44;
+}
+
+.descbox .impword {
+    color: #fff;
+    background-color: #614875;
+    border: 1px solid #f44;
 }
 
 .normtext .imphi {

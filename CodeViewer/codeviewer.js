@@ -116,8 +116,8 @@ function returned(data)
 				addTemplatebox(contentid);
 			}
 			
-			// Print out code example in a code box
 			if(boxtype == "CODE"){
+					// Print out code example in a code box					
 					document.getElementById(contentid).removeAttribute("contenteditable");
 	
 					$("#"+contentid).removeClass("descbox").addClass("codebox");
@@ -138,61 +138,57 @@ function returned(data)
 						//createcodedrop(contentid,boxid);
 					}
 					rendercode(boxcontent,boxid);
-			}
-			
-			// Print out description in a document box
-			if(boxtype == "DOCUMENT"){
-				$("#"+contentid).removeClass("codebox").addClass("descbox");
-				var desc = boxcontent;
-				desc = replaceAll('<span&nbsp;class="codestyle&nbsp;','<span class="codestyle ',desc);
-				desc =  replaceAll("<img&nbsp;","<img ",desc);
-
-				var docuwindow = document.getElementById(contentid);
-				docuwindow.innerHTML=desc;
-				
-				
-				//  Fill description with code using tokenizer.
-				var cs = docuwindow.getElementsByClassName("codestyle");
-				for(y=0; y<cs.length; y++){
-					desc = desc.replace(cs[y].innerHTML,renderdesccode(replaceAll("&nbsp;", " ",replaceAll("<br>","\n",cs[y].innerHTML)),cs[y].className.split(' ')[1]));
-				}
-				docuwindow.innerHTML = desc;
-				
-				
-				if($("#"+contentid+"menu").height() == null){
-					var boxmenuheight = 0;
-				}else{
-					var boxmenuheight= $("#"+contentid+"menu").height();
-				}
-				$("#"+contentid).css("margin-top", boxmenuheight);
-				
-				
-				createboxmenu(contentid,boxid,boxtype);
-				
-				if($("#"+contentid+"menu").height() == null){
-					var boxmenuheight = 0;
-				}else{
-					var boxmenuheight= $("#"+contentid+"menu").height();
-				}
-				$("#"+contentid).css("margin-top", boxmenuheight);
-				
-				if(retdata['writeaccess'] == "w"){
-					docuwindow.setAttribute("contenteditable","true");
-				}
-			}
-			
-			if(boxtype == "NOT DEFINED"){
-				if(retdata['writeaccess'] == "w"){
-					createboxmenu(contentid,boxid,boxtype);
+			}else if(boxtype == "DOCUMENT"){
+					// Print out description in a document box
+					$("#"+contentid).removeClass("codebox").addClass("descbox");
+					var desc = boxcontent;
+					desc = replaceAll("&nbsp;"," ",desc);
 					
-					// Make room for the menu by setting padding-top equals to height of menubox
+					// Highlight important words!
+					var iwcounter=0;
+					important = retdata.impwords;
+					for(var i=0;i<important.length;i++){
+							var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[i]+"\")' onmouseout='dehighlightKeyword(\""+important[i]+"\")'>"+important[i]+"</span>";														
+							desc=replaceAll(important[i],sstr,desc);
+					}
+														
+					//  Fill description with the document.
+					var docuwindow = document.getElementById(contentid);
+					docuwindow.innerHTML = desc;
+					
+					
 					if($("#"+contentid+"menu").height() == null){
 						var boxmenuheight = 0;
 					}else{
 						var boxmenuheight= $("#"+contentid+"menu").height();
 					}
 					$("#"+contentid).css("margin-top", boxmenuheight);
-				}
+					
+					
+					createboxmenu(contentid,boxid,boxtype);
+					
+					if($("#"+contentid+"menu").height() == null){
+						var boxmenuheight = 0;
+					}else{
+						var boxmenuheight= $("#"+contentid+"menu").height();
+					}
+					$("#"+contentid).css("margin-top", boxmenuheight);
+					
+					if(retdata['writeaccess'] == "w"){
+						docuwindow.setAttribute("contenteditable","true");
+					}
+			}else if(boxtype == "NOT DEFINED"){
+					if(retdata['writeaccess'] == "w"){
+						createboxmenu(contentid,boxid,boxtype);
+						
+						// Make room for the menu by setting padding-top equals to height of menubox
+						if($("#"+contentid+"menu").height() == null){
+							var boxmenuheight = 0;
+						}else{
+							var boxmenuheight= $("#"+contentid+"menu").height();
+						}
+						$("#"+contentid).css("margin-top", boxmenuheight);
+					}
 			}
 			
 		}
@@ -241,35 +237,6 @@ function returned(data)
 		}
 		var after=document.getElementById('forwdrop');
 		after.innerHTML=str;		
-		
-		if(retdata['writeaccess']=="w"){
-            // Fill imagelist
-            str="";
-            for(i=0;i<data['images'].length;i++){
-                    //str+="<span class='dropdownitem' id='DDII"+i+"' onclick='insertImage(\""+data['images'][i]+"\");' onmouseover='highlightMenu(\"DDII"+i+"\");' onmouseout='dehighlightMenu(\"DDII"+i+"\");'>"+data['images'][i]+"</span>";
-                str+="<img id='DDII"+i+"' onclick='insertImage(\"imgupload/"+data['images'][i]+"\");' title=\""+data['images'][i]+"\" src=\"imgupload/"+data['images'][i]+"\"></img>";
-            }
-
-            var imgdrop=document.getElementById('imgdrop');
-            if(imgdrop!=null){
-            	imgdrop.innerHTML=str;
-            } 
-		}
-		
-		// Fill wordlist part of document dialog
-		//----------------------------------------------------
-
-		if(retdata['writeaccess']=="w"){
-			
-			// Check what tab in general settings menu should be displayed, otherwise the same tabmenu will be displayed after every update.
-			if(genSettingsTabMenuValue == "wordlist"){
-//				displayWordlist();
-			}else if(genSettingsTabMenuValue == "playlink"){
-//				displayPlaylink();	
-			}else if(genSettingsTabMenuValue == "templates"){
-//				displayTemplates();
-			}					
-		}
 		
 		//Set the editing properties for mobile and desktop version
 		setEditing();
@@ -633,8 +600,6 @@ function switchDrop(dname)
 		}else{
 				hideDrop("forwdrop");
 				hideDrop("backwdrop");
-				hideDrop("docudrop");
-				hideDrop("codedrop");
 				$('#hotdogdrop').hide();
 			
 			$( dropd ).slideDown("fast");
@@ -1032,17 +997,7 @@ while (c) {		// c == first character in each word
 		}
 	}
 }
-// function to get chosen wordlist for a specific box
-function getChosenwordlist(boxid){
-	var chosenwordlist = "";
-	// get chosen wordlist for this box
-	for(var i=0;i<retdata['box'].length;i++){
-		if(retdata['box'][i][0] == boxid){
-			chosenwordlist = retdata['box'][i][4];
-		}
-	}
-	return chosenwordlist;
-}
+
 //----------------------------------------------------------------------------------
 // Renders a set of tokens from a string into a code viewer div
 // Requires tokens created by a cockford-type tokenizer

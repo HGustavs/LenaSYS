@@ -29,7 +29,7 @@ Version History
  4.00    2014-05-30 - Release version from WEBUG/DVP project 2013
  5.00    2014-10-30 - Redacted version of 4.00
  5.10		 2015-02-27 - Fixes for duggasys form
-
+ 
 Bugs:
 ------
 	
@@ -42,8 +42,7 @@ Fixed Bugs:
 
 Testing Link:
 
-EditorV30.php?courseid=Webbprogrammering&sectionid=Javascript&version=2013&position=3
-EditorV50.php?exampleid=1&courseid=1
+EditorV50.php?exampleid=1&courseid=1&cvers=2013
  
 ---->
 <?php
@@ -71,7 +70,7 @@ EditorV50.php?exampleid=1&courseid=1
 
 		<link type="text/css" href="css/template1.css" rel="stylesheet" />
 		<link type="text/css" href="css/codeviewer.css" rel="stylesheet" />
-    <link type="text/css" href="css/blackTheme.css" rel="stylesheet" />
+    <link type="text/css" href="css/whiteTheme.css" rel="stylesheet" />
     <link type="text/css" href="css/responsive.css" rel="stylesheet" />
     <link type="text/css" href="../DuggaSys/css/style.css" rel="stylesheet" />
 

@@ -1,3 +1,57 @@
+#div2{
+	background-color: #FFF;
+}
+
+#picktemplate{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: white;
+}
+
+#picktemplate img{
+	width: 140px;
+	height: 140px;
+}
+
+#picktemplate h1{
+	text-align: center;
+  font-family: Arial, Sans-Serif;
+	color: #000;
+}
+
+#docucontent h1 {
+		color:#000
+    display: block;
+    font-family: Arial,Sans-Serif;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+
+.docucontentStyle h1 {
+    color: black;
+}
+
+.box{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    overflow-y: auto;
+    overflow-x: auto;
+    font-family: Arial,Sans-Serif;
+    font-size: 14px;
+    outline: 0 none;
+    background-color: #FFF;
+    color: #000;
+}
+
 .docucontentStyle {
      background-color: #272822;
      color: white;
@@ -21,10 +75,6 @@
 
 .temp4Style{
 	background-color: #272822;
-}
-
-.docucontentStyle h1 {
-    color: white;
 }
 
 .buttomenuStyle {
@@ -213,11 +263,19 @@
 .normtext .impword {
     color: #000;
     background-color: #fff;
+    border: 1px solid #f44;
 }
 
 .impo .impword {
     color: #000000;
     background-color: #fff;
+    border: 1px solid #f44;
+}
+
+.descbox .impword {
+    color: #000000;
+    background-color: #fff;
+    border: 1px solid #f44;
 }
 
 .normtext .imphi {
@@ -263,26 +321,10 @@
 .codebox{
 	padding: 0px;
 }
+
 .descbox{
 	padding-top: 4px;
 	padding-left: 4px;
-}
-.box{
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    overflow-y: auto;
-    overflow-x: auto;
-    font-family: Arial,Sans-Serif;
-    font-size: 14px;
-    outline: 0 none;
-    background-color: #272822;
-    color: white;
-}
-#div2{
-	background-color: #272822;
 }
 
 /* BOXMENU STYLING START */
