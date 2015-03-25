@@ -18,6 +18,20 @@ Execution Order
 				toggleClass is called by generated javascript in hotdog menu
 		#6 displaywordlist(); adds wordlist display feature.
 
+2do:
+
+   Fix templating choice screen etc
+   Reconnect user interface
+   Make dialogs work
+   Make dropdowns for forward and backward work
+   Go over code to look for cruft
+   Make sure mobile theme at least partially work
+       Does finger scrolling work for mobile vers?
+
+Testing Link:
+
+EditorV50.php?exampleid=1&courseid=1&cvers=2013
+ 
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -724,6 +738,36 @@ function dehtmlify(mainstr,ignorebr,maxlength)
 		return outstr;
 }
 
+//----------------------------------------------------------
+// Highlights an important word from the important word list
+//----------------------------------------------------------		
+
+function highlightKeyword(kw)
+{
+			$(".impword").each(function(){
+				if(this.innerHTML==kw){
+					
+					$(this).addClass("imphi");	
+					//	$(".impword").addClass("temphighlightclass");
+					//	highlightimp(this.id);
+				}
+			});	
+}
+
+//----------------------------------------------------------
+// DeHighlights an important word from the important word list
+//----------------------------------------------------------		
+
+function dehighlightKeyword(kw)
+{
+			$(".impword").each(function(){
+				if(this.innerHTML==kw){
+					$(this).removeClass("imphi");	
+					//	dehighlightimp(this.id);
+				}
+			});	
+}
+
 /********************************************************************************
 
    Tokenizer
@@ -1011,17 +1055,17 @@ function rendercode(codestring,boxid)
 	
 	important = [];
 	for(var i=0;i<retdata.impwords.length;i++){
-		important.push(retdata.impwords[i]);		
+		important[retdata.impwords[i]]=retdata.impwords[i];	
 	}
 	
-	var chosenwordlist = getChosenwordlist(boxid);
+
 	keywords=[];
 	for(var i=0;i<retdata['words'].length;i++){
-		if(retdata['words'][i][0]==chosenwordlist){
+		if(retdata['words'][i][0]==wordlist){
 			temp=[retdata['words'][i][1],retdata['words'][i][2]];
-			keywords.push(temp);
+			keywords[temp]=temp;
 		}
-	}			
+	}
 
 	improws=[];
 	for(var i=0;i<retdata.improws.length;i++){
@@ -1071,30 +1115,17 @@ function rendercode(codestring,boxid)
 		}else if(tokens[i].kind=="name"){
 			var foundkey=0;
 					
-			for(var ind in keywords){
-				word=keywords[ind][0];
-				label=keywords[ind][1]
-				if(word==tokenvalue){
-					foundkey=1;
-					break;		
-				}
-			}								
-					
-			for(var ind in important){
-				word=important[ind];
-				if(word==tokenvalue){
+			// Removed two for loops here and replaced it with smart indexing. either kind 2 or kind 1
+			if(important[tokenvalue]!=null){
 					foundkey=2;
-					break;		
-				}
+			}else if(keywords[tokenvalue]!=null){	
+						foundkey=1;						
 			}
-					
+			
 			if(foundkey==1){
 				cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
 			}else if(foundkey==2){
 				iwcounter++;
-							
-				highlightKeyword("scrollTop")
-							
 				cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
 			}else{
 				cont+=tokenvalue;
@@ -1194,139 +1225,6 @@ function createCodeborder(lineno,improws){
 	
 	str+="</div>";
 	return str;
-}
-
-function renderdesccode(codestring,wordlist){
-	tokens = [];
-
-	important = [];
-	for(var i=0;i<retdata.impwords.length;i++){
-		important.push(retdata.impwords[i]);	
-	}
-	
-	
-
-	keywords=[];
-	for(var i=0;i<retdata['words'].length;i++){
-		if(retdata['words'][i][0]==wordlist){
-			temp=[retdata['words'][i][1],retdata['words'][i][2]];
-			keywords.push(temp);
-		}
-	}
-
-	
-	tokenize(codestring,"<>+-&","=>&:");
-	
-		str="";
-		cont="";
-
-		str+="<span class='normtext'>";
-		
-		pcount=0;
-		parenthesis=new Array();
-		bcount=0;
-		bracket=new Array();
-		cbcount=0;
-		cbracket=new Array();
-
-		pid="";
-		
-		var iwcounter=0;
-
-		for(i=0;i<tokens.length;i++){
-				
-				tokenvalue=String(tokens[i].val);
-
-				// Make white space characters
-				tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
-			
-				if(tokens[i].kind=="rowcomment"){ 
-						cont+="<span class='comment'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="blockcomment"){ 
-							cont+="<span class='comment'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="string"){ 
-							cont+="<span class='string'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="number"){
-						cont+="<span class='number'>"+tokenvalue+"</span>";
-				}else if(tokens[i].kind=="name"){
-						var foundkey=0;
-						
-						for(var ind in keywords){
-							word=keywords[ind][0];
-							label=keywords[ind][1]
-							if(word==tokenvalue){
-									foundkey=1;
-									break;		
-							}
-						}								
-						for(var ind in important){
-								word=important[ind];
-								if(word==tokenvalue){
-										foundkey=2;
-										break;		
-								}
-						}
-						if(foundkey==1){
-								cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
-						}else if(foundkey==2){
-								iwcounter++;
-								
-								highlightKeyword("scrollTop")
-								
-								cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
-						}else{
-								cont+=tokenvalue;
-						}
-						
-				}else if(tokens[i].kind=="operator"){
-						
-						cont+="<span class='oper'>"+tokenvalue+"</span>";	
-					
-					/* OUTCOMMENT BECAUSE THIS WILL BE DIFFICULT TO FIX FOR MORE THAN 1 DESCRIPTION BOX 
-						if(tokenvalue=="("){
-								pid="PA2"+pcount;
-								pcount++;
-								parenthesis.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue==")"){
-								pid=parenthesis.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else if(tokenvalue=="["){
-								pid="BR2"+bcount;
-								bcount++;
-								bracket.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue=="]"){
-								pid=bracket.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else if(tokenvalue=="{"){
-								pid="CBR2"+cbcount;
-								cbcount++;
-								cbracket.push(pid);
-								cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-						}else if(tokenvalue=="}"){
-								pid=cbracket.pop();
-								cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-						}else{	
-								cont+="<span class='oper'>"+tokenvalue+"</span>";		
-						}
-					*/	
-				}else{
-						cont+=tokenvalue;
-				}
-				
-				if(tokens[i].kind=="newline"){
-					
-					str+=cont+"<br>";
-					cont="";
-				} // no breakrow on last row in description.
-				if(i==tokens.length-1){
-					str+=cont;
-				}
-		}
-		str+="</span>";
-		return str;
-	
 }
 
 function linenumbers()
