@@ -11,12 +11,10 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Course Editor</title>
 		
-	<link type="text/css" href="css/style.css" rel="stylesheet">
-  <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
-
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.min.js"></script>
-
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="courseed.js"></script>
 
@@ -56,7 +54,7 @@ pdoConnect();
 			<input type='hidden' id='cid' value='Toddler' /></td>
 			<td>Course Name: <input class='form-control textinput' type='text' id='coursename' value='Course Name' /></td>
 			<!--TODO: add correct course code structure -->
-			<td>Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>		
+			<!--<td>Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>-->		
 		</tr>
 		<tr>
 			<td>Vers ID: <input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></td>		
