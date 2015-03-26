@@ -1,4 +1,5 @@
-LenaSYS_2014
+LenaSYS
 ============
 
 University of Skövde Code Viewer and Course Organization System
+ 
