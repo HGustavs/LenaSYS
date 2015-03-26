@@ -1,7 +1,8 @@
 <-- Text that uses <-- are used for commenting the coding style only, and are not part of the code nor the comments in the file
 <-- three periods ... denotes any section of random code
 <-- this file contains coding style for both javascript and php
-
+<-- We use tabs rather than space and each tab corresponds to 2 spaces to view properly on the web add ts parameter https://github.com/HGustavs/LenaSYS/blob/master/code_standard.js?ts=2
+ 
 /********************************************************************************
 
    Documentation <-- Top of file contains documentation e.g. call order and in some cases list of important bugs and/or version history
@@ -67,7 +68,7 @@ function returned(data) <-- Returned function should exist and work the same in 
 				...
 		}else{ <-- both brackets on same line as elese
 		
-		}
+		} 
 		
 		var a=retdata['template']['templateid']; 		<-- We prefer using varaibles to most cases of double indirection in arrays
 		
