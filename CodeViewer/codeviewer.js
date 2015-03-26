@@ -360,9 +360,9 @@ function createboxmenu(contentid, boxid, type){
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][3]+'</span></td>';
-				str+= '<td class="butto2 showdesktop" title="Remove formatting" onclick="styleReset();"><img src="new icons/reset_button.svg" /></td>';
-				str+= '<td class="butto2 showdesktop" title="Heading" onclick="styleHeader();"><img src="new icons/boldtext_button.svg" /></td>';
-				str+= "<td class='butto2 showdesktop imgdropbutton' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='new icons/picture_button.svg' /></td>";
+				str+= '<td class="butto2 showdesktop" title="Remove formatting" onclick="styleReset();"><img src="../Shared/icons/reset_button.svg" /></td>';
+				str+= '<td class="butto2 showdesktop" title="Heading" onclick="styleHeader();"><img src="../Shared/icons/boldtext_button.svg" /></td>';
+				str+= "<td class='butto2 showdesktop imgdropbutton' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='../Shared/icons/picture_button.svg' /></td>";
 							
 				str+="</tr></table>";
 				//----------------------------------------------------------------------------------------- END DOCUMENT
@@ -373,7 +373,7 @@ function createboxmenu(contentid, boxid, type){
 				var str = "<table cellspacing='2'><tr>";
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
 
-				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayEditContent("+boxid+");' ><img src='new icons/general_settings_button.svg' /></td>";
+				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 								
 				str+= '</tr></table>';
 			
@@ -440,17 +440,17 @@ function createhotdogmenu(){
 	}
 	
 		str = '<table cellspacing="0" class="showmobile"><tr>';
-		str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
-		str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="Skip(\"bd\");" onmouseup="Skip(\"bu\");" onclick="Skip(\"bd\")"><img src="new icons/backward_button.svg" /></td>';
-		str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="new icons/forward_button.svg" /></td>';
-		str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="new icons/play_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="../Shared/icons/home_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="Skip(\"bd\");" onmouseup="Skip(\"bu\");" onclick="Skip(\"bd\")"><img src="../Shared/icons/backward_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
 		str += '</tr>';
 		for(i=0;i<retdata['numbox'];i++){
-		//	str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleClass(\"box"+(i+1)+"wrapper\");' colspan='4'>"+retdata['box'][i][3]+"<img src='new icons/hotdogTabButton2.svg' /></td></tr>";
-			str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retdata['box'][i][3]+"<img src='new icons/hotdogTabButton.svg' /></td></tr>";
+		//	str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleClass(\"box"+(i+1)+"wrapper\");' colspan='4'>"+retdata['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton2.svg' /></td></tr>";
+			str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retdata['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
 		}		
- //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="new icons/hotdogTabButton2.svg" /></td></tr>';
- //		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="new icons/hotdogTabButton.svg" /></td></tr>';
+ //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="../Shared/icons/hotdogTabButton2.svg" /></td></tr>';
+ //		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="../Shared/icons/hotdogTabButton.svg" /></td></tr>';
 
 		// str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
 		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
@@ -1251,8 +1251,8 @@ function createCodeborder(lineno,improws){
 function linenumbers()
 {	
 	if(localStorage.getItem("linenumbers") == "false"){	
-		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg'); 
-		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton2.svg');
+		$( "#numberbutton img" ).attr('src', '../Shared/icons/noNumbers_button.svg'); 
+		$( "#numberbuttonMobile img" ).attr('src', '../Shared/icons/hotdogTabButton2.svg');
 		$( ".codeborder" ).css("display","none");	
 	}
 }
@@ -1261,13 +1261,13 @@ function fadelinenumbers()
 {
 	if ( $( ".codeborder" ).is( ":hidden" ) ) {
 		$( ".codeborder" ).fadeIn( "slow" );
-		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton.svg');
-		$( "#numberbutton img" ).attr('src', 'new icons/numbers_button.svg');
+		$( "#numberbuttonMobile img" ).attr('src', '../Shared/icons/hotdogTabButton.svg');
+		$( "#numberbutton img" ).attr('src', '../Shared/icons/numbers_button.svg');
 		localStorage.setItem("linenumbers", "true");					  
 	}else{
 		$( ".codeborder" ).fadeOut("slow");
-		$( "#numberbuttonMobile img" ).attr('src', 'new icons/hotdogTabButton2.svg');
-		$( "#numberbutton img" ).attr('src', 'new icons/noNumbers_button.svg');
+		$( "#numberbuttonMobile img" ).attr('src', '../Shared/icons/hotdogTabButton2.svg');
+		$( "#numberbutton img" ).attr('src', '../Shared/icons/noNumbers_button.svg');
 		localStorage.setItem("linenumbers", "false");
 	 }
 }

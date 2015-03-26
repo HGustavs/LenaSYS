@@ -192,13 +192,13 @@ function returnedDugga(data)
 						str+="<td>"+item['modified'].substr(0,10)+"</td>";
 						
 						str+="<td style='padding:4px;'>";
-								str+="<img id='plorf' style='float:left;margin-right:4px;' src='css/svg/PlusU.svg' ";
+								str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
 								str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");' >";
 						str+="</td>";
 
 
 						str+="<td style='padding:4px;'>";
-								str+="<img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Cogwheel.svg' ";
+								str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 								str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesys']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");' >";
 						str+="</td>";
 						str+="</tr>";
@@ -218,7 +218,7 @@ function returnedDugga(data)
 										str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
 										str+="<td style='padding:4px;'>";
-												str+="<img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Cogwheel.svg' ";
+												str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/Cogwheel.svg' ";
 												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
 										str+="</td>";
 

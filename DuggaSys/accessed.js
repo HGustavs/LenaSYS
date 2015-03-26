@@ -80,12 +80,11 @@ function returnedAccess(data)
 {
 		// Fill section list with information
 		str="";
-		str+="<div style='float:right;'>";
-		str+="<input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/>";
-		str+="</div>";
-
 		if (data['entries'].length > 0) {
 
+				str+="<div style='float:right;'>";
+				str+="<input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/>";
+				str+="</div>";
 				
 				str+="<table class='list'>";
 
@@ -110,10 +109,8 @@ function returnedAccess(data)
 
 						str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;'></td>";
 
-						str+="<td><img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Cogwheel.svg' ";
+						str+="<td><img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 						str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\");' ></td>";
-
-						//alert("selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\");' >");
 
 						str+="</tr>";
 				}

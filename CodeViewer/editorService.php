@@ -10,12 +10,9 @@
 
 	// Include basic application services!
 	include_once("../../coursesyspw.php");	
-
-	include_once "../Shared/sessions.php";
-	include_once "../Shared/basic.php";
-
-	include_once("../Shared/basic.php");
-	include_once("../Shared/courses.php");
+	include_once ("../Shared/sessions.php");
+	include_once ("../Shared/basic.php");
+	include_once ("../Shared/courses.php");
 	
 	// Connect to database and start session
 	dbConnect();
@@ -83,6 +80,7 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");						
 
+
 					}else if(strcmp('selectWordlist',$opt)===0){
 								$wordlistid=htmlEntities($_POST['wordlistid']);
 								$query = "UPDATE codeBox SET wordlistid='$wordlistid' WHERE exampleid='$exampleid' AND boxid='$boxid';";		
@@ -94,6 +92,8 @@
 								$result=mysql_query($query);
 								if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");	
 								/* Need to update file id in box-talble here. */
+
+
 					}else if(strcmp("editDescription",$opt)===0){
 								// replace HTML-spaces and -breakrows for less memory taken in db and nicer formatting
 								$description = str_replace("&nbsp;"," ",$_POST['description']);
@@ -196,7 +196,11 @@
 			$forward_examples = array();	
 			$currid=$exampleid;
 			do{
-					$currid=$beforeafter[$currid][4];
+					if(isset($beforeafter[$currid])){
+							$currid=$beforeafter[$currid][4];
+					}else{
+							$currid=null;
+					}					
 					if($currid!=null){
 							array_push($forward_examples,$beforeafter[$currid]);
 							$cnt++;
@@ -208,7 +212,11 @@
 			$currid=$exampleid;
 			$cnt=0;
 			do{
-					$currid=$beforeafter[$currid][3];
+					if(isset($beforeafter[$currid])){
+							$currid=$beforeafter[$currid][4];
+					}else{
+							$currid=null;
+					}					
 					if($currid!=null){
 							array_push($backward_examples,$beforeafter[$currid]);
 							$cnt++;

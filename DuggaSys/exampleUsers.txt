@@ -1,5 +1,0 @@
-012346-1111 Barkma, Snaff Mismels a23snafba@his.se
-046366-2222 Kirkels, Triff a13kirtr@his.se
-046365-3333 Farva, Troy a43fartr@his.se
-800102-3456 Plissken, Snake a66snpl@his.se
-870102-3456 Plissken, Jsvr Tester@his.se

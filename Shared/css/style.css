@@ -253,63 +253,66 @@ header {
     z-index: 5000;
     top: 0px;
     left: 0px;
-    /* box-shadow: 0px 3px 3px #AAA; */
+    box-shadow: 0px 3px 8px #A9A; 
 }
 
-nav#navigate {
-    padding: 12px;
-    float: left;
+.navSpacer {
+
 }
 
-nav#navigate img {
-    cursor: pointer;
+.navButt {
+		width:50px;
 }
 
-div#title {
-    padding: 5px;
-    float: left;
+.navHeading {
+    font-size: 2.5em;
 }
 
-div#title img {
-    cursor: default;
+.navName {
+    width:60px;
+    font-size:0.8em;
+    color: #ff0;
+		cursor:pointer;
+		text-decoration:underline;
+		text-align:right;
+		overflow:hidden;
+		padding-right:4px;
 }
 
-nav#user {
-    font-size: 0.8em;
-    float: right;
-}
-
-nav#user #userName {
-  font-size: 0.8em;
-  float: left;
-	color:#fff;
-	font-size:10pt;
-	margin-top:28px;
-	margin-right:8px;
-	cursor:pointer;
-	text-decoration:underline;
-}
-
-nav#user #userName:hover {
-	color: #ce3d3d;
-}
-
-nav#user img {
-  padding: 12px;
-  float: right;
-  cursor: pointer;
+.loggedout {
 	background-color: #c75050;
+	width:40px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	padding-left:14px;
 }
 
-nav#user img.loggedin {
+.loggedin {
 	background-color: #50a750;
-	padding: 13px;
+	width:40px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	padding-left:14px;
 }
 
-nav#user img.loggedin:hover {
+.loggedin:hover {
 	background-color: #3d9e3d;
-	padding: 13px;
+	width:40px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	padding-left:14px;
 }
+
+#div2
+{
+		width:100%;
+		position: fixed;
+		top: 50px;
+		bottom: 0px;
+		left:0px;
+		background:#fff;
+}
+
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -644,30 +647,4 @@ input.submit-button-red:hover {
 		
 		#mirth {display:none;}
 }
-
-#htmlfile {
-	margin-left: 15px;
-}
-
-#htmlfile ul { 
-  margin-left:0em; 
-  padding-left:0.8em; 
-  margin-bottom:1em; 
-}
-#htmlfile ul li { 
-  padding-left: 0.8em; 
-  list-style: disc; 
-}
  
-#htmlfile ol li { margin-bottom:0.5em; padding-left:0.8em; list-style:decimal; }
-
-#htmlfile ul li { margin-bottom:0.5em; padding-left:0.8em; list-style:disc; }
- 
-#htmlfile ol { 
-  margin-left:1.5em; 
-  padding-left:0px; 
-}
-
-#htmlfile h1,h2,h3,h4 {
-    color: #000;
-}

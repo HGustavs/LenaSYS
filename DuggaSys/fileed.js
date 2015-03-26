@@ -88,11 +88,10 @@ function hideLoginPopup()
 function returnedFile(data)
 {
 		filez = data;
-		console.log(data);
 		// Fill section list with information
 		str="";
 
-//		if (data['entries'].length > 0) {
+		if (data['entries'].length > 0) {
 
 				// 1=Link 2=Global 3=Course Global 4=Local
 
@@ -112,7 +111,7 @@ function returnedFile(data)
 								str+="<td>"+item['fileid']+"</td>";
 								str+="<td>"+item['filename']+"</td>";
 								str+="<td style='padding:4px;'>";
-										str+="<img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Trashcan.svg' ";
+										str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 										str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
 								str+="</td>";
 								str+="</tr>";
@@ -140,7 +139,7 @@ function returnedFile(data)
 								str+="<td>"+item['fileid']+"</td>";
 								str+="<td>"+item['filename']+"</td>";
 								str+="<td style='padding:4px;'>";
-										str+="<img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Trashcan.svg' ";
+										str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 										str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
 								str+="</td>";
 								str+="</tr>";
@@ -168,7 +167,7 @@ function returnedFile(data)
 								str+="<td>"+item['fileid']+"</td>";
 								str+="<td>"+item['filename']+"</td>";
 								str+="<td style='padding:4px;'>";
-										str+="<img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Trashcan.svg' ";
+										str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 										str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
 								str+="</td>";
 								str+="</tr>";
@@ -195,7 +194,7 @@ function returnedFile(data)
 								str+="<td>"+item['fileid']+"</td>";
 								str+="<td>"+item['filename']+"</td>";
 								str+="<td style='padding:4px;'>";
-										str+="<img id='dorf' style='float:right;margin-right:4px;' src='css/svg/Trashcan.svg' ";
+										str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 										str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
 								str+="</td>";
 								str+="</tr>";
@@ -203,7 +202,7 @@ function returnedFile(data)
 				}
 				
 				str+="</table>";
-		//}
+		}
 
 		var slist=document.getElementById("content");
 		slist.innerHTML=str;

@@ -214,9 +214,6 @@ function returnedResults(data) {
 						//----------------------------------------------------------------------------------------------------------- Start Standalone
 						// kind == 3 means dugga, moment == null means no parent dugga i.e. standalone
 						if (moment['kind'] == 3 && moment['moment'] == null) {
-
-							// Standalone Dugga -- we just need to make a dugga entry with the correct marking system.
-							str += "<td>&nbsp;</td></tr><tr  style='border-top:2px solid #dbd0d8;' >";
 							
 							// We are now processing the moment entry in the moment object
 							var foundgrade = null;
@@ -255,7 +252,7 @@ function returnedResults(data) {
 							
 							// Fist
 							if(useranswer!=null){
-									zstr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
+									zstr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='../Shared/icons/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
 							}
 
 							// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
@@ -271,6 +268,9 @@ function returnedResults(data) {
 									yomama="background-color:#fff";														
 							}
 							
+							// Standalone Dugga -- we just need to make a dugga entry with the correct marking system.
+							str += "<td style='"+yomama+"'>&nbsp;</td></tr><tr  style='border-top:2px solid #dbd0d8;' >";
+
 							str += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>"+zstr;
 
 							str += "</td>";
@@ -325,7 +325,7 @@ function returnedResults(data) {
 										zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");
 									}
 									if(useranswer!=null){
-											zttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='css/svg/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
+											zttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='../Shared/icons/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
 									}
 
 									// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
