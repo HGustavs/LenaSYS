@@ -2,7 +2,7 @@
 <-- three periods ... denotes any section of random code
 <-- this file contains coding style for both javascript and php
 <-- We use tabs rather than space and each tab corresponds to 2 spaces to view properly on the web add ts parameter https://github.com/HGustavs/LenaSYS/blob/master/code_standard.js?ts=2
-
+ 
 /********************************************************************************
 
    Documentation <-- Top of file contains documentation e.g. call order and in some cases list of important bugs and/or version history
