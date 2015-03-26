@@ -1,7 +1,7 @@
 <?php
-define("DB_USER","root");
-define("DB_PASSWORD","galvaniseradapa");
+define("DB_USER","write your database user name here");
+define("DB_PASSWORD","write your password here");
 define("DB_HOST","localhost");
-define("DB_NAME","Imperious");
+define("DB_NAME","write your database name here");
 
 ?>
