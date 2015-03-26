@@ -20,8 +20,8 @@
 				
 					// Either generate code viewer specific nav menu or a spacer
 					if(isset($codeviewer)){
-							echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='SkipBDown();' onmouseup='SkipBUp();' onclick='SkipB();'><img src='new icons/backward_button.svg'></td>";
-							echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='SkipFDown();' onmouseup='SkipFUp();' onclick='SkipF();'><img src='new icons/forward_button.svg' /></td>";
+							echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='new icons/backward_button.svg'></td>";
+							echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='new icons/forward_button.svg' /></td>";
 							echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play();'><img src='new icons/play_button.svg' /></td>";
 							if(checklogin()) {
 									echo "<td class='navButt' onclick='displayEditExample();' ><img src='new icons/general_settings_button.svg' /></td>";

@@ -441,8 +441,8 @@ function createhotdogmenu(){
 	
 		str = '<table cellspacing="0" class="showmobile"><tr>';
 		str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="new icons/home_button.svg" /></td>';
-		str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="SkipBDown();" onmouseup="SkipBUp();" onclick="SkipB();"><img src="new icons/backward_button.svg" /></td>';
-		str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="SkipFDown();" onmouseup="SkipFUp();" onclick="SkipF();""><img src="new icons/forward_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="Skip(\"bd\");" onmouseup="Skip(\"bu\");" onclick="Skip(\"bd\")"><img src="new icons/backward_button.svg" /></td>';
+		str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="new icons/forward_button.svg" /></td>';
 		str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="new icons/play_button.svg" /></td>';
 		str += '</tr>';
 		for(i=0;i<retdata['numbox'];i++){
@@ -507,10 +507,79 @@ function highlightop(otherop,thisop)
 		$("#"+thisop).addClass("hi");					
 }
 
+//----------------------------------------------------------------------------------
+// highlightop: Dehighlights an operator and corresponding operator in code window
+//----------------------------------------------------------------------------------
+
 function dehighlightop(otherop,thisop)
 {
 		$("#"+otherop).removeClass("hi");					
 		$("#"+thisop).removeClass("hi");					
+}
+
+//----------------------------------------------------------------------------------
+// SkipBTimeout: Skip forward and backward menu timeout
+//----------------------------------------------------------------------------------
+
+/*
+function SkipBTimeout()
+{
+		if(dmd==1){	
+			switchDrop("backwdrop");
+			isdropped=true;
+		}	
+}
+
+function SkipBDown()
+{		
+		setTimeout(function(){SkipBTimeout();}, 1000);							
+		dmd=1;
+}
+
+
+function SkipBUp()
+{
+		dmd=0;
+}
+
+function SkipB()
+{		
+		if(issetDrop("backwdrop")&&isdropped==false){
+			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
+			location="EditorV30.php?courseid="+querystring['courseid']+"&exampleid="+prevexampleid;
+		}else if(issetDrop("backwdrop")&&isdropped==true){
+				isdropped=false;
+		}else{
+			// get previous example in the hierarchy
+			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
+			location="EditorV30.php?courseid="+querystring['courseid']+"&exampleid="+prevexampleid;
+		}
+}
+
+
+function SkipF()
+{
+		if(issetDrop("forwdrop")&&isdropped==false){
+			var nextexampleid=parseInt(retdata['after'][0][1]);
+			location="EditorV30.php?courseid="+querystring['courseid']+"&exampleid="+nextexampleid;
+		}
+		else if(issetDrop("forwdrop")&&isdropped==true){
+				isdropped=false;
+		}else{
+			// get next example in the hierarchy
+			var nextexampleid=parseInt(retdata['after'][0][1]);
+			location="EditorV30.php?courseid="+querystring['courseid']+"&exampleid="+nextexampleid;
+		}
+}
+*/
+
+//----------------------------------------------------------------------------------
+// Skip: Handles skipping either forward or backward. If pressed show menu
+//----------------------------------------------------------------------------------
+
+function Skip(skipkind)
+{
+		alert(skipkind);
 }
 
 // -------------==============######## Verified Functions End ###########==============-------------
@@ -711,10 +780,8 @@ function highlightKeyword(kw)
 {
 			$(".impword").each(function(){
 				if(this.innerHTML==kw){
-					
 					$(this).addClass("imphi");	
-					//	$(".impword").addClass("temphighlightclass");
-					//	highlightimp(this.id);
+
 				}
 			});	
 }
@@ -728,7 +795,6 @@ function dehighlightKeyword(kw)
 			$(".impword").each(function(){
 				if(this.innerHTML==kw){
 					$(this).removeClass("imphi");	
-					//	dehighlightimp(this.id);
 				}
 			});	
 }
