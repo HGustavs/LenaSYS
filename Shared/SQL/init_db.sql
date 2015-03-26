@@ -3,28 +3,6 @@ create database Imperiouz;
 use Imperiouz;
 /* user contains the users of the system and related  information */
 
-/*
-DROP TABLE IF EXISTS userAnswer;
-DROP TABLE IF EXISTS grades;
-DROP TABLE IF EXISTS quiz;
-DROP TABLE IF EXISTS eventlog;
-DROP TABLE IF EXISTS listentries;
-DROP TABLE IF EXISTS impwordlist;
-DROP TABLE IF EXISTS wordlist;
-DROP TABLE IF EXISTS playereditor_playbacks;
-DROP TABLE IF EXISTS descriptionsection;
-DROP TABLE IF EXISTS filelist;
-DROP TABLE IF EXISTS improw;
-DROP TABLE IF EXISTS user_course;
-DROP TABLE IF EXISTS user_question;
-DROP TABLE IF EXISTS descriptionBox;
-DROP TABLE IF EXISTS codeBox;
-DROP TABLE IF EXISTS box;
-DROP TABLE IF EXISTS codeexample;
-DROP TABLE IF EXISTS template;
-DROP TABLE IF EXISTS course;
-DROP TABLE IF EXISTS user;
-*/
 CREATE TABLE user(
 		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
@@ -174,6 +152,10 @@ CREATE TABLE vers(
 		FOREIGN KEY (cid) REFERENCES course(cid),		
 		PRIMARY KEY(cid,coursecode,vers)
 );
+
+insert into vers (cid,coursecode,vers,versname) values(1,"DA551G","8212","HT 2012");
+insert into vers (cid,coursecode,vers,versname) values(1,"DA551G","8111","HT 2013");
+insert into vers (cid,coursecode,vers,versname) values(1,"DA551G","7844","HT 2014");
 
 CREATE TABLE fileLink(
 	fileid				INT(11) NOT NULL AUTO_INCREMENT,
@@ -425,7 +407,7 @@ CREATE TABLE eventlog(
 	raddress 		VARCHAR(45),
 	user 				VARCHAR(128),
 	eventtext 	TEXT NOT NULL,
-	PRIMARY KEY(eid),
+	PRIMARY KEY(eid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE playereditor_playbacks(
@@ -439,17 +421,6 @@ update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";
 update user set ssn="810101-5567" where username="Grimling";
 update user set ssn="444444-5447" where username="Toddler";
-
 update user set password=password("Kong") where username="Toddler";
-
-insert into vers (cid,coursecode,vers) values(1,"DA551G","2012");
-insert into vers (cid,coursecode,vers) values(1,"DA551G","2013");
-insert into vers (cid,coursecode,vers) values(1,"DA551G","2014");
-
-insert into vers (cid,coursecode,vers) values(2,"DA112G","2013");
-insert into vers (cid,coursecode,vers) values(2,"DA112G","2014");
-
-
 update user set superuser=1 where username="Toddler";
 
-alter table address 
