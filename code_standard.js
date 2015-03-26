@@ -68,7 +68,7 @@ function returned(data) <-- Returned function should exist and work the same in 
 				...
 		}else{ <-- both brackets on same line as elese
 		
-		}
+		} 
 		
 		var a=retdata['template']['templateid']; 		<-- We prefer using varaibles to most cases of double indirection in arrays
 		
