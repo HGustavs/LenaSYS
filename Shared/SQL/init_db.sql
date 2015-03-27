@@ -1,6 +1,6 @@
-drop database Imperiouz; 
-create database Imperiouz;
-use Imperiouz;
+drop database imperious;
+create database imperious;
+use imperious;
 /* user contains the users of the system and related  information */
 
 CREATE TABLE user(
@@ -153,9 +153,9 @@ CREATE TABLE vers(
 		PRIMARY KEY(cid,coursecode,vers)
 );
 
-insert into vers (cid,coursecode,vers,versname) values(1,"DA551G","8212","HT 2012");
-insert into vers (cid,coursecode,vers,versname) values(1,"DA551G","8111","HT 2013");
-insert into vers (cid,coursecode,vers,versname) values(1,"DA551G","7844","HT 2014");
+insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8212","HT 2012");
+insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8111","HT 2013");
+insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","7844","HT 2014");
 
 CREATE TABLE fileLink(
 	fileid				INT(11) NOT NULL AUTO_INCREMENT,
