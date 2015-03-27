@@ -25,6 +25,7 @@ $data = array();
 // select name, studentresultat.pnr, kull, kurs.kurskod, kursnamn, poang, termin, resultat, studentresultat.avbrott from studentresultat inner join kurstillf on studentresultat.anmkod=kurstillf.anmkod inner join student on studentresultat.pnr = student.pnr inner join kurs on studentresultat.kurskod = kurs.kurskod;
 //$sql = "select name, studentresultat.pnr, kull, kurs.kurskod, kursnamn, poang, termin, resultat, studentresultat.avbrott from studentresultat inner join kurstillf on studentresultat.anmkod=kurstillf.anmkod inner join student on studentresultat.pnr = student.pnr inner join kurs on studentresultat.kurskod = kurs.kurskod where studentresultat.pnr ='".$pnr."';";
 if ($pnr != null) {
+	array_push($data, array("student"));
 $sql = "select namn, studentresultat.pnr, kull, kurs.kurskod, kursnamn, poang, termin, resultat, studentresultat.avbrott from studentresultat inner join student on studentresultat.pnr = student.pnr inner join kurs on studentresultat.kurskod = kurs.kurskod where studentresultat.pnr ='".$pnr."';";
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 $sth = $pdo->prepare($sql);
@@ -41,7 +42,7 @@ array_push($data, $res2);
 
 } else if ($studyprogram != null) {
 	
-
+array_push($data, array("studyprogram"));
 	$sql = "select kurskod, kursnamn, period, termin from programkurs where kull='".$studyprogram."' order by termin,period;";
 	$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	$sth = $pdo->prepare($sql);

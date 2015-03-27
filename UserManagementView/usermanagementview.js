@@ -21,37 +21,20 @@ function natcmp(a, b) {
     return 0;
 }
 
-function hover(obj){
-	console.log("We hover!" + obj.id);
-}
 
-function stop_hover(obj){
-	console.log("We stopped hovering!" + obj.id);
-}
-
-function xml_to_string(xml_node)
-{
-    if (xml_node.xml)
-        return xml_node.xml;
-    else if (XMLSerializer)
-    {
-        var xml_serializer = new XMLSerializer();
-        return xml_serializer.serializeToString(xml_node);
-    }
-    else
-    {
-        alert("ERROR: Extremely old browser");
-        return "";
-    }
-}
 
 function loadData(studyprogram, pnr) {
-	$.get( "studentfollowupservice.php", { studyprogram: studyprogram, pnr: pnr })  
+	$.get( "usermanagementviewservice.php", { studyprogram: studyprogram, pnr: pnr })  
 		.done(
 			function( data ) {
 				//alert( "Data Loaded: " + data );
-				//renderStudentView(data);
-				renderStudyprogramView(data);				
+				if (data[0][0]==="student"){
+					renderStudentView(data);
+				} else if (data[0][0]==="studyprogram"){
+					renderStudyprogramView(data);	
+				} else {
+					alert("Error, unkown data returned\n"+data);
+				}								
 			});
 
 }
@@ -64,10 +47,10 @@ function renderStudentView(data){
 	 * 1. get start year 
 	 * 
 	 */
-	student_data = data[0];
-	forkunskap = data[1];
+	student_data = data[1];
+	forkunskap = data[2];
 	
-	var startYear = student_data[0].kull;
+	var startYear = student_data[1].kull;
 	startYear = startYear.match(/[0-9][0-9]/);
 	console.log(startYear);
 	
@@ -175,8 +158,7 @@ function renderStudentView(data){
 }
 
 function renderStudyprogramView(data){
-	var student_data = data[0];
-	alert(student_data.length);
+	var student_data = data[1];
 
 		var currentTermin;
 	var terminer = [];
@@ -186,7 +168,6 @@ function renderStudyprogramView(data){
         	terminer.push(termin);
 	    };
 	});
-		alert(terminer.length);
 	
 	terminer.sort(natcmp);
 	/* Render input data (JSON) format */

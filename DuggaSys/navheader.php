@@ -4,11 +4,11 @@
 				<?php
 					include_once "basic.php";
 					if($noup=="COURSE"){
-						echo "<a href='courseed.php'><img src='css/svg/Up.svg'></a>";
+						echo "<a href='courseed.php'><img src='../Shared/icons/Up.svg'></a>";
 					}else if($noup=="SECTION"){
 						$cid=getOPG('cid');
 						$coursevers=getOPG('coursevers');
-						echo "<a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='css/svg/Up.svg'></a>";
+						echo "<a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Up.svg'></a>";
 					}else{
 							// None!
 					}
@@ -21,12 +21,12 @@
 				<?php 
 					if(checklogin()) {
 						echo "<label id='userName'>".$_SESSION['loginname']."</label>";		
-						echo "<span id='loginbutton'><img class='loggedin' src='css/svg/Man.svg' onclick='processLogout(\"";
+						echo "<span id='loginbutton'><img class='loggedin' src='../Shared/icons/Man.svg' onclick='processLogout(\"";
 						echo $loginvar;
 						echo "\");' /></span>";
 					}else{
 						echo "<label id='userName'>Guest</label>";		
-						echo "<span id='loginbutton'><img src='css/svg/Man.svg' onclick='showLoginPopup();' /></span>";
+						echo "<span id='loginbutton'><img src='../Shared/icons/Man.svg' onclick='showLoginPopup();' /></span>";
 					}
 
 				?>

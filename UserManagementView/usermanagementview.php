@@ -9,19 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
  	<title>WEBUG - Program outline</title>
 
-    <!-- Bootstrap -->
-
 	<!-- My Bootstrap override -->
-	<link href="studentfollowup.css" rel="stylesheet">
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="jquery-1.11.0.min.js"></script>
-    <script src="js/connectorLib.js"></script>
-	<script src="studentfollowup.js"></script>
+	<link href="usermanagementview.css" rel="stylesheet">
+    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="usermanagementview.js"></script>
 
   </head>
   <body>
   	<nav class="my-nav">
-      <a href="index.html">WEBUG</a>
+      <a id="studyprogram-label" href="index.html"></a>
       <div class="my-input-group">
          <input type="text" class="form-control" placeholder="Program" name="studyprogram" id="studyprogram">
          <button type="button" onclick="loadData(studyprogram.value, null);">Sök</span></button>            
