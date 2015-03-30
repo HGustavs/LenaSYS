@@ -214,13 +214,39 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	</table>
 
 	<table width="100%"><tr>
-			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateUser();' /></td>
+			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
 		</tr>
 	</table>
 
 	</div>
 
 	<!--- Code Example Cog Wheel Dialog END --->
+
+	<div id='chooseTemplate' class='loginBox' style='width:464px;display:none;'>
+
+	<div class='loginBoxheader'>
+	<h3>Edit Example</h3>
+	<div onclick='closeEditExample();'>x</div>
+	</div>
+	<table width="100%">
+		<tr>
+				<td id="templat1" class="tmpl"><input id="templateno" type="hidden" value="0" />
+					<img class='templatethumbicon wiggle' onclick='changetemplate("1");' src='../Shared/icons/template1_butt.svg' /></td>
+				<td id="templat2" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("2");' src='../Shared/icons/template2_butt.svg' /></td>
+				<td id="templat3" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("3");' src='../Shared/icons/template3_butt.svg' /></td>
+				<td id="templat4" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("4");' src='../Shared/icons/template4_butt.svg' /></td>
+				<td id="templat5" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("5");' src='../Shared/icons/template5_butt.svg' /></td>
+		</tr>		
+	</table>
+
+	<table width="100%"><tr>
+			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
+		</tr>
+	</table>
+
+	</div>		
+
+	<!--- Template Choosing Box --->
 
 
 	<?php

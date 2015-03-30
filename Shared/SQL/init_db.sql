@@ -270,117 +270,40 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
-
 /* boxes with information in a certain example */
 CREATE TABLE box(
-		boxid				INTEGER UNSIGNED NOT NULL,
-		exampleid 			MEDIUMINT UNSIGNED NOT NULL,
+		boxid					INTEGER UNSIGNED NOT NULL,
+		exampleid 		MEDIUMINT UNSIGNED NOT NULL,
 		boxtitle			VARCHAR(20),
-		boxcontent			VARCHAR(39),
+		boxcontent		VARCHAR(64),
+		filename			VARCHAR(64),
 		settings			VARCHAR(1024),
+		wordlistid		MEDIUMINT UNSIGNED,
+		segment				TEXT,
 		PRIMARY KEY(boxid, exampleid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-/* Creates a subclass if it doesn't exsist when updating contents in a box. */
-delimiter //
-CREATE TRIGGER checkBoxContents BEFORE UPDATE ON box
-FOR EACH ROW
-BEGIN
-     IF ((UPPER(NEW.boxcontent) LIKE "DOCUMENT") AND ((Select count(*) FROM descriptionBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid) <>"1"))THEN       
-        	INSERT INTO descriptionBox (boxid, exampleid, segment) VALUES (NEW.boxid, NEW.exampleid, "");
-     END IF;
-     IF ((UPPER(NEW.boxcontent) LIKE "CODE") AND ((Select count(*) FROM codeBox WHERE exampleid=NEW.exampleid AND boxid=NEW.boxid) <>"1")) THEN       
-        	INSERT INTO codeBox (boxid, exampleid, filename,wordlistid) VALUES (NEW.boxid, NEW.exampleid, "", (select MIN(wordlistid) from wordlist));
-     END IF;
- END;//
- delimiter ;
-
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,1,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,1,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,2,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,2,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,3,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,3,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,4,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,4,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,5,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,5,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,6,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,6,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,7,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,7,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,8,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,8,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,9,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,9,"Title","Document","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (1,10,"Title","Code","[viktig=1]");
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings) VALUES (2,10,"Title","Document","[viktig=1]");
-
-CREATE TABLE codeBox(
-		boxid         INTEGER UNSIGNED NOT NULL,
-		exampleid     MEDIUMINT UNSIGNED NOT NULL,
-		filename			VARCHAR(1024),
-		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser				VARCHAR(64),
-		wordlistid			MEDIUMINT UNSIGNED NOT NULL,
-
-		PRIMARY KEY(boxid, exampleid),
-		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid),
-		FOREIGN KEY (wordlistid) REFERENCES wordlist(wordlistid)
-);
-
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,1,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,2,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,3,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,4,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,5,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,6,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,7,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,8,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,9,"js1.js",1);
-INSERT INTO codeBox(boxid,exampleid,filename,wordlistid) VALUES (1,10,"js1.js",1);
-
-CREATE TABLE descriptionBox(
-		boxid         INTEGER UNSIGNED NOT NULL,
-		exampleid     MEDIUMINT UNSIGNED NOT NULL,
-		segment				VARCHAR(64000),
-		ts	 					TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		appuser				VARCHAR(64),
-
-		PRIMARY KEY(boxid, exampleid),
-		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
-);
-
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,1,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,2,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,3,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,4,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,5,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,6,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,7,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,8,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,9,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
-INSERT INTO descriptionBox(boxid,exampleid,segment) VALUES (2,10,"<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1,1,"Title","Code","[viktig=1]","js1.js");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
 		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		codeBoxid         	INTEGER UNSIGNED NOT NULL,
+		boxid         	INTEGER UNSIGNED NOT NULL,
 		exampleid    		MEDIUMINT UNSIGNED NOT NULL,				
 		istart				INTEGER,
 		iend				INTEGER,
 		irowdesc			VARCHAR(1024),
 		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
-		PRIMARY KEY(impid, exampleid, codeBoxid),
+		PRIMARY KEY(impid, exampleid, boxid),
 		FOREIGN KEY (uid) REFERENCES user (uid),
-		FOREIGN KEY (codeBoxid, exampleid) REFERENCES codeBox (boxid, exampleid)
+		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 	
-INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (3,1,16,8,1);
-INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (5,1,15,19,1);
-INSERT INTO improw(exampleid,codeBoxid,istart,iend,uid) VALUES (7,1,10,12,2);
+INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,3,5,1);
+INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,8,11,1);
 
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(

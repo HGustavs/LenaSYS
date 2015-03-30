@@ -8,25 +8,6 @@ Execution Order
 ---------------------
  #1 setup() is first function to be called this then invokes returned() callback through AJAX
  #2 returned() is next function to be called as a callback from setup.
- 		#1 addTemplatebox() is called in order to create the main template box
- 		#2 createboxmenu() is called next to populate the menus
- 		#3 createcodedrop() is called next to populate code dropdowns
-			  displayImplines(); is called to populate the important lines dropdown
-			  displayFilelist(); is called to populate the important files list	
-		#4 removeTemplatebox() removes the template box that was created if no template was selected
-		#5 createhotdogmenu(); for showing a hotdog menu on mobile?
-				toggleClass is called by generated javascript in hotdog menu
-		#6 displaywordlist(); adds wordlist display feature.
-
-2do:
-
-   Fix templating choice screen etc
-   Reconnect user interface
-   Make dialogs work
-   Make dropdowns for forward and backward work
-   Go over code to look for cruft
-   Make sure mobile theme at least partially work
-       Does finger scrolling work for mobile vers?
 
 Testing Link:
 
@@ -84,9 +65,10 @@ function returned(data)
 		}
 		
 		// User can choose template if no template has been choosen and the user has write access.
+		console.log("Templ::"+retdata['templateid']+" "+retdata['writeaccess']);
 		if((retdata['templateid'] == 0)){
 			if(retdata['writeaccess'] == "w"){
-				choosetemplate();
+				$("#chooseTemplate").css("display","block");
 				return;
 			}else{
 				console.log("NoWrite "+retdata['writeaccess']+"!");
@@ -102,9 +84,10 @@ function returned(data)
 
 		// Clear div2
 		$("#div2").html("");
-			
+
 		// create boxes
-		for(i=0;i<retdata['numbox'];i++){
+	
+		for(var i=0;i<retdata['numbox'];i++){
 			
 			var contentid="box"+retdata['box'][i][0];
 			var boxid=retdata['box'][i][0];
@@ -133,12 +116,9 @@ function returned(data)
 					}
 					$("#"+contentid).css("margin-top", boxmenuheight-1);
 
-					// Create a codedrop for users with write access.	
-					if(retdata['writeaccess'] == "w"){
-						//createcodedrop(contentid,boxid);
-					}
 					rendercode(boxcontent,boxid);
 			}else if(boxtype == "DOCUMENT"){
+				
 					// Print out description in a document box
 					$("#"+contentid).removeClass("codebox").addClass("descbox");
 					var desc = boxcontent;
@@ -147,16 +127,14 @@ function returned(data)
 					// Highlight important words!
 					var iwcounter=0;
 					important = retdata.impwords;
-					for(var i=0;i<important.length;i++){
-							var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[i]+"\")' onmouseout='dehighlightKeyword(\""+important[i]+"\")'>"+important[i]+"</span>";														
-							desc=replaceAll(important[i],sstr,desc);
+					for(j=0;j<important.length;j++){
+							var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+							desc=replaceAll(important[j],sstr,desc);
 					}
-														
-					//  Fill description with the document.
-					var docuwindow = document.getElementById(contentid);
-					docuwindow.innerHTML = desc;
 					
-					
+					/* Assign Content */
+					$("#"+contentid).html(desc);
+
 					if($("#"+contentid+"menu").height() == null){
 						var boxmenuheight = 0;
 					}else{
@@ -174,9 +152,6 @@ function returned(data)
 					}
 					$("#"+contentid).css("margin-top", boxmenuheight);
 					
-					if(retdata['writeaccess'] == "w"){
-						docuwindow.setAttribute("contenteditable","true");
-					}
 			}else if(boxtype == "NOT DEFINED"){
 					if(retdata['writeaccess'] == "w"){
 						createboxmenu(contentid,boxid,boxtype);
@@ -190,58 +165,10 @@ function returned(data)
 						$("#"+contentid).css("margin-top", boxmenuheight);
 					}
 			}
-			
+
 		}
 
-		/* Remove unnecessary template boxes*/
-		removeTemplatebox();
-		createhotdogmenu();
-		
-		// Populate interface with returned data (all relevant data is returned)
-		//----------------------------------------------------
-
-		// Make before dropdown
-		str="<div class='dropdownback dropdownbackStyle'>Skip Backward</div>";
-		for(i=0;i<data['before'].length;i++){
-				str+="<span id='F"+data['before'][i][1]+"' onclick='gotoPosition(\""+data['before'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['before'][i][0]+"</span>";
-		}
-		var before=document.getElementById('backwdrop');
-		before.innerHTML=str;
-		
-		// If we have no items before the current item - hide before button and dropdown
-		var before=document.getElementsByClassName('beforebutton');
-		if(data['before'].length==0){
-			for(var i=0; i<before.length; i++){
-				before[i].childNodes[0].style.opacity="0.2";
-				before[i].onclick="";
-			}
-		}else{
-			for(var i=0; i<before.length; i++){
-				before[i].style.opacity="1";	
-			}	
-		}
-
-		// If we have no items before the current item - hide before button and dropdown
-		var after=document.getElementsByClassName('afterbutton');
-		if(data['after'].length==0){
-			for(var i=0; i<after.length; i++){
-				after[i].childNodes[0].style.opacity="0.2";
-				after[i].onclick="";
-			}
-		}
-	
-		// Make after dropdown
-		str="<div class='dropdownback dropdownbackStyle'>Skip Forward</div>";
-		for(i=0;i<data['after'].length;i++){
-				str+="<span id='F"+data['after'][i][1]+"' onclick='gotoPosition(\""+data['after'][i][1]+"\")' class='dropdownitem dropdownitemStyle'>"+data['after'][i][0]+"</span>";
-		}
-		var after=document.getElementById('forwdrop');
-		after.innerHTML=str;		
-		
-		//Set the editing properties for mobile and desktop version
-		setEditing();
 }
-
 
 //----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialog box for editing a code example
@@ -281,13 +208,6 @@ function displayEditExample(boxid)
 	}
 	$("#before").html(bestr);
 	$("#after").html(afstr);
-
-	// Get the filename for current codebox
-	for(var i=0; i<retdata['filename'].length; i++){
-		if((retdata['filename'][i][0]) == boxid){
-			var filename = retdata['filename'][i][1];
-		}
-	}
 
 	$("#editExample").css("display","block");
 }
@@ -371,7 +291,7 @@ function createboxmenu(contentid, boxid, type){
 				//----------------------------------------------------------------------------------------- CODE
 				
 				var str = "<table cellspacing='2'><tr>";
-				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][3]+'</span></td>';
+				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][4]+'</span></td>';
 
 				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 								
@@ -572,6 +492,7 @@ function SkipF()
 		}
 }
 */
+
 
 //----------------------------------------------------------------------------------
 // Skip: Handles skipping either forward or backward. If pressed show menu
@@ -1305,4 +1226,42 @@ function setEditing(){
 	}
 }
 
-/* HIDE/SHOW DROP MENUS --> START*/
+//----------------------------------------------------------------------------------
+// changeTemplate: Change template by updating hidden field
+//----------------------------------------------------------------------------------
+
+function changetemplate(templateno)
+{
+	$(".tmpl").each(function( index ) {
+			$(this).css("background","#ccc");
+	});
+
+	$("#templat"+templateno).css("background","#fc4");
+	$("#templateno").val(templateno);
+}
+
+//----------------------------------------------------------------------------------
+// updateTemplate: Write template hidden field to database
+//----------------------------------------------------------------------------------
+
+function updateTemplate()
+{
+		templateno=$("#templateno").val();
+		$("#chooseTemplate").css("display","none");
+		$.ajax({url: "editorService.php", type: "POST", data: "courseid="+querystring['courseid']+"&exampleid="+querystring['exampleid']+"&opt=SETTEMPL"+"&cvers="+querystring['cvers']+"&templateno="+templateno, dataType: "json", success: returned});											
+}
+
+function closeEditContent()
+{
+		$("#editContent").css("display","none");
+}
+
+function closeEditExample()
+{
+		$("#editExample").css("display","none");
+}
+
+function updateContent()
+{
+
+}
