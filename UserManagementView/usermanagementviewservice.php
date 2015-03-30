@@ -1,21 +1,44 @@
-<?php 
+<?php
 
-// Connect to a MySQL database using PHP PDO
-$dsn      = 'mysql:host=127.0.0.1;dbname=resultdb;';
-$login    = 'root';
-$password = '1qaz2wsx';
-$options  = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
-//$pdo = new PDO($dsn, $login, $password, $options);
-try {
-  $pdo = new PDO($dsn, $login, $password, $options);
-}
-catch(Exception $e) {
-  throw $e; // For debug purpose, shows all connection details
-  //throw new PDOException('Could not connect to database, hiding connection details.'); // Hide connection details.
+//---------------------------------------------------------------------------------------------------------------
+// UserMangagementService - Displays User Course Status or Study Program Status
+//---------------------------------------------------------------------------------------------------------------
+
+date_default_timezone_set("Europe/Stockholm");
+
+// Include basic application services!
+include_once "basic.php";
+include_once "../Shared/sessions.php";
+
+
+// Connect to database and start session
+pdoConnect();
+session_start();
+
+$pnr = getOP('pnr');
+$studyprogram = getOP('studyprogram');
+
+
+if(isset($_SESSION['uid'])){
+		$userid=$_SESSION['uid'];
+}else{
+		$userid="UNK";		
+} 
+
+$hr="";
+if(isSuperUser($userid)){
+		$ha=true;
+}else{
+		$ha=false;
 }
 
-$pnr = isset($_GET['pnr']) && !empty($_GET['pnr']) ? $_GET['pnr'] : null;
-$studyprogram = isset($_GET['studyprogram'])&& !empty($_GET['studyprogram']) ? $_GET['studyprogram'] : null;
+$debug="NONE!";	
+
+//------------------------------------------------------------------------------------------------
+// Services
+//------------------------------------------------------------------------------------------------
+
+
 
 $data = array();
 //$pnr ="920824-0599";
@@ -52,6 +75,12 @@ array_push($data, array("studyprogram"));
 
 }
 
+$array = array(
+	"data" => $data,
+	"debug" => $debug,
+	'writeaccess' => $ha,
+	'readaccess' => $hr,
+);
 
 header('Content-type: application/json');
 echo json_encode($data);
