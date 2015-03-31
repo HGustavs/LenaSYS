@@ -108,7 +108,8 @@
 					$stylesheet=$row['stylesheet'];
 					$numbox=$row['numbox'];					
 			}
-									
+
+
 			// Read ids and names from before/after list
 			$beforeafter = array();
 			$query = "select exampleid,sectionname,examplename,beforeid,afterid from codeexample where cid='".$cid."' and cversion='".$cvers."' order by sectionname,examplename;";
@@ -117,7 +118,7 @@
 			while ($row = mysql_fetch_assoc($result)){
 		  		$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
 			}  
-									
+
 			// iteration to find after examples - We start with $exampleid and at most 5 are collected
 			$cnt=0;
 			$forward_examples = array();	
@@ -130,8 +131,8 @@
 					}					
 					if($currid!=null){
 							array_push($forward_examples,$beforeafter[$currid]);
-							$cnt++;
 					}
+					$cnt++;
 			}while($currid!=null&&$cnt<5);
 
 			// iteration to find before examples - We start with $exampleid and at most 5 are collected 
@@ -146,10 +147,10 @@
 					}					
 					if($currid!=null){
 							array_push($backward_examples,$beforeafter[$currid]);
-							$cnt++;
 					}
+					$cnt++;
 			}while($currid!=null&&$cnt<5);
-				  
+
 		  // Read important lines
 			$imp=array();
 			$query = "SELECT boxid,istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;";
@@ -176,6 +177,7 @@
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($wordlists,array($row['wordlistid'],$row['wordlistname']));					
 			} 
+
 			
 		  // Read important wordlist
 			$impwordlist=array();
@@ -185,25 +187,30 @@
 			while ($row = mysql_fetch_assoc($result)){
 		  		array_push($impwordlist,$row['word']);					
 			}  
+
 			
 			// Read Directory - Codeexamples
 			$directory=array();
-			$dir = opendir('./codeupload');
-		  while (($file = readdir($dir)) !== false) {
-		  	if(endsWith($file,".js")){
-		    		array_push($directory,$file);		
-		    }
-		  }  
+			if(file_exists('./codeupload')){
+				$dir = opendir('./codeupload');
+			  while (($file = readdir($dir)) !== false) {
+			  	if(endsWith($file,".js")){
+			    		array_push($directory,$file);		
+			    }
+			  }  
+			}
 
-      // Read Directory - Images
       $images=array();
-      $img_dir = opendir('./imgupload');
-      while (($img_file = readdir($img_dir)) !== false) {
-          if(endsWith($img_file,".png")){
-              array_push($images,$img_file);
-          }
-      }
-
+			if(file_exists('./imgupload')){
+		      // Read Directory - Images
+		      $img_dir = opendir('./imgupload');
+		      while (($img_file = readdir($img_dir)) !== false) {
+		          if(endsWith($img_file,".png")){
+		              array_push($images,$img_file);
+		          }
+		      }		
+			}
+			
 			// Collect information for each box
 			$box=array();   // get the primary keys for all types kind of boxes.
 			$query = "SELECT boxid,boxcontent,boxtitle,filename,wordlistid,segment FROM box WHERE exampleid=$exampleid ORDER BY boxid;";
@@ -216,21 +223,27 @@
 					if(strcmp("DOCUMENT",$boxcontent)===0){
 							$content=$row['segment'];
 					}else{
-							$filename="./codeupload/".$filename;
-							$handle = @fopen($filename, "r");
-							if ($handle) {
-							    while (($buffer = fgets($handle, 1024)) !== false) {
-											$content=$content.$buffer;
+							
+							if(file_exists('./codeupload')){
+									$filename="./codeupload/".$filename;
+									
+									$handle = @fopen($filename, "r");
+									if ($handle) {
+									    while (($buffer = fgets($handle, 1024)) !== false) {
+													$content=$content.$buffer;
+											}
+									    if (!feof($handle)) {
+								       		$content.="Error: Unexpected end of file ".$filename."\n";			    
+									    }
+									    fclose($handle);
 									}
-							    if (!feof($handle)) {
-						       		$content.="Error: Unexpected end of file ".$filename."\n";			    
-							    }
-							    fclose($handle);
+							}else{
+									$content="No file found!";
 							}
 					}
 					array_push($box,array($row['boxid'],$boxcontent,$content,$row['wordlistid'],$row['boxtitle']));
 			}						
-				
+
 			$array = array(
 					'before' => $backward_examples,
 					'after' => $forward_examples,
