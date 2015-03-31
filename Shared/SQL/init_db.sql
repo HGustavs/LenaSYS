@@ -360,10 +360,7 @@ CREATE TABLE `studentresultat` (
   `termin` varchar(5) DEFAULT NULL,
   `resultat` decimal(3,1) DEFAULT NULL,
   `avbrott` date DEFAULT NULL,
-  PRIMARY KEY (`sid`),
-  KEY `anmkod` (`anmkod`),
-  KEY `pnr` (`pnr`),
-  KEY `kurskod` (`kurskod`),
+  PRIMARY KEY (sid, anmkod, pnr, kurskod),
   CONSTRAINT `studentresultat_ibfk_1` FOREIGN KEY (`anmkod`) REFERENCES `programkurs` (`anmkod`),
   CONSTRAINT `studentresultat_ibfk_2` FOREIGN KEY (`pnr`) REFERENCES `user` (`ssn`),
   CONSTRAINT `studentresultat_ibfk_3` FOREIGN KEY (`kurskod`) REFERENCES `programkurs` (`kurskod`)
