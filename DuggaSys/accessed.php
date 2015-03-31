@@ -90,7 +90,7 @@ pdoConnect();
 		</tr>
 	</table>
 
-	</div>
+	</div> 
 	<!--- Add Users Dialog END --->
 		
 </body>
