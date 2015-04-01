@@ -123,7 +123,12 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 		$("#editSection").css("display","block");
 		
 }
-
+function hidelogin(){
+$("#YO").hide();
+}
+function hidelogout(){
+$("#YE").hide();
+}
 function changedType()
 {
 		kind=$("#type").val();		
