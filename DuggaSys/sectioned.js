@@ -304,7 +304,7 @@ function returnedSection(data)
 									str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showDoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 								}	
 		
-								if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+item['moment']+"\",\""+item['gradesys']+"\");' />";
+								if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+item['moment']+"\",\""+item['gradesys']+"\");' />";
 		
 								if(parseInt(item['kind']) === 3||parseInt(item['kind']) === 4){
 										var grady=-1;
