@@ -19,32 +19,9 @@ function err ($errmsg,$hdr='')
         exit;
 }
 
-function dbConnect()
-{
-        $printHeaderFunction=0;
-        // Send header info to err()?
-        if ($printHeaderFunction) {
-                $hdr = 'Database Connection Error';
-        } else {
-                $hdr = '';
-        }
-
-        // Connect to DB server
-        $OC_db = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or err("Could not connect to database ".mysql_errno(),$
-        mysql_set_charset('utf8',$OC_db);
-        // Select DB
-        mysql_select_db(DB_NAME) or err("Could not select database \"".DB_NAME."\" error code".mysql_errno(),$hdr);
-}
-
 function pdoConnect()
 {
-        global $pdo;
-
-        $pdo = new PDO(
-                'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8',
-                DB_USER,
-                DB_PASSWORD
-        );
+$dbh = new PDO('mysql:host=localhost; DB_USERNAME', 'DB_PASSWORD', $DB_USERNAME, $DB_PASSWORD);
 }
 ?>
 
