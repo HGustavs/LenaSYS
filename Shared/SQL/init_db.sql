@@ -17,7 +17,7 @@ CREATE TABLE user(
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
 		PRIMARY KEY(uid)		
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
@@ -36,7 +36,7 @@ CREATE TABLE course(
 		activeedversion 	VARCHAR(8),
 		PRIMARY KEY(cid),
 		FOREIGN KEY (creator) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
 INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV13G","Futhark",NOW(),1,0);
@@ -52,7 +52,7 @@ CREATE TABLE user_course(
 		PRIMARY KEY(uid, cid),
 		FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
 		FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO user_course(uid,cid,access) values (1,1,"W");
 INSERT INTO user_course(uid,cid,access) values (2,1,"R");
@@ -151,7 +151,7 @@ CREATE TABLE vers(
 		coursenamealt	VARCHAR(45) NOT NULL,
 		FOREIGN KEY (cid) REFERENCES course(cid),		
 		PRIMARY KEY(cid,coursecode,vers)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8212","HT 2012");
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8111","HT 2013");
@@ -164,7 +164,7 @@ CREATE TABLE fileLink(
 	cid						INT UNSIGNED NOT NULL,
 	PRIMARY KEY (fileid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 
 /* Section contains a list of the course sections for a version of a course in the database */
@@ -176,7 +176,7 @@ CREATE TABLE template(
 		stylesheet 			VARCHAR(39) NOT NULL,
 		numbox				INTEGER NOT NULL,
 		PRIMARY KEY(templateid, stylesheet)
-)CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO template (templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
@@ -205,7 +205,7 @@ CREATE TABLE codeexample(
 		FOREIGN KEY (cid) REFERENCES course (cid),
 		FOREIGN KEY (uid) REFERENCES user (uid),
 		FOREIGN KEY (templateid) REFERENCES template (templateid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
@@ -227,7 +227,7 @@ CREATE TABLE wordlist(
 		uid					INT UNSIGNED NOT NULL,
 		PRIMARY KEY(wordlistid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 	
 INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
@@ -255,7 +255,7 @@ CREATE TABLE word(
 		PRIMARY KEY(wordid, wordlistid),
 		FOREIGN KEY (uid) REFERENCES user (uid),
 		FOREIGN KEY(wordlistid) REFERENCES wordlist(wordlistid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
@@ -282,7 +282,7 @@ CREATE TABLE box(
 		segment				TEXT,
 		PRIMARY KEY(boxid, exampleid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1,1,"Title","Code","[viktig=1]","js1.js");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
@@ -300,7 +300,7 @@ CREATE TABLE improw(
 		PRIMARY KEY(impid, exampleid, boxid),
 		FOREIGN KEY (uid) REFERENCES user (uid),
 		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 	
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,3,5,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,8,11,1);
@@ -316,7 +316,7 @@ CREATE TABLE impwordlist(
 		PRIMARY KEY(wordid),
 		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 		FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"elem",1);
@@ -350,7 +350,7 @@ CREATE TABLE `programkurs` (
   `platser` int(11) DEFAULT NULL,
   `termin` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`pkid`)
-) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=latin1;
+) AUTO_INCREMENT=168 CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB; 
 
 CREATE TABLE `studentresultat` (
   `sid` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -367,7 +367,7 @@ CREATE TABLE `studentresultat` (
   CONSTRAINT `studentresultat_ibfk_1` FOREIGN KEY (`anmkod`) REFERENCES `programkurs` (`anmkod`),
   CONSTRAINT `studentresultat_ibfk_2` FOREIGN KEY (`pnr`) REFERENCES `user` (`ssn`),
   CONSTRAINT `studentresultat_ibfk_3` FOREIGN KEY (`kurskod`) REFERENCES `programkurs` (`kurskod`)
-) ENGINE=InnoDB AUTO_INCREMENT=1869 DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT=1869 CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB; 
 
 INSERT INTO `programkurs` VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationssäkerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och användbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
 INSERT INTO `studentresultat` VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
