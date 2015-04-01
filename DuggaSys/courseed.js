@@ -43,6 +43,8 @@ function closeSelect() {
 
 function newCourse() {
 	AJAXService("NEW", {}, "COURSE");
+	
+	AJAXService("GET", {}, "COURSE");
 }
 
 function copyVersion() {
