@@ -340,37 +340,40 @@ CREATE TABLE playereditor_playbacks(
     PRIMARY KEY(id, type)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-CREATE TABLE `programkurs` (
-  `pkid` int(11) NOT NULL AUTO_INCREMENT,
-  `kull` varchar(8) DEFAULT NULL,
-  `kurskod` varchar(6) DEFAULT NULL,
-  `kursnamn` varchar(100) DEFAULT NULL,
-  `anmkod` varchar(8) DEFAULT NULL,
-  `period` mediumint(9) DEFAULT NULL,
-  `platser` int(11) DEFAULT NULL,
-  `termin` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`pkid`)
-) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=latin1;
+CREATE TABLE programkurs (
+    pkid int(11) NOT NULL AUTO_INCREMENT,
+    kull varchar(8) DEFAULT NULL,
+    kurskod varchar(6) DEFAULT NULL,
+    kursnamn varchar(100) DEFAULT NULL,
+    anmkod varchar(8) DEFAULT NULL,
+    period mediumint(9) DEFAULT NULL,
+    platser int(11) DEFAULT NULL,
+    termin varchar(45) DEFAULT NULL,
+    PRIMARY KEY (pkid)
+)  ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `studentresultat` (
-  `sid` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `pnr` varchar(11) DEFAULT NULL,
-  `anmkod` varchar(6) DEFAULT NULL,
-  `kurskod` varchar(6) NOT NULL,
-  `termin` varchar(5) DEFAULT NULL,
-  `resultat` decimal(3,1) DEFAULT NULL,
-  `avbrott` date DEFAULT NULL,
-  PRIMARY KEY (`sid`),
-  KEY `anmkod` (`anmkod`),
-  KEY `pnr` (`pnr`),
-  KEY `kurskod` (`kurskod`),
-  CONSTRAINT `studentresultat_ibfk_1` FOREIGN KEY (`anmkod`) REFERENCES `programkurs` (`anmkod`),
-  CONSTRAINT `studentresultat_ibfk_2` FOREIGN KEY (`pnr`) REFERENCES `user` (`ssn`),
-  CONSTRAINT `studentresultat_ibfk_3` FOREIGN KEY (`kurskod`) REFERENCES `programkurs` (`kurskod`)
-) ENGINE=InnoDB AUTO_INCREMENT=1869 DEFAULT CHARSET=utf8;
+CREATE TABLE studentresultat (
+    sid mediumint(9) NOT NULL AUTO_INCREMENT,
+    pnr varchar(11) DEFAULT NULL,
+    anmkod varchar(6) DEFAULT NULL,
+    kurskod varchar(6) NOT NULL,
+    termin varchar(5) DEFAULT NULL,
+    resultat decimal(3 , 1 ) DEFAULT NULL,
+    avbrott date DEFAULT NULL,
+    PRIMARY KEY (sid),
+    KEY anmkod (anmkod),
+    KEY pnr (pnr),
+    KEY kurskod (kurskod),
+    CONSTRAINT studentresultat_ibfk_1 FOREIGN KEY (anmkod)
+        REFERENCES programkurs (anmkod),
+    CONSTRAINT studentresultat_ibfk_2 FOREIGN KEY (pnr)
+        REFERENCES user (ssn),
+    CONSTRAINT studentresultat_ibfk_3 FOREIGN KEY (kurskod)
+        REFERENCES programkurs (kurskod)
+)  ENGINE=InnoDB AUTO_INCREMENT=1869 DEFAULT CHARSET=utf8;
 
-INSERT INTO `programkurs` VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationssäkerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och användbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
-INSERT INTO `studentresultat` VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
+INSERT INTO programkurs VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationssäkerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och användbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
+INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
 
 
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
