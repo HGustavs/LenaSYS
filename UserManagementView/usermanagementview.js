@@ -234,5 +234,6 @@ function renderStudyprogramView(data){
 			//console.log(document.getElementById(data[j].termin)); 
 			document.getElementById(student_data[j].termin).appendChild(newPanelBodyContainerListGroupItem);
 		}
+		/* Added this... */
 
 }

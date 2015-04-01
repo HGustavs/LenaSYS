@@ -287,6 +287,14 @@ header {
 	padding-left:14px;
 }
 
+.loggedout:hover {
+	background-color: #50a750;
+	width:40px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	padding-left:14px;
+}
+
 .loggedin {
 	background-color: #50a750;
 	width:40px;
@@ -296,7 +304,7 @@ header {
 }
 
 .loggedin:hover {
-	background-color: #3d9e3d;
+	background-color: #c75050;
 	width:40px;
 	padding-top: 13px;
 	padding-bottom: 13px;
