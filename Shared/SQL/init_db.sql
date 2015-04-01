@@ -233,14 +233,16 @@ INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
 
-/* Delete and update all foreign keys before deleting a wordlist */
+/**
+ * Delete and update all foreign keys before deleting a wordlist 
+ */
 delimiter //
 CREATE TRIGGER checkwordlists BEFORE DELETE ON wordlist
 FOR EACH ROW
 BEGIN
 	 DELETE FROM word WHERE wordlistid = OLD.wordlistid;    
-     IF ((Select count(*) FROM codeBox WHERE wordlistid=OLD.wordlistid)>"0")THEN   
-     		UPDATE codeBox SET wordlistid = (SELECT MIN(wordlistid) FROM wordlist WHERE wordlistid != OLD.wordlistid) WHERE wordlistid=OLD.wordlistid;
+     IF ((Select count(*) FROM box WHERE wordlistid=OLD.wordlistid)>"0")THEN   
+     		UPDATE box SET wordlistid = (SELECT MIN(wordlistid) FROM wordlist WHERE wordlistid != OLD.wordlistid) WHERE wordlistid=OLD.wordlistid;
      END IF;
  END;//
  delimiter ;
