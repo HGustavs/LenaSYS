@@ -19,9 +19,7 @@ function err ($errmsg,$hdr='')
         exit;
 }
 
-function pdoConnect()
-{
 $dbh = new PDO('mysql:host=localhost; DB_USERNAME', 'DB_PASSWORD', $DB_USERNAME, $DB_PASSWORD);
-}
+
 ?>
 
