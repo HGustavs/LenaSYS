@@ -170,7 +170,7 @@ function returnedCourse(data) {
 	// Course Name
 	str += "<div id='Courselistc' >";
 
-	str += "<div id='lena' class='head'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a> Course Organization System TEST</div>";
+	str += "<div id='lena' class='head'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a> Course Organization System now VERY GOOD</div>";
 
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
