@@ -42,7 +42,7 @@ pdoConnect();
 	
 	<!-- Result Popover START -->
 
-	<div id='resultpopover' class='resultPopover' style='display:none' onmousemove='moveDist(event);'>
+	<div id='resultpopover' class='resultPopover' onmousemove='moveDist(event);'>
 
 		<div class='loginBoxheader'>
 				<h3 id='Nameof'>Show Results</h3>
