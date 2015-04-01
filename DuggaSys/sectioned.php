@@ -26,7 +26,7 @@ pdoConnect();
 	<?php
 		$noup="COURSE";
 		$loginvar="SECTION"; 
-		include 'navheader.php';
+		include 'navheader1.php';
 	?>
 		
 	<!-- content START -->
