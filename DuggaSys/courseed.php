@@ -30,7 +30,7 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 			
-	<!--- Section List --->
+	<!-- Section List -->
 	<div id='Courselist'></div>
 
 	</div>
@@ -41,7 +41,7 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 
-	<!--- Edit Section Dialog START --->
+	<!-- Edit Section Dialog START -->
 	<div id='editCourse' class='loginBox' style='width:464px;display:none;'>
 
 	<div class='loginBoxheader'>
@@ -54,7 +54,7 @@ pdoConnect();
 			<input type='hidden' id='cid' value='Toddler' /></td>
 			<td>Course Name: <input class='form-control textinput' type='text' id='coursename' value='Course Name' /></td>
 			<!--TODO: add correct course code structure -->
-			<!--<td>Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>-->		
+			<td>Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>	
 		</tr>
 		<tr>
 			<td>Vers ID: <input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></td>		
@@ -81,7 +81,7 @@ pdoConnect();
 	</table>
 
 	</div>
-	<!--- Edit Section Dialog END --->
+	<!-- Edit Section Dialog END -->
 	
 </body>
 </html>
