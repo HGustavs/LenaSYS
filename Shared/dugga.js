@@ -220,11 +220,15 @@ function AJAXService(opt,apara,kind)
 	}
 }
 
+var tries = 0;
 function processLogin(kind) {
-		var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-
+	
+	var username = $("#login #username").val();
+	var saveuserlogin = $("#login #saveuserlogin").val();
+	var password = $("#login #password").val();
+		
+		
+	if(tries < 3){
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -256,19 +260,36 @@ function processLogin(kind) {
 					}				
 				}else{
 					console.log("Failed to log in.");
+					tries ++;
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
+						$("#login #message").html("<div class='alert danger'>Wrong username or password! You have "+tries+" more tries!</div>");
 					}
 					$("input#username").css("background-color", "#ff7c6a");
 					$("input#password").css("background-color", "#ff7c6a");
 				}
 			},
 			error:function() {
+				
 				console.log("error");
 			}
 		});
+		
+	}else{
+	
+		$("#login #message").html("<div class='alert danger'>3 tries made. Try again in 20 seconds</div>");
+		setTimeout(loginsettofuntional, 3000);
+		$("input#username").css("background-color", "white");
+					$("input#password").css("background-color", "white");
+		
+	}
+}
+
+
+function loginsettofuntional() {
+$("#login #message").html("<div class='alert danger'>Try again!</div>");
+	tries = 0;
 }
 
 function processLogout(kind) {
