@@ -190,7 +190,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	<div id='editExample' class='loginBox' style='width:464px;display:none;'>
 
 	<div class='loginBoxheader'>
-	<h3>Edit Examplew</h3>
+	<h3>Edit Example</h3>
 	<div onclick='closeEditExample();'>x</div>
 	</div>
 	<table width="100%">
