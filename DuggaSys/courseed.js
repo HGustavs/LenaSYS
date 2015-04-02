@@ -213,7 +213,7 @@ function returnedCourse(data) {
 			str += "<span><a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "'>" + item['coursename'] + "</a></span>";
 			if (data['writeaccess']) {
 				str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
-				str += "<img id='dorf' style='float:right;' src='../Shared/icons/Cogwheel.svg' ";
+				str += "<img id='dorf' style='float:right;margin-top:4px' src='../Shared/icons/Cogwheel.svg' ";
 				str += " onclick='selectCourse(\"" + item['cid'] + "\",\"" + item['coursename'] + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' >";
 			}
 
