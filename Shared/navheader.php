@@ -39,7 +39,7 @@
 					}
 
 					if(checklogin()) {
-							echo "<td class='navName'><label id='userName'>".$_SESSION['loginname']."</label></td>";		
+							echo "<td class='navName'><label id='userName' onclick='redirect()'>".$_SESSION['loginname']."</label></td>";		
 							echo "<td id='loginbutton' class='loggedin'><img src='../Shared/icons/Man.svg' onmouseover=\"this.src='../Shared/icons/logout_button.svg'\" onmouseout=\"this.src='../Shared/icons/Man.svg'\" onclick='processLogout(\"";
 							echo $loginvar;
 							echo "\");' /></td>";
