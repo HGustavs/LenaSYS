@@ -336,3 +336,7 @@ function hideDuggaInfoPopup()
 		$("#duggaInfoBox").css("display","none");
 		$("#overlay").css("display","none");
 }
+function redirect()
+{
+		window.location.href = "../UserManagementView/teacherView.php";
+}
