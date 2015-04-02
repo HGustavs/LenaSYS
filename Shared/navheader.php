@@ -9,7 +9,7 @@
 					
 					// Set the target for the 'Upward' Button
 					if($noup=="COURSE"){
-							echo "<td class='navButt'><a href='courseed.php'><img src='../Shared/icons/Up.svg'></a></td>";
+							echo "<td class='navButt'><a href='courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else if($noup=="SECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
