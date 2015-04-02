@@ -238,3 +238,23 @@ function returnedCourse(data) {
 	//resets all inputs
 
 }
+
+//depending on the value of switch different loginboxes appear
+var switchd = 1;
+function showForgontPw(){
+	if(switchd == 1){
+		$("#login2").css("display", "block");
+		$("#login").css("display", "none");
+		switchd++;
+	}
+	else if(switchd == 2){
+		$("#login2").css("display", "none");
+		$("#login").css("display", "block");
+		switchd = 1;
+	}
+	
+}
+function processemailsend(){
+	alert('add funtionallity');
+
+}
