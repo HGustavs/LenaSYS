@@ -33,18 +33,22 @@ function updateCourse() {
 
 function accessCourse() {
 	window.location.href = "accessed.php?cid=" + $("#cid").val();
+	resetinputs();
+	//resets all inputs
+
 }
 
 function closeSelect() {
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#editCourse").css("display", "none");
+	
+		resetinputs();
+	//resets all inputs
 }
 
 function newCourse() {
 	AJAXService("NEW", {}, "COURSE");
-	
-	AJAXService("GET", {}, "COURSE");
 }
 
 function copyVersion() {
@@ -52,15 +56,32 @@ function copyVersion() {
 	dvers = $("#versid").val();
 
 	sstr = "Are you sure you want to copy from the version with id " + svers + " to a new version with the id " + dvers;
-	if (confirm(sstr)) {
+	/*if (confirm(sstr)) {
 		alert("TKONG!");
 	}
+	*/
+			
+	//all inputs = empty
 }
 
+function resetinputs(){
+		
+
+$('#coursename').val("");
+$('#coursecode').val("");
+$('#versid').val("");
+$('#versname').val("");
+
+
+}
+
+
 function createVersion() {
+	$(".item").css("background", "#fff");
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$(".item").css("background", "#fff");
+
 
 	$("#editCourse").css("display", "none");
 
@@ -74,6 +95,10 @@ function createVersion() {
 		versid : versid,
 		versname : versname
 	}, "COURSE");
+	
+	resetinputs();
+	//resets all inputs
+	
 }
 
 function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
@@ -147,6 +172,8 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
 	// Show dialog
 	$("#editCourse").css("display", "block");
 
+			resetinputs();
+	//resets all inputs
 	return false;
 }
 
@@ -182,15 +209,10 @@ function returnedCourse(data) {
 				str += "style='opacity:0.3;' ";
 			}
 			str += ">";
-			
-			if(item['activeversion']){
-				str += "<span style='margin-right:15px;'><a href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
-			}else{
-				str += "<span style='margin-right:15px;'>" + item['coursename'] + "</span>";
-			}
 
+			str += "<span><a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "'>" + item['coursename'] + "</a></span>";
 			if (data['writeaccess']) {
-				str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeedversion'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
+				str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
 				str += "<img id='dorf' style='float:right;' src='../Shared/icons/Cogwheel.svg' ";
 				str += " onclick='selectCourse(\"" + item['cid'] + "\",\"" + item['coursename'] + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' >";
 			}
@@ -211,6 +233,8 @@ function returnedCourse(data) {
 
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
+		
+			resetinputs();
+	//resets all inputs
 
 }
-
