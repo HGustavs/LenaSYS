@@ -266,7 +266,14 @@ header {
 
 .navHeading {
     font-size: 2.5em;
+
 }
+.tableclassen{
+
+
+float:left;
+}
+
 
 .navName {
     width:60px;
@@ -277,17 +284,40 @@ header {
 		text-align:right;
 		overflow:hidden;
 		padding-right:4px;
+		padding-top:20px;
+		float:right;
 }
 
 .loggedout {
-	background-color: #c75050;
+	background-color: red;
 	width:40px;
 	padding-top: 13px;
 	padding-bottom: 13px;
 	padding-left:14px;
+	float:right;
+	overflow:hidden;
+	height:200px;
+}
+.loggedout2 {
+	background-color: red;
+	width:50px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	padding-left:14px;
+	float:right;
+	overflow:hidden;
+	height:200px;
+}
+#floatright{
+
+width:90px;height:60px;display:block;background:red;
+float:right;overflow:hidden;
 }
 
 .loggedin {
+	float:right;
+	height:200px;
+	overflow:hidden;
 	background-color: #50a750;
 	width:40px;
 	padding-top: 13px;
@@ -349,7 +379,10 @@ header {
 		border: 2px solid #999;
 }
 
-
+.what{
+float:left;
+position:absolute;
+}
 
 #overlay {
 	position: fixed;
@@ -647,4 +680,5 @@ input.submit-button-red:hover {
 		
 		#mirth {display:none;}
 }
+
  
