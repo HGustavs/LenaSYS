@@ -35,16 +35,30 @@ function accessCourse() {
 	window.location.href = "accessed.php?cid=" + $("#cid").val();
 }
 
-function closeSelect() {
+function closeEditCourse() {
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#editCourse").css("display", "none");
 }
 
+function closeNewCourse() {
+	$(".item").css("border", "none");
+	$(".item").css("box-shadow", "none");
+	$("#newCourse").css("display", "none");
+}
+
 function newCourse() {
-	AJAXService("NEW", {}, "COURSE");
-	
-	AJAXService("GET", {}, "COURSE");
+	$("#newCourse").css("display", "block");
+}
+
+function createNewCourse() {
+	var coursename = $("#ncoursename").val();
+	var coursecode = $("#ncoursecode").val();
+	$("#newCourse").css("display", "none");
+	AJAXService("NEW", {
+		coursename : coursename,
+		coursecode : coursecode
+	}, "COURSE");
 }
 
 function copyVersion() {
