@@ -1,9 +1,10 @@
 <?php
-include_once(dirname(__file__)."/../../coursesyspw.php");
+include_once(dirname(__file__)."/../Shared/coursesyspw.php");
 //---------------------------------------------------------------------------------------------------------------
 // dbconnect - Makes database connection
 //---------------------------------------------------------------------------------------------------------------
 $pdo = null;
+
 //---------------------------------------------------------------------------------------------------------------
 // err - Displays nicely formatted error and exits
 //---------------------------------------------------------------------------------------------------------------
@@ -16,6 +17,7 @@ function err ($errmsg,$hdr='')
 	print "</span></p>\n";
 	exit;
 }
+
 function dbConnect()
 {
 	$printHeaderFunction=0;
@@ -25,19 +27,24 @@ function dbConnect()
 	} else {
 		$hdr = '';
 	}
+
 	// Connect to DB server
 	$OC_db = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or err("Could not connect to database ".mysql_errno(),$hdr);
 	mysql_set_charset('utf8',$OC_db);
 	// Select DB
 	mysql_select_db(DB_NAME) or err("Could not select database \"".DB_NAME."\" error code".mysql_errno(),$hdr);
 }
+
 function pdoConnect()
 {
 	global $pdo;
+
 	$pdo = new PDO(
 		'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8',
 		DB_USER,
 		DB_PASSWORD
 	);
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+
 }
 ?>
