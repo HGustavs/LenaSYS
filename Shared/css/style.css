@@ -95,7 +95,7 @@ hr {
 
 .sys{
 		border-radius:6px;
-		color:#775886;
+		color:#775886;;
 		border: 2px solid #775886;
     background-color: #fff;
     padding-right:4px;
@@ -137,7 +137,7 @@ hr {
 
 #Courselist .bigg {
     text-align: center;
-		color:#775886;
+		color:#775886;;
 		font-size: 14pt;
     font-family: Calibri,Sans-Serif;
     display: block;
@@ -266,10 +266,16 @@ header {
 
 .navHeading {
     font-size: 2.5em;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor:default;
 }
 
 .navName {
-    width:60px;
     font-size:0.8em;
     color: #ff0;
 		cursor:pointer;
@@ -287,6 +293,14 @@ header {
 	padding-left:14px;
 }
 
+.loggedout:hover {
+	background-color: #50a750;
+	width:40px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	padding-left:14px;
+}
+
 .loggedin {
 	background-color: #50a750;
 	width:40px;
@@ -296,7 +310,7 @@ header {
 }
 
 .loggedin:hover {
-	background-color: #3d9e3d;
+	background-color: #c75050;
 	width:40px;
 	padding-top: 13px;
 	padding-bottom: 13px;

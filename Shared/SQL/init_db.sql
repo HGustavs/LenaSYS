@@ -1,12 +1,8 @@
 drop database imperious;
 create database imperious;
 use imperious;
+/* user contains the users of the system and related  information */
 
-/** 
- * The user table stores tuples which contain information relating to users of the system.
- * A user tuple will contain sensitive information such as passwords, social security nr. 
- * actual names, passwords etc., that should be approached with some reservation. 
- */
 CREATE TABLE user(
 		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
@@ -31,7 +27,6 @@ INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$
 /** 
  * Course table contains the most essential information relating to study courses in the database.
  */
-
 CREATE TABLE course(
 		cid								INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		coursecode				VARCHAR(45) NULL UNIQUE,
@@ -53,7 +48,6 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV
  * This table represents a many-to-many relation between users and courses. That is,
  * a tuple in this table joins a user with a course.
  */
-
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
 		cid				INT UNSIGNED NOT NULL, 
@@ -70,12 +64,6 @@ INSERT INTO user_course(uid,cid,access) values (1,1,"W");
 INSERT INTO user_course(uid,cid,access) values (2,1,"R");
 INSERT INTO user_course(uid,cid,access) values (1,2,"R");
 
-/** 
- * Entries in this table are used on the main course pages in the DuggaSys 
- * sub-project. An entry in this table can be used to redirect the user to 
- * a quiz, a link with information or to display information relating to
- * sub-entries.
- */
 CREATE TABLE listentries (
 	lid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	cid 					INT UNSIGNED NOT NULL,
@@ -111,10 +99,7 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visi
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "../CodeViewer/EditorV30.php?exampleid=8&courseid=1", 2, 11, 8, 1, 1);
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "../CodeViewer/EditorV30.php?exampleid=9&courseid=1", 2, 12, 9, 1, 1);
 
-/** 
- * Entries in the quiz table are used in the DuggaSys sub-project to specify
- * quizzes that are related to specific courses. 
- */
+/* Quiz tables */
 CREATE TABLE quiz (
   id						INT(11) NOT NULL AUTO_INCREMENT,
   cid 					INTEGER UNSIGNED NOT NULL,
@@ -131,7 +116,6 @@ CREATE TABLE quiz (
   FOREIGN KEY		(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-
 /** 
  * A quiz tuple has a one-to-many relation with a tuple from thea variant table.
  * An entry in the variant table is used to add questions to quiz tests. 
@@ -147,10 +131,6 @@ CREATE TABLE variant(
   FOREIGN KEY 	(quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-/** 
- * An entry in this table stores an answer that a specific user has made
- * to a specific question in a specific quiz.
- */
 CREATE TABLE userAnswer (
   aid						INT(11) NOT NULL AUTO_INCREMENT,
  	cid						INT UNSIGNED NOT NULL, 
@@ -172,11 +152,6 @@ CREATE TABLE userAnswer (
 	FOREIGN KEY  	(variant) REFERENCES variant(vid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-/** 
- * This table is used to specify different versions of courses.
- * For example a course may exist in different versions, taught
- * in different semesters etc.
- */
 CREATE TABLE vers(
 		cid					  INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		vers				  VARCHAR(8) NOT NULL,
@@ -192,11 +167,6 @@ insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8111","HT 2013");
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","7844","HT 2014");
 
-/** 
- * An entry in this table allow file locations to be related to specific courses. 
- * For example, if an instructor wants to give students a link to a file that 
- * they should be able to download from the course page.
- */
 CREATE TABLE fileLink(
 	fileid				INT(11) NOT NULL AUTO_INCREMENT,
 	filename			VARCHAR(128) NOT NULL,
@@ -225,10 +195,9 @@ INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
 
-/** 
- * Code Example contains a list of the code examples for a version of a course in the database 
- * Version of sections and examples corresponds roughly to year or semester that the course was given. 
- */
+/* Code Example contains a list of the code examples for a version of a course in the database 
+ Version of sections and examples corresponds roughly to year or semester that the course was given. */
+
 CREATE TABLE codeexample(
 		exampleid			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		cid					  INT UNSIGNED NOT NULL,
@@ -260,12 +229,7 @@ INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 3","Iulf.html",1,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
  
-/**
- * A word list entry is used to specify indexes for word table entries. 
- * A wordlist is used in this system to specify programming or scripting 
- * languages. Words can then be added to the word list to specify some
- * keywords from that language that the system should be aware of.
- */
+/* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
 		wordlistid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,		
 		wordlistname 		VARCHAR(24),
@@ -293,12 +257,6 @@ BEGIN
  END;//
  delimiter ;
 
-/**
- * A word has a many to one relation to wordlist. A word is used in conjunction
- * with a word list to specify keywords from a language that the wordlist specifies.
- * Entries in this table can then be used to do a simple form of syntax highlighting
- * for example.
- */
 CREATE TABLE word(
 		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		wordlistid			MEDIUMINT UNSIGNED NOT NULL,			
@@ -324,11 +282,7 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
-/**
- * An entry in this table can be used to store information that contains
- * either file information or text information. This table is used in
- * conjunction with a code example. 
- */
+/* boxes with information in a certain example */
 CREATE TABLE box(
 		boxid					INTEGER UNSIGNED NOT NULL,
 		exampleid 		MEDIUMINT UNSIGNED NOT NULL,
@@ -345,9 +299,7 @@ CREATE TABLE box(
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1,1,"Title","Code","[viktig=1]","js1.js");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 
-/**
- * An entry in improw specifies important rows in a box table entry.
- */
+/* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
 		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		boxid         	INTEGER UNSIGNED NOT NULL,
@@ -365,9 +317,7 @@ CREATE TABLE improw(
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,3,5,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,8,11,1);
 
-/**
- * Wordlist contains a list of important words for a certain code example 
- */
+/* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(
 		wordid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		exampleid		MEDIUMINT UNSIGNED NOT NULL,
@@ -384,10 +334,6 @@ INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"elem",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"pageY",2);
 
-/**
- * This table can be used to log information relating to any events. 
- * Entries in this table can be used for maintenance purposes etc.
- */
 CREATE TABLE eventlog(
 	eid 				BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	type 				TINYINT DEFAULT 0,
@@ -456,7 +402,6 @@ CREATE TABLE studentresultat (
 INSERT INTO programkurs VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationssäkerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och användbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
 INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
 
-
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";
 update user set ssn="810101-5567" where username="Grimling";
@@ -464,4 +409,53 @@ update user set ssn="444444-5447" where username="Toddler";
 update user set password=password("Kong") where username="Toddler";
 update user set superuser=1 where username="Toddler";
 
+// Code for testing Code Viewer
 
+// Create a number of examples, linked from one to five
+// Example 1 should have no template and therefore the select template dialog should be shown
+// http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=1&courseid=1&cvers=2013
+// Example 2 has template 1 (no template dialog should be shown but rather an error message if not administrator) and it should show a code file on the left pane and a description pane on the right pane
+// http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=2&courseid=1&cvers=2013
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid) values (1,"Xample Code","Events 1","Runlink1.html",1,2013,"2");
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Events 1","Runlink2.html",1,2013,"3","1",1);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid) values (1,"Xample Code","Events 2","Runlink3.html",1,2013,"4","2");
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Callback 2","Dulf.html",1,2013,"5","3",1);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid) values (1,"Xample Code","Callback 3","",2,2013,1);
+
+// Boxes for example 2 (Boxes are created automatically when selecting template) 
+// Note: if we have box rows but no template the template assignment will give an error message, it is thus important that there are corresponding templates
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,2,"TitleA","Code","[viktig=1]","js1.js",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,2,"TitleB","Document","[viktig=1]","<b>Events 1</b>This is elem the first section of the event description<b>More</b>This is more text",1);
+
+// In example 2 rows 3-5 and 8-1 are highlighted
+INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,3,5,1);
+INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,8,11,1);
+
+// Important words to be highlighted in example 1 and 2
+INSERT INTO impwordlist(exampleid,word,uid) values (1,"event",1);
+INSERT INTO impwordlist(exampleid,word,uid) values (1,"elem",1);
+INSERT INTO impwordlist(exampleid,word,uid) values (1,"pageY",2);
+INSERT INTO impwordlist(exampleid,word,uid) values (2,"event",1);
+INSERT INTO impwordlist(exampleid,word,uid) values (2,"elem",1);
+INSERT INTO impwordlist(exampleid,word,uid) values (2,"pageY",2);
+
+
+// Wordlists from three typical languages
+INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
+
+// Words in wordlist 1,2 and 3
+
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"if","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"var","D",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"echo","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"function","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"if","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"else","D",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);

@@ -30,7 +30,7 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 			
-	<!--- Section List --->
+	<!-- Section List -->
 	<div id='Courselist'></div>
 
 	</div>
@@ -40,21 +40,42 @@ pdoConnect();
 	<?php
 		include '../Shared/loginbox.php';
 	?>
+	
+	<!-- New Course Section Dialog START -->
+	<div id='newCourse' class='loginBox' style='width:464px;display:none;'>
+	<div class='loginBoxheader'>
+	<h3>New Course</h3>
+	<div onclick='closeNewCourse();'>x</div>
+	</div>		
+	<table width="100%">
+		<tr>
+			<input type='hidden' id='cid' value='Toddler' /></td>
+			<td>Course Name: <input class='form-control textinput' type='text' id='ncoursename' value='Course Name' /></td>
+			<td>Course Code: <input class='form-control textinput' type='text' id='ncoursecode' value='Course Code' /></td>	
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+			<td align='right'><input class='submit-button' type='button' value='Create' onclick='createNewCourse();' /></td>
+		</tr>
+	</table>
 
-	<!--- Edit Section Dialog START --->
+	</div>
+	<!-- New Course Section Dialog END -->
+	
+	<!-- Edit Section Dialog START -->
 	<div id='editCourse' class='loginBox' style='width:464px;display:none;'>
 
 	<div class='loginBoxheader'>
 	<h3>Edit Course</h3>
-	<div onclick='closeSelect();'>x</div>
+	<div onclick='closeEditCourse();'>x</div>
 	</div>
 				
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='cid' value='Toddler' /></td>
 			<td>Course Name: <input class='form-control textinput' type='text' id='coursename' value='Course Name' /></td>
-			<!--TODO: add correct course code structure -->
-			<!--<td>Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>-->		
+			<td>Course Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>	
 		</tr>
 		<tr>
 			<td>Vers ID: <input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></td>		
@@ -81,7 +102,7 @@ pdoConnect();
 	</table>
 
 	</div>
-	<!--- Edit Section Dialog END --->
+	<!-- Edit Section Dialog END -->
 	
 </body>
 </html>

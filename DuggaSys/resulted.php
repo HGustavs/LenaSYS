@@ -10,12 +10,12 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Result Editor</title>
 
-	<link type="text/css" href="css/style.css" rel="stylesheet">
-  <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+  <link type="text/css" href="../Shared/js/jquery-ui-1.10.4.min.css" rel="stylesheet">  
   <link type="text/css" href="templates/dugga.css" rel="stylesheet">  
 
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.min.js"></script>
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
 	<script src="dugga.js"></script>
 	<script src="resulted.js"></script>
@@ -34,15 +34,15 @@ pdoConnect();
 					
 	</div>
 
-	<!--- Edit Dugga Dialog END --->
+	<!-- Edit Dugga Dialog END -->
 	
 	<?php 
 		include 'loginbox.php';
 	?>
 	
-	<!--- Result Popover START --->
+	<!-- Result Popover START -->
 
-	<div id='resultpopover' class='resultPopover' style='display:none' onmousemove='moveDist(event);'>
+	<div id='resultpopover' class='resultPopover' onmousemove='moveDist(event);'>
 
 		<div class='loginBoxheader'>
 				<h3 id='Nameof'>Show Results</h3>
@@ -52,9 +52,9 @@ pdoConnect();
 	
 	</div>
 	
-	<!--- Result Popover END --->
+	<!-- Result Popover END -->
 
-	<!--- Edit Variant Dialog START --->
+	<!-- Edit Variant Dialog START -->
 	
 	<div id='editVariant' class='loginBox' style='width:464px;display:none;'>
 		
@@ -83,7 +83,7 @@ pdoConnect();
 	</table>
 
 	</div>
-	<!--- Edit Variant Dialog END --->
+	<!-- Edit Variant Dialog END -->
 		
 </body>
 </html>

@@ -9,11 +9,11 @@
 					
 					// Set the target for the 'Upward' Button
 					if($noup=="COURSE"){
-							echo "<td class='navButt'><a href='courseed.php'><img src='../Shared/icons/Up.svg'></a></td>";
+							echo "<td class='navButt'><a href='courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else if($noup=="SECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt'><a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Up.svg'></a></td>";
+							echo "<td class='navButt'><a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else{
 							// None!
 					}
@@ -40,12 +40,12 @@
 
 					if(checklogin()) {
 							echo "<td class='navName'><label id='userName'>".$_SESSION['loginname']."</label></td>";		
-							echo "<td id='loginbutton' class='loggedin'><img src='../Shared/icons/Man.svg' onclick='processLogout(\"";
+							echo "<td id='loginbutton' class='loggedin'><img src='../Shared/icons/Man.svg' onmouseover=\"this.src='../Shared/icons/logout_button.svg'\" onmouseout=\"this.src='../Shared/icons/Man.svg'\" onclick='processLogout(\"";
 							echo $loginvar;
 							echo "\");' /></td>";
 					}else{
 							echo "<td class='navName'><label id='userName'>Guest</label></td>";		
-							echo "<td id='loginbutton' class='loggedout'><img src='../Shared/icons/Man.svg' onclick='showLoginPopup();' /></td>";
+							echo "<td id='loginbutton' class='loggedout'><img src='../Shared/icons/Man.svg' onmouseover=\"this.src='../Shared/icons/login_button.svg'\" onmouseout=\"this.src='../Shared/icons/Man.svg'\" onclick='showLoginPopup();' /></td>";
 					}
 
 					echo "</tr></table>";
