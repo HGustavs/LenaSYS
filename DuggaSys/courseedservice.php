@@ -55,9 +55,10 @@ if($ha){
 		// The code for modification using sessions
 		if(strcmp($opt,"DEL")===0){
 		}else if(strcmp($opt,"NEW")===0){
-				$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,'New Course',0,:usrid)");
+				$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
 				$query->bindParam(':usrid', $userid);
-				$query->bindParam(':coursecode', makeRandomString(8));				
+				$query->bindParam(':coursecode', $coursecode);
+				$query->bindParam(':coursename', $coursename);				
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error updating entries".$error[2];
