@@ -48,14 +48,14 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 <?php
 	session_start();
 
-	include_once "../../coursesyspw.php";
-	include_once "../Shared/basic.php";
-	include_once "../Shared/sessions.php";
+	include_once("../Shared/coursesyspw.php");
+	include_once("../Shared/basic.php");
+	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
 
 	pdoConnect();
-	dbConnect();
+//	dbConnect(); 
 				
 ?>
 <!DOCTYPE html>
@@ -92,10 +92,10 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 		$courseID=getOPG('courseid');
 
 		//get the visibility
-		$query = "SELECT public FROM codeexample WHERE exampleid='$exampleid';";
-		$result=mysql_query($query);
-		if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-		$row = mysql_fetch_assoc($result);
+		$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid='$exampleid';");
+		$query-> execute();
+		//if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+		$row = $query -> fetch(PDO::FETCH_ASSOC);
 		$public=$row['public'];	
 	
 		$noup="SECTION";
@@ -190,7 +190,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	<div id='editExample' class='loginBox' style='width:464px;display:none;'>
 
 	<div class='loginBoxheader'>
-	<h3>Edit Examplew</h3>
+	<h3>Edit Example</h3>
 	<div onclick='closeEditExample();'>x</div>
 	</div>
 	<table width="100%">

@@ -170,8 +170,9 @@
 }
 
 .impo .hi {
-    background-color: #fff;
-    color: #000;
+   font-weight: bold;
+   color: #000000;
+   background-color: #FF0000;
 }
 
 .keywordA {
