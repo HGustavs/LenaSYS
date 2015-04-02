@@ -243,6 +243,10 @@ function processLogin(kind) {
 					$("#loginbutton").addClass("loggedin");
 
 					hideLoginPopup();
+					
+					$("#login #username").val("");
+					$("#login #password").val("");		
+					
 					$("#loginbutton").click(function(){processLogout();});
 
 					if(kind=="COURSE") AJAXService("GET",{},"COURSE")
