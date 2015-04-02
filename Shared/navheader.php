@@ -13,7 +13,7 @@
 					}else if($noup=="SECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt'><a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Up.svg'></a></td>";
+							echo "<td class='navButt'><a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else{
 							// None!
 					}
