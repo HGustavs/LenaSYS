@@ -19,7 +19,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="username" class='form-control textinput' type='text' autofocus >
+							<input id="username" placeholder="Toddler" class='form-control textinput' type='text' autofocus >
 						</td>
 					</tr>
 					<tr>
@@ -29,7 +29,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="password" class='form-control textinput' type='password' >
+							<input id="password" placeholder="kalleDgreat2" class='form-control textinput' type='password' >
 						</td>
 					</tr>
 					<tr>
@@ -45,6 +45,36 @@
 						<td>
 							<input type='button' class='submit-button' onclick="processLogin('<?PHP echo $loginvar; ?>');" value='Login'>
 							<label class='forgotPw' onclick='showForgontPw();'>Forgot password?</label>
+						</td>
+					</tr>
+				</table>
+			  </div>
+		</div>
+		<!-- -->
+		<div id='login2' style="display:none">
+			<div class='loginBoxheader'>
+				<h3>Send mail</h3>
+				<div onclick="hideLoginPopup()">x</div>
+			</div>
+			  <div class="table-wrap">
+				<table>
+					<tr>
+						<td>
+							<label class="text">Email:</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input id="emaaail1" placeholder="kalle@hotmail.com" class='form-control textinput' type='text' autofocus >
+						</td>
+					</tr>
+					<tr>
+						<td id="message2"></td>
+					</tr>
+					<tr>
+						<td>
+							<input type='button' class='submit-button' onclick="processemailsend()" value='Send'>
+							<label class='forgotPw' onclick='showForgontPw();'>Back to login page!</label>
 						</td>
 					</tr>
 				</table>
