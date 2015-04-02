@@ -16,6 +16,7 @@ CREATE TABLE user(
 		newpassword	TINYINT(1) NULL,
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
+		email			VARCHAR(256) DEFAULT NULL,
 		PRIMARY KEY(uid)		
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
