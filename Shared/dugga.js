@@ -95,6 +95,29 @@ function changeURL(thisurl)
 }
 
 //----------------------------------------------------------------------------------
+// navigateExample: Upscale variant of changeURL - navigate to certain Example
+//----------------------------------------------------------------------------------
+
+function navigateExample(exampleno)
+{
+		surl=window.location.href;
+		surl=surl.substring(0,surl.lastIndexOf("/")); 
+		window.location.href = surl+"/EditorV50.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
+}
+
+//----------------------------------------------------------------------------------
+// navigateTo: Upscale variant of changeURL
+//----------------------------------------------------------------------------------
+
+function navigateTo(prefix,file)
+{
+		surl=window.location.href;
+		surl=surl.substring(0,surl.lastIndexOf("/")); 
+		window.location.href = surl+"/codeupload/";
+}
+
+
+//----------------------------------------------------------------------------------
 // parseGet: reads the parameters from the get url and places content in an array
 //----------------------------------------------------------------------------------
 
