@@ -9,7 +9,7 @@
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
-	include_once ("../Shared/coursesyspw.php");	
+	include_once ("../../coursesyspw.php");	
 	include_once ("../Shared/sessions.php");
 	include_once ("../Shared/basic.php");
 	include_once ("../Shared/courses.php");
@@ -118,12 +118,14 @@
 
 			// Read ids and names from before/after list
 			$beforeafter = array();
+			$beforeafters = array();
 			$query = $pdo->prepare( "select exampleid,sectionname,examplename,beforeid,afterid from codeexample where cid='".$cid."' and cversion='".$cvers."' order by sectionname,examplename;");
 		/*	$result=mysql_query($query);*/
                         $query->execute();
 		/*	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);*/	
 			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 		  		$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
+					array_push($beforeafters,array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']));
 			}  
 
 			// iteration to find after examples - We start with $exampleid and at most 5 are collected
@@ -275,7 +277,7 @@
 					'images' => $images,
 					'writeaccess' => $writeaccess,
 					'debug' => $debug,
-					'beforeafter' => $beforeafter, 
+					'beforeafter' => $beforeafters, 
 					'public' => $public
 			);
 			
