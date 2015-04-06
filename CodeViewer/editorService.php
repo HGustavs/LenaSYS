@@ -27,6 +27,12 @@
 	$cid=getOP('courseid');
 	$cvers=getOP('cvers');
 	$templateno=getOP('templateno');
+	
+	$beforeid=getOP('beforeid');
+	$afterid=getOP('afterid');
+	$sectionname=getOP('sectionname');
+	$examplename=getOP('examplename');
+	$playlink=getOP('playlink');
 		
 	$debug="NONE!";	
 
@@ -68,7 +74,7 @@
 						$writeaccess="w";
 						if(strcmp('SETTEMPL',$opt)===0){
 									// Add word to wordlist
-									$query = $pdo->prepare( "UPDATE codeexample SET templateid='$templateno' WHERE exampleid='$exampleid' and $cid='$cid' and cversion='$cvers';");		
+									$query = $pdo->prepare( "UPDATE codeexample SET templateid='$templateno' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
 									$query -> execute();
 									/*if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");*/						
 
@@ -84,7 +90,23 @@
                                                                                         $query -> execute();
 											/*if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");*/						
 									}
+						}else	if(strcmp('EDITEXAMPLE',$opt)===0){
+									// Change content of example
+									$query = $pdo->prepare( "UPDATE codeexample SET runlink='$playlink',examplename='$examplename',sectionname='$sectionname' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
+									$query -> execute();
+									
+									// Is there a better way to set beforeid and afterid?
+									if($beforeid!="UNK"){
+											$query = $pdo->prepare( "UPDATE codeexample SET beforeid='$beforeid' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
+											$query -> execute();									
+									}
+									if($afterid!="UNK"){
+											$query = $pdo->prepare( "UPDATE codeexample SET afterid='$afterid' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
+											$query -> execute();									
+									}
 						}
+
+						
 			}
 	
 			//------------------------------------------------------------------------------------------------

@@ -53,15 +53,17 @@ function returned(data)
 		console.log(retdata);
 
 		// Hide and show before/after button
-		if(retdata['before'].length==0){
-				$("#beforebutton").css("visibility","hidden");
-		}else{
-				$("#beforebutton").css("visibility","none");		
-		}
-		if(retdata['after'].length==0){
-				$("#afterbutton").css("visibility","hidden");
-		}else{
-				$("#afterbutton").css("visibility","none");		
+		if(retdata['before']!=null&&retdata['after']!=null){
+				if(retdata['before'].length==0){
+						$("#beforebutton").css("visibility","hidden");
+				}else{
+						$("#beforebutton").css("visibility","none");		
+				}
+				if(retdata['after'].length==0){
+						$("#afterbutton").css("visibility","hidden");
+				}else{
+						$("#afterbutton").css("visibility","none");		
+				}
 		}
 
 		// Fill Section Name and Example Name
@@ -199,14 +201,18 @@ function displayEditExample(boxid)
 	var bestr="";
 	var afstr="";
 	
-	// Set beforeid if set
+	// Set beforeid and afterid if set
 	var beforeid="UNK";
-	if(retdata['before'].length!=0){
-			beforeid=retdata['before'][0][0];
+	if(retdata['before']!==null){
+			if(retdata['before'].length!==0){
+					beforeid=retdata['before'][0][0];			
+			}
 	}
 	var afterid="UNK";
-	if(retdata['after'].length!=0){
-			afterid=retdata['after'][0][0];
+	if(retdata['after']!==null){
+			if(retdata['after'].length!==0){
+					afterid=retdata['after'][0][0];
+			}
 	}
 	
 	var ba=retdata['beforeafter'];
@@ -246,9 +252,23 @@ function updateExample()
 	}
 
 	if(($("#before").val()!=beforeid&&beforeid!="UNK")||($("#after").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
-			alert("CHANGED!");	
-	}else{
-			alert("NOT CHANGED");
+			var courseid = querystring['courseid'];
+			var cvers = querystring['cvers'];
+			var exampleid = querystring['exampleid'];
+			var playlink = $("#playlink").val();
+			var examplename = $("#title").val();
+			var sectionname = $("#secttitle").val();
+			
+			AJAXService("EDITEXAMPLE", {
+					courseid : courseid,
+					cvers : cvers,
+					exampleid : exampleid,
+					beforeid : beforeid,
+					afterid : afterid,
+					playlink : playlink,
+					examplename : examplename,
+					sectionname : sectionname
+			}, "CODEVIEW");
 	}
 
 }
