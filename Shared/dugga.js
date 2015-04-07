@@ -340,3 +340,25 @@ function hideDuggaInfoPopup()
 		$("#duggaInfoBox").css("display","none");
 		$("#overlay").css("display","none");
 }
+
+//----------------------------------------------------------------------------------
+// A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
+//----------------------------------------------------------------------------------
+function loginButtonHover(status) {
+	if(status == "online"){
+		document.getElementById("loginbutton").addEventListener("mouseover", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/logout_button.svg";
+		}, false);
+		document.getElementById("loginbutton").addEventListener("mouseout", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
+		}, false);
+	}
+	if(status == "offline"){
+		document.getElementById("loginbutton").addEventListener("mouseover", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/login_button.svg";
+		}, false);
+		document.getElementById("loginbutton").addEventListener("mouseout", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
+		}, false);		
+	}
+}
