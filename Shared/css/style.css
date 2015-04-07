@@ -662,3 +662,72 @@ input.submit-button-red:hover {
 		#mirth {display:none;}
 }
  
+/* Clearfix styles */
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+ 
+.clearfix:after {
+  clear: both;
+}
+ 
+.clearfix {
+  zoom: 1; /* ie 6/7 */
+}
+
+/* DuggaSys Header */
+/*******************/
+.duggasys-head {
+	background-color: #614875;
+	overflow: inherit!important;
+	height: auto;
+}
+.duggasys-head--placeholder {
+	height: 72px;
+}
+.duggasys-head--nav {
+	float: left;
+	text-align: center;
+}
+.duggasys-head__backicon {
+	display: block;
+	margin: 0 auto;
+	padding: 10px;
+	width: 60px;
+}
+.duggasys-head__backtext {
+	display: block;
+}
+/* Navigation link styles */
+.duggasys-head--nav a {
+	color: #ffffff;
+	text-decoration: none;
+}
+.duggasys-head--nav a:visited {
+	color: #ffffff;
+}
+.duggasys-head--nav a:hover {
+	color: red;
+}
+
+.duggasys-head--userinfo {
+	float: right;
+	margin: 10px 85px 10px 10px;
+}
+.duggasys-head__profileicon {
+	height: 100%;
+	padding: 5px;
+}
+.duggasys-head__profileicon:hover {
+	height: 100%;
+	padding: 5px;
+}
+.duggasys-head__username {
+
+}
+
+
+/* End DuggaSys Header */
+/***********************/
