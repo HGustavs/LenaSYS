@@ -17,7 +17,7 @@ CREATE TABLE user(
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
 		email			VARCHAR(256) DEFAULT NULL,
-		PRIMARY KEY(uid)		
+		CONSTRAINT pk_user PRIMARY KEY(uid)		
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
@@ -37,8 +37,8 @@ CREATE TABLE course(
 		updated						TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 		activeversion 		VARCHAR(8),
 		activeedversion 	VARCHAR(8),
-		PRIMARY KEY(cid),
-		FOREIGN KEY (creator) REFERENCES user (uid)
+		CONSTRAINT pk_course PRIMARY KEY(cid),
+		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
@@ -55,9 +55,9 @@ CREATE TABLE user_course(
 		creator 	INTEGER,
 		access		VARCHAR(10) NOT NULL,
 		
-		PRIMARY KEY(uid, cid),
-		FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
-		FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
+		CONSTRAINT pk_user_course PRIMARY KEY(uid, cid),
+		CONSTRAINT user_course_joins_user FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
+		CONSTRAINT user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO user_course(uid,cid,access) values (1,1,"W");
@@ -78,10 +78,10 @@ CREATE TABLE listentries (
 	vers					VARCHAR(8),
   moment				INT UNSIGNED,
   gradesystem 	TINYINT(1),
-	PRIMARY KEY(lid),
+	CONSTRAINT pk_listentries PRIMARY KEY(lid),
 	
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
-	FOREIGN KEY(creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+	CONSTRAINT fk_listentries_joins_user FOREIGN KEY(creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 	
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
@@ -112,8 +112,8 @@ CREATE TABLE quiz (
 	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 			INTEGER,
 		
-  PRIMARY KEY 	(id),
-  FOREIGN KEY		(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT pk_quiz PRIMARY KEY (id),
+  CONSTRAINT fk_quiz_joins_course FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /** 
@@ -127,8 +127,8 @@ CREATE TABLE variant(
 	variantanswer	VARCHAR(2048),
 	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 			INTEGER,
-  PRIMARY KEY 	(vid),
-  FOREIGN KEY 	(quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT pk_variant PRIMARY KEY 	(vid),
+  CONSTRAINT fk_variant_joins_quiz FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE userAnswer (
@@ -144,12 +144,12 @@ CREATE TABLE userAnswer (
   marked				TIMESTAMP NULL,
 	vers					VARCHAR(8),
 	creator 			INTEGER,
-  PRIMARY KEY 	(aid),
-	FOREIGN KEY   (cid) REFERENCES course (cid),
-  FOREIGN KEY		(uid) REFERENCES user(uid),
-  FOREIGN KEY 	(quiz) REFERENCES quiz(id),
-  FOREIGN KEY 	(moment) REFERENCES listentries(lid),
-	FOREIGN KEY  	(variant) REFERENCES variant(vid)
+  CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
+  CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
+  CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
+  CONSTRAINT fk_useranswer_joins_quiz FOREIGN KEY (quiz) REFERENCES quiz(id),
+  CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
+  CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE vers(
@@ -159,8 +159,8 @@ CREATE TABLE vers(
 		coursecode	  VARCHAR(45) NOT NULL,
 		coursename	  VARCHAR(45) NOT NULL,
 		coursenamealt	VARCHAR(45) NOT NULL,
-		FOREIGN KEY (cid) REFERENCES course(cid),		
-		PRIMARY KEY(cid,coursecode,vers)
+		CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),		
+		CONSTRAINT pk_vers PRIMARY KEY(cid,coursecode,vers)
 );
 
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8212","HT 2012");
@@ -172,8 +172,8 @@ CREATE TABLE fileLink(
 	filename			VARCHAR(128) NOT NULL,
 	kind					INTEGER,	
 	cid						INT UNSIGNED NOT NULL,
-	PRIMARY KEY (fileid),
-	FOREIGN KEY (cid) REFERENCES course (cid)
+	CONSTRAINT pk_filelink PRIMARY KEY (fileid),
+	CONSTRAINT fk_filelink_joins_course FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /** 
@@ -185,7 +185,7 @@ CREATE TABLE template(
 		templateid			INTEGER UNSIGNED NOT NULL,
 		stylesheet 			VARCHAR(39) NOT NULL,
 		numbox				INTEGER NOT NULL,
-		PRIMARY KEY(templateid, stylesheet)
+		CONSTRAINT pk_template PRIMARY KEY(templateid, stylesheet)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO template (templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
@@ -211,10 +211,10 @@ CREATE TABLE codeexample(
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
 		templateid			INT UNSIGNED NOT NULL DEFAULT '0',
-		PRIMARY KEY(exampleid),
-		FOREIGN KEY (cid) REFERENCES course (cid),
-		FOREIGN KEY (uid) REFERENCES user (uid),
-		FOREIGN KEY (templateid) REFERENCES template (templateid)
+		CONSTRAINT pk_codeexample PRIMARY KEY(exampleid),
+		CONSTRAINT fk_codeexample_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
+		CONSTRAINT fk_codeexample_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
+		CONSTRAINT fk_codeexample_joins_template FOREIGN KEY (templateid) REFERENCES template (templateid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
@@ -235,8 +235,8 @@ CREATE TABLE wordlist(
 		wordlistname 		VARCHAR(24),
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
-		PRIMARY KEY(wordlistid),
-		FOREIGN KEY (uid) REFERENCES user (uid)
+		CONSTRAINT pk_wordlist PRIMARY KEY(wordlistid),
+		CONSTRAINT pk_wordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 	
 INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
@@ -264,9 +264,9 @@ CREATE TABLE word(
 		label				VARCHAR(256),
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
-		PRIMARY KEY(wordid, wordlistid),
-		FOREIGN KEY (uid) REFERENCES user (uid),
-		FOREIGN KEY(wordlistid) REFERENCES wordlist(wordlistid)
+		CONSTRAINT pk_word PRIMARY KEY(wordid, wordlistid),
+		CONSTRAINT fk_word_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
+		CONSTRAINT fk_word_joins_wordlist FOREIGN KEY(wordlistid) REFERENCES wordlist(wordlistid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
@@ -292,8 +292,8 @@ CREATE TABLE box(
 		settings			VARCHAR(1024),
 		wordlistid		MEDIUMINT UNSIGNED,
 		segment				TEXT,
-		PRIMARY KEY(boxid, exampleid),
-		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
+		CONSTRAINT pk_box PRIMARY KEY(boxid, exampleid),
+		CONSTRAINT fk_box_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1,1,"Title","Code","[viktig=1]","js1.js");
@@ -309,9 +309,9 @@ CREATE TABLE improw(
 		irowdesc			VARCHAR(1024),
 		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid					INT UNSIGNED NOT NULL,
-		PRIMARY KEY(impid, exampleid, boxid),
-		FOREIGN KEY (uid) REFERENCES user (uid),
-		FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
+		CONSTRAINT pk_improw PRIMARY KEY(impid, exampleid, boxid),
+		CONSTRAINT fk_improw_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
+		CONSTRAINT fk_improw_joins_box FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 	
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,3,5,1);
@@ -325,9 +325,9 @@ CREATE TABLE impwordlist(
 		label		VARCHAR(256),
 		UPDATED 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		uid				INTEGER UNSIGNED NOT NULL,
-		PRIMARY KEY(wordid),
-		FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
-		FOREIGN KEY (uid) REFERENCES user (uid)
+		CONSTRAINT pk_impwordlist PRIMARY KEY(wordid),
+		CONSTRAINT fk_impwordlist_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
+		CONSTRAINT fk_impwordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
@@ -342,14 +342,14 @@ CREATE TABLE eventlog(
 	raddress 		VARCHAR(45),
 	user 				VARCHAR(128),
 	eventtext 	TEXT NOT NULL,
-	PRIMARY KEY(eid)
+	CONSTRAINT pk_eventlog PRIMARY KEY(eid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE playereditor_playbacks(
     id  VARCHAR(32) NOT NULL,
     type    SMALLINT(1) NOT NULL,
     path    VARCHAR(256) NOT NULL,
-    PRIMARY KEY(id, type)
+    CONSTRAINT pk_playereditor_playbacks PRIMARY KEY(id, type)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
@@ -459,3 +459,4 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
+
