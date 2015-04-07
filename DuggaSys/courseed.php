@@ -74,12 +74,12 @@ pdoConnect();
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='cid' value='Toddler' /></td>
-			<td>Course Name: <input class='form-control textinput' type='text' id='coursename' value='Course Name' /></td>
-			<td>Course Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>	
+			<td>Course Name: <div id='couresnamewrapper'><input class='form-control textinput' type='text' id='coursename' value='Course Name' /></div></td>
+			<td>Course Code: <div id='courseidwrapper'><input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></div></td>	
 		</tr>
 		<tr>
-			<td>Vers ID: <input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></td>		
-			<td>Vers Name: <input size='8' class='form-control textinput' type='text' id='versname' value='Version Name' /></td>		
+			<td>Vers ID: <div id='versidwrapper'><input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></div></td>		
+			<td>Vers Name: <div id='versnamewrapper'><input size='8' class='form-control textinput' type='text' id='versname' value='Version Name' /></div></td>		
 			<input type='hidden' id='cid' value='Toddler' /></td>
 		</tr>
 		<tr>
