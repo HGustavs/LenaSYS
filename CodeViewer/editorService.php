@@ -6,7 +6,7 @@
 
 	// Check if example exists and then do operation
 
-	date_default_timezone_set("Europe/Stockholm");
+	date_default_timezone_set("Europe/Sto ckholm");
 
 	// Include basic application services!
 	include_once ("../Shared/coursesyspw.php");	
