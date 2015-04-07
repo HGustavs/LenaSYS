@@ -48,7 +48,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 <?php
 	session_start();
 
-	include_once("../Shared/coursesyspw.php");
+	//include_once("../../codesyspw.php");
 	include_once("../Shared/basic.php");
 	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
