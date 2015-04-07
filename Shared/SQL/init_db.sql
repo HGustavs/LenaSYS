@@ -8,7 +8,8 @@ CREATE TABLE user(
 		username		VARCHAR(80) NOT NULL UNIQUE,
 		firstname		VARCHAR(50) NULL,
 		lastname		VARCHAR(50) NULL,
-		ssn					VARCHAR(20) NULL,
+		ssn				VARCHAR(20) NULL,
+		class 			VARCHAR(10) DEFAULT NULL,
 		password		VARCHAR(225) NOT NULL,
 		lastupdated	TIMESTAMP,
 		addedtime   TIMESTAMP,
@@ -17,7 +18,8 @@ CREATE TABLE user(
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
 		email			VARCHAR(256) DEFAULT NULL,
-		PRIMARY KEY(uid)		
+		PRIMARY KEY(uid),
+		FOREIGN KEY (class) REFERENCES class (class)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
@@ -51,6 +53,7 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
 		cid				INT UNSIGNED NOT NULL, 
+		result 		varchar(5),
 		modified 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 	INTEGER,
 		access		VARCHAR(10) NOT NULL,
@@ -355,7 +358,7 @@ CREATE TABLE playereditor_playbacks(
 /**
  * This table seems to be intended to store program courses. It does not seem
  * to have any relation to the rest of the database and kind of stands out oddly.
- */
+ 
 CREATE TABLE programkurs (
     pkid int(11) NOT NULL AUTO_INCREMENT,
     kull varchar(8) DEFAULT NULL,
@@ -367,7 +370,47 @@ CREATE TABLE programkurs (
     termin varchar(45) DEFAULT NULL,
     PRIMARY KEY (pkid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+*/
 
+
+CREATE TABLE class (
+    class varchar(10) DEFAULT NULL,
+	classname varchar(100) DEFAULT NULL,
+    regcode int(8) DEFAULT NULL,
+	classcode varchar(8) DEFAULT NULL,
+    hp int(4) DEFAULT NULL,
+	tempo int(3),
+	resppers varchar(20),
+    PRIMARY KEY (class)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+/**
+ * this table stores the different subparts of each course. 
+ */ 
+CREATE TABLE subparts(
+	partname varchar(50),
+	cid INT UNSIGNED NOT NULL,
+	parthp int(4) DEFAULT NULL,
+	PRIMARY KEY (partname),
+	FOREIGN KEY (cid) REFERENCES course (cid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+
+CREATE TABLE partresult (
+    uid	INT UNSIGNED NOT NULL,
+	partname INT UNSIGNED NOT NULL,
+	grade int(5) DEFAULT NULL,
+	PRIMARY KEY(partname, uid),
+	FOREIGN KEY (partname) REFERENCES subparts (partname),
+	FOREIGN KEY (uid) REFERENCES user (uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+CREATE TABLE programcourse (
+    class varchar(10) DEFAULT NULL,
+	cid INT UNSIGNED NOT NULL,
+	PRIMARY KEY(cid, class),
+	FOREIGN KEY (cid) REFERENCES course (cid),
+	FOREIGN KEY (class) REFERENCES class (class)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 /**
  * This table seems to be intended to store student results from program courses.
  */ 
@@ -398,10 +441,10 @@ CREATE TABLE studentresultat (
         REFERENCES programkurs (kurskod)
 	*/
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
+/*
 INSERT INTO programkurs VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationssäkerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och användbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
 INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
-
+*/
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";
 update user set ssn="810101-5567" where username="Grimling";
