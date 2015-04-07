@@ -44,12 +44,12 @@
 
 					if(checklogin()) {
 							echo "<td class='navName'><label id='userName'>".$_SESSION['loginname']."</label></td>";		
-							echo "<td id='loginbutton' class='loggedin'><img src='../Shared/icons/Man.svg' onmouseover=\"this.src='../Shared/icons/logout_button.svg'\" onmouseout=\"this.src='../Shared/icons/Man.svg'\" onclick='processLogout(\"";
+							echo "<td id='loginbutton' class='loggedin' onclick='processLogout(\"";
 							echo $loginvar;
-							echo "\");' /></td>";
+							echo "\");'></td>";
 					}else{
 							echo "<td class='navName'><label id='userName'>Guest</label></td>";		
-							echo "<td id='loginbutton' class='loggedout'><img src='../Shared/icons/Man.svg' onmouseover=\"this.src='../Shared/icons/login_button.svg'\" onmouseout=\"this.src='../Shared/icons/Man.svg'\" onclick='showLoginPopup();' /></td>";
+							echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'></td>";
 					}
 
 					echo "</tr></table>";
