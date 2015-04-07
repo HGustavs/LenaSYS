@@ -19,7 +19,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="username" placeholder="Toddler" class='form-control textinput' type='text' autofocus >
+							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus >
 						</td>
 					</tr>
 					<tr>
@@ -29,7 +29,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="password" placeholder="kalleDgreat2" class='form-control textinput' type='password' >
+							<input id="password" placeholder="Password" class='form-control textinput' type='password' >
 						</td>
 					</tr>
 					<tr>
