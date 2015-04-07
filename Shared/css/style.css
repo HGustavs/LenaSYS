@@ -278,11 +278,15 @@ header {
 .navName {
     font-size:0.8em;
     color: #ff0;
-		cursor:pointer;
+		cursor:default;
 		text-decoration:underline;
 		text-align:right;
 		overflow:hidden;
 		padding-right:4px;
+}
+
+#userName {
+	cursor:pointer;
 }
 
 .loggedout {
@@ -315,6 +319,10 @@ header {
 	padding-top: 13px;
 	padding-bottom: 13px;
 	padding-left:14px;
+}
+
+#loginbutton{
+	cursor:pointer;
 }
 
 #div2
