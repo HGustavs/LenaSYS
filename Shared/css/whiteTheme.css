@@ -165,8 +165,9 @@
 }
 
 .normtext .hi {
-    background-color: #D3BEE3;
+    background-color: #FF0000;
     color: #000;
+    font-weight: bold;
 }
 
 .impo .hi {
