@@ -5,6 +5,10 @@
  Handles both Touch and Mouse/Keyboard input at the same time
 
  *********************************************************************************/
+ 
+// Example seed
+// Param: {"linje":"10,30,19 20 40 20 50 30 50,81 65 50"}
+// Answer: Variant 
 
 var running;
 
