@@ -48,7 +48,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 <?php
 	session_start();
 
-	include_once("../Shared/coursesyspw.php");
+	include_once("../../coursesyspw.php");
 	include_once("../Shared/basic.php");
 	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
@@ -147,8 +147,8 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 	<!--- Dropdowns START --->
 
-	<span id='forwdrop' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'>Forw</div></span>
-	<span id='backwdrop' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div></span>
+	<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
+	<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'>Forw</div><span id='forwdropc'>bii</span></span>
 		
 	<!--- Dropdowns END --->
 

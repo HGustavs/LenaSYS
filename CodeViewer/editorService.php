@@ -9,7 +9,7 @@
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
-	include_once ("../Shared/coursesyspw.php");	
+	include_once ("../../coursesyspw.php");	
 	include_once ("../Shared/sessions.php");
 	include_once ("../Shared/basic.php");
 	include_once ("../Shared/courses.php");
@@ -27,6 +27,12 @@
 	$cid=getOP('courseid');
 	$cvers=getOP('cvers');
 	$templateno=getOP('templateno');
+	
+	$beforeid=getOP('beforeid');
+	$afterid=getOP('afterid');
+	$sectionname=getOP('sectionname');
+	$examplename=getOP('examplename');
+	$playlink=getOP('playlink');
 		
 	$debug="NONE!";	
 
@@ -68,7 +74,7 @@
 						$writeaccess="w";
 						if(strcmp('SETTEMPL',$opt)===0){
 									// Add word to wordlist
-									$query = $pdo->prepare( "UPDATE codeexample SET templateid='$templateno' WHERE exampleid='$exampleid' and $cid='$cid' and cversion='$cvers';");		
+									$query = $pdo->prepare( "UPDATE codeexample SET templateid='$templateno' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
 									$query -> execute();
 									/*if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");*/						
 
@@ -84,7 +90,23 @@
                                                                                         $query -> execute();
 											/*if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");*/						
 									}
+						}else	if(strcmp('EDITEXAMPLE',$opt)===0){
+									// Change content of example
+									$query = $pdo->prepare( "UPDATE codeexample SET runlink='$playlink',examplename='$examplename',sectionname='$sectionname' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
+									$query -> execute();
+									
+									// Is there a better way to set beforeid and afterid?
+									if($beforeid!="UNK"){
+											$query = $pdo->prepare( "UPDATE codeexample SET beforeid='$beforeid' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
+											$query -> execute();									
+									}
+									if($afterid!="UNK"){
+											$query = $pdo->prepare( "UPDATE codeexample SET afterid='$afterid' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
+											$query -> execute();									
+									}
 						}
+
+						
 			}
 	
 			//------------------------------------------------------------------------------------------------
@@ -118,12 +140,14 @@
 
 			// Read ids and names from before/after list
 			$beforeafter = array();
+			$beforeafters = array();
 			$query = $pdo->prepare( "select exampleid,sectionname,examplename,beforeid,afterid from codeexample where cid='".$cid."' and cversion='".$cvers."' order by sectionname,examplename;");
 		/*	$result=mysql_query($query);*/
                         $query->execute();
 		/*	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);*/	
 			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 		  		$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
+					array_push($beforeafters,array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']));
 			}  
 
 			// iteration to find after examples - We start with $exampleid and at most 5 are collected
@@ -275,7 +299,7 @@
 					'images' => $images,
 					'writeaccess' => $writeaccess,
 					'debug' => $debug,
-					'beforeafter' => $beforeafter, 
+					'beforeafter' => $beforeafters, 
 					'public' => $public
 			);
 			

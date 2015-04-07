@@ -52,6 +52,20 @@ function returned(data)
 		
 		console.log(retdata);
 
+		// Hide and show before/after button
+		if(retdata['before']!=null&&retdata['after']!=null){
+				if(retdata['before'].length==0){
+						$("#beforebutton").css("visibility","hidden");
+				}else{
+						$("#beforebutton").css("visibility","none");		
+				}
+				if(retdata['after'].length==0){
+						$("#afterbutton").css("visibility","hidden");
+				}else{
+						$("#afterbutton").css("visibility","none");		
+				}
+		}
+
 		// Fill Section Name and Example Name
 		var examplenme=document.getElementById('exampleName');
 		examplenme.innerHTML=data['examplename'];
@@ -65,22 +79,18 @@ function returned(data)
 		}
 		
 		// User can choose template if no template has been choosen and the user has write access.
-		console.log("Templ::"+retdata['templateid']+" "+retdata['writeaccess']);
 		if((retdata['templateid'] == 0)){
 			if(retdata['writeaccess'] == "w"){
 				$("#chooseTemplate").css("display","block");
 				return;
 			}else{
-				console.log("NoWrite "+retdata['writeaccess']+"!");
 				/* Create an error message to user or send user back to duggasys */
 				return;
 			}
 		}
 		
 		// If there is a template
-		changeCSS("css/"+retdata['stylesheet']);
-
-		console.log("Setting Template: "+retdata['stylesheet']);
+		changeCSS("../Shared/css/"+retdata['stylesheet']);
 
 		// Clear div2
 		$("#div2").html("");
@@ -93,6 +103,7 @@ function returned(data)
 			var boxid=retdata['box'][i][0];
 			var boxtype=retdata['box'][i][1].toUpperCase();
 			var boxcontent=retdata['box'][i][2];
+			var boxwordlist=retdata['box'][i][3];
 		
 			// don't create templatebox if it already exists
 			if(!document.getElementById(contentid)){
@@ -116,7 +127,7 @@ function returned(data)
 					}
 					$("#"+contentid).css("margin-top", boxmenuheight-1);
 
-					rendercode(boxcontent,boxid);
+					rendercode(boxcontent,boxid,boxwordlist);
 			}else if(boxtype == "DOCUMENT"){
 				
 					// Print out description in a document box
@@ -141,7 +152,6 @@ function returned(data)
 						var boxmenuheight= $("#"+contentid+"menu").height();
 					}
 					$("#"+contentid).css("margin-top", boxmenuheight);
-					
 					
 					createboxmenu(contentid,boxid,boxtype);
 					
@@ -176,9 +186,8 @@ function returned(data)
 
 function displayEditExample(boxid)
 {
-	console.log("DISPLAYING EDIT EXAMPLE!");
-	
 	$("#title").val(retdata['examplename']);
+	$("#secttitle").val(retdata['sectionname']);
 	$("#playlink").val(retdata['playlink']);
 	
 	var iw=retdata['impwords'];
@@ -191,17 +200,30 @@ function displayEditExample(boxid)
 	// Get the filename for current codebox
 	var bestr="";
 	var afstr="";
-	var beforeid="tol";
-	var afterid="tol";
+	
+	// Set beforeid and afterid if set
+	var beforeid="UNK";
+	if(retdata['before']!==null){
+			if(retdata['before'].length!==0){
+					beforeid=retdata['before'][0][0];			
+			}
+	}
+	var afterid="UNK";
+	if(retdata['after']!==null){
+			if(retdata['after'].length!==0){
+					afterid=retdata['after'][0][0];
+			}
+	}
+	
 	var ba=retdata['beforeafter'];
 	for(var i=0; i<ba.length; i++){
 		if(ba[i][0] == beforeid){
-
+				bestr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
 		}else{
 				bestr+="<option value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
 		}
 		if(ba[i][0] == afterid){
-		
+				afstr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";				
 		}else{
 				afstr+="<option value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";		
 		}
@@ -210,6 +232,45 @@ function displayEditExample(boxid)
 	$("#after").html(afstr);
 
 	$("#editExample").css("display","block");
+}
+
+//----------------------------------------------------------------------------------
+// updateExample: Updates example data in the database if changed
+//----------------------------------------------------------------------------------
+
+function updateExample()
+{
+	// Set beforeid if set
+	var beforeid="UNK";
+	if(retdata['before'].length!=0){
+			beforeid=retdata['before'][0][0];
+	}
+
+	var afterid="UNK";
+	if(retdata['after'].length!=0){
+			afterid=retdata['after'][0][0];
+	}
+
+	if(($("#before").val()!=beforeid&&beforeid!="UNK")||($("#after").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
+			var courseid = querystring['courseid'];
+			var cvers = querystring['cvers'];
+			var exampleid = querystring['exampleid'];
+			var playlink = $("#playlink").val();
+			var examplename = $("#title").val();
+			var sectionname = $("#secttitle").val();
+			
+			AJAXService("EDITEXAMPLE", {
+					courseid : courseid,
+					cvers : cvers,
+					exampleid : exampleid,
+					beforeid : beforeid,
+					afterid : afterid,
+					playlink : playlink,
+					examplename : examplename,
+					sectionname : sectionname
+			}, "CODEVIEW");
+	}
+
 }
 
 //----------------------------------------------------------------------------------
@@ -245,8 +306,6 @@ function displayEditContent(boxid)
 
 function addTemplatebox(id)
 {
-	console.log("Addtemplatebox "+id);
-
 	str="<div id='"+id+"wrapper' ";
 	if(id==("box"+retdata['numbox'])){
 		str+="class='boxwrapper activebox'>";
@@ -267,7 +326,6 @@ function addTemplatebox(id)
 //----------------------------------------------------------------------------------
 
 function createboxmenu(contentid, boxid, type){
-	console.log("  BOXMENU "+contentid+" "+boxid+" "+type);
 
 	if(!document.getElementById(contentid+"menu")){
 		var boxmenu = document.createElement("div");
@@ -279,10 +337,8 @@ function createboxmenu(contentid, boxid, type){
 			//----------------------------------------------------------------------------------------- DOCUMENT
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
-				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][3]+'</span></td>';
-				str+= '<td class="butto2 showdesktop" title="Remove formatting" onclick="styleReset();"><img src="../Shared/icons/reset_button.svg" /></td>';
-				str+= '<td class="butto2 showdesktop" title="Heading" onclick="styleHeader();"><img src="../Shared/icons/boldtext_button.svg" /></td>';
-				str+= "<td class='butto2 showdesktop imgdropbutton' onclick='displayDrop(\"imgdrop\");'  title='Select image'><img src='../Shared/icons/picture_button.svg' /></td>";
+				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][4]+'</span></td>';
+				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 							
 				str+="</tr></table>";
 				//----------------------------------------------------------------------------------------- END DOCUMENT
@@ -349,14 +405,11 @@ function createhotdogmenu(){
 	var content = document.getElementById("div2");
 	if(document.getElementById("hotdogdrop")){
 		var hotdogmenu = document.getElementById("hotdogdrop");
-		console.log("Hotdogmenu A");
 	}else{
 		var hotdogmenu = document.createElement("span");
 		content.appendChild(hotdogmenu);
 		hotdogmenu.id = "hotdogdrop";
 		hotdogmenu.className = "hotdogdropStyle dropdown dropdownStyle showmobile";
-
-		console.log("Hotdogmenu B");
 	}
 	
 		str = '<table cellspacing="0" class="showmobile"><tr>';
@@ -388,7 +441,6 @@ function createhotdogmenu(){
 
 function toggleClass(id)
 {
-	console.log("   toggleClass"+id);
 	var className = $('#'+id).attr('class');
 	$(".boxwrapper").addClass("deactivatedbox").removeClass("activebox");	
 	if(className.indexOf("activebox") >-1){
@@ -438,69 +490,57 @@ function dehighlightop(otherop,thisop)
 }
 
 //----------------------------------------------------------------------------------
-// SkipBTimeout: Skip forward and backward menu timeout
-//----------------------------------------------------------------------------------
-
-/*
-function SkipBTimeout()
-{
-		if(dmd==1){	
-			switchDrop("backwdrop");
-			isdropped=true;
-		}	
-}
-
-function SkipBDown()
-{		
-		setTimeout(function(){SkipBTimeout();}, 1000);							
-		dmd=1;
-}
-
-
-function SkipBUp()
-{
-		dmd=0;
-}
-
-function SkipB()
-{		
-		if(issetDrop("backwdrop")&&isdropped==false){
-			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
-			location="EditorV30.php?courseid="+querystring['courseid']+"&exampleid="+prevexampleid;
-		}else if(issetDrop("backwdrop")&&isdropped==true){
-				isdropped=false;
-		}else{
-			// get previous example in the hierarchy
-			var prevexampleid=parseInt(retdata['before'].reverse()[0][1]);
-			location="EditorV30.php?courseid="+querystring['courseid']+"&exampleid="+prevexampleid;
-		}
-}
-
-
-function SkipF()
-{
-		if(issetDrop("forwdrop")&&isdropped==false){
-			var nextexampleid=parseInt(retdata['after'][0][1]);
-			location="EditorV30.php?courseid="+querystring['courseid']+"&exampleid="+nextexampleid;
-		}
-		else if(issetDrop("forwdrop")&&isdropped==true){
-				isdropped=false;
-		}else{
-			// get next example in the hierarchy
-			var nextexampleid=parseInt(retdata['after'][0][1]);
-			location="EditorV30.php?courseid="+querystring['courseid']+"&exampleid="+nextexampleid;
-		}
-}
-*/
-
-
-//----------------------------------------------------------------------------------
 // Skip: Handles skipping either forward or backward. If pressed show menu
 //----------------------------------------------------------------------------------
 
+
+var dmd;
 function Skip(skipkind)
 {
-		alert(skipkind);
+		if(skipkind=="bd"){
+				dmd=1;
+		}else if(skipkind=="bu"){
+				if(retdata['before'].length!=0&&dmd==1){
+						navigateExample(retdata['before'][0][0]);
+				}
+				dmd=0;		
+		}
+		if(skipkind=="fd"){
+				dmd=2;
+		}else if(skipkind=="fu"){
+				if(retdata['after'].length!=0&&dmd==2){
+						navigateExample(retdata['after'][0][0]);
+				}
+				dmd=0;		
+		}
+
+		if(skipkind=="bd"||skipkind=="fd"){
+				$("#forwdrop").css("display","none");
+				$("#backwdrop").css("display","none");
+		}
+		
+		setTimeout(function(){execSkip()}, 1000);							
+
+}
+
+function execSkip()
+{
+		str="";
+		if(dmd==1){
+				for(i=0;i<retdata['before'].length;i++){
+						str+="<span id='F"+retdata['before'][i][1]+"' onclick='navigateExample(\""+retdata['before'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retdata['before'][i][1]+":"+retdata['before'][i][2]+"</span>";
+				}
+				$("#backwdropc").html(str);
+				$("#backwdrop").css("display","block");
+				dmd=0;
+		}else if(dmd==2){
+				for(i=0;i<retdata['after'].length;i++){
+						str+="<span id='F"+retdata['after'][i][1]+"' onclick='navigateExample(\""+retdata['after'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retdata['after'][i][1]+":"+retdata['after'][i][2]+"</span>";
+				}
+				$("#forwdropc").html(str);
+				$("#forwdrop").css("display","block");
+				dmd=0;
+		}
 }
 
 // -------------==============######## Verified Functions End ###########==============-------------
@@ -990,7 +1030,7 @@ while (c) {		// c == first character in each word
 // Requires tokens created by a cockford-type tokenizer
 //----------------------------------------------------------------------------------
 
-function rendercode(codestring,boxid)
+function rendercode(codestring,boxid,wordlistid)
 {
     var destinationdiv = "box" + boxid;
 	tokens = [];
@@ -999,13 +1039,11 @@ function rendercode(codestring,boxid)
 	for(var i=0;i<retdata.impwords.length;i++){
 		important[retdata.impwords[i]]=retdata.impwords[i];	
 	}
-	
 
-	keywords=[];
+	keywords= [];
 	for(var i=0;i<retdata['words'].length;i++){
-		if(retdata['words'][i][0]==wordlist){
-			temp=[retdata['words'][i][1],retdata['words'][i][2]];
-			keywords[temp]=temp;
+		if(retdata['words'][i][0]==wordlistid){
+			keywords[retdata['words'][i][1]]=retdata['words'][i][2];
 		}
 	}
 
@@ -1065,7 +1103,7 @@ function rendercode(codestring,boxid)
 			}
 			
 			if(foundkey==1){
-				cont+="<span class='keyword"+label+"'>"+tokenvalue+"</span>";														
+				cont+="<span class='keyword"+keywords[tokenvalue]+"'>"+tokenvalue+"</span>";														
 			}else if(foundkey==2){
 				iwcounter++;
 				cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
@@ -1264,4 +1302,11 @@ function closeEditExample()
 function updateContent()
 {
 
+}
+
+function Play()
+{
+		if(retdata['playlink']!=null){
+				navigateTo("/codeupload/",retdata['playlink']);
+		}
 }
