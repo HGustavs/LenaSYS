@@ -40,10 +40,10 @@
 
 					if(checklogin()) {
 							echo "<td class='navName'><label id='userName'>".$_SESSION['loginname']."</label></td>";		
-							echo "<td id='loginbutton' class='loggedin' onclick='processLogout(\"$loginvar\");'><img src='../Shared/icons/Man.svg' onmouseover=\"this.src='../Shared/icons/logout_button.svg'\" onmouseout=\"this.src='../Shared/icons/Man.svg'\" /></td>";					
+							echo "<td id='loginbutton' class='loggedin' onclick='processLogout(\"$loginvar\");'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
 					}else{
 							echo "<td class='navName'><label id='userName'>Guest</label></td>";		
-							echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><img src='../Shared/icons/Man.svg' onmouseover=\"this.src='../Shared/icons/login_button.svg'\" onmouseout=\"this.src='../Shared/icons/Man.svg'\" /></td>";
+							echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
 					}
 
 					echo "</tr></table>";
