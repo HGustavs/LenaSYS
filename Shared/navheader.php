@@ -14,8 +14,12 @@
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
 							echo "<td class='navButt'><a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
-					}else{
-							// None!
+					}else if($noup=="CodeViewToSECTION"){
+							$cid=getOPG('cid');
+							$coursevers=getOPG('coursevers');
+							echo "<td class='navButt'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
+					}else {
+						// None!
 					}
 				
 					// Either generate code viewer specific nav menu or a spacer
