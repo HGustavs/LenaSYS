@@ -1284,9 +1284,15 @@ function changetemplate(templateno)
 
 function updateTemplate()
 {
-		templateno=$("#templateno").val();
-		$("#chooseTemplate").css("display","none");
-		$.ajax({url: "editorService.php", type: "POST", data: "courseid="+querystring['courseid']+"&exampleid="+querystring['exampleid']+"&opt=SETTEMPL"+"&cvers="+querystring['cvers']+"&templateno="+templateno, dataType: "json", success: returned});											
+	templateno=$("#templateno").val();
+	$("#chooseTemplate").css("display","none");
+	$.ajax({url: "editorService.php", type: "POST", data: "courseid="+querystring['courseid']+"&exampleid="+querystring['exampleid']+"&opt=SETTEMPL"+"&cvers="+querystring['cvers']+"&templateno="+templateno, dataType: "json", success: returned});
+	setTimeout("location.reload()", 500);
+}
+
+function openTemplateWindow()
+{
+	$("chooseTemplate").css("display","block");
 }
 
 function closeEditContent()
