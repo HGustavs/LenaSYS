@@ -126,7 +126,24 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
 	$(".item").css("background", "#fff");
 	$("#C" + cid).css("background", "#EDF");
 
+
+	
+	
 	// Set Name
+
+	$("#couresnamewrapper").html("<input class='form-control textinput' type='text' id='coursename' placeholder='"+coursename+"' />");
+	
+	// Set Cid
+
+	$("#courseidwrapper").html("<input class='form-control textinput' type='text' id='coursecode' placeholder='"+coursecode+"' />");
+	// Set Code
+	$("#versidwrapper").html("<input size='8' class='form-control textinput' type='text' id='versid' placeholder='"+vers+"' />");
+	
+	// Set Code
+	$("#versnamewrapper").html("<input size='8' class='form-control textinput' type='text' id='versname' placeholder='"+edvers+"' />");
+	// Set Visibiliy
+	
+		// Set Name
 	$("#coursename").val(coursename);
 
 	// Set Cid
@@ -225,10 +242,14 @@ function returnedCourse(data) {
 				str += "style='opacity:0.3;' ";
 			}
 			str += ">";
-
-			str += "<span><a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "'>" + item['coursename'] + "</a></span>";
+			if(item['activeversion']){
+				str += "<span style='margin-right:15px;'><a href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
+			}else{
+				str += "<span style='margin-right:15px;'>" + item['coursename'] + "</span>";
+			}
+			
 			if (data['writeaccess']) {
-				str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
+				str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeedversion'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
 				str += "<img id='dorf' style='float:right;' src='../Shared/icons/Cogwheel.svg' ";
 				str += " onclick='selectCourse(\"" + item['cid'] + "\",\"" + item['coursename'] + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' >";
 			}
