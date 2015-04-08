@@ -95,7 +95,7 @@
 	<?php 
 		$noup="SECTION";
 		$loginvar="PDUGGA"; 
-		include 'navheader.php';
+		include '../Shared/navheader.php';
 	?>
 		
 	<!-- content START -->
