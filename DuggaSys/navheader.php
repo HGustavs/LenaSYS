@@ -16,8 +16,8 @@ include_once "basic.php";
 			$cid = getOPG('cid');
 			$coursevers = getOPG('coursevers');
 		?>
-			<a href='<?php echo 'sectioned.php?courseid=".$cid."&coursevers=".$coursevers."' ?>'>
-				<img src='../Shared/icons/Up.svg' alt="Back icon" class='duggasys-head__backicon'>
+			<a href="<?php echo 'sectioned.php?courseid=' . $cid .'&coursevers=' . $coursevers ?>">
+				<img src="../Shared/icons/Up.svg" alt="Back icon" class="duggasys-head__backicon">
 				<span class="duggasys-head__backtext">Back</span>
 			</a>
 		<?php else: ?>
