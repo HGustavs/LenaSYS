@@ -69,11 +69,11 @@
 					</tr>
 	
 					<tr>
-						<td id="message"></td>
+						<td id="message2"></td>
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processLogin('<?PHP echo $loginvar; ?>')" value='Send'>
+							<input type='button' class='submit-button' value='Send'>
 							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
 						</td>
 					</tr>
