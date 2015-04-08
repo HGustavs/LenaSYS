@@ -3,12 +3,13 @@ create database imperious;
 use imperious;
 /* user contains the users of the system and related  information */
 
+
 CREATE TABLE user(
 		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
 		firstname		VARCHAR(50) NULL,
 		lastname		VARCHAR(50) NULL,
-		ssn					VARCHAR(20) NULL,
+		ssn				VARCHAR(20) NULL,
 		password		VARCHAR(225) NOT NULL,
 		lastupdated	TIMESTAMP,
 		addedtime   TIMESTAMP,
@@ -17,12 +18,14 @@ CREATE TABLE user(
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
 		email			VARCHAR(256) DEFAULT NULL,
-		PRIMARY KEY(uid)		
+		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class), 
+		PRIMARY KEY(uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
 INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111");
+
 
 /** 
  * Course table contains the most essential information relating to study courses in the database.
@@ -43,6 +46,7 @@ CREATE TABLE course(
 
 INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
 INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV13G","Futhark",NOW(),1,0);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("TEST13","Testing",NOW(),1,0);
 
 /** 
  * This table represents a many-to-many relation between users and courses. That is,
@@ -51,6 +55,7 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
 		cid				INT UNSIGNED NOT NULL, 
+		result 		varchar(5),
 		modified 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 	INTEGER,
 		access		VARCHAR(10) NOT NULL,
@@ -355,7 +360,7 @@ CREATE TABLE playereditor_playbacks(
 /**
  * This table seems to be intended to store program courses. It does not seem
  * to have any relation to the rest of the database and kind of stands out oddly.
- */
+ 
 CREATE TABLE programkurs (
     pkid int(11) NOT NULL AUTO_INCREMENT,
     kull varchar(8) DEFAULT NULL,
@@ -367,6 +372,69 @@ CREATE TABLE programkurs (
     termin varchar(45) DEFAULT NULL,
     PRIMARY KEY (pkid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+*/
+
+
+CREATE TABLE class (
+    class varchar(10) DEFAULT NULL,
+	classname varchar(100) DEFAULT NULL,
+    regcode int(8) DEFAULT NULL,
+	classcode varchar(8) DEFAULT NULL,
+    hp int(4) DEFAULT NULL,
+	tempo int(3) DEFAULT NULL,
+	resppers varchar(20) DEFAULT NULL,
+    PRIMARY KEY (class)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,resppers) VALUES ('WEBUG13','elite',23432,'WEBUG',180,100,'Brohede');
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,resppers) VALUES ('TEST13','test',44444,'TEST',180,100,'tester');
+/**
+ * this table stores the different subparts of each course. 
+ */ 
+CREATE TABLE subparts(
+	partname varchar(50),
+	cid INT UNSIGNED NOT NULL,
+	parthp int(4) DEFAULT NULL,
+	difGrade varchar(10),
+	PRIMARY KEY (partname,cid),
+	FOREIGN KEY (cid) REFERENCES course (cid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta1',3,1,'u345');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta2',3,1.5,'u345');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta3',3,1.5,'u345');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',3,3.5,'ug');
+
+/**
+ * this table for many to mny between user and subparts. 
+ */ 
+CREATE TABLE partresult (
+    uid	INT UNSIGNED NOT NULL,
+	partname varchar(50),
+	grade varchar(2) DEFAULT NULL,
+	PRIMARY KEY(partname, uid),
+	FOREIGN KEY (partname) REFERENCES subparts (partname),
+	FOREIGN KEY (uid) REFERENCES user (uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+INSERT INTO partresult(uid,partname,grade) VALUES (2,'hemtenta1',4);
+INSERT INTO partresult(uid,partname,grade) VALUES (2,'hemtenta2',3);
+INSERT INTO partresult(uid,partname,grade) VALUES (3,'hemtenta3','u');
+INSERT INTO partresult(uid,partname,grade) VALUES (3,'projektuppgift','g');
+
+/**
+ * this table many to many relation between class and course. 
+ */ 
+
+CREATE TABLE programcourse (
+    class varchar(10) DEFAULT NULL,
+	cid INT UNSIGNED NOT NULL,
+	PRIMARY KEY(cid, class),
+	FOREIGN KEY (cid) REFERENCES course (cid),
+	FOREIGN KEY (class) REFERENCES class (class)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',1);
 
 /**
  * This table seems to be intended to store student results from program courses.
@@ -398,9 +466,29 @@ CREATE TABLE studentresultat (
         REFERENCES programkurs (kurskod)
 	*/
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
+/*
 INSERT INTO programkurs VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationssäkerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och användbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
 INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
+
+delimiter //
+
+create trigger calcStudentHp after update on partresult
+for each row begin
+	update user_course,user set user_course.result = (select sum(subpart.parthp) from partresult,user,course_user where partresult.cid=user.cid and user.cid=course_user.cid) where user.uid=user_course.uid and ;
+end;
+//
+*/
+delimiter //
+create trigger calcStudentHp after insert on partresult
+for each row begin
+	update user_course 
+	set user_course.result = (select sum(subpart.parthp) 
+		from partresult,subpart,user_course
+		where partresult.cid=subpart.cid and partresult.partname=subpart.partname /*and partresult.grade != 'u'*/) 
+	where partresult.uid=user_course.uid and partresult.cid = user_course.cid;
+end;
+//
+delimiter ;
 
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";
@@ -408,7 +496,7 @@ update user set ssn="810101-5567" where username="Grimling";
 update user set ssn="444444-5447" where username="Toddler";
 update user set password=password("Kong") where username="Toddler";
 update user set superuser=1 where username="Toddler";
-
+/*
 // Code for testing Code Viewer
 
 // Create a number of examples, linked from one to five
@@ -416,22 +504,27 @@ update user set superuser=1 where username="Toddler";
 // http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=1&courseid=1&cvers=2013
 // Example 2 has template 1 (no template dialog should be shown but rather an error message if not administrator) and it should show a code file on the left pane and a description pane on the right pane
 // http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=2&courseid=1&cvers=2013
+
+*/
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid) values (1,"Xample Code","Events 1","Runlink1.html",1,2013,"2");
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Events 1","Runlink2.html",1,2013,"3","1",1);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid) values (1,"Xample Code","Events 2","Runlink3.html",1,2013,"4","2");
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Callback 2","Dulf.html",1,2013,"5","3",1);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid) values (1,"Xample Code","Callback 3","",2,2013,1);
-
+/*
 // Boxes for example 2 (Boxes are created automatically when selecting template) 
 // Note: if we have box rows but no template the template assignment will give an error message, it is thus important that there are corresponding templates
+*/
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,2,"TitleA","Code","[viktig=1]","js1.js",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,2,"TitleB","Document","[viktig=1]","<b>Events 1</b>This is elem the first section of the event description<b>More</b>This is more text",1);
-
+/*
 // In example 2 rows 3-5 and 8-1 are highlighted
+*/
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,3,5,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,8,11,1);
-
+/*
 // Important words to be highlighted in example 1 and 2
+*/
 INSERT INTO impwordlist(exampleid,word,uid) values (1,"event",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (1,"elem",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (1,"pageY",2);
@@ -439,14 +532,15 @@ INSERT INTO impwordlist(exampleid,word,uid) values (2,"event",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (2,"elem",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (2,"pageY",2);
 
-
+/*
 // Wordlists from three typical languages
+*/
 INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
-
+/*
 // Words in wordlist 1,2 and 3
-
+*/
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"if","C",1);
@@ -459,3 +553,4 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
+
