@@ -1,3 +1,9 @@
+// Example seed - simple
+// Param: {"variant":"40 13 7 20 0"}
+// Answer: Variant
+// Example seed - complex
+// Param: {"variant":"26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0"}
+// Answer: Variant 
 //------------==========########### GLOBALS ###########==========------------
 var running;
 var retdata = null;

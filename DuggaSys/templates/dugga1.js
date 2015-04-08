@@ -2,6 +2,10 @@
 //                                  Master Functions
 //--------------------================############================--------------------
 
+// Example seed
+// Param:  {"tal":"2"}
+// Answer: {"danswer":"00000010 0 2"}
+
 function setup()
 {
 		$('.bit').click(function(){
