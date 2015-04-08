@@ -94,10 +94,10 @@ pdoConnect();
 
 
 	<table width="100%"><tr>
-			<td id='accessbutt' align='left'><input class='submit-button' type='button' value='Access' onclick='accessCourse();' /></td>
-			<td align='center'><input class='submit-button' type='button' value='New Version' onclick='createVersion();' /></td>
-			<td align='center'><input class='submit-button' type='button' value='Copy' onclick='copyVersion();' /></td>
-			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateCourse();' /></td>
+			<td id='accessbutt' align='left'><input class='submit-button' type='button' value='Access' title='Give students access to this course' onclick='accessCourse();'/></td>
+			<td align='center'><input class='submit-button' type='button' value='New Version' title='Click here to save a new version' onclick='createVersion();' /></td>
+			<td align='center'><input class='submit-button' type='button' value='Copy' title='Copy this course' onclick='copyVersion();' /></td>
+			<td align='right'><input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateCourse();' /></td>
 		</tr>
 	</table>
 
