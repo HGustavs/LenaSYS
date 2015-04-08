@@ -48,6 +48,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 <?php
 	session_start();
 
+	//include_once("../../codesyspw.php");
 	include_once("../../coursesyspw.php");
 	include_once("../Shared/basic.php");
 	include_once("../Shared/sessions.php");
@@ -98,7 +99,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 		$row = $query -> fetch(PDO::FETCH_ASSOC);
 		$public=$row['public'];	
 	
-		$noup="CodeViewToSECTION";
+		$noup="SECTION";
 		$loginvar="CODV";
 		$codeviewer = true;
 		$codeviewerkind=false;
@@ -136,7 +137,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 		}else{
 				$codeviewer = false;
 				include '../Shared/navheader.php';
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
+				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist!</div>";
 		}
 
 		echo "</div>";
