@@ -1,6 +1,6 @@
 	<!-- Overlay -->
 
-  <div id="overlay" onclick="hideLoginPopup()" style="display:none"></div>
+  <div id="overlay" style="display:none"></div>
   
 	<!-- Login Box Start! -->
 
@@ -19,7 +19,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="username" placeholder="Toddler" class='form-control textinput' type='text' autofocus >
+							<input id="username" class='form-control textinput' placeholder="Bamsebjorn" type='text' autofocus >
 						</td>
 					</tr>
 					<tr>
@@ -29,7 +29,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="password" placeholder="kalleDgreat2" class='form-control textinput' type='password' >
+							<input id="password" class='form-control textinput' placeholder="goran123" type='password' >
 						</td>
 					</tr>
 					<tr>
@@ -43,38 +43,38 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processLogin('<?PHP echo $loginvar; ?>');" value='Login'>
-							<label class='forgotPw' onclick='showForgontPw();'>Forgot password?</label>
+							<input type='button' class='submit-button' onclick="processLogin('<?PHP echo $loginvar; ?>')" value='Login'>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
 						</td>
 					</tr>
 				</table>
 			  </div>
 		</div>
-		<!-- -->
-		<div id='login2' style="display:none">
-			<div class='loginBoxheader'>
-				<h3>Send mail</h3>
+		<div id='newpassword' style="display:none">
+			<div class='loginBoxheader' id="passwordid">
+				<h3>New Password</h3>
 				<div onclick="hideLoginPopup()">x</div>
 			</div>
 			  <div class="table-wrap">
 				<table>
 					<tr>
 						<td>
-							<label class="text">Email:</label>
+							<label class="text">email:</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input id="emaaail1" placeholder="kalle@hotmail.com" class='form-control textinput' type='text' autofocus >
+							<input id="email" class='form-control textinput' type='text' placeholder="kalrson@hotmail.com" autofocus >
 						</td>
 					</tr>
+	
 					<tr>
-						<td id="message2"></td>
+						<td id="message"></td>
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processemailsend()" value='Send'>
-							<label class='forgotPw' onclick='showForgontPw();'>Back to login page!</label>
+							<input type='button' class='submit-button' onclick="processLogin('<?PHP echo $loginvar; ?>')" value='Send'>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
 						</td>
 					</tr>
 				</table>
