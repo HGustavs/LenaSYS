@@ -31,6 +31,21 @@ function updateCourse() {
 
 }
 
+var status = 0;
+function toggleloginnewpass(){
+
+	if(status == 0){
+		$("#newpassword").css("display", "block");
+		$("#login").css("display", "none");
+		status++;
+	}
+	else if(status == 1){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "block");
+		status= 0;
+	}
+}
+
 function accessCourse() {
 	window.location.href = "accessed.php?cid=" + $("#cid").val();
 	resetinputs();
