@@ -1296,8 +1296,13 @@ function closeEditContent()
 
 function closeEditExample()
 {
-		/*$("#editExample").css("display","none");*/
-		$("#chooseTemplate").css("display","none");
+		$("#editExample").css("display","none");
+	
+}
+
+function closeTemplateWindow()
+{
+	$("chooseTemplate").css("display","none");
 }
 
 function updateContent()
