@@ -42,11 +42,10 @@ pdoConnect();
 	<!-- Section List -->
   	<nav class="my-nav clearfix">
       <div class="my-input-group my-pull-right">
-         <button type="button" class="my-pull-right " onclick="loadData(studyprogram.value, null);">Sök</span></button>            
-         <input type="text" class="form-control my-pull-right " placeholder="WEBUG12h" name="studyprogram" id="studyprogram">
+         <button type="button" class="my-pull-right " onclick="loadData(studyprogram.value,pnr.value, null);">Sök</span></button>            
+         <input type="text" class="form-control my-pull-right " placeholder="WEBUG12h/Pnr" name="studyprogram/Pnr" id="studyprogram/Pnr">
          
-         <button type="button" class="my-pull-right " onclick="loadData(null,pnr.value);">Sök</span></button>            
-         <input type="text" class="form-control my-pull-right " placeholder="Pnr" name="pnr" id="pnr">
+         <!-- Person ID search box used to be here-->
       </div>
 	</nav>
 
