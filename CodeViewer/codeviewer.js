@@ -1292,7 +1292,7 @@ function updateTemplate()
 
 function openTemplateWindow()
 {
-	$("chooseTemplate").css("display","block");
+	$("#chooseTemplate").css("display","block");
 }
 
 function closeEditContent()
