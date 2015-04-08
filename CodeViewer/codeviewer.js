@@ -1302,7 +1302,7 @@ function closeEditExample()
 
 function closeTemplateWindow()
 {
-	$("chooseTemplate").css("display","none");
+	$("#chooseTemplate").css("display","none");
 }
 
 function updateContent()
