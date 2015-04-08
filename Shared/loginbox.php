@@ -1,4 +1,4 @@
-	<!-- Overlay -->
+		<!-- Overlay -->
 
   <div id="overlay" style="display:none"></div>
   
@@ -19,7 +19,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="username" class='form-control textinput' placeholder="Bamsebjorn" type='text' autofocus >
+							<input id="username" class='form-control textinput' placeholder="c13andfi" type='text' autofocus >
 						</td>
 					</tr>
 					<tr>
@@ -29,7 +29,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="password" class='form-control textinput' placeholder="goran123" type='password' >
+							<input id="password" class='form-control textinput' placeholder="c90yutnU" type='password' >
 						</td>
 					</tr>
 					<tr>
@@ -64,7 +64,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="email" class='form-control textinput' type='text' placeholder="kalrson@hotmail.com" autofocus >
+							<input id="email" class='form-control textinput' type='text' placeholder="c13andfi@student.his.se" autofocus >
 						</td>
 					</tr>
 	
