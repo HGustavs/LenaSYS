@@ -1312,7 +1312,7 @@ function updateTemplate()
 			templateno : templateno
 		}, "CODEVIEW");
 	}catch(e){
-		alert("Error in setup() "+e.message)
+		alert("Error when updating template: "+e.message)
 	}
 }
 
