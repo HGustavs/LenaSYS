@@ -9,7 +9,7 @@
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
-	include_once ("../../coursesyspw.php");	
+	include_once ("../../codesyspw.php");	
 	include_once ("../Shared/sessions.php");
 	include_once ("../Shared/basic.php");
 	include_once ("../Shared/courses.php");
@@ -18,6 +18,7 @@
 	// Connect to database and start session
 	//dbConnect();
         pdoConnect();
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
 	session_start();
 	
