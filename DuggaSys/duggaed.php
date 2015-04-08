@@ -25,7 +25,7 @@ pdoConnect();
 	<?php 
 		$noup="SECTION";
 		$loginvar="DUGGA";
-		include 'navheader.php';
+		include '../Shared/navheader.php';
 	?>
 		
 	<!-- content START -->
