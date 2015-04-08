@@ -50,8 +50,8 @@ pdoConnect();
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='cid' value='Toddler' /></td>
-			<td>Course Name: <input class='form-control textinput' type='text' id='ncoursename' value='Course Name' /></td>
-			<td>Course Code: <input class='form-control textinput' type='text' id='ncoursecode' value='Course Code' /></td>	
+			<td>Course Name: <input class='form-control textinput' type='text' id='ncoursename' placeholder='Course Name' /></td>
+			<td>Course Code: <input class='form-control textinput' type='text' id='ncoursecode' placeholder='Course Code' /></td>	
 		</tr>
 	</table>
 	<table width="100%">
