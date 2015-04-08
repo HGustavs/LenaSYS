@@ -261,7 +261,8 @@ header {
 }
 
 .navButt {
-		width:50px;
+	width:50px;
+	vertical-align: middle;
 }
 
 .navHeading {
@@ -679,24 +680,18 @@ input.submit-button-red:hover {
 
 /* DuggaSys Header */
 /*******************/
-.duggasys-head {
-	background-color: #614875;
-	overflow: inherit!important;
-	height: auto;
+
+.head__backanchor {
+	color: #ff0;
 }
-.duggasys-head--placeholder {
-	height: 72px;
+.head__backanchor:visited {
+	color: #ff0;
 }
-.duggasys-head--nav {
-	float: left;
-	text-align: center;
+.head__backanchor:hover {
+	color: #fff;
 }
-.duggasys-head__backicon {
-	display: block;
-	margin: 0 auto;
-	padding: 10px;
-	width: 60px;
-}
+
+
 .duggasys-head__backtext {
 	display: block;
 }
