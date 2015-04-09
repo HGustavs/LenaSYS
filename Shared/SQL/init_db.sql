@@ -478,17 +478,21 @@ for each row begin
 end;
 //
 */
-delimiter //
-create trigger calcStudentHp after insert on partresult
-for each row begin
-	update user_course 
-	set user_course.result = (select sum(subpart.parthp) 
-		from partresult,subpart,user_course
-		where partresult.cid=subpart.cid and partresult.partname=subpart.partname /*and partresult.grade != 'u'*/) 
-	where partresult.uid=user_course.uid and partresult.cid = user_course.cid;
-end;
-//
-delimiter ;
+
+/**
+	This view eases the process of determining how many hp a student with a specific uid
+	in a specific course cid has finished. See the example below.
+
+	Example, get total hp finished by user with uid 2 in course with cid 1:
+		SQL code: select hp from studentresult where user = 2 and course_id = 1;
+*/
+create view studentresult as
+	select user.uid as user, user_course.cid as course_id, sum(subparts.parthp) as hp from subparts  
+		inner join partresult on partresult.partname = subparts.partname
+		inner join user_course on user_course.cid = subparts.cid
+		inner join user on user.uid = partresult.uid and user.uid = user_course.uid and user_course.uid = partresult.uid
+			and partresult.grade != "u"
+			group by user_course.uid;
 
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";
