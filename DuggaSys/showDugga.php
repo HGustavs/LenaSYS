@@ -1,10 +1,3 @@
-<?php
-session_start();
-include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
-pdoConnect();
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,22 +5,27 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Dugga Viewer</title>
 		
-	<link type="text/css" href="css/style.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="templates/dugga.css" rel="stylesheet">
 
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.min.js"></script>
-
-	<script src="dugga.js"></script>
+	
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="../Shared/dugga.js"></script>
 	
 	<script>var querystring=parseGet();</script>
 
 <?php
 			date_default_timezone_set("Europe/Stockholm");
-								
-			$noup="SECTION";
-			$loginvar="PDUGGA"; 
-			include '../Shared/navheader.php';
+			
+			// Include basic application services!
+			include_once "../Shared/basic.php";
+			include_once "../Shared/sessions.php";
+			
+			session_start();
+
+			// Connect to database and start session
+			pdoConnect();
 			
 			$cid=getOPG('cid');
 			$vers=getOPG('coursevers');
@@ -93,6 +91,12 @@ pdoConnect();
 		}
 ?>
 
+
+	<?php 
+		$noup="SECTION";
+		$loginvar="PDUGGA"; 
+		include '../Shared/navheader.php';
+	?>
 		
 	<!-- content START -->
 	<div id="content">
