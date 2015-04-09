@@ -11,22 +11,22 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Access Editor</title>
 
-	<link type="text/css" href="css/style.css" rel="stylesheet">
-  <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.min.js"></script>
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
 	<script src="dugga.js"></script>
 	<script src="accessed.js"></script>
 
 </head>
-<body>
+<body onload="addnewbutton()">
 	
 	<?php 
 		$noup=true;
 		$loginvar="ACCESS"; 
-		include '../Shared/navheader.php';
+		include 'navheader.php';
 	?>
 		
 	<!-- content START -->
@@ -46,11 +46,13 @@ pdoConnect();
 	
 	<?php 
 		include 'loginbox.php';
+		
+
 	?>
 	
 	<!--- Edit User Dialog START --->
-	<div id='createUsers' class='loginBox' style='width:464px;display:none;'>
-
+	
+<div id='createUsers' class='loginBox' style='width:464px;display:none'>
 	<div class='loginBoxheader'>
 	<h3>Create Users</h3>
 	<div onclick='hideCreateUsersPopup();'>x</div>
