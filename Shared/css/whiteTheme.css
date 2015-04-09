@@ -74,7 +74,7 @@
 	bottom: 0px;
 	left:0px;
 	margin: 0px !important;
-	padding: 0px !important;
+	padding: 5px 0px 0px 0px !important;
 	background-color: #614875;
 	text-align: right;
 	
@@ -104,6 +104,7 @@
 .normtextwrapper{
 	 /* Width of codeborder */
   	margin-left: 32px;
+  	padding: 5px 0px 5px 5px;
 }
 
 .normtext {
