@@ -191,7 +191,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 	<div class='loginBoxheader'>
 	<h3>Edit Example</h3>
-	<div onclick='closeTemplateWindow();'>x</div>
+	<div onclick='closeEditExample();'>x</div>
 	</div>
 	<table width="100%">
 		<tr>
@@ -226,7 +226,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 	<div class='loginBoxheader'>
 	<h3>Edit Example</h3>
-	<div onclick='closeEditExample();'>x</div>
+	<div onclick='closeTemplateWindow();'>x</div>
 	</div>
 	<table width="100%">
 		<tr>
