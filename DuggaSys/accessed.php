@@ -11,11 +11,11 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Access Editor</title>
 
-	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="css/style.css" rel="stylesheet">
+  <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 
-	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
-	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="js/jquery-1.11.0.min.js"></script>
+	<script src="js/jquery-ui-1.10.4.min.js"></script>
 
 	<script src="dugga.js"></script>
 	<script src="accessed.js"></script>
@@ -26,7 +26,7 @@ pdoConnect();
 	<?php 
 		$noup=true;
 		$loginvar="ACCESS"; 
-		include 'navheader.php';
+		include '../Shared/navheader.php';
 	?>
 		
 	<!-- content START -->
@@ -34,7 +34,7 @@ pdoConnect();
 		<div id="newbutton">
 			<?PHP
 			echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/></div>";
-			//new issue: needs to calculate if the user has access to this button before writing out
+			//needs to calculate if the user has access to this button before writing out
 			
 			?>		
 		</div>
@@ -46,13 +46,11 @@ pdoConnect();
 	
 	<?php 
 		include 'loginbox.php';
-		
-
 	?>
 	
 	<!--- Edit User Dialog START --->
-	
-<div id='createUsers' class='loginBox' style='width:464px;display:none'>
+	<div id='createUsers' class='loginBox' style='width:464px;display:none;'>
+
 	<div class='loginBoxheader'>
 	<h3>Create Users</h3>
 	<div onclick='hideCreateUsersPopup();'>x</div>
