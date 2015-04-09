@@ -9,11 +9,11 @@
 					
 					// Set the target for the 'Upward' Button
 					if($noup=="COURSE"){
-							echo "<td class='navButt'><a href='courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
+							echo "<td class='navButt'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else if($noup=="SECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt'><a href='sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
+							echo "<td class='navButt'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else if($noup=="CodeViewToSECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');

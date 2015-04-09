@@ -165,7 +165,7 @@
 }
 
 .normtext .hi {
-    background-color: #FF0000;
+    background-color: #9569BD;
     color: #000;
     font-weight: bold;
 }
@@ -173,7 +173,7 @@
 .impo .hi {
    font-weight: bold;
    color: #000000;
-   background-color: #FF0000;
+   background-color: #9569BD;
 }
 
 .keywordA {
@@ -277,6 +277,7 @@
 /* BOXMENU STYLING START */
 .buttomenu2Style{
 	background-color: #5A5757;
+	padding-top: 2px;
 }
 
 .buttomenu2Style .wordlistselect{
