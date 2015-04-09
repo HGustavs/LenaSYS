@@ -233,7 +233,7 @@ function returnedCourse(data) {
 	str += "<div id='lena' class='head'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a> Course Organization System</div>";
 
 	// For now we only have two kinds of sections
-	if (data['entries'].length > 0) {
+if (data['entries'].length > 0) {
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 
@@ -242,11 +242,19 @@ function returnedCourse(data) {
 				str += "style='opacity:0.3;' ";
 			}
 			str += ">";
-			if(item['activeversion']){
+			
+		if(item['activeversion']){
+		
+			if (data['writeaccess']) {
 				str += "<span style='margin-right:15px;'><a href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
-			}else{
-				str += "<span style='margin-right:15px;'>" + item['coursename'] + "</span>";
 			}
+			else{
+				str += "<span><a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "'>" + item['coursename'] + "</a></span>";
+			}
+
+		}else{
+				str += "<span style='margin-right:15px;'>" + item['coursename'] + "</span>";
+		}
 			
 			if (data['writeaccess']) {
 				str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeedversion'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
