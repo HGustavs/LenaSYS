@@ -193,9 +193,9 @@
 }
 
 .normtext .impword {
-    color: #fff;
-    background-color: #614875;
-		border: 1px solid #f44;
+    color: #000;
+    background-color: #F2F2F2;
+		border: 1px solid #899;
 }
 
 .impo .impword {
@@ -277,6 +277,7 @@
 /* BOXMENU STYLING START */
 .buttomenu2Style{
 	background-color: #5A5757;
+	padding-top: 2px;
 }
 
 .buttomenu2Style .wordlistselect{

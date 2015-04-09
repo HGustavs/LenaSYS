@@ -1,5 +1,5 @@
 <?php
-include_once("../../coursesyspw.php");
+include_once(dirname(__file__)."/../../codesyspw.php");
 //---------------------------------------------------------------------------------------------------------------
 // dbconnect - Makes database connection
 //---------------------------------------------------------------------------------------------------------------
@@ -51,6 +51,5 @@ function pdoConnect()
 	}
 	
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-
 }
 ?>
