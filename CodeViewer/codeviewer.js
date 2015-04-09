@@ -1314,6 +1314,7 @@ function updateTemplate()
 	}catch(e){
 		alert("Error when updating template: "+e.message)
 	}
+	setTimeout("location.reload()", 500);
 }
 
 function closeEditContent()
@@ -1325,6 +1326,11 @@ function closeEditExample()
 {
 		$("#editExample").css("display","none");
 	
+}
+
+function openTemplateWindow()
+{
+	$("#chooseTemplate").css("display","block");
 }
 
 function closeTemplateWindow()
