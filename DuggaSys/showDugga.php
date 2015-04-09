@@ -1,3 +1,10 @@
+<?php
+session_start();
+include_once "../../coursesyspw.php";
+include_once "../Shared/sessions.php";
+pdoConnect();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,15 +24,10 @@
 
 <?php
 			date_default_timezone_set("Europe/Stockholm");
-			
-			// Include basic application services!
-			include_once "basic.php";
-			include_once "../Shared/sessions.php";
-			
-			session_start();
-
-			// Connect to database and start session
-			pdoConnect();
+								
+			$noup="SECTION";
+			$loginvar="PDUGGA"; 
+			include '../Shared/navheader.php';
 			
 			$cid=getOPG('cid');
 			$vers=getOPG('coursevers');
@@ -91,12 +93,6 @@
 		}
 ?>
 
-
-	<?php 
-		$noup="SECTION";
-		$loginvar="PDUGGA"; 
-		include '../Shared/navheader.php';
-	?>
 		
 	<!-- content START -->
 	<div id="content">
