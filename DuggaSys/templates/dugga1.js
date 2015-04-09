@@ -1,10 +1,28 @@
-//--------------------================############================--------------------
-//                                  Master Functions
-//--------------------================############================--------------------
+/********************************************************************************
 
-// Example seed
-// Param:  {"tal":"2"}
-// Answer: {"danswer":"00000010 0 2"}
+   Documentation 
+
+*********************************************************************************
+
+Example seed
+---------------------
+	Param:  {"tal":"2"}
+	Answer: {"danswer":"00000010 0 2"}
+
+-------------==============######## Documentation End ###########==============-------------
+*/
+
+
+//----------------------------------------------------------------------------------
+// Globals
+//----------------------------------------------------------------------------------
+
+var retdata=null;
+var hc=null;
+
+//----------------------------------------------------------------------------------
+// Setup
+//----------------------------------------------------------------------------------
 
 function setup()
 {
@@ -17,7 +35,9 @@ function setup()
 		});
 }
 
-var retdata=null;
+//----------------------------------------------------------------------------------
+// returnedDugga: callback from ajax call in setup, data is json
+//----------------------------------------------------------------------------------
 
 function returnedDugga(data)
 {
@@ -50,6 +70,11 @@ function returnedDugga(data)
 		}		
 }
 
+//--------------------================############================--------------------
+//                                  Master Functions
+//--------------------================############================--------------------
+
+
 function saveClick()
 {
 		// Loop through all bits
@@ -80,6 +105,7 @@ function showFacit(param, uanswer, danswer)
 			var danswer = da.split(' ');
 			
 			$("#talet").html(p['tal']);
+			
 			// Add our previous answer
 			var previous = uanswer.split(' ');
 			if (previous.length >= 4){
@@ -88,13 +114,13 @@ function showFacit(param, uanswer, danswer)
 				var hexvalue2 = previous[5]; 
 			}			
 			resetBitstring();
+			
 			// NB: LSB is now on the highest string index
 			for (var i=bitstring.length;i>=0;i--){
 				if (bitstring[i]==1){
 					bitClick("B"+(7-i));
 				}				
 			}
-
 			
 			// NB: LSB is now on the highest string index
 			for (var i=danswer[0].length;i>0;i--){
@@ -151,7 +177,6 @@ function bitClick(divid)
 			}
 }
 
-var hc=null;
 function hexClick(divid)
 {
 

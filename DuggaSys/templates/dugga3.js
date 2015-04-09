@@ -1,20 +1,29 @@
 /********************************************************************************
 
+   Documentation 
+
+*********************************************************************************
+
  Mouse coordinate and canvas globals
 
  Handles both Touch and Mouse/Keyboard input at the same time
 
- *********************************************************************************/
- 
-// Example seed - simple
-// Param: {"linje":"10,30,19 20 40 20 50 30 50,81 65 50"}
-// Answer: Variant 
+Example seed
+---------------------
+	 Example seed - simple
+	 Param: {"linje":"10,30,19 20 40 20 50 30 50,81 65 50"}
+	 Answer: Variant 
 
-// Example seed - complex
-// Param: {"linje":"10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30"}
-// Answer: Variant 
+	Example seed - complex
+	Param: {"linje":"10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30"}
+	Answer: Variant ]
 
+-------------==============######## Documentation End ###########==============-------------
+*/
 
+//----------------------------------------------------------------------------------
+// Globals
+//----------------------------------------------------------------------------------
 
 var running;
 
@@ -32,6 +41,29 @@ var selectedPoint = 0;
 
 var retdata = null;
 
+
+var mx = 100, my = 100, clickstate = 0;
+var gridsize = 5;
+var goal;
+
+//Define colors
+var pointColor = "#f52";
+var	dashedLineColor = "#F8F";
+//			lineColor = "#49f";
+var targetLineColor = "#aaa";
+var studentLineColor = "#49f";
+
+var startx = 10;
+var starty = 30;
+var elapsedTime = 0;
+var previousSync = 0;
+
+
+
+//----------------------------------------------------------------------------------
+// Setup
+//----------------------------------------------------------------------------------
+
 function setup() {
 	running = true;
 	canvas = document.getElementById('a');
@@ -45,6 +77,10 @@ function setup() {
 		setTimeout("render();", 50);
 	}
 }
+
+//----------------------------------------------------------------------------------
+// returnedDugga: callback from ajax call in setup, data is json
+//----------------------------------------------------------------------------------
 
 function returnedDugga(data) {
 	if (data['debug'] != "NONE!")
@@ -84,6 +120,7 @@ function showFacit(param, uanswer, danswer) {
 		previous.shift();
 		previous.pop();
 		studentPreviousAnswer = previous.join();
+		
 		// Clear operations
 		while (document.getElementById('operations').options.length > 0) {
 			document.getElementById('operations').remove(0);
@@ -123,17 +160,14 @@ function setupClickHandling() {
 	canvas.addEventListener('touchmove', ev_touchmove, false);
 }
 
-// Keyboard/Mouse Mouse Up Handler
 function ev_mouseup(ev) {
 	handler_mouseup(ev);
 }
 
-// Keyboard/Mouse Mouse Down Handler
 function ev_mousedown(ev) {
 	handler_mousedown(ev);
 }
 
-// Keyboard/Mouse Mouse Move Handler
 function ev_mousemove(ev) {
 	var cx, cy = 0;
 	//coord=findPos(canvas);
@@ -149,14 +183,14 @@ function ev_mousemove(ev) {
 		cy = ev.offsetY;
 	}
 
-	if (debug) {// Firefox
+	if (debug) {
+		// Firefox
 		document.getElementById('debug').innerHTML = "<p>cx: " + cx + "</p><p> cy: " + cy + "</p>";
 	}
 
 	handler_mousemove(cx, cy);
 }
 
-// Touch start event
 function ev_touchstart(event) {
 	event.preventDefault();
 	var numtouch = event.touches.length;
@@ -173,7 +207,6 @@ function ev_touchstart(event) {
 
 }
 
-// Touch end event
 function ev_touchend(event) {
 	event.preventDefault();
 	var numtouch = event.touches.length;
@@ -181,7 +214,6 @@ function ev_touchend(event) {
 	handler_mouseup();
 };
 
-// Touch move event
 function ev_touchmove(event) {
 	event.preventDefault();
 	var numtouch = event.touches.length;
@@ -193,7 +225,11 @@ function ev_touchmove(event) {
 
 	handler_mousemove((cx / sf), (cy / sf));
 };
-// Recursive Pos of div in document - should work in most browsers
+
+
+//----------------------------------------------------------------------------------
+// getMousePos: Recursive Pos of div in document - should work in most browsers
+//----------------------------------------------------------------------------------
 
 function getMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
@@ -220,17 +256,9 @@ function findPos(obj) {
 	};
 }
 
-/*
 
- First point immovible
- -----
- Delete operation
- Move Up
- Move Down
- Move Control Points
-
- */
-function populateOperationsList() {
+function populateOperationsList() 
+{
 
 	var startOperations = startString.split(',');
 
@@ -250,7 +278,8 @@ function populateOperationsList() {
 	}
 }
 
-function saveClick() {
+function saveClick() 
+{
 	// Loop through all bits
 	bitstr = ",";
 	var opList = document.getElementById("operations");
@@ -273,7 +302,8 @@ function saveClick() {
 	saveDuggaResult(bitstr);
 }
 
-function newOp(operation, operationText) {
+function newOp(operation, operationText) 
+{
 	var oplist;
 
 	oplist = document.getElementById('operations');
@@ -281,7 +311,8 @@ function newOp(operation, operationText) {
 
 }
 
-function deletebutton() {
+function deletebutton() 
+{
 	var elSel = document.getElementById('operations');
 	var i = 0;
 	for ( i = elSel.length - 1; i >= 0; i--) {
@@ -291,7 +322,8 @@ function deletebutton() {
 	}
 }
 
-function moveupbutton() {
+function moveupbutton() 
+{
 	var elSel = document.getElementById('operations');
 	var ind = elSel.selectedIndex;
 	var val;
@@ -312,7 +344,8 @@ function moveupbutton() {
 	}
 }
 
-function movedownbutton() {
+function movedownbutton() 
+{
 	var elSel = document.getElementById('operations');
 	var ind = elSel.selectedIndex;
 	var val;
@@ -334,7 +367,8 @@ function movedownbutton() {
 
 }
 
-function handler_mouseup(ev) {
+function handler_mouseup(ev) 
+{
 	var op = document.getElementById(selectedObjId).value.split(' ');
 	op[selectedPoint * 2 - 1] = gridx;
 	op[selectedPoint * 2] = gridy;
@@ -345,7 +379,8 @@ function handler_mouseup(ev) {
 	clickstate = 0;
 }
 
-function handler_mousedown(ev) {
+function handler_mousedown(ev) 
+{
 	clickstate = 1;
 	// Figure out if we clicked in an object
 	$("#operations > option").each(function() {
@@ -360,7 +395,8 @@ function handler_mousedown(ev) {
 	});
 }
 
-function handler_mousemove(cx, cy) {
+function handler_mousemove(cx, cy) 
+{
 
 	gridx = Math.round(((cx / sf) - (gridsize / 2.0)) / gridsize) * gridsize;
 	gridy = Math.round(((cy / sf) - (gridsize / 2.0)) / gridsize) * gridsize;
@@ -373,7 +409,8 @@ function handler_mousemove(cx, cy) {
 
 }
 
-function dashedline(sx, sy, ex, ey, dashlen, linewidth, col) {
+function dashedline(sx, sy, ex, ey, dashlen, linewidth, col) 
+{
 
 	var dx = ex - sx;
 	var dy = ey - sy;
@@ -407,7 +444,8 @@ function dashedline(sx, sy, ex, ey, dashlen, linewidth, col) {
 
 }
 
-function drawCross(gX, gY, lcolor) {
+function drawCross(gX, gY, lcolor) 
+{
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
 
@@ -419,7 +457,8 @@ function drawCross(gX, gY, lcolor) {
 	context.stroke();
 }
 
-function makeString() {
+function makeString() 
+{
 	var s = "";
 	var elSel = document.getElementById('operations');
 	oplist = new Array();
@@ -431,18 +470,8 @@ function makeString() {
 	return s;
 }
 
-var mx = 100, my = 100, clickstate = 0;
-var gridsize = 5;
-var goal;
-
-//Define colors
-var pointColor = "#f52";
-dashedLineColor = "#F8F";
-//			lineColor = "#49f";
-var targetLineColor = "#aaa";
-var studentLineColor = "#49f";
-
-function drawSPoint(x, y, lcolor, fcolor) {
+function drawSPoint(x, y, lcolor, fcolor) 
+{
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
 
@@ -451,7 +480,8 @@ function drawSPoint(x, y, lcolor, fcolor) {
 	context.strokeRect((x - 1) * sf, (y - 1) * sf, 2 * sf, 2 * sf);
 }
 
-function drawSLine(x1, y1, x2, y2, lcolor, guideLines) {
+function drawSLine(x1, y1, x2, y2, lcolor, guideLines) 
+{
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
 	context.beginPath();
@@ -465,7 +495,8 @@ function drawSLine(x1, y1, x2, y2, lcolor, guideLines) {
 	}
 }
 
-function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines) {
+function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines) 
+{
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
 	context.beginPath();
@@ -483,7 +514,8 @@ function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines) {
 	}
 }
 
-function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines) {
+function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines) 
+{
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
 	context.beginPath();
@@ -503,8 +535,8 @@ function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines) {
 	}
 }
 
-function init(quizGoal, studentPreviousAnswer) {
-
+function init(quizGoal, studentPreviousAnswer) 
+{
 	goal = quizGoal.split(",");
 	startx = parseInt(goal.shift());
 	starty = parseInt(goal.shift());
@@ -534,7 +566,8 @@ function init(quizGoal, studentPreviousAnswer) {
 
 }
 
-function fitToContainer() {
+function fitToContainer() 
+{
 	// Make it visually fill the positioned parent
 	divw = $("#content").width();
 	if (divw > 500)
@@ -550,12 +583,8 @@ function fitToContainer() {
 	sf = canvas.width / 100;
 }
 
-var startx = 10;
-var starty = 30;
-var elapsedTime = 0;
-var previousSync = 0;
-
-function drawOp(sx, sy, opArr, lineColor, guideLines) {
+function drawOp(sx, sy, opArr, lineColor, guideLines) 
+{
 
 	if (opArr[0] == "L" || opArr[0] == "81") {
 		drawSLine(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), lineColor, guideLines);
@@ -574,7 +603,8 @@ function drawOp(sx, sy, opArr, lineColor, guideLines) {
 
 }
 
-function drawPath() {
+function drawPath() 
+{
 	var sx = startx;
 	var sy = starty;
 
@@ -606,7 +636,8 @@ function drawPath() {
 
 }
 
-function render() {
+function render() 
+{
 
 	fitToContainer();
 

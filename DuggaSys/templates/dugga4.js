@@ -1,9 +1,20 @@
-// Example seed - simple
-// Param: {"variant":"40 13 7 20 0"}
-// Answer: Variant
-// Example seed - complex
-// Param: {"variant":"26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0"}
-// Answer: Variant 
+/********************************************************************************
+
+   Documentation 
+
+*********************************************************************************
+
+Example seed
+---------------------
+	 Example seed - simple
+	 Param: {"variant":"40 13 7 20 0"}
+	 Answer: Variant
+	 Example seed - complex
+	 Param: {"variant":"26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0"}
+	 Answer: Variant 
+-------------==============######## Documentation End ###########==============-------------
+*/
+
 //------------==========########### GLOBALS ###########==========------------
 var running;
 var retdata = null;
@@ -18,7 +29,8 @@ var tickInterval;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
-function setup() {
+function setup() 
+{
 	running = true;
 	canvas = document.getElementById('a');
 	if (canvas) {
@@ -29,7 +41,8 @@ function setup() {
 	}
 }
 
-function returnedDugga(data) {
+function returnedDugga(data) 
+{
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
@@ -148,7 +161,8 @@ function returnedDugga(data) {
 	}
 }
 
-function saveClick() {
+function saveClick() 
+{
 	// Loop through all bits
 	bitstr = ",";
 	var opList = document.getElementById("operations");
@@ -171,7 +185,8 @@ function saveClick() {
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer) {
+function showFacit(param, uanswer, danswer) 
+{
 	/* reset */
 	sf = 2.0;
 	speed = 0.1;
@@ -296,7 +311,8 @@ function showFacit(param, uanswer, danswer) {
 
 }
 
-function closeFacit() {
+function closeFacit() 
+{
 	clearInterval(tickInterval);
 	running = false;
 }
@@ -306,7 +322,8 @@ function closeFacit() {
 //--------------------================############================--------------------
 //------------==========########### CONTROLLER FUNCTIONS ###########==========------------
 
-function fitToContainer() {
+function fitToContainer() 
+{
 	// Make it visually fill the positioned parent
 	divw = $("#content").width();
 	if (divw > 500)
@@ -322,7 +339,8 @@ function fitToContainer() {
 	sf = canvas.width / 200;
 }
 
-function sundial(radius, angle, scale) {
+function sundial(radius, angle, scale) 
+{
 
 	cosv = Math.cos(angle);
 	sinv = Math.sin(angle);
@@ -340,7 +358,8 @@ function sundial(radius, angle, scale) {
 	context.bezierCurveTo(xaddx + yaddx + xk, xaddy + yaddy + yk, (1.5 * xaddx) + yaddx + xk, (1.5 * xaddy) + yaddy + yk, (3.0 * xaddx) + xk, (3.0 * xaddy) + yk);
 }
 
-function drawsun(size) {
+function drawsun(size) 
+{
 	context.fillStyle = "#fe9";
 	context.strokeStyle = "#d82";
 	context.lineWidth = 1.5;
@@ -355,7 +374,8 @@ function drawsun(size) {
 	context.fill();
 }
 
-function drawBall(cx, cy, radie, innerradie, ballradie, col1, inangle, inangleadd) {
+function drawBall(cx, cy, radie, innerradie, ballradie, col1, inangle, inangleadd) 
+{
 
 	angleadd = (inangleadd / 360.0) * 2 * Math.PI;
 
@@ -394,7 +414,8 @@ function drawBall(cx, cy, radie, innerradie, ballradie, col1, inangle, inanglead
 
 }
 
-function drawDashcirc(cx, cy, radie, col, inangle, inangle2) {
+function drawDashcirc(cx, cy, radie, col, inangle, inangle2) 
+{
 	context.lineWidth = 2.5;
 	context.strokeStyle = col;
 	context.beginPath();
@@ -408,7 +429,8 @@ function drawDashcirc(cx, cy, radie, col, inangle, inangle2) {
 	context.stroke();
 }
 
-function drawArrowcirc(cx, cy, radie, col, inangle, inangle2, inangle3, direction) {
+function drawArrowcirc(cx, cy, radie, col, inangle, inangle2, inangle3, direction) 
+{
 	context.fillStyle = col;
 
 	context.beginPath();
@@ -435,12 +457,14 @@ function drawArrowcirc(cx, cy, radie, col, inangle, inangle2, inangle3, directio
 	context.fill();
 }
 
-function drawArrowDashcirc(cx, cy, radie, col, inangle, inangle2, inangle3, arrowsize, direction) {
+function drawArrowDashcirc(cx, cy, radie, col, inangle, inangle2, inangle3, arrowsize, direction) 
+{
 	drawArrowcirc(cx, cy, radie, col, inangle, inangle2, inangle3, arrowsize, direction);
 	drawDashcirc(cx, cy, radie, col, inangle, inangle2);
 }
 
-function drawCross(cx, cy, col, size) {
+function drawCross(cx, cy, col, size) 
+{
 	context.strikestyle = col;
 	context.lineWidth = 2;
 	context.strokeStyle = col;
@@ -452,7 +476,8 @@ function drawCross(cx, cy, col, size) {
 	context.stroke();
 }
 
-function newbutton() {
+function newbutton() 
+{
 	var texto = $("#operations").html();
 
 	var valv = $("#function").val();
@@ -461,27 +486,31 @@ function newbutton() {
 	$("#operations").html(texto);
 }
 
-function moveupbutton() {
+function moveupbutton() 
+{
 	$('#operations>option:selected').prev().each(function() {
 		$(this).next().after("<option value='" + $(this).val() + "'>" + $(this).html() + "</option>");
 		$(this).remove();
 	});
 }
 
-function movedownbutton() {
+function movedownbutton() 
+{
 	$('#operations>option:selected').next().each(function() {
 		$(this).prev().before("<option value='" + $(this).val() + "'>" + $(this).html() + "</option>");
 		$(this).remove();
 	});
 }
 
-function deletebutton() {
+function deletebutton() 
+{
 	$('#operations> option:selected').each(function() {
 		$(this).remove();
 	});
 }
 
-function drawCommand(cstr) {
+function drawCommand(cstr) 
+{
 	if (cstr == "D1" || cstr == "0") {
 		drawBall(0, 0, 15 * sf, 10 * sf, 5 * sf, "#F84", 45.0, 22.5);
 	} else if (cstr == "D2" || cstr == "1") {
@@ -577,13 +606,15 @@ function drawCommand(cstr) {
 	}
 }
 
-function tick() {
+function tick() 
+{
 	v += speed;
 	elapsedTime++;
 
 }
 
-function foo() {
+function foo() 
+{
 	fitToContainer();
 	//acanvas.width = acanvas.width;
 
