@@ -21,7 +21,7 @@ pdoConnect();
 	<script src="accessed.js"></script>
 
 </head>
-<body onload="addnewbutton()">
+<body>
 	
 	<?php 
 		$noup=true;
