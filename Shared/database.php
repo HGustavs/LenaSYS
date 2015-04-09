@@ -50,7 +50,6 @@ function pdoConnect()
 		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
 		exit;
 	}
-	
-	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+
 }
 ?>
