@@ -9,15 +9,15 @@
 					
 					// Set the target for the 'Upward' Button
 					if($noup=="COURSE"){
-							echo "<td class='navButt'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
+							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else if($noup=="SECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
+							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else if($noup=="CodeViewToSECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
+							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else {
 						// None!
 					}
@@ -29,7 +29,7 @@
 							echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 							echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play();'><img src='../Shared/icons/play_button.svg' /></td>";
 							if(checklogin()) {
-									echo "<td class='navButt' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+									echo "<td class='navButt' id='settings' title='Edit example settings' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 							}
 	
 							if($codeviewerkind) echo "<td class='navButt' title='Settings' id='hidesettings'><img src='../Shared/icons/general_settings_button.svg' /></td>";

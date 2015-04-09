@@ -349,9 +349,8 @@ function createboxmenu(contentid, boxid, type){
 			//----------------------------------------------------------------------------------------- DOCUMENT
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
-				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-							
+				str+='<td class="butto2" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][4]+'</span></td>';
+				str+="<td class='butto2 showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";	
 				str+="</tr></table>";
 				//----------------------------------------------------------------------------------------- END DOCUMENT
 			}else if(type=="CODE"){
@@ -361,8 +360,8 @@ function createboxmenu(contentid, boxid, type){
 				var str = "<table cellspacing='2'><tr>";
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][4]+'</span></td>';
 
-				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-								
+				str+="<td class='butto2 showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";				
+				
 				str+= '</tr></table>';
 			
 			}else{
