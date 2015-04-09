@@ -1,3 +1,4 @@
+
 <?php
 
 //---------------------------------------------------------------------------------------------------------------
@@ -15,8 +16,8 @@ include_once "../Shared/sessions.php";
 pdoConnect();
 session_start();
 
-$pnr = getOP('pnr');
-$studyprogram = getOP('studyprogram');
+//$pnr = getOP('Toddler');
+$studyprogram = getOP('Toddler');
 
 
 if(isset($_SESSION['uid'])){
@@ -41,32 +42,52 @@ $debug="NONE!";
 
 
 $data = array();
-//$pnr ="920824-0599";
-//$sql = "SELECT KursID,resultat FROM student_resultat WHERE pnr='".$pnr."';";
-//$sql = "SELECT name, pnr, kull, kurs.kurskod, kursnamn, poang, termin, resultat, avbrott FROM student_resultat inner join student on studentresultat.usrid = student.usrid inner join kurs ON studentresultat.kursid = kurstillf.kurskod where pnr ='".$pnr."';";
 
-// select name, studentresultat.pnr, kull, kurs.kurskod, kursnamn, poang, termin, resultat, studentresultat.avbrott from studentresultat inner join kurstillf on studentresultat.anmkod=kurstillf.anmkod inner join student on studentresultat.pnr = student.pnr inner join kurs on studentresultat.kurskod = kurs.kurskod;
-//$sql = "select name, studentresultat.pnr, kull, kurs.kurskod, kursnamn, poang, termin, resultat, studentresultat.avbrott from studentresultat inner join kurstillf on studentresultat.anmkod=kurstillf.anmkod inner join student on studentresultat.pnr = student.pnr inner join kurs on studentresultat.kurskod = kurs.kurskod where studentresultat.pnr ='".$pnr."';";
+$pnr = "111111-1111";
+$uid = "1"; 
+
+
 if ($pnr != null) {
-	array_push($data, array("student"));
-$sql = "select namn, studentresultat.pnr, kull, kurs.kurskod, kursnamn, poang, termin, resultat, studentresultat.avbrott from studentresultat inner join student on studentresultat.pnr = student.pnr inner join kurs on studentresultat.kurskod = kurs.kurskod where studentresultat.pnr ='".$pnr."';";
+	array_push($data, array($studyprogram));
+
+//SQL query to print out username,
+$sql = "SELECT user.firstname,user.lastname,user.ssn,user.username,course.coursecode,course.coursename FROM user INNER JOIN user_course INNER JOIN course WHERE user_course.uid='".$uid."' and user.uid='".$uid."' and course.cid = user_course.cid ;";
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 $sth = $pdo->prepare($sql);
 $sth->execute();
 $res = $sth->fetchAll();
 array_push($data, $res);
 
-
-$sql2 = "SELECT kursid, krav from forkunskap;";
+/*
+$sql2 = "SELECT * FROM user WHERE ssn = '".$pnr."';";
 $sth2 = $pdo->prepare($sql2);
 $sth2->execute();
 $res2 = $sth2->fetchAll();
 array_push($data, $res2);
+*/
+
+/*
+$sql3 = "SELECT course.coursename FROM course INNER JOIN programcourse WHERE course.cid = '".$cid."' and programcourse.cid = '".$cid."';";
+$sth3 = $pdo->prepare($sql3);
+$sth3->execute();
+$res3 = $sth3->fetchAll();
+array_push($data, $res3);
+*/
+/*
+$sql5 = "SELECT course.coursename FROM course INNER JOIN programcourse WHERE course.cid = '".$cid."' and programcourse.cid = '".$cid."';";
+$sth5 = $pdo->prepare($sql5);
+$sth5->execute();
+$res5 = $sth5->fetchAll();
+array_push($data, $res5);
+*/
+
+
+
 
 } else if ($studyprogram != null) {
 	
-array_push($data, array("studyprogram"));
-	$sql = "select kurskod, kursnamn, period, termin from programkurs where kull='".$studyprogram."' order by termin,period;";
+array_push($data, array($studyprogram));
+	//$sql = "SELECT * FROM studentresultat WHERE pnr='".$pnr."';";
 	$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 	$sth = $pdo->prepare($sql);
 	$sth->execute();
@@ -83,12 +104,14 @@ $array = array(
 );
 
 header('Content-type: application/json');
-echo json_encode($data);
+
+echo json_encode($data); 
 
 
-/* Datastrukturen för en student (JSON) skall ha följande format:
- 
- 	namn: "Svensson, Sven",
+ //Datastrukturen för en student (JSON) skall ha följande format:
+ /*
+
+ 	namn: "Svensson Sven",
  	pnr : "791230-1153",
  	kull: "h12",
  	resultat : [
@@ -125,4 +148,3 @@ echo json_encode($data);
  
  */
 ?>
- 
