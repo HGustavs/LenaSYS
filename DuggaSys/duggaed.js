@@ -218,7 +218,7 @@ function returnedDugga(data)
 										str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
 										str+="<td style='padding:4px;'>";
-												str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/Cogwheel.svg' ";
+												str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
 										str+="</td>";
 
