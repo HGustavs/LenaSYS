@@ -30,10 +30,18 @@ pdoConnect();
 	?>
 		
 	<!-- content START -->
-	<div id="content">
-					
+	<div id="wrappall">
+		<div id="newbutton">
+			<?PHP
+			echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/></div>";
+			//new issue: needs to calculate if the user has access to this button before writing out
+			
+			?>		
+		</div>
+		<div id="content">
+			
+		</div>
 	</div>
-
 	<!--- Edit Section Dialog END --->
 	
 	<?php 
