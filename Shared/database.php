@@ -1,5 +1,10 @@
 <?php
 include_once(dirname(__file__)."/../../codesyspw.php");
+<<<<<<< HEAD
+include_once(dirname(__file__)."/../../coursesyspw.php");
+
+=======
+>>>>>>> cv15
 //---------------------------------------------------------------------------------------------------------------
 // dbconnect - Makes database connection
 //---------------------------------------------------------------------------------------------------------------
@@ -38,7 +43,6 @@ function dbConnect()
 function pdoConnect()
 {
 	global $pdo;
-	
 	try {
 		$pdo = new PDO(
 			'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8',
