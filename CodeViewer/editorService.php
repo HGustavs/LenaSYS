@@ -9,17 +9,22 @@
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
-	//include_once ("../../codesyspw.php");	
 	include_once ("../../coursesyspw.php");	
+
 	include_once ("../Shared/sessions.php");
 	include_once ("../Shared/basic.php");
 	include_once ("../Shared/courses.php");
 	include_once ("../Shared/database.php");
 
 	// Connect to database and start session
+<<<<<<< HEAD
 	//dbConnect();
         pdoConnect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+=======
+    pdoConnect();
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+>>>>>>> cv15
 
 	session_start();
 	
@@ -53,10 +58,10 @@
 
 	// Make sure there is an exaple
 	$cnt=0;
-	$query = $pdo->prepare( "SELECT exampleid,examplename,cid,cversion,public FROM codeexample WHERE exampleid='$exampleid';");
-        $query -> execute();
-	/*$result=mysql_query($query);*/
-/*	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);*/	
+	$query = $pdo->prepare( "SELECT exampleid,examplename,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
+    $query->bindParam(':exampleid', $exampleid);
+	$query -> execute();	
+	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 			$cnt++;
 			$exampleid=$row['exampleid'];
@@ -76,10 +81,13 @@
 						$writeaccess="w";
 						if(strcmp('SETTEMPL',$opt)===0){
 									// Add word to wordlist
-									$query = $pdo->prepare( "UPDATE codeexample SET templateid='$templateno' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
+									$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+									$query->bindParam(':templateno', $templateno);
+									$query->bindParam(':exampleid', $exampleid);
+									$query->bindParam(':cid', $cid);
+									$query->bindParam(':cversion', $cvers);
 									$query -> execute();
-									/*if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");*/						
-
+									
 									// We have two boxes. Create two boxes to start with
 									if($templateno==1||$templateno==2) $boxcnt=2;
 									if($templateno==3||$templateno==4) $boxcnt=3;
@@ -87,24 +95,43 @@
 									
 									// Create appropriate number of boxes
 									for($i=1;$i<$boxcnt+1;$i++){
-											$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES ('$i','$exampleid','Title','Code','[viktig=1]','js1.js');");		
-											/*$result=mysql_query($query);*/
-                                                                                        $query -> execute();
-											/*if (!$result) err("SQL Query Error: ".mysql_error(),"Error updating Wordlist!");*/						
+											$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");		
+											$query->bindParam(':i', $i);
+											$query->bindParam(':exampleid', $exampleid);
+											$query->bindValue(':boxtitle', 'Title');
+											$query->bindValue(':boxcontent', 'Code');
+											$query->bindValue(':settings', '[viktig=1]');
+											$query->bindValue(':filename', 'js1.js');
+											$query -> execute();
 									}
 						}else	if(strcmp('EDITEXAMPLE',$opt)===0){
 									// Change content of example
-									$query = $pdo->prepare( "UPDATE codeexample SET runlink='$playlink',examplename='$examplename',sectionname='$sectionname' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
+									$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+									$query->bindParam(':playlink', $playlink);
+									$query->bindParam(':examplename', $examplename);
+									$query->bindParam(':sectionname', $sectionname);
+									$query->bindParam(':exampleid', $exampleid);
+									$query->bindParam(':cid', $cid);
+									$query->bindParam(':cvers', $cvers);
 									$query -> execute();
 									
 									// Is there a better way to set beforeid and afterid?
 									if($beforeid!="UNK"){
-											$query = $pdo->prepare( "UPDATE codeexample SET beforeid='$beforeid' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
-											$query -> execute();									
+											$query = $pdo->prepare( "UPDATE codeexample SET beforeid = :beforeid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+											$query->bindParam(':beforeid', $beforeid);
+											$query->bindParam(':exampleid', $exampleid);
+											$query->bindParam(':cid', $cid);
+											$query->bindParam(':cvers', $cvers);
+											$query -> execute();
 									}
 									if($afterid!="UNK"){
-											$query = $pdo->prepare( "UPDATE codeexample SET afterid='$afterid' WHERE exampleid='$exampleid' and cid='$cid' and cversion='$cvers';");		
-											$query -> execute();									
+											
+											$query = $pdo->prepare( "UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+											$query->bindParam(':afterid', $afterid);
+											$query->bindParam(':exampleid', $exampleid);
+											$query->bindParam(':cid', $cid);
+											$query->bindParam(':cvers', $cvers);
+											$query -> execute();
 									}
 						}
 
@@ -124,10 +151,13 @@
 			$playlink="";
 			$public="";
 			$entryname="";
-			$query = $pdo->prepare( "SELECT exampleid,examplename,sectionname,runlink,public,template.templateid as templateid,stylesheet,numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid=codeexample.templateid WHERE exampleid=$exampleid and cid='$courseID'");		
-			/*$result=mysql_query($query);*/
-                        $query->execute();
-		       /*	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);*/	
+			
+			
+			$query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid as templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid and cid = :courseID;");		
+			$query->bindParam(':exampleid', $exampleid);
+			$query->bindParam(':courseID', $courseID);
+            $query->execute();
+		
 			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 					$examplename=$row['examplename'];
 					$exampleno=$row['exampleid'];
@@ -138,15 +168,16 @@
 					$stylesheet=$row['stylesheet'];
 					$numbox=$row['numbox'];					
 			}
-
-
+			
 			// Read ids and names from before/after list
 			$beforeafter = array();
 			$beforeafters = array();
-			$query = $pdo->prepare( "select exampleid,sectionname,examplename,beforeid,afterid from codeexample where cid='".$cid."' and cversion='".$cvers."' order by sectionname,examplename;");
-		/*	$result=mysql_query($query);*/
-                        $query->execute();
-		/*	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);*/	
+			
+			$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample where cid = :cid and cversion = :cvers order by sectionname, examplename;");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':cvers', $cvers);
+            $query->execute();
+						
 			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 		  		$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
 					array_push($beforeafters,array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']));
@@ -184,12 +215,12 @@
 					$cnt++;
 			}while($currid!=null&&$cnt<5);
 
-		  // Read important lines
+			// Read important lines
 			$imp=array();
-			$query = $pdo->prepare( "SELECT boxid,istart,iend FROM improw WHERE exampleid=$exampleid ORDER BY istart;");
-			//$result=mysql_query($query);
-                        $query->execute();
-		//	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			$query = $pdo->prepare("SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY istart;");
+			$query->bindParam(':exampleid', $exampleid);
+			$query->execute();
+							
 			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 		  		array_push($imp,array($row['boxid'],$row['istart'],$row['iend']));
 			}  
@@ -197,9 +228,8 @@
 			// Get all words for each wordlist
 			$words = array();
 			$query = $pdo->prepare( "SELECT wordlistid,word,label FROM word ORDER BY wordlistid");
-		//	$result=mysql_query($query);
-                        $query->execute();
-		//	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			$query->execute();
+	
 			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 		  		array_push($words,array($row['wordlistid'],$row['word'],$row['label']));					
 			}
@@ -207,9 +237,8 @@
 			// Get all wordlists
 			$wordlists=array();
 			$query =$pdo->prepare( "SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;");
-		//	$result=mysql_query($query);
-                        $query->execute();
-		//	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+			$query->execute();
+	
 			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 		  		array_push($wordlists,array($row['wordlistid'],$row['wordlistname']));					
 			} 
@@ -217,14 +246,13 @@
 			
 		  // Read important wordlist
 			$impwordlist=array();
-			$query = $pdo->prepare( "SELECT word,label FROM impwordlist WHERE exampleid=$exampleid ORDER BY word;");
-		//	$result=mysql_query($query);
-                        $query->execute();
-		//	if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
-			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			$query = $pdo->prepare( "SELECT word,label FROM impwordlist WHERE exampleid = :exampleid ORDER BY word;");
+			$query->bindParam(':exampleid', $exampleid);
+            $query->execute();
+					
+            while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 		  		array_push($impwordlist,$row['word']);					
 			}  
-
 			
 			// Read Directory - Codeexamples
 			$directory=array();
@@ -250,10 +278,11 @@
 			
 			// Collect information for each box
 			$box=array();   // get the primary keys for all types kind of boxes.
-			$query = $pdo->prepare( "SELECT boxid,boxcontent,boxtitle,filename,wordlistid,segment FROM box WHERE exampleid=$exampleid ORDER BY boxid;");
-		//	$result=mysql_query($query);
-                        $query->execute();
-
+			$query = $pdo->prepare( "SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
+			$query->bindParam(':exampleid', $exampleid);
+			$query->execute();
+			
+						
 			while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 					$boxcontent=strtoupper($row['boxcontent']);
 					$filename=$row['filename'];

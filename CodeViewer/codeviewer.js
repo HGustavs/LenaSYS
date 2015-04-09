@@ -39,7 +39,19 @@ var filez;
 
 function setup()
 {
-		$.ajax({url: "editorService.php", type: "POST", data: "courseid="+querystring['courseid']+"&exampleid="+querystring['exampleid']+"&opt=List"+"&cvers="+querystring['cvers'], dataType: "json", success: returned});											
+	try{
+		var courseid = querystring['courseid'];
+		var exampleid = querystring['exampleid'];
+		var cvers = querystring['cvers'];
+		
+		AJAXService("EDITEXAMPLE", {
+			courseid : courseid,	
+			exampleid : exampleid,
+			cvers : cvers
+		}, "CODEVIEW");
+	}catch(e){
+		alert("Error while setting up: "+e.message)
+	}
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -1284,9 +1296,24 @@ function changetemplate(templateno)
 
 function updateTemplate()
 {
-		templateno=$("#templateno").val();
-		$("#chooseTemplate").css("display","none");
-		$.ajax({url: "editorService.php", type: "POST", data: "courseid="+querystring['courseid']+"&exampleid="+querystring['exampleid']+"&opt=SETTEMPL"+"&cvers="+querystring['cvers']+"&templateno="+templateno, dataType: "json", success: returned});											
+	templateno=$("#templateno").val();
+	$("#chooseTemplate").css("display","none");
+	
+	try{
+		var courseid = querystring['courseid'];
+		var exampleid = querystring['exampleid'];
+		var cvers = querystring['cvers'];
+		var templateno = $("#templateno").val();
+		
+		AJAXService("EDITEXAMPLE", {
+			courseid : courseid,	
+			exampleid : exampleid,
+			cvers : cvers,
+			templateno : templateno
+		}, "CODEVIEW");
+	}catch(e){
+		alert("Error when updating template: "+e.message)
+	}
 }
 
 function closeEditContent()
@@ -1297,6 +1324,12 @@ function closeEditContent()
 function closeEditExample()
 {
 		$("#editExample").css("display","none");
+	
+}
+
+function closeTemplateWindow()
+{
+	$("#chooseTemplate").css("display","none");
 }
 
 function updateContent()

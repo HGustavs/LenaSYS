@@ -54,10 +54,9 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
-
+	
 	pdoConnect();
-//	dbConnect(); 
-				
+			
 ?>
 <!DOCTYPE html>
 <html>
@@ -90,15 +89,16 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	<?php 
 
 		$exampleid = getOPG('exampleid');
-		$courseID=getOPG('courseid');
+		$courseID = getOPG('courseid');
 
 		//get the visibility
-		$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid='$exampleid';");
+		$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
+		$query->bindParam(':exampleid', $exampleid);
 		$query-> execute();
-		//if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+		
 		$row = $query -> fetch(PDO::FETCH_ASSOC);
 		$public=$row['public'];	
-	
+
 		$noup="SECTION";
 		$loginvar="CODV";
 		$codeviewer = true;
@@ -192,7 +192,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 	<div class='loginBoxheader'>
 	<h3>Edit Example</h3>
-	<div onclick='closeEditExample();'>x</div>
+	<div onclick='closeTemplateWindow();'>x</div>
 	</div>
 	<table width="100%">
 		<tr>
