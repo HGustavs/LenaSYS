@@ -189,6 +189,9 @@ function returned(data)
 			}
 
 		}
+		
+		//CALL resizeBoxes here!
+		resizeBoxes("#div2", retdata["templateid"]);
 
 }
 
@@ -1348,3 +1351,185 @@ function Play()
 				navigateTo("/codeupload/",retdata['playlink']);
 		}
 }
+
+//-----------------------------------------------------------------------------
+// resizeBoxes: Adding resize functionality for the boxes in template(1).
+//-----------------------------------------------------------------------------
+
+
+function resizeBoxes(parent, templateId) {
+	
+		
+		var boxValArray = initResizableBoxValues(parent);
+		
+		var remainWidth;
+		
+		
+		
+		if(templateId == 1){
+			
+			getLocalStorageProperties(templateId);
+		
+			alignBoxesWidth(boxValArray, 1, 2);
+		
+			$(boxValArray['box1']['id']).resizable({
+				containment: parent,
+				handles: "e",
+				resize: function(e, ui){
+					
+					alignBoxesWidth(boxValArray, 1, 2);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+				
+				}
+			});
+		
+		}else if(templateId == 3){
+		
+			getLocalStorageProperties(templateId);
+			
+			//Used to remove gap provided by percentage based positioning.
+			alignBoxesWidth(boxValArray, 1, 2);
+			alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+		
+			$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e,s",
+			resize: function(e, ui){
+				
+
+				alignBoxesWidth(boxValArray, 1, 2);
+				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+				
+			},
+			stop: function(e, ui) {
+				 
+				setLocalStorageProperties(templateId, boxValArray);
+				 
+			}
+			
+			});
+			
+			$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			resize: function(e, ui){
+				
+
+				
+				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+				alignBoxesWidth(boxValArray, 2, 1);
+				
+			},
+			stop: function(e, ui) {
+				 
+				setLocalStorageProperties(templateId, boxValArray);
+				 
+			}
+			
+			});
+			
+		}
+		
+	};
+	
+	//width adjustment for template(1,3)
+	function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign){
+					
+					
+					var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+					
+					//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off.
+					$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
+					
+					boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+					boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+					
+					$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
+		
+	}
+	
+	
+	//Height adjustment for boxes in template 3.
+	function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig){
+		
+					var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+					
+					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+					boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+					boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
+					
+					
+					$(boxValArray['box' + boxNumSame]['id']).height(boxValArray['box' + boxNumBase]['height']);
+					$(boxValArray['box' + boxNumBig]['id']).height(remainHeight);
+		
+	}
+	
+	
+	//Creates an array with all the properties needed for resize function.
+	function initResizableBoxValues(parent){
+	
+		var parentWidth = $(parent).width();
+		var parentHeight = $(parent).height();
+		var boxwidth;
+		var boxheight;
+		var boxId;
+		
+		var numBoxes = $("[id ^=box][id $=wrapper]").length;
+		
+		var boxValueArray = new Array();
+		boxValueArray["parent"] = {"width": parentWidth, "height": parentHeight};
+		
+		for (var i = 1; i <= numBoxes; i++) {
+			boxWidth = $("#box" + i + "wrapper").width();
+			boxHeight = $("#box" + i + "wrapper").height();
+			boxId = "#box" + i + "wrapper";
+			boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
+		}
+		
+		return boxValueArray;
+	}
+	
+	
+	//Saves the measurments in percent for the boxes on the screen in local storage.
+	function setLocalStorageProperties(templateId, boxValArray){
+	
+		var numBoxes = $("[id ^=box][id $=wrapper]").length;
+		
+		var widthPer;
+		var heightPer;
+		
+		for(var i = 1; i <= numBoxes; i++){
+			
+			widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) *100;
+			heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) *100;
+			
+			widthPer = Math.floor(widthPer, 100);
+			heightPer = Math.floor(heightPer, 100);
+			
+			localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
+			localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
+			
+		}
+	}
+
+	
+	//Gets box measurments from localstorage and applies them onto the boxes on screen.
+	//This is done preinit of boxValArray, so that the init of that array gets these values.
+	function getLocalStorageProperties(templateId){
+		
+		var numBoxes = $("[id ^=box][id $=wrapper]").length;
+		
+		for(var i = 1; i <= numBoxes; i++){
+		
+			if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null){
+				
+				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
+				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
+				
+			}
+		}
+	}
