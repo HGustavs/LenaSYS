@@ -18,8 +18,8 @@
 
 	// Connect to database and start session
 
-    pdoConnect();
-	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+	pdoConnect();
+//	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
 
 	session_start();
