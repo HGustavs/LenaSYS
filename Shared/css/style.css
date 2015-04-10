@@ -76,9 +76,22 @@ hr {
     position:relative;
     padding: 50px 12px 8px 8px;
     background: #fff;
-    width:80%;
     min-height: 200px;
-    border: 8px solid #ccc;
+ 
+}
+
+#newbutton {
+    margin:0px auto;
+    position:relative;
+    padding: 50px 12px 8px 8px;
+    background: #fff;
+    min-height: 50px;
+ 
+}
+#wrappall {
+    margin:0px auto;
+width:80%;
+ border: 8px solid #ccc;
 }
 
 .lena{

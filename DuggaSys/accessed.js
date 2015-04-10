@@ -82,10 +82,7 @@ function returnedAccess(data)
 		str="";
 		if (data['entries'].length > 0) {
 
-				str+="<div style='float:right;'>";
-				str+="<input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/>";
-				str+="</div>";
-				
+			
 				str+="<table class='list'>";
 
 				str+="<tr><th class='first'>Username</th><th>SSN</th><th>First Name</th><th>Last Name</th><th>Modified</th><th>Access</th><th>PW</th><th class='last'>Settings</th></tr>";
