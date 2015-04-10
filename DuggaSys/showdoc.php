@@ -29,7 +29,7 @@ session_start();
 	<?php 
 		$noup="SECTION";
 		$loginvar="LINK"; 
-		include 'navheader.php';
+		include '../Shared/navheader.php';
 	?>
 		
 	<!-- content START -->

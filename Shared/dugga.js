@@ -2,6 +2,28 @@
 // changeCSS: Changes the CSS and remembers the index of the CSS.
 //            This allows us to set and remove whole CSS files
 //----------------------------------------------------------------------------------
+var status = 0;
+function toggleloginnewpass(){
+
+	if(status == 0){
+		$("#newpassword").css("display", "block");
+		$("#login").css("display", "none");
+		status++;
+	}
+	else if(status == 1){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "block");
+		status= 0;
+	}
+}
+
+function closeWindows(){
+
+	$(".loginBox").css("display", "none");
+	$("#overlay").css("display","none");
+	$("#login #username").val("");
+	$("#login #password").val("");
+}
 
 function changeCSS(cssFile, index)
 {

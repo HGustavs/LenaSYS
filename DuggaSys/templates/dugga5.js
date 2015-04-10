@@ -1,3 +1,8 @@
+
+//----------------------------------------------------------------------------------
+// Globals
+//----------------------------------------------------------------------------------
+
 var camera, scene, renderer, rendererDOMElement;
 var object, lineR, lineG, lineB;
 var highlightCubes = [];
@@ -13,17 +18,12 @@ var startString = '{"vertice":[],"triangles":[]}';
 
 var goalObject;
 
-function toggleControl() {
-	if (document.getElementById('verticeControl').style.display == 'none') {
-		document.getElementById('verticeControl').style.display = 'block';
-		document.getElementById('triangleControl').style.display = 'none';
-	} else {
-		document.getElementById('verticeControl').style.display = 'none';
-		document.getElementById('triangleControl').style.display = 'block';
-	}
-}
+//----------------------------------------------------------------------------------
+// Setup
+//----------------------------------------------------------------------------------
 
-function setup() {
+function setup() 
+{
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js", function() {
 
 		acanvas = document.getElementById('container');
@@ -38,7 +38,12 @@ function setup() {
 
 }
 
-function returnedDugga(data) {
+//----------------------------------------------------------------------------------
+// returnedDugga: callback from ajax call in setup, data is json
+//----------------------------------------------------------------------------------
+
+function returnedDugga(data) 
+{
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
@@ -59,7 +64,20 @@ function returnedDugga(data) {
 	}
 }
 
-function submbutton() {
+function toggleControl() 
+{
+	if (document.getElementById('verticeControl').style.display == 'none') {
+		document.getElementById('verticeControl').style.display = 'block';
+		document.getElementById('triangleControl').style.display = 'none';
+	} else {
+		document.getElementById('verticeControl').style.display = 'none';
+		document.getElementById('triangleControl').style.display = 'block';
+	}
+}
+
+
+function submbutton() 
+{
 	var answerString = "";
 	//var verticeObject=new Object;
 	verticeArray = new Array();
@@ -86,14 +104,16 @@ function submbutton() {
 	console.log(answerString);
 }
 
-function populateLists(startString) {
+function populateLists(startString) 
+{
 	var startValues = JSON.parse(startString);
 	populateVerticeList(startValues.vertice);
 	populateTrianlgesList(startValues.triangles);
 	updateGeometry();
 }
 
-function populateVerticeList(vertice) {
+function populateVerticeList(vertice) 
+{
 	console.log(vertice);
 	var verticeList = document.getElementById("verticeList");
 	for (var i = 0; i < vertice.length; i++) {
@@ -101,7 +121,8 @@ function populateVerticeList(vertice) {
 	}
 }
 
-function populateTrianlgesList(triangles) {
+function populateTrianlgesList(triangles) 
+{
 	console.log(triangles);
 	var triangleList = document.getElementById("triangleList");
 	for (var i = 0; i < triangles.length; i++) {
@@ -109,7 +130,8 @@ function populateTrianlgesList(triangles) {
 	}
 }
 
-function deleteTriangle() {
+function deleteTriangle() 
+{
 	var elSel = document.getElementById('triangleList');
 	var i = 0;
 	for ( i = elSel.length - 1; i >= 0; i--) {
@@ -120,7 +142,8 @@ function deleteTriangle() {
 	updateGeometry();
 }
 
-function moveTriangleUp() {
+function moveTriangleUp() 
+{
 	var elSel = document.getElementById('triangleList');
 	var ind = elSel.selectedIndex;
 	var val;
@@ -142,7 +165,8 @@ function moveTriangleUp() {
 	updateGeometry();
 }
 
-function moveTriangleDown() {
+function moveTriangleDown() 
+{
 	var elSel = document.getElementById('triangleList');
 	var ind = elSel.selectedIndex;
 	var val;
@@ -165,7 +189,8 @@ function moveTriangleDown() {
 
 }
 
-function updateVerticeDropdown(selectList) {
+function updateVerticeDropdown(selectList) 
+{
 	selectList.innerHTML = "";
 	var verticeList = document.getElementById("verticeList");
 	for (var i = 0; i < verticeList.childNodes.length; i++) {
@@ -180,7 +205,8 @@ function updateVerticeDropdown(selectList) {
 	}
 }
 
-function newTriangle() {
+function newTriangle() 
+{
 	var tv1 = document.getElementById("tv1");
 	var tv2 = document.getElementById("tv2");
 	var tv3 = document.getElementById("tv3");
@@ -200,7 +226,8 @@ function newTriangle() {
 	updateGeometry();
 }
 
-function newVertex() {
+function newVertex() 
+{
 	var verticeList = document.getElementById('verticeList');
 	var vertexX = document.getElementById('vertexX');
 	var vertexY = document.getElementById('vertexY');
@@ -212,7 +239,8 @@ function newVertex() {
 	}
 }
 
-function checkVertexInput(vertexX, vertexY, vertexZ) {
+function checkVertexInput(vertexX, vertexY, vertexZ) 
+{
 	var vertexMsg = document.getElementById('vertexMsg');
 	vertexMsg.innerHTML = "";
 	if ((vertexX != '' && !isNaN(vertexX)) && (vertexY != '' && !isNaN(vertexY)) && (vertexZ != '' && !isNaN(vertexZ))) {
@@ -223,7 +251,8 @@ function checkVertexInput(vertexX, vertexY, vertexZ) {
 	}
 }
 
-function vertexUpdate() {
+function vertexUpdate() 
+{
 	var vertexMsg = document.getElementById('vertexMsg');
 	vertexMsg.innerHTML = "";
 
@@ -244,7 +273,8 @@ function vertexUpdate() {
 
 }
 
-function addVertexToVerticeList(vertexX, vertexY, vertexZ) {
+function addVertexToVerticeList(vertexX, vertexY, vertexZ) 
+{
 	var verticeList = document.getElementById('verticeList');
 	var newVertxLi = document.createElement('li');
 	newVertxLi.innerHTML = '(<input type="text" value="' + vertexX + '" style="width:30px;" onchange="vertexUpdate();" />' + ',<input type="text" value="' + vertexY + '" style="width:30px;" onchange="vertexUpdate();" />' + ',<input type="text" value="' + vertexZ + '" style="width:30px;" onchange="vertexUpdate();" />)' + '<button onclick="moveVertexUp(this.parentNode);">&uarr;</button>' + '<button onclick="moveVertexDown(this.parentNode);">&darr;</button>' + '<button onclick="deleteVertex(this.parentNode);">X</button>';
@@ -252,7 +282,8 @@ function addVertexToVerticeList(vertexX, vertexY, vertexZ) {
 	updateGeometry();
 }
 
-function deleteVertex(vertexLi) {
+function deleteVertex(vertexLi) 
+{
 	var vertexIndex = $(vertexLi).index() + vertexLi.parentNode.start;
 	var triangleList = document.getElementById('triangleList');
 	var vertexInUse = false;
@@ -274,7 +305,8 @@ function deleteVertex(vertexLi) {
 
 }
 
-function moveVertexUp(vertexLi) {
+function moveVertexUp(vertexLi) 
+{
 	var vertexLiIndex = $(vertexLi).index() + vertexLi.parentNode.start;
 	console.log(vertexLiIndex);
 	console.log(vertexLiIndex + " " + vertexLi.parentNode.childNodes.length);
@@ -285,7 +317,8 @@ function moveVertexUp(vertexLi) {
 	vertexUpdate();
 }
 
-function moveVertexDown(vertexLi) {
+function moveVertexDown(vertexLi) 
+{
 	var vertexLiIndex = $(vertexLi).index() + vertexLi.parentNode.start;
 	console.log(vertexLiIndex + " " + vertexLi.parentNode.childNodes.length);
 	if (vertexLiIndex < vertexLi.parentNode.childNodes.length - 1) {
@@ -295,21 +328,24 @@ function moveVertexDown(vertexLi) {
 	vertexUpdate();
 }
 
-function toggleRotate() {
+function toggleRotate() 
+{
 	if (rotateObjects)
 		rotateObjects = false;
 	else
 		rotateObjects = true;
 }
 
-function toggleWireframeMode() {
+function toggleWireframeMode() 
+{
 	if (material.wireframe)
 		material.wireframe = false;
 	else
 		material.wireframe = true;
 }
 
-function fitToContainer() {
+function fitToContainer() 
+{
 	// Make it visually fill the positioned parent
 	divw = $("#content").width();
 	if (divw > 500)
@@ -324,7 +360,8 @@ function fitToContainer() {
 	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);
 }
 
-function init() {	
+function init() 
+{	
 
 	rendererDOMElement = renderer.domElement;
 	rendererDOMElement.width = $("#content").width() - 250;
@@ -346,18 +383,19 @@ function init() {
 	pointLight.position.x = 200;
 	pointLight.position.y = 200;
 	pointLight.position.z = 330;
-	//pointLight.castShadow = true;
-	//pointLight.shadowCameraVisible = true;
+	pointLight.castShadow = true;
+	pointLight.shadowCameraVisible = true;
 	scene.add(pointLight);*/
 
-	//var bump512 = THREE.ImageUtils.loadTexture( 'includes/bump512_2.gif' );
-	//var jg = THREE.ImageUtils.loadTexture( 'includes/jg.gif' );
-	/*texture.anisotropy = renderer.getMaxAnisotropy();
-	 texture.magFilter=THREE.LinearFilter;
-	 texture.minFilter=THREE.LinearMipMapLinearFilter;*/
-	/*bump512.wrapT = THREE.RepeatWrapping;
-	 bump512.wrapS = THREE.RepeatWrapping;
-	 bump512.repeat.set(4,4);*/
+	/*var bump512 = THREE.ImageUtils.loadTexture( 'includes/bump512_2.gif' );
+		var jg = THREE.ImageUtils.loadTexture( 'includes/jg.gif' );
+		texture.anisotropy = renderer.getMaxAnisotropy();
+	 	texture.magFilter=THREE.LinearFilter;
+	 	texture.minFilter=THREE.LinearMipMapLinearFilter;
+		bump512.wrapT = THREE.RepeatWrapping;
+	 	bump512.wrapS = THREE.RepeatWrapping;
+	 	bump512.repeat.set(4,4);*/
+	
 	material = new THREE.MeshBasicMaterial({
 		wireframe : true,
 		wireframeLinewidth : 1,

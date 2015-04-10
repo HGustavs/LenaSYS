@@ -76,9 +76,22 @@ hr {
     position:relative;
     padding: 50px 12px 8px 8px;
     background: #fff;
-    width:80%;
     min-height: 200px;
-    border: 8px solid #ccc;
+ 
+}
+
+#newbutton {
+    margin:0px auto;
+    position:relative;
+    padding: 50px 12px 8px 8px;
+    background: #fff;
+    min-height: 50px;
+ 
+}
+#wrappall {
+    margin:0px auto;
+width:80%;
+ border: 8px solid #ccc;
 }
 
 .lena{
@@ -261,7 +274,8 @@ header {
 }
 
 .navButt {
-		width:50px;
+	width:50px;
+	vertical-align: middle;
 }
 
 .navHeading {
@@ -670,3 +684,66 @@ input.submit-button-red:hover {
 		#mirth {display:none;}
 }
  
+/* Clearfix styles */
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+ 
+.clearfix:after {
+  clear: both;
+}
+ 
+.clearfix {
+  zoom: 1; /* ie 6/7 */
+}
+
+/* DuggaSys Header */
+/*******************/
+
+.head__backanchor {
+	color: #ff0;
+}
+.head__backanchor:visited {
+	color: #ff0;
+}
+.head__backanchor:hover {
+	color: #fff;
+}
+
+
+.duggasys-head__backtext {
+	display: block;
+}
+/* Navigation link styles */
+.duggasys-head--nav a {
+	color: #ffffff;
+	text-decoration: none;
+}
+.duggasys-head--nav a:visited {
+	color: #ffffff;
+}
+.duggasys-head--nav a:hover {
+	color: red;
+}
+
+.duggasys-head--userinfo {
+	float: right;
+	margin: 10px 85px 10px 10px;
+}
+.duggasys-head__profileicon {
+	height: 100%;
+	padding: 5px;
+}
+.duggasys-head__profileicon:hover {
+	height: 100%;
+	padding: 5px;
+}
+.duggasys-head__username {
+
+}
+
+
+/* End DuggaSys Header */
+/***********************/

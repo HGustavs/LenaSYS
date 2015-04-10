@@ -11,13 +11,13 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Access Editor</title>
 
-	<link type="text/css" href="css/style.css" rel="stylesheet">
-  <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.min.js"></script>
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
-	<script src="dugga.js"></script>
+	<script src="../Shared/dugga.js"></script>
 	<script src="accessed.js"></script>
 
 </head>
@@ -26,14 +26,22 @@ pdoConnect();
 	<?php 
 		$noup=true;
 		$loginvar="ACCESS"; 
-		include 'navheader.php';
+		include '../Shared/navheader.php';
 	?>
 		
 	<!-- content START -->
-	<div id="content">
-					
+	<div id="wrappall">
+		<div id="newbutton">
+			<?PHP
+			echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/></div>";
+			//needs to calculate if the user has access to this button before writing out
+			
+			?>		
+		</div>
+		<div id="content">
+			
+		</div>
 	</div>
-
 	<!--- Edit Section Dialog END --->
 	
 	<?php 
@@ -45,7 +53,7 @@ pdoConnect();
 
 	<div class='loginBoxheader'>
 	<h3>Create Users</h3>
-	<div onclick='hideCreateUsersPopup();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>
  
 	The format required for the information is the following: SSN&lt;TAB&gt;NAME&lt;TAB&gt; EMAIL e.g.: 
@@ -70,7 +78,7 @@ pdoConnect();
 
 	<div class='loginBoxheader'>
 	<h3>Edit Users</h3>
-	<div onclick='closeEdituser();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>
 				
 	<table width="100%">
