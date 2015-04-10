@@ -43,7 +43,7 @@ function setup()
 		var courseid = querystring['courseid'];
 		var exampleid = querystring['exampleid'];
 		var cvers = querystring['cvers'];
-		
+
 		AJAXService("EDITEXAMPLE", {
 			courseid : courseid,	
 			exampleid : exampleid,
@@ -65,7 +65,7 @@ function returned(data)
 		console.log(retdata);
 
 		// Hide and show before/after button
-		if(retdata['before'].value!=null&&retdata['after'].value!=null){
+		if(retdata['before']!=null&&retdata['after']!=null){
 				if(retdata['before'].length==0){
 						$("#beforebutton").css("visibility","hidden");
 				}else{
@@ -246,6 +246,7 @@ function displayEditExample(boxid)
 	$("#editExample").css("display","block");
 }
 
+
 //----------------------------------------------------------------------------------
 // updateExample: Updates example data in the database if changed
 //----------------------------------------------------------------------------------
@@ -263,6 +264,7 @@ function updateExample()
 			afterid=retdata['after'][0][0];
 	}
 
+	// The statement checks if any values has changed, otherwise the update would be unnessecary..
 	if(($("#before").val()!=beforeid&&beforeid!="UNK")||($("#after").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
 			var courseid = querystring['courseid'];
 			var cvers = querystring['cvers'];
@@ -270,7 +272,8 @@ function updateExample()
 			var playlink = $("#playlink").val();
 			var examplename = $("#title").val();
 			var sectionname = $("#secttitle").val();
-			
+
+
 			AJAXService("EDITEXAMPLE", {
 					courseid : courseid,
 					cvers : cvers,
@@ -279,10 +282,9 @@ function updateExample()
 					afterid : afterid,
 					playlink : playlink,
 					examplename : examplename,
-					sectionname : sectionname
+					sectionname : sectionname,
 			}, "CODEVIEW");
 	}
-
 }
 
 //----------------------------------------------------------------------------------
@@ -293,6 +295,7 @@ function displayEditContent(boxid)
 {
 	
 	$("#title").val(retdata['examplename']);
+
 
 	var dirs=retdata['directory'];
 	var str="";
@@ -349,8 +352,9 @@ function createboxmenu(contentid, boxid, type){
 			//----------------------------------------------------------------------------------------- DOCUMENT
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
-				str+='<td class="butto2" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";	
+				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][4]+'</span></td>';
+				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+							
 				str+="</tr></table>";
 				//----------------------------------------------------------------------------------------- END DOCUMENT
 			}else if(type=="CODE"){
@@ -360,8 +364,8 @@ function createboxmenu(contentid, boxid, type){
 				var str = "<table cellspacing='2'><tr>";
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][4]+'</span></td>';
 
-				str+="<td class='butto2 showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";				
-				
+				str+="<td class='butto2 showdesktop codedropbutton' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+								
 				str+= '</tr></table>';
 			
 			}else{
@@ -823,215 +827,215 @@ function replaceAll(find, replace, str)
 
 function tokenize(instring,inprefix,insuffix)
 {
-	// replace HTML-entities
-	instring = replaceAll("&lt;","<",instring);
-	instring = replaceAll("&gt;",">",instring);
-	instring = replaceAll("&amp;","&",instring);
+// replace HTML-entities
+instring = replaceAll("&lt;","<",instring);
+instring = replaceAll("&gt;",">",instring);
+instring = replaceAll("&amp;","&",instring);
 
-	var from;                   	// index of the start of the token.
-	var i = 0;                  	// index of the current character.
-	var length=instring.length;	// length of the string
+var from;                   	// index of the start of the token.
+var i = 0;                  	// index of the current character.
+var length=instring.length;		// length of the string
 
-	var currentCharacter;           // current character.
-	var currentNum;                 // current numerical value
-	var currentQuoteChar;           // current quote character
-	var currentStr;                 // current string value.
-	var row=1;			// current row value
+var c;                      	// current character.
+var n;                      	// current numerical value
+var q;                      	// current quote character
+var str;                    	// current string value.
+var row=1;										// current row value
 
-	currentCharacter = instring.charAt(i);
-	while (currentCharacter) {		// currentCharacter == first character in each word
+c = instring.charAt(i);
+while (c) {		// c == first character in each word
 		from = i;
-		if (currentCharacter <= ' '){		// White space and carriage return
-			if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
-				maketoken('newline',"",i,i,row);
-				currentStr="";
-				row++;
-			}else{
-				currentStr=currentCharacter;
-			}
-				
-			i++;
-			while(true){
-				currentCharacter=instring.charAt(i);
-				if(currentCharacter>' '||!currentCharacter) break;
-				if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
-					//currentStr += currentCharacter;
-					maketoken('whitespace',currentStr,from,i,row);				                
-					maketoken('newline',"",i,i,row);
-					currentStr="";
-					// White space Row (so we get one white space token for each new row) also increase row number
-					row++;
-				}else{
-					currentStr += currentCharacter;
-				}
-				i++;
-			}
-			if(currentStr!="") maketoken('whitespace',currentStr,from,i,row);
-		}else if((currentCharacter >='a'&&currentCharacter<='z')||(currentCharacter>='A'&&currentCharacter<='Z')){					// Names i.e. Text
-			currentStr = currentCharacter;      				
-			i++;
-			while(true){
-				currentCharacter = instring.charAt(i);
-				if ((currentCharacter >='a'&&currentCharacter<='z')||(currentCharacter>='A'&&currentCharacter<='Z')||(currentCharacter>='0'&&currentCharacter<='9')||currentCharacter=='_'){
-					currentStr += currentCharacter;
-					i++;
-				}else{
-					break;
-				}
-			} 
-			maketoken('name',currentStr,from,i,row);
-		}else if(currentCharacter >= '0' && currentCharacter <= '9'){			// Number token
-			currentStr = currentCharacter;
-			i++;
-			while(true){
-				currentCharacter = instring.charAt(i);
-				if (currentCharacter < '0' || currentCharacter > '9') break;
-				i++;
-				currentStr+=currentCharacter;
-			}
-			if(currentCharacter=='.'){
-				i++;
-				currentStr+=currentCharacter;
-				for(;;){
-					currentCharacter=instring.charAt(i);
-					if (currentCharacter < '0' || currentCharacter > '9') break;
-					i++;
-					currentStr+=currentCharacter;
-				}
-			}
-			if (currentCharacter=='e'||currentCharacter=='E') {
-				i++;
-				currentStr+=currentCharacter;
-				currentCharacter=instring.charAt(i);
-				if(currentCharacter=='-'||currentCharacter=='+'){
-					i+=1;
-					currentStr+=currentCharacter;
-					currentCharacter=instring.charAt(i);
-				}
-				if (currentCharacter < '0' || currentCharacter > '9') error('Bad Exponent in Number: ',currentStr,row);
-				do {
-					i++;
-					currentStr+=currentCharacter;
-					currentCharacter=instring.charAt(i);
-				}while(currentCharacter>='0'&&currentCharacter<='9');
-			}
-			if (currentCharacter>='a'&&currentCharacter<='z'){
-				currentStr += currentCharacter;
-				i += 1;
-				error('Bad Number: ',currentStr,row);
-			}
-			currentNum=+currentStr;
-			if(isFinite(currentNum)){
-				maketoken('number',currentNum,from,i,row);		            		
-			}else{
-				error('Bad Number: ',currentStr,row);
-			}
-		}else if(currentCharacter=='\''||currentCharacter=='"'){	   // String .. handles c style breaking codes. Ex: "elem" or "text"
-			currentStr='';
-			currentQuoteChar=currentCharacter;
-			i++;
-			while(true){
-				currentCharacter=instring.charAt(i);
-				if (currentCharacter<' '){
-					if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter == '')) row++; 	// Add row if this white space is a row terminator				 																						
-					error('Unterminated String: ',currentStr,row);		
-					break;                		
-				}
-	
-				if (currentCharacter==currentQuoteChar) break;
-	
-				if (currentCharacter=='\\'){
-					i += 1;
-					if (i >= length) {
-						error('Unterminated String: ',currentStr,row);		
-						break;                		
-					}
-					currentCharacter=instring.charAt(i);
-					
-					if(currentCharacter=='b'){ currentCharacter='\b'; break; }
-					if(currentCharacter=='f'){ currentCharacter='\f'; break; }
-					if(currentCharacter=='n'){ currentCharacter='\n'; break; }
-					if(currentCharacter=='r'){ currentCharacter='\r'; break; }
-					if(currentCharacter=='t'){ currentCharacter='\t'; break; }
-					if(currentCharacter=='u'){
-						if (i >= length) {
-							error('Unterminated String: ',currentStr,row);		
-							break;                		
-						}
-						currentCharacter = parseInt(this.substr(i + 1, 4), 16);
-						if (!isFinite(currentCharacter) || currentCharacter < 0) {
-							error('Unterminated String: ',currentStr,row);		
-							break;                		
-						}
-						currentCharacter = String.fromCharCode(currentCharacter);
-						i+=4;
-						break;		                    
-					}
-				}
-				currentStr += currentCharacter;
-				i++;
-			}
-			i++;
-			maketoken('string',currentCharacter+currentStr+currentCharacter,from,i,row);
-			currentCharacter=instring.charAt(i);
-	
-		}else if (currentCharacter=='/'&&instring.charAt(i+1)=='/'){	// Comment of // type ... does not cover block comments
-			i++;
-			currentStr=currentCharacter; 
-			while(true){
-				currentCharacter=instring.charAt(i);
-				if (currentCharacter=='\n'||currentCharacter=='\r'||currentCharacter=='') {
-					row++;
-					break;
-				}else{
-					currentStr+=currentCharacter;                
-				}
-				i++;
-			}	
-			maketoken('rowcomment',currentStr,from,i,row);
-			/* This does not have to be hear because a newline creates in coderender function 
-			maketoken('newline',"",i,i,row); */													                
-		}else if (currentCharacter=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
-			i++;
-			currentStr=currentCharacter; 
-			while(true){
-				currentCharacter=instring.charAt(i); 
-				if ((currentCharacter=='*'&&instring.charAt(i+1)=='/')||(i==length)) {
-					currentStr+="*/"
-					i+=2;
-					currentCharacter=instring.charAt(i); 
-					break;
-				}	
-				if (currentCharacter=='\n'||currentCharacter=='\r'||currentCharacter=='') { 
-					// don't make blockcomment or newline if currentStr is empty
-					if(currentStr != ""){
-						maketoken('blockcomment',currentStr,from,i,row);
+		if (c <= ' '){																					// White space and carriage return
+			  if((c=='\n')||(c=='\r')||(c =='')){
 						maketoken('newline',"",i,i,row);
-						row++;
-						currentStr="";
-					}
-				}else{ 
-					currentStr+=currentCharacter;                
+						str="";
+            row++;
+				}else{
+        		str=c;
 				}
-				i++;
-			}	
-			maketoken('blockcomment',currentStr,from,i,row);
-		}else if(inprefix.indexOf(currentCharacter) >= 0) {		// Multi-character Operators
-			currentStr = currentCharacter;
-			i++;
-			while(true){
-				currentCharacter=instring.charAt(i); 
-				if (i >= length || insuffix.indexOf(currentCharacter) < 0) {
-					break;
+				
+        i++;
+    		while(true){
+		        c=instring.charAt(i);
+						if(c>' '||!c) break;
+    				if((c=='\n')||(c=='\r')||(c =='')){
+                //str += c;
+								maketoken('whitespace',str,from,i,row);				                
+								maketoken('newline',"",i,i,row);
+                str="";
+								// White space Row (so we get one white space token for each new row) also increase row number
+    						row++;
+    				}else{
+            		str += c;
+    				}
+            i++;
 				}
-				currentStr += currentCharacter; 
-				i++;
-			} 
-			maketoken('operator',currentStr,from,i,row);
-		} else {												// Single-character Operators
-			i++;  
-			maketoken('operator',currentCharacter,from,i,row);
-			currentCharacter = instring.charAt(i);
+				if(str!="") maketoken('whitespace',str,from,i,row);
+		}else if((c >='a'&&c<='z')||(c>='A'&&c<='Z')){					// Names i.e. Text
+    		str = c;      				
+    		i++;
+    		while(true){
+        		c = instring.charAt(i);
+        		if ((c >='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='_'){
+            		str += c;
+            		i++;
+        		}else{
+            		break;
+        		}
+    		} 
+    		maketoken('name',str,from,i,row);
+    }else if(c >= '0' && c <= '9'){			// Number token
+        str = c;
+        i++;
+    		while(true){
+		        c = instring.charAt(i);
+            if (c < '0' || c > '9') break;
+            i++;
+            str+=c;
+        }
+        if(c=='.'){
+            i++;
+            str+=c;
+            for(;;){
+    		        c=instring.charAt(i);
+                if (c < '0' || c > '9') break;
+                i++;
+                str+=c;
+            }
+        }
+        if (c=='e'||c=='E') {
+            i++;
+            str+=c;
+		        c=instring.charAt(i);
+            if(c=='-'||c=='+'){
+                i+=1;
+                str+=c;
+    		        c=instring.charAt(i);
+            }
+            if (c < '0' || c > '9') error('Bad Exponent in Number: ',str,row);
+            do {
+                i++;
+                str+=c;
+    		        c=instring.charAt(i);
+            }while(c>='0'&&c<='9');
+        }
+        if (c>='a'&&c<='z'){
+            str += c;
+            i += 1;
+            error('Bad Number: ',str,row);
+        }
+        n=+str;
+        if(isFinite(n)){
+						maketoken('number',n,from,i,row);		            		
+        }else{
+            error('Bad Number: ',str,row);
+        }
+    }else if(c=='\''||c=='"'){	   // String .. handles c style breaking codes. Ex: "elem" or "text"
+        str='';
+        q=c;
+        i++;
+    		while(true){
+		        c=instring.charAt(i);
+            if (c<' '){
+        				if((c=='\n')||(c=='\r')||(c == '')) row++; 	// Add row if this white space is a row terminator				 																						
+            		error('Unterminated String: ',str,row);		
+            		break;                		
+            }
+
+            if (c==q) break;
+
+            if (c=='\\'){
+                i += 1;
+                if (i >= length) {
+                		error('Unterminated String: ',str,row);		
+                		break;                		
+                }
+    		        c=instring.charAt(i);
+                
+                if(c=='b'){ c='\b'; break; }
+                if(c=='f'){ c='\f'; break; }
+                if(c=='n'){ c='\n'; break; }
+                if(c=='r'){ c='\r'; break; }
+                if(c=='t'){ c='\t'; break; }
+                if(c=='u'){
+                    if (i >= length) {
+		             	error('Unterminated String: ',str,row);		
+		             	break;                		
+                    }
+                    c = parseInt(this.substr(i + 1, 4), 16);
+                    if (!isFinite(c) || c < 0) {
+		                		error('Unterminated String: ',str,row);		
+		                		break;                		
+                    }
+                    c = String.fromCharCode(c);
+                    i+=4;
+                    break;		                    
+                }
+            }
+            str += c;
+            i++;
+        }
+        i++;
+        maketoken('string',c+str+c,from,i,row);
+        c=instring.charAt(i);
+
+    }else if (c=='/'&&instring.charAt(i+1)=='/'){	// Comment of // type ... does not cover block comments
+        i++;
+        str=c; 
+    		while(true){
+		        c=instring.charAt(i);
+            if (c=='\n'||c=='\r'||c=='') {
+                row++;
+                break;
+            }else{
+                str+=c;                
+            }
+            i++;
+        }	
+				maketoken('rowcomment',str,from,i,row);
+				/* This does not have to be hear because a newline creates in coderender function 
+				maketoken('newline',"",i,i,row); */													                
+    }else if (c=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
+        i++;
+    		str=c; 
+    		while(true){
+		        c=instring.charAt(i); 
+            if ((c=='*'&&instring.charAt(i+1)=='/')||(i==length)) {
+                str+="*/"
+                i+=2;
+  		        c=instring.charAt(i); 
+                break;
+            }	
+            if (c=='\n'||c=='\r'||c=='') { 
+            	// don't make blockcomment or newline if str is empty
+            	if(str != ""){
+            		maketoken('blockcomment',str,from,i,row);
+					maketoken('newline',"",i,i,row);
+            		row++;
+                	str="";
+            	}
+            }else{ 
+                str+=c;                
+            }
+            i++;
+        }	
+      	  	maketoken('blockcomment',str,from,i,row);
+		}else if(inprefix.indexOf(c) >= 0) {											// Multi-character Operators
+    		str = c;
+    		i++;
+    		while(true){
+		        c=instring.charAt(i); 
+        		if (i >= length || insuffix.indexOf(c) < 0) {
+            		break;
+        		}
+        		str += c; 
+        		i++;
+    		} 
+    		maketoken('operator',str,from,i,row);
+		} else {																									// Single-character Operators
+    		i++;  
+    		maketoken('operator',c,from,i,row);
+    		c = instring.charAt(i);
 		}
 	}
 }
@@ -1313,7 +1317,6 @@ function updateTemplate()
 	}catch(e){
 		alert("Error when updating template: "+e.message)
 	}
-	setTimeout("location.reload()", 500);
 }
 
 function closeEditContent()
@@ -1324,17 +1327,6 @@ function closeEditContent()
 function closeEditExample()
 {
 		$("#editExample").css("display","none");
-	
-}
-
-function openTemplateWindow()
-{
-	$("#chooseTemplate").css("display","block");
-}
-
-function closeTemplateWindow()
-{
-	$("#chooseTemplate").css("display","none");
 }
 
 function updateContent()
