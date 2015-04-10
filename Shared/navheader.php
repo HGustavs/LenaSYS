@@ -14,11 +14,7 @@
 					}else if($noup=="SECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
-					}else if($noup=="CodeViewToSECTION"){
-							$cid=getOPG('cid');
-							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
+							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'></a></td>";
 					}else {
 						// None!
 					}
