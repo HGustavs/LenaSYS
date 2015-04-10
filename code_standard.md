@@ -1,8 +1,10 @@
-<-- Text that uses <-- are used for commenting the coding style only, and are not part of the code nor the comments in the file
-<-- three periods ... denotes any section of random code
-<-- this file contains coding style for both javascript and php
-<-- We use tabs rather than space and each tab corresponds to 2 spaces to view properly on the web add ts parameter https://github.com/HGustavs/LenaSYS/blob/master/code_standard.js?ts=2
- 
+# Code standard for LenaSYS
++ Text that uses <-- are used for commenting the coding style only, and are not part of the code nor the comments in the file
++ three periods ... denotes any section of random code
++ this file contains coding style for both javascript and php
++ We use tabs rather than space and each tab corresponds to 2 spaces to view properly on the web add ts parameter https://github.com/HGustavs/LenaSYS/blob/master/code_standard.js?ts=2
+
+``` javascript
 /********************************************************************************
 
    Documentation <-- Top of file contains documentation e.g. call order and in some cases list of important bugs and/or version history
@@ -16,7 +18,6 @@ Execution Order
  		#1 addTemplatebox() is called in order to create the main template box
 
 -------------==============######## Documentation End ###########==============-------------
-
 */
 
 /********************************************************************************
@@ -102,7 +103,8 @@ function returned(data) <-- Returned function should exist and work the same in 
 */
 
 }
-
+```
+```php
 //---------------------------------------------------------------------------------------------------
 // myTest: Test code  <-- Same rules apply for PHP
 //         Second line comment <-- if used, second line comment aligns vertically with first line comment
@@ -116,5 +118,5 @@ function myTest() { <-- Capitals on second word in function name e.g. Test
 		
 		$foo="<div>".$olle."</div>";  <-- html is generated in javascript render function or statically in html file		
 }
-
+```
 

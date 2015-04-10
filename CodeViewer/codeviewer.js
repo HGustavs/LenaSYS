@@ -53,6 +53,7 @@ function returned(data)
 		console.log(retdata);
 
 		// Hide and show before/after button
+<<<<<<< HEAD
 		if(retdata['before']!=null&&retdata['after']!=null){
 				if(retdata['before'].length==0){
 						$("#beforebutton").css("visibility","hidden");
@@ -64,6 +65,17 @@ function returned(data)
 				}else{
 						$("#afterbutton").css("visibility","none");		
 				}
+=======
+		if(retdata['before'].length==0){
+				$("#beforebutton").css("visibility","hidden");
+		}else{
+				$("#beforebutton").css("visibility","none");		
+		}
+		if(retdata['after'].length==0){
+				$("#afterbutton").css("visibility","hidden");
+		}else{
+				$("#afterbutton").css("visibility","none");		
+>>>>>>> 7dd31969c8f000247d35c06c5518be6c01f958a9
 		}
 
 		// Fill Section Name and Example Name
@@ -90,7 +102,11 @@ function returned(data)
 		}
 		
 		// If there is a template
+<<<<<<< HEAD
 		changeCSS("../Shared/css/"+retdata['stylesheet']);
+=======
+		changeCSS("css/"+retdata['stylesheet']);
+>>>>>>> 7dd31969c8f000247d35c06c5518be6c01f958a9
 
 		// Clear div2
 		$("#div2").html("");

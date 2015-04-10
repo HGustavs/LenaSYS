@@ -113,7 +113,8 @@ function navigateTo(prefix,file)
 {
 		surl=window.location.href;
 		surl=surl.substring(0,surl.lastIndexOf("/")); 
-		window.location.href = surl+"/codeupload/"+file;
+		window.location.href = surl+"/codeupload/";
+
 }
 
 
