@@ -296,6 +296,7 @@ function processLogout(kind) {
 			else if(kind=="LINK"||kind=="PDUGGA"||kind=="CODV"){
 					location.reload(); 		
 			}
+			window.location.replace("../DuggaSys/courseed.php");
 		},
 		error:function() {
 			console.log("error");
