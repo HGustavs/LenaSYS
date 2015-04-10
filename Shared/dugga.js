@@ -362,3 +362,11 @@ function loginButtonHover(status) {
 		}, false);		
 	}
 }
+
+//----------------------------------------------------------------------------------
+// A function for redirecting the user to there UserManagementView
+//----------------------------------------------------------------------------------
+function redirectToUMV() 
+{
+	window.location.replace("../UserManagementView/redirector.php");
+}
