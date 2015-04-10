@@ -68,7 +68,7 @@ pdoConnect();
 
 	<div class='loginBoxheader'>
 	<h3>Edit Course</h3>
-	<div onclick='closeEditCourse();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>
 				
 	<table width="100%">
