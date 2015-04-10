@@ -18,6 +18,7 @@ pdoConnect();
 
 	<script src="dugga.js"></script>
 	<script src="duggaed.js"></script>
+	<script src="../Shared/dugga.js"></script>
 
 </head>
 <body>
@@ -80,7 +81,7 @@ pdoConnect();
 
 	<div class='loginBoxheader'>
 	<h3>Edit Variant</h3>
-	<div onclick='closeEditVariant();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>
 				
 	<table width="100%">
