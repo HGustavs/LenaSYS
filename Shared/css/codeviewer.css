@@ -949,4 +949,24 @@ a {
 
 /* BOXMENU STYLING STOP */
 
+/* Resizable jQuery UI fix for absolute positioning */
 
+.ui-resizable-e {
+	right: 0px;
+bottom: 0px;
+position: absolute;
+height: 100%;
+width: 1%;
+cursor: ew-resize;
+}
+
+.ui-resizable-s {
+left: 0px;
+bottom: 0px;
+position: absolute;
+height: 1%;
+width: 100%;
+cursor: ns-resize;
+}
+
+/* RESIZABLE UI CSS STOP */

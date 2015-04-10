@@ -136,7 +136,6 @@ function navigateTo(prefix,file)
 		surl=window.location.href;
 		surl=surl.substring(0,surl.lastIndexOf("/")); 
 		window.location.href = surl+"/codeupload/";
-
 }
 
 
@@ -267,10 +266,11 @@ function AJAXService(opt,apara,kind)
 }
 
 function processLogin(kind) {
+
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
-
+		
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -284,7 +284,6 @@ function processLogin(kind) {
 				var result = JSON.parse(data);
 				if(result['login'] == "success") {
 					$("#userName").html(result['username']);
-
 					$("#loginbutton").removeClass("loggedout");
 					$("#loginbutton").addClass("loggedin");
 
@@ -305,7 +304,7 @@ function processLogin(kind) {
 							location.reload(); 		
 					}				
 				}else{
-					console.log("Failed to log in.");
+					alert("Failed to log in.");
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {

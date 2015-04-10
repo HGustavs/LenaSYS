@@ -269,9 +269,7 @@ header {
     box-shadow: 0px 3px 8px #A9A; 
 }
 
-.navSpacer {
 
-}
 
 .navButt {
 	width:50px;
@@ -280,6 +278,7 @@ header {
 
 .navHeading {
     font-size: 2.5em;
+    padding-left: 15px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;

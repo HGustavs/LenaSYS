@@ -228,6 +228,8 @@ INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 2","Hulf.html",2,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 3","Iulf.html",1,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,exampleid,templateid) values (1,"HelloWorld-Html","HTML","html1.html",2,2013,1);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,12,13);
  
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
@@ -298,6 +300,10 @@ CREATE TABLE box(
 
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1,1,"Title","Code","[viktig=1]","js1.js");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,12,"TitleA","Code","[viktig=1]","html1.html",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,12,"TitleB","Document","[viktig=1]","<title>page title</title>",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,13,"TitleA","Code","[viktig=1]","html2.html",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,13,"TitleB","Document","[viktig=1]","Styling HTML with CSS",1);
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
@@ -462,46 +468,59 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
 /* solves the null problmen in codeviewer*/
 UPDATE codeexample
-SET sectionname='Example1'
+SET sectionname='Example1' , afterid='2' , beforeid='1'
 WHERE exampleid='1';
 
 UPDATE codeexample
-SET sectionname='Example2'
+SET sectionname='Example2' , afterid='3' , beforeid='1'
 WHERE exampleid='2';
 
 UPDATE codeexample
-SET sectionname='Example3'
+SET sectionname='Example3' , afterid='4' , beforeid='2'
 WHERE exampleid='3';
 
 UPDATE codeexample
-SET sectionname='Example4'
+SET sectionname='Example4' , afterid='5' , beforeid='3'
 WHERE exampleid='4';
 
 UPDATE codeexample
-SET sectionname='Example5'
+SET sectionname='Example5' , afterid='6' , beforeid='4'
 WHERE exampleid='5';
 
 UPDATE codeexample
-SET sectionname='Example6'
+SET sectionname='Example6' , afterid='7' , beforeid='5'
 WHERE exampleid='6';
 
 UPDATE codeexample
-SET sectionname='Example7'
+SET sectionname='Example7' , afterid='8' , beforeid='6'
 WHERE exampleid='7';
 
 UPDATE codeexample
-SET sectionname='Example8'
+SET sectionname='Example8' , afterid='9' , beforeid='7'
 WHERE exampleid='8';
 
 UPDATE codeexample
-SET sectionname='Example9'
+SET sectionname='Example9' , afterid='10' , beforeid='8'
 WHERE exampleid='9';
 
 UPDATE codeexample
-SET sectionname='Example10'
+SET sectionname='Example10' , afterid='11', beforeid='9'
 WHERE exampleid='10';
 
 UPDATE codeexample
-SET sectionname='Example11'
+SET sectionname='Example11' , beforeid='10' , afterid='12'
 WHERE exampleid='11';
+
+
+UPDATE codeexample
+SET sectionname='HTMLex1',	templateid='1', uid='1', beforeid='11', afterid='13', runlink='html1.html'
+WHERE exampleid='12';
+
+UPDATE box
+SET	segment='<b>HTML Helloworld</b>', boxcontent='Document', filename=null
+WHERE exampleid='12' and boxid='2' ;
+
+UPDATE codeexample
+SET beforeid='12', afterid='13'
+WHERE exampleid='13';
 

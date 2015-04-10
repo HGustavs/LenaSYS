@@ -74,7 +74,7 @@
 	bottom: 0px;
 	left:0px;
 	margin: 0px !important;
-	padding: 0px !important;
+	padding: 5px 0px 0px 0px !important;
 	background-color: #614875;
 	text-align: right;
 	
@@ -104,6 +104,7 @@
 .normtextwrapper{
 	 /* Width of codeborder */
   	margin-left: 32px;
+  	padding: 5px 0px 5px 5px;
 }
 
 .normtext {
@@ -165,14 +166,15 @@
 }
 
 .normtext .hi {
-    background-color: #D3BEE3;
+    background-color: #9569BD;
     color: #000;
+    font-weight: bold;
 }
 
 .impo .hi {
    font-weight: bold;
    color: #000000;
-   background-color: #FF0000;
+   background-color: #9569BD;
 }
 
 .keywordA {
@@ -192,9 +194,9 @@
 }
 
 .normtext .impword {
-    color: #fff;
-    background-color: #614875;
-		border: 1px solid #f44;
+    color: #000;
+    background-color: #F2F2F2;
+		border: 1px solid #899;
 }
 
 .impo .impword {
@@ -276,6 +278,7 @@
 /* BOXMENU STYLING START */
 .buttomenu2Style{
 	background-color: #5A5757;
+	padding-top: 2px;
 }
 
 .buttomenu2Style .wordlistselect{
@@ -312,11 +315,13 @@
 	color: white;
 	cursor:text;
     font-family: Arial, Sans-Serif;
+      font-size: 15px;
 }
 .boxtitle{
 	font-family: Arial, Sans-Serif !important;
 	cursor:default !important;
 	color: white !important;
+	  font-size: 15px;
 }
 }
 /* BOXMENU STYLING STOP */

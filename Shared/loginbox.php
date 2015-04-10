@@ -43,8 +43,11 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processLogin('<?PHP echo $loginvar; ?>')" value='Login'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
+
+							<input type='button' class='submit-button' onclick="processLogin('<?PHP echo $loginvar; ?>');" value='Login'>
+						
+							<label class='forgotPw' onclick='showForgontPw();'>Forgot password?</label>
+
 						</td>
 					</tr>
 				</table>

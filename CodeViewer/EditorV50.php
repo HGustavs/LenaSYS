@@ -53,10 +53,9 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
-
+	
 	pdoConnect();
-//	dbConnect(); 
-				
+			
 ?>
 <!DOCTYPE html>
 <html>
@@ -75,6 +74,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
     <link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
 
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script type="text/javascript" src="../Shared/dugga.js"></script>
     <script type="text/javascript" src="codeviewer.js"></script>
  
@@ -89,16 +89,17 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	<?php 
 
 		$exampleid = getOPG('exampleid');
-		$courseID=getOPG('courseid');
+		$courseID = getOPG('courseid');
 
 		//get the visibility
-		$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid='$exampleid';");
+		$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
+		$query->bindParam(':exampleid', $exampleid);
 		$query-> execute();
-		//if (!$result) err("SQL Query Error: ".mysql_error(),"Field Querying Error!" . __LINE__);	
+		
 		$row = $query -> fetch(PDO::FETCH_ASSOC);
 		$public=$row['public'];	
-	
-		$noup="SECTION";
+
+		$noup="COURSE";
 		$loginvar="CODV";
 		$codeviewer = true;
 		$codeviewerkind=false;
@@ -136,7 +137,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 		}else{
 				$codeviewer = false;
 				include '../Shared/navheader.php';
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist!</div>";
+				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 		}
 
 		echo "</div>";
@@ -226,7 +227,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 	<div class='loginBoxheader'>
 	<h3>Edit Example</h3>
-	<div onclick='closeEditExample();'>x</div>
+	<div onclick='closeTemplateWindow();'>x</div>
 	</div>
 	<table width="100%">
 		<tr>
