@@ -17,7 +17,7 @@ pdoConnect();
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery-ui-1.10.4.min.js"></script>
 
-	<script src="dugga.js"></script>
+	<script src="../Shared/dugga.js"></script>
 	<script src="accessed.js"></script>
 
 </head>
@@ -45,7 +45,7 @@ pdoConnect();
 
 	<div class='loginBoxheader'>
 	<h3>Create Users</h3>
-	<div onclick='hideCreateUsersPopup();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>
  
 	The format required for the information is the following: SSN&lt;TAB&gt;NAME&lt;TAB&gt; EMAIL e.g.: 
@@ -70,7 +70,7 @@ pdoConnect();
 
 	<div class='loginBoxheader'>
 	<h3>Edit Users</h3>
-	<div onclick='closeEdituser();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>
 				
 	<table width="100%">
