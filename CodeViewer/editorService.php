@@ -54,7 +54,7 @@
 
 	// Make sure there is an exaple
 	$cnt=0;
-	$query = $pdo->prepare( "SELECT exampleid,examplename,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
+	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
     $query->bindParam(':exampleid', $exampleid);
 	$query -> execute();	
 	
@@ -65,6 +65,8 @@
 			$courseID=$row['cid'];
 			$cversion=$row['cversion'];
 			$public=$row['public'];
+			$sectionname=$row['sectionname'];
+			$playlink=$row['runlink'];
 	}
 	
 	if($cnt>0){
@@ -101,6 +103,12 @@
 											$query -> execute();
 									}
 						}else	if(strcmp('EDITEXAMPLE',$opt)===0){
+
+									if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
+									if(isset($_POST['examplename'])) {$examplename = $_POST['examplename'];}
+									if(isset($_POST['sectionname'])) {$sectionname = $_POST['sectionname'];}
+									if(isset($_POST['beforeid'])) {$beforeid = $_POST['beforeid'];}
+									if(isset($_POST['afterid'])) {$afterid = $_POST['afterid'];}
 									// Change content of example
 									$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
 									$query->bindParam(':playlink', $playlink);
