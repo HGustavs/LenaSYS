@@ -78,7 +78,7 @@ function returned(data)
 			}else{
 					$("#afterbutton").css("visibility","none");	
 			}
-
+		}
 		// Fill Section Name and Example Name
 		var examplenme=document.getElementById('exampleName');
 		examplenme.innerHTML=data['examplename'];
