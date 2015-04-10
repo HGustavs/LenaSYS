@@ -74,6 +74,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
     <link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
 
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script type="text/javascript" src="../Shared/dugga.js"></script>
     <script type="text/javascript" src="codeviewer.js"></script>
  
