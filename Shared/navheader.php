@@ -2,22 +2,19 @@
 	<!-- New Version includes code for Code Viewer -->
 	
 	<header>
-				<?php
+		<?php
 					echo "<table width='100%'><tr>";
 					
 					include_once "../Shared/basic.php";
 					
 					// Set the target for the 'Upward' Button
-					if($noup=="COURSE"){
+					
+						if($noup=="COURSE"){
 							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 					}else if($noup=="SECTION"){
 							$cid=getOPG('cid');
 							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
-					}else if($noup=="CodeViewToSECTION"){
-							$cid=getOPG('cid');
-							$coursevers=getOPG('coursevers');
-							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'><img src='../Shared/icons/Home.svg'></a></td>";
+							echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers."'></a></td>";
 					}else {
 						// None!
 					}
