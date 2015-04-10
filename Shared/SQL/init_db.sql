@@ -459,3 +459,47 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
+/* solves the null problmen in codeviewer*/
+UPDATE codeexample
+SET sectionname='Example1'
+WHERE exampleid='1';
+
+UPDATE codeexample
+SET sectionname='Example2'
+WHERE exampleid='2';
+
+UPDATE codeexample
+SET sectionname='Example3'
+WHERE exampleid='3';
+
+UPDATE codeexample
+SET sectionname='Example4'
+WHERE exampleid='4';
+
+UPDATE codeexample
+SET sectionname='Example5'
+WHERE exampleid='5';
+
+UPDATE codeexample
+SET sectionname='Example6'
+WHERE exampleid='6';
+
+UPDATE codeexample
+SET sectionname='Example7'
+WHERE exampleid='7';
+
+UPDATE codeexample
+SET sectionname='Example8'
+WHERE exampleid='8';
+
+UPDATE codeexample
+SET sectionname='Example9'
+WHERE exampleid='9';
+
+UPDATE codeexample
+SET sectionname='Example10'
+WHERE exampleid='10';
+
+UPDATE codeexample
+SET sectionname='Example11'
+WHERE exampleid='11';
