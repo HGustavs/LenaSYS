@@ -17,6 +17,14 @@ function toggleloginnewpass(){
 	}
 }
 
+function closeWindows(){
+
+	$(".loginBox").css("display", "none");
+	$("#overlay").css("display","none");
+	$("#login #username").val("");
+	$("#login #password").val("");
+}
+
 function changeCSS(cssFile, index)
 {
 	var cssLinkIndex = index;
