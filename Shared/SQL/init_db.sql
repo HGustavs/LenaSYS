@@ -237,9 +237,11 @@ INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 4","Fulf.html",2,2013,1);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 1","Gulf.html",2,2013,1);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 2","Hulf.html",2,2013);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 3","Iulf.html",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 3","Iulf.html",1,2013,5);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,12,13);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"Example1","HTML","html1.html",2,2013,1,13,11);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,14,12);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,"Popup example","Javascript","popup.html",2,2013,1,14,13,14);
  
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
@@ -312,6 +314,10 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,12,"TitleA","Code","[viktig=1]","html1.html",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,12,"TitleB","Document","[viktig=1]","<title>page title</title>",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid)VALUES (1,13,"Code","Code","[viktig=1]","html2.html",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,13,"Description","Document","[viktig=1]","Styling HTML with CSS",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid)VALUES (1,14,"Code","Code","[viktig=1]","popup.html",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,14,"Description","Document","[viktig=1]","Popup example for javascript..",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (4,10,"Title","Code","[viktig=1]","js0 copy 2.js");
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
@@ -473,13 +479,11 @@ CREATE TABLE studentresultat (
 /*
 INSERT INTO programkurs VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationssäkerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och användbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundläggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
 INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
-
 */
 
 /**
 	This view eases the process of determining how many hp a student with a specific uid
 	in a specific course cid has finished. See the example below.
-
 	Example, get total hp finished by user with uid 2 in course with cid 1:
 		SQL code: select hp from studentresult where user = 2 and course_id = 1;
 */
@@ -501,67 +505,8 @@ update user set password=password("Kong") where username="Toddler";
 update user set password=password("Banan123") where username="Tester";
 update user set superuser=1 where username="Toddler";
 
-/*Code for testing Code Viewer
 
-
- Create a number of examples, linked from one to five
- Example 1 should have no template and therefore the select template dialog should be shown
- http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=1&courseid=1&cvers=2013
- Example 2 has template 1 (no template dialog should be shown but rather an error message if not administrator) and it should show a code file on the left pane and a description pane on the right pane
- http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=2&courseid=1&cvers=2013 */
-
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid) values (1,"Xample Code","Events 1","Runlink1.html",1,2013,"2");
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Events 1","Runlink2.html",1,2013,"3","1",1);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid) values (1,"Xample Code","Events 2","Runlink3.html",1,2013,"4","2");
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Callback 2","Dulf.html",1,2013,"5","3",1);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid) values (1,"Xample Code","Callback 3","",2,2013,1);
-
-/*
- Boxes for example 2 (Boxes are created automatically when selecting template) 
- Note: if we have box rows but no template the template assignment will give an error message, it is thus important that there are corresponding templates
-*/
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,2,"TitleA","Code","[viktig=1]","js1.js",1);
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,2,"TitleB","Document","[viktig=1]","<b>Events 1</b>This is elem the first section of the event description<b>More</b>This is more text",1);
-/*
- In example 2 rows 3-5 and 8-1 are highlighted
-*/
-INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,3,5,1);
-INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,8,11,1);
-/*
- Important words to be highlighted in example 1 and 2
-*/
-
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"event",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"elem",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"pageY",2);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"event",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"elem",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"pageY",2);
-
-
-/*
- Wordlists from three typical languages
-*/
-INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
-/*
- Words in wordlist 1,2 and 3
-*/
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"if","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"var","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"echo","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"function","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"if","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"else","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
-
-/* solves the null problmen in codeviewer*/
+/* sets after and before-id for examples in codeviewer*/
 UPDATE codeexample
 SET sectionname='Example1' , afterid='2' , beforeid='1'
 WHERE exampleid='1';
@@ -611,15 +556,7 @@ UPDATE codeexample
 SET sectionname='HTMLex1',	templateid='1', uid='1', beforeid='11', afterid='13', runlink='html1.html'
 WHERE exampleid='12';
 
-UPDATE codeexample
-SET TemplateID='5'
-WHERE exampleid='10';
-
 UPDATE box
 SET	segment='<b>HTML Helloworld</b>', boxcontent='Document', filename=null
 WHERE exampleid='12' and boxid='2' ;
-
-UPDATE codeexample
-SET beforeid='12', afterid='13'
-WHERE exampleid='13';
 
