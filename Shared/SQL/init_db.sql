@@ -237,7 +237,7 @@ INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 4","Fulf.html",2,2013,1);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 1","Gulf.html",2,2013,1);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 2","Hulf.html",2,2013);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 3","Iulf.html",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 3","Iulf.html",1,2013,5);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"Example1","HTML","html1.html",2,2013,1,13,11);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,14,12);
@@ -318,6 +318,7 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,13,"Description","Document","[viktig=1]","Styling HTML with CSS",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid)VALUES (1,14,"Code","Code","[viktig=1]","popup.html",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,14,"Description","Document","[viktig=1]","Popup example for javascript..",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (4,10,"Title","Code","[viktig=1]","js0 copy 2.js");
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
 		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
