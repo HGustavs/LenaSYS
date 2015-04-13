@@ -8,7 +8,7 @@ CREATE TABLE user(
 		username		VARCHAR(80) NOT NULL UNIQUE,
 		firstname		VARCHAR(50) NULL,
 		lastname		VARCHAR(50) NULL,
-		ssn				VARCHAR(20) NULL,
+		ssn				VARCHAR(20) NULL unique,
 		password		VARCHAR(225) NOT NULL,
 		lastupdated	TIMESTAMP,
 		addedtime   TIMESTAMP,
@@ -17,7 +17,8 @@ CREATE TABLE user(
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
 		email			VARCHAR(256) DEFAULT NULL,
-		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class), 
+		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class),
+		totHp			int(3),
 		PRIMARY KEY(uid)
 
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -25,6 +26,11 @@ CREATE TABLE user(
 INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
 INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111");
+
+/* users/students for UMV testing */
+
+insert into user(username, password,firstname,lastname,ssn,email,class) values('a13asrd','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','assad','rduk','111111-1112','a13asrd@his.se','WEBUG13');
+insert into user(username, password,firstname,lastname,ssn,email,class) values('a13durp','*0F1088E511EC11B8EF2BBDE830E08E9F959843C4','hurp','durp','111111-1113','a13durp@his.se','WEBUG13');
 
 
 /** 
@@ -40,14 +46,16 @@ CREATE TABLE course(
 		updated						TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 		activeversion 		VARCHAR(8),
 		activeedversion 	VARCHAR(8),
+		capacity			int(3) not null,
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
 INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV13G","Futhark",NOW(),1,0);
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("TEST13","Testing",NOW(),1,0);
-
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("IT1405","USEREXPERIENCE",NOW(),1,0);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("IT1431","IT-org",NOW(),1,0);
+INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DA4324","C++ grund prog",NOW(),1,0);
 /** 
  * This table represents a many-to-many relation between users and courses. That is,
  * a tuple in this table joins a user with a course.
@@ -59,20 +67,25 @@ CREATE TABLE user_course(
 		modified 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 	INTEGER,
 		access		VARCHAR(10) NOT NULL,
-		
+		period		int(1) not null,
 		CONSTRAINT pk_user_course PRIMARY KEY(uid, cid),
 		CONSTRAINT user_course_joins_user FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
 		CONSTRAINT user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /* test data */
-INSERT INTO user_course(uid,cid,access) values (1,2,"W");
-INSERT INTO user_course(uid,cid,access) values (1,1,"R");
-INSERT INTO user_course(uid,cid,access) values (1,3,"R");
-INSERT INTO user_course(uid,cid,access) values (2,1,"R");
-INSERT INTO user_course(uid,cid,access) values (2,2,"R");
-INSERT INTO user_course(uid,cid,access) values (2,3,"R");
-INSERT INTO user_course(uid,cid,access) values (3,3,"R");
+/* a13asrd couirses */
+insert into user_course(uid,cid,result,access,period) values(4,1,5,'R',1);
+insert into user_course(uid,cid,result,access,period) values(4,3,5,'R',2);
+insert into user_course(uid,cid,result,access,period) values(4,4,5,'R',3);
+insert into user_course(uid,cid,result,access,period) values(4,5,5,'R',4);
+
+/* a13durp couirses */
+insert into user_course(uid,cid,result,access,period) values(5,1,7,'R',1);
+insert into user_course(uid,cid,result,access,period) values(5,3,7,'R',2);
+insert into user_course(uid,cid,result,access,period) values(5,4,7,'R',3);
+insert into user_course(uid,cid,result,access,period) values(5,5,7,'R',4);
+
 
 
 CREATE TABLE listentries (
@@ -391,12 +404,13 @@ CREATE TABLE class (
 	classcode varchar(8) DEFAULT NULL,
     hp int(4) DEFAULT NULL,
 	tempo int(3) DEFAULT NULL,
-	resppers varchar(20) DEFAULT NULL,
+	responsible varchar(20) DEFAULT NULL,
+	hpProgress int(3),
     PRIMARY KEY (class)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,resppers) VALUES ('WEBUG13','elite',23432,'WEBUG',180,100,'Brohede');
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,resppers) VALUES ('TEST13','test',44444,'TEST',180,100,'tester');
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG13','elite',23432,'WEBUG',180,100,'Brohede');
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('TEST13','test',44444,'TEST',180,100,'tester');
 /**
  * this table stores the different subparts of each course. 
  */ 
@@ -445,12 +459,14 @@ INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta',3);
 CREATE TABLE programcourse (
     class varchar(10) DEFAULT NULL,
 	cid INT UNSIGNED NOT NULL,
+	period int(1) not null,
+	term 	char(5) not null,
 	PRIMARY KEY(cid, class),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (class) REFERENCES class (class)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',1);
+INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',1);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',2);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',3);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',5);
 
 /**
  * This table seems to be intended to store student results from program courses.
@@ -498,7 +514,7 @@ update user set firstname="Johan", lastname="Grimling" where username="Grimling"
 update user set ssn="810101-5567" where username="Grimling";
 update user set ssn="444444-5447" where username="Toddler";
 update user set password=password("Kong") where username="Toddler";
-update user set password=password("Banan123") where username="Tester";
+update user set password=password("Banan") where username="Tester";
 update user set superuser=1 where username="Toddler";
 
 /*Code for testing Code Viewer
