@@ -1,3 +1,28 @@
+
+.rightDropdownMenu ol li{
+	width:100px;
+	height: 20px;
+	background-color:#927B9E;
+}
+
+.rightDropdownMenu ul li{
+	width:100px;
+	height:20px;
+	background-color:#927B9E;
+}
+
+.rightDropdownMenu a{
+	color:#fff;
+	text-decoration: none;
+	display:inline;
+	padding:5px;
+	
+}
+.rightDropdownMenu a:hover { 
+	color: #fff; 
+	background-color:#614875; 
+}
+
 .my-nav {
 	position: relative;
 	top: 0;
