@@ -1520,7 +1520,6 @@ function resizeBoxes(parent, templateId) {
 	
 	//Gets box measurments from localstorage and applies them onto the boxes on screen.
 	//This is done preinit of boxValArray, so that the init of that array gets these values.
-	//Also adds some basic css to the boxes.
 	function getLocalStorageProperties(templateId){
 		
 		var numBoxes = $("[id ^=box][id $=wrapper]").length;
@@ -1531,10 +1530,6 @@ function resizeBoxes(parent, templateId) {
 				
 				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
 				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
-				
-				//setOverflow
-				$("#box" + i + "wrapper > #box" + i + "menu").css("overflow", "hidden");
-				$("#box" + i + "wrapper > #box" + i).css("overflow", "auto");
 				
 			}
 		}
