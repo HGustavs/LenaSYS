@@ -239,7 +239,9 @@ INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 2","Hulf.html",2,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 3","Iulf.html",1,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,12,13);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"Example1","HTML","html1.html",2,2013,1,13,11);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,14,12);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,"Popup example","Javascript","popup.html",2,2013,1,14,13,14);
  
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
@@ -312,7 +314,10 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,12,"TitleA","Code","[viktig=1]","html1.html",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,12,"TitleB","Document","[viktig=1]","<title>page title</title>",1);
-
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid)VALUES (1,13,"Code","Code","[viktig=1]","html2.html",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,13,"Description","Document","[viktig=1]","Styling HTML with CSS",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid)VALUES (1,14,"Code","Code","[viktig=1]","popup.html",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,14,"Description","Document","[viktig=1]","Popup example for javascript..",1);
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
 		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -501,67 +506,8 @@ update user set password=password("Kong") where username="Toddler";
 update user set password=password("Banan123") where username="Tester";
 update user set superuser=1 where username="Toddler";
 
-/*Code for testing Code Viewer
 
-
- Create a number of examples, linked from one to five
- Example 1 should have no template and therefore the select template dialog should be shown
- http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=1&courseid=1&cvers=2013
- Example 2 has template 1 (no template dialog should be shown but rather an error message if not administrator) and it should show a code file on the left pane and a description pane on the right pane
- http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=2&courseid=1&cvers=2013 */
-
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid) values (1,"Xample Code","Events 1","Runlink1.html",1,2013,"2");
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Events 1","Runlink2.html",1,2013,"3","1",1);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid) values (1,"Xample Code","Events 2","Runlink3.html",1,2013,"4","2");
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Callback 2","Dulf.html",1,2013,"5","3",1);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid) values (1,"Xample Code","Callback 3","",2,2013,1);
-
-/*
- Boxes for example 2 (Boxes are created automatically when selecting template) 
- Note: if we have box rows but no template the template assignment will give an error message, it is thus important that there are corresponding templates
-*/
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,2,"TitleA","Code","[viktig=1]","js1.js",1);
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,2,"TitleB","Document","[viktig=1]","<b>Events 1</b>This is elem the first section of the event description<b>More</b>This is more text",1);
-/*
- In example 2 rows 3-5 and 8-1 are highlighted
-*/
-INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,3,5,1);
-INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,8,11,1);
-/*
- Important words to be highlighted in example 1 and 2
-*/
-
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"event",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"elem",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"pageY",2);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"event",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"elem",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"pageY",2);
-
-
-/*
- Wordlists from three typical languages
-*/
-INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
-/*
- Words in wordlist 1,2 and 3
-*/
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"if","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"var","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"echo","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"function","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"if","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"else","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
-
-/* solves the null problmen in codeviewer*/
+/* sets after and before-id for examples in codeviewer*/
 UPDATE codeexample
 SET sectionname='Example1' , afterid='2' , beforeid='1'
 WHERE exampleid='1';
