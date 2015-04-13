@@ -187,7 +187,14 @@ function AJAXService(opt,apara,kind)
 {
 	var para="";
 	for (var key in apara) {
-			para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+		// Run the input parameter through the following regular expression
+		// The result is a string that only allows white-listed characters.
+		var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9\s]*/gi);
+		
+		// Concat the generated regex result to a string again.
+		apara[key] = s.join("");
+			
+		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 	}
 				
 	if(kind=="COURSE"){
