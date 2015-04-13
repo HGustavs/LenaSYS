@@ -312,7 +312,7 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,12,"TitleA","Code","[viktig=1]","html1.html",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,12,"TitleB","Document","[viktig=1]","<title>page title</title>",1);
-
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (4,10,"Title","Code","[viktig=1]","js0 copy 2.js");
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
 		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -610,6 +610,10 @@ WHERE exampleid='11';
 UPDATE codeexample
 SET sectionname='HTMLex1',	templateid='1', uid='1', beforeid='11', afterid='13', runlink='html1.html'
 WHERE exampleid='12';
+
+UPDATE codeexample
+SET TemplateID='5'
+WHERE exampleid='10';
 
 UPDATE box
 SET	segment='<b>HTML Helloworld</b>', boxcontent='Document', filename=null
