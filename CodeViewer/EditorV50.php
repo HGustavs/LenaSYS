@@ -99,7 +99,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 		$row = $query -> fetch(PDO::FETCH_ASSOC);
 		$public=$row['public'];	
 
-		$noup="COURSE";
+		$noup="CODEVIEWER"; //Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
 		$loginvar="CODV";
 		$codeviewer = true;
 		$codeviewerkind=false;
