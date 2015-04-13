@@ -10,10 +10,10 @@ CREATE TABLE user(
 		lastname		VARCHAR(50) NULL,
 		ssn				VARCHAR(20) NULL unique,
 		password		VARCHAR(225) NOT NULL,
-		lastupdated	TIMESTAMP,
-		addedtime   TIMESTAMP,
+		lastupdated		TIMESTAMP,
+		addedtime  		TIMESTAMP,
 		lastvisit		TIMESTAMP,
-		newpassword	TINYINT(1) NULL,
+		newpassword		TINYINT(1) NULL,
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
 		email			VARCHAR(256) DEFAULT NULL,
@@ -37,25 +37,26 @@ insert into user(username, password,firstname,lastname,ssn,email,class) values('
  * Course table contains the most essential information relating to study courses in the database.
  */
 CREATE TABLE course(
-		cid								INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		coursecode				VARCHAR(45) NULL UNIQUE,
-		coursename				VARCHAR(80) NULL,
-		created						DATETIME,
-		creator						INT UNSIGNED NOT NULL,
-		visibility				TINYINT UNSIGNED NOT NULL DEFAULT 0,
-		updated						TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+		cid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		coursecode			VARCHAR(45) NULL UNIQUE,
+		coursename			VARCHAR(80) NULL,
+		created				DATETIME,
+		creator				INT UNSIGNED NOT NULL,
+		visibility			TINYINT UNSIGNED NOT NULL DEFAULT 0,
+		updated				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 		activeversion 		VARCHAR(8),
 		activeedversion 	VARCHAR(8),
 		capacity			int(3) not null,
+		hp					decimal(2,1) not null,
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV13G","Futhark",NOW(),1,0);
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("IT1405","USEREXPERIENCE",NOW(),1,0);
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("IT1431","IT-org",NOW(),1,0);
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DA4324","C++ grund prog",NOW(),1,0);
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DV12G","Webbprogrammering",NOW(),1,1,7.5);
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DV13G","Futhark",NOW(),1,0,7.5);
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("IT1405","USEREXPERIENCE",NOW(),1,0,7.5);
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("IT1431","IT-org",NOW(),1,0,7.5);
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DA4324","C++ grund prog",NOW(),1,0,7.5);
 /** 
  * This table represents a many-to-many relation between users and courses. That is,
  * a tuple in this table joins a user with a course.
@@ -63,14 +64,14 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DA
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
 		cid				INT UNSIGNED NOT NULL, 
-		result 		varchar(5),
-		modified 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		creator 	INTEGER,
-		access		VARCHAR(10) NOT NULL,
-		period		int(1) not null,
-		CONSTRAINT pk_user_course PRIMARY KEY(uid, cid),
-		CONSTRAINT user_course_joins_user FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
-		CONSTRAINT user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
+		result 			varchar(5),
+		modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		creator 		INTEGER,
+		access			VARCHAR(10) NOT NULL,
+		period			int(1) not null,
+		CONSTRAINT 		pk_user_course PRIMARY KEY(uid, cid),
+		CONSTRAINT 		user_course_joins_user FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
+		CONSTRAINT 		user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /* test data */
@@ -89,20 +90,20 @@ insert into user_course(uid,cid,result,access,period) values(5,5,7,'R',4);
 
 
 CREATE TABLE listentries (
-	lid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	cid 					INT UNSIGNED NOT NULL,
+	lid 			INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	cid 			INT UNSIGNED NOT NULL,
 	entryname 		VARCHAR(64),
-	link 					VARCHAR(200),
-	kind 					INT unsigned,
-	pos 					INT,
-	creator 			INT unsigned not null,
-	ts						TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-	code_id 			MEDIUMINT unsigned null default null,
-	visible 			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-	vers					VARCHAR(8),
-  moment				INT UNSIGNED,
-  gradesystem 	TINYINT(1),
-	CONSTRAINT pk_listentries PRIMARY KEY(lid),
+	link 			VARCHAR(200),
+	kind 			INT unsigned,
+	pos 			INT,
+	creator 		INT unsigned not null,
+	ts				TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	code_id 		MEDIUMINT unsigned null default null,
+	visible 		TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	vers			VARCHAR(8),
+	moment			INT UNSIGNED,
+	gradesystem 	TINYINT(1),
+	CONSTRAINT 		pk_listentries PRIMARY KEY(lid),
 	
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
 	CONSTRAINT fk_listentries_joins_user FOREIGN KEY(creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
@@ -125,19 +126,19 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visi
 
 /* Quiz tables */
 CREATE TABLE quiz (
-  id						INT(11) NOT NULL AUTO_INCREMENT,
-  cid 					INTEGER UNSIGNED NOT NULL,
-  autograde 		TINYINT(1) NOT NULL DEFAULT 0, /* bool */
-  gradesystem 	TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
-  qname 				VARCHAR(255) NOT NULL DEFAULT '',
-  quizFile 			VARCHAR(255) NOT NULL DEFAULT 'default',
-  qrelease 			DATETIME,
-  deadline 			DATETIME,
-	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	creator 			INTEGER,
+	id				INT(11) NOT NULL AUTO_INCREMENT,
+	cid 			INTEGER UNSIGNED NOT NULL,
+	autograde 		TINYINT(1) NOT NULL DEFAULT 0, /* bool */
+	gradesystem 	TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
+	qname 			VARCHAR(255) NOT NULL DEFAULT '',
+	quizFile 		VARCHAR(255) NOT NULL DEFAULT 'default',
+	qrelease 		DATETIME,
+	deadline 		DATETIME,
+	modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	creator 		INTEGER,
 		
-  CONSTRAINT pk_quiz PRIMARY KEY (id),
-  CONSTRAINT fk_quiz_joins_course FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+	CONSTRAINT 		pk_quiz PRIMARY KEY (id),
+	CONSTRAINT 		fk_quiz_joins_course FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /** 
@@ -145,14 +146,14 @@ CREATE TABLE quiz (
  * An entry in the variant table is used to add questions to quiz tests. 
  */
 CREATE TABLE variant(
-  vid						INT(11) NOT NULL AUTO_INCREMENT,
-	quizID				INT(11),
-	param					VARCHAR(2048),
+  vid				INT(11) NOT NULL AUTO_INCREMENT,
+	quizID			INT(11),
+	param			VARCHAR(2048),
 	variantanswer	VARCHAR(2048),
-	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	creator 			INTEGER,
-  CONSTRAINT pk_variant PRIMARY KEY 	(vid),
-  CONSTRAINT fk_variant_joins_quiz FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
+	modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	creator 		INTEGER,
+	CONSTRAINT 		pk_variant PRIMARY KEY 	(vid),
+	CONSTRAINT 		fk_variant_joins_quiz FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE userAnswer (
@@ -398,14 +399,14 @@ CREATE TABLE programkurs (
 
 
 CREATE TABLE class (
-    class varchar(10) DEFAULT NULL,
-	classname varchar(100) DEFAULT NULL,
-    regcode int(8) DEFAULT NULL,
-	classcode varchar(8) DEFAULT NULL,
-    hp int(4) DEFAULT NULL,
-	tempo int(3) DEFAULT NULL,
+    class 		varchar(10) DEFAULT NULL,
+	classname 	varchar(100) DEFAULT NULL,
+    regcode 	int(8) DEFAULT NULL,
+	classcode 	varchar(8) DEFAULT NULL,
+    hp 			decimal(3,1) DEFAULT NULL,
+	tempo 		int(3) DEFAULT NULL,
 	responsible varchar(20) DEFAULT NULL,
-	hpProgress int(3),
+	hpProgress 	decimal(3,1),
     PRIMARY KEY (class)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
@@ -415,10 +416,10 @@ INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES
  * this table stores the different subparts of each course. 
  */ 
 CREATE TABLE subparts(
-	partname varchar(50),
-	cid INT UNSIGNED NOT NULL,
-	parthp int(4) DEFAULT NULL,
-	difGrade varchar(10),
+	partname 	varchar(50),
+	cid 		INT UNSIGNED NOT NULL,
+	parthp 		decimal(2,1) DEFAULT NULL,
+	difGrade 	varchar(10),
 	PRIMARY KEY (partname,cid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -434,10 +435,10 @@ INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',3,2,'u345'
  * this table for many to mny between user and subparts. 
  */ 
 CREATE TABLE partresult (
-    cid INT UNSIGNED NOT NULL,
-	uid	INT UNSIGNED NOT NULL,
-	partname varchar(50),
-	grade varchar(2) DEFAULT NULL,
+    cid 		INT UNSIGNED NOT NULL,
+	uid			INT UNSIGNED NOT NULL,
+	partname	varchar(50),
+	grade 		varchar(2) DEFAULT NULL,
 	PRIMARY KEY(partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
@@ -457,10 +458,10 @@ INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta',3);
  */ 
 
 CREATE TABLE programcourse (
-    class varchar(10) DEFAULT NULL,
-	cid INT UNSIGNED NOT NULL,
-	period int(1) not null,
-	term 	char(5) not null,
+    class 		varchar(10) DEFAULT NULL,
+	cid 		INT UNSIGNED NOT NULL,
+	period 		int(1) not null,
+	term 		char(5) not null,
 	PRIMARY KEY(cid, class),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (class) REFERENCES class (class)
@@ -472,13 +473,13 @@ INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',1);INSERT INTO programcou
  * This table seems to be intended to store student results from program courses.
  */ 
 CREATE TABLE studentresultat (
-    sid mediumint(9) NOT NULL AUTO_INCREMENT,
-    pnr varchar(11) DEFAULT NULL,
-    anmkod varchar(6) DEFAULT NULL,
-    kurskod varchar(6) NOT NULL,
-    termin varchar(5) DEFAULT NULL,
-    resultat decimal(3 , 1 ) DEFAULT NULL,
-    avbrott date DEFAULT NULL,
+    sid 		mediumint(9) NOT NULL AUTO_INCREMENT,
+    pnr 		varchar(11) DEFAULT NULL,
+    anmkod 		varchar(6) DEFAULT NULL,
+    kurskod 	varchar(6) NOT NULL,
+    termin 		varchar(5) DEFAULT NULL,
+    resultat 	decimal(3,1) DEFAULT NULL,
+    avbrott 	date DEFAULT NULL,
     PRIMARY KEY (sid),
     KEY anmkod (anmkod),
     KEY pnr (pnr),
