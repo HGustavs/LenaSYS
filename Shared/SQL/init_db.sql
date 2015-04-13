@@ -561,7 +561,4 @@ UPDATE box
 SET	segment='<b>HTML Helloworld</b>', boxcontent='Document', filename=null
 WHERE exampleid='12' and boxid='2' ;
 
-UPDATE codeexample
-SET beforeid='12', afterid='13'
-WHERE exampleid='13';
 
