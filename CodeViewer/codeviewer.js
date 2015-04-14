@@ -1641,10 +1641,10 @@ function initializeMarkdownArray()
 }
 
 //----------------------------------------------------------------------------------
-// rowCreatorMarkdown: Receives a string with text and returns an array of strings. 
-//					   Each element in the array contains a row, a row is the characters between line breaks.
-//					   DO NOT KNOW IF THIS REALLY WORK ON LINE BREAK NEED TO BE TEST WITH
-//					   A LONGER TEXT FILE.
+// rowCreatorMarkdown:	Receives a string with text and returns an array of strings. 
+//			Each element in the array contains a row, a row is the characters between line breaks.
+//			DO NOT KNOW IF THIS REALLY WORK ON LINE BREAK NEED TO BE TEST WITH
+//			 A LONGER TEXT FILE.
 //----------------------------------------------------------------------------------
 function stringToRowMarkdown(inString)
 {
@@ -1666,7 +1666,8 @@ function stringToRowMarkdown(inString)
 
 //----------------------------------------------------------------------------------
 // rowToStringMarkdown: Receives an array containing strings and assembles them to a
-//						string, also insert a line break between each string added from the array.
+//			string, also insert a line break between each string added 
+//			from the array.
 //----------------------------------------------------------------------------------
 function rowToStringMarkdown(inArray)
 {
@@ -1699,17 +1700,17 @@ function printMarkdown(leadingMarkdown, inString, trailingMarkdown)
 }
 
 //----------------------------------------------------------------------------------
-// parseMarkdown: 	Take a string disassemble it to rows, searches for markdown 
-//					symbols stored in markdownArray, if markdown symbols are found, 
-//					the replace them with html tags. Then Assemble the rows to a 
-//					string again, and return the string.
+// parseMarkdown:	Take a string disassemble it to rows, searches for markdown 
+//			symbols stored in markdownArray, if markdown symbols are found, 
+//			the replace them with html tags. Then Assemble the rows to a 
+//			string again, and return the string.
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {
 	var markdownArray = initializeMarkdownArray();	//The markdownArray stores all valid markdown symbols
-	var returnString = " " ;						//The variable used to return the string
-	var foundFirstMarkdown = false;					//Flag that tells if a markdown symbols has already been found
-	var markdownRowIndex = -1;						//For now just tells if markdown symbols found, later it should tell on which row the markdown is found
+	var returnString = " " ;			//The variable used to return the string
+	var foundFirstMarkdown = false;			//Flag that tells if a markdown symbols has already been found
+	var markdownRowIndex = -1;			//For now just tells if markdown symbols found, later it should tell on which row the markdown is found
 	
 	//Break the in string down row by row, place each row in an array
 	var rowArray = stringToRowMarkdown(inString);	
