@@ -9,6 +9,11 @@ AJAXService("get",{},"SECTION");
 
 var xelink;
 
+function displaymessage(){
+
+   $(".messagebox").css("display","block");
+}
+
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 {
 		
@@ -62,13 +67,18 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 		// Set Kind
 		str="";
 		if(kind==0) str+="<option selected='selected' value='0'>Header</option>"
-		else str+="<option value='0'>Header</option>";
+		else str+="<option id='headeritem' value='0'>Header</option>";
 		if(kind==1) str+="<option selected='selected' value='1'>Section</option>"
 		else str+="<option value='1'>Section</option>";
 		if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
 		else str+="<option value='2'>Code</option>";
-		if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
-		else str+="<option value='3'>Test</option>";
+		if(retdata['duggor'].length == 0){
+			str+="<option disabled>Test</option>"
+			displaymessage();
+		}else{
+			if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
+			else str+="<option value='3'>Test</option>";
+		}
 		if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
 		else str+="<option value='4'>Moment</option>";
 		if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
