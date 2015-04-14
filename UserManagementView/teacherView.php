@@ -42,23 +42,28 @@ pdoConnect();
 			
             
         <!-- Dropdownmenu -->
-        <nav class="rightDropdownMenu my-pull-right">
-            <ol>
-                <li><a href="#" > Program </a> 
+        <nav class="rightDropdownMenu">
+            <ul>
+                <li><a href="#" >Program 1</a>
                 	<ul>
-                      <li><a href="#" > År 1 </a> </li>
-                      <li><a href="#" > År 2 </a> </li>
-                      <li><a href="#" > År 3 </a> </li>
+                	  <li><a href="#">År 1</a></li>
+                    <li><a href="#">År 2</a></li>
+                    <li><a href="#">År 3</a></li>
                   </ul>
                 </li>
-                
-                <li><a href="#" > Program </a> </li>
-            </ol>
+                <li><a href="#" >Program 2</a>
+                	<ul>
+                    <li><a href="#">År 1</a></li>
+                    <li><a href="#">År 2</a></li>
+                    <li><a href="#">År 3</a></li>
+                  </ul>
+               </li> 
+        	 </ul> 
         </nav>     
         
         
         <!-- Searchfield -->
-        <div class="my-nav clearfix">
+        <div class="searchfieldTV clearfix">
           <div class="my-input-group my-pull-right">
              <button type="button" class="my-pull-right " onclick="loadData(studyprogram.value,pnr.value);">Sök</span></button>            
              <input type="text" class="form-control my-pull-right " placeholder="WEBUG12h/Pnr" name="studyprogram/Pnr" id="studyprogram/Pnr">

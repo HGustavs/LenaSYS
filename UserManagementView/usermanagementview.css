@@ -1,52 +1,106 @@
+
+/* The big wrapper */
 #contentUMV {
     margin:0px auto;
     position:relative;
-    padding: 50px 12px 8px 8px;
+	top:0px;
+    padding: 50px 0px 8px 8px;
     background: #fff;
     min-height: 200px;
 	width:80%;
 	border: 8px solid #CCC;
+	border-top:none;
 }
 
-.rightDropdownMenu ol li{
-	width:100px;
-	height: 20px;
-	background-color:#927B9E;
-}
 
-.rightDropdownMenu ul li{
-	width:100px;
-	height:20px;
-	background-color:#927B9E;
+/* Dropdownmenu at the top of the page to the right */
+.rightDropdownMenu {
+	float:right;
+	position:relative;
+	text-align:center;
+	top:0px;
+	right:0px;
+	z-index:9999;
+	box-shadow: -1px 5px 5px #A9A;
 }
 
 .rightDropdownMenu a{
 	color:#fff;
+	font-family: Calibri,sans-serif;
+	font-size:0.9em;
 	text-decoration: none;
 	display:inline;
-	padding:5px;
-	
 }
-.rightDropdownMenu a:hover { 
+
+.rightDropdownMenu ul li{
+	width:110px;
+	height: 25px;
+	padding:8px 0 5px;
+	background-color:#927B9E;
+	float:left;
+	display:inline;
+	border-right: 1px solid #857090;
+}
+.rightDropdownMenu ul li:hover{
 	color: #fff; 
 	background-color:#614875; 
+	cursor:pointer;
+	padding-bottom:5px;
+}
+.rightDropdownMenu ul ul li > a:after { 
+	content: ''; 
+	position: absolute; 
+	left: 20px; 
+	top: -6px; 
+	border-left: 6px solid transparent; 
+	border-right: 6px solid transparent; 
+	border-bottom: 6px solid #927B9E; 
+}
+
+.rightDropdownMenu ul li ul { 
+	clear:both;
+	top: 10px;
+	display: block; 
+	visibility: hidden;
+	position: relative;
+	font-size:0.82em;
+}
+.rightDropdownMenu ul ul li { 
+	width:110px;
+	height: 18px;
+	padding:8px 0 5px;
+	box-shadow: -1px 5px 5px #A9A;
+}
+
+.rightDropdownMenu ul li:hover > ul { 
+	opacity: 1; 
+	visibility: visible; 
+	margin: 0; 
+} 
+
+
+
+.searchfieldTV{
+	margin-top:10px;
+	position: relative;
+	margin:0 auto;
+	width: calc(100%-2em); 
+	padding: 1em; 
+	float:left;
 }
 
 .my-nav {
 	position: relative;
 	top: 0;
 	left: 0;
-	width: calc(100%-2em);
+	/* width: calc(100%-2em); */
 	padding: 1em; 
-	background-color: #def;
 }
 
 .my-container-fluid {
 	position: relative;
 	top: 0;
 	left: 0;
-	width: 100%;
-	background-color: #ce0;
 }
 
 .small {
@@ -120,7 +174,9 @@ small > a:hover {
 .panel-info {
     
 }
-
+.clearfix{
+	clear: both;
+}
 .clearfix:after { 
    content: "."; 
    visibility: hidden; 
