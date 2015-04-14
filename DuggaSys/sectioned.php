@@ -70,7 +70,7 @@ pdoConnect();
 	</table>
 	<table>
 		<tr>
-			<div class='messagebox' style='display:none;color:gray;font-weight:italic;text-align:center'>You need to create a Dugga first before you can use it for a test.</div>
+			<div class='messagebox' style='display:none;color:red;font-weight:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
 		</tr>
 	</table>
 	
