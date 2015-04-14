@@ -19,60 +19,57 @@ pdoConnect();
 
   </head>
   <body>
-  	<?php 
+  
+	<?php 
 		$noup="NONE";
 		$loginvar="COURSE"; 
 		include '../Shared/navheader.php';
 	?>
-
+	
 	<?php
 		include '../Shared/loginbox.php';
+		
 	?>
 		
 	<!-- content START -->
 	<div id="content">
+		
+		<!-- Program name and name of the student-->
+		<div id="studentTitle">
+		</div>
+		
+		<!-- Progressbar for every year of the program -->
+		<div id="MainProgress">
 			
-	<!-- Section List -->
+			<div id="ProgressbarG1N">
+			</div>
+			
+			<div id="ProgressbarG1F">
+			</div>
+			
+			<div id="ProgressbarG2F">
+			</div>
+			
+		</div>
+		
+		<!-- Container for each year for the student-->
+		<div id="Year1">
+
+		</div>
+		
+		<div id="Year2">
+
+		</div>
 	
-  	
+		<div id="Year3">
 
-<div class="my-container-fluid clearfix"> <!--Whole div that hold the text inside, the green-div-->
+		</div>
+	
+	
+  
 
-	<div class="my-col-xs-4"> <!--Div for the Year 1-->
-		<div class="panel panel-default">
-		  <div class="panel-heading">
-		    <h3 class="panel-title">Year 1 <span class="my-pull-right small">Fall2013/Spring2014</span></h3>
-		  </div>
-		  <div id="year1-body" class="panel-body">
-		  </div>
-		</div>
-	</div> <!--end of Year 1-->
-    
-    
-	<div class="my-col-xs-4"><!--Div for the Year 2-->
-		<div class="panel panel-default">
-			<div class="panel-heading">
-		    	<h3 class="panel-title">Year 2 <span class="my-pull-right small">Fall2014/Spring2015</span></h3>
-			</div>
-			<div id="year2-body" class="panel-body">
-			</div>		
-		</div>
-	</div><!--end of Year 2-->
-    
-    
-	<div class="my-col-xs-4"><!--Div for the Year 3-->
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Year 3 <span class="my-pull-right small">Fall2015/Spring2016</span></h3>
-			</div>
-			<div id="year3-body" class="panel-body">
-			</div>		
-		</div>
-	</div> <!--end of Year 3-->
-			
-	</div> <!--The green-div ends here-->
+	
 	</div>
-	
 	<!-- content END -->
 
   </body>
