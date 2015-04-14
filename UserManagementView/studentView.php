@@ -15,7 +15,7 @@ pdoConnect();
         <title>LenaSYS User Editor</title>
     
         <!-- My Bootstrap override -->
-            <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+        <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
         <link href="usermanagementview.css" rel="stylesheet">
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
         <script src="usermanagementview.js"></script>
@@ -38,11 +38,11 @@ pdoConnect();
     
         <!-- Dropdownmenu -->
         <nav class="rightDropdownMenu">
-        	<ul>
-            	<li><a href="#" >Nuvarande år</a></li>
-            	<li><a href="#" >Tidigare år</a></li> 
-        	</ul> 
-        </nav> 
+            <ul>
+                <li><a href="#" >Nuvarande år</a></li>
+                <li><a href="#" >Tidigare år</a></li> 
+        	 </ul> 
+        </nav>  
 			
         <!-- Section List -->
         <div class="my-container-fluid clearfix"> <!--Whole div that hold the text inside, the green-div-->
