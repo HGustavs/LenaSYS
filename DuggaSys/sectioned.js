@@ -51,12 +51,11 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 			}		
 		}
 		$("#moment").html(str);
+		
+		// Set Section name
+		$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='"+entryname+"' style='width:448px;'>")
 
-		// Set Name		
-		$("#sectionname").val(entryname);
-
-
-		// Set Lid	
+		// Set Lid
 		$("#lid").val(lid);
 
 		// Set Kind
