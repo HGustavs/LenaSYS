@@ -430,7 +430,6 @@ function redirectToUMV()
 	window.location.replace("../UserManagementView/redirector.php");
 }
 
-
 //Function to get a cookie from a cookie key(name)
 function getCookie(cname) {
 	var name = cname + "=";
