@@ -52,7 +52,7 @@ pdoConnect();
 	<div onclick='closeWindows();'>x</div>
 	</div>
 			
-	<table style="width:100%;margin-bottom:20px;">
+	<table style="width:100%;margin-bottom:20px;float:left">
 		<tr>
 			<td colspan='2'><input type='hidden' id='lid' value='Toddler' />Name:<br/><input type='text' class='form-control textinput' id='sectionname' value='sectionname' style='width:448px;' /></td>
 		</tr>
@@ -68,11 +68,13 @@ pdoConnect();
 			<td>GradeSystem:&nbsp;<select id='gradesys' ></select></td>
 		</tr>
 	</table>
+	<table>
+		<tr>
+			<div class='messagebox' style='display:none;color:gray;font-weight:italic;text-align:center'>You need to create a Dugga first before you can use it for a test.</div>
+		</tr>
+	</table>
 	
 	<!-- Error message, no duggas present-->
-	<div class='messagebox'>
-		Note: you need to create a Dugga first before you can use it for a test.
-	</div>
 	
 	<table style='width:460px;float:left'>
 		<tr>
