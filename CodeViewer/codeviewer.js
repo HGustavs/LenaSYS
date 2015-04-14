@@ -1550,7 +1550,7 @@ function resizeBoxes(parent, templateId) {
 //----------------------------------------------------------------------------------
 function initializeMarkdownMap()
 {
-	var characterToMarkdown = new Map();
+	var characterToMarkdown = {};
 																		// Markdown symbol
 	characterToMarkdown[0] = " ";					// [\] somehow escape symbol	
 	characterToMarkdown["*"] = "<font style='font-style:italic'>";	// [*] note * + " " == bulletin list
@@ -1597,7 +1597,7 @@ function markdownCharToHtmlTag(markdownString)
 //----------------------------------------------------------------------------------
 function initializeHtmlMap()
 {
-	var htmlTagMap = new Map();
+	var htmlTagMap = {};
 									// Markdown symbol
 	htmlTagMap[0] = " ";						// [\] Somehow escape symbol
 	htmlTagMap["<font style='font-style:italic'>"] = "</font>";	// [*] || [_] note "*" + " " == bulletin list
