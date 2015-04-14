@@ -135,7 +135,7 @@ function navigateTo(prefix,file)
 {
 		surl=window.location.href;
 		surl=surl.substring(0,surl.lastIndexOf("/")); 
-		window.location.href = surl+prefix+file;
+		window.location.href = surl+"/codeupload/";
 }
 
 
@@ -183,13 +183,22 @@ function htmlEntities(str) {
 // AJAX Service: Generic AJAX Calling Function with Prepared Parameters
 //----------------------------------------------------------------------------------
 
-function AJAXService(opt,apara,kind)
+function AJAXService(opt,apara,kind)	
 {
 	var para="";
 	for (var key in apara) {
-			para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
-	}
-				
+			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
+			if (apara[key].constructor === Array) {
+				var array = [];
+				for (var i = 0; i < apara[key].length; i++) {
+					array.push(encodeURIComponent(htmlEntities(apara[key][i])));
+				}
+				para+="&"+key+"="+array;
+			}
+			else {
+				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+			}
+	}		
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
