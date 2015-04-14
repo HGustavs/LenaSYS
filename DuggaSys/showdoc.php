@@ -30,6 +30,7 @@ session_start();
 		$noup="SECTION";
 		$loginvar="LINK"; 
 		include '../Shared/navheader.php';
+		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
