@@ -157,6 +157,8 @@ function returned(data)
 					}
 					
 					/* Assign Content */
+					//Parse markdown
+					desc = parseMarkdown(desc);
 					$("#"+contentid).html(desc);
 
 					if($("#"+contentid+"menu").height() == null){
