@@ -87,10 +87,10 @@ pdoConnect();
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='vid' value='Toddler' /></td>
-			<td colspan='2' style='line-height:40px;'>Param: <input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' value='Variant Param' /></td>		
+			<td colspan='2' style='line-height:40px;'>Param: <div id='parameternamewrapper'><input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' value='Variant Param' /></div></td>		
 		</tr>	
 		<tr>
-			<td colspan='2' style='line-height:40px;'>Answer: <input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' value='Variant Answer' /></td>		
+			<td colspan='2' style='line-height:40px;'>Answer: <div id='answernamewrapper'><input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' value='Variant Answer' /></div></td>		
 		</tr>
 	</table>
 
