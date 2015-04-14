@@ -28,12 +28,11 @@ pdoConnect();
 		$noup="COURSE";
 		$loginvar="SECTION"; 
 		include '../Shared/navheader.php';
-		setcookie("loginvar", $loginvar);
 	?>
-		
+
 	<!-- content START -->
 	<div id="content">
-			
+	
 	<!--- Section List --->
 	<div id='Sectionlist'></div>
 
@@ -51,8 +50,8 @@ pdoConnect();
 	<h3>Edit Item</h3>
 	<div onclick='closeWindows();'>x</div>
 	</div>
-				
-	<table style="width:100%">
+			
+	<table style="width:100%;margin-bottom:20px;">
 		<tr>
 			<td colspan='2'><input type='hidden' id='lid' value='Toddler' />Name:<br/><input type='text' class='form-control textinput' id='sectionname' value='sectionname' style='width:448px;' /></td>
 		</tr>
@@ -68,7 +67,13 @@ pdoConnect();
 			<td>GradeSystem:&nbsp;<select id='gradesys' ></select></td>
 		</tr>
 	</table>
-	<table style='width:460px;'>
+	
+	<!-- Error message, no duggas present-->
+	<div class='messagebox'>
+		Note: you need to create a Dugga first before you can use it for a test.
+	</div>
+	
+	<table style='width:460px;float:left'>
 		<tr>
 			<td align='left'><input class='submit-button' type='button' value='Delete' onclick='deleteItem();' /></td>
 			<td align='center'><input class='submit-button' type='button' value='Create' onclick='createItem();' id='createbutton' /></td>
