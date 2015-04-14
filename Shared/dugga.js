@@ -23,6 +23,8 @@ function closeWindows(){
 	$("#overlay").css("display","none");
 	$("#login #username").val("");
 	$("#login #password").val("");
+	
+	window.removeEventListener("keypress", loginEventHandler, false);
 }
 
 function changeCSS(cssFile, index)
@@ -265,6 +267,15 @@ function AJAXService(opt,apara,kind)
 	}
 }
 
+
+//Will handel enter key pressed when loginbox is showing
+function loginEventHandler(event){
+	if(event.keyCode == "0x0D"){
+		processLogin(getCookie("loginvar"));
+	}
+}
+
+
 function processLogin(kind) {
 
 		var username = $("#login #username").val();
@@ -352,12 +363,16 @@ function showLoginPopup()
 {
 		$("#loginBox").css("display","block");
 		$("#overlay").css("display","block");
+		
+		window.addEventListener("keypress", loginEventHandler, false);
 }
 
 function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
 		$("#overlay").css("display","none");
+		
+		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
 function showReceiptPopup()
@@ -415,3 +430,20 @@ function redirectToUMV()
 {
 	window.location.replace("../UserManagementView/redirector.php");
 }
+
+
+
+
+//Function to get a cookie from a cookie key(name)
+function getCookie(cname) {
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0; i<ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1);
+	        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    	}
+   return "";
+}
+
+
