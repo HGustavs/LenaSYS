@@ -12,6 +12,14 @@ var xelink;
 function displaymessage(){
    $(".messagebox").css("display","block");
 }
+$(document).ready(function(){
+     $(".messagebox").hover(function(){
+         $("#testbutton").css("background-color", "red");
+     });
+	 $(".messagebox").mouseout(function(){
+         $("#testbutton").css("background-color", "#614875");
+     });
+});
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 {
 		
@@ -231,7 +239,7 @@ function returnedSection(data)
 					str+="<div style='float:right;'>";
 					str+="<input class='submit-button' type='button' value='New' onclick='newItem();'/>";
 					str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
-					str+="<input class='submit-button' type='button' value='Tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+					str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 					str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 					str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 					str+="</div>";
