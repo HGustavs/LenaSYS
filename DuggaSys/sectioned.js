@@ -67,7 +67,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 		// Set Kind
 		str="";
 		if(kind==0) str+="<option selected='selected' value='0'>Header</option>"
-		else str+="<option id='headeritem' value='0'>Header</option>";
+		else str+="<option value='0'>Header</option>";
 		if(kind==1) str+="<option selected='selected' value='1'>Section</option>"
 		else str+="<option value='1'>Section</option>";
 		if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
