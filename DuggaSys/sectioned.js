@@ -10,10 +10,8 @@ AJAXService("get",{},"SECTION");
 var xelink;
 
 function displaymessage(){
-
    $(".messagebox").css("display","block");
 }
-
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 {
 		
