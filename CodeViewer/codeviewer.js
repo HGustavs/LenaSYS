@@ -1697,3 +1697,66 @@ function printMarkdown(leadingMarkdown, inString, trailingMarkdown)
 	
 	return outString;
 }
+
+//----------------------------------------------------------------------------------
+// parseMarkdown: 	Take a string disassemble it to rows, searches for markdown 
+//					symbols stored in markdownArray, if markdown symbols are found, 
+//					the replace them with html tags. Then Assemble the rows to a 
+//					string again, and return the string.
+//----------------------------------------------------------------------------------
+function parseMarkdown(inString)
+{
+	var markdownArray = initializeMarkdownArray();	//The markdownArray stores all valid markdown symbols
+	var returnString = " " ;						//The variable used to return the string
+	var foundFirstMarkdown = false;					//Flag that tells if a markdown symbols has already been found
+	var markdownRowIndex = -1;						//For now just tells if markdown symbols found, later it should tell on which row the markdown is found
+	
+	//Break the in string down row by row, place each row in an array
+	var rowArray = stringToRowMarkdown(inString);	
+	
+	//Iterate over each row
+	for(var i = 0; i < rowArray.length; i++){		
+		//Iterate over each symbol in the markdownArray
+		for(var j = 0; j < markdownArray.length; j++){
+			//indexOf() returns index of first symbol found in string, -1 if not found
+			markdownRowIndex = rowArray[i].indexOf(markdownArray[j]);	
+				
+			//If a string that exists in the markdownArray is found a markdown symbol has been found.
+			//Also check if it is the first time a markdown symbol is found, markdown at index j <= 5 has no trailing markdown symbols
+			if(markdownRowIndex != -1 && foundFirstMarkdown == false && j <= 5){
+				//Set that a markdown symbol is found
+				foundFirstMarkdown = true;
+				
+				//Replace the markdown symbols with html tags
+				rowArray[i] = printMarkdown(markdownArray[j], rowArray[i], false);
+				
+				//Check the same row for more markdown symbols of this kind, useful for bulletin lists 
+				j = j - 1;
+			}
+						
+			//If a string that exists in the markdownArray is found a markdown symbol has been found,
+			//Symbols stored at index j >=6, has trailing markdown symbols
+			if(markdownRowIndex != -1 && j >= 6){
+				//Set flag for first found markdown symbol
+				foundFirstMarkdown = true;
+				
+				//Replace the markdown symbols with html tags
+				rowArray[i] = printMarkdown(markdownArray[j], rowArray[i], true);
+				
+				//After the markdown has been replaced reset flag for first markdown
+				foundFirstMarkdown = false;
+				
+				//Check the same row for more markdown symbols of the same kind
+				j = j - 1;
+			}
+		}
+		//Reset flag
+		foundFirstMarkdown = false;
+	}
+	
+	//Assemble array of rows to one string
+	returnString = rowToStringMarkdown(rowArray);
+	
+	//return string with markdown symbols replaced with html tags
+	return returnString;
+}
