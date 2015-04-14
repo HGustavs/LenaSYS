@@ -1577,7 +1577,7 @@ function initializeMarkdownMap()
 //			  If the characters exists in the map characterToMarkdown, the function returns
 //			  the corresponding HTML tag.
 //----------------------------------------------------------------------------------
-function markdownCharToCssTag(markdownString)
+function markdownCharToHtmlTag(markdownString)
 {
 	var characterToMarkdown = initializeMarkdownMap();
 	var markdownArray = initializeMarkdownArray();
@@ -1593,40 +1593,40 @@ function markdownCharToCssTag(markdownString)
 }
 
 //----------------------------------------------------------------------------------
-// initializeTagMap: Fills a map with css tags, and matches them with a closing tag
+// initializeTagMap: Fills a map with html tags, and matches them with a closing tag
 //----------------------------------------------------------------------------------
-function initializeCssMap()
+function initializeHtmlMap()
 {
-	var cssTagMap = new Map();
+	var htmlTagMap = new Map();
 									// Markdown symbol
-	cssTagMap[0] = " ";						// [\] Somehow escape symbol
-	cssTagMap["<font style='font-style:italic'>"] = "</font>";	// [*] || [_] note "*" + " " == bulletin list
-	cssTagMap["<font style='font-weight:bold'>"] = "</font>";	// [**] || [__]
-	cssTagMap[3] = "***";						// [***] || [___] Should be italics AND bold
-	cssTagMap["<h1>"] = "</h1>";					// [#]	
-	cssTagMap["<h2>"] = "</h2>";					// [##]		
-	cssTagMap["<h3>"] = "</h3>";					// [###]	
-	cssTagMap["<h4>"] = "</h4>";					// [####]	
-	cssTagMap["<h5>"] = "</h5>";					// [#####]	
-	cssTagMap["<h6>"] = "</h6>"; 					// [######]	
-	cssTagMap[13] = "- ";						// [- ]	Should be bulletin list
-	cssTagMap[14] = "1. ";						// [1.] Should be numbered list
-	cssTagMap[15] = "~~~";						// [~~~] text section	
+	htmlTagMap[0] = " ";						// [\] Somehow escape symbol
+	htmlTagMap["<font style='font-style:italic'>"] = "</font>";	// [*] || [_] note "*" + " " == bulletin list
+	htmlTagMap["<font style='font-weight:bold'>"] = "</font>";	// [**] || [__]
+	htmlTagMap[3] = "***";						// [***] || [___] Should be italics AND bold
+	htmlTagMap["<h1>"] = "</h1>";					// [#]	
+	htmlTagMap["<h2>"] = "</h2>";					// [##]		
+	htmlTagMap["<h3>"] = "</h3>";					// [###]	
+	htmlTagMap["<h4>"] = "</h4>";					// [####]	
+	htmlTagMap["<h5>"] = "</h5>";					// [#####]	
+	htmlTagMap["<h6>"] = "</h6>"; 					// [######]	
+	htmlTagMap[13] = "- ";						// [- ]	Should be bulletin list
+	htmlTagMap[14] = "1. ";						// [1.] Should be numbered list
+	htmlTagMap[15] = "~~~";						// [~~~] text section	
 	
-	return cssTagMap;
+	return htmlTagMap;
 }
 
 //----------------------------------------------------------------------------------
-// matchCssTag: Receives a string and matches incoming css tags with the right closing tag.
+// matchHtmlTag: Receives a string and matches incoming HTML tags with the right closing tag.
 //----------------------------------------------------------------------------------
-function matchCssTag(inString)
+function matchHtmlTag(inString)
 {
 	var outString = " ";
-	var cssTagMap = initializeCssMap();
+	var htmlTagMap = initializeHtmlMap();
 		
-	for(var key in cssTagMap){
+	for(var key in htmlTagMap){
 		if(key === inString){
-			outString = cssTagMap[key];
+			outString = htmlTagMap[key];
 		}
 	}
 	return outString;
@@ -1687,8 +1687,8 @@ function rowToStringMarkdown(inArray)
 //----------------------------------------------------------------------------------
 function printMarkdown(leadingMarkdown, inString, trailingMarkdown)
 {
-	var startTag = markdownCharToCssTag(leadingMarkdown);	
-	var endTag = matchCssTag(startTag);
+	var startTag = markdownCharToHtmlTag(leadingMarkdown);	
+	var endTag = matchHtmlTag(startTag);
 	
 	if(trailingMarkdown == true){
 		var outString = inString.replace(leadingMarkdown, startTag); 
