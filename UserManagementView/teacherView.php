@@ -7,22 +7,25 @@ pdoConnect();
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
- 	
-    <title>LenaSYS User Editor</title>
 
-	<!-- My Bootstrap override -->
-	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link href="usermanagementview.css" rel="stylesheet">
-    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-	<script src="usermanagementview.js"></script>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>LenaSYS User Editor</title>
+    
+        <!-- My Bootstrap override -->
+        <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+        <link href="usermanagementview.css" rel="stylesheet">
+        <script src="../Shared/js/jquery-1.11.0.min.js"></script>
+        <script src="usermanagementview.js"></script>
+    
+    
+    </head>
 
+<body>
 
-</head>
-  <body>
   	<?php 
 		$noup="NONE";
 		$loginvar="COURSE"; 
@@ -34,66 +37,68 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 		
-        
-	<!-- content START -->
-	<div id="content">
+       
+	<div id="contentUMV">
 			
             
-	<!-- Section List -->
-  	<nav class="my-nav clearfix">
-      <div class="my-input-group my-pull-right">
-         <button type="button" class="my-pull-right " onclick="loadData(studyprogram.value,pnr.value);">Sök</span></button>            
-         <input type="text" class="form-control my-pull-right " placeholder="WEBUG12h/Pnr" name="studyprogram/Pnr" id="studyprogram/Pnr">
-         
-         <!-- Person ID search box used to be here-->
-      </div>
-	</nav>
-
-
-<div class="my-container-fluid clearfix">
-
-	<!-- Program year1 --> 
-	<div class="my-col-xs-4">
-		<div class="panel panel-default">
+        <!-- Dropdownmenu -->
+        <nav class="rightDropdownMenu my-pull-right">
+            <ol>
+                <li><a href="#" > Program </a> 
+                	<ul>
+                      <li><a href="#" > År 1 </a> </li>
+                      <li><a href="#" > År 2 </a> </li>
+                      <li><a href="#" > År 3 </a> </li>
+                  </ul>
+                </li>
+                
+                <li><a href="#" > Program </a> </li>
+            </ol>
+        </nav>     
         
-		  <div class="panel-heading">
-		    <h3 class="panel-title"> Year 1 <span class="my-pull-right small">Fall2013/Spring2014</span></h3>
-		  </div>
-          
-		  <div id="year1-body" class="panel-body">
-		  </div>
-          
-		</div>
-	</div>
-    
-    <!-- Program year2 --> 
-	<div class="my-col-xs-4">
-		<div class="panel panel-default">
         
-			<div class="panel-heading">
-		    	<h3 class="panel-title"> Year 2 <span class="my-pull-right small"> Fall2014/Spring2015</span> </h3>
-			</div>
-            
-			<div id="year2-body" class="panel-body">
-			</div>		
-		</div>
-	</div>
+        <!-- Searchfield -->
+        <div class="my-nav clearfix">
+          <div class="my-input-group my-pull-right">
+             <button type="button" class="my-pull-right " onclick="loadData(studyprogram.value,pnr.value);">Sök</span></button>            
+             <input type="text" class="form-control my-pull-right " placeholder="WEBUG12h/Pnr" name="studyprogram/Pnr" id="studyprogram/Pnr">
+          </div>
+        </div>
+        
     
-    <!-- Program year3 --> 
-	<div class="my-col-xs-4">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Year 3 <span class="my-pull-right small">Fall2015/Spring2016</span></h3>
-			</div>
-			<div id="year3-body" class="panel-body">
-			</div>		
-		</div>
-	</div>
-			
-	</div>
-	</div>
-	
-	<!-- content END -->
+        <!-- ProgramName -->
+        <div class="programName">
+        </div> 
+        
+        
+        <!-- Linegraph -->
+        <div class="lineGraph">
+        </div>
+        
+        
+        <!-- Large progressbar -->
+        <div class="largeProgressbarTV">
+        </div> 
+        
+        
+        <!-- View over the students how are going that program/course -->
+        <div class="studentCourseViewTV">
+        </div> 
+        
+        
+        <!-- Individual course progressbars -->
+        <div class="indivCourseProgressbarsTV">
+        </div> 
+        
+        
+        <!-- Change pages -->
+        <div class="changePages">
+        </div> 
 
-  </body>
+	</div>
+
+
+
+</body>
+
 </html>

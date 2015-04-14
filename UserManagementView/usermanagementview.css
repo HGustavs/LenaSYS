@@ -1,3 +1,37 @@
+#contentUMV {
+    margin:0px auto;
+    position:relative;
+    padding: 50px 12px 8px 8px;
+    background: #fff;
+    min-height: 200px;
+	width:80%;
+	border: 8px solid #CCC;
+}
+
+.rightDropdownMenu ol li{
+	width:100px;
+	height: 20px;
+	background-color:#927B9E;
+}
+
+.rightDropdownMenu ul li{
+	width:100px;
+	height:20px;
+	background-color:#927B9E;
+}
+
+.rightDropdownMenu a{
+	color:#fff;
+	text-decoration: none;
+	display:inline;
+	padding:5px;
+	
+}
+.rightDropdownMenu a:hover { 
+	color: #fff; 
+	background-color:#614875; 
+}
+
 .my-nav {
 	position: relative;
 	top: 0;
