@@ -1534,3 +1534,166 @@ function resizeBoxes(parent, templateId) {
 			}
 		}
 	}
+
+/********************************************************************************
+
+   Markdown, the functions in the next section contains the functions used by
+	the markdown parser.
+
+*********************************************************************************/
+
+//----------------------------------------------------------------------------------
+// initializeMarkdownMap: Fills a map with formatting tags, each element in the map
+//						  corresponds to a markdown symbol.
+//----------------------------------------------------------------------------------
+function initializeMarkdownMap()
+{
+	var characterToMarkdown = new Map();
+																		// Markdown symbol
+	characterToMarkdown[0] = " ";										// [\] somehow escape symbol	
+	characterToMarkdown["*"] = "<font style='font-style:italic'>";		// [*] note * + " " == bulletin list
+	characterToMarkdown["**"] = "<font style='font-weight:bold'>";		// [**]
+	characterToMarkdown["***"] = "<h1>";								// [***] Should be italics and bold
+	characterToMarkdown["_"] = "<font style='font-style:italic'>";		// [_]
+	characterToMarkdown["__"] = "<font style='font-weight:bold'>";		// [__]
+	characterToMarkdown["___"] = "___";									// [___] Should be italics and bold
+	characterToMarkdown["#"] = "<h1>"; 									// [#]	
+	characterToMarkdown["##"] = "<h2>"; 								// [##]	
+	characterToMarkdown["###"] = "<h3>"; 								// [###]	
+	characterToMarkdown["####"] = "<h4>"; 								// [####]	
+	characterToMarkdown["#####"] = "<h5>"; 								// [#####]	
+	characterToMarkdown["######"] = "<h6>"; 							// [######]
+	characterToMarkdown[13] = "- ";										// [- ]	Should be bulletin list
+	characterToMarkdown[14] = "1. ";									// [1.] Note: Should be numbered list
+	characterToMarkdown[15] = "~~~";									// [~~~] text section
+		
+	return characterToMarkdown;
+}
+
+//----------------------------------------------------------------------------------
+// markdownCharToHtmlTag: Receives a string of markdown characters. 
+//						  If the characters exists in the map characterToMarkdown, the function returns
+//						  the corresponding HTML tag.
+//----------------------------------------------------------------------------------
+function markdownCharToCssTag(markdownString)
+{
+	var characterToMarkdown = initializeMarkdownMap();
+	var markdownArray = initializeMarkdownArray();
+	var outString = "";
+	
+	for(var key in characterToMarkdown){
+		if(key === markdownString){
+			outString = characterToMarkdown[key];
+		}
+	}
+	
+	return outString;
+}
+
+//----------------------------------------------------------------------------------
+// initializeTagMap: Fills a map with css tags, and matches them with a closing tag
+//----------------------------------------------------------------------------------
+function initializeCssMap()
+{
+	var cssTagMap = new Map();
+																	// Markdown symbol
+	cssTagMap[0] = " "; // somehow escape symbol					// [\]
+	cssTagMap["<font style='font-style:italic'>"] = "</font>";		// [*] || [_] note "*" + " " == bulletin list
+	cssTagMap["<font style='font-weight:bold'>"] = "</font>";		// [**] || [__]
+	//cssTagMap[3] = "***"; //Should be italics and bold			// [***] || [___]
+	cssTagMap["<h1>"] = "</h1>";									// [#]	
+	cssTagMap["<h2>"] = "</h2>";									// [##]		
+	cssTagMap["<h3>"] = "</h3>";									// [###]	
+	cssTagMap["<h4>"] = "</h4>";									// [####]	
+	cssTagMap["<h5>"] = "</h5>";									// [#####]	
+	cssTagMap["<h6>"] = "</h6>"; 									// [######]	
+	//cssTagMap[13] = "- "; //Should be bulletin list					// [- ]	
+	//cssTagMap[14] = "1. "; //Should be numbered list				// [1.] note	
+	//cssTagMap[15] = "~~~"; //text section							// [~~~]	
+	
+	return cssTagMap;
+}
+
+//----------------------------------------------------------------------------------
+// matchCssTag: Receives a string and matches incoming css tags with the right closing tag.
+//----------------------------------------------------------------------------------
+function matchCssTag(inString)
+{
+	var outString = " ";
+	var cssTagMap = initializeCssMap();
+		
+	for(var key in cssTagMap){
+		if(key === inString){
+			outString = cssTagMap[key];
+		}
+	}
+	return outString;
+}
+
+//----------------------------------------------------------------------------------
+//initializeMarkdownMap: Fills an array with the valid markdown symbols
+//----------------------------------------------------------------------------------
+function initializeMarkdownArray()
+{
+	var markdownArray = ["######", "#####", "####", "###", "##", "#", "***", "**", "*", "___", "__", "_", "~~~"];
+	
+	return markdownArray;
+}
+
+//----------------------------------------------------------------------------------
+// rowCreatorMarkdown: Receives a string with text and returns an array of strings. 
+//					   Each element in the array contains a row, a row is the characters between line breaks.
+//					   DO NOT KNOW IF THIS REALLY WORK ON LINE BREAK NEED TO BE TEST WITH
+//					   A LONGER TEXT FILE.
+//----------------------------------------------------------------------------------
+function stringToRowMarkdown(inString)
+{
+	var outArray = [];
+	var storeAtIndexArray = 0;
+	var rowStart = 0;
+	
+	for(var i = 0; i < inString.length; i++){
+		currentChar = inString[i];
+		if(currentChar == '\n'){
+			outArray[storeAtIndexArray] = inString.slice(rowStart, i);
+			++storeAtIndexArray;
+			rowStart = i + 1;
+		}
+	}
+	outArray[storeAtIndexArray] = inString.slice(rowStart, inString.length);
+	return outArray;
+}
+
+//----------------------------------------------------------------------------------
+// rowToStringMarkdown: Receives an array containing strings and assembles them to a
+//						string, also insert a line break between each string added from the array.
+//----------------------------------------------------------------------------------
+function rowToStringMarkdown(inArray)
+{
+	var outString = " ";
+	linebreak = '<br>';
+	
+	for(var i = 0; i < inArray.length; i++){
+		outString = outString + inArray[i] + linebreak;		//Note: Adds line break after last line good or bad
+	}
+	return outString;
+}
+
+//----------------------------------------------------------------------------------
+// printMarkdown: Receives a string and matches incoming html tags with the right closing tag.			  
+//----------------------------------------------------------------------------------
+function printMarkdown(leadingMarkdown, inString, trailingMarkdown)
+{
+	var startTag = markdownCharToCssTag(leadingMarkdown);	
+	var endTag = matchCssTag(startTag);
+	
+	if(trailingMarkdown == true){
+		var outString = inString.replace(leadingMarkdown, startTag); 
+		outString = outString.replace(leadingMarkdown, endTag);	
+	}else{ 
+		var outString = inString.replace(leadingMarkdown, startTag); 
+		outString = outString + endTag;
+	}
+	
+	return outString;
+}
