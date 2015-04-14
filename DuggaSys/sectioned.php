@@ -40,7 +40,7 @@ pdoConnect();
 	<!-- content END -->
 
 	<?php 
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 
 	<!--- Edit Section Dialog START --->
@@ -53,7 +53,7 @@ pdoConnect();
 				
 	<table style="width:100%">
 		<tr>
-			<td colspan='2'><input type='hidden' id='lid' value='Toddler' />Name:<br/><input type='text' class='form-control textinput' id='sectionname' value='sectionname' style='width:448px;' /></td>
+			<td colspan='2'><input type='hidden' id='lid' value='Toddler' />Name: <div id='sectionnamewrapper'><br/><input type='text' class='form-control textinput' id='sectionname' value='sectionname' style='width:448px;' /></div></td>
 		</tr>
 		<tr>
 			<td colspan='2'><span id='linklabel'>Link:&nbsp;<select id='link' ></select></span></td>
