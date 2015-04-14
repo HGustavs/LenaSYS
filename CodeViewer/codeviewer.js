@@ -1713,6 +1713,7 @@ function parseMarkdown(inString)
 	var returnString = " " ;			//The variable used to return the string
 	var foundFirstMarkdown = false;			//Flag that tells if a markdown symbols has already been found
 	var markdownRowIndex = -1;			//For now just tells if markdown symbols found, later it should tell on which row the markdown is found
+	var endTagOrNot = 5; 				//If a markdown symbol is stored on a later index number than this in the markdownArray it means that they require an "end tag" (in markdown)
 	
 	//Break the in string down row by row, place each row in an array
 	var rowArray = stringToRowMarkdown(inString);	
@@ -1726,7 +1727,7 @@ function parseMarkdown(inString)
 				
 			//If a string that exists in the markdownArray is found a markdown symbol has been found.
 			//Also check if it is the first time a markdown symbol is found, markdown at index j <= 5 has no trailing markdown symbols
-			if(markdownRowIndex != -1 && foundFirstMarkdown == false && j <= 5){
+			if(markdownRowIndex != -1 && foundFirstMarkdown == false && j <= endTagOrNot){
 				//Set that a markdown symbol is found
 				foundFirstMarkdown = true;
 				
