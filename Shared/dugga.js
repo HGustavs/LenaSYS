@@ -267,7 +267,6 @@ function AJAXService(opt,apara,kind)
 	}
 }
 
-
 //Will handel enter key pressed when loginbox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
@@ -432,8 +431,6 @@ function redirectToUMV()
 }
 
 
-
-
 //Function to get a cookie from a cookie key(name)
 function getCookie(cname) {
 	var name = cname + "=";
@@ -445,5 +442,3 @@ function getCookie(cname) {
     	}
    return "";
 }
-
-
