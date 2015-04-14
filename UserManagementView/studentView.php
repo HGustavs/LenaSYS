@@ -28,12 +28,6 @@ pdoConnect();
 	
 	<?php
 		include '../Shared/loginbox.php';
-		include 'usermanagementviewservice.php';
-		
-		foreach($data as $arr ){
-			echo $arr['coursecode'] . " - " . $arr['coursename'] . ": " . $arr['hp'];
-			echo "</br>";
-		}
 		
 	?>
 		
