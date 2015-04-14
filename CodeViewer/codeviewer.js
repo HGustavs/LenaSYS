@@ -1544,7 +1544,7 @@ function resizeBoxes(parent, templateId) {
 
 //----------------------------------------------------------------------------------
 // initializeMarkdownMap: Fills a map with formatting tags, each element in the map
-//						  corresponds to a markdown symbol.
+//			  corresponds to a markdown symbol.
 //----------------------------------------------------------------------------------
 function initializeMarkdownMap()
 {
@@ -1572,8 +1572,8 @@ function initializeMarkdownMap()
 
 //----------------------------------------------------------------------------------
 // markdownCharToHtmlTag: Receives a string of markdown characters. 
-//						  If the characters exists in the map characterToMarkdown, the function returns
-//						  the corresponding HTML tag.
+//			  If the characters exists in the map characterToMarkdown, the function returns
+//			  the corresponding HTML tag.
 //----------------------------------------------------------------------------------
 function markdownCharToCssTag(markdownString)
 {
@@ -1644,7 +1644,7 @@ function initializeMarkdownArray()
 // rowCreatorMarkdown:	Receives a string with text and returns an array of strings. 
 //			Each element in the array contains a row, a row is the characters between line breaks.
 //			DO NOT KNOW IF THIS REALLY WORK ON LINE BREAK NEED TO BE TEST WITH
-//			 A LONGER TEXT FILE.
+//			A LONGER TEXT FILE.
 //----------------------------------------------------------------------------------
 function stringToRowMarkdown(inString)
 {
@@ -1700,10 +1700,10 @@ function printMarkdown(leadingMarkdown, inString, trailingMarkdown)
 }
 
 //----------------------------------------------------------------------------------
-// parseMarkdown:	Take a string disassemble it to rows, searches for markdown 
-//			symbols stored in markdownArray, if markdown symbols are found, 
-//			the replace them with html tags. Then Assemble the rows to a 
-//			string again, and return the string.
+// parseMarkdown: Take a string disassemble it to rows, searches for markdown 
+//		  symbols stored in markdownArray, if markdown symbols are found, 
+//		  the replace them with html tags. Then Assemble the rows to a 
+//		  string again, and return the string.
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {
