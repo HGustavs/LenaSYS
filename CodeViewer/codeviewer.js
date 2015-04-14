@@ -1552,22 +1552,22 @@ function initializeMarkdownMap()
 {
 	var characterToMarkdown = new Map();
 																		// Markdown symbol
-	characterToMarkdown[0] = " ";										// [\] somehow escape symbol	
-	characterToMarkdown["*"] = "<font style='font-style:italic'>";		// [*] note * + " " == bulletin list
-	characterToMarkdown["**"] = "<font style='font-weight:bold'>";		// [**]
-	characterToMarkdown["***"] = "<h1>";								// [***] Should be italics and bold
-	characterToMarkdown["_"] = "<font style='font-style:italic'>";		// [_]
-	characterToMarkdown["__"] = "<font style='font-weight:bold'>";		// [__]
-	characterToMarkdown["___"] = "___";									// [___] Should be italics and bold
-	characterToMarkdown["#"] = "<h1>"; 									// [#]	
-	characterToMarkdown["##"] = "<h2>"; 								// [##]	
-	characterToMarkdown["###"] = "<h3>"; 								// [###]	
-	characterToMarkdown["####"] = "<h4>"; 								// [####]	
-	characterToMarkdown["#####"] = "<h5>"; 								// [#####]	
-	characterToMarkdown["######"] = "<h6>"; 							// [######]
-	characterToMarkdown[13] = "- ";										// [- ]	Should be bulletin list
-	characterToMarkdown[14] = "1. ";									// [1.] Note: Should be numbered list
-	characterToMarkdown[15] = "~~~";									// [~~~] text section
+	characterToMarkdown[0] = " ";					// [\] somehow escape symbol	
+	characterToMarkdown["*"] = "<font style='font-style:italic'>";	// [*] note * + " " == bulletin list
+	characterToMarkdown["**"] = "<font style='font-weight:bold'>";	// [**]
+	characterToMarkdown["***"] = "<h1>";				// [***] Should be italics and bold
+	characterToMarkdown["_"] = "<font style='font-style:italic'>";	// [_]
+	characterToMarkdown["__"] = "<font style='font-weight:bold'>";	// [__]
+	characterToMarkdown["___"] = "___";				// [___] Should be italics and bold
+	characterToMarkdown["#"] = "<h1>"; 				// [#]	
+	characterToMarkdown["##"] = "<h2>"; 				// [##]	
+	characterToMarkdown["###"] = "<h3>"; 				// [###]	
+	characterToMarkdown["####"] = "<h4>"; 				// [####]	
+	characterToMarkdown["#####"] = "<h5>"; 				// [#####]	
+	characterToMarkdown["######"] = "<h6>"; 			// [######]
+	characterToMarkdown[13] = "- ";					// [- ]	Should be bulletin list
+	characterToMarkdown[14] = "1. ";				// [1.] Note: Should be numbered list
+	characterToMarkdown[15] = "~~~";				// [~~~] text section
 		
 	return characterToMarkdown;
 }
@@ -1598,20 +1598,20 @@ function markdownCharToCssTag(markdownString)
 function initializeCssMap()
 {
 	var cssTagMap = new Map();
-																	// Markdown symbol
-	cssTagMap[0] = " "; // somehow escape symbol					// [\]
-	cssTagMap["<font style='font-style:italic'>"] = "</font>";		// [*] || [_] note "*" + " " == bulletin list
-	cssTagMap["<font style='font-weight:bold'>"] = "</font>";		// [**] || [__]
-	//cssTagMap[3] = "***"; //Should be italics and bold			// [***] || [___]
-	cssTagMap["<h1>"] = "</h1>";									// [#]	
-	cssTagMap["<h2>"] = "</h2>";									// [##]		
-	cssTagMap["<h3>"] = "</h3>";									// [###]	
-	cssTagMap["<h4>"] = "</h4>";									// [####]	
-	cssTagMap["<h5>"] = "</h5>";									// [#####]	
-	cssTagMap["<h6>"] = "</h6>"; 									// [######]	
-	//cssTagMap[13] = "- "; //Should be bulletin list					// [- ]	
-	//cssTagMap[14] = "1. "; //Should be numbered list				// [1.] note	
-	//cssTagMap[15] = "~~~"; //text section							// [~~~]	
+									// Markdown symbol
+	cssTagMap[0] = " ";						// [\] Somehow escape symbol
+	cssTagMap["<font style='font-style:italic'>"] = "</font>";	// [*] || [_] note "*" + " " == bulletin list
+	cssTagMap["<font style='font-weight:bold'>"] = "</font>";	// [**] || [__]
+	cssTagMap[3] = "***";						// [***] || [___] Should be italics AND bold
+	cssTagMap["<h1>"] = "</h1>";					// [#]	
+	cssTagMap["<h2>"] = "</h2>";					// [##]		
+	cssTagMap["<h3>"] = "</h3>";					// [###]	
+	cssTagMap["<h4>"] = "</h4>";					// [####]	
+	cssTagMap["<h5>"] = "</h5>";					// [#####]	
+	cssTagMap["<h6>"] = "</h6>"; 					// [######]	
+	cssTagMap[13] = "- ";						// [- ]	Should be bulletin list
+	cssTagMap[14] = "1. ";						// [1.] Should be numbered list
+	cssTagMap[15] = "~~~";						// [~~~] text section	
 	
 	return cssTagMap;
 }
