@@ -38,10 +38,10 @@ pdoConnect();
     
         <!-- Dropdownmenu -->
         <nav class="rightDropdownMenu">
-            <ul>
-                <li><a href="#" >Nuvarande år</a></li>
-                <li><a href="#" >Tidigare år</a></li> 
-        	 </ul> 
+        	<ul>
+        		<li><a href="#" >Nuvarande år</a></li>
+        		<li><a href="#" >Tidigare år</a></li>
+        	</ul> 
         </nav>  
 			
         <!-- Section List -->
