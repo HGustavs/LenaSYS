@@ -37,8 +37,7 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 		
-        
-	<!-- content START -->
+       
 	<div id="content">
 			
             
@@ -68,49 +67,35 @@ pdoConnect();
         
     
         <!-- ProgramName -->
-        <div class="">
-          <div class="">
-          </div>
+        <div class="programName">
         </div> 
         
         
         <!-- Linegraph -->
-        <div class="">
-          <div class="">
-          </div>
+        <div class="lineGraph">
         </div>
         
         
         <!-- Large progressbar -->
-        <div class="">
-          <div class="">
-          </div>
+        <div class="largeProgressbarTV">
         </div> 
         
         
         <!-- View over the students how are going that program/course -->
-        <div class="">
-          <div class="">
-          </div>
+        <div class="studentCourseViewTV">
         </div> 
         
         
-        <!-- Smal course progressbars -->
-        <div class="">
-          <div class="">
-          </div>
+        <!-- Individual course progressbars -->
+        <div class="indivCourseProgressbarsTV">
         </div> 
         
         
         <!-- Change pages -->
-        <div class="">
-          <div class="">
-          </div>
+        <div class="changePages">
         </div> 
 
-        
-        
-	</div><!-- content END -->
+	</div>
 
 
 
