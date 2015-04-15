@@ -3,32 +3,25 @@ session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
-	session_start();
-	include_once "../../coursesyspw.php";
-	include_once "../Shared/sessions.php";
-	pdoConnect();
 ?>
 <!DOCTYPE html>
 <html>
-
   <head>
-    
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>LenaSYS User Editor</title>
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 	
     <title>WEBUG - Program outline</title>
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <!-- My Bootstrap override -->
-        <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-        <link href="usermanagementview.css" rel="stylesheet">
+	<!-- My Bootstrap override -->
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+    <link href="usermanagementview.css" rel="stylesheet">
 	<link href="usermanagementview_student.css" rel="stylesheet">
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-        <script src="usermanagementview.js"></script>
+	<script src="usermanagementview.js"></script>
 	<script type="text/javascript" src="../Shared/dugga.js"></script>
 
   </head>
@@ -43,23 +36,24 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 		
+	<!-- content START -->
   	<div id="contentUMV">
-
+    
     	<!-- Dropdownmenu -->
     	<nav class="rightDropdownMenu">
         	<ul>
             	<li>
-                	<a href="http://webblabb.iki.his.se:8080/umv/c13emmjo/week16/UserManagementView/teacherView.php">Nuvarande �r</a>
+                	<a href="http://webblabb.iki.his.se:8080/umv/c13emmjo/week16/UserManagementView/teacherView.php">Nuvarande år</a>
                 </li>
                 <li>
-                	<a href="#" >Tidigare �r</a>
+                	<a href="#" >Tidigare år</a>
                 </li> 
         	 </ul> 
         </nav>
        	<!-- End Dropdownmenu -->
         
 	<!-- Program year and name -->
-    <div id="name_bar"><h3>Program�r X f�r xxxxxxxxx</h3></div>
+    <div id="studentTitle"><h3 id="headerText">Programår X för xxxxxxxxx</h3></div>
 	<!-- End Program year and name -->
     
     <!-- Container for Progress Bars -->
@@ -68,70 +62,64 @@ pdoConnect();
         <!-- Main Progress Bar -->    
         <div class="progress" id="progress1">
             	
-            	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+            	<div class="progress-bar progress-bar-success" id="MainProgress" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:60%">
                 </div>
-    
+                       
 		</div>
 		<!-- End Main Progress Bar -->
     
  		<!-- 1st G1N Partial progress Bar -->
        	<div class="progress" id="progress2">
     		
-            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">G1N</div>
-
+            <div class="progress-bar progress-bar-info" id="ProgressbarG1N"
+            role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">G1N</div>
+      
   		</div>
-        	<ul>
-        		<li><a href="#" >Nuvarande år</a></li>
-        		<li><a href="#" >Tidigare år</a></li>
-        	</ul> 
-        </nav>  
-    		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:20%">G2F</div>
+  		<!-- End 1st G1N Partial progress Bar -->
+  
+  		<!-- 2st G2F Partial progress Bar -->
+        <div class="progress" id="progress4">
+            
+    		<div class="progress-bar progress-bar-info" id="ProgressbarG2F"role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:20%">G2F</div>
     
-        <div class="my-container-fluid clearfix"> <!--Whole div that hold the text inside, the green-div-->
+  		</div>
   		<!-- End 2st G2F Partial progress Bar -->
         
    		<!-- 3st G1F Partial progress Bar -->
         <div class="progress" id="progress3">
         
-    		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:90%">G1F</div>
-        
-            <div class="my-col-xs-4"> <!--Div for the Year 1-->
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Year 1 <span class="my-pull-right small">Fall2013/Spring2014</span></h3>
-                  </div>
-                  <div id="year1-body" class="panel-body">
-                  </div>
+    		<div class="progress-bar progress-bar-info" id="ProgressbarG1F"role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:90%">G1F</div>
+      
+  		</div>
+  		<!-- End 3st G1F Partial progress Bar -->
+	
+    </div>
 	<!-- End Container for Progress Bar -->    	
+   	
     <!-- Indicator for Big progress bar  -->
     <div  id="progress_m">
       	             
     	<div id="m">40hp</div>  
+             
     </div>
-            </div> <!--end of Year 1-->
+    <!-- End Indicator for Big progress bar  -->  
     </br>
    	
+    <!-- Big Wrapp for all courses -->
     <div class="my-container-fluid clearfix">
     	    
-        <!-- Year wrapp -->
+        <!-- Year1 wrapp -->
         <div class="my-col-xs-4">
             
                 <div class="panels">
                 
-                	<!-- Heading -->
+                	<!-- Heading year2 -->
                     <div class="panelheading">
                   
-                    	<h3 class="panel-title" id="panel-title">�r 1 </h3>
-
-            <div class="my-col-xs-4"><!--Div for the Year 2-->
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Year 2 <span class="my-pull-right small">Fall2014/Spring2015</span></h3>
-                    </div>
-                    <div id="year2-body" class="panel-body">
-                    </div>		
-                </div>
-            </div><!--end of Year 2-->
+                    	<h3 class="panel-title" id="panel-title">År 1 </h3>
+                    
+                  	</div>
+                  	<!-- End Heading year2-->
                     
                 
                 <div id="year1-body" class="panel-body">
@@ -142,862 +130,904 @@ pdoConnect();
                 <!-- Course1 Inner wrap -->
                 <div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course1 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course1 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course1 Bar -->
                             	<div class="progress" id="course_progress">
     							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
                                 </div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course1 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course1 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course1 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
+                  <div id="courseLink"><a href="#">Länk till kurssida</a></div>
                   <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
                 <!-- End Course1 Inner wrap -->
                 
                 </div>
-                <!-- End Course wrap -->
+                <!-- End Course1 wrap -->
                         
-                
+                <!-- Course2 wrap -->
                 <div id="course-2" class="courses_second">
                 
-                	<!-- Course1 Inner wrap -->
+                <!-- Course2 Inner wrap -->
                 <div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
-                       	<div id="courseName">Kursnamn
+               		<!-- Course2 Name -->  
+                    <div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
-                        	<div class="courseBar">
+                    	<!-- Course2 Bar wrapp -->
+                        <div class="courseBar">
                             	
-                                <!-- Course Bar -->
-                            	<div class="progress" id="course_progress">
+                        	<!-- Course2 Bar -->
+                            <div class="progress" id="course_progress">
     							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+                            	</div>
  								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
+                            </div>    
+                            <!-- End Course2 Bar -->
                             
-                        	</div>
-                        	<!-- End Course Bar wrapp -->
+                        </div>
+                        <!-- End Course2 Bar wrapp -->
                 
-               			</div>
-                		<!-- End Course Name -->         
+               		</div>
+                	<!-- End Course2 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->      	                          
+                <!-- End Course2 Inner wrap -->
+                      	                          
                 </div>
-                      
+                
+                <!-- Course3 wrap -->      
                 <div id="course-3" class="courses">
                 
-                	<!-- Course1 Inner wrap -->
-                <div class="courseInnerWrapp">
+                	<!-- Course3 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course3 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course3 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course3 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course3 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course3 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course3 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course3 Inner wrap -->
                       	                          
                 </div>
+                <!-- End Course3 wrap --> 
                       
+                <!-- Course4 wrap --> 
                 <div id="course-4" class="courses_second">
                 	
-                    <!-- Course1 Inner wrap -->
-                <div class="courseInnerWrapp">
+                    <!-- Course4 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course4 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course4 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course4 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
+                                </div>    
+                            	<!-- End Course4 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course4 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course4 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course4 Inner wrap -->
    
                 </div>
-                      
+                <!-- End Course4 wrap -->
+                       
+                <!-- Course5 wrap --> 
                 <div id="course-5" class="courses">
                 	
-                    <!-- Course1 Inner wrap -->
-                <div class="courseInnerWrapp">
+                    <!-- Course5 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course5 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course5 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course5 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
+                                </div>    
+                            	<!-- End Course5 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course5 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course5 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course5 Inner wrap -->
                       	                         
                 </div>
-                      
+                <!-- End Course5 wrap -->
+                
+                <!-- Course6 wrap -->      
                 <div id="course-6" class="courses_second">
                 
-                	<!-- Course1 Inner wrap -->
-                <div class="courseInnerWrapp">
+                	<!-- Course6 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course6 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course6 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course6 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course6 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course6 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course6 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course6 Inner wrap -->
                       	                         
                 </div>
+                <!-- End Course6 wrap -->
                                              
+                <!-- Course7 wrap -->
                 <div id="course-7" class="courses">
                 
-                	<!-- Course1 Inner wrap -->
-                <div class="courseInnerWrapp">
+                	<!-- Course7 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course7 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course7 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course7 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
+                                </div>    
+                            	<!-- End Course7 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course7 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course7 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course7 Inner wrap -->
                       	                         
                 </div>
-                      
+                <!-- End Course7 wrap -->
+                
+                <!-- Course8 wrap -->      
                 <div id="course-8" class="courses_second">
                 
-                	<!-- Course1 Inner wrap -->
-                <div class="courseInnerWrapp">
+                	<!-- Course8 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course8 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course8 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course8 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course8 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course8 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course8 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course8 Inner wrap -->
                       	                        
                 </div>                
+                <!-- End Course8 wrap -->  
                   
+			</div>
                   
-                  </div>
-                  
-                </div>
-                
         </div>
+                
+	</div>
+    <!-- End Year1 wrapp -->
     
-            <div class="my-col-xs-4">
+	<!-- Year2 wrapp -->
+    <div class="my-col-xs-4">
             
                 <div class="panels">
                 
-                  <div class="panelheading">
+                	<!-- Heading year2 -->
+                    <div class="panelheading">
+                  
+                    	<h3 class="panel-title" id="panel-title">År 2 </h3>
                     
-                        <h3 class="panel-title">�r 2 </h3>
-                  </div>
+                  	</div>
+                  	<!-- End Heading year2-->
                     
-                    <div id="year2-body" class="panel-body">
-                    
-                    	<div id="course-1" class="courses">
-    					
-                        	<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
+                
+                <div id="year1-body" class="panel-body">
+                  
+                <!-- Course9 wrap -->
+                <div id="course-9" class="courses">
+                
+                <!-- Course9 Inner wrap -->
+                <div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course9 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course9 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
-                            	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
-	
-
-            <div class="my-col-xs-4"><!--Div for the Year 3-->
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Year 3 <span class="my-pull-right small">Fall2015/Spring2016</span></h3>
-                    </div>
-                    <div id="year3-body" class="panel-body">
-                    </div>		
-                </div>
-            </div> <!--end of Year 3-->
-
-                        	</div>
-                        	<!-- End Course Bar wrapp -->
- 	
-    </div>
-                		<!-- End Course Name -->         
-                   
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
-                      
-                </div>
-                <!-- End Course1 Inner wrap -->
-                    	
-                </div>
-                      
-                      <div id="course-9" class="courses_second">
-                      
-                      		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
-                       	<div id="courseName">Kursnamn
-                        	
-                            <!-- Course Bar wrapp -->
-                        	<div class="courseBar">
-                            	
-                                <!-- Course Bar -->
+                                <!-- Course9 Bar -->
                             	<div class="progress" id="course_progress">
     							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
                                 </div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course9 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course9 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course9 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
+                  <div id="courseLink"><a href="#">Länk till kurssida</a></div>
                   <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course9 Inner wrap -->
+                
+                </div>
+                <!-- End Course9 wrap -->
+                       
+                <!-- Course10 wrap -->
+                <div id="course-10" class="courses_second">
+                
+                <!-- Course10 Inner wrap -->
+                <div class="courseInnerWrapp">
+                      
+               		<!-- Course10 Name -->  
+                    <div id="courseName">Kursnamn
+                        	
+                    	<!-- Course10 Bar wrapp -->
+                        <div class="courseBar">
+                            	
+                        	<!-- Course10 Bar -->
+                            <div class="progress" id="course_progress">
+    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                            	</div>
+ 								
+                            </div>    
+                            <!-- End Course10 Bar -->
+                            
+                        </div>
+                        <!-- End Course10 Bar wrapp -->
+                
+               		</div>
+                	<!-- End Course10 Name -->         
+                   
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                      
+                </div>
+                <!-- End Course10 Inner wrap -->
                       	                          
-                      </div>
+                </div>
+                
+                <!-- Course11 wrap -->      
+                <div id="course-11" class="courses">
+                
+                	<!-- Course11 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                      <div id="course-10" class="courses">
-                      
-                      		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
+                        <!-- Course11 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course11 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course11 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course11 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course11 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course11 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course11 Inner wrap -->
+                      	                          
+                </div>
+                <!-- End Course11 wrap --> 
+                      
+                <!-- Course12 wrap --> 
+                <div id="course-12" class="courses_second">
+                	
+                    <!-- Course12 Inner wrap -->
+                	<div class="courseInnerWrapp">
+                      
+                        <!-- Course12 Name -->  
+                       	<div id="courseName">Kursnamn
+                        	
+                            <!-- Course12 Bar wrapp -->
+                        	<div class="courseBar">
+                            	
+                                <!-- Course12 Bar -->
+                            	<div class="progress" id="course_progress">
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
+ 								
+                                </div>    
+                            	<!-- End Course12 Bar -->
+                            
+                        	</div>
+                        	<!-- End Course12 Bar wrapp -->
+                
+               			</div>
+                		<!-- End Course12 Name -->         
+                   
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                      
+                </div>
+                <!-- End Course12 Inner wrap -->
+   
+                </div>
+                <!-- End Course12 wrap -->
+                       
+                <!-- Course13 wrap --> 
+                <div id="course-13" class="courses">
+                	
+                    <!-- Course13 Inner wrap -->
+                	<div class="courseInnerWrapp">
+                      
+                        <!-- Course13 Name -->  
+                       	<div id="courseName">Kursnamn
+                        	
+                            <!-- Course13 Bar wrapp -->
+                        	<div class="courseBar">
+                            	
+                                <!-- Course13 Bar -->
+                            	<div class="progress" id="course_progress">
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
+ 								
+                                </div>    
+                            	<!-- End Course13 Bar -->
+                            
+                        	</div>
+                        	<!-- End Course13 Bar wrapp -->
+                
+               			</div>
+                		<!-- End Course13 Name -->         
+                   
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                      
+                </div>
+                <!-- End Course13 Inner wrap -->
                       	                         
-                      </div>
+                </div>
+                <!-- End Course13 wrap -->
+                
+                <!-- Course14 wrap -->      
+                <div id="course-14" class="courses_second">
+                
+                	<!-- Course14 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                      <div id="course-11" class="courses_second">
-                      
-                      		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
+                        <!-- Course14 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course14 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course14 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course14 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course14 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course14 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
-                        	                          
-                      </div>
-                      
-                      <div id="course-12" class="courses">
-                      	
-                        	<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
-                       	<div id="courseName">Kursnamn
-                        	
-                            <!-- Course Bar wrapp -->
-                        	<div class="courseBar">
-                            	
-                                <!-- Course Bar -->
-                            	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
- 								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
-                            
-                        	</div>
-                        	<!-- End Course Bar wrapp -->
-                
-               			</div>
-                		<!-- End Course Name -->         
-                   
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
-                      
+                <!-- End Course14 Inner wrap -->
+                      	                         
                 </div>
-                <!-- End Course1 Inner wrap -->
-                	                          
-                      </div>
-                      
-                      <div id="course-13" class="courses_second">
-                      
-                      		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
-                       	<div id="courseName">Kursnamn
-                        	
-                            <!-- Course Bar wrapp -->
-                        	<div class="courseBar">
-                            	
-                                <!-- Course Bar -->
-                            	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
- 								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
-                            
-                        	</div>
-                        	<!-- End Course Bar wrapp -->
-                
-               			</div>
-                		<!-- End Course Name -->         
-                   
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
-                      
-                </div>
-                <!-- End Course1 Inner wrap -->
-                	                         
-                </div>
+                <!-- End Course14 wrap -->
                                              
-                      <div id="course-14" class="courses">
+                <!-- Course15 wrap -->
+                <div id="course-15" class="courses">
+                
+                	<!-- Course15 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                      		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
+                        <!-- Course15 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course15 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course15 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
+ 								
+                                </div>    
+                            	<!-- End Course15 Bar -->
+                            
+                        	</div>
+                        	<!-- End Course15 Bar wrapp -->
+                
+               			</div>
+                		<!-- End Course15 Name -->         
+                   
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                      
+                </div>
+                <!-- End Course15 Inner wrap -->
+                      	                         
+                </div>
+                <!-- End Course15 wrap -->
+                
+                <!-- Course16 wrap -->      
+                <div id="course-16" class="courses_second">
+                
+                	<!-- Course16 Inner wrap -->
+                	<div class="courseInnerWrapp">
+                      
+                        <!-- Course16 Name -->  
+                       	<div id="courseName">Kursnamn
+                        	
+                            <!-- Course16 Bar wrapp -->
+                        	<div class="courseBar">
+                            	
+                                <!-- Course16 Bar -->
+                            	<div class="progress" id="course_progress">
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course16 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course16 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course16 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
-                      	                          
-                      </div>
-                      
-                      <div id="course-15" class="courses_second">
-                      
-                      		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
-                       	<div id="courseName">Kursnamn
-                        	
-                            <!-- Course Bar wrapp -->
-                        	<div class="courseBar">
-                            	
-                                <!-- Course Bar -->
-                            	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
- 								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
-                            
-                        	</div>
-                        	<!-- End Course Bar wrapp -->
-                
-               			</div>
-                		<!-- End Course Name -->         
-                   
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
-                      
-                </div>
-                <!-- End Course1 Inner wrap -->
+                <!-- End Course16 Inner wrap -->
                       	                        
-                      </div> 
-                        
-                    </div>		
-                </div>
-            </div>
+                </div>                
+                <!-- End Course16 wrap -->  
+                  
+			</div>
+                  
+        </div>
+                
+	</div>
+    <!-- End Year2 wrapp -->
     
-            <div class="my-col-xs-4">
+    <!-- Year3 wrapp -->
+        <div class="my-col-xs-4">
             
                 <div class="panels">
                 
-                  <div class="panelheading">
+                	<!-- Heading year3 -->
+                    <div class="panelheading">
+                  
+                    	<h3 class="panel-title" id="panel-title">År 1 </h3>
                     
-                        <h3 class="panel-title">�r 3 </h3>
-                  </div>
+                  	</div>
+                  	<!-- End Heading year3 -->
                     
-                    <div id="year3-body" class="panel-body">
-                    
-                      <div id="course-17" class="courses">
+                
+                <div id="year1-body" class="panel-body">
+                  
+                <!-- Course17 wrap -->
+                <div id="course-17" class="courses">
+                
+                <!-- Course17 Inner wrap -->
+                <div class="courseInnerWrapp">
                       
-                      		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
+                        <!-- Course17 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course17 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course17 Bar -->
                             	<div class="progress" id="course_progress">
     							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
                                 </div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course17 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course17 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course17 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
+                  <div id="courseLink"><a href="#">Länk till kurssida</a></div>
                   <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
-                          
-                      </div>
+                <!-- End Course17 Inner wrap -->
+                
+                </div>
+                <!-- End Course17 wrap -->
+                        
+                <!-- Course18 wrap -->
+                <div id="course-18" class="courses_second">
+                
+                <!-- Course18 Inner wrap -->
+                <div class="courseInnerWrapp">
                       
-                      <div id="course-18" class="courses_second">
-                      	                         
-                      		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
+               		<!-- Course18 Name -->  
+                    <div id="courseName">Kursnamn
+                        	
+                    	<!-- Course18 Bar wrapp -->
+                        <div class="courseBar">
+                            	
+                        	<!-- Course18 Bar -->
+                            <div class="progress" id="course_progress">
+    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                            	</div>
+ 								
+                            </div>    
+                            <!-- End Course18 Bar -->
+                            
+                        </div>
+                        <!-- End Course18 Bar wrapp -->
+                
+               		</div>
+                	<!-- End Course18 Name -->         
+                   
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
-                        <!-- Course Name -->  
+                </div>
+                <!-- End Course18 Inner wrap -->
+                      	                          
+                </div>
+                
+                <!-- Course19 wrap -->      
+                <div id="course-19" class="courses">
+                
+                	<!-- Course19 Inner wrap -->
+                	<div class="courseInnerWrapp">
+                      
+                        <!-- Course19 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course19 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course19 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course19 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course19 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course19 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
-                      
-                      </div>
-                      
-                      <div id="course-19" class="courses_second">
-                      	
-                        	<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
-                      
-                        <!-- Course Name -->  
-                       	<div id="courseName">Kursnamn
-                        	
-                            <!-- Course Bar wrapp -->
-                        	<div class="courseBar">
-                            	
-                                <!-- Course Bar -->
-                            	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
- 								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
-                            
-                        	</div>
-                        	<!-- End Course Bar wrapp -->
-                
-               			</div>
-                		<!-- End Course Name -->         
-                   
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
-                      
+                <!-- End Course19 Inner wrap -->
+                      	                          
                 </div>
-                <!-- End Course1 Inner wrap -->
-                	                          
-                </div>
-                
+                <!-- End Course19 wrap --> 
+                      
+                <!-- Course20 wrap --> 
                 <div id="course-20" class="courses_second">
-                
-                		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
+                	
+                    <!-- Course20 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course20 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course20 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course20 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
+                                </div>    
+                            	<!-- End Course20 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course20 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course20 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->
-                      	                         
-                </div>                       
-                
+                <!-- End Course20 Inner wrap -->
+   
+                </div>
+                <!-- End Course20 wrap -->
+                       
+                <!-- Course21 wrap --> 
                 <div id="course-21" class="courses">
-                
-                		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
+                	
+                    <!-- Course21 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course21 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course21 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course21 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
+                                </div>    
+                            	<!-- End Course21 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course21 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course21 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->      	                          
+                <!-- End Course21 Inner wrap -->
+                      	                         
                 </div>
+                <!-- End Course21 wrap -->
                 
+                <!-- Course22 wrap -->      
                 <div id="course-22" class="courses_second">
                 
-                		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
+                	<!-- Course22 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course22 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course22 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course22 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course22 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course22 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course22 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->      	                         
+                <!-- End Course22 Inner wrap -->
+                      	                         
                 </div>
+                <!-- End Course22 wrap -->
+                                             
+                <!-- Course23 wrap -->
+                <div id="course-23" class="courses">
                 
-                <div id="course-23" class="courses_second">
-                
-                		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
+                	<!-- Course23 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course23 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course23 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course23 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
-                                
-                            	</div>    
-                            	<!-- End Course Bar -->
+                                </div>    
+                            	<!-- End Course23 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course23 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course23 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->      	                         
+                <!-- End Course23 Inner wrap -->
+                      	                         
                 </div>
+                <!-- End Course23 wrap -->
                 
+                <!-- Course24 wrap -->      
                 <div id="course-24" class="courses_second">
                 
-                		<!-- Course1 Inner wrap -->
-                			<div class="courseInnerWrapp">
+                	<!-- Course24 Inner wrap -->
+                	<div class="courseInnerWrapp">
                       
-                        <!-- Course Name -->  
+                        <!-- Course24 Name -->  
                        	<div id="courseName">Kursnamn
                         	
-                            <!-- Course Bar wrapp -->
+                            <!-- Course24 Bar wrapp -->
                         	<div class="courseBar">
                             	
-                                <!-- Course Bar -->
+                                <!-- Course24 Bar -->
                             	<div class="progress" id="course_progress">
-    							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
-                                </div>
+    								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60% Complete (warning)
+                                	</div>
  								
                                 
                             	</div>    
-                            	<!-- End Course Bar -->
+                            	<!-- End Course24 Bar -->
                             
                         	</div>
-                        	<!-- End Course Bar wrapp -->
+                        	<!-- End Course24 Bar wrapp -->
                 
                			</div>
-                		<!-- End Course Name -->         
+                		<!-- End Course24 Name -->         
                    
-                  <div id="courseLink"><a href="#">L�nk till kurssida</a></div>
-                  <div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
+                  	<div id="courseLink"><a href="#">Länk till kurssida</a></div>
+                  	<div id="courseResponsible">Kursanvarig:<a href="mailto:">Marcus Brohede</a></div>
                       
                 </div>
-                <!-- End Course1 Inner wrap -->      	                         
-                </div>   
-                         
-                    </div>		
-                </div>
-            </div>
-			
-	  </div>
+                <!-- End Course24 Inner wrap -->
+                      	                        
+                </div>                
+                <!-- End Course24 wrap -->  
+                  
+			</div>
+                  
+        </div>
+                
+	</div>
+    <!-- End Year wrapp -->            
         
   </div>
-    
+  <!-- End Big Wrapp for all courses -->  
     
     
     
@@ -1005,6 +1035,7 @@ pdoConnect();
 	</div>		
   <!-- Section List -->
 
+	<!-- content END -->
 
   </body>
 </html>
