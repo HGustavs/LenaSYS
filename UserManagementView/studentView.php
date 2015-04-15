@@ -1,34 +1,37 @@
 <?php
-session_start();
-include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
-pdoConnect();
+	session_start();
+	include_once "../../coursesyspw.php";
+	include_once "../Shared/sessions.php";
+	pdoConnect();
 ?>
-<!DOCTYPE html>
-<html><head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
- 	<title>LenaSYS User Editor</title>
 
-	<!-- My Bootstrap override -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>LenaSYS User Editor</title>
+
+		<!-- My Bootstrap override -->
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link href="usermanagementview.css" rel="stylesheet">
-    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-	<script src="usermanagementview.js"></script>
+		<link href="usermanagementview.css" rel="stylesheet">
+		<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+		<script src="../Shared/dugga.js"></script>
+		<script src="usermanagementview.js"></script>
 
   </head>
+  
   <body>
   
 	<?php 
 		$noup="NONE";
-		$loginvar="COURSE"; 
+		$loginvar="UMVSTUDENT"; 
 		include '../Shared/navheader.php';
 	?>
 	
 	<?php
 		include '../Shared/loginbox.php';
-		
 	?>
 		
 	<!-- content START -->
@@ -64,9 +67,6 @@ pdoConnect();
 		<div id="Year3">
 
 		</div>
-	
-	
-  
 
 	
 	</div>
