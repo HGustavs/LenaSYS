@@ -4,7 +4,7 @@ use imperious;
 
 /* user contains the users of the system and related  information */
 CREATE TABLE user(
-		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
 		firstname		VARCHAR(50) NULL,
 		lastname		VARCHAR(50) NULL,
@@ -18,7 +18,7 @@ CREATE TABLE user(
 		superuser		TINYINT(1) NULL,
 		email			VARCHAR(256) DEFAULT NULL,
 		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class),
-		totHp			int(3),
+		totalHp			decimal(4,1),
 		PRIMARY KEY(uid)
 
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -48,15 +48,16 @@ CREATE TABLE course(
 		activeedversion 	VARCHAR(8),
 		capacity			int(3) not null,
 		hp					decimal(2,1) not null,
+		courseHttpPage		varchar(2000),
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DV12G","Webbprogrammering",NOW(),1,1,7.5);
 INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DV13G","Futhark",NOW(),1,0,7.5);
-INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("IT1405","USEREXPERIENCE",NOW(),1,0,7.5);
-INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("IT1431","IT-org",NOW(),1,0,7.5);
-INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DA4324","C++ grund prog",NOW(),1,0,7.5);
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("IT1405","USEREXPERIENCE",NOW(),1,0,7.5,"https://scio.his.se/portal");
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("IT1431","IT-org",NOW(),1,0,7.5,"https://scio.his.se/portal");
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("DA4324","C++ grund prog",NOW(),1,0,7.5,"https://scio.his.se/portal");
 /** 
  * This table represents a many-to-many relation between users and courses. That is,
  * a tuple in this table joins a user with a course.
@@ -64,7 +65,7 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values (
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
 		cid				INT UNSIGNED NOT NULL, 
-		result 			varchar(5),
+		result 			decimal(2,1) not null,
 		modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 		INTEGER,
 		access			VARCHAR(10) NOT NULL,
@@ -76,16 +77,16 @@ CREATE TABLE user_course(
 
 /* test data */
 /* a13asrd couirses */
-insert into user_course(uid,cid,result,access,period) values(4,1,5,'R',1);
-insert into user_course(uid,cid,result,access,period) values(4,3,5,'R',2);
-insert into user_course(uid,cid,result,access,period) values(4,4,5,'R',3);
-insert into user_course(uid,cid,result,access,period) values(4,5,5,'R',4);
+insert into user_course(uid,cid,result,access,period) values(4,1,0,'R',1);
+insert into user_course(uid,cid,result,access,period) values(4,3,0,'R',2);
+insert into user_course(uid,cid,result,access,period) values(4,4,0,'R',3);
+insert into user_course(uid,cid,result,access,period) values(4,5,0,'R',4);
 
 /* a13durp couirses */
-insert into user_course(uid,cid,result,access,period) values(5,1,7,'R',1);
-insert into user_course(uid,cid,result,access,period) values(5,3,7,'R',2);
-insert into user_course(uid,cid,result,access,period) values(5,4,7,'R',3);
-insert into user_course(uid,cid,result,access,period) values(5,5,7,'R',4);
+insert into user_course(uid,cid,result,access,period) values(5,1,0,'R',1);
+insert into user_course(uid,cid,result,access,period) values(5,3,0,'R',2);
+insert into user_course(uid,cid,result,access,period) values(5,4,0,'R',3);
+insert into user_course(uid,cid,result,access,period) values(5,5,0,'R',4);
 
 
 
@@ -157,35 +158,35 @@ CREATE TABLE variant(
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE userAnswer (
-  aid						INT(11) NOT NULL AUTO_INCREMENT,
- 	cid						INT UNSIGNED NOT NULL, 
-  quiz 					INT(11),
-  variant				INT,
-  moment				INT UNSIGNED NOT NULL,
-  grade 				TINYINT(2),
-  uid 					INT UNSIGNED NOT NULL,
-  useranswer		varchar(2048),
-  submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  marked				TIMESTAMP NULL,
-	vers					VARCHAR(8),
-	creator 			INTEGER,
-  CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
-  CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
-  CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
-  CONSTRAINT fk_useranswer_joins_quiz FOREIGN KEY (quiz) REFERENCES quiz(id),
-  CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
-  CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
+	aid				INT(11) NOT NULL AUTO_INCREMENT,
+	cid				INT UNSIGNED NOT NULL, 
+	quiz 			INT(11),
+	variant			INT,
+	moment			INT UNSIGNED NOT NULL,
+	grade 			TINYINT(2),
+	uid 			INT UNSIGNED NOT NULL,
+	useranswer		varchar(2048),
+	submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	marked			TIMESTAMP NULL,
+	vers			VARCHAR(8),
+	creator 		INTEGER,
+	CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
+	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
+	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
+	CONSTRAINT fk_useranswer_joins_quiz FOREIGN KEY (quiz) REFERENCES quiz(id),
+	CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
+	CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE vers(
-		cid					  INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		vers				  VARCHAR(8) NOT NULL,
-		versname		  VARCHAR(45) NOT NULL,
-		coursecode	  VARCHAR(45) NOT NULL,
-		coursename	  VARCHAR(45) NOT NULL,
-		coursenamealt	VARCHAR(45) NOT NULL,
-		CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),		
-		CONSTRAINT pk_vers PRIMARY KEY(cid,coursecode,vers)
+	cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	vers			VARCHAR(8) NOT NULL,
+	versname		VARCHAR(45) NOT NULL,
+	coursecode		VARCHAR(45) NOT NULL,
+	coursename	  	VARCHAR(45) NOT NULL,
+	coursenamealt	VARCHAR(45) NOT NULL,
+	CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),		
+	CONSTRAINT pk_vers PRIMARY KEY(cid,coursecode,vers)
 );
 
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8212","HT 2012");
@@ -418,39 +419,40 @@ INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES
 CREATE TABLE subparts(
 	partname 	varchar(50),
 	cid 		INT UNSIGNED NOT NULL,
-	parthp 		decimal(2,1) DEFAULT NULL,
-	difGrade 	varchar(10),
+	parthp 		decimal(3,1) DEFAULT NULL,
+	difgrade	varchar(10),
 	PRIMARY KEY (partname,cid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta2',1,1,'u345');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',2,2,'u345');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',1,2,'u345');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',2,3,'ug');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',3,5,'u345');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',3,2,'u345');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta2',1,1,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',2,2,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',1,2,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',2,3,'u-g');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',3,5,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',3,2,'u-3-4-5');
 
 /**
- * this table for many to mny between user and subparts. 
+ * this table is weak reslation to user and partcourse. 
  */ 
 CREATE TABLE partresult (
     cid 		INT UNSIGNED NOT NULL,
 	uid			INT UNSIGNED NOT NULL,
 	partname	varchar(50),
-	grade 		varchar(2) DEFAULT NULL,
-	PRIMARY KEY(partname, cid, uid),
+	grade 		varchar(1) DEFAULT NULL,
+	hp			decimal(3,1) references subparts (parthp),
+	PRIMARY KEY(partname, cid, uid,grade),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,1,'hemtenta2',4);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (2,1,'hemtenta',3);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,2,'hemtenta','u');
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (2,2,'projektuppgift','g');
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (3,3,'hemtenta',5);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (3,3,'projektuppgift',5);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta2',4);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,4,'hemtenta2',4,1);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (2,4,'hemtenta',3,2);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,5,'hemtenta','u',2);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (2,5,'projektuppgift','g',3);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (3,4,'hemtenta',5,2);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (3,4,'projektuppgift',5,5);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,3,'hemtenta2',4,2);
 INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta',3);
 
 /**
@@ -493,6 +495,7 @@ INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL
 
 */
 
+
 /**
 	This view eases the process of determining how many hp a student with a specific uid
 	in a specific course cid has finished. See the example below.
@@ -500,16 +503,19 @@ INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL
 	Example, get total hp finished by user with uid 2 in course with cid 1:
 		SQL code: select hp from studentresult where user = 2 and course_id = 1;
 */
-create view studentresult as
-	select user.uid as user, user_course.cid as course_id, sum(subparts.parthp) as hp from subparts  
-		inner join partresult on partresult.partname = subparts.partname
-		inner join user_course on user_course.cid = subparts.cid
-		inner join user on user.uid = partresult.uid and user.uid = user_course.uid and user_course.uid = partresult.uid
-			and partresult.grade != 'u'
-			group by user.uid;
+
+create view studentresultCourse  as
+	select partresult.uid as username, partresult.cid, partresult.hp  from partresult
+	inner join subparts on partresult.partname = subparts.partname 
+		and subparts.cid = partresult.cid
+		and subparts.parthp = partresult.hp
+	where partresult.grade != 'u';
+
+/*
+select username, cid, sum(hp) from studentresult where username = $varible group by cid;
+*/
 
 /* updatesd info in user table */
-
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";
 update user set ssn="810101-5567" where username="Grimling";
