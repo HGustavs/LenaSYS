@@ -9,6 +9,17 @@ AJAXService("get",{},"SECTION");
 
 var xelink;
 
+function displaymessage(){
+   $(".messagebox").css("display","block");
+}
+$(document).ready(function(){
+     $(".messagebox").hover(function(){
+         $("#testbutton").css("background-color", "red");
+     });
+	 $(".messagebox").mouseout(function(){
+         $("#testbutton").css("background-color", "#614875");
+     });
+});
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 {
 		
@@ -67,8 +78,13 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 		else str+="<option value='1'>Section</option>";
 		if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
 		else str+="<option value='2'>Code</option>";
-		if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
-		else str+="<option value='3'>Test</option>";
+		if(retdata['duggor'].length == 0){
+			str+="<option disabled>Test</option>"
+			displaymessage();
+		}else{
+			if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
+			else str+="<option value='3'>Test</option>";
+		}
 		if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
 		else str+="<option value='4'>Moment</option>";
 		if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
@@ -223,7 +239,7 @@ function returnedSection(data)
 					str+="<div style='float:right;'>";
 					str+="<input class='submit-button' type='button' value='New' onclick='newItem();'/>";
 					str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
-					str+="<input class='submit-button' type='button' value='Tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+					str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 					str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 					str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 					str+="</div>";
