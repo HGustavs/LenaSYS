@@ -4,7 +4,7 @@
 }
 
 
-#name_bar {
+#studentTitle {
 	width:70%;
 	height:20px;
 	margin: 40px auto;
@@ -23,7 +23,11 @@
 
 #container {
 	position: relative;
-	width:80%;
+	width:94%;
+	padding: 0 0 0 0;
+	margin: 0 0 0 35px;
+	
+	
 }
 
 #info {
@@ -60,7 +64,7 @@
 	text-align:center;
 	line-height:40px;
 	color:#FFF;
-	margin: 0 0 0 40%;
+	margin: 0 0 0 57%;
 	}
 
 #progress2{
@@ -145,7 +149,7 @@ display:inline;
 .my-container-fluid {
 	position: relative;
 	top: 10px;
-	left: 0;
+	left: 25px;
 	width: 100%;
 	
 }
@@ -184,7 +188,7 @@ footer p {
 }
 
 .courseInnerWrapp {
-	margin: 10px 10px 10px 10px;
+	margin: 0 10px 0 10px;
 
 }
 
@@ -203,15 +207,16 @@ footer p {
 }
 
 #courseName {
+	line-height:25px;
 	
 }
 
 #courseLink {
-	
+	line-height:25px;
 }
 
 #courseResponsible {
-	
+	line-height:25px;
 }	
 	
 .forkunskap {
