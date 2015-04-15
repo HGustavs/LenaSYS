@@ -137,7 +137,7 @@ session_start();
 	<!-- content END -->
 
 	<?php
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 	
 </body>
