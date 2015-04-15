@@ -30,10 +30,10 @@ pdoConnect();
 		include '../Shared/navheader.php';
 		setcookie("loginvar", $loginvar);
 	?>
-		
+	
 	<!-- content START -->
 	<div id="content">
-			
+		
 	<!--- Section List --->
 	<div id='Sectionlist'></div>
 
@@ -51,10 +51,10 @@ pdoConnect();
 	<h3>Edit Item</h3>
 	<div onclick='closeWindows();'>x</div>
 	</div>
-				
-	<table style="width:100%">
+			
+	<table style="width:100%;margin-bottom:20px;float:left">
 		<tr>
-			<td colspan='2'><input type='hidden' id='lid' value='Toddler' />Name:<br/><input type='text' class='form-control textinput' id='sectionname' value='sectionname' style='width:448px;' /></td>
+			<td colspan='2'><input type='hidden' id='lid' value='Toddler' />Name: <div id='sectionnamewrapper'><br/><input type='text' class='form-control textinput' id='sectionname' value='sectionname' style='width:448px;' /></div></td>
 		</tr>
 		<tr>
 			<td colspan='2'><span id='linklabel'>Link:&nbsp;<select id='link' ></select></span></td>
@@ -68,7 +68,15 @@ pdoConnect();
 			<td>GradeSystem:&nbsp;<select id='gradesys' ></select></td>
 		</tr>
 	</table>
-	<table style='width:460px;'>
+	<table>
+		<tr>
+			<div class='messagebox' style='display:none;color:red;font-weight:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
+		</tr>
+	</table>
+	
+	<!-- Error message, no duggas present-->
+	
+	<table style='width:460px;float:left'>
 		<tr>
 			<td align='left'><input class='submit-button' type='button' value='Delete' onclick='deleteItem();' /></td>
 			<td align='center'><input class='submit-button' type='button' value='Create' onclick='createItem();' id='createbutton' /></td>

@@ -633,6 +633,7 @@ input.submit-button {
 	margin-bottom:2px;
 	margin-left:4px;
 	font-size:14px;
+	transition:1s background-color;
 }
 
 input.submit-button:hover {
@@ -742,7 +743,6 @@ input.submit-button-red:hover {
 .duggasys-head__username {
 
 }
-
 
 /* End DuggaSys Header */
 /***********************/
