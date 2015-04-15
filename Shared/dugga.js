@@ -188,7 +188,7 @@ function AJAXService(opt,apara,kind)
 	var para="";
 	for (var key in apara) {
 		// Skips any undefined values
-		if (typeof(apara[key]) != 'undefined') {
+		if (typeof(apara[key]) != "undefined" && apara[key] != "") {
 			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
 			if (apara[key].constructor === Array) {
 				var array = [];
