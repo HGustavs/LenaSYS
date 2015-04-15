@@ -34,7 +34,7 @@ pdoConnect();
 	</div>
 	
 	<?php 
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 
 	<!--- Edit File Dialog START --->
