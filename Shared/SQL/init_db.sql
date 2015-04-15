@@ -619,3 +619,16 @@ UPDATE codeexample
 SET beforeid='12', afterid='13'
 WHERE exampleid='13';
 
+/**
+ * Clears the eventlog table on a weekly basis
+ */
+DELIMITER $$
+CREATE EVENT weekly_eventlog_delete
+ON SCHEDULE EVERY 1 WEEK 
+DO
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM eventlog;
+SET SQL_SAFE_UPDATES = 1;
+END $$
+DELIMITER ;
