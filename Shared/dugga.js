@@ -173,6 +173,9 @@ function htmlEntities(str) {
 				str=str.replace(/\å/g, '&aring;');
 				str=str.replace(/\Å/g, '&Aring;');
 				str=str.replace(/\"/g, '&quot;');
+				str=str.replace(/\//g, '&#47;');
+				str=str.replace(/\\/g, '&#92;');
+				str=str.replace(/\?/g, '&#63;');
 //				str=str.replace(/\{/g, '&#123;');
 //				str=str.replace(/\}/g, '&#125;');
 		}
