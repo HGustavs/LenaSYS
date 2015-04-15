@@ -321,6 +321,8 @@ function processLogin(kind) {
 					$("#login #username").val("");
 					$("#login #password").val("");		
 					
+					$("#loginbutton").off("click");
+					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
 					if(kind=="COURSE") AJAXService("GET",{},"COURSE")
@@ -349,27 +351,16 @@ function processLogin(kind) {
 		});
 }
 
-function processLogout(kind) {
+function processLogout() {
 	$.ajax({
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-			$("#userName").html("Guest");
-
-			$("#loginbutton").addClass("loggedout");
-			$("#loginbutton").removeClass("loggedin");
-
-			$("#loginbutton").click(function(){showLoginPopup();});
-
-			if(kind=="COURSE") AJAXService("GET",{},"COURSE")
-			else if(kind=="ACCESS") AJAXService("GET",{cid:querystring['cid']},"ACCESS")
-			else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
-			else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
-			else if(kind=="FILE") AJAXService("GET",{cid:querystring['cid']},"FILE")
-			else if(kind=="SECTION") AJAXService("get",{},"SECTION")
-			else if(kind=="LINK"||kind=="PDUGGA"||kind=="CODV"){
-					location.reload(); 		
-			}
+			var urlDivided = window.location.href.split("/");
+			urlDivided.pop();
+			urlDivided.pop();
+			var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
+			window.location.replace(newURL);			
 		},
 		error:function() {
 			console.log("error");
@@ -379,6 +370,7 @@ function processLogout(kind) {
 
 function showLoginPopup()
 {
+	console.log("Showing login popup");
 		$("#loginBox").css("display","block");
 		$("#overlay").css("display","block");
 		
@@ -391,6 +383,24 @@ function hideLoginPopup()
 		$("#overlay").css("display","none");
 		
 		window.removeEventListener("keypress", loginEventHandler, false);
+}
+
+//----------------------------------------------------------------------------------
+// setupLoginLogoutButton: Set button to login or logout functionality when navheader loads
+//----------------------------------------------------------------------------------
+
+function setupLoginLogoutButton(isLoggedIn){
+
+	if(isLoggedIn == "true"){
+		console.log("Setting button to logout");
+		$("#loginbutton").off("click");
+		$("#loginbutton").click(function(){processLogout();});	
+	}
+	else{
+		console.log("Setting button to show login prompt");
+		$("#loginbutton").off("click");
+		$("#loginbutton").click(function(){showLoginPopup();});		
+	}
 }
 
 function showReceiptPopup()

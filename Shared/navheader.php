@@ -1,5 +1,6 @@
 <!-- Navigation Header! -->
 <!-- New Version includes code for Code Viewer -->
+
 	<header>
 		<?php
 			echo "<table width='100%'><tr>";
@@ -70,13 +71,18 @@
 
 			if(checklogin()) {
 					echo "<td class='navName'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";		
-					echo "<td id='loginbutton' class='loggedin' onclick='processLogout(\"$loginvar\");'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
 			}else{
 					echo "<td class='navName'><label id='userName'>Guest</label></td>";		
-					echo "<td id='loginbutton' class='loggedout' onclick='showLoginPopup();'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
 			}
 
 
 		echo "</tr></table>";
 	?>
 </header>
+<script type="text/javascript">
+	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
+</script>
+
+
