@@ -844,7 +844,13 @@ a {
 	padding-top: 4px !important;
 	padding-left: 4px !important;
 }
-
+.descbox h1{
+	color: #000;
+	text-align: left;
+	font-size: 1.8em;
+    	font-weight: normal;
+	font-style: normal;
+}
 
 
 
