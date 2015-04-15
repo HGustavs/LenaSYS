@@ -9,8 +9,23 @@ require_once(dirname(__FILE__) . '/constants.php');
  * Check whether or not the user is logged in.
  * @return bool Returns true if the user is logged in and false if they aren't
  */
+ function addlogintry(){
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare('insert into eventlog (address,type,ts) values (:addr,:type,NOW())');
+	// TODO: Proxy detection?
+	$query->bindParam(':addr', $_SERVER['REMOTE_ADDR']);
+	$query->bindValue(':type', EVENT_LOGINERR);
+	$query->execute();
+}
+
 function checklogin()
 {
+
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
@@ -33,9 +48,10 @@ function failedLoginCount($addr)
 
 	if($pdo == null) {
 		pdoConnect();
+		
 	}
 
-	$query = $pdo->prepare('SELECT COUNT(1) FROM eventlog WHERE address=:addr AND type=:type AND ts > (CURRENT_TIMESTAMP() - interval 30 minute)');
+	$query = $pdo->prepare('SELECT COUNT(1) FROM eventlog WHERE address=:addr AND type=:type AND ts > (CURRENT_TIMESTAMP() - interval 1 minute)');
 	// TODO: Proxy detection?
 	$query->bindParam(':addr', $addr);
 	$query->bindValue(':type', EVENT_LOGINERR);

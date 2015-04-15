@@ -2,6 +2,7 @@
 session_start();
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
+
 include_once "../../coursesyspw.php";
 
 $opt=getOP('opt');
@@ -31,6 +32,7 @@ if($opt=="LOGIN"){
 			makeLogEntry($username,3,$pdo,"");			
 
 		}else{
+			addlogintry();
 			// As login has failed we log the attempt
 			makeLogEntry($username,4,$pdo,"");
 		}
