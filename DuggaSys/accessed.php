@@ -45,7 +45,7 @@ pdoConnect();
 	<!--- Edit Section Dialog END --->
 	
 	<?php 
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 	
 	<!--- Edit User Dialog START --->
