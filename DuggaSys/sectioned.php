@@ -40,7 +40,7 @@ pdoConnect();
 	<!-- content END -->
 
 	<?php 
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 
 	<!--- Edit Section Dialog START --->
