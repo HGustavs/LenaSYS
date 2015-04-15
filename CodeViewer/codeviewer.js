@@ -1555,7 +1555,7 @@ function initializeMarkdownMap()
 	characterToMarkdown[0] = " ";					// [\] somehow escape symbol	
 	characterToMarkdown["*"] = "<font style='font-style:italic'>";	// [*] note * + " " == bulletin list
 	characterToMarkdown["**"] = "<font style='font-weight:bold'>";	// [**]
-	characterToMarkdown["***"] = "<h1>";				// [***] Should be italics and bold
+	characterToMarkdown["***"] = "***";				// [***] Should be italics and bold
 	characterToMarkdown["_"] = "<font style='font-style:italic'>";	// [_]
 	characterToMarkdown["__"] = "<font style='font-weight:bold'>";	// [__]
 	characterToMarkdown["___"] = "___";				// [___] Should be italics and bold
