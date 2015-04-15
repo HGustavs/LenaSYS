@@ -46,10 +46,36 @@ function renderStudentView(data){
 	var htmlStr = "";
 	var titleData = data['titleData'];
 	
-	htmlStr += '<h1 id="headerText">' + titleData[0]['class']+ ' för ' + titleData[0]['fullname'] +'</h1>';
+	htmlStr += '<h2 id="headerText">' + titleData[0]['class']+ ' för ' + titleData[0]['fullname'] +'</h2>';
 	
 	var titleList = document.getElementById('studentTitle');
 	titleList.innerHTML = htmlStr;
+	
+	htmlStr = "";
+	var progress = data['progress'];
+	
+	htmlStr += '<div id="progressbar_finished">' + progress[0]['finishedHP'] + '/' + progress[0]['totalHP'] + '</div>';
+	var progressBar = document.getElementById('MainProgress');
+	progressBar.innerHTML = htmlStr;
+	
+	htmlStr = "";
+	var courses = data['courses'];
+	
+	for(var i = 0; i < courses.length; i++) {
+		htmlStr += '<div class="course">';
+		
+		htmlStr += '<p class="coursename">' + courses[i]['coursename'] + '</p>';
+		htmlStr += '<div class="outer_progress">';
+		htmlStr += '<div class="inner_progress">' + courses[i]['result'] + '/' + courses[i]['hp'] + '</div>';
+		htmlStr += '</div>';
+		htmlStr += '<div class ="coursePage"><a href="' + courses[i]['courseHttpPage'] + '">' + courses[i]['courseHttpPage'] + '</a></div>';
+		htmlStr += '<div class ="coordinator">' + courses[i]['coordinator'] + '</div>';
+		
+		htmlStr += '</div>';
+	}
+	
+	var courseList = document.getElementById('Year1');
+	courseList.innerHTML = htmlStr;
 	
 	if(data['debug'] != "NONE!") {
 		alert(data['debug']);
