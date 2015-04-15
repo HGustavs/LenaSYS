@@ -356,13 +356,11 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-
-		var urlDivided = window.location.href.split("/");
-		urlDivided.pop();
-		urlDivided.pop();
-		var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
-		window.location.replace(newURL);			
-
+			var urlDivided = window.location.href.split("/");
+			urlDivided.pop();
+			urlDivided.pop();
+			var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
+			window.location.replace(newURL);			
 		},
 		error:function() {
 			console.log("error");
