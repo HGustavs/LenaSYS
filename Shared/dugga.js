@@ -173,6 +173,9 @@ function htmlEntities(str) {
 				str=str.replace(/\å/g, '&aring;');
 				str=str.replace(/\Å/g, '&Aring;');
 				str=str.replace(/\"/g, '&quot;');
+				str=str.replace(/\//g, '&#47;');
+				str=str.replace(/\\/g, '&#92;');
+				str=str.replace(/\?/g, '&#63;');
 //				str=str.replace(/\{/g, '&#123;');
 //				str=str.replace(/\}/g, '&#125;');
 		}
@@ -183,13 +186,25 @@ function htmlEntities(str) {
 // AJAX Service: Generic AJAX Calling Function with Prepared Parameters
 //----------------------------------------------------------------------------------
 
-function AJAXService(opt,apara,kind)
+function AJAXService(opt,apara,kind)	
 {
 	var para="";
 	for (var key in apara) {
-			para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
-	}
-				
+		// Skips any undefined values
+		if (typeof(apara[key]) != "undefined" && apara[key] != "") {
+			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
+			if (apara[key].constructor === Array) {
+				var array = [];
+				for (var i = 0; i < apara[key].length; i++) {
+					array.push(encodeURIComponent(htmlEntities(apara[key][i])));
+				}
+				para+="&"+key+"="+array;
+			}
+			else {
+				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+			}
+		}
+	}		
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",

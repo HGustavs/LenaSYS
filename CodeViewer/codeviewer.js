@@ -199,6 +199,40 @@ function returned(data)
 }
 
 //----------------------------------------------------------------------------------
+// editImpWords: adds/removes important words to the #impword selectbox
+// and stores each added/removed word in the addedWords array and the removedWords array 
+//---------------------------------------------------------------------------------
+var addedWords = [];
+var removedWords = [];
+
+function editImpWords(editType) {
+	var word = $("#impword").val();
+
+	// word can't contain any whitespaces
+	if (editType == "+" && word != "" && /\s/.test(word) == false) {
+		var exists = false;
+
+		// Checks if the word already exists as an option in the selectbox
+		$('#impwords option').each(function() {
+    		if (this.value == word) {exists = true;}
+		});
+
+		if (exists == false) {
+			$("#impwords").append('<option>' + word + '</option>');
+			$("#impword").val("");
+			addedWords.push(word);
+		}
+	}
+
+	else if (editType == "-") {
+		word = $('option:selected', "#impwords").text();
+		$('option:selected', "#impwords").remove();
+    	removedWords.push(word);
+	}
+}
+
+
+//----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialog box for editing a code example
 //----------------------------------------------------------------------------------
 
@@ -269,7 +303,8 @@ function updateExample()
 			afterid=retdata['after'][0][0];
 	}
 
-	if(($("#before").val()!=beforeid&&beforeid!="UNK")||($("#after").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
+	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
+	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before").val()!=beforeid&&beforeid!="UNK")||($("#after").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
 			var courseid = querystring['courseid'];
 			var cvers = querystring['cvers'];
 			var exampleid = querystring['exampleid'];
@@ -285,8 +320,14 @@ function updateExample()
 					afterid : afterid,
 					playlink : playlink,
 					examplename : examplename,
-					sectionname : sectionname
+					sectionname : sectionname,
+					addedWords : addedWords,
+					removedWords : removedWords
 			}, "CODEVIEW");
+			
+			// Clears the important words and prevents multiple inserts..
+			addedWords = [];
+			removedWords = [];
 	}
 
 }
@@ -1194,6 +1235,7 @@ function rendercode(codestring,boxid,wordlistid)
 		
 	linenumbers();
 }
+
 
 // function to create a border with line numbers
 function createCodeborder(lineno,improws){

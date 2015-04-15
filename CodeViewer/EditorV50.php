@@ -210,7 +210,11 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 			<td colspan="2">Important Words:&nbsp;<select style="float:none;" id='impwords'></select></td>
 		</tr>		
 		<tr>
-			<td colspan="2"><input style="width:156px;" class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' /><input style="width:32px;" class='submit-button' type='button' value='+' onclick='updateUser();' /><input style="width:32px;" class='submit-button' type='button' value='-' onclick='updateUser();' /></td>
+			<td colspan="2">
+				<input style="width:156px;" class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' />
+				<input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' />
+				<input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' />
+			</td>
 		</tr>		
 	</table>
 
