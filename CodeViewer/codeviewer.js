@@ -1726,7 +1726,7 @@ function parseMarkdown(inString)
 			markdownRowIndex = rowArray[i].indexOf(markdownArray[j]);	
 				
 			//If a string that exists in the markdownArray is found a markdown symbol has been found.
-			//Also check if it is the first time a markdown symbol is found, markdown at index j <= 5 has no trailing markdown symbols
+			//Also check if it is the first time a markdown symbol is found, markdown at index j <= endTagOrNot has no trailing markdown symbols
 			if(markdownRowIndex != -1 && foundFirstMarkdown == false && j <= endTagOrNot){
 				//Set that a markdown symbol is found
 				foundFirstMarkdown = true;
@@ -1739,8 +1739,8 @@ function parseMarkdown(inString)
 			}
 						
 			//If a string that exists in the markdownArray is found a markdown symbol has been found,
-			//Symbols stored at index j >=6, has trailing markdown symbols
-			if(markdownRowIndex != -1 && j >= 6){
+			//Symbols stored at index j >= endTagOrNot+1, has trailing markdown symbols
+			if(markdownRowIndex != -1 && j >= endTagOrNot+1){
 				//Set flag for first found markdown symbol
 				foundFirstMarkdown = true;
 				
