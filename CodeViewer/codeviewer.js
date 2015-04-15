@@ -322,6 +322,10 @@ function updateExample()
 					addedWords : addedWords,
 					removedWords : removedWords
 			}, "CODEVIEW");
+			
+			// Clears the important words and prevents multiple inserts..
+			addedWords = [];
+			removedWords = [];
 	}
 
 }
