@@ -10,8 +10,8 @@
 	left: 0px;
 	width: -moz-calc(50.0%);
 	width: -webkit-calc(50.0%);
-	height: -webkit-calc(35%);
-	height: -moz-calc(35%);
+	height: -webkit-calc(100%);
+	height: -moz-calc(100%);
 }
 
 #box2wrapper {
@@ -25,8 +25,8 @@
 	right: 0px;
 	width: -moz-calc(50.0%);
 	width: -webkit-calc(50.0%);
-	height: -webkit-calc(35%);
-	height: -moz-calc(35%);
+	height: -webkit-calc(50%);
+	height: -moz-calc(50%);
 }
 
 #box3wrapper {
@@ -36,11 +36,8 @@
    	border-color: #5A5757;
    	right: 0px;
    	bottom: 0px;
-   	left: 0px;
-   	width: -moz-calc(100.0%);
-   	width: -webkit-calc(100.0%);
-   	height: -webkit-calc(65%);
-   	height: -moz-calc(65%);
+   	width: -moz-calc(50%);
+   	width: -webkit-calc(50%);
+   	height: -webkit-calc(50%);
+   	height: -moz-calc(50%);
 }
-
-
