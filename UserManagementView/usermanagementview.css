@@ -12,7 +12,6 @@
 	border-top:none;
 }
 
-
 /* Dropdownmenu at the top of the page to the right */
 .rightDropdownMenu {
 	float:right;
@@ -32,7 +31,7 @@
 		display:inline;
 	}
 	.rightDropdownMenu ul li{
-		width:110px;
+		width:120px;
 		height: 25px;
 		padding:8px 0 5px;
 		background-color:#927B9E;
@@ -73,14 +72,12 @@
 		font-size:0.82em;
 	}
 	.rightDropdownMenu ul ul li { 
-		width:110px;
+		width:120px;
 		height: 18px;
 		padding:8px 0 5px;
 		border-top:1px solid #857090;
 		box-shadow: -1px 5px 5px #A9A;
 	}
-
-
 
 /* Searchfield */
 .searchfieldTV{
