@@ -117,11 +117,13 @@ function createHTMLForCourse(data)
 	var courseHtmlStr = "";
 	
 	courseHtmlStr += '<div class="course">';
+	courseHtmlStr += '<div class="course_wrapper">';
 	
 	courseHtmlStr += '<div class="course_name">' + coursename + '</div>';
 	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + result + '/' + hp + '</div></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '</div>';
+	courseHtmlStr += '</div>';
 	
 	courseHtmlStr += '</div>';
 	
