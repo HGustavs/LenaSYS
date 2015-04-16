@@ -64,7 +64,7 @@ pdoConnect();
 			<td align='right'>Visibility:&nbsp;<select style='align:right;' id='visib'></select></td>
 		</tr>
 		<tr>
-			<td>Moment:&nbsp;<select id='moment' ></select></td>
+			<td>Moment:&nbsp;<select id='moment' disabled></select></td>
 			<td>GradeSystem:&nbsp;<select id='gradesys' ></select></td>
 		</tr>
 	</table>

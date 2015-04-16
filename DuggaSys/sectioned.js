@@ -63,9 +63,9 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 		}
 		$("#moment").html(str);
 
-		// Set Section name
-		$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='"+entryname+"' style='width:448px;'>")
-
+		// Set Name		
+		//$("#sectionname").val(entryname);
+		$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='"+entryname+"' style='width:448px;'/>");
 
 		// Set Lid	
 		$("#lid").val(lid);
@@ -79,7 +79,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 		if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
 		else str+="<option value='2'>Code</option>";
 		if(retdata['duggor'].length == 0){
-			str+="<option disabled>Test</option>"
+			str+="<option disabled>Test</option>";
 			displaymessage();
 		}else{
 			if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
@@ -143,7 +143,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 function changedType()
 {
 		kind=$("#type").val();		
-
+	
 		// Graying of Link
 		if((kind==5)||(kind==3)){
 				$("#linklabel").css("opacity","1.0");				
@@ -161,14 +161,15 @@ function changedType()
 						}
 						$("#link").html(iistr);					
 				}else if(kind==3){
-						for(var ii=0;ii<retdata['duggor'].length;ii++){
+							for(var ii=0;ii<retdata['duggor'].length;ii++){
 								var iitem=retdata['duggor'][ii];
 								if(xelink==iitem['id']){
 										iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
 								}else{
 										iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
 								}
-						}
+							}
+						
 				}
 				$("#link").html(iistr);					
 		}else{
@@ -225,7 +226,8 @@ function closeSelect()
 //----------------------------------------
 // Renderer
 //----------------------------------------
-
+var momentexists=0;
+var resave = false;
 function returnedSection(data)
 {
 		retdata=data;
@@ -249,7 +251,9 @@ function returnedSection(data)
 				str+="<div class='course'>"+data.coursename+" "+data.coursevers+"</div>";
 		
 				str+="<div id='Sectionlistc' >";
-		  
+			
+				var groupitems = 0;
+				
 				// For now we only have two kinds of sections
 				if (data['entries'].length > 0) {
 					var kk=0;
@@ -261,41 +265,44 @@ function returnedSection(data)
 										
 								if(parseInt(item['kind']) === 0 ){
 										// Styling for header row
-										str+="<span class='header item' id='I"+item['lid']+"' ";
+										str+="<span class='header item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 										kk=0;
 								} else if(parseInt(item['kind']) === 1 ){
 										//Styling for section row
-										str+="<span class='section item' id='I"+item['lid']+"' ";
+										str+="<span class='section item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 										kk=0;
 								} else if(parseInt(item['kind']) === 2 ){
 										// Styling for example row
 										str+="<span";
 										if(kk%2==0){
-												str+=" class='example item hi' id='I"+item['lid']+"' ";
+												str+=" class='example item hi' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 										}else{
-												str+=" class='example item lo' id='I"+item['lid']+"' ";
+												str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 										}
 										kk++;
 								} else if(parseInt(item['kind']) === 3 ){
 										// Styling for quiz row
 										str+="<span";
 										if(kk%2==0){
-												str+=" class='example item hi' id='I"+item['lid']+"' ";
+												str+=" class='example item hi' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 										}else{
-												str+=" class='example item lo' id='I"+item['lid']+"' ";
+												str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 										}
 										kk++;
 								} else if(parseInt(item['kind']) === 4 ){
+										//new moment bool equals true
+										momentexists = item['lid'];
+										
 										// Styling for moment row
-										str+="<span class='moment item' id='I"+item['lid']+"' ";
+										str+="<span class='moment item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 										kk=0;
 								} else if(parseInt(item['kind']) === 5 ){
 										// Styling for link row
 										str+="<span";
 										if(kk%2==0){
-												str+=" class='example item hi' id='I"+item['lid']+"' ";
+												str+=" class='example item hi' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 										}else{
-												str+=" class='example item lo' id='I"+item['lid']+"' ";
+												str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 										}
 										kk++;
 								}
@@ -304,13 +311,16 @@ function returnedSection(data)
 										if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:8px; margin-left:4px;' "
 										else str+="style='box-shadow: 0px 3px 2px #aaa inset;' ";				
 								}else{
-										if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; border-radius:8px; margin-left:4px;' ";
+										if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5;border-radius:8px; margin-left:4px;' ";
 								}
 					
 								str+=">";
 								
-								if (parseInt(item['kind']) < 2||parseInt(item['kind']) == 4) {
+								if (parseInt(item['kind']) < 2) {
 									str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
+								}
+								else if (parseInt(item['kind']) == 4) {
+									str+="<span style='padding-left:5px;border-bottom:3px solid white'>Course Segment "+item['entryname']+"</span>";
 								} else if (parseInt(item['kind']) == 2) {
 									str+="<span><a style='margin-left:15px;' href="+item['link']+">"+item['entryname']+"</a></span>";
 								} else if (parseInt(item['kind']) == 3 ) {
@@ -320,7 +330,7 @@ function returnedSection(data)
 									str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showDoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 								}	
 		
-								if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+item['moment']+"\",\""+item['gradesys']+"\");' />";
+								if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\");' />";
 		
 								if(parseInt(item['kind']) === 3||parseInt(item['kind']) === 4){
 										var grady=-1;
@@ -349,7 +359,7 @@ function returnedSection(data)
 													
 								str+="</span>";
 						}
-					}	
+					}								
 				} else {
 						// No items were returned! 
 						
@@ -361,25 +371,49 @@ function returnedSection(data)
 				str+="</div>";
 		
 				var slist=document.getElementById('Sectionlist');
-				slist.innerHTML=str;
-		
+				slist.innerHTML=str;	
+				if(resave == true){
+				str="";
+					$("#Sectionlist").find(".item").each(function(i) {
+										if(i>0) str+=",";
+										ido=$(this).attr('id');
+										phld=$(this).attr('placeholder')
+										str+=i+"XX"+ido.substr(1)+"XX"+phld;
+									
+					});
+							
+				AJAXService("REORDER",{order:str},"SECTION");	
+				resave = false;
+				}
 				if(data['writeaccess']) {				
 					// Enable sorting always if we are superuser as we refresh list on update 
+					
 					$("#Sectionlistc").sortable({
 							helper: 'clone',
-			      	update:  function (event, ui) {
-			            str="";
-			            $("#Sectionlist").find(".item").each(function(i) { 
-			  						if(i>0) str+=",";
-			  						ido=$(this).attr('id');
-			  						str+=i+"XX"+ido.substr(1);
-									});
+						
+							update:  function (event, ui) {
+						
+								str="";
+							
+							
+								$("#Sectionlist").find(".item").each(function(i) {
+										if(i>0) str+=",";
+										ido=$(this).attr('id');
+										phld=$(this).attr('placeholder')
+										str+=i+"XX"+ido.substr(1)+"XX"+phld;
 									
-									AJAXService("REORDER",{order:str},"SECTION");
-			        		
-			        		return false;
-			        }										
+								});
+							
+								AJAXService("REORDER",{order:str},"SECTION");	
+								resave = true;
+						
+							
+							return false;
+						}	
+							
 					});
+					
+				
 			
 				}
 
