@@ -65,9 +65,25 @@ if(checklogin()){
 					$orderarr=explode(",",$order);
 					foreach ($orderarr as $key => $value){
 							$armin=explode("XX",$value);
-							$query = $pdo->prepare("UPDATE listentries set pos=:pos WHERE lid=:lid;");
+							$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
 							$query->bindParam(':lid', $armin[1]);
 							$query->bindParam(':pos', $armin[0]);
+							$query->bindParam(':moment', $armin[2]);
+							//$query->bindParam(':moment', $moment);
+							if(!$query->execute()) {
+								$error=$query->errorInfo();
+								$debug="Error updating entries".$error[2];
+							}
+					}
+			}else if(strcmp($opt,"ORDERUPDATE")===0){
+					$orderarr=explode(",",$order);
+					foreach ($orderarr as $key => $value){
+							$armin=explode("XX",$value);
+							$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
+							$query->bindParam(':lid', $armin[1]);
+							$query->bindParam(':pos', $armin[0]);
+							$query->bindParam(':moment', $armin[2]);
+							//$query->bindParam(':moment', $moment);
 							if(!$query->execute()) {
 								$error=$query->errorInfo();
 								$debug="Error updating entries".$error[2];
@@ -90,7 +106,7 @@ if(checklogin()){
 						$error=$query->errorInfo();
 						$debug="Error updating entries".$error[2];
 					}
-			}	
+			}
 	}
 
 }
