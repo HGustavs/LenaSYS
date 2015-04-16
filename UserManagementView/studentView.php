@@ -15,6 +15,7 @@
 
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 		<link href="usermanagementview.css" rel="stylesheet">
+        <link href="usermanagementview_student.css" rel="stylesheet">
 		
 		<script src="../Shared/js/jquery-1.11.0.min.js"></script>
         <script type="text/javascript" src="usermanagementviewjquery.js"></script>
