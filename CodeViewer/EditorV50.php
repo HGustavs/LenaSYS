@@ -203,34 +203,24 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 			<td>Before: <select  id='before'></select></td>
 			<td>After: <select  id='after'></select></td>
 		</tr>
-		
-		<td>
-		Play Link: 
-		</td>
-		<td>
-		Important Words:
-		</td>
-			<tr><td colspan="2"><input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>	
-			
-			<td colspan="2">
-				<input class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' />
-				<input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' />
+			<td>
+			Play Link: 
 			</td>
-			
-		</tr>
-
+			<td>
+			Important Words:
+			</td>
 		<tr>
-		
-			<tr><td colspan="2">&nbsp;<select style="float:none;" id='impwords'>
-			
-			<input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' />
-		</select></td></tr>
-			
+			<td colspan="2"><input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>	
+			<td colspan="2"><input class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' />
+			<input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' />
+			</td>		
+		</tr>
+		<tr>
+			<tr><td colspan="2">&nbsp;<select style="float:none;" id='impwords'><input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td></tr>
 		</tr>		
-				
 	</table>
-
-	<table width="100%"><tr>
+	<table width="100%">
+		<tr>
 			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
 		</tr>
 	</table>
