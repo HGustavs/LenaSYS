@@ -1599,16 +1599,16 @@ function initializeMarkdownMap()
 	characterToMarkdown[0] = " ";					// [\] somehow escape symbol	
 	characterToMarkdown["*"] = "<font style='font-style:italic'>";	// [*] note * + " " == bulletin list
 	characterToMarkdown["**"] = "<font style='font-weight:bold'>";	// [**]
-	characterToMarkdown["***"] = "<h1>";				// [***] Should be italics and bold
+	characterToMarkdown["***"] = "";				// [***] Should be italics and bold
 	characterToMarkdown["_"] = "<font style='font-style:italic'>";	// [_]
 	characterToMarkdown["__"] = "<font style='font-weight:bold'>";	// [__]
 	characterToMarkdown["___"] = "___";				// [___] Should be italics and bold
-	characterToMarkdown["#"] = "<h1>"; 				// [#]	
-	characterToMarkdown["##"] = "<h2>"; 				// [##]	
-	characterToMarkdown["###"] = "<h3>"; 				// [###]	
-	characterToMarkdown["####"] = "<h4>"; 				// [####]	
-	characterToMarkdown["#####"] = "<h5>"; 				// [#####]	
-	characterToMarkdown["######"] = "<h6>"; 			// [######]
+	characterToMarkdown["# "] = "<h1>"; 				// [# ]	
+	characterToMarkdown["## "] = "<h2>"; 				// [## ]	
+	characterToMarkdown["### "] = "<h3>"; 				// [### ]	
+	characterToMarkdown["#### "] = "<h4>"; 				// [#### ]	
+	characterToMarkdown["##### "] = "<h5>"; 			// [##### ]	
+	characterToMarkdown["###### "] = "<h6>"; 			// [###### ]
 	characterToMarkdown[13] = "- ";					// [- ]	Should be bulletin list
 	characterToMarkdown[14] = "1. ";				// [1.] Note: Should be numbered list
 	characterToMarkdown[15] = "~~~";				// [~~~] text section
@@ -1647,12 +1647,12 @@ function initializeHtmlMap()
 	htmlTagMap["<font style='font-style:italic'>"] = "</font>";	// [*] || [_] note "*" + " " == bulletin list
 	htmlTagMap["<font style='font-weight:bold'>"] = "</font>";	// [**] || [__]
 	htmlTagMap[3] = "***";						// [***] || [___] Should be italics AND bold
-	htmlTagMap["<h1>"] = "</h1>";					// [#]	
-	htmlTagMap["<h2>"] = "</h2>";					// [##]		
-	htmlTagMap["<h3>"] = "</h3>";					// [###]	
-	htmlTagMap["<h4>"] = "</h4>";					// [####]	
-	htmlTagMap["<h5>"] = "</h5>";					// [#####]	
-	htmlTagMap["<h6>"] = "</h6>"; 					// [######]	
+	htmlTagMap["<h1>"] = "</h1>";					// [# ]	
+	htmlTagMap["<h2>"] = "</h2>";					// [## ]		
+	htmlTagMap["<h3>"] = "</h3>";					// [### ]	
+	htmlTagMap["<h4>"] = "</h4>";					// [#### ]	
+	htmlTagMap["<h5>"] = "</h5>";					// [##### ]	
+	htmlTagMap["<h6>"] = "</h6>"; 					// [###### ]	
 	htmlTagMap[13] = "- ";						// [- ]	Should be bulletin list
 	htmlTagMap[14] = "1. ";						// [1.] Should be numbered list
 	htmlTagMap[15] = "~~~";						// [~~~] text section	
@@ -1681,7 +1681,7 @@ function matchHtmlTag(inString)
 //----------------------------------------------------------------------------------
 function initializeMarkdownArray()
 {
-	var markdownArray = ["######", "#####", "####", "###", "##", "#", "***", "**", "*", "___", "__", "_", "~~~"];
+	var markdownArray = ["###### ", "##### ", "#### ", "### ", "## ", "# ", "***", "**", "*", "___", "__", "_", "~~~"];
 	
 	return markdownArray;
 }
@@ -1777,6 +1777,9 @@ function parseMarkdown(inString)
 				
 				//Replace the markdown symbols with html tags
 				rowArray[i] = printMarkdown(markdownArray[j], rowArray[i], false);
+				
+				//After the markdown has been replaced reset flag for first markdown
+				foundFirstMarkdown = false;
 				
 				//Check the same row for more markdown symbols of this kind, useful for bulletin lists 
 				j = j - 1;
