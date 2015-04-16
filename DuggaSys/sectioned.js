@@ -12,6 +12,14 @@ var xelink;
 function displaymessage(){
    $(".messagebox").css("display","block");
 }
+$(document).ready(function(){
+     $(".messagebox").hover(function(){
+         $("#testbutton").css("background-color", "red");
+     });
+	 $(".messagebox").mouseout(function(){
+         $("#testbutton").css("background-color", "#614875");
+     });
+});
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 {
 		
@@ -218,17 +226,7 @@ function closeSelect()
 //----------------------------------------
 // Renderer
 //----------------------------------------
-$(document).ready(function(){
-     $(".messagebox").hover(function(){
-         $("#testbutton").css("background-color", "red");
-     });
-	 $(".messagebox").mouseout(function(){
-         $("#testbutton").css("background-color", "#614875");
-     });
-	 
-	
-});
-var momentexists=34;
+var momentexists=0;
 var resave = false;
 function returnedSection(data)
 {
