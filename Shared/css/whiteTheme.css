@@ -265,8 +265,7 @@
     right: 0px;
     bottom: 0px;
     left: 0px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: auto;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;
