@@ -1,8 +1,8 @@
 <?php
-session_start();
-include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
-pdoConnect();
+	session_start();
+	include_once "../../coursesyspw.php";
+	include_once "../Shared/sessions.php";
+	pdoConnect();
 ?>
 
 <!DOCTYPE html>
@@ -15,13 +15,13 @@ pdoConnect();
         
         <title>LenaSYS User Editor</title>
     
-        <!-- My Bootstrap override -->
         <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
         <link href="usermanagementview.css" rel="stylesheet">
+        
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
         <script src="usermanagementview.js"></script>
-    
-    
+        <script type="text/javascript" src="usermanagementviewjquery.js"></script>
+        <script type="text/javascript" src="../Shared/dugga.js"></script>
     </head>
 
 <body>
@@ -32,14 +32,13 @@ pdoConnect();
 		include '../Shared/navheader.php';
 	?>
 
-
 	<?php
 		include '../Shared/loginbox.php';
 	?>
 		
        
 	<div id="contentUMV">
-			
+	
             
         <!-- Dropdownmenu -->
         <nav class="rightDropdownMenu">
@@ -60,16 +59,12 @@ pdoConnect();
         		</li> 
         	</ul> 
         </nav>      
-        
-        
+       		        
         <!-- Searchfield -->
         <div class="searchfieldTV clearfix">
-          <div class="my-input-group my-pull-right">
-             <button type="button" class="my-pull-right " onclick="loadData(studyprogram.value,pnr.value);">Sök</span></button>            
-             <input type="text" class="form-control my-pull-right " placeholder="WEBUG12h/Pnr" name="studyprogram/Pnr" id="studyprogram/Pnr">
-          </div>
+             	<input type="text" class="my-pull-left " placeholder=" Sök..." name="studyprogram/Pnr" id="studyprogram/Pnr">
+             	<div class="button my-pull-left " onclick="loadData(studyprogram.value,pnr.value);">Sök</span></div>
         </div>
-        
     
         <!-- ProgramName -->
         <div class="programName">
