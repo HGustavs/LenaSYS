@@ -550,9 +550,28 @@ function dehighlightop(otherop,thisop)
 }
 
 //----------------------------------------------------------------------------------
-// Skip: Handles skipping either forward or backward. If pressed show menu
+// highlightop: Highlights an html-tag and corresponding html-tag in code window
 //----------------------------------------------------------------------------------
 
+function highlightHtml(otherTag,thisTag)
+{
+		$("#"+otherTag).addClass("html");					
+		$("#"+thisTag).addClass("html");					
+}
+
+//----------------------------------------------------------------------------------
+// highlightop: Dehighlights an html-tag and corresponding html-tag in code window
+//----------------------------------------------------------------------------------
+
+function deHighlightHtml(otherTag,thisTag)
+{
+		$("#"+otherTag).removeClass("html");					
+		$("#"+thisTag).removeClass("html");					
+}
+
+//----------------------------------------------------------------------------------
+// Skip: Handles skipping either forward or backward. If pressed show menu
+//----------------------------------------------------------------------------------
 
 var dmd;
 function Skip(skipkind)
@@ -1131,6 +1150,11 @@ function rendercode(codestring,boxid,wordlistid)
 	bracket=new Array();
 	cbcount=0;
 	cbracket=new Array();
+	
+	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr');
+	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source'); 
+	var htmlTagCount=0;
+	htmlTag=new Array();
 
 	pid="";
 	
@@ -1190,15 +1214,55 @@ function rendercode(codestring,boxid,wordlistid)
 				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
 			}else if(tokenvalue=="{"){
 				pid="CBR"+cbcount+boxid;
-					cbcount++;
-					cbracket.push(pid);
-					cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-				}else if(tokenvalue=="}"){
-					pid=cbracket.pop();
-					cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-				}else{
-					cont+="<span class='oper'>"+tokenvalue+"</span>";										
+				cbcount++;
+				cbracket.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue=="}"){
+				pid=cbracket.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}else if(tokenvalue=="<"){
+				if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
+					var k = 2;
+					var foundEnd = false;
+					while(tokens[i+k].kind != "newline"){
+						if(tokens[i+k].val == ">"){					//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
+							foundEnd = true;
+							break;
+						}
+						k++;
+					}
+					if(foundEnd){
+						pid="html"+htmlTagCount+boxid;
+						htmlTagCount++;
+						if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+							htmlTag.push(pid);
+						}
+						cont+="<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+("&lt" + tokens[i+1].val);
+						for(var j = 2; j < k+1; j++){
+							cont+=tokens[i+j].val;
+						}
+						cont+="</span>";
+						i=i+k;
+					}else{
+						cont+="<span class='oper'>"+tokenvalue+"</span>";
+					}
+				}else if(tokens[i+1].val=="/"){
+					if(htmlArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
+						if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+							pid=htmlTag.pop();
+						}else{
+							htmlTagCount++;
+							pid="html"+htmlTagCount+boxid;
+						}
+						cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+("&lt" + tokens[i+1].val + tokens[i+2].val + tokens[i+3].val)+"</span>";
+						i = i+3;
+					}
+				} else {
+					cont+="<span class='oper'>"+tokenvalue+"</span>";
 				}
+			}else{
+				cont+="<span class='oper'>"+tokenvalue+"</span>";										
+			}
 		}else{
 			cont+=tokenvalue;
 		}

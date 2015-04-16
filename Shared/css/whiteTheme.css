@@ -177,6 +177,16 @@
    background-color: #9569BD;
 }
 
+.normtext .html {
+	background-color: #9569BD;
+	color: #000;
+}
+
+.impo .html {
+	background-color: #9569BD;
+	color: #000;
+}
+
 .keywordA {
     color: #e90000;
 }
