@@ -291,7 +291,7 @@ function returnedSection(data)
 										kk++;
 								} else if(parseInt(item['kind']) === 4 ){
 										//new moment bool equals true
-										momentexists = item['moment'];
+										momentexists = item['lid'];
 										
 										// Styling for moment row
 										str+="<span class='moment item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
