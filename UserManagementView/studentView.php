@@ -13,9 +13,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>LenaSYS User Editor</title>
 
-		<!-- My Bootstrap override -->
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 		<link href="usermanagementview.css" rel="stylesheet">
+		
 		<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script src="../Shared/dugga.js"></script>
 		<script src="usermanagementview.js"></script>
@@ -34,14 +34,13 @@
 		include '../Shared/loginbox.php';
 	?>
 		
-	<!-- content START -->
+
 	<div id="content">
 		
-		<!-- Program name and name of the student-->
 		<div id="studentTitle">
+
 		</div>
-		
-		<!-- Progressbar for every year of the program -->
+	
 		<div id="MainProgress">
 		
 			<div id="completedMainProgress">
@@ -62,10 +61,10 @@
 			
 		</div>
 		
-		<!-- Container for all years -->
+
 		<div id="YearContainer">
 		
-			<!-- Container for each year for the student-->
+			
 			<div id="Year1" class="Year">
 				
 			</div>
@@ -79,10 +78,9 @@
 			</div>
 		
 		</div>
-
 	
 	</div>
-	<!-- content END -->
+
 
   </body>
 </html>
