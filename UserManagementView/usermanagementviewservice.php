@@ -45,8 +45,10 @@
 	
 	//queries student
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
-	//$progressbarQuery = "";
-	//$yearQuery = "";
+	$progressbarQuery = "SELECT SUM(user_course.result) AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
+						WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
+	$coursesQuery = "SELECT course.coursename, user_course.result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
+	FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
 	
 	//------------------------------------------------------------------------------------------------
 	// Retrieve information
@@ -60,7 +62,9 @@
 	else {
 			//retrieve student data
 			
-			$titleData = array();
+			// data for title
+			$fullname = "";
+			$class = "";
 			
 			$query = $pdo->prepare($titleQuery);
 			
@@ -68,21 +72,72 @@
 				$error=$query->errorInfo();
 				$debug="Error reading data from user ". $error[2]; 
 			} else {
-				
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+					$fullname 	= $row['fullname'];
+					$class		= $row['class'];
+				}
+			}
+			
+			// data for progressbar
+			$progress = array();
+			
+			$query = $pdo->prepare($progressbarQuery);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading data from user ". $error[2]; 
+			} else {
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 					array_push(
-						$titleData,
+						$progress,
 						array(
-							'fullname' => $row['fullname'],
-							'class' => $row['class']
+							'completedHP' => $row['completedHP'],
+							'totalHP' => $row['totalHP']
 							)
 					);
 				}
 			}
 			
-			$retrievedData = array(
-				'titleData' => $titleData,
-				'debug' => $debug
+			$year = array();
+			
+			// data for course
+			$courses = array();
+			
+			//When executing query result is not correct below
+			
+			$query = $pdo->prepare($coursesQuery);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading data from user ". $error[2]; 
+			} else {
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+					array_push(
+						$courses,
+						array(
+							'coursename' => $row['coursename'],
+							'result' => $row['result'],
+							'hp' => $row['hp'],
+							'course_responsible' => $row['coordinator'],
+							'course_link' => $row['courseHttpPage']
+							)
+					);
+				}
+			}
+			
+			$year = array(
+				'value' => '1',
+				'courses' => $courses
+			);
+			
+			
+			
+			$retrievedData 	= array(
+				'fullname' 	=> $fullname,
+				'class' 	=> $class,
+				'progress' 	=> $progress,
+				'year' 		=> $year,
+				'debug' 	=> $debug
 			);
 			
 	}
