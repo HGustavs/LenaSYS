@@ -67,7 +67,6 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 	  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 
-		<link type="text/css" href="../Shared/css/template1.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
     <link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
     <link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet" />
