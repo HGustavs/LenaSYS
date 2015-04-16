@@ -375,6 +375,7 @@ function showLoginPopup()
 		$("#loginBox").css("display","block");
 		$("#overlay").css("display","block");
 		
+		$("#username").focus();
 		window.addEventListener("keypress", loginEventHandler, false);
 }
 
