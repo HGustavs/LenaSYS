@@ -876,6 +876,7 @@ function tokenize(instring,inprefix,insuffix)
 	instring = replaceAll("&lt;","<",instring);
 	instring = replaceAll("&gt;",">",instring);
 	instring = replaceAll("&amp;","&",instring);
+	instring = replaceAll("&#9;","    ",instring); // This will fix Tab function
 
 	var from;                   	// index of the start of the token.
 	var i = 0;                  	// index of the current character.
