@@ -1555,7 +1555,7 @@ function initializeMarkdownMap()
 	characterToMarkdown[0] = " ";					// [\] somehow escape symbol	
 	characterToMarkdown["*"] = "<font style='font-style:italic'>";	// [*] note * + " " == bulletin list
 	characterToMarkdown["**"] = "<font style='font-weight:bold'>";	// [**]
-	characterToMarkdown["***"] = "***";				// [***] Should be italics and bold
+	characterToMarkdown["***"] = "";				// [***] Should be italics and bold
 	characterToMarkdown["_"] = "<font style='font-style:italic'>";	// [_]
 	characterToMarkdown["__"] = "<font style='font-weight:bold'>";	// [__]
 	characterToMarkdown["___"] = "___";				// [___] Should be italics and bold
@@ -1733,6 +1733,9 @@ function parseMarkdown(inString)
 				
 				//Replace the markdown symbols with html tags
 				rowArray[i] = printMarkdown(markdownArray[j], rowArray[i], false);
+				
+				//After the markdown has been replaced reset flag for first markdown
+				foundFirstMarkdown = false;
 				
 				//Check the same row for more markdown symbols of this kind, useful for bulletin lists 
 				j = j - 1;
