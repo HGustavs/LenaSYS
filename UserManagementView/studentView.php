@@ -15,12 +15,13 @@
 
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 		<link href="usermanagementview.css" rel="stylesheet">
+        <link href="usermanagementview_student.css" rel="stylesheet">
 		
 		<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="usermanagementviewjquery.js"></script>
 		<script src="../Shared/dugga.js"></script>
 		<script src="usermanagementview.js"></script>
-
-  </head>
+	</head>
   
   <body>
   
@@ -35,7 +36,28 @@
 	?>
 		
 
-	<div id="content">
+	<div id="contentUMV">
+    
+    
+     <!-- Dropdownmenu -->
+        <nav class="rightDropdownMenu">
+        	<ul>
+        		<li><a href="#" >Program 1</a>
+        			<ul>
+        				<li><a href="#">År 1</a></li>
+        				<li><a href="#">År 2</a></li>
+        				<li><a href="#">År 3</a></li>
+        			</ul>
+        		</li>
+        		<li><a href="#" >Program 2</a>
+        			<ul>
+        				<li><a href="#">År 1</a></li>
+        				<li><a href="#">År 2</a></li>
+        				<li><a href="#">År 3</a></li>
+        			</ul>
+        		</li> 
+        	</ul> 
+        </nav>  
 		
 		<div id="studentTitle">
 
