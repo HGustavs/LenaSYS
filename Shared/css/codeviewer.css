@@ -14,10 +14,6 @@
     font-style: italic;
 }
 
-.box {
-    overflow: auto;
-}
-
 .box h1 {
 
     display: block;
