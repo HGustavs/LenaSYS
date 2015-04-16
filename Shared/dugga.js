@@ -192,7 +192,7 @@ function AJAXService(opt,apara,kind)
 		var old = apara[key];
 		// Run the input parameter through the following regular expression
 		// The result is a string that only allows white-listed characters.
-		var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9\s]*/gi);
+		var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@\. \- \s]*/gi);
 		
 		// Concat the generated regex result to a string again.
 		apara[key] = s.join("");
