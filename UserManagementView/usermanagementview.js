@@ -1,3 +1,5 @@
+
+// AJAX-call to dugga.js 
 AJAXService("GET", {}, "UMVSTUDENT");
 
 function strcmp(a, b) {
@@ -41,99 +43,93 @@ function loadData(studyprogram, pnr) {
 
 }
 
-function renderStudentView(data){
+//---------------------------------------------------------------
+//	renderStudentView(data) - renders the student view from the
+//	student. Will render the full view with title and everything.
+//---------------------------------------------------------------
+
+function renderStudentView(data)
+{
+
+	console.log("DATA_RECIVED - DONE");
 	
 	var htmlStr = "";
-	var titleData = data['titleData'];
+	var fullname = data['fullname'];
+	var studentClass = data['class'];
 	
-	htmlStr += '<h1 id="headerText">' + titleData[0]['class']+ ' för ' + titleData[0]['fullname'] +'</h1>';
+	htmlStr += '<h3 id="headerText">' + studentClass + ' för ' + fullname +'</h3>';
 	
 	var titleList = document.getElementById('studentTitle');
 	titleList.innerHTML = htmlStr;
 	
+	/* Add Progressbar data */
+	
+	htmlStr = "";
+	var progress = data['progress'];
+	
+	htmlStr += '<p>' + progress[0]['completedHP'] + '/' + progress[0]['totalHP']+ '</p>';
+	
+	var progressBar = document.getElementById('completedMainProgress');
+	progressBar.innerHTML = htmlStr;
+	
+	/* Add course data */
+	
+	htmlStr = "";
+	var year = data['year'];
+	var courses = year['courses'];
+	
+	htmlStr += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
+	
+	htmlStr += '<div class="courses_body">';
+	
+	for(var i = 0; i < courses.length; i++) {
+		
+		htmlStr += createHTMLForCourse(courses[i]);
+		
+	}
+	
+	htmlStr += '</div>';
+	
+	var yearList = document.getElementById('Year1');
+	yearList.innerHTML = htmlStr;
+	
+	console.log("DATA_PRINTED - DONE");
+	
+	/* Check if error occurred during execution of SQL queries */
 	if(data['debug'] != "NONE!") {
 		alert(data['debug']);
 	}
 	
 }
+//---------------------------------------------------------------
+//	createHTMLForCourse(data) - creates HTML representation of a
+//	specific course. Prints out the information into div-elements
+//---------------------------------------------------------------
+function createHTMLForCourse(data) 
+{
+	var coursename 	= data['coursename'];
+	var result		= data['result'];
+	var hp			= data['hp'];
+	// Check that the link is not null and if null present a '#' instead
+	var course_link = (data['course_link'] == null ?  '#' : data['course_link']);
+	var course_responsible = data['course_responsible'];
+	
+	var courseHtmlStr = "";
+	
+	courseHtmlStr += '<div class="course">';
+	
+	courseHtmlStr += '<div class="course_name">' + coursename + '</div>';
+	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + result + '/' + hp + '</div></div>';
+	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
+	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '</div>';
+	
+	courseHtmlStr += '</div>';
+	
+	return courseHtmlStr;
+	
+}
 
 function renderStudyprogramView(data){
-	var student_data = data[1];
-
-		var currentTermin;
-	var terminer = [];
-		$.each(student_data, function () {
-    	var termin = this.termin;
-    	if (terminer.indexOf(termin) < 0) {
-        	terminer.push(termin);
-	    };
-	});
 	
-	terminer.sort(natcmp);
-	/* Render input data (JSON) format */
-						
-	 	for (var year = 0; year <3; year++){	 	
-	 		var htmlStr = "";
-	 		for (var l=0;l<=1;l++){
-				htmlStr += '<div class="panel panel-info"> <div class="panel-heading"> <h3 class="panel-title">Termin: '+terminer[(year*2)+l]+'</h3></div>'		
-				htmlStr += '<div class="panel-body"> <div id="'+terminer[(year*2)+l]+'" class="list-group"></div></div></div>'
-			}
-				document.getElementById("year"+(year+1)+"-body").innerHTML = htmlStr;					
-		 }
-		 
-		 for(var j=0; j < student_data.length; j++){
-			 var newPanelBodyContainerListGroupItem = document.createElement('div');
-			 newPanelBodyContainerListGroupItem.className = "list-group-item";
-			 newPanelBodyContainerListGroupItem.id = student_data[j].kurskod+"-container";
-			 var div0 = document.createElement('div');
-			 div0.className="stoplight";
-			 var div1 = document.createElement('div');
-			 div1.className = "stoplight-outer";
-			 var div2 = document.createElement('div');
-			 div2.className = "stoplight-inner-green";
-			 div1.appendChild(div2);
-			 div0.appendChild(div1);
-			 newPanelBodyContainerListGroupItem.appendChild(div0);
-			 var span1 = document.createElement('span');
-			 //console.log(data[j].kurskod);
-			 span1.id = student_data[j].kurskod;
-			 span1.innerHTML = student_data[j].kurskod;
-			 span1.title = student_data[j].kursnamn;
-			 span1.className = "label label-info kurskod";
-			 var span2 = document.createElement('span');
-			 span2.className = "my-pull-right";
-			 	var span3 = document.createElement('span');
-			 	span3.id=student_data[j].kurskod+"-resultat";
-			 	span3.innerHTML=student_data[j].resultat;
-			 	var avklarat = student_data[j].resultat / student_data[j].poang * 100;
-//			 	newPanelBodyContainerListGroupItem.style.backgroundImage = "repeating-linear-gradient(90deg, #b3ecb3, #b3ecb3 "+avklarat+"%, white 0%, white 100%)";
-			 	newPanelBodyContainerListGroupItem.style.backgroundImage = "repeating-linear-gradient(90deg, #d1f3d1, #d1f3d1 "+avklarat+"%, white 0%, white 100%)";
-			 	if (student_data[j].resultat == student_data[j].poang){
-			 		span3.className = "badge alert-default";				 		
-			 	} else if (student_data[j].resultat < student_data[j].poang && student_data[j].resultat > 0) {
-			 		span3.className = "badge alert-default";	
-			 	} else {
-			 		span3.className = "badge alert-default";
-			 	}			 	
-			 	var span4 = document.createElement('span');
-			 	span4.className = "badge alert-default";
-			 	span4.innerHTML = student_data[j].poang;		 
-			 	span2.appendChild(span3);
-			 	span2.appendChild(document.createTextNode(" / "));
-			 	span2.appendChild(span4);
-			 	var newp = document.createElement('p');
-			 	newp.className = "kursnamn";
-			 	newp.innerHTML = student_data[j].kursnamn;
-			 	var span5 = document.createElement('span');
-			 	span5.id = student_data[j].kurskod+"-forkunskapskrav";
-			 newPanelBodyContainerListGroupItem.appendChild(span1);		 
-			 newPanelBodyContainerListGroupItem.appendChild(span2);
-			 newPanelBodyContainerListGroupItem.appendChild(newp);
-			 newPanelBodyContainerListGroupItem.appendChild(span5);
-		 
-			//console.log(document.getElementById(data[j].termin)); 
-			document.getElementById(student_data[j].termin).appendChild(newPanelBodyContainerListGroupItem);
-		}
-		/* Added this... */
 
 }
