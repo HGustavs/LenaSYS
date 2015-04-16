@@ -471,3 +471,6 @@ function getCookie(cname) {
     	}
 	return "";
 }
+$(window).load(function() {
+      $('.loginBox').draggable();
+});
