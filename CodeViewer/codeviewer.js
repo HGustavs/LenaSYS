@@ -1406,16 +1406,16 @@ function resizeBoxes(parent, templateId) {
 	
 		
 		var boxValArray = initResizableBoxValues(parent);
-		
 		var remainWidth;
-		
-		
 		
 		if(templateId == 1){
 			
 			getLocalStorageProperties(templateId);
 		
-			alignBoxesWidth(boxValArray, 1, 2);
+		//removes gap, that comes from percentage based positioning.
+			alignBoxesWidth(boxValArray, 1, 2);	
+			$(boxValArray['box1']['id']).css("height", "100%");
+			$(boxValArray['box2']['id']).css("height", "100%");
 		
 			$(boxValArray['box1']['id']).resizable({
 				containment: parent,
@@ -1423,6 +1423,8 @@ function resizeBoxes(parent, templateId) {
 				resize: function(e, ui){
 					
 					alignBoxesWidth(boxValArray, 1, 2);
+					$(boxValArray['box1']['id']).css("height", "100%");
+					$(boxValArray['box2']['id']).css("height", "100%");
 					
 				},
 				stop: function(e, ui) {
@@ -1432,7 +1434,67 @@ function resizeBoxes(parent, templateId) {
 				}
 			});
 		
+		}else if(templateId == 2){
+		
+			getLocalStorageProperties(templateId);
+			
+			//Used to remove gap provided by percentage based positioning.
+			alignBoxesHeight2boxes(boxValArray, 1, 2);
+			
+			$(boxValArray['box1']['id']).resizable({
+				containment: parent,
+				handles: "s",
+				resize: function(e, ui){
+					
+					alignBoxesHeight2boxes(boxValArray, 1, 2);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+		
 		}else if(templateId == 3){
+		
+			getLocalStorageProperties(templateId);
+			
+			//Used to remove gap provided by percentage based positioning.
+			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+			alignBoxesHeight2boxes(boxValArray, 2, 3);
+			
+			$(boxValArray['box1']['id']).resizable({
+				containment: parent,
+				handles: "e",
+				resize: function(e, ui){
+					
+					alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+			
+			$(boxValArray['box2']['id']).resizable({
+				containment: parent,
+				handles: "s",
+				resize: function(e, ui){
+					
+					alignBoxesHeight2boxes(boxValArray, 2, 3);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+		
+		}else if(templateId == 4){
 		
 			getLocalStorageProperties(templateId);
 			
@@ -1441,76 +1503,171 @@ function resizeBoxes(parent, templateId) {
 			alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
 		
 			$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e,s",
-			resize: function(e, ui){
-				
-
-				alignBoxesWidth(boxValArray, 1, 2);
-				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-				
-			},
-			stop: function(e, ui) {
-				 
-				setLocalStorageProperties(templateId, boxValArray);
-				 
-			}
-			
+				containment: parent,
+				handles: "e,s",
+				resize: function(e, ui){
+					
+					alignBoxesWidth(boxValArray, 1, 2);
+					alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
 			});
 			
 			$(boxValArray['box2']['id']).resizable({
-			containment: parent,
-			handles: "s",
-			resize: function(e, ui){
-				
-
-				
-				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
-				alignBoxesWidth(boxValArray, 2, 1);
-				
-			},
-			stop: function(e, ui) {
-				 
-				setLocalStorageProperties(templateId, boxValArray);
-				 
-			}
-			
+				containment: parent,
+				handles: "s",
+				resize: function(e, ui){
+					
+					alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+					alignBoxesWidth(boxValArray, 2, 1);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
 			});
 			
-		}
+		}else if(templateId == 5){
 		
+			getLocalStorageProperties(templateId);
+			
+			//Used to remove gap provided by percentage based positioning.
+			alignBoxesWidth(boxValArray, 1, 2);
+			alignBoxesHeight4boxes(boxValArray, 1, 2);
+			alignBoxesWidth(boxValArray, 3, 4);
+		
+			$(boxValArray['box1']['id']).resizable({
+				containment: parent,
+				handles: "e,s",
+				resize: function(e, ui){
+					alignBoxesWidth(boxValArray, 1, 2);
+					alignBoxesHeight4boxes(boxValArray, 1, 2);
+
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+			
+			$(boxValArray['box2']['id']).resizable({
+				containment: parent,
+				handles: "s",
+				resize: function(e, ui){
+					
+					alignBoxesHeight4boxes(boxValArray, 2, 1);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+			
+			$(boxValArray['box3']['id']).resizable({
+				containment: parent,
+				handles: "e",
+				resize: function(e, ui){
+				
+					alignBoxesWidth(boxValArray, 3, 4);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+		}
 	};
 	
-	//width adjustment for template(1,3)
+	//width adjustment for template(1,4)
 	function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign){
 					
+		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 					
-					var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+		//Worth noting that these bugs may be temporary ones caused by multi user tinkering in the system. And the fixes may not be needed later on.
+		$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
+		$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+				
+		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+		$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
+		
+	}
+	
+	//width adjustment for template(1,3)
+	function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
 					
-					//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off.
-					$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
+		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 					
-					boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-					boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+		$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
+		$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+		$(boxValArray['box' + boxNumBase]['id']).css("height", "100%");
 					
-					$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
+		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+					
+		$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
+		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidth);
 		
 	}
 	
 	
+	//Height adjustment for boxes in template 2.
+	function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame){
+		
+		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+					
+		$(boxValArray['box' + boxNumSame]['id']).height(remainHeight);
+		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+				
+			
+	}
+	
 	//Height adjustment for boxes in template 3.
 	function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig){
 		
-					var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
 					
-					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-					boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-					boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
+		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+		boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
 					
 					
-					$(boxValArray['box' + boxNumSame]['id']).height(boxValArray['box' + boxNumBase]['height']);
-					$(boxValArray['box' + boxNumBig]['id']).height(remainHeight);
+		$(boxValArray['box' + boxNumSame]['id']).height(boxValArray['box' + boxNumBase]['height']);
+		$(boxValArray['box' + boxNumBig]['id']).height(remainHeight);
 		
+	}
+	
+	
+	//Height adjustment for boxes in template 5.
+	function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame){
+		
+		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+					
+		$(boxValArray['box' + boxNumSame]['id']).height($(boxValArray['box' + boxNumBase]['id']).height());
+		$(boxValArray['box3']['id']).height(remainHeight);
+		$(boxValArray['box4']['id']).height(remainHeight);
+					
+		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+		boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
+		boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
+			
 	}
 	
 	
@@ -1543,7 +1700,6 @@ function resizeBoxes(parent, templateId) {
 	function setLocalStorageProperties(templateId, boxValArray){
 	
 		var numBoxes = $("[id ^=box][id $=wrapper]").length;
-		
 		var widthPer;
 		var heightPer;
 		
