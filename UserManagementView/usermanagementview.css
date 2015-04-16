@@ -31,7 +31,6 @@
 		text-decoration: none;
 		display:inline;
 	}
-	
 	.rightDropdownMenu ul li{
 		width:110px;
 		height: 25px;
@@ -65,7 +64,6 @@
 		border-bottom-left-radius:0.5em;
 		border-bottom-right-radius:0.5em;
 	}
-	
 	.rightDropdownMenu ul li ul { 
 		clear:both;
 		top: 10px;
@@ -121,7 +119,6 @@
 		color:#fff;
 		border-top-right-radius:0.5em;
 		border-bottom-right-radius:0.5em;
-	
 	}
 		.searchfieldTV .button:hover{
 			cursor:pointer;
@@ -217,6 +214,7 @@ small > a:hover {
 .clearfix{
 	clear: both;
 }
+
 .clearfix:after { 
    content: "."; 
    visibility: hidden; 
