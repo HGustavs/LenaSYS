@@ -304,14 +304,16 @@ function updateExample()
 	}
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
-	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before").val()!=beforeid&&beforeid!="UNK")||($("#after").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
+	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before option:selected").val()!=beforeid&&beforeid!="UNK")||($("#after option:selected").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
 			var courseid = querystring['courseid'];
 			var cvers = querystring['cvers'];
 			var exampleid = querystring['exampleid'];
 			var playlink = $("#playlink").val();
 			var examplename = $("#title").val();
 			var sectionname = $("#secttitle").val();
-			
+			var beforeid = $("#before option:selected").val();
+			var afterid = $("#after option:selected").val();
+
 			AJAXService("EDITEXAMPLE", {
 					courseid : courseid,
 					cvers : cvers,
