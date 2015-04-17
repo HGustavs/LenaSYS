@@ -478,31 +478,6 @@ font-size: 14px;
 	box-shadow:2px 2px 4px #000;
 }
 
-/* --------------================################================-------------- *
- *                        Pop-up BOX made by Django Okedjad                     *
- * --------------================################================-------------- */
-
-
-#impwords {
-	max-width: 186px;
-	min-width: 186px;
-	margin-left: 227px;
-}
-
-#impword {
-    	width: 174px;
-}
-
-#before, #after {
-    float: left;
-    width: 226px;
-}
-
-#playlink {
-    width: 216px;
-}
-
-
 .loginBox select {font-size:14px;float:right;margin-right:4px;}
 
 .loginBoxheader {
