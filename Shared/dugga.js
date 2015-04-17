@@ -137,7 +137,7 @@ function navigateTo(prefix,file)
 {
 		surl=window.location.href;
 		surl=surl.substring(0,surl.lastIndexOf("/")); 
-		window.location.href = surl+"/codeupload/";
+		window.location.href = surl+prefix+file;
 }
 
 
@@ -175,6 +175,9 @@ function htmlEntities(str) {
 				str=str.replace(/\å/g, '&aring;');
 				str=str.replace(/\Å/g, '&Aring;');
 				str=str.replace(/\"/g, '&quot;');
+				str=str.replace(/\//g, '&#47;');
+				str=str.replace(/\\/g, '&#92;');
+				str=str.replace(/\?/g, '&#63;');
 //				str=str.replace(/\{/g, '&#123;');
 //				str=str.replace(/\}/g, '&#125;');
 		}
@@ -185,7 +188,7 @@ function htmlEntities(str) {
 // AJAX Service: Generic AJAX Calling Function with Prepared Parameters
 //----------------------------------------------------------------------------------
 
-function AJAXService(opt,apara,kind)
+function AJAXService(opt,apara,kind)	
 {
 	var para="";
 	for (var key in apara) {
@@ -371,12 +374,10 @@ function processLogout() {
 
 function showLoginPopup()
 {
-	console.log("Showing login popup");
-		$("#loginBox").css("display","block");
-		$("#overlay").css("display","block");
-		
-		$("#username").focus();
-		window.addEventListener("keypress", loginEventHandler, false);
+	$("#loginBox").css("display","block");
+	$("#overlay").css("display","block");
+	$("#username").focus();
+	window.addEventListener("keypress", loginEventHandler, false);
 }
 
 function hideLoginPopup()

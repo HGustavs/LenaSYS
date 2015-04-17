@@ -177,6 +177,16 @@
    background-color: #9569BD;
 }
 
+.normtext .html {
+	background-color: #9569BD;
+	color: #000;
+}
+
+.impo .html {
+	background-color: #9569BD;
+	color: #000;
+}
+
 .keywordA {
     color: #e90000;
 }
@@ -265,8 +275,7 @@
     right: 0px;
     bottom: 0px;
     left: 0px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: auto;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
     outline: 0 none;

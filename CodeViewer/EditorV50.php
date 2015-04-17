@@ -67,7 +67,6 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 	  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 
-		<link type="text/css" href="../Shared/css/template1.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
     <link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
     <link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet" />
@@ -99,7 +98,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 		$row = $query -> fetch(PDO::FETCH_ASSOC);
 		$public=$row['public'];	
 
-		$noup="COURSE";
+		$noup="CODEVIEWER"; //Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
 		$loginvar="CODV";
 		$codeviewer = true;
 		$codeviewerkind=false;
@@ -199,19 +198,28 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 			<td>Title: <input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
 			<td>Section Title: <input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
 		</tr>
+		
 		<tr>
 			<td>Before: <select  id='before'></select></td>
 			<td>After: <select  id='after'></select></td>
 		</tr>
 		<tr>
-			<td colspan="2">Play Link: <input style="width:250px;" class='form-control textinput' type='text' id='playlink' value='User Name' /></td>		
+			<td>Play Link:</td>
+			<td>Important Words:</td>
 		</tr>
 		<tr>
-			<td colspan="2">Important Words:&nbsp;<select style="float:none;" id='impwords'></select></td>
-		</tr>		
+			<td> <colspan="2"><input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
+			<td> <colspan="2"><input class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' </td>
+			<input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /></td>
+			
+		</tr>
+			
 		<tr>
-			<td colspan="2"><input style="width:156px;" class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' /><input style="width:32px;" class='submit-button' type='button' value='+' onclick='updateUser();' /><input style="width:32px;" class='submit-button' type='button' value='-' onclick='updateUser();' /></td>
+			<td colspan="2">&nbsp;<select style="float:none;" id='impwords'><input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' />
+			</select></td>
+
 		</tr>		
+				
 	</table>
 
 	<table width="100%"><tr>
@@ -237,6 +245,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 				<td id="templat3" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("3");' src='../Shared/icons/template3_butt.svg' /></td>
 				<td id="templat4" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("4");' src='../Shared/icons/template4_butt.svg' /></td>
 				<td id="templat5" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("5");' src='../Shared/icons/template5_butt.svg' /></td>
+				<td id="templat6" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("6");' src='../Shared/icons/template6_butt.svg' /></td>
 		</tr>		
 	</table>
 

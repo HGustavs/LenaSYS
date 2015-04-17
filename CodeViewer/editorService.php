@@ -36,7 +36,8 @@
 	$sectionname=getOP('sectionname');
 	$examplename=getOP('examplename');
 	$playlink=getOP('playlink');
-		
+
+
 	$debug="NONE!";	
 
 	if(isset($_SESSION['uid'])){
@@ -109,6 +110,7 @@
 									if(isset($_POST['sectionname'])) {$sectionname = $_POST['sectionname'];}
 									if(isset($_POST['beforeid'])) {$beforeid = $_POST['beforeid'];}
 									if(isset($_POST['afterid'])) {$afterid = $_POST['afterid'];}
+
 									// Change content of example
 									$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
 									$query->bindParam(':playlink', $playlink);
@@ -137,6 +139,35 @@
 											$query->bindParam(':cvers', $cvers);
 											$query -> execute();
 									}
+									
+
+									if(isset($_POST['addedWords'])) {
+										// Converts to array
+										$addedWords = explode(",",$_POST['addedWords']);
+										
+										// Loops through the array of added words and inserts them one by one.
+										foreach ($addedWords as $word) {
+											$query = $pdo->prepare("INSERT INTO impwordlist(exampleid,word,uid) VALUES (:exampleid,:word,:uid);");		
+											$query->bindParam(':exampleid', $exampleid);
+											$query->bindParam(':word', $word);
+											$query->bindParam(':uid', $_SESSION['uid']);
+											$query->execute();
+										}
+									}
+									
+									if(isset($_POST['removedWords'])) {
+										// Converts to array
+										$removedWords = explode(",",$_POST['removedWords']);
+
+										// Loops through the array of removed words and deletes them one by one.
+										foreach ($removedWords as $word) {
+											$query = $pdo->prepare("DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;");		
+											$query->bindParam(':exampleid', $exampleid);
+											$query->bindParam(':word', $word);
+											$query->execute();
+										}
+									}
+									
 						}
 
 						
