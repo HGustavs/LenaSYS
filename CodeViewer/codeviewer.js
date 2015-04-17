@@ -1752,7 +1752,6 @@ function parseMarkdown(inString)
 	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<strong><em>$1</em></strong>');	
 	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<strong>$1</strong>');
 	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<em>$1</em>');
-	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<em>$1</em>');
 	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<strong><em>$1</em></strong>');
 	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<strong>$1</strong>');	
 	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<em>$1</em>');
