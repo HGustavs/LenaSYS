@@ -93,6 +93,11 @@
         
         <!-- Change pages -->
         <div class="changePages">
+        	<p>Sida</p>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div id="nextPage"> >> </div> 
         </div> 
 
 	</div>

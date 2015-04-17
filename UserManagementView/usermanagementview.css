@@ -102,7 +102,6 @@
 	.searchfieldTV input[type=text]:focus{
 		box-shadow: inset 2px 2px 5px #988a98;
 	}
-
 	.searchfieldTV .button{
 		border:none;
 		height:23px;
@@ -122,6 +121,44 @@
 			background-color:#927B9E;
 		}
 		
+/* Change pages */
+.changePages{
+	width:200px;
+	height:25px;
+	font-size:0.8em;
+	color:#614875;
+	margin:0 auto;
+}
+	.changePages p{
+		float:left;
+	}
+	.changePages div{
+		margin-left:10px;
+		padding:3px 8px;
+		border:3px solid #614875	;
+		display:inline;
+		float:left;
+		border-radius:0.5em;
+	}
+		.changePages div:hover{
+			cursor:pointer;
+			color:#fff;
+			background-color:#614875;
+		}
+	#nextPage{
+		display:inline;
+		border:none;
+		position:relative;
+		height:25px;
+		width: 20px;
+		font-size:1.2em;
+		margin-left:5px;
+	}
+		#nextPage:hover{
+			cursor:pointer;
+			background-color:#fff;
+			color:#614875;
+		}
 		
 .my-nav {
 	position: relative;
