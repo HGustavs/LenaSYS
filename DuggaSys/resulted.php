@@ -11,13 +11,13 @@ pdoConnect();
 	<title>Result Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-  <link type="text/css" href="../Shared/js/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
   <link type="text/css" href="templates/dugga.css" rel="stylesheet">  
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
-	<script src="dugga.js"></script>
+	<script src="../Shared/dugga.js"></script>
 	<script src="resulted.js"></script>
 
 </head>
@@ -27,6 +27,7 @@ pdoConnect();
 		$noup="SECTION";
 		$loginvar="RESULT";
 		include '../Shared/navheader.php';
+		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
@@ -37,12 +38,12 @@ pdoConnect();
 	<!-- Edit Dugga Dialog END -->
 	
 	<?php 
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 	
 	<!-- Result Popover START -->
 
-	<div id='resultpopover' class='resultPopover' onmousemove='moveDist(event);'>
+	<div id='resultpopover' class='resultPopover' style='display:none' onmousemove='moveDist(event);'>
 
 		<div class='loginBoxheader'>
 				<h3 id='Nameof'>Show Results</h3>

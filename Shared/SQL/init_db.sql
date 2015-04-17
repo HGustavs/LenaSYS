@@ -4,20 +4,21 @@ use imperious;
 
 /* user contains the users of the system and related  information */
 CREATE TABLE user(
-		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
 		firstname		VARCHAR(50) NULL,
 		lastname		VARCHAR(50) NULL,
-		ssn				VARCHAR(20) NULL,
+		ssn				VARCHAR(20) NULL unique,
 		password		VARCHAR(225) NOT NULL,
-		lastupdated	TIMESTAMP,
-		addedtime   TIMESTAMP,
+		lastupdated		TIMESTAMP,
+		addedtime  		TIMESTAMP,
 		lastvisit		TIMESTAMP,
-		newpassword	TINYINT(1) NULL,
+		newpassword		TINYINT(1) NULL,
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
 		email			VARCHAR(256) DEFAULT NULL,
-		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class), 
+		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class),
+		totalHp			decimal(4,1),
 		PRIMARY KEY(uid)
 
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -26,28 +27,37 @@ INSERT INTO user(username,password,newpassword,creator,superuser) values ("Griml
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
 INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111");
 
+/* users/students for UMV testing */
+
+insert into user(username, password,firstname,lastname,ssn,email,class) values('a13asrd','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','assad','rduk','111111-1112','a13asrd@his.se','WEBUG13');
+insert into user(username, password,firstname,lastname,ssn,email,class) values('a13durp','*0F1088E511EC11B8EF2BBDE830E08E9F959843C4','hurp','durp','111111-1113','a13durp@his.se','WEBUG13');
+
 
 /** 
  * Course table contains the most essential information relating to study courses in the database.
  */
 CREATE TABLE course(
-		cid								INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		coursecode				VARCHAR(45) NULL UNIQUE,
-		coursename				VARCHAR(80) NULL,
-		created						DATETIME,
-		creator						INT UNSIGNED NOT NULL,
-		visibility				TINYINT UNSIGNED NOT NULL DEFAULT 0,
-		updated						TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
+		cid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		coursecode			VARCHAR(45) NULL UNIQUE,
+		coursename			VARCHAR(80) NULL,
+		created				DATETIME,
+		creator				INT UNSIGNED NOT NULL,
+		visibility			TINYINT UNSIGNED NOT NULL DEFAULT 0,
+		updated				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 		activeversion 		VARCHAR(8),
 		activeedversion 	VARCHAR(8),
+		capacity			int(3) not null,
+		hp					decimal(2,1) not null,
+		courseHttpPage		varchar(2000),
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV12G","Webbprogrammering",NOW(),1,1);
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("DV13G","Futhark",NOW(),1,0);
-INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("TEST13","Testing",NOW(),1,0);
-
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DV12G","Webbprogrammering",NOW(),1,1,7.5);
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DV13G","Futhark",NOW(),1,0,7.5);
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("IT1405","USEREXPERIENCE",NOW(),1,0,7.5,"https://scio.his.se/portal");
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("IT1431","IT-org",NOW(),1,0,7.5,"https://scio.his.se/portal");
+INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("DA4324","C++ grund prog",NOW(),1,0,7.5,"https://scio.his.se/portal");
 /** 
  * This table represents a many-to-many relation between users and courses. That is,
  * a tuple in this table joins a user with a course.
@@ -55,41 +65,46 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility) values ("TE
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
 		cid				INT UNSIGNED NOT NULL, 
-		result 		varchar(5),
-		modified 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		creator 	INTEGER,
-		access		VARCHAR(10) NOT NULL,
-		
-		CONSTRAINT pk_user_course PRIMARY KEY(uid, cid),
-		CONSTRAINT user_course_joins_user FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
-		CONSTRAINT user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
+		result 			decimal(2,1) not null,
+		modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		creator 		INTEGER,
+		access			VARCHAR(10) NOT NULL,
+		period			int(1) not null,
+		CONSTRAINT 		pk_user_course PRIMARY KEY(uid, cid),
+		CONSTRAINT 		user_course_joins_user FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
+		CONSTRAINT 		user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /* test data */
-INSERT INTO user_course(uid,cid,access) values (1,2,"W");
-INSERT INTO user_course(uid,cid,access) values (1,1,"R");
-INSERT INTO user_course(uid,cid,access) values (1,3,"R");
-INSERT INTO user_course(uid,cid,access) values (2,1,"R");
-INSERT INTO user_course(uid,cid,access) values (2,2,"R");
-INSERT INTO user_course(uid,cid,access) values (2,3,"R");
-INSERT INTO user_course(uid,cid,access) values (3,3,"R");
+/* a13asrd couirses */
+insert into user_course(uid,cid,result,access,period) values(4,1,0,'R',1);
+insert into user_course(uid,cid,result,access,period) values(4,3,0,'R',2);
+insert into user_course(uid,cid,result,access,period) values(4,4,0,'R',3);
+insert into user_course(uid,cid,result,access,period) values(4,5,0,'R',4);
+
+/* a13durp couirses */
+insert into user_course(uid,cid,result,access,period) values(5,1,0,'R',1);
+insert into user_course(uid,cid,result,access,period) values(5,3,0,'R',2);
+insert into user_course(uid,cid,result,access,period) values(5,4,0,'R',3);
+insert into user_course(uid,cid,result,access,period) values(5,5,0,'R',4);
+
 
 
 CREATE TABLE listentries (
-	lid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	cid 					INT UNSIGNED NOT NULL,
+	lid 			INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	cid 			INT UNSIGNED NOT NULL,
 	entryname 		VARCHAR(64),
-	link 					VARCHAR(200),
-	kind 					INT unsigned,
-	pos 					INT,
-	creator 			INT unsigned not null,
-	ts						TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-	code_id 			MEDIUMINT unsigned null default null,
-	visible 			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-	vers					VARCHAR(8),
-  moment				INT UNSIGNED,
-  gradesystem 	TINYINT(1),
-	CONSTRAINT pk_listentries PRIMARY KEY(lid),
+	link 			VARCHAR(200),
+	kind 			INT unsigned,
+	pos 			INT,
+	creator 		INT unsigned not null,
+	ts				TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	code_id 		MEDIUMINT unsigned null default null,
+	visible 		TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	vers			VARCHAR(8),
+	moment			INT UNSIGNED,
+	gradesystem 	TINYINT(1),
+	CONSTRAINT 		pk_listentries PRIMARY KEY(lid),
 	
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
 	CONSTRAINT fk_listentries_joins_user FOREIGN KEY(creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
@@ -112,19 +127,19 @@ INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visi
 
 /* Quiz tables */
 CREATE TABLE quiz (
-  id						INT(11) NOT NULL AUTO_INCREMENT,
-  cid 					INTEGER UNSIGNED NOT NULL,
-  autograde 		TINYINT(1) NOT NULL DEFAULT 0, /* bool */
-  gradesystem 	TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
-  qname 				VARCHAR(255) NOT NULL DEFAULT '',
-  quizFile 			VARCHAR(255) NOT NULL DEFAULT 'default',
-  qrelease 			DATETIME,
-  deadline 			DATETIME,
-	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	creator 			INTEGER,
+	id				INT(11) NOT NULL AUTO_INCREMENT,
+	cid 			INTEGER UNSIGNED NOT NULL,
+	autograde 		TINYINT(1) NOT NULL DEFAULT 0, /* bool */
+	gradesystem 	TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
+	qname 			VARCHAR(255) NOT NULL DEFAULT '',
+	quizFile 		VARCHAR(255) NOT NULL DEFAULT 'default',
+	qrelease 		DATETIME,
+	deadline 		DATETIME,
+	modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	creator 		INTEGER,
 		
-  CONSTRAINT pk_quiz PRIMARY KEY (id),
-  CONSTRAINT fk_quiz_joins_course FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+	CONSTRAINT 		pk_quiz PRIMARY KEY (id),
+	CONSTRAINT 		fk_quiz_joins_course FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /** 
@@ -132,46 +147,46 @@ CREATE TABLE quiz (
  * An entry in the variant table is used to add questions to quiz tests. 
  */
 CREATE TABLE variant(
-  vid						INT(11) NOT NULL AUTO_INCREMENT,
-	quizID				INT(11),
-	param					VARCHAR(2048),
+  vid				INT(11) NOT NULL AUTO_INCREMENT,
+	quizID			INT(11),
+	param			VARCHAR(2048),
 	variantanswer	VARCHAR(2048),
-	modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	creator 			INTEGER,
-  CONSTRAINT pk_variant PRIMARY KEY 	(vid),
-  CONSTRAINT fk_variant_joins_quiz FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
+	modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	creator 		INTEGER,
+	CONSTRAINT 		pk_variant PRIMARY KEY 	(vid),
+	CONSTRAINT 		fk_variant_joins_quiz FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE userAnswer (
-  aid						INT(11) NOT NULL AUTO_INCREMENT,
- 	cid						INT UNSIGNED NOT NULL, 
-  quiz 					INT(11),
-  variant				INT,
-  moment				INT UNSIGNED NOT NULL,
-  grade 				TINYINT(2),
-  uid 					INT UNSIGNED NOT NULL,
-  useranswer		varchar(2048),
-  submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  marked				TIMESTAMP NULL,
-	vers					VARCHAR(8),
-	creator 			INTEGER,
-  CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
-  CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
-  CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
-  CONSTRAINT fk_useranswer_joins_quiz FOREIGN KEY (quiz) REFERENCES quiz(id),
-  CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
-  CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
+	aid				INT(11) NOT NULL AUTO_INCREMENT,
+	cid				INT UNSIGNED NOT NULL, 
+	quiz 			INT(11),
+	variant			INT,
+	moment			INT UNSIGNED NOT NULL,
+	grade 			TINYINT(2),
+	uid 			INT UNSIGNED NOT NULL,
+	useranswer		varchar(2048),
+	submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	marked			TIMESTAMP NULL,
+	vers			VARCHAR(8),
+	creator 		INTEGER,
+	CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
+	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
+	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
+	CONSTRAINT fk_useranswer_joins_quiz FOREIGN KEY (quiz) REFERENCES quiz(id),
+	CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
+	CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE vers(
-		cid					  INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		vers				  VARCHAR(8) NOT NULL,
-		versname		  VARCHAR(45) NOT NULL,
-		coursecode	  VARCHAR(45) NOT NULL,
-		coursename	  VARCHAR(45) NOT NULL,
-		coursenamealt	VARCHAR(45) NOT NULL,
-		CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),		
-		CONSTRAINT pk_vers PRIMARY KEY(cid,coursecode,vers)
+	cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	vers			VARCHAR(8) NOT NULL,
+	versname		VARCHAR(45) NOT NULL,
+	coursecode		VARCHAR(45) NOT NULL,
+	coursename	  	VARCHAR(45) NOT NULL,
+	coursenamealt	VARCHAR(45) NOT NULL,
+	CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),		
+	CONSTRAINT pk_vers PRIMARY KEY(cid,coursecode,vers)
 );
 
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8212","HT 2012");
@@ -237,9 +252,11 @@ INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 4","Fulf.html",2,2013,1);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 1","Gulf.html",2,2013,1);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 2","Hulf.html",2,2013);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 3","Iulf.html",1,2013);
+INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 3","Iulf.html",1,2013,5);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,12,13);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"Example1","HTML","html1.html",2,2013,1,13,11);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,14,12);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,"Popup example","Javascript","popup.html",2,2013,1,14,13,14);
  
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
@@ -312,7 +329,11 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,12,"TitleA","Code","[viktig=1]","html1.html",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,12,"TitleB","Document","[viktig=1]","<title>page title</title>",1);
-
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid)VALUES (1,13,"Code","Code","[viktig=1]","html2.html",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,13,"Description","Document","[viktig=1]","Styling HTML with CSS",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid)VALUES (1,14,"Code","Code","[viktig=1]","popup.html",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,14,"Description","Document","[viktig=1]","Popup example for javascript..",1);
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (4,10,"Title","Code","[viktig=1]","js0 copy 2.js");
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
 		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -385,57 +406,59 @@ CREATE TABLE programkurs (
 
 
 CREATE TABLE class (
-    class varchar(10) DEFAULT NULL,
-	classname varchar(100) DEFAULT NULL,
-    regcode int(8) DEFAULT NULL,
-	classcode varchar(8) DEFAULT NULL,
-    hp int(4) DEFAULT NULL,
-	tempo int(3) DEFAULT NULL,
-	resppers varchar(20) DEFAULT NULL,
+    class 		varchar(10) DEFAULT NULL,
+	classname 	varchar(100) DEFAULT NULL,
+    regcode 	int(8) DEFAULT NULL,
+	classcode 	varchar(8) DEFAULT NULL,
+    hp 			decimal(3,1) DEFAULT NULL,
+	tempo 		int(3) DEFAULT NULL,
+	responsible varchar(20) DEFAULT NULL,
+	hpProgress 	decimal(3,1),
     PRIMARY KEY (class)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,resppers) VALUES ('WEBUG13','elite',23432,'WEBUG',180,100,'Brohede');
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,resppers) VALUES ('TEST13','test',44444,'TEST',180,100,'tester');
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG13','elite',23432,'WEBUG',180,100,'Brohede');
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('TEST13','test',44444,'TEST',180,100,'tester');
 /**
  * this table stores the different subparts of each course. 
  */ 
 CREATE TABLE subparts(
-	partname varchar(50),
-	cid INT UNSIGNED NOT NULL,
-	parthp int(4) DEFAULT NULL,
-	difGrade varchar(10),
+	partname 	varchar(50),
+	cid 		INT UNSIGNED NOT NULL,
+	parthp 		decimal(3,1) DEFAULT NULL,
+	difgrade	varchar(10),
 	PRIMARY KEY (partname,cid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta2',1,1,'u345');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',2,2,'u345');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',1,2,'u345');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',2,3,'ug');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',3,5,'u345');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',3,2,'u345');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta2',1,1,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',2,2,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',1,2,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',2,3,'u-g');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',3,5,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',3,2,'u-3-4-5');
 
 /**
- * this table for many to mny between user and subparts. 
+ * this table is weak reslation to user and partcourse. 
  */ 
 CREATE TABLE partresult (
-    cid INT UNSIGNED NOT NULL,
-	uid	INT UNSIGNED NOT NULL,
-	partname varchar(50),
-	grade varchar(2) DEFAULT NULL,
-	PRIMARY KEY(partname, cid, uid),
+    cid 		INT UNSIGNED NOT NULL,
+	uid			INT UNSIGNED NOT NULL,
+	partname	varchar(50),
+	grade 		varchar(1) DEFAULT NULL,
+	hp			decimal(3,1) references subparts (parthp),
+	PRIMARY KEY(partname, cid, uid,grade),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,1,'hemtenta2',4);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (2,1,'hemtenta',3);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,2,'hemtenta','u');
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (2,2,'projektuppgift','g');
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (3,3,'hemtenta',5);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (3,3,'projektuppgift',5);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta2',4);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,4,'hemtenta2',4,1);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (2,4,'hemtenta',3,2);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,5,'hemtenta','u',2);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (2,5,'projektuppgift','g',3);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (3,4,'hemtenta',5,2);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (3,4,'projektuppgift',5,5);
+INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,3,'hemtenta2',4,2);
 INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta',3);
 
 /**
@@ -443,26 +466,28 @@ INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta',3);
  */ 
 
 CREATE TABLE programcourse (
-    class varchar(10) DEFAULT NULL,
-	cid INT UNSIGNED NOT NULL,
+    class 		varchar(10) DEFAULT NULL,
+	cid 		INT UNSIGNED NOT NULL,
+	period 		int(1) not null,
+	term 		char(5) not null,
 	PRIMARY KEY(cid, class),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (class) REFERENCES class (class)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',1);
+INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',1);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',2);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',3);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',5);
 
 /**
  * This table seems to be intended to store student results from program courses.
  */ 
 CREATE TABLE studentresultat (
-    sid mediumint(9) NOT NULL AUTO_INCREMENT,
-    pnr varchar(11) DEFAULT NULL,
-    anmkod varchar(6) DEFAULT NULL,
-    kurskod varchar(6) NOT NULL,
-    termin varchar(5) DEFAULT NULL,
-    resultat decimal(3 , 1 ) DEFAULT NULL,
-    avbrott date DEFAULT NULL,
+    sid 		mediumint(9) NOT NULL AUTO_INCREMENT,
+    pnr 		varchar(11) DEFAULT NULL,
+    anmkod 		varchar(6) DEFAULT NULL,
+    kurskod 	varchar(6) NOT NULL,
+    termin 		varchar(5) DEFAULT NULL,
+    resultat 	decimal(3,1) DEFAULT NULL,
+    avbrott 	date DEFAULT NULL,
     PRIMARY KEY (sid),
     KEY anmkod (anmkod),
     KEY pnr (pnr),
@@ -476,6 +501,7 @@ INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL
 
 */
 
+
 /**
 	This view eases the process of determining how many hp a student with a specific uid
 	in a specific course cid has finished. See the example below.
@@ -483,85 +509,29 @@ INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL
 	Example, get total hp finished by user with uid 2 in course with cid 1:
 		SQL code: select hp from studentresult where user = 2 and course_id = 1;
 */
-create view studentresult as
-	select user.uid as user, user_course.cid as course_id, sum(subparts.parthp) as hp from subparts  
-		inner join partresult on partresult.partname = subparts.partname
-		inner join user_course on user_course.cid = subparts.cid
-		inner join user on user.uid = partresult.uid and user.uid = user_course.uid and user_course.uid = partresult.uid
-			and partresult.grade != 'u'
-			group by user.uid;
+
+create view studentresultCourse  as
+	select partresult.uid as username, partresult.cid, partresult.hp  from partresult
+	inner join subparts on partresult.partname = subparts.partname 
+		and subparts.cid = partresult.cid
+		and subparts.parthp = partresult.hp
+	where partresult.grade != 'u';
+
+/*
+select username, cid, sum(hp) from studentresult where username = $varible group by cid;
+*/
 
 /* updatesd info in user table */
-
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";
 update user set ssn="810101-5567" where username="Grimling";
 update user set ssn="444444-5447" where username="Toddler";
 update user set password=password("Kong") where username="Toddler";
-update user set password=password("Banan123") where username="Tester";
+update user set password=password("Banan") where username="Tester";
 update user set superuser=1 where username="Toddler";
 
-/*Code for testing Code Viewer
 
-
- Create a number of examples, linked from one to five
- Example 1 should have no template and therefore the select template dialog should be shown
- http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=1&courseid=1&cvers=2013
- Example 2 has template 1 (no template dialog should be shown but rather an error message if not administrator) and it should show a code file on the left pane and a description pane on the right pane
- http://localhost/Toddler/CodeViewer/EditorV50.php?exampleid=2&courseid=1&cvers=2013 */
-
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid) values (1,"Xample Code","Events 1","Runlink1.html",1,2013,"2");
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Events 1","Runlink2.html",1,2013,"3","1",1);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid) values (1,"Xample Code","Events 2","Runlink3.html",1,2013,"4","2");
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid) values (1,"Xample Code","Callback 2","Dulf.html",1,2013,"5","3",1);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid) values (1,"Xample Code","Callback 3","",2,2013,1);
-
-/*
- Boxes for example 2 (Boxes are created automatically when selecting template) 
- Note: if we have box rows but no template the template assignment will give an error message, it is thus important that there are corresponding templates
-*/
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid) VALUES (1,2,"TitleA","Code","[viktig=1]","js1.js",1);
-INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,2,"TitleB","Document","[viktig=1]","<b>Events 1</b>This is elem the first section of the event description<b>More</b>This is more text",1);
-/*
- In example 2 rows 3-5 and 8-1 are highlighted
-*/
-INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,3,5,1);
-INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,1,8,11,1);
-/*
- Important words to be highlighted in example 1 and 2
-*/
-
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"event",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"elem",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"pageY",2);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"event",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"elem",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"pageY",2);
-
-
-/*
- Wordlists from three typical languages
-*/
-INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
-/*
- Words in wordlist 1,2 and 3
-*/
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"if","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"var","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"echo","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"function","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"if","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"else","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
-
-/* solves the null problmen in codeviewer*/
+/* sets after and before-id for examples in codeviewer*/
 UPDATE codeexample
 SET sectionname='Example1' , afterid='2' , beforeid='1'
 WHERE exampleid='1';
@@ -615,7 +585,17 @@ UPDATE box
 SET	segment='<b>HTML Helloworld</b>', boxcontent='Document', filename=null
 WHERE exampleid='12' and boxid='2' ;
 
-UPDATE codeexample
-SET beforeid='12', afterid='13'
-WHERE exampleid='13';
 
+/**
+ * Clears the eventlog table on a weekly basis
+ */
+DELIMITER $$
+CREATE EVENT weekly_eventlog_delete
+ON SCHEDULE EVERY 1 WEEK 
+DO
+BEGIN
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM eventlog;
+SET SQL_SAFE_UPDATES = 1;
+END $$
+DELIMITER ;

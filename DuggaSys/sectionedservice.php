@@ -8,7 +8,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
 include_once "../Shared/sessions.php";
-include_once "basic.php";
+include_once "../Shared/basic.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -65,9 +65,11 @@ if(checklogin()){
 					$orderarr=explode(",",$order);
 					foreach ($orderarr as $key => $value){
 							$armin=explode("XX",$value);
-							$query = $pdo->prepare("UPDATE listentries set pos=:pos WHERE lid=:lid;");
+							$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
 							$query->bindParam(':lid', $armin[1]);
 							$query->bindParam(':pos', $armin[0]);
+							$query->bindParam(':moment', $armin[2]);
+							//$query->bindParam(':moment', $moment);
 							if(!$query->execute()) {
 								$error=$query->errorInfo();
 								$debug="Error updating entries".$error[2];
@@ -259,3 +261,4 @@ $array = array(
 
 echo json_encode($array);
 ?>
+

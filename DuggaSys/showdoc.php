@@ -3,7 +3,7 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-include_once "basic.php";
+include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
 
 session_start();
@@ -21,7 +21,7 @@ session_start();
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery-ui-1.10.4.min.js"></script>
 
-	<script src="dugga.js"></script>
+	<script src="../Shared/dugga.js"></script>
 
 </head>
 <body>
@@ -30,6 +30,7 @@ session_start();
 		$noup="SECTION";
 		$loginvar="LINK"; 
 		include '../Shared/navheader.php';
+		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
@@ -137,7 +138,7 @@ session_start();
 	<!-- content END -->
 
 	<?php
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 	
 </body>

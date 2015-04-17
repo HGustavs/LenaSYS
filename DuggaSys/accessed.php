@@ -27,6 +27,7 @@ pdoConnect();
 		$noup=true;
 		$loginvar="ACCESS"; 
 		include '../Shared/navheader.php';
+		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
@@ -45,7 +46,7 @@ pdoConnect();
 	<!--- Edit Section Dialog END --->
 	
 	<?php 
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 	
 	<!--- Edit User Dialog START --->
@@ -84,12 +85,12 @@ pdoConnect();
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='uid' value='Toddler' /></td>
-			<td>UserName: <input class='form-control textinput' type='text' id='usrnme' value='User Name' /></td>		
-			<td>SSN: <input class='form-control textinput' type='text' id='ussn' value='SSN' /></td>
+			<td>UserName: <div id='usernamewrapper'><input class='form-control textinput' type='text' id='usrnme' value='User Name' /></div></td>		
+			<td>SSN: <div id='ssnwrapper'><input class='form-control textinput' type='text' id='ussn' value='SSN' /></div></td>
 		</tr>
 		<tr>
-			<td>First Name: <input class='form-control textinput' type='text' id='firstname' value='First Name' /></td>		
-			<td>Last Name: <input class='form-control textinput' type='text' id='lastname' value='Last Name' /></td>
+			<td>First Name: <div id='firstnamewrapper'><input class='form-control textinput' type='text' id='firstname' value='First Name' /></div></td>		
+			<td>Last Name: <div id='lastnamewrapper'><input class='form-control textinput' type='text' id='lastname' value='Last Name' /></div></td>
 		</tr>
 	</table>
 

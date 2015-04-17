@@ -77,7 +77,6 @@ hr {
     padding: 50px 12px 8px 8px;
     background: #fff;
     min-height: 200px;
- 
 }
 
 #newbutton {
@@ -479,6 +478,31 @@ font-size: 14px;
 	box-shadow:2px 2px 4px #000;
 }
 
+/* --------------================################================-------------- *
+ *                        Pop-up BOX made by Django Okedjad                     *
+ * --------------================################================-------------- */
+
+
+#impwords {
+	max-width: 186px;
+	min-width: 186px;
+	margin-left: 227px;
+}
+
+#impword {
+    	width: 174px;
+}
+
+#before, #after {
+    float: left;
+    width: 226px;
+}
+
+#playlink {
+    width: 216px;
+}
+
+
 .loginBox select {font-size:14px;float:right;margin-right:4px;}
 
 .loginBoxheader {
@@ -633,6 +657,7 @@ input.submit-button {
 	margin-bottom:2px;
 	margin-left:4px;
 	font-size:14px;
+	transition:1s background-color;
 }
 
 input.submit-button:hover {
@@ -742,7 +767,6 @@ input.submit-button-red:hover {
 .duggasys-head__username {
 
 }
-
 
 /* End DuggaSys Header */
 /***********************/
