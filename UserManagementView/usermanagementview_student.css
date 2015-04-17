@@ -38,11 +38,14 @@
 	margin:0px 0 0 250px;	
 }
 
-#progress1{
+#completedMainProgress{
 	height:40px;
 	margin:0 auto;
 	display: block;
 	box-shadow: 0px 3px 8px #A9A;
+	text-align:center;
+	font-size:20px;
+	background-color:#EE3B3B;
 }
 
 #progress_m{
@@ -89,11 +92,9 @@
 	
 }
 
-#course_progress {
+.completed_course_progressbar {
 	float:right;
-	height:20px;
-	width:50%;
-	margin:-17px 0 0 0;
+	background-color:#E9967A;
 	
 }
 
@@ -118,9 +119,9 @@
 
 
 
-#course {
+.course {
 	width:100%;
-	height:20px;
+	height:70px;
 	margin: 10px auto;
 	text-align:center;
 	
@@ -177,7 +178,7 @@ footer p {
 	margin: 0.2em;
 }
 
-.my-col-xs-4 {
+.Year {
 	float: left;
 	width: 30%;
 	margin: 1%;
@@ -187,13 +188,13 @@ footer p {
 
 }
 
-.courseInnerWrapp {
+.course_wrapper {
 	margin: 0 10px 0 10px;
 
 }
 
 
-.courses {
+.course {
 	height:50%;
 	background-color:#dad8db;
 	margin:1px 0 0 0;
@@ -206,16 +207,19 @@ footer p {
 	margin:1px 0 0 0;
 }
 
-#courseName {
+.course_name {
 	line-height:25px;
+	float:left;
+	background-color:#EEB4B4;
 	
 }
 
-#courseLink {
+.course_link {
 	line-height:25px;
+	float:left;
 }
 
-#courseResponsible {
+.course_reponsible {
 	line-height:25px;
 }	
 	
@@ -241,20 +245,13 @@ small > a:hover {
 }
     	
 /* my changes to BS */
-.panelheading{
-	
-	padding: 2px 5px;
-	text-align:center;
-	background-color:#614875;
-		
-}
 
 .panels {
   margin-bottom: 5px;
    
 }
 
-.panel-body{
+.courses_body{
 	padding: 5px;
 }
 
@@ -269,10 +266,13 @@ small > a:hover {
    clear: both;
 }
 
-.panel-title {
+.year_header {
  	margin: 0;
 	font-size:1.4em;
 	color:#fff;
+	padding: 2px 5px;
+	text-align:center;
+	background-color:#614875;
 }
 
 .list-group {
@@ -335,4 +335,8 @@ small > a:hover {
 	height: 12px;
 	width:12px;	
 	background-color: #d00;
+}
+
+#YearContainer{
+	min-height:inherit;
 }
