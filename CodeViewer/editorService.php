@@ -58,7 +58,7 @@
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
 
-		if(checklogin() && $_SESSION['uid'] == $uid || isSuperUser($_SESSION['uid'])) {
+		if(checklogin() && ($_SESSION['uid'] == $uid || hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 			$writeaccess="w";
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Add word to wordlist
