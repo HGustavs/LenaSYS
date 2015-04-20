@@ -32,6 +32,10 @@ INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$
 insert into user(username, password,firstname,lastname,ssn,email,class) values('a13asrd','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','assad','rduk','111111-1112','a13asrd@his.se','WEBUG13');
 insert into user(username, password,firstname,lastname,ssn,email,class) values('a13durp','*0F1088E511EC11B8EF2BBDE830E08E9F959843C4','hurp','durp','111111-1113','a13durp@his.se','WEBUG13');
 
+/* Students for duggasys testing */
+INSERT INTO user (username, password, firstname, lastname, ssn, newpassword, creator, superuser) VALUES ('Student01', password("pasta"), 'Student', 'Student', '000000-0001', '0', '1', '0');
+INSERT INTO user (username, password, firstname, lastname, ssn, newpassword, creator, superuser) VALUES ('Student02', password("pasta"), 'Student', 'Student', '000000-0002', '0', '1', '0');
+INSERT INTO user (username, password, firstname, lastname, ssn, newpassword, creator, superuser) VALUES ('Student03', password("pasta"), 'Student', 'Student', '000000-0003', '0', '1', '0');
 
 /** 
  * Course table contains the most essential information relating to study courses in the database.
