@@ -484,4 +484,7 @@ function getCookie(cname) {
 
 $(window).load(function() {
       $('.loginBox').draggable();
+      $(window).keyup(function(event){
+      	if(event.keyCode == 27) closeWindows();
+      });
 });
