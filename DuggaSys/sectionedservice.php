@@ -32,6 +32,13 @@ $link=getOP('link');
 $visibility=getOP('visibility');
 $order=getOP('order');
 $gradesys=getOP('gradesys');
+
+$versid=getOP('versid');
+$coursename=getOP('coursename');
+$versname=getOP('versname');
+$coursecode=getOP('coursecode');
+$coursenamealt=getOP('coursenamealt');
+
 if($gradesys=="UNK") $gradesys=0;
 
 $debug="NONE!";	
@@ -92,7 +99,43 @@ if(checklogin()){
 						$error=$query->errorInfo();
 						$debug="Error updating entries".$error[2];
 					}
-			}	
+			}else if(strcmp($opt,"NEWVRS")===0){
+					$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':coursecode', $coursecode);
+					$query->bindParam(':vers', $versid);
+					$query->bindParam(':versname', $versname);				
+					$query->bindParam(':coursename', $coursename);
+					$query->bindParam(':coursenamealt', $coursenamealt);
+
+					if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug="Error updating entries".$error[2];
+					}
+			}else if(strcmp($opt,"UPDATEVRS")===0){
+					$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':coursecode', $coursecode);
+					$query->bindParam(':vers', $versid);
+					$query->bindParam(':versname', $versname);				
+
+					if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug="Error updating entries".$error[2];
+					}
+			}else if(strcmp($opt,"CHGVERS")===0){
+					$query = $pdo->prepare("UPDATE COURSE SET activeversion=:vers WHERE cid=:cid");
+
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':vers', $versid);		
+
+					if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug="Error updating entries".$error[2];
+					}
+			}
 	}
 
 }
@@ -175,12 +218,14 @@ if($hr){
 		}
 }
 
-$query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
+$query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
 $query->bindParam(':cid', $courseid);
 $coursename = "Course not Found!";
+$coursecode = "Coursecode not found!";
 if($query->execute()) {
 	foreach($query->fetchAll() as $row) {
-			$coursename=$row['coursename'];		
+			$coursename=$row['coursename'];
+			$coursecode=$row['coursecode'];
 	}
 } else {
 			$error=$query->errorInfo();
@@ -244,6 +289,27 @@ if($ha){
 				)
 			);
 		}
+		
+		$versions=array();
+		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error reading courses".$error[2];
+		}else{
+			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+				array_push(
+					$versions,
+					array(
+						'cid' => $row['cid'],
+						'coursecode' => $row['coursecode'],
+						'vers' => $row['vers'],
+						'versname' => $row['versname'],
+						'coursename' => $row['coursename'],
+						'coursenamealt' => $row['coursenamealt']
+					)
+				);
+			}
+		}
 }
 
 $array = array(
@@ -253,10 +319,12 @@ $array = array(
 	'readaccess' => $hr,
 	'coursename' => $coursename,
 	'coursevers' => $coursevers,
+	'coursecode' => $coursecode,
 	'courseid' => $courseid,
 	'links' => $links,
 	'duggor' => $duggor,
-	'results' => $resulties
+	'results' => $resulties,
+	'versions' => $versions
 );
 
 echo json_encode($array);
