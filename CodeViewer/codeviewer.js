@@ -1689,12 +1689,12 @@ function getLocalStorageProperties(templateId){
 function parseMarkdown(inString)
 {	
 	var returnString = " ";							
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<strong><em>$1</em></strong>');	
-	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<strong>$1</strong>');
-	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<em>$1</em>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<strong><em>$1</em></strong>');
-	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<strong>$1</strong>');	
-	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<em>$1</em>');
+	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
+	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
+	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
+	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<font style="font-weight:bold;">$1</font>');	
+	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<font style="font-style:italic;">$1</font>');
 	inString = inString.replace(/^\#{6} (.*)=*/gm, '<h6>$1</h6>');
 	inString = inString.replace(/^\#{5} (.*)=*/gm, '<h5>$1</h5>');
 	inString = inString.replace(/^\#{4} (.*)=*/gm, '<h4>$1</h4>');
