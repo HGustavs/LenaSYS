@@ -19,16 +19,17 @@
         <link href="usermanagementview.css" rel="stylesheet">
         
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-        <script src="usermanagementview.js"></script>
+
         <script type="text/javascript" src="usermanagementviewjquery.js"></script>
         <script type="text/javascript" src="../Shared/dugga.js"></script>
+                <script src="teachermanagementview.js"></script>
     </head>
 
 <body>
 
   	<?php 
 		$noup="NONE";
-		$loginvar="COURSE"; 
+		$loginvar="UMVTEACHER"; 
 		include '../Shared/navheader.php';
 	?>
 
@@ -41,23 +42,8 @@
 	
             
         <!-- Dropdownmenu -->
-        <nav class="rightDropdownMenu">
-        	<ul>
-        		<li><a href="#" >Program 1</a>
-        			<ul>
-        				<li><a href="#">År 1</a></li>
-        				<li><a href="#">År 2</a></li>
-        				<li><a href="#">År 3</a></li>
-        			</ul>
-        		</li>
-        		<li><a href="#" >Program 2</a>
-        			<ul>
-        				<li><a href="#">År 1</a></li>
-        				<li><a href="#">År 2</a></li>
-        				<li><a href="#">År 3</a></li>
-        			</ul>
-        		</li> 
-        	</ul> 
+        <nav class="rightDropdownMenu" id="DropdownMenu">
+        	
         </nav>      
        		        
         <!-- Searchfield -->
@@ -80,15 +66,30 @@
         <div class="largeProgressbarTV">
         </div> 
         
+        <div id="totalInfo">
         
-        <!-- View over the students how are going that program/course -->
-        <div class="studentCourseViewTV">
-        </div> 
+			<!-- View over the students how are going that program/course -->
+			<div class="studentCourseViewTV">
+				<div id="radio_buttonToolbar">
+				</div>
+				<div id="studentslist">
+				</div>
+		
+			</div> 
+		
+		
+			<!-- Individual course progressbars -->
+			<div class="indivCourseProgressbarsTV">
+		
+				<div id="radio_buttonCourse">
+				</div>
+			
+				<div id="small_progressbar">
+				</div>
+			
+			</div> 
         
-        
-        <!-- Individual course progressbars -->
-        <div class="indivCourseProgressbarsTV">
-        </div> 
+        </div>
         
         
         <!-- Change pages -->
