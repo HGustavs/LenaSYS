@@ -193,27 +193,39 @@ function AJAXService(opt,apara,kind)
 	var para="";
 	for (var key in apara) {
 		var old = apara[key];
-		// Run the input parameter through the following regular expression
-		// The result is a string that only allows white-listed characters.
-		if (apara[key] != null) {
-			var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@\. \, \- \s]*/gi);
-			
-			// Concat the generated regex result to a string again.
-			apara[key] = s.join("");
-			
-			// Informs the user if his input contained illegal characters
-			// that they were removed after parsing.
-			if(old != apara[key]) {
-				alert("Illegal characters removed in " + key);
+			// Handles the array of important words. IMPORTANT!
+			if (typeof(apara[key]) != "undefined" && apara[key] != "") {
+				if (apara[key].constructor === Array) {
+					var array = [];
+					for (var i = 0; i < apara[key].length; i++) {
+						array.push(encodeURIComponent(htmlEntities(apara[key][i])));
+					}
+					para+="&"+key+"="+array;
+				}
+				else {
+					// Run the input parameter through the following regular expression
+					// The result is a string that only allows white-listed characters.
+					if (apara[key] != null) {
+						var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@\. \, \- \s]*/gi);
+				
+						// Concat the generated regex result to a string again.
+						apara[key] = s.join("");
+				
+						// Informs the user if his input contained illegal characters
+						// that they were removed after parsing.
+						if(old != apara[key]) {
+							alert("Illegal characters removed in " + key);
+						}
+					}
+					// Informs the user that his input contained nothing.
+					if(apara[key] == "") {
+						alert("Your input contained nothing in " + key);
+					}
+				
+					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+				}
 			}
 		}
-		// Informs the user that his input contained nothing.
-		if(apara[key] == "") {
-			alert("Your input contained nothing in " + key);
-		}
-			
-		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
-	}
 				
 	if(kind=="COURSE"){
 			$.ajax({
