@@ -1,5 +1,9 @@
 <?php
-session_start();
+// if no session is active prompt for login and redirect to start page
+// to prevent access using direct address.
+if(session_status() == PHP_SESSION_NONE){
+	header("Location: ../Shared/loginprompt.php");	
+}
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
