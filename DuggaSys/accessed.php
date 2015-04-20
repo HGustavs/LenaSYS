@@ -57,8 +57,13 @@ pdoConnect();
 	<div onclick='closeWindows();'>x</div>
 	</div>
  
-	The format required for the information is the following: SSN&lt;TAB&gt;NAME&lt;TAB&gt; EMAIL e.g.: 
-	<div class='note'>000000-0000 LastName, FirstName a12firla@student.his.se</div>
+	<p>Users must be separated with a linebreak and the format required for each user is as follows:</p> 
+	<div class='note'>
+		<p>SSN&lt;space&gt;Lastname,&lt;space&gt;Firstname&lt;space&gt;Email&lt;linebreak&gt;</p>
+		<p>Example:<br/>
+		000000-0000 Lastname, Firstname a12firla@student.his.se<br/>
+		111111-1111 Lastname, Firstname b12firla@student.his.se</p>
+	</div>
 
 	<table width="100%"><tr>
 			<td align='right'><input class='submit-button' type='button' value='Add Users' onclick='addUsers();' /></td>
@@ -67,7 +72,7 @@ pdoConnect();
 
 	<table width="100%">
 		<tr>
-			<td><textarea id="import" style="width:100%;height:200px;" ></textarea></td> 
+			<td><textarea id="import" ></textarea></td> 
 		</tr>
 	</table>
 
