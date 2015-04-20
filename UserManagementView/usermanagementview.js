@@ -67,7 +67,7 @@ function renderStudentView(data)
 	htmlStr = "";
 	var progress = data['progress'];
 	
-	htmlStr += '<p>' + progress[0]['completedHP'] + '/' + progress[0]['totalHP']+ '</p>';
+	htmlStr += '<p>' + parseFloat(progress[0]['completedHP']) + '/' + progress[0]['totalHP']+ '</p>';
 	
 	var progressBar = document.getElementById('completedMainProgress');
 	progressBar.innerHTML = htmlStr;
@@ -114,13 +114,17 @@ function createHTMLForCourse(data)
 	var course_link = (data['course_link'] == null ?  '#' : data['course_link']);
 	var course_responsible = data['course_responsible'];
 	
+	if(result==null){
+		result=0;
+	}
+	
 	var courseHtmlStr = "";
 	
 	courseHtmlStr += '<div class="course">';
 	courseHtmlStr += '<div class="course_wrapper">';
 	
 	courseHtmlStr += '<div class="course_name">' + coursename + '</div>';
-	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + result + '/' + hp + '</div></div>';
+	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + parseFloat(result) + '/' + hp + '</div></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '</div>';
 	courseHtmlStr += '</div>';
