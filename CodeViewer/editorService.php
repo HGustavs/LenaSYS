@@ -39,7 +39,7 @@
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 	// Make sure there is an example
 	$cnt=0;
-	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
+	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public,uid FROM codeexample WHERE exampleid = :exampleid;");
     $query->bindParam(':exampleid', $exampleid);
 	$query -> execute();	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
@@ -51,13 +51,14 @@
 		$public=$row['public'];
 		$sectionname=$row['sectionname'];
 		$playlink=$row['runlink'];
+		$uid=$row['uid'];
 	}	
 	if($cnt>0){
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
 
-		if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+		if(checklogin() && $_SESSION['uid'] == $uid || isSuperUser($_SESSION['uid'])) {
 			$writeaccess="w";
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Add word to wordlist
