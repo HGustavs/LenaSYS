@@ -178,8 +178,8 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 					<td>Important Words:</td>
 				</tr>
 				<tr>
-					<td> <colspan="2"><input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
-					<td> <colspan="2"><input class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' </td>
+					<td colspan="1"><input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
+					<td colspan="2"><input class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' </td>
 					<input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /></td>			
 				</tr>
 				<tr>
