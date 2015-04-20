@@ -241,6 +241,11 @@ function createVersion(){
 	var courseid = $("#course-courseid").text();
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
+	var coursevers = $("#course-coursevers").text();
+	
+	if(coursevers=="null"){
+		makeactive=true;
+	}
 	
 	AJAXService("NEWVRS", {
 		cid : cid,
