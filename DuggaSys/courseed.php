@@ -25,6 +25,7 @@ pdoConnect();
 		$noup="NONE";
 		$loginvar="COURSE"; 
 		include '../Shared/navheader.php';
+		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
@@ -45,13 +46,13 @@ pdoConnect();
 	<div id='newCourse' class='loginBox' style='width:464px;display:none;'>
 	<div class='loginBoxheader'>
 	<h3>New Course</h3>
-	<div onclick='closeNewCourse();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>		
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='cid' value='Toddler' /></td>
-			<td>Course Name: <input class='form-control textinput' type='text' id='ncoursename' value='Course Name' /></td>
-			<td>Course Code: <input class='form-control textinput' type='text' id='ncoursecode' value='Course Code' /></td>	
+			<td>Course Name: <input class='form-control textinput' type='text' id='ncoursename' placeholder='Course Name' /></td>
+			<td>Course Code: <input class='form-control textinput' type='text' id='ncoursecode' placeholder='Course Code' /></td>	
 		</tr>
 	</table>
 	<table width="100%">
@@ -68,18 +69,18 @@ pdoConnect();
 
 	<div class='loginBoxheader'>
 	<h3>Edit Course</h3>
-	<div onclick='closeEditCourse();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>
 				
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='cid' value='Toddler' /></td>
-			<td>Course Name: <input class='form-control textinput' type='text' id='coursename' value='Course Name' /></td>
-			<td>Course Code: <input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></td>	
+			<td>Course Name: <div id='couresnamewrapper'><input class='form-control textinput' type='text' id='coursename' value='Course Name' /></div></td>
+			<td>Course Code: <div id='courseidwrapper'><input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></div></td>	
 		</tr>
 		<tr>
-			<td>Vers ID: <input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></td>		
-			<td>Vers Name: <input size='8' class='form-control textinput' type='text' id='versname' value='Version Name' /></td>		
+			<td>Vers ID: <div id='versidwrapper'><input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></div></td>		
+			<td>Vers Name: <div id='versnamewrapper'><input size='8' class='form-control textinput' type='text' id='versname' value='Version Name' /></div></td>		
 			<input type='hidden' id='cid' value='Toddler' /></td>
 		</tr>
 		<tr>
@@ -94,10 +95,10 @@ pdoConnect();
 
 
 	<table width="100%"><tr>
-			<td id='accessbutt' align='left'><input class='submit-button' type='button' value='Access' onclick='accessCourse();' /></td>
-			<td align='center'><input class='submit-button' type='button' value='New Version' onclick='createVersion();' /></td>
-			<td align='center'><input class='submit-button' type='button' value='Copy' onclick='copyVersion();' /></td>
-			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateCourse();' /></td>
+			<td id='accessbutt' align='left'><input class='submit-button' type='button' value='Access' title='Give students access to this course' onclick='accessCourse();'/></td>
+			<td align='center'><input class='submit-button' type='button' value='New Version' title='Click here to save a new version' onclick='createVersion();' /></td>
+			<td align='center'><input class='submit-button' type='button' value='Copy' title='Copy this course' onclick='copyVersion();' /></td>
+			<td align='right'><input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateCourse();' /></td>
 		</tr>
 	</table>
 

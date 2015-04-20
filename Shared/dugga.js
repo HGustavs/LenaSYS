@@ -2,6 +2,30 @@
 // changeCSS: Changes the CSS and remembers the index of the CSS.
 //            This allows us to set and remove whole CSS files
 //----------------------------------------------------------------------------------
+var status = 0;
+function toggleloginnewpass(){
+
+	if(status == 0){
+		$("#newpassword").css("display", "block");
+		$("#login").css("display", "none");
+		status++;
+	}
+	else if(status == 1){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "block");
+		status= 0;
+	}
+}
+
+function closeWindows(){
+
+	$(".loginBox").css("display", "none");
+	$("#overlay").css("display","none");
+	$("#login #username").val("");
+	$("#login #password").val("");
+	
+	window.removeEventListener("keypress", loginEventHandler, false);
+}
 
 function changeCSS(cssFile, index)
 {
@@ -113,7 +137,7 @@ function navigateTo(prefix,file)
 {
 		surl=window.location.href;
 		surl=surl.substring(0,surl.lastIndexOf("/")); 
-		window.location.href = surl+"/codeupload/";
+		window.location.href = surl+prefix+file;
 }
 
 
@@ -151,6 +175,9 @@ function htmlEntities(str) {
 				str=str.replace(/\å/g, '&aring;');
 				str=str.replace(/\Å/g, '&Aring;');
 				str=str.replace(/\"/g, '&quot;');
+				str=str.replace(/\//g, '&#47;');
+				str=str.replace(/\\/g, '&#92;');
+				str=str.replace(/\?/g, '&#63;');
 //				str=str.replace(/\{/g, '&#123;');
 //				str=str.replace(/\}/g, '&#125;');
 		}
@@ -161,11 +188,31 @@ function htmlEntities(str) {
 // AJAX Service: Generic AJAX Calling Function with Prepared Parameters
 //----------------------------------------------------------------------------------
 
-function AJAXService(opt,apara,kind)
+function AJAXService(opt,apara,kind)	
 {
 	var para="";
 	for (var key in apara) {
-			para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+		var old = apara[key];
+		// Run the input parameter through the following regular expression
+		// The result is a string that only allows white-listed characters.
+		if (apara[key] != null) {
+			var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@\. \, \- \s]*/gi);
+			
+			// Concat the generated regex result to a string again.
+			apara[key] = s.join("");
+			
+			// Informs the user if his input contained illegal characters
+			// that they were removed after parsing.
+			if(old != apara[key]) {
+				alert("Illegal characters removed in " + key);
+			}
+		}
+		// Informs the user that his input contained nothing.
+		if(apara[key] == "") {
+			alert("Your input contained nothing in " + key);
+		}
+			
+		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 	}
 				
 	if(kind=="COURSE"){
@@ -240,14 +287,31 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returned
 			});
+	}else if(kind=="UMVSTUDENT") {
+			$.ajax({
+				url: "usermanagementviewservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: renderStudentView
+			});
 	}
 }
 
+//Will handel enter key pressed when loginbox is showing
+function loginEventHandler(event){
+	if(event.keyCode == "0x0D"){
+		processLogin(getCookie("loginvar"));
+	}
+}
+
+
 function processLogin(kind) {
+
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
-
+		
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -261,7 +325,6 @@ function processLogin(kind) {
 				var result = JSON.parse(data);
 				if(result['login'] == "success") {
 					$("#userName").html(result['username']);
-
 					$("#loginbutton").removeClass("loggedout");
 					$("#loginbutton").addClass("loggedin");
 
@@ -270,6 +333,8 @@ function processLogin(kind) {
 					$("#login #username").val("");
 					$("#login #password").val("");		
 					
+					$("#loginbutton").off("click");
+					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
 					if(kind=="COURSE") AJAXService("GET",{},"COURSE")
@@ -282,7 +347,7 @@ function processLogin(kind) {
 							location.reload(); 		
 					}				
 				}else{
-					console.log("Failed to log in.");
+					alert("Failed to log in.");
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
@@ -298,27 +363,16 @@ function processLogin(kind) {
 		});
 }
 
-function processLogout(kind) {
+function processLogout() {
 	$.ajax({
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
-			$("#userName").html("Guest");
-
-			$("#loginbutton").addClass("loggedout");
-			$("#loginbutton").removeClass("loggedin");
-
-			$("#loginbutton").click(function(){showLoginPopup();});
-
-			if(kind=="COURSE") AJAXService("GET",{},"COURSE")
-			else if(kind=="ACCESS") AJAXService("GET",{cid:querystring['cid']},"ACCESS")
-			else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
-			else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
-			else if(kind=="FILE") AJAXService("GET",{cid:querystring['cid']},"FILE")
-			else if(kind=="SECTION") AJAXService("get",{},"SECTION")
-			else if(kind=="LINK"||kind=="PDUGGA"||kind=="CODV"){
-					location.reload(); 		
-			}
+			var urlDivided = window.location.href.split("/");
+			urlDivided.pop();
+			urlDivided.pop();
+			var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
+			window.location.replace(newURL);			
 		},
 		error:function() {
 			console.log("error");
@@ -328,14 +382,36 @@ function processLogout(kind) {
 
 function showLoginPopup()
 {
-		$("#loginBox").css("display","block");
-		$("#overlay").css("display","block");
+	$("#loginBox").css("display","block");
+	$("#overlay").css("display","block");
+	$("#username").focus();
+	window.addEventListener("keypress", loginEventHandler, false);
 }
 
 function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
 		$("#overlay").css("display","none");
+		
+		window.removeEventListener("keypress", loginEventHandler, false);
+}
+
+//----------------------------------------------------------------------------------
+// setupLoginLogoutButton: Set button to login or logout functionality when navheader loads
+//----------------------------------------------------------------------------------
+
+function setupLoginLogoutButton(isLoggedIn){
+
+	if(isLoggedIn == "true"){
+		console.log("Setting button to logout");
+		$("#loginbutton").off("click");
+		$("#loginbutton").click(function(){processLogout();});	
+	}
+	else{
+		console.log("Setting button to show login prompt");
+		$("#loginbutton").off("click");
+		$("#loginbutton").click(function(){showLoginPopup();});		
+	}
 }
 
 function showReceiptPopup()
@@ -363,3 +439,49 @@ function hideDuggaInfoPopup()
 		$("#duggaInfoBox").css("display","none");
 		$("#overlay").css("display","none");
 }
+
+//----------------------------------------------------------------------------------
+// A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
+//----------------------------------------------------------------------------------
+function loginButtonHover(status) {
+	if(status == "online"){
+		document.getElementById("loginbutton").addEventListener("mouseover", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/logout_button.svg";
+		}, false);
+		document.getElementById("loginbutton").addEventListener("mouseout", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
+		}, false);
+	}
+	if(status == "offline"){
+		document.getElementById("loginbutton").addEventListener("mouseover", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/login_button.svg";
+		}, false);
+		document.getElementById("loginbutton").addEventListener("mouseout", function() {
+			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
+		}, false);		
+	}
+}
+
+//----------------------------------------------------------------------------------
+// A function for redirecting the user to there UserManagementView
+//----------------------------------------------------------------------------------
+function redirectToUMV() 
+{
+	window.location.replace("../UserManagementView/redirector.php");
+}
+
+//Function to get a cookie from a cookie key(name)
+function getCookie(cname) {
+	var name = cname + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0; i<ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1);
+	        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    	}
+	return "";
+}
+
+$(window).load(function() {
+      $('.loginBox').draggable();
+});

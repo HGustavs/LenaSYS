@@ -1,0 +1,342 @@
+#yearWrapp {
+	width:200px;
+	float:right;
+}
+
+
+#studentTitle {
+	width:70%;
+	height:20px;
+	margin: 40px auto;
+	text-align:center;
+	
+	
+}
+
+#id_bar {
+	width:70%;
+	height:20px;
+	margin: 10px auto;
+	text-align:center;
+	
+}
+
+#container {
+	position: relative;
+	width:94%;
+	padding: 0 0 0 0;
+	margin: 0 0 0 35px;
+	
+	
+}
+
+#info {
+	float:right;
+	width:50px;
+	height:40px;
+	background-color:#000;
+	margin:0px 0 0 250px;	
+}
+
+#completedMainProgress{
+	height:40px;
+	margin:0 auto;
+	display: block;
+	box-shadow: 0px 3px 8px #A9A;
+	text-align:center;
+	font-size:20px;
+	background-color:#EE3B3B;
+}
+
+#progress_m{
+	height:40px;
+	margin:12px 0 0 0;
+	display: block;
+	border:none;
+	background-color:#FFF;
+	
+}
+
+#m {
+	width:51px;
+	height:40px;
+	background-image:url(progress.png);
+	background-repeat:no-repeat;
+	float:left;
+	font-size:0.8em;
+	text-align:center;
+	line-height:40px;
+	color:#FFF;
+	margin: 0 0 0 57%;
+	}
+
+#progress2{
+	float: left;	
+	height:20px;
+	width:20%;
+	margin:-30px 0 0 70px;
+	
+	
+}
+#progress3{
+	margin: -30px auto;
+	height:20px;
+	width:20%;
+}
+
+#progress4{
+	float:right;
+	height:20px;
+	width:20%;
+	margin:-30px 70px 0 0;
+	
+}
+
+.completed_course_progressbar {
+	float:right;
+	background-color:#E9967A;
+	
+}
+
+.score {
+	font-size:0.8em;
+}
+
+#score1 {
+	margin:-28px 0 0 250px;
+	float: left;
+}
+
+#score2 {
+	margin:-28px auto;
+	
+	}
+
+#score3 {
+	margin:-28px 50px 0 0;
+	float: right;
+	}
+
+
+
+.course {
+	width:100%;
+	height:70px;
+	margin: 10px auto;
+	text-align:center;
+	
+}
+
+#course ul{
+	list-style:none;
+	text-decoration:none;
+	
+}
+
+#course ul li{
+display:inline;
+	
+}
+
+.my-nav {
+	position: relative;
+	top: 30px;
+	left: 0;
+	width: calc(100%-2em);
+	padding: 1em; 
+	background-color: #def;
+}
+
+.my-container-fluid {
+	position: relative;
+	top: 10px;
+	left: 25px;
+	width: 100%;
+	
+}
+
+.small {
+	font-size: 0.8em;
+}
+
+.my-input-group {
+	width:60%;
+	float: right;
+}
+
+.my-pull-left {
+	float: left;
+}
+
+.my-pull-right {
+	float: right;
+}
+
+footer p {
+	font-style: italic;
+	font-size: 1em;	
+	margin: 0.2em;
+}
+
+.Year {
+	float: left;
+	width: 30%;
+	margin: 1%;
+	border-radius:5px;
+	border: 3px solid #624877;
+	box-shadow: 0px 3px 8px #A9A;
+
+}
+
+.course_wrapper {
+	margin: 0 10px 0 10px;
+
+}
+
+
+.course {
+	height:50%;
+	background-color:#dad8db;
+	margin:1px 0 0 0;
+}
+
+
+.courses_second {
+	height:50%;
+	background-color:#eae8eb;
+	margin:1px 0 0 0;
+}
+
+.course_name {
+	line-height:25px;
+	float:left;
+	background-color:#EEB4B4;
+	
+}
+
+.course_link {
+	line-height:25px;
+	float:left;
+}
+
+.course_reponsible {
+	line-height:25px;
+}	
+	
+.forkunskap {
+	font-style: italic;
+	font-size: smaller;
+}
+
+small > a {
+	color: white;
+}
+small > a:hover {
+	color:white;
+}
+.kursnamn {
+	margin: 2px;
+}
+
+.kurskod {
+	display: inline-block;
+	line-height: 20px;
+	margin-left: 4px;
+}
+    	
+/* my changes to BS */
+
+.panels {
+  margin-bottom: 5px;
+   
+}
+
+.courses_body{
+	padding: 5px;
+}
+
+.panel-info {
+    
+}
+
+.clearfix:after { 
+   content: "."; 
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+.year_header {
+ 	margin: 0;
+	font-size:1.4em;
+	color:#fff;
+	padding: 2px 5px;
+	text-align:center;
+	background-color:#614875;
+}
+
+.list-group {
+    margin-bottom: 2px;
+    padding-left: 0;
+}
+
+.list-group-item {
+    border: 1px solid #ddd;
+    display: block;
+    margin-bottom: 2px;
+    padding: 10px 15px;
+    position: relative;
+}
+
+.input-group {
+    border-collapse: separate;
+    display: table;
+    position: relative;
+    margin-top: 8px;
+}
+
+.stoplight{
+
+	display: inline-block;
+	height:14px;
+	width:20px;
+	padding-top: 0px;
+	padding-bottom: 0px;	
+}
+
+.stoplight-outer {
+	border: 1px ridge #080;
+	border-radius: 6px;
+	height: 16px;
+	width:16px;
+	padding: 1px;
+	/*margin-top: 2px;*/
+}
+
+.stoplight-inner-red {
+	border: 2px solid #a00;
+	border-radius: 4px;
+	height: 12px;
+	width:12px;	
+	background-color: #d00;
+}
+
+.stoplight-inner-green {
+	border: 2px solid #218821;
+	border-radius: 4px;
+	height: 12px;
+	width:12px;	
+	background-color: #7d7;
+}
+
+.stoplight-inner-orange {
+	border: 2px solid #a00;
+	border-radius: 4px;
+	height: 12px;
+	width:12px;	
+	background-color: #d00;
+}
+
+#YearContainer{
+	min-height:inherit;
+}

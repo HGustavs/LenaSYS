@@ -87,8 +87,14 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 		// Set Variant ID		
 		$("#did").val(did);		
 
-		// Set Variant ID		
-		$("#name").val(name);
+		// Set Dugga name
+		$("#dugganamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='name' placeholder='"+name+"' />");
+		
+		// Set Release date name
+		$("#releasenamewrapper").html("<input class='form-control textinput datepicker hasDatepicker' type='text' id='release' placeholder='"+release+"' />");
+
+		// Set Deadline date name
+		$("#deadlinenamewrapper").html("<input class='form-control textinput datepicker hasDatepicker' type='text' id='deadline' placeholder='"+deadline+"' />");
 
 		// Set Autograde
 		var str="";
@@ -116,10 +122,6 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 				}
 		}
 		$("#template").html(str);
-
-		$("#release").val(release);
-		$("#deadline").val(deadline);
-
 }
 
 function selectVariant(vid,param,answer)
@@ -130,11 +132,11 @@ function selectVariant(vid,param,answer)
 		// Set Variant ID		
 		$("#vid").val(vid);
 		
-		// Set Parameter (Exam Question)
-		$("#parameter").val(param.replace(/&quot;/g, '"'));
-
-		// Set Answer (Answer for Question - Optional)	
-		$("#variantanswer").val(answer.replace(/&quot;/g, '"'));
+		// Set Variant parameter
+		$("#parameternamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' placeholder='"+param+"' />");
+		
+		// Set Variant answer
+		$("#answernamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' placeholder='"+answer+"' />");
 }
 
 //----------------------------------------
@@ -218,7 +220,7 @@ function returnedDugga(data)
 										str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
 										str+="<td style='padding:4px;'>";
-												str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/Cogwheel.svg' ";
+												str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
 										str+="</td>";
 

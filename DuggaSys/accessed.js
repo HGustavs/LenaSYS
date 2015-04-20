@@ -35,11 +35,14 @@ function changeAccess(cid,uid,val)
 function selectUser(uid,username,ssn,firstname,lastname,access)
 {
 		// Set Name		
-		$("#firstname").val(firstname);
-		$("#lastname").val(lastname);
-
-		$("#usrnme").val(username);
-		$("#ussn").val(ssn);
+		$("#firstnamewrapper").html("<input class='form-control textinput' type='text' id='firstname' placeholder='"+firstname+"' />");
+		$("#lastnamewrapper").html("<input class='form-control textinput' type='text' id='lastname' placeholder='"+lastname+"' />");
+		
+		// Set User name
+		$("#usernamewrapper").html("<input class='form-control textinput' type='text' id='usrnme' placeholder='"+username+"' />");
+		
+		//Set SSN
+		$("#ssnwrapper").html("<input class='form-control textinput' type='text' id='ussn' placeholder='"+ssn+"' />");
 		$("#uid").val(uid);
 
 		$("#editUsers").css("display","block");
@@ -82,10 +85,7 @@ function returnedAccess(data)
 		str="";
 		if (data['entries'].length > 0) {
 
-				str+="<div style='float:right;'>";
-				str+="<input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/>";
-				str+="</div>";
-				
+			
 				str+="<table class='list'>";
 
 				str+="<tr><th class='first'>Username</th><th>SSN</th><th>First Name</th><th>Last Name</th><th>Modified</th><th>Access</th><th>PW</th><th class='last'>Settings</th></tr>";

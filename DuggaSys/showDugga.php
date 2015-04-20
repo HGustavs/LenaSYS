@@ -5,13 +5,13 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Dugga Viewer</title>
 		
-	<link type="text/css" href="css/style.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="templates/dugga.css" rel="stylesheet">
 
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.min.js"></script>
-
-	<script src="dugga.js"></script>
+	
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="../Shared/dugga.js"></script>
 	
 	<script>var querystring=parseGet();</script>
 
@@ -19,7 +19,7 @@
 			date_default_timezone_set("Europe/Stockholm");
 			
 			// Include basic application services!
-			include_once "basic.php";
+			include_once "../Shared/basic.php";
 			include_once "../Shared/sessions.php";
 			
 			session_start();
@@ -95,7 +95,7 @@
 	<?php 
 		$noup="SECTION";
 		$loginvar="PDUGGA"; 
-		include 'navheader.php';
+		include '../Shared/navheader.php';
 	?>
 		
 	<!-- content START -->
@@ -134,7 +134,7 @@
 
 	<!-- Login Box Start! -->
 
-  <div id='receiptBox' class="loginBox" style="display:none">
+  <div id='receiptBox' class="loginbox" style="display:none">
 		<div id='receipt'>
 			<div class='loginBoxheader'>
 				<h3>Kvitto - Duggasvar</h3>
@@ -162,7 +162,7 @@
 	<!-- content END -->
 
 	<?php
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 	
 </body>

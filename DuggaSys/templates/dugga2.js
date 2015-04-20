@@ -1,14 +1,31 @@
+/********************************************************************************
+
+   Documentation 
+
+*********************************************************************************
+
+Example seed
+---------------------
+	 NB! This dugga requires a png-file corresponding to the specific colors, e.g., color_red.png
+	 Param: {"color":"red","colorname":"R&ouml;d"}
+	 Answer: Variant
+
+-------------==============######## Documentation End ###########==============-------------
+*/
+
+//----------------------------------------------------------------------------------
+// Globals
+//----------------------------------------------------------------------------------
+
 var dw,dpos,dwid,dhei,bw,lpos,popclass;
 var hc=null;
 
-/*
- *
- * Setup the dugga. Get paramters.
- *
- */
+//----------------------------------------------------------------------------------
+// Setup
+//----------------------------------------------------------------------------------
+
 function setup()
 {
-
 	// Add eventhandler for click to all
 	// buttons that have the class 'hexo'
 	$('.hexo').click(function(){
@@ -18,12 +35,10 @@ function setup()
 	AJAXService("GETPARAM",{ },"PDUGGA");
 }
 
+//----------------------------------------------------------------------------------
+// returnedDugga: callback from ajax call in setup, data is json
+//----------------------------------------------------------------------------------
 
-/*
- *
- * When we get parameters for the dugga. Instanciate the dugga. 
- *
- */
 function returnedDugga(data)
 {
 	if(data['debug']!="NONE!") alert(data['debug']);
@@ -49,11 +64,10 @@ function returnedDugga(data)
 	}	  
 }
 
-/*
- *
- * Save the dugga and get a receipt
- *
- */
+//----------------------------------------------------------------------------------
+// saveClick: Save the dugga and get a receipt
+//----------------------------------------------------------------------------------
+
 function saveClick()
 {
 	// Loop through all bits
@@ -75,6 +89,7 @@ function saveClick()
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
 }
+
 function showFacit(param, uanswer, danswer)
 {
 		var p = jQuery.parseJSON(param.replace(/&quot;/g, '"'));
@@ -103,11 +118,10 @@ function showFacit(param, uanswer, danswer)
 //                                  Local Functions
 //--------------------================############================--------------------
 
-/*
- *
- * Display HEX-values to select
- *
- */
+//----------------------------------------------------------------------------------
+// hexClick: Display HEX-values to select
+//----------------------------------------------------------------------------------
+
 function hexClick(divid)
 {
 	dw=$(window).width();
@@ -137,11 +151,10 @@ function hexClick(divid)
 	hc=divid;
 }
 
-/*
- *
- * Set the actual selected HEX-value
- *
- */
+//----------------------------------------------------------------------------------
+// hexClick: Set the actual selected HEX-value
+//----------------------------------------------------------------------------------
+
 function setval(sval)
 {
 	if(hc!=null){

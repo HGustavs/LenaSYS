@@ -5,11 +5,10 @@
     border-bottom-width: 3px;
     border-color: #5A5757;
     left: 0px;
-    right: 0px;
- 	height: -moz-calc(35.0%);
-	height: -webkit-calc(35.0%);
-	width: -moz-calc(100.0%);
-	width: -webkit-calc(100.0%);
+    height: -moz-calc(35.0%);
+    height: -webkit-calc(35.0%);
+    width: -moz-calc(100.0%)!important;
+    width: -webkit-calc(100.0%)!important;
 }
 
 
@@ -18,13 +17,13 @@
     border-top-style: solid;
     border-top-width: 3px;
     border-color: #5A5757;
+    top:auto !important;
     bottom: 0px;
-    right: 0px;
     left: 0px;
     height: -moz-calc(65.0%);
-	height: -webkit-calc(65.0%);
-	width: -moz-calc(100.0%);
-	width: -webkit-calc(100.0%);
+    height: -webkit-calc(65.0%);
+    width: -moz-calc(100.0%)!important;
+    width: -webkit-calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
 }
 

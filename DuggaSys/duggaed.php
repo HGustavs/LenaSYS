@@ -16,8 +16,9 @@ pdoConnect();
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
-	<script src="dugga.js"></script>
+	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
+	
 
 </head>
 <body>
@@ -25,7 +26,8 @@ pdoConnect();
 	<?php 
 		$noup="SECTION";
 		$loginvar="DUGGA";
-		include 'navheader.php';
+		include '../Shared/navheader.php';
+		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
@@ -36,7 +38,7 @@ pdoConnect();
 	<!--- Edit Dugga Dialog END --->
 	
 	<?php 
-		include 'loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 
 	<!--- Edit Dugga Dialog START --->
@@ -50,7 +52,7 @@ pdoConnect();
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='did' value='Toddler' /></td>
-			<td colspan='2' style='line-height:40px;'>Name: <input style='float:right;width:390px;' class='form-control textinput' type='text' id='name' value='Name' /></td>		
+			<td colspan='2' style='line-height:40px;'>Name: <div id='dugganamewrapper'><input style='float:right;width:390px;' class='form-control textinput' type='text' id='name' value='Name' /></div></td>		
 		</tr>
 		<tr>
 			<td>Auto-grade: <select style='float:right;' id='autograde'></select></td>
@@ -60,8 +62,8 @@ pdoConnect();
 			<td colspan="2">Template: <select id='template'></select></td>
 		</tr>
 		<tr>
-			<td>Release Date: <input class='form-control textinput datepicker' type='text' id='release' value='None' /></td>		
-			<td>Deadline Date: <input class='form-control textinput datepicker' type='text' id='deadline' value='None' /></td>
+			<td>Release Date: <div id='releasedatewrapper'><input class='form-control textinput datepicker' type='text' id='release' value='None' /></div></td>		
+			<td>Deadline Date: <div id='deadlinedatewrapper'><input class='form-control textinput datepicker' type='text' id='deadline' value='None' /></div></td>
 		</tr>
 
 
@@ -80,16 +82,16 @@ pdoConnect();
 
 	<div class='loginBoxheader'>
 	<h3>Edit Variant</h3>
-	<div onclick='closeEditVariant();'>x</div>
+	<div onclick='closeWindows();'>x</div>
 	</div>
 				
 	<table width="100%">
 		<tr>
 			<input type='hidden' id='vid' value='Toddler' /></td>
-			<td colspan='2' style='line-height:40px;'>Param: <input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' value='Variant Param' /></td>		
+			<td colspan='2' style='line-height:40px;'>Param: <div id='parameternamewrapper'><input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' value='Variant Param' /></div></td>		
 		</tr>	
 		<tr>
-			<td colspan='2' style='line-height:40px;'>Answer: <input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' value='Variant Answer' /></td>		
+			<td colspan='2' style='line-height:40px;'>Answer: <div id='answernamewrapper'><input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' value='Variant Answer' /></div></td>		
 		</tr>
 	</table>
 
