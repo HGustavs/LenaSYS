@@ -14,9 +14,6 @@ function updateCourse() {
 	var coursecode = $("#coursecode").val();
 	var visib = $("#visib").val();
 
-	var activevers = $("#activeversion").val();
-	var activeedvers = $("#activeedversion").val();
-
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
@@ -24,18 +21,8 @@ function updateCourse() {
 		cid : cid,
 		coursename : coursename,
 		visib : visib,
-		activevers : activevers,
-		activeedvers : activeedvers,
 		coursecode : coursecode
 	}, "COURSE");
-
-}
-
-function accessCourse() {
-	window.location.href = "accessed.php?cid=" + $("#cid").val();
-	resetinputs();
-	//resets all inputs
-
 }
 
 function closeEditCourse() {
