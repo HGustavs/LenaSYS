@@ -222,6 +222,7 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2)
 INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
 
 /* Code Example contains a list of the code examples for a version of a course in the database 
  Version of sections and examples corresponds roughly to year or semester that the course was given. */
