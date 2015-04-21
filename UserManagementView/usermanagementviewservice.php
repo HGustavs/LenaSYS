@@ -54,8 +54,8 @@
 	//$coursesQuery = "SELECT course.coursename, user_course.result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
 	//FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
 	$coursesQuery = "SELECT course.coursename, (SELECT SUM(hp) FROM studentresultCourse
-	WHERE username='".$userid."' AND studentresultCourse.cid=course.cid) AS result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
-	FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
+	WHERE username='".$userid."' AND studentresultCourse.cid=course.cid) AS result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage, user_course.period ,user_course.term 
+	FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator ORDER BY user_course.period ASC";
 	//------------------------------------------------------------------------------------------------
 	// Retrieve information
 	//------------------------------------------------------------------------------------------------
@@ -156,7 +156,9 @@
 							'result' => $row['result'],
 							'hp' => $row['hp'],
 							'course_responsible' => $row['coordinator'],
-							'course_link' => $row['courseHttpPage']
+							'course_link' => $row['courseHttpPage'],
+							'term' => $row['term'],
+							'period' => $row['period']
 							)
 					);
 				}
