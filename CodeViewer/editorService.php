@@ -184,10 +184,14 @@
 		$beforeafter = array();
 		$beforeafters = array();
 		
-		$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample where cid = :cid and cversion = :cvers order by sectionname, examplename;");
-		$query->bindParam(':cid', $cid);
-		$query->bindParam(':cvers', $cvers);
+		$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample order by exampleid");
 		$query->execute();
+	
+		//SAVE THIS FOR FUTURE USE!!!!!
+		//$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample where cid = :cid and cversion = :cvers order by sectionname, examplename;");
+		//$query->bindParam(':cid', $cid);
+		//$query->bindParam(':cvers', $cvers);
+		//$query->execute();
 					
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 			$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
