@@ -1,54 +1,70 @@
 
 // AJAX-call to dugga.js 
-AJAXService("GET", {}, "UMVSTUDENT");
+AJAXService("TOOLBAR", {}, "UMVTEACHER");
 
-function strcmp(a, b) {
-    return a > b ? 1 : a < b ? -1 : 0;
+function renderTeacherView(data) {
+	var type = data['type'];
+	
+	/* render the created toolbar*/
+	if(type == "TOOLBAR") {
+		createToolbar(data['classes']);
+	}
+	else if(type == "VIEW") {
+		renderView(data);
+	}
+	
+	/* Check if error occurred during execution of SQL queries */
+	if(data['debug'] != "NONE!") {
+		alert(data['debug']);
+	}
 }
 
-function natcmp(a, b) {
-    var x = [], y = [];
+function createToolbar(classes) {
+	
+	if(classes.length > 0) {
+		renderToolbar(classes);
+		//getTheDefaultProgram();
+		//AJAXService("VIEW", {class}, "UMVTEACHER");
+	}
+	
+}
 
-    a.replace(/(\d+)|(\D+)/g, function($0, $1, $2) { x.push([$1 || 0, $2]) })
-    b.replace(/(\d+)|(\D+)/g, function($0, $1, $2) { y.push([$1 || 0, $2]) })
-
-    while(x.length && y.length) {
-        var xx = x.shift();
-        var yy = y.shift();
-        var nn = (xx[0] - yy[0]) || strcmp(xx[1], yy[1]);
-        if(nn) return nn;
+function renderToolbar(classes) {
+	
+	var htmlStr = "";
+	var currentClassCode = "";
+	
+	currentClassCode = classes[0]['classcode'];
+	// Close current open lists
+	htmlStr += "<ul>";
+	htmlStr += "<li><a href='#'>" + currentClassCode + "</a>";
+	htmlStr += "<ul>";
+	
+	for(var i = 0; i < classes.length; i++) {
+		current_class = classes[i];
+		if(currentClassCode != current_class['classcode']) {
+			currentClassCode = current_class['classcode'];
+			// Close current open lists
+			htmlStr += "</ul>" + "</li>";
+			htmlStr += "<li><a href='#'>" + currentClassCode + "</a>";
+			htmlStr += "<ul>";
+		}
+		
+		htmlStr += "<li><a href='#'>" + current_class['class'] + "</a></li>";
     }
-
-    if(x.length) return -1;
-    if(y.length) return +1;
-
-    return 0;
-}
-
-
-
-function loadData(studyprogram, pnr) {
-	$.get( "usermanagementviewservice.php", { studyprogram: studyprogram, pnr: pnr })  
-		.done(
-			function( data ) {
-				//alert( "Data Loaded: " + data );
-				if (data[0][0]==="student"){
-					renderStudentView(data);
-				} else if (data[0][0]==="studyprogram"){
-					renderStudyprogramView(data);	
-				} else {
-					alert("Error, unkown data returned\n"+data);
-				}								
-			});
-
+    
+    htmlStr += "</ul>" + "</li>" + "</ul>";
+    
+    var menulist = document.getElementById('DropdownMenu');
+    menulist.innerHTML = htmlStr;
 }
 
 //---------------------------------------------------------------
-//	renderStudentView(data) - renders the student view from the
+//	renderView(data) - renders the student view from the
 //	student. Will render the full view with title and everything.
 //---------------------------------------------------------------
 
-function renderStudentView(data)
+function renderView(data)
 {
 
 	console.log("DATA_RECIVED - DONE");
@@ -67,7 +83,7 @@ function renderStudentView(data)
 	htmlStr = "";
 	var progress = data['progress'];
 	
-	htmlStr += '<p>' + parseFloat(progress[0]['completedHP']) + '/' + progress[0]['totalHP']+ '</p>';
+	htmlStr += '<p>' + progress[0]['completedHP'] + '/' + progress[0]['totalHP']+ '</p>';
 	
 	var progressBar = document.getElementById('completedMainProgress');
 	progressBar.innerHTML = htmlStr;
@@ -114,17 +130,13 @@ function createHTMLForCourse(data)
 	var course_link = (data['course_link'] == null ?  '#' : data['course_link']);
 	var course_responsible = data['course_responsible'];
 	
-	if(result==null){
-		result=0;
-	}
-	
 	var courseHtmlStr = "";
 	
 	courseHtmlStr += '<div class="course">';
 	courseHtmlStr += '<div class="course_wrapper">';
 	
 	courseHtmlStr += '<div class="course_name">' + coursename + '</div>';
-	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + parseFloat(result) + '/' + hp + '</div></div>';
+	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + result + '/' + hp + '</div></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '</div>';
 	courseHtmlStr += '</div>';

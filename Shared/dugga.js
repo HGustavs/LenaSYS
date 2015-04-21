@@ -295,6 +295,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: renderStudentView
 			});
+	}else if(kind=="UMVTEACHER") {
+			$.ajax({
+				url: "usermanagementviewservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: renderTeacherView
+			});
 	}
 }
 
@@ -356,6 +364,7 @@ function processLogin(kind) {
 					$("input#username").css("background-color", "#ff7c6a");
 					$("input#password").css("background-color", "#ff7c6a");
 				}
+					location.reload();
 			},
 			error:function() {
 				console.log("error");
@@ -483,5 +492,6 @@ function getCookie(cname) {
 }
 
 $(window).load(function() {
-      $('.loginBox').draggable();
+	//There is an issue with using this code, it generates errors that stop execution
+      //$('.loginBox').draggable();
 });

@@ -14,9 +14,10 @@
 	pdoConnect();
 	session_start();
 
-	
+	$opt = getOP('opt');
 	$pnr = getOP('pnr');
 	$studyprogram = getOP('username');
+	$class = getOP('class');
 	
 
 	
@@ -40,16 +41,21 @@
 	//------------------------------------------------------------------------------------------------
 	// Queries
 	//------------------------------------------------------------------------------------------------
-	
+
 	//queries teachers
+
+	$classDropMenu = "SELECT class.class,class.classcode FROM class,user WHERE user.uid = '".$userid."' AND class.responsible = user.uid order by class.classcode;";
+	//$studentInformation = "SELECT CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = "WEBUG13";";
 	
 	//queries student
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
 	$progressbarQuery = "SELECT SUM(user_course.result) AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
 						WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
-	$coursesQuery = "SELECT course.coursename, user_course.result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
+	//$coursesQuery = "SELECT course.coursename, user_course.result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
+	//FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
+	$coursesQuery = "SELECT course.coursename, (SELECT SUM(hp) FROM studentresultCourse
+	WHERE username='".$userid."' AND studentresultCourse.cid=course.cid) AS result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
 	FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
-	
 	//------------------------------------------------------------------------------------------------
 	// Retrieve information
 	//------------------------------------------------------------------------------------------------
@@ -58,6 +64,37 @@
 	
 	if($superUser) {
 		//retrieve teacher data
+
+
+		//data for 
+		if(strcmp($opt,'TOOLBAR') === 0){
+			$classes = array();
+
+			$query = $pdo->prepare($classDropMenu);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading data from user ". $error[2]; 
+
+			} else {
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$classes,
+						array(
+							'class' => $row['class'],
+							'classcode' => $row['classcode']
+						)
+					);
+				}
+
+				$retrievedData 	= array(
+					'type'		=> $opt,
+					'classes'	=> $classes,
+					'debug' 	=> $debug
+				);
+			}
+
+		}
 	}
 	else {
 			//retrieve student data

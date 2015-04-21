@@ -12,7 +12,8 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>LenaSYS User Editor</title>
-
+		
+		<link rel="stylesheet" type="text/css" href="progressbar2.css">
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 		<link href="usermanagementview.css" rel="stylesheet">
         <link href="usermanagementview_student.css" rel="stylesheet">
