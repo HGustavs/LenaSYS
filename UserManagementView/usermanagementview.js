@@ -90,17 +90,16 @@ function renderStudentView(data)
 	for(var i = 0; i < courses.length; i++) {
 		var termcheck=courses[i]['term'];
 		var termchecksplit=termcheck.split('-');
-		var test = studentClass.match(/\d+/)[0];
+		var intYear = studentClass.match(/\d+/)[0];
 		
-		
-		if(termchecksplit[1]==test || ((termchecksplit[1]==parseInt(test)+1) && termchecksplit[0]=='VT') ){
+		if(termchecksplit[1]==intYear || ((termchecksplit[1]==parseInt(intYear)+1) && termchecksplit[0]=='VT') ){
 				
 			htmlStr += createHTMLForCourse(courses[i]);
-		}else if((termchecksplit[1]==(parseInt(test)+1) && termchecksplit[0]=='HT') || ((termchecksplit[1]==parseInt(test)+2) && termchecksplit[0]=='VT')){
+		}else if((termchecksplit[1]==(parseInt(intYear)+1) && termchecksplit[0]=='HT') || ((termchecksplit[1]==parseInt(intYear)+2) && termchecksplit[0]=='VT')){
 				
 			htmlStr2 += createHTMLForCourse(courses[i]);
-			console.log(courses[i]['term']);
-		}else if((termchecksplit[1]==(parseInt(test)+2) && termchecksplit[0]=='HT') || ((termchecksplit[1]==parseInt(test)+3) && termchecksplit[0]=='VT')){
+			
+		}else if((termchecksplit[1]==(parseInt(intYear)+2) && termchecksplit[0]=='HT') || ((termchecksplit[1]==parseInt(intYear)+3) && termchecksplit[0]=='VT')){
 				
 			htmlStr3 += createHTMLForCourse(courses[i]);
 		}
