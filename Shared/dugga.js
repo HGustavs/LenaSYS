@@ -364,6 +364,7 @@ function processLogin(kind) {
 					$("input#username").css("background-color", "#ff7c6a");
 					$("input#password").css("background-color", "#ff7c6a");
 				}
+					location.reload();
 			},
 			error:function() {
 				console.log("error");
