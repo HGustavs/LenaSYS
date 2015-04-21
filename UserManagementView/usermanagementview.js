@@ -66,7 +66,7 @@ function renderStudentView(data)
 	htmlStr = "";
 	var progress = data['progress'];
 	
-	htmlStr += '<p>' + parseFloat(progress[0]['completedHP']) + '/' + progress[0]['totalHP']+ '</p>';
+	htmlStr += '<p>' + parseFloat(progress[0]['completedHP']) + '/' + parseFloat(progress[0]['totalHP']) + '</p>';
 	
 	var progressBar = document.getElementById('completedMainProgress');
 	progressBar.innerHTML = htmlStr;
@@ -78,15 +78,23 @@ function renderStudentView(data)
 	htmlStr3 = "";
 	var year = data['year'];
 	var courses = year['courses'];
-	
-	
-	htmlStr += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
+	var countYear = data['class'].match(/\d+/)[0];
+	var yearh3 = [];
+	console.log(data['class'].match(/\d+/)[0]);
+		
+	for(var i=0; i< progress[0]['totalHP']/60 ;i++){
+		yearh3[i]=parseInt(countYear)+i+2000;
+		console.log(yearh3[i]);
+	}
+		
+	htmlStr += '<div class="year_header"><h3>'+ yearh3[0] + '</h3></div>';
 	htmlStr += '<div class="courses_body">';
-	htmlStr2 += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
+	htmlStr2 += '<div class="year_header"><h3>'+ yearh3[1] +'</h3></div>';
 	htmlStr2 += '<div class="courses_body">';
-	htmlStr3 += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
+	htmlStr3 += '<div class="year_header"><h3>'+ yearh3[2] +'</h3></div>';
 	htmlStr3 += '<div class="courses_body">';
 	
+		console.log(data);
 	for(var i = 0; i < courses.length; i++) {
 		var termcheck=courses[i]['term'];
 		var termchecksplit=termcheck.split('-');
@@ -153,6 +161,9 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + parseFloat(result) + '/' + hp + '</div></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '</div>';
+	courseHtmlStr += '<div class="course_alert"></div>';
+	courseHtmlStr += '<div class="course_type"></div>';
+	
 	courseHtmlStr += '</div>';
 	
 	courseHtmlStr += '</div>';
