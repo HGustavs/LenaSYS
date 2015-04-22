@@ -87,125 +87,114 @@ function hideLoginPopup()
 //----------------------------------------
 function returnedFile(data)
 {
+
 		filez = data;
 		// Fill section list with information
-		str="";
+		str1="";
+		str2="";
+		str3="";
+		str4="";
+			str1+="<table class='list' style='margin-bottom:8px;' >";
+
+				str1+="<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>";
 
 		if (data['entries'].length > 0) {
-
-				// 1=Link 2=Global 3=Course Global 4=Local
-
-				str+="<div style='float:right;'>";
-				str+="<input class='submit-button' type='button' value='Add Link' onclick='createLink();'/>";
-				str+="</div>";
-				
-				str+="<table class='list' style='margin-bottom:8px;' >";
-
-				str+="<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>";
-
 				for(i=0;i<data['entries'].length;i++){
 						var item=data['entries'][i];
 						if(parseInt(item['kind'])==1){
-								str+="<tr class='fumo'>";
+								str1+="<tr class='fumo'>";
 		
-								str+="<td>"+item['fileid']+"</td>";
-								str+="<td>"+item['filename']+"</td>";
-								str+="<td style='padding:4px;'>";
-										str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-										str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
-								str+="</td>";
-								str+="</tr>";
+								str1+="<td>"+item['fileid']+"</td>";
+								str1+="<td>"+item['filename']+"</td>";
+								str1+="<td style='padding:4px;'>";
+										str1+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+										str1+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+								str1+="</td>";
+								str1+="</tr>";
 
 						}
 				}
 
-				str+="</table>";
+			str1+="</table>";
 
 				//------------------------------------------------------------------------------------------------------------------------
+				str2+="<table class='list' style='margin-bottom:8px;' >";
 
-				str+="<div style='float:right;'>";
-				str+="<input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/>";
-				str+="</div>";
+				str2+="<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>";
+
 				
-				str+="<table class='list' style='margin-bottom:8px;' >";
-
-				str+="<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>";
-
 				for(i=0;i<data['entries'].length;i++){
 						var item=data['entries'][i];
 						if(parseInt(item['kind'])==2){
-								str+="<tr class='fumo'>";
+								str2+="<tr class='fumo'>";
 		
-								str+="<td>"+item['fileid']+"</td>";
-								str+="<td>"+item['filename']+"</td>";
-								str+="<td style='padding:4px;'>";
-										str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-										str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
-								str+="</td>";
-								str+="</tr>";
+								str2+="<td>"+item['fileid']+"</td>";
+								str2+="<td>"+item['filename']+"</td>";
+								str2+="<td style='padding:4px;'>";
+										str2+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+										str2+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+								str2+="</td>";
+								str2+="</tr>";
 
 						}
 				}
-
-				str+="</table>";
-
+					str2+="</table>";
 				//------------------------------------------------------------------------------------------------------------------------
-				
-				str+="<div style='float:right;'>";
-				str+="<input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/>";
-				str+="</div>";
-				
-				str+="<table class='list'>";
+					str3+="<table class='list' style='margin-bottom:8px;' >";
 
-				str+="<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>";
-
+				str3+="<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>";
 				for(i=0;i<data['entries'].length;i++){
 						var item=data['entries'][i];
 						if(parseInt(item['kind'])==3){
-								str+="<tr class='fumo'>";
+								str3+="<tr class='fumo'>";
 		
-								str+="<td>"+item['fileid']+"</td>";
-								str+="<td>"+item['filename']+"</td>";
-								str+="<td style='padding:4px;'>";
-										str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-										str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
-								str+="</td>";
-								str+="</tr>";
+								str3+="<td>"+item['fileid']+"</td>";
+								str3+="<td>"+item['filename']+"</td>";
+								str3+="<td style='padding:4px;'>";
+										str3+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+										str3+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+								str3+="</td>";
+								str3+="</tr>";
 						}
 				}
 				
-				str+="</table>";
+				str3+="</table>";
+					str4+="<table class='list' style='margin-bottom:8px;' >";
 
-				//------------------------------------------------------------------------------------------------------------------------
-
-				str+="<div style='float:right;'>";
-				str+="<input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/>";
-				str+="</div>";
-				
-				str+="<table class='list'>";
-
-				str+="<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>";
-
+				str4+="<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>";
 				for(i=0;i<data['entries'].length;i++){
 						var item=data['entries'][i];
 						if(parseInt(item['kind'])==4){
-								str+="<tr class='fumo'>";
+								str4+="<tr class='fumo'>";
 		
-								str+="<td>"+item['fileid']+"</td>";
-								str+="<td>"+item['filename']+"</td>";
-								str+="<td style='padding:4px;'>";
-										str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-										str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
-								str+="</td>";
-								str+="</tr>";
+								str4+="<td>"+item['fileid']+"</td>";
+								str4+="<td>"+item['filename']+"</td>";
+								str4+="<td style='padding:4px;'>";
+										str4+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+										str4+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+								str4+="</td>";
+								str4+="</tr>";
 						}
 				}
+				str4+="</table>";
 				
-				str+="</table>";
+				
+		var alllinks=document.getElementById("alllinks");
+		alllinks.innerHTML=str1;
+		/*                                         */
+		var allglobalfiles=document.getElementById("allglobalfiles");
+		allglobalfiles.innerHTML=str2;
+		/*                                         */
+		var allcoursefiles=document.getElementById("allcoursefiles");
+		allcoursefiles.innerHTML=str3;
+		/*                                         */
+		var alllocalfiles=document.getElementById("alllocalfiles");
+		alllocalfiles.innerHTML=str4;
+	/*                                         */
+		}else{
+
 		}
 
-		var slist=document.getElementById("content");
-		slist.innerHTML=str;
 
 	  if(data['debug']!="NONE!") alert(data['debug']);
 
