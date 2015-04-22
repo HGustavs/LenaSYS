@@ -200,8 +200,9 @@ insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(
 CREATE TABLE fileLink(
 	fileid				INT(11) NOT NULL AUTO_INCREMENT,
 	filename			VARCHAR(128) NOT NULL,
-	kind					INTEGER,	
-	cid						INT UNSIGNED NOT NULL,
+	kind				INTEGER,	
+	cid				INT UNSIGNED NOT NULL,
+	isGlobal			BOOLEAN DEFAULT 0,
 	CONSTRAINT pk_filelink PRIMARY KEY (fileid),
 	CONSTRAINT fk_filelink_joins_course FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
