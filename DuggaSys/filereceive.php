@@ -25,11 +25,11 @@
 			}else{
 					$userid="UNK";		
 			} 	
-			
+			//hasAccess($userid, $cid, 'w') ||  && isSuperUser($userid)
 			$ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 			
 			echo "<pre>";
-
+			$globalinserted = false;
 			if($ha){
 					print_r($_FILES);
 					print_r($_POST);					
@@ -38,7 +38,7 @@
 			 		$storefile=false;
 
 					// Start at the "root-level"
-					chdir('../../');
+					chdir('../');
 			 		$currcvd=getcwd();
 			 		if($kind=="LINK"&&$link!="UNK"){
 			 				// Store Link
@@ -61,28 +61,31 @@
 									}			 				
 							}
 			 		}else if($kind=="GFILE"){
-							if(!file_exists ($currcvd."/templates")){
-									$storefile=mkdir($currcvd."/templates");
+							if(!file_exists ("/templates/".$_FILES['name'])){
+									
+										$storefile=mkdir($currcvd."/templates/".$_FILES['name']);
+									
+									$storefile=true;
 							}else{
 									$storefile=true;							
 							}
 							// Check if added file name exists.
 							if($selectedfile!="UNK"){
-									if(file_exists ($currcvd."/templates/".$selectedfile)){
+									if(file_exists ($currcvd."/templates/".$_FILES['name'])){
 											$storefile=true;
 									}else{
 											$storefile=false;									
 									}
 							}
 			 		}else if($kind=="LFILE"||$kind=="MFILE"){
-							if(!file_exists ($currcvd."/Courses/".$cid)){
-									$storefile=mkdir($currcvd."/Courses/".$cid);
+							if(!file_exists ($currcvd."/courses/".$cid)){
+									$storefile=mkdir($currcvd."/courses/".$cid);
 							}else{
 									$storefile=true;
 							}
 							if($kind=="LFILE"){
-									if(!file_exists ($currcvd."/Courses/".$cid."/".$vers)){
-											$storefile=mkdir($currcvd."/Courses/".$cid."/".$vers);
+									if(!file_exists ($currcvd."/courses/".$cid)){
+											$storefile=mkdir($currcvd."/courses/".$cid);
 									}else{
 											$storefile=true;
 									}
@@ -90,10 +93,10 @@
 							if($kind=="MFILE"){
 									// Check if added file name exists.
 									if($selectedfile!="UNK"){
-											if(file_exists ($currcvd."/Courses/".$cid."/".$vers."/".$selectedfile)){
-													$storefile=true;
+											if(!file_exists ($currcvd."/courses/".$cid)){
+													$storefile=mkdir($currcvd."/courses/".$cid);
 											}else{
-													$storefile=false;									
+													$storefile=true;									
 											}
 									}							
 							}
@@ -108,7 +111,7 @@
 					
 							foreach ($_FILES as $key => $filea){
 									
-									if($selectedfile!="UNK"&&($kind=="GFILE"||$kind=="MFILE")){
+									if($selectedfile!="NONE"&&($kind=="GFILE"||$kind=="MFILE")){
 											// Store link to existing file
 											if($kind=="GFILE"){
 													$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
@@ -123,9 +126,9 @@
 											
 											echo $norows;
 											
-											if($norows==0&&($kind=="GFILE"||$kind=="MFILE")){
+										if($norows==0&&($kind=="GFILE"||$kind=="MFILE")){
 													if($kind=="GFILE"){
-															$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'2',:cid);");
+															$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal) VALUES(:linkval,'2',:cid,'1');");
 													}else if($kind=="MFILE"){
 															$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
 													}
@@ -138,9 +141,10 @@
 														echo "Error updating file entries".$error[2];
 													}			 				
 											}
-
-									}else{
+								
+									}
 											if($filea["name"]!=""){
+												
 													$temp = explode(".", $filea["name"]);
 													$extension = end($temp);
 									
@@ -153,9 +157,9 @@
 															$fname = preg_replace('/\s+/', '', $fname);
 				
 															if($kind=="LFILE"){
-																	$movname=$currcvd."/Courses/".$cid."/".$vers."/".$fname;											
+																	$movname=$currcvd."/courses/".$cid."/".$fname;											
 															}else if($kind=="MFILE"){
-																	$movname=$currcvd."/Courses/".$cid."/".$fname;											
+																	$movname=$currcvd."/courses/".$cid."/".$fname;;											
 															}else{
 																	$movname=$currcvd."/templates/".$fname;											
 															}
@@ -163,11 +167,12 @@
 															if(move_uploaded_file($filea["tmp_name"],$movname)){
 																	// 1=Link 2=Global 3=Course Global 4=Local
 																	if($kind=="LFILE"){
-																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=4;" );
+																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" );
 																	}else if($kind=="MFILE"){
-																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
-																	}else{
-																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
+																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;" );
+																	}else{					
+																			$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;" );
+																		
 																	}
 																	
 																	$query->bindParam(':filename', $fname);
@@ -180,8 +185,8 @@
 																					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'4',:cid);");
 																			}else if($kind=="MFILE"){
 																					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
-																			}else{
-																					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'2',:cid);");
+																			}else if($kind=="GFILE"){
+																					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal) VALUES(:linkval,'2',:cid,'1');");
 																			}
 				
 																			$query->bindParam(':cid', $cid);
@@ -203,7 +208,7 @@
 														$error=true;
 													}
 											}
-									}							
+																
 							}			
 			 		}else{
 			 				echo "No Store File\n";
@@ -225,5 +230,4 @@
 			}
 ?>
 </body>
-
 </html>
