@@ -20,11 +20,14 @@ function renderTeacherView(data) {
 }
 
 function createToolbar(classes) {
+
+	console.log("Trying to create toolbar...");
 	
 	if(classes.length > 0) {
 		renderToolbar(classes);
-		//getTheDefaultProgram();
-		//AJAXService("VIEW", {class}, "UMVTEACHER");
+		var defaultclass = getTheDefaultProgram(classes);
+		console.log("AJAXService call to retrieve view");
+		updateView(defaultclass);
 	}
 	
 }
@@ -37,7 +40,7 @@ function renderToolbar(classes) {
 	currentClassCode = classes[0]['classcode'];
 	// Close current open lists
 	htmlStr += "<ul>";
-	htmlStr += "<li><a href='#'>" + currentClassCode + "</a>";
+	htmlStr += "<li><a>" + currentClassCode + "</a>";
 	htmlStr += "<ul>";
 	
 	for(var i = 0; i < classes.length; i++) {
@@ -46,11 +49,11 @@ function renderToolbar(classes) {
 			currentClassCode = current_class['classcode'];
 			// Close current open lists
 			htmlStr += "</ul>" + "</li>";
-			htmlStr += "<li><a href='#'>" + currentClassCode + "</a>";
+			htmlStr += "<li><a>" + currentClassCode + "</a>";
 			htmlStr += "<ul>";
 		}
 		
-		htmlStr += "<li><a href='#'>" + current_class['class'] + "</a></li>";
+		htmlStr += "<li onclick='updateView(" + "\"" + current_class['class'] + "\"" +")'><a>" + current_class['class'] + "</a></li>";
     }
     
     htmlStr += "</ul>" + "</li>" + "</ul>";
@@ -59,95 +62,69 @@ function renderToolbar(classes) {
     menulist.innerHTML = htmlStr;
 }
 
+function getTheDefaultProgram(classes) 
+{
+	return classes[0]['class'];
+}
+
+function updateView(classname) {
+	console.log("Clicked classname: " + classname);
+	/* AJAX call to request students of 'classname' */
+	AJAXService("VIEW", {classname:classname}, "UMVTEACHER");
+}
+
 //---------------------------------------------------------------
-//	renderView(data) - renders the student view from the
-//	student. Will render the full view with title and everything.
+//	renderView(data) - renders the view from the
+//	teacher. Will render the full view with title and everything.
 //---------------------------------------------------------------
 
 function renderView(data)
 {
 
-	console.log("DATA_RECIVED - DONE");
+	console.log("DATA_FOR_VIEW_RECIVED - DONE");
 	
 	var htmlStr = "";
-	var fullname = data['fullname'];
-	var studentClass = data['class'];
+	var classname = data['classname'];
+	var studentlist = data['studentlist'];
 	
-	htmlStr += '<h3 id="headerText">' + studentClass + ' för ' + fullname +'</h3>';
+	//Render title
+	htmlStr += "<h2>" + "Programvy för " + classname + "</h2>";
 	
-	var titleList = document.getElementById('studentTitle');
-	titleList.innerHTML = htmlStr;
-	
-	/* Add Progressbar data */
-	
-	htmlStr = "";
-	var progress = data['progress'];
-	
-	htmlStr += '<p>' + progress[0]['completedHP'] + '/' + progress[0]['totalHP']+ '</p>';
-	
-	var progressBar = document.getElementById('completedMainProgress');
-	progressBar.innerHTML = htmlStr;
-	
-	/* Add course data */
+	var programTitle = document.getElementById("title");
+	programTitle.innerHTML = htmlStr;
 	
 	htmlStr = "";
-	var year = data['year'];
-	var courses = year['courses'];
 	
-	htmlStr += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
+	//Render student information
+	for(var i = 0; i < studentlist.length; i++) {
 	
-	htmlStr += '<div class="courses_body">';
-	
-	for(var i = 0; i < courses.length; i++) {
+		var student = studentlist[i];
 		
-		htmlStr += createHTMLForCourse(courses[i]);
+		if(i % 2 == 0) {
+			htmlStr += "<div class='student_even'>";
+		}else {
+			htmlStr += "<div class='student_odd'>";
+		}
+		
+		//Student name
+		htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
+		//Student ssn
+		htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
+		//Username
+		htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
+		//E-mail
+		htmlStr += "<div class='student_email'><p>" + student['email'] + "</p></div>";
+		
+		htmlStr += "</div>";
 		
 	}
 	
-	htmlStr += '</div>';
-	
-	var yearList = document.getElementById('Year1');
-	yearList.innerHTML = htmlStr;
-	
-	console.log("DATA_PRINTED - DONE");
-	
-	/* Check if error occurred during execution of SQL queries */
-	if(data['debug'] != "NONE!") {
-		alert(data['debug']);
+	if(studentlist.length == 0) {
+		htmlStr = "<div id='no_page'><h2>NO STUDENTS FOUND THAT ARE REGISTERED TO THIS COURSE</h2></div>";
 	}
 	
-}
-//---------------------------------------------------------------
-//	createHTMLForCourse(data) - creates HTML representation of a
-//	specific course. Prints out the information into div-elements
-//---------------------------------------------------------------
-function createHTMLForCourse(data) 
-{
-	var coursename 	= data['coursename'];
-	var result		= data['result'];
-	var hp			= data['hp'];
-	// Check that the link is not null and if null present a '#' instead
-	var course_link = (data['course_link'] == null ?  '#' : data['course_link']);
-	var course_responsible = data['course_responsible'];
+	var studentView = document.getElementById("studentslist");
+	studentView.innerHTML = htmlStr;
 	
-	var courseHtmlStr = "";
 	
-	courseHtmlStr += '<div class="course">';
-	courseHtmlStr += '<div class="course_wrapper">';
-	
-	courseHtmlStr += '<div class="course_name">' + coursename + '</div>';
-	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + result + '/' + hp + '</div></div>';
-	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
-	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '</div>';
-	courseHtmlStr += '</div>';
-	
-	courseHtmlStr += '</div>';
-	
-	return courseHtmlStr;
-	
-}
-
-function renderStudyprogramView(data){
-	
-
 }
