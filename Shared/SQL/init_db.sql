@@ -64,12 +64,13 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHtt
  */
 CREATE TABLE user_course(
 		uid				INT UNSIGNED NOT NULL,
-		cid				INT UNSIGNED NOT NULL, 
+		cid				INT UNSIGNED NOT NULL,
 		result 			decimal(2,1) not null,
 		modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 		INTEGER,
 		access			VARCHAR(10) NOT NULL,
 		period			int(1) not null,
+		term			char(5) not null,
 		CONSTRAINT 		pk_user_course PRIMARY KEY(uid, cid),
 		CONSTRAINT 		user_course_joins_user FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
 		CONSTRAINT 		user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
@@ -77,16 +78,17 @@ CREATE TABLE user_course(
 
 /* test data */
 /* a13asrd couirses */
-insert into user_course(uid,cid,result,access,period) values(4,1,0,'R',1);
-insert into user_course(uid,cid,result,access,period) values(4,3,0,'R',2);
-insert into user_course(uid,cid,result,access,period) values(4,4,0,'R',3);
-insert into user_course(uid,cid,result,access,period) values(4,5,0,'R',4);
+insert into user_course(uid,cid,result,access,period,term) values(4,1,0,'R',1,'HT-13');
+insert into user_course(uid,cid,result,access,period,term) values(4,3,0,'R',2,'HT-14');
+insert into user_course(uid,cid,result,access,period,term) values(4,4,0,'R',3,'VT-14');
+insert into user_course(uid,cid,result,access,period,term) values(4,5,0,'R',4,'VT-15');
+insert into user_course(uid,cid,result,access,period,term) values(4,2,0,'R',4,'VT-15');
 
 /* a13durp couirses */
-insert into user_course(uid,cid,result,access,period) values(5,1,0,'R',1);
-insert into user_course(uid,cid,result,access,period) values(5,3,0,'R',2);
-insert into user_course(uid,cid,result,access,period) values(5,4,0,'R',3);
-insert into user_course(uid,cid,result,access,period) values(5,5,0,'R',4);
+insert into user_course(uid,cid,result,access,period,term) values(5,1,0,'R',1,'HT-13');
+insert into user_course(uid,cid,result,access,period,term) values(5,3,0,'R',2,'HT-14');
+insert into user_course(uid,cid,result,access,period,term) values(5,4,0,'R',3,'VT-14');
+insert into user_course(uid,cid,result,access,period,term) values(5,5,0,'R',4,'VT-15');
 
 
 
@@ -194,10 +196,10 @@ insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","7844","HT 2014");
 
 CREATE TABLE fileLink(
-	fileid				INT(11) NOT NULL AUTO_INCREMENT,
-	filename			VARCHAR(128) NOT NULL,
-	kind					INTEGER,	
-	cid						INT UNSIGNED NOT NULL,
+	fileid			INT(11) NOT NULL AUTO_INCREMENT,
+	filename		VARCHAR(128) NOT NULL,
+	kind			INTEGER,	
+	cid				INT UNSIGNED NOT NULL,
 	CONSTRAINT pk_filelink PRIMARY KEY (fileid),
 	CONSTRAINT fk_filelink_joins_course FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -208,13 +210,13 @@ CREATE TABLE fileLink(
  * they should be able to download from the course page.
  */
 CREATE TABLE template(
-		templateid			INTEGER UNSIGNED NOT NULL,
-		stylesheet 			VARCHAR(39) NOT NULL,
-		numbox				INTEGER NOT NULL,
-		CONSTRAINT pk_template PRIMARY KEY(templateid, stylesheet)
+	templateid		INTEGER UNSIGNED NOT NULL,
+	stylesheet 		VARCHAR(39) NOT NULL,
+	numbox			INTEGER NOT NULL,
+	CONSTRAINT pk_template PRIMARY KEY(templateid, stylesheet)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO template (templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
+INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2);
 INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
@@ -225,22 +227,22 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4)
  Version of sections and examples corresponds roughly to year or semester that the course was given. */
 
 CREATE TABLE codeexample(
-		exampleid			MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		cid					  INT UNSIGNED NOT NULL,
-		examplename		VARCHAR(64),
-		sectionname		VARCHAR(64),
-		beforeid			INTEGER,
-		afterid				INTEGER,
-		runlink			  VARCHAR(64),
-		cversion			INTEGER,
-		public 				tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT UNSIGNED NOT NULL,
-		templateid			INT UNSIGNED NOT NULL DEFAULT '0',
-		CONSTRAINT pk_codeexample PRIMARY KEY(exampleid),
-		CONSTRAINT fk_codeexample_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
-		CONSTRAINT fk_codeexample_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
-		CONSTRAINT fk_codeexample_joins_template FOREIGN KEY (templateid) REFERENCES template (templateid)
+	exampleid		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	cid				INT UNSIGNED NOT NULL,
+	examplename		VARCHAR(64),
+	sectionname		VARCHAR(64),
+	beforeid		INTEGER,
+	afterid			INTEGER,
+	runlink		 	VARCHAR(64),
+	cversion		INTEGER,
+	public 			tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+	updated 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	uid				INT UNSIGNED NOT NULL,
+	templateid		INT UNSIGNED NOT NULL DEFAULT '0',
+	CONSTRAINT pk_codeexample PRIMARY KEY(exampleid),
+	CONSTRAINT fk_codeexample_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
+	CONSTRAINT fk_codeexample_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
+	CONSTRAINT fk_codeexample_joins_template FOREIGN KEY (templateid) REFERENCES template (templateid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
@@ -260,12 +262,12 @@ INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templat
  
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
-		wordlistid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,		
-		wordlistname 		VARCHAR(24),
-		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT UNSIGNED NOT NULL,
-		CONSTRAINT pk_wordlist PRIMARY KEY(wordlistid),
-		CONSTRAINT pk_wordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
+	wordlistid		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,		
+	wordlistname	VARCHAR(24),
+	updated 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	uid				INT UNSIGNED NOT NULL,
+	CONSTRAINT pk_wordlist PRIMARY KEY(wordlistid),
+	CONSTRAINT pk_wordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 	
 INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
@@ -313,16 +315,16 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
-		boxid					INTEGER UNSIGNED NOT NULL,
-		exampleid 		MEDIUMINT UNSIGNED NOT NULL,
-		boxtitle			VARCHAR(20),
-		boxcontent		VARCHAR(64),
-		filename			VARCHAR(64),
-		settings			VARCHAR(1024),
-		wordlistid		MEDIUMINT UNSIGNED,
-		segment				TEXT,
-		CONSTRAINT pk_box PRIMARY KEY(boxid, exampleid),
-		CONSTRAINT fk_box_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
+	boxid			INTEGER UNSIGNED NOT NULL,
+	exampleid 		MEDIUMINT UNSIGNED NOT NULL,
+	boxtitle		VARCHAR(20),
+	boxcontent		VARCHAR(64),
+	filename		VARCHAR(64),
+	settings		VARCHAR(1024),
+	wordlistid		MEDIUMINT UNSIGNED,
+	segment			TEXT,
+	CONSTRAINT pk_box PRIMARY KEY(boxid, exampleid),
+	CONSTRAINT fk_box_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1,1,"Title","Code","[viktig=1]","js1.js");
@@ -336,17 +338,17 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid)
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (4,10,"Title","Code","[viktig=1]","js0 copy 2.js");
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
-		impid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		boxid         	INTEGER UNSIGNED NOT NULL,
-		exampleid    		MEDIUMINT UNSIGNED NOT NULL,				
-		istart				INTEGER,
-		iend				INTEGER,
-		irowdesc			VARCHAR(1024),
-		updated	 			TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT UNSIGNED NOT NULL,
-		CONSTRAINT pk_improw PRIMARY KEY(impid, exampleid, boxid),
-		CONSTRAINT fk_improw_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
-		CONSTRAINT fk_improw_joins_box FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
+	impid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	boxid         	INTEGER UNSIGNED NOT NULL,
+	exampleid    	MEDIUMINT UNSIGNED NOT NULL,				
+	istart			INTEGER,
+	iend			INTEGER,
+	irowdesc		VARCHAR(1024),
+	updated	 		TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	uid				INT UNSIGNED NOT NULL,
+	CONSTRAINT pk_improw PRIMARY KEY(impid, exampleid, boxid),
+	CONSTRAINT fk_improw_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
+	CONSTRAINT fk_improw_joins_box FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 	
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,3,5,1);
@@ -354,15 +356,15 @@ INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,8,11,1);
 
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(
-		wordid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		exampleid		MEDIUMINT UNSIGNED NOT NULL,
-		word 			VARCHAR(64),
-		label		VARCHAR(256),
-		UPDATED 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid				INTEGER UNSIGNED NOT NULL,
-		CONSTRAINT pk_impwordlist PRIMARY KEY(wordid),
-		CONSTRAINT fk_impwordlist_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
-		CONSTRAINT fk_impwordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
+	wordid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	exampleid		MEDIUMINT UNSIGNED NOT NULL,
+	word 			VARCHAR(64),
+	label			VARCHAR(256),
+	UPDATED 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	uid				INTEGER UNSIGNED NOT NULL,
+	CONSTRAINT pk_impwordlist PRIMARY KEY(wordid),
+	CONSTRAINT fk_impwordlist_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
+	CONSTRAINT fk_impwordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
@@ -370,20 +372,20 @@ INSERT INTO impwordlist(exampleid,word,uid) values (3,"elem",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"pageY",2);
 
 CREATE TABLE eventlog(
-	eid 				BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	type 				TINYINT DEFAULT 0,
-	ts 					TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	eid 			BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	type 			TINYINT DEFAULT 0,
+	ts 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address 		VARCHAR(45),
 	raddress 		VARCHAR(45),
-	user 				VARCHAR(128),
-	eventtext 	TEXT NOT NULL,
+	user 			VARCHAR(128),
+	eventtext	 	TEXT NOT NULL,
 	CONSTRAINT pk_eventlog PRIMARY KEY(eid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE playereditor_playbacks(
-    id  VARCHAR(32) NOT NULL,
-    type    SMALLINT(1) NOT NULL,
-    path    VARCHAR(256) NOT NULL,
+    id 		 VARCHAR(32) NOT NULL,
+    type  	 SMALLINT(1) NOT NULL,
+    path   	 VARCHAR(256) NOT NULL,
     CONSTRAINT pk_playereditor_playbacks PRIMARY KEY(id, type)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
@@ -517,17 +519,19 @@ create view studentresultCourse  as
 		and subparts.parthp = partresult.hp
 	where partresult.grade != 'u';
 
-/*
+/* hp per course for uid
 select username, cid, sum(hp) from studentresult where username = $varible group by cid;
 */
 
+/*  For total result per uid  
+select uid as userid, sum(hp) as totalHP from umvdb.partresult where uid = $varible and (partresult.grade != 'u' or partresult.grade != 'U');
+*/
 /* updatesd info in user table */
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";
 update user set ssn="810101-5567" where username="Grimling";
 update user set ssn="444444-5447" where username="Toddler";
 update user set password=password("Kong") where username="Toddler";
-update user set password=password("Banan") where username="Tester";
 update user set superuser=1 where username="Toddler";
 
 
@@ -590,12 +594,11 @@ WHERE exampleid='12' and boxid='2' ;
  * Clears the eventlog table on a weekly basis
  */
 DELIMITER $$
-CREATE EVENT weekly_eventlog_delete
-ON SCHEDULE EVERY 1 WEEK 
-DO
-BEGIN
-SET SQL_SAFE_UPDATES = 0;
-DELETE FROM eventlog;
-SET SQL_SAFE_UPDATES = 1;
+CREATE EVENT weekly_eventlog_delete ON SCHEDULE EVERY 1 WEEK 
+		DO
+	BEGIN
+	SET SQL_SAFE_UPDATES = 0;
+		DELETE FROM eventlog;
+	SET SQL_SAFE_UPDATES = 1;
 END $$
 DELIMITER ;

@@ -51,7 +51,6 @@ function loadData(studyprogram, pnr) {
 function renderStudentView(data)
 {
 
-	console.log("DATA_RECIVED - DONE");
 	
 	var htmlStr = "";
 	var fullname = data['fullname'];
@@ -67,7 +66,7 @@ function renderStudentView(data)
 	htmlStr = "";
 	var progress = data['progress'];
 	
-	htmlStr += '<p>' + progress[0]['completedHP'] + '/' + progress[0]['totalHP']+ '</p>';
+	htmlStr += '<p>' + parseFloat(progress[0]['completedHP']) + '/' + progress[0]['totalHP']+ '</p>';
 	
 	var progressBar = document.getElementById('completedMainProgress');
 	progressBar.innerHTML = htmlStr;
@@ -75,23 +74,50 @@ function renderStudentView(data)
 	/* Add course data */
 	
 	htmlStr = "";
+	htmlStr2 = "";
+	htmlStr3 = "";
 	var year = data['year'];
 	var courses = year['courses'];
 	
-	htmlStr += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
 	
+	htmlStr += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
 	htmlStr += '<div class="courses_body">';
+	htmlStr2 += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
+	htmlStr2 += '<div class="courses_body">';
+	htmlStr3 += '<div class="year_header"><h3>Year '+ year['value'] +'</h3></div>';
+	htmlStr3 += '<div class="courses_body">';
 	
 	for(var i = 0; i < courses.length; i++) {
+		var termcheck=courses[i]['term'];
+		var termchecksplit=termcheck.split('-');
+		var intYear = studentClass.match(/\d+/)[0];
 		
-		htmlStr += createHTMLForCourse(courses[i]);
-		
+		if(termchecksplit[1]==intYear || ((termchecksplit[1]==parseInt(intYear)+1) && termchecksplit[0]=='VT') ){
+				
+			htmlStr += createHTMLForCourse(courses[i]);
+		}else if((termchecksplit[1]==(parseInt(intYear)+1) && termchecksplit[0]=='HT') || ((termchecksplit[1]==parseInt(intYear)+2) && termchecksplit[0]=='VT')){
+				
+			htmlStr2 += createHTMLForCourse(courses[i]);
+			
+		}else if((termchecksplit[1]==(parseInt(intYear)+2) && termchecksplit[0]=='HT') || ((termchecksplit[1]==parseInt(intYear)+3) && termchecksplit[0]=='VT')){
+				
+			htmlStr3 += createHTMLForCourse(courses[i]);
+		}
+				
 	}
 	
 	htmlStr += '</div>';
 	
 	var yearList = document.getElementById('Year1');
 	yearList.innerHTML = htmlStr;
+	
+	
+	var yearList2 = document.getElementById('Year2');
+	yearList2.innerHTML = htmlStr2;
+	
+	
+	var yearList3 = document.getElementById('Year3');
+	yearList3.innerHTML = htmlStr3;
 	
 	console.log("DATA_PRINTED - DONE");
 	
@@ -114,13 +140,17 @@ function createHTMLForCourse(data)
 	var course_link = (data['course_link'] == null ?  '#' : data['course_link']);
 	var course_responsible = data['course_responsible'];
 	
+	if(result==null){
+		result=0;
+	}
+	
 	var courseHtmlStr = "";
 	
 	courseHtmlStr += '<div class="course">';
 	courseHtmlStr += '<div class="course_wrapper">';
 	
 	courseHtmlStr += '<div class="course_name">' + coursename + '</div>';
-	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + result + '/' + hp + '</div></div>';
+	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + parseFloat(result) + '/' + hp + '</div></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '</div>';
 	courseHtmlStr += '</div>';
