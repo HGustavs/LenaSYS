@@ -28,14 +28,9 @@
 			$ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 			
 			echo "<pre>";
-			$globalinserted = false;
-			if($ha){
-					print_r($_FILES);
-					print_r($_POST);					
+			if($ha){					
 					// Handle files! One by one  -- if all is ok add file name to fieldarray
-			 		
 			 		$storefile=false;
-
 					// Start at the "root-level"
 					chdir('../');
 			 		$currcvd=getcwd();
@@ -224,9 +219,7 @@
 </head>
 <body>
 <?php
-			if(!$error){
 				echo "<script>window.location.replace('fileed.php?cid=".$cid."&coursevers=".$vers."');</script>";
-			}
 ?>
 </body>
 </html>
