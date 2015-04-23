@@ -22,7 +22,7 @@
 
         <script type="text/javascript" src="usermanagementviewjquery.js"></script>
         <script type="text/javascript" src="../Shared/dugga.js"></script>
-                <script src="teachermanagementview.js"></script>
+        <script src="teachermanagementview.js"></script>
     </head>
 
 <body>
@@ -53,7 +53,7 @@
         </div>
     
         <!-- ProgramName -->
-        <div class="programName">
+        <div id="title" class="programName">
         </div> 
         
         
