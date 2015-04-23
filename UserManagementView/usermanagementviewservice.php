@@ -15,9 +15,10 @@
 	session_start();
 
 	
+	$opt = getOP('opt');
 	$pnr = getOP('pnr');
 	$studyprogram = getOP('username');
-	
+	$classname = getOP('classname');
 
 	
 	if(isset($_SESSION['uid'])){
@@ -29,9 +30,9 @@
 
 	
 	if(isSuperUser($userid)){
-			$superUser=true;
+			$isTeacher=true;
 	}else{
-			$superUser=false;
+			$isTeacher=false;
 	}
 
 	
@@ -42,6 +43,9 @@
 	//------------------------------------------------------------------------------------------------
 	
 	//queries teachers
+	
+	$classDropMenu = "SELECT class.class,class.classcode FROM class,user WHERE user.uid = '".$userid."' AND class.responsible = user.uid order by class.classcode;";
+	$studentInformation = "SELECT CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = '".$classname."';";
 	
 	//queries student
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
@@ -60,8 +64,67 @@
 	
 	$retrievedData =  null;
 	
-	if($superUser) {
+	if($isTeacher) {
 		//retrieve teacher data
+
+		if(strcmp($opt,'TOOLBAR') === 0){
+			
+			//retrive data for dropdownmenu 
+			$classes = array();
+			$query = $pdo->prepare($classDropMenu);
+		
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading data from user ". $error[2]; 
+
+			} else {
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$classes,
+						array(
+							'class' => $row['class'],
+							'classcode' => $row['classcode']
+						)
+					);
+				}
+
+				$retrievedData 	= array(
+					'type'		=> $opt,
+					'classes'	=> $classes,
+					'debug' 	=> $debug
+				);
+			}
+		}
+		else if(strcmp($opt, 'VIEW') === 0) {
+			//retive data for studentlist
+			$studentlist = array();
+			$query = $pdo->prepare($studentInformation);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading data from user ". $error[2]; 
+
+			} else {
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$studentlist,
+						array(
+							'fullname' => $row['fullname'],
+							'username' => $row['username'],
+							'ssn'	   => $row['ssn'],
+							'email'	   => $row['email']
+						)
+					);
+				}
+
+				$retrievedData 	= array(
+					'type'			=> $opt,
+					'classname'		=> $classname,
+					'studentlist'	=> $studentlist,
+					'debug' 		=> $debug
+				);
+			}
+		}
 	}
 	else {
 			//retrieve student data
