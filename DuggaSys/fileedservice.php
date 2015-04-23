@@ -53,7 +53,6 @@ $files=array();
 $lfiles =array();
 $gfiles =array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	//if(isSuperUser($userid)) {
 		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE (cid=:cid or isGlobal='1') ORDER BY filename;");
 		$query->bindParam(':cid', $cid);
 		if(!$query->execute()) {
