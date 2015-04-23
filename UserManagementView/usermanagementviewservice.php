@@ -17,7 +17,7 @@
 	$opt = getOP('opt');
 	$pnr = getOP('pnr');
 	$studyprogram = getOP('username');
-	$class = getOP('class');
+	$classname = getOP('classname');
 	
 
 	
@@ -30,9 +30,9 @@
 
 	
 	if(isSuperUser($userid)){
-			$superUser=true;
+			$isTeacher=true;
 	}else{
-			$superUser=false;
+			$isTeacher=false;
 	}
 
 	
@@ -45,33 +45,30 @@
 	//queries teachers
 
 	$classDropMenu = "SELECT class.class,class.classcode FROM class,user WHERE user.uid = '".$userid."' AND class.responsible = user.uid order by class.classcode;";
-	//$studentInformation = "SELECT CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = "WEBUG13";";
+	$studentInformation = "SELECT CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = '".$classname."';";
 	
 	//queries student
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
 	$progressbarQuery = "SELECT SUM(user_course.result) AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
 						WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
-	//$coursesQuery = "SELECT course.coursename, user_course.result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
-	//FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
-	$coursesQuery = "SELECT course.coursename, (SELECT SUM(hp) FROM studentresultCourse
-	WHERE username='".$userid."' AND studentresultCourse.cid=course.cid) AS result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage, user_course.period ,user_course.term 
-	FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator ORDER BY user_course.period ASC";
+	$coursesQuery = "SELECT course.coursename, user_course.result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
+	FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
+	
 	//------------------------------------------------------------------------------------------------
 	// Retrieve information
 	//------------------------------------------------------------------------------------------------
 	
 	$retrievedData =  null;
 	
-	if($superUser) {
+	if($isTeacher) {
 		//retrieve teacher data
 
-
-		//data for 
 		if(strcmp($opt,'TOOLBAR') === 0){
+			
+			//retrive data for dropdownmenu 
 			$classes = array();
-
 			$query = $pdo->prepare($classDropMenu);
-
+		
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error reading data from user ". $error[2]; 
@@ -93,7 +90,36 @@
 					'debug' 	=> $debug
 				);
 			}
+		}
+		else if(strcmp($opt, 'VIEW') === 0) {
+			//retive data for studentlist
+			$studentlist = array();
+			$query = $pdo->prepare($studentInformation);
 
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading data from user ". $error[2]; 
+
+			} else {
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+					array_push(
+						$studentlist,
+						array(
+							'fullname' => $row['fullname'],
+							'username' => $row['username'],
+							'ssn'	   => $row['ssn'],
+							'email'	   => $row['email']
+						)
+					);
+				}
+
+				$retrievedData 	= array(
+					'type'			=> $opt,
+					'classname'		=> $classname,
+					'studentlist'	=> $studentlist,
+					'debug' 		=> $debug
+				);
+			}
 		}
 	}
 	else {
@@ -156,9 +182,7 @@
 							'result' => $row['result'],
 							'hp' => $row['hp'],
 							'course_responsible' => $row['coordinator'],
-							'course_link' => $row['courseHttpPage'],
-							'term' => $row['term'],
-							'period' => $row['period']
+							'course_link' => $row['courseHttpPage']
 							)
 					);
 				}
@@ -182,6 +206,5 @@
 	}
 	
 	echo json_encode($retrievedData);
-
 	
 ?>
