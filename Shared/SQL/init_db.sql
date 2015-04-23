@@ -174,6 +174,7 @@ CREATE TABLE userAnswer (
 	marked			TIMESTAMP NULL,
 	vers			VARCHAR(8),
 	creator 		INTEGER,
+	timeSpent		INT DEFAULT NULL, 
 	CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
 	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
 	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
@@ -181,6 +182,14 @@ CREATE TABLE userAnswer (
 	CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
 	CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/**
+ * This view pulls the top 10 fastest quiz finishing students and lists them
+ */
+DROP VIEW IF EXISTS highscore_quiz_time;
+CREATE VIEW highscore_quiz_time AS
+	SELECT userAnswer.cid, userAnswer.quiz, userAnswer.uid, userAnswer.grade, userAnswer.timeSpent
+		FROM userAnswer ORDER BY userAnswer.timeSpent ASC LIMIT 10;
 
 CREATE TABLE vers(
 	cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
