@@ -344,7 +344,6 @@ function returnedResults(data) {
 									if (duggacnt > 0){
 										ttr += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 										ttr += dugga['entryname'] + " ";
-								
 									}else{
 										ttr += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 									}
