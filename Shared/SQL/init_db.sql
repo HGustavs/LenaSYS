@@ -82,7 +82,7 @@ insert into user_course(uid,cid,result,access,period,term) values(4,1,0,'R',1,'H
 insert into user_course(uid,cid,result,access,period,term) values(4,3,0,'R',2,'HT-14');
 insert into user_course(uid,cid,result,access,period,term) values(4,4,0,'R',3,'VT-14');
 insert into user_course(uid,cid,result,access,period,term) values(4,5,0,'R',4,'VT-15');
-insert into user_course(uid,cid,result,access,period,term) values(4,2,0,'R',4,'VT-15');
+insert into user_course(uid,cid,result,access,period,term) values(4,2,0,'R',4,'HT-15');
 
 /* a13durp couirses */
 insert into user_course(uid,cid,result,access,period,term) values(5,1,0,'R',1,'HT-13');
@@ -408,19 +408,23 @@ CREATE TABLE programkurs (
 
 
 CREATE TABLE class (
-    class 		varchar(10) DEFAULT NULL,
+    class 		varchar(10) NOT NULL,
+	responsible	INT UNSIGNED NOT null,
 	classname 	varchar(100) DEFAULT NULL,
     regcode 	int(8) DEFAULT NULL,
 	classcode 	varchar(8) DEFAULT NULL,
-    hp 			decimal(3,1) DEFAULT NULL,
+    hp 			decimal(10,1) DEFAULT NULL,
 	tempo 		int(3) DEFAULT NULL,
-	responsible varchar(20) DEFAULT NULL,
+	
 	hpProgress 	decimal(3,1),
-    PRIMARY KEY (class)
+    PRIMARY KEY (class,responsible),
+	FOREIGN KEY (responsible) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG13','elite',23432,'WEBUG',180,100,'Brohede');
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('TEST13','test',44444,'TEST',180,100,'tester');
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG13','elite',23432,'WEBUG',180,100,2);
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('TEST13','test',44444,'TEST',180,100,2);
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG14','sucks',23432,'WEBUG',180,100,2);
+INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG15','hard',23432,'WEBUG',180,100,2);
 /**
  * this table stores the different subparts of each course. 
  */ 
