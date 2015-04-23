@@ -25,7 +25,6 @@
 			}else{
 					$userid="UNK";		
 			} 	
-			//hasAccess($userid, $cid, 'w') ||  && isSuperUser($userid)
 			$ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 			
 			echo "<pre>";
