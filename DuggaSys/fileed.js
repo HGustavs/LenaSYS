@@ -159,7 +159,7 @@ function returnedFile(data)
 				}
 				
 				str3+="</table>";
-					str4+="<table class='list' style='margin-bottom:8px;' >";
+				str4+="<table class='list' style='margin-bottom:8px;' >";
 
 				str4+="<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>";
 				for(i=0;i<data['entries'].length;i++){
@@ -178,25 +178,19 @@ function returnedFile(data)
 				}
 				str4+="</table>";
 				
-				
+		/* overwrite the tables with the data fetched from mysql into the divs on the html page*/		
 		var alllinks=document.getElementById("alllinks");
 		alllinks.innerHTML=str1;
-		/*                                         */
 		var allglobalfiles=document.getElementById("allglobalfiles");
 		allglobalfiles.innerHTML=str2;
-		/*                                         */
 		var allcoursefiles=document.getElementById("allcoursefiles");
 		allcoursefiles.innerHTML=str3;
-		/*                                         */
 		var alllocalfiles=document.getElementById("alllocalfiles");
 		alllocalfiles.innerHTML=str4;
-	/*                                         */
 		}else{
 
 		}
 
-
 	  if(data['debug']!="NONE!") alert(data['debug']);
-
 }
 
