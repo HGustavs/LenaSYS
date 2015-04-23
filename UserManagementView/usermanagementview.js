@@ -80,13 +80,13 @@ function renderStudentView(data)
 	var courses = year['courses'];
 	var countYear = data['class'].match(/\d+/)[0];
 	var yearh3 = [];
-	
-	/*calculates the year header, from what year student has started */	
+	console.log(data['class'].match(/\d+/)[0]);
+		
 	for(var i=0; i< progress[0]['totalHP']/60 ;i++){
 		yearh3[i]=parseInt(countYear)+i+2000;
+		console.log(yearh3[i]);
 	}
 		
-	/* temp sulotion for 3 year programm students*/	
 	htmlStr += '<div class="year_header"><h3>'+ yearh3[0] + '</h3></div>';
 	htmlStr += '<div class="courses_body">';
 	htmlStr2 += '<div class="year_header"><h3>'+ yearh3[1] +'</h3></div>';
@@ -94,7 +94,7 @@ function renderStudentView(data)
 	htmlStr3 += '<div class="year_header"><h3>'+ yearh3[2] +'</h3></div>';
 	htmlStr3 += '<div class="courses_body">';
 	
-	/*calculates wich year the courses should be insertet in.*/
+		console.log(data);
 	for(var i = 0; i < courses.length; i++) {
 		var termcheck=courses[i]['term'];
 		var termchecksplit=termcheck.split('-');
@@ -157,13 +157,13 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<div class="course">';
 	courseHtmlStr += '<div class="course_wrapper">';
 	
-	courseHtmlStr += '<div class="course_name">' + coursename + '</div>';
-	courseHtmlStr += '<div class="course_progressbar"> <div class="completed_course_progressbar">' + parseFloat(result) + '/' + hp + '</div></div>';
+	
+	courseHtmlStr += '<div class="course_name"><p>' + coursename + '</p></div>';
+	courseHtmlStr += '<div class="course_progressbar"> <div class="progress"><div class="progress-bar progress-bar-warning" id="" role="progressbar" style="width:100%">' + parseFloat(result) + '/' + hp + '</div></div></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
-	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '</div>';
+	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '<a href="mailto:""><img src="envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
 	courseHtmlStr += '<div class="course_alert"></div>';
 	courseHtmlStr += '<div class="course_type"></div>';
-	
 	courseHtmlStr += '</div>';
 	
 	courseHtmlStr += '</div>';
