@@ -80,13 +80,13 @@ function renderStudentView(data)
 	var courses = year['courses'];
 	var countYear = data['class'].match(/\d+/)[0];
 	var yearh3 = [];
-	console.log(data['class'].match(/\d+/)[0]);
-		
+	
+	/*calculates the year header, from what year student has started */	
 	for(var i=0; i< progress[0]['totalHP']/60 ;i++){
 		yearh3[i]=parseInt(countYear)+i+2000;
-		console.log(yearh3[i]);
 	}
 		
+	/* temp sulotion for 3 year programm students*/	
 	htmlStr += '<div class="year_header"><h3>'+ yearh3[0] + '</h3></div>';
 	htmlStr += '<div class="courses_body">';
 	htmlStr2 += '<div class="year_header"><h3>'+ yearh3[1] +'</h3></div>';
@@ -94,7 +94,7 @@ function renderStudentView(data)
 	htmlStr3 += '<div class="year_header"><h3>'+ yearh3[2] +'</h3></div>';
 	htmlStr3 += '<div class="courses_body">';
 	
-		console.log(data);
+	/*calculates wich year the courses should be insertet in.*/
 	for(var i = 0; i < courses.length; i++) {
 		var termcheck=courses[i]['term'];
 		var termchecksplit=termcheck.split('-');
