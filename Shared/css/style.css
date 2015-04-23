@@ -785,3 +785,19 @@ input.submit-button-red:hover {
 
 /* End DuggaSys Header */
 /***********************/
+
+/* DuggaSys Sectioneed*/
+.course-menu--settings {
+	float: left;
+}
+
+.course-menu--options {
+	float: right;
+}
+
+/* select element */
+.course-dropdown {
+	height: 30px;
+}
+/* End DuggaSys Sectioneed*/
+/**************************/

@@ -79,25 +79,11 @@ pdoConnect();
 			<td>Course Code: <div id='courseidwrapper'><input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></div></td>	
 		</tr>
 		<tr>
-			<td>Vers ID: <div id='versidwrapper'><input size='8' class='form-control textinput' type='text' id='versid' value='Version ID' /></div></td>		
-			<td>Vers Name: <div id='versnamewrapper'><input size='8' class='form-control textinput' type='text' id='versname' value='Version Name' /></div></td>		
-			<input type='hidden' id='cid' value='Toddler' /></td>
-		</tr>
-		<tr>
-			<td>Student Version: <select style='float:right;' id='activeversion'></select></td>
-			<td>Edit Version: <select style='float:right;' id='activeedversion'></select></td>
-		</tr>
-		<tr>
 			<td>Visibility: <select style='float:right;' id='visib'></select></td>
-			<td>Copy Version: <select style='float:right;' id='copyversion'></select></td>
 		</tr>
 	</table>
-
-
-	<table width="100%"><tr>
-			<td id='accessbutt' align='left'><input class='submit-button' type='button' value='Access' title='Give students access to this course' onclick='accessCourse();'/></td>
-			<td align='center'><input class='submit-button' type='button' value='New Version' title='Click here to save a new version' onclick='createVersion();' /></td>
-			<td align='center'><input class='submit-button' type='button' value='Copy' title='Copy this course' onclick='copyVersion();' /></td>
+	<table width="100%">
+		<tr>
 			<td align='right'><input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateCourse();' /></td>
 		</tr>
 	</table>
