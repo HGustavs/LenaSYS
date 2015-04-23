@@ -343,6 +343,8 @@ function returnedResults(data) {
 
 									if (duggacnt > 0){
 										ttr += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+										ttr += dugga['entryname'] + " ";
+								
 									}else{
 										ttr += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 									}
@@ -393,7 +395,7 @@ function returnedResults(data) {
 								str += "<td style='"+yomama+"' colspan='" + duggacnt + "' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 							}
 							
-							str+=zttr;
+							str+= moment['entryname'] +" " +zttr;
 
 							str += "</td></tr><tr style='border-top:2px solid #dbd0d8;'>";
 							str += ttr;
