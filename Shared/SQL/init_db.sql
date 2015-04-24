@@ -50,7 +50,7 @@ CREATE TABLE course(
 		updated				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 		activeversion 		VARCHAR(8),
 		activeedversion 	VARCHAR(8),
-		capacity			int(3) not null,
+		capacity			int(5),
 		hp					decimal(2,1) not null,
 		courseHttpPage		varchar(2000),
 		CONSTRAINT pk_course PRIMARY KEY(cid),
@@ -219,15 +219,10 @@ insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","7844","HT 2014");
 
 CREATE TABLE fileLink(
-<<<<<<< HEAD
 	fileid				INT(11) NOT NULL AUTO_INCREMENT,
 	filename			VARCHAR(128) NOT NULL,
-=======
-	fileid			INT(11) NOT NULL AUTO_INCREMENT,
-	filename		VARCHAR(128) NOT NULL,
->>>>>>> a3e4b726724852ee6bb4bee81584b7f2fdae40e8
 	kind				INTEGER,	
-	cid				INT UNSIGNED NOT NULL,
+	cid					INT UNSIGNED NOT NULL,
 	isGlobal			BOOLEAN DEFAULT 0,
 	CONSTRAINT pk_filelink PRIMARY KEY (fileid),
 	CONSTRAINT fk_filelink_joins_course FOREIGN KEY (cid) REFERENCES course (cid)
@@ -504,8 +499,8 @@ INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta',3);
 CREATE TABLE programcourse (
     class 		varchar(10) DEFAULT NULL,
 	cid 		INT UNSIGNED NOT NULL,
-	period 		int(1) not null,
-	term 		char(5) not null,
+	period 		int(1) ,
+	term 		varchar(10),
 	PRIMARY KEY(cid, class),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (class) REFERENCES class (class)
@@ -570,6 +565,8 @@ update user set superuser=1 where username="Toddler";
 
 
 /* sets after and before-id for examples in codeviewer*/
+
+
 UPDATE codeexample
 SET sectionname='Example1' , afterid='2' , beforeid='1'
 WHERE exampleid='1';
