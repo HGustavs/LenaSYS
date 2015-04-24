@@ -132,32 +132,23 @@
 			
 	</div>
 
-	<!-- Login Box Start! -->
-
-  <div id='receiptBox' class="loginBox" style="display:none">
-		<div id='receipt'>
-			<div class='loginBoxheader'>
-				<h3>Kvitto - Duggasvar</h3>
-				<div onclick="hideReceiptPopup()">x</div>
-			</div>
-			  <div class="table-wrap">
-				<table>
-					<tr>
-						<td>
-							<textarea id="kvittotext" cols='20' rows='5' wrap='hard' style='width: 346px; height: 150px; resize: none;' autofocus readonly></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type='button' class='submit-button' style="float: right;" onclick="hideReceiptPopup();" value='Stäng'>
-						</td>
-					</tr>
-				</table>
-			  </div>
-		</div>
-	</div>
 	
-	<!-- Login Box End! -->
+  	<!-- Login Box (receiptbox) Start! -->
+
+  	<div id='receiptBox' class="loginBox" style="display:none">
+		<div class='loginBoxheader'>
+			<h3>Kvitto - Duggasvar</h3><div onclick="hideReceiptPopup()">x</div>
+		</div>
+		<div id='receiptInfo'></div>
+		<textarea id="receipt" autofocus readonly></textarea>
+		<div class="button-row">
+			<input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Save Receipt'> 
+			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>	
+  	    	</div>
+  	</div>
+	
+  	<!-- Login Box (receiptbox) End! -->
+  
 				
 	<!-- content END -->
 
