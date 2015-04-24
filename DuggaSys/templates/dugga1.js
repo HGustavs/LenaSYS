@@ -19,6 +19,8 @@ Example seed
 
 var retdata=null;
 var hc=null;
+var timeSpent = 0;
+var timer;
 
 //----------------------------------------------------------------------------------
 // Setup
@@ -41,6 +43,9 @@ function setup()
 
 function returnedDugga(data)
 {
+	startTimer();
+	console.log(data['param']);
+	
 	  if(data['debug']!="NONE!") alert(data['debug']);
 
 		if(data['param']=="UNK"){
@@ -74,9 +79,24 @@ function returnedDugga(data)
 //                                  Master Functions
 //--------------------================############================--------------------
 
+function startTimer()
+{
+	console.log("Starting timer");
+	timer = setInterval( incrementTimer, 1000);
+	
+}
+function incrementTimer(){
+	timeSpent = timeSpent + 1;
+	console.log(timeSpent);
+}
+function stopTimer(){
+	console.log("Stopping timer");
+	clearInterval(timer);
+}
 
 function saveClick()
 {
+		stopTimer();
 		// Loop through all bits
 		bitstr="";
 		$(".bit").each(function( index ) {

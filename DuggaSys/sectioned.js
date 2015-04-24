@@ -451,6 +451,8 @@ function returnedSection(data)
 							}
 						}
 						
+						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/Cogwheel.svg' onclick='showHighscore()'/>";
+						
 						if(grady==-1){
 								// Nothing submitted nor marked (White)
 								str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
@@ -524,3 +526,9 @@ function returnedSection(data)
 	}
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
+
+function showHighscore()
+{
+	$("#HighscoreBox").css("display", "block");
+}
+

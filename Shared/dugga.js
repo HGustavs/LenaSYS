@@ -88,10 +88,12 @@ function randomstring()
 
 function saveDuggaResult(citstr)
 {
+	console.log(timeSpent);
 		citstr=querystring['moment']+" "+citstr;
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
-
+		citstr= citstr + "-" + timeSpent;
+		
 		hexstr="";
 		for(i=0;i<citstr.length;i++){
 				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
@@ -210,9 +212,9 @@ function AJAXService(opt,apara,kind)
 		// Informs the user that his input contained nothing.
 		if(apara[key] == "") {
 			alert("Your input contained nothing in " + key);
-		}
-			
+		}			
 		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+		console.log("Para: " + para);
 	}
 				
 	if(kind=="COURSE"){
