@@ -110,13 +110,8 @@ function returned(data)
 		var boxid=retdata['box'][i][0];
 		var boxtype=retdata['box'][i][1].toUpperCase();
 		var boxcontent=retdata['box'][i][2];
-		var descContent=retdata['box'][i][3];
-		var boxwordlist=retdata['box'][i][4];
-		
-		for(var j = 0; j < 5; j++){
-			alert("i: " + i + " j: " + j + " data: ");
-			alert(retdata['box'][i][j]);
-		}
+		var boxwordlist=retdata['box'][i][3];
+	
 		// don't create templatebox if it already exists
 		if(!document.getElementById(contentid)){
 			addTemplatebox(contentid);
@@ -136,12 +131,11 @@ function returned(data)
 				var boxmenuheight= $("#"+contentid+"menu").height();
 			}
 			$("#"+contentid).css("margin-top", boxmenuheight-1);
-			//alert(boxcontent);
 			rendercode(boxcontent,boxid,boxwordlist);
 		}else if(boxtype == "DOCUMENT"){
 				// Print out description in a document box
 				$("#"+contentid).removeClass("codebox").addClass("descbox");
-				var desc = descContent;
+				var desc = boxcontent;
 				desc = replaceAll("&nbsp;"," ",desc);
 				
 				// Highlight important words!
@@ -1694,13 +1688,13 @@ function getLocalStorageProperties(templateId){
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {	
-	var returnString = " ";
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<strong><em>$1</em></strong>');
-	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<strong>$1</strong>');
-	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<em>$1</em>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<strong><em>$1</em></strong>');
-	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<strong>$1</strong>');
-	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<em>$1</em>');
+	var returnString = " ";							
+	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
+	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
+	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
+	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<font style="font-weight:bold;">$1</font>');	
+	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<font style="font-style:italic;">$1</font>');
 	inString = inString.replace(/^\#{6} (.*)=*/gm, '<h6>$1</h6>');
 	inString = inString.replace(/^\#{5} (.*)=*/gm, '<h5>$1</h5>');
 	inString = inString.replace(/^\#{4} (.*)=*/gm, '<h4>$1</h4>');
