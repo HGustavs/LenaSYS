@@ -265,7 +265,6 @@ header {
     z-index: 5000;
     top: 0px;
     left: 0px;
-    box-shadow: 0px 3px 8px #A9A; 
 }
 
 
@@ -479,7 +478,7 @@ font-size: 14px;
 }
 
 /* --------------================################================-------------- *
- *                        Pop-up BOX made by Django Okedjad                     *
+ *                       		  Pop-up BOX        				   *
  * --------------================################================-------------- */
 
 
@@ -521,16 +520,16 @@ font-size: 14px;
     width: 50%;
 }
 .loginBoxheader div {
-	padding: 2px 20px 2px 20px;
+	padding: 2px 20px;
 	position: absolute;
 	top: 4px;
-	right: 5px;
-    color: #fff;
-    cursor: default;
-	background-color: #c75050;
+	right: 4px;
+	color: rgb(255, 255, 255);
+	cursor: default;
+	background-color: rgb(199, 80, 80);
 	font-family: arial;
 	font-weight: bold;
-	height:20px;
+	height: 21px;
 }
 .loginBoxheader div:hover {
 	background-color: #ce3d3d;
