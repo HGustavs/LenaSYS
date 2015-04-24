@@ -58,6 +58,16 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values (
 INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("IT1405","USEREXPERIENCE",NOW(),1,0,7.5,"https://scio.his.se/portal");
 INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("IT1431","IT-org",NOW(),1,0,7.5,"https://scio.his.se/portal");
 INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("DA4324","C++ grund prog",NOW(),1,0,7.5,"https://scio.his.se/portal");
+
+/* This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
+CREATE TABLE course_req(
+		cid			INT UNSIGNED NOT NULL,
+		req_cid			INT UNSIGNED NOT NULL,
+		PRIMARY KEY(cid, req_cid),
+		FOREIGN KEY(cid) REFERENCES course(cid),
+		FOREIGN KEY(req_cid) REFERENCES course(cid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 /** 
  * This table represents a many-to-many relation between users and courses. That is,
  * a tuple in this table joins a user with a course.
