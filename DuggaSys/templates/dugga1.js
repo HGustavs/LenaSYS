@@ -85,11 +85,15 @@ function startTimer()
 	timer = setInterval( incrementTimer, 1000);
 	
 }
-function incrementTimer(){
+
+function incrementTimer()
+{
 	timeSpent = timeSpent + 1;
 	console.log(timeSpent);
 }
-function stopTimer(){
+
+function stopTimer()
+{
 	console.log("Stopping timer");
 	clearInterval(timer);
 }
