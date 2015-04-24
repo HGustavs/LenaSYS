@@ -9,13 +9,10 @@ pdoConnect();
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Dugga editor</title>
-
-	<link type="text/css" href="css/style.css" rel="stylesheet">
-  <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
-
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.min.js"></script>
-
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	 <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="fileed.js"></script>
 
@@ -31,7 +28,38 @@ pdoConnect();
 		
 	<!-- content START -->
 	<div id="content">
-					
+		<div style='float:right;'>
+				<input class='submit-button' type='button' value='Add Link' onclick='createLink();'/>
+				</div>
+				<div id="alllinks">
+					<table class='list' style='margin-bottom:8px;' >
+						<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
+					</table>
+				</div>
+				<div style='float:right;'>
+				<input class='submit-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
+				</div>
+				<div id="allglobalfiles">
+					<table class='list' style='margin-bottom:8px;' >
+						<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>
+					</table>
+				</div>
+				<div style='float:right;'>
+				<input class='submit-button' type='button' value='Add File' onclick='createFile("MFILE");'/>
+				</div>
+				<div id="allcoursefiles">
+					<table class='list'>
+						<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>
+					</table>
+				</div>
+				<div style='float:right;'>
+				<input class='submit-button' type='button' value='Add File' onclick='createFile("LFILE");'/>
+				</div>
+				<div id="alllocalfiles">
+					<table class='list'>
+					<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>
+					</table>
+				</div>
 	</div>
 	
 	<?php 
@@ -57,7 +85,7 @@ pdoConnect();
 			<td colspan='2' style='line-height:40px;'>URL:&nbsp;<input name="link" type="text" size="40" /></td>		
 		</tr>
 		<tr id="filey">
-			<td colspan='2' style='line-height:40px;'>Upload File:&nbsp;<input name="uploadedfile" type="file" /></td>		
+			<td colspan='2' style='line-height:40px;'>Upload File:&nbsp;<input name="uploadedfile" id="uploadedfile" type="file" /></td>		
 		</tr>
 		<tr id="selecty">
 			<td colspan='2' style='line-height:40px;'>Existing File:&nbsp;<select id="selectedfile" name="selectedfile"></select></td>		

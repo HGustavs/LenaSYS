@@ -88,10 +88,12 @@ function randomstring()
 
 function saveDuggaResult(citstr)
 {
+	console.log(timeSpent);
 		citstr=querystring['moment']+" "+citstr;
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
-
+		citstr= citstr + "-" + timeSpent;
+		
 		hexstr="";
 		for(i=0;i<citstr.length;i++){
 				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
@@ -224,6 +226,12 @@ function AJAXService(opt,apara,kind)
 				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
+		// Informs the user that his input contained nothing.
+		if(apara[key] == "") {
+			alert("Your input contained nothing in " + key);
+		}			
+		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+		console.log("Para: " + para);
 	}
 				
 	if(kind=="COURSE"){
@@ -495,4 +503,7 @@ function getCookie(cname) {
 
 $(window).load(function() {
       $('.loginBox').draggable();
+      $(window).keyup(function(event){
+      	if(event.keyCode == 27) closeWindows();
+      });
 });

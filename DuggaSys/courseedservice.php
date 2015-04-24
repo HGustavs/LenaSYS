@@ -78,12 +78,10 @@ if($ha){
 					$debug="Error updating entries".$error[2];
 				}
 		}else if(strcmp($opt,"UPDATE")===0){
-				$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, activeversion=:activevers, activeedversion=:activeedvers, coursecode=:coursecode WHERE cid=:cid;");
+				$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':coursename', $coursename);
 				$query->bindParam(':visibility', $visibility);
-				$query->bindParam(':activevers', $activevers);
-				$query->bindParam(':activeedvers', $activeedvers);
 				$query->bindParam(':coursecode', $coursecode);
 		
 				if(!$query->execute()) {
@@ -91,7 +89,6 @@ if($ha){
 					$debug="Error updating entries".$error[2];
 				}
 		}
-
 }
 
 //------------------------------------------------------------------------------------------------

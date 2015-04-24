@@ -47,13 +47,19 @@ if(checklogin()){
 					// Log the dugga write
 					makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
+					//Seperate timeSpent from $answer
+					$timeSpent = explode("-", $answer)[1];
+					$answer = explode("-", $answer)[0];
+					
 					// Update Dugga!
-					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
 					$query->bindParam(':moment', $moment);
 					$query->bindParam(':useranswer', $answer);
+					$query->bindParam(':timeSpent', $timeSpent);
+					
 					if(!$query->execute()) {
 						$debug="Error updating answer";
 				}

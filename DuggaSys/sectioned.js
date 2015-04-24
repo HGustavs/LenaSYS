@@ -227,6 +227,89 @@ function closeSelect()
 	$("#editSection").css("display","none");
 }
 
+function showCreateVersion()
+{
+	$("#newCourseVersion").css("display", "block");
+}
+
+function createVersion(){
+
+	var cid = $("#cid").val();
+	var versid = $("#versid").val();
+	var versname = $("#versname").val();
+	var coursecode = $("#course-coursecode").text();
+	var courseid = $("#course-courseid").text();
+	var coursename = $("#course-coursename").text();
+	var makeactive = $("#makeactive").is(':checked');
+	var coursevers = $("#course-coursevers").text();
+	
+	if(coursevers=="null"){
+		makeactive=true;
+	}
+	
+	AJAXService("NEWVRS", {
+		cid : cid,
+		versid : versid,
+		versname : versname,
+		coursecode : coursecode,
+		coursename : coursename
+	}, "SECTION");
+	
+	if(makeactive){
+		AJAXService("CHGVERS", {
+			cid : cid,
+			versid : versid,
+		}, "SECTION");
+	}
+
+	$("#newCourseVersion").css("display","none");
+	changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
+}
+
+function showEditVersion(versid, versname)
+{
+	$("#eversid").val(versid);
+	$("#eversname").val(versname);
+	$("#editCourseVersion").css("display", "block");
+}
+
+function updateVersion(){
+	var cid = $("#cid").val();
+	var versid = $("#eversid").val();
+	var versname = $("#eversname").val();
+	var coursecode = $("#course-coursecode").text();
+	var makeactive = $("#emakeactive").is(':checked');
+
+	AJAXService("UPDATEVRS", {
+		cid : cid,
+		versid : versid,
+		versname : versname,
+		coursecode : coursecode
+	}, "SECTION");
+	
+	if(makeactive){
+		AJAXService("CHGVERS", {
+			cid : cid,
+			versid : versid,
+		}, "SECTION");
+	}
+
+	$("#editCourseVersion").css("display","none");
+}
+
+function goToVersion(selected)
+{
+	var value = selected.value;
+	changeURL("sectioned.php"+value)
+}
+
+function accessCourse() {
+	var coursevers = $("#course-coursevers").text();
+	window.location.href = "accessed.php?cid=" + querystring['courseid']+"&coursevers="+coursevers;
+	resetinputs();
+	//resets all inputs
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -237,6 +320,7 @@ function returnedSection(data)
 	retdata=data;
 
 	if(querystring['coursevers']!="null"){
+<<<<<<< HEAD
 	// Fill section list with information
 		str="";
 		if(data['writeaccess']) {
@@ -251,6 +335,50 @@ function returnedSection(data)
 			
 				// Course Name
 		str+="<div class='course'>"+data.coursename+" "+data.coursevers+"</div>";
+=======
+		// Fill section list with information
+		str="";
+
+		if(data['writeaccess']) {
+			
+			str+="<div class='course-menu--settings'>";
+			str+="<select class='course-dropdown' onchange='goToVersion(this)'>";
+			if (retdata['versions'].length > 0) {
+				for ( i = 0; i < retdata['versions'].length; i++) {
+					var item = retdata['versions'][i];
+					if (retdata['courseid'] == item['cid']) {
+						var vvers = item['vers'];
+						var vname = item['versname'];
+						str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+						if(retdata['coursevers']==vvers){
+							str += "selected";
+							var versionname=vname;
+						}
+						str += ">" + vname + " - " + vvers + "</option>";
+					}
+				}
+			}
+			str+="</select>";
+			str+="<input type='button' class='submit-button' value='Edit version' title='Edit the selected version' onclick='showEditVersion";
+			str+='("'+querystring['coursevers']+'","'+versionname+'")';
+			str+=";'>";	
+			str+="<input type='button' class='submit-button' value='New version' title='Create a new version of this course' onclick='showCreateVersion();'>";
+			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";
+			str+="</div>";
+			
+			str+="<div class='course-menu--options'>";
+			str+="<input class='submit-button' type='button' value='New' onclick='newItem();'/>";
+			str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="</div>";
+		}
+	
+		// Course Name
+		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
+
+>>>>>>> origin/ds17
 		str+="<div id='Sectionlistc' >";
 			
 		var groupitems = 0;
@@ -340,6 +468,11 @@ function returnedSection(data)
 							}
 						}
 						
+<<<<<<< HEAD
+=======
+						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/Cogwheel.svg' onclick='showHighscore()'/>";
+						
+>>>>>>> origin/ds17
 						if(grady==-1){
 								// Nothing submitted nor marked (White)
 								str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
@@ -404,9 +537,26 @@ function returnedSection(data)
 			});							
 		}
 	}else{
+<<<<<<< HEAD
 		str="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;
 	}
 	if(data['debug']!="NONE!") alert(data['debug']);
+=======
+		str="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-coursevers' style='display: inline-block; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
+		str+="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
+		var slist=document.getElementById('Sectionlist');
+		slist.innerHTML=str;
+		showCreateVersion();
+		
+	}
+	if(data['debug']!="NONE!") alert(data['debug']);
 }
+
+function showHighscore()
+{
+	$("#HighscoreBox").css("display", "block");
+>>>>>>> origin/ds17
+}
+

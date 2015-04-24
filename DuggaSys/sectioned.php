@@ -34,7 +34,7 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 		
-	<!--- Section List --->
+	<!-- Section List -->
 	<div id='Sectionlist'></div>
 
 	</div>
@@ -44,7 +44,7 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 
-	<!--- Edit Section Dialog START --->
+	<!-- Edit Section Dialog START -->
 	<div id='editSection' class='loginBox' style='width:460px;display:none;'>
 
 	<div class='loginBoxheader'>
@@ -85,7 +85,78 @@ pdoConnect();
 	</table>
 
 	</div>
-	<!--- Edit Section Dialog END --->
+	<!-- Edit Section Dialog END -->
+	
+	<!-- New Verison Dialog START -->
+	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
+	<div class='loginBoxheader'>
+	<h3>New Course Verison</h3>
+	<div onclick='closeWindows();'>x</div>
+	</div>		
+	<table width="100%">
+		<tr>
+			<td>Version Name: <div id='versnamewrapper'><input size='8' class='form-control textinput' type='text' id='versname' placeholder='Version Name' /></div></td>	
+			<td>Version ID: <div id='versidwrapper'><input size='8' class='form-control textinput' type='text' id='versid' placeholder='Version ID' /></div></td>			
+			<input type='hidden' id='cid' value='Toddler' /></td>
+		</tr>
+		<tr>
+			<td>Copy content from:</td>		
+		</tr>
+		<tr>
+			<td><select style='float:left;' id='copyvers'></select></td>
+		</tr>
+		<tr>	
+			<td><br><div id='makeactivewrapper'><input type="checkbox" name="makeactive" id="makeactive" value="yes">Change this to default version</div></td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+			<td align='right'><input class='submit-button' type='button' value='Create' onclick='createVersion();' /></td>
+		</tr>
+	</table>
+
+	</div>
+	<!-- New Verison Dialog END -->
+	
+	<!-- Edit Verison Dialog START -->
+	<div id='editCourseVersion' class='loginBox' style='width:464px;display:none;'>
+	<div class='loginBoxheader'>
+	<h3>Edit Course Verison</h3>
+	<div onclick='closeWindows();'>x</div>
+	</div>		
+	<table width="100%">
+		<tr>
+			<td>Version Name: <div id='versnamewrapper'><input size='8' class='form-control textinput' type='text' id='eversname' placeholder='Version Name' /></div></td>	
+			<td>Version ID: <div id='versidwrapper'><input size='8' class='form-control textinput' type='text' id='eversid' placeholder='Version ID' disabled/></div></td>			
+			<input type='hidden' id='cid' value='Toddler' /></td>
+		</tr>
+		<tr>	
+			<td><br><div id='makeactivewrapper'><input type="checkbox" name="emakeactive" id="emakeactive" value="yes">Change this to default version</div></td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateVersion();' /></td>
+		</tr>
+	</table>
+
+	</div>
+	<!-- Edit Verison Dialog END -->
+	
+	<!-- HighscoreBox START -->
+	<div id='HighscoreBox' class='loginBox' style='width:500px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Highscore</h3>
+			<div onclick='closeWindows();'>x</div>
+		</div>
+		<table width='100%'>
+			<tr>
+				<td>Kebab</td>
+				<td>Sås</td>
+			</tr>
+		</table>
+	</div>
+	<!-- HighscoreBox END -->
 				
 </body>
 </html>

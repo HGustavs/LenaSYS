@@ -9,7 +9,6 @@ include_once "../Shared/basic.php";
 // Connect to database and start session
 pdoConnect();
 session_start();
-
 if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 }else{
@@ -51,10 +50,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 $entries=array();
 
 $files=array();
-
+$lfiles =array();
+$gfiles =array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-
-		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid ORDER BY filename;");
+		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE (cid=:cid or isGlobal='1') ORDER BY filename;");
 		$query->bindParam(':cid', $cid);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -72,25 +71,27 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 
 		// Start at the "root-level"
-		chdir('../../');
+		chdir('../');
 		$currcvd=getcwd();
 
 
-		$dir    = './templates';
-		$gfiles =array();
+		$dir    = $currcvd."/templates/";
+		
 		if (file_exists($dir)){
-				$giles = scandir($dir);
-				foreach ($giles as $value){
+				$files = scandir($dir);
+				foreach ($files as $value){
+					if(!is_dir($currcvd."/templates/".$value)){
 						array_push($gfiles,$value);
+					}
 				}
 		}
 
-		$dir    = $currcvd."/Courses/".$cid."/";
-		$lfiles =array();
+		$dir    = $currcvd."/courses/".$cid."/";
+	
 		if (file_exists($dir)){
-				$giles = scandir($dir);
-				foreach ($giles as $value){
-						if(!is_dir($currcvd."/Courses/".$cid."/".$value)){
+				$gtiles = scandir($dir);
+				foreach ($gtiles as $value){
+						if(!is_dir($currcvd."/courses/".$cid."/".$value)){
 								array_push($lfiles,$value);
 						}
 				}
