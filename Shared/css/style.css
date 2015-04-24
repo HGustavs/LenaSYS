@@ -89,15 +89,15 @@ hr {
 }
 #wrappall {
     margin:0px auto;
-width:80%;
- border: 8px solid #ccc;
+    width:80%;
+    border: 8px solid #ccc;
 }
 
 .lena{
-		border-radius: 6px 0px 0px 6px;
-		color:#FFF;
+    border-radius: 6px 0px 0px 6px;
+    color:#FFF;
     background-color: #775886;
-		background: linear-gradient(to bottom, #775886 , #573866); 
+    background: linear-gradient(to bottom, #775886 , #573866); 
     padding-left:6px;
     padding-right:6px;
     padding-top:2px;
@@ -106,75 +106,75 @@ width:80%;
 }		
 
 .sys{
-		border-radius:6px;
-		color:#775886;;
-		border: 2px solid #775886;
+    border-radius:6px;
+    color:#775886;;
+    border: 2px solid #775886;
     background-color: #fff;
     padding-right:4px;
     margin-right:4px;		
- 		text-decoration: none;
+    text-decoration: none;
 }
 
 #Courselist{
-	margin:0px auto;
+    margin:0px auto;
     background-color: #fff;
     color:#434343;
     display: block;
-	padding-top:1px;
+    padding-top:1px;
 }
 
 #Courselist a{
-	text-decoration:none;
+    text-decoration:none;
 }
 
 #Courselist a:hover{
-	text-decoration:underline;
+    text-decoration:underline;
 }
 
 #Courselist .head {
     text-align: center;
-		color:#775886;
-		font-size: 18pt;
+    color:#775886;
+    font-size: 18pt;
     font-family: Calibri,Sans-Serif;
     display: block;
     background-color: #FFF;
-		padding-top:7px;
-		min-height:30px;
-		margin-top:40px;
-		margin-bottom:4px;
-		padding-bottom:4px;
-		border-bottom: 2px dotted #775886;
+    padding-top:7px;
+    min-height:30px;
+    margin-top:40px;
+    margin-bottom:4px;
+    padding-bottom:4px;
+    border-bottom: 2px dotted #775886;
 }
 
 
 #Courselist .bigg {
     text-align: center;
-		color:#775886;;
-		font-size: 14pt;
+    color:#775886;;
+    font-size: 14pt;
     font-family: Calibri,Sans-Serif;
     display: block;
     background-color: #fff;
-		padding-top:7px;
-		min-height:30px;
-		margin-right:8px;
-		padding-right:8px;
+    padding-top:7px;
+    min-height:30px;
+    margin-right:8px;
+    padding-right:8px;
 }
 
 #Sectionlist{
-		margin:0px auto;
-		background-color: #fff;
-		color:#434343;
-		display: block;
-		padding-top:1px;
+	margin:0px auto;
+	background-color: #fff;
+	color:#434343;
+	display: block;
+	padding-top:1px;
 
 }
 
 .item {
   	display: block;
-		font-family: Calibri,Sans-Serif;
-		padding-top:7px;
-		min-height:30px;
-		font-size: 14pt;
+	font-family: Calibri,Sans-Serif;
+	padding-top:7px;
+	min-height:30px;
+	font-size: 14pt;
 }
 
 #Sectionlist .section {
@@ -290,11 +290,11 @@ header {
 .navName {
     font-size:0.8em;
     color: #ff0;
-		cursor:default;
-		text-decoration:underline;
-		text-align:right;
-		overflow:hidden;
-		padding-right:4px;
+    cursor:default;
+    text-decoration:underline;
+    text-align:right;
+    overflow:hidden;
+    padding-right:4px;
 }
 
 #userName {
@@ -339,12 +339,12 @@ header {
 
 #div2
 {
-		width:100%;
-		position: fixed;
-		top: 50px;
-		bottom: 0px;
-		left:0px;
-		background:#fff;
+	width:100%;
+	position: fixed;
+	top: 50px;
+	bottom: 0px;
+	left:0px;
+	background:#fff;
 }
 
 
@@ -353,34 +353,34 @@ header {
  * --------------================################================-------------- */
 
 #resultpopover{
-		position:fixed;
-		left:50px;
-		top:70px;
-		right:50px;
-		bottom:50px;
-		z-index:9000;
-		box-shadow:2px 2px 4px #000;
+	position:fixed;
+	left:50px;
+	top:70px;
+	right:50px;
+	bottom:50px;
+	z-index:9000;
+	box-shadow:2px 2px 4px #000;
 
-		padding:4px;
-		background-color: #ccc;
-		border: 2px solid #999;
+	padding:4px;
+	background-color: #ccc;
+	border: 2px solid #999;
 }
 
 .floatRightBox{
 
-		width:220px;
-		min-height:300px;
-		float:left;
-		margin-left:10px;
-		overflow:auto;
-		
-		float:right;
-		z-index:9000;
-		box-shadow:2px 2px 4px #000;
+	width:220px;
+	min-height:300px;
+	float:left;
+	margin-left:10px;
+	overflow:auto;
+	
+	float:right;
+	z-index:9000;
+	box-shadow:2px 2px 4px #000;
 
-		padding:4px;
-		background-color: #ccc;
-		border: 2px solid #999;
+	padding:4px;
+	background-color: #ccc;
+	border: 2px solid #999;
 }
 
 
@@ -421,20 +421,20 @@ header {
 /*  padding-top: 15px; */
 }
 .receiptBox h3 {
-font-size: 14px;
-	margin-top: 10px;
-	line-height: 0.5em;
-    color: #fff;
-    float: left;
-    width: 50%;
+    	font-size: 14px;
+    	margin-top: 10px;
+    	line-height: 0.5em;
+    	color: #fff;
+    	float: left;
+    	width: 50%;
 }
 .receiptBoxheader div {
 	padding: 2px 20px 2px 20px;
 	position: absolute;
 	top: 4px;
 	right: 5px;
-    color: #fff;
-    cursor: default;
+    	color: #fff;
+    	cursor: default;
 	background-color: #c75050;
 	font-family: arial;
 	font-weight: bold;
@@ -494,7 +494,8 @@ font-size: 14px;
 	height:60px;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    	-moz-box-sizing: border-box;
+}
 
 .note {
 	font-size: 0.95em;
@@ -535,20 +536,20 @@ font-size: 14px;
 /*  padding-top: 15px; */
 }
 .loginBoxheader h3 {
-font-size: 14px;
+	font-size: 14px;
 	margin-top: 10px;
 	line-height: 0.5em;
-    color: #fff;
-    float: left;
-    width: 50%;
+    	color: #fff;
+   	float: left;
+	width: 50%;
 }
 .loginBoxheader div {
 	padding: 2px 20px 2px 20px;
 	position: absolute;
 	top: 4px;
 	right: 5px;
-    color: #fff;
-    cursor: default;
+	color: #fff;
+    	cursor: default;
 	background-color: #c75050;
 	font-family: arial;
 	font-weight: bold;
