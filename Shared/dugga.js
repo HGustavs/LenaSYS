@@ -112,7 +112,7 @@ function readDugga()
 }
 
 function sendReceiptEmail(){
-	var receipt = document.getElementById('kvitto').value;
+	var receipt = document.getElementById('receipt').value;
 	var email = prompt("Please enter your email");
 	if (email != null){
 		window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
