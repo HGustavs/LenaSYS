@@ -279,6 +279,18 @@
 			}  
 		}
 
+		// Read Directory - Description
+		$descDirectory=array();
+		if(file_exists('./descupload')){
+			$descDir = opendir('./descupload');
+			while (($descFile = readdir($descDir)) !== false) {
+				if(endsWith($descFile,".txt")){
+					array_push($descDirectory,$descFile);		
+				}
+			}  
+		}
+
+
 		$images=array();
 		if(file_exists('./imgupload')){
 			// Read Directory - Images
@@ -301,10 +313,22 @@
 		$filename=$row['filename'];
 		$content="";					
 		if(strcmp("DOCUMENT",$boxcontent)===0){
-			$content=$row['segment'];
-		}else{	
+			if(file_exists('./descupload')){
+				$filename="./descupload/".$filename;
+				$handle = @fopen($filename, "r");
+				if ($handle) {
+					while (($buffer = fgets($handle, 1024)) !== false) {
+						$content=$content.$buffer;
+					}
+					if (!feof($handle)) {
+						$content.="Error: Unexpected end of file ".$descFilename."\n";			    
+					}
+					fclose($handle);
+				}
+			}
+		}else{
 			if(file_exists('./codeupload')){
-				$filename="./codeupload/".$filename;				
+				$filename="./codeupload/".$filename;
 				$handle = @fopen($filename, "r");
 				if ($handle) {
 					while (($buffer = fgets($handle, 1024)) !== false) {
