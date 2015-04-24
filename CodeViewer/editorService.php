@@ -284,8 +284,7 @@
 				}
 			}  
 		}
-		
-		
+				
 		$images=array();
 		if(file_exists('./imgupload')){
 			// Read Directory - Images
@@ -309,21 +308,31 @@
 		$content="";
 				
 		if(strcmp("DOCUMENT", $boxcontent)===0){
-			//$content=$row['segment'];
-			
-			if(file_exists('./descupload')){ // This if-statement is for descriptions
+					
+			if(file_exists('./descupload')){
+				
 				$filename="./descupload/".$filename;
 				$handle = @fopen($filename, "r");
+				
 				if ($handle) {
+					
 					while (($buffer = fgets($handle, 1024)) !== false) {
 						$content=$content.$buffer;
+					
 					}
+					
 					if (!feof($handle)) {
+						
 						$content.="Error: Unexpected end of file ".$descFilename."\n";			    
+					
 					}
+					
 					fclose($handle);
+				
 				}
+			
 			}
+		
 		}else{
 			if(file_exists('./codeupload')){
 				$filename="./codeupload/".$filename;
