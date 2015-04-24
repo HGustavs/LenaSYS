@@ -4,9 +4,10 @@
     margin:0px auto;
     position:relative;
 	margin-top:50px;
-    padding: 50px 0px 8px 8px;
+    padding: 50px 0px 8px 0px;
     background: #fff;
     min-height: 200px;
+	padding-bottom:200px;
 	width:80%;
 	border: 8px solid #CCC;
 	border-top:none;
@@ -120,14 +121,113 @@
 			cursor:pointer;
 			background-color:#927B9E;
 		}
+
+/* Title of program */		
+.programName{
+	width:500px;
+	margin:0 auto;
+}
+	.programName h2{
+		text-align:center;
+		margin-top:15px;
+		font-family: Calibri,sans-serif;
+		font-size: 1.5em;
+		color:#614875;
+	}
+	
+#totalInfo{
+	margin:25px;
+}
+
+#radio_buttonToolbar{
+	margin:0 auto;
+	height:30px;
+	font-size:0.7em;
+	color:#767676;
+	padding-bottom:5px;
+}
+	#radio_buttonToolbar label{
+		margin-right:15px;
+		cursor:pointer;
+	}
+	#radio_buttonToolbar input[type=radio] {
+    	display:none;
+	}
+	#radio_buttonToolbar input[type="radio"]:checked + label {
+    	color:#614875;
+	}
+	#radio_buttonToolbar input[type="radio"] + label:hover {
+    	color:#614875;
+	}
+	#radio_buttonToolbar input[type=radio] + label:before {
+		content: "";  
+		display: inline-block;  
+		width: 12px;  
+		height: 12px;  
+		vertical-align:middle;
+		margin-right: 8px;  
+		background-color: #fff;  
+		border-radius: 8px;  
+		border:#A9A9A9 2px solid;
+		cursor:pointer;
+	}
+	#radio_buttonToolbar input[type=radio]:checked + label:before {
+		content: "\2022"; /* Bullet */
+		color:#614875;
+		background-color:#bea8ca;
+		font-size:3em;
+		text-align:center;
+		line-height:11px;
+		border:#614875 2px solid;
+		cursor:pointer;
+	}
+
+	
+/* View over the students how are going that program/course */
+.studentCourseViewTV{
+	width: 30%; 
+	margin-top:10px;
+}
+	.studentCourseViewTV div{
+		display:inline;
+		float:left;
+	}
+
+.student_even{
+	width: 100%; 
+	background-color:#614875;
+	color:#fff;
+	font-size:0.7em;
+	padding:5px 10px;
+}
+.student_odd{ 
+	width: 100%; 
+	color:#614875;
+	font-size:0.7em;
+	padding:5px 10px;
+}
+
+.student_name{
+	width: 30%; 
+	margin-right:8px;
+}
+.student_ssn{
+	margin-right:8px;
+}
+.student_username{
+	margin-right:8px;
+}
+		
 		
 /* Change pages */
 .changePages{
-	width:200px;
+	width:190px;
 	height:25px;
 	font-size:0.8em;
 	color:#614875;
 	margin:0 auto;
+	padding-top:30px;
+	clear:both;
 }
 	.changePages p{
 		float:left;
@@ -145,44 +245,21 @@
 			color:#fff;
 			background-color:#614875;
 		}
-	#nextPage{
-		display:inline;
-		border:none;
-		position:relative;
-		height:25px;
-		width: 20px;
-		font-size:1.2em;
-		margin-left:5px;
+#nextPage{
+	display:inline;
+	border:none;
+	position:relative;
+	height:25px;
+	width: 20px;
+	font-size:1.2em;
+	margin-left:5px;
+}
+	#nextPage:hover{
+		cursor:pointer;
+		background-color:#fff;
+		color:#614875;
 	}
-		#nextPage:hover{
-			cursor:pointer;
-			background-color:#fff;
-			color:#614875;
-		}
-		
-.my-nav {
-	position: relative;
-	top: 0;
-	left: 0;
-	/* width: calc(100%-2em); */
-	padding: 1em; 
-}
-
-.my-container-fluid {
-	position: relative;
-	top: 0;
-	left: 0;
-}
-
-.small {
-	font-size: 0.8em;
-}
-
-.my-input-group {
-	width:60%;
-	float: right;
-}
-
+	
 .my-pull-left {
 	float: left;
 }
@@ -196,55 +273,6 @@ footer p {
 	margin: 0.2em;
 }
 
-.my-col-xs-4 {
-	float: left;
-	width: 30%;
-	margin: 1%;
-	
-}
-
-.forkunskap {
-	font-style: italic;
-	font-size: smaller;
-}
-small > a {
-	color: white;
-}
-small > a:hover {
-	color:white;
-}
-.kursnamn {
-	margin: 2px;
-}
-
-.kurskod {
-	display: inline-block;
-	line-height: 20px;
-	margin-left: 4px;
-}
-    	
-/* my changes to BS */
-.panel-heading{
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-	padding: 2px 5px;
-	background-color: #def;
-}
-.panel {
-    background-color: #fff;
-    /*border: 1px solid transparent;*/
-    border-radius: 4px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    margin-bottom: 5px;
-    border: 1px solid #bce8f1;
-}
-.panel-body{
-	padding: 5px;
-}
-
-.panel-info {
-    
-}
 .clearfix{
 	clear: both;
 }
@@ -257,68 +285,3 @@ small > a:hover {
    clear: both;
 }
 
-.panel-title {
- 	margin: 0;
-}
-
-.list-group {
-    margin-bottom: 2px;
-    padding-left: 0;
-}
-
-.list-group-item {
-    border: 1px solid #ddd;
-    display: block;
-    margin-bottom: 2px;
-    padding: 10px 15px;
-    position: relative;
-}
-
-.input-group {
-    border-collapse: separate;
-    display: table;
-    position: relative;
-    margin-top: 8px;
-}
-
-.stoplight{
-
-	display: inline-block;
-	height:14px;
-	width:20px;
-	padding-top: 0px;
-	padding-bottom: 0px;	
-}
-
-.stoplight-outer {
-	border: 1px ridge #080;
-	border-radius: 6px;
-	height: 16px;
-	width:16px;
-	padding: 1px;
-	/*margin-top: 2px;*/
-}
-
-.stoplight-inner-red {
-	border: 2px solid #a00;
-	border-radius: 4px;
-	height: 12px;
-	width:12px;	
-	background-color: #d00;
-}
-
-.stoplight-inner-green {
-	border: 2px solid #218821;
-	border-radius: 4px;
-	height: 12px;
-	width:12px;	
-	background-color: #7d7;
-}
-
-.stoplight-inner-orange {
-	border: 2px solid #a00;
-	border-radius: 4px;
-	height: 12px;
-	width:12px;	
-	background-color: #d00;
-}
