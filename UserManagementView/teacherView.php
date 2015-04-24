@@ -39,7 +39,6 @@
 		
        
 	<div id="contentUMV">
-	
             
         <!-- Dropdownmenu -->
         <nav class="rightDropdownMenu" id="DropdownMenu">
@@ -66,17 +65,26 @@
         <div class="largeProgressbarTV">
         </div> 
         
-        <div id="totalInfo">
         
+        <div id="totalInfo">
+        	
 			<!-- View over the students how are going that program/course -->
 			<div class="studentCourseViewTV">
+            
+            	<!-- Filter (Radiobuttons) -->
 				<div id="radio_buttonToolbar">
+                    <form>
+                    	<input type="radio" id="allStudents" name="filterList" value="allStudents" checked>
+                        	<label for="allStudents"><span></span>Alla studenter</label>
+						<input type="radio" id="activeStudents" name="filterList" value="activeStudents">
+                        	<label for="activeStudents"><span></span>Aktiva studenter</label>
+                    </form>
 				</div>
+                
 				<div id="studentslist">
 				</div>
 		
 			</div> 
-		
 		
 			<!-- Individual course progressbars -->
 			<div class="indivCourseProgressbarsTV">
@@ -88,19 +96,18 @@
 				</div>
 			
 			</div> 
+            
+            <!-- Change pages -->
+            <div class="changePages">
+                <p>Sida</p>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div id="nextPage"> >> </div> 
+            </div> 
         
         </div>
-        
-        
-        <!-- Change pages -->
-        <div class="changePages">
-        	<p>Sida</p>
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div id="nextPage"> >> </div> 
-        </div> 
-
+       
 	</div>
 
 
