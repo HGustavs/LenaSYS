@@ -71,7 +71,7 @@
 				// We have two boxes. Create two boxes to start with
 				if($templateNumber==1||$templateNumber==2) $boxcnt=2;
 				if($templateNumber==3||$templateNumber==4) $boxcnt=3;
-				if($templateNumber==5) $boxcnt=4;
+				if($templateNumber==5||$templateNumber==6) $boxcnt=4;
 				
 				// Create appropriate number of boxes
 				for($i=1;$i<$boxcnt+1;$i++){
