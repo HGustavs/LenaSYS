@@ -60,142 +60,126 @@ function setup()
 
 function returned(data)
 {	
-		retdata=data;
-		
-		console.log(retdata);
+	retdata=data;
+	console.log(retdata);
+	// Hide and show before/after button
 
-		// Hide and show before/after button
-
-		if(retdata['before'].value!=null&&retdata['after'].value!=null){
-
-			if(retdata['before'].length==0){
-					$("#beforebutton").css("visibility","hidden");
-			}else{
-					$("#beforebutton").css("visibility","none");		
-			}
-			if(retdata['after'].length==0){
-					$("#afterbutton").css("visibility","hidden");
-			}else{
-					$("#afterbutton").css("visibility","none");	
-			}
+	if(retdata['before'].value!=null&&retdata['after'].value!=null){
+		if(retdata['before'].length==0){
+			$("#beforebutton").css("visibility","hidden");
+		}else{
+			$("#beforebutton").css("visibility","none");		
 		}
-		// Fill Section Name and Example Name
-		var examplenme=document.getElementById('exampleName');
-		examplenme.innerHTML=data['examplename'];
-		var examplesect=document.getElementById("exampleSection");
-		examplesect.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
+		if(retdata['after'].length==0){
+			$("#afterbutton").css("visibility","hidden");
+		}else{
+			$("#afterbutton").css("visibility","none");	
+		}
+	}
+	// Fill Section Name and Example Name
+	var examplenme=document.getElementById('exampleName');
+	examplenme.innerHTML=data['examplename'];
+	var examplesect=document.getElementById("exampleSection");
+	examplesect.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
 
-		if(retdata['debug']!="NONE!") alert(retdata['debug']);
+	if(retdata['debug']!="NONE!") alert(retdata['debug']);
 
+	if(retdata['writeaccess'] == "w"){
+		// If write access show settings cog wheel.
+	}
+	
+	// User can choose template if no template has been choosen and the user has write access.
+	if((retdata['templateid'] == 0)){
 		if(retdata['writeaccess'] == "w"){
-				// If write access show settings cog wheel.
+			$("#chooseTemplate").css("display","block");
+			return;
+		}else{
+			/* Create an error message to user or send user back to duggasys */
+			return;
+		}
+	}
+	
+	// If there is a template
+	changeCSS("../Shared/css/"+retdata['stylesheet']);
+
+	// Clear div2
+	$("#div2").html("");
+	// create boxes
+	for(var i=0;i<retdata['numbox'];i++){
+		var contentid="box"+retdata['box'][i][0];
+		var boxid=retdata['box'][i][0];
+		var boxtype=retdata['box'][i][1].toUpperCase();
+		var boxcontent=retdata['box'][i][2];
+		var boxwordlist=retdata['box'][i][3];
+	
+		// don't create templatebox if it already exists
+		if(!document.getElementById(contentid)){
+			addTemplatebox(contentid);
 		}
 		
-		// User can choose template if no template has been choosen and the user has write access.
-		if((retdata['templateid'] == 0)){
-			if(retdata['writeaccess'] == "w"){
-				$("#chooseTemplate").css("display","block");
-				return;
+		if(boxtype == "CODE"){
+			// Print out code example in a code box					
+			document.getElementById(contentid).removeAttribute("contenteditable");
+			$("#"+contentid).removeClass("descbox").addClass("codebox");
+			createboxmenu(contentid,boxid,boxtype);
+
+			// Make room for the menu by setting padding-top equal to height of menubox
+			// For some reason without this fix the code box is placed at same height as the menu, obstructing first lines of the code
+			if($("#"+contentid+"menu").height() == null){
+				var boxmenuheight = 0;
 			}else{
-				/* Create an error message to user or send user back to duggasys */
-				return;
+				var boxmenuheight= $("#"+contentid+"menu").height();
 			}
-		}
-		
-		// If there is a template
-		changeCSS("../Shared/css/"+retdata['stylesheet']);
-
-		// Clear div2
-		$("#div2").html("");
-
-		// create boxes
-	
-		for(var i=0;i<retdata['numbox'];i++){
-			
-			var contentid="box"+retdata['box'][i][0];
-			var boxid=retdata['box'][i][0];
-			var boxtype=retdata['box'][i][1].toUpperCase();
-			var boxcontent=retdata['box'][i][2];
-			var boxwordlist=retdata['box'][i][3];
-		
-			// don't create templatebox if it already exists
-			if(!document.getElementById(contentid)){
-				addTemplatebox(contentid);
-			}
-			
-			if(boxtype == "CODE"){
-					// Print out code example in a code box					
-					document.getElementById(contentid).removeAttribute("contenteditable");
-	
-					$("#"+contentid).removeClass("descbox").addClass("codebox");
-	
-					createboxmenu(contentid,boxid,boxtype);
-
-					// Make room for the menu by setting padding-top equal to height of menubox
-					// For some reason without this fix the code box is placed at same height as the menu, obstructing first lines of the code
-					if($("#"+contentid+"menu").height() == null){
-						var boxmenuheight = 0;
-					}else{
-						var boxmenuheight= $("#"+contentid+"menu").height();
-					}
-					$("#"+contentid).css("margin-top", boxmenuheight-1);
-
-					rendercode(boxcontent,boxid,boxwordlist);
-			}else if(boxtype == "DOCUMENT"){
+			$("#"+contentid).css("margin-top", boxmenuheight-1);
+			rendercode(boxcontent,boxid,boxwordlist);
+		}else if(boxtype == "DOCUMENT"){
+				// Print out description in a document box
+				$("#"+contentid).removeClass("codebox").addClass("descbox");
+				var desc = boxcontent;
+				desc = replaceAll("&nbsp;"," ",desc);
 				
-					// Print out description in a document box
-					$("#"+contentid).removeClass("codebox").addClass("descbox");
-					var desc = boxcontent;
-					desc = replaceAll("&nbsp;"," ",desc);
-					
-					// Highlight important words!
-					var iwcounter=0;
-					important = retdata.impwords;
-					for(j=0;j<important.length;j++){
-							var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
-							desc=replaceAll(important[j],sstr,desc);
-					}
-					
-					/* Assign Content */
-					//Call the markdown function to parse markdown symbols to html tags
-					desc = parseMarkdown(desc);
-					$("#"+contentid).html(desc);
+				// Highlight important words!
+				var iwcounter=0;
+				important = retdata.impwords;
+				for(j=0;j<important.length;j++){
+					var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+					desc=replaceAll(important[j],sstr,desc);
+				}
+				
+				/* Assign Content */
+				//Call the markdown function to parse markdown symbols to html tags
+				desc = parseMarkdown(desc);
+				$("#"+contentid).html(desc);
 
-					if($("#"+contentid+"menu").height() == null){
-						var boxmenuheight = 0;
-					}else{
-						var boxmenuheight= $("#"+contentid+"menu").height();
-					}
-					$("#"+contentid).css("margin-top", boxmenuheight);
-					
-					createboxmenu(contentid,boxid,boxtype);
-					
-					if($("#"+contentid+"menu").height() == null){
-						var boxmenuheight = 0;
-					}else{
-						var boxmenuheight= $("#"+contentid+"menu").height();
-					}
-					$("#"+contentid).css("margin-top", boxmenuheight);
-					
-			}else if(boxtype == "NOT DEFINED"){
-					if(retdata['writeaccess'] == "w"){
-						createboxmenu(contentid,boxid,boxtype);
-						
-						// Make room for the menu by setting padding-top equals to height of menubox
-						if($("#"+contentid+"menu").height() == null){
-							var boxmenuheight = 0;
-						}else{
-							var boxmenuheight= $("#"+contentid+"menu").height();
-						}
-						$("#"+contentid).css("margin-top", boxmenuheight);
-					}
+				if($("#"+contentid+"menu").height() == null){
+					var boxmenuheight = 0;
+				}else{
+					var boxmenuheight= $("#"+contentid+"menu").height();
+				}
+				$("#"+contentid).css("margin-top", boxmenuheight);
+				createboxmenu(contentid,boxid,boxtype);
+				
+				if($("#"+contentid+"menu").height() == null){
+					var boxmenuheight = 0;
+				}else{
+					var boxmenuheight= $("#"+contentid+"menu").height();
+				}
+				$("#"+contentid).css("margin-top", boxmenuheight);
+		}else if(boxtype == "NOT DEFINED"){
+			if(retdata['writeaccess'] == "w"){
+				createboxmenu(contentid,boxid,boxtype);
+				// Make room for the menu by setting padding-top equals to height of menubox
+				if($("#"+contentid+"menu").height() == null){
+					var boxmenuheight = 0;
+				}else{
+					var boxmenuheight= $("#"+contentid+"menu").height();
+				}
+				$("#"+contentid).css("margin-top", boxmenuheight);
 			}
-
 		}
-		
-		//CALL resizeBoxes here!
-		resizeBoxes("#div2", retdata["templateid"]);
-
+	}
+	//CALL resizeBoxes here!
+	resizeBoxes("#div2", retdata["templateid"]);
 }
 
 //----------------------------------------------------------------------------------
@@ -211,12 +195,10 @@ function editImpWords(editType) {
 	// word can't contain any whitespaces
 	if (editType == "+" && word != "" && /\s/.test(word) == false) {
 		var exists = false;
-
 		// Checks if the word already exists as an option in the selectbox
 		$('#impwords option').each(function() {
     		if (this.value == word) {exists = true;}
 		});
-
 		if (exists == false) {
 			$("#impwords").append('<option>' + word + '</option>');
 			$("#impword").val("");
@@ -245,7 +227,7 @@ function displayEditExample(boxid)
 	var iw=retdata['impwords'];
 	var str="";
 	for(var i=0;i<iw.length;i++){
-			str+="<option>"+iw[i]+"</option>";
+		str+="<option>"+iw[i]+"</option>";
 	}
 	$("#impwords").html(str);
 
@@ -256,28 +238,28 @@ function displayEditExample(boxid)
 	// Set beforeid and afterid if set
 	var beforeid="UNK";
 	if(retdata['before']!==null){
-			if(retdata['before'].length!==0){
-					beforeid=retdata['before'][0][0];			
-			}
+		if(retdata['before'].length!==0){
+			beforeid=retdata['before'][0][0];			
+		}
 	}
 	var afterid="UNK";
 	if(retdata['after']!==null){
-			if(retdata['after'].length!==0){
-					afterid=retdata['after'][0][0];
-			}
+		if(retdata['after'].length!==0){
+			afterid=retdata['after'][0][0];
+		}
 	}
 	
 	var ba=retdata['beforeafter'];
 	for(var i=0; i<ba.length; i++){
 		if(ba[i][0] == beforeid){
-				bestr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
+			bestr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
 		}else{
-				bestr+="<option value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
+			bestr+="<option value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
 		}
 		if(ba[i][0] == afterid){
-				afstr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";				
+			afstr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";				
 		}else{
-				afstr+="<option value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";		
+			afstr+="<option value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";		
 		}
 	}
 	$("#before").html(bestr);
@@ -295,41 +277,41 @@ function updateExample()
 	// Set beforeid if set
 	var beforeid="UNK";
 	if(retdata['before'].length!=0){
-			beforeid=retdata['before'][0][0];
+		beforeid=retdata['before'][0][0];
 	}
 
 	var afterid="UNK";
 	if(retdata['after'].length!=0){
-			afterid=retdata['after'][0][0];
+		afterid=retdata['after'][0][0];
 	}
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
 	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before option:selected").val()!=beforeid&&beforeid!="UNK")||($("#after option:selected").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
-			var courseid = querystring['courseid'];
-			var cvers = querystring['cvers'];
-			var exampleid = querystring['exampleid'];
-			var playlink = $("#playlink").val();
-			var examplename = $("#title").val();
-			var sectionname = $("#secttitle").val();
-			var beforeid = $("#before option:selected").val();
-			var afterid = $("#after option:selected").val();
+		var courseid = querystring['courseid'];
+		var cvers = querystring['cvers'];
+		var exampleid = querystring['exampleid'];
+		var playlink = $("#playlink").val();
+		var examplename = $("#title").val();
+		var sectionname = $("#secttitle").val();
+		var beforeid = $("#before option:selected").val();
+		var afterid = $("#after option:selected").val();
 
-			AJAXService("EDITEXAMPLE", {
-					courseid : courseid,
-					cvers : cvers,
-					exampleid : exampleid,
-					beforeid : beforeid,
-					afterid : afterid,
-					playlink : playlink,
-					examplename : examplename,
-					sectionname : sectionname,
-					addedWords : addedWords,
-					removedWords : removedWords
-			}, "CODEVIEW");
-			
-			// Clears the important words and prevents multiple inserts..
-			addedWords = [];
-			removedWords = [];
+		AJAXService("EDITEXAMPLE", {
+			courseid : courseid,
+			cvers : cvers,
+			exampleid : exampleid,
+			beforeid : beforeid,
+			afterid : afterid,
+			playlink : playlink,
+			examplename : examplename,
+			sectionname : sectionname,
+			addedWords : addedWords,
+			removedWords : removedWords
+		}, "CODEVIEW");
+		
+		// Clears the important words and prevents multiple inserts..
+		addedWords = [];
+		removedWords = [];
 	}
 
 }
@@ -339,22 +321,20 @@ function updateExample()
 //----------------------------------------------------------------------------------
 
 function displayEditContent(boxid)
-{
-	
+{	
 	$("#title").val(retdata['examplename']);
 
 	var dirs=retdata['directory'];
 	var str="";
 	for(var i=0;i<dirs.length;i++){
-			str+="<option>"+dirs[i]+"</option>";
+		str+="<option>"+dirs[i]+"</option>";
 	}
 	$("#filename").html(str);
 	
-
 	var wordl=retdata['wordlists'];
 	var str="";
 	for(var i=0;i<wordl.length;i++){
-			str+="<option value='"+wordl[i][0]+"'>"+wordl[i][1]+"</option>";
+		str+="<option value='"+wordl[i][0]+"'>"+wordl[i][1]+"</option>";
 	}
 	$("#wordlist").html(str);
 		
@@ -378,7 +358,6 @@ function addTemplatebox(id)
 	
 	str=str+$("#div2").html();
 	$("#div2").html(str);
-
 }
 
 //----------------------------------------------------------------------------------
@@ -387,14 +366,12 @@ function addTemplatebox(id)
 //----------------------------------------------------------------------------------
 
 function createboxmenu(contentid, boxid, type){
-
 	if(!document.getElementById(contentid+"menu")){
 		var boxmenu = document.createElement("div");
 		document.getElementById(contentid+"wrapper").appendChild(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid+"menu");
 		if(retdata['writeaccess'] == "w"){
-
 			//----------------------------------------------------------------------------------------- DOCUMENT
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
@@ -403,16 +380,11 @@ function createboxmenu(contentid, boxid, type){
 				str+="</tr></table>";
 				//----------------------------------------------------------------------------------------- END DOCUMENT
 			}else if(type=="CODE"){
-				
 				//----------------------------------------------------------------------------------------- CODE
-				
 				var str = "<table cellspacing='2'><tr>";
 				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][4]+'</span></td>';
-
 				str+="<td class='butto2 showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";				
-				
-				str+= '</tr></table>';
-			
+				str+= '</tr></table>';			
 			}else{
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
@@ -424,32 +396,24 @@ function createboxmenu(contentid, boxid, type){
 				str+= '</td></tr></table>';
 			}					
 			boxmenu.innerHTML=str;	
-			
 			//----------------------------------------------------------------------------------------- END CODE
-		
 		}else{
 			var str = '<table cellspacing="2"><tr>';
 			str+= '<td ><span class="boxtitle">'+retdata['box'][boxid-1][3]+'</span></td>';
 			str+='</tr></table>';
 			boxmenu.innerHTML=str;	
-		}
-			
-			
+		}			
 		$(boxmenu).click(function(event){
 			if($(window).width() <=1100){
 				toggleClass(document.getElementById(boxmenu.parentNode.getAttribute("id")).getAttribute("id"));
 			}
 		});
 	}
-		
 }
-
 //----------------------------------------------------------------------------------
 // removeTemplatebox: Removes any template box -- Is called by renderer
 //----------------------------------------------------------------------------------
-
 function removeTemplatebox(){
-	
 	for(var i=document.getElementsByClassName("box").length; i>retdata['numbox']; i--){
 		document.getElementById("div2").removeChild(document.getElementById("box"+i+"wrapper"));
 	}
@@ -460,7 +424,6 @@ function removeTemplatebox(){
 //----------------------------------------------------------------------------------
 
 function createhotdogmenu(){
-
 	// div2 refers to the main content div below the floating menu
 	var content = document.getElementById("div2");
 	if(document.getElementById("hotdogdrop")){
@@ -471,28 +434,21 @@ function createhotdogmenu(){
 		hotdogmenu.id = "hotdogdrop";
 		hotdogmenu.className = "hotdogdropStyle dropdown dropdownStyle showmobile";
 	}
-	
-		str = '<table cellspacing="0" class="showmobile"><tr>';
-		str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="../Shared/icons/home_button.svg" /></td>';
-		str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="Skip(\"bd\");" onmouseup="Skip(\"bu\");" onclick="Skip(\"bd\")"><img src="../Shared/icons/backward_button.svg" /></td>';
-		str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
-		str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
-		str += '</tr>';
-		for(i=0;i<retdata['numbox'];i++){
-		//	str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleClass(\"box"+(i+1)+"wrapper\");' colspan='4'>"+retdata['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton2.svg' /></td></tr>";
-			str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retdata['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
-		}		
- //		str += '<tr><td class="mbutto mbuttoStyle " title="Show JS" onclick="" colspan="4">JS<img src="../Shared/icons/hotdogTabButton2.svg" /></td></tr>';
- //		str += '<tr><td id="numberbuttonMobile" class="mbutto mbuttoStyle " title="Show rownumbers" onclick="fadelinenumbers();" colspan="4">Show rownumbers<img src="../Shared/icons/hotdogTabButton.svg" /></td></tr>';
 
-		// str += '<tr><td class="mbutto mbuttoStyle " title="Settings" onclick="" colspan="4">Settings</td></tr>';
-		str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
+	str = '<table cellspacing="0" class="showmobile"><tr>';
+	str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="../Shared/icons/home_button.svg" /></td>';
+	str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="Skip(\"bd\");" onmouseup="Skip(\"bu\");" onclick="Skip(\"bd\")"><img src="../Shared/icons/backward_button.svg" /></td>';
+	str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
+	str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
+	str += '</tr>';
+	for(i=0;i<retdata['numbox'];i++){
+		str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retdata['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
+	}		
+	str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
+	str += '</table>';
+	hotdogmenu.style.display="block";	
+	hotdogmenu.innerHTML = str;
 
-		str += '</table>';
-		
-		hotdogmenu.style.display="block";	
-		hotdogmenu.innerHTML = str;
-	
 }
 
 //----------------------------------------------------------------------------------
@@ -504,12 +460,8 @@ function toggleClass(id)
 	var className = $('#'+id).attr('class');
 	$(".boxwrapper").addClass("deactivatedbox").removeClass("activebox");	
 	if(className.indexOf("activebox") >-1){
-		/* Height of the boxmenu + 1px for border-bottom */
-	//	$('#'+id).animate({height: "26px"}, 500);	
 		$("#"+id).removeClass("activebox").addClass("deactivatedbox");
-
 	}else{
-	//	$('#'+id).animate({height: "100%"}, 500);
 		$("#"+id).removeClass("deactivatedbox").addClass("activebox");	
 	}
 }
@@ -535,8 +487,8 @@ function displayDrop(dropid)
 
 function highlightop(otherop,thisop)
 {
-		$("#"+otherop).addClass("hi");					
-		$("#"+thisop).addClass("hi");					
+	$("#"+otherop).addClass("hi");					
+	$("#"+thisop).addClass("hi");					
 }
 
 //----------------------------------------------------------------------------------
@@ -545,8 +497,8 @@ function highlightop(otherop,thisop)
 
 function dehighlightop(otherop,thisop)
 {
-		$("#"+otherop).removeClass("hi");					
-		$("#"+thisop).removeClass("hi");					
+	$("#"+otherop).removeClass("hi");					
+	$("#"+thisop).removeClass("hi");					
 }
 
 //----------------------------------------------------------------------------------
@@ -555,8 +507,8 @@ function dehighlightop(otherop,thisop)
 
 function highlightHtml(otherTag,thisTag)
 {
-		$("#"+otherTag).addClass("html");					
-		$("#"+thisTag).addClass("html");					
+	$("#"+otherTag).addClass("html");					
+	$("#"+thisTag).addClass("html");					
 }
 
 //----------------------------------------------------------------------------------
@@ -565,8 +517,8 @@ function highlightHtml(otherTag,thisTag)
 
 function deHighlightHtml(otherTag,thisTag)
 {
-		$("#"+otherTag).removeClass("html");					
-		$("#"+thisTag).removeClass("html");					
+	$("#"+otherTag).removeClass("html");					
+	$("#"+thisTag).removeClass("html");					
 }
 
 //----------------------------------------------------------------------------------
@@ -576,50 +528,49 @@ function deHighlightHtml(otherTag,thisTag)
 var dmd;
 function Skip(skipkind)
 {
-		if(skipkind=="bd"){
-				dmd=1;
-		}else if(skipkind=="bu"){
-				if(retdata['before'].length!=0&&dmd==1){
-						navigateExample(retdata['before'][0][0]);
-				}
-				dmd=0;		
-		}
-		if(skipkind=="fd"){
-				dmd=2;
-		}else if(skipkind=="fu"){
-				if(retdata['after'].length!=0&&dmd==2){
-						navigateExample(retdata['after'][0][0]);
-				}
-				dmd=0;		
-		}
+	if(skipkind=="bd"){
+			dmd=1;
+	}else if(skipkind=="bu"){
+			if(retdata['before'].length!=0&&dmd==1){
+					navigateExample(retdata['before'][0][0]);
+			}
+			dmd=0;		
+	}
+	if(skipkind=="fd"){
+			dmd=2;
+	}else if(skipkind=="fu"){
+			if(retdata['after'].length!=0&&dmd==2){
+					navigateExample(retdata['after'][0][0]);
+			}
+			dmd=0;		
+	}
 
-		if(skipkind=="bd"||skipkind=="fd"){
-				$("#forwdrop").css("display","none");
-				$("#backwdrop").css("display","none");
-		}
-		
-		setTimeout(function(){execSkip()}, 1000);							
-
+	if(skipkind=="bd"||skipkind=="fd"){
+			$("#forwdrop").css("display","none");
+			$("#backwdrop").css("display","none");
+	}
+	
+	setTimeout(function(){execSkip()}, 1000);							
 }
 
 function execSkip()
 {
-		str="";
-		if(dmd==1){
-				for(i=0;i<retdata['before'].length;i++){
-						str+="<span id='F"+retdata['before'][i][1]+"' onclick='navigateExample(\""+retdata['before'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retdata['before'][i][1]+":"+retdata['before'][i][2]+"</span>";
-				}
-				$("#backwdropc").html(str);
-				$("#backwdrop").css("display","block");
-				dmd=0;
-		}else if(dmd==2){
-				for(i=0;i<retdata['after'].length;i++){
-						str+="<span id='F"+retdata['after'][i][1]+"' onclick='navigateExample(\""+retdata['after'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retdata['after'][i][1]+":"+retdata['after'][i][2]+"</span>";
-				}
-				$("#forwdropc").html(str);
-				$("#forwdrop").css("display","block");
-				dmd=0;
+	str="";
+	if(dmd==1){
+		for(i=0;i<retdata['before'].length;i++){
+			str+="<span id='F"+retdata['before'][i][1]+"' onclick='navigateExample(\""+retdata['before'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retdata['before'][i][1]+":"+retdata['before'][i][2]+"</span>";
 		}
+		$("#backwdropc").html(str);
+		$("#backwdrop").css("display","block");
+		dmd=0;
+	}else if(dmd==2){
+		for(i=0;i<retdata['after'].length;i++){
+			str+="<span id='F"+retdata['after'][i][1]+"' onclick='navigateExample(\""+retdata['after'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retdata['after'][i][1]+":"+retdata['after'][i][2]+"</span>";
+		}
+		$("#forwdropc").html(str);
+		$("#forwdrop").css("display","block");
+		dmd=0;
+	}
 }
 
 // -------------==============######## Verified Functions End ###########==============-------------
@@ -692,8 +643,8 @@ function changeboxcontent(boxcontent,boxid)
 
 function hideDrop(dname)
 {
-		var dropd=document.getElementById(dname);
-		if(dropd!=null) dropd.style.display="none";							
+	var dropd=document.getElementById(dname);
+	if(dropd!=null) dropd.style.display="none";							
 }
 
 //----------------------------------------------------------------------------------
@@ -702,18 +653,16 @@ function hideDrop(dname)
 
 function switchDrop(dname)
 {
-		var dropd=document.getElementById(dname); 
-		if(dropd.style.display=="block"){
-			$( dropd ).slideUp("fast");
-			//	dropd.style.display="none";							
-		}else{
-				hideDrop("forwdrop");
-				hideDrop("backwdrop");
-				$('#hotdogdrop').hide();
-			
-			$( dropd ).slideDown("fast");
-			dropd.style.display="block";
-		} 
+	var dropd=document.getElementById(dname); 
+	if(dropd.style.display=="block"){
+		$( dropd ).slideUp("fast");							
+	}else{
+		hideDrop("forwdrop");
+		hideDrop("backwdrop");
+		$('#hotdogdrop').hide();	
+		$( dropd ).slideDown("fast");
+		dropd.style.display="block";
+	} 
 }
 
 //----------------------------------------------------------------------------------
@@ -722,12 +671,12 @@ function switchDrop(dname)
 
 function issetDrop(dname)
 {
-		var dropd=document.getElementById(dname);
-		if(dropd.style.display=="block"){
-				return true;
-		}else{
-				return false;
-		}
+	var dropd=document.getElementById(dname);
+	if(dropd.style.display=="block"){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -736,22 +685,18 @@ function issetDrop(dname)
 
 function setupEditable()
 {	
-		if(retdata['writeaccess']=="w"){
-				var editable=document.getElementById('exampleName');
-				editable.addEventListener("blur", function(){editedExamplename();}, true);
-		/*
-				var fditable=document.getElementById('docucontent');
-				fditable.addEventListener("blur", function(){editedDescription();}, true);
-		*/
-		}
+	if(retdata['writeaccess']=="w"){
+			var editable=document.getElementById('exampleName');
+			editable.addEventListener("blur", function(){editedExamplename();}, true);
+	}
 }
 
 function editedExamplename()
 {
-		var editable=document.getElementById('exampleName');
-		var examplename=dehtmlify(editable.innerHTML,true,60);
-		editable.innerHTML=examplename;
-		AJAXService("editExampleName","&examplename="+examplename);
+	var editable=document.getElementById('exampleName');
+	var examplename=dehtmlify(editable.innerHTML,true,60);
+	editable.innerHTML=examplename;
+	AJAXService("editExampleName","&examplename="+examplename);
 }
 
 //----------------------------------------------------------------------------------
@@ -761,55 +706,55 @@ function editedExamplename()
 function dehtmlify(mainstr,ignorebr,maxlength)
 {
 		
-		mod=0;
-		outstr="";
-		
-		if(maxlength==0||mainstr.length<maxlength){
-				ln=mainstr.length;
-		}else{
-				ln=maxlength;
-		}
-		tagstr="";
-		
-		for(i=0;i<ln;i++){
-				currchr=mainstr.charAt(i);
-				if(currchr=="<"){
-						mod=1;
-						tagstr="";
-				}else if(mod==1&&currchr==" "){
-						mod=2;
-				}else if(currchr==">"){
-						mod=0;
-						if(tagstr=="br"||tagstr=="b"||tagstr=="strong"){
-								if(tagstr=="br"&&ignorebr==true){
-										// Ignore BR tag 
-								}else{
-										outstr+="<"+tagstr+">";
-								}
-						}else if(tagstr=="br/"||tagstr=="b/"||tagstr=="strong/"){
-								if(tagstr=="br/"&&ignorebr==true){
-										// Ignore BR tag 
-								}else{
-										outstr+="<"+tagstr+">";
-								}
-						}else if(tagstr=="/br"||tagstr=="/b"||tagstr=="/strong"){
-								if(tagstr=="/br"&&ignorebr==true){
-										// Ignore BR tag 
-								}else{
-										outstr+="<"+tagstr+">";
-								}
-						}
+	mod=0;
+	outstr="";
+	
+	if(maxlength==0||mainstr.length<maxlength){
+			ln=mainstr.length;
+	}else{
+			ln=maxlength;
+	}
+	tagstr="";
+	
+	for(i=0;i<ln;i++){
+		currchr=mainstr.charAt(i);
+		if(currchr=="<"){
+			mod=1;
+			tagstr="";
+		}else if(mod==1&&currchr==" "){
+			mod=2;
+		}else if(currchr==">"){
+			mod=0;
+			if(tagstr=="br"||tagstr=="b"||tagstr=="strong"){
+				if(tagstr=="br"&&ignorebr==true){
+					// Ignore BR tag 
 				}else{
-						if(mod==0){
-								outstr+=currchr;
-						}else if(mod==1){
-								tagstr+=currchr;
-						}else if(mod==2){
-								if(currchr=="/") tagstr+=currchr;
-						}
+					outstr+="<"+tagstr+">";
 				}
+			}else if(tagstr=="br/"||tagstr=="b/"||tagstr=="strong/"){
+				if(tagstr=="br/"&&ignorebr==true){
+					// Ignore BR tag 
+				}else{
+					outstr+="<"+tagstr+">";
+				}
+			}else if(tagstr=="/br"||tagstr=="/b"||tagstr=="/strong"){
+				if(tagstr=="/br"&&ignorebr==true){
+					// Ignore BR tag 
+				}else{
+					outstr+="<"+tagstr+">";
+				}
+			}
+		}else{
+			if(mod==0){
+				outstr+=currchr;
+			}else if(mod==1){
+				tagstr+=currchr;
+			}else if(mod==2){
+				if(currchr=="/") tagstr+=currchr;
+			}
 		}
-		return outstr;
+	}
+	return outstr;
 }
 
 //----------------------------------------------------------
@@ -818,12 +763,11 @@ function dehtmlify(mainstr,ignorebr,maxlength)
 
 function highlightKeyword(kw)
 {
-			$(".impword").each(function(){
-				if(this.innerHTML==kw){
-					$(this).addClass("imphi");	
-
-				}
-			});	
+	$(".impword").each(function(){
+		if(this.innerHTML==kw){
+			$(this).addClass("imphi");	
+		}
+	});	
 }
 
 //----------------------------------------------------------
@@ -832,11 +776,11 @@ function highlightKeyword(kw)
 
 function dehighlightKeyword(kw)
 {
-			$(".impword").each(function(){
-				if(this.innerHTML==kw){
-					$(this).removeClass("imphi");	
-				}
-			});	
+	$(".impword").each(function(){
+		if(this.innerHTML==kw){
+			$(this).removeClass("imphi");	
+		}
+	});	
 }
 
 /********************************************************************************
@@ -1138,11 +1082,8 @@ function rendercode(codestring,boxid,wordlistid)
 	printout=document.getElementById(destinationdiv);
 	str="";
 	cont="";
-
 	lineno=0;
-	
-	str+="<div class='normtextwrapper'>";
-	
+	str+="<div class='normtextwrapper'>";	
 	
 	pcount=0;
 	parenthesis=new Array();
@@ -1157,13 +1098,10 @@ function rendercode(codestring,boxid,wordlistid)
 	htmlTag=new Array();
 
 	pid="";
-	
 	var iwcounter=0;
 	
 	for(i=0;i<tokens.length;i++){
-			
 		tokenvalue=String(tokens[i].val);
-			
 		// Make white space characters
 		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
 		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
@@ -1177,13 +1115,12 @@ function rendercode(codestring,boxid,wordlistid)
 		}else if(tokens[i].kind=="number"){
 			cont+="<span class='number'>"+tokenvalue+"</span>";
 		}else if(tokens[i].kind=="name"){
-			var foundkey=0;
-					
+			var foundkey=0;	
 			// Removed two for loops here and replaced it with smart indexing. either kind 2 or kind 1
 			if(important[tokenvalue]!=null){
-					foundkey=2;
+				foundkey=2;
 			}else if(keywords[tokenvalue]!=null){	
-						foundkey=1;						
+				foundkey=1;						
 			}
 			
 			if(foundkey==1){
@@ -1270,11 +1207,9 @@ function rendercode(codestring,boxid,wordlistid)
 		if(tokens[i].kind=="newline" || i==tokens.length-1){  
 			// Prevent empty lines to be printed out
 			if(cont != ""){
-				
 				// count how many linenumbers that'll be needed
 				lineno++;
-
-			// Print out normal rows if no important exists
+				// Print out normal rows if no important exists
 				if(improws.length==0){
 					str+="<div class='normtext'>"+cont+"</div>";
 				}else{	
@@ -1295,10 +1230,8 @@ function rendercode(codestring,boxid,wordlistid)
 		}
 	}
 	str+="</div>";
-		
-		// Print out rendered code and border with numbers
-	printout.innerHTML = createCodeborder(lineno,improws) + str;
-		
+	// Print out rendered code and border with numbers
+	printout.innerHTML = createCodeborder(lineno,improws) + str;	
 	linenumbers();
 }
 
@@ -1318,7 +1251,6 @@ function createCodeborder(lineno,improws){
 				if(i>=parseInt(improws[kp][1])&&i<=parseInt(improws[kp][2])){
 					str+="<div class='impono'>"+(i)+"</div>";	
 					break;	
-					
 				}else{
 					if(kp==(improws.length-1)){
 						str+="<div class='no'>"+(i)+"</div>";					
@@ -1356,23 +1288,21 @@ function fadelinenumbers()
 	 }
 }
 
-
 function changedSecurity(){
 	var cb = document.getElementById('checkbox');
 	var option = 0;
 	if(cb.checked){
 		option = 1;
-	}
-	
+	}	
 	AJAXService("updateSecurity","&public="+ option);
 }
 
 function mobileTheme(id){
 	if ($(".mobilethemebutton").is(":hidden")){
-		  $(".mobilethemebutton").css("display","table-cell");
+		$(".mobilethemebutton").css("display","table-cell");
 	}
 	else{
-		  $(".mobilethemebutton").css("display","none");
+		$(".mobilethemebutton").css("display","none");
 	}
 }
 
@@ -1381,8 +1311,8 @@ function setEditing(){
 	var	hotdog = document.getElementById("hidehotdog");
 	var	isDesktop = $(hotdog).is(":hidden");
 	if(isDesktop){
-		 $("*[contenteditable]").attr("contenteditable","true"); 
-		 $(".tooltip").css("display", "block");
+		$("*[contenteditable]").attr("contenteditable","true"); 
+		$(".tooltip").css("display", "block");
 	}else{ 
 		$("*[contenteditable]").attr("contenteditable","false"); 
 		$(".tooltip").css("display", "none");
@@ -1396,7 +1326,7 @@ function setEditing(){
 function changetemplate(templateno)
 {
 	$(".tmpl").each(function( index ) {
-			$(this).css("background","#ccc");
+		$(this).css("background","#ccc");
 	});
 
 	$("#templat"+templateno).css("background","#fc4");
@@ -1411,7 +1341,6 @@ function updateTemplate()
 {
 	templateno=$("#templateno").val();
 	$("#chooseTemplate").css("display","none");
-	
 	try{
 		var courseid = querystring['courseid'];
 		var exampleid = querystring['exampleid'];
@@ -1438,7 +1367,6 @@ function closeEditContent()
 function closeEditExample()
 {
 		$("#editExample").css("display","none");
-	
 }
 
 function openTemplateWindow()
@@ -1451,16 +1379,11 @@ function closeTemplateWindow()
 	$("#chooseTemplate").css("display","none");
 }
 
-function updateContent()
-{
-
-}
-
 function Play()
 {
-		if(retdata['playlink']!=null){
-				navigateTo("/codeupload/",retdata['playlink']);
-		}
+	if(retdata['playlink']!=null){
+		navigateTo("/codeupload/",retdata['playlink']);
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -1468,338 +1391,291 @@ function Play()
 //-----------------------------------------------------------------------------
 
 
-function resizeBoxes(parent, templateId) {
+function resizeBoxes(parent, templateId) {		
+	var boxValArray = initResizableBoxValues(parent);
+	var remainWidth;
 	
+	if(templateId == 1){
 		
-		var boxValArray = initResizableBoxValues(parent);
-		var remainWidth;
-		
-		if(templateId == 1){
-			
-			getLocalStorageProperties(templateId);
-		
+		getLocalStorageProperties(templateId);
+	
 		//removes gap, that comes from percentage based positioning.
-			alignBoxesWidth(boxValArray, 1, 2);	
-			$(boxValArray['box1']['id']).css("height", "100%");
-			$(boxValArray['box2']['id']).css("height", "100%");
-		
-			$(boxValArray['box1']['id']).resizable({
-				containment: parent,
-				handles: "e",
-				resize: function(e, ui){
-					
-					alignBoxesWidth(boxValArray, 1, 2);
-					$(boxValArray['box1']['id']).css("height", "100%");
-					$(boxValArray['box2']['id']).css("height", "100%");
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-				
-				}
-			});
-		
-		}else if(templateId == 2){
-		
-			getLocalStorageProperties(templateId);
-			
-			//Used to remove gap provided by percentage based positioning.
-			alignBoxesHeight2boxes(boxValArray, 1, 2);
-			
-			$(boxValArray['box1']['id']).resizable({
-				containment: parent,
-				handles: "s",
-				resize: function(e, ui){
-					
-					alignBoxesHeight2boxes(boxValArray, 1, 2);
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-					 
-				}
-			});
-		
-		}else if(templateId == 3){
-		
-			getLocalStorageProperties(templateId);
-			
-			//Used to remove gap provided by percentage based positioning.
-			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-			alignBoxesHeight2boxes(boxValArray, 2, 3);
-			
-			$(boxValArray['box1']['id']).resizable({
-				containment: parent,
-				handles: "e",
-				resize: function(e, ui){
-					
-					alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-					 
-				}
-			});
-			
-			$(boxValArray['box2']['id']).resizable({
-				containment: parent,
-				handles: "s",
-				resize: function(e, ui){
-					
-					alignBoxesHeight2boxes(boxValArray, 2, 3);
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-					 
-				}
-			});
-		
-		}else if(templateId == 4){
-		
-			getLocalStorageProperties(templateId);
-			
-			//Used to remove gap provided by percentage based positioning.
-			alignBoxesWidth(boxValArray, 1, 2);
-			alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-		
-			$(boxValArray['box1']['id']).resizable({
-				containment: parent,
-				handles: "e,s",
-				resize: function(e, ui){
-					
-					alignBoxesWidth(boxValArray, 1, 2);
-					alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-					 
-				}
-			});
-			
-			$(boxValArray['box2']['id']).resizable({
-				containment: parent,
-				handles: "s",
-				resize: function(e, ui){
-					
-					alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
-					alignBoxesWidth(boxValArray, 2, 1);
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-					 
-				}
-			});
-			
-		}else if(templateId == 5){
-		
-			getLocalStorageProperties(templateId);
-			
-			//Used to remove gap provided by percentage based positioning.
-			alignBoxesWidth(boxValArray, 1, 2);
-			alignBoxesHeight4boxes(boxValArray, 1, 2);
-			alignBoxesWidth(boxValArray, 3, 4);
-		
-			$(boxValArray['box1']['id']).resizable({
-				containment: parent,
-				handles: "e,s",
-				resize: function(e, ui){
-					alignBoxesWidth(boxValArray, 1, 2);
-					alignBoxesHeight4boxes(boxValArray, 1, 2);
-
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-					 
-				}
-			});
-			
-			$(boxValArray['box2']['id']).resizable({
-				containment: parent,
-				handles: "s",
-				resize: function(e, ui){
-					
-					alignBoxesHeight4boxes(boxValArray, 2, 1);
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-					 
-				}
-			});
-			
-			$(boxValArray['box3']['id']).resizable({
-				containment: parent,
-				handles: "e",
-				resize: function(e, ui){
-				
-					alignBoxesWidth(boxValArray, 3, 4);
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-					 
-				}
-			});
-		}
-	};
+		alignBoxesWidth(boxValArray, 1, 2);	
+		$(boxValArray['box1']['id']).css("height", "100%");
+		$(boxValArray['box2']['id']).css("height", "100%");
 	
-	//width adjustment for template(1,4)
-	function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign){
-					
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-					
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-		//Worth noting that these bugs may be temporary ones caused by multi user tinkering in the system. And the fixes may not be needed later on.
-		$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
-		$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-				
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-		$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
-		
-	}
-	
-	//width adjustment for template(1,3)
-	function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
-					
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-					
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-		$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
-		$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-		$(boxValArray['box' + boxNumBase]['id']).css("height", "100%");
-					
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
-					
-		$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidth);
-		
-	}
-	
-	
-	//Height adjustment for boxes in template 2.
-	function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame){
-		
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-					
-		$(boxValArray['box' + boxNumSame]['id']).height(remainHeight);
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-				
-			
-	}
-	
-	//Height adjustment for boxes in template 3.
-	function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig){
-		
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-					
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-		boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
-					
-					
-		$(boxValArray['box' + boxNumSame]['id']).height(boxValArray['box' + boxNumBase]['height']);
-		$(boxValArray['box' + boxNumBig]['id']).height(remainHeight);
-		
-	}
-	
-	
-	//Height adjustment for boxes in template 5.
-	function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame){
-		
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-					
-		$(boxValArray['box' + boxNumSame]['id']).height($(boxValArray['box' + boxNumBase]['id']).height());
-		$(boxValArray['box3']['id']).height(remainHeight);
-		$(boxValArray['box4']['id']).height(remainHeight);
-					
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-		boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
-		boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
-			
-	}
-	
-	
-	//Creates an array with all the properties needed for resize function.
-	function initResizableBoxValues(parent){
-	
-		var parentWidth = $(parent).width();
-		var parentHeight = $(parent).height();
-		var boxwidth;
-		var boxheight;
-		var boxId;
-		
-		var numBoxes = $("[id ^=box][id $=wrapper]").length;
-		
-		var boxValueArray = new Array();
-		boxValueArray["parent"] = {"width": parentWidth, "height": parentHeight};
-		
-		for (var i = 1; i <= numBoxes; i++) {
-			boxWidth = $("#box" + i + "wrapper").width();
-			boxHeight = $("#box" + i + "wrapper").height();
-			boxId = "#box" + i + "wrapper";
-			boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
-		}
-		
-		return boxValueArray;
-	}
-	
-	
-	//Saves the measurments in percent for the boxes on the screen in local storage.
-	function setLocalStorageProperties(templateId, boxValArray){
-	
-		var numBoxes = $("[id ^=box][id $=wrapper]").length;
-		var widthPer;
-		var heightPer;
-		
-		for(var i = 1; i <= numBoxes; i++){
-			
-			widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) *100;
-			heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) *100;
-			
-			widthPer = Math.floor(widthPer, 100);
-			heightPer = Math.floor(heightPer, 100);
-			
-			localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
-			localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
-			
-		}
-	}
-
-	
-	//Gets box measurments from localstorage and applies them onto the boxes on screen.
-	//This is done preinit of boxValArray, so that the init of that array gets these values.
-	function getLocalStorageProperties(templateId){
-		
-		var numBoxes = $("[id ^=box][id $=wrapper]").length;
-		
-		for(var i = 1; i <= numBoxes; i++){
-		
-			if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null){
-				
-				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
-				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
-				
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			resize: function(e, ui){		
+				alignBoxesWidth(boxValArray, 1, 2);
+				$(boxValArray['box1']['id']).css("height", "100%");
+				$(boxValArray['box2']['id']).css("height", "100%");
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
 			}
+		});
+	}else if(templateId == 2){
+	
+		getLocalStorageProperties(templateId);
+		
+		//Used to remove gap provided by percentage based positioning.
+		alignBoxesHeight2boxes(boxValArray, 1, 2);
+		
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			resize: function(e, ui){
+				alignBoxesHeight2boxes(boxValArray, 1, 2);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+	
+	}else if(templateId == 3){
+	
+		getLocalStorageProperties(templateId);
+		
+		//Used to remove gap provided by percentage based positioning.
+		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+		alignBoxesHeight2boxes(boxValArray, 2, 3);
+		
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			resize: function(e, ui){
+				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			resize: function(e, ui){
+				alignBoxesHeight2boxes(boxValArray, 2, 3);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+	
+	}else if(templateId == 4){
+		getLocalStorageProperties(templateId);
+		
+		//Used to remove gap provided by percentage based positioning.
+		alignBoxesWidth(boxValArray, 1, 2);
+		alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+	
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e,s",
+			resize: function(e, ui){
+				alignBoxesWidth(boxValArray, 1, 2);
+				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			resize: function(e, ui){
+				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
+				alignBoxesWidth(boxValArray, 2, 1);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+		
+	}else if(templateId == 5){
+	
+		getLocalStorageProperties(templateId);
+		
+		//Used to remove gap provided by percentage based positioning.
+		alignBoxesWidth(boxValArray, 1, 2);
+		alignBoxesHeight4boxes(boxValArray, 1, 2);
+		alignBoxesWidth(boxValArray, 3, 4);
+	
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e,s",
+			resize: function(e, ui){
+				alignBoxesWidth(boxValArray, 1, 2);
+				alignBoxesHeight4boxes(boxValArray, 1, 2);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			resize: function(e, ui){
+				alignBoxesHeight4boxes(boxValArray, 2, 1);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+		
+		$(boxValArray['box3']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			resize: function(e, ui){
+				alignBoxesWidth(boxValArray, 3, 4);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+	}
+};
+
+//width adjustment for template(1,4)
+function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign){
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+				
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	//Worth noting that these bugs may be temporary ones caused by multi user tinkering in the system. And the fixes may not be needed later on.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+			
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
+	
+}
+
+//width adjustment for template(1,3)
+function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
+				
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+				
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+	$(boxValArray['box' + boxNumBase]['id']).css("height", "100%");
+				
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+				
+	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidth);
+	
+}
+
+//Height adjustment for boxes in template 2.
+function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame){
+	
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+				
+	$(boxValArray['box' + boxNumSame]['id']).height(remainHeight);
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+}
+
+//Height adjustment for boxes in template 3.
+function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig){
+	
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+				
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
+				
+				
+	$(boxValArray['box' + boxNumSame]['id']).height(boxValArray['box' + boxNumBase]['height']);
+	$(boxValArray['box' + boxNumBig]['id']).height(remainHeight);
+	
+}
+
+//Height adjustment for boxes in template 5.
+function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame){
+	
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+				
+	$(boxValArray['box' + boxNumSame]['id']).height($(boxValArray['box' + boxNumBase]['id']).height());
+	$(boxValArray['box3']['id']).height(remainHeight);
+	$(boxValArray['box4']['id']).height(remainHeight);
+				
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
+	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
+		
+}
+
+//Creates an array with all the properties needed for resize function.
+function initResizableBoxValues(parent){
+
+	var parentWidth = $(parent).width();
+	var parentHeight = $(parent).height();
+	var boxwidth;
+	var boxheight;
+	var boxId;
+	
+	var numBoxes = $("[id ^=box][id $=wrapper]").length;
+	
+	var boxValueArray = new Array();
+	boxValueArray["parent"] = {"width": parentWidth, "height": parentHeight};
+	
+	for (var i = 1; i <= numBoxes; i++) {
+		boxWidth = $("#box" + i + "wrapper").width();
+		boxHeight = $("#box" + i + "wrapper").height();
+		boxId = "#box" + i + "wrapper";
+		boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
+	}
+	
+	return boxValueArray;
+}	
+
+//Saves the measurments in percent for the boxes on the screen in local storage.
+function setLocalStorageProperties(templateId, boxValArray){
+
+	var numBoxes = $("[id ^=box][id $=wrapper]").length;
+	var widthPer;
+	var heightPer;
+	
+	for(var i = 1; i <= numBoxes; i++){
+		
+		widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) *100;
+		heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) *100;
+		
+		widthPer = Math.floor(widthPer, 100);
+		heightPer = Math.floor(heightPer, 100);
+		
+		localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
+		localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
+		
+	}
+}
+
+//Gets box measurments from localstorage and applies them onto the boxes on screen.
+//This is done preinit of boxValArray, so that the init of that array gets these values.
+function getLocalStorageProperties(templateId){
+	
+	var numBoxes = $("[id ^=box][id $=wrapper]").length;
+	
+	for(var i = 1; i <= numBoxes; i++){
+	
+		if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null){
+			
+			$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
+			$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
+			
 		}
 	}
+}
 
 /********************************************************************************
 
@@ -1813,12 +1689,12 @@ function resizeBoxes(parent, templateId) {
 function parseMarkdown(inString)
 {	
 	var returnString = " ";							
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<strong><em>$1</em></strong>');	
-	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<strong>$1</strong>');
-	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<em>$1</em>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<strong><em>$1</em></strong>');
-	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<strong>$1</strong>');	
-	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<em>$1</em>');
+	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
+	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
+	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
+	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<font style="font-weight:bold;">$1</font>');	
+	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<font style="font-style:italic;">$1</font>');
 	inString = inString.replace(/^\#{6} (.*)=*/gm, '<h6>$1</h6>');
 	inString = inString.replace(/^\#{5} (.*)=*/gm, '<h5>$1</h5>');
 	inString = inString.replace(/^\#{4} (.*)=*/gm, '<h4>$1</h4>');
