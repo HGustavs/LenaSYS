@@ -142,6 +142,21 @@ pdoConnect();
 
 	</div>
 	<!-- Edit Verison Dialog END -->
+	
+	<!-- HighscoreBox START -->
+	<div id='HighscoreBox' class='loginBox' style='width:500px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Highscore</h3>
+			<div onclick='closeWindows();'>x</div>
+		</div>
+		<table width='100%'>
+			<tr>
+				<td>Kebab</td>
+				<td>Sås</td>
+			</tr>
+		</table>
+	</div>
+	<!-- HighscoreBox END -->
 				
 </body>
 </html>
