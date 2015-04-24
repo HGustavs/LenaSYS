@@ -134,7 +134,7 @@
 
 	<!-- Login Box Start! -->
 
-  <div id='receiptBox' class="loginbox" style="display:none">
+  <div id='receiptBox' class="loginBox" style="display:none">
 		<div id='receipt'>
 			<div class='loginBoxheader'>
 				<h3>Kvitto - Duggasvar</h3>

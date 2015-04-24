@@ -222,10 +222,19 @@ function AJAXService(opt,apara,kind)
 				// Informs the user that his input contained nothing.
 				if(apara[key] == "") {
 					alert("Your input contained nothing in " + key);
-		}			
+				}
 				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
+<<<<<<< HEAD
+=======
+		// Informs the user that his input contained nothing.
+		if(apara[key] == "") {
+			alert("Your input contained nothing in " + key);
+		}			
+		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+		console.log("Para: " + para);
+>>>>>>> origin/ds17
 	}
 				
 	if(kind=="COURSE"){

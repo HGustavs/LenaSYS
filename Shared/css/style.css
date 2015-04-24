@@ -477,6 +477,21 @@ font-size: 14px;
 	box-shadow:2px 2px 4px #000;
 }
 
+.loginBox textarea, #import{
+	width:100%;
+	height:200px;
+	margin:auto;
+	margin-top:7px;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    	-moz-box-sizing: border-box;
+    	padding:5px;
+}
+
+.note {
+	font-size: 0.95em;
+}
+
 /* --------------================################================-------------- *
  *                       		  Pop-up BOX        				   *
  * --------------================################================-------------- */
@@ -769,3 +784,19 @@ input.submit-button-red:hover {
 
 /* End DuggaSys Header */
 /***********************/
+
+/* DuggaSys Sectioneed*/
+.course-menu--settings {
+	float: left;
+}
+
+.course-menu--options {
+	float: right;
+}
+
+/* select element */
+.course-dropdown {
+	height: 30px;
+}
+/* End DuggaSys Sectioneed*/
+/**************************/

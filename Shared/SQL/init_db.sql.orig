@@ -209,11 +209,18 @@ insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","7844","HT 2014");
 
 CREATE TABLE fileLink(
+<<<<<<< HEAD
 	fileid			INT(11) NOT NULL AUTO_INCREMENT,
 	filename		VARCHAR(128) NOT NULL,
+	kind			INTEGER,	
+	cid				INT UNSIGNED NOT NULL,
+=======
+	fileid				INT(11) NOT NULL AUTO_INCREMENT,
+	filename			VARCHAR(128) NOT NULL,
 	kind				INTEGER,	
 	cid				INT UNSIGNED NOT NULL,
 	isGlobal			BOOLEAN DEFAULT 0,
+>>>>>>> origin/ds17
 	CONSTRAINT pk_filelink PRIMARY KEY (fileid),
 	CONSTRAINT fk_filelink_joins_course FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
