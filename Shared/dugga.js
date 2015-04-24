@@ -222,16 +222,19 @@ function AJAXService(opt,apara,kind)
 				// Informs the user that his input contained nothing.
 				if(apara[key] == "") {
 					alert("Your input contained nothing in " + key);
-				}
+		}			
 				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
+<<<<<<< HEAD
 		// Informs the user that his input contained nothing.
 		if(apara[key] == "") {
 			alert("Your input contained nothing in " + key);
 		}			
 		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 		console.log("Para: " + para);
+=======
+>>>>>>> a3e4b726724852ee6bb4bee81584b7f2fdae40e8
 	}
 				
 	if(kind=="COURSE"){
@@ -511,7 +514,11 @@ function getCookie(cname) {
 }
 
 $(window).load(function() {
+<<<<<<< HEAD
       $('.loginBox').draggable();
+=======
+	//There is an issue with using this code, it generates errors that stop execution
+>>>>>>> a3e4b726724852ee6bb4bee81584b7f2fdae40e8
       $(window).keyup(function(event){
       	if(event.keyCode == 27) closeWindows();
       });

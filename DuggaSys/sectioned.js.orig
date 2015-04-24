@@ -225,6 +225,8 @@ function closeSelect()
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
 	$("#editSection").css("display","none");
+<<<<<<< HEAD
+=======
 }
 
 function showCreateVersion()
@@ -308,6 +310,7 @@ function accessCourse() {
 	window.location.href = "accessed.php?cid=" + querystring['courseid']+"&coursevers="+coursevers;
 	resetinputs();
 	//resets all inputs
+>>>>>>> origin/ds17
 }
 
 //----------------------------------------
@@ -320,6 +323,22 @@ function returnedSection(data)
 	retdata=data;
 
 	if(querystring['coursevers']!="null"){
+<<<<<<< HEAD
+	// Fill section list with information
+		str="";
+		if(data['writeaccess']) {
+			str+="<div style='float:right;'>";
+			str+="<input class='submit-button' type='button' value='New' onclick='newItem();'/>";
+			str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="</div>";
+		}
+			
+				// Course Name
+		str+="<div class='course'>"+data.coursename+" "+data.coursevers+"</div>";
+=======
 		// Fill section list with information
 		str="";
 
@@ -362,6 +381,7 @@ function returnedSection(data)
 		// Course Name
 		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
 
+>>>>>>> origin/ds17
 		str+="<div id='Sectionlistc' >";
 			
 		var groupitems = 0;
@@ -451,8 +471,11 @@ function returnedSection(data)
 							}
 						}
 						
+<<<<<<< HEAD
+=======
 						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/Cogwheel.svg' onclick='showHighscore()'/>";
 						
+>>>>>>> origin/ds17
 						if(grady==-1){
 								// Nothing submitted nor marked (White)
 								str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
@@ -517,6 +540,13 @@ function returnedSection(data)
 			});							
 		}
 	}else{
+<<<<<<< HEAD
+		str="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
+		var slist=document.getElementById('Sectionlist');
+		slist.innerHTML=str;
+	}
+	if(data['debug']!="NONE!") alert(data['debug']);
+=======
 		str="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-coursevers' style='display: inline-block; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
 		str+="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
 		var slist=document.getElementById('Sectionlist');
@@ -530,5 +560,6 @@ function returnedSection(data)
 function showHighscore()
 {
 	$("#HighscoreBox").css("display", "block");
+>>>>>>> origin/ds17
 }
 

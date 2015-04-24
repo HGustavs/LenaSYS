@@ -219,8 +219,13 @@ insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","7844","HT 2014");
 
 CREATE TABLE fileLink(
+<<<<<<< HEAD
 	fileid				INT(11) NOT NULL AUTO_INCREMENT,
 	filename			VARCHAR(128) NOT NULL,
+=======
+	fileid			INT(11) NOT NULL AUTO_INCREMENT,
+	filename		VARCHAR(128) NOT NULL,
+>>>>>>> a3e4b726724852ee6bb4bee81584b7f2fdae40e8
 	kind				INTEGER,	
 	cid				INT UNSIGNED NOT NULL,
 	isGlobal			BOOLEAN DEFAULT 0,
