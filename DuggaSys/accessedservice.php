@@ -93,7 +93,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							// next one.
 							continue;
 						}
-			
+						$saveemail = $username1;
 						// Assemble this into more useful bits.
 						list($lastname, $firstname)=(explode(", ",$name));
 						list($username, $garbage)=(explode("@",$username1));
@@ -108,14 +108,13 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						// If there isn't we'll register a new user and give them a randomly
 						// assigned password which can be printed later.
 						if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
-								// User does exist
-								$debug.="   ".$username."Does not Exist \n";
-
+							
 								$rnd=makeRandomString(9);
 								
-								$querystring='INSERT INTO user (username, firstname, lastname, ssn, password,addedtime) VALUES(:username,:firstname,:lastname,:ssn,password(:password),now());';	
+								$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now());';	
 								$stmt = $pdo->prepare($querystring);
 								$stmt->bindParam(':username', $username);
+								$stmt->bindParam(':email', $saveemail);
 								$stmt->bindParam(':firstname', $firstname);
 								$stmt->bindParam(':lastname', $lastname);
 								$stmt->bindParam(':ssn', $ssn);
@@ -123,6 +122,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 								if(!$stmt->execute()) {
 									$error=$stmt->errorInfo();
 									$debug.="Error updating entries".$error[2];
+									$debug.="   ".$username."Does not Exist \n";
+										$debug.=" ".$uid;
 								}
 
 								$uid=$pdo->lastInsertId();
@@ -133,7 +134,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 								$uid = $usr['uid'];
 						}
 						
-						$debug.=" ".$uid;
+					
 						
 						// We have a user, connect to current course
 						if($uid!="UNK"){
@@ -157,7 +158,6 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				}
 		}
 }
-
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
