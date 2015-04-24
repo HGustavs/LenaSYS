@@ -222,4 +222,4 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 			include '../Shared/loginbox.php';
 		?>		
 	</body>
- </html>
+</html>
