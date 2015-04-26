@@ -1,791 +1,331 @@
-html, body, div, span, applet, object, 
-iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-    margin: 0;  
-    padding: 0; 
-    border: 0;  
-    font-size: 100%;    
-    font: inherit;
-    vertical-align: baseline;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
-
-table {
-    border-collapse: collapse;
-}
-th, td {
-    padding: 0;
-}
-h1 {
-    color: #fff;
-    font-size: 1.8em;
-    line-height: 1.4em;
-}
-h2 {
-    font-size: 1.5em;
-    line-height: 1.5em; 
-}
-h3 {
-    font-size: 1.3em;
-    line-height: 1.3em; 
-}
-h4 {
-    font-size: 1.2em;
-    line-height: 1.5em;
-}
-body {
-    background: #ddd;
-}
-hr {
-    border: 0;
-    border-bottom: 1px dashed #ccc;
-    background: #999;
-}
-
-/* --------------================################================-------------- *
- *                               Lists and Content                              *
- * --------------================################================-------------- */
-
-.err{
-
-	color:#FFE;
-	background-color:#964C4D;
-	/* border:2px solid #964C4D; */
-    border-radius:10px;
-    font-family: Calibri,Sans-Serif;
-    display: block;
-    box-shadow:0px 2px 4px #DCD;
-	padding:8px;
-	text-shadow:1px 1px #000;
-}		
-
-#content {
-    margin:0px auto;
-    position:relative;
-    padding: 50px 12px 8px 8px;
-    background: #fff;
-    min-height: 200px;
-}
-
-#newbutton {
-    margin:0px auto;
-    position:relative;
-    padding: 50px 12px 8px 8px;
-    background: #fff;
-    min-height: 50px;
-}
-
-#wrappall {
-    margin:0px auto;
-width:80%;
- border: 8px solid #ccc;
-}
-
-.lena{
-	border-radius: 6px 0px 0px 6px;
-	color:#FFF;
-    background-color: #775886;
-	background: linear-gradient(to bottom, #775886 , #573866); 
-    padding-left:6px;
-    padding-right:6px;
-    padding-top:2px;
-    padding-bottom:2px;
-    margin-right:2px;
-}		
-
-.sys{
-	border-radius:6px;
-	color:#775886;;
-	border: 2px solid #775886;
-    background-color: #fff;
-    padding-right:4px;
-    margin-right:4px;		
- 	text-decoration: none;
-}
-
-#Courselist{
-	margin:0px auto;
-    background-color: #fff;
-    color:#434343;
-    display: block;
-	padding-top:1px;
-}
-
-#Courselist a{
-	text-decoration:none;
-}
-
-#Courselist a:hover{
-	text-decoration:underline;
-}
-
-#Courselist .head {
-    text-align: center;
-	color:#775886;
-	font-size: 18pt;
-    font-family: Calibri,Sans-Serif;
-    display: block;
-    background-color: #FFF;
-	padding-top:7px;
-	min-height:30px;
-	margin-top:40px;
-	margin-bottom:4px;
-	padding-bottom:4px;
-	border-bottom: 2px dotted #775886;
-}
-
-
-#Courselist .bigg {
-    text-align: center;
-	color:#775886;;
-	font-size: 14pt;
-    font-family: Calibri,Sans-Serif;
-    display: block;
-    background-color: #fff;
-	padding-top:7px;
-	min-height:30px;
-	margin-right:8px;
-	padding-right:8px;
-}
-
-#Sectionlist{
-	margin:0px auto;
-	background-color: #fff;
-	color:#434343;
-	display: block;
-	padding-top:1px;
-}
-
-.item {
-  	display: block;
-	font-family: Calibri,Sans-Serif;
-	padding-top:7px;
-	min-height:30px;
-	font-size: 14pt;
-}
-
-#Sectionlist .section {
-	color:#fff;
-	background-color: #927b9e;
-}
-
-#Sectionlist .header {
-	color:#fff;
-	background-color: #775886;
-	text-align: center;
-}
-
-#Sectionlist .moment {
-	color:#ffffff;
-	background-color: #927b9e;
-}
-
-#Sectionlist .example {
-	color:#434343;
-	font-size: 12pt;
-	padding-top:5px;
-	min-height:26px;
-}
-
-
-#Sectionlist .quiz {
-	color:#434343;
-	font-size: 12pt;
-	padding-top:5px;
-	min-height:26px;
-}
-
-#Sectionlist .norm {
-	color:#fff;
-	background-color: #f0f0f0;
-}
-
-#Sectionlist .course {
-	padding:6px;
-    text-align: center;
-    color: #fff;
-    display: block;
-    font-family: Calibri,Sans-Serif;
-	font-size:18pt;
-    background-color: #614875;
-	margin-top:40px;
-}
-
-.hi { background-color:#dad8db; }
-
-.lo { background-color:#eae8eb;}
-
-.item a {
-	text-decoration:none;
-	color: #775886;
-}
-
-.item a:hover {
-	text-decoration:underline;
-}
-
-#Sectionlist .norm:hover, #Sectionlist .example:hover, #Sectionlist .test:hover, #Sectionlist .hidden:hover{
-	background-color:#c6cdb8;
-	color: #000;
-}
-
-.hidden {opacity:0.5;border-radius:4px;margin-left:16px;}
-
-p {
-	margin: .5em auto .5em auto;
-}
-
-/* --------------================################================-------------- *
- *                                    Header                                    *
- * --------------================################================-------------- */
-
-header {
-    overflow: hidden;
-    color: #fff;
-    height: 50px;
-    width: 100%;
-    background: #614875;
-    position: fixed;
-    z-index: 5000;
-    top: 0px;
-    left: 0px;
-}
-
-
-
-.navButt {
-	width:50px;
-	vertical-align: middle;
-}
-
-.navHeading {
-    font-size: 2.5em;
-    padding-left: 15px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor:default;
-}
-
-.navName {
-    font-size:0.8em;
-    color: #ff0;
-	cursor:default;
-	text-decoration:underline;
-	text-align:right;
-	overflow:hidden;
-	padding-right:4px;
-}
-
-#userName {
-	cursor:pointer;
-}
-
-.loggedout {
-	background-color: #c75050;
-	width:40px;
-	padding-top: 13px;
-	padding-bottom: 13px;
-	padding-left:14px;
-}
-
-.loggedout:hover {
-	background-color: #50a750;
-	width:40px;
-	padding-top: 13px;
-	padding-bottom: 13px;
-	padding-left:14px;
-}
-
-.loggedin {
-	background-color: #50a750;
-	width:40px;
-	padding-top: 13px;
-	padding-bottom: 13px;
-	padding-left:14px;
-}
-
-.loggedin:hover {
-	background-color: #c75050;
-	width:40px;
-	padding-top: 13px;
-	padding-bottom: 13px;
-	padding-left:14px;
-}
-
-#loginbutton{
-	cursor:pointer;
-}
-
-#div2
-{
-	width:100%;
-	position: fixed;
-	top: 50px;
-	bottom: 0px;
-	left:0px;
-	background:#fff;
-}
-
-
-/* --------------================################================-------------- *
- *                                   Dialog Box                                 *
- * --------------================################================-------------- */
-
-#resultpopover{
-	position:fixed;
-	left:50px;
-	top:70px;
-	right:50px;
-	bottom:50px;
-	z-index:9000;
-	box-shadow:2px 2px 4px #000;
-	padding:4px;
-	background-color: #ccc;
-	border: 2px solid #999;
-}
-
-.floatRightBox{
-	width:220px;
-	min-height:300px;
-	float:left;
-	margin-left:10px;
-	overflow:auto;
-	float:right;
-	z-index:9000;
-	box-shadow:2px 2px 4px #000;
-	padding:4px;
-	background-color: #ccc;
-	border: 2px solid #999;
-}
-
-
-
-#overlay {
-	position: fixed;
-	top: 0;
-	background-color: #000;
-	opacity: 0.6;
-	width: 100%;
-	height: 100%;
-	z-index: 8000;
-}
-
-.receiptBox {
-	display:block;
-	padding:4px;
-	background-color: #ccc;
-	border: 2px solid #999;
-	width: 350px;
-	min-height: 100px;
-	z-index: 9000;
-	position: fixed;
-	top: 40%;
-	left: 50%;
-	margin-top: -100px;
-	margin-left: -178px;
-	box-shadow:2px 2px 4px #000;
-}
-.receiptBox select {font-size:14px;float:right;margin-right:4px;}
-
-.receiptBoxheader {
-	height: 25px;
-	background-color: #614875;
-	vertical-align: bottom;
-	padding-left: 10px;
-/*  padding-top: 15px; */
-}
-.receiptBox h3 {
-font-size: 14px;
-	margin-top: 10px;
-	line-height: 0.5em;
-    color: #fff;
-    float: left;
-    width: 50%;
-}
-.receiptBoxheader div {
-	padding: 2px 20px 2px 20px;
-	position: absolute;
-	top: 4px;
-	right: 5px;
-    color: #fff;
-    cursor: default;
-	background-color: #c75050;
-	font-family: arial;
-	font-weight: bold;
-	height:20px;
-}
-.receiptBoxheader div:hover {
-	background-color: #ce3d3d;
-}
-.recepitBox form {
-	padding: 10px;
-}
-.recepitBox .text {
-	font-weight: bold;
-	font-size: 0.8em;
-}
-
-.receiptBox .submit {
-	width: 80px;
-	height: 25px;
-	color: #fff;
-	background-color: #614875;
-	border: 0px;
-	border-radius: 4px;
-	margin-left: 1px;
-}
- 
-.loginBox {
-	display:block;
-	padding:4px;
-	background-color: #ccc;
-	border: 2px solid #999;
-	width: 350px;
-	min-height: 100px;
-	z-index: 9000;
-	position: fixed;
-	top: 40%;
-	left: 50%;
-	margin-top: -100px;
-	margin-left: -178px;
-	box-shadow:2px 2px 4px #000;
-}
-
-.loginBox textarea, #import{
-	width:100%;
-	height:200px;
-	margin:auto;
-	margin-top:7px;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    padding:5px;
-}
-
-.note {
-	font-size: 0.95em;
-}
-
-/* --------------================################================-------------- *
- *                       		  Pop-up BOX        				   *
- * --------------================################================-------------- */
-
-
-#impwords {
-	max-width: 186px;
-	min-width: 186px;
-	margin-left: 227px;
-}
-
-#impword {
-    width: 174px;
-}
-
-#before, #after {
-    float: left;
-    width: 226px;
-}
-
-#playlink {
-    width: 216px;
-}
-
-
-.loginBox select {font-size:14px;float:right;margin-right:4px;}
-
-.loginBoxheader {
-	height: 25px;
-	background-color: #614875;
-	vertical-align: bottom;
-	padding-left: 10px;
-/*  padding-top: 15px; */
-}
-.loginBoxheader h3 {
-font-size: 14px;
-	margin-top: 10px;
-	line-height: 0.5em;
-    color: #fff;
-    float: left;
-    width: 50%;
-}
-.loginBoxheader div {
-	padding: 2px 20px;
-	position: absolute;
-	top: 4px;
-	right: 4px;
-	color: rgb(255, 255, 255);
-	cursor: default;
-	background-color: rgb(199, 80, 80);
-	font-family: arial;
-	font-weight: bold;
-	height: 21px;
-}
-.loginBoxheader div:hover {
-	background-color: #ce3d3d;
-}
-.loginBox form {
-	padding: 10px;
-}
-.loginBox .text {
-	font-weight: bold;
-	font-size: 0.8em;
-}
-
-.loginBox .submit {
-	width: 80px;
-	height: 25px;
-	color: #fff;
-	background-color: #614875;
-	border: 0px;
-	border-radius: 4px;
-	margin-left: 1px;
-}
-
-.loginBox .cancel {
-	width: 80px;
-	height: 25px;
-	color: #333;
-	background-color: #ebebeb;
-	border-color: #adadad;
-	border: 1px;
-	border-radius: 4px;
-	margin-left: 1px;
-}
-
-.loginBox .forgotPw {
-	font-family: arial;
-	font-size: 10pt;
-	font-weight: bold;
-	text-decoration: underline;
-	cursor: pointer;
-	padding-left: 10px;
-}
-
-.loginBox .form-control {
-	margin: 3px 0px 3px 0px;
-}
-
-.loginBox .hide {
-	display: none;
-}
-
-.loginBox td{
-	margin-left:4px;
-}
-
-/* --------------================################================-------------- *
- *                                 Form Controls                                *
- * --------------================################================-------------- */
- 
-.form-control {
-    display: block;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
-
-.textinput {
-	display: block;
-	width: 216px;
-	height: 30px;
-	padding: 6px 12px;
-	font-size: 15px;
-	line-height: 1.42857143;
-	color: #6f6f6f;
-	background-color: #ffffff;
-	background-image: none;
-	border: 1px solid #cccccc;
-	border-radius: 0;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	-webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	padding: 5px;
-	font-size: 12px;
-	letter-spacing: normal;
-	word-spacing: normal;
-	text-transform: none;
-	text-indent: 0px;
-	text-shadow: none;
-	display: inline-block;
-	text-align: start;
-	border-radius: 0px;
+<?php 
+
+//---------------------------------------------------------------------------------------------------------------
+// editorService - Saves and Reads content for Code Editor
+//---------------------------------------------------------------------------------------------------------------
+
+date_default_timezone_set("Europe/Stockholm");
+
+// Include basic application services!
+include_once "../Shared/sessions.php";
+include_once "../Shared/basic.php";
+
+// Connect to database and start session
+pdoConnect();
+session_start();
+
+if(isset($_SESSION['uid'])){
+		$userid=$_SESSION['uid'];
+}else{
+		$userid="1";		
+} 
+
+$opt=getOP('opt');
+$courseid=getOP('courseid');
+$coursevers=getOP('coursevers');
+
+$moment=getOP('moment');
+$sectid=getOP('lid');
+$sectname=getOP('sectname');
+$kind=getOP('kind');
+$link=getOP('link');
+$visibility=getOP('visibility');
+$order=getOP('order');
+$gradesys=getOP('gradesys');
+
+$versid=getOP('versid');
+$coursename=getOP('coursename');
+$versname=getOP('versname');
+$coursecode=getOP('coursecode');
+$coursenamealt=getOP('coursenamealt');
+
+if($gradesys=="UNK") $gradesys=0;
+
+$debug="NONE!";	
+
+//------------------------------------------------------------------------------------------------
+// Services
+//------------------------------------------------------------------------------------------------
+
+if(checklogin()){
+	$ha = hasAccess($userid, $courseid, 'w') || isSuperUser($userid);
+
+	if($ha){
+
+		// The code for modification using sessions
+		if(strcmp($opt,"DEL")===0){
+			$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
+			$query->bindParam(':lid', $sectid);
+			if(!$query->execute()) {
+				$debug="Error updating entries";
+			}
+		}else if(strcmp($opt,"NEW")===0){
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator) VALUES(:cid,:cvs,'New Item','', '0', '100','0',:usrid)");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':cvs', $coursevers);
+			$query->bindParam(':usrid', $userid);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries".$error[2];
+			}
+		}else if(strcmp($opt,"REORDER")===0){
+			$orderarr=explode(",",$order);
+			foreach ($orderarr as $key => $value){
+				$armin=explode("XX",$value);
+				$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
+				$query->bindParam(':lid', $armin[1]);
+				$query->bindParam(':pos', $armin[0]);
+				$query->bindParam(':moment', $armin[2]);
+				//$query->bindParam(':moment', $moment);
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating entries".$error[2];
+				}
+			}
+		}else if(strcmp($opt,"UPDATE")===0){
+			$query = $pdo->prepare("UPDATE listentries set moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
+			$query->bindParam(':lid', $sectid);
+			$query->bindParam(':entryname', $sectname);
+
+			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
+			else $query->bindParam(':moment', $moment);
+				
+			$query->bindParam(':kind', $kind);
+			$query->bindParam(':link', $link);
+			$query->bindParam(':visible', $visibility);
+			$query->bindParam(':gradesys', $gradesys);
 	
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries".$error[2];
+			}
+		}else if(strcmp($opt,"NEWVRS")===0){
+			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursecode', $coursecode);
+			$query->bindParam(':vers', $versid);
+			$query->bindParam(':versname', $versname);				
+			$query->bindParam(':coursename', $coursename);
+			$query->bindParam(':coursenamealt', $coursenamealt);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries".$error[2];
+			}
+		}else if(strcmp($opt,"UPDATEVRS")===0){
+			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursecode', $coursecode);
+			$query->bindParam(':vers', $versid);
+			$query->bindParam(':versname', $versname);				
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries".$error[2];
+			}
+		}else if(strcmp($opt,"CHGVERS")===0){
+			$query = $pdo->prepare("UPDATE COURSE SET activeversion=:vers WHERE cid=:cid");
+
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':vers', $versid);		
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries".$error[2];
+			}
+		}
+	}
+
 }
 
-input.option {
-    float: left;
+//------------------------------------------------------------------------------------------------
+// Retrieve Information			
+//------------------------------------------------------------------------------------------------
+
+$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
+$query->bindParam(':cid', $courseid);
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading visibility ".$error[2];
+}
+if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+	$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
+	if (!$hr) {
+		if (checklogin()) {
+			$hr = isSuperUser($userid);
+		}
+	}
 }
 
-button.option {
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-    width: 38px;
-    height: 38px;
-    padding: 6px 12px;
-    margin: 2px 0px 2px -38px;
+$ha = (checklogin() && (hasAccess($userid, $courseid, 'w') || isSuperUser($userid)));
+
+$resulties=array();
+$query = $pdo->prepare("SELECT moment,grade,submitted,marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':vers', $coursevers);
+$query->bindParam(':uid', $userid);
+
+$result=$query->execute();
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading results".$error[2];
+}
+foreach($query->fetchAll() as $row) {
+	array_push(
+		$resulties,
+		array(
+			'moment' => $row['moment'],
+			'grade' => $row['grade'],
+			'submitted' => $row['submitted'],
+			'marked' => $row['marked'],
+			'useranswer' => $row['useranswer']
+		)
+	);
 }
 
-input.submit-button {
-	background-color:#614875;
-	border:0px;
-	width:100px;
-	height:30px;
-	color:#fff;
-	cursor:pointer;
-	margin-top:6px;
-	margin-bottom:2px;
-	margin-left:4px;
-	font-size:14px;
-	transition:1s background-color;
+
+
+
+
+$entries=array();
+// If user has read access!
+if($hr){
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,gradesystem FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':coursevers', $coursevers);
+	$result=$query->execute();
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+	foreach($query->fetchAll() as $row) {
+		array_push(
+			$entries,
+			array(
+				'entryname' => $row['entryname'],
+				'lid' => $row['lid'],
+				'pos' => $row['pos'],
+				'kind' => $row['kind'],
+				'moment' => $row['moment'],
+				'link'=> $row['link'],
+				'visible'=> $row['visible'],
+				'gradesys' => $row['gradesystem'],
+				'code_id' => $row['code_id']
+			)
+		);
+	}
 }
 
-input.submit-button:hover {
-	background-color:#7B5A96;
-	border-radius:4px;	
+$query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
+$query->bindParam(':cid', $courseid);
+$coursename = "Course not Found!";
+$coursecode = "Coursecode not found!";
+if($query->execute()) {
+	foreach($query->fetchAll() as $row) {
+		$coursename=$row['coursename'];
+		$coursecode=$row['coursecode'];
+	}
+} else {
+	$error=$query->errorInfo();
+	$debug="Error reading entries".$error[2];
 }
 
-input.submit-button-red {
-	background-color:#c75050;
-	border:0px;
-	width:100px;
-	height:30px;
-	color:#fff;
-	cursor:pointer;
-}
+$duggor=array();
+$links=array();
 
-input.submit-button-red:hover {
-	background-color:#DF4F4F;
-	border-radius:4px;	
-}
+if($ha){
 
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;}
+	$query = $pdo->prepare("SELECT id,qname FROM quiz WHERE cid=:cid ORDER BY qname");
+	$query->bindParam(':cid', $courseid);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+	foreach($query->fetchAll() as $row) {
+		array_push(
+			$duggor,
+			array(
+				'id' => $row['id'],
+				'qname' => $row['qname']
+			)
+		);
+	}
 
-.list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
-.list th {background:#614875; color:#fff;line-height:28px;}
+	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
+	$query->bindParam(':cid', $courseid);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+	foreach($query->fetchAll() as $row) {
+		array_push(
+			$links,
+			array(
+				'fileid' => $row['fileid'],
+				'filename' => $row['filename']
+			)
+		);
+	}
 
-.innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
-.innertable td {color:#000;line-height:28px;border:none;}
-
-.list tr:hover { background-color: #dbd0d8; }
-
-.Trow{
-	font-family: "Lucida Console", Monaco, monospace;
-	font-size: 8pt;
-}
-
-@media print {
-	.Trow {
-		page-break-inside : avoid
+	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
+	$query->bindParam(':cid', $courseid);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+	$oldkind=-1;
+	foreach($query->fetchAll() as $row) {
+		if($row['kind']!=$oldkind){
+			array_push($links,array('fileid' => -1,'filename' => "---===######===---"));
+		}
+		$oldkind=$row['kind'];
+		array_push(
+			$links,
+			array(
+				'fileid' => $row['fileid'],
+				'filename' => $row['filename']
+			)
+		);
 	}
 	
-	header {display:none;}
-	
-	body {margin:0px}
-	
-	#content {margins:0px; padding:0px; border:none;}
-	
-	#mirth {display:none;}
-}
- 
-/* Clearfix styles */
-.clearfix:before,
-.clearfix:after {
-  content: "";
-  display: table;
-}
- 
-.clearfix:after {
-  clear: both;
-}
- 
-.clearfix {
-  zoom: 1; /* ie 6/7 */
+	$versions=array();
+	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading courses".$error[2];
+	}else{
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$versions,
+				array(
+					'cid' => $row['cid'],
+					'coursecode' => $row['coursecode'],
+					'vers' => $row['vers'],
+					'versname' => $row['versname'],
+					'coursename' => $row['coursename'],
+					'coursenamealt' => $row['coursenamealt']
+				)
+			);
+		}
+	}
 }
 
-/* DuggaSys Header */
-/*******************/
+$array = array(
+	'entries' => $entries,
+	"debug" => $debug,
+	'writeaccess' => $ha,
+	'readaccess' => $hr,
+	'coursename' => $coursename,
+	'coursevers' => $coursevers,
+	'coursecode' => $coursecode,
+	'courseid' => $courseid,
+	'links' => $links,
+	'duggor' => $duggor,
+	'results' => $resulties,
+	'versions' => $versions
+);
 
-.head__backanchor {
-	color: #ff0;
-}
-.head__backanchor:visited {
-	color: #ff0;
-}
-.head__backanchor:hover {
-	color: #fff;
-}
-
-
-.duggasys-head__backtext {
-	display: block;
-}
-/* Navigation link styles */
-.duggasys-head--nav a {
-	color: #ffffff;
-	text-decoration: none;
-}
-.duggasys-head--nav a:visited {
-	color: #ffffff;
-}
-.duggasys-head--nav a:hover {
-	color: red;
-}
-
-.duggasys-head--userinfo {
-	float: right;
-	margin: 10px 85px 10px 10px;
-}
-.duggasys-head__profileicon {
-	height: 100%;
-	padding: 5px;
-}
-.duggasys-head__profileicon:hover {
-	height: 100%;
-	padding: 5px;
-}
-.duggasys-head__username {
-
-}
-
-/* End DuggaSys Header */
-/***********************/
-
-/* DuggaSys Sectioneed*/
-.course-menu--settings {
-	float: left;
-}
-
-.course-menu--options {
-	float: right;
-}
-
-/* select element */
-.course-dropdown {
-	height: 30px;
-}
-/* End DuggaSys Sectioneed*/
-/**************************/
+echo json_encode($array);
+?>
