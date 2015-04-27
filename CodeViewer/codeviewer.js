@@ -1688,7 +1688,8 @@ function getLocalStorageProperties(templateId){
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {	
-	var returnString = " ";							
+	var returnString = " ";
+	
 	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
 	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
 	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<font style="font-style:italic;">$1</font>');
@@ -1701,6 +1702,8 @@ function parseMarkdown(inString)
 	inString = inString.replace(/^\#{3} (.*)=*/gm, '<h3>$1</h3>');
 	inString = inString.replace(/^\#{2} (.*)=*/gm, '<h2>$1</h2>');
 	inString = inString.replace(/^\#{1} (.*)=*/gm, '<h1>$1</h1>');
+	inString = inString.replace(/~{3}((?:\r|\n|.)+)\~{3}/gm, '<pre><code>$1</code></pre>');
+	
 	returnString = inString;
 
 	return returnString;
