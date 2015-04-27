@@ -102,7 +102,8 @@ function saveDuggaResult(citstr)
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
-		document.getElementById('kvittotext').value = "\n\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.";
+		document.getElementById('receipt').value = hexstr;
+		document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 		showReceiptPopup();
 }
 
@@ -453,6 +454,20 @@ function hideReceiptPopup()
 		$("#receiptBox").css("display","none");
 		$("#overlay").css("display","none");
 }
+
+
+//----------------------------------------------------------------------------------
+// A function that asks for users email so the dugga-receipt can be sent to the user.
+//----------------------------------------------------------------------------------
+function sendReceiptEmail(){
+	var receipt = document.getElementById('receipt').value;
+	var email = prompt("Please enter your email");
+	if (email != null){
+		window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
+	}
+}
+
+
 function showDuggaInfoPopup()
 {
 
