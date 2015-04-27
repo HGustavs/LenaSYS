@@ -233,10 +233,6 @@ CREATE TABLE wordlist(
 	CONSTRAINT pk_wordlist PRIMARY KEY(wordlistid),
 	CONSTRAINT pk_wordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-	
-INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
 
 /**
  * Delete and update all foreign keys before deleting a wordlist 
