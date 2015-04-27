@@ -55,13 +55,14 @@
 	
 	//queries student
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
+	$reg_course_student = "SELECT course_req.coursecode as coursecode, course_req.reg_coursecode, user_course.uid FROM course_req,user_course WHERE course_req.cid=user_course.cid and user_course.uid='".$userid."';";
 	//$progressbarQuery = "SELECT SUM(user_course.result) AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
 		//				WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
 	$progressbarQuery = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username = '".$userid."') AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
 						WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
 	//$coursesQuery = "SELECT course.coursename, user_course.result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
 	//FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
-	$coursesQuery = "SELECT course.coursename, (SELECT SUM(hp) FROM studentresultCourse
+	$coursesQuery = "SELECT course.coursename, course.coursecode, (SELECT SUM(hp) FROM studentresultCourse
 	WHERE username='".$userid."' AND studentresultCourse.cid=course.cid) AS result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage, user_course.period ,user_course.term 
 	FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator ORDER BY user_course.period ASC";
 	//------------------------------------------------------------------------------------------------
@@ -193,6 +194,26 @@
 					);
 				}
 			}
+
+			// requierments for hover effects.
+			$reqCourses = array();
+			
+			$query = $pdo->prepare($reg_course_student);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading data from user ". $error[2]; 
+			} else {
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+					array_push(
+						$reqCourses,
+						array(
+							'coursecode' => $row['coursecode'],
+							'reg_coursecode' => $row['reg_coursecode']
+							)
+					);
+				}
+			}
 			
 			$year = array();
 			
@@ -217,7 +238,8 @@
 							'course_responsible' => $row['coordinator'],
 							'course_link' => $row['courseHttpPage'],
 							'term' => $row['term'],
-							'period' => $row['period']
+							'period' => $row['period'],
+							'coursecode' => $row['coursecode']
 							)
 					);
 				}
@@ -235,6 +257,7 @@
 				'class' 	=> $class,
 				'progress' 	=> $progress,
 				'year' 		=> $year,
+				'reqCourses'=> $reqCourses,
 				'debug' 	=> $debug
 			);
 			
