@@ -2,6 +2,10 @@
 // AJAX-call to dugga.js 
 AJAXService("TOOLBAR", {}, "UMVTEACHER");
 
+//---------------------------------------------------------------
+//	renderTeacherView(data) - renders given html code for the given
+//	data that was returned.
+//---------------------------------------------------------------
 function renderTeacherView(data) {
 	var type = data['type'];
 	
@@ -19,6 +23,10 @@ function renderTeacherView(data) {
 	}
 }
 
+//---------------------------------------------------------------
+//	createToolbar(classes) - creates the the toolbar with the
+//	given classes that the teacher is responsible for.
+//---------------------------------------------------------------
 function createToolbar(classes) {
 
 	console.log("Trying to create toolbar...");
@@ -32,6 +40,10 @@ function createToolbar(classes) {
 	
 }
 
+//---------------------------------------------------------------
+//	renderToolbar(classes) - renders the toolbar with the given
+//	classnames, sorts under the given coursecode
+//---------------------------------------------------------------
 function renderToolbar(classes) {
 	
 	var htmlStr = "";
@@ -45,7 +57,7 @@ function renderToolbar(classes) {
 	
 	for(var i = 0; i < classes.length; i++) {
 		current_class = classes[i];
-		if(currentClassCode != current_class['classcode']) {
+		if(currentClassCode != current_class['classcode']) {	//Check if course has a new course code
 			currentClassCode = current_class['classcode'];
 			// Close current open lists
 			htmlStr += "</ul>" + "</li>";
@@ -62,11 +74,19 @@ function renderToolbar(classes) {
     menulist.innerHTML = htmlStr;
 }
 
+//---------------------------------------------------------------
+//	getTheDefaultProgram(classes) - returns the first class in the
+//	the array that represents the default choice
+//---------------------------------------------------------------
 function getTheDefaultProgram(classes) 
 {
 	return classes[0]['class'];
 }
 
+//---------------------------------------------------------------
+//	updateView(classname) - calls the ajaxservice that renders
+//	the view for the given class
+//---------------------------------------------------------------
 function updateView(classname) {
 	console.log("Clicked classname: " + classname);
 	/* AJAX call to request students of 'classname' */
@@ -102,22 +122,7 @@ function renderView(data)
 		
 		htmlStr += "<div class='studentInfo'>";
 		
-		if(i % 2 == 0) {
-			htmlStr += "<div class='student_even'>";
-		}else {
-			htmlStr += "<div class='student_odd'>";
-		}
-		
-		//Student name
-		htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
-		//Student ssn
-		htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
-		//Username
-		htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
-		//E-mail
-		htmlStr += "<div class='student_email'><p>" + student['email'] + "</p></div>";
-		
-		htmlStr += "</div>";
+		htmlStr += getStudentInfo(student, i);
 		
 		htmlStr += getCourseResults(student['results']);
 		
@@ -135,8 +140,39 @@ function renderView(data)
 	
 }
 
+function getStudentInfo(student, number) 
+{
+	var htmlStr = "";
+
+	if(number % 2 == 0) {
+		htmlStr += "<div class='student_even'>";
+	}else {
+		htmlStr += "<div class='student_odd'>";
+	}
+		
+	//Student name
+	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
+	//Student ssn
+	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
+	//Username
+	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
+	//E-mail
+	htmlStr += "<div class='student_email'><p>" + student['email'] + "</p></div>";
+		
+	htmlStr += "</div>";
+	
+	return htmlStr;
+}
+
+//---------------------------------------------------------------
+//	getCourseResults(results) - creates the html representation
+//	of the course results for a student and returns it
+//---------------------------------------------------------------
+
 function getCourseResults(results)
 {
+	var colorGreen = "#50a750";
+	var colorYellow = "#FFE273";
 	var htmlStr = "";
 		
 	htmlStr += "<div class='students_results'>";
@@ -145,8 +181,15 @@ function getCourseResults(results)
 	
 		/* Check that result is not null and set to 0 if so */
 		var course_result = results[i]['result'] == null ? 0 : results[i]['result'];
+		var course_hp	  = results[i]['hp'];
+		var procent		  = course_result/course_hp * 100;
+		var color		  = procent < 100 ? colorYellow : colorGreen;
 		
-		htmlStr += "<div class='progress_course'>" + parseInt(course_result) + "</div>"
+		htmlStr += "<div class='progress_course_total'>";
+		htmlStr += "<div class='progress_course' style='width:" + procent + "%; background-color: " + color + ";'>";
+		htmlStr += "<p>" + course_result + "/" + course_hp + "</p>";
+		htmlStr += "</div>";
+		htmlStr += "</div>";
 		
 	}
 		
