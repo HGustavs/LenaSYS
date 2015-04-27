@@ -194,7 +194,6 @@
 		display:inline;
 		float:left;
 	}
-
 .studentInfo{
 	width: 100%; 
 	font-size:0.7em;
@@ -210,7 +209,6 @@
 	background-color:#fff;
 	color:#614875;
 }
-
 .student_name{
 	width: 30%; 
 	margin-right:8px;
@@ -222,6 +220,7 @@
 	margin-right:8px;
 }
 
+/* Smal progressbars in teacherview */
 .students_results{
 	display:inline;
 	float:left;
@@ -241,8 +240,18 @@
 .progress_course{
 	height:1.5em;
 }
+.progress_course p{
+	visibility:hidden;
+	margin-left:2px;
+	margin-top:3px;
+	font-size:0.8em;
+	position:absolute;
+}
+.progress_course_total:hover p{
+	visibility:visible;
+	cursor:default;
+}
 
-		
 /* Change pages */
 .changePages{
 	width:190px;
