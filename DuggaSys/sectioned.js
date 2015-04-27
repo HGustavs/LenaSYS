@@ -529,15 +529,12 @@ function returnedSection(data)
 
 function showHighscore(did, lid)
 {
-	console.log(lid);
 	AJAXService("GET", {did:did, lid:lid}, "DUGGAHIGHSCORE");
 }
 
 function returnedHighscore(data){
-	console.log("In returnedHighscore");
 
 	var str = "";
-	console.log("Length of highscore list: " + data['highscores'].length);
 
 	if (data['highscores'].length > 0) {
 		for(i=0;i<data['highscores'].length;i++){

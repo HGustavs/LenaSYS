@@ -223,7 +223,7 @@ function AJAXService(opt,apara,kind)
 				if(apara[key] == "") {
 					alert("Your input contained nothing in " + key);
 				}				
-				//para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
 		// Informs the user that his input contained nothing.
