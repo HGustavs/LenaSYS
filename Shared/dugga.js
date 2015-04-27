@@ -333,15 +333,15 @@ function AJAXService(opt,apara,kind)
 	}
 }
 
-//Will handel enter key pressed when loginbox is showing
+//Will handle enter key pressed when loginbox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
-		processLogin(getCookie("loginvar"));
+		processLogin();
 	}
 }
 
 
-function processLogin(kind) {
+function processLogin() {
 
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
@@ -372,15 +372,7 @@ function processLogin(kind) {
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
-					if(kind=="COURSE") AJAXService("GET",{},"COURSE")
-					else if(kind=="ACCESS") AJAXService("GET",{cid:querystring['cid']},"ACCESS")
-					else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
-					else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
-					else if(kind=="FILE") AJAXService("GET",{cid:querystring['cid']},"FILE")
-					else if(kind=="SECTION") AJAXService("get",{},"SECTION")
-					else if(kind=="LINK"||kind=="PDUGGA"||kind=="CODV"){
-							location.reload(); 		
-					}				
+					location.reload();				
 				}else{
 					alert("Failed to log in.");
 					if(typeof result.reason != "undefined") {
@@ -391,7 +383,7 @@ function processLogin(kind) {
 					$("input#username").css("background-color", "#ff7c6a");
 					$("input#password").css("background-color", "#ff7c6a");
 				}
-					location.reload();
+					
 			},
 			error:function() {
 				console.log("error");
