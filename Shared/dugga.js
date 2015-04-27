@@ -195,45 +195,52 @@ function AJAXService(opt,apara,kind)
 	var para="";
 	for (var key in apara) {
 		var old = apara[key];
-		// Handles the array of important words. IMPORTANT!
-		if (typeof(apara[key]) != "undefined" && apara[key] != "") {
-			if (apara[key].constructor === Array) {
+		// Skips any undefined values
+		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
+			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
+			if (apara[key].constructor === Array && key != "addedRows" && key != "removedRows") {
 				var array = [];
 				for (var i = 0; i < apara[key].length; i++) {
 					array.push(encodeURIComponent(htmlEntities(apara[key][i])));
 				}
 				para+="&"+key+"="+array;
 			}
-			else {
-				// Run the input parameter through the following regular expression
-				// The result is a string that only allows white-listed characters.
-				if (apara[key] != null) {
-					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@\. \, \- \s]*/gi);
-			
-					// Concat the generated regex result to a string again.
-					apara[key] = s.join("");
-			
-					// Informs the user if his input contained illegal characters
-					// that they were removed after parsing.
-					if(old != apara[key]) {
-						alert("Illegal characters removed in " + key);
+			// Handles all the individual elements in an array and adds the array as such: &key=[val1,val2,val3][val1,val2,val3]
+			else if (key == "addedRows" || key == "removedRows") {
+				para+="&"+key+"=";
+				var array = [];
+				for (var i = 0; i < apara[key].length; i++) {
+					var string = "["; 
+					var row = [];
+					for (var j = 0; j < apara[key][i].length; j++) {
+						row.push(apara[key][i][j]);
 					}
+					string += row + "]";
+					array.push(string);
+				}
+				para += array;
+			}
+			else {
+				var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@\. \, \- \s]*/gi);
+		
+				// Concat the generated regex result to a string again.
+				apara[key] = s.join("");
+		
+				// Informs the user if his input contained illegal characters
+				// that they were removed after parsing.
+				if(old != apara[key]) {
+					alert("Illegal characters removed in " + key);
 				}
 				// Informs the user that his input contained nothing.
 				if(apara[key] == "") {
 					alert("Your input contained nothing in " + key);
-		}			
-				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+				}	
+				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));		
 			}
 		}
-		// Informs the user that his input contained nothing.
-		if(apara[key] == "") {
-			alert("Your input contained nothing in " + key);
-		}			
-		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
-		console.log("Para: " + para);
 	}
-				
+	
+	console.log("Para: " + para);			
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
@@ -306,6 +313,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returned
 			});
+	}else if(kind=="BOXCONTENT"){
+		$.ajax({
+			url: "editorService.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returned
+		});
 	}else if(kind=="UMVSTUDENT") {
 			$.ajax({
 				url: "usermanagementviewservice.php",

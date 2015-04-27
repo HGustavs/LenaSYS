@@ -149,6 +149,51 @@
 						$query->execute();
 					}
 				}
+			}else if(strcmp('EDITCONTENT',$opt)===0) {
+				$exampleid = $_POST['exampleid'];
+				$boxid = $_POST['boxid'];
+				$boxtitle = $_POST['boxtitle'];
+				$boxcontent = $_POST['boxcontent'];
+				$wordlist = $_POST['wordlist'];
+				$filename = $_POST['filename'];
+				$addedRows = $_POST['addedRows'];
+				$removedRows = $_POST['removedRows'];
+
+				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");	
+				$query->bindParam(':boxtitle', $boxtitle);
+				$query->bindParam(':boxcontent', $boxcontent);
+				$query->bindParam(':wordlist', $wordlist);
+				$query->bindParam(':filename', $filename);
+				$query->bindParam(':boxid', $boxid);
+				$query->bindParam(':exampleid', $exampleid);
+				$query->execute();
+
+				if (isset($_POST['addedRows'])) {
+					preg_match_all("/\[(.*?)\]/", $addedRows, $matches, PREG_PATTERN_ORDER);
+					foreach ($matches[1] as $match) { 
+						$row = explode(",", $match);
+						$query = $pdo->prepare("INSERT INTO improw(boxid,exampleid,istart,iend,uid) VALUES (:boxid,:exampleid,:istart,:iend,:uid);");
+						$query->bindValue(':boxid', $boxid);
+						$query->bindValue(':exampleid', $exampleid);
+						$query->bindValue(':istart', $row[1]);
+						$query->bindValue(':iend', $row[2]);
+						$query->bindValue(':uid', $_SESSION['uid']);
+						$query->execute();
+					}
+				}
+
+				if (isset($_POST['removedRows'])) {
+					preg_match_all("/\[(.*?)\]/", $removedRows, $matches, PREG_PATTERN_ORDER);
+					foreach ($matches[1] as $match) { 
+						$row = explode(",", $match);
+						$query = $pdo->prepare("DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exampleid=:exampleid;");
+						$query->bindValue(':boxid', $boxid);
+						$query->bindValue(':exampleid', $exampleid);
+						$query->bindValue(':istart', $row[1]);
+						$query->bindValue(':iend', $row[2]);
+						$query->execute();
+					}
+				}
 			}
 		}
 		//------------------------------------------------------------------------------------------------
@@ -344,7 +389,7 @@
 				$content="No file found!";
 			}
 		}
-		array_push($box,array($row['boxid'],$boxcontent,$content,$row['wordlistid'],$row['boxtitle']));
+		array_push($box,array($row['boxid'],$boxcontent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
 	}						
 	$array = array(
 		'before' => $backward_examples,
