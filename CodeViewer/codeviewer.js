@@ -378,7 +378,7 @@ function editImpRows(editType) {
 	var rowTo = $("#improwto").val();
 	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
 
-	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true) {
+	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo) {
 
 		var exists = false;
 		$('#improws option').each(function() {
