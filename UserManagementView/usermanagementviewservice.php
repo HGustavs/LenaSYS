@@ -16,18 +16,18 @@
 
 	
 	$opt = getOP('opt');
-	$pnr = getOP('pnr');
-	$studyprogram = getOP('username');
 	$classname = getOP('classname');
+	$retrievedData =  null;
 
-	
+	/* Failer handling for incorrect userid */
 	if(isset($_SESSION['uid'])){
 			$userid=$_SESSION['uid'];
 	}else{
-			$userid="UNK";	
+			$userid="UNK";
+			$debug="Invalid userid";
+			$retrievedData = array('debug' => $debug);
+			echo json_encode($retrievedData);
 	} 
-	
-
 	
 	if(isSuperUser($userid)){
 			$isTeacher=true;
@@ -42,37 +42,33 @@
 	// Queries
 	//------------------------------------------------------------------------------------------------
 	
-	//queries teachers
+	//###################################### Teacher queries #########################################
 	
 	$classDropMenu = "SELECT class.class,class.classcode FROM class,user WHERE user.uid = '".$userid."' AND class.responsible = user.uid order by class.classcode;";
-	$studentInformation = "SELECT user.uid, CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = '".$classname."';";
+	$studentInformation = "SELECT user.uid, CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = '".$classname."' ORDER BY user.lastname ASC;";
 	
 	$studentResults = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username= :uid 
-							AND studentresultCourse.cid=course.cid) AS result FROM user_course, course, programcourse 
+							AND studentresultCourse.cid=course.cid) AS result, course.hp FROM user_course, course, programcourse 
 							WHERE user_course.uid = :uid AND programcourse.class =  '".$classname."'
 							AND programcourse.cid = course.cid AND user_course.cid = course.cid
 							ORDER BY user_course.period ASC;";
 	
-	//queries student
+	//###################################### Student queries ##########################################
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
-	//$progressbarQuery = "SELECT SUM(user_course.result) AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
-		//				WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
 	$progressbarQuery = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username = '".$userid."') AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
 						WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
-	//$coursesQuery = "SELECT course.coursename, user_course.result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage 
-	//FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator";
+						
 	$coursesQuery = "SELECT course.coursename, (SELECT SUM(hp) FROM studentresultCourse
 	WHERE username='".$userid."' AND studentresultCourse.cid=course.cid) AS result, course.hp, CONCAT(user.firstname,' ',user.lastname) AS coordinator, course.courseHttpPage, user_course.period ,user_course.term 
 	FROM user_course, course, user WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.uid=course.creator ORDER BY user_course.period ASC";
-	//------------------------------------------------------------------------------------------------
-	// Retrieve information
-	//------------------------------------------------------------------------------------------------
 	
-	$retrievedData =  null;
+	//------------------------------------------------------------------------------------------------
+	// Retrieve Teacher information
+	//------------------------------------------------------------------------------------------------
 	
 	if($isTeacher) {
-		//retrieve teacher data
-
+	
+		// Get data for the tool bar
 		if(strcmp($opt,'TOOLBAR') === 0){
 			
 			//retrive data for dropdownmenu 
@@ -101,8 +97,9 @@
 				);
 			}
 		}
+		
+		//Get userdata for the given class (view data)
 		else if(strcmp($opt, 'VIEW') === 0) {
-			//retive data for studentlist
 			$studentlist = array();
 			$query = $pdo->prepare($studentInformation);
 
@@ -113,7 +110,8 @@
 			} else {
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 				
-					/* Nestled query to get results for the given student */ 
+					/* -------------------------------------------------------- */
+					/* -- Nestled query to get results for the given student -- */ 
 					$course_results = array();
 					$sql_query = $pdo->prepare($studentResults);
 					$sql_query->bindParam(':uid', $row['uid']);
@@ -127,12 +125,14 @@
 							array_push(
 								$course_results,
 								array(
-									'result' => $course_row['result']
+									'result' => $course_row['result'],
+									'hp'	 => $course_row['hp']
 								)
 							);
 						}
 			
 					}
+					/* ------------------------------------------------------- */
 				
 					array_push(
 						$studentlist,
@@ -155,10 +155,12 @@
 			}
 		}
 	}
+	
+	//------------------------------------------------------------------------------------------------
+	// Retrieve Student information
+	//------------------------------------------------------------------------------------------------
+	
 	else {
-			//retrieve student data
-			
-			// data for title
 			$fullname = "";
 			$class = "";
 			
@@ -228,8 +230,6 @@
 				'courses' => $courses
 			);
 			
-			
-			
 			$retrievedData 	= array(
 				'fullname' 	=> $fullname,
 				'class' 	=> $class,
@@ -240,6 +240,7 @@
 			
 	}
 	
+	//Pass the data
 	echo json_encode($retrievedData);
 	
 ?>
