@@ -71,20 +71,20 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4)
 
 /*  codeexamples*/
 
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 2","",1,2013);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Callback 1","Culf.html",1,2013);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 2","Dulf.html",1,2013,1);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 3","",2,2013,1);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 4","Fulf.html",2,2013,1);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 1","Gulf.html",2,2013,1);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 2","Hulf.html",2,2013);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 3","Iulf.html",1,2013,5);
-INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"Example1","HTML","html1.html",2,2013,1,2,1);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,13,11);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,"Popup example","Javascript","popup.html",2,2013,1,14,13,14);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,exampleid) values (1,'Example1',"Events 1","",1,2013,'2','1',1);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,exampleid) values (1,'Example2',"Events 1","",1,2013,'3','1',2);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,exampleid) values (1,'Example3',"Events 2","",1,2013,'4','2',3);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,exampleid) values (1,'Example4',"Callback 1","Culf.html",1,2013,'5','3',4);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,'Example5',"Callback 2","Dulf.html",1,2013,1,'6','4',5);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,'Example6',"Callback 3","",2,2013,1,'7','5',6);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,'Example7',"Callback 4","Fulf.html",2,2013,1,'8','6',7);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,'Example8',"Design 1","Gulf.html",2,2013,1,'9','7',8);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,exampleid) values (1,'Example9',"Design 2","Hulf.html",2,2013,'10','8',9);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,'Example10',"Design 3","Iulf.html",1,2013,5,'11','9',10);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,exampleid) values (1,'Example11',"Design 4","Julf.html",1,2013,'12','10',11);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,'Example12',"HTML","html1.html",2,2013,1,2,1,12);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,'Example13',"HTML","html2.html",2,2013,1,13,11,13);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,'Example14',"Javascript","popup.html",2,2013,1,14,13,14);
  
 /* codeexample importantwordlists */
  
@@ -166,50 +166,6 @@ select uid as userid, sum(hp) as totalHP from umvdb.partresult where uid = $vari
 
 /* CODEVIEWR*/
 
-
-UPDATE codeexample
-SET sectionname='Example1' , afterid='2' , beforeid='1'
-WHERE exampleid='1';
-
-UPDATE codeexample
-SET sectionname='Example2' , afterid='3' , beforeid='1'
-WHERE exampleid='2';
-
-UPDATE codeexample
-SET sectionname='Example3' , afterid='4' , beforeid='2'
-WHERE exampleid='3';
-
-UPDATE codeexample
-SET sectionname='Example4' , afterid='5' , beforeid='3'
-WHERE exampleid='4';
-
-UPDATE codeexample
-SET sectionname='Example5' , afterid='6' , beforeid='4'
-WHERE exampleid='5';
-
-UPDATE codeexample
-SET sectionname='Example6' , afterid='7' , beforeid='5'
-WHERE exampleid='6';
-
-UPDATE codeexample
-SET sectionname='Example7' , afterid='8' , beforeid='6'
-WHERE exampleid='7';
-
-UPDATE codeexample
-SET sectionname='Example8' , afterid='9' , beforeid='7'
-WHERE exampleid='8';
-
-UPDATE codeexample
-SET sectionname='Example9' , afterid='10' , beforeid='8'
-WHERE exampleid='9';
-
-UPDATE codeexample
-SET sectionname='Example10' , afterid='11', beforeid='9'
-WHERE exampleid='10';
-
-UPDATE codeexample
-SET sectionname='Example11' , beforeid='10' , afterid='12'
-WHERE exampleid='11';
 
 
 UPDATE codeexample
