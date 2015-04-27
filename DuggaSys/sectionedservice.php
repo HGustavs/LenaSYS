@@ -126,7 +126,7 @@ if(checklogin()){
 				$debug="Error updating entries".$error[2];
 			}
 		}else if(strcmp($opt,"CHGVERS")===0){
-			$query = $pdo->prepare("UPDATE COURSE SET activeversion=:vers WHERE cid=:cid");
+			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':vers', $versid);		
