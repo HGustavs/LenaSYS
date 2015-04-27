@@ -485,6 +485,35 @@ font-size: 14px;
  *                       		  Pop-up BOX        				   *
  * --------------================################================-------------- */
 
+#playlink {
+    width: 216px;
+}
+
+#editContent td {
+	padding: 5px 5px 0px 5px;
+}
+	
+#editContent select  {
+	padding: 5px;
+	float: none;
+	width: 100%;
+	height: 30px;
+}
+
+#editContent input[type="number"] {
+	height: 20px;
+	border-color: rgb(169, 169, 169);
+}
+
+#editContent input[type="text"] {
+	height: 20px;
+	border-color: rgb(169, 169, 169);
+	width: calc(100% - 10px);
+}
+
+#editContent input.submit-button {
+	margin:0;
+}
 
 #impwords {
 	max-width: 186px;
