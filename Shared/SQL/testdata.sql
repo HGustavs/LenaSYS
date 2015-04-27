@@ -59,7 +59,7 @@ insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8111","HT 2013");
 insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","7844","HT 2014");
 
-/* testdata for codeviewer? */
+/* testdata for codeviewer */
 
 INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
@@ -69,12 +69,11 @@ INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3)
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
 
-/*  aasdsad*/
+/*  codeexamples*/
 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 1","",1,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Events 2","",1,2013);
-
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Callback 1","Culf.html",1,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 2","Dulf.html",1,2013,1);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Callback 3","",2,2013,1);
@@ -83,11 +82,17 @@ INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values 
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 2","Hulf.html",2,2013);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion,templateid) values (1,"Design 3","Iulf.html",1,2013,5);
 INSERT INTO codeexample(cid,examplename,runlink,uid,cversion) values (1,"Design 4","Julf.html",1,2013);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"Example1","HTML","html1.html",2,2013,1,13,11);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,14,12);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"Example1","HTML","html1.html",2,2013,1,2,1);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid) values (1,"HTMLex2","HTML","html2.html",2,2013,1,13,11);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templateid,afterid,beforeid,exampleid) values (1,"Popup example","Javascript","popup.html",2,2013,1,14,13,14);
  
-/* whos this?*/
+/* codeexample importantwordlists */
+ 
+INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
+ 
+/* codeexample important words*/
 
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
@@ -102,7 +107,7 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
-/* codeviewer?*/
+/* codeviewer boxes */
 
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (1,1,"Title","Code","[viktig=1]","js1.js");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment) VALUES (2,1,"Title","Document","[viktig=1]","<b>Events 1</b>This is the first section of the description<b>More</b>This is more text");
@@ -114,7 +119,7 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename,wordlistid
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,segment,wordlistid) VALUES (2,14,"Description","Document","[viktig=1]","Popup example for javascript..",1);
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (4,10,"Title","Code","[viktig=1]","js0 copy 2.js");
 
-
+/* codeviewer */
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,3,5,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,8,11,1);
 
