@@ -1,111 +1,119 @@
+p{font-family: Calibri,sans-serif;font-size:0.95em; color: #000; line-height: 1.3em; }
+h1{font-family: Calibri,sans-serif;font-size:1.8em; color: #000;}
+h2{font-family: Calibri,sans-serif;font-size:1.5em; color: #000;}
+h3{font-family: Calibri,sans-serif;font-size:1.3em; color: #000;}
+h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
+
+strong {font-weight: bold;}
+
 .outertd{
-		font-family:calibri;
-		padding:4px;
-		font-size:20px;
+	font-family:calibri;
+	padding:4px;
+	font-size:20px;
 }
 
 .outer{
-		border-collapse: collapse;
+	border-collapse: collapse;
 }
 
 .noll { 
-		text-align:center;
-		vertical-align:middle;
-		background:#523;
-		color:#fff;
-		box-shadow:2px 2px 3px #646;
-		padding:4px;
-		border-radius:6px;
-		cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	background:#523;
+	color:#fff;
+	box-shadow:2px 2px 3px #646;
+	padding:4px;
+	border-radius:6px;
+	cursor:pointer;
 }
 
 .ett { 
-		text-align:center;
-		vertical-align:middle;
-		background:#c9a;
-		color:#000;
-		box-shadow:2px 2px 3px #646;
-		padding:4px;
-		border-radius:6px;
-		cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	background:#c9a;
+	color:#000;
+	box-shadow:2px 2px 3px #646;
+	padding:4px;
+	border-radius:6px;
+	cursor:pointer;
 }
 
 .hexo { 
-		text-align:center;
-		vertical-align:middle;
-		background:#c9a;
-		color:#000;
-		box-shadow:2px 2px 3px #646;
-		padding:4px;
-		border-radius:6px;
-		cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	background:#c9a;
+	color:#000;
+	box-shadow:2px 2px 3px #646;
+	padding:4px;
+	border-radius:6px;
+	cursor:pointer;
 }
 
 .hexbutt { 
-		text-align:center;
-		vertical-align:middle;
-		background:#b89;
-		color:#000;
-		box-shadow:2px 2px 3px #646;
-		padding:4px;
-		border-radius:6px;
-		cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	background:#b89;
+	color:#000;
+	box-shadow:2px 2px 3px #646;
+	padding:4px;
+	border-radius:6px;
+	cursor:pointer;
 }
 
 .popover {
-		margin: 2px;
-		position: relative;
-		box-sizing: border-box;
-		width: 400px;
-		padding: 8px;
-		background-color:#523;
-		/* border: 2px outset #000; */
-		background: linear-gradient(to bottom, #fff 10px, #fde 90%); 
-		border-radius:8px;
+	margin: 2px;
+	position: relative;
+	box-sizing: border-box;
+	width: 400px;
+	padding: 8px;
+	background-color:#523;
+	/* border: 2px outset #000; */
+	background: linear-gradient(to bottom, #fff 10px, #fde 90%); 
+	border-radius:8px;
 }
 
 .popover, .popover:before {
-		box-shadow: 2px 2px 2px rgba(0,0,0,0.5);  
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);  
 }
 
 .popover:before,
 .popover:after {
-		content: '';
-		display: block;
-		position: absolute;
-		width: 15px;
-		height: 15px;
-		border: 2px outset #000;
-		-webkit-transform: rotate(45deg);
-		-moz-transform: rotate(45deg);
-		-ms-transform: rotate(45deg);
-		-o-transform: rotate(45deg);
-		transform: rotate(45deg);
+	content: '';
+	display: block;
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	border: 2px outset #000;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 .popover:before {
-		z-index: -1;
+	z-index: -1;
 }
 
 
 .popover.arrow-top:before,
 .popover.arrow-top:after {
-		bottom: 100%;
-		left: 10px;
-		margin-bottom: -7px; 
-		border-bottom: 0;
-		border-right: 0;
-		background: #fff;
+	bottom: 100%;
+	left: 10px;
+	margin-bottom: -7px; 
+	border-bottom: 0;
+	border-right: 0;
+	background: #fff;
 }
 
 .popover.arrow-topr:before,
 .popover.arrow-topr:after {
-		bottom: 100%;
-		right: 10px;
-		margin-bottom: -7px; 
-		border-bottom: 0;
-		border-right: 0;
-		background: #fff;
+	bottom: 100%;
+	right: 10px;
+	margin-bottom: -7px; 
+	border-bottom: 0;
+	border-right: 0;
+	background: #fff;
 }
 	
 input.submit-button {
@@ -125,4 +133,61 @@ input.submit-button:hover {
 	background-color:#7B5A96; 
 	border-radius:4px;
 }
+
+
+/* --------------================################================-------------- *
+ *                        Instructions for dugga 1 and 2                        *
+ * --------------================################================-------------- */
+
+.instructions-container{
+	min-width:350px;
+	max-width:600px;
+	margin-bottom:25px;
+}
+
+.instructions-content {
+	width:100%;
+	padding:10px;
+	border:1px solid #ccc;	
+	box-sizing: border-box;
+  	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.instructions-button {
+	background-color: #ccc;
+	width:100%;
+	display:inline-block;
+	position:relative;
+	padding:3px 0;
+	text-align:center;
+	box-sizing: border-box;
+  	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.instructions-button:after {
+	content: '';
+	display: block;  
+	position: absolute;
+	left:46%;
+	top:100%;
+	width:0%;
+	height:0%;
+	border-top: 10px solid #ccc;
+	border-right: 15px solid transparent;
+	border-bottom: 0px solid transparent;
+	border-left: 15px solid transparent;
+}
+
+.instructions-button:hover:after {
+	border-top: 10px solid #939393;
+	border-right: 15px solid transparent;
+	border-bottom: 0px solid transparent;
+	border-left: 15px solid transparent;
+}
+
+.instructions-button:hover {
+	background-color:#939393;	
+}
+
 						
