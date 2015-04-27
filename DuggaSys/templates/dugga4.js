@@ -7,10 +7,10 @@
 Example seed
 ---------------------
 	 Example seed - simple
-	 Param: {"variant":"40 13 7 20 0"}
+	 Param: {*variant*:*40 13 7 20 0*}
 	 Answer: Variant
 	 Example seed - complex
-	 Param: {"variant":"26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0"}
+	 Param: {*variant*:*26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0*}
 	 Answer: Variant 
 -------------==============######## Documentation End ###########==============-------------
 */
@@ -53,7 +53,7 @@ function returnedDugga(data)
 			showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
 
-			retdata = jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+			retdata = jQuery.parseJSON(data['param'].replace(/\*/g, '"'));
 			variant = retdata["variant"];
 
 			if (data["answer"] != null) {
@@ -202,7 +202,7 @@ function showFacit(param, uanswer, danswer)
 	if (uanswer != null) {
 		var studentPreviousAnswer = "";
 
-		retdata = jQuery.parseJSON(param.replace(/&quot;/g, '"'));
+		retdata = jQuery.parseJSON(param.replace(/\*/g, '"'));
 		variant = retdata["variant"];
 
 		if (uanswer != null) {
