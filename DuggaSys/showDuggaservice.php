@@ -48,8 +48,9 @@ if(checklogin()){
 					makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
 					//Seperate timeSpent from $answer
-					$timeSpent = explode("-", $answer)[1];
-					$answer = explode("-", $answer)[0];
+					$temp = explode("-", $answer);
+					$timeSpent = $temp[1];
+					$answer = $temp[0];
 					
 					// Update Dugga!
 					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
