@@ -847,7 +847,25 @@ a {
     	font-weight: normal;
 	font-style: normal;
 }
-
+.desc pre {
+    font-family: "Courier 10 Pitch", Courier, monospace;
+    font-size: 95%;
+    line-height: 140%;
+    white-space: pre;
+    white-space: pre-wrap;
+}  
+.descbox code {
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 95%;
+    line-height: 140%;
+    white-space: pre;
+    white-space: pre-wrap;
+    background: #ffffff;	
+    display: inline-block;
+    padding: 0em 1em 1em 1em;
+	margin: 0.5em;
+    border: 1px solid #bebab0;	
+}
 
 
 
