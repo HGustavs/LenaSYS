@@ -10,7 +10,7 @@ function natcmp(a, b) {
     var x = [], y = [];
 
     a.replace(/(\d+)|(\D+)/g, function($0, $1, $2) { x.push([$1 || 0, $2]) })
-    b.replace(/(\d+)|(\D+)/g, function($0, $1, $2) { y.push([$1 || 0, $2]) })
+    b.replace(/(\d+)|(\D+)/g, function($0, $1, $2) { y.push([$1 || 0, $2]) })	
 
     while(x.length && y.length) {
         var xx = x.shift();
@@ -80,11 +80,11 @@ function renderStudentView(data)
 	var courses = year['courses'];
 	var countYear = data['class'].match(/\d+/)[0];
 	var yearh3 = [];
-	console.log(data['class'].match(/\d+/)[0]);
+	console.log(data);
 		
 	for(var i=0; i< progress[0]['totalHP']/60 ;i++){
 		yearh3[i]=parseInt(countYear)+i+2000;
-		console.log(yearh3[i]);
+		
 	}
 		
 	htmlStr += '<div class="year_header"><h3>'+ yearh3[0] + '</h3></div>';
@@ -94,7 +94,6 @@ function renderStudentView(data)
 	htmlStr3 += '<div class="year_header"><h3>'+ yearh3[2] +'</h3></div>';
 	htmlStr3 += '<div class="courses_body">';
 	
-		console.log(data);
 	for(var i = 0; i < courses.length; i++) {
 		var termcheck=courses[i]['term'];
 		var termchecksplit=termcheck.split('-');
@@ -144,6 +143,7 @@ function createHTMLForCourse(data)
 	var coursename 	= data['coursename'];
 	var result		= data['result'];
 	var hp			= data['hp'];
+	var idCourse	= data['coursecode'];
 	// Check that the link is not null and if null present a '#' instead
 	var course_link = (data['course_link'] == null ?  '#' : data['course_link']);
 	var course_responsible = data['course_responsible'];
@@ -154,7 +154,7 @@ function createHTMLForCourse(data)
 	
 	var courseHtmlStr = "";
 	
-	courseHtmlStr += '<div class="course">';
+	courseHtmlStr += '<div id="' + idCourse +  '" class="course reg_fade">';
 	courseHtmlStr += '<div class="course_wrapper">';
 	
 	
