@@ -135,25 +135,38 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 				<h3>Edit Content</h3>
 				<div onclick='closeEditContent();'>x</div>
 			</div>	
-			<table width="100%">
+			<table width="100%" style="table-layout:fixed;">
 				<tr>
-					<td>Title: <input class='form-control textinput' type='text' id='usrnme' value='User Name' /></td>		
-					<td>Kind: <select style='float:right;' id='activeversion'><option value='1'>Document</option><option value='2'>Code</option><option value='3'>HTML</option></select></td>
+					<td>Title:</td>
+					<td>Kind:</td>
 				</tr>
 				<tr>
-					<td>Wordlist: <select style="float:none;" id='wordlist'></select></td>
-					<td>File: <select style="float:none;" id='filename'></select></td>
+					<td><input class='form-control textinput' type='text' id='boxtitle' value='Title' /></td>		
+					<td><select id='boxcontent'><option value='DOCUMENT'>Document</option><option value='CODE'>Code</option><option value='HTML'>HTML</option></select></td>
 				</tr>
 				<tr>
-					<td colspan="2">Important Rows:&nbsp;<select style="float:none;" id='improws'></select></td>
+					<td>Wordlist:</td>
+					<td>File:</td>
+				</tr>
+				<tr>
+					<td><select id='wordlist'></select></td>
+					<td><select id='filename'></select></td>
+				</tr>
+				<tr>
+					<td>Important Rows:</td>
+				</tr>
+				<tr>
+					<td colspan="1"><select id='improws'></select></td>
+					<td colspan="1"><input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
 				</tr>		
 				<tr>
-					<td colspan="2"><input style="width:80px;" class='form-control textinput' type='text' id='improwfrom' value='&lt;N&gt;' />&nbsp;-&nbsp;<input style="width:80px;" class='form-control textinput' type='text' id='improwto' value='&lt;N&gt;' /><input style="width:32px;" class='submit-button' type='button' value='+' onclick='updateUser();' /><input style="width:32px;" class='submit-button' type='button' value='-' onclick='updateUser();' /></td>
+					<td colspan="1"><input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
+					<td colspan="1"><input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpRows("+");' /></td>
 				</tr>		
 			</table>
 			<table width="100%">
 				<tr>
-					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateUser();' /></td>
+					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateContent();' /></td>
 				</tr>
 			</table>
 		</div>
