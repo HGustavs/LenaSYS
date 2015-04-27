@@ -42,8 +42,7 @@ if($opt=="LOGIN"){
 
 }else{
 		// Parts of Logout copied from http://stackoverflow.com/a/3948312 and slightly modified, licensed under cc by-sa
-		// Redirect to start page and unset all of the session variables.
-		header("Location: ../DuggaSys/courseed.php");
+		// unset all of the session variables.
 		$_SESSION = array();
 		
 		// If it's desired to kill the session, also delete the session cookie.
