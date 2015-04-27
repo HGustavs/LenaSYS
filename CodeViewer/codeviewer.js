@@ -1347,7 +1347,7 @@ function updateTemplate()
 		var cvers = querystring['cvers'];
 		var templateno = $("#templateno").val();
 		
-		AJAXService("EDITEXAMPLE", {
+		AJAXService("SETTEMPL", {
 			courseid : courseid,	
 			exampleid : exampleid,
 			cvers : cvers,
