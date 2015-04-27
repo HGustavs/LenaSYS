@@ -146,7 +146,7 @@ function getCourseResults(results)
 		/* Check that result is not null and set to 0 if so */
 		var course_result = results[i]['result'] == null ? 0 : results[i]['result'];
 		
-		htmlStr += "<div class='progress_course'>" + course_result + "</div>"
+		htmlStr += "<div class='progress_course'>" + parseInt(course_result) + "</div>"
 		
 	}
 		
