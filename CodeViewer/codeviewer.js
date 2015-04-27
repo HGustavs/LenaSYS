@@ -320,25 +320,114 @@ function updateExample()
 // displayEditContent: Displays the dialog box for editing a content pane
 //----------------------------------------------------------------------------------
 
+// Keeps track of the currently open box. Used when saving the box content.
+var openBoxID;
+
 function displayEditContent(boxid)
 {	
-	$("#title").val(retdata['examplename']);
+	
+	var box = retdata['box'][boxid-1]; // The information stored about the box
+	openBoxID = boxid;
+
+	$("#boxtitle").val(box[4]);
+	$("#boxcontent").val(box[1]);  
 
 	var dirs=retdata['directory'];
 	var str="";
 	for(var i=0;i<dirs.length;i++){
-		str+="<option>"+dirs[i]+"</option>";
+		str+="<option value='" + dirs[i] + "'>"+dirs[i]+"</option>";
 	}
 	$("#filename").html(str);
-	
+	$("#filename").val(box[5]);
+
 	var wordl=retdata['wordlists'];
 	var str="";
 	for(var i=0;i<wordl.length;i++){
 		str+="<option value='"+wordl[i][0]+"'>"+wordl[i][1]+"</option>";
 	}
 	$("#wordlist").html(str);
+	$("#wordlist").val(box[3]);
+
+	var str="";
+	for (var i = 0; i < retdata['improws'].length; i++) {
+		if (retdata['improws'][i][0] == boxid) {
+			str+="<option>" + retdata['improws'][i][1] + " - " + retdata['improws'][i][2] + "</option>";
+		}
+	};
+	$("#improws").html(str);
 		
 	$("#editContent").css("display","block");
+}
+
+//----------------------------------------------------------------------------------
+// isNumber: 		returns true: the variable only contains numbers
+//					returns false: the variable is not purely numeric
+//----------------------------------------------------------------------------------
+
+function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+
+//----------------------------------------------------------------------------------
+// editImpRows: Adds and removes important rows
+//----------------------------------------------------------------------------------
+
+var addedRows = new Array();
+var removedRows = new Array();
+
+function editImpRows(editType) {
+	var rowFrom = $("#improwfrom").val();
+	var rowTo = $("#improwto").val();
+	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
+
+	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true) {
+
+		var exists = false;
+		$('#improws option').each(function() {
+    		if (this.value == row) {exists = true;}
+		});
+		if (exists == false) {
+			$("#improws").append('<option>' + row + '</option>');
+			$("#improwfrom").val("");
+			$("#improwto").val("");
+			addedRows.push([openBoxID,rowFrom,rowTo]);
+		}
+	}
+	else if (editType == "-") {
+		FromTo = $('option:selected', "#improws").text().split(" - ");
+		$('option:selected', "#improws").remove();
+    	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
+	}
+}
+
+//----------------------------------------------------------------------------------
+// updateContent: Updates the box
+//----------------------------------------------------------------------------------
+
+function updateContent() {
+	var box = retdata['box'][openBoxID-1];
+
+	// Doesn't work for null values yet. box[3]
+	if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
+		var boxtitle = $("#boxtitle").val();
+		var boxcontent = $("#boxcontent option:selected").val();
+		var wordlist = $("#wordlist").val();
+		var filename = $("#filename option:selected").val();
+		var exampleid = querystring['exampleid'];
+		var boxid = box[0];
+		
+		AJAXService("EDITCONTENT", {
+			exampleid : exampleid,
+			boxid : boxid,			
+			boxtitle : boxtitle,
+			boxcontent : boxcontent,
+			wordlist : wordlist,
+			filename : filename,
+			addedRows : addedRows,
+			removedRows : removedRows
+		}, "BOXCONTENT");
+
+		addedRows = [];
+		removedRows = [];
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -1347,7 +1436,7 @@ function updateTemplate()
 		var cvers = querystring['cvers'];
 		var templateno = $("#templateno").val();
 		
-		AJAXService("SETTEMPL", {
+		AJAXService("EDITEXAMPLE", {
 			courseid : courseid,	
 			exampleid : exampleid,
 			cvers : cvers,
