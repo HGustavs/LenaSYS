@@ -149,10 +149,9 @@ pdoConnect();
 			<h3>Highscore</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
-		<table width='100%'>
+		<table id ='HighscoreTable' width='100%'>
 			<tr>
-				<td>Kebab</td>
-				<td>Sås</td>
+				
 			</tr>
 		</table>
 	</div>
