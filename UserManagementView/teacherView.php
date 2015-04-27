@@ -85,17 +85,6 @@
 				</div>
 		
 			</div> 
-		
-			<!-- Individual course progressbars -->
-			<div class="indivCourseProgressbarsTV">
-		
-				<div id="radio_buttonCourse">
-				</div>
-			
-				<div id="small_progressbar">
-				</div>
-			
-			</div> 
             
             <!-- Change pages -->
             <div class="changePages">

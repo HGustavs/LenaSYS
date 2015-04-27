@@ -100,6 +100,8 @@ function renderView(data)
 	
 		var student = studentlist[i];
 		
+		htmlStr += "<div class='studentInfo'>";
+		
 		if(i % 2 == 0) {
 			htmlStr += "<div class='student_even'>";
 		}else {
@@ -117,6 +119,10 @@ function renderView(data)
 		
 		htmlStr += "</div>";
 		
+		htmlStr += getCourseResults(student['results']);
+		
+		htmlStr += "</div>";
+		
 	}
 	
 	if(studentlist.length == 0) {
@@ -126,5 +132,26 @@ function renderView(data)
 	var studentView = document.getElementById("studentslist");
 	studentView.innerHTML = htmlStr;
 	
+	
+}
+
+function getCourseResults(results)
+{
+	var htmlStr = "";
+		
+	htmlStr += "<div class='students_results'>";
+	
+	for(var i = 0; i < results.length; i++) {
+	
+		/* Check that result is not null and set to 0 if so */
+		var course_result = results[i]['result'] == null ? 0 : results[i]['result'];
+		
+		htmlStr += "<div class='progress_course'>" + parseInt(course_result) + "</div>"
+		
+	}
+		
+	htmlStr += "</div>";
+	
+	return htmlStr;
 	
 }
