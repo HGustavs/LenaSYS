@@ -132,7 +132,6 @@ function renderView(data)
 	var studentView = document.getElementById("studentslist");
 	studentView.innerHTML = htmlStr;
 	
-	renderCourseResults(studentlist);
 	
 }
 
