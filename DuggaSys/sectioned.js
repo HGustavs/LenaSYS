@@ -451,7 +451,7 @@ function returnedSection(data)
 							}
 						}
 						
-						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/Cogwheel.svg' onclick='showHighscore()'/>";
+						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/Cogwheel.svg' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
 						
 						if(grady==-1){
 								// Nothing submitted nor marked (White)
@@ -527,8 +527,32 @@ function returnedSection(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
 
-function showHighscore()
+function showHighscore(did, lid)
 {
-	$("#HighscoreBox").css("display", "block");
+	console.log(lid);
+	AJAXService("GET", {did:did, lid:lid}, "DUGGAHIGHSCORE");
 }
 
+function returnedHighscore(data){
+	console.log("In returnedHighscore");
+
+	var str = "";
+	console.log("Length of highscore list: " + data['highscores'].length);
+
+	if (data['highscores'].length > 0) {
+		for(i=0;i<data['highscores'].length;i++){
+			var item=data['highscores'][i];
+			str += "<tr>"; 
+			str += "<td>";
+			str += item['username'];
+			str += "</td>"
+			str += "<td>";
+			str += "Time spent: ";
+			str += item['timeSpent']
+			str += "</td>";
+			str += "</tr>";
+		}
+	}
+	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
+	$("#HighscoreBox").css("display", "block");
+}

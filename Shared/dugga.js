@@ -222,8 +222,8 @@ function AJAXService(opt,apara,kind)
 				// Informs the user that his input contained nothing.
 				if(apara[key] == "") {
 					alert("Your input contained nothing in " + key);
-		}			
-				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+				}				
+				//para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
 		// Informs the user that his input contained nothing.
@@ -249,6 +249,14 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: returnedDugga
+			});
+		}else if(kind=="DUGGAHIGHSCORE"){
+			$.ajax({
+				url: "highscoreservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedHighscore
 			});
 		}else if(kind=="FILE"){
 			$.ajax({
