@@ -245,3 +245,12 @@ function resetBitstring(){
 		document.getElementById("B"+i).className="bit noll";		
 	}
 }
+
+//----------------------------------------------------------------------------------
+// show/hide dugga instructions
+//----------------------------------------------------------------------------------
+function toggleInstructions()
+{
+    $(".instructions-content").slideToggle("slow");
+}
+
