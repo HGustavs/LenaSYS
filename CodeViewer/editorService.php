@@ -61,7 +61,7 @@
 			$writeaccess="w";
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Add word to wordlist
-				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cversion;");		
 				$query->bindParam(':templateno', $templateno);
 				$query->bindParam(':exampleid', $exampleid);
 				$query->bindParam(':cid', $cid);
