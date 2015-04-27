@@ -1,225 +1,379 @@
-<!-----------------------------------------------------------------------------------------
-                         Code Viewer V3 (CV3) 
--------------------------------------------------------------------------------------------
+<?php 
+	//---------------------------------------------------------------------------------------------------------------
+	// editorService - Saves and Reads content for Code Editor
+	//---------------------------------------------------------------------------------------------------------------
 
-Version History
-
- 1.0		 2010       - Code viewer version 1 - mostly manual with many issues
- 2.0     2012       - Improved code viewer code by A. Grahn and J. Grimling
- 3.0     2013-08-10 - Refactoring of existing code viewer (v1 and v2) base code together with working css demonstrator for independent scrolling windows
- 3.01    2013-08-15 - Cockford parser implemented for c-like languages
- 3.02    2013-08-16 - Improved back-end using database definition, ideas and code from WEBUG/DVP project 2013
-                         Forward/Backward
-                         Code
-                         File list from upload directory 
-                         Name of Example                        
- 3.03    2013-08-18 - First iteration of back-end 
- 3.05    2013-08-21 - Added new features to back-end
- 												Separate tables for Important words and descriptions
- 												Fields for play link and chosen wordlist
- 												Updates of database from back-end 
- 												Navigation using arrows (dropdown still missing)
- 3.06	2013-08-21 - Create new example and save description 
- 3.07   2013-08-22 - Section Editor
- 3.08   2013-08-25 - Section Editor Back-End finished and more minor bug fixes
-                      Linked to external CSS anf JS
- 3.09   2013-08-30 - Login / Logout
-                    - Viewer Functionality if not logged in
- 3.10	2013-10-10 - 
- 4.00   2014-05-30 - Release version from WEBUG/DVP project 2013
- 5.00   2014-10-30 - Redacted version of 4.00
- 5.10	2015-02-27 - Fixes for duggasys form
- 
-Bugs:
-------------------
-	
-Missing Features:
-------------------
-Changing language -- All Strings in File that can be translated to fit other languages.... including language change.
-    
-Fixed Bugs:
-------------------
-
-Testing Link:
-
-EditorV50.php?exampleid=1&courseid=1&cvers=2013
- 
----->
-<?php
+	// Check if example exists and then do operation
+	date_default_timezone_set("Europe/Stockholm");
+	// Include basic application services!
+	include_once ("../../coursesyspw.php");	
+	include_once ("../Shared/sessions.php");
+	include_once ("../Shared/basic.php");
+	include_once ("../Shared/courses.php");
+	include_once ("../Shared/database.php");
+	// Connect to database and start session
+	pdoConnect();
 	session_start();
-	include_once("../../coursesyspw.php");
-	include_once("../Shared/basic.php");
-	include_once("../Shared/sessions.php");
-	include_once("../Shared/database.php");
-	include_once("../Shared/courses.php");
-	pdoConnect();		
-?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Result Editor</title>
-		<title>Code Viewer and Editor Version 3</title>
-		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
-		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
-		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
-		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-		<script type="text/javascript" src="../Shared/dugga.js"></script>
-		<script type="text/javascript" src="codeviewer.js"></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
-		<body onload="setup();">
-		<!-- content START -->
-		<div id="content">
-		<?php 
-			$exampleid = getOPG('exampleid');
-			$courseID = getOPG('courseid');
-			//get the visibility
-			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
-			$query->bindParam(':exampleid', $exampleid);
-			$query-> execute();
-			$row = $query -> fetch(PDO::FETCH_ASSOC);
-			$public=$row['public'];	
-			$noup="CODEVIEWER"; //Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
-			$loginvar="CODV";
-			$codeviewer = true;
-			$codeviewerkind=false;
-			if($courseID!="UNK"&&$exampleid!="UNK"){
-				if(courseexists($courseID)){
-					// If course exists - check login credentials
-					// Logged in and with credentials - show full editor otherwise show viewer version 
-					if(checklogin()){
-						$ha=getAccessType($_SESSION['uid'], $courseID);
-						if($ha == "w"){
-							// Allowed to edit this course
-							$codeviewerkind=true;
-						}else{
-							// No editing
-							$codeviewerkind=false;
-						}
-						include '../Shared/navheader.php';
-					}else{
-						if($public == 0){
-							$codeviewerkind=false;									
-							include '../Shared/navheader.php';
-							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have to be logged in to view this code example.</div>";;
-						}else{
-							$codeviewerkind=false;
-							include '../Shared/navheader.php';
-						}
+	$exampleId=getOP('exampleid');
+	$boxId=getOP('boxid');
+	$opt=getOP('opt');
+	$courseId=getOP('courseid');
+	$courseVersion=getOP('cvers');
+	$templateNumber=getOP('templateno');
+	$beforeId=getOP('beforeid');
+	$afterId=getOP('afterid');
+	$sectionName=getOP('sectionname');
+	$exampleName=getOP('examplename');
+	$playlink=getOP('playlink');
+	$debug="NONE!";	
+	
+	if(isset($_SESSION['uid'])){
+		$userid=$_SESSION['uid'];
+	}else{
+		$userid="1";		
+	} 
+	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
+		$writeaccess="w";
+	}else{
+		$writeaccess="s";	
+	}
+	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
+	// Make sure there is an example
+	$cnt=0;
+	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
+    $query->bindParam(':exampleid', $exampleId);
+	$query -> execute();	
+	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$cnt++;
+		$exampleId=$row['exampleid'];
+		$exampleName=$row['examplename'];
+		$courseID=$row['cid'];
+		$cversion=$row['cversion'];
+		$public=$row['public'];
+		$sectionName=$row['sectionname'];
+		$playlink=$row['runlink'];
+	}	
+	if($cnt>0){
+		//------------------------------------------------------------------------------------------------
+		// Perform Update Action
+		//------------------------------------------------------------------------------------------------
+
+		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
+			$writeaccess="w";
+			if(strcmp('SETTEMPL',$opt)===0){
+				// Add word to wordlist
+				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+				$query->bindParam(':templateno', $templateNumber);
+				$query->bindParam(':exampleid', $exampleId);
+				$query->bindParam(':cid', $courseId);
+				$query->bindParam(':cversion', $courseVersion);
+				$query -> execute();
+				
+				// We have two boxes. Create two boxes to start with
+
+				if($templateNumber==1||$templateNumber==2) $boxCount=2;
+				if($templateNumber==3||$templateNumber==4) $boxCount=3;
+				if($templateNumber==5||$templateNumber==6) $boxCount=4;
+				
+				// Create appropriate number of boxes
+				for($i=1;$i<$boxCount+1;$i++){
+					$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");		
+					$query->bindParam(':i', $i);
+					$query->bindParam(':exampleid', $exampleId);
+					$query->bindValue(':boxtitle', 'Title');
+					$query->bindValue(':boxcontent', 'Code');
+					$query->bindValue(':settings', '[viktig=1]');
+					$query->bindValue(':filename', 'js1.js');
+					$query -> execute();
+				}
+			}else if(strcmp('EDITEXAMPLE',$opt)===0){
+
+				if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
+				if(isset($_POST['examplename'])) {$exampleName = $_POST['examplename'];}
+				if(isset($_POST['sectionname'])) {$sectionName = $_POST['sectionname'];}
+				if(isset($_POST['beforeid'])) {$beforeId = $_POST['beforeid'];}
+				if(isset($_POST['afterid'])) {$afterId = $_POST['afterid'];}
+
+				// Change content of example
+				$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+				$query->bindParam(':playlink', $playlink);
+				$query->bindParam(':examplename', $exampleName);
+				$query->bindParam(':sectionname', $sectionName);
+				$query->bindParam(':exampleid', $exampleId);
+				$query->bindParam(':cid', $courseId);
+				$query->bindParam(':cvers', $courseVersion);
+				$query -> execute();
+				
+				// Is there a better way to set beforeid and afterid?
+				if($beforeId!="UNK"){
+						$query = $pdo->prepare( "UPDATE codeexample SET beforeid = :beforeid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+						$query->bindParam(':beforeid', $beforeId);
+						$query->bindParam(':exampleid', $exampleId);
+						$query->bindParam(':cid', $courseId);
+						$query->bindParam(':cvers', $courseVersion);
+						$query -> execute();
+				}
+				if($afterId!="UNK"){
+						
+						$query = $pdo->prepare( "UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+						$query->bindParam(':afterid', $afterId);
+						$query->bindParam(':exampleid', $exampleId);
+						$query->bindParam(':cid', $courseId);
+						$query->bindParam(':cvers', $courseVersion);
+						$query -> execute();
+				}
+				
+
+				if(isset($_POST['addedWords'])) {
+					// Converts to array
+					$addedWords = explode(",",$_POST['addedWords']);
+					
+					// Loops through the array of added words and inserts them one by one.
+					foreach ($addedWords as $word) {
+						$query = $pdo->prepare("INSERT INTO impwordlist(exampleid,word,uid) VALUES (:exampleid,:word,:uid);");		
+						$query->bindParam(':exampleid', $exampleId);
+						$query->bindParam(':word', $word);
+						$query->bindParam(':uid', $_SESSION['uid']);
+						$query->execute();
 					}
-				}else{
-					$codeviewer = false;
-					include '../Shared/navheader.php';
-					// Print Warning If course does not exist!
-					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course does not seem to exist!</div>";
+				}
+				
+				if(isset($_POST['removedWords'])) {
+					// Converts to array
+					$removedWords = explode(",",$_POST['removedWords']);
+
+					// Loops through the array of removed words and deletes them one by one.
+					foreach ($removedWords as $word) {
+						$query = $pdo->prepare("DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;");		
+						$query->bindParam(':exampleid', $exampleId);
+						$query->bindParam(':word', $word);
+						$query->execute();
+					}
+				}
+			}
+		}
+		//------------------------------------------------------------------------------------------------
+		// Retrieve Information			
+		//------------------------------------------------------------------------------------------------	
+			
+		// Read exampleid, examplename and runlink etc from codeexample and template
+		$exampleName="";
+		$templateid="";
+		$stylesheet="";
+		$numbox="";
+		$exampleno=0;
+		$playlink="";
+		$public="";
+		$entryname="";
+		
+		$query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid as templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid and cid = :courseID;");		
+		$query->bindParam(':exampleid', $exampleId);
+		$query->bindParam(':courseID', $courseID);
+		$query->execute();
+
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			$exampleName=$row['examplename'];
+			$exampleno=$row['exampleid'];
+			$public=$row['public'];
+			$playlink=$row['runlink'];
+			$sectionName=$row['sectionname'];
+			$templateid=$row['templateid'];
+			$stylesheet=$row['stylesheet'];
+			$numbox=$row['numbox'];					
+		}
+		
+		// Read ids and names from before/after list
+		$beforeafter = array();
+		$beforeafters = array();
+		
+		$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample order by exampleid");
+		$query->execute();
+	
+		//SAVE THIS FOR FUTURE USE!!!!!
+		//$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample where cid = :cid and cversion = :cvers order by sectionname, examplename;");
+		//$query->bindParam(':cid', $cid);
+		//$query->bindParam(':cvers', $courseVersion);
+		//$query->execute();
+					
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
+				array_push($beforeafters,array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']));
+		}  
+
+		// iteration to find after examples - We start with $exampleId and at most 5 are collected
+		$cnt=0;
+		$forward_examples = array();	
+		$currid=$exampleId;
+		do{
+			if(isset($beforeafter[$currid])){
+				$currid=$beforeafter[$currid][4];
+			}else{
+				$currid=null;
+			}					
+			if($currid!=null){
+				array_push($forward_examples,$beforeafter[$currid]);
+			}
+			$cnt++;
+		}while($currid!=null&&$cnt<5);
+
+		// iteration to find before examples - We start with $exampleId and at most 5 are collected 
+		$backward_examples = array();	
+		$currid=$exampleId;
+		$cnt=0;
+		do{
+			if(isset($beforeafter[$currid])){
+				$currid=$beforeafter[$currid][3];
+			}else{
+				$currid=null;
+			}					
+			if($currid!=null){
+				array_push($backward_examples,$beforeafter[$currid]);
+			}
+			$cnt++;
+		}while($currid!=null&&$cnt<5);
+
+		// Read important lines
+		$imp=array();
+		$query = $pdo->prepare("SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY istart;");
+		$query->bindParam(':exampleid', $exampleId);
+		$query->execute();
+						
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			array_push($imp,array($row['boxid'],$row['istart'],$row['iend']));
+		}  
+
+		// Get all words for each wordlist
+		$words = array();
+		$query = $pdo->prepare( "SELECT wordlistid,word,label FROM word ORDER BY wordlistid");
+		$query->execute();
+
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			array_push($words,array($row['wordlistid'],$row['word'],$row['label']));					
+		}
+		
+		// Get all wordlists
+		$wordlists=array();
+		$query =$pdo->prepare( "SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;");
+		$query->execute();
+
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			array_push($wordlists,array($row['wordlistid'],$row['wordlistname']));					
+		} 
+		
+	  // Read important wordlist
+		$impwordlist=array();
+		$query = $pdo->prepare( "SELECT word,label FROM impwordlist WHERE exampleid = :exampleid ORDER BY word;");
+		$query->bindParam(':exampleid', $exampleId);
+		$query->execute();
+				
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			array_push($impwordlist,$row['word']);					
+		}  
+		
+		// Read Directory - Codeexamples
+		$directory=array();
+		if(file_exists('./codeupload')){
+			$dir = opendir('./codeupload');
+			while (($file = readdir($dir)) !== false) {
+				if(endsWith($file,".js")){
+					array_push($directory,$file);		
+				}
+			}  
+		}
+
+		// Read Directory - Description
+		$descDirectory=array();
+		if(file_exists('./descupload')){
+			$descDir = opendir('./descupload');
+			while (($descFile = readdir($descDir)) !== false) {
+				if(endsWith($descFile,".txt")){
+					array_push($descDirectory,$descFile);		
+				}
+			}  
+		}
+
+
+		$images=array();
+		if(file_exists('./imgupload')){
+			// Read Directory - Images
+			$img_dir = opendir('./imgupload');
+			while (($img_file = readdir($img_dir)) !== false) {
+				if(endsWith($img_file,".png")){
+					array_push($images,$img_file);
+				}
+			}		
+		}
+	
+	// Collect information for each box
+	$box=array();   // get the primary keys for all types kind of boxes.
+	$query = $pdo->prepare( "SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
+	$query->bindParam(':exampleid', $exampleId);
+	$query->execute();
+
+	while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+		$boxcontent=strtoupper($row['boxcontent']);
+		$filename=$row['filename'];
+		$content="";					
+		if(strcmp("DOCUMENT",$boxcontent)===0){
+			if(file_exists('./descupload')){
+				$filename="./descupload/".$filename;
+				$handle = @fopen($filename, "r");
+				if ($handle) {
+					while (($buffer = fgets($handle, 1024)) !== false) {
+						$content=$content.$buffer;
+					}
+					if (!feof($handle)) {
+						$content.="Error: Unexpected end of file ".$descFilename."\n";			    
+					}
+					fclose($handle);
+				}
+			}
+		}else{
+			if(file_exists('./codeupload')){
+				$filename="./codeupload/".$filename;
+				$handle = @fopen($filename, "r");
+				if ($handle) {
+					while (($buffer = fgets($handle, 1024)) !== false) {
+						$content=$content.$buffer;
+					}
+					if (!feof($handle)) {
+						$content.="Error: Unexpected end of file ".$filename."\n";			    
+					}
+					fclose($handle);
 				}
 			}else{
-				$codeviewer = false;
-				include '../Shared/navheader.php';
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
+				$content="No file found!";
 			}
-			echo "</div>";
-			if($codeviewer) echo "<div id='div2'>If no content appears here... update your browser, enable javascript and try again.</div>";
-		?>						
-		<!--- Dropdowns START --->
-		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
-		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'>Forw</div><span id='forwdropc'>bii</span></span>
-		<!--- Dropdowns END --->
-		<!--- Example Content Cog Wheel Dialog START --->
-		<div id='editContent' class='loginBox' style='width:464px;display:none;'>
-			<div class='loginBoxheader'>
-				<h3>Edit Content</h3>
-				<div onclick='closeEditContent();'>x</div>
-			</div>	
-			<table width="100%">
-				<tr>
-					<td>Title: <input class='form-control textinput' type='text' id='usrnme' value='User Name' /></td>		
-					<td>Kind: <select style='float:right;' id='activeversion'><option value='1'>Document</option><option value='2'>Code</option><option value='3'>HTML</option></select></td>
-				</tr>
-				<tr>
-					<td>Wordlist: <select style="float:none;" id='wordlist'></select></td>
-					<td>File: <select style="float:none;" id='filename'></select></td>
-				</tr>
-				<tr>
-					<td colspan="2">Important Rows:&nbsp;<select style="float:none;" id='improws'></select></td>
-				</tr>		
-				<tr>
-					<td colspan="2"><input style="width:80px;" class='form-control textinput' type='text' id='improwfrom' value='&lt;N&gt;' />&nbsp;-&nbsp;<input style="width:80px;" class='form-control textinput' type='text' id='improwto' value='&lt;N&gt;' /><input style="width:32px;" class='submit-button' type='button' value='+' onclick='updateUser();' /><input style="width:32px;" class='submit-button' type='button' value='-' onclick='updateUser();' /></td>
-				</tr>		
-			</table>
-			<table width="100%">
-				<tr>
-					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateUser();' /></td>
-				</tr>
-			</table>
-		</div>
-		<!--- Example Content Cog Wheel Dialog END --->
-		<!--- Code Example Cog Wheel Dialog START --->
-		<div id='editExample' class='loginBox' style='width:464px;display:none;'>
-			<div class='loginBoxheader'>
-				<h3>Edit Example</h3>
-				<div onclick='closeEditExample();'>x</div>
-			</div>
-			<table width="100%">
-				<tr>
-					<td>Title: <input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
-					<td>Section Title: <input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
-				</tr>
-				<tr>
-					<td>Before: <select  id='before'></select></td>
-					<td>After: <select  id='after'></select></td>
-				</tr>
-				<tr>
-					<td>Play Link:</td>
-					<td>Important Words:</td>
-				</tr>
-				<tr>
-					<td colspan="1"><input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
-					<td colspan="1"><input class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' </td>
-					<input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /></td>			
-				</tr>
-				<tr>
-					<td colspan="2">&nbsp;<select style="float:none;" id='impwords'><input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' />
-					</select></td>
-				</tr>	
-			</table>
-			<table width="100%">
-				<tr>
-					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
-				</tr>
-			</table>
-		</div>
-		<!--- Code Example Cog Wheel Dialog END --->
-		<div id='chooseTemplate' class='loginBox' style='width:464px;display:none;'>
-			<div class='loginBoxheader'>
-				<h3>Edit Example</h3>
-				<div onclick='closeTemplateWindow();'>x</div>
-			</div>
-			<table width="100%">
-				<tr>
-					<td id="templat1" class="tmpl"><input id="templateno" type="hidden" value="0" />
-						<img class='templatethumbicon wiggle' onclick='changetemplate("1");' src='../Shared/icons/template1_butt.svg' />
-					</td>
-					<td id="templat2" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("2");' src='../Shared/icons/template2_butt.svg' /></td>
-					<td id="templat3" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("3");' src='../Shared/icons/template3_butt.svg' /></td>
-					<td id="templat4" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("4");' src='../Shared/icons/template4_butt.svg' /></td>
-					<td id="templat5" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("5");' src='../Shared/icons/template5_butt.svg' /></td>
-					<td id="templat6" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("6");' src='../Shared/icons/template6_butt.svg' /></td>
-				</tr>		
-			</table>
-			<table width="100%">
-				<tr>
-					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
-				</tr>
-			</table>
-		</div>		
-		<!--- Template Choosing Box --->
-		<?php
-			include '../Shared/loginbox.php';
-		?>		
-	</body>
-</html>
+		}
+		array_push($box,array($row['boxid'],$boxcontent,$content,$row['wordlistid'],$row['boxtitle']));
+	}						
+	$array = array(
+		'before' => $backward_examples,
+		'after' => $forward_examples,
+		'templateid' => $templateid,
+		'stylesheet' => $stylesheet,
+		'numbox' => $numbox,
+		'box' => $box,
+		'improws' => $imp,
+		'impwords' => $impwordlist,
+		'directory' => $directory,
+		'examplename'=> $exampleName,
+		'sectionname'=> $sectionName,
+		'playlink' => $playlink,
+		'exampleno' => $exampleno,
+		'words' => $words,
+		'wordlists' => $wordlists, 
+		'images' => $images,
+		'writeaccess' => $writeaccess,
+		'debug' => $debug,
+		'beforeafter' => $beforeafters, 
+		'public' => $public
+	);
+	echo json_encode($array);
+	}else{
+		$array = array(
+		 	'debug' => "ID does not exist" 
+		);		
+		echo json_encode($array);
+	}
+?>
