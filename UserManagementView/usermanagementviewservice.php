@@ -1,7 +1,7 @@
 <?php
 
 	//---------------------------------------------------------------------------------------------------------------
-	// UserMangagementService - Displays User Course Status or Study Program Status
+	// UserMangagementService - Displays student data or teacher data for a specified course
 	//---------------------------------------------------------------------------------------------------------------
 
 	date_default_timezone_set("Europe/Stockholm");
@@ -45,7 +45,13 @@
 	//queries teachers
 	
 	$classDropMenu = "SELECT class.class,class.classcode FROM class,user WHERE user.uid = '".$userid."' AND class.responsible = user.uid order by class.classcode;";
-	$studentInformation = "SELECT CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = '".$classname."';";
+	$studentInformation = "SELECT user.uid, CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = '".$classname."';";
+	
+	$studentResults = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username= :uid 
+							AND studentresultCourse.cid=course.cid) AS result FROM user_course, course, programcourse 
+							WHERE user_course.uid = :uid AND programcourse.class =  '".$classname."'
+							AND programcourse.cid = course.cid AND user_course.cid = course.cid
+							ORDER BY user_course.period ASC;";
 	
 	//queries student
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
@@ -106,13 +112,36 @@
 
 			} else {
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+				
+					/* Nestled query to get results for the given student */ 
+					$course_results = array();
+					$sql_query = $pdo->prepare($studentResults);
+					$sql_query->bindParam(':uid', $row['uid']);
+		
+					if(!$sql_query->execute()) {
+						$error=$sql_query->errorInfo();
+						$debug="Error reading data from user ". $error[2]; 
+					} else {
+			
+						foreach($sql_query->fetchAll(PDO::FETCH_ASSOC) as $course_row){
+							array_push(
+								$course_results,
+								array(
+									'result' => $course_row['result']
+								)
+							);
+						}
+			
+					}
+				
 					array_push(
 						$studentlist,
 						array(
 							'fullname' => $row['fullname'],
 							'username' => $row['username'],
 							'ssn'	   => $row['ssn'],
-							'email'	   => $row['email']
+							'email'	   => $row['email'],
+							'results'   => $course_results	//Add the results for the student
 						)
 					);
 				}
@@ -212,6 +241,5 @@
 	}
 	
 	echo json_encode($retrievedData);
-
 	
 ?>
