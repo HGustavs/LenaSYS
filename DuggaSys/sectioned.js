@@ -451,7 +451,7 @@ function returnedSection(data)
 							}
 						}
 						
-						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/Cogwheel.svg' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
+						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
 						
 						if(grady==-1){
 								// Nothing submitted nor marked (White)
