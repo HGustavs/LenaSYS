@@ -1952,8 +1952,7 @@ function Play()
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {	
-	var removeExtraTagsNumberedList = new RegExp('</ol>' + '\n' + '<ol>', 'g');
-	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
+	var returnString = " ";
 	
 	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
 	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
@@ -1967,10 +1966,9 @@ function parseMarkdown(inString)
 	inString = inString.replace(/^\#{3} (.*)=*/gm, '<h3>$1</h3>');
 	inString = inString.replace(/^\#{2} (.*)=*/gm, '<h2>$1</h2>');
 	inString = inString.replace(/^\#{1} (.*)=*/gm, '<h1>$1</h1>');
-	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
-	inString = inString.replace(removeExtraTagsNumberedList, '');
-	inString = inString.replace(/^\s*\-\s(.*)/gm, '<ul><li>$1</li></ul>');
-	inString = inString.replace(removeExtraTagsUnorderedList, '');
+	inString = inString.replace(/~{3}((?:\r|\n|.)+)\~{3}/gm, '<pre><code>$1</code></pre>');
 	
-	return inString;
+	returnString = inString;
+
+	return returnString;
 }
