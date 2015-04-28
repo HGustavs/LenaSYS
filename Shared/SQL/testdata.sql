@@ -3,42 +3,6 @@
 
 use imperius;
 
-
-/* users/students for UMV testing */
-/*
-insert into user(username, password,firstname,lastname,ssn,email,class) values('a13asrd','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','assad','rduk','111111-1112','a13asrd@his.se','WEBUG13');
-insert into user(username, password,firstname,lastname,ssn,email,class) values('a13durp','*0F1088E511EC11B8EF2BBDE830E08E9F959843C4','hurp','durp','111111-1113','a13durp@his.se','WEBUG13');
-*/
-/* Students for duggasys testing */
-/*
-INSERT INTO user (username, password, firstname, lastname, ssn, newpassword, creator, superuser) VALUES ('Student01', password("pasta"), 'Student', 'Student', '000000-0001', '0', '1', '0');
-INSERT INTO user (username, password, firstname, lastname, ssn, newpassword, creator, superuser) VALUES ('Student02', password("pasta"), 'Student', 'Student', '000000-0002', '0', '1', '0');
-INSERT INTO user (username, password, firstname, lastname, ssn, newpassword, creator, superuser) VALUES ('Student03', password("pasta"), 'Student', 'Student', '000000-0003', '0', '1', '0');
-*/
-/* courses for umv testing*/
-/*
-INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("IT1405","USEREXPERIENCE",NOW(),1,0,7.5,"https://scio.his.se/portal");
-INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("IT1431","IT-org",NOW(),1,0,7.5,"https://scio.his.se/portal");
-INSERT INTO course(coursecode,coursename,created,creator,visibility,hp,courseHttpPage) values ("DA4324","C++ grund prog",NOW(),1,0,7.5,"https://scio.his.se/portal");
-*/
-
-
-/* test data */
-/* a13asrd couirses */
-/*
-insert into user_course(uid,cid,result,access,period,term) values(4,1,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(4,3,0,'R',2,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(4,4,0,'R',3,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(4,5,0,'R',4,'VT-15');
-insert into user_course(uid,cid,result,access,period,term) values(4,2,0,'R',4,'HT-15');
-*/
-/* a13durp couirses */
-/*
-insert into user_course(uid,cid,result,access,period,term) values(5,1,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(5,3,0,'R',2,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(5,4,0,'R',3,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(5,5,0,'R',4,'VT-15');
-*/
 /*codeviewver test data */
 
 INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic HTML", "../CodeViewer/EditorV30.php?exampleid=1&courseid=1", 2, 2, 1, 1, 1);
@@ -127,39 +91,3 @@ INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,1,8,11,1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"event",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"elem",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (3,"pageY",2);
-
-/* UMV*/
-/*
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG13','elite',23432,'WEBUG',180,100,2);
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('TEST13','test',44444,'TEST',180,100,2);
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG14','sucks',23432,'WEBUG',180,100,2);
-INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG15','hard',23432,'WEBUG',180,100,2);
-
-INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',1);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',2);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',3);INSERT INTO programcourse(class,cid) VALUES ('WEBUG13',5);
-
-
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta2',1,1,'u-3-4-5');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',2,2,'u-3-4-5');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',1,2,'u-3-4-5');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',2,3,'u-g');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('projektuppgift',3,5,'u-3-4-5');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('hemtenta',3,2,'u-3-4-5');
-
-
-INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,4,'hemtenta2',4,1);
-INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (2,4,'hemtenta',3,2);
-INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,5,'hemtenta','u',2);
-INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (2,5,'projektuppgift','g',3);
-INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (3,4,'hemtenta',5,2);
-INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (3,4,'projektuppgift',5,5);
-INSERT INTO partresult(cid,uid,partname,grade,hp) VALUES (1,3,'hemtenta2',4,2);
-INSERT INTO partresult(cid,uid,partname,grade) VALUES (1,3,'hemtenta',3);
-
-*/
-/* hp per course for uid
-select username, cid, sum(hp) from studentresult where username = $varible group by cid;
-*/
-
-/*  For total result per uid  
-select uid as userid, sum(hp) as totalHP from umvdb.partresult where uid = $varible and (partresult.grade != 'u' or partresult.grade != 'U');
-*/
