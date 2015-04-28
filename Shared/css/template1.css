@@ -6,21 +6,17 @@
     top: 0px;
     left: 0px;
     bottom: 0px;
- 	width: -moz-calc(25.0%);
-	width: -webkit-calc(25.0%);
+    width: -moz-calc(25.0%);
+    width: -webkit-calc(25.0%);
 }
 
 
 #box2wrapper {
     position: absolute;
-    position: absolute;
-    border-left-style: solid;
-    border-left-width: 3px;
-    border-color: #5A5757;
     top: 0px;
     bottom: 0px;
- 	width: -moz-calc(75%);
-	width: -webkit-calc(75%);
+    width: -moz-calc(75%);
+    width: -webkit-calc(75%);
     right: 0px;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
