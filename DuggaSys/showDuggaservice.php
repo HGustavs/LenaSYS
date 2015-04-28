@@ -64,7 +64,8 @@ if(checklogin()){
 					if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 						$grade=$row['grade'];
 					}
-					if(($grade == 1) || ($grade == 2)){
+					if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
+						//if grade equal G, VG, 3, 4, 5, or 6
 					$debug="You have already been grade on this assignment";
 					}
 					else{
