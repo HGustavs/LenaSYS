@@ -1,9 +1,6 @@
 
 #box1wrapper{
     position: absolute;
-    border-bottom-style: solid;
-    border-bottom-width: 3px;
-    border-color: #5A5757;
     left: 0px;
     height: -moz-calc(35.0%);
     height: -webkit-calc(35.0%);
@@ -14,9 +11,6 @@
 
 #box2wrapper {
     position: absolute;
-    border-top-style: solid;
-    border-top-width: 3px;
-    border-color: #5A5757;
     top:auto !important;
     bottom: 0px;
     left: 0px;
