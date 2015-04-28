@@ -40,7 +40,7 @@ $hr=false;
 //------------------------------------------------------------------------------------------------
 
 if(checklogin()){
-	$query = $pdo->prepare("SELECT username, timeSpent FROM userAnswer, user, variant where user.uid = userAnswer.uid AND userAnswer.quiz = :did ORDER BY timeSpent ASC LIMIT 10;");
+	$query = $pdo->prepare("SELECT username, timeSpent FROM userAnswer, user, variant where user.uid = userAnswer.uid AND userAnswer.quiz = :did GROUP BY userAnswer.uid ORDER BY timeSpent ASC LIMIT 10;");
 	$query->bindParam(':did', $duggaid);
 	//$query->bindParam(':lid', $variant);
 
