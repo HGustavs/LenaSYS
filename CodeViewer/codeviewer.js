@@ -131,6 +131,7 @@ function returned(data)
 				var boxmenuheight= $("#"+contentid+"menu").height();
 			}
 			$("#"+contentid).css("margin-top", boxmenuheight-1);
+			boxcontent = tabLine(boxcontent);
 			rendercode(boxcontent,boxid,boxwordlist);
 		}else if(boxtype == "DOCUMENT"){
 				// Print out description in a document box
@@ -181,6 +182,29 @@ function returned(data)
 	//CALL resizeBoxes here!
 	resizeBoxes("#div2", retdata["templateid"]);
 }
+
+//---------------------------------------------------------------------------------
+// This functions convert tabs to "&#9;""
+// The indexOf() method returns the position of the first time of a specified value 
+// (in this example is the search word "\t" which stands for tab) in a string.
+// This method returns then -1 if the "search word" dosn't exist in the string. 
+// Text.slice truncates the text string were the tab is placed by useing tabindex 
+// as a index. And then adds "&#9;" to the text string. "&#9;" replace the tab 
+// utill "tokenize" functions is called then &#9; is being replaces by 4 spaces. 
+// So the loop will check the whole text the function assign "start" the value of 
+// tabindex so the loop can keep on looking for tabs in the same place where it left off
+//---------------------------------------------------------------------------------
+
+var tabLine = function(text) {
+    var start = 0;
+    var tabIndex;
+
+    while ((tabIndex = text.indexOf('\t', start)) != -1) {
+        text = text.slice(0, tabIndex) + "&#9; " + text.slice(tabIndex + 1);
+        start = tabIndex;
+    }
+    return text;
+};
 
 //----------------------------------------------------------------------------------
 // editImpWords: adds/removes important words to the #impword selectbox
@@ -928,6 +952,8 @@ function tokenize(instring,inprefix,insuffix)
 	instring = replaceAll("&lt;","<",instring);
 	instring = replaceAll("&gt;",">",instring);
 	instring = replaceAll("&amp;","&",instring);
+	// this will replace all "&#9;" in the text that the function tabLine adds were a tab (\t) is placed.
+	instring = replaceAll("&#9;","    ",instring); 
 
 	var from;                   	// index of the start of the token.
 	var i = 0;                  	// index of the current character.
