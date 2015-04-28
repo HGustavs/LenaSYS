@@ -267,6 +267,9 @@
 .descbox{
     padding-top: 4px;
     padding-left: 4px;
+    border-left-style: solid;
+    border-left-width: 3px;
+    border-color: #5A5757;
 }
 
 .box{
@@ -287,7 +290,6 @@
 /* BOXMENU STYLING START */
 .buttomenu2Style{
 	background-color: #5A5757;
-	padding-top: 2px;
 }
 
 .buttomenu2Style .wordlistselect{
@@ -324,7 +326,6 @@
 	color: white;
 	cursor:text;
     font-family: Arial, Sans-Serif;
-      font-size: 15px;
 }
 .boxtitle{
 	font-family: Arial, Sans-Serif !important;
@@ -332,5 +333,19 @@
 	color: white !important;
 	  font-size: 15px;
 }
+
+.editcontentbtn {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    text-align: center;
 }
+
+.boxtitlewrap {
+    font-size: 15px;
+    height: 32px;
+    vertical-align: middle;
+    padding: 0px 5px;
+}
+
 /* BOXMENU STYLING STOP */
