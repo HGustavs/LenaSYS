@@ -206,6 +206,54 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 				</tr>
 			</table>
 		</div>
+
+****************
+
+			<div id='AddExample' class='loginBox' style='width:464px;display:none;'>
+			<div class='loginBoxheader'>
+				<h3>Edit fdsfds</h3>
+				<div onclick='closeAddExample();'>x</div>
+			</div>
+			<table width="100%">
+				<tr>
+					<td>Title: <input class='form-control textinput' type='text' id='title' value='&lt;Tssitle&gt;' /></td>		
+					<td>Section Title: <input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
+				</tr>
+				<tr>
+					<td>Before: <select  id='before'></select></td>
+					<td>After: <select  id='after'></select></td>
+				</tr>
+				<tr>
+					<td>Play Link:</td>
+					<td>Important Words:</td>
+				</tr>
+				<tr>
+					<td colspan="1"><input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
+					<td colspan="1"><input class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' </td>
+					<input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /></td>			
+				</tr>
+				<tr>
+					<td colspan="2">&nbsp;<select style="float:none;" id='impwords'><input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' />
+					</select></td>
+				</tr>	
+			</table>
+			<table width="100%">
+				<tr>
+					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
+				</tr>
+			</table>
+		</div>
+
+
+
+
+
+***************
+
+
+
+
+
 		<!--- Code Example Cog Wheel Dialog END --->
 		<div id='chooseTemplate' class='loginBox' style='width:464px;display:none;'>
 			<div class='loginBoxheader'>
