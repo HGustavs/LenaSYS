@@ -56,6 +56,7 @@ INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,templat
 INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("Plain Text",1);
  
 /* codeexample important words*/
 
