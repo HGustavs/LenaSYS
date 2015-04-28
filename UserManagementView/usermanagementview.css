@@ -285,3 +285,13 @@ footer p {
    clear: both;
 }
 
+#no_page h2 {
+	text-transform:lowercase !important;
+	font-size:1em;
+	font-style: italic;
+}
+
+#no_page h2:first-letter {
+	text-transform:uppercase !important;
+}
+
