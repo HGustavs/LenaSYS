@@ -56,6 +56,8 @@ INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values (
 CREATE TABLE course_req(
 		cid			INT UNSIGNED NOT NULL,
 		req_cid			INT UNSIGNED NOT NULL,
+		reg_coursecode 		varchar(50),
+		coursecode 		varchar(50),
 		PRIMARY KEY(cid, req_cid),
 		FOREIGN KEY(cid) REFERENCES course(cid),
 		FOREIGN KEY(req_cid) REFERENCES course(cid)
