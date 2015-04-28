@@ -143,6 +143,7 @@ input.submit-button:hover {
 	min-width:350px;
 	max-width:600px;
 	margin-bottom:25px;
+	margin-top:10px;
 }
 
 .instructions-content {
@@ -151,7 +152,7 @@ input.submit-button:hover {
 	border:1px solid #ccc;	
 	box-sizing: border-box;
   	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+  	-moz-box-sizing: border-box;
 }
 
 .instructions-button {
@@ -163,7 +164,7 @@ input.submit-button:hover {
 	text-align:center;
 	box-sizing: border-box;
   	-webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+  	-moz-box-sizing: border-box;
 }
 .instructions-button:after {
 	content: '';
