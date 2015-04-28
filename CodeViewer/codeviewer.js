@@ -148,8 +148,15 @@ function returned(data)
 				}
 				
 				/* Assign Content */
+				//Remove html tags since only markdown should be allowed		
+				desc = dehtmlify(desc, true, 0);
+				
 				//Call the markdown function to parse markdown symbols to html tags
 				desc = parseMarkdown(desc);
+				
+				//Change the '\n' line breaks to <br> tags
+				desc = addHtmlLineBreak(desc);
+								
 				$("#"+contentid).html(desc);
 
 				if($("#"+contentid+"menu").height() == null){
@@ -1968,29 +1975,45 @@ function Play()
 
 *********************************************************************************/
 //----------------------------------------------------------------------------------
-// parseMarkdown: Translates markdown symbols to html tags.
+// parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
+//				  function replace with regular expressions.
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {	
 	var removeExtraTagsNumberedList = new RegExp('</ol>' + '\n' + '<ol>', 'g');
 	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
 	
+	//Regular expressions for italics and bold formatting
 	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
 	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
 	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<font style="font-style:italic;">$1</font>');
 	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
 	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<font style="font-weight:bold;">$1</font>');	
 	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<font style="font-style:italic;">$1</font>');
+	
+	//Regular expressions for headings
 	inString = inString.replace(/^\#{6} (.*)=*/gm, '<h6>$1</h6>');
 	inString = inString.replace(/^\#{5} (.*)=*/gm, '<h5>$1</h5>');
 	inString = inString.replace(/^\#{4} (.*)=*/gm, '<h4>$1</h4>');
 	inString = inString.replace(/^\#{3} (.*)=*/gm, '<h3>$1</h3>');
 	inString = inString.replace(/^\#{2} (.*)=*/gm, '<h2>$1</h2>');
 	inString = inString.replace(/^\#{1} (.*)=*/gm, '<h1>$1</h1>');
+	
+	//Regular expressions for lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
 	inString = inString.replace(removeExtraTagsNumberedList, '');
 	inString = inString.replace(/^\s*\-\s(.*)/gm, '<ul><li>$1</li></ul>');
 	inString = inString.replace(removeExtraTagsUnorderedList, '');
 	
+	//Regular expression for line
+	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
+	
 	return inString;
+}
+//----------------------------------------------------------------------------------
+// addHtmlLineBreak: This function will replace all '\n' line breaks in a string
+//					 with <br> tags.
+//----------------------------------------------------------------------------------
+function addHtmlLineBreak(inString){
+	return inString.replace(/\n/g, '<br>'); 
 }
