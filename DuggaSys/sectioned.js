@@ -414,7 +414,7 @@ function returnedSection(data)
 						}else{
 							str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
-						k++;
+						kk++;
 					}
 
 					if(kk==1){
