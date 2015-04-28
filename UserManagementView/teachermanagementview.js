@@ -145,9 +145,9 @@ function getStudentInfo(student, number)
 	var htmlStr = "";
 
 	if(number % 2 == 0) {
-		htmlStr += "<div class='student_even'>";
+		htmlStr += "<div class='student'>";
 	}else {
-		htmlStr += "<div class='student_odd'>";
+		htmlStr += "<div class='student odd'>";
 	}
 		
 	//Student name

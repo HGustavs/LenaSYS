@@ -135,12 +135,7 @@
 		color:#614875;
 	}
 	
-#totalInfo{
-	margin:25px;
-}
-
 #radio_buttonToolbar{
-	margin:0 auto;
 	height:30px;
 	font-size:0.7em;
 	color:#767676;
@@ -184,29 +179,36 @@
 
 	
 /* View over the students how are going that program/course */
-.studentCourseViewTV{
-	width: 30%; 
-	margin-top:10px;
+.totalInfo{
+	width: 95%;
+	margin:0 auto;
 }
-	.studentCourseViewTV div{
+.studentInfoWrapper{
+	clear:both;
+	width: 100%; 
+}
+#studentslist{
+	clear:both;
+}
+	#studentslist div{
 		display:inline;
 		float:left;
 	}
-
-.student_even{
+.studentInfo{
 	width: 100%; 
+	font-size:0.7em;
+}
+.student{
+	width: 35%; 
 	background-color:#614875;
 	color:#fff;
-	font-size:0.7em;
+	
 	padding:5px 10px;
 }
-.student_odd{ 
-	width: 100%; 
+.odd{ 
+	background-color:#fff;
 	color:#614875;
-	font-size:0.7em;
-	padding:5px 10px;
 }
-
 .student_name{
 	width: 30%; 
 	margin-right:8px;
@@ -217,8 +219,39 @@
 .student_username{
 	margin-right:8px;
 }
-		
-		
+
+/* Smal progressbars in teacherview */
+.students_results{
+	display:inline;
+	float:left;
+	margin-left:10px;
+	margin-top:3px;
+	width:60%;
+	border:1px solid #A9A9A9;
+	padding:5px;
+}
+.progress_course_total{
+	margin-right:1%;
+	border:1px solid #A9A9A9;
+	width:5%;
+	height:10%;
+	border-radius:0.3em;
+}
+.progress_course{
+	height:1.5em;
+}
+.progress_course p{
+	visibility:hidden;
+	margin-left:2px;
+	margin-top:3px;
+	font-size:0.8em;
+	position:absolute;
+}
+.progress_course_total:hover p{
+	visibility:visible;
+	cursor:default;
+}
+
 /* Change pages */
 .changePages{
 	width:190px;

@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <title>LenaSYS User Editor</title>
-    
+        
         <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
         <link href="usermanagementview.css" rel="stylesheet">
         
@@ -66,11 +66,8 @@
         </div> 
         
         
-        <div id="totalInfo">
-        	
-			<!-- View over the students how are going that program/course -->
-			<div class="studentCourseViewTV">
-            
+        <div class="totalInfo">
+			
             	<!-- Filter (Radiobuttons) -->
 				<div id="radio_buttonToolbar">
                     <form>
@@ -81,10 +78,12 @@
                     </form>
 				</div>
                 
-				<div id="studentslist">
+                <!-- View over the students how are going that program/course -->
+                <div class="studentInfoWrapper">
+                    <div id="studentslist">
+                    </div>
 				</div>
 		
-			</div> 
             
             <!-- Change pages -->
             <div class="changePages">
