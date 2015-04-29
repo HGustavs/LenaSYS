@@ -347,11 +347,10 @@ function returnedSection(data)
 			str+='("'+querystring['coursevers']+'","'+versionname+'")';
 			str+=";'>";	
 			str+="<input type='button' class='submit-button' value='New version' title='Create a new version of this course' onclick='showCreateVersion();'>";
-			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";
 			str+="</div>";
 			
 			str+="<div class='course-menu--options'>";
-			str+="<input class='submit-button' type='button' value='New' onclick='newItem();'/>";
+			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";
 			str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
@@ -360,7 +359,7 @@ function returnedSection(data)
 		}
 	
 		// Course Name
-		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
+		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/></div>";
 
 		str+="<div id='Sectionlistc' >";
 			

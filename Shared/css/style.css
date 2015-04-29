@@ -220,6 +220,7 @@ hr {
     font-size:18pt;
     background-color: #614875;
     margin-top:40px;
+    clear:both;
 }
 
 .hi { background-color:#dad8db; }
@@ -688,6 +689,27 @@ input.submit-button-red {
 input.submit-button-red:hover {
     background-color:#DF4F4F;
     border-radius:4px;	
+}
+
+input.new-item-button {
+    float:right;
+    background-color:#927B9E;
+    border:0px;
+    width:100px;
+    height:28px;
+    color:#fff;
+    cursor:pointer;
+    margin-top:2px;
+    margin-bottom:2px;
+    font-size:14px;
+    border-radius:4px;
+    transition:0.5s background-color;
+}
+
+input.new-item-button:hover {
+    background-color:#614875;
+    border:1px solid #927B9E;
+    border-radius:4px;  
 }
 
 .button-row {
