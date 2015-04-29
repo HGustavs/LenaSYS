@@ -70,7 +70,7 @@ function renderStudentView(data)
 	var totalHP = progress[0]['totalHP'];
 	var procent = completedHP/totalHP*100;
 	
-	htmlStr += '<div class="totalProgressBar"> <div class="progress-bar progress-bar-success" id="MainProgress" role="progressbar" style="width:' + parseFloat(procent) + '%"><div id="progressIndicator">' + parseFloat(progress[0]['completedHP']) + '/' + parseFloat(progress[0]['totalHP']) + "hp" +'</div></div></div>';
+	htmlStr += '<div class="totalProgressBar"> <div class="progress-bar progress-bar-success" id="MainProgress" role="progressbar" style="width:' + parseFloat(procent) + '%"><div id="progressIndicator">' + parseFloat(progress[0]['completedHP']) + '/' + parseFloat(progress[0]['totalHP']) + " hp" +'</div></div></div>';
 	
 	var progressBar = document.getElementById('completedMainProgress');
 	progressBar.innerHTML = htmlStr;
