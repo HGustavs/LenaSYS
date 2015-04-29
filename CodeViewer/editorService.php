@@ -315,28 +315,30 @@
 			array_push($impwordlist,$row['word']);					
 		}  
 		
+		$directories = array();
 		// Read Directory - Codeexamples
-		$directory=array();
+		$codeDir=array();
 		if(file_exists('./codeupload')){
 			$dir = opendir('./codeupload');
 			while (($file = readdir($dir)) !== false) {
 				if(endsWith($file,".js")){
-					array_push($directory,$file);		
+					array_push($codeDir,$file);		
 				}
 			}  
 		}
+		array_push($directories, $codeDir);
 
 		// Read Directory - Description
-		$descDirectory=array();
+		$descDir=array();
 		if(file_exists('./descupload')){
-			$descDir = opendir('./descupload');
-			while (($descFile = readdir($descDir)) !== false) {
-				if(endsWith($descFile,".txt")){
-					array_push($descDirectory,$descFile);		
+			$dir = opendir('./descupload');
+			while (($file = readdir($dir)) !== false) {
+				if(endsWith($file,".txt")){
+					array_push($descDir,$file);		
 				}
 			}  
 		}
-
+		array_push($directories, $descDir);
 
 		$images=array();
 		if(file_exists('./imgupload')){
@@ -401,7 +403,7 @@
 		'box' => $box,
 		'improws' => $imp,
 		'impwords' => $impwordlist,
-		'directory' => $directory,
+		'directory' => $directories,
 		'examplename'=> $exampleName,
 		'sectionname'=> $sectionName,
 		'playlink' => $playlink,

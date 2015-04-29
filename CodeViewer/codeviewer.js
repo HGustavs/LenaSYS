@@ -363,12 +363,8 @@ function displayEditContent(boxid)
 	$("#boxtitle").val(box[4]);
 	$("#boxcontent").val(box[1]);  
 
-	var dirs=retdata['directory'];
-	var str="";
-	for(var i=0;i<dirs.length;i++){
-		str+="<option value='" + dirs[i] + "'>"+dirs[i]+"</option>";
-	}
-	$("#filename").html(str);
+	changeDirectory($("#boxcontent"));
+	
 	$("#filename").val(box[5]);
 
 	var wordl=retdata['wordlists'];
@@ -388,6 +384,30 @@ function displayEditContent(boxid)
 	$("#improws").html(str);
 		
 	$("#editContent").css("display","block");
+}
+
+//----------------------------------------------------------------------------------
+// changeDirectory: Changes the directory in which you choose your code or description
+// 					in the Edit Content box.
+//----------------------------------------------------------------------------------
+
+function changeDirectory(kind) {
+	var dir;
+	var str="";
+
+	if ($(kind).val() == "CODE") {
+		dir = retdata['directory'][0];
+		$('#wordlist').prop('disabled', false);
+	}else if ($(kind).val() == "DOCUMENT") {
+		dir = retdata['directory'][1];
+		$('#wordlist').val('4');
+		$('#wordlist').prop('disabled', 'disabled');
+	}
+
+	for(var i=0;i<dir.length;i++){
+		str+="<option value='" + dir[i] + "'>"+dir[i]+"</option>";
+	}
+	$("#filename").html(str);
 }
 
 //----------------------------------------------------------------------------------
