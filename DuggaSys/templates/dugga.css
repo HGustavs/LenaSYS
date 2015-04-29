@@ -140,7 +140,7 @@ input.submit-button:hover {
  * --------------================################================-------------- */
 
 .instructions-container{
-	min-width:350px;
+	min-width:200px;
 	max-width:600px;
 	margin-bottom:25px;
 	margin-top:10px;
