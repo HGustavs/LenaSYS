@@ -171,7 +171,7 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Kurslänk</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">';
-	courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
+	courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="img/envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
 	courseHtmlStr += '<div class="course_alert"></div>';
 	courseHtmlStr += '<div class="course_type"></div>';
 	
