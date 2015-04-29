@@ -43,31 +43,32 @@
 		<div id="studentTitle">
 
 		</div>
-	
-		<div id="MainProgress">
-		
-			<div id="completedMainProgress">
-			
-				<div id="ProgressbarG1N">
-					<div id="completedProgressbarG1N"></div>
-				</div>
-			
-				<div id="ProgressbarG1F">
-					<div id="completedProgressbarG1F"></div>
-				</div>
-			
-				<div id="ProgressbarG2F">
-					<div id="completedProgressbarG2F"></div>
-				</div>
-			
-			</div>
-			
+        
+		<div class="mainProgressBarcontainer">
+            <div id="MainProgress">
+            
+                <div id="completedMainProgress">
+                
+                    <div id="ProgressbarG1N">
+                        <div id="completedProgressbarG1N"></div>
+                    </div>
+                
+                    <div id="ProgressbarG1F">
+                        <div id="completedProgressbarG1F"></div>
+                    </div>
+                
+                    <div id="ProgressbarG2F">
+                        <div id="completedProgressbarG2F"></div>
+                    </div>
+                
+                </div>
+                
+            </div>
 		</div>
-		
+        
 
 		<div id="YearContainer">
 		
-			
 			<div id="Year1" class="Year">
 				
 			</div>
@@ -80,12 +81,9 @@
 
 			</div>
 	
-			
-		
 		</div>
 	
 	</div>
-
 
   </body>
 </html>

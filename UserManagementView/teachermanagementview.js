@@ -172,7 +172,7 @@ function getStudentInfo(student, number)
 function getCourseResults(results)
 {
 	var colorGreen = "#50a750";
-	var colorYellow = "#FFE273";
+	var colorYellow = "#F0AD4E";
 	var htmlStr = "";
 		
 	htmlStr += "<div class='students_results'>";
@@ -187,7 +187,7 @@ function getCourseResults(results)
 		
 		htmlStr += "<div class='progress_course_total'>";
 		htmlStr += "<div class='progress_course' style='width:" + procent + "%; background-color: " + color + ";'>";
-		htmlStr += "<p>" + course_result + "/" + course_hp + "</p>";
+		htmlStr += "<p>" + parseFloat(course_result) + "/" + course_hp + "</p>";
 		htmlStr += "</div>";
 		htmlStr += "</div>";
 		
