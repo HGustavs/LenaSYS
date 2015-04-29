@@ -26,40 +26,41 @@ pdoConnect();
 		setcookie("loginvar", $loginvar);
 	?>
 		
-	<!-- content START -->
-	<div id="content">
-		<div style='float:right;'>
+<!-- content START -->
+	<div id="content" >
+		<div style='height:32px;width:100%;float:right'>
 				<input class='submit-button' type='button' value='Add Link' onclick='createLink();'/>
 				</div>
-				<div id="alllinks">
+				<div id="alllinks" style='width:100%;float:right'>
 					<table class='list' style='margin-bottom:8px;' >
 						<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
 					</table>
 				</div>
-				<div style='float:right;'>
+				<div style='height:32px;width:100%;float:right'>
 				<input class='submit-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
 				</div>
-				<div id="allglobalfiles">
+				<div id="allglobalfiles" style='width:100%;float:right'>
 					<table class='list' style='margin-bottom:8px;' >
 						<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>
 					</table>
 				</div>
-				<div style='float:right;'>
+				<div style='height:32px;width:100%;float:right'>
 				<input class='submit-button' type='button' value='Add File' onclick='createFile("MFILE");'/>
 				</div>
-				<div id="allcoursefiles">
+				<div id="allcoursefiles" style='width:100%;float:right'>
 					<table class='list'>
 						<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>
 					</table>
 				</div>
-				<div style='float:right;'>
+				<div style='height:32px;width:100%;float:right;display:block'>
 				<input class='submit-button' type='button' value='Add File' onclick='createFile("LFILE");'/>
 				</div>
-				<div id="alllocalfiles">
+				<div id="alllocalfiles" style='width:100%;float:right'>
 					<table class='list'>
 					<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>
 					</table>
 				</div>
+			<br style="clear:both" />
 	</div>
 	
 	<?php 

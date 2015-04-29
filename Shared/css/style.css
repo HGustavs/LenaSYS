@@ -669,6 +669,7 @@ input.submit-button {
     margin-left:4px;
     font-size:14px;
     transition:1s background-color;
+    float:right;
 }
 
 input.submit-button:hover {
