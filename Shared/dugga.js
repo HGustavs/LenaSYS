@@ -209,7 +209,7 @@ function AJAXService(opt,apara,kind)
 				// Run the input parameter through the following regular expression
 				// The result is a string that only allows white-listed characters.
 				if (apara[key] != null) {
-					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@{}\. \, \- \: \* \[ \] \s]*/gi);
+					var s = apara[key].match(/[a-zA-ZÃ¤Ã¶Ã¥Ã„Ã–Ã…0-9@{}\. \, \- \: \* \[ \] \s]*/gi);
 			
 					// Concat the generated regex result to a string again.
 					apara[key] = s.join("");
@@ -220,19 +220,13 @@ function AJAXService(opt,apara,kind)
 						alert("Illegal characters removed in " + key);
 					}
 				}
-				// Informs the user that his input contained nothing.
-				if(apara[key] == "") {
-					alert("Your input contained nothing in " + key);
-				}				
 				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
 		// Informs the user that his input contained nothing.
 		if(apara[key] == "") {
 			alert("Your input contained nothing in " + key);
-		}			
-		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
-		console.log("Para: " + para);
+		}					
 	}
 				
 	if(kind=="COURSE"){
