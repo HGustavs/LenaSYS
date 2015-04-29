@@ -172,7 +172,7 @@ function getStudentInfo(student, number)
 function getCourseResults(results)
 {
 	var colorGreen = "#50a750";
-	var colorYellow = "#FFE273";
+	var colorYellow = "#F0AD4E";
 	var htmlStr = "";
 		
 	htmlStr += "<div class='students_results'>";

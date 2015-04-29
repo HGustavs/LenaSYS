@@ -1,16 +1,17 @@
 
 /* The big wrapper */
 #contentUMV {
+	height: 100%;
+	position:absolute;
+	left: 10%;
+	right: 10%;
     margin:0px auto;
-    position:relative;
 	margin-top:50px;
-    padding: 50px 0px 8px 0px;
+    padding: 50px 0px 100px 0px;
     background: #fff;
-    min-height: 200px;
-	padding-bottom:200px;
-	width:80%;
 	border: 8px solid #CCC;
 	border-top:none;
+	border-bottom:none;
 }
 
 /* Dropdownmenu at the top of the page to the right */
@@ -299,11 +300,6 @@
 
 .my-pull-right {
 	float: right;
-}
-footer p {
-	font-style: italic;
-	font-size: 1em;
-	margin: 0.2em;
 }
 
 .clearfix{

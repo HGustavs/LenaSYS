@@ -1,16 +1,21 @@
 /*Student Main info wrap*/
 #studentTitle {
 	width:70%;
-	height:20px;
+	height:60px;
 	margin: 15px auto;
 	text-align:center;
-}
-
-#studentTitle h3 {
-	font-size:1.5em;
-	font-family:Calibri,sans-serif;
 	color:#614875;
-	
+	font-family:Calibri,sans-serif;
+}
+#studentTitle h2 {
+	font-size:1.7em;
+	margin-bottom:8px;
+}
+#studentTitle h2:first-letter {
+	text-transform:uppercase !important;
+}
+#studentTitle h3 {
+	font-size:1.2em;
 }
 
 /*Main progress bar wrapp*/
@@ -20,8 +25,6 @@
 	margin: 0 auto;
 	margin-top:50px;
 	margin-bottom:50px;
-
-	
 }
 
 /*Main progressbar*/
@@ -33,7 +36,6 @@
 	background-color:#F00;
 	border-radius:0.5em;
 }
-
 .progress-bar-success {
 	height:40px;
 	border-top-left-radius:0.5em;
@@ -53,56 +55,6 @@
 	color:#FFF;
 	padding:20px 0 0 0;
 	margin:38px -35px 0 0;
-	
-}
-	
-/*Year 1 progress wrap*/
-#year1Progress {
-	float: left;	
-	height:20px;
-	width:20%;
-	margin:-30px 0 0 70px;
-	box-shadow:none;
-	
-}
-
-
-/*Year 3 progress wrap*/
-#year3Progress {
-	float:right;
-	height:20px;
-	width:20%;
-	margin:-30px 70px 0 0;
-	box-shadow:none;
-	
-}
-
-/*Year 2 progress wrap*/
-#year2Progress {
-	height:20px;
-	width:20%;
-	margin: -30px auto;
-	box-shadow:none;
-	
-}
-
-#year1Score {
-	float:left;
-	margin: -20px 0 0 182px;
-	position:relative;
-	font-size:0.8em;
-}
-
-#year3Score {
-	float:right;
-	margin: -27px 72px 0 0;
-	font-size:0.8em;
-}
-
-#year2Score {
-	margin:0 auto;
-	margin: -20px 0 0 0;
-	font-size:0.8em;
 }
 
 
@@ -113,28 +65,64 @@
 	margin: 0 auto;
 	min-height:inherit;
 }
+	
+/*Year 1 progress wrap*/
+#year1Progress {
+	float: left;	
+	height:20px;
+	width:20%;
+	margin:-30px 0 0 70px;
+	box-shadow:none;
+}
+/*Year 2 progress wrap*/
+#year2Progress {
+	height:20px;
+	width:20%;
+	margin: -30px auto;
+	box-shadow:none;
+}
+/*Year 3 progress wrap*/
+#year3Progress {
+	float:right;
+	height:20px;
+	width:20%;
+	margin:-30px 70px 0 0;
+	box-shadow:none;
+}
 
+#year1Score {
+	float:left;
+	margin: -20px 0 0 182px;
+	position:relative;
+	font-size:0.8em;
+}
+#year2Score {
+	margin:0 auto;
+	margin: -20px 0 0 0;
+	font-size:0.8em;
+}
+#year3Score {
+	float:right;
+	margin: -27px 72px 0 0;
+	font-size:0.8em;
+}
 
 /*Big Year Wrap*/
 .Year {
 	font-size:0.8em;
 	width: 32%;
-	
-	
-
 }
 
 #Year1 {
 	float:left;
 }
-
+#Year2 {
+	margin:0 auto;
+}
 #Year3 {
 	float:right;
 }
 
-#Year2 {
-	margin:0 auto;
-}
 
 /*Year Heading*/
 .year_header{
@@ -144,7 +132,6 @@
 	color:#FFF;
 	border-top-left-radius:0.5em;
 	border-top-right-radius:0.5em;
-	
 }
 
 /*Even Course wrap*/
@@ -152,7 +139,6 @@
 	height:50%;
 	background-color:#dad8db;
 	color:#614875;
-	
 }
 
 .course:nth-child(2n){
@@ -169,8 +155,6 @@
 .course_name p {
 	text-transform:lowercase !important;
 	font-size:1.3em;
-	
-	
 }
 
 /*Course Name*/
@@ -181,23 +165,25 @@
 /*Course Progress Wrap*/
 .course_progressbar {
 	float:right;
-	height:15px;
+	height:20px;
 	width:50%;
 	margin:0 0 0 0;
 }
-
+.course_progressbar:hover p {
+	visibility:visible;
+	cursor:default;
+}
 .progress-bar-warning {
 	height:20px;
 	border-top-left-radius:0.5em;
 	border-bottom-left-radius:0.5em;
-	
 }
-
-
-
 .points {
+	margin-top: -38px;
+    margin-right: 10px;
 	color:#614875;
-	
+	float:right;
+	visibility:hidden;
 }
 
 .course_alert {
@@ -209,7 +195,6 @@
 /*Course Link*/
 .course_link {
 	line-height:25px;
-	
 }
 
 /*Course Responsible*/
@@ -223,15 +208,13 @@
 }
 
 #mail-icon :hover {
-	
-	}
+}
 
 .course_type {
 	cursor:pointer;
 	float:right;
 	margin: -1px 0 0 0;
 }
-
 
 /*Year Background Body*/
 .yearBody{
