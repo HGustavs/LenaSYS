@@ -70,7 +70,9 @@ function renderStudentView(data)
 	var totalHP = progress[0]['totalHP'];
 	var procent = completedHP/totalHP*100;
 	
-	htmlStr += '<div class="totalProgressBar"> <div class="progress-bar progress-bar-success" id="MainProgress" role="progressbar" style="width:' + parseFloat(procent) + '%"><div id="progressIndicator">' + parseFloat(progress[0]['completedHP']) + '/' + parseFloat(progress[0]['totalHP']) + " hp" +'</div></div></div>';
+	htmlStr += '<div class="totalProgressBar">';
+	htmlStr += '<div class="progress-bar progress-bar-success" id="MainProgress" role="progressbar" style="width:' + parseFloat(procent) + '%">';
+	htmlStr += '<div id="progressIndicator">' + parseFloat(progress[0]['completedHP']) + '/' + parseFloat(progress[0]['totalHP']) + " hp" +'</div></div></div>';
 	
 	var progressBar = document.getElementById('completedMainProgress');
 	progressBar.innerHTML = htmlStr;
@@ -163,21 +165,20 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<div id="' + idCourse +  '" class="course reg_fade">';
 	courseHtmlStr += '<div class="course_wrapper">';
 	
-	
 	courseHtmlStr += '<div class="course_name"><p>' + coursename + '</p></div>';
-	courseHtmlStr += '<div class="course_progressbar"> <div class="progress"><div class="progress-bar progress-bar-warning" id="" role="progressbar" style="width:' + parseFloat(procent) + '%"></div></div><p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
+	courseHtmlStr += '<div class="course_progressbar">';
+	courseHtmlStr += '<div class="progress"><div class="progress-bar progress-bar-warning" id="" role="progressbar" style="width:' + parseFloat(procent) + '%"></div></div>';
+	courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Kurslänk</a></div>';
-	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '<a href="mailto:""><img src="envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
+	courseHtmlStr += '<div class="course_reponsible">';
+	courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
 	courseHtmlStr += '<div class="course_alert"></div>';
 	courseHtmlStr += '<div class="course_type"></div>';
 	
 	courseHtmlStr += '</div>';
-	
 	courseHtmlStr += '</div>';
 	
 	return courseHtmlStr;
-	
-	
 }
 
 function renderStudyprogramView(data){
