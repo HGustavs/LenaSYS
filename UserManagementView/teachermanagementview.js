@@ -187,7 +187,7 @@ function getCourseResults(results)
 		
 		htmlStr += "<div class='progress_course_total'>";
 		htmlStr += "<div class='progress_course' style='width:" + procent + "%; background-color: " + color + ";'>";
-		htmlStr += "<p>" + course_result + "/" + course_hp + "</p>";
+		htmlStr += "<p>" + parseFloat(course_result) + "/" + course_hp + "</p>";
 		htmlStr += "</div>";
 		htmlStr += "</div>";
 		
