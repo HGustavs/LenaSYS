@@ -347,11 +347,10 @@ function returnedSection(data)
 			str+='("'+querystring['coursevers']+'","'+versionname+'")';
 			str+=";'>";	
 			str+="<input type='button' class='submit-button' value='New version' title='Create a new version of this course' onclick='showCreateVersion();'>";
-			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";
 			str+="</div>";
 			
 			str+="<div class='course-menu--options'>";
-			str+="<input class='submit-button' type='button' value='New' onclick='newItem();'/>";
+			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";
 			str+="<input class='submit-button' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
@@ -360,7 +359,7 @@ function returnedSection(data)
 		}
 	
 		// Course Name
-		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
+		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/></div>";
 
 		str+="<div id='Sectionlistc' >";
 			
@@ -414,7 +413,7 @@ function returnedSection(data)
 						}else{
 							str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
-						k++;
+						kk++;
 					}
 
 					if(kk==1){
@@ -451,7 +450,7 @@ function returnedSection(data)
 							}
 						}
 						
-						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/Cogwheel.svg' onclick='showHighscore()'/>";
+						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
 						
 						if(grady==-1){
 								// Nothing submitted nor marked (White)
@@ -474,7 +473,7 @@ function returnedSection(data)
 		}else{
 			// No items were returned! 
 			str+="<div class='bigg'>";
-			str+="<span>There is currently no content in this course</span>";
+			str+="<span>You don't have access to this course</span>";
 			str+="</div>";
 		}
 					
@@ -527,8 +526,29 @@ function returnedSection(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
 
-function showHighscore()
+function showHighscore(did, lid)
 {
-	$("#HighscoreBox").css("display", "block");
+	AJAXService("GET", {did:did, lid:lid}, "DUGGAHIGHSCORE");
 }
 
+function returnedHighscore(data){
+
+	var str = "";
+
+	if (data['highscores'].length > 0) {
+		for(i=0;i<data['highscores'].length;i++){
+			var item=data['highscores'][i];
+			str += "<tr>"; 
+			str += "<td>";
+			str += item['username'];
+			str += "</td>"
+			str += "<td>";
+			str += "Time spent: ";
+			str += item['timeSpent']
+			str += "</td>";
+			str += "</tr>";
+		}
+	}
+	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
+	$("#HighscoreBox").css("display", "block");
+}

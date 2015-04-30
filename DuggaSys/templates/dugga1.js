@@ -6,8 +6,8 @@
 
 Example seed
 ---------------------
-	Param:  {"tal":"2"}
-	Answer: {"danswer":"00000010 0 2"}
+	Param:  {*tal*:*2*}
+	Answer: {*danswer*:*00000010 0 2*}
 
 -------------==============######## Documentation End ###########==============-------------
 */
@@ -35,6 +35,8 @@ function setup()
 		$('.hexo').click(function(){
 				hexClick(this.id);
 		});
+
+		AJAXService("GETPARAM",{ },"PDUGGA");
 }
 
 //----------------------------------------------------------------------------------
@@ -51,7 +53,7 @@ function returnedDugga(data)
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
 		}else{		
-			retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+			retdata=jQuery.parseJSON(data['param'].replace(/\*/g, '"'));
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
 			if(data['answer'] != null && data['answer'] != "UNK"){
@@ -122,8 +124,8 @@ function saveClick()
 
 function showFacit(param, uanswer, danswer)
 {
-			var p = jQuery.parseJSON(param.replace(/&quot;/g, '"'));
-			var daJSON = jQuery.parseJSON(danswer.replace(/&quot;/g, '"'));
+			var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
+			var daJSON = jQuery.parseJSON(danswer.replace(/\*/g, '"'));
 			
 			var da = daJSON['danswer'];
 			var danswer = da.split(' ');
@@ -245,3 +247,12 @@ function resetBitstring(){
 		document.getElementById("B"+i).className="bit noll";		
 	}
 }
+
+//----------------------------------------------------------------------------------
+// show/hide dugga instructions
+//----------------------------------------------------------------------------------
+function toggleInstructions()
+{
+    $(".instructions-content").slideToggle("slow");
+}
+

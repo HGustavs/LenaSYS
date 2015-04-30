@@ -88,7 +88,6 @@ function randomstring()
 
 function saveDuggaResult(citstr)
 {
-	console.log(timeSpent);
 		citstr=querystring['moment']+" "+citstr;
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
@@ -102,13 +101,9 @@ function saveDuggaResult(citstr)
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
-		document.getElementById('kvittotext').value = "\n\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.";
+		document.getElementById('receipt').value = hexstr;
+		document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 		showReceiptPopup();
-}
-
-function readDugga()
-{
-		AJAXService("GETPARAM",{},"PDUGGA");
 }
 
 //----------------------------------------------------------------------------------
@@ -221,7 +216,7 @@ function AJAXService(opt,apara,kind)
 				para += array;
 			}
 			else {
-				var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@\. \, \- \s]*/gi);
+					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@{}\. \, \- \: \* \[ \] \s]*/gi);
 		
 				// Concat the generated regex result to a string again.
 				apara[key] = s.join("");
@@ -256,6 +251,14 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: returnedDugga
+			});
+		}else if(kind=="DUGGAHIGHSCORE"){
+			$.ajax({
+				url: "highscoreservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedHighscore
 			});
 		}else if(kind=="FILE"){
 			$.ajax({
@@ -340,15 +343,15 @@ function AJAXService(opt,apara,kind)
 	}
 }
 
-//Will handel enter key pressed when loginbox is showing
+//Will handle enter key pressed when loginbox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
-		processLogin(getCookie("loginvar"));
+		processLogin();
 	}
 }
 
 
-function processLogin(kind) {
+function processLogin() {
 
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
@@ -379,15 +382,7 @@ function processLogin(kind) {
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
-					if(kind=="COURSE") AJAXService("GET",{},"COURSE")
-					else if(kind=="ACCESS") AJAXService("GET",{cid:querystring['cid']},"ACCESS")
-					else if(kind=="RESULT") AJAXService("GET",{cid:querystring['cid']},"RESULT")
-					else if(kind=="DUGGA") AJAXService("GET",{cid:querystring['cid']},"DUGGA")
-					else if(kind=="FILE") AJAXService("GET",{cid:querystring['cid']},"FILE")
-					else if(kind=="SECTION") AJAXService("get",{},"SECTION")
-					else if(kind=="LINK"||kind=="PDUGGA"||kind=="CODV"){
-							location.reload(); 		
-					}				
+					location.reload();				
 				}else{
 					alert("Failed to log in.");
 					if(typeof result.reason != "undefined") {
@@ -398,7 +393,7 @@ function processLogin(kind) {
 					$("input#username").css("background-color", "#ff7c6a");
 					$("input#password").css("background-color", "#ff7c6a");
 				}
-					location.reload();
+					
 			},
 			error:function() {
 				console.log("error");
@@ -468,6 +463,20 @@ function hideReceiptPopup()
 		$("#receiptBox").css("display","none");
 		$("#overlay").css("display","none");
 }
+
+
+//----------------------------------------------------------------------------------
+// A function that asks for users email so the dugga-receipt can be sent to the user.
+//----------------------------------------------------------------------------------
+function sendReceiptEmail(){
+	var receipt = document.getElementById('receipt').value;
+	var email = prompt("Please enter your email");
+	if (email != null){
+		window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
+	}
+}
+
+
 function showDuggaInfoPopup()
 {
 
