@@ -25,21 +25,6 @@ function updateCourse() {
 	}, "COURSE");
 }
 
-function closeEditCourse() {
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$("#editCourse").css("display", "none");
-	
-		resetinputs();
-	//resets all inputs
-}
-
-function closeNewCourse() {
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$("#newCourse").css("display", "none");
-}
-
 function newCourse() {
 	$("#newCourse").css("display", "block");
 }
@@ -54,58 +39,15 @@ function createNewCourse() {
 	}, "COURSE");
 }
 
-function copyVersion() {
-	svers = $("#copyversion").val();
-	dvers = $("#versid").val();
-
-	sstr = "Are you sure you want to copy from the version with id " + svers + " to a new version with the id " + dvers;
-	/*if (confirm(sstr)) {
-		alert("TKONG!");
-	}
-	*/
-			
-	//all inputs = empty
-}
-
 function resetinputs(){
-		
-
-$('#coursename').val("");
-$('#coursecode').val("");
-$('#versid').val("");
-$('#versname').val("");
-
-
+	$('#coursename').val("");
+	$('#coursecode').val("");
+	$('#versid').val("");
+	$('#versname').val("");
 }
 
-
-function createVersion() {
-	$(".item").css("background", "#fff");
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$(".item").css("background", "#fff");
-
-
-	$("#editCourse").css("display", "none");
-
-	// Set Name
-	var versid = $("#versid").val();
-	var versname = $("#versname").val();
-	var cid = $("#cid").val();
-
-	AJAXService("NEWVRS", {
-		cid : cid,
-		versid : versid,
-		versname : versname
-	}, "COURSE");
-	
-	resetinputs();
-	//resets all inputs
-	
-}
-
-function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
-	console.log(cid, coursename, coursecode, visi, vers, edvers);
+function selectCourse(cid, coursename, coursecode, visi) {
+	console.log(cid, coursename, coursecode, visi);
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#C" + cid).css("border", "2px dashed #FC5");
@@ -113,24 +55,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
 	$(".item").css("background", "#fff");
 	$("#C" + cid).css("background", "#EDF");
 
-
-	
-	
 	// Set Name
-
-	$("#couresnamewrapper").html("<input class='form-control textinput' type='text' id='coursename' placeholder='"+coursename+"' />");
-	
-	// Set Cid
-
-	$("#courseidwrapper").html("<input class='form-control textinput' type='text' id='coursecode' placeholder='"+coursecode+"' />");
-	// Set Code
-	$("#versidwrapper").html("<input size='8' class='form-control textinput' type='text' id='versid' placeholder='"+vers+"' />");
-	
-	// Set Code
-	$("#versnamewrapper").html("<input size='8' class='form-control textinput' type='text' id='versname' placeholder='"+edvers+"' />");
-	// Set Visibiliy
-	
-		// Set Name
 	$("#coursename").val(coursename);
 
 	// Set Cid
@@ -159,41 +84,9 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
 		str += "<option value='3'>Deleted</option>";
 	$("#visib").html(str);
 
-	var cstr = "";
-	var sstr = "";
-	var estr = "";
-
-	if (versions.length > 0) {
-		for ( i = 0; i < versions.length; i++) {
-			var item = versions[i];
-			if (cid == item['cid']) {
-				var vvers = item['vers'];
-				var vname = item['versname'];
-
-				if (vvers == vers) {
-					sstr += "<option selected='selected' value='" + vvers + "'>" + vname + "</option>";
-				} else {
-					sstr += "<option value='" + vvers + "'>" + vname + "</option>";
-				}
-				if (vvers == edvers) {
-					estr += "<option selected='selected' value='" + vvers + "'>" + vname + "</option>";
-				} else {
-					estr += "<option value='" + vvers + "'>" + vname + "</option>";
-				}
-				cstr += "<option value='" + vvers + "'>" + vname + "</option>";
-			}
-		}
-	}
-
-	$("#activeversion").html(sstr);
-	$("#activeedversion").html(estr);
-	$("#copyversion").html(cstr);
-
-	// Show dialog
+	// Show edit course dialog
 	$("#editCourse").css("display", "block");
 
-			resetinputs();
-	//resets all inputs
 	return false;
 }
 
@@ -260,7 +153,6 @@ if (data['entries'].length > 0) {
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 		
-			resetinputs();
+	resetinputs();
 	//resets all inputs
-
 }
