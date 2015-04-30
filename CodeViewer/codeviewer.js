@@ -131,6 +131,7 @@ function returned(data)
 				var boxmenuheight= $("#"+contentid+"menu").height();
 			}
 			$("#"+contentid).css("margin-top", boxmenuheight-1);
+			boxcontent = tabLine(boxcontent);
 			rendercode(boxcontent,boxid,boxwordlist);
 		}else if(boxtype == "DOCUMENT"){
 				// Print out description in a document box
@@ -147,8 +148,15 @@ function returned(data)
 				}
 				
 				/* Assign Content */
+				//Remove html tags since only markdown should be allowed		
+				desc = dehtmlify(desc, true, 0);
+				
 				//Call the markdown function to parse markdown symbols to html tags
 				desc = parseMarkdown(desc);
+				
+				//Change the '\n' line breaks to <br> tags
+				desc = addHtmlLineBreak(desc);
+								
 				$("#"+contentid).html(desc);
 
 				if($("#"+contentid+"menu").height() == null){
@@ -181,6 +189,29 @@ function returned(data)
 	//CALL resizeBoxes here!
 	resizeBoxes("#div2", retdata["templateid"]);
 }
+
+//---------------------------------------------------------------------------------
+// This functions convert tabs to "&#9;""
+// The indexOf() method returns the position of the first time of a specified value 
+// (in this example is the search word "\t" which stands for tab) in a string.
+// This method returns then -1 if the "search word" dosn't exist in the string. 
+// Text.slice truncates the text string were the tab is placed by useing tabindex 
+// as a index. And then adds "&#9;" to the text string. "&#9;" replace the tab 
+// utill "tokenize" functions is called then &#9; is being replaces by 4 spaces. 
+// So the loop will check the whole text the function assign "start" the value of 
+// tabindex so the loop can keep on looking for tabs in the same place where it left off
+//---------------------------------------------------------------------------------
+
+var tabLine = function(text) {
+    var start = 0;
+    var tabIndex;
+
+    while ((tabIndex = text.indexOf('\t', start)) != -1) {
+        text = text.slice(0, tabIndex) + "&#9; " + text.slice(tabIndex + 1);
+        start = tabIndex;
+    }
+    return text;
+};
 
 //----------------------------------------------------------------------------------
 // editImpWords: adds/removes important words to the #impword selectbox
@@ -320,25 +351,134 @@ function updateExample()
 // displayEditContent: Displays the dialog box for editing a content pane
 //----------------------------------------------------------------------------------
 
+// Keeps track of the currently open box. Used when saving the box content.
+var openBoxID;
+
 function displayEditContent(boxid)
 {	
-	$("#title").val(retdata['examplename']);
-
-	var dirs=retdata['directory'];
-	var str="";
-	for(var i=0;i<dirs.length;i++){
-		str+="<option>"+dirs[i]+"</option>";
-	}
-	$("#filename").html(str);
 	
+	var box = retdata['box'][boxid-1]; // The information stored about the box
+	openBoxID = boxid;
+
+	$("#boxtitle").val(box[4]);
+	$("#boxcontent").val(box[1]);  
+
+	changeDirectory($("#boxcontent"));
+	
+	$("#filename").val(box[5]);
+
 	var wordl=retdata['wordlists'];
 	var str="";
 	for(var i=0;i<wordl.length;i++){
 		str+="<option value='"+wordl[i][0]+"'>"+wordl[i][1]+"</option>";
 	}
 	$("#wordlist").html(str);
+	$("#wordlist").val(box[3]);
+
+	var str="";
+	for (var i = 0; i < retdata['improws'].length; i++) {
+		if (retdata['improws'][i][0] == boxid) {
+			str+="<option>" + retdata['improws'][i][1] + " - " + retdata['improws'][i][2] + "</option>";
+		}
+	};
+	$("#improws").html(str);
 		
 	$("#editContent").css("display","block");
+}
+
+//----------------------------------------------------------------------------------
+// changeDirectory: Changes the directory in which you choose your code or description
+// 					in the Edit Content box.
+//----------------------------------------------------------------------------------
+
+function changeDirectory(kind) {
+	var dir;
+	var str="";
+
+	if ($(kind).val() == "CODE") {
+		dir = retdata['directory'][0];
+		$('#wordlist').prop('disabled', false);
+	}else if ($(kind).val() == "DOCUMENT") {
+		dir = retdata['directory'][1];
+		$('#wordlist').val('4');
+		$('#wordlist').prop('disabled', 'disabled');
+	}
+
+	for(var i=0;i<dir.length;i++){
+		str+="<option value='" + dir[i] + "'>"+dir[i]+"</option>";
+	}
+	$("#filename").html(str);
+}
+
+//----------------------------------------------------------------------------------
+// isNumber: 		returns true: the variable only contains numbers
+//					returns false: the variable is not purely numeric
+//----------------------------------------------------------------------------------
+
+function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+
+//----------------------------------------------------------------------------------
+// editImpRows: Adds and removes important rows
+//----------------------------------------------------------------------------------
+
+var addedRows = new Array();
+var removedRows = new Array();
+
+function editImpRows(editType) {
+	var rowFrom = $("#improwfrom").val();
+	var rowTo = $("#improwto").val();
+	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
+
+	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo) {
+
+		var exists = false;
+		$('#improws option').each(function() {
+    		if (this.value == row) {exists = true;}
+		});
+		if (exists == false) {
+			$("#improws").append('<option>' + row + '</option>');
+			$("#improwfrom").val("");
+			$("#improwto").val("");
+			addedRows.push([openBoxID,rowFrom,rowTo]);
+		}
+	}
+	else if (editType == "-") {
+		FromTo = $('option:selected', "#improws").text().split(" - ");
+		$('option:selected', "#improws").remove();
+    	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
+	}
+}
+
+//----------------------------------------------------------------------------------
+// updateContent: Updates the box
+//----------------------------------------------------------------------------------
+
+function updateContent() {
+	var box = retdata['box'][openBoxID-1];
+
+	// Doesn't work for null values yet. box[3]
+	if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
+		var boxtitle = $("#boxtitle").val();
+		var boxcontent = $("#boxcontent option:selected").val();
+		var wordlist = $("#wordlist").val();
+		var filename = $("#filename option:selected").val();
+		var exampleid = querystring['exampleid'];
+		var boxid = box[0];
+		
+		AJAXService("EDITCONTENT", {
+			exampleid : exampleid,
+			boxid : boxid,			
+			boxtitle : boxtitle,
+			boxcontent : boxcontent,
+			wordlist : wordlist,
+			filename : filename,
+			addedRows : addedRows,
+			removedRows : removedRows
+		}, "BOXCONTENT");
+
+		addedRows = [];
+		removedRows = [];
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -375,15 +515,15 @@ function createboxmenu(contentid, boxid, type){
 			//----------------------------------------------------------------------------------------- DOCUMENT
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
-				str+='<td class="butto2" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";	
+				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][4]+'</span></td>';	
 				str+="</tr></table>";
 				//----------------------------------------------------------------------------------------- END DOCUMENT
 			}else if(type=="CODE"){
 				//----------------------------------------------------------------------------------------- CODE
 				var str = "<table cellspacing='2'><tr>";
-				str+= '<td class="butto2" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][4]+'</span></td>';
-				str+="<td class='butto2 showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";				
+				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				str+= '<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][4]+'</span></td>';				
 				str+= '</tr></table>';			
 			}else{
 				var str = "<table cellspacing='2'><tr>";
@@ -399,7 +539,7 @@ function createboxmenu(contentid, boxid, type){
 			//----------------------------------------------------------------------------------------- END CODE
 		}else{
 			var str = '<table cellspacing="2"><tr>';
-			str+= '<td ><span class="boxtitle">'+retdata['box'][boxid-1][3]+'</span></td>';
+			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retdata['box'][boxid-1][3]+'</span></td>';
 			str+='</tr></table>';
 			boxmenu.innerHTML=str;	
 		}			
@@ -839,6 +979,8 @@ function tokenize(instring,inprefix,insuffix)
 	instring = replaceAll("&lt;","<",instring);
 	instring = replaceAll("&gt;",">",instring);
 	instring = replaceAll("&amp;","&",instring);
+	// this will replace all "&#9;" in the text that the function tabLine adds were a tab (\t) is placed.
+	instring = replaceAll("&#9;","    ",instring); 
 
 	var from;                   	// index of the start of the token.
 	var i = 0;                  	// index of the current character.
@@ -1347,7 +1489,7 @@ function updateTemplate()
 		var cvers = querystring['cvers'];
 		var templateno = $("#templateno").val();
 		
-		AJAXService("EDITEXAMPLE", {
+		AJAXService("SETTEMPL", {
 			courseid : courseid,	
 			exampleid : exampleid,
 			cvers : cvers,
@@ -1391,291 +1533,440 @@ function Play()
 //-----------------------------------------------------------------------------
 
 
-function resizeBoxes(parent, templateId) {		
-	var boxValArray = initResizableBoxValues(parent);
-	var remainWidth;
+	function resizeBoxes(parent, templateId) {
 	
-	if(templateId == 1){
 		
-		getLocalStorageProperties(templateId);
-	
-		//removes gap, that comes from percentage based positioning.
-		alignBoxesWidth(boxValArray, 1, 2);	
-		$(boxValArray['box1']['id']).css("height", "100%");
-		$(boxValArray['box2']['id']).css("height", "100%");
-	
-		$(boxValArray['box1']['id']).resizable({
-			containment: parent,
-			handles: "e",
-			resize: function(e, ui){		
-				alignBoxesWidth(boxValArray, 1, 2);
-				$(boxValArray['box1']['id']).css("height", "100%");
-				$(boxValArray['box2']['id']).css("height", "100%");
-			},
-			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
-			}
-		});
-	}else if(templateId == 2){
-	
-		getLocalStorageProperties(templateId);
+		var boxValArray = initResizableBoxValues(parent);
 		
-		//Used to remove gap provided by percentage based positioning.
-		alignBoxesHeight2boxes(boxValArray, 1, 2);
+		var remainWidth;
 		
-		$(boxValArray['box1']['id']).resizable({
+		
+		
+		if(templateId == 1){
+			
+			getLocalStorageProperties(templateId, boxValArray);
+		
+			$(boxValArray['box1']['id']).resizable({
+				containment: parent,
+				handles: "e",
+				resize: function(e, ui){
+					
+					alignBoxesWidth(boxValArray, 1, 2);
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+				
+				}
+			});
+		
+		}else if(templateId == 2){
+		
+			getLocalStorageProperties(templateId, boxValArray);
+			
+			$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			resize: function(e, ui){
+				
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
+				$(boxValArray['box1']['id']).width("100%");
 			},
 			stop: function(e, ui) {
+				 
 				setLocalStorageProperties(templateId, boxValArray);
+				 
 			}
-		});
-	
-	}else if(templateId == 3){
-	
-		getLocalStorageProperties(templateId);
+			
+			});
 		
-		//Used to remove gap provided by percentage based positioning.
-		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-		alignBoxesHeight2boxes(boxValArray, 2, 3);
+		}else if(templateId == 3){
 		
-		$(boxValArray['box1']['id']).resizable({
+			getLocalStorageProperties(templateId, boxValArray);
+			
+			$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
 			resize: function(e, ui){
+				
 				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+				$("#box2wrapper").css("left", ""); 
+				$("#box1wrapper").css("height", "100%");
 			},
 			stop: function(e, ui) {
+				 
 				setLocalStorageProperties(templateId, boxValArray);
+				
+				
 			}
-		});
-		
-		$(boxValArray['box2']['id']).resizable({
+			
+			});
+			
+			$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			resize: function(e, ui){
+				
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
+				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
+				 
 				setLocalStorageProperties(templateId, boxValArray);
+				
 			}
-		});
-	
-	}else if(templateId == 4){
-		getLocalStorageProperties(templateId);
+			
+			});
 		
-		//Used to remove gap provided by percentage based positioning.
-		alignBoxesWidth(boxValArray, 1, 2);
-		alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-	
-		$(boxValArray['box1']['id']).resizable({
+		
+		}else if(templateId == 4){
+		
+			getLocalStorageProperties(templateId, boxValArray);
+		
+		
+			$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
 			resize: function(e, ui){
+				
+
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
+				 
 				setLocalStorageProperties(templateId, boxValArray);
+				 
 			}
-		});
-		
-		$(boxValArray['box2']['id']).resizable({
+			
+			});
+			
+			$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			resize: function(e, ui){
+				
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 				alignBoxesWidth(boxValArray, 2, 1);
+				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
+				 
 				setLocalStorageProperties(templateId, boxValArray);
+				 
 			}
-		});
+			
+			});
+			
+		}else if(templateId == 5){
 		
-	}else if(templateId == 5){
-	
-		getLocalStorageProperties(templateId);
+			getLocalStorageProperties(templateId, boxValArray);
+			
 		
-		//Used to remove gap provided by percentage based positioning.
-		alignBoxesWidth(boxValArray, 1, 2);
-		alignBoxesHeight4boxes(boxValArray, 1, 2);
-		alignBoxesWidth(boxValArray, 3, 4);
-	
-		$(boxValArray['box1']['id']).resizable({
+			$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight4boxes(boxValArray, 1, 2);
+				$("#box2wrapper").css("left", " ");
+
 			},
 			stop: function(e, ui) {
+				 
 				setLocalStorageProperties(templateId, boxValArray);
+				 
 			}
-		});
-		
-		$(boxValArray['box2']['id']).resizable({
+			
+			});
+			
+			$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			resize: function(e, ui){
+				
 				alignBoxesHeight4boxes(boxValArray, 2, 1);
+				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
+				 
 				setLocalStorageProperties(templateId, boxValArray);
+				 
 			}
-		});
-		
-		$(boxValArray['box3']['id']).resizable({
+			
+			});
+			
+			$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e",
 			resize: function(e, ui){
+			
 				alignBoxesWidth(boxValArray, 3, 4);
+				
 			},
 			stop: function(e, ui) {
+				 
 				setLocalStorageProperties(templateId, boxValArray);
+				 
 			}
-		});
-	}
-};
+			});
 
-//width adjustment for template(1,4)
-function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign){
-	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+		}
+		
+		
+		
+	};
+	
+	//width adjustment for template(1,3) (Two boxes beside eachother.)
+	function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign){
+					
+					
+					var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+					
+					//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+					$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
+					$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+					
+					var remainWidthPer = (remainWidth/boxValArray['parent']['width'])*100;
+					var basePer = 100 - remainWidthPer;
+					
+					$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+					$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+					
+					boxValArray['box' + boxNumBase]['width'] = basePer;
+					boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
+					
+					
+		
+	}
+	
+	//width adjustment for template 3. 
+	function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
+					
+					var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+					
+					
+					var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+					var basePer = 100 - remainWidthPer;
+					
+					
+					$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+					//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+					$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
+					$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+					
+					
+					$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+					$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
+					
+					boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+					boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+					boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+					
+	}
+	
+	
+	//Height adjustment for two boxes on top of eachother.
+	function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame){
+		
+					var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+					var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+					
+					var basePer = 100-remainHeightPer;
+					
+					
+					$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+					$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
+					
+					
+					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+					boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 				
-	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-	//Worth noting that these bugs may be temporary ones caused by multi user tinkering in the system. And the fixes may not be needed later on.
-	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
-	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+	}
+	
+	//Height adjustment for boxes in template 4. (Two small boxes ontop of a big box.)
+	function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig){
+		
+					var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+					
+					var remainHeightPer = (remainHeight / boxValArray['parent']['height'])*100;
+					
+					var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height'])*100;
+					
+					$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
+					$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
+					$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
+					
 			
-	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
-	
-}
-
-//width adjustment for template(1,3)
-function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
-				
-	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-				
-	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
-	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-	$(boxValArray['box' + boxNumBase]['id']).css("height", "100%");
-				
-	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
-				
-	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidth);
-	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidth);
-	
-}
-
-//Height adjustment for boxes in template 2.
-function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame){
-	
-	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-				
-	$(boxValArray['box' + boxNumSame]['id']).height(remainHeight);
-	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-}
-
-//Height adjustment for boxes in template 3.
-function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig){
-	
-	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-				
-	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-	boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
-				
-				
-	$(boxValArray['box' + boxNumSame]['id']).height(boxValArray['box' + boxNumBase]['height']);
-	$(boxValArray['box' + boxNumBig]['id']).height(remainHeight);
-	
-}
-
-//Height adjustment for boxes in template 5.
-function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame){
-	
-	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-				
-	$(boxValArray['box' + boxNumSame]['id']).height($(boxValArray['box' + boxNumBase]['id']).height());
-	$(boxValArray['box3']['id']).height(remainHeight);
-	$(boxValArray['box4']['id']).height(remainHeight);
-				
-	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
-	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
-		
-}
-
-//Creates an array with all the properties needed for resize function.
-function initResizableBoxValues(parent){
-
-	var parentWidth = $(parent).width();
-	var parentHeight = $(parent).height();
-	var boxwidth;
-	var boxheight;
-	var boxId;
-	
-	var numBoxes = $("[id ^=box][id $=wrapper]").length;
-	
-	var boxValueArray = new Array();
-	boxValueArray["parent"] = {"width": parentWidth, "height": parentHeight};
-	
-	for (var i = 1; i <= numBoxes; i++) {
-		boxWidth = $("#box" + i + "wrapper").width();
-		boxHeight = $("#box" + i + "wrapper").height();
-		boxId = "#box" + i + "wrapper";
-		boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
-	}
-	
-	return boxValueArray;
-}	
-
-//Saves the measurments in percent for the boxes on the screen in local storage.
-function setLocalStorageProperties(templateId, boxValArray){
-
-	var numBoxes = $("[id ^=box][id $=wrapper]").length;
-	var widthPer;
-	var heightPer;
-	
-	for(var i = 1; i <= numBoxes; i++){
-		
-		widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) *100;
-		heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) *100;
-		
-		widthPer = Math.floor(widthPer, 100);
-		heightPer = Math.floor(heightPer, 100);
-		
-		localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
-		localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
+					
+					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+					boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+					boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
+					
 		
 	}
-}
-
-//Gets box measurments from localstorage and applies them onto the boxes on screen.
-//This is done preinit of boxValArray, so that the init of that array gets these values.
-function getLocalStorageProperties(templateId){
 	
-	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	
-	for(var i = 1; i <= numBoxes; i++){
-	
-		if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null){
+	//Height adjustment for boxes in template 5.
+	function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame){
+		
+					var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+					
+					var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+					var basePer = 100 - remainHeightPer;
+					
+					$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+					$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
+					$(boxValArray['box3']['id']).height(remainHeightPer + "%");
+					$(boxValArray['box4']['id']).height(remainHeightPer + "%");
+					
+					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+					boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+					boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
+					boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
 			
-			$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
-			$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
+	}
+	
+	
+	//Creates an array with all the properties needed for resize function.
+	function initResizableBoxValues(parent){
+	
+		var parentWidth = $(parent).width();
+		var parentHeight = $(parent).height();
+		var boxwidth;
+		var boxheight;
+		var boxId;
+		
+		var numBoxes = $("[id ^=box][id $=wrapper]").length;
+		
+		var boxValueArray = new Array();
+		boxValueArray["parent"] = {"id": parent, "width": parentWidth, "height": parentHeight};
+		
+		for (var i = 1; i <= numBoxes; i++) {
+			boxWidth = $("#box" + i + "wrapper").width();
+			boxHeight = $("#box" + i + "wrapper").height();
+			boxId = "#box" + i + "wrapper";
+			boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
+			console.log("boxId " + boxValueArray["box" + i]["id"] + " boxWidth: " + boxValueArray["box" + i]["width"] + " boxHeight: " + boxValueArray["box" + i]["height"]);
+		}
+		
+		$(window).resize(function(event){
+			
+			 if (!$(event.target).hasClass('ui-resizable')) {
+				
+				boxValueArray['parent']['height'] = $(parent).height();
+				boxValueArray['parent']['width'] = $(parent).width();
+				
+			}
+			
+		}); 
+		
+		return boxValueArray;
+	}
+	
+	
+	
+	
+	//Saves the measurments in percent for the boxes on the screen in local storage.
+	function setLocalStorageProperties(templateId, boxValArray){
+	
+		var numBoxes = $("[id ^=box][id $=wrapper]").length;
+		
+		var widthPer;
+		var heightPer;
+		
+		for(var i = 1; i <= numBoxes; i++){
+			
+		
+			boxValArray['box' + i]['width'] = $(boxValArray['box' + i]['id']).width();
+			boxValArray['box' + i]['height'] = $(boxValArray['box' + i]['id']).height();
+			
+			widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) *100;
+			heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) *100;
+			
+			widthPer = Math.floor(widthPer, 100);
+			heightPer = Math.floor(heightPer, 100);
+			
+			localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
+			localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
 			
 		}
+		
+		setResizableToPer(boxValArray);
+		
 	}
-}
+
+	
+	//Gets box measurments from localstorage and applies them onto the boxes on screen.
+	//This is done preinit of boxValArray, so that the init of that array gets these values.
+	function getLocalStorageProperties(templateId, boxValArray){
+		
+		var numBoxes = $("[id ^=box][id $=wrapper]").length;
+		
+		for(var i = 1; i <= numBoxes; i++){
+			
+			if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null){
+				
+				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
+				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
+				
+				erasePercentGap(templateId, boxValArray);
+				
+			}
+		}
+	}
+	
+	//removes percentage based gap
+	function erasePercentGap(templateId, boxValArray){
+	
+		if(templateId == 1){
+		
+			alignBoxesWidth(boxValArray, 1, 2);
+		
+		}else if(templateId == 2){
+		
+			alignBoxesHeight2boxes(boxValArray, 1, 2);
+		
+		}else if(templateId == 3){
+		
+			alignBoxesHeight2boxes(boxValArray, 2, 3);
+			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+		
+		}else if(templateId == 4){
+		
+			alignBoxesWidth(boxValArray, 1, 2);
+			alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+		
+		}else if(templateId == 5){
+		
+			alignBoxesWidth(boxValArray, 1, 2);
+			alignBoxesWidth(boxValArray, 3, 4);
+			alignBoxesHeight4boxes(boxValArray, 1, 2);
+		
+		}
+	
+	
+	}
+	
+	//Solves problem of how resizable ui component only work with pixel based positioning.
+	function setResizableToPer(boxValArray){
+		
+		$("[class ^=ui][class $=resizable]").each(function( index ) {
+			
+			var elemWidth =  $(this).width();
+			var elemHeight = $(this).height();
+			alert("hello");
+			var newWidth = (elemWidth / ($(boxValArray['parent']['id']).width()))* 100;
+			var newHeight = (elemHeight / ($(boxValArray['parent']['id']).height())) * 100;
+			
+			$(this).height(newHeight + "%");
+			$(this).width(newWidth + "%");
+			
+			
+		});
+	}
 
 /********************************************************************************
 
@@ -1684,24 +1975,45 @@ function getLocalStorageProperties(templateId){
 
 *********************************************************************************/
 //----------------------------------------------------------------------------------
-// parseMarkdown: Translates markdown symbols to html tags.
+// parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
+//				  function replace with regular expressions.
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {	
-	var returnString = " ";							
+	var removeExtraTagsNumberedList = new RegExp('</ol>' + '\n' + '<ol>', 'g');
+	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
+	
+	//Regular expressions for italics and bold formatting
 	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
 	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
 	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<font style="font-style:italic;">$1</font>');
 	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
 	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<font style="font-weight:bold;">$1</font>');	
 	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<font style="font-style:italic;">$1</font>');
+	
+	//Regular expressions for headings
 	inString = inString.replace(/^\#{6} (.*)=*/gm, '<h6>$1</h6>');
 	inString = inString.replace(/^\#{5} (.*)=*/gm, '<h5>$1</h5>');
 	inString = inString.replace(/^\#{4} (.*)=*/gm, '<h4>$1</h4>');
 	inString = inString.replace(/^\#{3} (.*)=*/gm, '<h3>$1</h3>');
 	inString = inString.replace(/^\#{2} (.*)=*/gm, '<h2>$1</h2>');
 	inString = inString.replace(/^\#{1} (.*)=*/gm, '<h1>$1</h1>');
-	returnString = inString;
-
-	return returnString;
+	
+	//Regular expressions for lists
+	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
+	inString = inString.replace(removeExtraTagsNumberedList, '');
+	inString = inString.replace(/^\s*\-\s(.*)/gm, '<ul><li>$1</li></ul>');
+	inString = inString.replace(removeExtraTagsUnorderedList, '');
+	
+	//Regular expression for line
+	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
+	
+	return inString;
+}
+//----------------------------------------------------------------------------------
+// addHtmlLineBreak: This function will replace all '\n' line breaks in a string
+//					 with <br> tags.
+//----------------------------------------------------------------------------------
+function addHtmlLineBreak(inString){
+	return inString.replace(/\n/g, '<br>'); 
 }

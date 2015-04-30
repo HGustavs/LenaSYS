@@ -13,10 +13,6 @@
 
 #box2wrapper {
     position: absolute;
-    position: absolute;
-    border-left-style: solid;
-    border-left-width: 3px;
-    border-color: #5A5757;
     top: 0px;
     bottom: 0px;
  	width: -moz-calc(75%);
