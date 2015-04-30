@@ -7,7 +7,7 @@
 Example seed
 ---------------------
 	 NB! This dugga requires a png-file corresponding to the specific colors, e.g., color_red.png
-	 Param: {"color":"red","colorname":"R&ouml;d"}
+	 Param: {*color*:*red*,*colorname*:*Röd*}
 	 Answer: Variant
 
 -------------==============######## Documentation End ###########==============-------------
@@ -46,7 +46,7 @@ function returnedDugga(data)
 	if(data['param']=="UNK"){
 			alert("UNKNOWN DUGGA!");
 	}else{
-		retdata=jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
+		retdata=jQuery.parseJSON(data['param'].replace(/\*/g, '"'));
 		$("#fargnamn").html(retdata['colorname']);
 		$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
 		// Add our previous answer
@@ -92,7 +92,7 @@ function saveClick()
 
 function showFacit(param, uanswer, danswer)
 {
-		var p = jQuery.parseJSON(param.replace(/&quot;/g, '"'));
+		var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
 			
 		$("#fargnamn").html(p['colorname']);
 		$("#fargen").attr("src", "templates/color_"+p['color']+".png");
@@ -161,4 +161,12 @@ function setval(sval)
 		$("#"+hc).html(sval);		
 	}
 	$("#pop").css({display:"none"})
+}
+
+//----------------------------------------------------------------------------------
+// show/hide dugga instructions
+//----------------------------------------------------------------------------------
+function toggleInstructions()
+{
+    $(".instructions-content").slideToggle("slow");
 }

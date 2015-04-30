@@ -45,7 +45,7 @@
 					<tr>
 						<td>
 
-							<input type='button' class='submit-button' onclick="processLogin('<?PHP echo $loginvar; ?>');" value='Login'>
+							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
 						
 							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
 

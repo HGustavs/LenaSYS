@@ -20,7 +20,6 @@ function showCreateUsersPopup()
 		$("#createUsers").css("display","block");
 }
 
-
 function hideCreateUsersPopup()
 {
 		$("#createUsers").css("display","none");
@@ -29,7 +28,6 @@ function hideCreateUsersPopup()
 function changeAccess(cid,uid,val)
 {
 		AJAXService("ACCESS",{cid:cid,uid:uid,val:val},"ACCESS");
-
 }
 
 function selectUser(uid,username,ssn,firstname,lastname,access)
@@ -85,7 +83,6 @@ function returnedAccess(data)
 		str="";
 		if (data['entries'].length > 0) {
 
-			
 				str+="<table class='list'>";
 
 				str+="<tr><th class='first'>Username</th><th>SSN</th><th>First Name</th><th>Last Name</th><th>Modified</th><th>Access</th><th>PW</th><th class='last'>Settings</th></tr>";
@@ -99,12 +96,22 @@ function returnedAccess(data)
 						str+="<td>"+item['modified'].substr(0,10)+"</td>";
 						
 						str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
-						if(item['access']=="R") str+="<option selected='selected' value='R'>Student</option>"
-						else str+="<option value='R'>Student</option>";
-						if(item['access']=="W") str+="<option selected='selected' value='W'>Teacher</option>"
-						else str+="<option value='W'>Teacher</option>";									
-						if(item['access']=="N") str+="<option selected='selected' value='N'>None</option>"
-						else str+="<option value='N'>None</option>";
+						
+						if(item['access']=="R"){
+							str+="<option selected='selected' value='R'>Student</option>";
+						}else{
+							str+="<option value='R'>Student</option>";
+						}
+						if(item['access']=="W"){
+							str+="<option selected='selected' value='W'>Teacher</option>";
+						}else{
+							str+="<option value='W'>Teacher</option>";
+						}
+						if(item['access']=="N"){ 
+							str+="<option selected='selected' value='N'>None</option>"
+						}else{ 
+							str+="<option value='N'>None</option>";
+						}
 						str+="</select>";
 
 						str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;'></td>";
@@ -114,16 +121,12 @@ function returnedAccess(data)
 
 						str+="</tr>";
 				}
-
 				str+="</table>";
-
 		}
-
 		var slist=document.getElementById("content");
 		slist.innerHTML=str;
-
+		
 	  if(data['debug']!="NONE!") alert(data['debug']);
-
 }
 
 		

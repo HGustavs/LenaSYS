@@ -48,17 +48,35 @@ if(checklogin()){
 					makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
 					//Seperate timeSpent from $answer
-					$timeSpent = explode("-", $answer)[1];
-					$answer = explode("-", $answer)[0];
+					$temp = explode("-", $answer);
+					$timeSpent = $temp[1];
+					$answer = $temp[0];
 					
-					// Update Dugga!
-					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					// check if the user already has a grade on the assignment
+					$query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
 					$query->bindParam(':moment', $moment);
-					$query->bindParam(':useranswer', $answer);
-					$query->bindParam(':timeSpent', $timeSpent);
+					
+					$query->execute();
+
+					if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+						$grade=$row['grade'];
+					}
+					if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
+						//if grade equal G, VG, 3, 4, 5, or 6
+						$debug="You have already been graded on this assignment";
+					}else{
+						// Update Dugga!
+						$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':coursevers', $coursevers);
+						$query->bindParam(':uid', $userid);
+						$query->bindParam(':moment', $moment);
+						$query->bindParam(':useranswer', $answer);
+						$query->bindParam(':timeSpent', $timeSpent);
+					}
 					
 					if(!$query->execute()) {
 						$debug="Error updating answer";
@@ -129,10 +147,11 @@ if($hr&&$userid!="UNK"){
 						$savedvariant=$newvariant;
 
 		}else if(($savedvariant=="UNK")&&($newvariant!="")){
-						$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,moment,vers,variant) VALUES(:uid,:cid,:moment,:coursevers,:variant);");
+						$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':coursevers', $coursevers);
 						$query->bindParam(':uid', $userid);
+						$query->bindParam(':did', $duggaid);
 						$query->bindParam(':moment', $moment);
 						$query->bindParam(':variant', $newvariant);
 						if(!$query->execute()) {
