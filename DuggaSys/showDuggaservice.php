@@ -52,14 +52,31 @@ if(checklogin()){
 					$timeSpent = $temp[1];
 					$answer = $temp[0];
 					
-					// Update Dugga!
-					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					// check if the user already has a grade on the assignment
+					$query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
 					$query->bindParam(':moment', $moment);
-					$query->bindParam(':useranswer', $answer);
-					$query->bindParam(':timeSpent', $timeSpent);
+					
+					$query->execute();
+
+					if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+						$grade=$row['grade'];
+					}
+					if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
+						//if grade equal G, VG, 3, 4, 5, or 6
+						$debug="You have already been graded on this assignment";
+					}else{
+						// Update Dugga!
+						$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':coursevers', $coursevers);
+						$query->bindParam(':uid', $userid);
+						$query->bindParam(':moment', $moment);
+						$query->bindParam(':useranswer', $answer);
+						$query->bindParam(':timeSpent', $timeSpent);
+					}
 					
 					if(!$query->execute()) {
 						$debug="Error updating answer";
