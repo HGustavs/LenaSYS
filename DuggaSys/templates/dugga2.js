@@ -162,3 +162,11 @@ function setval(sval)
 	}
 	$("#pop").css({display:"none"})
 }
+
+//----------------------------------------------------------------------------------
+// show/hide dugga instructions
+//----------------------------------------------------------------------------------
+function toggleInstructions()
+{
+    $(".instructions-content").slideToggle("slow");
+}
