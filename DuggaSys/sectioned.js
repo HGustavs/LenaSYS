@@ -474,7 +474,7 @@ function returnedSection(data)
 		}else{
 			// No items were returned! 
 			str+="<div class='bigg'>";
-			str+="<span>There is currently no content in this course</span>";
+			str+="<span>You don't have access to this course</span>";
 			str+="</div>";
 		}
 					
