@@ -67,8 +67,7 @@ if(checklogin()){
 					if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
 						//if grade equal G, VG, 3, 4, 5, or 6
 					$debug="You have already been graded on this assignment";
-					}
-					else{
+					}else{
 						// Update Dugga!
 						$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 						$query->bindParam(':cid', $courseid);
