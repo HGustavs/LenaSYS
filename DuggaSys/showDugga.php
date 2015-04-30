@@ -78,7 +78,7 @@
 							echo "<script src='templates/".$duggafile.".js'></script>";
 
 							echo "</head>";
-							echo "<body onload='readDugga();setup();'>";
+							echo "<body onload='setup();'>";
 
 					}else{
 							echo "</head>";

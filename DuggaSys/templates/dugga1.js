@@ -35,6 +35,8 @@ function setup()
 		$('.hexo').click(function(){
 				hexClick(this.id);
 		});
+
+		AJAXService("GETPARAM",{ },"PDUGGA");
 }
 
 //----------------------------------------------------------------------------------
