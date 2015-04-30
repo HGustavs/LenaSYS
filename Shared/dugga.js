@@ -226,12 +226,13 @@ function AJAXService(opt,apara,kind)
 				if(old != apara[key]) {
 					alert("Illegal characters removed in " + key);
 				}
-				// Informs the user that his input contained nothing.
-				if(apara[key] == "") {
-					alert("Your input contained nothing in " + key);
-				}	
+					
 				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));		
 			}
+		}
+		// Informs the user that his input contained nothing.
+		if(apara[key] == "") {
+			alert("Your input contained nothing in " + key);
 		}
 	}
 	
