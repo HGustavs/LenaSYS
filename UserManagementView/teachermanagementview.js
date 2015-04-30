@@ -131,7 +131,7 @@ function renderView(data)
 	}
 	
 	if(studentlist.length == 0) {
-		htmlStr = "<div id='no_page'><h2>NO STUDENTS FOUND THAT ARE REGISTERED TO THIS COURSE</h2></div>";
+		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
 	}
 	
 	var studentView = document.getElementById("studentslist");
