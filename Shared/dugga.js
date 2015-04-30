@@ -88,7 +88,6 @@ function randomstring()
 
 function saveDuggaResult(citstr)
 {
-	console.log(timeSpent);
 		citstr=querystring['moment']+" "+citstr;
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;

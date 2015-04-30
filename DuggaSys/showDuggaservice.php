@@ -147,10 +147,11 @@ if($hr&&$userid!="UNK"){
 						$savedvariant=$newvariant;
 
 		}else if(($savedvariant=="UNK")&&($newvariant!="")){
-						$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,moment,vers,variant) VALUES(:uid,:cid,:moment,:coursevers,:variant);");
+						$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
 						$query->bindParam(':cid', $courseid);
 						$query->bindParam(':coursevers', $coursevers);
 						$query->bindParam(':uid', $userid);
+						$query->bindParam(':did', $duggaid);
 						$query->bindParam(':moment', $moment);
 						$query->bindParam(':variant', $newvariant);
 						if(!$query->execute()) {
