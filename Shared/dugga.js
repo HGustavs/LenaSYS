@@ -88,11 +88,10 @@ function randomstring()
 
 function saveDuggaResult(citstr)
 {
-	console.log(timeSpent);
 		citstr=querystring['moment']+" "+citstr;
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
-		citstr= citstr + "-" + timeSpent;
+		citstr= citstr + "-" + timeSpent
 		
 		hexstr="";
 		for(i=0;i<citstr.length;i++){
@@ -105,6 +104,7 @@ function saveDuggaResult(citstr)
 		document.getElementById('receipt').value = hexstr;
 		document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 		showReceiptPopup();
+		console.log(citstr);
 }
 
 function readDugga()
