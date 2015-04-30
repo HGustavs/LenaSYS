@@ -220,19 +220,13 @@ function AJAXService(opt,apara,kind)
 						alert("Illegal characters removed in " + key);
 					}
 				}
-				// Informs the user that his input contained nothing.
-				if(apara[key] == "") {
-					alert("Your input contained nothing in " + key);
-				}				
 				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
 		// Informs the user that his input contained nothing.
 		if(apara[key] == "") {
 			alert("Your input contained nothing in " + key);
-		}			
-		para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
-		console.log("Para: " + para);
+		}					
 	}
 				
 	if(kind=="COURSE"){
