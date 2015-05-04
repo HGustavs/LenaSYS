@@ -91,7 +91,6 @@
 	margin-top:-40px;
 	position:absolute;	
 }
-
 	.searchfieldTV input{
 		width: 70%;
 		height: 25px;
@@ -103,11 +102,9 @@
 		border-bottom-left-radius:0.5em;
 		box-shadow: inset 2px 2px 5px #A9A;
 	}
-
 	.searchfieldTV input[type=text]:focus{
 		box-shadow: inset 2px 2px 5px #988a98;
 	}
-
 	.searchfieldTV .button{
 		border:none;
 		height:23px;
@@ -122,7 +119,6 @@
 		border-top-right-radius:0.5em;
 		border-bottom-right-radius:0.5em;
 	}
-
 		.searchfieldTV .button:hover{
 			cursor:pointer;
 			background-color:#927B9E;
@@ -154,6 +150,10 @@
 		margin-right:15px;
 		cursor:pointer;
 	}
+	#radio_buttonToolbar span{
+		position: relative;
+		bottom: 2px;
+	}
 	#radio_buttonToolbar input[type=radio] {
     	display:none;
 	}
@@ -166,24 +166,15 @@
 	#radio_buttonToolbar input[type=radio] + label:before {
 		content: "";  
 		display: inline-block;  
-		width: 12px;  
-		height: 12px;  
-		vertical-align:middle;
-		margin-right: 8px;  
-		background-color: #fff;  
-		border-radius: 8px;  
-		border:#A9A9A9 2px solid;
+		width: 13px;  
+		height: 14px;  
+		margin-right: 6px;
+		background-color:transparent; 
 		cursor:pointer;
+		background-image:url(../img/radiobutton.svg);
 	}
 	#radio_buttonToolbar input[type=radio]:checked + label:before {
-		content: "\2022"; /* Bullet */
-		color:#614875;
-		background-color:#bea8ca;
-		font-size:3em;
-		text-align:center;
-		line-height:11px;
-		border:#614875 2px solid;
-		cursor:pointer;
+		background-image:url(../img/radiobuttonchecked.svg);
 	}
 /*END radiobutton filter*/
 
@@ -203,7 +194,6 @@
 #studentslist{
 	clear:both;
 }
-
 	#studentslist div{
 		display:inline;
 		float:left;
