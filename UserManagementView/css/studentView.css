@@ -48,7 +48,7 @@
 #progressIndicator {
 	width:70px;
 	height:42px;
-	background-image:url(img/indicator.png);
+	background-image:url(../img/indicator.png);
 	background-repeat:no-repeat;
 	float:right;
 	font-size:0.9em;

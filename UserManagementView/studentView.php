@@ -13,16 +13,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>LenaSYS User Editor</title>
 		
-        <link rel="stylesheet" type="text/css" href="progressbar2.css">
+        <link rel="stylesheet" type="text/css" href="css/progressbar2.css">
 		
         <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-		<link href="usermanagementview.css" rel="stylesheet">
-        <link href="usermanagementview_student.css" rel="stylesheet">
+		<link href="css/umv.css" rel="stylesheet">
+        <link href="css/studentView.css" rel="stylesheet">
 		
 		<script src="../Shared/js/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="usermanagementviewjquery.js"></script>
-		<script src="../Shared/dugga.js"></script>
-		<script src="usermanagementview.js"></script>
+        <script src="../Shared/dugga.js"></script>
 	</head>
   
   <body>
@@ -84,6 +82,9 @@
 		</div>
 	
 	</div>
-
+	
+    <script src="js/studentView.js"></script>
+    <script type="text/javascript" src="js/umvjquery.js"></script>
+    
   </body>
 </html>
