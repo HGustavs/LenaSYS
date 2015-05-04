@@ -1,3 +1,9 @@
+/********************************************************************************
+
+   Globals 
+
+*********************************************************************************/
+
 var sessionkind = 0;
 var querystring = parseGet();
 var versions;
@@ -18,12 +24,7 @@ function updateCourse()
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
-	AJAXService("UPDATE", {
-		cid : cid,
-		coursename : coursename,
-		visib : visib,
-		coursecode : coursecode
-	}, "COURSE");
+	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
 }
 
 function closeEditCourse() 
@@ -53,10 +54,7 @@ function createNewCourse()
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
-	AJAXService("NEW", {
-		coursename : coursename,
-		coursecode : coursecode
-	}, "COURSE");
+	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
 function copyVersion() 
@@ -88,11 +86,7 @@ function createVersion()
 	var versname = $("#versname").val();
 	var cid = $("#cid").val();
 
-	AJAXService("NEWVRS", {
-		cid : cid,
-		versid : versid,
-		versname : versname
-	}, "COURSE");
+	AJAXService("NEWVRS", {	cid : cid, versid : versid, versname : versname	}, "COURSE");
 	
 	//resets all inputs
 	resetinputs();
