@@ -154,8 +154,8 @@ function returned(data)
 				//Call the markdown function to parse markdown symbols to html tags
 				desc = parseMarkdown(desc);
 				
-				//Change the '\n' line breaks to <br> tags
-				desc = addHtmlLineBreak(desc);
+				//Add <pre> tags to string to keep line breaks and indentations
+				desc = formatHtml(desc);
 								
 				$("#"+contentid).html(desc);
 
@@ -1970,13 +1970,14 @@ function Play()
 
 /********************************************************************************
 
-   Markdown, the functions in the next section contains the functions used by
-	the markdown parser.
+   Markdown
 
 *********************************************************************************/
 //----------------------------------------------------------------------------------
 // parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
-//				  function replace with regular expressions.
+//				  function replace, to identify markdown symbols regular expressions
+//				  are used. There is a detailed description of the parser 
+//				  in /codeviewer/Documentation/Markdown Manual.pdf.
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {	
@@ -1984,20 +1985,20 @@ function parseMarkdown(inString)
 	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
 	
 	//Regular expressions for italics and bold formatting
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
-	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
-	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<font style="font-style:italic;">$1</font>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
-	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<font style="font-weight:bold;">$1</font>');	
-	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\*{3}(\S.*?\S)\*{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
+	inString = inString.replace(/\*{2}(\S.*?\S)\*{2}/g, '<font style="font-weight:bold;">$1</font>');
+	inString = inString.replace(/\*{1}(\S.*?\S)\*{1}/g, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\_{3}(\S.*?\S)\_{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
+	inString = inString.replace(/\_{2}(\S.*?\S)\_{2}/g, '<font style="font-weight:bold;">$1</font>');	
+	inString = inString.replace(/\_{1}(\S.*?\S)\_{1}/g, '<font style="font-style:italic;">$1</font>');
 	
 	//Regular expressions for headings
-	inString = inString.replace(/^\#{6} (.*)=*/gm, '<h6>$1</h6>');
-	inString = inString.replace(/^\#{5} (.*)=*/gm, '<h5>$1</h5>');
-	inString = inString.replace(/^\#{4} (.*)=*/gm, '<h4>$1</h4>');
-	inString = inString.replace(/^\#{3} (.*)=*/gm, '<h3>$1</h3>');
-	inString = inString.replace(/^\#{2} (.*)=*/gm, '<h2>$1</h2>');
-	inString = inString.replace(/^\#{1} (.*)=*/gm, '<h1>$1</h1>');
+	inString = inString.replace(/^\#{6}\s(.*)/gm, '<h6>$1</h6>');
+	inString = inString.replace(/^\#{5}\s(.*)/gm, '<h5>$1</h5>');
+	inString = inString.replace(/^\#{4}\s(.*)/gm, '<h4>$1</h4>');
+	inString = inString.replace(/^\#{3}\s(.*)/gm, '<h3>$1</h3>');
+	inString = inString.replace(/^\#{2}\s(.*)/gm, '<h2>$1</h2>');
+	inString = inString.replace(/^\#{1}\s(.*)/gm, '<h1>$1</h1>');
 	
 	//Regular expressions for lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
@@ -2006,7 +2007,10 @@ function parseMarkdown(inString)
 	inString = inString.replace(removeExtraTagsUnorderedList, '');
 	
 	//Regular expression for line
-	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
+	inString = inString.replace(/^\-{3}\n/gm, '<hr>');
+	
+	//Regular expression for code blocks
+	inString = inString.replace(/~{3}((?:\r|\n|.)+)\~{3}/g, '<pre><code>$1</code></pre>');
 	
 	//Regular expression for code blocks
 	inString = inString.replace(/~{3}((?:\r|\n|.)+?)\~{3}/gm, '<pre><code>$1</code></pre>');
@@ -2017,6 +2021,6 @@ function parseMarkdown(inString)
 // addHtmlLineBreak: This function will replace all '\n' line breaks in a string
 //					 with <br> tags.
 //----------------------------------------------------------------------------------
-function addHtmlLineBreak(inString){
-	return inString.replace(/\n/g, '<br>'); 
+function formatHtml(inString){
+	return inString = '<pre>' + inString + '</pre>';
 }
