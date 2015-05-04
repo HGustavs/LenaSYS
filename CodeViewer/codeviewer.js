@@ -2010,7 +2010,7 @@ function parseMarkdown(inString)
 	inString = inString.replace(/^\-{3}\n/gm, '<hr>');
 	
 	//Regular expression for code blocks
-	inString = inString.replace(/~{3}((?:\r|\n|.)+?)\~{3}/g, '<pre><code>$1</code></pre>');
+	inString = inString.replace(/~{3}((?:\r|\n|.)+)\~{3}/g, '<pre><code>$1</code></pre>');
 	
 	return inString;
 }
