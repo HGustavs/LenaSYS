@@ -42,7 +42,7 @@ CREATE TABLE course(
 		activeversion 		VARCHAR(8),
 		activeedversion 	VARCHAR(8),
 		capacity			int(5),
-		hp					decimal(2,1) not null,
+		hp					decimal(4,1) not null,
 		courseHttpPage		varchar(2000),
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
