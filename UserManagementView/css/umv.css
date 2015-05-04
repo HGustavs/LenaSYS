@@ -1,5 +1,5 @@
 
-/* The big wrapper */
+/* Main wrapper */
 #contentUMV {
 	height: 100%;
 	position:absolute;
@@ -14,7 +14,7 @@
 	border-bottom:none;
 }
 
-/* Dropdownmenu at the top of the page to the right */
+/* Dropdown menu UMV  */
 .rightDropdownMenu {
 	float:right;
 	margin-right:25px;
@@ -80,16 +80,18 @@
 		border-top:1px solid #857090;
 		box-shadow: -1px 5px 5px #A9A;
 	}
+/*END dropdown menu*/
 
-/* Searchfield */
+
+/* Searchfield UMV */
 .searchfieldTV{
 	font-family: Calibri,sans-serif;
 	width: 35%; 
 	margin-left:25px;
 	margin-top:-40px;
-	position:absolute;
-	
+	position:absolute;	
 }
+
 	.searchfieldTV input{
 		width: 70%;
 		height: 25px;
@@ -101,9 +103,11 @@
 		border-bottom-left-radius:0.5em;
 		box-shadow: inset 2px 2px 5px #A9A;
 	}
+
 	.searchfieldTV input[type=text]:focus{
 		box-shadow: inset 2px 2px 5px #988a98;
 	}
+
 	.searchfieldTV .button{
 		border:none;
 		height:23px;
@@ -118,16 +122,19 @@
 		border-top-right-radius:0.5em;
 		border-bottom-right-radius:0.5em;
 	}
+
 		.searchfieldTV .button:hover{
 			cursor:pointer;
 			background-color:#927B9E;
 		}
 
-/* Title of program */		
+
+/* Program title style */		
 .programName{
 	width:500px;
 	margin:0 auto;
 }
+
 	.programName h2{
 		text-align:center;
 		margin-top:15px;
@@ -136,6 +143,7 @@
 		color:#614875;
 	}
 	
+/* Radiobutton filter */
 #radio_buttonToolbar{
 	height:30px;
 	font-size:0.7em;
@@ -177,28 +185,35 @@
 		border:#614875 2px solid;
 		cursor:pointer;
 	}
+/*END radiobutton filter*/
 
-	
-/* View over the students how are going that program/course */
+
+/* Wrapper for studentlist and filter function */
 .totalInfo{
 	width: 95%;
 	margin:0 auto;
 }
+
+/* View style for students of a specific course/program */
 .studentInfoWrapper{
 	clear:both;
 	width: 100%; 
 }
+
 #studentslist{
 	clear:both;
 }
+
 	#studentslist div{
 		display:inline;
 		float:left;
 	}
+
 .studentInfo{
 	width: 100%; 
 	font-size:0.7em;
 }
+
 .student{
 	width: 35%; 
 	background-color:#614875;
@@ -206,17 +221,21 @@
 	
 	padding:5px 10px;
 }
+
 .odd{ 
 	background-color:#fff;
 	color:#614875;
 }
+
 .student_name{
 	width: 30%; 
 	margin-right:8px;
 }
+
 .student_ssn{
 	margin-right:8px;
 }
+
 .student_username{
 	margin-right:8px;
 }
@@ -231,6 +250,7 @@
 	border:1px solid #A9A9A9;
 	padding:5px;
 }
+
 .progress_course_total{
 	margin-right:1%;
 	border:1px solid #A9A9A9;
@@ -238,9 +258,11 @@
 	height:10%;
 	border-radius:0.3em;
 }
+
 .progress_course{
 	height:1.5em;
 }
+
 .progress_course p{
 	visibility:hidden;
 	margin-left:2px;
@@ -248,12 +270,13 @@
 	font-size:0.8em;
 	position:absolute;
 }
+
 .progress_course_total:hover p{
 	visibility:visible;
 	cursor:default;
 }
 
-/* Change pages */
+/* Site list nav at bottom of page */
 .changePages{
 	width:190px;
 	height:25px;
@@ -263,9 +286,11 @@
 	padding-top:30px;
 	clear:both;
 }
+
 	.changePages p{
 		float:left;
 	}
+
 	.changePages div{
 		margin-left:10px;
 		padding:3px 8px;
@@ -274,11 +299,14 @@
 		float:left;
 		border-radius:0.5em;
 	}
+
 		.changePages div:hover{
 			cursor:pointer;
 			color:#fff;
 			background-color:#614875;
 		}
+
+/* Next page icon for list nav */
 #nextPage{
 	display:inline;
 	border:none;
@@ -288,11 +316,13 @@
 	font-size:1.2em;
 	margin-left:5px;
 }
+
 	#nextPage:hover{
 		cursor:pointer;
 		background-color:#fff;
 		color:#614875;
 	}
+/* END list nav */
 	
 .my-pull-left {
 	float: left;
@@ -314,6 +344,7 @@
    clear: both;
 }
 
+/* Style fix for no_page error msg */
 #no_page h2 {
 	text-transform:lowercase !important;
 	font-size:1em;
