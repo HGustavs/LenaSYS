@@ -16,13 +16,10 @@
         <title>LenaSYS User Editor</title>
         
         <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-        <link href="usermanagementview.css" rel="stylesheet">
+        <link href="css/umv.css" rel="stylesheet">
         
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-
-        <script type="text/javascript" src="usermanagementviewjquery.js"></script>
         <script type="text/javascript" src="../Shared/dugga.js"></script>
-        <script src="teachermanagementview.js"></script>
     </head>
 
 <body>
@@ -98,7 +95,8 @@
        
 	</div>
 
-
+    <script src="js/teacherView.js"></script>
+    <script type="text/javascript" src="js/umvjquery.js"></script>
 
 </body>
 
