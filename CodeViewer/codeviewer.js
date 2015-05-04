@@ -22,14 +22,12 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 *********************************************************************************/
 
-var retdata;
+var retData;				// Data returned from setup
 var tokens = [];            // Array to hold the tokens.
-var dmd=0;
-var isdropped=false;
+var dmd=0;					// Variable used to determine forward/backward skipping with the forward/backward buttons
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";				
 var querystring = parseGet();
-var filez;
 
 /********************************************************************************
 
@@ -55,62 +53,64 @@ function setup()
 }
 
 //---------------------------------------------------------------------------------------------------
-// Renderer
+// returned: Fetches returned data from all sources
+//                Is called by [this function] in [this file]
 //---------------------------------------------------------------------------------------------------
 
 function returned(data)
 {	
-	retdata=data;
-	console.log(retdata);
+	retData=data;
+	console.log(retData);
+	
 	// Hide and show before/after button
-
-	if(retdata['before'].value!=null&&retdata['after'].value!=null){
-		if(retdata['before'].length==0){
+	if(retData['before'].value!=null&&retData['after'].value!=null){
+		if(retData['before'].length==0){
 			$("#beforebutton").css("visibility","hidden");
 		}else{
 			$("#beforebutton").css("visibility","none");		
 		}
-		if(retdata['after'].length==0){
+		if(retData['after'].length==0){
 			$("#afterbutton").css("visibility","hidden");
 		}else{
 			$("#afterbutton").css("visibility","none");	
 		}
 	}
 	// Fill Section Name and Example Name
-	var examplenme=document.getElementById('exampleName');
-	examplenme.innerHTML=data['examplename'];
-	var examplesect=document.getElementById("exampleSection");
-	examplesect.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
+	var exName=document.getElementById('exampleName');
+	exName.innerHTML=data['examplename'];
+	var exSection=document.getElementById('exampleSection');
+	exSection.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
 
-	if(retdata['debug']!="NONE!") alert(retdata['debug']);
+	if(retData['debug']!="NONE!") alert(retData['debug']);
 
-	if(retdata['writeaccess'] == "w"){
-		// If write access show settings cog wheel.
-	}
-	
-	// User can choose template if no template has been choosen and the user has write access.
-	if((retdata['templateid'] == 0)){
-		if(retdata['writeaccess'] == "w"){
+	// User can choose template if no template has been chosen and the user has write access.
+	if((retData['templateid'] == 0)){
+		if(retData['writeaccess'] == "w"){
+			alert("A template has not been chosen for this example, please choose one");
 			$("#chooseTemplate").css("display","block");
 			return;
 		}else{
-			/* Create an error message to user or send user back to duggasys */
+			alert("There is no template and you do not have the access rights to change this");
 			return;
 		}
 	}
-	
-	// If there is a template
-	changeCSS("../Shared/css/"+retdata['stylesheet']);
+	changeCSS("../Shared/css/"+retData['stylesheet']);
 
 	// Clear div2
 	$("#div2").html("");
-	// create boxes
-	for(var i=0;i<retdata['numbox'];i++){
-		var contentid="box"+retdata['box'][i][0];
-		var boxid=retdata['box'][i][0];
-		var boxtype=retdata['box'][i][1].toUpperCase();
-		var boxcontent=retdata['box'][i][2];
-		var boxwordlist=retdata['box'][i][3];
+	
+	// Possible crash warning if returned number of boxes is wrong
+	if(retData['numbox']==0 || retData['numbox']==null){
+		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
+	}
+	// Create boxes
+	for(var i=0;i<retData['numbox'];i++){
+		var contentid="box"+retData['box'][i][0];
+		var boxid=retData['box'][i][0];
+		var boxtype=retData['box'][i][1].toUpperCase();
+		var boxcontent=retData['box'][i][2];
+		var boxwordlist=retData['box'][i][3];
+		var boxmenuheight = 0;
 	
 		// don't create templatebox if it already exists
 		if(!document.getElementById(contentid)){
@@ -122,72 +122,66 @@ function returned(data)
 			document.getElementById(contentid).removeAttribute("contenteditable");
 			$("#"+contentid).removeClass("descbox").addClass("codebox");
 			createboxmenu(contentid,boxid,boxtype);
-
+			
 			// Make room for the menu by setting padding-top equal to height of menubox
-			// For some reason without this fix the code box is placed at same height as the menu, obstructing first lines of the code
+			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
+			// Setting boxmenuheight to 0, possible cause to example malfunction? 
 			if($("#"+contentid+"menu").height() == null){
-				var boxmenuheight = 0;
+				boxmenuheight = 0;
 			}else{
-				var boxmenuheight= $("#"+contentid+"menu").height();
+				boxmenuheight= $("#"+contentid+"menu").height();
 			}
 			$("#"+contentid).css("margin-top", boxmenuheight-1);
+			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
+			// Render code
 			rendercode(boxcontent,boxid,boxwordlist);
 		}else if(boxtype == "DOCUMENT"){
-				// Print out description in a document box
-				$("#"+contentid).removeClass("codebox").addClass("descbox");
-				var desc = boxcontent;
-				desc = replaceAll("&nbsp;"," ",desc);
-				
-				// Highlight important words!
-				var iwcounter=0;
-				important = retdata.impwords;
-				for(j=0;j<important.length;j++){
-					var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
-					desc=replaceAll(important[j],sstr,desc);
-				}
-				
-				/* Assign Content */
-				//Remove html tags since only markdown should be allowed		
-				desc = dehtmlify(desc, true, 0);
-				
-				//Call the markdown function to parse markdown symbols to html tags
-				desc = parseMarkdown(desc);
-				
-				//Change the '\n' line breaks to <br> tags
-				desc = addHtmlLineBreak(desc);
-								
-				$("#"+contentid).html(desc);
-
-				if($("#"+contentid+"menu").height() == null){
-					var boxmenuheight = 0;
-				}else{
-					var boxmenuheight= $("#"+contentid+"menu").height();
-				}
-				$("#"+contentid).css("margin-top", boxmenuheight);
-				createboxmenu(contentid,boxid,boxtype);
-				
-				if($("#"+contentid+"menu").height() == null){
-					var boxmenuheight = 0;
-				}else{
-					var boxmenuheight= $("#"+contentid+"menu").height();
-				}
-				$("#"+contentid).css("margin-top", boxmenuheight);
+			// Print out description in a document box
+			$("#"+contentid).removeClass("codebox").addClass("descbox");
+			var desc = boxcontent;
+			desc = replaceAll("&nbsp;"," ",desc);
+			
+			// Highlight important words
+			important = retData.impwords;
+			for(j=0;j<important.length;j++){
+				var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+				desc=replaceAll(important[j],sstr,desc);
+			}
+			/* Assign Content */
+			//Remove html tags since only markdown should be allowed		
+			desc = dehtmlify(desc, true, 0);
+			//Call the markdown function to parse markdown symbols to html tags
+			desc = parseMarkdown(desc);
+			//Change the '\n' line breaks to <br> tags
+			desc = addHtmlLineBreak(desc);
+			
+			$("#"+contentid).html(desc);			
+			$("#"+contentid).css("margin-top", boxmenuheight);
+			createboxmenu(contentid,boxid,boxtype);
+			// Make room for the menu by setting padding-top equals to height of menubox
+			if($("#"+contentid+"menu").height() == null){
+				boxmenuheight = 0;
+			}else{
+				boxmenuheight= $("#"+contentid+"menu").height();
+			}
+			$("#"+contentid).css("margin-top", boxmenuheight);
 		}else if(boxtype == "NOT DEFINED"){
-			if(retdata['writeaccess'] == "w"){
+			if(retData['writeaccess'] == "w"){
 				createboxmenu(contentid,boxid,boxtype);
 				// Make room for the menu by setting padding-top equals to height of menubox
 				if($("#"+contentid+"menu").height() == null){
-					var boxmenuheight = 0;
+					boxmenuheight = 0;
 				}else{
-					var boxmenuheight= $("#"+contentid+"menu").height();
+					boxmenuheight= $("#"+contentid+"menu").height();
 				}
 				$("#"+contentid).css("margin-top", boxmenuheight);
 			}
 		}
 	}
-	//CALL resizeBoxes here!
-	resizeBoxes("#div2", retdata["templateid"]);
+	// Allows resizing of boxes on the page
+	resizeBoxes("#div2", retData["templateid"]);
+	//$("#box1").append("<button onclick=''>clickerino</button>");
 }
 
 //---------------------------------------------------------------------------------
@@ -200,9 +194,10 @@ function returned(data)
 // utill "tokenize" functions is called then &#9; is being replaces by 4 spaces. 
 // So the loop will check the whole text the function assign "start" the value of 
 // tabindex so the loop can keep on looking for tabs in the same place where it left off
+//                Is called by returned(data) in codeviewer.js
 //---------------------------------------------------------------------------------
-
-var tabLine = function(text) {
+var tabLine = function(text) 
+{
     var start = 0;
     var tabIndex;
 
@@ -216,11 +211,13 @@ var tabLine = function(text) {
 //----------------------------------------------------------------------------------
 // editImpWords: adds/removes important words to the #impword selectbox
 // and stores each added/removed word in the addedWords array and the removedWords array 
+//                Is called by [this function] in EditorV50.php
 //---------------------------------------------------------------------------------
 var addedWords = [];
 var removedWords = [];
 
-function editImpWords(editType) {
+function editImpWords(editType) 
+{
 	var word = $("#impword").val();
 
 	// word can't contain any whitespaces
@@ -244,43 +241,40 @@ function editImpWords(editType) {
 	}
 }
 
-
 //----------------------------------------------------------------------------------
-// displayEditExample: Displays the dialog box for editing a code example
-//----------------------------------------------------------------------------------
-
+// displayEditExample: Displays the dialogue box for editing a code example
+//                Is called by [this function] in [this file]
+//----------------------------------------------------------------------------------¨
 function displayEditExample(boxid)
 {
-	$("#title").val(retdata['examplename']);
-	$("#secttitle").val(retdata['sectionname']);
-	$("#playlink").val(retdata['playlink']);
+	$("#title").val(retData['examplename']);
+	$("#secttitle").val(retData['sectionname']);
+	$("#playlink").val(retData['playlink']);
 	
-	var iw=retdata['impwords'];
+	var iw=retData['impwords'];
 	var str="";
 	for(var i=0;i<iw.length;i++){
 		str+="<option>"+iw[i]+"</option>";
 	}
 	$("#impwords").html(str);
 
-	// Get the filename for current codebox
-	var bestr="";
-	var afstr="";
-	
 	// Set beforeid and afterid if set
 	var beforeid="UNK";
-	if(retdata['before']!==null){
-		if(retdata['before'].length!==0){
-			beforeid=retdata['before'][0][0];			
+	if(retData['before']!==null){
+		if(retData['before'].length!==0){
+			beforeid=retData['before'][0][0];			
 		}
 	}
 	var afterid="UNK";
-	if(retdata['after']!==null){
-		if(retdata['after'].length!==0){
-			afterid=retdata['after'][0][0];
+	if(retData['after']!==null){
+		if(retData['after'].length!==0){
+			afterid=retData['after'][0][0];
 		}
 	}
-	
-	var ba=retdata['beforeafter'];
+	// Variables used to fetch filename for current codebox
+	var bestr="";
+	var afstr="";
+	var ba=retData['beforeafter'];
 	for(var i=0; i<ba.length; i++){
 		if(ba[i][0] == beforeid){
 			bestr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
@@ -295,29 +289,27 @@ function displayEditExample(boxid)
 	}
 	$("#before").html(bestr);
 	$("#after").html(afstr);
-
 	$("#editExample").css("display","block");
 }
 
 //----------------------------------------------------------------------------------
 // updateExample: Updates example data in the database if changed
+//                Is called by [this function] in [this file]
+//					Used by file EditorV50.php
 //----------------------------------------------------------------------------------
-
 function updateExample()
 {
 	// Set beforeid if set
 	var beforeid="UNK";
-	if(retdata['before'].length!=0){
-		beforeid=retdata['before'][0][0];
+	if(retData['before'].length!=0){
+		beforeid=retData['before'][0][0];
 	}
-
 	var afterid="UNK";
-	if(retdata['after'].length!=0){
-		afterid=retdata['after'][0][0];
+	if(retData['after'].length!=0){
+		afterid=retData['after'][0][0];
 	}
-
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
-	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before option:selected").val()!=beforeid&&beforeid!="UNK")||($("#after option:selected").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retdata['playlink'])||($("#title").val()!=retdata['examplename'])||($("#secttitle").val()!=retdata['sectionname'])){
+	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before option:selected").val()!=beforeid&&beforeid!="UNK")||($("#after option:selected").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retData['playlink'])||($("#title").val()!=retData['examplename'])||($("#secttitle").val()!=retData['sectionname'])){
 		var courseid = querystring['courseid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
@@ -344,21 +336,17 @@ function updateExample()
 		addedWords = [];
 		removedWords = [];
 	}
-
 }
 
 //----------------------------------------------------------------------------------
-// displayEditContent: Displays the dialog box for editing a content pane
+// displayEditContent: Displays the dialogue box for editing a content pane
+//                Is called by createboxmenu in codeviewer.js
 //----------------------------------------------------------------------------------
-
-// Keeps track of the currently open box. Used when saving the box content.
-var openBoxID;
 
 function displayEditContent(boxid)
 {	
-	
-	var box = retdata['box'][boxid-1]; // The information stored about the box
-	openBoxID = boxid;
+	var box = retData['box'][boxid-1]; 	// The information stored about the box is fetched
+	var openBoxID = boxid;				// Keeps track of the currently open box. Used when saving the box content.
 
 	$("#boxtitle").val(box[4]);
 	$("#boxcontent").val(box[1]);  
@@ -367,7 +355,7 @@ function displayEditContent(boxid)
 	
 	$("#filename").val(box[5]);
 
-	var wordl=retdata['wordlists'];
+	var wordl=retData['wordlists'];
 	var str="";
 	for(var i=0;i<wordl.length;i++){
 		str+="<option value='"+wordl[i][0]+"'>"+wordl[i][1]+"</option>";
@@ -376,30 +364,31 @@ function displayEditContent(boxid)
 	$("#wordlist").val(box[3]);
 
 	var str="";
-	for (var i = 0; i < retdata['improws'].length; i++) {
-		if (retdata['improws'][i][0] == boxid) {
-			str+="<option>" + retdata['improws'][i][1] + " - " + retdata['improws'][i][2] + "</option>";
+	for (var i = 0; i < retData['improws'].length; i++) {
+		if (retData['improws'][i][0] == boxid) {
+			str+="<option>" + retData['improws'][i][1] + " - " + retData['improws'][i][2] + "</option>";
 		}
 	};
 	$("#improws").html(str);
-		
 	$("#editContent").css("display","block");
 }
 
 //----------------------------------------------------------------------------------
 // changeDirectory: Changes the directory in which you choose your code or description
 // 					in the Edit Content box.
+//                Is called by [this function] in EditorV50.php
 //----------------------------------------------------------------------------------
 
-function changeDirectory(kind) {
+function changeDirectory(kind) 
+{
 	var dir;
 	var str="";
 
 	if ($(kind).val() == "CODE") {
-		dir = retdata['directory'][0];
+		dir = retData['directory'][0];
 		$('#wordlist').prop('disabled', false);
 	}else if ($(kind).val() == "DOCUMENT") {
-		dir = retdata['directory'][1];
+		dir = retData['directory'][1];
 		$('#wordlist').val('4');
 		$('#wordlist').prop('disabled', 'disabled');
 	}
@@ -413,18 +402,21 @@ function changeDirectory(kind) {
 //----------------------------------------------------------------------------------
 // isNumber: 		returns true: the variable only contains numbers
 //					returns false: the variable is not purely numeric
+//                Is called by editImpRows in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
 
 //----------------------------------------------------------------------------------
 // editImpRows: Adds and removes important rows
+//                Is called by [this function] in EditorV50.php
 //----------------------------------------------------------------------------------
 
 var addedRows = new Array();
 var removedRows = new Array();
 
-function editImpRows(editType) {
+function editImpRows(editType) 
+{
 	var rowFrom = $("#improwfrom").val();
 	var rowTo = $("#improwto").val();
 	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
@@ -450,13 +442,16 @@ function editImpRows(editType) {
 }
 
 //----------------------------------------------------------------------------------
-// updateContent: Updates the box
+// updateContent: Updates the box if changes has been made
+//                Is called by [this function] in [this file]
+//					Used by file EditorV50.php
 //----------------------------------------------------------------------------------
+function updateContent() 
+{
+	var box = retData['box'][openBoxID-1];
 
-function updateContent() {
-	var box = retdata['box'][openBoxID-1];
-
-	// Doesn't work for null values yet. box[3]
+	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
+	// TODO: Handle null values
 	if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 		var boxtitle = $("#boxtitle").val();
 		var boxcontent = $("#boxcontent option:selected").val();
@@ -483,12 +478,13 @@ function updateContent() {
 
 //----------------------------------------------------------------------------------
 // addTemplatebox: Adds a new template box to div2
+//				   Is called by returned(data) in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function addTemplatebox(id)
 {
 	str="<div id='"+id+"wrapper' ";
-	if(id==("box"+retdata['numbox'])){
+	if(id==("box"+retData['numbox'])){
 		str+="class='boxwrapper activebox'>";
 	}else{
 		str+="class='boxwrapper deactivatedbox'>";
@@ -502,44 +498,44 @@ function addTemplatebox(id)
 
 //----------------------------------------------------------------------------------
 // createboxmenu: Creates the menu at the top of a box. 
-//                Is called by returned
+//                Is called by returned(data) in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function createboxmenu(contentid, boxid, type){
+function createboxmenu(contentid, boxid, type)
+{
 	if(!document.getElementById(contentid+"menu")){
 		var boxmenu = document.createElement("div");
 		document.getElementById(contentid+"wrapper").appendChild(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid+"menu");
-		if(retdata['writeaccess'] == "w"){
-			//----------------------------------------------------------------------------------------- DOCUMENT
+		
+		// If reader has write access the settings button is shown along with box title
+		if(retData['writeaccess'] == "w"){
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable">'+retdata['box'][boxid-1][4]+'</span></td>';	
+				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';	
 				str+="</tr></table>";
-				//----------------------------------------------------------------------------------------- END DOCUMENT
 			}else if(type=="CODE"){
-				//----------------------------------------------------------------------------------------- CODE
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+= '<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retdata['box'][boxid-1][4]+'</span></td>';				
-				str+= '</tr></table>';			
+				str+= '<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retData['box'][boxid-1][4]+'</span></td>';				
+				str+= '</tr></table>';
 			}else{
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
 				str+= "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
-					str+= "<option>Choose content</option>";
-						str+= "<option value='CODE'>Code example</option>";
-						str+= "<option value='DOCUMENT'>Description section</option>";
-					str+= "</select>";
+				str+= "<option>Choose content</option>";
+				str+= "<option value='CODE'>Code example</option>";
+				str+= "<option value='DOCUMENT'>Description section</option>";
+				str+= "</select>";
 				str+= '</td></tr></table>';
 			}					
 			boxmenu.innerHTML=str;	
-			//----------------------------------------------------------------------------------------- END CODE
+		// If reader doesn't have write access, only the boxtitle is shown
 		}else{
 			var str = '<table cellspacing="2"><tr>';
-			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retdata['box'][boxid-1][3]+'</span></td>';
+			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][3]+'</span></td>';
 			str+='</tr></table>';
 			boxmenu.innerHTML=str;	
 		}			
@@ -552,20 +548,26 @@ function createboxmenu(contentid, boxid, type){
 }
 //----------------------------------------------------------------------------------
 // removeTemplatebox: Removes any template box -- Is called by renderer
+//						TODO: Check if actually used, seems to never be used
+//                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
-function removeTemplatebox(){
-	for(var i=document.getElementsByClassName("box").length; i>retdata['numbox']; i--){
+function removeTemplatebox()
+{
+	for(var i=document.getElementsByClassName("box").length; i>retData['numbox']; i--){
 		document.getElementById("div2").removeChild(document.getElementById("box"+i+"wrapper"));
 	}
 }
 
 //----------------------------------------------------------------------------------
-// createhotdogmenu: Creates the menu at the top of a box -- Is called by renderer
+// createhotdogmenu: Creates the menu at the top of a box 
+//                Is called by renderer in [this file]
 //----------------------------------------------------------------------------------
 
-function createhotdogmenu(){
+function createhotdogmenu()
+{
 	// div2 refers to the main content div below the floating menu
 	var content = document.getElementById("div2");
+	// Checks if a hotdogmenu already exists, then calls that, if not a new one is created
 	if(document.getElementById("hotdogdrop")){
 		var hotdogmenu = document.getElementById("hotdogdrop");
 	}else{
@@ -581,18 +583,22 @@ function createhotdogmenu(){
 	str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
 	str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
 	str += '</tr>';
-	for(i=0;i<retdata['numbox'];i++){
-		str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retdata['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retdata['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
+	// Possible crash warning if returned number of boxes is wrong
+	if(retData['numbox']==0 || retData['numbox']==null){
+		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
+	}
+	for(i=0;i<retData['numbox'];i++){
+		str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retData['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retData['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
 	}		
 	str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
 	str += '</table>';
 	hotdogmenu.style.display="block";	
 	hotdogmenu.innerHTML = str;
-
 }
 
 //----------------------------------------------------------------------------------
-// toggleClass: Modifies class using Jquery to contain "activebox" class selector -- called by code generated by createhotdog
+// toggleClass: Modifies class using Jquery to contain "activebox" class selector
+//				Used by createboxmenu(contentid, boxid, type) in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function toggleClass(id)
@@ -607,9 +613,10 @@ function toggleClass(id)
 }
 
 //----------------------------------------------------------------------------------
-// displayDrop: Modifies class using Jquery to contain "activebox" class selector -- called by code generated by createhotdog
+// displayDrop: Modifies class using Jquery to contain "activebox" class selector 
+//				TODO: Check if actually used, could not find within our files
+//                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
-
 function displayDrop(dropid)
 {	
 	drop = document.getElementById(dropid);
@@ -623,6 +630,7 @@ function displayDrop(dropid)
 
 //----------------------------------------------------------------------------------
 // highlightop: Highlights an operator and corresponding operator in code window
+//                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function highlightop(otherop,thisop)
@@ -632,7 +640,8 @@ function highlightop(otherop,thisop)
 }
 
 //----------------------------------------------------------------------------------
-// highlightop: Dehighlights an operator and corresponding operator in code window
+// dehighlightop: Dehighlights an operator and corresponding operator in code window
+//                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function dehighlightop(otherop,thisop)
@@ -642,7 +651,8 @@ function dehighlightop(otherop,thisop)
 }
 
 //----------------------------------------------------------------------------------
-// highlightop: Highlights an html-tag and corresponding html-tag in code window
+// highlightHtml: Highlights an html-tag and corresponding html-tag in code window
+//                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function highlightHtml(otherTag,thisTag)
@@ -652,7 +662,8 @@ function highlightHtml(otherTag,thisTag)
 }
 
 //----------------------------------------------------------------------------------
-// highlightop: Dehighlights an html-tag and corresponding html-tag in code window
+// deHighlightHtml: Dehighlights an html-tag and corresponding html-tag in code window
+//                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function deHighlightHtml(otherTag,thisTag)
@@ -663,6 +674,7 @@ function deHighlightHtml(otherTag,thisTag)
 
 //----------------------------------------------------------------------------------
 // Skip: Handles skipping either forward or backward. If pressed show menu
+//                Is called by createhotdogmenu in codeviewer.js
 //----------------------------------------------------------------------------------
 
 var dmd;
@@ -671,16 +683,16 @@ function Skip(skipkind)
 	if(skipkind=="bd"){
 			dmd=1;
 	}else if(skipkind=="bu"){
-			if(retdata['before'].length!=0&&dmd==1){
-					navigateExample(retdata['before'][0][0]);
+			if(retData['before'].length!=0&&dmd==1){
+					navigateExample(retData['before'][0][0]);
 			}
 			dmd=0;		
 	}
 	if(skipkind=="fd"){
 			dmd=2;
 	}else if(skipkind=="fu"){
-			if(retdata['after'].length!=0&&dmd==2){
-					navigateExample(retdata['after'][0][0]);
+			if(retData['after'].length!=0&&dmd==2){
+					navigateExample(retData['after'][0][0]);
 			}
 			dmd=0;		
 	}
@@ -692,20 +704,23 @@ function Skip(skipkind)
 	
 	setTimeout(function(){execSkip()}, 1000);							
 }
-
+//----------------------------------------------------------------------------------
+// execSkip: 
+//				Used by Skip
+//----------------------------------------------------------------------------------
 function execSkip()
 {
 	str="";
 	if(dmd==1){
-		for(i=0;i<retdata['before'].length;i++){
-			str+="<span id='F"+retdata['before'][i][1]+"' onclick='navigateExample(\""+retdata['before'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retdata['before'][i][1]+":"+retdata['before'][i][2]+"</span>";
+		for(i=0;i<retData['before'].length;i++){
+			str+="<span id='F"+retData['before'][i][1]+"' onclick='navigateExample(\""+retData['before'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retData['before'][i][1]+":"+retData['before'][i][2]+"</span>";
 		}
 		$("#backwdropc").html(str);
 		$("#backwdrop").css("display","block");
 		dmd=0;
 	}else if(dmd==2){
-		for(i=0;i<retdata['after'].length;i++){
-			str+="<span id='F"+retdata['after'][i][1]+"' onclick='navigateExample(\""+retdata['after'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retdata['after'][i][1]+":"+retdata['after'][i][2]+"</span>";
+		for(i=0;i<retData['after'].length;i++){
+			str+="<span id='F"+retData['after'][i][1]+"' onclick='navigateExample(\""+retData['after'][i][0]+"\")' class='dropdownitem dropdownitemStyle'>"+retData['after'][i][1]+":"+retData['after'][i][2]+"</span>";
 		}
 		$("#forwdropc").html(str);
 		$("#forwdrop").css("display","block");
@@ -715,7 +730,7 @@ function execSkip()
 
 // -------------==============######## Verified Functions End ###########==============-------------
 
-//Retrive height for buliding menu.
+//Retrieve height for building menu.
 $(window).load(function() {
 	var windowHeight = $(window).height();
 	textHeight= windowHeight-50;
@@ -726,7 +741,6 @@ $(window).resize(function() {
 	var windowHeight = $(window).height();
 	textHeight= windowHeight-50;
 	$("#table-scroll").css("height", textHeight);
-	
 	
 	// Keep right margin to boxes when user switch from mobile version to desktop version
 	if($(".buttomenu2").height() == null){
@@ -760,6 +774,7 @@ document.addEventListener("paste", function(e) {
 
 //----------------------------------------------------------------------------------
 // changeboxcontent: Called when the contents of the boxes at the top of a content div is changed
+// 					Used by createboxmenu in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function changeboxcontent(boxcontent,boxid)
@@ -779,6 +794,7 @@ function changeboxcontent(boxcontent,boxid)
 
 //----------------------------------------------------------------------------------
 // Switches Dropdown List to Visible
+//			Used by switchDrop
 //----------------------------------------------------------------------------------
 
 function hideDrop(dname)
@@ -789,8 +805,10 @@ function hideDrop(dname)
 
 //----------------------------------------------------------------------------------
 // Switches Dropdown List to Visible
+//			Used by 
+//			TODO: Appears to not be used
 //----------------------------------------------------------------------------------
-
+/*
 function switchDrop(dname)
 {
 	var dropd=document.getElementById(dname); 
@@ -804,11 +822,12 @@ function switchDrop(dname)
 		dropd.style.display="block";
 	} 
 }
-
+*/
 //----------------------------------------------------------------------------------
 // Reads value from Dropdown List
+//				TODO: Appears to not be used
 //----------------------------------------------------------------------------------
-
+/*
 function issetDrop(dname)
 {
 	var dropd=document.getElementById(dname);
@@ -818,19 +837,25 @@ function issetDrop(dname)
 		return false;
 	}
 }
-
+*/
 //----------------------------------------------------------------------------------
 // Connects blur event to a functon for each editable element
+//				TODO: Appears to not be used
 //----------------------------------------------------------------------------------
-
+/*
 function setupEditable()
 {	
-	if(retdata['writeaccess']=="w"){
+	if(retData['writeaccess']=="w"){
 			var editable=document.getElementById('exampleName');
 			editable.addEventListener("blur", function(){editedExamplename();}, true);
 	}
 }
-
+*/
+//----------------------------------------------------------------------------------
+// editedExamplename:
+//				Used by setupEditable which appears to not be used
+//----------------------------------------------------------------------------------
+/*
 function editedExamplename()
 {
 	var editable=document.getElementById('exampleName');
@@ -838,21 +863,21 @@ function editedExamplename()
 	editable.innerHTML=examplename;
 	AJAXService("editExampleName","&examplename="+examplename);
 }
-
+*/
 //----------------------------------------------------------------------------------
-// Removes most html tags from a string!
+// dehtmlify: Removes most html tags from a string!
+//                Is called by editedExamplename(), returned(data) in codeviewer.js
 //----------------------------------------------------------------------------------
 
 function dehtmlify(mainstr,ignorebr,maxlength)
 {
-		
 	mod=0;
 	outstr="";
 	
 	if(maxlength==0||mainstr.length<maxlength){
-			ln=mainstr.length;
+		ln=mainstr.length;
 	}else{
-			ln=maxlength;
+		ln=maxlength;
 	}
 	tagstr="";
 	
@@ -898,7 +923,8 @@ function dehtmlify(mainstr,ignorebr,maxlength)
 }
 
 //----------------------------------------------------------
-// Highlights an important word from the important word list
+// highlightKeyword: Highlights an important word from the important word list
+//                Is called by [this function] in codeviewer.js
 //----------------------------------------------------------		
 
 function highlightKeyword(kw)
@@ -911,7 +937,8 @@ function highlightKeyword(kw)
 }
 
 //----------------------------------------------------------
-// DeHighlights an important word from the important word list
+// dehighlightKeyword: DeHighlights an important word from the important word list
+//                Is called by [this function] in codeviewer.js
 //----------------------------------------------------------		
 
 function dehighlightKeyword(kw)
@@ -928,19 +955,22 @@ function dehighlightKeyword(kw)
    Tokenizer
 
 *********************************************************************************/
-
-// Token class and storage definition									
+//----------------------------------------------------------	
+// Token class and storage definition	
+//                Is called by [this function] in [this file]	
+//----------------------------------------------------------								
 function token (kind,val,fromchar,tochar,row) {
-this.kind = kind;
-this.val = val;
-this.from = fromchar;
-this.to = tochar;
-this.row = row;
+	this.kind = kind;
+	this.val = val;
+	this.from = fromchar;
+	this.to = tochar;
+	this.row = row;
 }
 
 //----------------------------------------------------------
 // Store token in tokens array
 // Creates a new token object using the constructor
+//                Is called by [this function] in [this file]
 //----------------------------------------------------------						
 
 function maketoken(kind,val,from,to,rowno)
@@ -951,6 +981,7 @@ function maketoken(kind,val,from,to,rowno)
 
 //----------------------------------------------------------
 // Writes error from tokenizer
+//                Is called by [this function] in [this file]
 //----------------------------------------------------------						
 
 function error(str,val,row)
@@ -961,6 +992,7 @@ function error(str,val,row)
 //----------------------------------------------------------------------------------
 // replaceAll: Used by tokenizer to replace all instances of find string with replace string in str.
 //             The idea behind this is to  cancel the html entities introduced to allow streaming of content
+//                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
 
 function replaceAll(find, replace, str)
@@ -971,6 +1003,7 @@ function replaceAll(find, replace, str)
 //----------------------------------------------------------
 // Tokenize: Tokenizer partly based on ideas from the very clever tokenizer written by Douglas Cockford
 //           The tokenizer is passed a string, and a string of prefix and suffix terminators
+//                Is called by [this function] in [this file]
 //----------------------------------------------------------						
 
 function tokenize(instring,inprefix,insuffix)
@@ -1009,7 +1042,6 @@ function tokenize(instring,inprefix,insuffix)
 				currentCharacter=instring.charAt(i);
 				if(currentCharacter>' '||!currentCharacter) break;
 				if((currentCharacter=='\n')||(currentCharacter=='\r')||(currentCharacter =='')){
-					//currentStr += currentCharacter;
 					maketoken('whitespace',currentStr,from,i,row);				                
 					maketoken('newline',"",i,i,row);
 					currentStr="";
@@ -1143,7 +1175,7 @@ function tokenize(instring,inprefix,insuffix)
 				i++;
 			}	
 			maketoken('rowcomment',currentStr,from,i,row);
-			/* This does not have to be hear because a newline creates in coderender function 
+			/* This does not have to be here because a newline creates in coderender function 
 			maketoken('newline',"",i,i,row); */													                
 		}else if (currentCharacter=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
 			i++;
@@ -1193,6 +1225,7 @@ function tokenize(instring,inprefix,insuffix)
 //----------------------------------------------------------------------------------
 // Renders a set of tokens from a string into a code viewer div
 // Requires tokens created by a cockford-type tokenizer
+//                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
 
 function rendercode(codestring,boxid,wordlistid)
@@ -1201,21 +1234,21 @@ function rendercode(codestring,boxid,wordlistid)
 	tokens = [];
 	
 	important = [];
-	for(var i=0;i<retdata.impwords.length;i++){
-		important[retdata.impwords[i]]=retdata.impwords[i];	
+	for(var i=0;i<retData.impwords.length;i++){
+		important[retData.impwords[i]]=retData.impwords[i];	
 	}
 
 	keywords= [];
-	for(var i=0;i<retdata['words'].length;i++){
-		if(retdata['words'][i][0]==wordlistid){
-			keywords[retdata['words'][i][1]]=retdata['words'][i][2];
+	for(var i=0;i<retData['words'].length;i++){
+		if(retData['words'][i][0]==wordlistid){
+			keywords[retData['words'][i][1]]=retData['words'][i][2];
 		}
 	}
 
 	improws=[];
-	for(var i=0;i<retdata.improws.length;i++){
-        if ((retdata['improws'][i][0]) == boxid){
-       		improws.push(retdata.improws[i]);
+	for(var i=0;i<retData.improws.length;i++){
+        if ((retData['improws'][i][0]) == boxid){
+       		improws.push(retData.improws[i]);
 		}
 	}
 	tokenize(codestring,"<>+-&","=>&:");
@@ -1345,11 +1378,11 @@ function rendercode(codestring,boxid,wordlistid)
 		}else{
 			cont+=tokenvalue;
 		}
-				// tokens.length-1 so the last line will be printed out
+		// tokens.length-1 so the last line will be printed out
 		if(tokens[i].kind=="newline" || i==tokens.length-1){  
 			// Prevent empty lines to be printed out
 			if(cont != ""){
-				// count how many linenumbers that'll be needed
+				// Count how many linenumbers that'll be needed
 				lineno++;
 				// Print out normal rows if no important exists
 				if(improws.length==0){
@@ -1377,11 +1410,12 @@ function rendercode(codestring,boxid,wordlistid)
 	linenumbers();
 }
 
-
-// function to create a border with line numbers
+//----------------------------------------------------------------------------------
+// createCodeborder: function to create a border with line numbers
+//                Is called by rendercode in codeviewer.js
+//----------------------------------------------------------------------------------
 function createCodeborder(lineno,improws){
 	var str="<div class='codeborder'>";
-	var x= 0;
 	
 	for(var i=1; i<=lineno; i++){
 		// Print out normal numbers
@@ -1405,7 +1439,10 @@ function createCodeborder(lineno,improws){
 	str+="</div>";
 	return str;
 }
-
+//----------------------------------------------------------------------------------
+//  linenumbers: 
+//                Is called by fadelinenumbers(), rendercode in codeviewer.js
+//----------------------------------------------------------------------------------
 function linenumbers()
 {	
 	if(localStorage.getItem("linenumbers") == "false"){	
@@ -1414,31 +1451,10 @@ function linenumbers()
 		$( ".codeborder" ).css("display","none");	
 	}
 }
-
-function fadelinenumbers()
-{
-	if ( $( ".codeborder" ).is( ":hidden" ) ) {
-		$( ".codeborder" ).fadeIn( "slow" );
-		$( "#numberbuttonMobile img" ).attr('src', '../Shared/icons/hotdogTabButton.svg');
-		$( "#numberbutton img" ).attr('src', '../Shared/icons/numbers_button.svg');
-		localStorage.setItem("linenumbers", "true");					  
-	}else{
-		$( ".codeborder" ).fadeOut("slow");
-		$( "#numberbuttonMobile img" ).attr('src', '../Shared/icons/hotdogTabButton2.svg');
-		$( "#numberbutton img" ).attr('src', '../Shared/icons/noNumbers_button.svg');
-		localStorage.setItem("linenumbers", "false");
-	 }
-}
-
-function changedSecurity(){
-	var cb = document.getElementById('checkbox');
-	var option = 0;
-	if(cb.checked){
-		option = 1;
-	}	
-	AJAXService("updateSecurity","&public="+ option);
-}
-
+//----------------------------------------------------------------------------------
+//  mobileTheme
+//                Is called by [this function] in codeviewer.css
+//----------------------------------------------------------------------------------
 function mobileTheme(id){
 	if ($(".mobilethemebutton").is(":hidden")){
 		$(".mobilethemebutton").css("display","table-cell");
@@ -1448,8 +1464,12 @@ function mobileTheme(id){
 	}
 }
 
-//Set the editing properties for mobile and desktop version
-function setEditing(){
+//----------------------------------------------------------------------------------
+//  setEditing: Set the editing properties for mobile and desktop version
+//                Is called by [this function] in [codeviewer.js
+//----------------------------------------------------------------------------------
+function setEditing()
+{
 	var	hotdog = document.getElementById("hidehotdog");
 	var	isDesktop = $(hotdog).is(":hidden");
 	if(isDesktop){
@@ -1463,8 +1483,8 @@ function setEditing(){
 
 //----------------------------------------------------------------------------------
 // changeTemplate: Change template by updating hidden field
+//                Is called by [this function] in EditorV50.php
 //----------------------------------------------------------------------------------
-
 function changetemplate(templateno)
 {
 	$(".tmpl").each(function( index ) {
@@ -1477,8 +1497,8 @@ function changetemplate(templateno)
 
 //----------------------------------------------------------------------------------
 // updateTemplate: Write template hidden field to database
+//                Is called by [this function] in EditorV50.php
 //----------------------------------------------------------------------------------
-
 function updateTemplate()
 {
 	templateno=$("#templateno").val();
@@ -1501,472 +1521,391 @@ function updateTemplate()
 	setTimeout("location.reload()", 500);
 }
 
+//----------------------------------------------------------------------------------
+// closeEditContent: 
+//                Is called by [this function] in EditorV50.php
+//----------------------------------------------------------------------------------
 function closeEditContent()
 {
 		$("#editContent").css("display","none");
 }
-
+//----------------------------------------------------------------------------------
+// closeEditExample: 
+//                Is called by [this function] in EditorV50.php
+//----------------------------------------------------------------------------------
 function closeEditExample()
 {
 		$("#editExample").css("display","none");
 }
-
+//----------------------------------------------------------------------------------
+// openTemplateWindow:
+//                Is called by [this function] in EditorV50.php
+//----------------------------------------------------------------------------------
 function openTemplateWindow()
 {
 	$("#chooseTemplate").css("display","block");
 }
-
+//----------------------------------------------------------------------------------
+// closeTemplateWindow: 
+//                Is called by [this function] in EditorV50.php
+//----------------------------------------------------------------------------------
 function closeTemplateWindow()
 {
 	$("#chooseTemplate").css("display","none");
 }
-
+//----------------------------------------------------------------------------------
+// Play:
+//					Is called by createhotdogmenu in codeviewer.js
+//----------------------------------------------------------------------------------
 function Play()
 {
-	if(retdata['playlink']!=null){
-		navigateTo("/codeupload/",retdata['playlink']);
+	if(retData['playlink']!=null){
+		navigateTo("/codeupload/",retData['playlink']);
 	}
 }
 
 //-----------------------------------------------------------------------------
-// resizeBoxes: Adding resize functionality for the boxes in template(1).
+// resizeBoxes: Adding resize functionality for the boxes
+//					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
-
-
-	function resizeBoxes(parent, templateId) {
+function resizeBoxes(parent, templateId) 
+{
+	var boxValArray = initResizableBoxValues(parent);
+	var remainWidth;
+		
+	if(templateId == 1){
+		getLocalStorageProperties(templateId, boxValArray);
 	
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			resize: function(e, ui){
+				alignBoxesWidth(boxValArray, 1, 2);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+			}
+		});
+	}else if(templateId == 2){
+		getLocalStorageProperties(templateId, boxValArray);
 		
-		var boxValArray = initResizableBoxValues(parent);
-		
-		var remainWidth;
-		
-		
-		
-		if(templateId == 1){
-			
-			getLocalStorageProperties(templateId, boxValArray);
-		
-			$(boxValArray['box1']['id']).resizable({
-				containment: parent,
-				handles: "e",
-				resize: function(e, ui){
-					
-					alignBoxesWidth(boxValArray, 1, 2);
-					
-				},
-				stop: function(e, ui) {
-					 
-					setLocalStorageProperties(templateId, boxValArray);
-				
-				}
-			});
-		
-		}else if(templateId == 2){
-		
-			getLocalStorageProperties(templateId, boxValArray);
-			
-			$(boxValArray['box1']['id']).resizable({
+		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			resize: function(e, ui){
-				
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
 				$(boxValArray['box1']['id']).width("100%");
 			},
 			stop: function(e, ui) {
-				 
 				setLocalStorageProperties(templateId, boxValArray);
-				 
 			}
-			
-			});
+		});
+	}else if(templateId == 3){
+		getLocalStorageProperties(templateId, boxValArray);
 		
-		}else if(templateId == 3){
-		
-			getLocalStorageProperties(templateId, boxValArray);
-			
-			$(boxValArray['box1']['id']).resizable({
+		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
 			resize: function(e, ui){
-				
 				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 				$("#box2wrapper").css("left", ""); 
 				$("#box1wrapper").css("height", "100%");
 			},
 			stop: function(e, ui) {
-				 
 				setLocalStorageProperties(templateId, boxValArray);
-				
-				
 			}
-			
-			});
-			
-			$(boxValArray['box2']['id']).resizable({
+		});
+
+		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			resize: function(e, ui){
-				
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
-				 
 				setLocalStorageProperties(templateId, boxValArray);
-				
 			}
-			
-			});
-		
-		
-		}else if(templateId == 4){
-		
-			getLocalStorageProperties(templateId, boxValArray);
-		
-		
-			$(boxValArray['box1']['id']).resizable({
+		});
+	}else if(templateId == 4){
+		getLocalStorageProperties(templateId, boxValArray);
+	
+		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
 			resize: function(e, ui){
-				
-
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				 
 				setLocalStorageProperties(templateId, boxValArray);
-				 
 			}
-			
-			});
-			
-			$(boxValArray['box2']['id']).resizable({
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
-			resize: function(e, ui){
-				
+			resize: function(e, ui){	
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 				alignBoxesWidth(boxValArray, 2, 1);
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				 
 				setLocalStorageProperties(templateId, boxValArray);
-				 
 			}
-			
-			});
-			
-		}else if(templateId == 5){
-		
-			getLocalStorageProperties(templateId, boxValArray);
-			
-		
-			$(boxValArray['box1']['id']).resizable({
+		});
+	}else if(templateId == 5){
+		getLocalStorageProperties(templateId, boxValArray);
+	
+		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight4boxes(boxValArray, 1, 2);
 				$("#box2wrapper").css("left", " ");
-
 			},
 			stop: function(e, ui) {
-				 
 				setLocalStorageProperties(templateId, boxValArray);
-				 
 			}
-			
-			});
-			
-			$(boxValArray['box2']['id']).resizable({
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
 			resize: function(e, ui){
-				
 				alignBoxesHeight4boxes(boxValArray, 2, 1);
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				 
 				setLocalStorageProperties(templateId, boxValArray);
-				 
 			}
-			
-			});
-			
-			$(boxValArray['box3']['id']).resizable({
+		});
+		
+		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e",
 			resize: function(e, ui){
-			
 				alignBoxesWidth(boxValArray, 3, 4);
-				
 			},
 			stop: function(e, ui) {
-				 
 				setLocalStorageProperties(templateId, boxValArray);
-				 
 			}
-			});
-
-		}
-		
-		
-		
-	};
-	
-	//width adjustment for template(1,3) (Two boxes beside eachother.)
-	function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign){
-					
-					
-					var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-					
-					//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-					$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
-					$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-					
-					var remainWidthPer = (remainWidth/boxValArray['parent']['width'])*100;
-					var basePer = 100 - remainWidthPer;
-					
-					$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-					$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-					
-					boxValArray['box' + boxNumBase]['width'] = basePer;
-					boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
-					
-					
-		
-	}
-	
-	//width adjustment for template 3. 
-	function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
-					
-					var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-					
-					
-					var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-					var basePer = 100 - remainWidthPer;
-					
-					
-					$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-					//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-					$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
-					$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-					
-					
-					$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-					$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-					
-					boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-					boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-					boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
-					
-	}
-	
-	
-	//Height adjustment for two boxes on top of eachother.
-	function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame){
-		
-					var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-					var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-					
-					var basePer = 100-remainHeightPer;
-					
-					
-					$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-					$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
-					
-					
-					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-					boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-				
-	}
-	
-	//Height adjustment for boxes in template 4. (Two small boxes ontop of a big box.)
-	function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig){
-		
-					var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-					
-					var remainHeightPer = (remainHeight / boxValArray['parent']['height'])*100;
-					
-					var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height'])*100;
-					
-					$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
-					$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
-					$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
-					
-			
-					
-					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-					boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-					boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
-					
-		
-	}
-	
-	
-	//Height adjustment for boxes in template 5.
-	function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame){
-		
-					var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-					
-					var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-					var basePer = 100 - remainHeightPer;
-					
-					$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-					$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
-					$(boxValArray['box3']['id']).height(remainHeightPer + "%");
-					$(boxValArray['box4']['id']).height(remainHeightPer + "%");
-					
-					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-					boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-					boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
-					boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
-			
-	}
-	
-	
-	//Creates an array with all the properties needed for resize function.
-	function initResizableBoxValues(parent){
-	
-		var parentWidth = $(parent).width();
-		var parentHeight = $(parent).height();
-		var boxwidth;
-		var boxheight;
-		var boxId;
-		
-		var numBoxes = $("[id ^=box][id $=wrapper]").length;
-		
-		var boxValueArray = new Array();
-		boxValueArray["parent"] = {"id": parent, "width": parentWidth, "height": parentHeight};
-		
-		for (var i = 1; i <= numBoxes; i++) {
-			boxWidth = $("#box" + i + "wrapper").width();
-			boxHeight = $("#box" + i + "wrapper").height();
-			boxId = "#box" + i + "wrapper";
-			boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
-			console.log("boxId " + boxValueArray["box" + i]["id"] + " boxWidth: " + boxValueArray["box" + i]["width"] + " boxHeight: " + boxValueArray["box" + i]["height"]);
-		}
-		
-		$(window).resize(function(event){
-			
-			 if (!$(event.target).hasClass('ui-resizable')) {
-				
-				boxValueArray['parent']['height'] = $(parent).height();
-				boxValueArray['parent']['width'] = $(parent).width();
-				
-			}
-			
-		}); 
-		
-		return boxValueArray;
-	}
-	
-	
-	
-	
-	//Saves the measurments in percent for the boxes on the screen in local storage.
-	function setLocalStorageProperties(templateId, boxValArray){
-	
-		var numBoxes = $("[id ^=box][id $=wrapper]").length;
-		
-		var widthPer;
-		var heightPer;
-		
-		for(var i = 1; i <= numBoxes; i++){
-			
-		
-			boxValArray['box' + i]['width'] = $(boxValArray['box' + i]['id']).width();
-			boxValArray['box' + i]['height'] = $(boxValArray['box' + i]['id']).height();
-			
-			widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) *100;
-			heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) *100;
-			
-			widthPer = Math.floor(widthPer, 100);
-			heightPer = Math.floor(heightPer, 100);
-			
-			localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
-			localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
-			
-		}
-		
-		setResizableToPer(boxValArray);
-		
-	}
-
-	
-	//Gets box measurments from localstorage and applies them onto the boxes on screen.
-	//This is done preinit of boxValArray, so that the init of that array gets these values.
-	function getLocalStorageProperties(templateId, boxValArray){
-		
-		var numBoxes = $("[id ^=box][id $=wrapper]").length;
-		
-		for(var i = 1; i <= numBoxes; i++){
-			
-			if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null){
-				
-				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
-				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
-				
-				erasePercentGap(templateId, boxValArray);
-				
-			}
-		}
-	}
-	
-	//removes percentage based gap
-	function erasePercentGap(templateId, boxValArray){
-	
-		if(templateId == 1){
-		
-			alignBoxesWidth(boxValArray, 1, 2);
-		
-		}else if(templateId == 2){
-		
-			alignBoxesHeight2boxes(boxValArray, 1, 2);
-		
-		}else if(templateId == 3){
-		
-			alignBoxesHeight2boxes(boxValArray, 2, 3);
-			alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-		
-		}else if(templateId == 4){
-		
-			alignBoxesWidth(boxValArray, 1, 2);
-			alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-		
-		}else if(templateId == 5){
-		
-			alignBoxesWidth(boxValArray, 1, 2);
-			alignBoxesWidth(boxValArray, 3, 4);
-			alignBoxesHeight4boxes(boxValArray, 1, 2);
-		
-		}
-	
-	
-	}
-	
-	//Solves problem of how resizable ui component only work with pixel based positioning.
-	function setResizableToPer(boxValArray){
-		
-		$("[class ^=ui][class $=resizable]").each(function( index ) {
-			
-			var elemWidth =  $(this).width();
-			var elemHeight = $(this).height();
-			alert("hello");
-			var newWidth = (elemWidth / ($(boxValArray['parent']['id']).width()))* 100;
-			var newHeight = (elemHeight / ($(boxValArray['parent']['id']).height())) * 100;
-			
-			$(this).height(newHeight + "%");
-			$(this).width(newWidth + "%");
-			
-			
 		});
 	}
+};
+//----------------------------------------------------------------------------------
+//width adjustment for template(1,3) (Two boxes beside eachother.)
+//                Is called by resizeBoxes in codeviewer.js
+//----------------------------------------------------------------------------------
+function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
+{
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+	
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+	
+	var remainWidthPer = (remainWidth/boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;
+	
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+	
+	boxValArray['box' + boxNumBase]['width'] = basePer;
+	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
+}
+//----------------------------------------------------------------------------------
+//width adjustment for template 3. 
+//                Is called by resizeBoxes in codeviewer.js
+//----------------------------------------------------------------------------------
+function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
+{
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;
+
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
+	
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+}
+	
+//----------------------------------------------------------------------------------
+//Height adjustment for two boxes on top of eachother.
+//                Is called by resizeBoxes in codeviewer.js
+//----------------------------------------------------------------------------------
+function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
+{
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var basePer = 100-remainHeightPer;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+}
+//----------------------------------------------------------------------------------
+//Height adjustment for boxes in template 4. (Two small boxes ontop of a big box.)
+//                Is called by resizeBoxes in codeviewer.js
+//----------------------------------------------------------------------------------
+function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
+{
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height'])*100;
+	var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height'])*100;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
+	$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
+}
+//----------------------------------------------------------------------------------
+//Height adjustment for boxes in template 5.
+//                Is called by resizeBoxes in codeviewer.js
+//----------------------------------------------------------------------------------
+function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
+{	
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();	
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var basePer = 100 - remainHeightPer;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
+	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
+	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
+	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
+}
+
+//----------------------------------------------------------------------------------
+//Creates an array with all the properties needed for resize function.
+//                Is called by resizeBoxes in codeviewer.js
+//----------------------------------------------------------------------------------
+function initResizableBoxValues(parent)
+{
+	var parentWidth = $(parent).width();
+	var parentHeight = $(parent).height();
+	var boxwidth;
+	var boxheight;
+	var boxId;
+	var numBoxes = $("[id ^=box][id $=wrapper]").length;
+	var boxValueArray = new Array();
+	boxValueArray["parent"] = {"id": parent, "width": parentWidth, "height": parentHeight};
+	
+	for (var i = 1; i <= numBoxes; i++) {
+		boxWidth = $("#box" + i + "wrapper").width();
+		boxHeight = $("#box" + i + "wrapper").height();
+		boxId = "#box" + i + "wrapper";
+		boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
+		console.log("boxId " + boxValueArray["box" + i]["id"] + " boxWidth: " + boxValueArray["box" + i]["width"] + " boxHeight: " + boxValueArray["box" + i]["height"]);
+	}
+	
+	$(window).resize(function(event){
+		 if (!$(event.target).hasClass('ui-resizable')) {
+			boxValueArray['parent']['height'] = $(parent).height();
+			boxValueArray['parent']['width'] = $(parent).width();
+		}
+	}); 
+	return boxValueArray;
+}
+
+//----------------------------------------------------------------------------------
+//Saves the measurments in percent for the boxes on the screen in local storage.
+//                Is called by resizeBoxes in codeviewer.js
+//----------------------------------------------------------------------------------
+function setLocalStorageProperties(templateId, boxValArray)
+{
+	var numBoxes = $("[id ^=box][id $=wrapper]").length;	
+	var widthPer;
+	var heightPer;
+	
+	for(var i = 1; i <= numBoxes; i++){
+		boxValArray['box' + i]['width'] = $(boxValArray['box' + i]['id']).width();
+		boxValArray['box' + i]['height'] = $(boxValArray['box' + i]['id']).height();
+		
+		widthPer = (boxValArray['box' + i]['width'] / boxValArray['parent']['width']) *100;
+		heightPer = (boxValArray['box' + i]['height'] / boxValArray['parent']['height']) *100;
+		
+		widthPer = Math.floor(widthPer, 100);
+		heightPer = Math.floor(heightPer, 100);
+		
+		localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
+		localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
+	}
+	setResizableToPer(boxValArray);
+}
+
+//----------------------------------------------------------------------------------
+//Gets box measurements from localstorage and applies them onto the boxes on screen.
+//This is done preinit of boxValArray, so that the init of that array gets these values.
+//                Is called by resizeBoxes in codeviewer.js
+//----------------------------------------------------------------------------------
+function getLocalStorageProperties(templateId, boxValArray)
+{
+	var numBoxes = $("[id ^=box][id $=wrapper]").length;
+	
+	for(var i = 1; i <= numBoxes; i++){
+		if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null){
+			$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
+			$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
+			erasePercentGap(templateId, boxValArray);
+		}
+	}
+}
+//----------------------------------------------------------------------------------
+//removes percentage based gap
+//                Is called by getLocalStorageProperties in codeviewer.js
+//----------------------------------------------------------------------------------
+function erasePercentGap(templateId, boxValArray)
+{
+	if(templateId == 1){	
+		alignBoxesWidth(boxValArray, 1, 2);
+	}else if(templateId == 2){
+		alignBoxesHeight2boxes(boxValArray, 1, 2);
+	}else if(templateId == 3){
+		alignBoxesHeight2boxes(boxValArray, 2, 3);
+		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+	}else if(templateId == 4){
+		alignBoxesWidth(boxValArray, 1, 2);
+		alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
+	}else if(templateId == 5){
+		alignBoxesWidth(boxValArray, 1, 2);
+		alignBoxesWidth(boxValArray, 3, 4);
+		alignBoxesHeight4boxes(boxValArray, 1, 2);
+	}
+}
+
+//----------------------------------------------------------------------------------
+//Solves problem of how resizable ui component only work with pixel based positioning.
+//                Is called by setLocalStorageProperties in codeviewer.js
+//----------------------------------------------------------------------------------
+function setResizableToPer(boxValArray)
+{
+	$("[class ^=ui][class $=resizable]").each(function( index ) {
+		var elemWidth =  $(this).width();
+		var elemHeight = $(this).height();
+		var newWidth = (elemWidth / ($(boxValArray['parent']['id']).width()))* 100;
+		var newHeight = (elemHeight / ($(boxValArray['parent']['id']).height())) * 100;
+		$(this).height(newHeight + "%");
+		$(this).width(newWidth + "%");
+	});
+}
 
 /********************************************************************************
 
@@ -1977,6 +1916,7 @@ function Play()
 //----------------------------------------------------------------------------------
 // parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
 //				  function replace with regular expressions.
+//                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
 {	
@@ -2008,14 +1948,12 @@ function parseMarkdown(inString)
 	//Regular expression for line
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
 	
-	//Regular expression for code blocks
-	inString = inString.replace(/~{3}((?:\r|\n|.)+?)\~{3}/gm, '<pre><code>$1</code></pre>');
-	
 	return inString;
 }
 //----------------------------------------------------------------------------------
 // addHtmlLineBreak: This function will replace all '\n' line breaks in a string
 //					 with <br> tags.
+//                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>'); 
