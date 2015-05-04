@@ -57,7 +57,7 @@
 #progressIndicator {
 	width:70px;
 	height:42px;
-	background-image:url(img/indicator.png);
+	background-image:url(../img/indicator.png);
 	background-repeat:no-repeat;
 	float:right;
 	font-size:0.9em;
@@ -68,12 +68,58 @@
 }
 
 
-/*Overall Courses wrap*/
+/*Big Course Wrap*/
 #YearContainer {
 	position: relative;
 	width: 90%;
 	margin: 0 auto;
 	min-height:inherit;
+}
+	
+/*Year 1 progress wrap*/
+#year1Progress {
+	float: left;	
+	height:20px;
+	width:20%;
+	margin:-30px 0 0 70px;
+	box-shadow:none;
+}
+/*Year 2 progress wrap*/
+#year2Progress {
+	height:20px;
+	width:20%;
+	margin: -30px auto;
+	box-shadow:none;
+}
+/*Year 3 progress wrap*/
+#year3Progress {
+	float:right;
+	height:20px;
+	width:20%;
+	margin:-30px 70px 0 0;
+	box-shadow:none;
+}
+
+/*Year 1 score*/
+#year1Score {
+	float:left;
+	margin: -20px 0 0 182px;
+	position:relative;
+	font-size:0.8em;
+}
+
+/*Year 2 score*/
+#year2Score {
+	margin:0 auto;
+	margin: -20px 0 0 0;
+	font-size:0.8em;
+}
+
+/*Year 3 score*/
+#year3Score {
+	float:right;
+	margin: -27px 72px 0 0;
+	font-size:0.8em;
 }
 
 /*Overall Year Wrap*/
@@ -115,9 +161,15 @@
 	color:#614875;
 }
 
-/*Odd Course wrap*/
+/*Odd course wrap*/
 .course:nth-child(2n){
 	background-color:#e5e5e5;
+}
+
+
+/*Course Inner Wrap*/
+.course_wrapper{
+	padding: 5px 10px 5px 10px;
 }
 
 /*Course Name transformation*/
@@ -196,6 +248,11 @@
 	margin: -1px 0 0 0;
 }
 
+/*Year Background Body*/
+.yearBody{
+	padding: 5px;
+}
+
 .clearfix:after { 
    content: "."; 
    display: block; 
@@ -203,4 +260,10 @@
    clear: both;
 }
 
+/*Year Title*/
+.panel-title {
+ 	margin: 0;
+	font-size:1.4em;
+	color:#fff;
+}
 
