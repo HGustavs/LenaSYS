@@ -7,13 +7,19 @@
 	color:#614875;
 	font-family:Calibri,sans-serif;
 }
+
+/*Student name size h2*/
 #studentTitle h2 {
 	font-size:1.7em;
 	margin-bottom:8px;
 }
+
+/*Student name makes the first letter uppercase*/
 #studentTitle h2:first-letter {
 	text-transform:uppercase !important;
 }
+
+/*Student class size h3*/
 #studentTitle h3 {
 	font-size:1.2em;
 }
@@ -37,6 +43,9 @@
 	border-radius:0.5em;
 	border:1px solid #A9A9A9;
 }
+
+/*Supplement to the progressbar2.css*/
+/*Main progress bar green area styling*/
 .progress-bar-success {
 	height:40px;
 	border-top-left-radius:0.5em;
@@ -91,35 +100,45 @@
 	box-shadow:none;
 }
 
+/*Year 1 score*/
 #year1Score {
 	float:left;
 	margin: -20px 0 0 182px;
 	position:relative;
 	font-size:0.8em;
 }
+
+/*Year 2 score*/
 #year2Score {
 	margin:0 auto;
 	margin: -20px 0 0 0;
 	font-size:0.8em;
 }
+
+/*Year 3 score*/
 #year3Score {
 	float:right;
 	margin: -27px 72px 0 0;
 	font-size:0.8em;
 }
 
-/*Big Year Wrap*/
+/*Overall Year Wrap*/
 .Year {
 	font-size:0.8em;
 	width: 32%;
 }
 
+/*Year1 wrap*/
 #Year1 {
 	float:left;
 }
+
+/*Year2 wrap*/
 #Year2 {
 	margin:0 auto;
 }
+
+/*Year3 wrap*/
 #Year3 {
 	float:right;
 }
@@ -142,6 +161,7 @@
 	color:#614875;
 }
 
+/*Odd course wrap*/
 .course:nth-child(2n){
 	background-color:#e5e5e5;
 }
@@ -152,13 +172,13 @@
 	padding: 5px 10px 5px 10px;
 }
 
-/*Course Name*/
+/*Course Name transformation*/
 .course_name p {
 	text-transform:lowercase !important;
 	font-size:1.3em;
 }
 
-/*Course Name*/
+/*Course Name p first letter uppercase*/
 .course_name p:first-letter {
 	text-transform:uppercase !important;
 }
@@ -170,15 +190,22 @@
 	width:50%;
 	margin:0 0 0 0;
 }
+
+/*Hover function on progress bar*/
 .course_progressbar:hover p {
 	visibility:visible;
 	cursor:default;
 }
+
+/*Supplement to the progressbar2.css*/
+/*Course progress bar yellow area styling*/
 .progress-bar-warning {
 	height:20px;
 	border-top-left-radius:0.5em;
 	border-bottom-left-radius:0.5em;
 }
+
+/*Course progress bar points styling*/
 .points {
 	margin-top: -38px;
     margin-right: 10px;
@@ -187,6 +214,7 @@
 	visibility:hidden;
 }
 
+/*Course alert*/
 .course_alert {
 	cursor:pointer;
 	float:right;
@@ -204,13 +232,16 @@
 	
 }
 
+/*Course mail icon*/
 #mail-icon {
 	margin: 0 0 0 5px;	
 }
 
+/*Course mail icon hover*/
 #mail-icon :hover {
 }
 
+/*Course type icon*/
 .course_type {
 	cursor:pointer;
 	float:right;
