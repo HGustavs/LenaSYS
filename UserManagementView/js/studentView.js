@@ -69,8 +69,7 @@ function renderStudentView(data)
 	var fullname = data['fullname'];
 	var studentClass = data['class'];
 	
-	htmlStr += '<h2>' + fullname +'</h2>';
-	htmlStr += '<h3>' + studentClass + '</h3>';
+	htmlStr += '<h2>' + fullname + " - " + studentClass + '</h2>';
 	
 	var titleList = document.getElementById('studentTitle');
 	titleList.innerHTML = htmlStr;
