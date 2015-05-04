@@ -40,7 +40,7 @@ if(checklogin()){
 	$query->bindParam(':cid', $courseid);
 	$result = $query->execute();
 
-	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
 		if($hr&&$userid!="UNK"){
 			// The code for modification using sessions
@@ -62,7 +62,7 @@ if(checklogin()){
 
 				$query->execute();
 
-				if ($row = $query->fetch(PDO::FETCH_ASSOC)){
+				if($row = $query->fetch(PDO::FETCH_ASSOC)){
 					$grade=$row['grade'];
 				}
 				if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
@@ -85,7 +85,6 @@ if(checklogin()){
 			}
 		}
 	}
-	
 }
 
 //------------------------------------------------------------------------------------------------
@@ -116,7 +115,7 @@ if($hr&&$userid!="UNK"){
 	$query->bindParam(':duggaid', $duggaid);
 	$result=$query->execute();
 
-	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!"){
+	if(!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!"){
 		$i=0;
 	}
 
@@ -150,7 +149,6 @@ if($hr&&$userid!="UNK"){
 			$debug="Error updating entries".$error[2];
 		}
 		$savedvariant=$newvariant;
-
 	}else if(($savedvariant=="UNK")&&($newvariant!="")){
 		$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
 		$query->bindParam(':cid', $courseid);
@@ -160,7 +158,7 @@ if($hr&&$userid!="UNK"){
 		$query->bindParam(':moment', $moment);
 		$query->bindParam(':variant', $newvariant);
 		
-		if(!$query->execute()) {
+		if(!$query->execute()){
 			$error=$query->errorInfo();
 			$debug="Error updating entries".$error[2];
 		}
@@ -180,9 +178,9 @@ if($hr&&$userid!="UNK"){
 }
 
 $array = array(
-	"debug" => $debug,
-	"param" => $param,
-	"answer" => $savedanswer
+		"debug" => $debug,
+		"param" => $param,
+		"answer" => $savedanswer
 	);
 
 echo json_encode($array);
