@@ -181,7 +181,6 @@ function returned(data)
 	}
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
-	//$("#box1").append("<button onclick=''>clickerino</button>");
 }
 
 //---------------------------------------------------------------------------------
