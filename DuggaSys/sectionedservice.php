@@ -189,9 +189,7 @@ foreach($query->fetchAll() as $row) {
 
 
 $entries=array();
-// If user has read access!
-$reada = (checklogin() && hasAccess($userid, $courseid, 'r'));
-if($reada){
+if($hr){
 	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,gradesystem FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
