@@ -10,68 +10,66 @@ AJAXService("GET",{cid:querystring['cid']},"ACCESS");
 
 function addUsers()
 {
-		newusers=$("#import").val();
-		AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newusers},"ACCESS");
-		$("#createUsers").css("display","none");
+	newusers=$("#import").val();
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newusers},"ACCESS");
+	$("#createUsers").css("display","none");
 }
 
 function showCreateUsersPopup()
 {
-		$("#createUsers").css("display","block");
+	$("#createUsers").css("display","block");
 }
 
 function hideCreateUsersPopup()
 {
-		$("#createUsers").css("display","none");
+	$("#createUsers").css("display","none");
 }
 
 function changeAccess(cid,uid,val)
 {
-		AJAXService("ACCESS",{cid:cid,uid:uid,val:val},"ACCESS");
+	AJAXService("ACCESS",{cid:cid,uid:uid,val:val},"ACCESS");
 }
 
 function selectUser(uid,username,ssn,firstname,lastname,access)
 {
-		// Set Name		
-		$("#firstnamewrapper").html("<input class='form-control textinput' type='text' id='firstname' placeholder='"+firstname+"' />");
-		$("#lastnamewrapper").html("<input class='form-control textinput' type='text' id='lastname' placeholder='"+lastname+"' />");
+	// Set Name		
+	$("#firstnamewrapper").html("<input class='form-control textinput' type='text' id='firstname' placeholder='"+firstname+"' />");
+	$("#lastnamewrapper").html("<input class='form-control textinput' type='text' id='lastname' placeholder='"+lastname+"' />");
 		
-		// Set User name
-		$("#usernamewrapper").html("<input class='form-control textinput' type='text' id='usrnme' placeholder='"+username+"' />");
+	// Set User name
+	$("#usernamewrapper").html("<input class='form-control textinput' type='text' id='usrnme' placeholder='"+username+"' />");
 		
-		//Set SSN
-		$("#ssnwrapper").html("<input class='form-control textinput' type='text' id='ussn' placeholder='"+ssn+"' />");
-		$("#uid").val(uid);
-
-		$("#editUsers").css("display","block");
+	//Set SSN
+	$("#ssnwrapper").html("<input class='form-control textinput' type='text' id='ussn' placeholder='"+ssn+"' />");
+	$("#uid").val(uid);
+	$("#editUsers").css("display","block");
 }
 
 function updateUser()
 {
-		var ussn=$("#ussn").val();
-		var usrnme=$("#usrnme").val();
-		var firstname=$("#firstname").val();
-		var lastname=$("#lastname").val();
-		var uid=$("#uid").val();
-		
-		AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,cid:querystring['cid']},"ACCESS");
-		
-		$("#editUsers").css("display","none");
+	var ussn=$("#ussn").val();
+	var usrnme=$("#usrnme").val();
+	var firstname=$("#firstname").val();
+	var lastname=$("#lastname").val();
+	var uid=$("#uid").val();
+	
+	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,cid:querystring['cid']},"ACCESS");
+	
+	$("#editUsers").css("display","none");
 }
 
 function closeEdituser()
 {
-		$("#editUsers").css("display","none");
+	$("#editUsers").css("display","none");
 }
 
 function resetPw(uid,username)
 {
-		rnd=randomstring();
+	rnd=randomstring();
 
-		window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
-		
-		AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd},"ACCESS");
-
+	window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
+	
+	AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd},"ACCESS");
 }
 
 //----------------------------------------
@@ -79,54 +77,52 @@ function resetPw(uid,username)
 //----------------------------------------
 function returnedAccess(data)
 {
-		// Fill section list with information
-		str="";
-		if (data['entries'].length > 0) {
+	// Fill section list with information
+	str="";
+	if (data['entries'].length > 0) {
 
-				str+="<table class='list'>";
+		str+="<table class='list'>";
 
-				str+="<tr><th class='first'>Username</th><th>SSN</th><th>First Name</th><th>Last Name</th><th>Modified</th><th>Access</th><th>PW</th><th class='last'>Settings</th></tr>";
-				for(i=0;i<data['entries'].length;i++){
-						var item=data['entries'][i];
-						str+="<tr>";
-						str+="<td>"+item['username']+"</td>";
-						str+="<td>"+item['ssn']+"</td>";
-						str+="<td>"+item['firstname']+"</td>";
-						str+="<td>"+item['lastname']+"</td>";
-						str+="<td>"+item['modified'].substr(0,10)+"</td>";
-						
-						str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
-						
-						if(item['access']=="R"){
-							str+="<option selected='selected' value='R'>Student</option>";
-						}else{
-							str+="<option value='R'>Student</option>";
-						}
-						if(item['access']=="W"){
-							str+="<option selected='selected' value='W'>Teacher</option>";
-						}else{
-							str+="<option value='W'>Teacher</option>";
-						}
-						if(item['access']=="N"){ 
-							str+="<option selected='selected' value='N'>None</option>"
-						}else{ 
-							str+="<option value='N'>None</option>";
-						}
-						str+="</select>";
+		str+="<tr><th class='first'>Username</th><th>SSN</th><th>First Name</th><th>Last Name</th><th>Modified</th><th>Access</th><th>PW</th><th class='last'>Settings</th></tr>";
+		for(i=0;i<data['entries'].length;i++){
+			var item=data['entries'][i];
+			str+="<tr>";
+			str+="<td>"+item['username']+"</td>";
+			str+="<td>"+item['ssn']+"</td>";
+			str+="<td>"+item['firstname']+"</td>";
+			str+="<td>"+item['lastname']+"</td>";
+			str+="<td>"+item['modified'].substr(0,10)+"</td>";
+			
+			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
+			
+			if(item['access']=="R"){
+				str+="<option selected='selected' value='R'>Student</option>";
+			}else{
+				str+="<option value='R'>Student</option>";
+			}
+			if(item['access']=="W"){
+				str+="<option selected='selected' value='W'>Teacher</option>";
+			}else{
+				str+="<option value='W'>Teacher</option>";
+			}
+			if(item['access']=="N"){ 
+				str+="<option selected='selected' value='N'>None</option>"
+			}else{ 
+				str+="<option value='N'>None</option>";
+			}
+			str+="</select>";
 
-						str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;'></td>";
+			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;'></td>";
 
-						str+="<td><img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-						str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\");' ></td>";
+			str+="<td><img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\");' ></td>";
 
-						str+="</tr>";
-				}
-				str+="</table>";
+			str+="</tr>";
 		}
-		var slist=document.getElementById("content");
-		slist.innerHTML=str;
-		
-	  if(data['debug']!="NONE!") alert(data['debug']);
+		str+="</table>";
+	}
+	var slist=document.getElementById("content");
+	slist.innerHTML=str;
+	
+	if(data['debug']!="NONE!") alert(data['debug']);
 }
-
-		
