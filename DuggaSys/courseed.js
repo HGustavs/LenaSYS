@@ -8,7 +8,8 @@ AJAXService("GET", {}, "COURSE");
 // Commands:
 //----------------------------------------
 
-function updateCourse() {
+function updateCourse() 
+{
 	var coursename = $("#coursename").val();
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
@@ -25,26 +26,30 @@ function updateCourse() {
 	}, "COURSE");
 }
 
-function closeEditCourse() {
+function closeEditCourse() 
+{
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#editCourse").css("display", "none");
 	
-		resetinputs();
 	//resets all inputs
+	resetinputs();
 }
 
-function closeNewCourse() {
+function closeNewCourse() 
+{
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#newCourse").css("display", "none");
 }
 
-function newCourse() {
+function newCourse() 
+{
 	$("#newCourse").css("display", "block");
 }
 
-function createNewCourse() {
+function createNewCourse() 
+{
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
@@ -54,38 +59,28 @@ function createNewCourse() {
 	}, "COURSE");
 }
 
-function copyVersion() {
+function copyVersion() 
+{
 	svers = $("#copyversion").val();
 	dvers = $("#versid").val();
-
-	sstr = "Are you sure you want to copy from the version with id " + svers + " to a new version with the id " + dvers;
-	/*if (confirm(sstr)) {
-		alert("TKONG!");
-	}
-	*/
-			
+	sstr = "Are you sure you want to copy from the version with id " + svers + " to a new version with the id " + dvers;	
 	//all inputs = empty
 }
 
-function resetinputs(){
-		
-
-$('#coursename').val("");
-$('#coursecode').val("");
-$('#versid').val("");
-$('#versname').val("");
-
-
+function resetinputs()
+{
+	$('#coursename').val("");
+	$('#coursecode').val("");
+	$('#versid').val("");
+	$('#versname').val("");
 }
 
-
-function createVersion() {
+function createVersion() 
+{
 	$(".item").css("background", "#fff");
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$(".item").css("background", "#fff");
-
-
 	$("#editCourse").css("display", "none");
 
 	// Set Name
@@ -99,12 +94,12 @@ function createVersion() {
 		versname : versname
 	}, "COURSE");
 	
-	resetinputs();
 	//resets all inputs
-	
+	resetinputs();
 }
 
-function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
+function selectCourse(cid, coursename, coursecode, visi, vers, edvers) 
+{
 	console.log(cid, coursename, coursecode, visi, vers, edvers);
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
@@ -112,53 +107,49 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
 	$("#C" + cid).css("box-shadow", "1px 1px 3px #000 inset");
 	$(".item").css("background", "#fff");
 	$("#C" + cid).css("background", "#EDF");
-
-
-	
-	
 	// Set Name
-
 	$("#couresnamewrapper").html("<input class='form-control textinput' type='text' id='coursename' placeholder='"+coursename+"' />");
-	
 	// Set Cid
-
 	$("#courseidwrapper").html("<input class='form-control textinput' type='text' id='coursecode' placeholder='"+coursecode+"' />");
 	// Set Code
 	$("#versidwrapper").html("<input size='8' class='form-control textinput' type='text' id='versid' placeholder='"+vers+"' />");
-	
 	// Set Code
 	$("#versnamewrapper").html("<input size='8' class='form-control textinput' type='text' id='versname' placeholder='"+edvers+"' />");
 	// Set Visibiliy
-	
-		// Set Name
+	// Set Name
 	$("#coursename").val(coursename);
-
 	// Set Cid
 	$("#cid").val(cid);
-
 	// Set Code
 	$("#coursecode").val(coursecode);
-
 	// Set Visibiliy
 	str = "";
-	if (visi == 0)
+	
+	if (visi == 0) {
 		str += "<option selected='selected' value='0'>Hidden</option>";
-	else
+	} else {
 		str += "<option value='0'>Hidden</option>";
-	if (visi == 1)
+	}
+	
+	if (visi == 1) {
 		str += "<option selected='selected' value='1'>Public</option>";
-	else
+	} else {
 		str += "<option value='1'>Public</option>";
-	if (visi == 2)
+	}
+	
+	if (visi == 2) {
 		str += "<option selected='selected' value='2'>Login</option>";
-	else
+	} else {
 		str += "<option value='2'>Login</option>";
-	if (visi == 3)
+	}
+	
+	if (visi == 3) {
 		str += "<option selected='selected' value='3'>Deleted</option>";
-	else
+	} else {
 		str += "<option value='3'>Deleted</option>";
+	}
+	
 	$("#visib").html(str);
-
 	var cstr = "";
 	var sstr = "";
 	var estr = "";
@@ -191,9 +182,9 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
 
 	// Show dialog
 	$("#editCourse").css("display", "block");
-
-			resetinputs();
+	
 	//resets all inputs
+	resetinputs();
 	return false;
 }
 
@@ -201,8 +192,8 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers) {
 // Renderer
 //----------------------------------------
 
-function returnedCourse(data) {
-
+function returnedCourse(data) 
+{
 	versions = data['versions'];
 
 	// Fill section list with information
@@ -216,11 +207,10 @@ function returnedCourse(data) {
 
 	// Course Name
 	str += "<div id='Courselistc' >";
-
 	str += "<div id='lena' class='head'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a> Course Organization System</div>";
 
 	// For now we only have two kinds of sections
-if (data['entries'].length > 0) {
+	if (data['entries'].length > 0) {
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 
@@ -232,8 +222,7 @@ if (data['entries'].length > 0) {
 			
 			if (data['writeaccess']) {
 				str += "<span style='margin-right:15px;'><a href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
-			}
-			else{
+			} else {
 				str += "<span><a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] +"&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
 			}
 			
@@ -257,10 +246,10 @@ if (data['entries'].length > 0) {
 	var slist = document.getElementById('Courselist');
 	slist.innerHTML = str;
 
-	if (data['debug'] != "NONE!")
+	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
-		
-			resetinputs();
+	}
+	
+	resetinputs();
 	//resets all inputs
-
 }
