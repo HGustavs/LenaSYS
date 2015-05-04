@@ -470,11 +470,19 @@ function hideReceiptPopup()
 // A function that asks for users email so the dugga-receipt can be sent to the user.
 //----------------------------------------------------------------------------------
 function sendReceiptEmail(){
-	var receipt = document.getElementById('receipt').value;
-	var email = prompt("Please enter your email");
-	if (email != null){
-		window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
-	}
+
+var receiptcemail ="";
+receiptcemail = localStorage.getItem("receiptcemail");
+//fetches localstorage item, if it is empty the prompt message is empty at first
+//----------------------------------------------------------------------------------
+		if(receiptcemail != ""){
+				var promtemail = localStorage.getItem("receiptcemail");
+				var email= prompt("Please enter your email",""+promtemail);
+				if (email != null){
+						localStorage.setItem("receiptcemail", email); //save value of propmt into an localStorage variable
+						window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
+				}
+		}
 }
 
 
