@@ -1,5 +1,7 @@
 <?php
-	session_start();
+	if(session_status() == PHP_SESSION_NONE){
+		header("Location: ../Shared/loginprompt.php");
+	}
 	include_once "../../coursesyspw.php";
 	include_once "../Shared/sessions.php";
 	pdoConnect();
