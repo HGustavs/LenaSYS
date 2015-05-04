@@ -35,38 +35,37 @@
 		include '../Shared/loginbox.php';
 	?>
 		
-
+	<!-- content START -->
 	<div id="contentUMV">
-		
+		<!-- Student name and clas Title --> 
 		<div id="studentTitle">
 
 		</div>
-        
-		<div class="mainProgressBarcontainer">
-            <div id="MainProgress">
-            
-                <div id="completedMainProgress">
-                
-                    <div id="ProgressbarG1N">
-                        <div id="completedProgressbarG1N"></div>
-                    </div>
-                
-                    <div id="ProgressbarG1F">
-                        <div id="completedProgressbarG1F"></div>
-                    </div>
-                
-                    <div id="ProgressbarG2F">
-                        <div id="completedProgressbarG2F"></div>
-                    </div>
-                
-                </div>
-                
-            </div>
+		<!-- Students progressbar, completed credits in percent out of total -->
+		<div id="MainProgress">
+		
+			<div id="completedMainProgress">
+			
+				<div id="ProgressbarG1N">
+					<div id="completedProgressbarG1N"></div>
+				</div>
+			
+				<div id="ProgressbarG1F">
+					<div id="completedProgressbarG1F"></div>
+				</div>
+			
+				<div id="ProgressbarG2F">
+					<div id="completedProgressbarG2F"></div>
+				</div>
+			
+			</div>
+			
 		</div>
-        
-
+		
+		<!-- View over the student courses/ school year  -->
 		<div id="YearContainer">
 		
+			
 			<div id="Year1" class="Year">
 				
 			</div>
@@ -79,10 +78,11 @@
 
 			</div>
 	
+		
 		</div>
 	
 	</div>
-	
+
     <script src="js/studentView.js"></script>
     <script type="text/javascript" src="js/umvjquery.js"></script>
     

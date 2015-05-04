@@ -34,7 +34,7 @@
 		include '../Shared/loginbox.php';
 	?>
 		
-       
+    <!-- content START -->   
 	<div id="contentUMV">
             
         <!-- Dropdownmenu -->
@@ -82,7 +82,7 @@
 				</div>
 		
             
-            <!-- Change pages -->
+            <!-- Change pages buttons-->
             <div class="changePages">
                 <p>Sida</p>
                 <div>1</div>
@@ -94,6 +94,7 @@
         </div>
        
 	</div>
+
 
     <script src="js/teacherView.js"></script>
     <script type="text/javascript" src="js/umvjquery.js"></script>

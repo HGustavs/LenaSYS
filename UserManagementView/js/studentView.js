@@ -2,11 +2,21 @@
 // AJAX-call to dugga.js 
 AJAXService("GET", {}, "UMVSTUDENT");
 
-function strcmp(a, b) {
+//---------------------------------------------------------------
+//	strcmp: 
+//	
+//---------------------------------------------------------------
+function strcmp(a, b) 
+{
     return a > b ? 1 : a < b ? -1 : 0;
 }
 
-function natcmp(a, b) {
+//---------------------------------------------------------------
+//	natcmp: 
+//	
+//---------------------------------------------------------------
+function natcmp(a, b) 
+{
     var x = [], y = [];
 
     a.replace(/(\d+)|(\D+)/g, function($0, $1, $2) { x.push([$1 || 0, $2]) })
@@ -26,8 +36,12 @@ function natcmp(a, b) {
 }
 
 
-
-function loadData(studyprogram, pnr) {
+//---------------------------------------------------------------
+//	loadData: This function doesent do anything at the moment. 
+//			  Old code. 	
+//---------------------------------------------------------------
+function loadData(studyprogram, pnr) 
+{
 	$.get( "usermanagementviewservice.php", { studyprogram: studyprogram, pnr: pnr })  
 		.done(
 			function( data ) {
@@ -43,15 +57,14 @@ function loadData(studyprogram, pnr) {
 
 }
 
-//---------------------------------------------------------------
-//	renderStudentView(data) - renders the student view from the
-//	student. Will render the full view with title and everything.
-//---------------------------------------------------------------
+//-------------------------------------------------------------------------
+//	renderStudentView: Renders the student view from the student. Will
+//					   render the full view with title and everything.
+//-------------------------------------------------------------------------
 
 function renderStudentView(data)
 {
 
-	
 	var htmlStr = "";
 	var fullname = data['fullname'];
 	var studentClass = data['class'];
@@ -62,7 +75,7 @@ function renderStudentView(data)
 	var titleList = document.getElementById('studentTitle');
 	titleList.innerHTML = htmlStr;
 	
-	/* Add Progressbar data */
+	// Add Progressbar data
 	
 	htmlStr = "";
 	var progress = data['progress'];
@@ -78,7 +91,7 @@ function renderStudentView(data)
 	progressBar.innerHTML = htmlStr;
 	
 	
-	/* Add course data */
+	// Add course data 
 	
 	htmlStr = "";
 	htmlStr2 = "";
@@ -101,6 +114,7 @@ function renderStudentView(data)
 	htmlStr3 += '<div class="year_header"><h3>'+ yearh3[2] +'</h3></div>';
 	htmlStr3 += '<div class="courses_body">';
 	
+	//Parse html for each course. 
 	for(var i = 0; i < courses.length; i++) {
 		var termcheck=courses[i]['term'];
 		var termchecksplit=termcheck.split('-');
@@ -135,16 +149,16 @@ function renderStudentView(data)
 	
 	console.log("DATA_PRINTED - DONE");
 	
-	/* Check if error occurred during execution of SQL queries */
+	// Check if error occurred during execution of SQL queries 
 	if(data['debug'] != "NONE!") {
 		alert(data['debug']);
 	}
 	
 }
-//---------------------------------------------------------------
-//	createHTMLForCourse(data) - creates HTML representation of a
-//	specific course. Prints out the information into div-elements
-//---------------------------------------------------------------
+//-----------------------------------------------------------------------
+//	createHTMLForCourse: Creates HTML representation of a specific course.
+//						 Prints out the information into div-elements.
+//-----------------------------------------------------------------------
 function createHTMLForCourse(data) 
 {
 	var coursename 	= data['coursename'];
@@ -152,6 +166,7 @@ function createHTMLForCourse(data)
 	var hp			= data['hp'];
 	var idCourse	= data['coursecode'];
 	var procent 	= result/hp * 100;
+	
 	// Check that the link is not null and if null present a '#' instead
 	var course_link = (data['course_link'] == null ?  '#' : data['course_link']);
 	var course_responsible = data['course_responsible'];
@@ -164,14 +179,13 @@ function createHTMLForCourse(data)
 	
 	courseHtmlStr += '<div id="' + idCourse +  '" class="course reg_fade">';
 	courseHtmlStr += '<div class="course_wrapper">';
-	
 	courseHtmlStr += '<div class="course_name"><p>' + coursename + '</p></div>';
 	courseHtmlStr += '<div class="course_progressbar">';
 	courseHtmlStr += '<div class="progress"><div class="progress-bar progress-bar-warning" id="" role="progressbar" style="width:' + parseFloat(procent) + '%"></div></div>';
-	courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
+		courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Kurslänk</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">';
-	courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="img/envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
+		courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="img/envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
 	courseHtmlStr += '<div class="course_alert"></div>';
 	courseHtmlStr += '<div class="course_type"></div>';
 	
@@ -179,9 +193,4 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '</div>';
 	
 	return courseHtmlStr;
-}
-
-function renderStudyprogramView(data){
-	
-
 }

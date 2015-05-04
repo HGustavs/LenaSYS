@@ -7,17 +7,18 @@ AJAXService("TOOLBAR", {}, "UMVTEACHER");
 //	data that was returned.
 //---------------------------------------------------------------
 function renderTeacherView(data) {
-	var type = data['type'];
+	var type = data['type']; //Array that holds what type of data should be rendered from DB
 	
-	/* render the created toolbar*/
+	// render the created toolbar
 	if(type == "TOOLBAR") {
 		createToolbar(data['classes']);
 	}
+	//Render the studentlist 
 	else if(type == "VIEW") {
 		renderView(data);
 	}
-	
-	/* Check if error occurred during execution of SQL queries */
+
+	// Check if error occurred during execution of SQL queries
 	if(data['debug'] != "NONE!") {
 		alert(data['debug']);
 	}
@@ -31,9 +32,10 @@ function createToolbar(classes) {
 
 	console.log("Trying to create toolbar...");
 	
+	//Check if there is a class that can be placed in the toolbar
 	if(classes.length > 0) {
 		renderToolbar(classes);
-		var defaultclass = getTheDefaultProgram(classes);
+		var defaultclass = getTheDefaultProgram(classes); // Reads data from getTheDeaultProgram()
 		console.log("AJAXService call to retrieve view");
 		updateView(defaultclass);
 	}
@@ -55,6 +57,7 @@ function renderToolbar(classes) {
 	htmlStr += "<li><a>" + currentClassCode + "</a>";
 	htmlStr += "<ul>";
 	
+	//Loop to list every class into a dropdownmenu for the teacher
 	for(var i = 0; i < classes.length; i++) {
 		current_class = classes[i];
 		if(currentClassCode != current_class['classcode']) {	//Check if course has a new course code
@@ -70,6 +73,7 @@ function renderToolbar(classes) {
     
     htmlStr += "</ul>" + "</li>" + "</ul>";
     
+    //Place everything that is retrived as a class and put it into a dropdownmenu.
     var menulist = document.getElementById('DropdownMenu');
     menulist.innerHTML = htmlStr;
 }
@@ -89,7 +93,7 @@ function getTheDefaultProgram(classes)
 //---------------------------------------------------------------
 function updateView(classname) {
 	console.log("Clicked classname: " + classname);
-	/* AJAX call to request students of 'classname' */
+	// AJAX call to request students of 'classname' 
 	AJAXService("VIEW", {classname:classname}, "UMVTEACHER");
 }
 
@@ -110,6 +114,7 @@ function renderView(data)
 	//Render title
 	htmlStr += "<h2>" + "Programvy för " + classname + "</h2>";
 	
+	//program title
 	var programTitle = document.getElementById("title");
 	programTitle.innerHTML = htmlStr;
 	
@@ -130,6 +135,7 @@ function renderView(data)
 		
 	}
 	
+	//If there is no students this will execute.
 	if(studentlist.length == 0) {
 		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
 	}
@@ -140,6 +146,11 @@ function renderView(data)
 	
 }
 
+//---------------------------------------------------------------
+//	getStudentInfo(student, number) - Creates a div that shows 
+//	a list of every student of a specific class. Fullname, ssn
+//	username and email.
+//---------------------------------------------------------------
 function getStudentInfo(student, number) 
 {
 	var htmlStr = "";
