@@ -1,0 +1,72 @@
+#### **Overview**
+This example shows how elements may be added and removed from the DOM.
+
+#### **createElement**
+The createElement method creates a new element of the given element type. The following code creates a new paragraph element:
+**createElement Example:**
+~~~
+var newParagraph=document.createElement("p");
+~~~
+In the code example to the right this method is used in the addNewButtonsPanelBelow to create new DOM elements, e.g. at line 13 and 16. 
+
+#### **innerHTML**
+The new paragraph is empty. To read or add content to any DOM element the innerHTML method may be used.
+**innerHTML Example:**
+~~~
+newParagraph.innerHTML="Test &#60;strong&#62;Text&#60;/strong&#62;";
+~~~
+In the code example to the right this method is used in the addNewButtonsPanelAbove to create new DOM elements by entering HTML in the string at line 35 to line 38. 
+
+However the new paragraph element is not yet part of the DOM. There are several ways to add elements to the DOM, e.g. the appendChild method.
+
+#### **appendChild**
+This method adds the given element as the last child element of a DOM element.
+**appendChild Example:**
+~~~
+var b=document.querySelector("body");
+b.appendChild(newParagraph);
+~~~
+The code above inserts the new paragraph element as the last child element of the body element. 
+
+In the code example to the right this method is used in the addNewButtonsPanelBelow insert new elements in the DOM, e.g. at line 19 and 28. 
+
+To insert elements at arbitrary positions in the DOM the insertBefore method is used.
+
+#### **insertBefore**
+This method inserts an element as a child element before another child element.
+**insertBefore Example:**
+~~~
+var b=document.querySelector("body");
+b.insertBefore(newParagraph, b.firstChild);
+~~~
+This code will insert the new paragraph element as the first child element in the body element. The firstChild method returns the first child element of a DOM element. 
+
+In the code example to the right this method is used in the addNewButtonsPanelAbove insert new elements in the DOM at line 39. 
+
+#### **removeChild**
+To remove elements from the DOM the removeChild method can be used.
+**removeChild Example:**
+~~~
+var b=document.querySelector("body");
+b.removeChild(newParagraph);
+~~~
+This code will remove the paragraph element from body element in the DOM. 
+
+In the code example to the right this method is used in the removeButtonsPanel to remove elements from the DOM at line 43. 
+
+Another way to completely clear the contents of a DOM element is setting its innerHTML to an empty string:
+innerHTML Example:
+
+var b=document.querySelector("body");
+b.innerHTML="";
+This code removes all content from the body element. 
+
+#### **parentNode**
+It is often usefull to access the parent element of a DOM element. E.g. using the parentNode method we can remove elements from the DOM:
+**parentNode Example:**
+~~~
+newParagraph.parentNode.removeChild(newParagraph);
+~~~
+This code removes the new paragraph element from its parent element (in this case the body element). 
+
+In the code example to the right this method is used at line 28 in the addNewButtonsPanelBelow to add a new panel with buttons at the end of the body element. The body element is the grandparent of the clicked button and can therefore be accessed by accessing the parent node of the parent node of the clicked button.
