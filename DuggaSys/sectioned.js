@@ -20,7 +20,7 @@ $(document).ready(function(){
         $("#testbutton").css("background-color", "#614875");
     });
 });
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode)
 {
 		
 	xelink=elink;
@@ -107,6 +107,18 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 	if(evisible==1) str+="<option selected='selected' value='1'>Public</option>"
 	else str+="<option value='1'>Public</option>";
 	$("#visib").html(str);
+	
+	// Add hichscore mode options
+	str = "";
+	if(highscoremode==0) str +="<option selected='selected' value ='0'>None</option>" 
+	else str +="<option value ='0'>None</option>"; 
+
+	if(highscoremode==1) str +="<option selected='selected' value ='1'>Time based</option>" 
+	else str +="<option value ='1'>Time based</option>"; 
+
+	if(highscoremode==2) str +="<option selected='selected' value ='2'>Click based</option>" 
+	else str +="<option value ='2'>Click based</option>"; 
+	$("#highscoremode").html(str);
 
 	// Set Link
 	$("#link").val(elink);
@@ -199,11 +211,12 @@ function updateItem()
 	lid=$("#lid").val();
 	kind=$("#type").val();
 	link=$("#link").val();
+	highscoremode=$("#highscoremode").val();
 	sectionname=$("#sectionname").val();
 	visibility=$("#visib").val();
 	moment=$("#moment").val();
 	gradesys=$("#gradesys").val();
-	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys},"SECTION");
+	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode},"SECTION");
 	$("#editSection").css("display","none");
 }
 
@@ -438,7 +451,7 @@ function returnedSection(data)
 						str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showDoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 					}	
 		
-					if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\");' />";
+					if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' />";
 		
 					if(parseInt(item['kind']) === 3||parseInt(item['kind']) === 4){
 						var grady=-1;

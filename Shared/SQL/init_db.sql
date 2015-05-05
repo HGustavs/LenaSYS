@@ -97,6 +97,7 @@ CREATE TABLE listentries (
 	vers			VARCHAR(8),
 	moment			INT UNSIGNED,
 	gradesystem 	TINYINT(1),
+	highscoremode		INT DEFAULT 0,
 	CONSTRAINT 		pk_listentries PRIMARY KEY(lid),
 	
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */

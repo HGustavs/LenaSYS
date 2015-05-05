@@ -67,6 +67,9 @@ pdoConnect();
 			<td>Moment:&nbsp;<select id='moment' disabled></select></td>
 			<td>GradeSystem:&nbsp;<select id='gradesys' ></select></td>
 		</tr>
+		<tr>
+			<td>High score:&nbsp;<select id='highscoremode' ></select></td>
+		</tr>
 	</table>
 	<table>
 		<tr>
