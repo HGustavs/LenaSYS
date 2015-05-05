@@ -115,9 +115,9 @@ if($hr&&$userid!="UNK"){
 	$query->bindParam(':duggaid', $duggaid);
 	$result=$query->execute();
 
-	if(!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!"){
-		$i=0;
-	}
+	if(!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+	$i=0;
+	
 
 	foreach($query->fetchAll() as $row){
 		$variants[$i]=array(
