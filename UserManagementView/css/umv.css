@@ -166,15 +166,17 @@
 	#radio_buttonToolbar input[type=radio] + label:before {
 		content: "";  
 		display: inline-block;  
-		width: 13px;  
+		width: 15px;  
 		height: 14px;  
 		margin-right: 6px;
 		background-color:transparent; 
 		cursor:pointer;
 		background-image:url(../img/radiobutton.svg);
+		background-repeat:no-repeat;
 	}
 	#radio_buttonToolbar input[type=radio]:checked + label:before {
 		background-image:url(../img/radiobuttonchecked.svg);
+		background-repeat:no-repeat;
 	}
 /*END radiobutton filter*/
 
