@@ -1,0 +1,7 @@
+#### **Overview**
+This example demonstrates how to read mouse coordinates and use these coordinates to draw something on a canvas.
+
+#### **The event object**
+The event object holds several different properties of the event. Amongst these is the target property that holds a reference to the DOM element the event was triggered at. The event object also has the properties pageX and pageY that holds the position of the mouse pointer relative to the document in pixels when the event was triggered. We can use these properties to calculate where the mouse pointer is relative to a specific DOM element, e.g. a canvas element. To do this we also need to know the position of the DOM element relative to the document. This can be done in a couple of different ways. One way to do this can be seen in the example code in the findPos function. 
+
+By subtracting the position of the DOM element from the position of the mouse when the event was fired we get the position of the mouse relative to the top left corner of the DOM element. We now know where in the DOM element the mouse was when the event was triggered. This can be used to manipulate a canvas element, e.g. draw to the canvas at the mouse position or check if the mouse position is inside a boundary. The latter case is useful when making selections for a booking, e.g. changing color of seat in a cinema when the mouse pointer hovers over it or when the seat is clicked to mark it as selected.
