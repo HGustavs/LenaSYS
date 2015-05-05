@@ -177,7 +177,7 @@ CREATE TABLE vers(
 	coursename	  	VARCHAR(45) NOT NULL,
 	coursenamealt	VARCHAR(45) NOT NULL,
 	CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),		
-	CONSTRAINT pk_vers PRIMARY KEY(cid,coursecode,vers)
+	CONSTRAINT pk_vers PRIMARY KEY(cid,vers)
 );
 
 CREATE TABLE fileLink(
