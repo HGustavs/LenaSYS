@@ -1265,6 +1265,7 @@ function rendercode(codestring,boxid,wordlistid)
 	bracket=new Array();
 	cbcount=0;
 	cbracket=new Array();
+	ts = new Array();
 	
 	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr');
 	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source'); 
@@ -1327,10 +1328,12 @@ function rendercode(codestring,boxid,wordlistid)
 				pid="CBR"+cbcount+boxid;
 				cbcount++;
 				cbracket.push(pid);
-				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";
+				ts.push(tokens[i]);
 			}else if(tokenvalue=="}"){
 				pid=cbracket.pop();
-				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";
+				ts.push(tokens[i]);
 			}else if(tokenvalue=="<"){
 				if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
 					var k = 2;
@@ -1405,8 +1408,52 @@ function rendercode(codestring,boxid,wordlistid)
 	}
 	str+="</div>";
 	// Print out rendered code and border with numbers
-	printout.innerHTML = createCodeborder(lineno,improws) + str;	
+	printout.innerHTML = createCodeborder(lineno,improws) + createButtonBorder(lineno, ts) + str;	
 	linenumbers();
+}
+
+
+//----------------------------------------------------------------------------------
+// Function to toggle the visibility of codeblocks. NOT FINISHED
+//----------------------------------------------------------------------------------
+function toggleBlock(a){
+	var e=document.getElementById(a);
+	if(!e)return true;
+		if(e.style.display=="none"){
+			e.style.display="block"
+		} else {
+			e.style.display="none"
+		}
+	return true;
+}
+
+//----------------------------------------------------------------------------------
+// Function to create a border with buttons for collapsing code blocks/statements.
+//----------------------------------------------------------------------------------
+function createButtonBorder(a, b){
+	var str="<div class='buttonborder'>";
+	var lineno = a;
+	var cbrrow = [];
+	var id = 0;
+	ts = b;
+	
+	for(j = 0; j < ts.length; j++) {
+		if(ts[j].val == "{") {
+			var row = ts[j].row;
+			cbrrow.push(row);
+		}
+	}
+
+	for(i = 1; i <= lineno; i++) {
+		if(jQuery.inArray(i, cbrrow) != -1) {
+			str+="<div onclick='toggleBlock(\""+id+"\");'>+</div>";
+		} else {
+			str+="<br>";
+		}
+	}
+
+	str+="</div>";
+	return str;
 }
 
 //----------------------------------------------------------------------------------
