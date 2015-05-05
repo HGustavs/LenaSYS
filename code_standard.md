@@ -1,4 +1,13 @@
+# Review considerations of importance
+
+* Small code is impprtant - a small solution is better, reuse important
+* Minimize use of libraries such as jquery
+* Innerhtml better than dom .addchild etc
+* Static code better than dynamic.
+* Styled html inputs better than hand made or from libraries e.g. jquery
+
 # Code standard for LenaSYS
+
 + Text that uses <-- are used for commenting the coding style only, and are not part of the code nor the comments in the file
 + three periods ... denotes any section of random code
 + this file contains coding style for both javascript and php
