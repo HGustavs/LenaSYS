@@ -1,0 +1,29 @@
+canvas		{border:1px solid #000;float:left;} 
+
+#fillRect	{
+			padding:5px;float:left;
+			margin-left:10px;
+			border:3px solid #bfbfbf;
+			background-color:#ccc;
+			font-family:Arial, Helvetica, san-serif;
+			}
+			
+label			{
+			display:block;
+			width:140px;
+			clear:both;
+			margin:5px;
+			text-align:right;
+			}  
+                                                                     
+label input	{
+			float:right;
+			width:70px;
+			text-align:right;
+			margin-left:5px;
+			}
+                                                                          
+button		{
+			display:block;
+			margin:10px auto;
+			}  
