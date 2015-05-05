@@ -1,7 +1,11 @@
 <?php
-	session_start();
 	include_once "../../coursesyspw.php";
 	include_once "../Shared/sessions.php";
+	// continue if logged in, else redirect to loginprompt
+	session_start();
+	if(!checklogin()){
+		header("Location: ../Shared/loginprompt.php");
+	}
 	pdoConnect();
 ?>
 
