@@ -44,6 +44,7 @@ function setup()
 function returnedDugga(data)
 {
 	Timer.startTimer();
+	
 	console.log(data['param']);
 	
 	  if(data['debug']!="NONE!") alert(data['debug']);
