@@ -69,9 +69,9 @@
 				<div id="radio_buttonToolbar">
                     <form>
                     	<input type="radio" id="allStudents" name="filterList" value="allStudents" checked>
-                        	<label for="allStudents"><span></span>Alla studenter</label>
+                        	<label for="allStudents"><span>Alla studenter</span></label>
 						<input type="radio" id="activeStudents" name="filterList" value="activeStudents">
-                        	<label for="activeStudents"><span></span>Aktiva studenter</label>
+                        	<label for="activeStudents"><span>Aktiva studenter</span></label>
                     </form>
 				</div>
                 
