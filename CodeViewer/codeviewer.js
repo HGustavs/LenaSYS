@@ -181,6 +181,7 @@ function returned(data)
 	}
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
+	//$("#box1").append("<button onclick=''>clickerino</button>");
 }
 
 //---------------------------------------------------------------------------------
@@ -210,7 +211,7 @@ var tabLine = function(text)
 //----------------------------------------------------------------------------------
 // editImpWords: adds/removes important words to the #impword selectbox
 // and stores each added/removed word in the addedWords array and the removedWords array 
-//                Is called by [this function] in EditorV50.php
+//                Is called at line 201/204 in EditorV50.php
 //---------------------------------------------------------------------------------
 var addedWords = [];
 var removedWords = [];
@@ -242,7 +243,7 @@ function editImpWords(editType)
 
 //----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialogue box for editing a code example
-//                Is called by [this function] in [this file]
+//                Is called at line 58 in navheader.php
 //----------------------------------------------------------------------------------¨
 function displayEditExample(boxid)
 {
@@ -293,7 +294,7 @@ function displayEditExample(boxid)
 
 //----------------------------------------------------------------------------------
 // updateExample: Updates example data in the database if changed
-//                Is called by [this function] in [this file]
+//                Is called at line 210 in EditorV50.php
 //					Used by file EditorV50.php
 //----------------------------------------------------------------------------------
 function updateExample()
@@ -375,7 +376,7 @@ function displayEditContent(boxid)
 //----------------------------------------------------------------------------------
 // changeDirectory: Changes the directory in which you choose your code or description
 // 					in the Edit Content box.
-//                Is called by [this function] in EditorV50.php
+//                Is called at line 159 in EditorV50.php
 //----------------------------------------------------------------------------------
 
 function changeDirectory(kind) 
@@ -408,7 +409,7 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
 //----------------------------------------------------------------------------------
 // editImpRows: Adds and removes important rows
-//                Is called by [this function] in EditorV50.php
+//                Is called at line 165/169 in EditorV50.php
 //----------------------------------------------------------------------------------
 
 var addedRows = new Array();
@@ -442,8 +443,7 @@ function editImpRows(editType)
 
 //----------------------------------------------------------------------------------
 // updateContent: Updates the box if changes has been made
-//                Is called by [this function] in [this file]
-//					Used by file EditorV50.php
+//                Is called at line 174 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateContent() 
 {
@@ -546,60 +546,9 @@ function createboxmenu(contentid, boxid, type)
 	}
 }
 //----------------------------------------------------------------------------------
-// removeTemplatebox: Removes any template box -- Is called by renderer
-//						TODO: Check if actually used, seems to never be used
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------------------------------
-function removeTemplatebox()
-{
-	for(var i=document.getElementsByClassName("box").length; i>retData['numbox']; i--){
-		document.getElementById("div2").removeChild(document.getElementById("box"+i+"wrapper"));
-	}
-}
-
-//----------------------------------------------------------------------------------
-// createhotdogmenu: Creates the menu at the top of a box 
-//                Is called by renderer in [this file]
-//----------------------------------------------------------------------------------
-
-function createhotdogmenu()
-{
-	// div2 refers to the main content div below the floating menu
-	var content = document.getElementById("div2");
-	// Checks if a hotdogmenu already exists, then calls that, if not a new one is created
-	if(document.getElementById("hotdogdrop")){
-		var hotdogmenu = document.getElementById("hotdogdrop");
-	}else{
-		var hotdogmenu = document.createElement("span");
-		content.appendChild(hotdogmenu);
-		hotdogmenu.id = "hotdogdrop";
-		hotdogmenu.className = "hotdogdropStyle dropdown dropdownStyle showmobile";
-	}
-
-	str = '<table cellspacing="0" class="showmobile"><tr>';
-	str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="../Shared/icons/home_button.svg" /></td>';
-	str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="Skip(\"bd\");" onmouseup="Skip(\"bu\");" onclick="Skip(\"bd\")"><img src="../Shared/icons/backward_button.svg" /></td>';
-	str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
-	str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
-	str += '</tr>';
-	// Possible crash warning if returned number of boxes is wrong
-	if(retData['numbox']==0 || retData['numbox']==null){
-		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
-	}
-	for(i=0;i<retData['numbox'];i++){
-		str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retData['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retData['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
-	}		
-	str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
-	str += '</table>';
-	hotdogmenu.style.display="block";	
-	hotdogmenu.innerHTML = str;
-}
-
-//----------------------------------------------------------------------------------
 // toggleClass: Modifies class using Jquery to contain "activebox" class selector
 //				Used by createboxmenu(contentid, boxid, type) in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function toggleClass(id)
 {
 	var className = $('#'+id).attr('class');
@@ -609,22 +558,6 @@ function toggleClass(id)
 	}else{
 		$("#"+id).removeClass("deactivatedbox").addClass("activebox");	
 	}
-}
-
-//----------------------------------------------------------------------------------
-// displayDrop: Modifies class using Jquery to contain "activebox" class selector 
-//				TODO: Check if actually used, could not find within our files
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------------------------------
-function displayDrop(dropid)
-{	
-	drop = document.getElementById(dropid);
-	if($(drop).is(":hidden")){
-		$(".dropdown").css({display: "none"});
-		drop.style.display="block";
-	}else{
-		drop.style.display="none";
-	}	
 }
 
 //----------------------------------------------------------------------------------
@@ -664,7 +597,6 @@ function highlightHtml(otherTag,thisTag)
 // deHighlightHtml: Dehighlights an html-tag and corresponding html-tag in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function deHighlightHtml(otherTag,thisTag)
 {
 	$("#"+otherTag).removeClass("html");					
@@ -675,7 +607,6 @@ function deHighlightHtml(otherTag,thisTag)
 // Skip: Handles skipping either forward or backward. If pressed show menu
 //                Is called by createhotdogmenu in codeviewer.js
 //----------------------------------------------------------------------------------
-
 var dmd;
 function Skip(skipkind)
 {
@@ -705,7 +636,7 @@ function Skip(skipkind)
 }
 //----------------------------------------------------------------------------------
 // execSkip: 
-//				Used by Skip
+//				Used by Skip in codeviewer.js
 //----------------------------------------------------------------------------------
 function execSkip()
 {
@@ -726,8 +657,6 @@ function execSkip()
 		dmd=0;
 	}
 }
-
-// -------------==============######## Verified Functions End ###########==============-------------
 
 //Retrieve height for building menu.
 $(window).load(function() {
@@ -782,9 +711,6 @@ function changeboxcontent(boxcontent,boxid)
 	AJAXService("changeboxcontent","&boxid="+boxid+"&boxcontent="+boxcontent);	
 }
 
-// -------------==============######## Verified Functions End ###########==============-------------
-	
-
 /********************************************************************************
 
    HTML freeform editing code
@@ -803,71 +729,9 @@ function hideDrop(dname)
 }
 
 //----------------------------------------------------------------------------------
-// Switches Dropdown List to Visible
-//			Used by 
-//			TODO: Appears to not be used
-//----------------------------------------------------------------------------------
-/*
-function switchDrop(dname)
-{
-	var dropd=document.getElementById(dname); 
-	if(dropd.style.display=="block"){
-		$( dropd ).slideUp("fast");							
-	}else{
-		hideDrop("forwdrop");
-		hideDrop("backwdrop");
-		$('#hotdogdrop').hide();	
-		$( dropd ).slideDown("fast");
-		dropd.style.display="block";
-	} 
-}
-*/
-//----------------------------------------------------------------------------------
-// Reads value from Dropdown List
-//				TODO: Appears to not be used
-//----------------------------------------------------------------------------------
-/*
-function issetDrop(dname)
-{
-	var dropd=document.getElementById(dname);
-	if(dropd.style.display=="block"){
-		return true;
-	}else{
-		return false;
-	}
-}
-*/
-//----------------------------------------------------------------------------------
-// Connects blur event to a functon for each editable element
-//				TODO: Appears to not be used
-//----------------------------------------------------------------------------------
-/*
-function setupEditable()
-{	
-	if(retData['writeaccess']=="w"){
-			var editable=document.getElementById('exampleName');
-			editable.addEventListener("blur", function(){editedExamplename();}, true);
-	}
-}
-*/
-//----------------------------------------------------------------------------------
-// editedExamplename:
-//				Used by setupEditable which appears to not be used
-//----------------------------------------------------------------------------------
-/*
-function editedExamplename()
-{
-	var editable=document.getElementById('exampleName');
-	var examplename=dehtmlify(editable.innerHTML,true,60);
-	editable.innerHTML=examplename;
-	AJAXService("editExampleName","&examplename="+examplename);
-}
-*/
-//----------------------------------------------------------------------------------
 // dehtmlify: Removes most html tags from a string!
 //                Is called by editedExamplename(), returned(data) in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function dehtmlify(mainstr,ignorebr,maxlength)
 {
 	mod=0;
@@ -1462,27 +1326,9 @@ function mobileTheme(id){
 		$(".mobilethemebutton").css("display","none");
 	}
 }
-
 //----------------------------------------------------------------------------------
-//  setEditing: Set the editing properties for mobile and desktop version
-//                Is called by [this function] in [codeviewer.js
-//----------------------------------------------------------------------------------
-function setEditing()
-{
-	var	hotdog = document.getElementById("hidehotdog");
-	var	isDesktop = $(hotdog).is(":hidden");
-	if(isDesktop){
-		$("*[contenteditable]").attr("contenteditable","true"); 
-		$(".tooltip").css("display", "block");
-	}else{ 
-		$("*[contenteditable]").attr("contenteditable","false"); 
-		$(".tooltip").css("display", "none");
-	}
-}
-
-//----------------------------------------------------------------------------------
-// changeTemplate: Change template by updating hidden field
-//                Is called by [this function] in EditorV50.php
+// changetemplate: Change template by updating hidden field
+//                Is called at line 223-229 in EditorV50.php
 //----------------------------------------------------------------------------------
 function changetemplate(templateno)
 {
@@ -1496,7 +1342,7 @@ function changetemplate(templateno)
 
 //----------------------------------------------------------------------------------
 // updateTemplate: Write template hidden field to database
-//                Is called by [this function] in EditorV50.php
+//                Is called at line 234 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateTemplate()
 {
@@ -1522,7 +1368,7 @@ function updateTemplate()
 
 //----------------------------------------------------------------------------------
 // closeEditContent: 
-//                Is called by [this function] in EditorV50.php
+//                Is called at line 141 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeEditContent()
 {
@@ -1530,7 +1376,7 @@ function closeEditContent()
 }
 //----------------------------------------------------------------------------------
 // closeEditExample: 
-//                Is called by [this function] in EditorV50.php
+//                Is called at line 183 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeEditExample()
 {
@@ -1538,7 +1384,7 @@ function closeEditExample()
 }
 //----------------------------------------------------------------------------------
 // openTemplateWindow:
-//                Is called by [this function] in EditorV50.php
+//                Is called at line 53 in EditorV50.php
 //----------------------------------------------------------------------------------
 function openTemplateWindow()
 {
@@ -1546,7 +1392,7 @@ function openTemplateWindow()
 }
 //----------------------------------------------------------------------------------
 // closeTemplateWindow: 
-//                Is called by [this function] in EditorV50.php
+//                Is called at line 218 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeTemplateWindow()
 {
@@ -1554,7 +1400,7 @@ function closeTemplateWindow()
 }
 //----------------------------------------------------------------------------------
 // Play:
-//					Is called by createhotdogmenu in codeviewer.js
+//					Is called at line 195 in EditorV50.php and line 56 in navheader.php
 //----------------------------------------------------------------------------------
 function Play()
 {
