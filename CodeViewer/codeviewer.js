@@ -1416,7 +1416,8 @@ function rendercode(codestring,boxid,wordlistid)
 //----------------------------------------------------------------------------------
 // Function to toggle the visibility of codeblocks. NOT FINISHED
 //----------------------------------------------------------------------------------
-function toggleBlock(a){
+function toggleBlock(a)
+{
 	var e=document.getElementById(a);
 	if(!e)return true;
 		if(e.style.display=="none"){
@@ -1430,7 +1431,8 @@ function toggleBlock(a){
 //----------------------------------------------------------------------------------
 // Function to create a border with buttons for collapsing code blocks/statements.
 //----------------------------------------------------------------------------------
-function createButtonBorder(a, b){
+function createButtonBorder(a, b)
+{
 	var str="<div class='buttonborder'>";
 	var lineno = a;
 	var cbrrow = [];
@@ -1460,7 +1462,8 @@ function createButtonBorder(a, b){
 // createCodeborder: function to create a border with line numbers
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
-function createCodeborder(lineno,improws){
+function createCodeborder(lineno,improws)
+{
 	var str="<div class='codeborder'>";
 	
 	for(var i=1; i<=lineno; i++){
@@ -1501,7 +1504,8 @@ function linenumbers()
 //  mobileTheme
 //                Is called by [this function] in codeviewer.css
 //----------------------------------------------------------------------------------
-function mobileTheme(id){
+function mobileTheme(id)
+{
 	if ($(".mobilethemebutton").is(":hidden")){
 		$(".mobilethemebutton").css("display","table-cell");
 	}
