@@ -83,7 +83,7 @@ pdoConnect();
 	
 	<table width="100%">
 		<tr id="linky">
-			<td colspan='2' style='line-height:40px;'>URL:&nbsp;<input name="link" type="text" size="40" /></td>		
+			<td colspan='2' style='line-height:40px;'>URL:&nbsp;<input name="link" placeholder="https://facebook.com" type="text" size="40" /></td>		
 		</tr>
 		<tr id="filey">
 			<td colspan='2' style='line-height:40px;'>Upload File:&nbsp;<input name="uploadedfile" id="uploadedfile" type="file" /></td>		
