@@ -101,9 +101,24 @@
     padding-right: 6px;
 }
 
+.buttonborder{
+	position: absolute;
+	top:0px;
+	bottom: 0px;
+	left:32px;
+	float: right;
+	margin-right: 50px;
+	padding: 5px 0px 0px 0px !important;
+	background-color: #C1B0CF;
+	text-align: right;
+	
+	/* Width of .no and .impo */
+	width: 16px !important;
+}
+
 .normtextwrapper{
 	 /* Width of codeborder */
-  	margin-left: 32px;
+  	margin-left: 48px;
   	padding: 5px 0px 5px 5px;
 }
 
