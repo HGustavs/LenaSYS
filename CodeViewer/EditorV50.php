@@ -82,21 +82,21 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 			$query->bindParam(':exampleid', $exampleid);
 			$query-> execute();
 			$row = $query -> fetch(PDO::FETCH_ASSOC);
-			$public=$row['public'];	// Get info if the course is public.
+			$public=$row['public'];	//  Gets the info if the course are in public mode.
 			$noup="CODEVIEWER"; 	// Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
-			$codeviewer = true;		// Makes it possible to view the content i the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
-			$codeviewerkind=false;	// This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes the user have the right. Codeviewerkind is in use in navheader.php to make the settings button visible. 
+			$codeviewer = true;	// Makes it possible to view the content in the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
+			$codeviewerkind=false;	// This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible. 
 
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
 				//checks if $courseid exists. 
 				if(courseexists($courseID)){ 
-					// If course exists - check login credentials
+					// If the course exists- check login credentials
 					// Logged in and with credentials - show full editor otherwise show viewer version 
 					if(checklogin()){
 						$ha=getAccessType($_SESSION['uid'], $courseID);
 						if($ha == "w"){
-							// Allowed to edit this course (full editor)
+							// Allow to edit this course (full editor)
 							$codeviewerkind=true;
 						}else{
 							// Not allowed to edit (viewer version) 
@@ -115,7 +115,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 						}
 					}
 				}else{
-					//This will show a error message if the course id doesnt exist. 
+					// This will show an error message if the course id doesnt exist.
 					$codeviewer = false;
 					include '../Shared/navheader.php';
 					// Print Warning If course does not exist!
@@ -123,7 +123,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 				}
 			}else{
 				// If $courseID is "UNK" and $exampleid is also "UNK"
-				// This will show a error message if the courseid or the Code Example doesnt exist. 
+				// This will show an error message if the courseid or the Code Example doesnt exist. 
 				$codeviewer = false;
 				include '../Shared/navheader.php';
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
