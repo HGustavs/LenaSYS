@@ -149,6 +149,7 @@ function renderStudentView(data)
 	yearList3.innerHTML = htmlStr3;
 	
 	course_hover_requierments(data);
+	progress_bar_complete(data);
 	console.log("DATA_PRINTED - DONE");
 	
 	// Check if error occurred during execution of SQL queries 
@@ -184,10 +185,10 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<div class="course_name"><p>' + coursename + '</p></div>';
 	courseHtmlStr += '<div class="course_progressbar">';
 	courseHtmlStr += '<div class="progress"><div class="progress-bar progress-bar-warning" id="" role="progressbar" style="width:' + parseFloat(procent) + '%"></div></div>';
-		courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
+	courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Kurslänk</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">';
-		courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="img/envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
+	courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="img/envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
 	courseHtmlStr += '<div class="course_alert"></div>';
 	courseHtmlStr += '<div class="course_type"></div>';
 	
@@ -200,7 +201,6 @@ function createHTMLForCourse(data)
 
 function course_hover_requierments(data){
 	var regCourses = data['reqCourses'];
-	/* I WILL DO ALL THE BLOCK COMMENTS I WANT!*/
 
 	$('.course div, .course p, .course a').hover(function() {
 		// Return the closest div parent div ID on the hover effect.
@@ -225,4 +225,13 @@ function course_hover_requierments(data){
    		}
     );
  
+}
+//Changes the background color to green when the student have finished the course.
+function progress_bar_complete(data){
+
+	$( ".progress-bar" ).each(function( index ) {
+		 if($('.progress').width() == $(this).width()){
+			$(this).css("background-color", "#5cb85c");
+		 }
+	});
 }
