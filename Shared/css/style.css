@@ -263,6 +263,19 @@ header {
     left: 0px;
 }
 
+#duggaTimer {
+    z-index: 9000;
+    width: 100px;
+    background-color: white;
+    text-align: center;
+    position: fixed;
+    top: 0%;
+    left: 50%;
+    margin-top: 7px;
+    margin-left: -50px;
+    border-style: solid;
+    border-width: 1px;
+}
 
 
 .navButt {
@@ -457,7 +470,7 @@ header {
     background-color: #ccc;
     border: 2px solid #999;
     width: 350px;
-    min-height: 100px;
+    min-height: 100px;dugga
     z-index: 9000;
     position: fixed;
     top: 40%;
