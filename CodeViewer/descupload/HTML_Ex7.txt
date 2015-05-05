@@ -1,0 +1,2 @@
+#### **Overview**
+This example demonstrates how to read mouse coordinates in a tile map and use these coordinates to control drawing. 

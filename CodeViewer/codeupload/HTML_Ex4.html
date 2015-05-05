@@ -1,0 +1,125 @@
+<!DOCTYPE html>                                                                                                                                    
+<html lang="en">                                                                                                                                      
+<head>                                                                                                                                              
+	<meta charset="utf-8">                                                                                                                            
+	<script type="text/javascript"><!--                                                                                                               
+                                                                                                                                                       
+    //Declaration of globals                                                                                                                           
+    var acanvas,context,clouds,mountainA,mountainB,car,road,wheels;                                                                                    
+    var cloudx=0;                                                                                                                                      
+    var cloudy=0;                                                                                                                                      
+    var mountainAx=0;                                                                                                                                  
+    var mountainAy=216;                                                                                                                                
+    var mountainBx=0;                                                                                                                                  
+    var mountainBy=264;                                                                                                                                
+    var roadx=0;                                                                                                                                       
+    var roady=380;                                                                                                                                     
+    var cary=364;                                                                                                                                      
+    var wheelsy=413;                                                                                                                                   
+    var v=0;                                                                                                                                           
+    var animate=0;                                                                                                                                     
+                                                                                                                                                       
+    function start() //Loads the images and starts the animation                                                                                       
+    {                                                                                                                                                  
+		acanvas=document.getElementById('a');                                                                                                           
+		context=acanvas.getContext("2d");                                                                                                               
+		clouds = new Image();                                                                                                                           
+		clouds.src = 'Cloudlayer.png';                                                                                                                  
+		mountainA = new Image();                                                                                                                        
+		mountainA.src = 'Mountain1.png';                                                                                                                
+		mountainB = new Image();                                                                                                                        
+		mountainB.src = 'Mountain2.png';                                                                                                                
+		road = new Image();                                                                                                                             
+		road.src = 'Road.png';                                                                                                                          
+		car = new Image();                                                                                                                              
+		car.src = 'Car.png';                                                                                                                            
+		wheels = new Image();                                                                                                                           
+		wheels.src = 'Wheels.png';                                                                                                                      
+		setTimeout("draw();",20);                                                                                                                       
+    }                                                                                                                                                  
+                                                                                                                                                       
+	function draw() //Performs all the drawing                                                                                                          
+	{                                                                                                                                                   
+		//Update variables to achieve animation                                                                                                          
+		animate++;                                                                                                                                       
+		if(animate>600) animate=0;                                                                                                                       
+		cloudx+=0.5;                                                                                                                                     
+		mountainAx+=2;                                                                                                                                   
+		mountainBx+=3;                                                                                                                                   
+		roadx+=30;                                                                                                                                       
+		v+=0.1;                                                                                                                                          
+                                                                                                                                                       
+		//Reset animation variables to create an endless animation loop                                                                                  
+		if(cloudx>500) cloudx-=500;                                                                                                                      
+		if(cloudx<0) cloudx+=500;                                                                                                                        
+		if(mountainAx>300) mountainAx-=300;                                                                                                              
+		if(mountainAx<0) mountainAx+=300;                                                                                                                
+		if(mountainBx>400) mountainBx-=400;                                                                                                              
+		if(mountainBx<0) mountainBx+=400;                                                                                                                
+		if(roadx>450) roadx-=450;                                                                                                                        
+		if(roadx<0) roadx+=450;                                                                                                                          
+                                                                                                                                                       
+		//Draw the images to the canvas                                                                                                                  
+		//(using a try-catch statement to avoid crashing if image loading fails or is slow)                                                              
+		try {                                                                                                                                            
+			context.drawImage(clouds, cloudx, cloudy);                                                                                                    
+			context.drawImage(clouds, cloudx-500, cloudy);                                                                                                
+                                                                                                                                                       
+			context.drawImage(mountainA, mountainAx, mountainAy);                                                                                         
+			context.drawImage(mountainA, mountainAx-300, mountainAy);                                                                                     
+			context.drawImage(mountainA, mountainAx+300, mountainAy);                                                                                     
+                                                                                                                                                       
+			context.drawImage(mountainB, mountainBx, mountainBy);                                                                                         
+			context.drawImage(mountainB, mountainBx-400, mountainBy);                                                                                     
+                                                                                                                                                       
+			context.drawImage(road, roadx, roady);                                                                                                        
+			context.drawImage(road, roadx-450, roady);                                                                                                    
+                                                                                                                                                       
+			context.drawImage(wheels, 85, wheelsy);                                                                                                       
+			context.drawImage(car, 100, cary+(Math.sin(v)*2.5));                                                                                          
+		} catch(err) {console.log("Error:"+err);}                                                                                                        
+                                                                                                                                                       
+		//Create a gradient for the text                                                                                                                 
+		gradient=context.createLinearGradient(0,280,0,300);                                                                                              
+		gradient.addColorStop(0,"#fff");                                                                                                                 
+		gradient.addColorStop(1,"#ccc");                                                                                                                 
+		context.fillStyle=gradient;                                                                                                                      
+                                                                                                                                                       
+		//Set shadow properties for the text                                                                                                             
+		context.shadowColor = 'rgba(0, 0, 0, 0.8)';                                                                                                      
+		context.shadowOffsetX = 4;                                                                                                                       
+		context.shadowOffsetY = 4;                                                                                                                       
+		context.shadowBlur = 6;                                                                                                                          
+		context.font="bold 52px Sans-Serif";                                                                                                             
+                                                                                                                                                       
+		//Decide which text to display as the animation progresses                                                                                       
+		if(animate<300){                                                                                                                                 
+			if(animate<=100) context.globalAlpha=animate/100                                                                                              
+			else if(animate<=260) context.globalAlpha=1.0                                                                                                 
+			else if(animate<=300) context.globalAlpha=1.0-((animate-260.0)/40.0)                                                                          
+                                                                                                                                                       
+			if(animate<100) context.fillText("Har DU ful bil?",20,200.0+animate)                                                                          
+			else context.fillText("Har DU ful bil?",20,300);                                                                                              
+                                                                                                                                                       
+		}else{                                                                                                                                           
+			if(animate<=400) context.globalAlpha=(animate-300)/100                                                                                        
+			else if(animate<=550) context.globalAlpha=1.0                                                                                                 
+			else if(animate<=600) context.globalAlpha=1.0-((animate-550.0)/50.0)                                                                          
+                                                                                                                                                       
+			context.fillText("Köp Ny!",110,300);                                                                                                         
+		}                                                                                                                                                
+                                                                                                                                                       
+		context.shadowOffsetX = 0;                                                                                                                       
+		context.shadowOffsetY = 0;                                                                                                                       
+		context.shadowBlur = 0;                                                                                                                          
+                                                                                                                                                       
+		setTimeout("draw();",20);                                                                                                                        
+		}                                                                                                                                                   
+                                                                                                                                                       
+		// --></script>                                                                                                                                   
+</head>                                                                                                                                             
+                                                                                                                                                       
+<body onload='start();'>                                                                                                                            
+	<canvas id="a" width="400" height="460"></canvas>                                                                                                 
+</body>                                                                                                                                             
+</html>

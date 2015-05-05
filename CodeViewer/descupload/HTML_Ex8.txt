@@ -1,0 +1,16 @@
+#### **Overview**
+This example shows how cookies can be used to persistently store a list of something and how to synchronize this data between browser windows/tabs. Cookies are not new to HTML5 but an example is included here to showcase the difference between cookies and the Web Storage API.
+
+#### **Cookies**
+To get and set cookies we need to access the document.cookie object. This object stores all cookies as one long string. To extract a particular cookie it is necessary to find the substring that corresponds to the cookie looked for. In the code example the function named getCookie implements this functionality. 
+
+Cookies are useful to store data that should be persistent between visits to a website. This data can also be shared between browser windows and/or tabs. However a cookie cannot be read by a different browser.
+
+#### **Drawbacks of cookies**
+Cookies have some significant limits and drawbacks:
+- Cookies have a very limited amount of storage available. Many web browsers only allow cookies of a maximum size of 4096 bytes. Although most browsers allows between 30 to 50 cookies this is still somewhat limiting.
+- Another drawback for cookies is that they are always sent with every HTTP request consuming more bandwidth.
+- Unlike the localStorage API there is no equivalent to the on storage event and therefore synchronization must be performed manually, e.g. by using a timer as in this example.
+All these drawbacks are countered by the Web Storage API. This API provides a simple interface to store and retrieve data. The API also allows a larger amount of data to be stored, most browsers offers no less than 5 to 10 MB to be stored per domain. This means more data can be stored on the client-side. And the data is not resent with every HTTP request. The Web Storage API also comes with a special event, the on storage event, that fires every time something is stored using the localStorage.setItem method. By listening for this event there is no longer any need to use a timer to achieve synchronization between browser windows or tabs. 
+
+The next example shows how the same application implemented using the localStorage API. 

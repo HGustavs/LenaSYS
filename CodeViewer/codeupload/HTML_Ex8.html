@@ -1,0 +1,23 @@
+<!DOCTYPE html>                                                                                                                                    
+<html lang="en">                                                                                                                                      
+<head>                                                                                                                                             
+	<meta charset="utf-8">
+	<link type="text/css" href="HTML_Ex8.css" rel="stylesheet">
+</head>                                                                                                                                            
+    <body onload="updateList()">                                                                                                                       
+		<h3>Cookies version</h3>                                                                                                                        
+		<p>Click the boxes to add or remove them from the list. <br />                                                                                  
+        The "clear" button will empty the list. <br >                                                                                                
+        Try reloading the page. The content of the list persists between page reloads.<br />                                                         
+        Open this page in multiple browser windows to see the effect of the synchronizeList() function.</p>                                          
+		<input type="button" value="clear" onclick="eraseCookie('boxItems');updateList();">                                                             
+		<br />                                                                                                                                          
+		<h3>Click a box to add it to the list:</h3>                                                                                                     
+                                                                                                                                                       
+		<div id="Blue" class="box blue" onclick="add('blue');"></div>                                                                                   
+		<div id="Red" class="box red" onclick="add('red');"></div>                                                                                      
+		<h3>Click a box to remove it from the list:</h3>                                                                                                
+		<div id="list"></div>   
+		<script type="text/javascript" src="HTML_Ex8.js"></script>
+    </body>                                                                                                                                            
+ </html>
