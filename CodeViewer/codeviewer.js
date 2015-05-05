@@ -62,6 +62,8 @@ function returned(data)
 	retData=data;
 	console.log(retData);
 	
+	if(retData['debug']!="NONE!") alert(retData['debug']);
+	
 	// Hide and show before/after button
 	if(retData['before'].value!=null&&retData['after'].value!=null){
 		if(retData['before'].length==0){
@@ -80,8 +82,6 @@ function returned(data)
 	exName.innerHTML=data['examplename'];
 	var exSection=document.getElementById('exampleSection');
 	exSection.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
-
-	if(retData['debug']!="NONE!") alert(retData['debug']);
 
 	// User can choose template if no template has been chosen and the user has write access.
 	if((retData['templateid'] == 0)){
