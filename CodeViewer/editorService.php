@@ -424,7 +424,7 @@
 		echo json_encode($array);
 	}else{
 		$array = array(
-		 	'debug' => "ID does not exist, there are no examples" 
+		 	'debug' => "ID does not exist or there are no examples" 
 		);		
 		echo "There are no examples to fetch, error occur at line 58 in editorService.php";
 		echo json_encode($array);
