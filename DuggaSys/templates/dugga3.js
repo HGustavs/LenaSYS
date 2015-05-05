@@ -83,6 +83,8 @@ function setup() {
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data) {
+	Timer.startTimer();
+	
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
