@@ -104,7 +104,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 						}
 						include '../Shared/navheader.php';
 					}else{	
-						// if the course is'nt public then a error message will ap
+						// if the course isn't public then a error message will display
 						if($public == 0){
 							$codeviewerkind=false;									
 							include '../Shared/navheader.php';
