@@ -69,7 +69,8 @@ function renderStudentView(data)
 	var fullname = data['fullname'];
 	var studentClass = data['class'];
 	
-	htmlStr += '<h2>' + fullname + " - " + studentClass + '</h2>';
+	htmlStr += '<h2>' + fullname +'</h2>';
+	htmlStr += '<h3>' + studentClass + '</h3>';
 	
 	var titleList = document.getElementById('studentTitle');
 	titleList.innerHTML = htmlStr;
@@ -130,6 +131,7 @@ function renderStudentView(data)
 				
 			htmlStr3 += createHTMLForCourse(courses[i]);
 		}
+
 				
 	}
 	
@@ -146,6 +148,7 @@ function renderStudentView(data)
 	var yearList3 = document.getElementById('Year3');
 	yearList3.innerHTML = htmlStr3;
 	
+	course_hover_requierments(data);
 	console.log("DATA_PRINTED - DONE");
 	
 	// Check if error occurred during execution of SQL queries 
@@ -192,4 +195,34 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '</div>';
 	
 	return courseHtmlStr;
+}
+
+
+function course_hover_requierments(data){
+	var regCourses = data['reqCourses'];
+	/* I WILL DO ALL THE BLOCK COMMENTS I WANT!*/
+
+	$('.course div, .course p, .course a').hover(function() {
+		// Return the closest div parent div ID on the hover effect.
+		var hoverCourse = $(this).closest('.course' , '[id]').attr('id');
+		var rmHoverCourse = '#'+ hoverCourse;
+		$(rmHoverCourse).removeClass('reg_fade');
+
+		//checks the prereqiuerments courses so they wont fade.
+		for (var i = 0; i < regCourses.length ; i++){
+			if(hoverCourse == regCourses[i]['coursecode']){
+				var rmClass = '#' + regCourses[i]['reg_coursecode'];
+				$(rmClass).removeClass('reg_fade');
+			}
+		}
+
+		$(".reg_fade").fadeTo(0, 0.2);
+
+		}, function() {
+			// 
+			$('.course').addClass('reg_fade');
+			$(".reg_fade").fadeTo(0, 1);
+   		}
+    );
+ 
 }
