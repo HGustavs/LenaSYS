@@ -36,7 +36,7 @@
 		width:120px;
 		height: 25px;
 		padding:8px 0 5px;
-		background-color:#927B9E;
+		/* background-color:#927B9E; */
 		float:left;
 		display:inline;
 		border-right: 1px solid #857090;
@@ -80,6 +80,12 @@
 		border-top:1px solid #857090;
 		box-shadow: -1px 5px 5px #A9A;
 	}
+.active{
+	background-color:#614875;
+}
+.noActive{
+	background-color:#927B9E;
+}
 /*END dropdown menu*/
 
 

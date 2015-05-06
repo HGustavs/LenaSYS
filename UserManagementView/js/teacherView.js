@@ -2,11 +2,15 @@
 // AJAX-call to dugga.js 
 AJAXService("TOOLBAR", {}, "UMVTEACHER");
 
+var selectedClass = "";
+var selectedClassCode = "";
+
 //---------------------------------------------------------------
 //	renderTeacherView(data) - renders given html code for the given
 //	data that was returned.
 //---------------------------------------------------------------
-function renderTeacherView(data) {
+function renderTeacherView(data) 
+{
 	var type = data['type']; //Array that holds what type of data should be rendered from DB
 	
 	// render the created toolbar
@@ -28,33 +32,24 @@ function renderTeacherView(data) {
 //	createToolbar(classes) - creates the the toolbar with the
 //	given classes that the teacher is responsible for.
 //---------------------------------------------------------------
-function createToolbar(classes) {
-
-	console.log("Trying to create toolbar...");
-	
+function createToolbar(classes) 
+{
 	//Check if there is a class that can be placed in the toolbar
 	if(classes.length > 0) {
 		renderToolbar(classes);
-		var defaultclass = getTheDefaultProgram(classes); // Reads data from getTheDeaultProgram()
-		console.log("AJAXService call to retrieve view");
-		updateView(defaultclass);
+		updateDefaultProgram(classes); // Updates the view for the default class
 	}
-	
 }
 
 //---------------------------------------------------------------
 //	renderToolbar(classes) - renders the toolbar with the given
 //	classnames, sorts under the given coursecode
 //---------------------------------------------------------------
-function renderToolbar(classes) {
-	
+function renderToolbar(classes) 
+{
 	var htmlStr = "";
 	var currentClassCode = "";
-	
-	currentClassCode = classes[0]['classcode'];
 	// Close current open lists
-	htmlStr += "<ul>";
-	htmlStr += "<li><a>" + currentClassCode + "</a>";
 	htmlStr += "<ul>";
 	
 	//Loop to list every class into a dropdownmenu for the teacher
@@ -62,15 +57,16 @@ function renderToolbar(classes) {
 		current_class = classes[i];
 		if(currentClassCode != current_class['classcode']) {	//Check if course has a new course code
 			currentClassCode = current_class['classcode'];
+			if(i > 0) {
+				htmlStr += "</ul>";
+			}
 			// Close current open lists
-			htmlStr += "</ul>" + "</li>";
-			htmlStr += "<li><a>" + currentClassCode + "</a>";
+			htmlStr += "</li>";
+			htmlStr += "<li id='"+currentClassCode+"' class='noActive'><a>" + currentClassCode + "</a>";
 			htmlStr += "<ul>";
 		}
-		
-		htmlStr += "<li onclick='updateView(" + "\"" + current_class['class'] + "\"" +")'><a>" + current_class['class'] + "</a></li>";
+		htmlStr += "<li class='noActive' id='"+current_class['class']+"' onclick='updateView(" + "\"" + 		current_class['class'] + "\", \"" + current_class['classcode'] + "\")'><a>" + current_class['class'] + "</a></li>";
     }
-    
     htmlStr += "</ul>" + "</li>" + "</ul>";
     
     //Place everything that is retrived as a class and put it into a dropdownmenu.
@@ -79,20 +75,46 @@ function renderToolbar(classes) {
 }
 
 //---------------------------------------------------------------
+// selects the active menu and sets the css 
+//---------------------------------------------------------------
+function markAsActive(classname_id, classcode) 
+{
+	if(selectedClass !== classname_id) {
+		if(selectedClass !== "") {
+			$("#" + selectedClass).removeClass('active');
+			$("#" + selectedClass).addClass('noActive');
+			//Remove active from classcode 
+			$("#" + selectedClassCode).removeClass('active');
+			$("#" + selectedClassCode).addClass('noActive');
+		}
+		$("#" + classname_id).removeClass('noActive');
+		$("#" + classname_id).addClass('active');
+		
+		$("#" + classcode).removeClass('noActive');
+		$("#" + classcode).addClass('active');
+		
+		// Save current selected for later use
+		selectedClass = classname_id;
+		selectedClassCode = classcode;
+	}
+}
+
+//---------------------------------------------------------------
 //	getTheDefaultProgram(classes) - returns the first class in the
 //	the array that represents the default choice
 //---------------------------------------------------------------
-function getTheDefaultProgram(classes) 
+function updateDefaultProgram(classes) 
 {
-	return classes[0]['class'];
+	updateView(classes[0]['class'], classes[0]['classcode']);
 }
 
 //---------------------------------------------------------------
 //	updateView(classname) - calls the ajaxservice that renders
 //	the view for the given class
 //---------------------------------------------------------------
-function updateView(classname) {
-	console.log("Clicked classname: " + classname);
+function updateView(classname, classcode) 
+{
+	markAsActive(classname, classcode);
 	// AJAX call to request students of 'classname' 
 	AJAXService("VIEW", {classname:classname}, "UMVTEACHER");
 }
@@ -101,12 +123,8 @@ function updateView(classname) {
 //	renderView(data) - renders the view from the
 //	teacher. Will render the full view with title and everything.
 //---------------------------------------------------------------
-
 function renderView(data)
 {
-
-	console.log("DATA_FOR_VIEW_RECIVED - DONE");
-	
 	var htmlStr = "";
 	var classname = data['classname'];
 	var studentlist = data['studentlist'];
@@ -142,8 +160,6 @@ function renderView(data)
 	
 	var studentView = document.getElementById("studentslist");
 	studentView.innerHTML = htmlStr;
-	
-	
 }
 
 //---------------------------------------------------------------
@@ -201,11 +217,9 @@ function getCourseResults(results)
 		htmlStr += "<p>" + parseFloat(course_result) + "/" + course_hp + "</p>";
 		htmlStr += "</div>";
 		htmlStr += "</div>";
-		
 	}
 		
 	htmlStr += "</div>";
 	
 	return htmlStr;
-	
 }
