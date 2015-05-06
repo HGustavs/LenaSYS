@@ -46,18 +46,14 @@ pdoConnect();
 			<h3>New Course</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
-		<table width="100%">
-			<tr>
-				<input type='hidden' id='cid' value='Toddler' /></td>
-				<td>Course Name: <input class='form-control textinput' type='text' id='ncoursename' placeholder='Course Name' /></td>
-				<td>Course Code: <input class='form-control textinput' type='text' id='ncoursecode' placeholder='Course Code' /></td>
-			</tr>
-		</table>
-		<table width="100%">
-			<tr>
-				<td align='right'><input class='submit-button' type='button' value='Create' onclick='createNewCourse();' /></td>
-			</tr>
-		</table>
+		<div style='padding:5px;'>
+			<input type='hidden' id='cid' value='Toddler' />
+			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' id='ncoursename' placeholder='Course Name' /></div>
+			<div class='inputwrapper'><span>Course code:</span><input class='textinput' type='text' id='ncoursecode' placeholder='Course Code' /></div>
+		</div>
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Create' title='Create course' onclick='createNewCourse();' />
+		</div>
 	</div>
 	<!-- New Course Section Dialog END -->
 	
@@ -67,21 +63,15 @@ pdoConnect();
 			<h3>Edit Course</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
-		<table width="100%">
-			<tr>
-				<input type='hidden' id='cid' value='Toddler' /></td>
-				<td>Course Name: <div id='couresnamewrapper'><input class='form-control textinput' type='text' id='coursename' value='Course Name' /></div></td>
-				<td>Course Code: <div id='courseidwrapper'><input class='form-control textinput' type='text' id='coursecode' value='Course Code' /></div></td>
-			</tr>
-			<tr>
-				<td>Visibility: <select style='float:right;' id='visib'></select></td>
-			</tr>
-		</table>
-		<table width="100%">
-			<tr>
-				<td align='right'><input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateCourse();' /></td>
-			</tr>
-		</table>
+		<div style='padding:5px;'>
+			<input type='hidden' id='cid' value='Toddler' />
+			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' id='coursename' placeholder='Course Name' /></div>
+			<div class='inputwrapper'><span>Course code:</span><input class='textinput' type='text' id='coursecode' placeholder='Course Code' /></div>
+			<div class='inputwrapper'><span>Visibility:</span><select class='selectinput' id='visib'></select></div>
+		</div>
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateCourse();' />
+		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
 </body>
