@@ -278,13 +278,13 @@
 		}while($currentId!=null&&$count<5);
 
 		// Read important lines
-		$imp=array();
+		$importantRows=array();
 		$query = $pdo->prepare("SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY istart;");
 		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 						
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
-			array_push($imp,array($row['boxid'],$row['istart'],$row['iend']));
+			array_push($importantRows,array($row['boxid'],$row['istart'],$row['iend']));
 		}  
 
 		// Get all words for each wordlist
@@ -401,7 +401,7 @@
 		'stylesheet' => $styleSheet,
 		'numbox' => $numBox,
 		'box' => $box,
-		'improws' => $imp,
+		'improws' => $importantRows,
 		'impwords' => $importantWordList,
 		'directory' => $directories,
 		'examplename'=> $exampleName,
