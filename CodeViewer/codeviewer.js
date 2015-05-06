@@ -1235,7 +1235,7 @@ function rendercode(codestring,boxid,wordlistid)
 	
 	important = [];
 	for(var i=0;i<retData.impwords.length;i++){
-		important[retData.impwords[i]]=retData.impwords[i];	
+		important[i] = retData.impwords[i];
 	}
 
 	keywords= [];
@@ -1291,11 +1291,12 @@ function rendercode(codestring,boxid,wordlistid)
 			cont+="<span class='number'>"+tokenvalue+"</span>";
 		}else if(tokens[i].kind=="name"){
 			var foundkey=0;	
-			// Removed two for loops here and replaced it with smart indexing. either kind 2 or kind 1
-			if(important[tokenvalue]!=null){
-				foundkey=2;
-			}else if(keywords[tokenvalue]!=null){	
-				foundkey=1;						
+			//If tokenvalue exists in the array for important words
+			if(important.indexOf(tokenvalue) != -1){
+				foundkey = 2;
+			//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
+			}else if(keywords[tokenvalue] != null){
+				foundkey = 1;
 			}
 			
 			if(foundkey==1){
@@ -1915,7 +1916,8 @@ function setResizableToPer(boxValArray)
 *********************************************************************************/
 //----------------------------------------------------------------------------------
 // parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
-//				  function replace with regular expressions.
+//		  function replace with regular expressions. A document describing
+//		  the regex is found at /codeviewer/documentation.
 //                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
 function parseMarkdown(inString)
@@ -1924,20 +1926,20 @@ function parseMarkdown(inString)
 	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
 	
 	//Regular expressions for italics and bold formatting
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
-	inString = inString.replace(/\*{2}(.*?\S)\*{2}/gm, '<font style="font-weight:bold;">$1</font>');
-	inString = inString.replace(/\*{1}(.*?\S)\*{1}/gm, '<font style="font-style:italic;">$1</font>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/gm, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
-	inString = inString.replace(/\_{2}(.*?\S)\_{2}/gm, '<font style="font-weight:bold;">$1</font>');	
-	inString = inString.replace(/\_{1}(.*?\S)\_{1}/gm, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
+	inString = inString.replace(/\*{2}(.*?\S)\*{2}/g, '<font style="font-weight:bold;">$1</font>');
+	inString = inString.replace(/\*{1}(.*?\S)\*{1}/g, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
+	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<font style="font-weight:bold;">$1</font>');	
+	inString = inString.replace(/\_{1}(.*?\S)\_{1}/g, '<font style="font-style:italic;">$1</font>');
 	
 	//Regular expressions for headings
-	inString = inString.replace(/^\#{6} (.*)=*/gm, '<h6>$1</h6>');
-	inString = inString.replace(/^\#{5} (.*)=*/gm, '<h5>$1</h5>');
-	inString = inString.replace(/^\#{4} (.*)=*/gm, '<h4>$1</h4>');
-	inString = inString.replace(/^\#{3} (.*)=*/gm, '<h3>$1</h3>');
-	inString = inString.replace(/^\#{2} (.*)=*/gm, '<h2>$1</h2>');
-	inString = inString.replace(/^\#{1} (.*)=*/gm, '<h1>$1</h1>');
+	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
+	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
+	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
+	inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
+	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
+	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
 	
 	//Regular expressions for lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
