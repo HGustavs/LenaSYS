@@ -3,16 +3,60 @@
    Documentation
 
 *********************************************************************************
-
+----------------------------------------------------------------------------------
 Execution Order
----------------------
- #1 setup() is first function to be called this then invokes returned() callback through AJAX
- #2 returned() is next function to be called as a callback from setup.
-
-Testing Link:
-
-EditorV50.php?exampleid=1&courseid=1&cvers=2013
- 
+	#1 setup() is first function to be called this then invokes returned() callback through AJAX
+	#2 returned() is next function to be called as a callback from setup.
+----------------------------------------------------------------------------------
+Testing Link: 
+	EditorV50.php?exampleid=1&courseid=1&cvers=2013
+----------------------------------------------------------------------------------
+Fixlist
+To find more, search for TODO in this file 
+	Change variables to a fitting or standardized manner: 
+		querystring ( multiple files and groups use it )
+		dmd, courseid, exampleid, cvers, boxid, boxtype, boxcontent, boxwordlist
+		boxmenuheight, sectionname, contentid, afterid, beforeid, bestr, 
+		afstr, ba, wordl, boxmenu, boxcontent, outstr, maxlength, mainstr, 
+		tagstr, currchr, ingorebr, fromchar, tochar, newtoken, rowno, 
+		keywords, codestring, pcount, bcount, cbcount, cbracket, tokenvalue
+	Change functions to fit standard:
+		addTemplatebox -> addTemplateBox
+		dehtmlify -> deHtmlify
+		Skip -> skip
+		changeboxcontent -> changeBoxContent
+		maketoken -> makeToken
+		rendercode -> renderCode
+		linenumbers -> lineNumbers
+		createCodeborder -> createCodeBorder
+		changetemplate -> changeTemplate
+		Play -> play
+		alignBoxesHeight2boxes -> alignBoxesHeight2Boxes
+		alignBoxesHeight3boxes -> alignBoxesHeight3Boxes
+		alignBoxesHeight4boxes -> alignBoxesHeight4Boxes
+	Check if ever used:
+		Variables:
+			genSettingsTabMenuValue
+			codeSettingsTabMenuValue
+		Functions:
+			removeTemplatebox
+			createhotdogmenu
+			displayDrop
+			hideDrop
+			switchDrop
+			issetDrop
+			setupEditable
+			editedExamplename
+			setEditing
+	updateContent function needs to handle null values
+	Comment code that needs some or better documentation
+	Update the Execution Order list
+	Bugs:
+		replaceAll() not ok with ex scale( or translate( (missing last parenthesis)
+		Length not ok as impword
+		"length" highlighted even when not an impword
+		tokenizer not ok with css
+		Highlighting iffy
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -22,19 +66,22 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 
 *********************************************************************************/
 
-var retData;				// Data returned from setup
-var tokens = [];            // Array to hold the tokens.
+var retData;					// Data returned from setup
+var tokens = [];            			// Array to hold the tokens.
 var dmd=0;					// Variable used to determine forward/backward skipping with the forward/backward buttons
-var genSettingsTabMenuValue = "wordlist";
-var codeSettingsTabMenuValue = "implines";				
-var querystring = parseGet();
+var genSettingsTabMenuValue = "wordlist";	// TODO: Check if ever used
+var codeSettingsTabMenuValue = "implines";	// TODO: Check if ever used
+var querystring = parseGet();			// TODO: Change name of variable to follow standard, is however used in more files than this (dugga.js is one) so needs coordination
 
 /********************************************************************************
 
    SETUP
 
 *********************************************************************************/
-
+//----------------------------------------------------------------------------------
+// setup:
+//
+//----------------------------------------------------------------------------------
 function setup()
 {
 	try{
@@ -54,9 +101,7 @@ function setup()
 
 //---------------------------------------------------------------------------------------------------
 // returned: Fetches returned data from all sources
-//                Is called by [this function] in [this file]
 //---------------------------------------------------------------------------------------------------
-
 function returned(data)
 {	
 	retData=data;
@@ -99,7 +144,7 @@ function returned(data)
 	// Clear div2
 	$("#div2").html("");
 	
-	// Possible crash warning if returned number of boxes is wrong
+	// Possible crash warning if returned number of boxes is null/0
 	if(retData['numbox']==0 || retData['numbox']==null){
 		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
 	}
@@ -148,7 +193,6 @@ function returned(data)
 				var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
 				desc=replaceAll(important[j],sstr,desc);
 			}
-			/* Assign Content */
 			//Remove html tags since only markdown should be allowed		
 			desc = dehtmlify(desc, true, 0);
 			//Call the markdown function to parse markdown symbols to html tags
@@ -184,16 +228,18 @@ function returned(data)
 }
 
 //---------------------------------------------------------------------------------
-// This functions convert tabs to "&#9;""
-// The indexOf() method returns the position of the first time of a specified value 
-// (in this example is the search word "\t" which stands for tab) in a string.
-// This method returns then -1 if the "search word" dosn't exist in the string. 
-// Text.slice truncates the text string were the tab is placed by useing tabindex 
-// as a index. And then adds "&#9;" to the text string. "&#9;" replace the tab 
-// utill "tokenize" functions is called then &#9; is being replaces by 4 spaces. 
-// So the loop will check the whole text the function assign "start" the value of 
-// tabindex so the loop can keep on looking for tabs in the same place where it left off
-//                Is called by returned(data) in codeviewer.js
+// tabLine: This functions convert tabs to "&#9;""
+// 			The indexOf() method returns the position of the first time of a 
+//			specified value (in this example is the search word "\t" which stands 
+//			for tab) in a string. This method returns then -1 if the "search word" 
+//			doesn't exist in the string. Text.slice truncates the text string were 
+//			the tab is placed by using tabindex as a index. And then adds "&#9;" 
+//			to the text string. "&#9;" replace the tab until "tokenize" functions 
+//			is called then &#9; is being replaces by 4 spaces. So the loop will 
+//			check the whole text the function assign "start" the value of tabindex 
+//			so the loop can keep on looking for tabs in the same place where it 
+//			left off
+//          Is called by returned(data) in codeviewer.js
 //---------------------------------------------------------------------------------
 var tabLine = function(text) 
 {
@@ -208,9 +254,9 @@ var tabLine = function(text)
 };
 
 //----------------------------------------------------------------------------------
-// editImpWords: adds/removes important words to the #impword selectbox
-// and stores each added/removed word in the addedWords array and the removedWords array 
-//                Is called by [this function] in EditorV50.php
+// editImpWords: adds/removes important words to the #impword selectbox, stores each 
+// 				 added/removed word in the addedWords array and the removedWords array
+//               Is called at line 201/204 in EditorV50.php
 //---------------------------------------------------------------------------------
 var addedWords = [];
 var removedWords = [];
@@ -242,8 +288,8 @@ function editImpWords(editType)
 
 //----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialogue box for editing a code example
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------------------------------¨
+//                	   Is called at line 58 in navheader.php
+//----------------------------------------------------------------------------------
 function displayEditExample(boxid)
 {
 	$("#title").val(retData['examplename']);
@@ -293,8 +339,7 @@ function displayEditExample(boxid)
 
 //----------------------------------------------------------------------------------
 // updateExample: Updates example data in the database if changed
-//                Is called by [this function] in [this file]
-//					Used by file EditorV50.php
+//                Is called at line 210 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateExample()
 {
@@ -339,9 +384,8 @@ function updateExample()
 
 //----------------------------------------------------------------------------------
 // displayEditContent: Displays the dialogue box for editing a content pane
-//                Is called by createboxmenu in codeviewer.js
+//                	   Is called by createboxmenu in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function displayEditContent(boxid)
 {	
 	var box = retData['box'][boxid-1]; 	// The information stored about the box is fetched
@@ -373,11 +417,10 @@ function displayEditContent(boxid)
 }
 
 //----------------------------------------------------------------------------------
-// changeDirectory: Changes the directory in which you choose your code or description
-// 					in the Edit Content box.
-//                Is called by [this function] in EditorV50.php
+// changeDirectory: Changes the directory in which you choose your code or 
+//					description in the Edit Content box.
+//                	Is called at line 159 in EditorV50.php
 //----------------------------------------------------------------------------------
-
 function changeDirectory(kind) 
 {
 	var dir;
@@ -399,18 +442,16 @@ function changeDirectory(kind)
 }
 
 //----------------------------------------------------------------------------------
-// isNumber: 		returns true: the variable only contains numbers
-//					returns false: the variable is not purely numeric
-//                Is called by editImpRows in codeviewer.js
+// isNumber: returns true: the variable only contains numbers
+//			 returns false: the variable is not purely numeric
+//           Is called by editImpRows in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
 
 //----------------------------------------------------------------------------------
 // editImpRows: Adds and removes important rows
-//                Is called by [this function] in EditorV50.php
+//              Is called at line 165/169 in EditorV50.php
 //----------------------------------------------------------------------------------
-
 var addedRows = new Array();
 var removedRows = new Array();
 
@@ -442,8 +483,7 @@ function editImpRows(editType)
 
 //----------------------------------------------------------------------------------
 // updateContent: Updates the box if changes has been made
-//                Is called by [this function] in [this file]
-//					Used by file EditorV50.php
+//                Is called at line 174 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateContent() 
 {
@@ -548,20 +588,20 @@ function createboxmenu(contentid, boxid, type)
 //----------------------------------------------------------------------------------
 // removeTemplatebox: Removes any template box -- Is called by renderer
 //						TODO: Check if actually used, seems to never be used
-//                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 function removeTemplatebox()
 {
 	for(var i=document.getElementsByClassName("box").length; i>retData['numbox']; i--){
 		document.getElementById("div2").removeChild(document.getElementById("box"+i+"wrapper"));
 	}
 }
-
+*/
 //----------------------------------------------------------------------------------
 // createhotdogmenu: Creates the menu at the top of a box 
 //                Is called by renderer in [this file]
 //----------------------------------------------------------------------------------
-
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 function createhotdogmenu()
 {
 	// div2 refers to the main content div below the floating menu
@@ -594,7 +634,7 @@ function createhotdogmenu()
 	hotdogmenu.style.display="block";	
 	hotdogmenu.innerHTML = str;
 }
-
+*/
 //----------------------------------------------------------------------------------
 // toggleClass: Modifies class using Jquery to contain "activebox" class selector
 //				Used by createboxmenu(contentid, boxid, type) in codeviewer.js
@@ -614,8 +654,9 @@ function toggleClass(id)
 //----------------------------------------------------------------------------------
 // displayDrop: Modifies class using Jquery to contain "activebox" class selector 
 //				TODO: Check if actually used, could not find within our files
-//                Is called by [this function] in [this file]
+//              Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 function displayDrop(dropid)
 {	
 	drop = document.getElementById(dropid);
@@ -626,12 +667,11 @@ function displayDrop(dropid)
 		drop.style.display="none";
 	}	
 }
-
+*/
 //----------------------------------------------------------------------------------
 // highlightop: Highlights an operator and corresponding operator in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function highlightop(otherop,thisop)
 {
 	$("#"+otherop).addClass("hi");					
@@ -642,7 +682,6 @@ function highlightop(otherop,thisop)
 // dehighlightop: Dehighlights an operator and corresponding operator in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function dehighlightop(otherop,thisop)
 {
 	$("#"+otherop).removeClass("hi");					
@@ -653,7 +692,6 @@ function dehighlightop(otherop,thisop)
 // highlightHtml: Highlights an html-tag and corresponding html-tag in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function highlightHtml(otherTag,thisTag)
 {
 	$("#"+otherTag).addClass("html");					
@@ -664,7 +702,6 @@ function highlightHtml(otherTag,thisTag)
 // deHighlightHtml: Dehighlights an html-tag and corresponding html-tag in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function deHighlightHtml(otherTag,thisTag)
 {
 	$("#"+otherTag).removeClass("html");					
@@ -673,9 +710,8 @@ function deHighlightHtml(otherTag,thisTag)
 
 //----------------------------------------------------------------------------------
 // Skip: Handles skipping either forward or backward. If pressed show menu
-//                Is called by createhotdogmenu in codeviewer.js
+//       Is called at line 54/55 in navheader.php
 //----------------------------------------------------------------------------------
-
 var dmd;
 function Skip(skipkind)
 {
@@ -705,7 +741,7 @@ function Skip(skipkind)
 }
 //----------------------------------------------------------------------------------
 // execSkip: 
-//				Used by Skip
+//				Used by Skip in codeviewer.js
 //----------------------------------------------------------------------------------
 function execSkip()
 {
@@ -772,10 +808,10 @@ document.addEventListener("paste", function(e) {
 *********************************************************************************/
 
 //----------------------------------------------------------------------------------
-// changeboxcontent: Called when the contents of the boxes at the top of a content div is changed
-// 					Used by createboxmenu in codeviewer.js
+// changeboxcontent: Called when the contents of the boxes at the top of a content 
+//					 div is changed
+// 					 Used by createboxmenu in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function changeboxcontent(boxcontent,boxid)
 {
 	alert(boxcontent+" "+boxid);
@@ -792,22 +828,23 @@ function changeboxcontent(boxcontent,boxid)
 *********************************************************************************/
 
 //----------------------------------------------------------------------------------
-// Switches Dropdown List to Visible
-//			Used by switchDrop
+// hideDrop: Switches Dropdown List to Visible
+//			 Used by switchDrop in codeviewer.js
 //----------------------------------------------------------------------------------
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 
 function hideDrop(dname)
 {
 	var dropd=document.getElementById(dname);
 	if(dropd!=null) dropd.style.display="none";							
 }
-
+*/
 //----------------------------------------------------------------------------------
 // Switches Dropdown List to Visible
 //			Used by 
 //			TODO: Appears to not be used
 //----------------------------------------------------------------------------------
-/*
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 function switchDrop(dname)
 {
 	var dropd=document.getElementById(dname); 
@@ -826,7 +863,7 @@ function switchDrop(dname)
 // Reads value from Dropdown List
 //				TODO: Appears to not be used
 //----------------------------------------------------------------------------------
-/*
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 function issetDrop(dname)
 {
 	var dropd=document.getElementById(dname);
@@ -841,7 +878,7 @@ function issetDrop(dname)
 // Connects blur event to a functon for each editable element
 //				TODO: Appears to not be used
 //----------------------------------------------------------------------------------
-/*
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 function setupEditable()
 {	
 	if(retData['writeaccess']=="w"){
@@ -854,7 +891,7 @@ function setupEditable()
 // editedExamplename:
 //				Used by setupEditable which appears to not be used
 //----------------------------------------------------------------------------------
-/*
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 function editedExamplename()
 {
 	var editable=document.getElementById('exampleName');
@@ -865,9 +902,8 @@ function editedExamplename()
 */
 //----------------------------------------------------------------------------------
 // dehtmlify: Removes most html tags from a string!
-//                Is called by editedExamplename(), returned(data) in codeviewer.js
+//            Is called by editedExamplename(), returned(data) in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function dehtmlify(mainstr,ignorebr,maxlength)
 {
 	mod=0;
@@ -923,7 +959,7 @@ function dehtmlify(mainstr,ignorebr,maxlength)
 
 //----------------------------------------------------------
 // highlightKeyword: Highlights an important word from the important word list
-//                Is called by [this function] in codeviewer.js
+//                	 Is called by returned and rendercode in codeviewer.js
 //----------------------------------------------------------		
 
 function highlightKeyword(kw)
@@ -937,7 +973,7 @@ function highlightKeyword(kw)
 
 //----------------------------------------------------------
 // dehighlightKeyword: DeHighlights an important word from the important word list
-//                Is called by [this function] in codeviewer.js
+//                	   Is called by returned and rendercode in codeviewer.js
 //----------------------------------------------------------		
 
 function dehighlightKeyword(kw)
@@ -954,10 +990,10 @@ function dehighlightKeyword(kw)
    Tokenizer
 
 *********************************************************************************/
-//----------------------------------------------------------	
-// Token class and storage definition	
-//                Is called by [this function] in [this file]	
-//----------------------------------------------------------								
+//----------------------------------------------------------------------------------
+// token: Token class and storage definition	
+//        Is called by maketoken in codeviewer.js
+//----------------------------------------------------------------------------------
 function token (kind,val,fromchar,tochar,row) {
 	this.kind = kind;
 	this.val = val;
@@ -966,45 +1002,43 @@ function token (kind,val,fromchar,tochar,row) {
 	this.row = row;
 }
 
-//----------------------------------------------------------
-// Store token in tokens array
-// Creates a new token object using the constructor
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------						
-
+//----------------------------------------------------------------------------------
+// maketoken: Store token in tokens array
+// 			  Creates a new token object using the constructor
+//            Is called by tokenize in codeviewer.js
+//----------------------------------------------------------------------------------
 function maketoken(kind,val,from,to,rowno)
 {
 	newtoken=new token(kind,val,from,to,rowno);
 	tokens.push(newtoken);
 }
 
-//----------------------------------------------------------
-// Writes error from tokenizer
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------						
-
+//----------------------------------------------------------------------------------
+// error: Writes error from tokenizer
+//        Is called by tokenizer in codeviewer.js
+//----------------------------------------------------------------------------------
 function error(str,val,row)
 {
 	alert("Tokenizer Error: "+str+val+" at row "+row);
 }
 
 //----------------------------------------------------------------------------------
-// replaceAll: Used by tokenizer to replace all instances of find string with replace string in str.
-//             The idea behind this is to  cancel the html entities introduced to allow streaming of content
-//                Is called by [this function] in [this file]
+// replaceAll: Used by tokenizer to replace all instances of find string with 
+//			   replace string in str. The idea behind this is to  cancel the html 
+//			   entities introduced to allow streaming of content
+//             Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function replaceAll(find, replace, str)
 {
     return str.replace(new RegExp(find, 'g'), replace);
 }
 
-//----------------------------------------------------------
-// Tokenize: Tokenizer partly based on ideas from the very clever tokenizer written by Douglas Cockford
-//           The tokenizer is passed a string, and a string of prefix and suffix terminators
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------						
-
+//----------------------------------------------------------------------------------
+// Tokenize: Tokenizer partly based on ideas from the very clever tokenizer written 
+//			 by Douglas Cockford. The tokenizer is passed a string, and a string of 
+//			 prefix and suffix terminators
+//           Is called by rendercode in codeviewer.js
+//----------------------------------------------------------------------------------
 function tokenize(instring,inprefix,insuffix)
 {
 	// replace HTML-entities
@@ -1222,11 +1256,10 @@ function tokenize(instring,inprefix,insuffix)
 }
 
 //----------------------------------------------------------------------------------
-// Renders a set of tokens from a string into a code viewer div
-// Requires tokens created by a cockford-type tokenizer
-//                Is called by [this function] in [this file]
+// rendercode: Renders a set of tokens from a string into a code viewer div
+// 			   Requires tokens created by a cockford-type tokenizer
+//             Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function rendercode(codestring,boxid,wordlistid)
 {
     var destinationdiv = "box" + boxid;
@@ -1410,8 +1443,8 @@ function rendercode(codestring,boxid,wordlistid)
 }
 
 //----------------------------------------------------------------------------------
-// createCodeborder: function to create a border with line numbers
-//                Is called by rendercode in codeviewer.js
+// createCodeborder: Function to create a border with line numbers
+//                	 Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
 function createCodeborder(lineno,improws){
 	var str="<div class='codeborder'>";
@@ -1467,6 +1500,7 @@ function mobileTheme(id){
 //  setEditing: Set the editing properties for mobile and desktop version
 //                Is called by [this function] in [codeviewer.js
 //----------------------------------------------------------------------------------
+/* COMMENTED OUT AS IT IS UNSURE IF NEEDED
 function setEditing()
 {
 	var	hotdog = document.getElementById("hidehotdog");
@@ -1479,10 +1513,10 @@ function setEditing()
 		$(".tooltip").css("display", "none");
 	}
 }
-
+*/
 //----------------------------------------------------------------------------------
 // changeTemplate: Change template by updating hidden field
-//                Is called by [this function] in EditorV50.php
+//                 Is called at line 223-229 in EditorV50.php
 //----------------------------------------------------------------------------------
 function changetemplate(templateno)
 {
@@ -1496,7 +1530,7 @@ function changetemplate(templateno)
 
 //----------------------------------------------------------------------------------
 // updateTemplate: Write template hidden field to database
-//                Is called by [this function] in EditorV50.php
+//                 Is called at line 234 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateTemplate()
 {
@@ -1522,23 +1556,25 @@ function updateTemplate()
 
 //----------------------------------------------------------------------------------
 // closeEditContent: 
-//                Is called by [this function] in EditorV50.php
+//                   Is called at line 141 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeEditContent()
 {
-		$("#editContent").css("display","none");
+	$("#editContent").css("display","none");
 }
+
 //----------------------------------------------------------------------------------
 // closeEditExample: 
-//                Is called by [this function] in EditorV50.php
+//                   Is called at line 183 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeEditExample()
 {
-		$("#editExample").css("display","none");
+	$("#editExample").css("display","none");
 }
+
 //----------------------------------------------------------------------------------
 // openTemplateWindow:
-//                Is called by [this function] in EditorV50.php
+//              	   Is called at line 53 in EditorV50.php
 //----------------------------------------------------------------------------------
 function openTemplateWindow()
 {
@@ -1546,15 +1582,16 @@ function openTemplateWindow()
 }
 //----------------------------------------------------------------------------------
 // closeTemplateWindow: 
-//                Is called by [this function] in EditorV50.php
+//                		Is called at line 218 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeTemplateWindow()
 {
 	$("#chooseTemplate").css("display","none");
 }
+
 //----------------------------------------------------------------------------------
 // Play:
-//					Is called by createhotdogmenu in codeviewer.js
+//		 Is called at line 195 in EditorV50.php and line 56 in navheader.php
 //----------------------------------------------------------------------------------
 function Play()
 {
@@ -1563,10 +1600,10 @@ function Play()
 	}
 }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
 // resizeBoxes: Adding resize functionality for the boxes
-//					Is called by setup() in codeviewer.js
-//-----------------------------------------------------------------------------
+//				Is called by setup() in codeviewer.js
+//----------------------------------------------------------------------------------
 function resizeBoxes(parent, templateId) 
 {
 	var boxValArray = initResizableBoxValues(parent);
@@ -1695,8 +1732,8 @@ function resizeBoxes(parent, templateId)
 	}
 };
 //----------------------------------------------------------------------------------
-//width adjustment for template(1,3) (Two boxes beside eachother.)
-//                Is called by resizeBoxes in codeviewer.js
+// alignBoxesWidth: Width adjustment for template(1,3) (Two boxes beside eachother)
+//                  Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 {
@@ -1715,9 +1752,10 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 	boxValArray['box' + boxNumBase]['width'] = basePer;
 	boxValArray['box' + boxNumAlign]['width'] = remainWidthPer;
 }
+
 //----------------------------------------------------------------------------------
-//width adjustment for template 3. 
-//                Is called by resizeBoxes in codeviewer.js
+// alignBoxesWidth3Boxes: Width adjustment for template 3. 
+//                		  Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
@@ -1738,8 +1776,8 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 }
 	
 //----------------------------------------------------------------------------------
-//Height adjustment for two boxes on top of eachother.
-//                Is called by resizeBoxes in codeviewer.js
+// alignBoxesHeight2boxes: Height adjustment for two boxes on top of eachother.
+//                		   Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 {
@@ -1753,9 +1791,11 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 }
+
 //----------------------------------------------------------------------------------
-//Height adjustment for boxes in template 4. (Two small boxes ontop of a big box.)
-//                Is called by resizeBoxes in codeviewer.js
+// alignBoxesHeight3boxes: Height adjustment for boxes in template 4. 
+//						   (Two small boxes ontop of a big box.)
+//                		   Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 {
@@ -1771,9 +1811,10 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 	boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
 }
+
 //----------------------------------------------------------------------------------
-//Height adjustment for boxes in template 5.
-//                Is called by resizeBoxes in codeviewer.js
+// alignBoxesHeight4boxes: Height adjustment for boxes in template 5.
+//                		   Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 {	
@@ -1793,8 +1834,9 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 }
 
 //----------------------------------------------------------------------------------
-//Creates an array with all the properties needed for resize function.
-//                Is called by resizeBoxes in codeviewer.js
+// initResizableBoxValues: Creates an array with all the properties needed for the
+//						   resize function.
+//                		   Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function initResizableBoxValues(parent)
 {
@@ -1825,8 +1867,9 @@ function initResizableBoxValues(parent)
 }
 
 //----------------------------------------------------------------------------------
-//Saves the measurments in percent for the boxes on the screen in local storage.
-//                Is called by resizeBoxes in codeviewer.js
+// setLocalStorageProperties: Saves the measurments in percent for the boxes on the 
+//							  screen in local storage.
+//                			  Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function setLocalStorageProperties(templateId, boxValArray)
 {
@@ -1851,9 +1894,11 @@ function setLocalStorageProperties(templateId, boxValArray)
 }
 
 //----------------------------------------------------------------------------------
-//Gets box measurements from localstorage and applies them onto the boxes on screen.
-//This is done preinit of boxValArray, so that the init of that array gets these values.
-//                Is called by resizeBoxes in codeviewer.js
+//getLocalStorageProperties: Gets box measurements from localstorage and applies 
+//							 them onto the boxes on screen. This is done preinit of 
+//							 boxValArray, so that the init of that array gets these 
+//							 values.
+//                			 Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function getLocalStorageProperties(templateId, boxValArray)
 {
@@ -1867,9 +1912,10 @@ function getLocalStorageProperties(templateId, boxValArray)
 		}
 	}
 }
+
 //----------------------------------------------------------------------------------
-//removes percentage based gap
-//                Is called by getLocalStorageProperties in codeviewer.js
+// erasePercentGap: Removes percentage based gap
+//                  Is called by getLocalStorageProperties in codeviewer.js
 //----------------------------------------------------------------------------------
 function erasePercentGap(templateId, boxValArray)
 {
@@ -1891,8 +1937,9 @@ function erasePercentGap(templateId, boxValArray)
 }
 
 //----------------------------------------------------------------------------------
-//Solves problem of how resizable ui component only work with pixel based positioning.
-//                Is called by setLocalStorageProperties in codeviewer.js
+// setResizableToPer: Solves problem of how resizable ui component only work with 
+//					  pixel based positioning.
+//                	  Is called by setLocalStorageProperties in codeviewer.js
 //----------------------------------------------------------------------------------
 function setResizableToPer(boxValArray)
 {
@@ -1947,15 +1994,13 @@ function parseMarkdown(inString)
 	//Regular expression for line
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
 	
-	//Regular expression for code blocks
-	inString = inString.replace(/~{3}((?:\r|\n|.)+?)\~{3}/gm, '<pre><code>$1</code></pre>');
-	
 	return inString;
 }
+
 //----------------------------------------------------------------------------------
 // addHtmlLineBreak: This function will replace all '\n' line breaks in a string
 //					 with <br> tags.
-//                Is called by returned in codeviewer.js
+//                	 Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>'); 
