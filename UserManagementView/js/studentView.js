@@ -202,30 +202,36 @@ function createHTMLForCourse(data)
 function course_hover_requierments(data){
 	var regCourses = data['reqCourses'];
 
-	$('.course div, .course p, .course a').hover(function() {
-		// Return the closest div parent div ID on the hover effect.
-		var hoverCourse = $(this).closest('.course' , '[id]').attr('id');
-		var rmHoverCourse = '#'+ hoverCourse;
-		$(rmHoverCourse).removeClass('reg_fade');
+	$('.course_wrapper').on( 'mouseenter',function() {
+		
+	
+		
+	
+			// Return the closest div parent div ID on the hover effect.
+			var hoverCourse = $(this).closest('.course' , '[id]').attr('id');
+			var rmHoverCourse = '#'+ hoverCourse;
+			$(rmHoverCourse).removeClass('reg_fade');
 
-		//checks the prereqiuerments courses so they wont fade.
-		for (var i = 0; i < regCourses.length ; i++){
-			if(hoverCourse == regCourses[i]['coursecode']){
-				var rmClass = '#' + regCourses[i]['reg_coursecode'];
-				$(rmClass).removeClass('reg_fade');
+			//checks the prereqiuerments courses so they wont fade.
+			for (var i = 0; i < regCourses.length ; i++){
+				if(hoverCourse == regCourses[i]['coursecode']){
+					var rmClass = '#' + regCourses[i]['reg_coursecode'];
+					$(rmClass).removeClass('reg_fade');
+				}
 			}
-		}
+		
+			$(".reg_fade").fadeTo(0, 0.2);
 
-		$(".reg_fade").fadeTo(0, 0.2);
-
-		}, function() {
-			// 
+		}).on('mouseleave', function() {
+			
 			$('.course').addClass('reg_fade');
 			$(".reg_fade").fadeTo(0, 1);
-   		}
-    );
+			
+   	
+    });
  
 }
+
 //Changes the background color to green when the student have finished the course.
 function progress_bar_complete(data){
 
