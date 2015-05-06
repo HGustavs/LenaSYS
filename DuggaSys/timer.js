@@ -4,6 +4,7 @@ var Timer = {
 	startTimer: function(){
 		var self = this;
 		this.timer = setInterval( function(){self.incrementTimer(); self.animateTimer();}, 1000 );
+		this.animateTimer();
 	},
 	stopTimer: function(){
 		var self = this;
