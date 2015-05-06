@@ -446,7 +446,7 @@ function returnedSection(data)
 						str+="<span><a style='margin-left:15px;' href="+item['link']+">"+item['entryname']+"</a></span>";
 					}else if (parseInt(item['kind']) == 3 ) {
 						//Dugga!
-						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"\");' >"+item['entryname']+"</a>";
+						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
 					}else if(parseInt(item['kind']) == 5){
 						str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showDoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 					}	
@@ -556,7 +556,15 @@ function returnedHighscore(data){
 			str += item['username'];
 			str += "</td>"
 			str += "<td>";
-			str += "Time spent: ";
+			if(highscoremode == 0) {
+				// Undefined	
+			} else if(highscoremode == 1) {
+				str += "Time spent: ";
+			} else if (highscoremode == 2) {
+				str += "Number of clicks: ";
+			} else {
+				str += "Score: ";
+			}
 			str += item['timeSpent']
 			str += "</td>";
 			str += "</tr>";
