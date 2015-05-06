@@ -38,16 +38,20 @@
 	} 
 	// Checks and sets user rights
 	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
-		$writeaccess="w";
+		$writeAccess="w";
 	}else{
-		$writeaccess="s";
+		$writeAccess="s";	
 	}
+	
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
+	
+	// Make sure there is an example
+	$exampleCount = 0;
+	
 	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
     $query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 	
-	$exampleCount = 0;
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$exampleCount++;
 		$exampleId=$row['exampleid'];
@@ -57,7 +61,7 @@
 		$public=$row['public'];
 		$sectionName=$row['sectionname'];
 		$playlink=$row['runlink'];
-	}
+	}	
 	
 	// TODO: Handle a situation where there are no examples available
 	if($exampleCount>0){
@@ -65,7 +69,7 @@
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
 		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
-			$writeaccess="w";
+			$writeAccess="w";
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Add word to wordlist
 				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
@@ -154,22 +158,22 @@
 					}
 				}
 			}else if(strcmp('EDITCONTENT',$opt)===0) {
-				$exampleid = $_POST['exampleid'];
-				$boxid = $_POST['boxid'];
-				$boxtitle = $_POST['boxtitle'];
-				$boxcontent = $_POST['boxcontent'];
+				$exampleId = $_POST['exampleid'];
+				$boxId = $_POST['boxid'];
+				$boxTitle = $_POST['boxtitle'];
+				$boxContent = $_POST['boxcontent'];
 				$wordlist = $_POST['wordlist'];
 				$filename = $_POST['filename'];
 				$addedRows = $_POST['addedRows'];
 				$removedRows = $_POST['removedRows'];
 
 				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");	
-				$query->bindParam(':boxtitle', $boxtitle);
-				$query->bindParam(':boxcontent', $boxcontent);
+				$query->bindParam(':boxtitle', $boxTitle);
+				$query->bindParam(':boxcontent', $boxContent);
 				$query->bindParam(':wordlist', $wordlist);
 				$query->bindParam(':filename', $filename);
-				$query->bindParam(':boxid', $boxid);
-				$query->bindParam(':exampleid', $exampleid);
+				$query->bindParam(':boxid', $boxId);
+				$query->bindParam(':exampleid', $exampleId);
 				$query->execute();
 
 				if (isset($_POST['addedRows'])) {
@@ -177,8 +181,8 @@
 					foreach ($matches[1] as $match) { 
 						$row = explode(",", $match);
 						$query = $pdo->prepare("INSERT INTO improw(boxid,exampleid,istart,iend,uid) VALUES (:boxid,:exampleid,:istart,:iend,:uid);");
-						$query->bindValue(':boxid', $boxid);
-						$query->bindValue(':exampleid', $exampleid);
+						$query->bindValue(':boxid', $boxId);
+						$query->bindValue(':exampleid', $exampleId);
 						$query->bindValue(':istart', $row[1]);
 						$query->bindValue(':iend', $row[2]);
 						$query->bindValue(':uid', $_SESSION['uid']);
@@ -191,8 +195,8 @@
 					foreach ($matches[1] as $match) { 
 						$row = explode(",", $match);
 						$query = $pdo->prepare("DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exampleid=:exampleid;");
-						$query->bindValue(':boxid', $boxid);
-						$query->bindValue(':exampleid', $exampleid);
+						$query->bindValue(':boxid', $boxId);
+						$query->bindValue(':exampleid', $exampleId);
 						$query->bindValue(':istart', $row[1]);
 						$query->bindValue(':iend', $row[2]);
 						$query->execute();
@@ -205,10 +209,10 @@
 		//------------------------------------------------------------------------------------------------		
 		// Read exampleid, examplename and runlink etc from codeexample and template
 		$exampleName="";
-		$templateid="";
-		$stylesheet="";
-		$numbox="";
-		$exampleno=0;
+		$templateId="";
+		$styleSheet="";
+		$numBox="";
+		$exampleNumber=0;
 		$playlink="";
 		$public="";
 		$entryname="";
@@ -220,18 +224,18 @@
 
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 			$exampleName=$row['examplename'];
-			$exampleno=$row['exampleid'];
+			$exampleNumber=$row['exampleid'];
 			$public=$row['public'];
 			$playlink=$row['runlink'];
 			$sectionName=$row['sectionname'];
-			$templateid=$row['templateid'];
-			$stylesheet=$row['stylesheet'];
-			$numbox=$row['numbox'];					
+			$templateId=$row['templateid'];
+			$styleSheet=$row['stylesheet'];
+			$numBox=$row['numbox'];					
 		}
 		
 		// Read ids and names from before/after list
-		$beforeafter = array();
-		$beforeafters = array();
+		$beforeAfter = array();
+		$beforeAfters = array();
 		
 		$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample order by exampleid");
 		$query->execute();
@@ -243,50 +247,53 @@
 		//$query->execute();
 
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
-			$beforeafter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
-				array_push($beforeafters,array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']));
+			$beforeAfter[$row['exampleid']]=array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']);
+				array_push($beforeAfters,array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']));
 		}  
 
-		// iteration to find after examples - We start with $exampleId and at most 5 are collected
+		// Iteration to find after examples - We start with $exampleId and at most 5 are collected
 		$nextExampleCount = 0;
-		$forward_examples = array();	
-		$currid=$exampleId;
+		$forwardExamples = array();	
+		$currentId=$exampleId;
+		
 		do{
-			if(isset($beforeafter[$currid])){
-				$currid=$beforeafter[$currid][4];
+			if(isset($beforeAfter[$currentId])){
+				$currentId=$beforeAfter[$currentId][4];
 			}else{
-				$currid=null;
+				$currentId=null;
 			}					
-			if($currid!=null){
-				array_push($forward_examples,$beforeafter[$currid]);
+			if($currentId!=null){
+				array_push($forwardExamples,$beforeAfter[$currentId]);
 			}
 			$nextExampleCount++;
-		}while($currid!=null&&$nextExampleCount<5);
+			
+		// Iteration to find before examples - We start with $exampleId and at most 5 are collected
+		}while($currentId!=null&&$nextExampleCount<5);
 
-		// Iteration to find before examples - We start with $exampleId and at most 5 are collected 
-		$backward_examples = array();	
-		$currid=$exampleId;
-		$previousExamplesCount = 0;
-		do{
-			if(isset($beforeafter[$currid])){
-				$currid=$beforeafter[$currid][3];
-			}else{
-				$currid=null;
-			}					
-			if($currid!=null){
-				array_push($backward_examples,$beforeafter[$currid]);
-			}
+			 
+			$backwardExamples = array();	
+			$currentId=$exampleId;
+			$previousExamplesCount = 0;
+			do{
+				if(isset($beforeAfter[$currentId])){
+					$currentId=$beforeAfter[$currentId][3];
+				}else{
+					$currentId=null;
+				}					
+				if($currentId!=null){
+					array_push($backwardExamples,$beforeAfter[$currentId]);
+				}
 			$previousExamplesCount++;
-		}while($currid!=null&&$previousExamplesCount<5);
+		}while($currentId!=null&&$previousExamplesCount<5);
 
 		// Read important lines
-		$imp=array();
+		$importantRows=array();
 		$query = $pdo->prepare("SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY istart;");
 		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 		
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
-			array_push($imp,array($row['boxid'],$row['istart'],$row['iend']));
+			array_push($importantRows,array($row['boxid'],$row['istart'],$row['iend']));
 		}  
 
 		// Get all words for each wordlist
@@ -299,22 +306,23 @@
 		}
 		
 		// Get all wordlists
-		$wordlists=array();
-		$query =$pdo->prepare( "SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;");
+		$wordLists=array();
+		$query = $pdo->prepare( "SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;");
 		$query->execute();
 
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
-			array_push($wordlists,array($row['wordlistid'],$row['wordlistname']));					
+			array_push($wordLists,array($row['wordlistid'],$row['wordlistname']));					
 		} 
 		
+
 		// Read important wordlist
-		$impwordlist=array();
+		$importantWordList=array();
 		$query = $pdo->prepare( "SELECT word,label FROM impwordlist WHERE exampleid = :exampleid ORDER BY word;");
 		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 		
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
-			array_push($impwordlist,$row['word']);					
+			array_push($importantWordList,$row['word']);					
 		}  
 		
 		$directories = array();
@@ -343,13 +351,13 @@
 		}
 		array_push($directories, $descDir);
 
-		// Read Directory - Images
 		$images=array();
 		if(file_exists('./imgupload')){
-			$img_dir = opendir('./imgupload');
-			while (($img_file = readdir($img_dir)) !== false) {
-				if(endsWith($img_file,".png")){
-					array_push($images,$img_file);
+			// Read Directory - Images
+			$imgDir = opendir('./imgupload');
+			while (($imgFile = readdir($imgDir)) !== false) {
+				if(endsWith($imgFile,".png")){
+					array_push($images,$imgFile);
 				}
 			}		
 		}
@@ -360,25 +368,24 @@
 		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 
-		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
-			$boxcontent=strtoupper($row['boxcontent']);
-			$filename=$row['filename'];
-			$content="";
-			//If box is of Document type, open doc and read
-			if(strcmp("DOCUMENT",$boxcontent)===0){
-				if(file_exists('./descupload')){
-					$filename="./descupload/".$filename;
-					$handle = @fopen($filename, "r");
-					if ($handle) {
-						while (($buffer = fgets($handle, 1024)) !== false) {
-							$content=$content.$buffer;
-						}
-						if (!feof($handle)) {
-							$content.="Error: Unexpected end of file ".$descFilename."\n";			    
-						}
-						fclose($handle);
+	while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+		$boxContent=strtoupper($row['boxcontent']);
+		$filename=$row['filename'];
+		$content="";					
+		if(strcmp("DOCUMENT",$boxContent)===0){
+			if(file_exists('./descupload')){
+				$filename="./descupload/".$filename;
+				$handle = @fopen($filename, "r");
+				if ($handle) {
+					while (($buffer = fgets($handle, 1024)) !== false) {
+						$content=$content.$buffer;
 					}
+					if (!feof($handle)) {
+						$content.="Error: Unexpected end of file ".$descFilename."\n";			    			    
+					}
+					fclose($handle);
 				}
+			}
 			//If box is not of Document type, code is assumed
 			}else{
 				if(file_exists('./codeupload')){
@@ -396,32 +403,34 @@
 				}else{
 					$content="No file found!";
 				}
+			
+
 			}
-			array_push($box,array($row['boxid'],$boxcontent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
-		}						
-		$array = array(
-			'before' => $backward_examples,
-			'after' => $forward_examples,
-			'templateid' => $templateid,
-			'stylesheet' => $stylesheet,
-			'numbox' => $numbox,
-			'box' => $box,
-			'improws' => $imp,
-			'impwords' => $impwordlist,
-			'directory' => $directories,
-			'examplename'=> $exampleName,
-			'sectionname'=> $sectionName,
-			'playlink' => $playlink,
-			'exampleno' => $exampleno,
-			'words' => $words,
-			'wordlists' => $wordlists, 
-			'images' => $images,
-			'writeaccess' => $writeaccess,
-			'debug' => $debug,
-			'beforeafter' => $beforeafters, 
-			'public' => $public
-		);
-		echo json_encode($array);
+			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
+	}						
+	$array = array(
+		'before' => $backwardExamples,
+		'after' => $forwardExamples,
+		'templateid' => $templateId,
+		'stylesheet' => $styleSheet,
+		'numbox' => $numBox,
+		'box' => $box,
+		'improws' => $importantRows,
+		'impwords' => $importantWordList,
+		'directory' => $directories,
+		'examplename'=> $exampleName,
+		'sectionname'=> $sectionName,
+		'playlink' => $playlink,
+		'exampleno' => $exampleNumber,
+		'words' => $words,
+		'wordlists' => $wordLists, 
+		'images' => $images,
+		'writeaccess' => $writeAccess,
+		'debug' => $debug,
+		'beforeafter' => $beforeAfters, 
+		'public' => $public
+	);
+	echo json_encode($array);
 	}else{
 		$array = array(
 		 	'debug' => "ID does not exist or there are no examples" 
