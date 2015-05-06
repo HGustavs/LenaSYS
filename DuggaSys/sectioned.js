@@ -157,46 +157,83 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}
 	
 	// Show dialog
+	if(kind==0){	
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==1){
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==2){
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==3){
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-highscore").css("display","block");
+	}else if(kind==4){
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-highscore").css("display","block");
+	}else if(kind==5){
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}
 	$("#editSection").css("display","block");
-		
 }
 
 function changedType()
 {
 	kind=$("#type").val();		
-	
+	iistr="";
 	// Graying of Link
-	if((kind==5)||(kind==3)){
-		$("#linklabel").css("opacity","1.0");				
-		$("#link").prop('disabled', false);					
-		iistr="";
-		if(kind==5){
-			for(var ii=0;ii<retdata['links'].length;ii++){
-				var iitem=retdata['links'][ii];
-				if(xelink==iitem['fileid']){
-					iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-				}else{
-					iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
-				}
+	
+	if(kind==0){	
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==1){
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==2){
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==3){
+		for(var ii=0;ii<retdata['duggor'].length;ii++){
+			var iitem=retdata['duggor'][ii];
+			if(xelink==iitem['id']){
+				iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
 			}
-			$("#link").html(iistr);					
-		}else if(kind==3){
-			for(var ii=0;ii<retdata['duggor'].length;ii++){
-				var iitem=retdata['duggor'][ii];
-				if(xelink==iitem['id']){
-					iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-				}else{
-					iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-				}
-			}
-						
 		}
-		$("#link").html(iistr);					
-	}else{
-		$("#linklabel").css("opacity","0.3");	
-		$("#link").prop('disabled', true);					
-		$("#createbutton").css('visibility', 'hidden');					
-	}	
+		$("#link").html(iistr);
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-highscore").css("display","block");
+	}else if(kind==4){
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-highscore").css("display","block");
+	}else if(kind==5){
+		for(var ii=0;ii<retdata['links'].length;ii++){
+			var iitem=retdata['links'][ii];
+			if(xelink==iitem['fileid']){
+				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
+			}else{
+				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+			}
+		}
+		$("#link").html(iistr);
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}
 }
 
 function deleteItem()
