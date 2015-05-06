@@ -150,10 +150,6 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 			}
 		}
 	$("#link").html(iistr);					
-	}else{
-		$("#linklabel").css("opacity","0.3");	
-		$("#link").prop('disabled', true);					
-		$("#createbutton").css('visibility', 'hidden');					
 	}
 	
 	// Show dialog
@@ -189,8 +185,7 @@ function changedType()
 {
 	kind=$("#type").val();		
 	iistr="";
-	// Graying of Link
-	
+
 	if(kind==0){	
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
