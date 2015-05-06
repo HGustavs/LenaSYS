@@ -184,7 +184,6 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 function changedType()
 {
 	kind=$("#type").val();		
-	iistr="";
 
 	if(kind==0){	
 		$("#inputwrapper-link").css("display","none");
@@ -195,10 +194,13 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==2){
+		iistr="";
+		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==3){
+		iistr="";
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
 			var iitem=retdata['duggor'][ii];
 			if(xelink==iitem['id']){
@@ -216,6 +218,7 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
 	}else if(kind==5){
+		iistr="";
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			if(xelink==iitem['fileid']){
