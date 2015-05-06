@@ -48,62 +48,36 @@ pdoConnect();
 	<h3>Edit Dugga</h3>
 	<div onclick='closeEditDugga();'>x</div>
 	</div>
-				
-	<table width="100%">
-		<tr>
+		<div style='padding:5px;'>
 			<input type='hidden' id='did' value='Toddler' /></td>
-			<td colspan='2' style='line-height:40px;'>Name: <div id='dugganamewrapper'><input style='float:right;width:390px;' class='form-control textinput' type='text' id='name' value='Name' /></div></td>		
-		</tr>
-		<tr>
-			<td>Auto-grade: <select style='float:right;' id='autograde'></select></td>
-			<td>Grade System: <select style='float:right;' id='gradesys'></select></td>
-		</tr>
-		<tr>
-			<td colspan="2">Template: <select id='template'></select></td>
-		</tr>
-		<tr>
-			<td>Release Date: <div id='releasedatewrapper'><input class='form-control textinput datepicker' type='text' id='release' value='None' /></div></td>		
-			<td>Deadline Date: <div id='deadlinedatewrapper'><input class='form-control textinput datepicker' type='text' id='deadline' value='None' /></div></td>
-		</tr>
-
-
-	</table>
-
-	<table width="100%"><tr>
-			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateDugga();' /></td>
-		</tr>
-	</table>
-
+			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='name' value='Name' /></div>
+			<div class='inputwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
+			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
+			<div class='inputwrapper'><span>Template:</span><select id='template'></select></div>
+			<div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
+			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
+		</div>
+	<div style='padding:5px;'>
+		<input class='submit-button' type='button' value='Save' onclick='updateDugga();' />
+	</div>
 	</div>
 	<!--- Edit Dugga Dialog END --->
 	
 	<!--- Edit Variant Dialog START --->
 	<div id='editVariant' class='loginBox' style='width:464px;display:none;'>
-
 	<div class='loginBoxheader'>
 	<h3>Edit Variant</h3>
 	<div onclick='closeWindows();'>x</div>
 	</div>
-				
-	<table width="100%">
-		<tr>
-			<input type='hidden' id='vid' value='Toddler' /></td>
-			<td colspan='2' style='line-height:40px;'>Param: <div id='parameternamewrapper'><input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' value='Variant Param' /></div></td>		
-		</tr>	
-		<tr>
-			<td colspan='2' style='line-height:40px;'>Answer: <div id='answernamewrapper'><input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' value='Variant Answer' /></div></td>		
-		</tr>
-	</table>
-
-	<table width="100%">
-		<tr>
-			<td align='left'><input class='submit-button' type='button' value='Delete' onclick='deleteVariant();' /></td>
-			<td align='center'></td>
-			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateVariant();' /></td>
-		</tr>
-		
-	</table>
-
+		<div style='padding:5px;'>
+			<input type='hidden' id='vid' value='Toddler' />
+			<div class='inputwrapper'><span>Param:</span><input class='textinput' type='text' id='parameter' value='Variant Param' /></div>	
+			<div class='inputwrapper'><span>Answer:</span><input class='textinput' type='text' id='variantanswer' value='Variant Answer' /></div>	
+		</div>	
+		<div style='padding:5px;'>
+			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
+			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();' />
+		</div>	
 	</div>
 	<!--- Edit Variant Dialog END --->
 		
