@@ -172,7 +172,7 @@ $readfile = false;
 
 							}else{
 									$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
-									$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) ORDER BY kind LIMIT 1;");
+									$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) LIMIT 1;");
 									$temp = substr($fname,6); 
 									$out = substr_replace($fname,"//",6); 
 									$out .= $temp; 
