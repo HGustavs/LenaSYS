@@ -341,11 +341,12 @@ function updateExample()
 // displayEditContent: Displays the dialogue box for editing a content pane
 //                Is called by createboxmenu in codeviewer.js
 //----------------------------------------------------------------------------------
+var openBoxID;
 
 function displayEditContent(boxid)
 {	
 	var box = retData['box'][boxid-1]; 	// The information stored about the box is fetched
-	var openBoxID = boxid;				// Keeps track of the currently open box. Used when saving the box content.
+	openBoxID = boxid;				// Keeps track of the currently open box. Used when saving the box content.
 
 	$("#boxtitle").val(box[4]);
 	$("#boxcontent").val(box[1]);  
