@@ -55,7 +55,7 @@ $readfile = false;
 									$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 							}
 					}else if($fname!="UNK"){
-							$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) ORDER BY kind LIMIT 1;");
+							$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) LIMIT 1;");
 
 							$query->bindParam(':cid', $cid);
 							$query->bindParam(':fname', $fname);
@@ -98,9 +98,8 @@ $readfile = false;
 											header('Accept-Ranges: bytes');
 											@readfile($file);
 
-											 $bummer = "<div class='err'><span style='font-weight:bold;'>YES!</span> the link exists".$filename." fssafsafasf ".$file_extension."!!!!</div>";								
 										  }else{
-													$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
+											$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
 										  }
 								}else if($filekind==3){
 											// Course Local
@@ -133,9 +132,8 @@ $readfile = false;
 											header('Accept-Ranges: bytes');
 											@readfile($file);
 											
-											 $bummer = "<div class='err'><span style='font-weight:bold;'>YES!</span> the link exists".$filename." fssafsafasf ".$file_extension."!!!!</div>";		
 										  }else{
-													$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
+											$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
 										  }
 								}else if($filekind==4){
 											// Local
@@ -167,9 +165,8 @@ $readfile = false;
 												header('Accept-Ranges: bytes');
 												@readfile($file);
 														
-												$bummer = "<div class='err'><span style='font-weight:bold;'>YES!</span> the link exists".$filename." fssafsafasf ".$file_extension."!!!!</div>";	
 										  }else{
-													$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
+											$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
 										  }
 								}
 
@@ -187,8 +184,8 @@ $readfile = false;
 									if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 									$filekind=$row['kind'];
 											if($filekind==1){
-														// Link
-														echo "<script>window.location.replace('".$row['filename']."');</script>";
+												// Link
+												echo "<script>window.location.replace('".$row['filename']."');</script>";
 											}else{
 											}
 									}
