@@ -545,6 +545,44 @@ function createboxmenu(contentid, boxid, type)
 		});
 	}
 }
+
+//----------------------------------------------------------------------------------
+// createhotdogmenu: Creates the menu at the top of a box 
+//                Is called never called, code is kept for future use
+//----------------------------------------------------------------------------------
+function createhotdogmenu()
+{
+	// div2 refers to the main content div below the floating menu
+	var content = document.getElementById("div2");
+	// Checks if a hotdogmenu already exists, then calls that, if not a new one is created
+	if(document.getElementById("hotdogdrop")){
+		var hotdogmenu = document.getElementById("hotdogdrop");
+	}else{
+		var hotdogmenu = document.createElement("span");
+		content.appendChild(hotdogmenu);
+		hotdogmenu.id = "hotdogdrop";
+		hotdogmenu.className = "hotdogdropStyle dropdown dropdownStyle showmobile";
+	}
+
+	str = '<table cellspacing="0" class="showmobile"><tr>';
+	str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="../Shared/icons/home_button.svg" /></td>';
+	str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="Skip(\"bd\");" onmouseup="Skip(\"bu\");" onclick="Skip(\"bd\")"><img src="../Shared/icons/backward_button.svg" /></td>';
+	str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
+	str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
+	str += '</tr>';
+	// Possible crash warning if returned number of boxes is wrong
+	if(retData['numbox']==0 || retData['numbox']==null){
+		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
+	}
+	for(i=0;i<retData['numbox'];i++){
+		str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retData['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retData['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
+	}		
+	str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
+	str += '</table>';
+	hotdogmenu.style.display="block";	
+	hotdogmenu.innerHTML = str;
+}
+
 //----------------------------------------------------------------------------------
 // toggleClass: Modifies class using Jquery to contain "activebox" class selector
 //				Used by createboxmenu(contentid, boxid, type) in codeviewer.js
@@ -561,10 +599,25 @@ function toggleClass(id)
 }
 
 //----------------------------------------------------------------------------------
+// displayDrop: Modifies class using Jquery to contain "activebox" class selector 
+//				TODO: Check if actually used, could not find within our files
+//                Is called by [this function] in [this file]
+//----------------------------------------------------------------------------------
+function displayDrop(dropid)
+{	
+	drop = document.getElementById(dropid);
+	if($(drop).is(":hidden")){
+		$(".dropdown").css({display: "none"});
+		drop.style.display="block";
+	}else{
+		drop.style.display="none";
+	}	
+}
+
+//----------------------------------------------------------------------------------
 // highlightop: Highlights an operator and corresponding operator in code window
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function highlightop(otherop,thisop)
 {
 	$("#"+otherop).addClass("hi");					
@@ -728,6 +781,37 @@ function hideDrop(dname)
 	if(dropd!=null) dropd.style.display="none";							
 }
 
+//----------------------------------------------------------------------------------
+// Switches Dropdown List to Visible
+//				Is never used, code is kept for future use
+//----------------------------------------------------------------------------------
+
+function switchDrop(dname)
+{
+	var dropd=document.getElementById(dname); 
+	if(dropd.style.display=="block"){
+		$( dropd ).slideUp("fast");							
+	}else{
+		hideDrop("forwdrop");
+		hideDrop("backwdrop");
+		$('#hotdogdrop').hide();	
+		$( dropd ).slideDown("fast");
+		dropd.style.display="block";
+	} 
+}
+//----------------------------------------------------------------------------------
+// Reads value from Dropdown List
+//				Is never used, code is kept for future use
+//----------------------------------------------------------------------------------
+function issetDrop(dname)
+{
+	var dropd=document.getElementById(dname);
+	if(dropd.style.display=="block"){
+		return true;
+	}else{
+		return false;
+	}
+}
 //----------------------------------------------------------------------------------
 // dehtmlify: Removes most html tags from a string!
 //                Is called by editedExamplename(), returned(data) in codeviewer.js
