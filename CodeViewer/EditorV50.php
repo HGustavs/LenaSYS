@@ -53,12 +53,6 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
 	pdoConnect();
-	
-	if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];
-	}else{
-		$userid="UNK";		
-	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -83,6 +77,8 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 		<?php 
 			$exampleid = getOPG('exampleid');
 			$courseID = getOPG('courseid');
+			$cvers = getOPG('cvers');
+			
 			//get the visibility
 			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
 			$query->bindParam(':exampleid', $exampleid);
@@ -93,8 +89,23 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 			$codeviewer = true;	// Makes it possible to view the content in the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
 			$codeviewerkind=false;	// This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible. 
 			
-			// Logs users viewing examples
-			makeLogEntry($userid,1,$pdo,$exampleid." ".$courseID);
+			if(isset($_SESSION['uid'])){
+				$userid=$_SESSION['uid'];
+			}else{
+				$userid="UNK";		
+			}
+			
+			//Gets username based on uid
+			$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+			$query->bindParam(':uid', $userid);
+			$query-> execute();
+			
+			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+				$username = $row['username'];
+			}
+			
+			// Logs users who view example, along with the example they have viewed
+			makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);
 			
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
