@@ -1410,6 +1410,24 @@ function mobileTheme(id){
 		$(".mobilethemebutton").css("display","none");
 	}
 }
+
+//----------------------------------------------------------------------------------
+//  setEditing: Set the editing properties for mobile and desktop version
+//                Is never called, code is saved for future use
+//----------------------------------------------------------------------------------
+function setEditing()
+{
+	var	hotdog = document.getElementById("hidehotdog");
+	var	isDesktop = $(hotdog).is(":hidden");
+	if(isDesktop){
+		$("*[contenteditable]").attr("contenteditable","true"); 
+		$(".tooltip").css("display", "block");
+	}else{ 
+		$("*[contenteditable]").attr("contenteditable","false"); 
+		$(".tooltip").css("display", "none");
+	}
+}
+
 //----------------------------------------------------------------------------------
 // changetemplate: Change template by updating hidden field
 //                Is called at line 223-229 in EditorV50.php
