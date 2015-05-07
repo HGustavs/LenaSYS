@@ -58,7 +58,9 @@
         
         
         <!-- Linegraph -->
-        <div class="lineGraph">
+        <div id="graphContainer" class="lineGraph">
+            <canvas id="graph" width="900" height="150">
+            </canvas>
         </div>
         
         

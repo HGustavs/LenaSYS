@@ -106,6 +106,7 @@ function renderView(data)
 {
 
 	console.log("DATA_FOR_VIEW_RECIVED - DONE");
+	clearLinearGraph();
 	
 	var htmlStr = "";
 	var classname = data['classname'];
@@ -143,6 +144,7 @@ function renderView(data)
 	var studentView = document.getElementById("studentslist");
 	studentView.innerHTML = htmlStr;
 	
+	createLinearGraph(data);
 	
 }
 
@@ -208,4 +210,147 @@ function getCourseResults(results)
 	
 	return htmlStr;
 	
+}
+
+//---------------------------------------------------------------
+//	clearLinearGraph() - clears the line graph representing
+//	all the student results in every course
+//---------------------------------------------------------------
+
+function clearLinearGraph() 
+{
+	var graph = $('#graph');
+	var c = graph[0].getContext('2d');
+	c.clearRect(0, 0, graph.width, graph.height);
+}
+
+//---------------------------------------------------------------
+//	createLinearGraph() - creates the line graph
+//	representing all the student results in every course
+//---------------------------------------------------------------
+
+function createLinearGraph(data)
+{
+	var backgroundcolor_overlay = "#F5F0F5";
+	var color_helpLines 		= "#D8D8D8";
+	var width_helpLines			= 2;
+	var x_axis_text_font			= 'italic 8pt sans-serif';
+	var x_axis_text_align		= "center";
+	var x_axis_text_color		= "#000";
+	var width_axisLines			= 2;
+	var color_axisLines			= "#333";
+	var y_axis_text_baseline	= "middle";
+	var y_axis_text_align		= "right";
+	var graphLine_color			= "#5C005C";
+	var graphLine_width			= 4;
+	var circle_fill_color		= '#FFF';
+	var circle_stroke_color		= '#D8D8D8';
+	var circle_width			= 10;
+	
+	
+	var graph;
+    var yPadding_top = 20;
+    var yPadding_bottom = 20;
+	var xPadding = 40;
+	var maxY = 100;
+	
+	var data = { values:[
+		{ X: "Kurs", Y: 50 },
+		{ X: "Kurs", Y: 67 },
+		{ X: "Kurs", Y: 86 },
+		{ X: "Kurs", Y: 76 },
+		{ X: "Kurs", Y: 55 },
+		{ X: "Kurs", Y: 89 },
+		{ X: "Kurs", Y: 34 },
+		{ X: "Kurs", Y: 34 },
+		{ X: "Kurs", Y: 67 },
+		{ X: "Kurs", Y: 22 },
+		{ X: "Kurs", Y: 64 },
+		{ X: "Kurs", Y: 74 },
+		{ X: "Kurs", Y: 87 },
+		{ X: "Kurs", Y: 16 },
+	]};
+	
+	// Return the x pixel for a graph point
+	function getXPixel(val) {
+		return ((graph.width() - xPadding) / data.values.length) * val + (xPadding * 2);
+	}
+	
+	// Return the y pixel for a graph point
+	function getYPixel(val) {
+		return graph.height() - (((graph.height() - (yPadding_top + yPadding_bottom)) / maxY) * val) - yPadding_bottom;
+	}
+	 
+	graph = $('#graph');
+	console.log("graph");
+
+	var c = graph[0].getContext('2d');
+
+	/* style for the overlay under the graph */
+	c.fillStyle = backgroundcolor_overlay;
+	
+	/* begin the drawing of the polygon that should be under the graph */
+	c.beginPath();
+	c.moveTo(getXPixel(0), getYPixel(0));
+	
+	for(var i = 0; i < data.values.length; i++) {
+		c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));
+	}
+	
+	c.lineTo(getXPixel(data.values.length - 1), getYPixel(0));
+	c.fill();
+	
+	c.lineWidth 	= width_helpLines;
+	c.strokeStyle 	= color_helpLines;
+	c.font 			= x_axis_text_font;
+	c.textAlign 	= x_axis_text_align;
+	c.fillStyle 	= x_axis_text_color;
+	
+	// Draw the X value texts
+	for(var i = 0; i < data.values.length; i ++) {
+		c.beginPath();
+		c.fillText(data.values[i].X, getXPixel(i), graph.height() - yPadding_bottom + 20);
+		c.moveTo(getXPixel(i), graph.height() - yPadding_bottom);
+		c.lineTo(getXPixel(i), getYPixel(100));
+		c.stroke();
+	}
+	
+	c.lineWidth = width_axisLines;
+	c.strokeStyle = color_axisLines;
+	
+	// Draw the axises
+	c.beginPath();
+	c.moveTo(xPadding, yPadding_top);
+	c.lineTo(xPadding, graph.height() - yPadding_bottom);
+	c.lineTo(graph.width(), graph.height() - yPadding_bottom);
+	c.stroke();
+	
+	// Draw the Y value texts
+	c.textAlign = y_axis_text_align;
+	c.textBaseline = y_axis_text_baseline;
+	
+	c.fillText((0 + "%"), xPadding - 5, getYPixel(0));
+	c.fillText((100 + "%"), xPadding - 5, getYPixel(100));
+	
+	c.strokeStyle = graphLine_color;
+	c.lineWidth = graphLine_width;
+	
+	// Draw the line graph
+	c.beginPath();
+	c.moveTo(getXPixel(0), getYPixel(data.values[0].Y));
+	for(var i = 1; i < data.values.length; i ++) {
+		c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));
+	}
+	c.stroke();
+	
+	// Draw the dots
+	c.fillStyle = circle_fill_color;
+	c.strokeStyle = circle_stroke_color;
+					
+	for(var i = 0; i < data.values.length; i ++) {  
+		c.beginPath();
+		c.arc(getXPixel(i), getYPixel(data.values[i].Y), circle_width, 0, Math.PI * 2, true);
+		c.fill();
+		c.stroke();
+	}
 }
