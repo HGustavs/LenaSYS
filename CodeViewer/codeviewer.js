@@ -1181,7 +1181,7 @@ function rendercode(codestring,boxid,wordlistid)
 	
 	important = [];
 	for(var i=0;i<retData.impwords.length;i++){
-		important[retData.impwords[i]]=retData.impwords[i];	
+		important[i] = retData.impwords[i];
 	}
 
 	keywords= [];
@@ -1237,11 +1237,12 @@ function rendercode(codestring,boxid,wordlistid)
 			cont+="<span class='number'>"+tokenvalue+"</span>";
 		}else if(tokens[i].kind=="name"){
 			var foundkey=0;	
-			// Removed two for loops here and replaced it with smart indexing. either kind 2 or kind 1
-			if(important[tokenvalue]!=null){
-				foundkey=2;
-			}else if(keywords[tokenvalue]!=null){	
-				foundkey=1;						
+			//If tokenvalue exists in the array for important words
+			if(important.indexOf(tokenvalue) != -1){
+				foundkey = 2;
+			//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
+			}else if(keywords[tokenvalue] != null){
+				foundkey = 1;
 			}
 			
 			if(foundkey==1){
