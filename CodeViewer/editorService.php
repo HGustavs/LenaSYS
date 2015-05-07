@@ -1,4 +1,17 @@
 <?php 
+	//----------------------------------------------------------------------------------
+	// TODO:
+	//	78: Better handle a situation where there are no examples available
+	//	84: Redundant? Is set a couple of rows above
+	//	106: Check what viktig is and what it's for
+	//	107: Should only bind with the file used (if used) and not to one by default
+	//	128: Check for better way to get and set before/afterId
+	//	Change variables to a fitting or standardized manner: 
+	//		forward_examples
+	//		currid
+	//		backward_examples
+	//		boxcontent	
+	//	Comment and document functions/statements that seems non-self explanatory
 	//---------------------------------------------------------------------------------------------------------------
 	// editorService - Saves and Reads content for Code Editor
 	//---------------------------------------------------------------------------------------------------------------
@@ -30,7 +43,7 @@
 	$playlink=getOP('playlink');
 	$debug="NONE!";	
 	
-	// Checks user id
+	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
@@ -45,11 +58,10 @@
 	
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 	
-	// Make sure there is an example
 	$exampleCount = 0;
 	
 	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
-    $query->bindParam(':exampleid', $exampleId);
+    	$query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
@@ -63,13 +75,13 @@
 		$playlink=$row['runlink'];
 	}	
 	
-	// TODO: Handle a situation where there are no examples available
+	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
 		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
-			$writeAccess="w";
+			$writeaccess="w"; // TODO: Redundant? Is set a couple of rows above
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Add word to wordlist
 				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
@@ -91,9 +103,8 @@
 					$query->bindParam(':exampleid', $exampleId);
 					$query->bindValue(':boxtitle', 'Title');
 					$query->bindValue(':boxcontent', 'Code');
-					$query->bindValue(':settings', '[viktig=1]');
-					//Should only bind with the file used (if used) and not to one by default
-					$query->bindValue(':filename', 'js1.js');
+					$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
+					$query->bindValue(':filename', 'js1.js'); // TODO: Should only bind with the file used (if used) and not to one by default
 					$query->execute();
 				}
 			}else if(strcmp('EDITEXAMPLE',$opt)===0){
@@ -332,7 +343,7 @@
 		if(file_exists('./codeupload')){
 			$dir = opendir('./codeupload');
 			while (($file = readdir($dir)) !== false) {
-				if(endsWith($file,".js") || endsWith($file,".html") || endsWith($file,".php")){
+				if(endsWith($file,".js")){
 					array_push($codeDir,$file);		
 				}
 			}  
@@ -433,9 +444,8 @@
 	echo json_encode($array);
 	}else{
 		$array = array(
-		 	'debug' => "ID does not exist or there are no examples" 
+		 	'debug' => "ID does not exist or there are no examples, error occur at line 63 in editorService.php (start of if-state)" 
 		);		
-		echo "There are no examples to fetch, error occur at line 58 in editorService.php";
 		echo json_encode($array);
 	}
 ?>
