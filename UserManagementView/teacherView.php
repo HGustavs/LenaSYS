@@ -1,110 +1,356 @@
-<?php
-	include_once "../../coursesyspw.php";
-	include_once "../Shared/sessions.php";
-	// continue if logged in, else redirect to loginprompt
-	session_start();
-	if(!checklogin()){
-		header("Location: ../Shared/loginprompt.php");
+
+// AJAX-call to dugga.js 
+AJAXService("TOOLBAR", {}, "UMVTEACHER");
+
+//---------------------------------------------------------------
+//	renderTeacherView(data) - renders given html code for the given
+//	data that was returned.
+//---------------------------------------------------------------
+function renderTeacherView(data) {
+	var type = data['type']; //Array that holds what type of data should be rendered from DB
+	
+	// render the created toolbar
+	if(type == "TOOLBAR") {
+		createToolbar(data['classes']);
 	}
-	pdoConnect();
-?>
+	//Render the studentlist 
+	else if(type == "VIEW") {
+		renderView(data);
+	}
 
-<!DOCTYPE html>
-<html>
+	// Check if error occurred during execution of SQL queries
+	if(data['debug'] != "NONE!") {
+		alert(data['debug']);
+	}
+}
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <title>LenaSYS User Editor</title>
-        
-        <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-        <link href="css/umv.css" rel="stylesheet">
-        
-        <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="../Shared/dugga.js"></script>
-    </head>
+//---------------------------------------------------------------
+//	createToolbar(classes) - creates the the toolbar with the
+//	given classes that the teacher is responsible for.
+//---------------------------------------------------------------
+function createToolbar(classes) {
 
-<body>
+	console.log("Trying to create toolbar...");
+	
+	//Check if there is a class that can be placed in the toolbar
+	if(classes.length > 0) {
+		renderToolbar(classes);
+		var defaultclass = getTheDefaultProgram(classes); // Reads data from getTheDeaultProgram()
+		console.log("AJAXService call to retrieve view");
+		updateView(defaultclass);
+	}
+	
+}
 
-  	<?php 
-		$noup="NONE";
-		$loginvar="UMVTEACHER"; 
-		include '../Shared/navheader.php';
-	?>
-
-	<?php
-		include '../Shared/loginbox.php';
-	?>
+//---------------------------------------------------------------
+//	renderToolbar(classes) - renders the toolbar with the given
+//	classnames, sorts under the given coursecode
+//---------------------------------------------------------------
+function renderToolbar(classes) {
+	
+	var htmlStr = "";
+	var currentClassCode = "";
+	
+	currentClassCode = classes[0]['classcode'];
+	// Close current open lists
+	htmlStr += "<ul>";
+	htmlStr += "<li><a>" + currentClassCode + "</a>";
+	htmlStr += "<ul>";
+	
+	//Loop to list every class into a dropdownmenu for the teacher
+	for(var i = 0; i < classes.length; i++) {
+		current_class = classes[i];
+		if(currentClassCode != current_class['classcode']) {	//Check if course has a new course code
+			currentClassCode = current_class['classcode'];
+			// Close current open lists
+			htmlStr += "</ul>" + "</li>";
+			htmlStr += "<li><a>" + currentClassCode + "</a>";
+			htmlStr += "<ul>";
+		}
 		
-    <!-- content START -->   
-	<div id="contentUMV">
-            
-        <!-- Dropdownmenu -->
-        <nav class="rightDropdownMenu" id="DropdownMenu">
-        	
-        </nav>      
-       		        
-        <!-- Searchfield -->
-        <div class="searchfieldTV clearfix">
-             	<input type="text" class="my-pull-left " placeholder=" Sök..." name="studyprogram/Pnr" id="studyprogram/Pnr">
-             	<div class="button my-pull-left " onclick="loadData(studyprogram.value,pnr.value);">Sök</span></div>
-        </div>
+		htmlStr += "<li onclick='updateView(" + "\"" + current_class['class'] + "\"" +")'><a>" + current_class['class'] + "</a></li>";
+    }
     
-        <!-- ProgramName -->
-        <div id="title" class="programName">
-        </div> 
-        
-        
-        <!-- Linegraph -->
-        <div id="graphContainer" class="lineGraph">
-            <canvas id="graph" width="900" height="150">
-            </canvas>
-        </div>
-        
-        
-        <!-- Large progressbar -->
-        <div class="largeProgressbarTV">
-        </div> 
-        
-        
-        <div class="totalInfo">
-			
-            	<!-- Filter (Radiobuttons) -->
-				<div id="radio_buttonToolbar">
-                    <form>
-                    	<input type="radio" id="allStudents" name="filterList" value="allStudents" checked>
-                        	<label for="allStudents"><span>Alla studenter</span></label>
-						<input type="radio" id="activeStudents" name="filterList" value="activeStudents">
-                        	<label for="activeStudents"><span>Aktiva studenter</span></label>
-                    </form>
-				</div>
-                
-                <!-- View over the students how are going that program/course -->
-                <div class="studentInfoWrapper">
-                    <div id="studentslist">
-                    </div>
-				</div>
+    htmlStr += "</ul>" + "</li>" + "</ul>";
+    
+    //Place everything that is retrived as a class and put it into a dropdownmenu.
+    var menulist = document.getElementById('DropdownMenu');
+    menulist.innerHTML = htmlStr;
+}
+
+//---------------------------------------------------------------
+//	getTheDefaultProgram(classes) - returns the first class in the
+//	the array that represents the default choice
+//---------------------------------------------------------------
+function getTheDefaultProgram(classes) 
+{
+	return classes[0]['class'];
+}
+
+//---------------------------------------------------------------
+//	updateView(classname) - calls the ajaxservice that renders
+//	the view for the given class
+//---------------------------------------------------------------
+function updateView(classname) {
+	console.log("Clicked classname: " + classname);
+	// AJAX call to request students of 'classname' 
+	AJAXService("VIEW", {classname:classname}, "UMVTEACHER");
+}
+
+//---------------------------------------------------------------
+//	renderView(data) - renders the view from the
+//	teacher. Will render the full view with title and everything.
+//---------------------------------------------------------------
+
+function renderView(data)
+{
+
+	console.log("DATA_FOR_VIEW_RECIVED - DONE");
+	clearLinearGraph();
+	
+	var htmlStr = "";
+	var classname = data['classname'];
+	var studentlist = data['studentlist'];
+	
+	//Render title
+	htmlStr += "<h2>" + classname + "</h2>";
+	
+	//program title
+	var programTitle = document.getElementById("title");
+	programTitle.innerHTML = htmlStr;
+	
+	htmlStr = "";
+	
+	//Render student information
+	for(var i = 0; i < studentlist.length; i++) {
+	
+		var student = studentlist[i];
 		
-            
-            <!-- Change pages buttons-->
-            <div class="changePages">
-                <p>Sida</p>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div id="nextPage"> >> </div> 
-            </div> 
-        
-        </div>
-       
-	</div>
+		htmlStr += "<div class='studentInfo'>";
+		
+		htmlStr += getStudentInfo(student, i);
+		
+		htmlStr += getCourseResults(student['results']);
+		
+		htmlStr += "</div>";
+		
+	}
+	
+	//If there is no students this will execute.
+	if(studentlist.length == 0) {
+		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
+	}
+	
+	var studentView = document.getElementById("studentslist");
+	studentView.innerHTML = htmlStr;
+	
+	createLinearGraph(data);
+	
+}
 
+//---------------------------------------------------------------
+//	getStudentInfo(student, number) - Creates a div that shows 
+//	a list of every student of a specific class. Fullname, ssn
+//	username and email.
+//---------------------------------------------------------------
+function getStudentInfo(student, number) 
+{
+	var htmlStr = "";
 
-    <script src="js/teacherView.js"></script>
-    <script type="text/javascript" src="js/umvjquery.js"></script>
+	if(number % 2 == 0) {
+		htmlStr += "<div class='student'>";
+	}else {
+		htmlStr += "<div class='student odd'>";
+	}
+		
+	//Student name
+	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
+	//Student ssn
+	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
+	//Username
+	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
+	//E-mail
+	htmlStr += "<div class='student_email'><p>" + student['email'] + "</p></div>";
+		
+	htmlStr += "</div>";
+	
+	return htmlStr;
+}
 
-</body>
+//---------------------------------------------------------------
+//	getCourseResults(results) - creates the html representation
+//	of the course results for a student and returns it
+//---------------------------------------------------------------
 
-</html>
+function getCourseResults(results)
+{
+	var colorGreen = "#50a750";
+	var colorYellow = "#F0AD4E";
+	var htmlStr = "";
+		
+	htmlStr += "<div class='students_results'>";
+	
+	for(var i = 0; i < results.length; i++) {
+	
+		/* Check that result is not null and set to 0 if so */
+		var course_result = results[i]['result'] == null ? 0 : results[i]['result'];
+		var course_hp	  = results[i]['hp'];
+		var procent		  = course_result/course_hp * 100;
+		var color		  = procent < 100 ? colorYellow : colorGreen;
+		
+		htmlStr += "<div class='progress_course_total'>";
+		htmlStr += "<div class='progress_course' style='width:" + procent + "%; background-color: " + color + ";'>";
+		htmlStr += "<p>" + parseFloat(course_result) + "/" + course_hp + "</p>";
+		htmlStr += "</div>";
+		htmlStr += "</div>";
+		
+	}
+		
+	htmlStr += "</div>";
+	
+	return htmlStr;
+	
+}
+
+//---------------------------------------------------------------
+//	clearLinearGraph() - clears the line graph representing
+//	all the student results in every course
+//---------------------------------------------------------------
+
+function clearLinearGraph() 
+{
+	var graph = $('#graph');
+	var c = graph[0].getContext('2d');
+	c.clearRect(0, 0, graph.width, graph.height);
+}
+
+//---------------------------------------------------------------
+//	createLinearGraph() - creates the line graph
+//	representing all the student results in every course
+//---------------------------------------------------------------
+
+function createLinearGraph(data)
+{
+	var backgroundcolor_overlay = "#F5F0F5";
+	var color_helpLines 		= "#D8D8D8";
+	var width_helpLines			= 2;
+	var x_axis_text_font			= 'italic 8pt sans-serif';
+	var x_axis_text_align		= "center";
+	var x_axis_text_color		= "#000";
+	var width_axisLines			= 2;
+	var color_axisLines			= "#333";
+	var y_axis_text_baseline	= "middle";
+	var y_axis_text_align		= "right";
+	var graphLine_color			= "#5C005C";
+	var graphLine_width			= 4;
+	var circle_fill_color		= '#FFF';
+	var circle_stroke_color		= '#D8D8D8';
+	var circle_width			= 10;
+	
+	
+	var graph;
+    var yPadding_top = 20;
+    var yPadding_bottom = 20;
+	var xPadding = 40;
+	var maxY = 100;
+	
+	var data = { values:[
+		{ X: "Kurs", Y: 50 },
+		{ X: "Kurs", Y: 67 },
+		{ X: "Kurs", Y: 86 },
+		{ X: "Kurs", Y: 76 },
+		{ X: "Kurs", Y: 55 },
+		{ X: "Kurs", Y: 89 },
+		{ X: "Kurs", Y: 34 },
+		{ X: "Kurs", Y: 34 },
+		{ X: "Kurs", Y: 67 },
+		{ X: "Kurs", Y: 22 },
+		{ X: "Kurs", Y: 64 },
+		{ X: "Kurs", Y: 74 },
+		{ X: "Kurs", Y: 87 },
+		{ X: "Kurs", Y: 16 },
+	]};
+	
+	// Return the x pixel for a graph point
+	function getXPixel(val) {
+		return ((graph.width() - xPadding) / data.values.length) * val + (xPadding * 2);
+	}
+	
+	// Return the y pixel for a graph point
+	function getYPixel(val) {
+		return graph.height() - (((graph.height() - (yPadding_top + yPadding_bottom)) / maxY) * val) - yPadding_bottom;
+	}
+	 
+	graph = $('#graph');
+	console.log("graph");
+
+	var c = graph[0].getContext('2d');
+
+	/* style for the overlay under the graph */
+	c.fillStyle = backgroundcolor_overlay;
+	
+	/* begin the drawing of the polygon that should be under the graph */
+	c.beginPath();
+	c.moveTo(getXPixel(0), getYPixel(0));
+	
+	for(var i = 0; i < data.values.length; i++) {
+		c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));
+	}
+	
+	c.lineTo(getXPixel(data.values.length - 1), getYPixel(0));
+	c.fill();
+	
+	c.lineWidth 	= width_helpLines;
+	c.strokeStyle 	= color_helpLines;
+	c.font 			= x_axis_text_font;
+	c.textAlign 	= x_axis_text_align;
+	c.fillStyle 	= x_axis_text_color;
+	
+	// Draw the X value texts
+	for(var i = 0; i < data.values.length; i ++) {
+		c.beginPath();
+		c.fillText(data.values[i].X, getXPixel(i), graph.height() - yPadding_bottom + 20);
+		c.moveTo(getXPixel(i), graph.height() - yPadding_bottom);
+		c.lineTo(getXPixel(i), getYPixel(100));
+		c.stroke();
+	}
+	
+	c.lineWidth = width_axisLines;
+	c.strokeStyle = color_axisLines;
+	
+	// Draw the axises
+	c.beginPath();
+	c.moveTo(xPadding, yPadding_top);
+	c.lineTo(xPadding, graph.height() - yPadding_bottom);
+	c.lineTo(graph.width(), graph.height() - yPadding_bottom);
+	c.stroke();
+	
+	// Draw the Y value texts
+	c.textAlign = y_axis_text_align;
+	c.textBaseline = y_axis_text_baseline;
+	
+	c.fillText((0 + "%"), xPadding - 5, getYPixel(0));
+	c.fillText((100 + "%"), xPadding - 5, getYPixel(100));
+	
+	c.strokeStyle = graphLine_color;
+	c.lineWidth = graphLine_width;
+	
+	// Draw the line graph
+	c.beginPath();
+	c.moveTo(getXPixel(0), getYPixel(data.values[0].Y));
+	for(var i = 1; i < data.values.length; i ++) {
+		c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));
+	}
+	c.stroke();
+	
+	// Draw the dots
+	c.fillStyle = circle_fill_color;
+	c.strokeStyle = circle_stroke_color;
+					
+	for(var i = 0; i < data.values.length; i ++) {  
+		c.beginPath();
+		c.arc(getXPixel(i), getYPixel(data.values[i].Y), circle_width, 0, Math.PI * 2, true);
+		c.fill();
+		c.stroke();
+	}
+}
