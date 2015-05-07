@@ -59,11 +59,10 @@
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 	
 	$exampleCount = 0;
-	
+	// Example fetch
 	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
     	$query->bindParam(':exampleid', $exampleId);
 	$query->execute();
-	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$exampleCount++;
 		$exampleId=$row['exampleid'];
@@ -74,11 +73,12 @@
 		$sectionName=$row['sectionname'];
 		$playlink=$row['runlink'];
 	}	
+	// Example fetch end
 	
 	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
 		//------------------------------------------------------------------------------------------------
-		// Perform Update Action
+		// Perform Update Action, either show example, update changes to content/example
 		//------------------------------------------------------------------------------------------------
 		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
 			$writeaccess="w"; // TODO: Redundant? Is set a couple of rows above
@@ -379,72 +379,72 @@
 		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 
-	while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
-		$boxContent=strtoupper($row['boxcontent']);
-		$filename=$row['filename'];
-		$content="";					
-		if(strcmp("DOCUMENT",$boxContent)===0){
-			if(file_exists('./descupload')){
-				$filename="./descupload/".$filename;
-				$handle = @fopen($filename, "r");
-				if ($handle) {
-					while (($buffer = fgets($handle, 1024)) !== false) {
-						$content=$content.$buffer;
-					}
-					if (!feof($handle)) {
-						$content.="Error: Unexpected end of file ".$descFilename."\n";			    			    
-					}
-					fclose($handle);
-				}
-			}
-			//If box is not of Document type, code is assumed
-			}else{
-				if(file_exists('./codeupload')){
-					$filename="./codeupload/".$filename;
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			$boxContent=strtoupper($row['boxcontent']);
+			$filename=$row['filename'];
+			$content="";					
+			if(strcmp("DOCUMENT",$boxContent)===0){
+				if(file_exists('./descupload')){
+					$filename="./descupload/".$filename;
 					$handle = @fopen($filename, "r");
 					if ($handle) {
 						while (($buffer = fgets($handle, 1024)) !== false) {
 							$content=$content.$buffer;
 						}
 						if (!feof($handle)) {
-							$content.="Error: Unexpected end of file ".$filename."\n";
+							$content.="Error: Unexpected end of file ".$filename."\n";			    			    
 						}
 						fclose($handle);
 					}
-				}else{
-					$content="No file found!";
 				}
-			
+				//If box is not of Document type, code is assumed
+				}else{
+					if(file_exists('./codeupload')){
+						$filename="./codeupload/".$filename;
+						$handle = @fopen($filename, "r");
+						if ($handle) {
+							while (($buffer = fgets($handle, 1024)) !== false) {
+								$content=$content.$buffer;
+							}
+							if (!feof($handle)) {
+								$content.="Error: Unexpected end of file ".$filename."\n";
+							}
+							fclose($handle);
+						}
+					}else{
+						$content="No file found!";
+					}
+				
 
-			}
-			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
-	}						
-	$array = array(
-		'before' => $backwardExamples,
-		'after' => $forwardExamples,
-		'templateid' => $templateId,
-		'stylesheet' => $styleSheet,
-		'numbox' => $numBox,
-		'box' => $box,
-		'improws' => $importantRows,
-		'impwords' => $importantWordList,
-		'directory' => $directories,
-		'examplename'=> $exampleName,
-		'sectionname'=> $sectionName,
-		'playlink' => $playlink,
-		'exampleno' => $exampleNumber,
-		'words' => $words,
-		'wordlists' => $wordLists, 
-		'images' => $images,
-		'writeaccess' => $writeAccess,
-		'debug' => $debug,
-		'beforeafter' => $beforeAfters, 
-		'public' => $public
-	);
-	echo json_encode($array);
+				}
+				array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
+		}						
+		$array = array(
+			'before' => $backwardExamples,
+			'after' => $forwardExamples,
+			'templateid' => $templateId,
+			'stylesheet' => $styleSheet,
+			'numbox' => $numBox,
+			'box' => $box,
+			'improws' => $importantRows,
+			'impwords' => $importantWordList,
+			'directory' => $directories,
+			'examplename'=> $exampleName,
+			'sectionname'=> $sectionName,
+			'playlink' => $playlink,
+			'exampleno' => $exampleNumber,
+			'words' => $words,
+			'wordlists' => $wordLists, 
+			'images' => $images,
+			'writeaccess' => $writeAccess,
+			'debug' => $debug,
+			'beforeafter' => $beforeAfters, 
+			'public' => $public
+		);
+		echo json_encode($array);
 	}else{
 		$array = array(
-		 	'debug' => "ID does not exist or there are no examples, error occur at line 63 in editorService.php (start of if-state)" 
+		 	'debug' => "ID does not exist or there are no examples, error occur at line 79 in editorService.php (start of if-state)" 
 		);		
 		echo json_encode($array);
 	}
