@@ -186,7 +186,7 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<div class="course_progressbar">';
 	courseHtmlStr += '<div class="progress"><div class="progress-bar progress-bar-warning" id="" role="progressbar" style="width:' + parseFloat(procent) + '%"></div></div>';
 	courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
-	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Kurslänk</a></div>';
+	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">';
 	courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="img/envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
 	courseHtmlStr += '<div class="course_alert"></div>';
