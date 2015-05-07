@@ -1,7 +1,11 @@
 <?php
-	session_start();
 	include_once "../../coursesyspw.php";
 	include_once "../Shared/sessions.php";
+	// continue if logged in, else redirect to loginprompt
+	session_start();
+	if(!checklogin()){
+		header("Location: ../Shared/loginprompt.php");
+	}
 	pdoConnect();
 ?>
 
@@ -44,8 +48,8 @@
        		        
         <!-- Searchfield -->
         <div class="searchfieldTV clearfix">
-             	<input type="text" class="my-pull-left " placeholder=" Sök..." name="studyprogram/Pnr" id="studyprogram/Pnr">
-             	<div class="button my-pull-left " onclick="loadData(studyprogram.value,pnr.value);">Sök</span></div>
+             	<input type="text" class="my-pull-left " placeholder=" Search..." name="studyprogram/Pnr" id="studyprogram/Pnr">
+             	<div class="button my-pull-left " onclick="loadData(studyprogram.value,pnr.value);">Search</span></div>
         </div>
     
         <!-- ProgramName -->
@@ -54,7 +58,9 @@
         
         
         <!-- Linegraph -->
-        <div class="lineGraph">
+        <div id="graphContainer" class="lineGraph">
+            <canvas id="graph" width="900" height="150">
+            </canvas>
         </div>
         
         
@@ -69,9 +75,9 @@
 				<div id="radio_buttonToolbar">
                     <form>
                     	<input type="radio" id="allStudents" name="filterList" value="allStudents" checked>
-                        	<label for="allStudents"><span></span>Alla studenter</label>
+                        	<label for="allStudents"><span>All students</span></label>
 						<input type="radio" id="activeStudents" name="filterList" value="activeStudents">
-                        	<label for="activeStudents"><span></span>Aktiva studenter</label>
+                        	<label for="activeStudents"><span>Active students</span></label>
                     </form>
 				</div>
                 
@@ -84,7 +90,7 @@
             
             <!-- Change pages buttons-->
             <div class="changePages">
-                <p>Sida</p>
+                <p>Page</p>
                 <div>1</div>
                 <div>2</div>
                 <div>3</div>
