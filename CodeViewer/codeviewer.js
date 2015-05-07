@@ -3,16 +3,53 @@
    Documentation
 
 *********************************************************************************
-
+----------------------------------------------------------------------------------
 Execution Order
----------------------
- #1 setup() is first function to be called this then invokes returned() callback through AJAX
- #2 returned() is next function to be called as a callback from setup.
-
-Testing Link:
-
-EditorV50.php?exampleid=1&courseid=1&cvers=2013
- 
+	#1 setup() is first function to be called this then invokes returned() callback through AJAX
+	#2 returned() is next function to be called as a callback from setup.
+----------------------------------------------------------------------------------
+Testing Link: 
+	EditorV50.php?exampleid=1&courseid=1&cvers=2013
+----------------------------------------------------------------------------------
+Fixlist
+To find more, search for TODO in this file 
+	Change variables to a fitting or standardized manner: 
+		querystring ( multiple files and groups use it )
+		courseid, exampleid, cvers, boxid, boxtype, $boxcontent, boxwordlist
+		sectionname, contentid, afterid, beforeid, bestr, 
+		afstr, ba, fromchar, tochar, newtoken, 
+		rowno, keywords, pcount, bcount, cbcount, cbracket, tokenvalue
+	Change functions to fit standard:
+		Skip -> skip
+		createCodeborder -> createCodeBorder
+		changetemplate -> changeTemplate
+		Play -> play
+		alignBoxesHeight2boxes -> alignBoxesHeight2Boxes
+		alignBoxesHeight3boxes -> alignBoxesHeight3Boxes
+		alignBoxesHeight4boxes -> alignBoxesHeight4Boxes
+	Check if ever used:
+		Variables:
+			genSettingsTabMenuValue
+			codeSettingsTabMenuValue
+		Functions:
+			removeTemplatebox
+			createhotdogmenu
+			displayDrop
+			hideDrop
+			switchDrop
+			issetDrop
+			setupEditable
+			editedExamplename
+			setEditing
+	updateContent function needs to handle null values
+	Comment code that needs some or better documentation
+	Update the Execution Order list
+	Bugs:
+		replaceAll() not ok with ex scale( or translate( (missing last parenthesis)
+		Length not ok as impword
+		"length" highlighted even when not an impword
+		tokenizer not ok with css
+		Highlighting is iffy
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -54,7 +91,6 @@ function setup()
 
 //---------------------------------------------------------------------------------------------------
 // returned: Fetches returned data from all sources
-//                Is called by [this function] in [this file]
 //---------------------------------------------------------------------------------------------------
 
 function returned(data)
@@ -125,7 +161,7 @@ function returned(data)
 			
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
-			// Setting boxmenuheight to 0, possible cause to example malfunction? 
+			// TODO: Check if setting boxmenuheight to 0, possible cause to example malfunction of examples
 			if($("#"+contentid+"menu").height() == null){
 				boxmenuheight = 0;
 			}else{
@@ -148,7 +184,6 @@ function returned(data)
 				var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
 				desc=replaceAll(important[j],sstr,desc);
 			}
-			/* Assign Content */
 			//Remove html tags since only markdown should be allowed		
 			desc = dehtmlify(desc, true, 0);
 			//Call the markdown function to parse markdown symbols to html tags
@@ -179,22 +214,23 @@ function returned(data)
 			}
 		}
 	}
-	// Allows resizing of boxes on the page
-	resizeBoxes("#div2", retData["templateid"]);
+	resizeBoxes("#div2", retData["templateid"]); // Allows resizing of boxes on the page
 }
 
-//---------------------------------------------------------------------------------
-// This functions convert tabs to "&#9;""
-// The indexOf() method returns the position of the first time of a specified value 
-// (in this example is the search word "\t" which stands for tab) in a string.
-// This method returns then -1 if the "search word" dosn't exist in the string. 
-// Text.slice truncates the text string were the tab is placed by useing tabindex 
-// as a index. And then adds "&#9;" to the text string. "&#9;" replace the tab 
-// utill "tokenize" functions is called then &#9; is being replaces by 4 spaces. 
-// So the loop will check the whole text the function assign "start" the value of 
-// tabindex so the loop can keep on looking for tabs in the same place where it left off
-//                Is called by returned(data) in codeviewer.js
-//---------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+// tabLine: This functions convert tabs to "&#9;""
+// 			The indexOf() method returns the position of the first time of a 
+//			specified value (in this example is the search word "\t" which stands 
+//			for tab) in a string. This method returns then -1 if the "search word" 
+//			doesn't exist in the string. Text.slice truncates the text string were 
+//			the tab is placed by using tabindex as a index. And then adds "&#9;" 
+//			to the text string. "&#9;" replace the tab until "tokenize" functions 
+//			is called then &#9; is being replaces by 4 spaces. So the loop will 
+//			check the whole text the function assign "start" the value of tabindex 
+//			so the loop can keep on looking for tabs in the same place where it 
+//			left off
+//          Is called by returned(data) in codeviewer.js
+//----------------------------------------------------------------------------------
 var tabLine = function(text) 
 {
     var start = 0;
@@ -208,10 +244,10 @@ var tabLine = function(text)
 };
 
 //----------------------------------------------------------------------------------
-// editImpWords: adds/removes important words to the #impword selectbox
-// and stores each added/removed word in the addedWords array and the removedWords array 
-//                Is called at line 201/204 in EditorV50.php
-//---------------------------------------------------------------------------------
+// editImpWords: adds/removes important words to the #impword selectbox, stores each 
+// 				 added/removed word in the addedWords array and the removedWords array
+//               Is called at line 204/207 in EditorV50.php
+//----------------------------------------------------------------------------------
 var addedWords = [];
 var removedWords = [];
 
@@ -242,8 +278,8 @@ function editImpWords(editType)
 
 //----------------------------------------------------------------------------------
 // displayEditExample: Displays the dialogue box for editing a code example
-//                Is called at line 58 in navheader.php
-//----------------------------------------------------------------------------------¨
+//                	   Is called at line 58 in navheader.php
+//----------------------------------------------------------------------------------
 function displayEditExample(boxid)
 {
 	$("#title").val(retData['examplename']);
@@ -293,8 +329,7 @@ function displayEditExample(boxid)
 
 //----------------------------------------------------------------------------------
 // updateExample: Updates example data in the database if changed
-//                Is called at line 210 in EditorV50.php
-//					Used by file EditorV50.php
+//                Is called at line 213 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateExample()
 {
@@ -376,7 +411,7 @@ function displayEditContent(boxid)
 //----------------------------------------------------------------------------------
 // changeDirectory: Changes the directory in which you choose your code or description
 // 					in the Edit Content box.
-//                Is called at line 159 in EditorV50.php
+//                Is called at line 153 in EditorV50.php
 //----------------------------------------------------------------------------------
 
 function changeDirectory(kind) 
@@ -409,7 +444,7 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
 //----------------------------------------------------------------------------------
 // editImpRows: Adds and removes important rows
-//                Is called at line 165/169 in EditorV50.php
+//                Is called at line 168/172 in EditorV50.php
 //----------------------------------------------------------------------------------
 
 var addedRows = new Array();
@@ -443,7 +478,7 @@ function editImpRows(editType)
 
 //----------------------------------------------------------------------------------
 // updateContent: Updates the box if changes has been made
-//                Is called at line 174 in EditorV50.php
+//                Is called at line 177 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateContent() 
 {
@@ -601,7 +636,6 @@ function toggleClass(id)
 //----------------------------------------------------------------------------------
 // displayDrop: Modifies class using Jquery to contain "activebox" class selector 
 //				TODO: Check if actually used, could not find within our files
-//                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
 function displayDrop(dropid)
 {	
@@ -658,7 +692,7 @@ function deHighlightHtml(otherTag,thisTag)
 
 //----------------------------------------------------------------------------------
 // Skip: Handles skipping either forward or backward. If pressed show menu
-//                Is called by createhotdogmenu in codeviewer.js
+//       Is called at line 54/55 in navheader.php
 //----------------------------------------------------------------------------------
 var dmd;
 function Skip(skipkind)
@@ -689,6 +723,7 @@ function Skip(skipkind)
 }
 //----------------------------------------------------------------------------------
 // execSkip: 
+//				TODO: Add comment of usage
 //				Used by Skip in codeviewer.js
 //----------------------------------------------------------------------------------
 function execSkip()
@@ -871,7 +906,7 @@ function dehtmlify(mainstr,ignorebr,maxlength)
 
 //----------------------------------------------------------
 // highlightKeyword: Highlights an important word from the important word list
-//                Is called by [this function] in codeviewer.js
+//                	 Is called by returned and renderCode in codeviewer.js
 //----------------------------------------------------------		
 
 function highlightKeyword(kw)
@@ -885,7 +920,7 @@ function highlightKeyword(kw)
 
 //----------------------------------------------------------
 // dehighlightKeyword: DeHighlights an important word from the important word list
-//                Is called by [this function] in codeviewer.js
+//                	 Is called by returned and renderCode in codeviewer.js
 //----------------------------------------------------------		
 
 function dehighlightKeyword(kw)
@@ -902,10 +937,10 @@ function dehighlightKeyword(kw)
    Tokenizer
 
 *********************************************************************************/
-//----------------------------------------------------------	
-// Token class and storage definition	
-//                Is called by [this function] in [this file]	
-//----------------------------------------------------------								
+//----------------------------------------------------------------------------------
+// token: Token class and storage definition	
+//        Is called by makeToken in codeviewer.js
+//----------------------------------------------------------------------------------
 function token (kind,val,fromchar,tochar,row) {
 	this.kind = kind;
 	this.val = val;
@@ -914,45 +949,45 @@ function token (kind,val,fromchar,tochar,row) {
 	this.row = row;
 }
 
-//----------------------------------------------------------
-// Store token in tokens array
-// Creates a new token object using the constructor
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------						
-
+//----------------------------------------------------------------------------------
+// makeToken: Store token in tokens array
+// 			  Creates a new token object using the constructor
+//            Is called by tokenize in codeviewer.js
+//----------------------------------------------------------------------------------
 function maketoken(kind,val,from,to,rowno)
 {
 	newtoken=new token(kind,val,from,to,rowno);
 	tokens.push(newtoken);
 }
 
-//----------------------------------------------------------
-// Writes error from tokenizer
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------						
-
+//----------------------------------------------------------------------------------
+// error: Writes error from tokenizer
+//        Is called by tokenizer in codeviewer.js
+//----------------------------------------------------------------------------------
 function error(str,val,row)
 {
 	alert("Tokenizer Error: "+str+val+" at row "+row);
 }
 
 //----------------------------------------------------------------------------------
-// replaceAll: Used by tokenizer to replace all instances of find string with replace string in str.
-//             The idea behind this is to  cancel the html entities introduced to allow streaming of content
-//                Is called by [this function] in [this file]
+// replaceAll: Used by tokenizer to replace all instances of find string with 
+//			   replace string in str. The idea behind this is to  cancel the html 
+//			   entities introduced to allow streaming of content
+//			   BUG detected: cannot handle unfinished parenthesis e.g. scale(
+//             Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function replaceAll(find, replace, str)
 {
     return str.replace(new RegExp(find, 'g'), replace);
 }
 
-//----------------------------------------------------------
-// Tokenize: Tokenizer partly based on ideas from the very clever tokenizer written by Douglas Cockford
-//           The tokenizer is passed a string, and a string of prefix and suffix terminators
-//                Is called by [this function] in [this file]
-//----------------------------------------------------------						
-
+//----------------------------------------------------------------------------------
+// Tokenize: Tokenizer partly based on ideas from the very clever tokenizer written 
+//			 by Douglas Cockford. The tokenizer is passed a string, and a string of 
+//			 prefix and suffix terminators
+//			 TODO: Handle css, if e.g. "100px" is entered it becomes "p" (hint: {})
+//           Is called by renderCode in codeviewer.js
+//----------------------------------------------------------------------------------
 function tokenize(instring,inprefix,insuffix)
 {
 	// replace HTML-entities
@@ -1169,11 +1204,10 @@ function tokenize(instring,inprefix,insuffix)
 }
 
 //----------------------------------------------------------------------------------
-// Renders a set of tokens from a string into a code viewer div
-// Requires tokens created by a cockford-type tokenizer
-//                Is called by [this function] in [this file]
+// renderCode: Renders a set of tokens from a string into a code viewer div
+// 			   Requires tokens created by a cockford-type tokenizer
+//             Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
-
 function rendercode(codestring,boxid,wordlistid)
 {
     var destinationdiv = "box" + boxid;
@@ -1357,8 +1391,8 @@ function rendercode(codestring,boxid,wordlistid)
 }
 
 //----------------------------------------------------------------------------------
-// createCodeborder: function to create a border with line numbers
-//                Is called by rendercode in codeviewer.js
+// createCodeborder: Function to create a border with line numbers
+//                	 Is called by renderCode in codeviewer.js
 //----------------------------------------------------------------------------------
 function createCodeborder(lineno,improws){
 	var str="<div class='codeborder'>";
@@ -1399,7 +1433,7 @@ function linenumbers()
 }
 //----------------------------------------------------------------------------------
 //  mobileTheme
-//                Is called by [this function] in codeviewer.css
+//                Is called by codeviewer.css
 //----------------------------------------------------------------------------------
 function mobileTheme(id){
 	if ($(".mobilethemebutton").is(":hidden")){
@@ -1429,7 +1463,7 @@ function setEditing()
 
 //----------------------------------------------------------------------------------
 // changetemplate: Change template by updating hidden field
-//                Is called at line 223-229 in EditorV50.php
+//                Is called at line 226/228-232 in EditorV50.php
 //----------------------------------------------------------------------------------
 function changetemplate(templateno)
 {
@@ -1443,7 +1477,7 @@ function changetemplate(templateno)
 
 //----------------------------------------------------------------------------------
 // updateTemplate: Write template hidden field to database
-//                Is called at line 234 in EditorV50.php
+//                Is called at line 237 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateTemplate()
 {
@@ -1469,7 +1503,7 @@ function updateTemplate()
 
 //----------------------------------------------------------------------------------
 // closeEditContent: 
-//                Is called at line 141 in EditorV50.php
+//                Is called at line 144 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeEditContent()
 {
@@ -1477,7 +1511,7 @@ function closeEditContent()
 }
 //----------------------------------------------------------------------------------
 // closeEditExample: 
-//                Is called at line 183 in EditorV50.php
+//                Is called at line 186 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeEditExample()
 {
@@ -1485,7 +1519,7 @@ function closeEditExample()
 }
 //----------------------------------------------------------------------------------
 // openTemplateWindow:
-//                Is called at line 53 in EditorV50.php
+//                TODO: Check if used, appears to never be called
 //----------------------------------------------------------------------------------
 function openTemplateWindow()
 {
@@ -1493,7 +1527,7 @@ function openTemplateWindow()
 }
 //----------------------------------------------------------------------------------
 // closeTemplateWindow: 
-//                Is called at line 218 in EditorV50.php
+//                Is called at line 221 in EditorV50.php
 //----------------------------------------------------------------------------------
 function closeTemplateWindow()
 {
@@ -1501,7 +1535,7 @@ function closeTemplateWindow()
 }
 //----------------------------------------------------------------------------------
 // Play:
-//					Is called at line 195 in EditorV50.php and line 56 in navheader.php
+//					Is called at line 198 in EditorV50.php and line 56 in navheader.php
 //----------------------------------------------------------------------------------
 function Play()
 {
