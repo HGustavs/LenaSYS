@@ -1167,7 +1167,6 @@ function tokenize(instring,inprefix,insuffix)
 			while(true){
 				currentCharacter=instring.charAt(i);
 				if (currentCharacter=='\n'||currentCharacter=='\r'||currentCharacter=='') {
-					row++;
 					break;
 				}else{
 					currentStr+=currentCharacter;                
