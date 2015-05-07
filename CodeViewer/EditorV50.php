@@ -52,7 +52,13 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
-	pdoConnect();		
+	pdoConnect();
+	
+	if(isset($_SESSION['uid'])){
+		$userid=$_SESSION['uid'];
+	}else{
+		$userid="UNK";		
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -86,7 +92,10 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 			$noup="CODEVIEWER"; 	// Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
 			$codeviewer = true;	// Makes it possible to view the content in the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
 			$codeviewerkind=false;	// This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible. 
-
+			
+			// Logs users viewing examples
+			makeLogEntry($userid,1,$pdo,$exampleid." ".$courseID);
+			
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
 				//checks if $courseid exists. 
