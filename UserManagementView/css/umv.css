@@ -353,3 +353,7 @@
 	text-transform:uppercase !important;
 }
 
+#graph {
+	display: block;
+	margin: 30px auto;
+}
