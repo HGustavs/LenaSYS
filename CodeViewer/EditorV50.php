@@ -80,6 +80,8 @@ Testing Link:
 		<?php 
 			$exampleid = getOPG('exampleid');
 			$courseID = getOPG('courseid');
+			$cvers = getOPG('cvers');
+
 			// Fetch content
 			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
 			$query->bindParam(':exampleid', $exampleid);
@@ -88,7 +90,25 @@ Testing Link:
 			$public=$row['public'];	//  Gets the info if the course are in public mode.
 			$noup="CODEVIEWER"; 	// Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
 			$codeviewer = true;	// Is used in navheader.php@line52: Makes it possible to view the content in the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
-			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible. 
+			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible.
+			
+			if(isset($_SESSION['uid'])){
+				$userid=$_SESSION['uid'];
+			}else{
+				$userid="UNK";		
+			}
+			
+			//Gets username based on uid
+			$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+			$query->bindParam(':uid', $userid);
+			$query-> execute();
+			
+			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+				$username = $row['username'];
+			}
+			
+			// Logs users who view example, along with the example they have viewed
+			makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);
 
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
