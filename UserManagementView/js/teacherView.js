@@ -183,8 +183,10 @@ function renderView(data)
 	var studentView = document.getElementById("studentslist");
 	studentView.innerHTML = htmlStr;
 	
+	//The line graph needs to be redrawn once for the text to appear correctly
 	createLinearGraph(data);
-	
+	clearLinearGraph();
+	createLinearGraph(data);
 }
 
 //---------------------------------------------------------------
@@ -293,7 +295,7 @@ function clearLinearGraph()
 {
 	var graph = $('#graph');
 	var c = graph[0].getContext('2d');
-	c.clearRect(0, 0, graph.width, graph.height);
+	c.clearRect(0, 0, graph[0].width, graph[0].height);
 }
 
 //---------------------------------------------------------------
@@ -322,7 +324,7 @@ function createLinearGraph(data)
 	
 	var graph;
     var yPadding_top = 20;
-    var yPadding_bottom = 20;
+    var yPadding_bottom = 30;
 	var xPadding = 40;
 	var maxY = 100;
 	
