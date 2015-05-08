@@ -81,7 +81,7 @@
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
 		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
-			$writeaccess="w"; // TODO: Redundant? Is set a couple of rows above
+			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Add word to wordlist
 				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
