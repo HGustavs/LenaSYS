@@ -1803,20 +1803,24 @@ function setLocalStorageProperties(templateId, boxValArray)
 //----------------------------------------------------------------------------------
 //Gets box measurements from localstorage and applies them onto the boxes on screen.
 //This is done preinit of boxValArray, so that the init of that array gets these values.
+//		  TODO: Add handling for when localstorage is null or < 0
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function getLocalStorageProperties(templateId, boxValArray)
 {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
-	
 	for(var i = 1; i <= numBoxes; i++){
-		if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null){
-			$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
-			$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
-			erasePercentGap(templateId, boxValArray);
+		//Sanity checks
+		if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "widthPercent") > 0){
+			if(localStorage.getItem("template" + templateId + "box" + i + "heightPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "heightPercent") > 0){
+				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
+				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
+				erasePercentGap(templateId, boxValArray);
+			}
 		}
 	}
 }
+
 //----------------------------------------------------------------------------------
 //removes percentage based gap
 //                Is called by getLocalStorageProperties in codeviewer.js
