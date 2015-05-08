@@ -101,15 +101,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$("#C" + cid).css("box-shadow", "1px 1px 3px #000 inset");
 	$(".item").css("background", "#fff");
 	$("#C" + cid).css("background", "#EDF");
-	// Set Name
-	$("#couresnamewrapper").html("<input class='form-control textinput' type='text' id='coursename' placeholder='"+coursename+"' />");
-	// Set Cid
-	$("#courseidwrapper").html("<input class='form-control textinput' type='text' id='coursecode' placeholder='"+coursecode+"' />");
-	// Set Code
-	$("#versidwrapper").html("<input size='8' class='form-control textinput' type='text' id='versid' placeholder='"+vers+"' />");
-	// Set Code
-	$("#versnamewrapper").html("<input size='8' class='form-control textinput' type='text' id='versname' placeholder='"+edvers+"' />");
-	// Set Visibiliy
+
 	// Set Name
 	$("#coursename").val(coursename);
 	// Set Cid
@@ -176,9 +168,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	// Show dialog
 	$("#editCourse").css("display", "block");
-	
-	//resets all inputs
-	resetinputs();
+
 	return false;
 }
 
