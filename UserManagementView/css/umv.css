@@ -1,14 +1,14 @@
 
 /* Main wrapper */
 #contentUMV {
-	height: 100%;
+	min-height: calc(100% - 150px);
 	position:absolute;
 	left: 10%;
 	right: 10%;
-    margin:0px auto;
+    	margin:0px auto;
 	margin-top:50px;
-    padding: 50px 0px 100px 0px;
-    background: #fff;
+    	padding: 50px 0px 50px 0px;
+    	background: #fff;
 	border: 8px solid #CCC;
 	border-top:none;
 	border-bottom:none;
@@ -36,7 +36,6 @@
 		width:120px;
 		height: 25px;
 		padding:8px 0 5px;
-		background-color:#927B9E;
 		float:left;
 		display:inline;
 		border-right: 1px solid #857090;
@@ -80,6 +79,12 @@
 		border-top:1px solid #857090;
 		box-shadow: -1px 5px 5px #A9A;
 	}
+.active{
+	background-color:#614875;
+}
+.noActive{
+	background-color:#927B9E;
+}
 /*END dropdown menu*/
 
 
@@ -91,7 +96,6 @@
 	margin-top:-40px;
 	position:absolute;	
 }
-
 	.searchfieldTV input{
 		width: 70%;
 		height: 25px;
@@ -103,11 +107,9 @@
 		border-bottom-left-radius:0.5em;
 		box-shadow: inset 2px 2px 5px #A9A;
 	}
-
 	.searchfieldTV input[type=text]:focus{
 		box-shadow: inset 2px 2px 5px #988a98;
 	}
-
 	.searchfieldTV .button{
 		border:none;
 		height:23px;
@@ -122,7 +124,6 @@
 		border-top-right-radius:0.5em;
 		border-bottom-right-radius:0.5em;
 	}
-
 		.searchfieldTV .button:hover{
 			cursor:pointer;
 			background-color:#927B9E;
@@ -154,6 +155,10 @@
 		margin-right:15px;
 		cursor:pointer;
 	}
+	#radio_buttonToolbar span{
+		position: relative;
+		bottom: 2px;
+	}
 	#radio_buttonToolbar input[type=radio] {
     	display:none;
 	}
@@ -166,24 +171,17 @@
 	#radio_buttonToolbar input[type=radio] + label:before {
 		content: "";  
 		display: inline-block;  
-		width: 12px;  
-		height: 12px;  
-		vertical-align:middle;
-		margin-right: 8px;  
-		background-color: #fff;  
-		border-radius: 8px;  
-		border:#A9A9A9 2px solid;
+		width: 15px;  
+		height: 14px;  
+		margin-right: 6px;
+		background-color:transparent; 
 		cursor:pointer;
+		background-image:url(../img/radiobutton.svg);
+		background-repeat:no-repeat;
 	}
 	#radio_buttonToolbar input[type=radio]:checked + label:before {
-		content: "\2022"; /* Bullet */
-		color:#614875;
-		background-color:#bea8ca;
-		font-size:3em;
-		text-align:center;
-		line-height:11px;
-		border:#614875 2px solid;
-		cursor:pointer;
+		background-image:url(../img/radiobuttonchecked.svg);
+		background-repeat:no-repeat;
 	}
 /*END radiobutton filter*/
 
@@ -203,7 +201,6 @@
 #studentslist{
 	clear:both;
 }
-
 	#studentslist div{
 		display:inline;
 		float:left;
@@ -355,3 +352,7 @@
 	text-transform:uppercase !important;
 }
 
+#graph {
+	display: block;
+	margin: 30px auto;
+}

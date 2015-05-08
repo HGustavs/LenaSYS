@@ -131,6 +131,7 @@ function renderStudentView(data)
 				
 			htmlStr3 += createHTMLForCourse(courses[i]);
 		}
+
 				
 	}
 	
@@ -147,6 +148,8 @@ function renderStudentView(data)
 	var yearList3 = document.getElementById('Year3');
 	yearList3.innerHTML = htmlStr3;
 	
+	course_hover_requierments(data);
+	progress_bar_complete(data);
 	console.log("DATA_PRINTED - DONE");
 	
 	// Check if error occurred during execution of SQL queries 
@@ -182,10 +185,9 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<div class="course_name"><p>' + coursename + '</p></div>';
 	courseHtmlStr += '<div class="course_progressbar">';
 	courseHtmlStr += '<div class="progress"><div class="progress-bar progress-bar-warning" id="" role="progressbar" style="width:' + parseFloat(procent) + '%"></div></div>';
-		courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
+	courseHtmlStr += '<p class="points">' + parseFloat(result) + ' / ' + hp + " hp" + '</p></div>';
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Kurslänk</a></div>';
-	courseHtmlStr += '<div class="course_reponsible">';
-		courseHtmlStr += + course_responsible + '<a href="mailto:""><img src="img/envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
+	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '<a href="mailto:""><img src="img/envelope.png" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
 	courseHtmlStr += '<div class="course_alert"></div>';
 	courseHtmlStr += '<div class="course_type"></div>';
 	
@@ -193,4 +195,48 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '</div>';
 	
 	return courseHtmlStr;
+}
+
+
+function course_hover_requierments(data){
+	var regCourses = data['reqCourses'];
+
+	$('.course_wrapper').on( 'mouseenter',function() {
+		
+	
+		
+	
+			// Return the closest div parent div ID on the hover effect.
+			var hoverCourse = $(this).closest('.course' , '[id]').attr('id');
+			var rmHoverCourse = '#'+ hoverCourse;
+			$(rmHoverCourse).removeClass('reg_fade');
+
+			//checks the prereqiuerments courses so they wont fade.
+			for (var i = 0; i < regCourses.length ; i++){
+				if(hoverCourse == regCourses[i]['coursecode']){
+					var rmClass = '#' + regCourses[i]['reg_coursecode'];
+					$(rmClass).removeClass('reg_fade');
+				}
+			}
+		
+			$(".reg_fade").fadeTo(0, 0.2);
+
+		}).on('mouseleave', function() {
+			
+			$('.course').addClass('reg_fade');
+			$(".reg_fade").fadeTo(0, 1);
+			
+   	
+    });
+ 
+}
+
+//Changes the background color to green when the student have finished the course.
+function progress_bar_complete(data){
+
+	$( ".progress-bar" ).each(function( index ) {
+		 if($('.progress').width() == $(this).width()){
+			$(this).css("background-color", "#5cb85c");
+		 }
+	});
 }

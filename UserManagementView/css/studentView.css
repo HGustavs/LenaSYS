@@ -1,16 +1,19 @@
 /*Student Main info wrap*/
 #studentTitle {
-	width:70%;
-	height:60px;
-	margin: 15px auto;
-	text-align:center;
+	text-align:left;
+	margin: 0 auto;
+	margin-top:-20px;
+	margin-bottom:0px;
+	width: 90%;
 	color:#614875;
 	font-family:Calibri,sans-serif;
+	
+	
 }
 
 /*Student name size h2*/
 #studentTitle h2 {
-	font-size:1.7em;
+	font-size:1.0em;
 	margin-bottom:8px;
 }
 
@@ -29,8 +32,8 @@
 	position: relative; 
 	width:90%;
 	margin: 0 auto;
-	margin-top:50px;
-	margin-bottom:50px;
+	margin-top:20px;
+	margin-bottom:45px;
 }
 
 /*Main progressbar*/
