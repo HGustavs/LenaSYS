@@ -1,7 +1,11 @@
 <?php
-	session_start();
 	include_once "../../coursesyspw.php";
 	include_once "../Shared/sessions.php";
+	// continue if logged in, else redirect to loginprompt
+	session_start();
+	if(!checklogin()){
+		header("Location: ../Shared/loginprompt.php");
+	}
 	pdoConnect();
 ?>
 
@@ -54,7 +58,9 @@
         
         
         <!-- Linegraph -->
-        <div class="lineGraph">
+        <div id="graphContainer" class="lineGraph">
+            <canvas id="graph" width="900" height="150">
+            </canvas>
         </div>
         
         
@@ -69,9 +75,9 @@
 				<div id="radio_buttonToolbar">
                     <form>
                     	<input type="radio" id="allStudents" name="filterList" value="allStudents" checked>
-                        	<label for="allStudents"><span></span>Alla studenter</label>
+                        	<label for="allStudents"><span>Alla studenter</span></label>
 						<input type="radio" id="activeStudents" name="filterList" value="activeStudents">
-                        	<label for="activeStudents"><span></span>Aktiva studenter</label>
+                        	<label for="activeStudents"><span>Aktiva studenter</span></label>
                     </form>
 				</div>
                 
@@ -83,12 +89,7 @@
 		
             
             <!-- Change pages buttons-->
-            <div class="changePages">
-                <p>Sida</p>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div id="nextPage"> >> </div> 
+            <div id="teacher_pages"> 
             </div> 
         
         </div>

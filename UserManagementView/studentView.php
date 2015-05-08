@@ -1,7 +1,11 @@
 <?php
-	session_start();
 	include_once "../../coursesyspw.php";
 	include_once "../Shared/sessions.php";
+	// continue if logged in, else redirect to loginprompt
+	session_start();
+	if(!checklogin()){
+		header("Location: ../Shared/loginprompt.php");
+	}
 	pdoConnect();
 ?>
 
@@ -42,24 +46,26 @@
 
 		</div>
 		<!-- Students progressbar, completed credits in percent out of total -->
-		<div id="MainProgress">
-		
-			<div id="completedMainProgress">
+		<div class="mainProgressBarcontainer">
+			<div id="MainProgress">
 			
-				<div id="ProgressbarG1N">
-					<div id="completedProgressbarG1N"></div>
+				<div id="completedMainProgress">
+				
+					<div id="ProgressbarG1N">
+						<div id="completedProgressbarG1N"></div>
+					</div>
+				
+					<div id="ProgressbarG1F">
+						<div id="completedProgressbarG1F"></div>
+					</div>
+				
+					<div id="ProgressbarG2F">
+						<div id="completedProgressbarG2F"></div>
+					</div>
+				
 				</div>
-			
-				<div id="ProgressbarG1F">
-					<div id="completedProgressbarG1F"></div>
-				</div>
-			
-				<div id="ProgressbarG2F">
-					<div id="completedProgressbarG2F"></div>
-				</div>
-			
+				
 			</div>
-			
 		</div>
 		
 		<!-- View over the student courses/ school year  -->
