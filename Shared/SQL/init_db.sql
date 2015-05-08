@@ -97,6 +97,7 @@ CREATE TABLE listentries (
 	vers			VARCHAR(8),
 	moment			INT UNSIGNED,
 	gradesystem 	TINYINT(1),
+	highscoremode		INT DEFAULT 0,
 	CONSTRAINT 		pk_listentries PRIMARY KEY(lid),
 	
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
@@ -177,7 +178,7 @@ CREATE TABLE vers(
 	coursename	  	VARCHAR(45) NOT NULL,
 	coursenamealt	VARCHAR(45) NOT NULL,
 	CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),		
-	CONSTRAINT pk_vers PRIMARY KEY(cid,coursecode,vers)
+	CONSTRAINT pk_vers PRIMARY KEY(cid,vers)
 );
 
 CREATE TABLE fileLink(

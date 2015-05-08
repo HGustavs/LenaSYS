@@ -140,19 +140,20 @@ input.submit-button:hover {
  * --------------================################================-------------- */
 
 .instructions-container{
-	min-width:200px;
-	max-width:600px;
+	width:100%;
 	margin-bottom:25px;
 	margin-top:10px;
 }
 
 .instructions-content {
-	width:100%;
-	padding:10px;
+	-webkit-columns: 2 200px;
+	-moz-columns: 2 200px;
+	columns: 2 200px; 
+	-webkit-column-gap: 40px;        
+	-moz-column-gap: 40px;
+	column-gap: 40px; 
+	padding:15px;
 	border:1px solid #ccc;	
-	box-sizing: border-box;
-  	-webkit-box-sizing: border-box;
-  	-moz-box-sizing: border-box;
 }
 
 .instructions-button {
@@ -160,17 +161,19 @@ input.submit-button:hover {
 	width:100%;
 	display:inline-block;
 	position:relative;
-	padding:3px 0;
-	text-align:center;
+	padding:3px 10px;
 	box-sizing: border-box;
-  	-webkit-box-sizing: border-box;
-  	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 }
 .instructions-button:after {
 	content: '';
 	display: block;  
 	position: absolute;
-	left:46%;
+	left: 49%;
+	left: -webkit-calc(50% - 15px);
+	left: -moz-calc(50% - 15px);
+	left: calc(50% - 15px);
 	top:100%;
 	width:0%;
 	height:0%;
@@ -190,5 +193,4 @@ input.submit-button:hover {
 .instructions-button:hover {
 	background-color:#939393;	
 }
-
 						

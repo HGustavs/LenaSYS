@@ -19,8 +19,6 @@ Example seed
 
 var retdata=null;
 var hc=null;
-var timeSpent = 0;
-var timer;
 
 //----------------------------------------------------------------------------------
 // Setup
@@ -45,8 +43,11 @@ function setup()
 
 function returnedDugga(data)
 {
-	startTimer();
-	console.log(data['param']);
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+	}
 	
 	  if(data['debug']!="NONE!") alert(data['debug']);
 
@@ -81,28 +82,16 @@ function returnedDugga(data)
 //                                  Master Functions
 //--------------------================############================--------------------
 
-function startTimer()
-{
-	console.log("Starting timer");
-	timer = setInterval( incrementTimer, 1000);
-	
-}
-
-function incrementTimer()
-{
-	timeSpent = timeSpent + 1;
-	console.log(timeSpent);
-}
-
-function stopTimer()
-{
-	console.log("Stopping timer");
-	clearInterval(timer);
-}
 
 function saveClick()
 {
-		stopTimer();
+		if (querystring['highscoremode'] == 1) {	
+			Timer.stopTimer();
+			timeSpent = Timer.timeSpent;
+		} else if (querystring['highscoremode'] == 2) {
+			timeSpent = ClickCounter.noClicks;
+		}
+
 		// Loop through all bits
 		bitstr="";
 		$(".bit").each(function( index ) {
@@ -192,6 +181,10 @@ function closeFacit(){
 
 function bitClick(divid)
 {
+			if (querystring['highscoremode'] == 2) {
+				ClickCounter.onClick();
+			}		
+
 			if($("#"+divid).html()=="1"){
 					$("#"+divid).html("0");
 					$("#"+divid).removeClass("ett");
@@ -205,6 +198,9 @@ function bitClick(divid)
 
 function hexClick(divid)
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}	
 
 	dw=$(window).width();
 	dpos=$("#"+divid).position();

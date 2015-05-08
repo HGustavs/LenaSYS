@@ -46,100 +46,63 @@ pdoConnect();
 
 	<!-- Edit Section Dialog START -->
 	<div id='editSection' class='loginBox' style='width:460px;display:none;'>
-
-	<div class='loginBoxheader'>
-	<h3>Edit Item</h3>
-	<div onclick='closeWindows();'>x</div>
-	</div>
-			
-	<table style="width:100%;margin-bottom:20px;float:left">
-		<tr>
-			<td colspan='2'><input type='hidden' id='lid' value='Toddler' />Name: <div id='sectionnamewrapper'><br/><input type='text' class='form-control textinput' id='sectionname' value='sectionname' style='width:448px;' /></div></td>
-		</tr>
-		<tr>
-			<td colspan='2'><span id='linklabel'>Link:&nbsp;<select id='link' ></select></span></td>
-		</tr>
-		<tr>
-			<td>Type:&nbsp;<select id='type' onchange='changedType();'></select></td>
-			<td align='right'>Visibility:&nbsp;<select style='align:right;' id='visib'></select></td>
-		</tr>
-		<tr>
-			<td>Moment:&nbsp;<select id='moment' disabled></select></td>
-			<td>GradeSystem:&nbsp;<select id='gradesys' ></select></td>
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<div class='messagebox' style='display:none;color:red;font-weight:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
-		</tr>
-	</table>
-	
-	<!-- Error message, no duggas present-->
-	
-	<table style='width:460px;float:left'>
-		<tr>
-			<td align='left'><input class='submit-button' type='button' value='Delete' onclick='deleteItem();' /></td>
-			<td align='center'><input class='submit-button' type='button' value='Create' onclick='createItem();' id='createbutton' /></td>
-			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateItem();' /></td>
-		</tr>
-	</table>
-
+		<div class='loginBoxheader'>
+			<h3>Edit Item</h3>
+			<div onclick='closeWindows();'>x</div>
+		</div>
+		<div style='padding:5px;'>
+			<input type='hidden' id='lid' value='Toddler' />
+			<div id='inputwrapper-name' class='inputwrapper'><span>Name:</span><input type='text' class='textinput' id='sectionname' value='sectionname' /></div>
+			<div id='inputwrapper-type' class='inputwrapper'><span>Type:</span><select id='type' onchange='changedType();'></select></div>
+			<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
+			<div id='inputwrapper-gradesystem' class='inputwrapper'><span>GradeSystem:</span><select id='gradesys' ></select></div>
+			<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
+			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
+			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
+			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-weight:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
+		</div>
+		<!-- Error message, no duggas present-->
+		<div style='padding:5px;'>
+				<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteItem();' />
+				<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateItem();' />
+		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
 	
 	<!-- New Verison Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
-	<div class='loginBoxheader'>
-	<h3>New Course Verison</h3>
-	<div onclick='closeWindows();'>x</div>
-	</div>		
-	<table width="100%">
-		<tr>
-			<td>Version Name: <div id='versnamewrapper'><input size='8' class='form-control textinput' type='text' id='versname' placeholder='Version Name' /></div></td>	
-			<td>Version ID: <div id='versidwrapper'><input size='8' class='form-control textinput' type='text' id='versid' placeholder='Version ID' /></div></td>			
-			<input type='hidden' id='cid' value='Toddler' /></td>
-		</tr>
-		<tr>
-			<td>Copy content from:</td>		
-		</tr>
-		<tr>
-			<td><select style='float:left;' id='copyvers'></select></td>
-		</tr>
-		<tr>	
-			<td><br><div id='makeactivewrapper'><input type="checkbox" name="makeactive" id="makeactive" value="yes">Change this to default version</div></td>
-		</tr>
-	</table>
-	<table width="100%">
-		<tr>
-			<td align='right'><input class='submit-button' type='button' value='Create' onclick='createVersion();' /></td>
-		</tr>
-	</table>
-
+		<div class='loginBoxheader'>
+			<h3>New Course Verison</h3>
+			<div onclick='closeWindows();'>x</div>
+		</div>		
+		<div style='padding:5px;'>
+			<input type='hidden' id='cid' value='Toddler' />
+			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
+			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' /></div>
+			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
+			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
+		</div>
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
+		</div>
 	</div>
 	<!-- New Verison Dialog END -->
 	
 	<!-- Edit Verison Dialog START -->
 	<div id='editCourseVersion' class='loginBox' style='width:464px;display:none;'>
-	<div class='loginBoxheader'>
-	<h3>Edit Course Verison</h3>
-	<div onclick='closeWindows();'>x</div>
-	</div>		
-	<table width="100%">
-		<tr>
-			<td>Version Name: <div id='versnamewrapper'><input size='8' class='form-control textinput' type='text' id='eversname' placeholder='Version Name' /></div></td>	
-			<td>Version ID: <div id='versidwrapper'><input size='8' class='form-control textinput' type='text' id='eversid' placeholder='Version ID' disabled/></div></td>			
-			<input type='hidden' id='cid' value='Toddler' /></td>
-		</tr>
-		<tr>	
-			<td><br><div id='makeactivewrapper'><input type="checkbox" name="emakeactive" id="emakeactive" value="yes">Change this to default version</div></td>
-		</tr>
-	</table>
-	<table width="100%">
-		<tr>
-			<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateVersion();' /></td>
-		</tr>
-	</table>
-
+		<div class='loginBoxheader'>
+			<h3>Edit Course Verison</h3>
+			<div onclick='closeWindows();'>x</div>
+		</div>		
+		<div style='padding:5px;'>
+			<input type='hidden' id='cid' value='Toddler' />
+			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name' /></div>
+			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
+			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
+		</div>
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />
+		</div>
 	</div>
 	<!-- Edit Verison Dialog END -->
 	

@@ -20,7 +20,7 @@ $(document).ready(function(){
         $("#testbutton").css("background-color", "#614875");
     });
 });
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode)
 {
 		
 	xelink=elink;
@@ -67,7 +67,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 	$("#moment").html(str);
 
 	// Set Name		
-	//$("#sectionname").val(entryname);
+	$("#sectionname").val(entryname);
 	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='"+entryname+"' style='width:448px;'/>");
 
 	// Set Lid	
@@ -107,84 +107,119 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys)
 	if(evisible==1) str+="<option selected='selected' value='1'>Public</option>"
 	else str+="<option value='1'>Public</option>";
 	$("#visib").html(str);
+	
+	// Add hichscore mode options
+	str = "";
+	if(highscoremode==0) str +="<option selected='selected' value ='0'>None</option>" 
+	else str +="<option value ='0'>None</option>"; 
+
+	if(highscoremode==1) str +="<option selected='selected' value ='1'>Time based</option>" 
+	else str +="<option value ='1'>Time based</option>"; 
+
+	if(highscoremode==2) str +="<option selected='selected' value ='2'>Click based</option>" 
+	else str +="<option value ='2'>Click based</option>"; 
+	$("#highscoremode").html(str);
 
 	// Set Link
 	$("#link").val(elink);
-
-	// Graying of Link
-	if((kind==5)||(kind==3)){
-		$("#linklabel").css("opacity","1.0");				
-		$("#link").prop('disabled', false);					
-
-		iistr="";
-		if(kind==5){
-			for(var ii=0;ii<retdata['links'].length;ii++){
-				var iitem=retdata['links'][ii];
-				if(elink==iitem['fileid']){
-					iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-				}else{
-					iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
-				}
-			}
-				$("#link").html(iistr);					
-		}else if(kind==3){
-			for(var ii=0;ii<retdata['duggor'].length;ii++){
-				var iitem=retdata['duggor'][ii];
-				if(elink==iitem['id']){
-					iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-				}else{
-					iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-				}
-			}
-		}
-	$("#link").html(iistr);					
-	}else{
-		$("#linklabel").css("opacity","0.3");	
-		$("#link").prop('disabled', true);					
-		$("#createbutton").css('visibility', 'hidden');					
-	}
 	
 	// Show dialog
+	iistr="";
+	if(kind==0){	
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==1){
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==2){
+		$("#link").html(iistr);
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==3){
+		for(var ii=0;ii<retdata['duggor'].length;ii++){
+			var iitem=retdata['duggor'][ii];
+			if(xelink==iitem['id']){
+				iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+			}
+		}
+		$("#link").html(iistr);
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-highscore").css("display","block");
+	}else if(kind==4){
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-highscore").css("display","block");
+	}else if(kind==5){
+		for(var ii=0;ii<retdata['links'].length;ii++){
+			var iitem=retdata['links'][ii];
+			if(xelink==iitem['fileid']){
+				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
+			}else{
+				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+			}
+		}
+		$("#link").html(iistr);
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}
 	$("#editSection").css("display","block");
-		
 }
 
 function changedType()
 {
 	kind=$("#type").val();		
-	
-	// Graying of Link
-	if((kind==5)||(kind==3)){
-		$("#linklabel").css("opacity","1.0");				
-		$("#link").prop('disabled', false);					
-		iistr="";
-		if(kind==5){
-			for(var ii=0;ii<retdata['links'].length;ii++){
-				var iitem=retdata['links'][ii];
-				if(xelink==iitem['fileid']){
-					iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-				}else{
-					iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
-				}
+	iistr="";
+	if(kind==0){	
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==1){
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==2){
+		$("#link").html(iistr);
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}else if(kind==3){
+		for(var ii=0;ii<retdata['duggor'].length;ii++){
+			var iitem=retdata['duggor'][ii];
+			if(xelink==iitem['id']){
+				iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
 			}
-			$("#link").html(iistr);					
-		}else if(kind==3){
-			for(var ii=0;ii<retdata['duggor'].length;ii++){
-				var iitem=retdata['duggor'][ii];
-				if(xelink==iitem['id']){
-					iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-				}else{
-					iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-				}
-			}
-						
 		}
-		$("#link").html(iistr);					
-	}else{
-		$("#linklabel").css("opacity","0.3");	
-		$("#link").prop('disabled', true);					
-		$("#createbutton").css('visibility', 'hidden');					
-	}	
+		$("#link").html(iistr);
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-highscore").css("display","block");
+	}else if(kind==4){
+		$("#inputwrapper-link").css("display","none");
+		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-highscore").css("display","block");
+	}else if(kind==5){
+		for(var ii=0;ii<retdata['links'].length;ii++){
+			var iitem=retdata['links'][ii];
+			if(xelink==iitem['fileid']){
+				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
+			}else{
+				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+			}
+		}
+		$("#link").html(iistr);
+		$("#inputwrapper-link").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
+		$("#inputwrapper-highscore").css("display","none");
+	}
 }
 
 function deleteItem()
@@ -199,11 +234,12 @@ function updateItem()
 	lid=$("#lid").val();
 	kind=$("#type").val();
 	link=$("#link").val();
+	highscoremode=$("#highscoremode").val();
 	sectionname=$("#sectionname").val();
 	visibility=$("#visib").val();
 	moment=$("#moment").val();
 	gradesys=$("#gradesys").val();
-	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys},"SECTION");
+	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode},"SECTION");
 	$("#editSection").css("display","none");
 }
 
@@ -263,7 +299,9 @@ function createVersion(){
 	}
 
 	$("#newCourseVersion").css("display","none");
-	changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
+	window.setTimeout(function(){
+		changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
+	}, 10);
 }
 
 function showEditVersion(versid, versname)
@@ -433,12 +471,12 @@ function returnedSection(data)
 						str+="<span><a style='margin-left:15px;' href="+item['link']+">"+item['entryname']+"</a></span>";
 					}else if (parseInt(item['kind']) == 3 ) {
 						//Dugga!
-						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"\");' >"+item['entryname']+"</a>";
+						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
 					}else if(parseInt(item['kind']) == 5){
-						str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showDoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
+						str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+" (material)</a>";
 					}	
 		
-					if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\");' />";
+					if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' />";
 		
 					if(parseInt(item['kind']) === 3||parseInt(item['kind']) === 4){
 						var grady=-1;
@@ -473,7 +511,7 @@ function returnedSection(data)
 		}else{
 			// No items were returned! 
 			str+="<div class='bigg'>";
-			str+="<span>You don't have access to this course</span>";
+			str+="<span>You either have no access or there isn't anything under this course</span>";
 			str+="</div>";
 		}
 					
@@ -543,7 +581,15 @@ function returnedHighscore(data){
 			str += item['username'];
 			str += "</td>"
 			str += "<td>";
-			str += "Time spent: ";
+			if(highscoremode == 0) {
+				// Undefined	
+			} else if(highscoremode == 1) {
+				str += "Time spent: ";
+			} else if (highscoremode == 2) {
+				str += "Number of clicks: ";
+			} else {
+				str += "Score: ";
+			}
 			str += item['timeSpent']
 			str += "</td>";
 			str += "</tr>";

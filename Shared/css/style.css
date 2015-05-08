@@ -263,6 +263,19 @@ header {
     left: 0px;
 }
 
+#duggaTimer {
+    z-index: 9000;
+    width: 100px;
+    background-color: white;
+    text-align: center;
+    position: fixed;
+    top: 0%;
+    left: 50%;
+    margin-top: 7px;
+    margin-left: -50px;
+    border-style: solid;
+    border-width: 1px;
+}
 
 
 .navButt {
@@ -554,8 +567,41 @@ header {
     width: 216px;
 }
 
+.loginBox .inputwrapper {
+    clear:both;
+	width:100%;
+	padding:3px 0 3px 0;
+	height:30px;
+	line-height:30px;
+}
 
-.loginBox select {font-size:14px;float:right;margin-right:4px;}
+.loginBox .inputwrapper span{
+    float:left;
+}
+
+.loginBox .inputwrapper input, .loginBox .inputwrapper select{
+    float:right;
+}
+
+.loginBox .inputwrapper input[type="checkbox"]{
+    margin-right:200px;
+	height:24px;
+}
+
+.loginBox select {
+    width: 216px;
+    height: 30px;
+    line-height: 18px;
+    color: #6f6f6f;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    padding: 5px;
+    font-size: 14px;
+}
 
 .loginBoxheader {
     height: 25px;
@@ -644,7 +690,7 @@ header {
 .form-control {
     display: block;
     font-size: 14px;
-    line-height: 1.42857143;
+    line-height: 18px;
     color: #555;
     background-color: #fff;
     background-image: none;
@@ -661,9 +707,8 @@ header {
     width: 216px;
     height: 30px;
     padding: 6px 12px;
-    font-size: 15px;
-    line-height: 1.42857143;
-    color: #6f6f6f;
+    line-height: 18px;
+    color: #202020;
     background-color: #ffffff;
     background-image: none;
     border: 1px solid #cccccc;
@@ -673,7 +718,7 @@ header {
     -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     padding: 5px;
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: normal;
     word-spacing: normal;
     text-transform: none;
@@ -682,7 +727,6 @@ header {
     display: inline-block;
     text-align: start;
     border-radius: 0px;
-	
 }
 
 input.option {

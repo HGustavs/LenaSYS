@@ -32,6 +32,7 @@ $link=getOP('link');
 $visibility=getOP('visibility');
 $order=getOP('order');
 $gradesys=getOP('gradesys');
+$highscoremode=getOP('highscoremode');
 
 $versid=getOP('versid');
 $coursename=getOP('coursename');
@@ -83,10 +84,11 @@ if(checklogin()){
 				}
 			}
 		}else if(strcmp($opt,"UPDATE")===0){
-			$query = $pdo->prepare("UPDATE listentries set moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
-
+			$query->bindParam(':highscoremode', $highscoremode);
+			
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
 			else $query->bindParam(':moment', $moment);
 				
@@ -189,10 +191,12 @@ foreach($query->fetchAll() as $row) {
 
 
 $entries=array();
-if($hr){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,gradesystem FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
+$reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)));
+if($reada){
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,gradesystem,highscoremode FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
+
 	$result=$query->execute();
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -209,6 +213,7 @@ if($hr){
 				'moment' => $row['moment'],
 				'link'=> $row['link'],
 				'visible'=> $row['visible'],
+				'highscoremode'=> $row['highscoremode'],
 				'gradesys' => $row['gradesystem'],
 				'code_id' => $row['code_id']
 			)
