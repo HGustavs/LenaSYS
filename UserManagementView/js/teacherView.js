@@ -134,6 +134,8 @@ function renderView(data)
 	var classname = data['classname'];
 	var studentlist = data['studentlist'];
 	var calcNumberOfStudents = null;
+	//change this varible for the number of students that renders per page
+	var numberOfStudentsPerPages = 8; 
 	
 	//Render title
 	htmlStr += "<h2>" + "Programvy för " + classname + "</h2>";
@@ -156,8 +158,8 @@ function renderView(data)
 
 			htmlStr += "<div id='page_"+wichPage+"' class='student_pages'>";
 		}
-		// render five students, change here for more students per page
-		for(var j = 0; j<5; j++){
+		
+		for(var j = 0; j<numberOfStudentsPerPages; j++){
 
 			htmlStr += "<div class='studentInfo'>";
 			htmlStr += getStudentInfo(student, i);
@@ -173,11 +175,16 @@ function renderView(data)
 		wichPage++;
 		
 	}
-	render_next_pages(calcNumberOfStudents);
+	render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages);
 
 	//If there is no students this will execute.
 	if(studentlist.length == 0) {
 		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
+		$('.changePages').hide();
+		$('#radio_buttonToolbar').hide();
+	}else{
+
+		$('#radio_buttonToolbar').show();
 	}
 	
 	var studentView = document.getElementById("studentslist");
@@ -248,15 +255,14 @@ function getCourseResults(results)
 }
 
 /* Sets the number of change pages buttons depending of how many students in class*/
-function render_next_pages(calcNumberOfStudents){
+function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	var htmlInserts="";
 	var numberOfPage=1;
 
 	htmlInserts+="<div class='changePages'>";
 	htmlInserts+="<p>Sida</p>";
 
-	//add te "i+= to set the number of students per page
-	for(var i =0; i < calcNumberOfStudents; i+=5){
+	for(var i =0; i < calcNumberOfStudents; i+=numberOfStudentsPerPages){
 		htmlInserts+= "<div class='page_"+numberOfPage +" pages'>"+numberOfPage +"</div>";
 		numberOfPage++;
 	}
@@ -272,7 +278,7 @@ function render_next_pages(calcNumberOfStudents){
 //navigates between pages.
 function navigate_page(){
 	$('.pages').click(function(){
-		//$(this).className();
+		
 		var classPage = "#"+this.className.split(' ')[0]; 
 		
 		// hides all studen_pages before the right one is displayesd
