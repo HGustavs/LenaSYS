@@ -65,7 +65,7 @@ function returned(data)
 	if(retData['debug']!="NONE!") alert(retData['debug']);
 	
 	// Hide and show before/after button
-	if(retData['before'].value!=null&&retData['after'].value!=null){
+	if(retData['before']!=null&&retData['after']!=null){
 		if(retData['before'].length==0){
 			$("#beforebutton").css("visibility","hidden");
 		}else{
