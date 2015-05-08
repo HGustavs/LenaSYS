@@ -134,6 +134,8 @@ function returned(data)
 			$("#"+contentid).css("margin-top", boxmenuheight-1);
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
+			//Replace '"<', and '>"', in qoutes with "&lt, and &gt"
+			boxcontent = fixQuotedHtml(boxcontent);
 			// Render code
 			rendercode(boxcontent,boxid,boxwordlist);
 		}else if(boxtype == "DOCUMENT"){
@@ -1853,7 +1855,14 @@ function setResizableToPer(boxValArray)
 		$(this).width(newWidth + "%");
 	});
 }
-
+//----------------------------------------------------------------------------------
+// fixQuotedHtml: replace all "<, and >" with "&lt and &gt". This makes sure the 
+//				  html tags are not rendered by the browser.	
+//                
+//----------------------------------------------------------------------------------
+function fixQuotedHtml(inString){
+	return inString.replace(/\"\<(.*)\>\"/g, "\"&lt$1&gt\"");
+}
 /********************************************************************************
 
    Markdown, the functions in the next section contains the functions used by
