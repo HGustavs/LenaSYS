@@ -295,7 +295,7 @@ function clearLinearGraph()
 {
 	var graph = $('#graph');
 	var c = graph[0].getContext('2d');
-	c.clearRect(0, 0, graph[0].width, grap[0].height);
+	c.clearRect(0, 0, graph[0].width, graph[0].height);
 }
 
 //---------------------------------------------------------------
@@ -324,7 +324,7 @@ function createLinearGraph(data)
 	
 	var graph;
     var yPadding_top = 20;
-    var yPadding_bottom = 20;
+    var yPadding_bottom = 30;
 	var xPadding = 40;
 	var maxY = 100;
 	
