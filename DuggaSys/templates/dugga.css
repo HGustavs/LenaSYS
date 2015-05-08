@@ -170,10 +170,10 @@ input.submit-button:hover {
 	content: '';
 	display: block;  
 	position: absolute;
-	left:47%;
-	left: -webkit-calc(50%-15px);
-	left: -moz-calc(50%-15px);
-	left:calc(50%-15px);
+	left: 49%;
+	left: -webkit-calc(50% - 15px);
+	left: -moz-calc(50% - 15px);
+	left: calc(50% - 15px);
 	top:100%;
 	width:0%;
 	height:0%;
