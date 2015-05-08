@@ -1,7 +1,7 @@
 
 /* Main wrapper */
 #contentUMV {
-	height: calc(100% - 150px);
+	min-height: calc(100% - 150px);
 	position:absolute;
 	left: 10%;
 	right: 10%;
