@@ -146,35 +146,39 @@ function renderView(data)
 	
 	htmlStr = "";
 	var wichPage=1;
-	//Render student information
-	for(var i = 0; i < studentlist.length;i) {
-		
-		var student = studentlist[i];
+	var renderStudent = 0;
 
-		//hides the pages wich isnt the first one that renders
+	for(var i = 0; i <= studentlist.length; i+=numberOfStudentsPerPages){
+		
+
 		if(wichPage>1){
 			htmlStr += "<div id='page_"+wichPage+"' class='student_pages' style='display:none;'>";
 		}else{
 
 			htmlStr += "<div id='page_"+wichPage+"' class='student_pages'>";
 		}
+
+		for(var j = 0; j < numberOfStudentsPerPages;j++) {
 		
-		for(var j = 0; j<numberOfStudentsPerPages; j++){
+			var student = studentlist[renderStudent];
 
 			htmlStr += "<div class='studentInfo'>";
-			htmlStr += getStudentInfo(student, i);
+			htmlStr += getStudentInfo(student, renderStudent);
 			htmlStr += getCourseResults(student['results']);
 
 			htmlStr += "</div>";
-			i++;
-
-			calcNumberOfStudents++;
-		}
-
-		htmlStr += "</div>";
-		wichPage++;
 		
+			calcNumberOfStudents++;
+			//error handling so it breaks when all the students are render
+			if(renderStudent+1==studentlist.length){
+				break;
+			}
+			renderStudent++;	
+		}
+		wichPage++;
+		htmlStr += "</div>";
 	}
+	
 	render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages);
 
 	//If there is no students this will execute.
@@ -208,7 +212,7 @@ function getStudentInfo(student, number)
 	}else {
 		htmlStr += "<div class='student odd'>";
 	}
-		
+	
 	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
 	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
 	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
