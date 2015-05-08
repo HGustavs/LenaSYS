@@ -1865,7 +1865,7 @@ function setResizableToPer(boxValArray)
 //                
 //----------------------------------------------------------------------------------
 function fixQuotedHtml(inString){
-	return inString.replace(/\"\<(.*)\>/g, "\"&lt$1&gt);
+	return inString.replace(/\"\<(.*)\>/g, "\"&lt$1&gt");
 }
 /********************************************************************************
 
