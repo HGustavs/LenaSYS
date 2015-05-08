@@ -1,50 +1,52 @@
 <!-----------------------------------------------------------------------------------------
-                         Code Viewer V3 (CV3) 
+                         Code Viewer V5.20 (CV5)  
 -------------------------------------------------------------------------------------------
 
 Version History
 
- 1.0		 2010       - Code viewer version 1 - mostly manual with many issues
- 2.0     2012       - Improved code viewer code by A. Grahn and J. Grimling
- 3.0     2013-08-10 - Refactoring of existing code viewer (v1 and v2) base code together with working css demonstrator for independent scrolling windows
- 3.01    2013-08-15 - Cockford parser implemented for c-like languages
- 3.02    2013-08-16 - Improved back-end using database definition, ideas and code from WEBUG/DVP project 2013
-                         Forward/Backward
-                         Code
-                         File list from upload directory 
-                         Name of Example                        
- 3.03    2013-08-18 - First iteration of back-end 
- 3.05    2013-08-21 - Added new features to back-end
- 												Separate tables for Important words and descriptions
- 												Fields for play link and chosen wordlist
- 												Updates of database from back-end 
- 												Navigation using arrows (dropdown still missing)
- 3.06	2013-08-21 - Create new example and save description 
- 3.07   2013-08-22 - Section Editor
- 3.08   2013-08-25 - Section Editor Back-End finished and more minor bug fixes
-                      Linked to external CSS anf JS
- 3.09   2013-08-30 - Login / Logout
-                    - Viewer Functionality if not logged in
+ 1.0	2010       - 	Code viewer version 1 - mostly manual with many issues
+ 2.0    2012       - 	Improved code viewer code by A. Grahn and J. Grimling
+ 3.0    2013-08-10 - 	Refactoring of existing code viewer (v1 and v2) base code together with working css demonstrator for independent scrolling windows
+ 3.01   2013-08-15 - 	Cockford parser implemented for c-like languages
+ 3.02   2013-08-16 - 	Improved back-end using database definition, ideas and code from WEBUG/DVP project 2013
+			Forward/Backward
+                        Code
+                        File list from upload directory 
+                        Name of Example                        
+ 3.03    2013-08-18 - 	First iteration of back-end 
+ 3.05    2013-08-21 - 	Added new features to back-end
+ 			Separate tables for Important words and descriptions
+ 			Fields for play link and chosen wordlist
+ 			Updates of database from back-end 
+ 			Navigation using arrows (dropdown still missing)
+ 3.06	2013-08-21 - 	Create new example and save description 
+ 3.07   2013-08-22 - 	Section Editor
+ 3.08   2013-08-25 - 	Section Editor Back-End finished and more minor bug fixes
+			Linked to external CSS anf JS
+ 3.09   2013-08-30 - 	Login / Logout
+                     	Viewer Functionality if not logged in
  3.10	2013-10-10 - 
- 4.00   2014-05-30 - Release version from WEBUG/DVP project 2013
- 5.00   2014-10-30 - Redacted version of 4.00
- 5.10	2015-02-27 - Fixes for duggasys form
- 
+ 4.00   2014-05-30 - 	Release version from WEBUG/DVP project 2013
+ 5.00   2014-10-30 - 	Redacted version of 4.00
+ 5.10	2015-02-27 - 	Fixes for duggasys form
+ 5.20	2015-05-05 -	Added feature resizable windows
+			Updated design of edit window
+			Updated database with real data
+			Cleaning of code
+			Documentation of functions added
+-------------------------------------------------------------------------------------------
 Bugs:
-------------------
-	
-Missing Features:
-------------------
-Changing language -- All Strings in File that can be translated to fit other languages.... including language change.
-    
+	Some examples are not properly functioning
+-------------------------------------------------------------------------------------------
 Fixed Bugs:
-------------------
-
-Testing Link:
-
-EditorV50.php?exampleid=1&courseid=1&cvers=2013
- 
----->
+-------------------------------------------------------------------------------------------
+Missing/desired Features:
+	Collapsible code
+	Changing language -- All Strings in File that can be translated to fit other languages.... including language change.
+-------------------------------------------------------------------------------------------
+Testing Link: 
+	EditorV50.php?exampleid=1&courseid=1&cvers=2013
+------------------------------------------------------------------------------------------->
 <?php
 	session_start();
 	include_once("../../coursesyspw.php");
@@ -52,6 +54,7 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
+	// Database connection
 	pdoConnect();		
 ?>
 <!DOCTYPE html>
@@ -77,53 +80,79 @@ EditorV50.php?exampleid=1&courseid=1&cvers=2013
 		<?php 
 			$exampleid = getOPG('exampleid');
 			$courseID = getOPG('courseid');
-			//get the visibility
+			$cvers = getOPG('cvers');
+
+			// Fetch content
 			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
 			$query->bindParam(':exampleid', $exampleid);
 			$query-> execute();
 			$row = $query -> fetch(PDO::FETCH_ASSOC);
-			$public=$row['public'];	
-			$noup="CODEVIEWER"; //Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
-			$loginvar="CODV";
-			$codeviewer = true;
-			$codeviewerkind=false;
+			$public=$row['public'];	//  Gets the info if the course are in public mode.
+			$noup="CODEVIEWER"; 	// Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
+			$codeviewer = true;	// Is used in navheader.php@line52: Makes it possible to view the content in the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
+			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible.
+			
+			if(isset($_SESSION['uid'])){
+				$userid=$_SESSION['uid'];
+			}else{
+				$userid="UNK";		
+			}
+			
+			//Gets username based on uid
+			$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
+			$query->bindParam(':uid', $userid);
+			$query-> execute();
+			
+			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+				$username = $row['username'];
+			}
+			
+			// Logs users who view example, along with the example they have viewed
+			makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);
+
+			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){
-				if(courseexists($courseID)){
-					// If course exists - check login credentials
+				//checks if $courseid exists. 
+				if(courseexists($courseID)){ 
+					// If the course exists- check login credentials
 					// Logged in and with credentials - show full editor otherwise show viewer version 
 					if(checklogin()){
 						$ha=getAccessType($_SESSION['uid'], $courseID);
 						if($ha == "w"){
-							// Allowed to edit this course
+							// Allow to edit this course (full editor)
 							$codeviewerkind=true;
 						}else{
-							// No editing
+							// Not allowed to edit (viewer version) 
 							$codeviewerkind=false;
 						}
 						include '../Shared/navheader.php';
-					}else{
+					}else{	
+						// if the course isn't public then a error message will display
 						if($public == 0){
 							$codeviewerkind=false;									
 							include '../Shared/navheader.php';
-							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have to be logged in to view this code example.</div>";;
+							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have to be logged in to view this code example.</div>";
 						}else{
 							$codeviewerkind=false;
 							include '../Shared/navheader.php';
 						}
 					}
 				}else{
+					// This will show an error message if the course id doesnt exist.
 					$codeviewer = false;
 					include '../Shared/navheader.php';
 					// Print Warning If course does not exist!
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course does not seem to exist!</div>";
 				}
 			}else{
+				// If $courseID is "UNK" and $exampleid is also "UNK"
+				// This will show an error message if the courseid or the Code Example doesnt exist. 
 				$codeviewer = false;
 				include '../Shared/navheader.php';
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
 			echo "</div>";
-			if($codeviewer) echo "<div id='div2'>If no content appears here... update your browser, enable javascript and try again.</div>";
+			if($codeviewer) echo "<div id='div2'>If this text remains this means this is an uncaught error. Please contact the admin with this message : codeviewer=true@line135-EV50.php</div>";
 		?>						
 		<!--- Dropdowns START --->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>

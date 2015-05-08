@@ -1,0 +1,50 @@
+<!DOCTYPE html>                                                                                                                                    
+<html>                                                                                                                                                
+<head>                                                                                                                                                
+	<meta charset="utf-8" />                                                                                                                          
+	<style>                                                                                                                                           
+		.isNotValid{border:2px solid #f00;}                                                                                                              
+		.isValid{border:2px solid #0f0;}                                                                                                                 
+	</style>
+</head>                                                                                                                                               
+<body>                                                                                                                                                
+	<label>Has to be a number and not empty:                                                                                                           
+		<input type="text" id="textInputDemo" />                                                                                                        
+	</label>                                                                                                                                           
+    <button  type="button" onclick="checkIfEmpty('textInputDemo');">Check if empty</button>                                                            
+    <button  type="button" onclick="checkIfNumber('textInputDemo');">Check if number</button>                                                          
+    <br /><br />                                                                                                                                       
+    <label>Has to start with a capital letter (checked on blur):                                                                                       
+        <input type="text" onblur="checkIfBeginsWithCapitalLetter(this)" />                                                                            
+    </label>                                                                                                                                           
+    <br /><br />                                                                                                                                       
+    <label>Has to be at least 5 characters long but not longer than 8 characters (checked on key up):                                                  
+        <input type="text" onkeyup="checkLength(this,5,8)" />                                                                                          
+    </label>                                                                                                                                           
+    <br /><br />                                                                                                                                       
+    <fieldset>                                                                                                                                         
+		<legend>Validate multiple inputs</legend>                                                                                                       
+		<label>Has to contain the word "hello" (checked on key up):                                                                                     
+			<input type="text" id="helloInput" onkeyup="checkIfContainsString(this,'hello');validateInput();" />                                        
+		</label>                                                                                                                                        
+		<br /><br />                                                                                                                                    
+		<label>A selection has to be made (checked on change):                                                                                          
+			<select id="selectDemo" onchange="checkSelection(this);validateInput();">                                                                   
+				<option value="-1">Select one:</option>                                                                                                 
+				<option value="orange">Orange</option>                                                                                                  
+				<option value="banana">Banana</option>                                                                                                  
+			</select>                                                                                                                                   
+		</label>                                                                                                                                        
+		<br /><br />                                                                                                                                    
+		<div id="colorCheckboxes">Select at least 2 options but not more than 3 options below:<br />                                                    
+			<label for="blueCheckbox"> Blue</label> <input type="checkbox" id="blueCheckbox" value="blue" onchange="checkNumberOfCheckboxesSelected(this);validateInput();" /> 
+			<label for="redCheckbox"> Red</label> <input type="checkbox" id="redCheckbox" value="red" onchange="checkNumberOfCheckboxesSelected(this);validateInput();" />
+			<label for="greenCheckbox"> Green</label> <input type="checkbox" id="greenCheckbox" value="green" onchange="checkNumberOfCheckboxesSelected(this);validateInput();" />
+			<label for="yellowCheckbox"> Yellow</label> <input type="checkbox" id="yellowCheckbox" value="yellow" onchange="checkNumberOfCheckboxesSelected(this);validateInput();" />
+		</div>                                                                                                                                          
+		<br /><br />                                                                                                                                    
+		<button  type="button" id="buttonDemo" disabled="disabled">Can only be clicked if input is valid</button>                                       
+    </fieldset>
+	<script type="text/javascript" src="JavaScript_Ex3.js"></script>
+ </body>                                                                                                                                               
+ </html>

@@ -1,0 +1,37 @@
+#### **Overview**
+This example showcases how images are loaded and drawn on a canvas. The example also shows how these images can be manipulated to create an animation using a timer.
+
+#### **Loading images**
+Images are loaded using the Image class. To load an image create a new Image object and set its source to the path of the image to be loaded:
+**Image Loading Example:**
+~~~
+myImageObject=new Image();
+myImageObject.src='myImage.jpg';
+~~~
+This code will load the myImage.jpg file into the myImageObject object.
+
+#### **Drawing images**
+To draw an image in a canvas drawing context the drawImage method is used.
+**Image Drawing Example:**
+~~~
+context.drawImage(myImage,100,50); 
+~~~
+This draws the image stored in myImage at the position 100,50 (x,y). The same image may be drawn multiple times at different positions as seen in the example, e.g. lines 65-67 where one of the mountain images are drawn three times. 
+
+Images may be transformed just like anything else drawn to the canvas.
+**Image Transformation Example:**
+~~~
+context.scale(0.5,0.5); 
+context.drawImage(myImage,100,50); 
+~~~
+This would draw the image at half its size.
+
+#### **Animation**
+Animation is simply the changing of some variable over time. This is achieved in the example by changing the positions the images are drawn at each time the canvas is updated. To create an endless animation the positions are reset once they reach a certain limit. Updating the canvas is done by setting a timer by using the setTimeout function.
+**setTimeout Example:**
+~~~
+setTimeout("foo();",500);
+~~~
+The code above will call the foo function in 500 milliseconds time. 
+
+The code example starts a timer each time the drawing has finished that will call the draw function. This makes the animation continue indefinitely.
