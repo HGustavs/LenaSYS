@@ -164,8 +164,8 @@ input.submit-button:hover {
 	padding:3px 0;
 	text-align:center;
 	box-sizing: border-box;
-  	-webkit-box-sizing: border-box;
-  	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 }
 .instructions-button:after {
 	content: '';
