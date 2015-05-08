@@ -147,12 +147,12 @@ input.submit-button:hover {
 
 .instructions-content {
 	-webkit-columns: 2 200px;
-    -moz-columns: 2 200px;
-    columns: 2 200px; 
-    -webkit-column-gap: 40px;        
-    -moz-column-gap: 40px;
-    column-gap: 40px; 
-    padding:15px;
+	-moz-columns: 2 200px;
+	columns: 2 200px; 
+	-webkit-column-gap: 40px;        
+	-moz-column-gap: 40px;
+	column-gap: 40px; 
+	padding:15px;
 	border:1px solid #ccc;	
 }
 
