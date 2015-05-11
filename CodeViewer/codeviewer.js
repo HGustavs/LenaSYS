@@ -1893,11 +1893,11 @@ function parseMarkdown(inString)
 	
 	//Regular expressions for headings
 	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
-	inString = inString.replace(/^\#{5}\s (.*)=*/gm, '<h5>$1</h5>');
-	inString = inString.replace(/^\#{4}\s (.*)=*/gm, '<h4>$1</h4>');
-	inString = inString.replace(/^\#{3}\s (.*)=*/gm, '<h3>$1</h3>');
-	inString = inString.replace(/^\#{2}\s (.*)=*/gm, '<h2>$1</h2>');
-	inString = inString.replace(/^\#{1}\s (.*)=*/gm, '<h1>$1</h1>');
+	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
+	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
+	inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
+	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
+	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
 	
 	//Regular expressions for lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
