@@ -218,7 +218,6 @@ function getStudentInfo(student, number)
 	}else {
 		htmlStr += "<div class='student odd'>";
 	}
-	console.log(student);
 	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
 	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
 	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
@@ -312,10 +311,6 @@ function clearLinearGraph()
 	c.clearRect(0, 0, graph[0].width, graph[0].height);
 }
 
-// Redirect teacher to specific student page
-function onClick_Students_To_page(){
-	//bajs
-}
 
 //---------------------------------------------------------------
 //	createLinearGraph() - creates the line graph
