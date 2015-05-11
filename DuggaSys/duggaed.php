@@ -18,8 +18,6 @@ pdoConnect();
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
-	
-
 </head>
 <body>
 	
@@ -80,6 +78,6 @@ pdoConnect();
 		</div>	
 	</div>
 	<!--- Edit Variant Dialog END --->
-		
+	
 </body>
 </html>
