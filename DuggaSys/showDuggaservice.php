@@ -114,9 +114,6 @@ if($userid!="UNK"){
 		foreach ($variants as $variant) {
 			$param.=$variant['param']." \n";
 			$questionanswer.=$variant['questionanswer']." \n";
-		  //  if($variant['vid']==$savedvariant){ $param=$variant['param'];
-	   // $debug.=$param=$variant['param']." \n";
-		//	}
 		}
 }else{
 		$param="FORBIDDEN!!";
