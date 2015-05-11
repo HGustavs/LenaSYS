@@ -138,7 +138,7 @@ function renderView(data)
 	var numberOfStudentsPerPages = 8; 
 	
 	//Render title
-	htmlStr += "<h2>" + classname + "</h2>";
+	htmlStr += "<h2>" + "Programvy för " + classname + "</h2>";
 	
 	//program title
 	var programTitle = document.getElementById("title");
@@ -148,16 +148,7 @@ function renderView(data)
 	var wichPage=1;
 	var renderStudent = 0;
 
-	
-	//If there is no students this will execute.
-	if(studentlist.length == 0) {
-		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
-		$('.changePages').hide();
-		$('#radio_buttonToolbar').hide();
-
-	}else{
-
-		for(var i = 0; i <= studentlist.length; i+=numberOfStudentsPerPages){
+	for(var i = 0; i <= studentlist.length; i+=numberOfStudentsPerPages){
 		
 
 		if(wichPage>1){
@@ -186,13 +177,18 @@ function renderView(data)
 		}
 		wichPage++;
 		htmlStr += "</div>";
-		}
+	}
 	
-		render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages);
+	render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages);
 
+	//If there is no students this will execute.
+	if(studentlist.length == 0) {
+		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
+		$('.changePages').hide();
+		$('#radio_buttonToolbar').hide();
+	}else{
 
 		$('#radio_buttonToolbar').show();
-		onClick_Students_To_page();
 	}
 	
 	var studentView = document.getElementById("studentslist");
@@ -218,13 +214,21 @@ function getStudentInfo(student, number)
 	}else {
 		htmlStr += "<div class='student odd'>";
 	}
+	
 	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
 	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
 	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
-	htmlStr += "<div class='student_email'><p>" + student['email'] + "</p></div>";
-		
-	htmlStr += "</div>";
 	
+	if(number % 2 == 0) {
+		htmlStr += "<div class='student_email'><a href='mailto:" + student['email'] + "'>";
+		htmlStr += "<img src='img/envelope_white.svg' id='mail-icon' width='13' height='10' alt='mail'></a></div>";
+	}else {
+		htmlStr += "<div class='student_email'><a href='mailto:" + student['email'] + "'>";
+		htmlStr += "<img src='img/envelope_purple.svg' id='mail-icon' width='13' height='10' alt='mail'></a></div>";
+	}
+	
+	htmlStr += "</div>";
+
 	return htmlStr;
 }
 
@@ -232,7 +236,6 @@ function getStudentInfo(student, number)
 //	getCourseResults(results) - creates the html representation
 //	of the course results for a student and returns it
 //---------------------------------------------------------------
-
 function getCourseResults(results)
 {
 	var colorGreen = "#50a750";
@@ -263,13 +266,16 @@ function getCourseResults(results)
 	
 }
 
-/* Sets the number of change pages buttons depending of how many students in class*/
+//---------------------------------------------------------------
+//	Sets the number of change pages buttons depending of how many 
+//  students in class
+//---------------------------------------------------------------
 function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	var htmlInserts="";
 	var numberOfPage=1;
 
 	htmlInserts+="<div class='changePages'>";
-	htmlInserts+="<p>Page</p>";
+	htmlInserts+="<p>Sida</p>";
 
 	for(var i =0; i < calcNumberOfStudents; i+=numberOfStudentsPerPages){
 		htmlInserts+= "<div class='page_"+numberOfPage +" pages'>"+numberOfPage +"</div>";
@@ -283,8 +289,9 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	changePages.innerHTML = htmlInserts;
 
 }
-
-//navigates between pages.
+//---------------------------------------------------------------
+//	navigates between pages
+//---------------------------------------------------------------
 function navigate_page(){
 	$('.pages').click(function(){
 		
@@ -303,7 +310,6 @@ function navigate_page(){
 //	clearLinearGraph() - clears the line graph representing
 //	all the student results in every course
 //---------------------------------------------------------------
-
 function clearLinearGraph() 
 {
 	var graph = $('#graph');
@@ -311,12 +317,10 @@ function clearLinearGraph()
 	c.clearRect(0, 0, graph[0].width, graph[0].height);
 }
 
-
 //---------------------------------------------------------------
 //	createLinearGraph() - creates the line graph
 //	representing all the student results in every course
 //---------------------------------------------------------------
-
 function createLinearGraph(data)
 {
 	var backgroundcolor_overlay = "#F5F0F5";
