@@ -47,7 +47,7 @@
 	$classDropMenu = "SELECT class.class,class.classcode FROM class,user WHERE user.uid = '".$userid."' AND class.responsible = user.uid order by class.classcode;";
 	$studentInformation = "SELECT user.uid, CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = '".$classname."' ORDER BY user.lastname ASC;";
 	
-	$studentResults = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username= :uid 
+	$studentResults = "SELECT course.coursename,(SELECT SUM(hp) FROM studentresultCourse WHERE username= :uid 
 							AND studentresultCourse.cid=course.cid) AS result, course.hp FROM user_course, course, programcourse 
 							WHERE user_course.uid = :uid AND programcourse.class =  '".$classname."'
 							AND programcourse.cid = course.cid AND user_course.cid = course.cid
@@ -126,6 +126,7 @@
 							array_push(
 								$course_results,
 								array(
+									'coursename' => $course_row['coursename'],
 									'result' => $course_row['result'],
 									'hp'	 => $course_row['hp']
 								)
