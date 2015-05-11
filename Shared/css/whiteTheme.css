@@ -203,30 +203,35 @@
     color: rgba(231, 0, 255, 1);
 }
 
+/* Gives some words a black border */
 .normtext .impword {
     color: #000;
     background-color: #F2F2F2;
 		border: 1px solid #899;
 }
 
+/* Gives important words a background and a border */
 .impo .impword {
     color: #fff;
     background-color: #614875;
     border: 1px solid #f44;
 }
 
+/* Gives some words a purple background and a dark border */
 .descbox .impword {
     color: #fff;
     background-color: #614875;
     border: 1px solid #f44;
 }
 
+/* Gives some words a pink background and a black border when you hover */
 .normtext .imphi {
     background-color: #D3BEE3;
     color: #000;
     
 }
 
+/* Gives important words a white background and a black font-color when you hover the word with your mouse*/
 .impo .imphi {
     background-color: #fff;
     color: #000;
@@ -288,6 +293,7 @@
 
 
 /* BOXMENU STYLING START */
+/* Gives a darker background on the second header under the top-menu  */
 .buttomenu2Style{
 	background-color: #5A5757;
 }
@@ -318,6 +324,8 @@
   background-color: #938C8C;
     cursor: pointer;
 }
+
+/* When you hover over the button, the background will be lighter. */
 .butto2:hover{
     background-color: #938C8C;
     cursor: pointer;
