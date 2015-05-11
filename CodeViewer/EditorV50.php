@@ -186,11 +186,11 @@ Testing Link:
 				</tr>
 				<tr>
 					<td colspan="1"><select id='improws'></select></td>
-					<td colspan="1"><input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
+					<td colspan="1"><input style="width:32px; float: none;" class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
 				</tr>		
 				<tr>
 					<td colspan="1"><input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
-					<td colspan="1"><input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpRows("+");' /></td>
+					<td colspan="1"><input style="width: 32px; float: none;" class='submit-button' type='button' value='+' onclick='editImpRows("+");' /></td>
 				</tr>		
 			</table>
 			<table width="100%">
