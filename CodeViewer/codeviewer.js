@@ -64,17 +64,16 @@ function returned(data)
 	
 	if(retData['debug']!="NONE!") alert(retData['debug']);
 	
-	// Hide and show before/after button
-	if(retData['before']!=null&&retData['after']!=null){
-		if(retData['before'].length==0){
-			$("#beforebutton").css("visibility","hidden");
-		}else{
-			$("#beforebutton").css("visibility","none");		
+	// Disables before and after button if there are no available example before or after. 
+	// Works by checking if the current example is last or first in the order of examples.
+	if(retData['before']!=null&&retData['after']!=null) {
+		if (retData['exampleno'] == retData['beforeafter'][0][0] || retData['before'].length == 0) {
+			$("#beforebutton").css("opacity",0.4);
+			$("#beforebutton").css("pointer-events","none");
 		}
-		if(retData['after'].length==0){
-			$("#afterbutton").css("visibility","hidden");
-		}else{
-			$("#afterbutton").css("visibility","none");	
+		if (retData['exampleno'] == retData['beforeafter'][retData['beforeafter'].length - 1][0] || retData['after'].length == 0) {
+			$("#afterbutton").css("opacity",0.4);
+			$("#afterbutton").css("pointer-events","none");
 		}
 	}
 	// Fill Section Name and Example Name
