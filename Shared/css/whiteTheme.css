@@ -83,6 +83,7 @@
 	
 }
 
+/* Gives the number rows a purple background  */
 .codeborder .no {
     color: #D8D8D8;
     padding-left: 4px;
@@ -93,6 +94,7 @@
     
 }
 
+/* Gives the numbers a white text-color and a position */
 .codeborder .impono {
     color: white;
     width: 22px;
@@ -101,6 +103,7 @@
     padding-right: 6px;
 }
 
+/* Gives the numbers a white text-color and a position ( only important rows )*/
 .normtextwrapper{
 	 /* Width of codeborder */
   	margin-left: 32px;
@@ -113,6 +116,7 @@
     white-space:nowrap;
 }
 
+/* Gives the important code a black text-color and light pink background */
 .impo {
     color: #000;
     background-color: rgba(186, 96, 255, 0.09);
@@ -137,22 +141,27 @@
     background-color: #9569BD;
 }
 
+/* Gives all comments a diffrent color  */
 .comment {
     color: rgba(72, 68, 101, 0.83);
 }
 
+/* Gives the html code a black text-color  */
 .normtext .oper {
     color: #000;
 }
 
+/* Gives the html code a black text-color ( only on important rows )  */
 .impo .oper {
     color: #000;
 }
 
+/* Gives all the string code a black text-color  */
 .normtext .string {
     color: #000;
 }
 
+/* Gives all the string code a black text-color( only on important rows )  */
 .impo .string {
     color: #000;
 }
@@ -181,6 +190,7 @@
 	background-color: #9569BD;
 	color: #000;
 }
+
 
 .impo .html {
 	background-color: #9569BD;
