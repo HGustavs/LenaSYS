@@ -204,6 +204,7 @@ $array = array(
 	"debug" => $debug,
 	"param" => $param,
 	"answer" => $savedanswer,
+	"highscoremode" => $highscoremode,
 	"questionanswer" => $questionanswer
 );
 
