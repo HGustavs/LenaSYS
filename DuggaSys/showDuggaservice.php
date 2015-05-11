@@ -1,7 +1,7 @@
 <?php 
 
 //---------------------------------------------------------------------------------------------------------------
-// editorService - Saves and Reads content for Code Editor
+// showDuggaservice - Retrieve duggor, services save and update duggor
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
