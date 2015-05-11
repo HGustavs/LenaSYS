@@ -208,12 +208,14 @@
 
 .studentInfo{
 	box-sizing:border-box;
+	-moz-box-sizing:border-box;
 	width: 100%; 
 	font-size:0.7em;
 }
 
 .student{
 	box-sizing:border-box;
+	-moz-box-sizing:border-box;
 	width: 35%; 
 	background-color:#614875;
 	color:#fff;
@@ -242,6 +244,7 @@
 /* Smal progressbars in teacherview */
 .students_results{
 	box-sizing:border-box;
+	-moz-box-sizing:border-box;
 	display:inline;
 	float:left;
 	margin-left:1%;
