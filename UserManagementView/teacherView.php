@@ -48,8 +48,8 @@
        		        
         <!-- Searchfield -->
         <div class="searchfieldTV clearfix">
-             	<input type="text" class="my-pull-left " placeholder=" Sök..." name="studyprogram/Pnr" id="studyprogram/Pnr">
-             	<div class="button my-pull-left " onclick="loadData(studyprogram.value,pnr.value);">Sök</span></div>
+             	<input type="text" class="my-pull-left " placeholder=" Search..." name="studyprogram/Pnr" id="studyprogram/Pnr">
+             	<div class="button my-pull-left " onclick="loadData(studyprogram.value,pnr.value);">Search</span></div>
         </div>
     
         <!-- ProgramName -->
@@ -75,9 +75,9 @@
 				<div id="radio_buttonToolbar">
                     <form>
                     	<input type="radio" id="allStudents" name="filterList" value="allStudents" checked>
-                        	<label for="allStudents"><span>Alla studenter</span></label>
+                        	<label for="allStudents"><span>All students</span></label>
 						<input type="radio" id="activeStudents" name="filterList" value="activeStudents">
-                        	<label for="activeStudents"><span>Aktiva studenter</span></label>
+                        	<label for="activeStudents"><span>Active students</span></label>
                     </form>
 				</div>
                 
