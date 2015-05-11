@@ -148,7 +148,16 @@ function renderView(data)
 	var wichPage=1;
 	var renderStudent = 0;
 
-	for(var i = 0; i <= studentlist.length; i+=numberOfStudentsPerPages){
+	
+	//If there is no students this will execute.
+	if(studentlist.length == 0) {
+		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
+		$('.changePages').hide();
+		$('#radio_buttonToolbar').hide();
+
+	}else{
+
+		for(var i = 0; i <= studentlist.length; i+=numberOfStudentsPerPages){
 		
 
 		if(wichPage>1){
@@ -177,18 +186,13 @@ function renderView(data)
 		}
 		wichPage++;
 		htmlStr += "</div>";
-	}
+		}
 	
-	render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages);
+		render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages);
 
-	//If there is no students this will execute.
-	if(studentlist.length == 0) {
-		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
-		$('.changePages').hide();
-		$('#radio_buttonToolbar').hide();
-	}else{
 
 		$('#radio_buttonToolbar').show();
+		onClick_Students_To_page();
 	}
 	
 	var studentView = document.getElementById("studentslist");
@@ -214,7 +218,6 @@ function getStudentInfo(student, number)
 	}else {
 		htmlStr += "<div class='student odd'>";
 	}
-	
 	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
 	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
 	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
@@ -307,6 +310,7 @@ function clearLinearGraph()
 	var c = graph[0].getContext('2d');
 	c.clearRect(0, 0, graph[0].width, graph[0].height);
 }
+
 
 //---------------------------------------------------------------
 //	createLinearGraph() - creates the line graph
