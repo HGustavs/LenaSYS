@@ -1,8 +1,8 @@
 <?php
-session_start();
-include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
-pdoConnect();
+	session_start();
+	include_once "../../coursesyspw.php";
+	include_once "../Shared/sessions.php";
+	pdoConnect();
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,15 +10,15 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Result List Editor</title>
 
-	<link type="text/css" href="css/style.css" rel="stylesheet">
-  <link type="text/css" href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
-  <link type="text/css" href="templates/dugga.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/templates/dugga.css" rel="stylesheet">  
 
-	<script src="js/jquery-1.11.0.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.min.js"></script>
+	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
+	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
 	<script src="../Shared/dugga.js"></script>
-	<script src="resultlisted.js"></script>
+	<script src="../Shared/resultlisted.js"></script>
 
 </head>
 <body>
@@ -41,6 +41,5 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 	
-		
 </body>
 </html>
