@@ -41,7 +41,11 @@ function setup()
 
 function returnedDugga(data)
 {
-	Timer.startTimer();
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+	}
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
 
@@ -72,6 +76,13 @@ function returnedDugga(data)
 
 function saveClick()
 {
+	if (querystring['highscoremode'] == 1) {	
+		Timer.stopTimer();
+			timeSpent = Timer.timeSpent;
+	} else if (querystring['highscoremode'] == 2) {
+		timeSpent = ClickCounter.noClicks;
+	}
+
 	// Loop through all bits
 	bitstr="";
 	
@@ -126,6 +137,10 @@ function showFacit(param, uanswer, danswer)
 
 function hexClick(divid)
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	dw=$(window).width();
 	dpos=$("#"+divid).position();
 	dwid=$("#"+divid).width();
