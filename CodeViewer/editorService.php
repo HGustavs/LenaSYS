@@ -343,7 +343,7 @@
 		if(file_exists('./codeupload')){
 			$dir = opendir('./codeupload');
 			while (($file = readdir($dir)) !== false) {
-				if(endsWith($file,".js") || endsWith($file,".html") || endsWith($file,".php")){
+				if(endsWith($file,".js") || endsWith($file,".html") || endsWith($file,".php") || endsWith($file,".css")){
 					array_push($codeDir,$file);		
 				}
 			}  
