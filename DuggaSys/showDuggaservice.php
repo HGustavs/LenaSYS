@@ -26,6 +26,7 @@ $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $moment=getOP('moment');
 $answer=getOP('answer');
+$highscoremode=getOP('highscoremode');
 $setanswer=gettheOP('setanswer');
 $debug="NONE!";	
 
