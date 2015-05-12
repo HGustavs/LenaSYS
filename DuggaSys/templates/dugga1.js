@@ -87,9 +87,9 @@ function saveClick()
 {
 		if (querystring['highscoremode'] == 1) {	
 			Timer.stopTimer();
-			timeSpent = Timer.timeSpent;
+			score = Timer.timeSpent;
 		} else if (querystring['highscoremode'] == 2) {
-			timeSpent = ClickCounter.noClicks;
+			score = ClickCounter.noClicks;
 		}
 
 		// Loop through all bits

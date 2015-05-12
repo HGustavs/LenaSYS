@@ -119,7 +119,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(highscoremode==2) str +="<option selected='selected' value ='2'>Click based</option>" 
 	else str +="<option value ='2'>Click based</option>"; 
 	$("#highscoremode").html(str);
-
+	
 	// Set Link
 	$("#link").val(elink);
 	
@@ -488,7 +488,7 @@ function returnedSection(data)
 							}
 						}
 						
-						if(item['highscoremode'] != 0) {
+						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
 							str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
 						}
 						
@@ -583,16 +583,16 @@ function returnedHighscore(data){
 			str += item['username'];
 			str += "</td>"
 			str += "<td>";
-			if(highscoremode == 0) {
+			if(parseInt(item['highscoremode']) == 0) {
 				// Undefined	
-			} else if(highscoremode == 1) {
+			} else if(parseInt(item['highscoremode']) == 1) {
 				str += "Time spent: ";
-			} else if (highscoremode == 2) {
+			} else if (parseInt(item['highscoremode']) == 2) {
 				str += "Number of clicks: ";
 			} else {
 				str += "Score: ";
 			}
-			str += item['timeSpent']
+			str += item['score']
 			str += "</td>";
 			str += "</tr>";
 		}
