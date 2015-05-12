@@ -313,6 +313,26 @@ if($ha){
 			);
 		}
 	}
+	$codeexamples=array();
+	$query=$pdo->prepare("SELECT exampleid, cid, examplename, sectionname, runlink, cversion FROM codeexample;");
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading code examples".$error[2];
+	}else{
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$codeexamples,
+				array(
+					'exampleid' => $row['exampleid'],
+					'cid' => $row['cid'],
+					'examplename' => $row['examplename'],
+					'sectionname' => $row['sectionname'],
+					'runlink' => $row['runlink'],
+					'cversion' => $row['cversion']
+				)
+			);
+		}
+	}
 }
 
 $array = array(
@@ -327,7 +347,8 @@ $array = array(
 	'links' => $links,
 	'duggor' => $duggor,
 	'results' => $resulties,
-	'versions' => $versions
+	'versions' => $versions,
+	'codeexamples' => $codeexamples
 );
 
 echo json_encode($array);
