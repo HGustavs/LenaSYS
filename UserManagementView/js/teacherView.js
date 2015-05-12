@@ -313,8 +313,6 @@ function clearLinearGraph()
 
 // Redirect teacher to specific student page
 function onClick_Students_To_page(){
-
-	//bajs
 	$('.student').click(function(){
 		get_student_data(this.id);
 	});
