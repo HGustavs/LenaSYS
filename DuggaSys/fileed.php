@@ -78,7 +78,7 @@ pdoConnect();
 				<input type='hidden' id='cid' name='cid' value='Toddler' />
 				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
 				<input type='hidden' id='kind' name='kind' value='Toddler' />
-				<div id="linky" class='inputwrapper'><span>URL:</span><input class="textinput" name="link" placeholder="https://facebook.com" type="text" size="40" /></div>
+				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
 				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile" id="uploadedfile" type="file" /></div>
 				<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>
 			</div> 
