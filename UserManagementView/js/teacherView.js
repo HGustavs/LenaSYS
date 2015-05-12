@@ -138,7 +138,7 @@ function renderView(data)
 	var numberOfStudentsPerPages = 8; 
 	
 	//Render title
-	htmlStr += "<h2>" + "Programvy för " + classname + "</h2>";
+	htmlStr += "<h2>" + classname + "</h2>";
 	
 	//program title
 	var programTitle = document.getElementById("title");
@@ -269,7 +269,7 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	var numberOfPage=1;
 
 	htmlInserts+="<div class='changePages'>";
-	htmlInserts+="<p>Sida</p>";
+	htmlInserts+="<p>Page</p>";
 
 	for(var i =0; i < calcNumberOfStudents; i+=numberOfStudentsPerPages){
 		htmlInserts+= "<div class='page_"+numberOfPage +" pages'>"+numberOfPage +"</div>";
@@ -329,7 +329,6 @@ function get_student_data(studentid) {
 		},
 		success:function(data) {
 			var result = JSON.parse(data);
-			//console.log(data);
 			renderStudentView(result);
 		},
 		error:function() {
