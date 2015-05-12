@@ -12,7 +12,7 @@ var selectedClassCode = "";
 function renderTeacherView(data) 
 {
 	var type = data['type']; //Array that holds what type of data should be rendered from DB
-	
+
 	// render the created toolbar
 	if(type == "TOOLBAR") {
 		createToolbar(data['classes']);
@@ -202,6 +202,7 @@ function renderView(data)
 	createLinearGraph(data);
 	clearLinearGraph();
 	createLinearGraph(data);
+	onClick_Students_To_page();
 }
 
 //---------------------------------------------------------------
@@ -212,11 +213,10 @@ function renderView(data)
 function getStudentInfo(student, number) 
 {
 	var htmlStr = "";
-
 	if(number % 2 == 0) {
-		htmlStr += "<div class='student'>";
+		htmlStr += "<div id='"+student['uid']+"' class='student'>";
 	}else {
-		htmlStr += "<div class='student odd'>";
+		htmlStr += "<div id='"+student['uid']+"' class='student odd'>";
 	}
 	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
 	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
@@ -311,6 +311,31 @@ function clearLinearGraph()
 	c.clearRect(0, 0, graph[0].width, graph[0].height);
 }
 
+// Redirect teacher to specific student page
+function onClick_Students_To_page(){
+	$('.student').click(function(){
+		get_student_data(this.id);
+	});
+}
+
+function get_student_data(studentid) {
+	var renderstudent = 'render';
+	$.ajax({
+		type:"POST",
+		url: "../UserManagementView/usermanagementviewservice.php",
+		data: {
+			studentid: studentid,
+			renderstudent: renderstudent
+		},
+		success:function(data) {
+			var result = JSON.parse(data);
+			renderStudentView(result);
+		},
+		error:function() {
+			console.log("error");
+		}
+	});
+}
 
 //---------------------------------------------------------------
 //	createLinearGraph() - creates the line graph
@@ -370,7 +395,6 @@ function createLinearGraph(data)
 	}
 	 
 	graph = $('#graph');
-	console.log("graph");
 
 	var c = graph[0].getContext('2d');
 
