@@ -573,6 +573,7 @@ function createhotdogmenu()
 	str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
 	str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
 	str += '</tr>';
+	// TODO: Check if redundant warning, as code is not used for now it's not that much of a priority
 	// Possible crash warning if returned number of boxes is wrong
 	if(retData['numbox']==0 || retData['numbox']==null){
 		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
