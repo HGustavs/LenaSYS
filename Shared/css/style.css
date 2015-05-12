@@ -803,7 +803,7 @@ input.new-item-button:hover {
     text-align: right;
 }
 
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;}
+.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:10px;}
 
 .list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
 .list th {background:#614875; color:#fff;line-height:28px;}
