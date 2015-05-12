@@ -39,6 +39,13 @@
 				case 'NONE';
 					// This case is used for pages still under development
 					break;
+				case 'TEACHERVIEW';
+					echo "<td class='serachC'>
+					<input type='text' class='my-pull-left' placeholder='Sök...' name='studyprogram/Pnr' id='studyprogram/Pnr'>
+					<div class='button my-pull-left ' onclick='loadData(studyprogram.value,pnr.value);'>Sök</span></div>
+					</td>";
+					break;	
+					
 				default:
 					// Show generic back button
 					echo "<a href='";
