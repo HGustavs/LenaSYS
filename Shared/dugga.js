@@ -105,7 +105,18 @@ function saveDuggaResult(citstr)
 		document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 		showReceiptPopup();
 }
+//----------------------------------------------------------------------------------
+// savequizResult: Saves the result of a quiz
+//----------------------------------------------------------------------------------
 
+function savequizResult(citstr)
+{
+		citstr=querystring['moment']+" "+citstr;
+		citstr=querystring['coursevers']+" "+citstr;
+		citstr=querystring['cid']+" "+citstr;
+		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
+		alert('inlämnat');
+}
 //----------------------------------------------------------------------------------
 // changeURL: Patch-in for changeURL from project 2014 code
 //----------------------------------------------------------------------------------
@@ -245,6 +256,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedCourse
 			});
+	}else if(kind=="VARIANTPDUGGA"){
+			$.ajax({
+				url: "showDuggaservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedanswersDugga
+			});
 	}else if(kind=="DUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
@@ -253,7 +272,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedDugga
 			});
-		}else if(kind=="DUGGAHIGHSCORE"){
+	}else if(kind=="DUGGAHIGHSCORE"){
 			$.ajax({
 				url: "highscoreservice.php",
 				type: "POST",
@@ -261,7 +280,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedHighscore
 			});
-		}else if(kind=="FILE"){
+	}else if(kind=="FILE"){
 			$.ajax({
 				url: "fileedservice.php",
 				type: "POST",

@@ -42,6 +42,13 @@ function getOP($name)
 //------------------------------------------------------------------------------------------------
 // getOP
 //------------------------------------------------------------------------------------------------
+function gettheOP($name)
+{
+		if(isset($_POST[$name])){
+			return $_POST[$name];
+		}		
+		else return "UNK";			
+}
 //
 // Reads service Parameter from POST encoding using entities
 //
