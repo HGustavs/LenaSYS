@@ -29,7 +29,10 @@ $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
 $setanswer=gettheOP('setanswer');
 $debug="NONE!";	
-
+$param = "";
+$savedanswer = "";
+$highscoremode = "";
+$questionanswer = "";
 $hr=false;
 $insertparam = false;
 
