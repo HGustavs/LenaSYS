@@ -48,9 +48,9 @@ if(checklogin()){
 				// Log the dugga write
 				makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
-				//Seperate timeSpent from $answer
+				//Seperate score from $answer
 				$temp = explode("-", $answer);
-				$timeSpent = $temp[1];
+				$score = $temp[1];
 				$answer = $temp[0];
 
 				// check if the user already has a grade on the assignment
@@ -70,13 +70,13 @@ if(checklogin()){
 					$debug="You have already been graded on this assignment";
 				}else{
 					// Update Dugga!
-					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
 					$query->bindParam(':moment', $moment);
 					$query->bindParam(':useranswer', $answer);
-					$query->bindParam(':timeSpent', $timeSpent);
+					$query->bindParam(':score', $score);
 				}
 
 				if(!$query->execute()){
