@@ -18,8 +18,11 @@
 	$opt = getOP('opt');
 	$classname = getOP('classname');
 	$retrievedData =  null;
+	$studentid = getOP('studentid');
+	$renderstudent = getOP('renderstudent');
 
 	/* Failer handling for incorrect userid */
+
 	if(isset($_SESSION['uid'])){
 			$userid=$_SESSION['uid'];
 	}else{
@@ -29,13 +32,16 @@
 			echo json_encode($retrievedData);
 	} 
 	
+	if($renderstudent == 'render'){
+		$userid=$studentid;
+	}
+	
 	if(isSuperUser($userid)){
 			$isTeacher=true;
 	}else{
 			$isTeacher=false;
 	}
-
-	
+	error_log(print_r($userid,true));
 	$debug="NONE!";
 	
 	//------------------------------------------------------------------------------------------------
@@ -134,10 +140,11 @@
 			
 					}
 					/* ------------------------------------------------------- */
-				
+					
 					array_push(
 						$studentlist,
 						array(
+							'uid' => $row['uid'],
 							'fullname' => $row['fullname'],
 							'username' => $row['username'],
 							'ssn'	   => $row['ssn'],
