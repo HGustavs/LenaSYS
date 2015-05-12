@@ -126,17 +126,17 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 
 function selectVariant(vid,param,answer)
 {
-		//alert(vid+" "+param+" "+answer);
+		// Display edit dialog
 		$("#editVariant").css("display","block");
 		
 		// Set Variant ID		
 		$("#vid").val(vid);
 		
 		// Set Variant parameter
-		$("#parameternamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' placeholder='"+param+"' />");
+		$("#parameter").val(param);
 		
 		// Set Variant answer
-		$("#answernamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' placeholder='"+answer+"' />");
+		$("#variantanswer").val(answer);
 }
 
 //----------------------------------------
