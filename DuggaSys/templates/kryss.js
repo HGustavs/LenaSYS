@@ -158,3 +158,11 @@ $("#output").html(checkifcorrect+"</br>"+yoloswag);
 function closeFacit(){
 
 }
+
+//----------------------------------------------------------------------------------
+// show/hide dugga instructions
+//----------------------------------------------------------------------------------
+function toggleInstructions()
+{
+    $(".instructions-content").slideToggle("slow");
+}
