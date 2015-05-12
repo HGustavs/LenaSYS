@@ -67,42 +67,26 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 
-	<!--- Edit File Dialog START --->
+	<!-- Edit File Dialog START -->
 	<div id='editFile' class='loginBox' style='width:464px;display:none;'>
-
-	<div class='loginBoxheader'>
-	<h3>Edit File/Link</h3>
-	<div onclick='closeEditFile();'>x</div>
+		<div class='loginBoxheader'>
+			<h3>Edit File/Link</h3>
+			<div onclick='closeEditFile();'>x</div>
+		</div>
+		<form enctype="multipart/form-data" action="filereceive.php" method="POST">
+			<div style='padding:5px;'>
+				<input type='hidden' id='cid' name='cid' value='Toddler' />
+				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
+				<input type='hidden' id='kind' name='kind' value='Toddler' />
+				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
+				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile" id="uploadedfile" type="file" /></div>
+				<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>
+			</div> 
+			<div style='padding:5px;'>
+				<td align='right'><input class='submit-button' type="submit" value="Upload File" /></td>
+			</div> 
+		</form>
 	</div>
-				
-	<form enctype="multipart/form-data" action="filereceive.php" method="POST">
-	
-	<input type='hidden' id='cid' name='cid' value='Toddler' />
-	<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
-	<input type='hidden' id='kind' name='kind' value='Toddler' />
-	
-	<table width="100%">
-		<tr id="linky">
-			<td colspan='2' style='line-height:40px;'>URL:&nbsp;<input name="link" placeholder="https://facebook.com" type="text" size="40" /></td>		
-		</tr>
-		<tr id="filey">
-			<td colspan='2' style='line-height:40px;'>Upload File:&nbsp;<input name="uploadedfile" id="uploadedfile" type="file" /></td>		
-		</tr>
-		<tr id="selecty">
-			<td colspan='2' style='line-height:40px;'>Existing File:&nbsp;<select id="selectedfile" name="selectedfile"></select></td>		
-		</tr>
-	</table>
-
-	<table width="100%"><tr>
-			<td align='right'><input class='submit-button' type="submit" value="Upload File" /></td>
-		</tr>
-	</table>
-	
-	</form>
-
-	</div>
-	<!--- Edit File Dialog END --->
-	
-		
+	<!-- Edit File Dialog END -->
 </body>
 </html>
