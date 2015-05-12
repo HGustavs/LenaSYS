@@ -192,7 +192,6 @@ function renderView(data)
 
 
 		$('#radio_buttonToolbar').show();
-		onClick_Students_To_page();
 	}
 	
 	var studentView = document.getElementById("studentslist");
@@ -201,8 +200,6 @@ function renderView(data)
 	progress_bar_hover(data);
 	
 	//The line graph needs to be redrawn once for the text to appear correctly
-	createLinearGraph(data);
-	clearLinearGraph();
 	createLinearGraph(data);
 	onClick_Students_To_page();
 }
@@ -223,7 +220,14 @@ function getStudentInfo(student, number)
 	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
 	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
 	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
-	htmlStr += "<div class='student_email'><p>" + student['email'] + "</p></div>";
+	
+	if(number % 2 == 0) {
+		htmlStr += "<div class='student_email'><a href='mailto:" + student['email'] + "'>";
+		htmlStr += "<img src='img/envelope_white.svg' id='mail-icon' width='13' height='10' alt='mail'></a></div>";
+	}else {
+		htmlStr += "<div class='student_email'><a href='mailto:" + student['email'] + "'>";
+		htmlStr += "<img src='img/envelope_purple.svg' id='mail-icon' width='13' height='10' alt='mail'></a></div>";
+	}
 		
 	htmlStr += "</div>";
 	
@@ -311,7 +315,9 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 
 }
 
-//navigates between pages.
+//---------------------------------------------------------------
+//	navigates between pages
+//---------------------------------------------------------------
 function navigate_page(){
 	$('.pages').click(function(){
 		
@@ -324,18 +330,6 @@ function navigate_page(){
 		$(classPage).css("display", "block");
 		
 	});
-}
-
-//---------------------------------------------------------------
-//	clearLinearGraph() - clears the line graph representing
-//	all the student results in every course
-//---------------------------------------------------------------
-
-function clearLinearGraph() 
-{
-	var graph = $('#graph');
-	var c = graph[0].getContext('2d');
-	c.clearRect(0, 0, graph[0].width, graph[0].height);
 }
 
 // Redirect teacher to specific student page
@@ -365,16 +359,26 @@ function get_student_data(studentid) {
 }
 
 //---------------------------------------------------------------
+//	clearLinearGraph() - clears the line graph representing
+//	all the student results in every course
+//---------------------------------------------------------------
+function clearLinearGraph() 
+{
+	var graph = $('#graph');
+	var c = graph[0].getContext('2d');
+	c.clearRect(0, 0, graph[0].width, graph[0].height);
+}
+
+//---------------------------------------------------------------
 //	createLinearGraph() - creates the line graph
 //	representing all the student results in every course
 //---------------------------------------------------------------
-
 function createLinearGraph(data)
 {
 	var backgroundcolor_overlay = "#F5F0F5";
 	var color_helpLines 		= "#D8D8D8";
 	var width_helpLines			= 2;
-	var x_axis_text_font			= 'italic 8pt sans-serif';
+	var x_axis_text_font		= 'italic 8pt sans-serif';
 	var x_axis_text_align		= "center";
 	var x_axis_text_color		= "#000";
 	var width_axisLines			= 2;
@@ -393,27 +397,18 @@ function createLinearGraph(data)
     var yPadding_bottom = 30;
 	var xPadding = 40;
 	var maxY = 100;
-	
-	var data = { values:[
-		{ X: "Kurs", Y: 50 },
-		{ X: "Kurs", Y: 67 },
-		{ X: "Kurs", Y: 86 },
-		{ X: "Kurs", Y: 76 },
-		{ X: "Kurs", Y: 55 },
-		{ X: "Kurs", Y: 89 },
-		{ X: "Kurs", Y: 34 },
-		{ X: "Kurs", Y: 34 },
-		{ X: "Kurs", Y: 67 },
-		{ X: "Kurs", Y: 22 },
-		{ X: "Kurs", Y: 64 },
-		{ X: "Kurs", Y: 74 },
-		{ X: "Kurs", Y: 87 },
-		{ X: "Kurs", Y: 16 },
-	]};
+
+	var courselist = data['courselist'];
+	var courses = [];
+	var hp = 0;
+	for(var i = 0; i < courselist.length; i++) {
+		hp = Math.floor(((courselist[i]['result'] / (courselist[i]['hp'] * courselist[i]['studentCount'])) * 100), 0);
+		courses.push({X: courselist[i]['name'], Y: hp});
+	}
 	
 	// Return the x pixel for a graph point
 	function getXPixel(val) {
-		return ((graph.width() - xPadding) / data.values.length) * val + (xPadding * 2);
+		return ((graph.width() - (xPadding * 2)) / courses.length) * val + (xPadding * 2);
 	}
 	
 	// Return the y pixel for a graph point
@@ -423,20 +418,23 @@ function createLinearGraph(data)
 	 
 	graph = $('#graph');
 
+	// Adjust the width of the graph to fit the amount of ćourses
+	graph[0].width = 700 + ((courselist.length/30) * 700);
+
 	var c = graph[0].getContext('2d');
 
-	/* style for the overlay under the graph */
+	// Style for the overlay under the graph
 	c.fillStyle = backgroundcolor_overlay;
 	
-	/* begin the drawing of the polygon that should be under the graph */
+	// Begin the drawing of the polygon that should be under the graph
 	c.beginPath();
 	c.moveTo(getXPixel(0), getYPixel(0));
 	
-	for(var i = 0; i < data.values.length; i++) {
-		c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));
+	for(var i = 0; i < courses.length; i++) {
+		c.lineTo(getXPixel(i), getYPixel(courses[i].Y));
 	}
 	
-	c.lineTo(getXPixel(data.values.length - 1), getYPixel(0));
+	c.lineTo(getXPixel(courses.length - 1), getYPixel(0));
 	c.fill();
 	
 	c.lineWidth 	= width_helpLines;
@@ -446,9 +444,10 @@ function createLinearGraph(data)
 	c.fillStyle 	= x_axis_text_color;
 	
 	// Draw the X value texts
-	for(var i = 0; i < data.values.length; i ++) {
+	for(var i = 0; i < courses.length; i++) {
 		c.beginPath();
-		c.fillText(data.values[i].X, getXPixel(i), graph.height() - yPadding_bottom + 20);
+		c.fillText(courses[i].X, getXPixel(i), graph.height() - yPadding_bottom + 20);
+		c.fillText(courses[i].Y + "%", getXPixel(i) - 15, getYPixel(courses[i].Y) - 15);
 		c.moveTo(getXPixel(i), graph.height() - yPadding_bottom);
 		c.lineTo(getXPixel(i), getYPixel(100));
 		c.stroke();
@@ -475,21 +474,23 @@ function createLinearGraph(data)
 	c.lineWidth = graphLine_width;
 	
 	// Draw the line graph
-	c.beginPath();
-	c.moveTo(getXPixel(0), getYPixel(data.values[0].Y));
-	for(var i = 1; i < data.values.length; i ++) {
-		c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));
-	}
-	c.stroke();
-	
-	// Draw the dots
-	c.fillStyle = circle_fill_color;
-	c.strokeStyle = circle_stroke_color;
-					
-	for(var i = 0; i < data.values.length; i ++) {  
+	if(courses.length > 0) {
 		c.beginPath();
-		c.arc(getXPixel(i), getYPixel(data.values[i].Y), circle_width, 0, Math.PI * 2, true);
-		c.fill();
+		c.moveTo(getXPixel(0), getYPixel(courses[0].Y));
+		for(var i = 1; i < courses.length; i++) {
+			c.lineTo(getXPixel(i), getYPixel(courses[i].Y));
+		}
 		c.stroke();
+		
+		// Draw the dots
+		c.fillStyle = circle_fill_color;
+		c.strokeStyle = circle_stroke_color;
+						
+		for(var i = 0; i < courses.length; i++) {  
+			c.beginPath();
+			c.arc(getXPixel(i), getYPixel(courses[i].Y), circle_width, 0, Math.PI * 2, true);
+			c.fill();
+			c.stroke();
+		}
 	}
 }

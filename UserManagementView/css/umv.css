@@ -357,7 +357,12 @@
 	text-transform:uppercase !important;
 }
 
+#graphContainer {
+	overflow-x: auto;
+}
+
 #graph {
 	display: block;
 	margin: 30px auto;
+	overflow-x: auto;
 }
