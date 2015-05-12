@@ -158,7 +158,7 @@ CREATE TABLE userAnswer (
 	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
 	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
 	CONSTRAINT fk_useranswer_joins_quiz FOREIGN KEY (quiz) REFERENCES quiz(id),
-	CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
+	CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
