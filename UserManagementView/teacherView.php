@@ -30,7 +30,7 @@
 <body>
 
   	<?php 
-		$noup="NONE";
+		$noup="TEACHERVIEW";
 		$loginvar="UMVTEACHER"; 
 		include '../Shared/navheader.php';
 	?>
@@ -47,11 +47,6 @@
         	
         </nav>      
        		        
-        <!-- Searchfield -->
-        <div class="searchfieldTV clearfix">
-             	<input type="text" class="my-pull-left " placeholder=" Search..." name="studyprogram/Pnr" id="studyprogram/Pnr">
-             	<div class="button my-pull-left " onclick="loadData(studyprogram.value,pnr.value);">Search</span></div>
-        </div>
     
         <div id="class_view">
             <!-- ProgramName -->
