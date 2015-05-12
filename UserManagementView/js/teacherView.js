@@ -173,7 +173,7 @@ function renderView(data)
 
 			htmlStr += "<div class='studentInfo'>";
 			htmlStr += getStudentInfo(student, renderStudent);
-			htmlStr += getCourseResults(student['results']);
+			htmlStr += getCourseResults(student['results'],j+i);
 
 			htmlStr += "</div>";
 		
@@ -196,6 +196,8 @@ function renderView(data)
 	
 	var studentView = document.getElementById("studentslist");
 	studentView.innerHTML = htmlStr;
+	
+	progress_bar_hover(data);
 	
 	//The line graph needs to be redrawn once for the text to appear correctly
 	createLinearGraph(data);
@@ -236,7 +238,8 @@ function getStudentInfo(student, number)
 //	getCourseResults(results) - creates the html representation
 //	of the course results for a student and returns it
 //---------------------------------------------------------------
-function getCourseResults(results)
+
+function getCourseResults(results, studentNumber)
 {
 	var colorGreen = "#50a750";
 	var colorYellow = "#F0AD4E";
@@ -249,10 +252,13 @@ function getCourseResults(results)
 		/* Check that result is not null and set to 0 if so */
 		var course_result = results[i]['result'] == null ? 0 : results[i]['result'];
 		var course_hp	  = results[i]['hp'];
+		var course_name	  = results[i]['coursename'];
 		var procent		  = course_result/course_hp * 100;
 		var color		  = procent < 100 ? colorYellow : colorGreen;
 		
-		htmlStr += "<div class='progress_course_total'>";
+		htmlStr += "<div id='course_"+course_name+"#"+studentNumber+"' style='position:relative; margin:-42px 0px 0px -50px; z-index:1001px;'>";		
+		htmlStr += "</div>";
+		htmlStr += "<div id='"+course_name+"#"+studentNumber+"' class='progress_course_total'>";
 		htmlStr += "<div class='progress_course' style='width:" + procent + "%; background-color: " + color + ";'>";
 		htmlStr += "<p>" + parseFloat(course_result) + "/" + course_hp + "</p>";
 		htmlStr += "</div>";
@@ -266,10 +272,29 @@ function getCourseResults(results)
 	
 }
 
-//---------------------------------------------------------------
-//	Sets the number of change pages buttons depending of how many 
-//  students in class
-//---------------------------------------------------------------
+function progress_bar_hover(data){
+	
+	$('.progress_course_total').on( 'mouseenter',function() {
+		
+			var course = 'course_'+$(this).attr('id');
+
+			var htmlString = "";
+			htmlString += "<p>"+$(this).attr('id').split('#')[0]+"</p>";
+			
+			var hover_name = document.getElementById(course);
+			hover_name.innerHTML = htmlString;
+
+		}).on('mouseleave', function(){
+			
+			var courseout = "course_"+$(this).attr('id');
+
+			var hover_name = document.getElementById(courseout);
+			hover_name.innerHTML = "";
+  
+    });
+}
+
+/* Sets the number of change pages buttons depending of how many students in class*/
 function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	var htmlInserts="";
 	var numberOfPage=1;
