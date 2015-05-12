@@ -83,6 +83,7 @@
 	
 }
 
+/* Gives the number rows a purple background  */
 .codeborder .no {
     color: #D8D8D8;
     padding-left: 4px;
@@ -93,6 +94,7 @@
     
 }
 
+/* Gives the numbers a white text-color and a position */
 .codeborder .impono {
     color: white;
     width: 22px;
@@ -101,6 +103,7 @@
     padding-right: 6px;
 }
 
+/* Gives the numbers a white text-color and a position ( only important rows )*/
 .normtextwrapper{
 	 /* Width of codeborder */
   	margin-left: 32px;
@@ -113,6 +116,7 @@
     white-space:nowrap;
 }
 
+/* Gives the important code a black text-color and light pink background */
 .impo {
     color: #000;
     background-color: rgba(186, 96, 255, 0.09);
@@ -137,22 +141,27 @@
     background-color: #9569BD;
 }
 
+/* Gives all comments a diffrent color  */
 .comment {
     color: rgba(72, 68, 101, 0.83);
 }
 
+/* Gives the html code a black text-color  */
 .normtext .oper {
     color: #000;
 }
 
+/* Gives the html code a black text-color ( only on important rows )  */
 .impo .oper {
     color: #000;
 }
 
+/* Gives all the string code a black text-color  */
 .normtext .string {
     color: #000;
 }
 
+/* Gives all the string code a black text-color( only on important rows )  */
 .impo .string {
     color: #000;
 }
@@ -182,6 +191,7 @@
 	color: #000;
 }
 
+
 .impo .html {
 	background-color: #9569BD;
 	color: #000;
@@ -203,30 +213,35 @@
     color: rgba(231, 0, 255, 1);
 }
 
+/* Gives some words a black border */
 .normtext .impword {
     color: #000;
     background-color: #F2F2F2;
 		border: 1px solid #899;
 }
 
+/* Gives important words a background and a border */
 .impo .impword {
     color: #fff;
     background-color: #614875;
     border: 1px solid #f44;
 }
 
+/* Gives some words a purple background and a dark border */
 .descbox .impword {
     color: #fff;
     background-color: #614875;
     border: 1px solid #f44;
 }
 
+/* Gives some words a pink background and a black border when you hover */
 .normtext .imphi {
     background-color: #D3BEE3;
     color: #000;
     
 }
 
+/* Gives important words a white background and a black font-color when you hover the word with your mouse*/
 .impo .imphi {
     background-color: #fff;
     color: #000;
@@ -288,6 +303,7 @@
 
 
 /* BOXMENU STYLING START */
+/* Gives a darker background on the second header under the top-menu  */
 .buttomenu2Style{
 	background-color: #5A5757;
 }
@@ -318,6 +334,8 @@
   background-color: #938C8C;
     cursor: pointer;
 }
+
+/* When you hover over the button, the background will be lighter. */
 .butto2:hover{
     background-color: #938C8C;
     cursor: pointer;
