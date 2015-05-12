@@ -64,17 +64,16 @@ function returned(data)
 	
 	if(retData['debug']!="NONE!") console.log("Returned from setup: " + retData['debug']);
 	
-	// Hide and show before/after button
-	if(retData['before']!=null&&retData['after']!=null){
-		if(retData['before'].length==0){
-			$("#beforebutton").css("visibility","hidden");
-		}else{
-			$("#beforebutton").css("visibility","none");		
+	// Disables before and after button if there are no available example before or after. 
+	// Works by checking if the current example is last or first in the order of examples.
+	if(retData['before']!=null&&retData['after']!=null) {
+		if (retData['exampleno'] == retData['beforeafter'][0][0] || retData['before'].length == 0) {
+			$("#beforebutton").css("opacity",0.4);
+			$("#beforebutton").css("pointer-events","none");
 		}
-		if(retData['after'].length==0){
-			$("#afterbutton").css("visibility","hidden");
-		}else{
-			$("#afterbutton").css("visibility","none");	
+		if (retData['exampleno'] == retData['beforeafter'][retData['beforeafter'].length - 1][0] || retData['after'].length == 0) {
+			$("#afterbutton").css("opacity",0.4);
+			$("#afterbutton").css("pointer-events","none");
 		}
 	}
 	// Fill Section Name and Example Name
@@ -1898,11 +1897,11 @@ function parseMarkdown(inString)
 	
 	//Regular expressions for headings
 	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
-	inString = inString.replace(/^\#{5}\s (.*)=*/gm, '<h5>$1</h5>');
-	inString = inString.replace(/^\#{4}\s (.*)=*/gm, '<h4>$1</h4>');
-	inString = inString.replace(/^\#{3}\s (.*)=*/gm, '<h3>$1</h3>');
-	inString = inString.replace(/^\#{2}\s (.*)=*/gm, '<h2>$1</h2>');
-	inString = inString.replace(/^\#{1}\s (.*)=*/gm, '<h1>$1</h1>');
+	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
+	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
+	inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
+	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
+	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
 	
 	//Regular expressions for lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
