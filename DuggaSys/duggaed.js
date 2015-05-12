@@ -88,14 +88,14 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 		$("#did").val(did);		
 
 		// Set Dugga name
-		$("#dugganamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='name' placeholder='"+name+"' />");
+		$("#name").val(name);
 		
 		// Set Release date name
-		$("#releasenamewrapper").html("<input class='form-control textinput datepicker hasDatepicker' type='text' id='release' placeholder='"+release+"' />");
+		$("#release").val(release);
 
 		// Set Deadline date name
-		$("#deadlinenamewrapper").html("<input class='form-control textinput datepicker hasDatepicker' type='text' id='deadline' placeholder='"+deadline+"' />");
-
+		$("#deadline").val(deadline);
+		
 		// Set Autograde
 		var str="";
 		if(autograde==0) str+="<option selected='selected' value='0'>Off</option>"
@@ -126,17 +126,17 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 
 function selectVariant(vid,param,answer)
 {
-		//alert(vid+" "+param+" "+answer);
+		// Display edit dialog
 		$("#editVariant").css("display","block");
 		
 		// Set Variant ID		
 		$("#vid").val(vid);
 		
 		// Set Variant parameter
-		$("#parameternamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' placeholder='"+param+"' />");
+		$("#parameter").val(param);
 		
 		// Set Variant answer
-		$("#answernamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' placeholder='"+answer+"' />");
+		$("#variantanswer").val(answer);
 }
 
 //----------------------------------------

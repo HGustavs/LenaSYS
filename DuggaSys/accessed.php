@@ -22,9 +22,7 @@
 	
 	<?php 
 		$noup=true;
-		$loginvar="ACCESS"; 
 		include '../Shared/navheader.php';
-		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
@@ -51,51 +49,38 @@
 			<h3>Create Users</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
-	 
-		<p>Users must be separated with a linebreak and the format required for each user is as follows:</p> 
 		<div class='note'>
+			<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
 			<p>SSN&lt;space&gt;Lastname,&lt;space&gt;Firstname&lt;space&gt;Email&lt;linebreak&gt;</p>
 			<p>Example:<br/>
 			000000-0000 Lastname, Firstname a12firla@student.his.se<br/>
 			111111-1111 Lastname, Firstname b12firla@student.his.se</p>
 		</div>
-		<table width="100%">
-			<tr>
-				<td align='right'><input class='submit-button' type='button' value='Add Users' onclick='addUsers();' /></td>
-			</tr>
-		</table>
-		<table width="100%">
-			<tr>
-				<td><textarea id="import" ></textarea></td> 
-			</tr>
-		</table>
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Add Users' onclick='addUsers();' />
+			<textarea id="import" ></textarea>
+		</div>
 	</div>
 	
-	<!--- Edit User Dialog END --->
-	<!--- Add Users Dialog START --->
+	<!-- Edit User Dialog END -->
+	<!-- Add Users Dialog START -->
 	<div id='editUsers' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-		<h3>Edit Users</h3>
-		<div onclick='closeWindows();'>x</div>
+			<h3>Edit Users</h3>
+			<div onclick='closeWindows();'>x</div>
 		</div>
 					
-		<table width="100%">
-			<tr>
-				<input type='hidden' id='uid' value='Toddler' /></td>
-				<td>UserName: <div id='usernamewrapper'><input class='form-control textinput' type='text' id='usrnme' value='User Name' /></div></td>		
-				<td>SSN: <div id='ssnwrapper'><input class='form-control textinput' type='text' id='ussn' value='SSN' /></div></td>
-			</tr>
-			<tr>
-				<td>First Name: <div id='firstnamewrapper'><input class='form-control textinput' type='text' id='firstname' value='First Name' /></div></td>		
-				<td>Last Name: <div id='lastnamewrapper'><input class='form-control textinput' type='text' id='lastname' value='Last Name' /></div></td>
-			</tr>
-		</table>
-		<table width="100%"><tr>
-				<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateUser();' /></td>
-			</tr>
-		</table>
+		<div style='padding:5px;'>
+			<input type='hidden' id='uid' value='Toddler' /></td>
+			<div class='inputwrapper'><span>UserName:</span><input class='textinput' type='text' id='usrnme' value='User Name' /></div>
+			<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
+			<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>	
+			<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
+		</div> 
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateUser();' />
+		</div> 
 	</div> 
-	<!--- Add Users Dialog END --->
-		
+	<!-- Add Users Dialog END -->
 </body>
 </html>

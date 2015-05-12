@@ -119,7 +119,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(highscoremode==2) str +="<option selected='selected' value ='2'>Click based</option>" 
 	else str +="<option value ='2'>Click based</option>"; 
 	$("#highscoremode").html(str);
-
+	
 	// Set Link
 	$("#link").val(elink);
 	
@@ -473,7 +473,7 @@ function returnedSection(data)
 						//Dugga!
 						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
 					}else if(parseInt(item['kind']) == 5){
-						str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+" (material)</a>";
+						str+="<a style='cursor:pointer;margin-left:75px;' onClifck='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+" (material)</a>";
 					}	
 		
 					if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' />";
@@ -488,7 +488,7 @@ function returnedSection(data)
 							}
 						}
 						
-						if(item['highscoremode'] != 0) {
+						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
 							str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
 						}
 						
@@ -583,16 +583,16 @@ function returnedHighscore(data){
 			str += item['username'];
 			str += "</td>"
 			str += "<td>";
-			if(highscoremode == 0) {
+			if(parseInt(item['highscoremode']) == 0) {
 				// Undefined	
-			} else if(highscoremode == 1) {
+			} else if(parseInt(item['highscoremode']) == 1) {
 				str += "Time spent: ";
-			} else if (highscoremode == 2) {
+			} else if (parseInt(item['highscoremode']) == 2) {
 				str += "Number of clicks: ";
 			} else {
 				str += "Score: ";
 			}
-			str += item['timeSpent']
+			str += item['score']
 			str += "</td>";
 			str += "</tr>";
 		}

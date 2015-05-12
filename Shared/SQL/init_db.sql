@@ -153,7 +153,7 @@ CREATE TABLE userAnswer (
 	marked			TIMESTAMP NULL,
 	vers			VARCHAR(8),
 	creator 		INTEGER,
-	timeSpent		INT DEFAULT NULL, 
+	score		INT DEFAULT NULL, 
 	CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
 	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
 	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
@@ -167,8 +167,8 @@ CREATE TABLE userAnswer (
  */
 DROP VIEW IF EXISTS highscore_quiz_time;
 CREATE VIEW highscore_quiz_time AS
-	SELECT userAnswer.cid, userAnswer.quiz, userAnswer.uid, userAnswer.grade, userAnswer.timeSpent
-		FROM userAnswer ORDER BY userAnswer.timeSpent ASC LIMIT 10;
+	SELECT userAnswer.cid, userAnswer.quiz, userAnswer.uid, userAnswer.grade, userAnswer.score
+		FROM userAnswer ORDER BY userAnswer.score ASC LIMIT 10;
 
 CREATE TABLE vers(
 	cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,

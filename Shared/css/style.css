@@ -706,7 +706,6 @@ header {
     display: block;
     width: 216px;
     height: 30px;
-    padding: 6px 12px;
     line-height: 18px;
     color: #202020;
     background-color: #ffffff;
@@ -727,6 +726,7 @@ header {
     display: inline-block;
     text-align: start;
     border-radius: 0px;
+    box-sizing: border-box;
 }
 
 input.option {

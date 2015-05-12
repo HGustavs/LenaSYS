@@ -25,9 +25,7 @@ pdoConnect();
 
 	<?php 
 	$noup="NONE";
-	$loginvar="COURSE";
 	include '../Shared/navheader.php';
-	setcookie("loginvar", $loginvar);
 	?>
 
 	<!-- content START -->
