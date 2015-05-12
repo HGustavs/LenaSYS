@@ -23,6 +23,7 @@
         <link href="css/umv.css" rel="stylesheet">
         
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
+        <link href="css/studentView.css" rel="stylesheet">
         <script type="text/javascript" src="../Shared/dugga.js"></script>
     </head>
 
