@@ -62,7 +62,7 @@ function returned(data)
 	retData=data;
 	console.log(retData);
 	
-	if(retData['debug']!="NONE!") console.log("Returned from setup: " + retData['debug']);
+	if(retData['debug']!="NONE!") alert(retData['debug']);
 	
 	// Disables before and after button if there are no available example before or after. 
 	// Works by checking if the current example is last or first in the order of examples.
@@ -100,8 +100,7 @@ function returned(data)
 	
 	// Possible crash warning if returned number of boxes is wrong
 	if(retData['numbox']==0 || retData['numbox']==null){
-		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
-		console.log(debug);
+		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
 	}
 	// Create boxes
 	for(var i=0;i<retData['numbox'];i++){
@@ -407,7 +406,7 @@ function changeDirectory(kind)
 //                Is called by editImpRows in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
 //----------------------------------------------------------------------------------
 // editImpRows: Adds and removes important rows
@@ -572,11 +571,9 @@ function createhotdogmenu()
 	str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
 	str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
 	str += '</tr>';
-	// TODO: Check if redundant warning, as code is not used for now it's not that much of a priority
 	// Possible crash warning if returned number of boxes is wrong
 	if(retData['numbox']==0 || retData['numbox']==null){
-		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
-		console.log(debug);
+		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
 	}
 	for(i=0;i<retData['numbox'];i++){
 		str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retData['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retData['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
@@ -681,7 +678,7 @@ function Skip(skipkind)
 			if(retData['after'].length!=0&&dmd==2){
 					navigateExample(retData['after'][0][0]);
 			}
-			dmd=0;
+			dmd=0;		
 	}
 
 	if(skipkind=="bd"||skipkind=="fd"){
@@ -937,8 +934,6 @@ function maketoken(kind,val,from,to,rowno)
 
 function error(str,val,row)
 {
-	var debug = "Tokenizer error: "+ str+val+ " at row "+row;
-	console.log(debug);
 	alert("Tokenizer Error: "+str+val+" at row "+row);
 }
 
@@ -1219,7 +1214,7 @@ function rendercode(codestring,boxid,wordlistid)
 	cbcount=0;
 	cbracket=new Array();
 	
-	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr');
+	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'canvas', 'link', 'meta', 'style', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr');
 	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source'); 
 	var htmlTagCount=0;
 	htmlTag=new Array();
@@ -1286,30 +1281,32 @@ function rendercode(codestring,boxid,wordlistid)
 				pid=cbracket.pop();
 				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
 			}else if(tokenvalue=="<"){
-				if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
-					var k = 2;
-					var foundEnd = false;
-					while(tokens[i+k].kind != "newline"){
-						if(tokens[i+k].val == ">"){					//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
-							foundEnd = true;
-							break;
+				if (isNumber(tokens[i+1].val) == false && tokens[i+1].val!="/") {
+					if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
+						var k = 2;
+						var foundEnd = false;
+						while(tokens[i+k].kind != "newline"){
+							if(tokens[i+k].val == ">"){					//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
+								foundEnd = true;
+								break;
+							}
+							k++;
 						}
-						k++;
-					}
-					if(foundEnd){
-						pid="html"+htmlTagCount+boxid;
-						htmlTagCount++;
-						if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
-							htmlTag.push(pid);
+						if(foundEnd){
+							pid="html"+htmlTagCount+boxid;
+							htmlTagCount++;
+							if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+								htmlTag.push(pid);
+							}
+							cont+="<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+("&lt" + tokens[i+1].val);
+							for(var j = 2; j < k+1; j++){
+								cont+=tokens[i+j].val;
+							}
+							cont+="</span>";
+							i=i+k;
+						}else{
+							cont+="<span class='oper'>"+tokenvalue+"</span>";
 						}
-						cont+="<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+("&lt" + tokens[i+1].val);
-						for(var j = 2; j < k+1; j++){
-							cont+=tokens[i+j].val;
-						}
-						cont+="</span>";
-						i=i+k;
-					}else{
-						cont+="<span class='oper'>"+tokenvalue+"</span>";
 					}
 				}else if(tokens[i+1].val=="/"){
 					if(htmlArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
