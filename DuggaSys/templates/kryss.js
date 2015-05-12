@@ -85,7 +85,7 @@ function returnedDugga(data)
 
 	console.log(data['param']);
 	var output ="";
-	  if(data['debug']!="NONE!") alert(data['debug']);
+	if(data['debug']!="NONE!") alert(data['debug']);
 		
 		if(data['param']!="UNK"){
 			quiz(data['param']);
@@ -126,12 +126,9 @@ var allanswers = "";
 var theanswers ="";
 function showFacit(param, uanswer, danswer)
 {
-
-			AJAXService("GETVARIANTANSWER",{ setanswer:uanswer},"VARIANTPDUGGA");
-				var splited = uanswer.split(" ");
-			allanswers =  splited[3];
-			
-			
+	AJAXService("GETVARIANTANSWER",{ setanswer:uanswer},"VARIANTPDUGGA");
+	var splited = uanswer.split(" ");
+	allanswers =  splited[3];
 }
 
 function returnedanswersDugga(data){
