@@ -59,7 +59,7 @@
 	
 	$exampleCount = 0;
 	
-	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
+		$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
     $query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 	
@@ -69,12 +69,14 @@
 		$exampleName=$row['examplename'];
 		$courseID=$row['cid'];
 		$cversion=$row['cversion'];
+		$beforeId=$row['beforeid'];
+		$afterId=$row['afterid'];
 		$public=$row['public'];
 		$sectionName=$row['sectionname'];
 		$playlink=$row['runlink'];
 	}	
-	
-	$debug = "Debug: exampleCount = $exampleCount\n, if zero, there are no examples";
+	$debug = $debug .' '. "Debug: beforeId/afterId = $beforeId/$afterId at line ". __LINE__ . ". \n";
+	$debug = $debug .' '. "Debug: exampleCount = $exampleCount\n, if zero, there are no examples";
 	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
 		//------------------------------------------------------------------------------------------------
@@ -141,7 +143,6 @@
 					$query->bindParam(':cvers', $courseVersion);
 					$query->execute();
 				}
-				$debug= $debug .' '. "Debug: beforeId/afterId = $beforeId/$afterId at line ". __LINE__ . ". \n";
 				if(isset($_POST['addedWords'])) {
 					// Converts to array
 					$addedWords = explode(",",$_POST['addedWords']);
