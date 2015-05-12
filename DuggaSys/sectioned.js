@@ -134,6 +134,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==2){
+		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
+			var iitem=retdata['codeexamples'][ii];
+			if(xelink==iitem['exampleid']){
+				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}
+		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
@@ -185,6 +193,14 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==2){
+		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
+			var iitem=retdata['codeexamples'][ii];
+			if(xelink==iitem['exampleid']){
+				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}
+		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
@@ -468,7 +484,8 @@ function returnedSection(data)
 					}else if (parseInt(item['kind']) == 4) {
 						str+="<span style='padding-left:5px;border-bottom:3px solid white'>Course Segment "+item['entryname']+"</span>";
 					}else if (parseInt(item['kind']) == 2) {
-						str+="<span><a style='margin-left:15px;' href="+item['link']+">"+item['entryname']+"</a></span>";
+						str+="<span><a style='margin-left:15px;' href='../CodeViewer/EditorV50.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
+						
 					}else if (parseInt(item['kind']) == 3 ) {
 						//Dugga!
 						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
