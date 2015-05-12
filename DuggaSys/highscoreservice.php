@@ -40,9 +40,9 @@ $hr=false;
 //------------------------------------------------------------------------------------------------
 
 if(checklogin()){
-	$query = $pdo->prepare("SELECT username, timeSpent FROM userAnswer, user, variant where user.uid = userAnswer.uid AND userAnswer.quiz = :did GROUP BY userAnswer.uid ORDER BY timeSpent ASC LIMIT 10;");
+	$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 0 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
 	$query->bindParam(':did', $duggaid);
-	//$query->bindParam(':lid', $variant);
+	//$query->bindParam(':lid', $moment);
 
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -56,7 +56,7 @@ if(checklogin()){
 			$rows,
 			array(
 				'username' => $row['username'],
-				'timeSpent' => $row['timeSpent']
+				'score' => $row['score']
 				)
 			);
 	}
