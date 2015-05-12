@@ -23,9 +23,7 @@ pdoConnect();
 	
 	<?php 
 		$noup="SECTION";
-		$loginvar="DUGGA";
 		include '../Shared/navheader.php';
-		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
