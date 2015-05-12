@@ -17,11 +17,10 @@
 /* Dropdown menu UMV  */
 .rightDropdownMenu {
 	float:right;
-	margin-right:100px;
 	position:fixed;
 	text-align:center;
 	top:50px;
-	right:4%;
+	right:12%;
 	box-shadow: -1px 5px 5px #A9A;
 	z-index:5001;
 }
