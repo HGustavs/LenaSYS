@@ -192,7 +192,6 @@ function renderView(data)
 
 
 		$('#radio_buttonToolbar').show();
-		onClick_Students_To_page();
 	}
 	
 	var studentView = document.getElementById("studentslist");
@@ -221,7 +220,14 @@ function getStudentInfo(student, number)
 	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
 	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
 	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
-	htmlStr += "<div class='student_email'><p>" + student['email'] + "</p></div>";
+	
+	if(number % 2 == 0) {
+		htmlStr += "<div class='student_email'><a href='mailto:" + student['email'] + "'>";
+		htmlStr += "<img src='img/envelope_white.svg' id='mail-icon' width='13' height='10' alt='mail'></a></div>";
+	}else {
+		htmlStr += "<div class='student_email'><a href='mailto:" + student['email'] + "'>";
+		htmlStr += "<img src='img/envelope_purple.svg' id='mail-icon' width='13' height='10' alt='mail'></a></div>";
+	}
 		
 	htmlStr += "</div>";
 	
@@ -232,7 +238,6 @@ function getStudentInfo(student, number)
 //	getCourseResults(results) - creates the html representation
 //	of the course results for a student and returns it
 //---------------------------------------------------------------
-
 function getCourseResults(results)
 {
 	var colorGreen = "#50a750";
@@ -263,7 +268,10 @@ function getCourseResults(results)
 	
 }
 
-/* Sets the number of change pages buttons depending of how many students in class*/
+//---------------------------------------------------------------
+//	Sets the number of change pages buttons depending of how many 
+//  students in class
+//---------------------------------------------------------------
 function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	var htmlInserts="";
 	var numberOfPage=1;
@@ -284,7 +292,9 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 
 }
 
-//navigates between pages.
+//---------------------------------------------------------------
+//	navigates between pages
+//---------------------------------------------------------------
 function navigate_page(){
 	$('.pages').click(function(){
 		
@@ -303,7 +313,6 @@ function navigate_page(){
 //	clearLinearGraph() - clears the line graph representing
 //	all the student results in every course
 //---------------------------------------------------------------
-
 function clearLinearGraph() 
 {
 	var graph = $('#graph');
@@ -316,7 +325,6 @@ function clearLinearGraph()
 //	createLinearGraph() - creates the line graph
 //	representing all the student results in every course
 //---------------------------------------------------------------
-
 function createLinearGraph(data)
 {
 	var backgroundcolor_overlay = "#F5F0F5";
