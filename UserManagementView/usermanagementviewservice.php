@@ -59,6 +59,10 @@
 							AND programcourse.cid = course.cid AND user_course.cid = course.cid
 							ORDER BY user_course.period ASC;";
 	
+	$classCourses = "SELECT course.cid, course.coursecode AS name, course.hp FROM course, programcourse WHERE programcourse.class =  '".$classname."' AND programcourse.cid = course.cid;";
+	$classCoursesResults = "SELECT SUM(hp) AS result FROM studentresultCourse WHERE studentresultCourse.cid = :cid GROUP BY username HAVING SUM(hp) >= :hp;";
+	$classStudentCount = "SELECT COUNT(uid) AS count FROM user WHERE user.class = '".$classname."';";
+
 	//###################################### Student queries ##########################################
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
 	$reg_course_student = "SELECT course_req.coursecode as coursecode, course_req.reg_coursecode, user_course.uid FROM course_req,user_course WHERE course_req.cid=user_course.cid and user_course.uid='".$userid."';";
@@ -107,6 +111,61 @@
 		
 		//Get userdata for the given class (view data)
 		else if(strcmp($opt, 'VIEW') === 0) {
+			$courselist = array();
+			$query = $pdo->prepare($classCourses);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading data from user ". $error[2]; 
+
+			} else {
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+
+					/* ---------------------------------------------------------------------------------- */
+					/* -- Nestled query to get sum of hp and amount of students who's completed course -- */ 
+					$sql_query = $pdo->prepare($classCoursesResults);
+					$sql_query->bindParam(':cid', $row['cid']);
+					$sql_query->bindParam(':hp', $row['hp']);
+					$result = 0;
+		
+					if(!$sql_query->execute()) {
+						$error=$sql_query->errorInfo();
+						$debug="Error reading data from user ". $error[2]; 
+					} else {
+			
+						foreach($sql_query->fetchAll(PDO::FETCH_ASSOC) as $result_row){
+							$result = $result + $result_row['result'];
+						}
+			
+					}
+
+					$sql_query = $pdo->prepare($classStudentCount);
+		
+					if(!$sql_query->execute()) {
+						$error=$sql_query->errorInfo();
+						$debug="Error reading data from user ". $error[2]; 
+					} else {
+			
+						foreach($sql_query->fetchAll(PDO::FETCH_ASSOC) as $count_row){
+							$count = $count_row['count'];
+						}
+			
+					}
+					/* --------------------------------------------------------------------------------- */
+
+					array_push(
+						$courselist,
+						array(
+							'name' 			=> $row['name'],
+							'hp'			=> $row['hp'],
+							'result'		=> $result,
+							'studentCount'	=> $count
+						)
+					);
+				}
+			}
+
+
 			$studentlist = array();
 			$query = $pdo->prepare($studentInformation);
 
@@ -158,6 +217,7 @@
 					'type'			=> $opt,
 					'classname'		=> $classname,
 					'studentlist'	=> $studentlist,
+					'courselist'	=> $courselist,
 					'debug' 		=> $debug
 				);
 			}
