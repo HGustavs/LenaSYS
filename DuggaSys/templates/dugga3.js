@@ -83,7 +83,11 @@ function setup() {
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data) {
-	Timer.startTimer();
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+	}
 	
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
@@ -163,6 +167,10 @@ function setupClickHandling() {
 }
 
 function ev_mouseup(ev) {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	handler_mouseup(ev);
 }
 
@@ -282,6 +290,13 @@ function populateOperationsList()
 
 function saveClick() 
 {
+	if (querystring['highscoremode'] == 1) {	
+		Timer.stopTimer();
+		timeSpent = Timer.timeSpent;
+	} else if (querystring['highscoremode'] == 2) {
+		timeSpent = ClickCounter.noClicks;
+	}
+
 	// Loop through all bits
 	bitstr = ",";
 	var opList = document.getElementById("operations");

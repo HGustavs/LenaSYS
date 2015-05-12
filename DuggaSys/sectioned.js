@@ -154,7 +154,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","block");
+		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==5){
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
@@ -205,7 +205,7 @@ function changedType()
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","block");
+		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==5){
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
@@ -488,7 +488,9 @@ function returnedSection(data)
 							}
 						}
 						
-						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
+						if(item['highscoremode'] != 0) {
+							str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
+						}
 						
 						if(grady==-1){
 								// Nothing submitted nor marked (White)
