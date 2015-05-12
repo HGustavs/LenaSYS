@@ -630,7 +630,7 @@ $( document ).ready(function() {
 			$('#awesomebar').css({position: 'fixed', "margin-top": "-5px"
 			});
 		}
-		 if(height  < 100) {
+		 if(height  == 0) {
 			$('#awesomebar').css({position: 'relative', "margin-top": "0px"
 			});
 					
