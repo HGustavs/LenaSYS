@@ -227,6 +227,15 @@
 /*Course Link*/
 .course_link {
 	line-height:25px;
+	color:#309;
+}
+.course_link a:hover{
+	color:#F00;
+	
+}
+.course_link a:active{
+	content="";
+	color:#614875;
 }
 
 /*Course Responsible*/
