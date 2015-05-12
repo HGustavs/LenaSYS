@@ -219,9 +219,7 @@ $readfile = false;
 <?php 
 		if($readfile == false){
 		$noup="SECTION";
-			$loginvar="LINK"; 
 			include '../Shared/navheader.php';
-			setcookie("loginvar", $loginvar); 
 		}
 		?>	
 		
