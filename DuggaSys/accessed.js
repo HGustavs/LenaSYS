@@ -33,14 +33,15 @@ function changeAccess(cid,uid,val)
 function selectUser(uid,username,ssn,firstname,lastname,access)
 {
 	// Set Name		
-	$("#firstnamewrapper").html("<input class='form-control textinput' type='text' id='firstname' placeholder='"+firstname+"' />");
-	$("#lastnamewrapper").html("<input class='form-control textinput' type='text' id='lastname' placeholder='"+lastname+"' />");
+	$("#firstname").val(firstname);
+	$("#lastname").val(lastname);
 		
 	// Set User name
-	$("#usernamewrapper").html("<input class='form-control textinput' type='text' id='usrnme' placeholder='"+username+"' />");
+	$("#usrnme").val(username);
 		
 	//Set SSN
-	$("#ssnwrapper").html("<input class='form-control textinput' type='text' id='ussn' placeholder='"+ssn+"' />");
+	$("#ussn").val(ssn);
+	
 	$("#uid").val(uid);
 	$("#editUsers").css("display","block");
 }
