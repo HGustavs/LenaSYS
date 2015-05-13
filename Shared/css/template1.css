@@ -8,6 +8,7 @@
     bottom: 0px;
  	width: -moz-calc(25.0%);
 	width: -webkit-calc(25.0%);
+	width: calc(25.0%);
 }
 
 
@@ -17,6 +18,7 @@
     bottom: 0px;
  	width: -moz-calc(75%);
 	width: -webkit-calc(75%);
+	width: calc(75.0%);
     right: 0px;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
