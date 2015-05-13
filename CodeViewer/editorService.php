@@ -41,27 +41,26 @@
 	$sectionName=getOP('sectionname');
 	$exampleName=getOP('examplename');
 	$playlink=getOP('playlink');
-	$debug="NONE!";	
-	
+	$debug="NONE!";
 	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
 		$userid="1";
-	} 
+	}
 	// Checks and sets user rights
 	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
 		$writeAccess="w";
 	}else{
 		$writeAccess="s";	
 	}
-	
+	$debug = "Debug: writeAccess = $writeAccess\n";
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 	
 	$exampleCount = 0;
 	
-	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,public FROM codeexample WHERE exampleid = :exampleid;");
-    	$query->bindParam(':exampleid', $exampleId);
+		$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
+    $query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
@@ -70,11 +69,14 @@
 		$exampleName=$row['examplename'];
 		$courseID=$row['cid'];
 		$cversion=$row['cversion'];
+		$beforeId=$row['beforeid'];
+		$afterId=$row['afterid'];
 		$public=$row['public'];
 		$sectionName=$row['sectionname'];
 		$playlink=$row['runlink'];
 	}	
-	
+	$debug = $debug .' '. "Debug: beforeId/afterId = $beforeId/$afterId at line ". __LINE__ . ". \n";
+	$debug = $debug .' '. "Debug: exampleCount = $exampleCount\n, if zero, there are no examples";
 	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
 		//------------------------------------------------------------------------------------------------
@@ -106,7 +108,7 @@
 					$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
 					$query->bindValue(':filename', 'js1.js'); // TODO: Should only bind with the file used (if used) and not to one by default
 					$query->execute();
-				}
+				}	
 			}else if(strcmp('EDITEXAMPLE',$opt)===0){
 				if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
 				if(isset($_POST['examplename'])) {$exampleName = $_POST['examplename'];}
@@ -141,7 +143,6 @@
 					$query->bindParam(':cvers', $courseVersion);
 					$query->execute();
 				}
-				
 				if(isset($_POST['addedWords'])) {
 					// Converts to array
 					$addedWords = explode(",",$_POST['addedWords']);
@@ -154,8 +155,7 @@
 						$query->bindParam(':uid', $_SESSION['uid']);
 						$query->execute();
 					}
-				}
-				
+				}			
 				if(isset($_POST['removedWords'])) {
 					// Converts to array
 					$removedWords = explode(",",$_POST['removedWords']);
@@ -167,7 +167,7 @@
 						$query->bindParam(':word', $word);
 						$query->execute();
 					}
-				}
+				}			
 			}else if(strcmp('EDITCONTENT',$opt)===0) {
 				$exampleId = $_POST['exampleid'];
 				$boxId = $_POST['boxid'];
@@ -265,8 +265,8 @@
 		// Iteration to find after examples - We start with $exampleId and at most 5 are collected
 		$nextExampleCount = 0;
 		$forwardExamples = array();	
-		$currentId=$exampleId;
-		
+		$currentId=$exampleId;				
+
 		do{
 			if(isset($beforeAfter[$currentId])){
 				$currentId=$beforeAfter[$currentId][4];
@@ -277,26 +277,26 @@
 				array_push($forwardExamples,$beforeAfter[$currentId]);
 			}
 			$nextExampleCount++;
-			
 		// Iteration to find before examples - We start with $exampleId and at most 5 are collected
 		}while($currentId!=null&&$nextExampleCount<5);
-
-			 
-			$backwardExamples = array();	
-			$currentId=$exampleId;
-			$previousExamplesCount = 0;
-			do{
-				if(isset($beforeAfter[$currentId])){
-					$currentId=$beforeAfter[$currentId][3];
-				}else{
-					$currentId=null;
-				}					
-				if($currentId!=null){
-					array_push($backwardExamples,$beforeAfter[$currentId]);
-				}
+		$debug= $debug . ' ' . "Debug: Nr upcoming examples found:  $nextExampleCount at line ". __LINE__ . ". \n";
+		
+		$backwardExamples = array();	
+		$currentId=$exampleId;
+		$previousExamplesCount = 0;
+		do{
+			if(isset($beforeAfter[$currentId])){
+				$currentId=$beforeAfter[$currentId][3];
+			}else{
+				$currentId=null;
+			}					
+			if($currentId!=null){
+				array_push($backwardExamples,$beforeAfter[$currentId]);
+			}
 			$previousExamplesCount++;
 		}while($currentId!=null&&$previousExamplesCount<5);
-
+		$debug= $debug . ' ' ."Debug: Nr previous examples found:  $previousExamplesCount at line " . __LINE__ . ". \n";
+		
 		// Read important lines
 		$importantRows=array();
 		$query = $pdo->prepare("SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY istart;");
@@ -324,7 +324,6 @@
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 			array_push($wordLists,array($row['wordlistid'],$row['wordlistname']));					
 		} 
-		
 
 		// Read important wordlist
 		$importantWordList=array();
@@ -343,8 +342,8 @@
 		if(file_exists('./codeupload')){
 			$dir = opendir('./codeupload');
 			while (($file = readdir($dir)) !== false) {
-				if(endsWith($file,".js") || endsWith($file,".html") || endsWith($file,".php")){
-					array_push($codeDir,$file);		
+				if(endsWith($file,".js") || endsWith($file,".html") || endsWith($file,".php") || endsWith($file,".css")){
+					array_push($codeDir,$file);
 				}
 			}  
 		}
@@ -356,7 +355,7 @@
 			$dir = opendir('./descupload');
 			while (($file = readdir($dir)) !== false) {
 				if(endsWith($file,".txt")){
-					array_push($descDir,$file);		
+					array_push($descDir,$file);	
 				}
 			}  
 		}
@@ -379,24 +378,24 @@
 		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 
-	while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
-		$boxContent=strtoupper($row['boxcontent']);
-		$filename=$row['filename'];
-		$content="";					
-		if(strcmp("DOCUMENT",$boxContent)===0){
-			if(file_exists('./descupload')){
-				$filename="./descupload/".$filename;
-				$handle = @fopen($filename, "r");
-				if ($handle) {
-					while (($buffer = fgets($handle, 1024)) !== false) {
-						$content=$content.$buffer;
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			$boxContent=strtoupper($row['boxcontent']);
+			$filename=$row['filename'];
+			$content="";					
+			if(strcmp("DOCUMENT",$boxContent)===0){
+				if(file_exists('./descupload')){
+					$filename="./descupload/".$filename;
+					$handle = @fopen($filename, "r");
+					if ($handle) {
+						while (($buffer = fgets($handle, 1024)) !== false) {
+							$content=$content.$buffer;
+						}
+						if (!feof($handle)) {
+							$content.="Error: Unexpected end of file ".$descFilename."\n";			    			    
+						}
+						fclose($handle);
 					}
-					if (!feof($handle)) {
-						$content.="Error: Unexpected end of file ".$descFilename."\n";			    			    
-					}
-					fclose($handle);
 				}
-			}
 			//If box is not of Document type, code is assumed
 			}else{
 				if(file_exists('./codeupload')){
@@ -414,37 +413,37 @@
 				}else{
 					$content="No file found!";
 				}
-			
-
 			}
 			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
-	}						
-	$array = array(
-		'before' => $backwardExamples,
-		'after' => $forwardExamples,
-		'templateid' => $templateId,
-		'stylesheet' => $styleSheet,
-		'numbox' => $numBox,
-		'box' => $box,
-		'improws' => $importantRows,
-		'impwords' => $importantWordList,
-		'directory' => $directories,
-		'examplename'=> $exampleName,
-		'sectionname'=> $sectionName,
-		'playlink' => $playlink,
-		'exampleno' => $exampleNumber,
-		'words' => $words,
-		'wordlists' => $wordLists, 
-		'images' => $images,
-		'writeaccess' => $writeAccess,
-		'debug' => $debug,
-		'beforeafter' => $beforeAfters, 
-		'public' => $public
-	);
-	echo json_encode($array);
-	}else{
+		}
+		$debug = $debug . "File : " . __FILE__ . ". \n";
 		$array = array(
-		 	'debug' => "ID does not exist or there are no examples, error occur at line 63 in editorService.php (start of if-state)" 
+			'before' => $backwardExamples,
+			'after' => $forwardExamples,
+			'templateid' => $templateId,
+			'stylesheet' => $styleSheet,
+			'numbox' => $numBox,
+			'box' => $box,
+			'improws' => $importantRows,
+			'impwords' => $importantWordList,
+			'directory' => $directories,
+			'examplename'=> $exampleName,
+			'sectionname'=> $sectionName,
+			'playlink' => $playlink,
+			'exampleno' => $exampleNumber,
+			'words' => $words,
+			'wordlists' => $wordLists, 
+			'images' => $images,
+			'writeaccess' => $writeAccess,
+			'debug' => $debug,
+			'beforeafter' => $beforeAfters, 
+			'public' => $public
+		);
+		echo json_encode($array);
+	}else{
+		$debug = "Debug: Error occur at line " . __LINE__ . " in file " . __FILE__ . ". There are no examples or the ID of example is incorrect.\n";
+		$array = array(
+		 	'debug' => $debug
 		);		
 		echo json_encode($array);
 	}

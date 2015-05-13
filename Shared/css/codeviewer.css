@@ -1,5 +1,5 @@
+/* DOCUMENT CONTENT STYLE START */
 #docucontent h1 {
-
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -13,9 +13,10 @@
     font-family: Arial,Sans-Serif;
     font-style: italic;
 }
+/* DOCUMENT CONTENT STYLE STOP */
 
+/* BOX STYLE START */
 .box h1 {
-
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
@@ -46,28 +47,29 @@
     font-family: Arial,Sans-Serif;
 }
 
-/* Base-size for images in descriptionboxes */
+/* Base-size for images in description boxes */
 .box img{
     width: 70%;
 }
+/* BOX STYLE STOP */
 
-
-
-/* --- */
 /* BOXMENU STYLING START */
 .buttomenu2{
 	position: absolute;
-    top:0px;
+    top: 0px;
     width: -moz-calc(100%);
     width: -webkit-calc(100%);
+    width: calc(100%);
     margin: 0;
     overflow: hidden;
 }
+
 .buttomenu2 table td img{
 	height: 24px;
 	width: 24px;
     vertical-align: middle;
 }
+
 .buttomenu2 select{
 	top: 0px;
    	bottom:0px;
@@ -80,7 +82,6 @@
    	text-indent: 1px;
    	outline: none;
 }
-
 /* BOXMENU STYLING STOP */
 
 #buttomenu {
@@ -88,11 +89,12 @@
     position: absolute;
     top: 0px;
     height: 50px;
-    /*background-color: #614875;*/
     margin: 0px;
     border-color: rgb(0,0,0) transparent;
 }
 
+/* PICK TEMPLATE START */
+/* Is possibly replaced with template css further down in document */
 #picktemplate{
 	position: absolute;
 	top: 0px;
@@ -101,36 +103,19 @@
 	bottom: 0px;
 	background-color: white;
 }
+
 #picktemplate h1{
 	text-align: center;
     font-family: Arial, Sans-Serif;
 }
+
 #picktemplate img{
 	width: 140px;
 	height: 140px;
 }
-/*  LOOKS LIKE NOT IN USE!!!!
-.butto {
-    text-align: center;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 4px;
-    height: 44px;
-    background-color: #614875;
-}
-*/
+/* PICK TEMPLATE STOP */
 
-
-
-/* LOOKS LIKE NOT IN USE!!!!
-.butto:hover{
-	background-color: #7D5CA0;
-    cursor: pointer;
-}
-*/
-
-/* MENU BUTTONS */
+/* MENU BUTTONS START*/
 .mbutto {
     text-align: center;
     font-family: Verdana,Serif;
@@ -143,13 +128,13 @@
 .mbutto:hover{
     cursor: pointer;
 }
+/* MENU BUTTONS STOP */
 
 /* Example title in menu */
 .menutext {
     overflow: hidden;
     height: 46px;
     vertical-align: middle;
-    /*color: white;*/
     width: 100%;
     border-radius: 12px;
     font-family: Verdana,Serif;
@@ -157,43 +142,13 @@
     font-weight: normal;
     padding: 4px;
 }
-/* Extra spaces */
+
+/* Extra button spaces */
 .buttospacer {
     width: 20px;
 }
 
-/* LOOKS LIKE NOT IN USE!!!!!
-.buttogray {
-    border: 1px inset #888;
-    text-align: center;
-    border-radius: 6px;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 4px;
-    background: linear-gradient(to bottom, #AAA 0%,#DDD 15%,#FFF 40%, #555 48%,#555 80%,#DDD 99%);
-    height: 44px;
-    color: white;
-    background-color: #BBB;
-}
-*/
-
-
-/*
-.warning {
-    position: absolute;
-    top: 200px;
-    width: 200px;
-    border: 1px inset #fff;
-    text-align: center;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 4px;
-    background-color: #5D5D5D;
-}*/
-
-/* Hotdog menu */
+/* HOTDOG MENU START */
 #hotdogdrop{
 	display: none;
 	right: 0px;
@@ -202,45 +157,45 @@
 	border-color: rgb(0,0,0) transparent;
 	font-family: Arial,Serif;
 	font-size: 14px;
-	/*color: white;*/
 }
+
 #hotdogdrop table td img{
-	 	font-family: Arial,Serif;
+	font-family: Arial,Serif;
 	font-size: 14px;
 	color: white;
 	float:right;
 }
 
 #hotdogdrop table td{
-	 border-bottom: solid 1px #2A120A;
-	 	font-family: Arial,Serif;
+	border-bottom: solid 1px #2A120A;
+	font-family: Arial,Serif;
 	font-size: 14px;
-	/*color: white;*/
 }
 
-/* Scroll hotdog menu */
+/* SCROLL HOTDOG MENU */
 #table-wrapper {
-  position:relative;
+	position:relative;
 }
+
 #table-scroll {
-  height:100%;
-  overflow-y:scroll; 
+	height:100%;
+	overflow-y:scroll; 
 }
+
 #table-wrapper table {
-  width:100%;
-    
+	width:100%;
 }
 #table-wrapper table * {
-  color:white;
+	color:white;
 }
+/* HOTDOG MENU STOP */
 
-/* All dropdrowns (codeexample, images, general settings) */
+/* DROPDOWN STARTS */
 .dropdown {
     display: none;
     position: fixed;
     top: 50px;
     z-index: 4000;
-
     font-size: 14px;
     font-family: Arial,Sans-serif;
 }
@@ -264,38 +219,33 @@
     height: -moz-calc(40.0%);
     padding-left:7px;
     overflow: auto;
-    /*background-color: #614875;*/
     border-color: rgb(0,0,0) transparent;	
 }
 
-/* GENERAL SETTINGS (NEED TO CHANGE NAME!!) */
+/* General settings drop */
+/* Consider changing names */
 .docudrop {
-  /*  left: 354px; */
  	right: 0px;
     width: -moz-calc(25.0%);
 	width: -webkit-calc(25.0%);  
     height: -webkit-calc(65.0%);
     height: -moz-calc(65.0%);
-   /* background-color: #614875; 
-    background: rgb(0, 0, 0) transparent;*/
 	padding-left:7px;
 	border-color: rgb(0,0,0) transparent;
     min-width: 270px;
 }
 
-/* Different themes */
+/* Different themes dropdown */
 .themedrop {
 	right: 0px;
     width: -moz-calc(20.0%);
 	width: -webkit-calc(20.0%);  
     height: -webkit-calc(40.0%);
     height: -moz-calc(40.0%);
-	/*background-color: #614875;*/
 }	
 
 /* Images for descriptions */
 .imgdrop {
-    /*  left: 354px; */
     right: 0px;
     width: -moz-calc(30.0%);
     width: -webkit-calc(30.0%);
@@ -309,7 +259,6 @@
     width: 20%;
     padding: 5px;
 }
-
 
 .forwdrop {
     right: 20px;
@@ -342,35 +291,9 @@
 .dropdownitem:hover {
 	background-color: #7D5CA0;
 }
+/* DROPDOWN STOP */
 
-/* NOT IN USE !!!
-.menuhi {
- 	background-color: #7D5CA0;
-}
-*/
-/* NOT IN USE!!!
-.menuch {
-    background: #5D5D5D;
-    color: #fff;
-    text-shadow: 1px 1px 2px #000;
-    background-color: #614875;
-}
-*/
-
-/*  NOT IN USE!!!
-a {
-    text-decoration: none;
-    color: #000;
-}
-*/
-
-/* REPLACED WITH normtext 
-.codeview {
-    display: block;
-    font-size: 14px;
-    font-family: Courier,Courier New,Monospace;
-}
-*/
+/* BOX TEXT STYLING START */
 .norm {
     color: #fff;
     background-color: #272822;
@@ -381,289 +304,19 @@ a {
     margin: 0 auto;
     position: relative;
 }
-/*.normtextend:before{
-      display: inline-block; 
-  vertical-align: middle;
-}
+/* BOX TEXT STYLING STOP */
 
-.normtextend:before { 
-  content: ''; 
-  display: inline-block; 
-  width: 0; 
-  height: 100%; 
-  vertical-align: middle; 
-  margin-left: -0.25em; 
-} 
-*/
-
-/*
-.normtext {
-    color: #fff;
-    background-color: #272822;
-}
-
-.impo {
-    color: #fff;
-    background-color: #5d5d5d;
-}
-
-.norm .no {
-    border-right: 2px #444;
-    color: white;
-    padding-left: 3px; 
-    background-color: #614875;
-}
-
-.impo .no {
-    border-right: 2px #444;
-    color: white;
-    background-color: #9569BD;
-}
-
-.comment {
-    color: #888;
-}
-
-.norm .oper {
-    color: white;
-}
-
-.impo .oper {
-    color: #fff;
-}
-
-.norm .string {
-    color: #fff;
-}
-
-.impo .string {
-    color: #000;
-}
-
-.norm .number {
-    color: #fff;
-}
-
-.impo .number {
-    color: #fff;
-    font-weight: bold;
-}
-
-.norm .hi {
-    background-color: #5d5d5d;
-    color: #fff;
-}
-
-.impo .hi {
-    background-color: #272822;
-    color: #fed;
-}
-
-.norm .keyword {
-    color: #C5822C;
-}
-
-.impo .keyword {
-    color: #C5822C;
-}
-
-.norm .impword {
-    color: #000;
-    background-color: #fff;
-    font-weight: bold;
-}
-
-.impo .impword {
-    color: #000000;
-    background-color: #fff;
-    font-weight: bold;
-}
-
-.norm .imphi {
-    background-color: #5d5d5d;
-    color: #fff;   
-}
-
-.impo .imphi {
-    background-color: #272822;
-    color: #fed;
-}
-
-*/
-
-/*  NOT IN USE
-.warning {
-    color: #fff;
-    position: absolute;
-    top: 200px;
-    width: 200px;
-    border: 1px inset #888;
-    text-align: center;
-    border-radius: 6px;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 4px;
-    background-color: #5D5D5D;
-}
-*/
-
-/* NOT IN USE!!
-.smallbutt {
-    float: right;
-}
-
-.smallishbutt {
-    float: right;
-}
-
-.smallbutt img {
-    margin-left: 4px;
-}
-
-.smallishbutt img {
-    margin-top: 8px;
-    margin-left: 4px;
-}
- 
-#buttomenus {
-    width: 100%;
-    height: 50px;
-    background-color: #000;
-    margin: 0px;
-}
-
-.buttos {
-    border: 1px inset #888;
-    text-align: center;
-    border-radius: 6px;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    padding: 4px;
-    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
-    height: 44px;
-    color: white;
-    background-color: #BBB;
-}
-
-.menutexts {
-    overflow: hidden;
-    height: 46px;
-    vertical-align: middle;
-    color: white;
-    width: 100%;
-    border-radius: 12px;
-    font-family: Verdana,Serif;
-    font-size: 24px;
-    font-weight: normal;
-    padding: 4px;
-}
-
-#loginbox {
-    background: linear-gradient(to bottom, #CCC 0%,#888 35%,#AAA 90%, #CCC 99%);
-    padding: 4px;
-    position: relative;
-    width: 400;
-    height: 240;
-    display: block;
-    border: outset 2px #888;
-    border-radius: 8px;
-    box-shadow: 2px 2px 4px #000;
-    text-align: left;
-    color: #fff;
-    text-shadow: 2px 2px 2px #000;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-}
-
-#loginheading {
-    border: 2px solid #888;
-    padding-top: 4px;
-    text-shadow: 2px 2px 2px #000;
-    box-shadow: 2px 2px 4px #000 inset;
-    color: #fff;
-    display: block;
-    background: #fed;
-    text-align: center;
-    border-radius: 6px;
-    font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    background: linear-gradient(to right, #555 0%,#888 85%,#AAA 90%);
-    height: 24px;
-    color: white;
-    background-color: #BBB;
-}
-
-.logininput {
-    width: 150px;
-    border 1px solid #000;font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-}
-
-.loginbutton {
-    width: 120px;
-    padding-bottom: 4px;
-    height: 25px;
-    color: #fff;
-    text-shadow: 2px 2px 2px #000;
-    background: linear-gradient(to bottom, #555 0%,#888 15%,#BBB 40%, #000 48%,#000 80%,#888 99%);
-    border-radius: 4px;
-    box-shadow 2px 2px 2px #000;font-family: Verdana,Serif;
-    font-size: 14px;
-    font-weight: normal;
-    box-shadow: 2px 2px 4px #000;
-}
-
-.logincenter {
-    text-align: center;
-}
-
-.loginleft {
-    margin-left: 16px;
-}
-
-.inv {
-    font-family: Calibri,Sans-Serif;
-    font-size: 24px;
-    font-weight: normal;
-    padding: 4px;
-    box-shadow: 1px 1px 2px #666;
-    position: fixed;
-    bottom: 4px;
-    left: 4px;
-    padding-left: 6px;
-    padding-right: 6px;
-    background: #000;
-    color: #fff;
-    margin-left: 8px;
-    border-radius: 4px;
-}
-
-
-.genSettingsSection{
-	display:none;
-}
-
-*/
-/*
-.errormsg{
-	color: red;
-}
-*/
 #playlinkErrorMsg{
 	display: none;
 }
 
-/* Tab-menu in general settings */
+/* TAB-MENU SETTINGS */
 .settingsTabMenu{	
 	border-bottom: solid 2px;
 	padding-left:0px;
 	padding-bottom:0px;
 }
+
 .settingsTabMenu li{
 	display: inline;
 	cursor: default;
@@ -674,7 +327,6 @@ a {
 	border-bottom-width: 2px;
 	border-left-width: 2px;
 	border-right-width: 2px;
-	
 	-webkit-border-top-left-radius: 5px;
 	-webkit-border-top-right-radius: 5px;
 	-moz-border-radius-topleft: 5px;
@@ -686,9 +338,9 @@ a {
 .settingsTabMenu .activeSetMenuLink{
 	border-bottom-width:3px;
 }
+/* TAB-MENU STOP */
 
-/*TOOLTIPS START*/
-
+/* TOOLTIPS START */
 .tooltip, .arrow:after, .arrow2:after {
     background: black;
 }
@@ -709,12 +361,13 @@ a {
     text-transform: uppercase;
     z-index: 10000;
 }
+
 .arrow {
     width: 70px;
     height: 18px;
     overflow: hidden;
     position: absolute;
-   bottom: -16px;
+	bottom: -16px;
 }
 
 .arrow::after {
@@ -723,8 +376,7 @@ a {
     top: -20px;
     width: 25px;
     height: 25px;
-    /* 22.5 to place the arrow in the middle. arrowwidth/2 - arrow:afterwidth/2=22.5 */
-    left:22.5;
+    left:22.5; /* 22.5 to place the arrow in the middle. arrowwidth/2 - arrow:afterwidth/2=22.5 */
     -webkit-transform: rotate(45deg);
     -moz-transform:    rotate(45deg);
     -ms-transform:     rotate(45deg);
@@ -738,21 +390,19 @@ a {
     position: absolute;
     top: -16px;
 }
+
 .arrow2::after {
     content: "";
     position: absolute;
     bottom: -20px;
     width: 25px;
     height: 25px;
-    
-    /* 22.5 to place the arrow in the middle. arrow2width/2 - arrow2:afterwidth/2=22.5 */
-    left:22.5;
+    left:22.5; /* 22.5 to place the arrow in the middle. arrow2width/2 - arrow2:afterwidth/2=22.5 */
     -webkit-transform: rotate(45deg);
     -moz-transform:    rotate(45deg);
     -ms-transform:     rotate(45deg);
     -o-transform:      rotate(45deg);
 }
-
 
 .tooltip.active {
     opacity: 1;
@@ -789,15 +439,13 @@ a {
 }
 /* TOOLTIPS STOP */
 
-
-
-
-/*Prevent new lines to entered (which creates screen-errors) when editing names in lists*/
+/*Prevent new lines to enter (which creates screen-errors) when editing names in lists*/
 .norm > [contenteditable="true"] br,
 .butt > [contenteditable="true"] br{
     display:none;
 }
 
+/* TEMPLATE ICON START */
 /* Icons for picking templates */
 .templateicon{
     width: 45%;
@@ -812,12 +460,13 @@ a {
 .templatethumbicon:hover{
     cursor: pointer;
 }
+/* TEMPLATE ICON STOP */
 
+/* THEME ICON START */
 /* Icons for picking themes */
 .themeicon {
 	height:20px;
 	padding:5px;
-
 }
 
 .themeicon:hover {
@@ -832,6 +481,7 @@ a {
 	padding-left: 6px;
 	font-size:16px;
 }
+
 .themeicon:hover{
     background-color: black;
 }
@@ -839,9 +489,11 @@ a {
 .mobilethemebutton{
     display: none;
 }
+
 .subbutton span{
     font-size: 12px;
 }
+/* THEME ICON STOP */
 
 .showdesktop{
     display: table-cell;
@@ -853,23 +505,28 @@ a {
 .codebox{
 	padding: 0px !important;
 }
+
+/* DESCRIPTION BOX STYLE START */
 .descbox{
 	padding: 10px !important;
 }
+
 .descbox h1{
 	color: #000;
 	text-align: left;
 	font-size: 1.8em;
-    	font-weight: normal;
+    font-weight: normal;
 	font-style: normal;
 }
+
 .desc pre {
     font-family: "Courier 10 Pitch", Courier, monospace;
     font-size: 95%;
     line-height: 140%;
     white-space: pre;
     white-space: pre-wrap;
-}  
+}
+
 .descbox code {
     font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
     font-size: 95%;
@@ -882,36 +539,36 @@ a {
     margin: 0.5em 0px;
     border: 1px solid #bebab0;	
 }
+/* DESCRIPTION BOX STYLE STOP */
 
-
-
-/* USER FEEDBACK BOX ---> START  */
-
+/* USER FEEDBACK BOX START  */
 .alert.success {
 	background-color:#DFF0D8;
 	border-color:#D6E9C6;
 	color:#3C763D;
     width: 150px;
 }
+
 .alert.warning{
 	background-color: #fcf8e3;
     border-color: #faebcc;
     color: #8a6d3b;
 }
+
 .slide-down {
-  border-bottom-left-radius:0;
-  border-bottom-right-radius:0;
-  border-left-width:0;
-  border-right-width:0;
-  border-top-left-radius:0;
-  border-top-right-radius:0;
-  border-top-width:0;
-  height:40px;
-  overflow:hidden;
-  width:100%;
-  z-index:3000;
-  
+	border-bottom-left-radius:0;
+	border-bottom-right-radius:0;
+	border-left-width:0;
+	border-right-width:0;
+	border-top-left-radius:0;
+	border-top-right-radius:0;
+	border-top-width:0;
+	height:40px;
+	overflow:hidden;
+	width:100%;
+	z-index:3000;  
 }
+
 .alert strong, .alert p{
 	margin:0px;
 	padding: 0px;
@@ -928,24 +585,17 @@ a {
 }
 
 .alert {
-  border:1px solid transparent;
-  border-bottom-left-radius:4px;
-  border-bottom-right-radius:4px;
-  border-top-left-radius:4px;
-  border-top-right-radius:4px;
-  margin: 0px;
-  padding:0px;
-  width: 300px;
-  position: relative;
+	border:1px solid transparent;
+	border-bottom-left-radius:4px;
+	border-bottom-right-radius:4px;
+	border-top-left-radius:4px;
+	border-top-right-radius:4px;
+	margin: 0px;
+	padding:0px;
+	width: 300px;
+	position: relative;
 }
-
-/* USER FEEDBACK BOX ---> STOP*/
-
-
-
-
-
-
+/* USER FEEDBACK BOX STOP*/
 
 /* BOXMENU STYLING START */
 .buttomenu2{
@@ -983,27 +633,73 @@ a {
    	text-indent: 1px;
    	outline: none;
 }
-
 /* BOXMENU STYLING STOP */
 
-/* Resizable jQuery UI fix for absolute positioning */
-
+/* RESIZABLE UI START*/
+/* Resizable jQuery UI fix for absolute positioning east*/
 .ui-resizable-e {
 	right: 0px;
-bottom: 0px;
-position: absolute;
-height: 100%;
-width: 1%;
-cursor: ew-resize;
+	bottom: 0px;
+	position: absolute;
+	height: 100%;
+	width: 10px;
+	cursor: ew-resize;
 }
 
+/* Resizable jQuery UI fix for absolute positioning south*/
 .ui-resizable-s {
-left: 0px;
-bottom: 0px;
-position: absolute;
-height: 1%;
-width: 100%;
-cursor: ns-resize;
+	left: 0px;
+	bottom: 0px;
+	position: absolute;
+	height: 10px;
+	width: 100%;
+	cursor: ns-resize;
+}
+/* RESIZABLE UI CSS STOP */
+
+/* DragnDrop CSS */
+#sortList {
+	margin-left:20px;
+	margin-right:20px;
+	border: 2px solid black;
+	width: 200px;
+	background:#5a5757;
+	display:inline-block;
+}
+#exampleList {
+	margin-left:auto;
+	margin-right:auto;
+	border: 2px solid black;
+	width: 200px;
+	background:#5a5757;
+	display:inline-block;
+}
+#sortList div {
+	margin: 5px 2px 5px 2px;
+	padding: 10px;
+	background: #f2f2f2;
+	color: #000;
+	border-bottom: 2px solid #000;
+	border-top: 2px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	cursor:pointer;
+}
+#exampleList div {
+	margin: 5px 2px 5px 2px;
+	padding: 10px;
+	background: #f2f2f2;
+	color: #000;
+	border-bottom: 2px solid #000;
+	border-top: 2px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	cursor:pointer;
 }
 
-/* RESIZABLE UI CSS STOP */
+.empty {
+	margin: 5px;
+	padding: 10px;
+	background: #614875;
+	cursor:pointer;
+}

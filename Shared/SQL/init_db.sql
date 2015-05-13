@@ -226,6 +226,13 @@ CREATE TABLE codeexample(
 	CONSTRAINT fk_codeexample_joins_template FOREIGN KEY (templateid) REFERENCES template (templateid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
+/* Table structure for sequence, holding the sequence order of a specific example sequence */
+CREATE TABLE sequence (
+	seqid 	int(10) unsigned NOT NULL,
+  	cid 	int(10) unsigned NOT NULL,
+  	exampleseq 	text NOT NULL,
+  	PRIMARY KEY (cid,seqid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(

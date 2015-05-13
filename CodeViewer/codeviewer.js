@@ -62,19 +62,18 @@ function returned(data)
 	retData=data;
 	console.log(retData);
 	
-	if(retData['debug']!="NONE!") alert(retData['debug']);
+	if(retData['debug']!="NONE!") console.log("Returned from setup: " + retData['debug']);
 	
-	// Hide and show before/after button
-	if(retData['before']!=null&&retData['after']!=null){
-		if(retData['before'].length==0){
-			$("#beforebutton").css("visibility","hidden");
-		}else{
-			$("#beforebutton").css("visibility","none");		
+	// Disables before and after button if there are no available example before or after. 
+	// Works by checking if the current example is last or first in the order of examples.
+	if(retData['before']!=null&&retData['after']!=null) {
+		if (retData['exampleno'] == retData['beforeafter'][0][0] || retData['before'].length == 0) {
+			$("#beforebutton").css("opacity",0.4);
+			$("#beforebutton").css("pointer-events","none");
 		}
-		if(retData['after'].length==0){
-			$("#afterbutton").css("visibility","hidden");
-		}else{
-			$("#afterbutton").css("visibility","none");	
+		if (retData['exampleno'] == retData['beforeafter'][retData['beforeafter'].length - 1][0] || retData['after'].length == 0) {
+			$("#afterbutton").css("opacity",0.4);
+			$("#afterbutton").css("pointer-events","none");
 		}
 	}
 	// Fill Section Name and Example Name
@@ -101,7 +100,8 @@ function returned(data)
 	
 	// Possible crash warning if returned number of boxes is wrong
 	if(retData['numbox']==0 || retData['numbox']==null){
-		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
+		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
+		console.log(debug);
 	}
 	// Create boxes
 	for(var i=0;i<retData['numbox'];i++){
@@ -572,9 +572,11 @@ function createhotdogmenu()
 	str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
 	str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
 	str += '</tr>';
+	// TODO: Check if redundant warning, as code is not used for now it's not that much of a priority
 	// Possible crash warning if returned number of boxes is wrong
 	if(retData['numbox']==0 || retData['numbox']==null){
-		alert("Number of boxes returned is " +retData['numbox']+ ", this may cause the page to crash");
+		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
+		console.log(debug);
 	}
 	for(i=0;i<retData['numbox'];i++){
 		str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retData['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retData['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
@@ -679,7 +681,7 @@ function Skip(skipkind)
 			if(retData['after'].length!=0&&dmd==2){
 					navigateExample(retData['after'][0][0]);
 			}
-			dmd=0;		
+			dmd=0;
 	}
 
 	if(skipkind=="bd"||skipkind=="fd"){
@@ -935,6 +937,8 @@ function maketoken(kind,val,from,to,rowno)
 
 function error(str,val,row)
 {
+	var debug = "Tokenizer error: "+ str+val+ " at row "+row;
+	console.log(debug);
 	alert("Tokenizer Error: "+str+val+" at row "+row);
 }
 
@@ -1050,12 +1054,18 @@ function tokenize(instring,inprefix,insuffix)
 					currentCharacter=instring.charAt(i);
 				}while(currentCharacter>='0'&&currentCharacter<='9');
 			}
+			
 			if (currentCharacter>='a'&&currentCharacter<='z'){
-				currentStr += currentCharacter;
-				i += 1;
-				error('Bad Number: ',currentStr,row);
+				//if currentStr is not finite (aka non-numerical) then it is a bad number!
+				if(!isFinite(currentStr)) {
+					currentStr += currentCharacter;
+					i += 1;
+					error('Bad Number: ',currentStr,row);
+				}
 			}
-			currentNum=+currentStr;
+			
+			currentNum = currentStr;
+			
 			if(isFinite(currentNum)){
 				maketoken('number',currentNum,from,i,row);		            		
 			}else{
@@ -1215,7 +1225,7 @@ function rendercode(codestring,boxid,wordlistid)
 	cbcount=0;
 	cbracket=new Array();
 	
-	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr');
+	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr');
 	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source'); 
 	var htmlTagCount=0;
 	htmlTag=new Array();
@@ -1282,30 +1292,32 @@ function rendercode(codestring,boxid,wordlistid)
 				pid=cbracket.pop();
 				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
 			}else if(tokenvalue=="<"){
-				if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
-					var k = 2;
-					var foundEnd = false;
-					while(tokens[i+k].kind != "newline"){
-						if(tokens[i+k].val == ">"){					//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
-							foundEnd = true;
-							break;
+				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!"){
+					if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
+						var k = 2;
+						var foundEnd = false;
+						while(tokens[i+k].kind != "newline"){
+							if(tokens[i+k].val == ">"){					//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
+								foundEnd = true;
+								break;
+							}
+							k++;
 						}
-						k++;
-					}
-					if(foundEnd){
-						pid="html"+htmlTagCount+boxid;
-						htmlTagCount++;
-						if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
-							htmlTag.push(pid);
+						if(foundEnd){
+							pid="html"+htmlTagCount+boxid;
+							htmlTagCount++;
+							if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+								htmlTag.push(pid);
+							}
+							cont+="<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+("&lt" + tokens[i+1].val);
+							for(var j = 2; j < k+1; j++){
+								cont+=tokens[i+j].val;
+							}
+							cont+="</span>";
+							i=i+k;
+						}else{
+							cont+="<span class='oper'>"+tokenvalue+"</span>";
 						}
-						cont+="<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+("&lt" + tokens[i+1].val);
-						for(var j = 2; j < k+1; j++){
-							cont+=tokens[i+j].val;
-						}
-						cont+="</span>";
-						i=i+k;
-					}else{
-						cont+="<span class='oper'>"+tokenvalue+"</span>";
 					}
 				}else if(tokens[i+1].val=="/"){
 					if(htmlArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
@@ -1642,7 +1654,65 @@ function resizeBoxes(parent, templateId)
 				setLocalStorageProperties(templateId, boxValArray);
 			}
 		});
-	}
+	}else if(templateId == 6){
+		
+			getLocalStorageProperties(templateId, boxValArray);
+			$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
+			
+		
+			$(boxValArray['box1']['id']).resizable({
+				containment: parent,
+				handles: "e",
+				resize: function(e, ui){
+					alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+					$(boxValArray['box1']['id']).height(100 + "%");
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+			
+			$(boxValArray['box2']['id']).resizable({
+				containment: parent,
+				handles: "s",
+				resize: function(e, ui){
+					
+						alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+						$(boxValArray['box3']['id']).css("left", " ");
+						$(boxValArray['box2']['id']).css("left", " ");
+						console.log("1");
+					
+				},
+				stop: function(e, ui) {
+					 
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+			
+			
+			$(boxValArray['box3']['id']).resizable({
+				containment: parent,
+				handles: "s",
+				resize: function(e, ui){
+					
+					console.log("");
+					$(boxValArray['box4']['id']).css("top", " ");
+					alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+					
+					
+				},
+				stop: function(e, ui) {
+					 
+					$(boxValArray['box4']['id']).css("top", " ");
+					setLocalStorageProperties(templateId, boxValArray);
+					 
+				}
+			});
+		}
 };
 //----------------------------------------------------------------------------------
 //width adjustment for template(1,3) (Two boxes beside eachother.)
@@ -1741,6 +1811,108 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
 	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
 }
+
+//----------------------
+// WIDTH MEASURMENT FOR TEMPLATE 6
+//----------------------
+
+function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
+	
+					var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+					
+					
+					var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+					var basePer = 100 - remainWidthPer;
+					
+					
+					$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+					//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+					$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
+					$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+					
+					
+					$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+					$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
+					$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
+					
+					boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+					boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+					boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+					boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
+	
+	}
+	
+	//----------------------
+	// HEIGHT MEASURMENT FOR TEMPLATE 6
+	//----------------------
+	
+	function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
+					
+					//Get initial values.
+					var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
+					var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+					var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
+					var basePer = 100-(remainHeightPer + alignSecondPer);
+					var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+					var atry2 = (atry/boxValArray['parent']['height'])*100;
+					
+					
+					if(remainHeightPer <= 10){
+					
+						atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+						atry2 = (atry/boxValArray['parent']['height'])*100;
+					
+						remainHeightPer = 10;
+						$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+						$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+						$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
+						$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
+						
+					}else {
+					
+						$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+						$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+						$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
+					}
+					
+					//Update array
+					boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+					boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
+					boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
+						
+	}
+	
+	//----------------------
+	// HEIGHT MEASURMENT FOR TEMPLATE 6
+	//----------------------
+	
+	function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
+	
+		
+					var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
+					var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+					var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
+					var basePer = 100-(remainHeightPer + alignSecondPer);
+					var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+					var atry2 = (atry/boxValArray['parent']['height'])*100;
+					
+					if(atry2 <= 10){
+					
+						$("#box3wrapper").css({"top": basePer + "%",
+											   "height": remainHeightPer + "%"});
+						
+						
+						
+					 }else {
+					
+						$("#box4wrapper").height(atry2 + "%");
+						$("#box3wrapper").css({"top": basePer + "%",
+											   "height": remainHeightPer + "%",
+											   "left": " "});
+						
+					}
+			
+	}
 
 //----------------------------------------------------------------------------------
 //Creates an array with all the properties needed for resize function.
@@ -1841,6 +2013,9 @@ function erasePercentGap(templateId, boxValArray)
 		alignBoxesWidth(boxValArray, 1, 2);
 		alignBoxesWidth(boxValArray, 3, 4);
 		alignBoxesHeight4boxes(boxValArray, 1, 2);
+	}else if(templateId == 6){
+		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 	}
 }
 
@@ -1893,11 +2068,11 @@ function parseMarkdown(inString)
 	
 	//Regular expressions for headings
 	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
-	inString = inString.replace(/^\#{5}\s (.*)=*/gm, '<h5>$1</h5>');
-	inString = inString.replace(/^\#{4}\s (.*)=*/gm, '<h4>$1</h4>');
-	inString = inString.replace(/^\#{3}\s (.*)=*/gm, '<h3>$1</h3>');
-	inString = inString.replace(/^\#{2}\s (.*)=*/gm, '<h2>$1</h2>');
-	inString = inString.replace(/^\#{1}\s (.*)=*/gm, '<h1>$1</h1>');
+	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
+	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
+	inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
+	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
+	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
 	
 	//Regular expressions for lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');

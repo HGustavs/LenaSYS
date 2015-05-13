@@ -61,8 +61,7 @@ Testing Link:
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Result Editor</title>
-		<title>Code Viewer and Editor Version 3</title>
+		<title>Code Editor v5</title>
 		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
@@ -74,7 +73,7 @@ Testing Link:
 		<script type="text/javascript" src="codeviewer.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-		<body onload="setup();">
+	<body onload="setup();">
 		<!-- content START -->
 		<div id="content">
 		<?php 
@@ -152,7 +151,7 @@ Testing Link:
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
 			echo "</div>";
-			if($codeviewer) echo "<div id='div2'>If this text remains this means this is an uncaught error. Please contact the admin with this message : codeviewer=true@line135-EV50.php</div>";
+			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 		?>						
 		<!--- Dropdowns START --->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
@@ -186,11 +185,11 @@ Testing Link:
 				</tr>
 				<tr>
 					<td colspan="1"><select id='improws'></select></td>
-					<td colspan="1"><input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
+					<td colspan="1"><input style="width:32px; float: none;" class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
 				</tr>		
 				<tr>
 					<td colspan="1"><input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
-					<td colspan="1"><input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpRows("+");' /></td>
+					<td colspan="1"><input style="width: 32px; float: none;" class='submit-button' type='button' value='+' onclick='editImpRows("+");' /></td>
 				</tr>		
 			</table>
 			<table width="100%">
@@ -212,10 +211,6 @@ Testing Link:
 					<td>Section Title: <input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
 				</tr>
 				<tr>
-					<td>Before: <select  id='before'></select></td>
-					<td>After: <select  id='after'></select></td>
-				</tr>
-				<tr>
 					<td>Play Link:</td>
 					<td>Important Words:</td>
 				</tr>
@@ -229,6 +224,11 @@ Testing Link:
 					</select></td>
 				</tr>	
 			</table>
+			<div id="SeqEdit" style="border:2px solid #000;">
+			<?php
+				echo "<script>$('#SeqEdit').load('dragndrop.php?courseid=$courseID');</script>";
+			?>
+			</div>
 			<table width="100%">
 				<tr>
 					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
