@@ -16,7 +16,7 @@
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
 
-	<?php
+<?php
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services!
@@ -89,15 +89,15 @@
 
 	}else{
 		echo "</head>";
-		echo "<body>";		
+		echo "<body>";
 	}
-	?>
+?>
 
 
 	<?php 
-	$noup="SECTION";
-	$loginvar="PDUGGA"; 
-	include '../Shared/navheader.php';
+		$noup="SECTION";
+		$loginvar="PDUGGA"; 
+		include '../Shared/navheader.php';
 	?>
 
 	<!-- content START -->
@@ -105,31 +105,30 @@
 		<?php
 
 			// Log USERID for Dugga Access
-		makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
 
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
-		if($duggafile!="UNK"&&$userid!="UNK"){
-			if(file_exists ( "templates/".$duggafile.".html")){
-				readfile("templates/".$duggafile.".html");
+			if($duggafile!="UNK"&&$userid!="UNK"){
+				if(file_exists ( "templates/".$duggafile.".html")){
+					readfile("templates/".$duggafile.".html");
 
-				echo "<table width='100%'>";
-				echo "<tr>";
-				echo "<td align='center'>";
-				echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='box-shadow:none;width:160px;height:48px;line-height:48px;' />";
-				echo "</td>";
-				echo "</tr>";
-				echo "</table>";
+					echo "<table width='100%'>";
+					echo "<tr>";
+					echo "<td align='center'>";
+					echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='box-shadow:none;width:160px;height:48px;line-height:48px;' />";
+					echo "</td>";
+					echo "</tr>";
+					echo "</table>";
 
-			}else{
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
+				}else{
+					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
+				}
+			}else if ($userid=="UNK"){
+				echo "<div class='err'><span style='font-weight:bold;'>Inte inloggad!</span> Du måste logga in för att kunna se och genomföra duggor. Klicka på symbolen längst upp till höger.</div>";
+			}else {
+				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Något gick fel vid hämtningen av duggan. Kontakta LENASys-adminsitratör.</div>";
 			}
-		}else if ($userid=="UNK"){
-			echo "<div class='err'><span style='font-weight:bold;'>Inte inloggad!</span> Du måste logga in för att kunna se och genomföra duggor. Klicka på symbolen längst upp till höger.</div>";
-		}else {
-			echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Något gick fel vid hämtningen av duggan. Kontakta LENASys-adminsitratör.</div>";
-		}								
-
 		?>
 
 	</div>
@@ -159,7 +158,7 @@
 	<!-- content END -->
 
 	<?php
-	include '../Shared/loginbox.php';
+		include '../Shared/loginbox.php';
 	?>
 	
 </body>
