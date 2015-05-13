@@ -91,7 +91,7 @@ function saveDuggaResult(citstr)
 		citstr=querystring['moment']+" "+citstr;
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
-		citstr= citstr + "-" + timeSpent;
+		citstr= citstr + "-" + score;
 		
 		hexstr="";
 		for(i=0;i<citstr.length;i++){
