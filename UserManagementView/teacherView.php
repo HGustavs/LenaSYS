@@ -30,7 +30,7 @@
 <body>
 
   	<?php 
-		$noup="NONE";
+		$noup="TEACHERVIEW";
 		$loginvar="UMVTEACHER"; 
 		include '../Shared/navheader.php';
 	?>
@@ -43,14 +43,16 @@
 	<div id="contentUMV">
             
         <!-- Dropdownmenu -->
+        
         <nav class="rightDropdownMenu" id="DropdownMenu">
         	
-        </nav>      
-       		        
+        </nav>     
+       	        
         <!-- Searchfield -->
         <div class="searchfieldTV clearfix">
-             	<input type="text" class="my-pull-left " placeholder=" Search..." name="studyprogram/Pnr" id="studyprogram/Pnr">
-             	<div class="button my-pull-left " onclick="loadData(studyprogram.value,pnr.value);">Search</span></div>
+             	<input type="text" id="inputSearch" class="my-pull-left" list="searchOptions" placeholder=" Search..." name="studyprogram/Pnr" id="studyprogram/Pnr">
+             	<datalist id="searchOptions"> </datalist>
+                <div class="button my-pull-left" id="searchbutton" onclick="display_search_data();">Search</span></div>
         </div>
     
         <div id="class_view">

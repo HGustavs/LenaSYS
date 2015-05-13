@@ -6,6 +6,7 @@ var selectedClass = "";
 var selectedClassCode = "";
 var selectedPage = 0;
 
+
 //---------------------------------------------------------------
 //	renderTeacherView(data) - renders given html code for the given
 //	data that was returned.
@@ -155,6 +156,9 @@ function renderView(data)
 		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
 		$('.changePages').hide();
 		$('#radio_buttonToolbar').hide();
+		$('graphContainer').hide();
+		$('#studentView').hide();
+		
 
 	}else{
 
@@ -193,16 +197,21 @@ function renderView(data)
 
 
 		$('#radio_buttonToolbar').show();
+		
 	}
 	
 	var studentView = document.getElementById("studentslist");
 	studentView.innerHTML = htmlStr;
 	
-	progress_bar_hover(data);
 	
+	progress_bar_hover(data);
+	//jquery functions
 	//The line graph needs to be redrawn once for the text to appear correctly
 	createLinearGraph(data);
+	clearLinearGraph();
+	createLinearGraph(data);
 	onClick_Students_To_page();
+	input_search_alternative()
 }
 
 //---------------------------------------------------------------
@@ -352,6 +361,120 @@ function navigate_page(){
 		
 	});
 }
+
+//---------------------------------------------------------------
+//	clearLinearGraph() - clears the line graph representing
+//	all the student results in every course
+//---------------------------------------------------------------
+
+function clearLinearGraph() 
+{
+	var graph = $('#graph');
+	var c = graph[0].getContext('2d');
+	c.clearRect(0, 0, graph[0].width, graph[0].height);
+}
+
+function input_search_alternative(){
+	$('#inputSearch').keyup(function(){
+		
+		// checks witch query it will use to get data from php. add more statments for diffrent querys
+		if(isNaN(this.value.charAt(0))){
+			search_alternatives(this.value,2);
+			console.log('username');
+		}else{
+			search_alternatives(this.value,1);
+			console.log('number');
+		}
+	});
+}
+
+
+function search_alternatives(varible,query) {
+	if(query==1){	
+		$.ajax({
+			type:"POST",
+			url: "../UserManagementView/umvSearch.php",
+			data: {
+				ssn: varible,
+				query: query,
+			},
+			success:function(data) {
+				if(data != null){
+					var dataclean = JSON.parse(data);
+					search_option_pnr(dataclean);
+				}
+			},
+			error:function() {
+				console.log("error");
+			}
+		});
+
+	}if(query==2){
+		$.ajax({
+			type:"POST",
+			url: "../UserManagementView/umvSearch.php",
+			data: {
+				usernameSearch: varible,
+				query: query,
+			},
+			success:function(data) {
+				if(data != null){
+					var dataclean = JSON.parse(data);
+					search_option_username(dataclean);
+				}
+			},
+			error:function() {
+				console.log("error");
+			}
+		});
+	}
+}
+
+function search_option_username(data){
+	var htmlStr= "";
+	var user = data['user'];
+
+	for(var i = 0; i<5;i++){
+		console.log(user.length +'asdm');
+		htmlStr += "<option value='"+user[i]['username']+"' class='"+user[i]['uid']+"'></option>";
+		if(i < user.length){
+			break;
+		}
+	}
+	var insert = document.getElementById("searchOptions");
+	insert.innerHTML = htmlStr;
+}
+
+function search_option_pnr(data){
+	var htmlStr= "";
+	var user = data['user'];
+	for(var i = 0; i<5;i++){
+		htmlStr += "<option value='"+user[i]['ssn']+"' class='"+user[i]['uid']+"'></option>";
+		if(i < user.length){
+			break;
+		}
+	}
+	var insert = document.getElementById("searchOptions");
+	insert.innerHTML = htmlStr;
+}
+
+function display_search_data(){
+	var studentToRender = null;
+	var theOption = $('#inputSearch').val();
+
+	$('option').each( function() {
+
+		if(this.value== theOption){
+			studentToRender = this.className;
+			console.log(this.className);
+
+		}
+	});
+	if(studentToRender != null){
+		get_student_data(studentToRender);
+	}
+}
+
 
 // Redirect teacher to specific student page
 function onClick_Students_To_page(){
