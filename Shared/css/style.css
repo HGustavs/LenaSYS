@@ -283,6 +283,10 @@ header {
     vertical-align: middle;
 }
 
+.navButt img {
+    margin-left: 10px;
+}
+
 .navHeading {
     font-size: 2.5em;
     padding-left: 15px;
