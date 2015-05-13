@@ -4,7 +4,6 @@ AJAXService("TOOLBAR", {}, "UMVTEACHER");
 
 var selectedClass = "";
 var selectedClassCode = "";
-var selectedPage = 0;
 
 //---------------------------------------------------------------
 //	renderTeacherView(data) - renders given html code for the given
@@ -155,6 +154,9 @@ function renderView(data)
 		htmlStr = "<div id='no_page'><h2>No student data found for this class.</h2></div>";
 		$('.changePages').hide();
 		$('#radio_buttonToolbar').hide();
+		$('graphContainer').hide();
+		$('#studentView').hide();
+		
 
 	}else{
 
@@ -174,7 +176,7 @@ function renderView(data)
 
 			htmlStr += "<div class='studentInfo'>";
 			htmlStr += getStudentInfo(student, renderStudent);
-			htmlStr += getCourseResults(student['results'],j+i);
+			htmlStr += getCourseResults(student['results']);
 
 			htmlStr += "</div>";
 		
@@ -193,16 +195,20 @@ function renderView(data)
 
 
 		$('#radio_buttonToolbar').show();
+		onClick_Students_To_page();
 	}
 	
 	var studentView = document.getElementById("studentslist");
 	studentView.innerHTML = htmlStr;
 	
-	progress_bar_hover(data);
-	
+
+	//jquery functions
 	//The line graph needs to be redrawn once for the text to appear correctly
 	createLinearGraph(data);
+	clearLinearGraph();
+	createLinearGraph(data);
 	onClick_Students_To_page();
+	input_search_alternative()
 }
 
 //---------------------------------------------------------------
@@ -221,14 +227,7 @@ function getStudentInfo(student, number)
 	htmlStr += "<div class='student_name'><p>" + student['fullname'] + "</p></div>";
 	htmlStr += "<div class='student_ssn'><p>" + student['ssn'] + "</p></div>";
 	htmlStr += "<div class='student_username'><p>" + student['username'] + "</p></div>";
-	
-	if(number % 2 == 0) {
-		htmlStr += "<div class='student_email'><a href='mailto:" + student['email'] + "'>";
-		htmlStr += "<img src='img/envelope_white.svg' id='mail-icon' width='13' height='10' alt='mail'></a></div>";
-	}else {
-		htmlStr += "<div class='student_email'><a href='mailto:" + student['email'] + "'>";
-		htmlStr += "<img src='img/envelope_purple.svg' id='mail-icon' width='13' height='10' alt='mail'></a></div>";
-	}
+	htmlStr += "<div class='student_email'><p>" + student['email'] + "</p></div>";
 		
 	htmlStr += "</div>";
 	
@@ -240,7 +239,7 @@ function getStudentInfo(student, number)
 //	of the course results for a student and returns it
 //---------------------------------------------------------------
 
-function getCourseResults(results, studentNumber)
+function getCourseResults(results)
 {
 	var colorGreen = "#50a750";
 	var colorYellow = "#F0AD4E";
@@ -253,13 +252,10 @@ function getCourseResults(results, studentNumber)
 		/* Check that result is not null and set to 0 if so */
 		var course_result = results[i]['result'] == null ? 0 : results[i]['result'];
 		var course_hp	  = results[i]['hp'];
-		var course_name	  = results[i]['coursename'];
 		var procent		  = course_result/course_hp * 100;
 		var color		  = procent < 100 ? colorYellow : colorGreen;
 		
-		htmlStr += "<div id='course_"+course_name+"#"+studentNumber+"' style='position:relative; margin:-42px 0px 0px -50px; z-index:1001px;'>";		
-		htmlStr += "</div>";
-		htmlStr += "<div id='"+course_name+"#"+studentNumber+"' class='progress_course_total'>";
+		htmlStr += "<div class='progress_course_total'>";
 		htmlStr += "<div class='progress_course' style='width:" + procent + "%; background-color: " + color + ";'>";
 		htmlStr += "<p>" + parseFloat(course_result) + "/" + course_hp + "</p>";
 		htmlStr += "</div>";
@@ -273,72 +269,28 @@ function getCourseResults(results, studentNumber)
 	
 }
 
-function progress_bar_hover(data){
-	
-	$('.progress_course_total').on( 'mouseenter',function() {
-		
-			var course = 'course_'+$(this).attr('id');
-
-			var htmlString = "";
-			htmlString += "<p>"+$(this).attr('id').split('#')[0]+"</p>";
-			
-			var hover_name = document.getElementById(course);
-			hover_name.innerHTML = htmlString;
-
-		}).on('mouseleave', function(){
-			
-			var courseout = "course_"+$(this).attr('id');
-
-			var hover_name = document.getElementById(courseout);
-			hover_name.innerHTML = "";
-  
-    });
-}
-
-//---------------------------------------------------------------
-//	Sets the number of change pages buttons depending of how many 
-//  students in class
-//---------------------------------------------------------------
+/* Sets the number of change pages buttons depending of how many students in class*/
 function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	var htmlInserts="";
 	var numberOfPage=1;
-	
+
 	htmlInserts+="<div class='changePages'>";
 	htmlInserts+="<p>Page</p>";
-	
+
 	for(var i =0; i < calcNumberOfStudents; i+=numberOfStudentsPerPages){
-		htmlInserts+= "<div class='page_"+numberOfPage +" pages notActive_Page' onClick='activePage("+numberOfPage+")'>"+numberOfPage +"</div>";
+		htmlInserts+= "<div class='page_"+numberOfPage +" pages'>"+numberOfPage +"</div>";
 		numberOfPage++;
 	}
-		
-	htmlInserts+= "<div id='nextPage'> >> </div> ";	
+
+	//htmlInserts+= "<div id='nextPage'> >> </div> ";	
 	htmlInserts+="</div>";
 
 	var changePages = document.getElementById("teacher_pages");
 	changePages.innerHTML = htmlInserts;
-	activePage(1);
+
 }
 
-//---------------------------------------------------------------
-//	When click on pagenumber the pagenumber is going to be markt
-//---------------------------------------------------------------
-function activePage(numberOfPage){
-	
-	if(selectedPage !== numberOfPage) {
-		if(selectedPage !== "") {
-			$('.page_'+selectedPage).removeClass('active_Page');
-			$('.page_'+selectedPage).addClass('notActive_Page');
-		}
-		$('.page_'+numberOfPage).removeClass('notActive_Page');
-		$('.page_'+numberOfPage).addClass('active_Page');
-		
-		selectedPage = numberOfPage;
-	}
-}
-
-//---------------------------------------------------------------
-//	navigates between pages
-//---------------------------------------------------------------
+//navigates between pages.
 function navigate_page(){
 	$('.pages').click(function(){
 		
@@ -352,6 +304,120 @@ function navigate_page(){
 		
 	});
 }
+
+//---------------------------------------------------------------
+//	clearLinearGraph() - clears the line graph representing
+//	all the student results in every course
+//---------------------------------------------------------------
+
+function clearLinearGraph() 
+{
+	var graph = $('#graph');
+	var c = graph[0].getContext('2d');
+	c.clearRect(0, 0, graph[0].width, graph[0].height);
+}
+
+function input_search_alternative(){
+	$('#inputSearch').keyup(function(){
+		
+		// checks witch query it will use to get data from php. add more statments for diffrent querys
+		if(isNaN(this.value.charAt(0))){
+			search_alternatives(this.value,2);
+			console.log('username');
+		}else{
+			search_alternatives(this.value,1);
+			console.log('number');
+		}
+	});
+}
+
+
+function search_alternatives(varible,query) {
+	if(query==1){	
+		$.ajax({
+			type:"POST",
+			url: "../UserManagementView/umvSearch.php",
+			data: {
+				ssn: varible,
+				query: query,
+			},
+			success:function(data) {
+				if(data != null){
+					var dataclean = JSON.parse(data);
+					search_option_pnr(dataclean);
+				}
+			},
+			error:function() {
+				console.log("error");
+			}
+		});
+
+	}if(query==2){
+		$.ajax({
+			type:"POST",
+			url: "../UserManagementView/umvSearch.php",
+			data: {
+				usernameSearch: varible,
+				query: query,
+			},
+			success:function(data) {
+				if(data != null){
+					var dataclean = JSON.parse(data);
+					search_option_username(dataclean);
+				}
+			},
+			error:function() {
+				console.log("error");
+			}
+		});
+	}
+}
+
+function search_option_username(data){
+	var htmlStr= "";
+	var user = data['user'];
+
+	for(var i = 0; i<5;i++){
+		console.log(user.length +'asdm');
+		htmlStr += "<option value='"+user[i]['username']+"' class='"+user[i]['uid']+"'></option>";
+		if(i < user.length){
+			break;
+		}
+	}
+	var insert = document.getElementById("searchOptions");
+	insert.innerHTML = htmlStr;
+}
+
+function search_option_pnr(data){
+	var htmlStr= "";
+	var user = data['user'];
+	for(var i = 0; i<5;i++){
+		htmlStr += "<option value='"+user[i]['ssn']+"' class='"+user[i]['uid']+"'></option>";
+		if(i < user.length){
+			break;
+		}
+	}
+	var insert = document.getElementById("searchOptions");
+	insert.innerHTML = htmlStr;
+}
+
+function display_search_data(){
+	var studentToRender = null;
+	var theOption = $('#inputSearch').val();
+
+	$('option').each( function() {
+
+		if(this.value== theOption){
+			studentToRender = this.className;
+			console.log(this.className);
+
+		}
+	});
+	if(studentToRender != null){
+		get_student_data(studentToRender);
+	}
+}
+
 
 // Redirect teacher to specific student page
 function onClick_Students_To_page(){
@@ -380,26 +446,16 @@ function get_student_data(studentid) {
 }
 
 //---------------------------------------------------------------
-//	clearLinearGraph() - clears the line graph representing
-//	all the student results in every course
-//---------------------------------------------------------------
-function clearLinearGraph() 
-{
-	var graph = $('#graph');
-	var c = graph[0].getContext('2d');
-	c.clearRect(0, 0, graph[0].width, graph[0].height);
-}
-
-//---------------------------------------------------------------
 //	createLinearGraph() - creates the line graph
 //	representing all the student results in every course
 //---------------------------------------------------------------
+
 function createLinearGraph(data)
 {
 	var backgroundcolor_overlay = "#F5F0F5";
 	var color_helpLines 		= "#D8D8D8";
 	var width_helpLines			= 2;
-	var x_axis_text_font		= 'italic 8pt sans-serif';
+	var x_axis_text_font			= 'italic 8pt sans-serif';
 	var x_axis_text_align		= "center";
 	var x_axis_text_color		= "#000";
 	var width_axisLines			= 2;
@@ -418,18 +474,27 @@ function createLinearGraph(data)
     var yPadding_bottom = 30;
 	var xPadding = 40;
 	var maxY = 100;
-
-	var courselist = data['courselist'];
-	var courses = [];
-	var hp = 0;
-	for(var i = 0; i < courselist.length; i++) {
-		hp = Math.floor(((courselist[i]['result'] / (courselist[i]['hp'] * courselist[i]['studentCount'])) * 100), 0);
-		courses.push({X: courselist[i]['name'], Y: hp});
-	}
+	
+	var data = { values:[
+		{ X: "Kurs", Y: 50 },
+		{ X: "Kurs", Y: 67 },
+		{ X: "Kurs", Y: 86 },
+		{ X: "Kurs", Y: 76 },
+		{ X: "Kurs", Y: 55 },
+		{ X: "Kurs", Y: 89 },
+		{ X: "Kurs", Y: 34 },
+		{ X: "Kurs", Y: 34 },
+		{ X: "Kurs", Y: 67 },
+		{ X: "Kurs", Y: 22 },
+		{ X: "Kurs", Y: 64 },
+		{ X: "Kurs", Y: 74 },
+		{ X: "Kurs", Y: 87 },
+		{ X: "Kurs", Y: 16 },
+	]};
 	
 	// Return the x pixel for a graph point
 	function getXPixel(val) {
-		return ((graph.width() - (xPadding * 2)) / courses.length) * val + (xPadding * 2);
+		return ((graph.width() - xPadding) / data.values.length) * val + (xPadding * 2);
 	}
 	
 	// Return the y pixel for a graph point
@@ -439,23 +504,20 @@ function createLinearGraph(data)
 	 
 	graph = $('#graph');
 
-	// Adjust the width of the graph to fit the amount of ćourses
-	graph[0].width = 700 + ((courselist.length/30) * 700);
-
 	var c = graph[0].getContext('2d');
 
-	// Style for the overlay under the graph
+	/* style for the overlay under the graph */
 	c.fillStyle = backgroundcolor_overlay;
 	
-	// Begin the drawing of the polygon that should be under the graph
+	/* begin the drawing of the polygon that should be under the graph */
 	c.beginPath();
 	c.moveTo(getXPixel(0), getYPixel(0));
 	
-	for(var i = 0; i < courses.length; i++) {
-		c.lineTo(getXPixel(i), getYPixel(courses[i].Y));
+	for(var i = 0; i < data.values.length; i++) {
+		c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));
 	}
 	
-	c.lineTo(getXPixel(courses.length - 1), getYPixel(0));
+	c.lineTo(getXPixel(data.values.length - 1), getYPixel(0));
 	c.fill();
 	
 	c.lineWidth 	= width_helpLines;
@@ -465,10 +527,9 @@ function createLinearGraph(data)
 	c.fillStyle 	= x_axis_text_color;
 	
 	// Draw the X value texts
-	for(var i = 0; i < courses.length; i++) {
+	for(var i = 0; i < data.values.length; i ++) {
 		c.beginPath();
-		c.fillText(courses[i].X, getXPixel(i), graph.height() - yPadding_bottom + 20);
-		c.fillText(courses[i].Y + "%", getXPixel(i) - 15, getYPixel(courses[i].Y) - 15);
+		c.fillText(data.values[i].X, getXPixel(i), graph.height() - yPadding_bottom + 20);
 		c.moveTo(getXPixel(i), graph.height() - yPadding_bottom);
 		c.lineTo(getXPixel(i), getYPixel(100));
 		c.stroke();
@@ -495,23 +556,21 @@ function createLinearGraph(data)
 	c.lineWidth = graphLine_width;
 	
 	// Draw the line graph
-	if(courses.length > 0) {
+	c.beginPath();
+	c.moveTo(getXPixel(0), getYPixel(data.values[0].Y));
+	for(var i = 1; i < data.values.length; i ++) {
+		c.lineTo(getXPixel(i), getYPixel(data.values[i].Y));
+	}
+	c.stroke();
+	
+	// Draw the dots
+	c.fillStyle = circle_fill_color;
+	c.strokeStyle = circle_stroke_color;
+					
+	for(var i = 0; i < data.values.length; i ++) {  
 		c.beginPath();
-		c.moveTo(getXPixel(0), getYPixel(courses[0].Y));
-		for(var i = 1; i < courses.length; i++) {
-			c.lineTo(getXPixel(i), getYPixel(courses[i].Y));
-		}
+		c.arc(getXPixel(i), getYPixel(data.values[i].Y), circle_width, 0, Math.PI * 2, true);
+		c.fill();
 		c.stroke();
-		
-		// Draw the dots
-		c.fillStyle = circle_fill_color;
-		c.strokeStyle = circle_stroke_color;
-						
-		for(var i = 0; i < courses.length; i++) {  
-			c.beginPath();
-			c.arc(getXPixel(i), getYPixel(courses[i].Y), circle_width, 0, Math.PI * 2, true);
-			c.fill();
-			c.stroke();
-		}
 	}
 }
