@@ -230,7 +230,7 @@ CREATE TABLE codeexample(
 CREATE TABLE sequence (
 	seqid 	int(10) unsigned NOT NULL,
   	cid 	int(10) unsigned NOT NULL,
-  	exampleseq 	text COLLATE utf8_unicode_ci NOT NULL,
+  	exampleseq 	text NOT NULL,
   	PRIMARY KEY (cid,seqid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
