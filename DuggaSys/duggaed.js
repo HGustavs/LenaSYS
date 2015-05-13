@@ -5,8 +5,22 @@ var filez;
 AJAXService("GET",{cid:querystring['cid']},"DUGGA");
 
 $(function() {
-  $( "#release" ).datepicker({dateFormat: "yy-mm-dd"});
-    $( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});
+	$("#release").datepicker({
+        dateFormat: "yy-mm-dd", 
+        minDate:  0,
+        onSelect: function(date){            
+            var date1 = $('#release').datepicker('getDate');           
+            var date = new Date( Date.parse( date1 ) ); 
+            date.setDate( date.getDate());        
+            var newDate = date.toDateString(); 
+            newDate = new Date( Date.parse( newDate ) );                      
+            $('#deadline').datepicker("option","minDate",newDate);            
+        }
+    });
+    
+	$('#deadline').datepicker({
+        dateFormat: "yy-mm-dd" 
+    });
 });
 
 //----------------------------------------
