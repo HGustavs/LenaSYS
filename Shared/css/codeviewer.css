@@ -656,3 +656,50 @@
 	cursor: ns-resize;
 }
 /* RESIZABLE UI CSS STOP */
+
+/* DragnDrop CSS */
+#sortList {
+	margin-left:20px;
+	margin-right:20px;
+	border: 2px solid black;
+	width: 200px;
+	background:#5a5757;
+	display:inline-block;
+}
+#exampleList {
+	margin-left:auto;
+	margin-right:auto;
+	border: 2px solid black;
+	width: 200px;
+	background:#5a5757;
+	display:inline-block;
+}
+#sortList div {
+	margin: 5px 2px 5px 2px;
+	padding: 10px;
+	background: #f2f2f2;
+	color: #000;
+	border-bottom: 2px solid #000;
+	border-top: 2px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	cursor:pointer;
+}
+#exampleList div {
+	margin: 5px 2px 5px 2px;
+	padding: 10px;
+	background: #f2f2f2;
+	color: #000;
+	border-bottom: 2px solid #000;
+	border-top: 2px solid #000;
+	border-left: 1px solid #000;
+	border-right: 1px solid #000;
+	cursor:pointer;
+}
+
+.empty {
+	margin: 5px;
+	padding: 10px;
+	background: #614875;
+	cursor:pointer;
+}
