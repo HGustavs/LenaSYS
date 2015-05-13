@@ -211,10 +211,6 @@ Testing Link:
 					<td>Section Title: <input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
 				</tr>
 				<tr>
-					<td>Before: <select  id='before'></select></td>
-					<td>After: <select  id='after'></select></td>
-				</tr>
-				<tr>
 					<td>Play Link:</td>
 					<td>Important Words:</td>
 				</tr>
@@ -228,6 +224,11 @@ Testing Link:
 					</select></td>
 				</tr>	
 			</table>
+			<div id="SeqEdit" style="border:2px solid #000;">
+			<?php
+			 echo "<script>$('#SeqEdit').load('dragndrop.php?courseid=$courseID');</script>";
+			?>
+			</div>
 			<table width="100%">
 				<tr>
 					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
