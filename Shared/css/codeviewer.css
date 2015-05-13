@@ -13,7 +13,7 @@
     font-family: Arial,Sans-Serif;
     font-style: italic;
 }
-/* DOCUMENT CONTENT STYLE STOP */
+/* DOCUMENT CONTENT STYLE STOP */bo
 
 /* BOX STYLE START */
 .box h1 {
@@ -59,6 +59,7 @@
     top: 0px;
     width: -moz-calc(100%);
     width: -webkit-calc(100%);
+    width: calc(100%);
     margin: 0;
     overflow: hidden;
 }
