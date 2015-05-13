@@ -226,7 +226,7 @@ Testing Link:
 			</table>
 			<div id="SeqEdit" style="border:2px solid #000;">
 			<?php
-			 echo "<script>$('#SeqEdit').load('dragndrop.php?courseid=$courseID');</script>";
+				echo "<script>$('#SeqEdit').load('dragndrop.php?courseid=$courseID');</script>";
 			?>
 			</div>
 			<table width="100%">
