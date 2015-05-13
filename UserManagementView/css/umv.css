@@ -311,6 +311,16 @@
 	cursor:default;
 }
 
+/* Course Name Hover */
+.courseNameindicator {
+	background-color:#614875;
+	color:#FFF;
+	padding:0 5px 0 5px;
+	border-radius:0.5em;
+	margin:-42px 0px 0px -50px;
+	z-index:1001px;
+}
+
 /* Site list nav at bottom of page */
 .changePages{
 	width:190px;
