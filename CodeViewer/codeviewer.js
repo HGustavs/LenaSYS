@@ -1055,11 +1055,15 @@ function tokenize(instring,inprefix,insuffix)
 				}while(currentCharacter>='0'&&currentCharacter<='9');
 			}
 			if (currentCharacter>='a'&&currentCharacter<='z'){
-				currentStr += currentCharacter;
-				i += 1;
-				error('Bad Number: ',currentStr,row);
+				if(!isFinite(currentStr)) {
+					currentStr += currentCharacter;
+					i += 1;
+					error('Bad Number: ',currentStr,row);
+				}
 			}
-			currentNum=+currentStr;
+
+			currentNum = currentStr;
+			
 			if(isFinite(currentNum)){
 				maketoken('number',currentNum,from,i,row);		            		
 			}else{
