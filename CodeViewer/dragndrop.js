@@ -1,7 +1,7 @@
 $(function() {
 	$( "#sequenceSelector" ).change(function() {
 		seqID = $(this).val();
-		 $("#SeqEdit").load("dragndrop.php?courseid="+courseID+"&seqid="+seqID+"");
+		$("#SeqEdit").load("dragndrop.php?courseid="+courseID+"&seqid="+seqID+"");
 	});
 	
 	var emptySort = "<div class='empty'>No items.</div>";
@@ -29,7 +29,6 @@ $(function() {
 		$.post('dragndropService.php?action=update', {list: postData, seqid: seqID, courseid: courseID}, function(o) {
 			$( "#status" ).html("Saved!");
 		});
-	
 	});
 	
 	$('.newSequence').click(function(){
@@ -47,6 +46,5 @@ $(function() {
 			$( "#status" ).html("Sequence deleted!");
 		});
 	
-	});
-	
+	});	
 });
