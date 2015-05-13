@@ -4,6 +4,7 @@ AJAXService("TOOLBAR", {}, "UMVTEACHER");
 
 var selectedClass = "";
 var selectedClassCode = "";
+var selectedPage = 0;
 
 //---------------------------------------------------------------
 //	renderTeacherView(data) - renders given html code for the given
@@ -294,25 +295,45 @@ function progress_bar_hover(data){
     });
 }
 
-/* Sets the number of change pages buttons depending of how many students in class*/
+//---------------------------------------------------------------
+//	Sets the number of change pages buttons depending of how many 
+//  students in class
+//---------------------------------------------------------------
 function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	var htmlInserts="";
 	var numberOfPage=1;
-
+	
 	htmlInserts+="<div class='changePages'>";
 	htmlInserts+="<p>Page</p>";
-
+	
 	for(var i =0; i < calcNumberOfStudents; i+=numberOfStudentsPerPages){
-		htmlInserts+= "<div class='page_"+numberOfPage +" pages'>"+numberOfPage +"</div>";
+		htmlInserts+= "<div class='page_"+numberOfPage +" pages notActive_Page' onClick='activePage("+numberOfPage+")'>"+numberOfPage +"</div>";
 		numberOfPage++;
 	}
-
+		
 	htmlInserts+= "<div id='nextPage'> >> </div> ";	
 	htmlInserts+="</div>";
 
 	var changePages = document.getElementById("teacher_pages");
 	changePages.innerHTML = htmlInserts;
+	activePage(1);
+}
 
+//---------------------------------------------------------------
+//	When click on pagenumber the pagenumber is going to be markt
+//---------------------------------------------------------------
+function activePage(numberOfPage){
+	
+	if(selectedPage !== numberOfPage) {
+		if(selectedPage !== "") {
+			$('.page_'+selectedPage).removeClass('active_Page');
+			$('.page_'+selectedPage).addClass('notActive_Page');
+		}
+		$('.page_'+numberOfPage).removeClass('notActive_Page');
+		$('.page_'+numberOfPage).addClass('active_Page');
+		
+		selectedPage = numberOfPage;
+	}
 }
 
 //---------------------------------------------------------------
