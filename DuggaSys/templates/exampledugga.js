@@ -10,5 +10,4 @@ var exampleDugga={
 	
 	exampleParaDugga4 : "{*variant*:*40 13 7 20 0*}",
 	exampleAnswerDugga4 : "Variant"
-	
 };
