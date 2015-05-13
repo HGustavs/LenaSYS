@@ -1054,14 +1054,16 @@ function tokenize(instring,inprefix,insuffix)
 					currentCharacter=instring.charAt(i);
 				}while(currentCharacter>='0'&&currentCharacter<='9');
 			}
+			
 			if (currentCharacter>='a'&&currentCharacter<='z'){
+				//if currentStr is not finite (aka non-numerical) then it is a bad number!
 				if(!isFinite(currentStr)) {
 					currentStr += currentCharacter;
 					i += 1;
 					error('Bad Number: ',currentStr,row);
 				}
 			}
-
+			
 			currentNum = currentStr;
 			
 			if(isFinite(currentNum)){
