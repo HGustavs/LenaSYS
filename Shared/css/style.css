@@ -692,6 +692,22 @@ header {
     margin-left:4px;
 }
 
+/* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
+
+#HighscoreTable{
+	text-align: center;
+}
+
+#HighscoreTable th{
+	font-size: 120%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.highscoreUser {
+	background-color: rgba(99, 102,99, 0.4);
+}
+
 /* --------------================################================-------------- *
  *                                 Form Controls                                *
  * --------------================################================-------------- */
