@@ -57,6 +57,15 @@ hr {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
+.version {
+    color:#EFF;
+    text-shadow:1px 1px #000;
+    text-align:center;
+    padding: 10px;
+    font-size: 10pt;
+    font-family: Calibri,Sans-Serif;
+}
+
 .err{
 
     color:#FFE;
