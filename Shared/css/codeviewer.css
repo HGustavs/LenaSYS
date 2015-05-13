@@ -59,6 +59,7 @@
     top: 0px;
     width: -moz-calc(100%);
     width: -webkit-calc(100%);
+    width: calc(100%);
     margin: 0;
     overflow: hidden;
 }

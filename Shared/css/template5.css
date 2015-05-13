@@ -5,8 +5,10 @@
     left: 0px;
     height: -webkit-calc(50.0%);
     height: -moz-calc(50.0%);
+    height: calc(50.0%);
     width: -webkit-calc(50.0%);
     width: -moz-calc(50.0%); 
+    width: calc(50.0%); 
 }
 
 #box2wrapper {
@@ -15,8 +17,10 @@
     right: 0px;
     height: -webkit-calc(50.0%);
     height: -moz-calc(50.0%);
+    height: calc(50.0%);
     width: -webkit-calc(50.0%);
     width: -moz-calc(50.0%); 
+    width: calc(50.0%);
 }
 
 #box3wrapper {
@@ -25,8 +29,10 @@
     left: 0px;
     height: -webkit-calc(50.0%);
     height: -moz-calc(50.0%);
+    height: calc(50.0%);
     width: -webkit-calc(50.0%);
     width: -moz-calc(50.0%); 
+    width: calc(50.0%);
 }
 
 #box4wrapper {
@@ -35,7 +41,9 @@
     bottom: 0px;
     height: -webkit-calc(50.0%);
     height: -moz-calc(50.0%);
+    height: calc(50.0%);
     width: -webkit-calc(50.0%);
     width: -moz-calc(50.0%); 
+    width: calc(50.0%); 
 }
 
