@@ -238,6 +238,28 @@ if($query->execute()) {
 $duggor=array();
 $links=array();
 
+$versions=array();
+$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses".$error[2];
+}else{
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		array_push(
+			$versions,
+			array(
+				'cid' => $row['cid'],
+				'coursecode' => $row['coursecode'],
+				'vers' => $row['vers'],
+				'versname' => $row['versname'],
+				'coursename' => $row['coursename'],
+				'coursenamealt' => $row['coursenamealt']
+			)
+		);
+	}
+}
+$codeexamples = array();
+
 if($ha){
 
 	$query = $pdo->prepare("SELECT id,qname FROM quiz WHERE cid=:cid ORDER BY qname");

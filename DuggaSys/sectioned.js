@@ -410,10 +410,37 @@ function returnedSection(data)
 			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="</div>";
+		}else{
+			str+="<div class='course-menu--settings'>";
+			str+="<select class='course-dropdown' onchange='goToVersion(this)'>";
+			if (retdata['versions'].length > 0) {
+				for ( i = 0; i < retdata['versions'].length; i++) {
+					var item = retdata['versions'][i];
+					if (retdata['courseid'] == item['cid']) {
+						var vvers = item['vers'];
+						var vname = item['versname'];
+						str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+						if(retdata['coursevers']==vvers){
+							str += "selected";
+							var versionname=vname;
+						}
+						str += ">" + vname + " - " + vvers + "</option>";
+					}
+				}
+			}
+			str+="</select>";
+			str += "</div>";	
 		}
 	
 		// Course Name
-		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/></div>";
+		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
+
+		if(retdata["writeaccess"]){
+			str += "<input class='new-item-button' type='button' value='New Item' onclick='newItem();'/></div>";
+		}else{
+			str += "</div>";
+		}
+
 
 		str+="<div id='Sectionlistc' >";
 			
