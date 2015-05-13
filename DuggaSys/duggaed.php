@@ -18,6 +18,7 @@ pdoConnect();
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
+	<script src="templates/exampledugga.js"></script>
 </head>
 <body>
 	
@@ -68,8 +69,10 @@ pdoConnect();
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='vid' value='Toddler' />
-			<div class='inputwrapper' style="height:100px"><span>Param:</span><textarea id="parameter" placeholder='Variant Param'></textarea></div>
-			<div class='inputwrapper' style="height:100px"><span>Answer:</span><textarea id="variantanswer" placeholder='Variant Param'></textarea></div>
+			<div id='examplePara'></div>	
+			<div class='inputwrapper'><span>Param:</span><input class='textinput' type='text' id='parameter' value='Variant Param' /></div>	
+			<div id='exampleAnswer'></div>	
+			<div class='inputwrapper'><span>Answer:</span><input class='textinput' type='text' id='variantanswer' value='Variant Answer' /></div>
 		</div>	
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
