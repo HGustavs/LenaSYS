@@ -1,28 +1,132 @@
 
 /* use script like this to insert testdata. Do not have inserts in the script to create the database..*/
 
-use imperius;
+use imperious;
 
-/*codeviewver test data */
-
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic HTML", "../CodeViewer/EditorV30.php?exampleid=1&courseid=1", 2, 2, 1, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic CSS", "../CodeViewer/EditorV30.php?exampleid=2&courseid=1", 2, 3, 2, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Basic JS", "../CodeViewer/EditorV30.php?exampleid=3&courseid=1", 2, 4, 3, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Avancerade Kodexempel", NULL, 1, 5, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced HTML", "../CodeViewer/EditorV30.php?exampleid=4&courseid=1", 2, 6, 4, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced CSS", "../CodeViewer/EditorV30.php?exampleid=5&courseid=1", 2, 7, 5, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Advanced JS", "../CodeViewer/EditorV30.php?exampleid=6&courseid=1", 2, 8, 6, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Expert Kodexempel", NULL, 1, 9, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert HTML", "../CodeViewer/EditorV30.php?exampleid=7&courseid=1", 2, 10, 7, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert CSS", "../CodeViewer/EditorV30.php?exampleid=8&courseid=1", 2, 11, 8, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, code_id, creator, visible) VALUES(1, "Expert JS", "../CodeViewer/EditorV30.php?exampleid=9&courseid=1", 2, 12, 9, 1, 1);
+/* Insert test users */
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (1010, 'c92cober', 'Conny',  'Berg Czarnecki', '19920404-4522', password('password'), '', '1', 'c92cober@student.his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (2020, 'a87antal', 'Ann-Marie',  'Tallström', '19871116-7384', password('password'), '', '1', 'a87antal@student.his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (3030, 'a72ashal', 'Åsa',  'Hällsjö', '19721224-5582', password('password'), '', '1', 'a72ashal@student.his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (4040, 'a92albri', 'Alex', 'Bridgeman', '19920404-0404', password('password'), '', '1', 'a92albri@student.his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (5050, 'e93evkos', 'Eva', 'Koskinen', '19930505-0505', password('password'), '', '1', 'e93evkos@student.his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (6060, 's94sveri', 'Sven', 'Eriksson', '19940606-0606', password('password'), '', '1', 's94sveri@student.his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (7070, 's92sveri', 'Sven', 'Eriksson', '19920707-0707', password('password'), '', '1', 's92sveri@student.his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (8080, 'k90kakli', 'Karl', 'Klint', '19900808-0808', password('password'), '', '1', 'k90kakli@student.his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, newpassword, creator, email) VALUES (9090, 's91stcar', 'Stina', 'Carlsson', '19910909-0909', password('password'), '', '1', 's91stcar@student.his.se');
 
 
-/* more testdata in vers*/ 
+/* START Webbprogrammering START  */
+/* Insert course */
+INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) values (1, 'DV12G', 'Webbprogrammering', NOW(), 1, 1, '45656', '7.5');
 
-insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8212","HT 2012");
-insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","8111","HT 2013");
-insert into vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1,"DA551G","Distribuerade system","","7844","HT 2014");
+/* Insert versions of course (The column vers should be the same as "anmälningskod", number with 5 digts) */
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1, 'DV12G', 'Webbprogrammering', 'UNK', '45656', 'HT15');
+
+/* Insert items on coursepage */
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1001, 1, 'PHP examples', 'UNK', 1, 1, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1002, 1, 'PHP Example 1', 1, 2, 2, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1003, 1, 'PHP Example 2', 2, 2, 3, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1004, 1, 'PHP Example 3', 3, 2, 4, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1005, 1, 'Javascript examples', 'UNK', 1, 5, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1006, 1, 'JavaScript Example 1', 4, 2, 6, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1007, 1, 'JavaScript Example 2', 5, 2, 7, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1008, 1, 'JavaScript Example 3', 6, 2, 8, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1009, 1, 'HTML5 examples', 'UNK', 1, 9, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1010, 1, 'HTML5 Example 1', 7, 2, 10, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1011, 1, 'HTML5 Example 2', 8, 2, 11, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1012, 1, 'HTML5 Example 3', 9, 2, 12, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1013, 1, 'HTML5 Example 4', 10, 2, 13, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1014, 1, 'HTML5 Example 5', 11, 2, 14, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1015, 1, 'HTML5 Example 6', 12, 2, 15, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1016, 1, 'HTML5 Example 7', 13, 2, 16, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1017, 1, 'HTML5 Example 8', 14, 2, 17, 1, 1,'45656');
+
+/* Insert access for users */
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1010, 1, '0.0', 1, 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (2020, 1, '0.0', 1, 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (3030, 1, '0.0', 1, 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (4040, 1, '0.0', 1, 'R', 0, '');
+/* END Webbprogrammering END  */
+
+
+/* START Webbutveckling - datorgrafik START  */
+/* Insert course */
+INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) values (2, 'IT118G', 'Webbutveckling - datorgrafik', NOW(), 1, 1, '97732', '7.5');
+
+/* Insert versions of course (The column vers should be the same as "anmälningskod", number with 5 digts) */
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) values('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97732', 'HT15');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) values('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97731', 'HT14');
+
+/* Insert tests */
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-09-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (2, 2, 1, 2, 'Bitdugga2', 'dugga1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (3, 2, 1, 2, 'colordugga1', 'dugga2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (4, 2, 1, 2, 'colordugga2', 'dugga2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (5, 2, 1, 2, 'linjedugga1', 'dugga3', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (6, 2, 1, 2, 'linjedugga2', 'dugga3', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (7, 2, 1, 2, 'dugga1', 'dugga4', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (8, 2, 1, 2, 'dugga2', 'dugga4', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
+
+/* Insert variants of tests */
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (1, 1, '{*tal*:*2*}', '{*danswer*:*00000010 0 2*}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (2, 1, '{*tal*:*5*}', '{*danswer*:*00000101 0 5*}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (3, 1, '{*tal*:*10*}', '{*danswer*:*00002 0 A*}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (4, 2, '{*tal*:*25*}', '{*danswer*:*00011001 1 9*}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (5, 2, '{*tal*:*87*}', '{*danswer*:*02111 5 7*}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (6, 2, '{*tal*:*192*}', '{*danswer*:*11000000 C 0*}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (7, 3, '{*color*:*red*,*colorname*:*Röd*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (8, 3, '{*color*:*white*,*colorname*:*Vit*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (9, 3, '{*color*:*black*,*colorname*:*Svart*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (10, 4, '{*color*:*blue*,*colorname*:*Blå*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (11, 4, '{*color*:*purple*,*colorname*:*Lila*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (12, 4, '{*color*:*teal*,*colorname*:*Turkos (Teal)*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (13, 5, '{*linje*:*10,30,19 20 40 20 50 30 50,81 65 50*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (14, 6, '{*linje*:*10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (15, 7, '{*variant*:*40 13 7 20 0*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (16, 8, '{*variant*:*26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0*}', '{Variant}', NOW(), 2);
+
+/* Insert items on coursepage */
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2001, 2, 'Biträkningsduggor 1HP', '', 4, 0, 1, 1, '97732', 2001, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2002, 2, 'Biträkningsdugga 1', '1', 3, 1, 1, 1, '97732', 2001, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2003, 2, 'Biträkningsdugga 2', '2', 3, 2, 1, 1, '97732', 2001, 0, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2004, 2, 'Färgduggor 1HP', '', 4, 3, 1, 1, '97732', 2004, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2005, 2, 'Färgdugga 1', '3', 3, 4, 1, 1, '97732', 2004, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2006, 2, 'Färgdugga 2', '4', 3, 5, 1, 1, '97732', 2004, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2007, 2, 'Geometri 2HP', '', 4, 6, 1, 1, '97732', 2007, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2008, 2, 'Linjedugga 1', '5', 3, 7, 1, 1, '97732', 2007, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2009, 2, 'Linjedugga 2', '6', 3, 8, 1, 1, '97732', 2007, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2010, 2, 'Transformationer 3,5HP', '', 4, 9, 1, 1, '97732', 2010, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2011, 2, 'Transformationsdugga 1', '7', 3, 10, 1, 1, '97732', 2010, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2012, 2, 'Transformationsdugga 2', '8', 3, 11, 1, 1, '97732', 2010, 2, 0);
+
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2013, 2, 'Bit count test 1HP', '', 4, 0, 1, 1, '97731', 2013, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2014, 2, 'Bit count test 1', '1', 3, 1, 1, 1, '97731', 2013, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2015, 2, 'Bit count test 2', '2', 3, 2, 1, 1, '97731', 2013, 0, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2016, 2, 'Color test 1HP', '', 4, 3, 1, 1, '97731', 2016, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2017, 2, 'Hex color test 1', '3', 3, 4, 1, 1, '97731', 2016, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2018, 2, 'Hex color test 2', '4', 3, 5, 1, 1, '97731', 2016, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2019, 2, 'Geometry 2HP', '', 4, 6, 1, 1, '97731', 2019, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2020, 2, 'Geometry test 1', '5', 3, 7, 1, 1, '97731', 2019, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2021, 2, 'Geometry test 2', '6', 3, 8, 1, 1, '97731', 2019, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2022, 2, 'Transforms 3,5HP', '', 4, 9, 1, 1, '97731', 2022, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2023, 2, 'Transforms test 1', '7', 3, 10, 1, 1, '97731', 2022, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2024, 2, 'Transforms test 2', '8', 3, 11, 1, 1, '97731', 2022, 2, 0);
+
+/* Insert access for users */
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1010, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (2020, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (3030, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (4040, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (5050, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (6060, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (7070, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (8080, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (9090, 2, '0.0', '1', 'R', 0, '');
+/* END Webbutveckling - datorgrafik END  */
+
+
+
+/* START codeviewver test data START */
 
 /* Templates for codeexamples */
 
@@ -228,3 +332,5 @@ INSERT INTO impwordlist(exampleid,word,uid) values (10,"shadowColor",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (10,"shadowOffsetX",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (10,"shadowOffsetY",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (10,"shadowBlur",1);
+
+

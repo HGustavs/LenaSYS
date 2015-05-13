@@ -27,7 +27,6 @@ INSERT INTO user(username,password,newpassword,creator,superuser) values ("Griml
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
 INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111");
 
-
 /** 
  * Course table contains the most essential information relating to study courses in the database.
  */
@@ -47,10 +46,6 @@ CREATE TABLE course(
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DV12G","Webbprogrammering",NOW(),1,1,7.5);
-INSERT INTO course(coursecode,coursename,created,creator,visibility,hp) values ("DV13G","Futhark",NOW(),1,0,7.5);
-
 
 /* This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
 CREATE TABLE course_req(
@@ -81,8 +76,6 @@ CREATE TABLE user_course(
 		CONSTRAINT 		user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-
-
 CREATE TABLE listentries (
 	lid 			INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	cid 			INT UNSIGNED NOT NULL,
@@ -104,9 +97,6 @@ CREATE TABLE listentries (
 	CONSTRAINT fk_listentries_joins_user FOREIGN KEY(creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 	
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Etapp 1", NULL, 0, 0, 1, 1);
-INSERT INTO listentries (cid, entryname, link, kind, pos, creator, visible) VALUES(1, "Kodexempel", NULL, 1, 1, 1, 1);
 
 /* Quiz tables */
 CREATE TABLE quiz (
