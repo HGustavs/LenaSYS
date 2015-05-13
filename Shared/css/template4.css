@@ -5,8 +5,10 @@
     left: 0px;
     width: -moz-calc(50.0%);
 	width: -webkit-calc(50.0%);
+	width: calc(50.0%);
     height: -webkit-calc(35%);
     height: -moz-calc(35%);
+    height: calc(35%);
 }
 
 #box2wrapper {
@@ -15,8 +17,10 @@
     right: 0px;
     width: -moz-calc(50.0%);
 	width: -webkit-calc(50.0%);
+	width: calc(50.0%);
     height: -webkit-calc(35%);
     height: -moz-calc(35%);
+    height: calc(35%);
 }
 
 #box3wrapper {
@@ -26,8 +30,10 @@
     left: 0px;
     width: -moz-calc(100.0%);
 	width: -webkit-calc(100.0%);
+	width: calc(100.0%);
     height: -webkit-calc(65%);
     height: -moz-calc(65%);
+    height: calc(65%);
 }
 
 
