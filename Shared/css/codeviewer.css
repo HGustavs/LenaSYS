@@ -641,7 +641,7 @@
 	bottom: 0px;
 	position: absolute;
 	height: 100%;
-	width: 1%;
+	width: 10px;
 	cursor: ew-resize;
 }
 
@@ -650,7 +650,7 @@
 	left: 0px;
 	bottom: 0px;
 	position: absolute;
-	height: 1%;
+	height: 10px;
 	width: 100%;
 	cursor: ns-resize;
 }
