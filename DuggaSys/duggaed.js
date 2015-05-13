@@ -138,7 +138,7 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 		$("#template").html(str);
 }
 
-function selectVariant(vid,param,answer)
+function selectVariant(vid,param,answer,template)
 {
 		// Display edit dialog
 		$("#editVariant").css("display","block");
@@ -151,6 +151,39 @@ function selectVariant(vid,param,answer)
 		
 		// Set Variant answer
 		$("#variantanswer").val(answer);
+		
+		switch(template){
+			case "dugga1":
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga1;
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga1;
+				break;
+			case "dugga2":
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga2;
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga2;
+				break;
+			case "dugga3":
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga3;
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga3;
+				break;
+			case "dugga4":
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga4;
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga4;
+				break;
+			default:
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example parameter: " + "No example available";
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example answer: " + "No example available";
+				break;
+		}
 }
 
 //----------------------------------------
@@ -235,7 +268,7 @@ function returnedDugga(data)
 
 										str+="<td style='padding:4px;'>";
 												str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
+												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\",\"" + item['template'] +"\")" +"' >";
 										str+="</td>";
 
 										str+="</tr>";
