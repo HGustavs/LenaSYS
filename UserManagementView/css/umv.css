@@ -204,7 +204,9 @@
 	display:inline;
 	float:left;
 }
-
+.student_pages{
+	width:100%;
+}
 .studentInfo{
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
@@ -218,8 +220,7 @@
 	width: 35%; 
 	background-color:#614875;
 	color:#fff;
-	
-	padding:5px 10px;
+	padding:5px;
 }
 
 .odd{ 
@@ -228,17 +229,48 @@
 }
 
 .student_name{
-	width: 30%; 
-	margin-right:8px;
+	width: 38%; 
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+}
+.student_name p{
+	padding-left:5%;
+	padding-right:5%;
 }
 
 .student_ssn{
-	margin-right:8px;
+	width: 32%;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+}
+.student_ssn p{
+	padding-left:5%;
+	padding-right:5%;
 }
 
 .student_username{
-	margin-right:8px;
+	width: 22%;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
 }
+.student_username p{
+	padding-left:5%;
+	padding-right:5%;
+}
+
+.student_email{
+	width: 5%;
+	padding-left:1%;
+	padding-right:5%;
+	margin:7px 5px 0 0;
+	float:right;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+}
+.student_email a:active{
+	content: "";  
+}
+
 
 /* Smal progressbars in teacherview */
 .students_results{
@@ -250,7 +282,7 @@
 	margin-top:3px;
 	width:64%;
 	border:1px solid #A9A9A9;
-	padding:5px;
+	padding:3px 5px 5px 5px;
 }
 
 .progress_course_total{
@@ -259,6 +291,7 @@
 	width:5%;
 	height:10%;
 	border-radius:0.3em;
+	margin-top:2px;
 }
 
 .progress_course{
@@ -288,11 +321,10 @@
 	padding-top:30px;
 	clear:both;
 }
-
 .changePages p{
 	float:left;
+	cursor:default;
 }
-
 .changePages div{
 	margin-left:10px;
 	padding:3px 8px;
@@ -301,11 +333,23 @@
 	float:left;
 	border-radius:0.5em;
 }
-
 .changePages div:hover{
 	cursor:pointer;
 	color:#fff;
 	background-color:#614875;
+}
+.changePages div:active{
+	content:"";
+}
+.active_Page{
+	cursor:pointer;
+	color:#fff;
+	background-color:#614875;
+}
+.notActive_Page{
+	cursor:pointer;
+	color:#614875;
+	background-color:#fff;
 }
 
 /* Next page icon */
@@ -318,7 +362,6 @@
 	font-size:1.2em;
 	margin-left:5px;
 }
-
 #nextPage:hover{
 	cursor:pointer;
 	background-color:#fff;
