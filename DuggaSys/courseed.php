@@ -3,6 +3,10 @@ session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
+
+$versionFile = fopen("../.git/refs/heads/master", "r"); 	
+$version = fgets($versionFile);
+fclose($versionFile);
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,6 +40,8 @@ pdoConnect();
 		<div id='Courselist'>
 		</div>
 	</div>
+	<!-- version identification -->
+	<div id="version" class='version'>Master hash <br /><?php echo $version ?></div>
 	<!-- content END -->
 	<?php
 	include '../Shared/loginbox.php';
