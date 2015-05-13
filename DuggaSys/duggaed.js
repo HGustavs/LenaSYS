@@ -5,8 +5,22 @@ var filez;
 AJAXService("GET",{cid:querystring['cid']},"DUGGA");
 
 $(function() {
-  $( "#release" ).datepicker({dateFormat: "yy-mm-dd"});
-    $( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});
+  $("#release").datepicker({
+    dateFormat: "yy-mm-dd",
+    minDate: 0,
+    onSelect: function(date){
+      var date1 = $('#release').datepicker('getDate');
+      var date = new Date( Date.parse( date1 ) );
+      date.setDate( date.getDate());
+      var newDate = date.toDateString();
+      newDate = new Date( Date.parse( newDate ) );
+      $('#deadline').datepicker("option","minDate",newDate);
+    }
+  });
+
+  $('#deadline').datepicker({
+   dateFormat: "yy-mm-dd" 
+  });
 });
 
 //----------------------------------------
@@ -88,14 +102,14 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 		$("#did").val(did);		
 
 		// Set Dugga name
-		$("#dugganamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='name' placeholder='"+name+"' />");
+		$("#name").val(name);
 		
 		// Set Release date name
-		$("#releasenamewrapper").html("<input class='form-control textinput datepicker hasDatepicker' type='text' id='release' placeholder='"+release+"' />");
+		$("#release").val(release);
 
 		// Set Deadline date name
-		$("#deadlinenamewrapper").html("<input class='form-control textinput datepicker hasDatepicker' type='text' id='deadline' placeholder='"+deadline+"' />");
-
+		$("#deadline").val(deadline);
+		
 		// Set Autograde
 		var str="";
 		if(autograde==0) str+="<option selected='selected' value='0'>Off</option>"
@@ -124,19 +138,52 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 		$("#template").html(str);
 }
 
-function selectVariant(vid,param,answer)
+function selectVariant(vid,param,answer,template)
 {
-		//alert(vid+" "+param+" "+answer);
+		// Display edit dialog
 		$("#editVariant").css("display","block");
 		
 		// Set Variant ID		
 		$("#vid").val(vid);
 		
 		// Set Variant parameter
-		$("#parameternamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='parameter' placeholder='"+param+"' />");
+		$("#parameter").val(param);
 		
 		// Set Variant answer
-		$("#answernamewrapper").html("<input style='float:right;width:390px;' class='form-control textinput' type='text' id='variantanswer' placeholder='"+answer+"' />");
+		$("#variantanswer").val(answer);
+		
+		switch(template){
+			case "dugga1":
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga1;
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga1;
+				break;
+			case "dugga2":
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga2;
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga2;
+				break;
+			case "dugga3":
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga3;
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga3;
+				break;
+			case "dugga4":
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga4;
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga4;
+				break;
+			default:
+				var ep=document.getElementById("examplePara");
+				ep.innerHTML = "Example parameter: " + "No example available";
+				var test=document.getElementById("exampleAnswer");
+				test.innerHTML = "Example answer: " + "No example available";
+				break;
+		}
 }
 
 //----------------------------------------
@@ -221,7 +268,7 @@ function returnedDugga(data)
 
 										str+="<td style='padding:4px;'>";
 												str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
+												str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\",\"" + item['template'] +"\")" +"' >";
 										str+="</td>";
 
 										str+="</tr>";

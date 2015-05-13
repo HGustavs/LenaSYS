@@ -119,7 +119,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(highscoremode==2) str +="<option selected='selected' value ='2'>Click based</option>" 
 	else str +="<option value ='2'>Click based</option>"; 
 	$("#highscoremode").html(str);
-
+	
 	// Set Link
 	$("#link").val(elink);
 	
@@ -134,6 +134,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==2){
+		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
+			var iitem=retdata['codeexamples'][ii];
+			if(xelink==iitem['exampleid']){
+				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}
+		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
@@ -154,7 +162,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","block");
+		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==5){
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
@@ -185,6 +193,14 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==2){
+		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
+			var iitem=retdata['codeexamples'][ii];
+			if(xelink==iitem['exampleid']){
+				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}
+		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
@@ -205,7 +221,7 @@ function changedType()
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","block");
+		$("#inputwrapper-highscore").css("display","none");
 	}else if(kind==5){
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
@@ -394,10 +410,37 @@ function returnedSection(data)
 			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="</div>";
+		}else{
+			str+="<div class='course-menu--settings'>";
+			str+="<select class='course-dropdown' onchange='goToVersion(this)'>";
+			if (retdata['versions'].length > 0) {
+				for ( i = 0; i < retdata['versions'].length; i++) {
+					var item = retdata['versions'][i];
+					if (retdata['courseid'] == item['cid']) {
+						var vvers = item['vers'];
+						var vname = item['versname'];
+						str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+						if(retdata['coursevers']==vvers){
+							str += "selected";
+							var versionname=vname;
+						}
+						str += ">" + vname + " - " + vvers + "</option>";
+					}
+				}
+			}
+			str+="</select>";
+			str += "</div>";	
 		}
 	
 		// Course Name
-		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/></div>";
+		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
+
+		if(retdata["writeaccess"]){
+			str += "<input class='new-item-button' type='button' value='New Item' onclick='newItem();'/></div>";
+		}else{
+			str += "</div>";
+		}
+
 
 		str+="<div id='Sectionlistc' >";
 			
@@ -468,7 +511,8 @@ function returnedSection(data)
 					}else if (parseInt(item['kind']) == 4) {
 						str+="<span style='padding-left:5px;border-bottom:3px solid white'>Course Segment "+item['entryname']+"</span>";
 					}else if (parseInt(item['kind']) == 2) {
-						str+="<span><a style='margin-left:15px;' href="+item['link']+">"+item['entryname']+"</a></span>";
+						str+="<span><a style='margin-left:15px;' href='../CodeViewer/EditorV50.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
+						
 					}else if (parseInt(item['kind']) == 3 ) {
 						//Dugga!
 						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
@@ -488,7 +532,9 @@ function returnedSection(data)
 							}
 						}
 						
-						str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
+						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
+							str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
+						}
 						
 						if(grady==-1){
 								// Nothing submitted nor marked (White)
@@ -572,29 +618,67 @@ function showHighscore(did, lid)
 function returnedHighscore(data){
 
 	var str = "";
+	
+	str += "<tr>";
+	str += "<th>Rank</th>";
+	str += "<th>Name</th>";
+	str += "<th>Score</th>";
+	str += "</tr>";
 
 	if (data['highscores'].length > 0) {
 		for(i=0;i<data['highscores'].length;i++){
 			var item=data['highscores'][i];
+			if(!isNaN(data["user"][0]) && data["user"][0] === i){
+				str += "<tr class='highscoreUser'>"
+			}else{
+				str += "<tr>";
+			}
+			str += "<td>";
+			str += i + 1;
+			str += "</td>";
 			str += "<tr>"; 
 			str += "<td>";
 			str += item['username'];
 			str += "</td>"
 			str += "<td>";
-			if(highscoremode == 0) {
+			if(parseInt(item['highscoremode']) == 0) {
 				// Undefined	
-			} else if(highscoremode == 1) {
+			} else if(parseInt(item['highscoremode']) == 1) {
 				str += "Time spent: ";
-			} else if (highscoremode == 2) {
+			} else if (parseInt(item['highscoremode']) == 2) {
 				str += "Number of clicks: ";
 			} else {
 				str += "Score: ";
 			}
-			str += item['timeSpent']
+			str += item['score']
 			str += "</td>";
 			str += "</tr>";
 		}
 	}
+	
+	if(data["user"]["username"]){	
+		str += "<tr class='highscoreUser'>";
+		str += "<td>";
+		str += "";
+		str += "</td>";
+		str += "<td>";
+		str += data["user"]["username"];
+		str += "</td>"
+		str += "<td>";
+		if(parseInt(item['highscoremode']) == 0) {
+			// Undefined	
+		} else if(parseInt(item['highscoremode']) == 1) {
+			str += "Time spent: ";
+		} else if (parseInt(item['highscoremode']) == 2) {
+			str += "Number of clicks: ";
+		} else {
+			str += "Score: ";
+		}
+		str += data["user"]["score"]
+		str += "</td>";
+		str += "</tr>";
+	}
+
 	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
 }

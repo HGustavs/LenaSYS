@@ -15,9 +15,9 @@ pdoConnect();
 session_start();
 
 if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];
+	$userid=$_SESSION['uid'];
 }else{
-		$userid="1";		
+	$userid="guest";		
 } 
 
 $opt=getOP('opt');
@@ -192,7 +192,7 @@ foreach($query->fetchAll() as $row) {
 
 $entries=array();
 $reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)));
-if($reada){
+if($reada || $userid == "guest"){
 	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,gradesystem,highscoremode FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
@@ -237,6 +237,28 @@ if($query->execute()) {
 
 $duggor=array();
 $links=array();
+
+$versions=array();
+$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading courses".$error[2];
+}else{
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		array_push(
+			$versions,
+			array(
+				'cid' => $row['cid'],
+				'coursecode' => $row['coursecode'],
+				'vers' => $row['vers'],
+				'versname' => $row['versname'],
+				'coursename' => $row['coursename'],
+				'coursenamealt' => $row['coursenamealt']
+			)
+		);
+	}
+}
+$codeexamples = array();
 
 if($ha){
 
@@ -313,6 +335,26 @@ if($ha){
 			);
 		}
 	}
+	$codeexamples=array();
+	$query=$pdo->prepare("SELECT exampleid, cid, examplename, sectionname, runlink, cversion FROM codeexample;");
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading code examples".$error[2];
+	}else{
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$codeexamples,
+				array(
+					'exampleid' => $row['exampleid'],
+					'cid' => $row['cid'],
+					'examplename' => $row['examplename'],
+					'sectionname' => $row['sectionname'],
+					'runlink' => $row['runlink'],
+					'cversion' => $row['cversion']
+				)
+			);
+		}
+	}
 }
 
 $array = array(
@@ -327,7 +369,8 @@ $array = array(
 	'links' => $links,
 	'duggor' => $duggor,
 	'results' => $resulties,
-	'versions' => $versions
+	'versions' => $versions,
+	'codeexamples' => $codeexamples
 );
 
 echo json_encode($array);

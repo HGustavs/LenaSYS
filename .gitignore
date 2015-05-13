@@ -1,17 +1,20 @@
+# This line is a comment.
+# This file contains files/folders which should be ignored by git.
+
+# Filename extensions
 *.swp
 *.patch
 *.db
-.metadata
-/PlayerEditor/CanvasWrapper/Tests/*
-
 *.xml
-
+.metadata
 .project
 
-DuggaSys/Courses/3/87514/group_assignment.html
+# All files inside folders
+courses/*
+/PlayerEditor/CanvasWrapper/Tests/*
 
+# Specific files
+DuggaSys/Courses/3/87514/group_assignment.html
 DuggaSys/Courses/3/87514/kursmaterial.html
-
 DuggaSys/Courses/3/87514/group_assignment.html
-
 DuggaSys/Courses/3/87514/kursmaterial.html

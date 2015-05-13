@@ -57,6 +57,15 @@ hr {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
+.version {
+    color:#EFF;
+    text-shadow:1px 1px #000;
+    text-align:center;
+    padding: 10px;
+    font-size: 10pt;
+    font-family: Calibri,Sans-Serif;
+}
+
 .err{
 
     color:#FFE;
@@ -687,6 +696,22 @@ header {
     margin-left:4px;
 }
 
+/* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
+
+#HighscoreTable{
+	text-align: center;
+}
+
+#HighscoreTable th{
+	font-size: 120%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.highscoreUser {
+	background-color: rgba(99, 102,99, 0.4);
+}
+
 /* --------------================################================-------------- *
  *                                 Form Controls                                *
  * --------------================################================-------------- */
@@ -710,7 +735,6 @@ header {
     display: block;
     width: 216px;
     height: 30px;
-    padding: 6px 12px;
     line-height: 18px;
     color: #202020;
     background-color: #ffffff;
@@ -731,6 +755,7 @@ header {
     display: inline-block;
     text-align: start;
     border-radius: 0px;
+    box-sizing: border-box;
 }
 
 input.option {
@@ -807,7 +832,7 @@ input.new-item-button:hover {
     text-align: right;
 }
 
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;}
+.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;}
 
 .list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
 .list th {background:#614875; color:#fff;line-height:28px;}

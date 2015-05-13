@@ -43,7 +43,11 @@ function setup()
 
 function returnedDugga(data) 
 {	
-	Timer.startTimer();
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+	}
 	
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
@@ -165,6 +169,13 @@ function returnedDugga(data)
 
 function saveClick() 
 {
+	if (querystring['highscoremode'] == 1) {	
+		Timer.stopTimer();
+		score = Timer.timeSpent;
+	} else if (querystring['highscoremode'] == 2) {
+		score = ClickCounter.noClicks;
+	}
+
 	// Loop through all bits
 	bitstr = ",";
 	var opList = document.getElementById("operations");
@@ -490,6 +501,10 @@ function newbutton()
 
 function moveupbutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	$('#operations>option:selected').prev().each(function() {
 		$(this).next().after("<option value='" + $(this).val() + "'>" + $(this).html() + "</option>");
 		$(this).remove();
@@ -506,6 +521,10 @@ function movedownbutton()
 
 function deletebutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	$('#operations> option:selected').each(function() {
 		$(this).remove();
 	});

@@ -44,8 +44,12 @@ function setup()
 
 function returnedDugga(data) 
 {
-	Timer.startTimer();
-	
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+	}
+
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
@@ -78,8 +82,15 @@ function toggleControl()
 }
 
 
-function submbutton() 
+function submbutton()
 {
+	if (querystring['highscoremode'] == 1) {	
+		Timer.stopTimer();
+		score = Timer.timeSpent;
+	} else if (querystring['highscoremode'] == 2) {
+		score = ClickCounter.noClicks;
+	}
+
 	var answerString = "";
 	//var verticeObject=new Object;
 	verticeArray = new Array();
@@ -255,6 +266,10 @@ function checkVertexInput(vertexX, vertexY, vertexZ)
 
 function vertexUpdate() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}	
+
 	var vertexMsg = document.getElementById('vertexMsg');
 	vertexMsg.innerHTML = "";
 

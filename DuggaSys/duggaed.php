@@ -11,15 +11,14 @@ pdoConnect();
 	<title>Dugga editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+  	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
-	
-
+	<script src="templates/exampledugga.js"></script>
 </head>
 <body>
 	
@@ -35,51 +34,51 @@ pdoConnect();
 					
 	</div>
 
-	<!--- Edit Dugga Dialog END --->
+	<!-- Edit Dugga Dialog END -->
 	
 	<?php 
 		include '../Shared/loginbox.php';
 	?>
 
-	<!--- Edit Dugga Dialog START --->
+	<!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBox' style='width:464px;display:none;'>
-
-	<div class='loginBoxheader'>
-	<h3>Edit Dugga</h3>
-	<div onclick='closeEditDugga();'>x</div>
-	</div>
+		<div class='loginBoxheader'>
+			<h3>Edit Dugga</h3>
+			<div onclick='closeEditDugga();'>x</div>
+		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='did' value='Toddler' /></td>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='name' value='Name' /></div>
 			<div class='inputwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
 			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
 			<div class='inputwrapper'><span>Template:</span><select id='template'></select></div>
-			<div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
-			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
+			<div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' readonly="readonly"/></div>
+			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' readonly="readonly"/></div>
 		</div>
-	<div style='padding:5px;'>
-		<input class='submit-button' type='button' value='Save' onclick='updateDugga();' />
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Save' onclick='updateDugga();' />
+		</div>
 	</div>
-	</div>
-	<!--- Edit Dugga Dialog END --->
+	<!-- Edit Dugga Dialog END -->
 	
-	<!--- Edit Variant Dialog START --->
+	<!-- Edit Variant Dialog START -->
 	<div id='editVariant' class='loginBox' style='width:464px;display:none;'>
-	<div class='loginBoxheader'>
-	<h3>Edit Variant</h3>
-	<div onclick='closeWindows();'>x</div>
-	</div>
+		<div class='loginBoxheader'>
+			<h3>Edit Variant</h3>
+			<div onclick='closeWindows();'>x</div>
+		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='vid' value='Toddler' />
-			<div class='inputwrapper'><span>Param:</span><input class='textinput' type='text' id='parameter' value='Variant Param' /></div>	
-			<div class='inputwrapper'><span>Answer:</span><input class='textinput' type='text' id='variantanswer' value='Variant Answer' /></div>	
+			<div id='examplePara'></div>
+			<div class='inputwrapper' style="height:100px"><span>Param:</span><textarea id="parameter" placeholder='Variant Param'></textarea></div>
+			<div id='exampleAnswer'></div>	
+			<div class='inputwrapper' style="height:100px"><span>Answer:</span><textarea id="variantanswer" placeholder='Variant Param'></textarea></div>
 		</div>	
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
 			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();' />
 		</div>	
 	</div>
-	<!--- Edit Variant Dialog END --->
-		
+	<!-- Edit Variant Dialog END -->
 </body>
 </html>

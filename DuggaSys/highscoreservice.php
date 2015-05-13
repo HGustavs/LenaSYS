@@ -29,8 +29,6 @@ $moment=getOP('moment');
 
 $debug="NONE!";	
 
-$hr=false;
-
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
@@ -39,32 +37,63 @@ $hr=false;
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
-if(checklogin()){
-	$query = $pdo->prepare("SELECT username, timeSpent FROM userAnswer, user, variant where user.uid = userAnswer.uid AND userAnswer.quiz = :did GROUP BY userAnswer.uid ORDER BY timeSpent ASC LIMIT 10;");
-	$query->bindParam(':did', $duggaid);
-	//$query->bindParam(':lid', $variant);
+$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 0 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
+$query->bindParam(':did', $duggaid);
+//$query->bindParam(':lid', $moment);
 
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		$debug="Error fetching entries".$error[2];
+if(!$query->execute()){
+	$error=$query->errorInfo();
+	$debug="Error fetching entries".$error[2];
+}
+
+$rows = array();
+
+foreach($query->fetchAll() as $row) {
+	array_push(
+		$rows,
+		array(
+			'username' => $row['username'],
+			'score' => $row['score']
+		)
+	);
+}
+
+$user = array();
+
+if(checklogin()){
+	$nrOfRows = count($rows);
+	for($i = 0; $i < $nrOfRows; $i++){
+		if($rows[$i]["username"] === $_SESSION["loginname"]){
+			$user[] = $i;
+			break;
+		}
 	}
 
-	$rows = array();
-
-	foreach($query->fetchAll() as $row) {
-		array_push(
-			$rows,
-			array(
-				'username' => $row['username'],
-				'timeSpent' => $row['timeSpent']
-				)
+	if(count($user) === 0){
+		//this must be tested
+		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did LIMIT 1;");
+		$query->bindParam(':did', $duggaid);
+		$query->bindParam(':user', $_SESSION["loginname"]);
+	
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			$debug="Error fetching entries".$error[2];
+		}
+				
+		foreach($query->fetchAll() as $row){
+			$debug = $row;
+			$user = array(
+				"username" => $row["username"],
+				"score" => $row["score"]
 			);
+		}
 	}
 }
 
 $array = array(
 	"debug" => $debug,
-	"highscores" => $rows
+	"highscores" => $rows,
+	"user" => $user
 );
 
 echo json_encode($array);
