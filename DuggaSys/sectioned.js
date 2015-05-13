@@ -591,10 +591,24 @@ function showHighscore(did, lid)
 function returnedHighscore(data){
 
 	var str = "";
+	
+	str += "<tr>";
+	str += "<th>Rank</th>";
+	str += "<th>Name</th>";
+	str += "<th>Score</th>";
+	str += "</tr>";
 
 	if (data['highscores'].length > 0) {
 		for(i=0;i<data['highscores'].length;i++){
 			var item=data['highscores'][i];
+			if(!isNaN(data["user"][0]) && data["user"][0] === i){
+				str += "<tr class='highscoreUser'>"
+			}else{
+				str += "<tr>";
+			}
+			str += "<td>";
+			str += i + 1;
+			str += "</td>";
 			str += "<tr>"; 
 			str += "<td>";
 			str += item['username'];
@@ -614,6 +628,30 @@ function returnedHighscore(data){
 			str += "</tr>";
 		}
 	}
+	
+	if(data["user"]["username"]){	
+		str += "<tr class='highscoreUser'>";
+		str += "<td>";
+		str += "";
+		str += "</td>";
+		str += "<td>";
+		str += data["user"]["username"];
+		str += "</td>"
+		str += "<td>";
+		if(parseInt(item['highscoremode']) == 0) {
+			// Undefined	
+		} else if(parseInt(item['highscoremode']) == 1) {
+			str += "Time spent: ";
+		} else if (parseInt(item['highscoremode']) == 2) {
+			str += "Number of clicks: ";
+		} else {
+			str += "Score: ";
+		}
+		str += data["user"]["score"]
+		str += "</td>";
+		str += "</tr>";
+	}
+
 	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
 }
