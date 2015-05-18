@@ -1,5 +1,5 @@
-/* This template makes three boxes one to the left and two to the right of the fist one.
-   The two to the right is one on top of the other */
+/* This template makes three boxes, one to the left and two to the right of the fist one.
+   The two to the right is, one on top of the other */
 #box1wrapper{
 	position: absolute;
 	top: 0px;
