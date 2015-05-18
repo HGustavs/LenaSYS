@@ -1294,7 +1294,7 @@ function rendercode(codestring,boxid,wordlistid)
 				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
 			}else if(tokenvalue=="<"){
 				// This statement checks the character after < to make sure it is a valid tag. 
-				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!"){
+				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!" && tokens[i+1].val != "?"){
 					if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
 						var k = 2;
 						var foundEnd = false;
