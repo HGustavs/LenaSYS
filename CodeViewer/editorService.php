@@ -1,11 +1,11 @@
 <?php 
 	//----------------------------------------------------------------------------------
 	// TODO:
-	//	Better handle a situation where there are no examples available
-	//	87: Redundant? Is set a couple of rows above
-	//	109: Check what viktig is and what it's for
-	//	110: Should only bind with the file used (if used) and not to one by default
-	//	130: Check for better way to get and set before/afterId
+	//	78: Better handle a situation where there are no examples available
+	//	84: Redundant? Is set a couple of rows above
+	//	106: Check what viktig is and what it's for
+	//	107: Should only bind with the file used (if used) and not to one by default
+	//	128: Check for better way to get and set before/afterId
 	//	Change variables to a fitting or standardized manner: 
 	//		forward_examples
 	//		currid
@@ -43,7 +43,6 @@
 	$playlink=getOP('playlink');
 	$debug="NONE!";
 	// Checks user id, if user has none a guest id is set
-	// TODO: Check if possible bug; userid is aldo set in EditorV50.php, should userid be set there or here?
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
@@ -60,8 +59,8 @@
 	
 	$exampleCount = 0;
 	
-	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
-	$query->bindParam(':exampleid', $exampleId);
+		$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
+    $query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
@@ -373,7 +372,7 @@
 			}		
 		}
 	
-		// Collect information for each box
+		// Collects information for each box
 		$box=array();   // Array to be filled with the primary keys to all boxes of the example
 		$query = $pdo->prepare( "SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
 		$query->bindParam(':exampleid', $exampleId);
@@ -383,9 +382,9 @@
 			$boxContent=strtoupper($row['boxcontent']);
 			$filename=$row['filename'];
 			$content="";					
-			if(strcmp("DOCUMENT",$boxContent)===0){
-				if(file_exists('./descupload')){
-					$filename="./descupload/".$filename;
+			if(strcmp("DOCUMENT",$boxContent)===0){ 
+				if(file_exists('./descupload')){ // Checks if the file exists
+					$filename="./descupload/".$filename; // If it exists, it will search for the file in the folder /descupload/
 					$handle = @fopen($filename, "r");
 					if ($handle) {
 						while (($buffer = fgets($handle, 1024)) !== false) {
@@ -399,8 +398,8 @@
 				}
 			//If box is not of Document type, code is assumed
 			}else{
-				if(file_exists('./codeupload')){
-					$filename="./codeupload/".$filename;
+				if(file_exists('./codeupload')){ // Checks if the file exists
+					$filename="./codeupload/".$filename; // If it exists, it will search for the file in the folder /descupload/
 					$handle = @fopen($filename, "r");
 					if ($handle) {
 						while (($buffer = fgets($handle, 1024)) !== false) {
@@ -412,7 +411,7 @@
 						fclose($handle);
 					}
 				}else{
-					$content="No file found!";
+					$content="No file found!"; // Error message if the file doesn't exist 
 				}
 			}
 			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
