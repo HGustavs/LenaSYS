@@ -535,7 +535,7 @@ function createboxmenu(contentid, boxid, type)
 		// If reader doesn't have write access, only the boxtitle is shown
 		}else{
 			var str = '<table cellspacing="2"><tr>';
-			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][3]+'</span></td>';
+			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][4]+'</span></td>';
 			str+='</tr></table>';
 			boxmenu.innerHTML=str;	
 		}			
