@@ -12,7 +12,7 @@ session_start();
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="1";		
+	$userid="1";
 } 
 
 $cid = getOP('cid');
@@ -31,7 +31,7 @@ $debug="NONE!";
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	if(strcmp($opt,"DELFILE")===0){
 		// Remove from database
-		$querystring='DELETE FROM fileLink WHERE fileid=:fid';	
+		$querystring='DELETE FROM fileLink WHERE fileid=:fid';
 		$query = $pdo->prepare($querystring);
 		$query->bindParam(':fid', $fid);
 		if(!$query->execute()) {
@@ -74,8 +74,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	chdir('../');
 	$currcvd=getcwd();
 
-
-	$dir    = $currcvd."/templates/";
+	$dir = $currcvd."/templates/";
 	
 	if (file_exists($dir)){
 		$files = scandir($dir);
@@ -86,7 +85,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 	}
 
-	$dir    = $currcvd."/courses/".$cid."/";
+	$dir = $currcvd."/courses/".$cid."/";
 
 	if (file_exists($dir)){
 		$gtiles = scandir($dir);
@@ -105,8 +104,5 @@ $array = array(
 	'lfiles' => $lfiles
 );
 
-
 echo json_encode($array);
-
-
 ?>
