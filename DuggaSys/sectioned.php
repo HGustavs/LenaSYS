@@ -4,6 +4,7 @@ include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,11 +15,10 @@ pdoConnect();
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">
-  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-
 	<script src="../Shared/dugga.js"></script>
 	<script src="sectioned.js"></script>
 </head>
@@ -33,10 +33,8 @@ pdoConnect();
 	
 	<!-- content START -->
 	<div id="content">
-		
-	<!-- Section List -->
-	<div id='Sectionlist'></div>
-
+		<!-- Section List -->
+		<div id='Sectionlist'></div>
 	</div>
 	<!-- content END -->
 
@@ -63,8 +61,8 @@ pdoConnect();
 		</div>
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
-				<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteItem();' />
-				<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateItem();' />
+			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteItem();' />
+			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateItem();' />
 		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
