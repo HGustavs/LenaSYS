@@ -60,8 +60,8 @@
 	
 	$exampleCount = 0;
 	
-		$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
-    $query->bindParam(':exampleid', $exampleId);
+	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
+	$query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
