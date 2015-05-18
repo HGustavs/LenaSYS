@@ -1,20 +1,20 @@
+
+/********************************************************************************
+   Globals
+*********************************************************************************/
+
 var sessionkind = 0;
 var querystring = parseGet();
 var filez;
 var mmx = 0, mmy = 0;
 var msx = 0, msy = 0;
 
-AJAXService("GET", {
-	cid : querystring['cid']
-}, "RESULTLIST");
+AJAXService("GET", { cid : querystring['cid'] }, "RESULTLIST");
 
-$(function() {
-	$("#release").datepicker({
-		dateFormat : "yy-mm-dd"
-	});
-	$("#deadline").datepicker({
-		dateFormat : "yy-mm-dd"
-	});
+$(function() 
+{
+	$("#release").datepicker({ dateFormat : "yy-mm-dd" });
+	$("#deadline").datepicker({ dateFormat : "yy-mm-dd" });
 });
 
 //----------------------------------------
@@ -25,7 +25,8 @@ $(function() {
 // Renderer
 //----------------------------------------
 
-function padstring(str, padno, kind) {
+function padstring(str, padno, kind) 
+{
 	// Right Padding
 	if (kind == 1) {
 		if (str.length > padno) {
@@ -41,7 +42,8 @@ function padstring(str, padno, kind) {
 	return newstr;
 }
 
-function returnedResults(data) {
+function returnedResults(data) 
+{
 	str = "";
 
 	if (data['dugganame'] != "") {
@@ -185,7 +187,7 @@ function returnedResults(data) {
 							if (foundres == null) {
 								str += "NF3";
 							}
-
+							
 							str += ttr;
 						}
 
@@ -199,9 +201,6 @@ function returnedResults(data) {
 		var slist = document.getElementById("content");
 		slist.innerHTML = str;
 	}
-
-	if (data['debug'] != "NONE!")
-		alert(data['debug']);
-
+	
+	if (data['debug'] != "NONE!") alert(data['debug']);
 }
-
