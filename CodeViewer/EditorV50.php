@@ -81,27 +81,29 @@ Testing Link:
 			$courseID = getOPG('courseid');
 			$cvers = getOPG('cvers');
 
-			// Fetch content
+			// Fetch content from database
 			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
 			$query->bindParam(':exampleid', $exampleid);
 			$query-> execute();
 			$row = $query -> fetch(PDO::FETCH_ASSOC);
-			$public=$row['public'];	//  Gets the info if the course are in public mode.
+			$public=$row['public'];	// Gets the info if the course are in public mode.
 			$noup="CODEVIEWER"; 	// Is called for in Shared/navheader.php, used to call for generic Home/Backbuttons
 			$codeviewer = true;	// Is used in navheader.php@line52: Makes it possible to view the content in the code example. If codeviewer is allocated "false" then one of the error message is gong to be presented.
 			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible.
 			
+			// userid is set, either as a registered user or as guest
 			if(isset($_SESSION['uid'])){
-				$userid=$_SESSION['uid'];
+				$userid=$_SESSION['uid'];	// userid of registered users
 			}else{
-				$userid="UNK";		
+				$userid="UNK";		// Guest ID / unknown user
 			}
 			
-			//Gets username based on uid
+			// Gets username based on uid
 			$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
 			$query->bindParam(':uid', $userid);
 			$query-> execute();
-			
+
+			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$username = $row['username'];
 			}
@@ -151,6 +153,7 @@ Testing Link:
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
 			echo "</div>";
+			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 		?>						
 		<!--- Dropdowns START --->
