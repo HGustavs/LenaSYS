@@ -1,4 +1,5 @@
-
+/* This template makes four boxes, one to the upper left and one to the upper right.
+   A third at the bottom left and the forth at the bottom right. */
 #box1wrapper {
     position: absolute;
     top: 0px;
