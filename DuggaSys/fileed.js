@@ -1,17 +1,29 @@
+/********************************************************************************
+   Documentation 
+*********************************************************************************
+
+This file displays the result of each student with access under this course, the teacher can grade students
+in this page.
+
+Execution order: 
+#1 returnedFile() is first function to be called this then invokes returned() callback through AJAX
+#2 the other funtions are executed and used as eventlisteners, e.g waiting for the user to do something before they are started
+-------------==============######## Documentation End ###########==============-------------
+*/
+
+/********************************************************************************
+
+   Globals <-- Next are globals - properly declared with var
+
+*********************************************************************************/
+
 var sessionkind=0;
 var querystring=parseGet();
 var filez;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
-$(function() {
-  $( "#release" ).datepicker({dateFormat: "yy-mm-dd"});
-    $( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});
-});
-
-//----------------------------------------
-// Commands:
-//----------------------------------------
+$(function(){$( "#release" ).datepicker({dateFormat: "yy-mm-dd"});$( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});});
 
 function closeEditFile()
 {
@@ -30,14 +42,15 @@ function createLink()
 		$("#filey").css("display","none");
 		$("#linky").css("display","block");
 		$("#selecty").css("display","none");
-
 		$("#kind").val("LINK");
 		$("#cid").val(querystring['cid']);
 		$("#coursevers").val(querystring['coursevers']);
 		
-				
 }
-
+//----------------------------------------
+// createFile(kind) <- gets the files that exists and puts them as options under a select tag.
+//		       ,options can be used to overwrite existing files later on
+//----------------------------------------
 function createFile(kind)
 {
 		if(kind=="MFILE"){
@@ -64,7 +77,6 @@ function createFile(kind)
 		$("#filey").css("display","block");
 		$("#linky").css("display","none");
 		if(kind!="LFILE") $("#selecty").css("display","block");
-
 		$("#kind").val(kind);
 		$("#cid").val(querystring['cid']);
 		$("#coursevers").val(querystring['coursevers']);
@@ -83,102 +95,88 @@ function hideLoginPopup()
 }
 
 //----------------------------------------
-// Renderer
+// Renderer <- ran after the ajax call(ajax is started after initialation of this file) is successful
 //----------------------------------------
 function returnedFile(data)
 {
-
 		filez = data;
-		// Fill section list with information
-		str1="";
+		//strings filled with content that will later be html code in certain parts of the page
+		//----------------------------------------
+		str1=""; 
 		str2="";
 		str3="";
 		str4="";
-			str1+="<table class='list' style='margin-bottom:8px;' >";
-
-				str1+="<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>";
+		str1+="<table class='list' style='margin-bottom:8px;' >";
+		str1+="<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>";
 
 		if (data['entries'].length > 0) {
-				for(i=0;i<data['entries'].length;i++){
-						var item=data['entries'][i];
-						if(parseInt(item['kind'])==1){
-								str1+="<tr class='fumo'>";
-		
-								str1+="<td>"+item['fileid']+"</td>";
-								str1+="<td>"+item['filename']+"</td>";
-								str1+="<td style='padding:4px;'>";
-										str1+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-										str1+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
-								str1+="</td>";
-								str1+="</tr>";
-
-						}
-				}
-
+			for(i=0;i<data['entries'].length;i++){
+					var item=data['entries'][i];
+					if(parseInt(item['kind'])==1){
+							str1+="<tr class='fumo'>";
+							str1+="<td>"+item['fileid']+"</td>";
+							str1+="<td>"+item['filename']+"</td>";
+							str1+="<td style='padding:4px;'>";
+							str1+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+							str1+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+							str1+="</td>";
+							str1+="</tr>";
+					}
+			}
 			str1+="</table>";
+			str2+="<table class='list' style='margin-bottom:8px;' >";
+			str2+="<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>";
+			
+			for(i=0;i<data['entries'].length;i++){
+				var item=data['entries'][i];
+				if(parseInt(item['kind'])==2){
+					str2+="<tr class='fumo'>";
+					str2+="<td>"+item['fileid']+"</td>";
+					str2+="<td>"+item['filename']+"</td>";
+					str2+="<td style='padding:4px;'>";
+					str2+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+					str2+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+					str2+="</td>";
+					str2+="</tr>";
 
-				//------------------------------------------------------------------------------------------------------------------------
-				str2+="<table class='list' style='margin-bottom:8px;' >";
-
-				str2+="<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>";
-
-				
-				for(i=0;i<data['entries'].length;i++){
-						var item=data['entries'][i];
-						if(parseInt(item['kind'])==2){
-								str2+="<tr class='fumo'>";
-		
-								str2+="<td>"+item['fileid']+"</td>";
-								str2+="<td>"+item['filename']+"</td>";
-								str2+="<td style='padding:4px;'>";
-										str2+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-										str2+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
-								str2+="</td>";
-								str2+="</tr>";
-
-						}
 				}
-					str2+="</table>";
-				//------------------------------------------------------------------------------------------------------------------------
-					str3+="<table class='list' style='margin-bottom:8px;' >";
-
-				str3+="<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>";
-				for(i=0;i<data['entries'].length;i++){
-						var item=data['entries'][i];
-						if(parseInt(item['kind'])==3){
-								str3+="<tr class='fumo'>";
-		
-								str3+="<td>"+item['fileid']+"</td>";
-								str3+="<td>"+item['filename']+"</td>";
-								str3+="<td style='padding:4px;'>";
-										str3+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-										str3+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
-								str3+="</td>";
-								str3+="</tr>";
-						}
+			}
+			str2+="</table>";
+			str3+="<table class='list' style='margin-bottom:8px;' >";
+			str3+="<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>";
+			for(i=0;i<data['entries'].length;i++){
+				var item=data['entries'][i];
+				if(parseInt(item['kind'])==3){
+					str3+="<tr class='fumo'>";
+					str3+="<td>"+item['fileid']+"</td>";
+					str3+="<td>"+item['filename']+"</td>";
+					str3+="<td style='padding:4px;'>";
+					str3+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+					str3+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+					str3+="</td>";
+					str3+="</tr>";
 				}
-				
-				str3+="</table>";
-				str4+="<table class='list' style='margin-bottom:8px;' >";
-
-				str4+="<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>";
-				for(i=0;i<data['entries'].length;i++){
-						var item=data['entries'][i];
-						if(parseInt(item['kind'])==4){
-								str4+="<tr class='fumo'>";
-		
-								str4+="<td>"+item['fileid']+"</td>";
-								str4+="<td>"+item['filename']+"</td>";
-								str4+="<td style='padding:4px;'>";
-										str4+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-										str4+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
-								str4+="</td>";
-								str4+="</tr>";
-						}
+			}
+			str3+="</table>";
+			str4+="<table class='list' style='margin-bottom:8px;' >";
+			str4+="<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>";
+			for(i=0;i<data['entries'].length;i++){
+				var item=data['entries'][i];
+				if(parseInt(item['kind'])==4){
+					str4+="<tr class='fumo'>";
+					str4+="<td>"+item['fileid']+"</td>";
+					str4+="<td>"+item['filename']+"</td>";
+					str4+="<td style='padding:4px;'>";
+					str4+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+					str4+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+					str4+="</td>";
+					str4+="</tr>";
 				}
-				str4+="</table>";
+			}
+		str4+="</table>";
 				
-		/* overwrite the tables with the data fetched from mysql into the divs on the html page*/		
+		// overwrite the tables with the data fetched from mysql into the divs on the html page
+		//-------------------------------------------------------------------------------------
 		var alllinks=document.getElementById("alllinks");
 		alllinks.innerHTML=str1;
 		var allglobalfiles=document.getElementById("allglobalfiles");
@@ -190,7 +188,8 @@ function returnedFile(data)
 		}else{
 
 		}
-
-	  if(data['debug']!="NONE!") alert(data['debug']);
+	//if there was an error in the php file while fetching, an alert goes off here
+	//-------------------------------------------------------------------------------------
+	if(data['debug']!="NONE!") alert(data['debug']);
 }
 
