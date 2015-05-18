@@ -25,7 +25,6 @@ $coursename=getOP('coursename');
 $visibility=getOP('visib');
 $activevers=getOP('activevers');
 $activeedvers=getOP('activeedvers');
-
 $versid=getOP('versid');
 $versname=getOP('versname');
 $coursenamealt=getOP('coursenamealt');
@@ -51,21 +50,23 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 
 if($ha){
-
 	// The code for modification using sessions
 	if(strcmp($opt,"DEL")===0){
+	
 	}else if(strcmp($opt,"NEW")===0){
 		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
+		
 		$query->bindParam(':usrid', $userid);
 		$query->bindParam(':coursecode', $coursecode);
-		$query->bindParam(':coursename', $coursename);				
+		$query->bindParam(':coursename', $coursename);
+		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating entries".$error[2];
 		}
 	}else if(strcmp($opt,"NEWVRS")===0){
 		$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
-
+		
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':coursecode', $coursecode);
 		$query->bindParam(':vers', $versid);
@@ -79,6 +80,7 @@ if($ha){
 		}
 	}else if(strcmp($opt,"UPDATE")===0){
 		$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
+		
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':coursename', $coursename);
 		$query->bindParam(':visibility', $visibility);
@@ -96,11 +98,13 @@ if($ha){
 //------------------------------------------------------------------------------------------------
 
 $entries=array();
+
 if($ha){
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
 }else{
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
 }
+
 if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading courses".$error[2];
@@ -153,3 +157,4 @@ $array = array(
 echo json_encode($array);
 
 ?>
+
