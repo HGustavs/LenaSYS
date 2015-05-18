@@ -1,7 +1,7 @@
 <?php 
 
 //---------------------------------------------------------------------------------------------------------------
-// editorService - Saves and Reads content for Code Editor
+// Highscoreservice - Used by highscore system to communicate with the database
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
@@ -15,9 +15,9 @@ pdoConnect();
 session_start();
 
 if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];
+	$userid=$_SESSION['uid'];
 }else{
-		$userid="1";		
+	$userid="1";		
 } 
 
 $opt=getOP('opt');
@@ -37,9 +37,9 @@ $debug="NONE!";
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
+// The query specified below selects only scores associated with users that have returned a dugga with a passing grade
 $query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 0 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
 $query->bindParam(':did', $duggaid);
-//$query->bindParam(':lid', $moment);
 
 if(!$query->execute()){
 	$error=$query->errorInfo();
@@ -70,7 +70,7 @@ if(checklogin()){
 	}
 
 	if(count($user) === 0){
-		//this must be tested
+		// This must be tested
 		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did LIMIT 1;");
 		$query->bindParam(':did', $duggaid);
 		$query->bindParam(':user', $_SESSION["loginname"]);
