@@ -1,39 +1,40 @@
-
+/* This template makes three boxes one to the upper left and one to the upper right.
+   The third fills out the bottom of the window. */
 #box1wrapper{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: -moz-calc(50.0%);
-	width: -webkit-calc(50.0%);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: -moz-calc(50.0%);
+	width: -webkit-calc(50.0%)
 	width: calc(50.0%);
-    height: -webkit-calc(35%);
-    height: -moz-calc(35%);
-    height: calc(35%);
+	height: -webkit-calc(35%);
+	height: -moz-calc(35%);
+	height: calc(35%);
 }
 
 #box2wrapper {
 	position: absolute;
-    top: 0px;
-    right: 0px;
-    width: -moz-calc(50.0%);
+	top: 0px;
+	right: 0px;
+	width: -moz-calc(50.0%);
 	width: -webkit-calc(50.0%);
 	width: calc(50.0%);
-    height: -webkit-calc(35%);
-    height: -moz-calc(35%);
-    height: calc(35%);
+	height: -webkit-calc(35%);
+	height: -moz-calc(35%);
+	height: calc(35%);
 }
 
 #box3wrapper {
    	position: absolute;
    	right: 0px;
-    bottom: 0px;
-    left: 0px;
-    width: -moz-calc(100.0%);
+   	bottom: 0px;
+   	left: 0px;
+   	width: -moz-calc(100.0%);
 	width: -webkit-calc(100.0%);
 	width: calc(100.0%);
-    height: -webkit-calc(65%);
-    height: -moz-calc(65%);
-    height: calc(65%);
+	height: -webkit-calc(65%);
+	height: -moz-calc(65%);
+	height: calc(65%);
 }
 
 
