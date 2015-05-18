@@ -74,6 +74,11 @@ function returned(data)
 			$("#afterbutton").css("opacity",0.4);
 			$("#afterbutton").css("pointer-events","none");
 		}
+	}else if(retData['before']==null&&retData['after']==null){ //If there are no examples this disables being able to jump through (the non-existsing) examples
+		$("#beforebutton").css("opacity",0.4);
+		$("#beforebutton").css("pointer-events","none");
+		$("#afterbutton").css("opacity",0.4);
+		$("#afterbutton").css("pointer-events","none");	
 	}
 	// Fill Section Name and Example Name
 	var exName=document.getElementById('exampleName');
