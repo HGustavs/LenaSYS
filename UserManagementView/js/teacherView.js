@@ -245,7 +245,7 @@ function getStudentInfo(student, number)
 }
 
 //---------------------------------------------------------------
-//	getCourseResults(results) - creates the html representation
+//	getCourseResults(results, studentNumber) - creates the html representation
 //	of the course results for a student and returns it
 //---------------------------------------------------------------
 
@@ -281,7 +281,10 @@ function getCourseResults(results, studentNumber)
 	return htmlStr;
 	
 }
-
+//---------------------------------------------------------------
+//	progress_bar_hover(data) - shows the coursename when hovering 
+//	over the small progressbars. 
+//---------------------------------------------------------------
 function progress_bar_hover(data){
 	
 	$('.progress_course_total').on( 'mouseenter',function() {
@@ -305,8 +308,9 @@ function progress_bar_hover(data){
 }
 
 //---------------------------------------------------------------
+//	render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages) 
 //	Sets the number of change pages buttons depending of how many 
-//  students in class
+//	students in class.
 //---------------------------------------------------------------
 function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	var htmlInserts="";
@@ -328,9 +332,10 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 	activePage(1);
 }
 
-//---------------------------------------------------------------
-//	When click on pagenumber the pagenumber is going to be markt
-//---------------------------------------------------------------
+//------------------------------------------------------------------------
+//	activePage(numberOfPage) - When click on pagenumber the pagenumber 
+// 	is going to be markt
+//------------------------------------------------------------------------
 function activePage(numberOfPage){
 	
 	if(selectedPage !== numberOfPage) {
@@ -346,7 +351,7 @@ function activePage(numberOfPage){
 }
 
 //---------------------------------------------------------------
-//	navigates between pages
+//	navigate_page() - navigates between pages
 //---------------------------------------------------------------
 function navigate_page(){
 	$('.pages').click(function(){
@@ -366,7 +371,6 @@ function navigate_page(){
 //	clearLinearGraph() - clears the line graph representing
 //	all the student results in every course
 //---------------------------------------------------------------
-
 function clearLinearGraph() 
 {
 	var graph = $('#graph');
@@ -374,21 +378,28 @@ function clearLinearGraph()
 	c.clearRect(0, 0, graph[0].width, graph[0].height);
 }
 
+//----------------------------------------------------------------------------------
+//	input_search_alternative() - Checks if the first letter is a number
+//	or a character in the searchfield. If it's a number the search_alternatives 
+//	function will parse ssn data from the database and if its a character it
+//	will parse username data.
+//----------------------------------------------------------------------------------
 function input_search_alternative(){
 	$('#inputSearch').keyup(function(){
 		
 		// checks witch query it will use to get data from php. add more statments for diffrent querys
 		if(isNaN(this.value.charAt(0))){
 			search_alternatives(this.value,2);
-			console.log('username');
 		}else{
 			search_alternatives(this.value,1);
-			console.log('number');
 		}
 	});
 }
 
-
+//----------------------------------------------------------------------------------
+//	search_alternatives(varible,query) - Depending on the query value the 
+//	the function will either parse ssn or username data. 
+//----------------------------------------------------------------------------------
 function search_alternatives(varible,query) {
 	if(query==1){	
 		$.ajax({
@@ -429,7 +440,10 @@ function search_alternatives(varible,query) {
 		});
 	}
 }
-
+//------------------------------------------------------------------------------------------
+//	search_option_username(data) - Adds the top five searchresults to the search options
+//	under the searchbar when searching for username. 
+//------------------------------------------------------------------------------------------
 function search_option_username(data){
 	var htmlStr= "";
 	var user = data['user'];
@@ -444,7 +458,10 @@ function search_option_username(data){
 	var insert = document.getElementById("searchOptions");
 	insert.innerHTML = htmlStr;
 }
-
+//------------------------------------------------------------------------------------------
+//	search_option_pnr(data) - Adds the top five searchresults to the search options
+//	under the searchbar when searching for ssn. 
+//------------------------------------------------------------------------------------------
 function search_option_pnr(data){
 	var htmlStr= "";
 	var user = data['user'];
@@ -457,7 +474,10 @@ function search_option_pnr(data){
 	var insert = document.getElementById("searchOptions");
 	insert.innerHTML = htmlStr;
 }
-
+//------------------------------------------------------------------------------------------
+//	display_search_data() - Render student view for the selected option in the
+//	in the searchfield.
+//------------------------------------------------------------------------------------------
 function display_search_data(){
 	var studentToRender = null;
 	var theOption = $('#inputSearch').val();
@@ -482,7 +502,10 @@ function onClick_Students_To_page(){
 		get_student_data(this.id);
 	});
 }
-
+//------------------------------------------------------------------------------------------
+//	get_student_data(studentid) - Collects the right data from the DB to render the
+//	student view for a specific student. 
+//------------------------------------------------------------------------------------------
 function get_student_data(studentid) {
 	var renderstudent = 'render';
 	$.ajax({
@@ -537,8 +560,8 @@ function createLinearGraph(data)
 	
 	
 	var graph;
-    var yPadding_top = 20;
-    var yPadding_bottom = 30;
+   	var yPadding_top = 20;
+    	var yPadding_bottom = 30;
 	var xPadding = 40;
 	var maxY = 100;
 
