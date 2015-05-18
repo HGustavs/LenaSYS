@@ -2,61 +2,6 @@
 // AJAX-call to dugga.js 
 AJAXService("GET", {}, "UMVSTUDENT");
 
-//---------------------------------------------------------------
-//	strcmp: 
-//	
-//---------------------------------------------------------------
-function strcmp(a, b) 
-{
-    return a > b ? 1 : a < b ? -1 : 0;
-}
-
-//---------------------------------------------------------------
-//	natcmp: 
-//	
-//---------------------------------------------------------------
-function natcmp(a, b) 
-{
-    var x = [], y = [];
-
-    a.replace(/(\d+)|(\D+)/g, function($0, $1, $2) { x.push([$1 || 0, $2]) })
-    b.replace(/(\d+)|(\D+)/g, function($0, $1, $2) { y.push([$1 || 0, $2]) })	
-
-    while(x.length && y.length) {
-        var xx = x.shift();
-        var yy = y.shift();
-        var nn = (xx[0] - yy[0]) || strcmp(xx[1], yy[1]);
-        if(nn) return nn;
-    }
-
-    if(x.length) return -1;
-    if(y.length) return +1;
-
-    return 0;
-}
-
-
-//---------------------------------------------------------------
-//	loadData: This function doesent do anything at the moment. 
-//			  Old code. 	
-//---------------------------------------------------------------
-function loadData(studyprogram, pnr) 
-{
-	$.get( "usermanagementviewservice.php", { studyprogram: studyprogram, pnr: pnr })  
-		.done(
-			function( data ) {
-				//alert( "Data Loaded: " + data );
-				if (data[0][0]==="student"){
-					renderStudentView(data);
-				} else if (data[0][0]==="studyprogram"){
-					renderStudyprogramView(data);	
-				} else {
-					alert("Error, unkown data returned\n"+data);
-				}								
-			});
-
-}
-
 //-------------------------------------------------------------------------
 //	renderStudentView: Renders the student view from the student. Will
 //					   render the full view with title and everything.
@@ -76,7 +21,6 @@ function renderStudentView(data)
 	titleList.innerHTML = htmlStr;
 	
 	// Add Progressbar data
-	
 	htmlStr = "";
 	var progress = data['progress'];
 	var completedHP = progress[0]['completedHP'];
@@ -198,7 +142,9 @@ function createHTMLForCourse(data)
 	return courseHtmlStr;
 }
 
-
+//-----------------------------------------------------------------------
+// When hover, fades away courses not requiered 
+//-----------------------------------------------------------------------
 function course_hover_requierments(data){
 	var regCourses = data['reqCourses'];
 
@@ -231,8 +177,9 @@ function course_hover_requierments(data){
     });
  
 }
-
+//-----------------------------------------------------------------------
 //Changes the background color to green when the student have finished the course.
+//-----------------------------------------------------------------------
 function progress_bar_complete(data){
 
 	$( ".progress-bar" ).each(function( index ) {
