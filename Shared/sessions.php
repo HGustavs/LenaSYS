@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/constants.php');
  * Check whether or not the user is logged in.
  * @return bool Returns true if the user is logged in and false if they aren't
  */
- function addlogintry(){
+ function addlogintry(){ // A function that will record the amount of tries when login in.
 	global $pdo;
 
 	if($pdo == null) {
