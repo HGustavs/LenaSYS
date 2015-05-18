@@ -662,6 +662,8 @@ function deHighlightHtml(otherTag,thisTag)
 //----------------------------------------------------------------------------------
 // Skip: Handles skipping either forward or backward. If pressed show menu
 //                Is called by createhotdogmenu in codeviewer.js
+// TODO: Check usage of function now that DragNDrop of example order is
+// implemented
 //----------------------------------------------------------------------------------
 var dmd;
 function Skip(skipkind)
