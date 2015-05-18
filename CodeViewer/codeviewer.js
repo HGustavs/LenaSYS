@@ -54,7 +54,6 @@ function setup()
 
 //---------------------------------------------------------------------------------------------------
 // returned: Fetches returned data from all sources
-//                Is called by [this function] in [this file]
 //---------------------------------------------------------------------------------------------------
 
 function returned(data)
