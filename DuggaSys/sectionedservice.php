@@ -23,7 +23,6 @@ if(isset($_SESSION['uid'])){
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
-
 $moment=getOP('moment');
 $sectid=getOP('lid');
 $sectname=getOP('sectname');
@@ -33,7 +32,6 @@ $visibility=getOP('visibility');
 $order=getOP('order');
 $gradesys=getOP('gradesys');
 $highscoremode=getOP('highscoremode');
-
 $versid=getOP('versid');
 $coursename=getOP('coursename');
 $versname=getOP('versname');
@@ -52,11 +50,11 @@ if(checklogin()){
 	$ha = hasAccess($userid, $courseid, 'w') || isSuperUser($userid);
 
 	if($ha){
-
 		// The code for modification using sessions
 		if(strcmp($opt,"DEL")===0){
 			$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
 			$query->bindParam(':lid', $sectid);
+			
 			if(!$query->execute()) {
 				$debug="Error updating entries";
 			}
@@ -65,12 +63,14 @@ if(checklogin()){
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
+			
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
 		}else if(strcmp($opt,"REORDER")===0){
 			$orderarr=explode(",",$order);
+			
 			foreach ($orderarr as $key => $value){
 				$armin=explode("XX",$value);
 				$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
@@ -78,6 +78,7 @@ if(checklogin()){
 				$query->bindParam(':pos', $armin[0]);
 				$query->bindParam(':moment', $armin[2]);
 				//$query->bindParam(':moment', $moment);
+				
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error updating entries".$error[2];
@@ -103,7 +104,6 @@ if(checklogin()){
 			}
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
-
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
@@ -115,9 +115,9 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
+			
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
-
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
@@ -129,7 +129,6 @@ if(checklogin()){
 			}
 		}else if(strcmp($opt,"CHGVERS")===0){
 			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
-
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':vers', $versid);		
 
@@ -139,7 +138,6 @@ if(checklogin()){
 			}
 		}
 	}
-
 }
 
 //------------------------------------------------------------------------------------------------
@@ -148,12 +146,15 @@ if(checklogin()){
 
 $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 $query->bindParam(':cid', $courseid);
+
 if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading visibility ".$error[2];
 }
+
 if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 	$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
+	
 	if (!$hr) {
 		if (checklogin()) {
 			$hr = isSuperUser($userid);
@@ -168,12 +169,13 @@ $query = $pdo->prepare("SELECT moment,grade,submitted,marked,useranswer FROM use
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
 $query->bindParam(':uid', $userid);
-
 $result=$query->execute();
+
 if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading results".$error[2];
 }
+
 foreach($query->fetchAll() as $row) {
 	array_push(
 		$resulties,
@@ -187,21 +189,20 @@ foreach($query->fetchAll() as $row) {
 	);
 }
 
-
-
-
 $entries=array();
 $reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)));
+
 if($reada || $userid == "guest"){
 	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,gradesystem,highscoremode FROM listentries WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
-
 	$result=$query->execute();
+	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries".$error[2];
 	}
+	
 	foreach($query->fetchAll() as $row) {
 		array_push(
 			$entries,
@@ -223,8 +224,10 @@ if($reada || $userid == "guest"){
 
 $query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
 $query->bindParam(':cid', $courseid);
+
 $coursename = "Course not Found!";
 $coursecode = "Coursecode not found!";
+
 if($query->execute()) {
 	foreach($query->fetchAll() as $row) {
 		$coursename=$row['coursename'];
@@ -240,6 +243,7 @@ $links=array();
 
 $versions=array();
 $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
+
 if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading courses".$error[2];
@@ -261,13 +265,14 @@ if(!$query->execute()) {
 $codeexamples = array();
 
 if($ha){
-
 	$query = $pdo->prepare("SELECT id,qname FROM quiz WHERE cid=:cid ORDER BY qname");
 	$query->bindParam(':cid', $courseid);
+	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries".$error[2];
 	}
+	
 	foreach($query->fetchAll() as $row) {
 		array_push(
 			$duggor,
@@ -280,10 +285,12 @@ if($ha){
 
 	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
 	$query->bindParam(':cid', $courseid);
+	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries".$error[2];
 	}
+	
 	foreach($query->fetchAll() as $row) {
 		array_push(
 			$links,
@@ -296,11 +303,14 @@ if($ha){
 
 	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
 	$query->bindParam(':cid', $courseid);
+	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries".$error[2];
 	}
+	
 	$oldkind=-1;
+	
 	foreach($query->fetchAll() as $row) {
 		if($row['kind']!=$oldkind){
 			array_push($links,array('fileid' => -1,'filename' => "---===######===---"));
@@ -317,6 +327,7 @@ if($ha){
 	
 	$versions=array();
 	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
+	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading courses".$error[2];
@@ -335,8 +346,10 @@ if($ha){
 			);
 		}
 	}
+	
 	$codeexamples=array();
 	$query=$pdo->prepare("SELECT exampleid, cid, examplename, sectionname, runlink, cversion FROM codeexample;");
+	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading code examples".$error[2];
@@ -375,3 +388,4 @@ $array = array(
 
 echo json_encode($array);
 ?>
+
