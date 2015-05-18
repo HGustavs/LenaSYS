@@ -207,6 +207,7 @@ function AJAXService(opt,apara,kind)
 		// Skips any undefined values
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
 			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
+			// This handles the important words that are sent from the codeviewer
 			if (apara[key].constructor === Array && key != "addedRows" && key != "removedRows") {
 				var array = [];
 				for (var i = 0; i < apara[key].length; i++) {
@@ -215,6 +216,7 @@ function AJAXService(opt,apara,kind)
 				para+="&"+key+"="+array;
 			}
 			// Handles all the individual elements in an array and adds the array as such: &key=[val1,val2,val3][val1,val2,val3]
+			// This case is specifically for adding/removing important rows in the codeviewer
 			else if (key == "addedRows" || key == "removedRows") {
 				para+="&"+key+"=";
 				var array = [];
