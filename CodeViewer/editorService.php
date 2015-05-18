@@ -1,11 +1,11 @@
 <?php 
 	//----------------------------------------------------------------------------------
 	// TODO:
-	//	78: Better handle a situation where there are no examples available
-	//	84: Redundant? Is set a couple of rows above
-	//	106: Check what viktig is and what it's for
-	//	107: Should only bind with the file used (if used) and not to one by default
-	//	128: Check for better way to get and set before/afterId
+	//	Better handle a situation where there are no examples available
+	//	87: Redundant? Is set a couple of rows above
+	//	109: Check what viktig is and what it's for
+	//	110: Should only bind with the file used (if used) and not to one by default
+	//	130: Check for better way to get and set before/afterId
 	//	Change variables to a fitting or standardized manner: 
 	//		forward_examples
 	//		currid
@@ -43,6 +43,7 @@
 	$playlink=getOP('playlink');
 	$debug="NONE!";
 	// Checks user id, if user has none a guest id is set
+	// TODO: Check if possible bug; userid is aldo set in EditorV50.php, should userid be set there or here?
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
