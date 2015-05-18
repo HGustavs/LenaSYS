@@ -92,6 +92,7 @@ Testing Link:
 			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible.
 			
 			// userid is set, either as a registered user or as guest
+			// TODO: Check if possible bug; userid is set to 1 if guest in editorService.php, should userid be set there or here?
 			if(isset($_SESSION['uid'])){
 				$userid=$_SESSION['uid'];	// userid of registered users
 			}else{
