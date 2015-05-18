@@ -1,3 +1,4 @@
+*/ This template makes two boxes on to the left in the window and one to the right of the first one*/
 #box1wrapper {
     position: absolute;
     border-right-style: solid;
@@ -6,9 +7,9 @@
     top: 0px;
     left: 0px;
     bottom: 0px;
- 	width: -moz-calc(25.0%);
-	width: -webkit-calc(25.0%);
-	width: calc(25.0%);
+    width: -moz-calc(25.0%);
+    width: -webkit-calc(25.0%);
+    width: calc(25.0%);
 }
 
 
@@ -16,9 +17,9 @@
     position: absolute;
     top: 0px;
     bottom: 0px;
- 	width: -moz-calc(75%);
-	width: -webkit-calc(75%);
-	width: calc(75.0%);
+    width: -moz-calc(75%);
+    width: -webkit-calc(75%);
+    width: calc(75.0%);
     right: 0px;
     font-family: Arial,Sans-Serif;
     font-size: 14px;
