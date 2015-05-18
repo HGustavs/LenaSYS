@@ -15,7 +15,7 @@ if($opt=="LOGIN"){
 		
 		$savelogin = array_key_exists('saveuserlogin', $_POST) && $_POST['saveuserlogin'] == 'on';
 		
-		pdoConnect();
+		pdoConnect(); // Made sure if actually connects to a database
 		
 		// Default values
 		$res = array("login" => "failed");
@@ -32,7 +32,7 @@ if($opt=="LOGIN"){
 			makeLogEntry($username,3,$pdo,"");			
 
 		}else{
-			addlogintry();
+			addlogintry(); // If to many attempts has been commited, it will jump to this
 			// As login has failed we log the attempt
 			makeLogEntry($username,4,$pdo,"");
 		}
