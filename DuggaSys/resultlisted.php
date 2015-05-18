@@ -19,10 +19,8 @@
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="../Shared/resultlisted.js"></script>
-
 </head>
 <body>
-	
 	<?php 
 		$noup="SECTION";
 		$loginvar="RESULT";
@@ -40,6 +38,5 @@
 	<?php 
 		include '../Shared/loginbox.php';
 	?>
-	
 </body>
 </html>
