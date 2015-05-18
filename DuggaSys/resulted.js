@@ -1,3 +1,8 @@
+
+/********************************************************************************
+	 Globals
+*********************************************************************************/
+
 var sessionkind = 0;
 var querystring = parseGet();
 var filez;
@@ -5,24 +10,20 @@ var mmx = 0, mmy = 0;
 var msx = 0, msy = 0;
 var rProbe = null;
 
-AJAXService("GET", {
-	cid : querystring['cid']
-}, "RESULT");
+AJAXService("GET", { cid : querystring['cid'] }, "RESULT");
 
-$(function() {
-	$("#release").datepicker({
-		dateFormat : "yy-mm-dd"
-	});
-	$("#deadline").datepicker({
-		dateFormat : "yy-mm-dd"
-	});
+$(function() 
+{
+	$("#release").datepicker({ dateFormat : "yy-mm-dd" });
+	$("#deadline").datepicker({ dateFormat : "yy-mm-dd" });
 });
 
 //----------------------------------------
 // Commands:
 //----------------------------------------
 
-function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind) {
+function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind) 
+{
 	var str = "";
 	str += "<select onchange='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'>";
 
@@ -72,34 +73,25 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind) {
 	return str;
 }
 
-function hoverResult(cid, vers, moment, uid, firstname, lastname) {
+function hoverResult(cid, vers, moment, uid, firstname, lastname) 
+{
 	$("#Nameof").html(firstname + " " + lastname);
-
+	
 	// Start counting pixels
 	msx = -1;
 	msy = -1;
 
-	AJAXService("DUGGA", {
-		cid : cid,
-		vers : vers,
-		moment : moment,
-		luid : uid
-	}, "RESULT");
+	AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid }, "RESULT");
 }
 
-function changeGrade(elem, gradesys, cid, vers, moment, uid, mark, ukind) {
+function changeGrade(elem, gradesys, cid, vers, moment, uid, mark, ukind) 
+{
 	mark = elem.value;
-	AJAXService("CHGR", {
-		cid : cid,
-		vers : vers,
-		moment : moment,
-		luid : uid,
-		mark : mark,
-		ukind : ukind
-	}, "RESULT");
+	AJAXService("CHGR", { cid : cid, vers : vers, moment : moment, luid : uid, mark : mark, ukind : ukind }, "RESULT");
 }
 
-function moveDist(e) {
+function moveDist(e) 
+{
 	mmx = e.clientX;
 	mmy = e.clientY;
 
@@ -148,7 +140,8 @@ function leaveCell(thisObj)
 // Renderer
 //----------------------------------------
 
-function returnedResults(data) {
+function returnedResults(data) 
+{
 	var str = "";
 	var zstr = "";
 	var ttr = "";
@@ -156,13 +149,11 @@ function returnedResults(data) {
 
 	if (data['dugganame'] != "") {
 		$.getScript(data['dugganame'], function() {
-		$("#MarkCont").html(data['duggapage']);
+			$("#MarkCont").html(data['duggapage']);
 
-//		alert(data['duggaparam']+"\n"+data['useranswer'] + "\n" + data['duggaanswer']);
-		showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer']);
-
-	});
-
+			//alert(data['duggaparam']+"\n"+data['useranswer'] + "\n" + data['duggaanswer']);
+			showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer']);
+		});
 		$("#resultpopover").css("display", "block");
 		//alert(data['duggaanswer']);
 	} else {
@@ -239,7 +230,7 @@ function returnedResults(data) {
 							}
 
 							zstr = "";
-
+							
 							// If no result is found i.e. No Fist
 							if (foundgrade == null && useranswer == null && submitted == null) {
 								zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
@@ -403,20 +394,15 @@ function returnedResults(data) {
 
 						str += "</tr>";
 						str += "</table>";
-
 						str += "</td>";
 					}
 				}
 				str += "</tr>";
 			}
 		}
-
+		
 		var slist = document.getElementById("content");
 		slist.innerHTML = str;
 	}
-
-	if (data['debug'] != "NONE!")
-		alert(data['debug']);
-
+	if (data['debug'] != "NONE!") alert(data['debug']);
 }
-
