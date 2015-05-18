@@ -121,7 +121,6 @@
 			} else {
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 
-					/* ---------------------------------------------------------------------------------- */
 					/* -- Nestled query to get sum of hp and amount of students who's completed course -- */ 
 					$sql_query = $pdo->prepare($classCoursesResults);
 					$sql_query->bindParam(':cid', $row['cid']);
@@ -151,7 +150,7 @@
 						}
 			
 					}
-					/* --------------------------------------------------------------------------------- */
+				
 
 					array_push(
 						$courselist,
@@ -289,8 +288,6 @@
 			
 			// data for course
 			$courses = array();
-			
-			//When executing query result is not correct below
 			
 			$query = $pdo->prepare($coursesQuery);
 			
