@@ -264,6 +264,7 @@
 
 /* Student wrap of name, pnr, usrname, mail*/
 .student{
+	cursor:pointer;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	width: 35%; 
