@@ -378,7 +378,7 @@ function returnedSection(data)
 		str="";
 
 		if(data['writeaccess']) {
-			
+			str+="<div class='course-menu-wrapper clearfix'>";			
 			str+="<div class='course-menu--settings'>";
 			str+="<select class='course-dropdown' onchange='goToVersion(this)'>";
 			if (retdata['versions'].length > 0) {
@@ -409,6 +409,7 @@ function returnedSection(data)
 			str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="</div>";
 			str+="</div>";
 		}else{
 			str+="<div class='course-menu--settings'>";

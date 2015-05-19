@@ -228,7 +228,6 @@ hr {
     font-family: Calibri,Sans-Serif;
     font-size:18pt;
     background-color: #614875;
-    margin-top:40px;
     clear:both;
 }
 
@@ -841,6 +840,10 @@ input.new-item-button:hover {
 .innertable td {color:#000;line-height:28px;border:none;}
 
 .list tr:hover { background-color: #dbd0d8; }
+
+.list--nomargin {
+    margin: 0!important;
+}
 
 .Trow{
     font-family: "Lucida Console", Monaco, monospace;
