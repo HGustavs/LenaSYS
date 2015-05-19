@@ -272,6 +272,10 @@ header {
     left: 0px;
 }
 
+header td {
+    white-space: nowrap;
+}
+
 #duggaTimer {
     z-index: 9000;
     width: 100px;
@@ -288,16 +292,23 @@ header {
 
 
 .navButt {
-    width:50px;
+    width:32px;
     vertical-align: middle;
 }
 
 .navButt img {
     margin-left: 10px;
+    vertical-align: middle;
+    height: 32px;
+}
+
+.navButt:hover {
+    cursor: pointer;
 }
 
 .navHeading {
     font-size: 2.5em;
+    vertical-align: middle;
     padding-left: 15px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -306,6 +317,7 @@ header {
     -ms-user-select: none;
     user-select: none;
     cursor:default;
+    overflow: hidden;
 }
 
 .navName {
@@ -335,38 +347,26 @@ header {
 
 .loggedout {
     background-color: #c75050;
-    width:40px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left:14px;
 }
 
 .loggedout:hover {
     background-color: #50a750;
-    width:40px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left:14px;
 }
 
 .loggedin {
     background-color: #50a750;
-    width:40px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left:14px;
 }
 
 .loggedin:hover {
     background-color: #c75050;
-    width:40px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left:14px;
 }
 
 #loginbutton{
     cursor:pointer;
+    height:50px;
+    width: 50px;
+    vertical-align: middle;
+    text-align: center;
 }
 
 #div2
@@ -938,6 +938,7 @@ input.new-item-button:hover {
 	height: 30px;
 }
 
+/* Shapes and color for the buttons in Editexample box*/
 .newSequence  {
     background-color: rgb(97, 72, 117);
     border: 0px none;
@@ -951,6 +952,7 @@ input.new-item-button:hover {
 	transition: background-color 1s ease 0s;
 }
 
+/* Shapes and color for the buttons in Editexample box*/
 .deleteSequence {
     background-color: rgb(97, 72, 117);
     border: 0px none;
@@ -964,6 +966,7 @@ input.new-item-button:hover {
 	transition: background-color 1s ease 0s;
 }
 
+/* Shapes and color for the buttons in Editexample box*/
 .updateSequence {
     background-color: rgb(97, 72, 117);
     border: 0px none;
@@ -978,18 +981,23 @@ input.new-item-button:hover {
 	transition: background-color 1s ease 0s;
 }
 
+/* Hover style for the buttons in Editexample box*/
 .newSequence:hover {
   background-color:#7B5A96;
     border-radius:4px;	
 }
 
+/* Hover style for the buttons in Editexample box*/
 .deleteSequence:hover {
   background-color:#7B5A96;
     border-radius:4px;	
 }
+
+/* Hover style for the buttons in Editexample box*/
 .updateSequence:hover {
   background-color:#7B5A96;
     border-radius:4px;	
 }
+
 /* End DuggaSys Sectioneed*/
 /**************************/
