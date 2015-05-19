@@ -14,9 +14,9 @@
 	$wichQuery = getOP('query');
 
 	//Query for snn
-	$searchPnrQuery = "SELECT ssn,uid FROM user WHERE ssn LIKE '%{$pnr}%' ORDER BY ssn DESC";
+	$searchPnrQuery = "SELECT ssn,uid,username FROM user WHERE ssn LIKE '%{$pnr}%' ORDER BY ssn DESC";
 	//Query for username
-	$searchUsernameQuery = "SELECT uid,username FROM user WHERE username LIKE '%{$usernameSearch}%' ORDER BY username DESC";
+	$searchUsernameQuery = "SELECT uid,username,ssn FROM user WHERE username LIKE '%{$usernameSearch}%' ORDER BY username DESC";
 
 	//Case 1 searching for snn
 	if($wichQuery == 1){
@@ -34,6 +34,7 @@
 						$PnrSearchRes,
 						array(
 							'uid' => $row['uid'],
+							'username' => $row['username'],
 							'ssn' => $row['ssn']
 						)
 					);
@@ -59,6 +60,7 @@
 						$PnrSearchRes,
 						array(
 							'uid' => $row['uid'],
+							'ssn' => $row['ssn'],
 							'username' => $row['username']
 						)
 					);
