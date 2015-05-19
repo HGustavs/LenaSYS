@@ -25,14 +25,15 @@ INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) values('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97731', 'HT14');
 
 /* Insert tests */
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-09-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (2, 2, 1, 2, 'Bitdugga2', 'dugga1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (3, 2, 1, 2, 'colordugga1', 'dugga2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (4, 2, 1, 2, 'colordugga2', 'dugga2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (5, 2, 1, 2, 'linjedugga1', 'dugga3', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (6, 2, 1, 2, 'linjedugga2', 'dugga3', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (7, 2, 1, 2, 'dugga1', 'dugga4', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (8, 2, 1, 2, 'dugga2', 'dugga4', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (2, 2, 1, 2, 'Bitdugga2', 'dugga1', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (3, 2, 1, 2, 'colordugga1', 'dugga2', '2015-04-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (4, 2, 1, 2, 'colordugga2', 'dugga2', '2015-04-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (5, 2, 1, 2, 'linjedugga1', 'dugga3', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (6, 2, 1, 2, 'linjedugga2', 'dugga3', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (7, 2, 1, 2, 'dugga1', 'dugga4', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (8, 2, 1, 2, 'dugga2', 'dugga4', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (9, 2, 1, 2, 'Quiz', 'kryss', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
 
 /* Insert variants of tests */
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (1, 1, '{*tal*:*2*}', '{*danswer*:*00000010 0 2*}', NOW(), 2);
@@ -51,6 +52,11 @@ INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUE
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (14, 6, '{*linje*:*10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30*}', '{Variant}', NOW(), 2);
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (15, 7, '{*variant*:*40 13 7 20 0*}', '{Variant}', NOW(), 2);
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (16, 8, '{*variant*:*26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0*}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (17, 9, '{question*One byte is equivalent to how many bits?: A*4: B*8: C*16: D*32}', 'B', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (18, 9, '{question*RGB and CMYK are abbreviations for what?: A*Red, Green, Blue and Cyan Magenta, Yellow, Key (black): B*Red, Grey, Black and Cyclone, Magenta, Yellow, Kayo: C*Randy´s Green Brick and Cactus Magnolia Yronema Kalmia}', 'A', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (19, 9, '{question*Which of these are examples of actual shaders?: A*B32shader, 554shader: B*Context shaders, Shadow shaders and Block shaders: C*Vertex shaders, Pixel shaders and Geometry shaders}', 'C', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (20, 9, '{question*Points, lines and curves are examples of geometrical...: A*Primitives: B*Substitutes: C*Formations: D*Partitions}', 'A', NOW(), 2);
+
 
 /* Insert items on coursepage */
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1001, 1, 'PHP examples', 'UNK', 1, 1, 1, 1,'45656');
@@ -83,19 +89,25 @@ INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible,
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2010, 2, 'Transformationer 3,5HP', '', 4, 9, 1, 1, '97732', 2010, 2, 0);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2011, 2, 'Transformationsdugga 1', '7', 3, 10, 1, 1, '97732', 2010, 2, 0);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2012, 2, 'Transformationsdugga 2', '8', 3, 11, 1, 1, '97732', 2010, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2013, 2, 'Frågeduggor 1HP', '', 4, 12, 1, 1, '97732', 2013, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2014, 2, 'Frågedugga 1', '9', 3, 13, 1, 1, '97732', 2013, 2, 0);
 
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2013, 2, 'Bit count test 1HP', '', 4, 0, 1, 1, '97731', 2013, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2014, 2, 'Bit count test 1', '1', 3, 1, 1, 1, '97731', 2013, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2015, 2, 'Bit count test 2', '2', 3, 2, 1, 1, '97731', 2013, 0, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2016, 2, 'Color test 1HP', '', 4, 3, 1, 1, '97731', 2016, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2017, 2, 'Hex color test 1', '3', 3, 4, 1, 1, '97731', 2016, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2018, 2, 'Hex color test 2', '4', 3, 5, 1, 1, '97731', 2016, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2019, 2, 'Geometry 2HP', '', 4, 6, 1, 1, '97731', 2019, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2020, 2, 'Geometry test 1', '5', 3, 7, 1, 1, '97731', 2019, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2021, 2, 'Geometry test 2', '6', 3, 8, 1, 1, '97731', 2019, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2022, 2, 'Transforms 3,5HP', '', 4, 9, 1, 1, '97731', 2022, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2023, 2, 'Transforms test 1', '7', 3, 10, 1, 1, '97731', 2022, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2024, 2, 'Transforms test 2', '8', 3, 11, 1, 1, '97731', 2022, 2, 0);
+
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2015, 2, 'Bit count test 1HP', '', 4, 0, 1, 1, '97731', 2015, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2016, 2, 'Bit count test 1', '1', 3, 1, 1, 1, '97731', 2015, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2017, 2, 'Bit count test 2', '2', 3, 2, 1, 1, '97731', 2015, 0, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2018, 2, 'Color test 1HP', '', 4, 3, 1, 1, '97731', 2018, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2019, 2, 'Hex color test 1', '3', 3, 4, 1, 1, '97731', 2018, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2020, 2, 'Hex color test 2', '4', 3, 5, 1, 1, '97731', 2018, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2021, 2, 'Geometry 2HP', '', 4, 6, 1, 1, '97731', 2021, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2022, 2, 'Geometry test 1', '5', 3, 7, 1, 1, '97731', 2021, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2023, 2, 'Geometry test 2', '6', 3, 8, 1, 1, '97731', 2021, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2024, 2, 'Transforms 3,5HP', '', 4, 9, 1, 1, '97731', 2024, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2025, 2, 'Transforms test 1', '7', 3, 10, 1, 1, '97731', 2024, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2026, 2, 'Transforms test 2', '8', 3, 11, 1, 1, '97731', 2024, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2027, 2, 'Quizzes 1HP', '', 4, 12, 1, 1, '97731', 2027, 2, 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2028, 2, 'Quiz 1', '9', 3, 13, 1, 1, '97731', 2027, 2, 0);
+
 
 /* Insert access for users */
 INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1010, 1, '0.0', 1, 'R', 0, '');

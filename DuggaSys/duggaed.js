@@ -179,6 +179,12 @@ function selectVariant(vid,param,answer,template)
 			var test=document.getElementById("exampleAnswer");
 			test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga4;
 			break;
+		case "kryss":
+			var ep=document.getElementById("examplePara");
+			ep.innerHTML = "Example: " + exampleDugga.exampleParaKryss;
+			var test=document.getElementById("exampleAnswer");
+			test.innerHTML = "Example: " + exampleDugga.exampleAnswerKryss;
+			break;
 		default:
 			var ep=document.getElementById("examplePara");
 			ep.innerHTML = "Example parameter: " + "No example available";
