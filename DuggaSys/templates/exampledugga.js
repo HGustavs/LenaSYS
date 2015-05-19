@@ -9,5 +9,8 @@ var exampleDugga={
 	exampleAnswerDugga3 : "Variant",
 	
 	exampleParaDugga4 : "{*variant*:*40 13 7 20 0*}",
-	exampleAnswerDugga4 : "Variant"
+	exampleAnswerDugga4 : "Variant",
+	
+	exampleParaKryss : "{question*Who is Ss best soccer player: A*Zlatan: B *Hysen: C*Robin: D*Aslan}",
+	exampleAnswerKryss : "A"
 };
