@@ -5,6 +5,9 @@
     .showdesktop{
         display: none;
     }
+    #navHeading {
+        font-size: 1.5em;
+    }
     #exampleSection{
         display: none;
     }
