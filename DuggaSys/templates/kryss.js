@@ -1,5 +1,5 @@
 /*
-THIS IS A QUIZTAMPLATE
+THIS IS A QUIZTEMPLATE
 DO NOT CHANGE THE QUIZ MAIN FUNCTION NAME AND PARAMETER, IT SHOULD ALWAYS BE THE SAME.
 quiz(parameters)
 
@@ -11,29 +11,28 @@ This description will be visible on the interface for adding or change a quiz.
    Documentation 
 
 *********************************************************************************
-This template separates each question between dots and then seperates each parameter between commas within the question,
+This template separates each question between : and then separates each parameter between : within the question,
 Example seed
 ---------------------
-	Param:  {question*Who is Ss best soccer player, A*Zlatan, B *Hysen, C*Robin, D*Aslan.}
-	Answer: {A}
-	
-	NOTE! If it is a single question or if it is the last question it should NOT include a dot (.) in the end of the question.
-
+	Param:  {question*Who is the best soccer player: A*Zlatan: B *Hysen: C*Robin: D*Aslan}
+	Answer: A
 -------------==============######## Documentation End ###########==============-------------
 */
 var idunique = 0;
 function quiz(parameters) {
 	if(parameters != undefined) {
 		console.log("pram:" + parameters);
-		var qeustionsplit = parameters.split(".");
-		
+		parameters = parameters.replace(/NONE!/g, '');
+		parameters = parameters.replace(/{/g, '');
+		var qeustionsplit = parameters.split("}");
 		var answerValue;
 		var answerID;
 		var app ="";
-		for(var iy = 0;iy < qeustionsplit.length;iy++){	
-		idunique++;
-		var inputSplit = qeustionsplit[iy].split(",");
-		app += idunique+" -----------------------------------------------------";
+		app+="<div class='quiz-header'><h1>Quiz</h1></div>";
+		for(var iy = 0;iy < qeustionsplit.length - 1;iy++){
+			idunique++;
+			var inputSplit = qeustionsplit[iy].split(":");
+			//app += idunique+" -----------------------------------------------------";
 			for(var i = 0;i < inputSplit.length;i++){
 				
 				var splited = inputSplit[i].split("*");
@@ -42,20 +41,23 @@ function quiz(parameters) {
 				answerID = answerID.replace(/^\s+|\s+$/g, '') ;
 				
 				if((answerID == "question")||(answerID == "NONE!question")) {
-					app += "<h2>";
-					app += answerValue + "<br>";
-					app += "</h2>";
+					app += "<div class='quiz-question'>";
+					app += "<h3>";
+					app += "<div class='quiz-question-number'>" + idunique +"</div>" + answerValue;
+					app += "</h3>";
+					app += "</div>";
 				}
 				else {
-					app += "<input type='radio' name='answers"+idunique+"' value='"+answerValue+"' id='"+answerID+"'>"+answerValue+"</input>";
+					app += "<div class='quiz-answer'>";
+					app += "<input type='radio' name='answers"+idunique+"' value='"+answerValue+"' id='"+answerID+"'>" +answerValue+"</input>";
 					app += "<br>";
-					
+					app += "</div>";
 				}
 			}
 		}
 
-		app += "<button class='submit' onclick='checkQuizAnswer();'>Check answers</button>";
-
+		app += "<button class='submit' style='margin:15px;' onclick='checkQuizAnswer();'>Check answers</button>";
+		
 		$("#output").html(app);
 	}
 	else {
