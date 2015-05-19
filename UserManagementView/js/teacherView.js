@@ -389,16 +389,22 @@ function clearLinearGraph()
 //	function will parse ssn data from the database and if its a character it
 //	will parse username data.
 //----------------------------------------------------------------------------------
-function input_search_alternative()
-{
-	$('#inputSearch').keyup(function(){
-		
-		// checks witch query it will use to get data from php. add more statments for diffrent querys
-		if(isNaN(this.value.charAt(0))){
-			search_alternatives(this.value,2);
-		}else{
-			search_alternatives(this.value,1);
+function input_search_alternative(){
+	$('#inputSearch').keydown(function(e){
+		switch(e.wich){
+			case 38: break;	//this is the press up key
+			case 40: break; // this is press down key
+			case 13: console.log('aids'); // this is the enter key
+			default:
+
+				// checks witch query it will use to get data from php. add more statments for diffrent querys
+				if(isNaN(this.value.charAt(0))){
+					search_alternatives(this.value,2);
+				}else{
+					search_alternatives(this.value,1);
+				};
 		}
+	
 	});
 }
 
@@ -406,8 +412,7 @@ function input_search_alternative()
 //	search_alternatives(varible,query) - Depending on the query value the 
 //	the function will either parse ssn or username data. 
 //----------------------------------------------------------------------------------
-function search_alternatives(varible,query) 
-{
+function search_alternatives(varible,query) {
 	if(query==1){	
 		$.ajax({
 			type:"POST",
@@ -419,7 +424,7 @@ function search_alternatives(varible,query)
 			success:function(data) {
 				if(data != null){
 					var dataclean = JSON.parse(data);
-					search_option_pnr(dataclean);
+					search_option(dataclean,1);
 				}
 			},
 			error:function() {
@@ -438,7 +443,7 @@ function search_alternatives(varible,query)
 			success:function(data) {
 				if(data != null){
 					var dataclean = JSON.parse(data);
-					search_option_username(dataclean);
+					search_option(dataclean,2);
 				}
 			},
 			error:function() {
@@ -447,37 +452,29 @@ function search_alternatives(varible,query)
 		});
 	}
 }
-//------------------------------------------------------------------------------------------
-//	search_option_username(data) - Adds the top five searchresults to the search options
-//	under the searchbar when searching for username. 
-//------------------------------------------------------------------------------------------
-function search_option_username(data)
-{
-	var htmlStr= "";
-	var user = data['user'];
 
-	for(var i = 0; i<5;i++){
-		console.log(user.length +'asdm');
-		htmlStr += "<option value='"+user[i]['username']+"' class='"+user[i]['uid']+"'></option>";
-		if(i < user.length){
-			break;
-		}
-	}
-	var insert = document.getElementById("searchOptions");
-	insert.innerHTML = htmlStr;
-}
+
 //------------------------------------------------------------------------------------------
 //	search_option_pnr(data) - Adds the top five searchresults to the search options
 //	under the searchbar when searching for ssn. 
 //------------------------------------------------------------------------------------------
-function search_option_pnr(data)
-{
+function search_option(data,input){
 	var htmlStr= "";
 	var user = data['user'];
-	for(var i = 0; i<5;i++){
-		htmlStr += "<option value='"+user[i]['ssn']+"' class='"+user[i]['uid']+"'></option>";
-		if(i < user.length){
-			break;
+	
+	if(input==1){
+		for(var i = 0; i<8;i++){
+			htmlStr += "<option value='"+user[i]['ssn']+"  "+user[i]['username']+"' class='"+user[i]['uid']+"'></option>";
+			if(i == user.length-1){
+				break;
+			}
+		}
+	}if(input==2){
+		for(var i = 0; i<8;i++){
+			htmlStr += "<option value='"+user[i]['username']+"  "+user[i]['ssn']+"' class='"+user[i]['uid']+"'></option>";
+			if(i == user.length-1){
+				break;
+			}
 		}
 	}
 	var insert = document.getElementById("searchOptions");
@@ -487,8 +484,7 @@ function search_option_pnr(data)
 //	display_search_data() - Render student view for the selected option in the
 //	in the searchfield.
 //------------------------------------------------------------------------------------------
-function display_search_data()
-{
+function display_search_data(){
 	var studentToRender = null;
 	var theOption = $('#inputSearch').val();
 
@@ -496,7 +492,6 @@ function display_search_data()
 
 		if(this.value== theOption){
 			studentToRender = this.className;
-			console.log(this.className);
 		}
 	});
 	if(studentToRender != null){
