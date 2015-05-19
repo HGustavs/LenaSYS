@@ -47,13 +47,7 @@
         <nav class="rightDropdownMenu" id="DropdownMenu">
         	
         </nav>     
-       	        
-        <!-- Searchfield -->
-        <div class="searchfieldTV clearfix">
-             	<input type="text" id="inputSearch" class="my-pull-left" list="searchOptions" placeholder=" Search..." name="studyprogram/Pnr" id="studyprogram/Pnr">
-             	<datalist id="searchOptions"> </datalist>
-                <div class="button my-pull-left" id="searchbutton" onclick="display_search_data();">Search</span></div>
-        </div>
+
     
         <div id="class_view">
             <!-- ProgramName -->
