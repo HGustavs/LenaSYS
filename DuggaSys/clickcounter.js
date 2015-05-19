@@ -4,17 +4,17 @@
 
 var ClickCounter = {
 	// Used to count clicks
-	noClicks: 0,
+	score: 0,
 	
 	// Initializes the noClicks variable, called at the start of a dugga
 	initialize: function() {
-		this.noClicks = 0;	
+		this.score = 0;	
 	},
 	
 	// Called whenever a dugga should count a mouse click, e.g., when a user presses a button
 	onClick: function() {
 		// Increments the click counter by one
-		this.noClicks++;
+		this.score++;
 		
 		// Calls animate clicks to directly update the click counter user interface 
 		this.animateClicks();
@@ -24,7 +24,7 @@ var ClickCounter = {
 	animateClicks: function() {
 		// Apply some web magic to change the ui counter
 		var str = "<p>";
-		str += this.noClicks;
+		str += this.score;
 		document.getElementById('duggaTimer').innerHTML = str;
 	}
 }
