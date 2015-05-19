@@ -613,4 +613,13 @@ INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,205,'salstentamen
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,206,'salstentamen',3,7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,207,'salstentamen',4,7.5);
 
+/* Insert into list */
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2001,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2004,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2010,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2013,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2016,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2019,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2022,'Christina Sjogren',2);
+
 -- END UMV test data END --
