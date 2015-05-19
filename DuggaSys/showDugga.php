@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Dugga Viewer</title>
