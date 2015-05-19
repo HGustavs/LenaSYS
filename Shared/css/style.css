@@ -307,9 +307,8 @@ header td {
 }
 
 .navHeading {
-    font-size: 2.5em; /* Fallback if browser doesn't support vw*/
+    font-size: 2.5em;
     vertical-align: middle;
-    max-width: 500px;
     padding-left: 15px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
