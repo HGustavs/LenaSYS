@@ -631,7 +631,7 @@ function returnedHighscore(data){
 			if(!isNaN(data["user"][0]) && data["user"][0] === i){
 				str += "<tr class='highscoreUser'>"
 			}else{
-				str += "<tr class='highscoreUser'>";
+				str += "<tr>";
 			}
 			str += "<td>";
 			str += (i + 1);
