@@ -164,7 +164,7 @@ if(checklogin()){
 					$debug="You have already been graded on this assignment";
 				}else{
 					// Update Dugga!
-					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, timeSpent=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, score=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
@@ -175,7 +175,6 @@ if(checklogin()){
 				
 				if(!$query->execute()) {
 					$debug="Error updating answer";
-		
 				}
 			}
 		}
