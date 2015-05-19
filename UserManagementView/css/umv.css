@@ -106,56 +106,6 @@
 /*END dropdown menu*/
 
 
-/* Searchfield UMV */
-.searchfieldTV{
-	font-family: Calibri,sans-serif;
-	width: 35%; 
-	margin-left:25px;
-	margin-top:-40px;
-	position:absolute;	
-}
-
-/* Searchfield UMV input field*/
-.searchfieldTV input{
-	width: 70%;
-	height: 25px;
-	float:left;
-	position:relative;
-	font-size:0.9em;
-	border:none;
-	border-top-left-radius:0.5em;
-	border-bottom-left-radius:0.5em;
-	box-shadow: inset 2px 2px 5px #A9A;
-}
-
-/* Searchfield UMV input text field focus */
-.searchfieldTV input[type=text]:focus{
-	box-shadow: inset 2px 2px 5px #988a98;
-}
-
-/* Searchfield UMV button */
-.searchfieldTV .button{
-	border:none;
-	height:23px;
-	letter-spacing:0.1em;
-	margin-left:0px;
-	width:20%;
-	padding-top:4px;
-	font-size:0.9em;
-	background-color:#614875;
-	text-align:center;
-	color:#fff;
-	border-top-right-radius:0.5em;
-	border-bottom-right-radius:0.5em;
-}
-
-/* Searchfield UMV button hover */
-.searchfieldTV .button:hover{
-	cursor:pointer;
-	background-color:#927B9E;
-}
-
-
 /* Program title style */		
 .programName{
 	width:500px;
