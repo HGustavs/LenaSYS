@@ -7,7 +7,7 @@ var Timer = {
 	timer: undefined,
 	
 	// Counts the amount of time spent on a dugga
-	timeSpent: 0,
+	score: 0,
 	
 	// Called at the start of a dugga to initialize the object
 	startTimer: function(){
@@ -28,15 +28,15 @@ var Timer = {
 	
 	// Increments the time counter by one
 	incrementTimer: function(){
-		this.timeSpent++;
+		this.score++;
 	},
 	
 	// Updates the user interface
 	animateTimer: function(){
 		// Calculate hours, minutes and seconds based on timespent
-		var hours = Math.floor(this.timeSpent / 3600);
-		var minutes = Math.floor(this.timeSpent / 60);
-		var seconds = this.timeSpent % 60;
+		var hours = Math.floor(this.score / 3600);
+		var minutes = Math.floor(this.score / 60);
+		var seconds = this.score % 60;
 
 		// Create a nice looking clock thing with the information we have
 		var str = "<p>";
