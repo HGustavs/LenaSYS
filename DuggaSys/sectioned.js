@@ -634,22 +634,14 @@ function returnedHighscore(data){
 				str += "<tr>";
 			}
 			str += "<td>";
-			str += i + 1;
+			str += (i + 1);
 			str += "</td>";
-			str += "<tr>"; 
+
 			str += "<td>";
 			str += item['username'];
 			str += "</td>"
 			str += "<td>";
-			if(parseInt(item['highscoremode']) == 0) {
-				// Undefined	
-			} else if(parseInt(item['highscoremode']) == 1) {
-				str += "Time spent: ";
-			} else if (parseInt(item['highscoremode']) == 2) {
-				str += "Number of clicks: ";
-			} else {
-				str += "Score: ";
-			}
+			str += "Score: ";
 			str += item['score']
 			str += "</td>";
 			str += "</tr>";
@@ -665,15 +657,7 @@ function returnedHighscore(data){
 		str += data["user"]["username"];
 		str += "</td>"
 		str += "<td>";
-		if(parseInt(item['highscoremode']) == 0) {
-			// Undefined	
-		} else if(parseInt(item['highscoremode']) == 1) {
-			str += "Time spent: ";
-		} else if (parseInt(item['highscoremode']) == 2) {
-			str += "Number of clicks: ";
-		} else {
-			str += "Score: ";
-		}
+		str += "Score: ";
 		str += data["user"]["score"]
 		str += "</td>";
 		str += "</tr>";
