@@ -547,7 +547,7 @@ header td {
 }
 
 #editContent input[type="number"] {
-	height: 20px;
+	height: 30px;
 	border-color: rgb(169, 169, 169);
 }
 
