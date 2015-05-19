@@ -193,4 +193,68 @@ input.submit-button:hover {
 .instructions-button:hover {
 	background-color:#939393;	
 }
+
+/* --------------================################================-------------- *
+ *                      	    Quizdugga				        *
+ * --------------================################================-------------- */
+
+.quiz-wrapper{
+	width:70%;
+	margin:auto;
+	background-color:#ccc;
+}
+
+.quiz-header{
+ 	background-color: #614875;
+	padding:15px;
+}
+
+.quiz-header h1{
+	color:#fff;
+}
+
+.quiz-question{
+	background-color:#614875;
+	padding:6px 15px 6px 15px;	
+}
+
+.quiz-question h3{
+	color:#fff;
+}
+
+.quiz-answer{
+	padding:6px 15px 6px 15px;	
+}
+
+
+.quiz-question-number {
+	height: 30px;
+	width: 30px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius:15px;
+	border-radius: 20px;
+	border:1px solid #fff;
+	text-align: center;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.submit{
+	background-color:#614875;
+	border:0px;
+	padding:10px;
+	margin:7px;
+    	color:#fff;
+    	cursor:pointer;
+    	font-size:14px;
+    	transition:1s background-color;
+    	border-radius:4px;	
+
+}
+
+.submit:hover {
+    	background-color:#7B5A96;
+    	border-radius:4px;	
+}
+
 						
