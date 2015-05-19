@@ -20,7 +20,14 @@ time, mark, audio, video {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
 }
-
+.listbar{
+    margin:0px auto;
+    background-color: #614875;
+    color:#fff;
+    display: block;
+    padding-top:1px;
+	height:31px;width:100%;padding:2px;
+}
 table {
     border-collapse: collapse;
 }
