@@ -157,7 +157,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			}
 
 		// All results from current course and vers?
-		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,answer,submitted,vers from userAnswer where cid=:cid;");
+		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers from userAnswer where cid=:cid;");
 		$query->bindParam(':cid', $cid);
 		
 		if(!$query->execute()) {
@@ -180,7 +180,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					'moment' => $row['moment'],
 					'grade' => $row['grade'],
 					'uid' => $row['uid'],
-					'answer' => $row['answer'],
+					'answer' => $row['useranswer'],
 					'submitted'=> $row['submitted'],
 					'vers'=> $row['vers']
 				)
