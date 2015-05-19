@@ -115,7 +115,7 @@ function returnedFile(data)
 					if(parseInt(item['kind'])==1){
 							str1+="<tr class='fumo'>";
 							str1+="<td>"+item['fileid']+"</td>";
-							str1+="<td>"+item['filename']+"</td>";
+							str1+="<td>"+"<a href="+item['filename']+" target="+"_blank"+">"+item['filename']+"</a>"+"</td>";
 							str1+="<td style='padding:4px;'>";
 							str1+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 							str1+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
