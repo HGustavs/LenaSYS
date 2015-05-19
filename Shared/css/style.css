@@ -272,10 +272,6 @@ header {
     left: 0px;
 }
 
-header td {
-    white-space: nowrap;
-}
-
 #duggaTimer {
     z-index: 9000;
     width: 100px;
@@ -292,23 +288,16 @@ header td {
 
 
 .navButt {
-    width:32px;
+    width:50px;
     vertical-align: middle;
 }
 
 .navButt img {
     margin-left: 10px;
-    vertical-align: middle;
-    height: 32px;
-}
-
-.navButt:hover {
-    cursor: pointer;
 }
 
 .navHeading {
     font-size: 2.5em;
-    vertical-align: middle;
     padding-left: 15px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -317,7 +306,6 @@ header td {
     -ms-user-select: none;
     user-select: none;
     cursor:default;
-    overflow: hidden;
 }
 
 .navName {
@@ -347,26 +335,38 @@ header td {
 
 .loggedout {
     background-color: #c75050;
+    width:40px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    padding-left:14px;
 }
 
 .loggedout:hover {
     background-color: #50a750;
+    width:40px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    padding-left:14px;
 }
 
 .loggedin {
     background-color: #50a750;
+    width:40px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    padding-left:14px;
 }
 
 .loggedin:hover {
     background-color: #c75050;
+    width:40px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    padding-left:14px;
 }
 
 #loginbutton{
     cursor:pointer;
-    height:50px;
-    width: 50px;
-    vertical-align: middle;
-    text-align: center;
 }
 
 #div2
@@ -936,6 +936,60 @@ input.new-item-button:hover {
 /* select element */
 .course-dropdown {
 	height: 30px;
+}
+
+.newSequence  {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+	transition: background-color 1s ease 0s;
+}
+
+.deleteSequence {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+	transition: background-color 1s ease 0s;
+}
+
+.updateSequence {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-top: 26px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+	transition: background-color 1s ease 0s;
+}
+
+.newSequence:hover {
+  background-color:#7B5A96;
+    border-radius:4px;	
+}
+
+.deleteSequence:hover {
+  background-color:#7B5A96;
+    border-radius:4px;	
+}
+.updateSequence:hover {
+  background-color:#7B5A96;
+    border-radius:4px;	
 }
 /* End DuggaSys Sectioneed*/
 /**************************/
