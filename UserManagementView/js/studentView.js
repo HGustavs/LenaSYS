@@ -27,6 +27,11 @@ function renderStudentView(data)
 	var totalHP = progress[0]['totalHP'];
 	var procent = completedHP/totalHP*100;
 	
+	//If the student doesn't have any credits for a course
+	if(progress[0]['completedHP'] == NaN || progress[0]['completedHP'] == null){
+		progress[0]['completedHP'] = 0;
+	}
+	
 	htmlStr += '<div class="totalProgressBar">';
 	htmlStr += '<div class="progress-bar progress-bar-success" id="MainProgress" role="progressbar" style="width:' + parseFloat(procent) + '%">';
 	htmlStr += '<div id="progressIndicator">' + parseFloat(progress[0]['completedHP']) + '/' + parseFloat(progress[0]['totalHP']) + " hp" +'</div></div></div>';
