@@ -19,11 +19,13 @@
         
         <title>LenaSYS User Editor</title>
         
+        <link rel="stylesheet" type="text/css" href="css/progressbar2.css">
+        
         <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
         <link href="css/umv.css" rel="stylesheet">
+        <link href="css/studentView.css" rel="stylesheet">
         
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
-        <link href="css/studentView.css" rel="stylesheet">
         <script type="text/javascript" src="../Shared/dugga.js"></script>
     </head>
 
@@ -44,11 +46,8 @@
             
         <!-- Dropdownmenu -->
         
-        <nav class="rightDropdownMenu" id="DropdownMenu">
-        	
-        </nav>     
-
-    
+        <nav class="rightDropdownMenu" id="DropdownMenu"></nav>  
+        
         <div id="class_view">
             <!-- ProgramName -->
             <div id="title" class="programName">
@@ -94,7 +93,6 @@
         </div>
         <!-- Clickble view so the teacher can se specific student -->
         <div id="studentView">
-            <div class="student_back_button">Back</div>
 
             <div id="studentTitle">
 
@@ -146,7 +144,6 @@
 
     <script src="js/teacherView.js"></script>
     <script src="js/studentView.js"></script>
-    <script type="text/javascript" src="js/umvjquery.js"></script>
 
 </body>
 </html>

@@ -4,7 +4,7 @@ AJAXService("TOOLBAR", {}, "UMVTEACHER");
 
 var selectedClass = "";
 var selectedClassCode = "";
-var selectedPage = 0;
+var selectedPage = "";
 
 
 //---------------------------------------------------------------
@@ -285,8 +285,8 @@ function getCourseResults(results, studentNumber)
 //	progress_bar_hover(data) - shows the coursename when hovering 
 //	over the small progressbars. 
 //---------------------------------------------------------------
-function progress_bar_hover(data){
-	
+function progress_bar_hover(data)
+{
 	$('.progress_course_total').on( 'mouseenter',function() {
 		
 			var course = 'course_'+$(this).attr('id');
@@ -312,7 +312,8 @@ function progress_bar_hover(data){
 //	Sets the number of change pages buttons depending of how many 
 //	students in class.
 //---------------------------------------------------------------
-function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
+function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages)
+{
 	var htmlInserts="";
 	var numberOfPage=1;
 	
@@ -323,9 +324,6 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 		htmlInserts+= "<div class='page_"+numberOfPage +" pages notActive_Page' onClick='activePage("+numberOfPage+")'>"+numberOfPage +"</div>";
 		numberOfPage++;
 	}
-		
-	htmlInserts+= "<div id='nextPage'> >> </div> ";	
-	htmlInserts+="</div>";
 
 	var changePages = document.getElementById("teacher_pages");
 	changePages.innerHTML = htmlInserts;
@@ -336,8 +334,8 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 //	activePage(numberOfPage) - When click on pagenumber the pagenumber 
 // 	is going to be markt
 //------------------------------------------------------------------------
-function activePage(numberOfPage){
-	
+function activePage(numberOfPage)
+{
 	if(selectedPage !== numberOfPage) {
 		if(selectedPage !== "") {
 			$('.page_'+selectedPage).removeClass('active_Page');
@@ -348,12 +346,19 @@ function activePage(numberOfPage){
 		
 		selectedPage = numberOfPage;
 	}
+	else{
+		selectedPage = "";
+		$('.page_'+numberOfPage).removeClass('notActive_Page');
+		$('.page_'+numberOfPage).addClass('active_Page');
+	}
+	
 }
 
 //---------------------------------------------------------------
 //	navigate_page() - navigates between pages
 //---------------------------------------------------------------
-function navigate_page(){
+function navigate_page()
+{
 	$('.pages').click(function(){
 		
 		var classPage = "#"+this.className.split(' ')[0]; 
@@ -384,7 +389,8 @@ function clearLinearGraph()
 //	function will parse ssn data from the database and if its a character it
 //	will parse username data.
 //----------------------------------------------------------------------------------
-function input_search_alternative(){
+function input_search_alternative()
+{
 	$('#inputSearch').keyup(function(){
 		
 		// checks witch query it will use to get data from php. add more statments for diffrent querys
@@ -400,7 +406,8 @@ function input_search_alternative(){
 //	search_alternatives(varible,query) - Depending on the query value the 
 //	the function will either parse ssn or username data. 
 //----------------------------------------------------------------------------------
-function search_alternatives(varible,query) {
+function search_alternatives(varible,query) 
+{
 	if(query==1){	
 		$.ajax({
 			type:"POST",
@@ -444,7 +451,8 @@ function search_alternatives(varible,query) {
 //	search_option_username(data) - Adds the top five searchresults to the search options
 //	under the searchbar when searching for username. 
 //------------------------------------------------------------------------------------------
-function search_option_username(data){
+function search_option_username(data)
+{
 	var htmlStr= "";
 	var user = data['user'];
 
@@ -462,7 +470,8 @@ function search_option_username(data){
 //	search_option_pnr(data) - Adds the top five searchresults to the search options
 //	under the searchbar when searching for ssn. 
 //------------------------------------------------------------------------------------------
-function search_option_pnr(data){
+function search_option_pnr(data)
+{
 	var htmlStr= "";
 	var user = data['user'];
 	for(var i = 0; i<5;i++){
@@ -478,7 +487,8 @@ function search_option_pnr(data){
 //	display_search_data() - Render student view for the selected option in the
 //	in the searchfield.
 //------------------------------------------------------------------------------------------
-function display_search_data(){
+function display_search_data()
+{
 	var studentToRender = null;
 	var theOption = $('#inputSearch').val();
 
@@ -487,7 +497,6 @@ function display_search_data(){
 		if(this.value== theOption){
 			studentToRender = this.className;
 			console.log(this.className);
-
 		}
 	});
 	if(studentToRender != null){
@@ -495,18 +504,22 @@ function display_search_data(){
 	}
 }
 
-
-// Redirect teacher to specific student page
-function onClick_Students_To_page(){
+//------------------------------------------------------------------------------------------
+//	Redirect teacher to specific student page
+//------------------------------------------------------------------------------------------
+function onClick_Students_To_page()
+{
 	$('.student').click(function(){
 		get_student_data(this.id);
 	});
 }
+
 //------------------------------------------------------------------------------------------
 //	get_student_data(studentid) - Collects the right data from the DB to render the
 //	student view for a specific student. 
 //------------------------------------------------------------------------------------------
-function get_student_data(studentid) {
+function get_student_data(studentid) 
+{
 	var renderstudent = 'render';
 	$.ajax({
 		type:"POST",
@@ -518,6 +531,7 @@ function get_student_data(studentid) {
 		success:function(data) {
 			var result = JSON.parse(data);
 			renderStudentView(result);
+			$('#class_view').hide();
 		},
 		error:function() {
 			console.log("error");
