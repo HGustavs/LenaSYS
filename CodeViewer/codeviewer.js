@@ -74,6 +74,11 @@ function returned(data)
 			$("#afterbutton").css("opacity",0.4);
 			$("#afterbutton").css("pointer-events","none");
 		}
+	}else if(retData['before']==null&&retData['after']==null){ //If there are no examples this disables being able to jump through (the non-existsing) examples
+		$("#beforebutton").css("opacity",0.4);
+		$("#beforebutton").css("pointer-events","none");
+		$("#afterbutton").css("opacity",0.4);
+		$("#afterbutton").css("pointer-events","none");	
 	}
 	// Fill Section Name and Example Name
 	var exName=document.getElementById('exampleName');
@@ -535,7 +540,7 @@ function createboxmenu(contentid, boxid, type)
 		// If reader doesn't have write access, only the boxtitle is shown
 		}else{
 			var str = '<table cellspacing="2"><tr>';
-			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][3]+'</span></td>';
+			str+= '<td class="boxtitlewrap"><span class="boxtitle">'+retData['box'][boxid-1][4]+'</span></td>';
 			str+='</tr></table>';
 			boxmenu.innerHTML=str;	
 		}			
@@ -1294,7 +1299,7 @@ function rendercode(codestring,boxid,wordlistid)
 				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
 			}else if(tokenvalue=="<"){
 				// This statement checks the character after < to make sure it is a valid tag. 
-				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!"){
+				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!" && tokens[i+1].val != "?"){
 					if(htmlArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
 						var k = 2;
 						var foundEnd = false;
