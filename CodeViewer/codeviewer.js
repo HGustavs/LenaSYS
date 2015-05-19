@@ -453,26 +453,31 @@ function updateContent()
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
 	if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
-		var boxtitle = $("#boxtitle").val();
-		var boxcontent = $("#boxcontent option:selected").val();
-		var wordlist = $("#wordlist").val();
-		var filename = $("#filename option:selected").val();
-		var exampleid = querystring['exampleid'];
-		var boxid = box[0];
-		
-		AJAXService("EDITCONTENT", {
-			exampleid : exampleid,
-			boxid : boxid,			
-			boxtitle : boxtitle,
-			boxcontent : boxcontent,
-			wordlist : wordlist,
-			filename : filename,
-			addedRows : addedRows,
-			removedRows : removedRows
-		}, "BOXCONTENT");
-
-		addedRows = [];
-		removedRows = [];
+		try {
+			var boxtitle = $("#boxtitle").val();
+			var boxcontent = $("#boxcontent option:selected").val();
+			var wordlist = $("#wordlist").val();
+			var filename = $("#filename option:selected").val();
+			var exampleid = querystring['exampleid'];
+			var boxid = box[0];
+			
+			AJAXService("EDITCONTENT", {
+				exampleid : exampleid,
+				boxid : boxid,			
+				boxtitle : boxtitle,
+				boxcontent : boxcontent,
+				wordlist : wordlist,
+				filename : filename,
+				addedRows : addedRows,
+				removedRows : removedRows
+			}, "BOXCONTENT");
+	
+			addedRows = [];
+			removedRows = [];
+		}catch(e){
+			alert("Error when updating content: "+e.message)
+		}
+		setTimeout("location.reload()", 500);
 	}
 }
 
