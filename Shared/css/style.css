@@ -949,7 +949,10 @@ input.new-item-button:hover {
     margin-left: 4px;
     font-size: 14px;
     float: right;
-	transition: background-color 1s ease 0s;
+    -webkit-transition: background-color 1s ease 0s;
+    -moz-transition: background-color 1s ease 0s;
+    -o-transition: background-color 1s ease 0s;
+    transition: background-color 1s ease 0s;
 }
 
 /* Shapes and color for the buttons in Editexample box*/
@@ -963,7 +966,10 @@ input.new-item-button:hover {
     margin-left: 4px;
     font-size: 14px;
     float: right;
-	transition: background-color 1s ease 0s;
+    -webkit-transition: background-color 1s ease 0s;
+    -moz-transition: background-color 1s ease 0s;
+    -o-transition: background-color 1s ease 0s;
+    transition: background-color 1s ease 0s;
 }
 
 /* Shapes and color for the buttons in Editexample box*/
@@ -978,7 +984,10 @@ input.new-item-button:hover {
     margin-left: 4px;
     font-size: 14px;
     float: right;
-	transition: background-color 1s ease 0s;
+    -webkit-transition: background-color 1s ease 0s;
+    -moz-transition: background-color 1s ease 0s;
+    -o-transition: background-color 1s ease 0s;
+    transition: background-color 1s ease 0s;
 }
 
 /* Hover style for the buttons in Editexample box*/
