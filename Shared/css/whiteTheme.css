@@ -204,15 +204,17 @@
 }
 
 .normtext .impword {
-    color: #000;
-    background-color: #F2F2F2;
-		border: 1px solid #899;
+ color: rgb(34, 34, 34);
+background-color: rgb(245, 195, 225);
+border: 1px solid rgb(66, 66, 66);
+
 }
+
 
 .impo .impword {
     color: #fff;
     background-color: #614875;
-    border: 1px solid #f44;
+    border: 1px solid #424242;
 }
 
 .descbox .impword {
