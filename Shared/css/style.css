@@ -937,5 +937,65 @@ input.new-item-button:hover {
 .course-dropdown {
 	height: 30px;
 }
+/* shapes and color for the buttons in editExample box  */
+.newSequence  {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+    transition: background-color 1s ease 0s;
+}
+
+/* shapes and color for the buttons in editExample box  */
+.deleteSequence {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+	transition: background-color 1s ease 0s;
+}
+
+/* shapes and color for the buttons in editExample box  */
+.updateSequence {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-top: 26px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+	transition: background-color 1s ease 0s;
+}
+
+/* hover style for the buttons in editExample box  */
+.newSequence:hover {
+  background-color:#7B5A96;
+    border-radius:4px;	
+}
+
+/* hover style for the buttons in editExample box  */
+.deleteSequence:hover {
+  background-color:#7B5A96;
+    border-radius:4px;	
+}
+
+/* hover style for the buttons in editExample box  */
+.updateSequence:hover {
+  background-color:#7B5A96;
+    border-radius:4px;	
+}
 /* End DuggaSys Sectioneed*/
 /**************************/
