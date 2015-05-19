@@ -9,7 +9,7 @@ pdoConnect();
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Dugga editor</title>
+	<title>File editor</title>
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
