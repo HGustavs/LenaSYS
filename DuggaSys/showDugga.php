@@ -152,7 +152,7 @@
 
 	<!-- Timer START -->
 
-	<div id='duggaTimer'>
+	<div id='scoreElement'>
 
 	</div>
 
