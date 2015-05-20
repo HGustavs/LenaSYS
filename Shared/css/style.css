@@ -531,6 +531,10 @@ header td {
  *                       		  Pop-up BOX        				   *
  * --------------================################================-------------- */
 
+#playlink {
+    width: 216px;
+}
+
 #editContent td {
 	padding: 5px 5px 0px 5px;
 }
@@ -557,22 +561,23 @@ header td {
 	margin:0;
 }
 
-#editExample td {
-    width: 50%;
-    padding: 5px 5px 0px 5px;
+#impwords {
+    max-width: 186px;
+    min-width: 186px;
+    margin-left: 227px;
 }
 
-#title, #secttitle, #playlink {
-    width:100%;
-}
-
-#impwords, #impword {
-    width: 186px;
+#impword {
+    width: 174px;
 }
 
 #before, #after {
     float: left;
     width: 226px;
+}
+
+#playlink {
+    width: 216px;
 }
 
 .loginBox .inputwrapper {
@@ -936,7 +941,7 @@ input.new-item-button:hover {
 
 
 /* Shapes and color for the buttons in Editexample box*/
-.newSequence, .deleteSequence, .updateSequence  {
+.newSequence, .deleteSequence {
     background-color: rgb(97, 72, 117);
     border: 0px none;
     height: 30px;
@@ -953,11 +958,25 @@ input.new-item-button:hover {
 
 }
 
+.updateSequence {
+background-color: rgb(97, 72, 117);
+border: 0px none;
+height: 30px;
+color: rgb(255, 255, 255);
+cursor: pointer;
+margin-bottom: 2px;
+font-size: 14px;
+margin-left: 316px;
+transition: background-color 1s ease 0s;
+}
+
+#sequenceSelector {
+	width: 295px;
+}
+
 /* Shapes and color for the buttons in Editexample box*/
 .updateSequence {
-    margin-top: 26px;
     margin-bottom: 4px;
-    margin-left: 4px;
 }
 
 /* Hover style for the buttons in Editexample box*/
