@@ -47,7 +47,7 @@ pdoConnect();
 	<div id='editSection' class='loginBox' style='width:460px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Item</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div onclick='closeWindows(); closeSelect();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='lid' value='Toddler' />
