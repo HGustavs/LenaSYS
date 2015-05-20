@@ -334,8 +334,8 @@
 	color:#FFF;
 	padding:0 5px 0 5px;
 	border-radius:0.5em;
-	margin:-42px 0px 0px -50px;
-	z-index:1001px;
+	margin:-30px 0 0 0;
+	z-index:10px;
 }
 
 /* Site list nav at bottom of page */
