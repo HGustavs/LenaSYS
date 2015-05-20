@@ -35,7 +35,7 @@ var Timer = {
 	animateTimer: function(){
 		// Calculate hours, minutes and seconds based on timespent
 		var hours = Math.floor(this.score / 3600);
-		var minutes = Math.floor(this.score / 60);
+		var minutes = Math.floor(this.score / 60) % 60;
 		var seconds = this.score % 60;
 
 		// Create a nice looking clock thing with the information we have
