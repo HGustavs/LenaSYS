@@ -4,9 +4,13 @@ include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
 
-$versionFile = fopen("../.git/refs/heads/master", "r"); 	
-$version = fgets($versionFile);
-fclose($versionFile);
+if (file_exists("../.git/refs/heads/master")) {
+	$versionFile = fopen("../.git/refs/heads/master", "r"); 	
+	$version = fgets($versionFile);
+	fclose($versionFile);
+} else {
+	$version = ".git folder is missing";
+}
 ?>
 <!DOCTYPE html>
 <html>
