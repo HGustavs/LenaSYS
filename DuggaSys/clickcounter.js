@@ -25,6 +25,6 @@ var ClickCounter = {
 		// Apply some web magic to change the ui counter
 		var str = "<p>";
 		str += this.score;
-		document.getElementById('duggaTimer').innerHTML = str;
+		document.getElementById('scoreElement').innerHTML = str;
 	}
 }

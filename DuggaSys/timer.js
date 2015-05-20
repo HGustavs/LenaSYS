@@ -53,6 +53,6 @@ var Timer = {
 		str += seconds;
 
 		// Push new value to ui thing
-		document.getElementById('duggaTimer').innerHTML = str;
+		document.getElementById('scoreElement').innerHTML = str;
 	}
 }	
