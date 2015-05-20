@@ -102,6 +102,20 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
+			
+			// insert into list forthe specific course
+			//---------------------------------------
+			if($kind == 4){
+				$query2 = $pdo->prepare("INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);");
+
+				$query2->bindParam(':cid', $courseid);
+				$query2->bindParam(':lid', $sectid);
+
+				if(!$query2->execute()) {
+					$error=$query2->errorInfo();
+					$debug="Error updating entries".$error[2];
+				}
+			}
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
 			$query->bindParam(':cid', $courseid);

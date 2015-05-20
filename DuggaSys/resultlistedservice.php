@@ -31,6 +31,12 @@ $dugganame="";
 $duggaparam="";
 $duggaanswer="";
 
+$listid=getOP('listid');
+$dateissue=getOP('dateissue');
+$listnumber=getOP('listnumber');
+$examdate=getOP('examdate');
+$listissuer=getOP('listissuer');
+
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
@@ -105,6 +111,7 @@ if(strcmp($opt,"DUGGA")===0){
 
 $entries=array();
 $gentries=array();
+$list=array();
 $sentries=array();
 $lentries=array();
 
@@ -133,10 +140,24 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			);
 			array_push($entries, $entry);
 		}
+		
+			if(strcmp($opt,"UPDATELIST")===0){
+				$query = $pdo->prepare("UPDATE list set listnr=:listnr, provdatum=:examdate,responsible=:listissuer,responsibledate=:dateissue where listid=:listid");
+				$query->bindParam(':listnr', $listnumber);
+				$query->bindParam(':examdate', $examdate);
+				$query->bindParam(':listissuer', $listissuer);
+				$query->bindParam(':dateissue', $dateissue);
+				$query->bindParam(':listid', $listid);
 
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating entries".$error[2];
+				}
+			
+			}
 
 		// All results from current course and vers?
-		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,answer,submitted,vers from userAnswer where cid=:cid;");
+		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers from userAnswer where cid=:cid;");
 		$query->bindParam(':cid', $cid);
 		
 		if(!$query->execute()) {
@@ -159,7 +180,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					'moment' => $row['moment'],
 					'grade' => $row['grade'],
 					'uid' => $row['uid'],
-					'answer' => $row['answer'],
+					'answer' => $row['useranswer'],
 					'submitted'=> $row['submitted'],
 					'vers'=> $row['vers']
 				)
@@ -190,13 +211,35 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					'visible'=> $row['visible'],
 					'code_id' => $row['code_id'],
 					'vers' => $row['vers'],
-					'gradesystem' => $row['gradesystem']					
+					'gradesystem' => $row['gradesystem']
 				)
 			);
 		}
-
+		
+		// All lists
+		$query = $pdo->prepare("SELECT * FROM list WHERE course=:cid");
+		$query->bindParam(':cid', $cid);
+		$result=$query->execute();
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$list,
+				array(
+					'listnr' => $row['listnr'],
+					'listid' => $row['listid'],
+					'provdatum' => $row['provdatum'],
+					'responsible' => $row['responsible'],
+					'responsibledate' => $row['responsibledate'],
+					'listeriesid' => $row['listeriesid']								
+				)
+			);
+		}
+		
 		// All extant versions of course
-		$query = $pdo->prepare("SELECT cid,coursecode,vers FROM vers");
+		$query = $pdo->prepare("SELECT coursename,cid,coursecode,vers FROM vers");
 		$result=$query->execute();
 		
 		if(!$query->execute()) {
@@ -210,6 +253,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				array(
 					'cid' => $row['cid'],
 					'coursecode' => $row['coursecode'],
+					'coursename' => $row['coursename'],
 					'vers' => $row['vers']
 				)
 			);
@@ -226,7 +270,8 @@ $array = array(
 	'duggapage' => $duggapage,
 	'dugganame' => $dugganame,
 	'duggaparam' => $duggaparam,
-	'duggaanswer' => $duggaanswer
+	'duggaanswer' => $duggaanswer,
+	'list' => $list
 );
 
 echo json_encode($array);
