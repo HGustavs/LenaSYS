@@ -52,7 +52,7 @@
 	$result = $query->execute();
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 		//Give permit if the user is logged in and has access to the course or if it is public
-		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0);
+		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
 		if(!$hr){
 			if (checklogin()){
 				$hr = isSuperUser($userid);
