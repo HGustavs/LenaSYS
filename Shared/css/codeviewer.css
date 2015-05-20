@@ -659,12 +659,17 @@
 
 /* DragnDrop CSS */
 #sortList {
-	margin-left:20px;
-	margin-right:20px;
+	margin-left:10px;
+	margin-right:45px;
 	border: 2px solid black;
-	width: 200px;
+	width: 170px;
 	background:#5a5757;
 	display:inline-block;
+}
+
+#wrap {
+    height: 400px;
+    overflow: scroll;
 }
 #exampleList {
 	margin-left:auto;
