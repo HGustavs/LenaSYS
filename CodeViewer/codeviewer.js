@@ -232,6 +232,21 @@ function editImpWords(editType)
 {
 	var word = $("#impword").val();
 
+	//Check if the word contains an uneven amount of parenthesis
+	// * if so do not add the word to important words, if will break the page
+	for(var i = 0; i < word.length; i++){
+		if(word[i] == '(' ){
+			left++;
+		}else if (word[i] == ')'){
+			right++;
+		}
+	}
+	var uneven = false;
+	//If there is an uneven amount set uneven
+	if(left != right){
+		uneven = true;
+	}
+	
 	// word can't contain any whitespaces
 	if (editType == "+" && word != "" && /\s/.test(word) == false) {
 		var exists = false;
