@@ -279,7 +279,7 @@ header {
     left: 0px;
 }
 
-#duggaTimer {
+#scoreElement {
     z-index: 9000;
     width: 100px;
     background-color: white;
