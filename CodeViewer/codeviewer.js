@@ -82,7 +82,7 @@ function returned(data)
 	}
 	
 	// Disables the play button if there is no playlink
-	if(retData['playlink'] == null){
+	if(retData['playlink'] == null || retData['playlink'] == ""){
 		$("#playbutton").css("opacity",0.4);
 		$("#playbutton").css("pointer-events","none");
 	}
