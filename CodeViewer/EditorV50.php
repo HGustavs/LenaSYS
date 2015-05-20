@@ -213,21 +213,12 @@ Testing Link:
 			</div>
 			<table width="100%">
 				<tr>
-					<td>Title: <input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
-					<td>Section Title: <input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
+					<td>Section Title:<input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
+					<td>Title:<input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
 				</tr>
 				<tr>
-					<td>Play Link:</td>
-					<td>Important Words:</td>
-				</tr>
-				<tr>
-					<td colspan="1"><input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
-					<td colspan="1"><input class='form-control textinput' type='text' id='impword' value='&lt;Important Word&gt;' </td>
-					<input style="width:32px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /></td>			
-				</tr>
-				<tr>
-					<td colspan="2">&nbsp;<select style="float:none;" id='impwords'><input style="width:32px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' />
-					</select></td>
+					<td>Play Link:<input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
+					<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
 				</tr>	
 			</table>
 			<div id="SeqEdit" style="border:2px solid #000;">
