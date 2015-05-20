@@ -38,6 +38,7 @@ function deleteFile(fileid,filename){
 
 function createLink()
 {
+		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
 		$("#editFile").css("display","block");
 		$("#filey").css("display","none");
 		$("#linky").css("display","block");
@@ -53,6 +54,7 @@ function createLink()
 //----------------------------------------
 function createFile(kind)
 {
+		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload File' /></td>");
 		if(kind=="MFILE"){
 				var str="<option>NONE</option>";
 				for(i=0;i<filez['lfiles'].length;i++){
