@@ -81,10 +81,10 @@ function returned(data)
 		$("#afterbutton").css("pointer-events","none");	
 	}
 	// Fill Section Name and Example Name
-	var exName=document.getElementById('exampleName');
-	exName.innerHTML=data['examplename'];
-	var exSection=document.getElementById('exampleSection');
-	exSection.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
+	var exName= $('#exampleName');
+	exName.html(data['examplename']);
+	var exSection= $('#exampleSection');
+	exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
 
 	// User can choose template if no template has been chosen and the user has write access.
 	if((retData['templateid'] == 0)){
@@ -117,13 +117,13 @@ function returned(data)
 		var boxmenuheight = 0;
 	
 		// don't create templatebox if it already exists
-		if(!document.getElementById(contentid)){
+		if($("#" + contentid).length == 0){
 			addTemplatebox(contentid);
 		}
 		
 		if(boxtype == "CODE"){
 			// Print out code example in a code box					
-			document.getElementById(contentid).removeAttribute("contenteditable");
+			$("#"+contentid).removeAttr("contenteditable");
 			$("#"+contentid).removeClass("descbox").addClass("codebox");
 			createboxmenu(contentid,boxid,boxtype);
 			
@@ -513,9 +513,9 @@ function addTemplatebox(id)
 
 function createboxmenu(contentid, boxid, type)
 {
-	if(!document.getElementById(contentid+"menu")){
+	if($("#"+contentid+"menu").length == 0){
 		var boxmenu = document.createElement("div");
-		document.getElementById(contentid+"wrapper").appendChild(boxmenu);
+		$("#"+contentid+"wrapper").append(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid+"menu");
 		
@@ -551,7 +551,7 @@ function createboxmenu(contentid, boxid, type)
 		}			
 		$(boxmenu).click(function(event){
 			if($(window).width() <=1100){
-				toggleClass(document.getElementById(boxmenu.parentNode.getAttribute("id")).getAttribute("id"));
+				toggleClass($("#"+boxmenu.parentNode.id).attr("id"));
 			}
 		});
 	}
@@ -564,10 +564,10 @@ function createboxmenu(contentid, boxid, type)
 function createhotdogmenu()
 {
 	// div2 refers to the main content div below the floating menu
-	var content = document.getElementById("div2");
+	var content = $("#div2");
 	// Checks if a hotdogmenu already exists, then calls that, if not a new one is created
-	if(document.getElementById("hotdogdrop")){
-		var hotdogmenu = document.getElementById("hotdogdrop");
+	if($("#hotdogdrop").length < 0){
+		var hotdogmenu = $("#hotdogdrop");
 	}else{
 		var hotdogmenu = document.createElement("span");
 		content.appendChild(hotdogmenu);
@@ -618,7 +618,7 @@ function toggleClass(id)
 //----------------------------------------------------------------------------------
 function displayDrop(dropid)
 {	
-	drop = document.getElementById(dropid);
+	drop = $("#"+dropid);
 	if($(drop).is(":hidden")){
 		$(".dropdown").css({display: "none"});
 		drop.style.display="block";
@@ -792,7 +792,7 @@ function changeboxcontent(boxcontent,boxid)
 
 function hideDrop(dname)
 {
-	var dropd=document.getElementById(dname);
+	var dropd= $("#"+dname);
 	if(dropd!=null) dropd.style.display="none";							
 }
 
@@ -803,7 +803,7 @@ function hideDrop(dname)
 
 function switchDrop(dname)
 {
-	var dropd=document.getElementById(dname); 
+	var dropd=$("#"+dname); 
 	if(dropd.style.display=="block"){
 		$( dropd ).slideUp("fast");							
 	}else{
@@ -820,7 +820,7 @@ function switchDrop(dname)
 //----------------------------------------------------------------------------------
 function issetDrop(dname)
 {
-	var dropd=document.getElementById(dname);
+	var dropd=$("#"+dname);
 	if(dropd.style.display=="block"){
 		return true;
 	}else{
@@ -1223,7 +1223,7 @@ function rendercode(codestring,boxid,wordlistid)
 	tokenize(codestring,"<>+-&","=>&:");
 			
 	// Iterate over token objects and print kind of each token and token type in window 
-	printout=document.getElementById(destinationdiv);
+	printout= $("#"+destinationdiv);
 	str="";
 	cont="";
 	lineno=0;
@@ -1379,7 +1379,7 @@ function rendercode(codestring,boxid,wordlistid)
 	}
 	str+="</div>";
 	// Print out rendered code and border with numbers
-	printout.innerHTML = createCodeborder(lineno,improws) + str;	
+	printout.html(createCodeborder(lineno,improws) + str);	
 	linenumbers();
 }
 
@@ -1443,7 +1443,7 @@ function mobileTheme(id){
 //----------------------------------------------------------------------------------
 function setEditing()
 {
-	var	hotdog = document.getElementById("hidehotdog");
+	var	hotdog = $("#hidehotdog");
 	var	isDesktop = $(hotdog).is(":hidden");
 	if(isDesktop){
 		$("*[contenteditable]").attr("contenteditable","true"); 
