@@ -84,7 +84,7 @@ pdoConnect();
 				<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>
 			</div> 
 			<div style='padding:5px;'>
-				<td align='right'><input class='submit-button' type="submit" value="Upload File" /></td>
+				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
 			</div> 
 		</form>
 	</div>
