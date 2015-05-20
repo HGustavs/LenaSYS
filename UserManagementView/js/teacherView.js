@@ -266,11 +266,10 @@ function getCourseResults(results, studentNumber)
 		var procent		  = course_result/course_hp * 100;
 		var color		  = procent < 100 ? colorYellow : colorGreen;
 		
-		htmlStr += "<div class='courseNameindicator' id='course_"+course_name+"#"+studentNumber+"'>";		
+		htmlStr += "<div class='courseNameindicator' id='course_"+course_name+" "+course_result+"/"+course_hp+"hp#"+studentNumber+"'>";		
 		htmlStr += "</div>";
-		htmlStr += "<div id='"+course_name+"#"+studentNumber+"' class='progress_course_total'>";
+		htmlStr += "<div id='"+course_name+" "+course_result+"/"+course_hp+"hp#"+studentNumber+"' class='progress_course_total'>";
 		htmlStr += "<div class='progress_course' style='width:" + procent + "%; background-color: " + color + ";'>";
-		htmlStr += "<p>" + parseFloat(course_result) + "/" + course_hp + "</p>";
 		htmlStr += "</div>";
 		htmlStr += "</div>";
 		
