@@ -80,6 +80,13 @@ function returned(data)
 		$("#afterbutton").css("opacity",0.4);
 		$("#afterbutton").css("pointer-events","none");	
 	}
+	
+	// Disables the play button if there is no playlink
+	if(retData['playlink'] == null || retData['playlink'] == ""){
+		$("#playbutton").css("opacity",0.4);
+		$("#playbutton").css("pointer-events","none");
+	}
+	
 	// Fill Section Name and Example Name
 	var exName= $('#exampleName');
 	exName.html(data['examplename']);
