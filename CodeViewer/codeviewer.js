@@ -82,9 +82,9 @@ function returned(data)
 	}
 	// Fill Section Name and Example Name
 	var exName= $('#exampleName');
-	exName.innerHTML=data['examplename'];
+	exName.html(data['examplename']);
 	var exSection= $('#exampleSection');
-	exSection.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
+	exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
 
 	// User can choose template if no template has been chosen and the user has write access.
 	if((retData['templateid'] == 0)){
