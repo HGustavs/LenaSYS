@@ -89,7 +89,7 @@ hr {
 #content {
     margin:0px auto;
     position:relative;
-    padding: 50px 12px 8px 8px;
+    padding: 50px 10px 10px 10px;
     background: #fff;
     min-height: 200px;
 }
@@ -983,14 +983,14 @@ input.new-item-button:hover {
 #divtable {
 	float:left;
 	overflow:scroll;
-	width: calc(100% - 208px);
+	width: calc(100% - 200px);
 }
 #tableheader {
 	background: #614875;
 	color:#FFFFFF;
 	margin-top:10px;
 	float:left;
-	width: calc(100% - 208px);
+	width: calc(100% - 200px);
 	overflow:hidden;
 }
 #tableheaderwrapper{
