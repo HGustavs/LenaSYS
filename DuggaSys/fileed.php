@@ -31,7 +31,7 @@ pdoConnect();
 			<div style='width:100%;float:right'>
 				<input class='submit-button' type='button' value='Add Link' onclick='createLink();'/>
 			</div>
-			<div id="alllinks" style='width:100%;float:right'>
+			<div id="alllinks" style='width:100%;'>
 				<table class='list list--nomargin' style='margin-bottom:8px;' >
 					<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
 				</table>
@@ -41,7 +41,7 @@ pdoConnect();
 			<div style='width:100%;float:right'>
 				<input class='submit-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
 			</div>
-			<div id="allglobalfiles" style='width:100%;float:right'>
+			<div id="allglobalfiles" style='width:100%;'>
 				<table class='list list--nomargin' style='margin-bottom:8px;' >
 					<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>
 				</table>
@@ -51,7 +51,7 @@ pdoConnect();
 			<div style='width:100%;float:right'>
 				<input class='submit-button' type='button' value='Add File' onclick='createFile("MFILE");'/>
 			</div>
-			<div id="allcoursefiles" style='width:100%;float:right'>
+			<div id="allcoursefiles" style='width:100%;'>
 				<table class='list list--nomargin'>
 					<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>
 				</table>
@@ -61,7 +61,7 @@ pdoConnect();
 			<div style='width:100%;float:right;display:block'>
 				<input class='submit-button' type='button' value='Add File' onclick='createFile("LFILE");'/>
 			</div>
-			<div id="alllocalfiles" style='width:100%;float:right'>
+			<div id="alllocalfiles" style='width:100%;'>
 				<table class='list list--nomargin'>
 				<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>
 				</table>
