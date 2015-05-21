@@ -50,11 +50,11 @@ pdoConnect();
 		<div style='padding:5px;'>
 			<input type='hidden' id='did' value='Toddler' /></td>
 			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='name' value='Name' /></div>
-			<div class='inputwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
-			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
-			<div class='inputwrapper'><span>Template:</span><select id='template'></select></div>
-			<div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' readonly="readonly"/></div>
-			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' readonly="readonly"/></div>
+			<div class='inputwrapper'><span>Auto-grade:</span><select id='autograde'><option value='0'>Hidden</option><option value='1'>Public</option></select></div>
+			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
+			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
+			<div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
+			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' onclick='updateDugga();' />
@@ -70,9 +70,7 @@ pdoConnect();
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='vid' value='Toddler' />
-			<div id='examplePara'></div>
 			<div class='inputwrapper' style="height:100px"><span>Param:</span><textarea id="parameter" placeholder='Variant Param'></textarea></div>
-			<div id='exampleAnswer'></div>	
 			<div class='inputwrapper' style="height:100px"><span>Answer:</span><textarea id="variantanswer" placeholder='Variant Param'></textarea></div>
 		</div>	
 		<div style='padding:5px;'>
