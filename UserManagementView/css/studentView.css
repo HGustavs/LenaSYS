@@ -221,7 +221,9 @@
 .course_alert {
 	cursor:pointer;
 	float:right;
-	margin: -1px 2px 0 0;
+	margin: -76px 2px 0 1px;
+	width:30px;
+	height:30px;
 }
 
 /*Course Link*/
