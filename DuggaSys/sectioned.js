@@ -537,7 +537,7 @@ function returnedSection(data)
 							str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
 						}
 						
-						if(grady==-1){
+						if(grady==-1 || grady == 0){
 								// Nothing submitted nor marked (White)
 								str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
 						}else if(grady==null){
