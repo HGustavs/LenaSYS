@@ -284,6 +284,10 @@ header {
     left: 0px;
 }
 
+header td {
+    white-space: nowrap;
+}
+
 #scoreElement {
     z-index: 9000;
     width: 100px;
@@ -298,18 +302,24 @@ header {
     border-width: 1px;
 }
 
-
 .navButt {
-    width:50px;
+    width:32px;
     vertical-align: middle;
 }
 
 .navButt img {
     margin-left: 10px;
+    vertical-align: middle;
+    height: 32px;
+}
+
+.navButt:hover {
+    cursor: pointer;
 }
 
 .navHeading {
     font-size: 2.5em;
+    vertical-align: middle;
     padding-left: 15px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -318,6 +328,7 @@ header {
     -ms-user-select: none;
     user-select: none;
     cursor:default;
+    overflow: hidden;
 }
 
 .navName {
@@ -347,38 +358,26 @@ header {
 
 .loggedout {
     background-color: #c75050;
-    width:40px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left:14px;
 }
 
 .loggedout:hover {
     background-color: #50a750;
-    width:40px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left:14px;
 }
 
 .loggedin {
     background-color: #50a750;
-    width:40px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left:14px;
 }
 
 .loggedin:hover {
     background-color: #c75050;
-    width:40px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    padding-left:14px;
 }
 
 #loginbutton{
     cursor:pointer;
+    height:50px;
+    width: 50px;
+    vertical-align: middle;
+    text-align: center;
 }
 
 #div2
@@ -574,13 +573,14 @@ header {
 }
 
 #impwords {
-    max-width: 186px;
-    min-width: 186px;
-    margin-left: 227px;
+    max-width: 180px;
+    min-width: 191px;
+    margin-left: 0px;
 }
 
 #impword {
-    width: 174px;
+    width: 180px;
+    
 }
 
 #before, #after {
@@ -954,6 +954,48 @@ input.new-item-button:hover {
 .course-dropdown {
 	height: 30px;
 }
+
+
+
+/* Shapes and color for the buttons in Editexample box*/
+.newSequence, .deleteSequence, .updateSequence  {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+    -webkit-transition: background-color 1s ease 0s;
+    -moz-transition: background-color 1s ease 0s;
+    -o-transition: background-color 1s ease 0s;
+     transition: background-color 1s ease 0s;
+
+}
+
+/* Shapes and color for the buttons in Editexample box*/
+.updateSequence {
+    margin-top: 26px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+}
+
+/* Hover style for the buttons in Editexample box*/
+.newSequence:hover, .updateSequence:hover, .deleteSequence:hover {
+  background-color:#7B5A96;
+  border-radius:4px;	
+}
+
+#editExample {
+	position: absolute;
+	top: 0 auto;
+	width: 442px;
+
+}
+
+
 /* End DuggaSys Sectioneed*/
 /**************************/
 
