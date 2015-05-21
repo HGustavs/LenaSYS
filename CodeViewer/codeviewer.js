@@ -231,9 +231,10 @@ var removedWords = [];
 function editImpWords(editType) 
 {
 	var word = $("#impword").val();
-
+	var left = 0;
+	var right = 0;
 	//Check if the word contains an uneven amount of parenthesis
-	// * if so do not add the word to important words, if will break the page
+	// * if so do not add the word to important words, it will break the page
 	for(var i = 0; i < word.length; i++){
 		if(word[i] == '(' ){
 			left++;
@@ -241,14 +242,14 @@ function editImpWords(editType)
 			right++;
 		}
 	}
-	var uneven = false;
 	//If there is an uneven amount set uneven
+	var uneven = false;
 	if(left != right){
 		uneven = true;
 	}
 	
 	// word can't contain any whitespaces
-	if (editType == "+" && word != "" && /\s/.test(word) == false) {
+	if (editType == "+" && word != "" && /\s/.test(word) == false && uneven == false) {
 		var exists = false;
 		// Checks if the word already exists as an option in the selectbox
 		$('#impwords option').each(function() {
