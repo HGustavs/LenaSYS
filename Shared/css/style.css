@@ -933,40 +933,5 @@ input.new-item-button:hover {
 	height: 30px;
 }
 
-
-
-/* Shapes and color for the buttons in Editexample box*/
-.newSequence, .deleteSequence, .updateSequence  {
-    background-color: rgb(97, 72, 117);
-    border: 0px none;
-    height: 30px;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    margin-bottom: 2px;
-    margin-left: 4px;
-    font-size: 14px;
-    float: right;
-    -webkit-transition: background-color 1s ease 0s;
-    -moz-transition: background-color 1s ease 0s;
-    -o-transition: background-color 1s ease 0s;
-     transition: background-color 1s ease 0s;
-
-}
-
-/* Shapes and color for the buttons in Editexample box*/
-.updateSequence {
-    margin-top: 26px;
-    margin-bottom: 4px;
-    margin-left: 4px;
-}
-
-/* Hover style for the buttons in Editexample box*/
-.newSequence:hover, .updateSequence:hover, .deleteSequence:hover {
-  background-color:#7B5A96;
-  border-radius:4px;	
-}
-
-
-
 /* End DuggaSys Sectioneed*/
 /**************************/
