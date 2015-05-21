@@ -75,6 +75,7 @@ if($userid!="UNK"){
 			'questionanswer' => $row['variantanswer']
 		);
 		$i++;
+		$insertparam = true;
 	}
 
 	// If there are any variants, randomize
