@@ -143,9 +143,12 @@ function leaveCell(thisObj)
 function returnedResults(data) 
 {
 	var str = "";
+	var strtable = "";
+	var strleft = "<div id='namecolumn'><div class='namecolumnheader'>Students</div><div id='studentswrapper'>";
 	var zstr = "";
 	var ttr = "";
 	var zttr = "";
+	var headercount = 0;
 
 	if (data['dugganame'] != "") {
 		$.getScript(data['dugganame'], function() {
@@ -159,33 +162,33 @@ function returnedResults(data)
 	} else {
 
 		results = data['results'];
-
-		str += "<table class='list'>";
-
-		str += "<tr><th></th>";
-
+		str += "<div id='tableheader'><div id='tableheaderwrapper'>";
 		for ( j = 0; j < data['moments'].length; j++) {
 			var jtem = data['moments'][j];
+			
 			if ((jtem['kind'] == 3 && jtem['moment'] == null) || (jtem['kind'] == 4)) {
 				// Td-s for each variant or non-connected dugga.
-				str += "<th style='border-left:2px solid white;'>";
+				
+				str += "<div id='header-"+headercount+"'>";
 				str += jtem['entryname'];
-				str += "</th>";
+				str += "</div>";
+				headercount++;
 			}
 		}
+		str += "</div></div>";
+		strtable += "<div id='divtable'>";
 
-		str += "</tr>";
 		console.log(data);
 		if (data['entries'].length > 0) {
 			for ( i = 0; i < data['entries'].length; i++) {
 				var user = data['entries'][i];
 
-				str += "<tr class='fumo'>";
+				strtable += "<div class='fumo'>";
 
 				// One row for each student
-				str += "<td>";
-				str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['ssn'];
-				str += "</td>";
+				strleft += "<div class='namecolumnstudent'>";
+				strleft += user['firstname'] + " " + user['lastname'] + "<br/>" + user['ssn'];
+				strleft += "</div>";
 
 				// Each of the section entries (i.e. moments)
 				for ( j = 0; j < data['moments'].length; j++) {
@@ -193,14 +196,11 @@ function returnedResults(data)
 
 					if ((moment['kind'] == 3 && moment['moment'] == null) || (moment['kind'] == 4)) {
 
-						str += "<td style='padding:0px;'>";
-
 						// We have data if there is a set of result elements for this student in this course... otherwise null
 						studres = results[user['uid']];
 						
 						// There are results to display.
-						str += "<table width='100%' class='innertable' >";
-						str += "<tr>";
+						strtable += "<div class='momentdiv' >";
 
 						//----------------------------------------------------------------------------------------------------------- Start Standalone
 						// kind == 3 means dugga, moment == null means no parent dugga i.e. standalone
@@ -260,11 +260,11 @@ function returnedResults(data)
 							}
 							
 							// Standalone Dugga -- we just need to make a dugga entry with the correct marking system.
-							str += "<td style='"+yomama+"'>&nbsp;</td></tr><tr  style='border-top:2px solid #dbd0d8;' >";
+							strtable += "<div style='"+yomama+"'>&nbsp;</div>";
 
-							str += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>"+zstr;
+							strtable += "<div style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>"+zstr;
 
-							str += "</td>";
+							strtable += "</div>";
 						}
 						//------------------------------------------------------------------------------------------------------------- End Standalone
 						
@@ -333,15 +333,15 @@ function returnedResults(data)
 									}
 
 									if (duggacnt > 0){
-										ttr += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
-										ttr += dugga['entryname'] + " ";
+										ttr += "<div style='width:220px; float:left;border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+										ttr += dugga['entryname'] + " <br>";
 									}else{
-										ttr += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+										ttr += "<div style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 									}
 
 									ttr+=zttr;
 
-									ttr += "</td>";
+									ttr += "</div>";
 
 								//--------------------------------------------------------------------------------------------------------- End Dugga
 								
@@ -379,30 +379,51 @@ function returnedResults(data)
 							}
 							
 							if (duggacnt == 0) {
-								ttr += "<td style='"+yomama+"'>&nbsp;</td>";
-								str += "<td style='"+yomama+"' colspan='1' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+								ttr += "<div style='"+yomama+"'>&nbsp;</div>";
+								strtable += "<div style='border-bottom:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 							} else {
-								str += "<td style='"+yomama+"' colspan='" + duggacnt + "' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+								strtable += "<div style='border-bottom:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 							}
 							
-							str+= moment['entryname'] +" " +zttr;
+							strtable+= moment['entryname'] +" " +zttr;
 
-							str += "</td></tr><tr style='border-top:2px solid #dbd0d8;'>";
-							str += ttr;
+							strtable += "</div>";
+							strtable += ttr;
 						}
 						//----------------------------------------------------------------------------------------------------------- End Moment
 
-						str += "</tr>";
-						str += "</table>";
-						str += "</td>";
+						strtable += "</div>";
+
 					}
 				}
-				str += "</tr>";
+				strtable += "</div>";
 			}
+			
+			strleft += "</div></div>";
 		}
 		
 		var slist = document.getElementById("content");
+		str = strleft+str+strtable;
 		slist.innerHTML = str;
+		var totalwidth = 0;
+		for ( i = 0; i < $("#divtable > div:first-child").children().length; i++) {
+			var width = $("#divtable > div:first-child").children().eq(i).width();
+			totalwidth+=width;
+			$("#header-"+i).css("width", width);
+		}
+		$(".fumo").css("width", totalwidth+20);
+		$('#divtable').on('scroll', function () {
+			$('#tableheader').scrollLeft($(this).scrollLeft());
+			$('#studentswrapper').scrollTop($(this).scrollTop());
+		});
+		$(".namecolumnstudent").css("height", $(".fumo").outerHeight());
+		var viewportheight = $(window).height();
+		$('#studentswrapper').css("height", viewportheight-100);
+		$('#divtable').css("height", viewportheight-100);
+		$('#content').css("height", viewportheight-60);
+		
+		
+		
 	}
 	if (data['debug'] != "NONE!") alert(data['debug']);
 }
