@@ -92,7 +92,7 @@ function returnedResults(data)
 						listid = listitem['listid'];
 					}
 				}
-				str+="<div class='listbar'><input class='new-item-button' type='button' value='Edit List' onclick='displayeditlist("+listid+");'/></div>";
+				str+="<div class='listbar' style='margin-top:6px'><input class='new-item-button' type='button' value='Edit List' onclick='displayeditlist("+listid+");'/></div>";
 				str += "</br></br></br><pre class='Trow'>";
 				str += "H&ouml;gskolan i Sk&ouml;vde                        RS01 Resultat p&aring; prov\n";
 				str += "Institutionen f&ouml;r informationsteknologi R&auml;ttningsprotokoll: Inl&auml;ggning, betyg p&aring; prov\n";
