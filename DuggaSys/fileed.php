@@ -81,17 +81,19 @@ pdoConnect();
 			<h3>Edit File/Link</h3>
 			<div onclick='closeEditFile();'>x</div>
 		</div>
-		<form enctype="multipart/form-data" action="filereceive.php" method="POST">
+		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
 			<div style='padding:5px;'>
 				<input type='hidden' id='cid' name='cid' value='Toddler' />
 				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
 				<input type='hidden' id='kind' name='kind' value='Toddler' />
-				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
+				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
 				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile" id="uploadedfile" type="file" /></div>
 				<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>
 			</div> 
 			<div style='padding:5px;'>
 				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
+			</div> 
+			<div style ='padding:5px, display:none' id='errormessage'>
 			</div> 
 		</form>
 	</div>
