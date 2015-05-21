@@ -176,7 +176,7 @@ Testing Link:
 				</tr>
 				<tr>
 					<td><input class='form-control textinput' type='text' id='boxtitle' value='Title' /></td>		
-					<td><select id='boxcontent' onchange='changeDirectory(this);'><option value='DOCUMENT'>Document</option><option value='CODE'>Code</option><option value='IFRAME'>Preview</option></select></td>
+					<td><select id='boxcontent' onchange='changeDirectory(this);'><option value='DOCUMENT'>Document</option><option value='CODE'>Code</option><!--- <option value='HTML'>HTML</option> ---></select></td>
 				</tr>
 				<tr>
 					<td>Wordlist:</td>
@@ -206,7 +206,7 @@ Testing Link:
 		</div>
 		<!--- Example Content Cog Wheel Dialog END --->
 		<!--- Code Example Cog Wheel Dialog START --->
-		<div id='editExample' class='loginBox' style='width:464px;display:none;'>
+		<div id='editExample' class='loginBox' style='width:460px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
 				<div onclick='closeEditExample();'>x</div>

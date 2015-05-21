@@ -307,7 +307,7 @@ header td {
 }
 
 .navHeading {
-    font-size: 26px;
+    font-size: 2.5em;
     vertical-align: middle;
     padding-left: 15px;
     -webkit-touch-callout: none;
@@ -531,6 +531,10 @@ header td {
  *                       		  Pop-up BOX        				   *
  * --------------================################================-------------- */
 
+#playlink {
+    width: 216px;
+}
+
 #editContent td {
 	padding: 5px 5px 0px 5px;
 }
@@ -543,7 +547,7 @@ header td {
 }
 
 #editContent input[type="number"] {
-	height: 30px;
+	height: 20px;
 	border-color: rgb(169, 169, 169);
 }
 
@@ -557,22 +561,24 @@ header td {
 	margin:0;
 }
 
-#editExample td {
-    width: 50%;
-    padding: 5px 5px 0px 5px;
+#impwords {
+    max-width: 180px;
+    min-width: 191px;
+    margin-left: 0px;
 }
 
-#title, #secttitle, #playlink {
-    width:100%;
-}
-
-#impwords, #impword {
-    width: 186px;
+#impword {
+    width: 180px;
+    
 }
 
 #before, #after {
     float: left;
     width: 226px;
+}
+
+#playlink {
+    width: 216px;
 }
 
 .loginBox .inputwrapper {
@@ -932,6 +938,47 @@ input.new-item-button:hover {
 .course-dropdown {
 	height: 30px;
 }
+
+
+
+/* Shapes and color for the buttons in Editexample box*/
+.newSequence, .deleteSequence, .updateSequence  {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+    -webkit-transition: background-color 1s ease 0s;
+    -moz-transition: background-color 1s ease 0s;
+    -o-transition: background-color 1s ease 0s;
+     transition: background-color 1s ease 0s;
+
+}
+
+/* Shapes and color for the buttons in Editexample box*/
+.updateSequence {
+    margin-top: 26px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+}
+
+/* Hover style for the buttons in Editexample box*/
+.newSequence:hover, .updateSequence:hover, .deleteSequence:hover {
+  background-color:#7B5A96;
+  border-radius:4px;	
+}
+
+#editExample {
+	position: absolute;
+	top: 0 auto;
+	width: 442px;
+
+}
+
 
 /* End DuggaSys Sectioneed*/
 /**************************/
