@@ -266,7 +266,7 @@ border: 1px solid rgb(66, 66, 66);
 .codebox{
     padding: 0px;
 }
-.descbox{
+.descbox, .framebox{
     padding-top: 4px;
     padding-left: 4px;
     border-left-style: solid;
