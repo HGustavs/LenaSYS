@@ -30,10 +30,11 @@ include_once("../Shared/basic.php");
 			while($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$data[] = $row;
 			}
-			echo "<br><br>";
+			echo "<div id='seqSelectBox'>";
 			echo "Select Sequence: ";
+			echo "<br>";
 			echo "<select id='sequenceSelector'>";
-			echo "<option value='$seqID'>Current Sequence: $seqID</option>";
+			echo "<option value='$seqID'>Current: $seqID</option>";
 
 			foreach($data as $key => $value){
 				foreach($value as $val){
@@ -42,11 +43,11 @@ include_once("../Shared/basic.php");
 					}
 				}
 			}
-			echo "</select>";		
-			echo "<br><br><br>";
-			echo "<button class='newSequence' style='margin-right:20px;'>Create a new sequence</button>";
-			echo "<button class='deleteSequence' style='margin-left:20px;'>Delete sequence</button>";
-			echo "<br><br><br>";
+			echo "</select>";	
+			echo "<button class='newSequence'>New sequence</button>";
+			echo "<button class='deleteSequence'>Delete sequence</button>";
+			echo "</div>";
+			
 			
 			$query = $pdo->prepare("SELECT exampleseq from sequence where seqid=$seqID and cid=$courseID");
 			$query->execute();
@@ -56,6 +57,8 @@ include_once("../Shared/basic.php");
 				$data[] = $row;
 			}
 			$data = explode(',',$data[0]['exampleseq']);
+			echo "<div id='sortListBox'>";
+			echo "<span>Sequence examples</span>";
 			echo "<div id='sortList' class='dragAndDrop'>";
 			foreach($data as $key => $value){
 				$query = $pdo->prepare("SELECT examplename from codeexample where exampleid=$value");
@@ -63,11 +66,12 @@ include_once("../Shared/basic.php");
 				$examplename = $query->fetchColumn();
 				array_push($exampleExist, $value);
 				if($value){
-					echo "<div id='item_$value'>$examplename</div>";
+					echo "<div id='item_$value'>- $examplename</div>";
 				} else {
 					echo "<div class='empty'>No items.</div>";
 				}
 			}
+			echo "</div>";
 			echo "</div>";
 			
 			$query = $pdo->prepare("SELECT exampleid,examplename from codeexample where cid=$courseID");
@@ -96,11 +100,13 @@ include_once("../Shared/basic.php");
 				}
 			}
 			$count = 0;
+			echo "<div id='exampleListBox'>";
+			echo "<span>Unused examples</span>";
 			echo "<div id='exampleList' class='dragAndDrop'>";
 			foreach($data as $example){
 				
 				if(!in_array($example[0], $examp)){
-					echo "<div id='item_$example[0]'>$example[1]</div>";
+					echo "<div id='item_$example[0]'>- $example[1]</div>";
 					$count++;
 				}	
 			}
@@ -108,13 +114,12 @@ include_once("../Shared/basic.php");
 				echo "<div class='empty'>No examples.</div>";
 			}
 			echo "</div>";
+			echo "</div>";
 			
 			
 		?>
-		<br><br>
+		<span id="status"></span>
 		<button class="updateSequence">Save sequence</button>
-		<span id="status" style="color:green;"></span>
-		
 	</div>
 </body>
 </html>
