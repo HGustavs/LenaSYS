@@ -518,7 +518,7 @@ function returnedSection(data)
 						//Dugga!
 						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
 					}else if(parseInt(item['kind']) == 5){
-						str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+" (material)</a>";
+						str+="<a style='cursor:pointer;margin-left:75px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+" (material)</a>";
 					}	
 		
 					if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' />";
