@@ -98,6 +98,61 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
 		}	
+	}else if(strcmp($opt,"UPDATEAUTO")===0){
+			$query = $pdo->prepare("UPDATE quiz SET autograde=:autograde WHERE id=:qid;");
+			$query->bindParam(':qid', $qid);
+			$query->bindParam(':autograde', $autograde);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating user".$error[2];
+			}	
+	}else if(strcmp($opt,"UPDATEDNAME")===0){
+			$query = $pdo->prepare("UPDATE quiz SET qname=:name WHERE id=:qid;");
+			$query->bindParam(':qid', $qid);
+			$query->bindParam(':name', $name);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating user".$error[2];
+			}	
+	}else if(strcmp($opt,"UPDATEGRADE")===0){
+			$query = $pdo->prepare("UPDATE quiz SET gradesystem=:gradesys WHERE id=:qid;");
+			$query->bindParam(':qid', $qid);
+			$query->bindParam(':gradesys', $gradesys);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating user".$error[2];
+			}	
+	}else if(strcmp($opt,"UPDATETEMPLATE")===0){
+			$query = $pdo->prepare("UPDATE quiz SET quizFile=:template WHERE id=:qid;");
+			$query->bindParam(':qid', $qid);
+			$query->bindParam(':template', $template);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating user".$error[2];
+			}	
+	}else if(strcmp($opt,"SAVVARIANSWER")===0){
+			$query = $pdo->prepare("UPDATE variant SET variantanswer=:variantanswer WHERE vid=:vid;");
+			$query->bindParam(':vid', $vid);
+			$query->bindParam(':variantanswer', $answer);
+	
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating user".$error[2];
+			}
+	}
+	else if(strcmp($opt,"SAVVARIPARA")===0){
+			$query = $pdo->prepare("UPDATE variant SET  param=:param WHERE vid=:vid;");
+			$query->bindParam(':vid', $vid);
+			$query->bindParam(':param', $param);
+	
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating user".$error[2];
+			}
 	}
 }
 
