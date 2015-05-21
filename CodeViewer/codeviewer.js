@@ -456,11 +456,20 @@ function editImpRows(editType)
 	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
 
 	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo) {
-
+        alert("You've added " + rowFrom + " and " + rowTo); //Shows you what you've input
 		var exists = false;
 		$('#improws option').each(function() {
     		if (this.value == row) {exists = true;}
 		});
+		
+		if (rowFrom && rowTo < 0) { //Negative numbers alert
+		 //   FromTo = $("#improws").text().split(" - ");
+		//	$("#improws").remove();
+		//	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
+			alert("You cannot input the negative numbers " + rowFrom + " and " + rowTo);
+			editContent.reload();
+		}
+		
 		if (exists == false) {
 			$("#improws").append('<option>' + row + '</option>');
 			$("#improwfrom").val("");
