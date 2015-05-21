@@ -155,6 +155,9 @@ function returned(data)
 			var desc = boxcontent;
 			desc = replaceAll("&nbsp;"," ",desc);
 			
+			//Remove html tags since only markdown should be allowed		
+			desc = dehtmlify(desc, true, 0);
+			
 			// Highlight important words
 			important = retData.impwords;
 			for(j=0;j<important.length;j++){
@@ -162,8 +165,6 @@ function returned(data)
 				desc=replaceAll(important[j],sstr,desc);
 			}
 			/* Assign Content */
-			//Remove html tags since only markdown should be allowed		
-			desc = dehtmlify(desc, true, 0);
 			//Call the markdown function to parse markdown symbols to html tags
 			desc = parseMarkdown(desc);
 			//Change the '\n' line breaks to <br> tags
@@ -183,8 +184,7 @@ function returned(data)
 			createboxmenu(contentid,boxid,boxtype);
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
 			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "''></iframe>");
-		}
-		else if(boxtype == "NOT DEFINED"){
+		}else if(boxtype == "NOT DEFINED"){
 			if(retData['writeaccess'] == "w"){
 				createboxmenu(contentid,boxid,boxtype);
 				// Make room for the menu by setting padding-top equals to height of menubox
@@ -236,9 +236,25 @@ var removedWords = [];
 function editImpWords(editType) 
 {
 	var word = $("#impword").val();
-
+	var left = 0;
+	var right = 0;
+	//Check if the word contains an uneven amount of parenthesis
+	// * if so do not add the word to important words, it will break the page
+	for(var i = 0; i < word.length; i++){
+		if(word[i] == '(' ){
+			left++;
+		}else if (word[i] == ')'){
+			right++;
+		}
+	}
+	//If there is an uneven amount set uneven
+	var uneven = false;
+	if(left != right){
+		uneven = true;
+	}
+	
 	// word can't contain any whitespaces
-	if (editType == "+" && word != "" && /\s/.test(word) == false) {
+	if (editType == "+" && word != "" && /\s/.test(word) == false && uneven == false) {
 		var exists = false;
 		// Checks if the word already exists as an option in the selectbox
 		$('#impwords option').each(function() {
@@ -401,6 +417,7 @@ function changeDirectory(kind)
 {
 	var dir;
 	var str="";
+
 	if ($(kind).val() == "CODE" || $(kind).val() == "IFRAME") {
 		dir = retData['directory'][0];
 		$('#wordlist').prop('disabled', false);
@@ -542,7 +559,7 @@ function createboxmenu(contentid, boxid, type)
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+= '<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retData['box'][boxid-1][4]+'</span></td>';				
 				str+= '</tr></table>';
-			}else if(type=="IFRAME") {
+			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';	
@@ -1752,7 +1769,7 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 	
 	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
 	$(boxValArray['box' + boxNumAlign]['id']).css("left", "");
-	$(boxValArray['box' + boxNumBase]['id']).css("top", "");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
 	
 	var remainWidthPer = (remainWidth/boxValArray['parent']['width'])*100;
 	var basePer = 100 - remainWidthPer;
