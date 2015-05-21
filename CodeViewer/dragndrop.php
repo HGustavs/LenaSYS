@@ -3,9 +3,6 @@ include_once("../Shared/basic.php");
 ?>
 <html>
 <head>
-	<link rel="stylesheet" href="../Shared/css/codeviewer.css" />
-	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
-	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="dragndrop.js"></script>
 </head>
 <body>
