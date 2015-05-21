@@ -384,7 +384,8 @@
 	padding:0 5px 0 5px;
 	border-radius:0.5em;
 	margin:-42px 0px 0px -50px;
-	z-index:1001px;
+	z-index:1000;
+	position:absolute;
 }
 
 /* Site list nav at bottom of page */
