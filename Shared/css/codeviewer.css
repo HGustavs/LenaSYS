@@ -658,42 +658,72 @@
 /* RESIZABLE UI CSS STOP */
 
 /* DragnDrop CSS */
-#sortList {
-	margin-left:20px;
-	margin-right:20px;
-	border: 2px solid black;
-	width: 200px;
-	background:#5a5757;
-	display:inline-block;
+#SeqEdit {
+	border:2px solid #000;
+	margin-top:10px;
+	background-color:#b3b3b3;
+	max-height:500px;
+	overflow-y:auto;
 }
-#exampleList {
-	margin-left:auto;
-	margin-right:auto;
+
+#sortListBox {
+	margin:5px;
+	padding: 5px 3px 0px 3px;
 	border: 2px solid black;
-	width: 200px;
-	background:#5a5757;
+	width: 199px;
+	background-color:#cccccc;
 	display:inline-block;
+	text-align:center;
 }
+
+#sortListBox span {
+	color: #000;
+	font-size:16px;
+	margin-top:10px;
+}
+
+#exampleListBox {
+	margin:5px 5px 10px 5px;
+	padding: 5px 3px 0px 3px;
+	border: 2px solid black;
+	width: 199px;
+	background-color:#cccccc;
+	display:inline-block;
+	text-align:center;
+	float:right;
+}
+
+#exampleListBox span {
+	color: #000;
+	font-size:16px;
+	margin-top:10px;
+}
+
 #sortList div {
 	margin: 5px 2px 5px 2px;
 	padding: 10px;
-	background: #f2f2f2;
-	color: #000;
+	background: #614875;
+	font-size: 12px;
+	color: #fff;
 	border-bottom: 2px solid #000;
 	border-top: 2px solid #000;
 	border-left: 1px solid #000;
 	border-right: 1px solid #000;
+	text-align:left;
 	cursor:pointer;
 }
+
 #exampleList div {
 	margin: 5px 2px 5px 2px;
 	padding: 10px;
-	background: #f2f2f2;
-	color: #000;
+	background: #614875;
+	font-size: 12px;
+	color: #fff;
 	border-bottom: 2px solid #000;
 	border-top: 2px solid #000;
 	border-left: 1px solid #000;
 	border-right: 1px solid #000;
+	text-align:left;
 	cursor:pointer;
 }
 
@@ -702,4 +732,56 @@
 	padding: 10px;
 	background: #614875;
 	cursor:pointer;
+}
+
+/* Shapes and color for the buttons in Editexample box*/
+.newSequence, .deleteSequence, .updateSequence  {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+    -webkit-transition: background-color 1s ease 0s;
+    -moz-transition: background-color 1s ease 0s;
+    -o-transition: background-color 1s ease 0s;
+     transition: background-color 1s ease 0s;
+
+}
+
+/* Shapes and color for the buttons in Editexample box*/
+.updateSequence {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 323px;
+	margin-right:5px;
+}
+
+/* Hover style for the buttons in Editexample box*/
+.newSequence:hover, .updateSequence:hover, .deleteSequence:hover {
+  background-color:#7B5A96;
+  border-radius:4px;	
+}
+
+#seqSelectBox {
+	padding: 5px;
+	margin-bottom:20px;
+}
+
+#seqSelectBox select {
+	width:195px;
+}
+
+#status {
+	margin-left:323px;
+	float:right;
+	margin-right:30px;
+	color:green;
+}
+
+.loginBox {
+	top:25%;
 }
