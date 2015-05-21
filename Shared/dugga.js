@@ -448,6 +448,14 @@ function showLoginPopup()
 	$("#loginBox").css("display","block");
 	$("#overlay").css("display","block");
 	$("#username").focus();
+		
+	// Reset input box color
+	$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
+	$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
+	
+	// Reset warning, if applicable
+	$("#login #message").html("<div class='alert danger'></div>");
+	
 	window.addEventListener("keypress", loginEventHandler, false);
 }
 
