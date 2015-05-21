@@ -950,3 +950,77 @@ input.new-item-button:hover {
 }
 /* End DuggaSys Sectioneed*/
 /**************************/
+
+/* DuggaSys resulted*/
+#namecolumn .namecolumnheader {
+	width:200px;
+	height:30px;
+	background: #614875;
+	line-height:30px;
+	color:#FFFFFF;
+	text-align:center;
+}
+#namecolumn {
+	margin-top:10px;
+	float:left;
+}
+#studentswrapper {
+	overflow-y:hidden;
+	overflow-x:scroll;
+}
+#namecolumn .namecolumnstudent{
+	height:64px;
+	width:200px;
+	border-bottom:2px solid #614875;
+	border-left:2px solid #614875;
+	border-right:2px solid #614875;
+	text-align:right;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding:10px;
+}
+#divtable {
+	float:left;
+	overflow:scroll;
+	width: calc(100% - 208px);
+}
+#tableheader {
+	background: #614875;
+	color:#FFFFFF;
+	margin-top:10px;
+	float:left;
+	width: calc(100% - 208px);
+	overflow:hidden;
+}
+#tableheaderwrapper{
+	min-width:4100px;
+}
+#tableheaderwrapper div{
+	height:30px;
+	line-height:30px;
+	float:left;
+	text-align:center;
+}
+.momentdiv {
+	border-right:2px solid #927b9e;
+	display: inline-block;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.momentdiv div{
+	padding:5px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.fumo {
+	border-bottom:2px solid #614875;
+	clear:both;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+/* End DuggaSys resulted*/
+/**************************/
