@@ -4,7 +4,7 @@ AJAXService("TOOLBAR", {}, "UMVTEACHER");
 
 var selectedClass = "";
 var selectedClassCode = "";
-var selectedPage = 0;
+var selectedPage = "";
 
 
 //---------------------------------------------------------------
@@ -266,11 +266,10 @@ function getCourseResults(results, studentNumber)
 		var procent		  = course_result/course_hp * 100;
 		var color		  = procent < 100 ? colorYellow : colorGreen;
 		
-		htmlStr += "<div class='courseNameindicator' id='course_"+course_name+"#"+studentNumber+"'>";		
+		htmlStr += "<div class='courseNameindicator' id='course_"+course_name+" "+course_result+"/"+course_hp+"hp#"+studentNumber+"'>";		
 		htmlStr += "</div>";
-		htmlStr += "<div id='"+course_name+"#"+studentNumber+"' class='progress_course_total'>";
+		htmlStr += "<div id='"+course_name+" "+course_result+"/"+course_hp+"hp#"+studentNumber+"' class='progress_course_total'>";
 		htmlStr += "<div class='progress_course' style='width:" + procent + "%; background-color: " + color + ";'>";
-		htmlStr += "<p>" + parseFloat(course_result) + "/" + course_hp + "</p>";
 		htmlStr += "</div>";
 		htmlStr += "</div>";
 		
@@ -285,8 +284,8 @@ function getCourseResults(results, studentNumber)
 //	progress_bar_hover(data) - shows the coursename when hovering 
 //	over the small progressbars. 
 //---------------------------------------------------------------
-function progress_bar_hover(data){
-	
+function progress_bar_hover(data)
+{
 	$('.progress_course_total').on( 'mouseenter',function() {
 		
 			var course = 'course_'+$(this).attr('id');
@@ -312,7 +311,8 @@ function progress_bar_hover(data){
 //	Sets the number of change pages buttons depending of how many 
 //	students in class.
 //---------------------------------------------------------------
-function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
+function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages)
+{
 	var htmlInserts="";
 	var numberOfPage=1;
 	
@@ -323,9 +323,6 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 		htmlInserts+= "<div class='page_"+numberOfPage +" pages notActive_Page' onClick='activePage("+numberOfPage+")'>"+numberOfPage +"</div>";
 		numberOfPage++;
 	}
-		
-	htmlInserts+= "<div id='nextPage'> >> </div> ";	
-	htmlInserts+="</div>";
 
 	var changePages = document.getElementById("teacher_pages");
 	changePages.innerHTML = htmlInserts;
@@ -336,8 +333,8 @@ function render_next_pages(calcNumberOfStudents,numberOfStudentsPerPages){
 //	activePage(numberOfPage) - When click on pagenumber the pagenumber 
 // 	is going to be markt
 //------------------------------------------------------------------------
-function activePage(numberOfPage){
-	
+function activePage(numberOfPage)
+{
 	if(selectedPage !== numberOfPage) {
 		if(selectedPage !== "") {
 			$('.page_'+selectedPage).removeClass('active_Page');
@@ -348,12 +345,19 @@ function activePage(numberOfPage){
 		
 		selectedPage = numberOfPage;
 	}
+	else{
+		selectedPage = "";
+		$('.page_'+numberOfPage).removeClass('notActive_Page');
+		$('.page_'+numberOfPage).addClass('active_Page');
+	}
+	
 }
 
 //---------------------------------------------------------------
 //	navigate_page() - navigates between pages
 //---------------------------------------------------------------
-function navigate_page(){
+function navigate_page()
+{
 	$('.pages').click(function(){
 		
 		var classPage = "#"+this.className.split(' ')[0]; 
@@ -385,14 +389,21 @@ function clearLinearGraph()
 //	will parse username data.
 //----------------------------------------------------------------------------------
 function input_search_alternative(){
-	$('#inputSearch').keyup(function(){
-		
-		// checks witch query it will use to get data from php. add more statments for diffrent querys
-		if(isNaN(this.value.charAt(0))){
-			search_alternatives(this.value,2);
-		}else{
-			search_alternatives(this.value,1);
+	$('#inputSearch').keydown(function(e){
+		switch(e.wich){
+			case 38: break;	//this is the press up key
+			case 40: break; // this is press down key
+			case 13: console.log('aids'); // this is the enter key
+			default:
+
+				// checks witch query it will use to get data from php. add more statments for diffrent querys
+				if(isNaN(this.value.charAt(0))){
+					search_alternatives(this.value,2);
+				}else{
+					search_alternatives(this.value,1);
+				};
 		}
+	
 	});
 }
 
@@ -412,7 +423,7 @@ function search_alternatives(varible,query) {
 			success:function(data) {
 				if(data != null){
 					var dataclean = JSON.parse(data);
-					search_option_pnr(dataclean);
+					search_option(dataclean,1);
 				}
 			},
 			error:function() {
@@ -431,7 +442,7 @@ function search_alternatives(varible,query) {
 			success:function(data) {
 				if(data != null){
 					var dataclean = JSON.parse(data);
-					search_option_username(dataclean);
+					search_option(dataclean,2);
 				}
 			},
 			error:function() {
@@ -440,35 +451,29 @@ function search_alternatives(varible,query) {
 		});
 	}
 }
-//------------------------------------------------------------------------------------------
-//	search_option_username(data) - Adds the top five searchresults to the search options
-//	under the searchbar when searching for username. 
-//------------------------------------------------------------------------------------------
-function search_option_username(data){
-	var htmlStr= "";
-	var user = data['user'];
 
-	for(var i = 0; i<5;i++){
-		console.log(user.length +'asdm');
-		htmlStr += "<option value='"+user[i]['username']+"' class='"+user[i]['uid']+"'></option>";
-		if(i < user.length){
-			break;
-		}
-	}
-	var insert = document.getElementById("searchOptions");
-	insert.innerHTML = htmlStr;
-}
+
 //------------------------------------------------------------------------------------------
 //	search_option_pnr(data) - Adds the top five searchresults to the search options
 //	under the searchbar when searching for ssn. 
 //------------------------------------------------------------------------------------------
-function search_option_pnr(data){
+function search_option(data,input){
 	var htmlStr= "";
 	var user = data['user'];
-	for(var i = 0; i<5;i++){
-		htmlStr += "<option value='"+user[i]['ssn']+"' class='"+user[i]['uid']+"'></option>";
-		if(i < user.length){
-			break;
+	
+	if(input==1){
+		for(var i = 0; i<8;i++){
+			htmlStr += "<option value='"+user[i]['ssn']+"  "+user[i]['username']+"' class='"+user[i]['uid']+"'></option>";
+			if(i == user.length-1){
+				break;
+			}
+		}
+	}if(input==2){
+		for(var i = 0; i<8;i++){
+			htmlStr += "<option value='"+user[i]['username']+"  "+user[i]['ssn']+"' class='"+user[i]['uid']+"'></option>";
+			if(i == user.length-1){
+				break;
+			}
 		}
 	}
 	var insert = document.getElementById("searchOptions");
@@ -486,8 +491,6 @@ function display_search_data(){
 
 		if(this.value== theOption){
 			studentToRender = this.className;
-			console.log(this.className);
-
 		}
 	});
 	if(studentToRender != null){
@@ -495,18 +498,22 @@ function display_search_data(){
 	}
 }
 
-
-// Redirect teacher to specific student page
-function onClick_Students_To_page(){
+//------------------------------------------------------------------------------------------
+//	Redirect teacher to specific student page
+//------------------------------------------------------------------------------------------
+function onClick_Students_To_page()
+{
 	$('.student').click(function(){
 		get_student_data(this.id);
 	});
 }
+
 //------------------------------------------------------------------------------------------
 //	get_student_data(studentid) - Collects the right data from the DB to render the
 //	student view for a specific student. 
 //------------------------------------------------------------------------------------------
-function get_student_data(studentid) {
+function get_student_data(studentid) 
+{
 	var renderstudent = 'render';
 	$.ajax({
 		type:"POST",
@@ -518,6 +525,7 @@ function get_student_data(studentid) {
 		success:function(data) {
 			var result = JSON.parse(data);
 			renderStudentView(result);
+			$('#class_view').hide();
 		},
 		error:function() {
 			console.log("error");

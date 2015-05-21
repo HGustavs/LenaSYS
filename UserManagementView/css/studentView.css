@@ -1,3 +1,7 @@
+#studentView{
+	z-index:0;
+}
+
 /*Student Main info wrap*/
 #studentTitle {
 	text-align:left;
@@ -7,8 +11,6 @@
 	width: 90%;
 	color:#614875;
 	font-family:Calibri,sans-serif;
-	
-	
 }
 
 /*Student name size h2*/
@@ -63,13 +65,12 @@
 	background-image:url(../img/indicator.png);
 	background-repeat:no-repeat;
 	float:right;
-	font-size:0.9em;
+	font-size:0.8em;
 	text-align:center;
 	color:#FFF;
 	padding:20px 0 0 0;
 	margin:38px -35px 0 0;
 }
-
 
 /*Big Course Wrap*/
 #YearContainer {
@@ -146,7 +147,6 @@
 	float:right;
 }
 
-
 /*Year Heading*/
 .year_header{
 	padding: 10px 5px;
@@ -162,6 +162,7 @@
 	height:50%;
 	background-color:#dad8db;
 	color:#614875;
+	cursor:default;
 }
 
 /*Odd course wrap*/
@@ -221,7 +222,9 @@
 .course_alert {
 	cursor:pointer;
 	float:right;
-	margin: -1px 2px 0 0;
+	margin: -76px 2px 0 1px;
+	width:30px;
+	height:30px;
 }
 
 /*Course Link*/

@@ -999,6 +999,7 @@ input.new-item-button:hover {
 /* End DuggaSys Sectioneed*/
 /**************************/
 
+
 /* DuggaSys resulted*/
 #namecolumn .namecolumnheader {
 	width:200px;
@@ -1072,3 +1073,49 @@ input.new-item-button:hover {
 }
 /* End DuggaSys resulted*/
 /**************************/
+
+/* --------------================################================-------------- *
+ *                                    UMV                                   *
+ * --------------================################================-------------- */
+ 
+ .UmvButton {
+	cursor:pointer;
+	background-color:#FFFFFF;
+	border:none;	
+	letter-spacing:0.1em;
+	margin-left:0px;
+	width:8%;
+	padding-top:4px;
+	text-align:center;
+	color:#614875;
+	border-top-right-radius:0.5em;
+	border-bottom-right-radius:0.5em;
+}
+
+/* Searchfield UMV */
+.searchfieldTV{
+	font-family: Calibri,sans-serif;
+	width: 35%; 
+	margin-left:25px;
+	margin-top:-40px;
+	position:absolute;	
+}
+
+/* Searchfield UMV input field*/
+.searchfieldTV input{
+	width: 70%;
+	height: 25px;
+	float:left;
+	position:relative;
+	font-size:0.9em;
+	border:none;
+	border-top-left-radius:0.5em;
+	border-bottom-left-radius:0.5em;
+	box-shadow: inset 2px 2px 5px #A9A;
+}
+
+/* Searchfield UMV input text field focus */
+.searchfieldTV input[type=text]:focus{
+	box-shadow: inset 2px 2px 5px #988a98;
+}
+
