@@ -223,6 +223,17 @@ border: 1px solid rgb(66, 66, 66);
     border: 1px solid #f44;
 }
 
+.descbox .impword {
+   color: #fff;
+    background-color: #614875;
+    border: 1px solid #424242;
+}
+ 
+.descbox .imphi {
+	background-color: #fff;
+    color: #000;
+}
+
 .normtext .imphi {
     background-color: #D3BEE3;
     color: #000;
