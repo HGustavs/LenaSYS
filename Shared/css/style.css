@@ -784,7 +784,6 @@ input.submit-button {
     height:30px;
     color:#fff;
     cursor:pointer;
-    margin-top:6px;
     margin-bottom:2px;
     margin-left:4px;
     font-size:14px;
@@ -937,10 +936,12 @@ input.new-item-button:hover {
 /* DuggaSys Sectioneed*/
 .course-menu--settings {
 	float: left;
+	margin-top: 6px;
 }
 
 .course-menu--options {
 	float: right;
+	margin-top: 6px;
 }
 
 /* select element */
