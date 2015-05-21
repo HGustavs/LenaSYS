@@ -176,7 +176,7 @@ Testing Link:
 				</tr>
 				<tr>
 					<td><input class='form-control textinput' type='text' id='boxtitle' value='Title' /></td>		
-					<td><select id='boxcontent' onchange='changeDirectory(this);'><option value='DOCUMENT'>Document</option><option value='CODE'>Code</option><!--- <option value='HTML'>HTML</option> ---></select></td>
+					<td><select id='boxcontent' onchange='changeDirectory(this);'><option value='DOCUMENT'>Document</option><option value='CODE'>Code</option><option value='IFRAME'>Preview</option></select></td>
 				</tr>
 				<tr>
 					<td>Wordlist:</td>

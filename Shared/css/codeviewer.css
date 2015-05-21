@@ -47,6 +47,11 @@
     font-family: Arial,Sans-Serif;
 }
 
+.box iframe {
+    width: 100%;
+    height: 100%;
+}
+
 /* Base-size for images in description boxes */
 .box img{
     width: 70%;

@@ -180,6 +180,10 @@ function returned(data)
 				boxmenuheight= $("#"+contentid+"menu").height();
 			}
 			$("#"+contentid).css("margin-top", boxmenuheight);
+		}else if(boxtype == "IFRAME") {
+			createboxmenu(contentid,boxid,boxtype);
+			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
+			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "''></iframe>");
 		}else if(boxtype == "NOT DEFINED"){
 			if(retData['writeaccess'] == "w"){
 				createboxmenu(contentid,boxid,boxtype);
@@ -414,7 +418,7 @@ function changeDirectory(kind)
 	var dir;
 	var str="";
 
-	if ($(kind).val() == "CODE") {
+	if ($(kind).val() == "CODE" || $(kind).val() == "IFRAME") {
 		dir = retData['directory'][0];
 		$('#wordlist').prop('disabled', false);
 	}else if ($(kind).val() == "DOCUMENT") {
@@ -555,6 +559,11 @@ function createboxmenu(contentid, boxid, type)
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+= '<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retData['box'][boxid-1][4]+'</span></td>';				
 				str+= '</tr></table>';
+			}else if(type=="IFRAME"){
+				var str = '<table cellspacing="2"><tr>';
+				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';	
+				str+="</tr></table>";
 			}else{
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
