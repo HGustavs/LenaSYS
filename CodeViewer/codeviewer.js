@@ -155,6 +155,9 @@ function returned(data)
 			var desc = boxcontent;
 			desc = replaceAll("&nbsp;"," ",desc);
 			
+			//Remove html tags since only markdown should be allowed		
+			desc = dehtmlify(desc, true, 0);
+			
 			// Highlight important words
 			important = retData.impwords;
 			for(j=0;j<important.length;j++){
@@ -162,8 +165,6 @@ function returned(data)
 				desc=replaceAll(important[j],sstr,desc);
 			}
 			/* Assign Content */
-			//Remove html tags since only markdown should be allowed		
-			desc = dehtmlify(desc, true, 0);
 			//Call the markdown function to parse markdown symbols to html tags
 			desc = parseMarkdown(desc);
 			//Change the '\n' line breaks to <br> tags
