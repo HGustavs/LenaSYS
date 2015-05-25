@@ -1,1081 +1,796 @@
-html, body, div, span, applet, object, 
-iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-    margin: 0;  
-    padding: 0; 
-    border: 0;  
-    font-size: 100%;    
-    font: inherit;
-    vertical-align: baseline;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
-.listbar{
-    margin:0px auto;
-    background-color: #614875;
-    color:#fff;
+/* DOCUMENT CONTENT STYLE START */
+#docucontent h1 {
     display: block;
-    padding-top:1px;
-	height:31px;width:100%;padding:2px;
-}
-table {
-    border-collapse: collapse;
-}
-th, td {
-    padding: 0;
-}
-h1 {
-    color: #fff;
-    font-size: 1.8em;
-    line-height: 1.4em;
-}
-h2 {
-    font-size: 1.5em;
-    line-height: 1.5em; 
-}
-h3 {
-    font-size: 1.3em;
-    line-height: 1.3em; 
-}
-h4 {
-    font-size: 1.2em;
-    line-height: 1.5em;
-}
-body {
-    background: #ddd;
-}
-hr {
-    border: 0;
-    border-bottom: 1px dashed #ccc;
-    background: #999;
-}
-
-/* --------------================################================-------------- *
- *                               Lists and Content                              *
- * --------------================################================-------------- */
-
-.version {
-    color:#EFF;
-    text-shadow:1px 1px #000;
-    text-align:center;
-    padding: 10px;
-    font-size: 10pt;
-    font-family: Calibri,Sans-Serif;
-}
-
-.err{
-
-    color:#FFE;
-    background-color:#964C4D;
-    /* border:2px solid #964C4D; */
-    border-radius:10px;
-    font-family: Calibri,Sans-Serif;
-    display: block;
-    box-shadow:0px 2px 4px #DCD;
-    padding:8px;
-    text-shadow:1px 1px #000;
-}		
-
-#content {
-    margin:0px auto;
-    position:relative;
-    padding: 50px 10px 10px 10px;
-    background: #fff;
-    min-height: 200px;
-}
-
-#newbutton {
-    margin:0px auto;
-    position:relative;
-    padding: 50px 12px 8px 8px;
-    background: #fff;
-    min-height: 50px;
-}
-
-#wrappall {
-    margin:0px auto;
-    width:80%;
-    border: 8px solid #ccc;
-}
-
-.lena{
-    border-radius: 6px 0px 0px 6px;
-    color:#FFF;
-    background-color: #775886;
-    background: linear-gradient(to bottom, #775886 , #573866); 
-    padding-left:6px;
-    padding-right:6px;
-    padding-top:2px;
-    padding-bottom:2px;
-    margin-right:2px;
-}		
-
-.sys{
-    border-radius:6px;
-    color:#775886;
-    border: 2px solid #775886;
-    background-color: #fff;
-    padding-right:4px;
-    margin-right:4px;		
-    text-decoration: none;
-}
-
-#Courselist{
-    margin:0px auto;
-    background-color: #fff;
-    color:#434343;
-    display: block;
-    padding-top:1px;
-}
-
-#Courselist a{
-    text-decoration:none;
-}
-
-#Courselist a:hover{
-    text-decoration:underline;
-}
-
-#Courselist .head {
+    font-family: Arial,Sans-Serif;
     text-align: center;
-    color:#775886;
-    font-size: 18pt;
-    font-family: Calibri,Sans-Serif;
-    display: block;
-    background-color: #FFF;
-    padding-top:7px;
-    min-height:30px;
-    margin-top:40px;
-    margin-bottom:4px;
-    padding-bottom:4px;
-    border-bottom: 2px dotted #775886;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
 }
 
+#docucontent span.codestyle{
+    color: grey;
+    font-family: Arial,Sans-Serif;
+    font-style: italic;
+}
+/* DOCUMENT CONTENT STYLE STOP */
 
-#Courselist .bigg {
+/* BOX STYLE START */
+.box h1 {
+    display: block;
+    font-family: Arial,Sans-Serif;
     text-align: center;
-    color:#775886;
-    font-size: 14pt;
-    font-family: Calibri,Sans-Serif;
-    display: block;
-    background-color: #fff;
-    padding-top:7px;
-    min-height:30px;
-    margin-right:8px;
-    padding-right:8px;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
 }
 
-#Sectionlist{
-    margin:0px auto;
-    background-color: #fff;
-    color:#434343;
-    display: block;
-    padding-top:1px;
+.box ol{
+	margin-left: 2em;
 }
 
-.item {
-    display: block;
-    font-family: Calibri,Sans-Serif;
-    padding-top:7px;
-    min-height:30px;
-    font-size: 14pt;
+.box ul{
+	list-style-type: disc;
+	display: list-item;
+	margin-left: 1.5em;
 }
 
-#Sectionlist .section {
-    color:#fff;
-    background-color: #927b9e;
+.box hr{
+	border:none;	
+	border-top:1px #CCCCCC solid;
+	height: 2px;
+	width: 100%;
 }
 
-#Sectionlist .header {
-    color:#fff;
-    background-color: #775886;
-    text-align: center;
+.box span.codestyle{
+    color: #666;
+    font-family: Arial,Sans-Serif;
 }
 
-#Sectionlist .moment {
-    color:#ffffff;
-    background-color: #927b9e;
+/* Base-size for images in description boxes */
+.box img{
+    width: 70%;
 }
+/* BOX STYLE STOP */
 
-#Sectionlist .example {
-    color:#434343;
-    font-size: 12pt;
-    padding-top:5px;
-    min-height:26px;
-}
-
-
-#Sectionlist .quiz {
-    color:#434343;
-    font-size: 12pt;
-    padding-top:5px;
-    min-height:26px;
-}
-
-#Sectionlist .norm {
-    color:#fff;
-    background-color: #f0f0f0;
-}
-
-#Sectionlist .course {
-    padding:6px;
-    text-align: center;
-    color: #fff;
-    display: block;
-    font-family: Calibri,Sans-Serif;
-    font-size:18pt;
-    background-color: #614875;
-    clear:both;
-}
-
-.hi { background-color:#dad8db; }
-
-.lo { background-color:#eae8eb;}
-
-.item a {
-    text-decoration:none;
-    color: #775886;
-}
-
-.item a:hover {
-    text-decoration:underline;
-}
-
-#Sectionlist .norm:hover, #Sectionlist .example:hover, #Sectionlist .test:hover, #Sectionlist .hidden:hover{
-    background-color:#c6cdb8;
-    color: #000;
-}
-
-.hidden {opacity:0.5;border-radius:4px;margin-left:16px;}
-
-p {
-    margin: .5em auto .5em auto;
-}
-
-/* ---- ---- ---- --- Files page --- ---- ---- ---- */
-
-.fileed-row-wrapper{
-	margin-top: 10px;
-}
-
-/* --------------================################================-------------- *
- *                                    Header                                    *
- * --------------================################================-------------- */
-
-header {
-    overflow: hidden;
-    color: #fff;
-    height: 50px;
-    width: 100%;
-    background: #614875;
-    position: fixed;
-    z-index: 5000;
+/* BOXMENU STYLING START */
+.buttomenu2{
+	position: absolute;
     top: 0px;
-    left: 0px;
+    width: -moz-calc(100%);
+    width: -webkit-calc(100%);
+    width: calc(100%);
+    margin: 0;
+    overflow: hidden;
 }
 
-header td {
-    white-space: nowrap;
+.buttomenu2 table td img{
+	height: 24px;
+	width: 24px;
+    vertical-align: middle;
 }
 
-#scoreElement {
-    z-index: 9000;
-    width: 100px;
-    background-color: white;
+.buttomenu2 select{
+	top: 0px;
+   	bottom:0px;
+   	width: 150px;
+   	margin:0px;
+   	padding: 3px;
+   	-webkit-appearance: none;
+   	-moz-appearance: none;
+   	text-overflow: '';
+   	text-indent: 1px;
+   	outline: none;
+}
+/* BOXMENU STYLING STOP */
+
+#buttomenu {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    height: 50px;
+    margin: 0px;
+    border-color: rgb(0,0,0) transparent;
+}
+
+/* PICK TEMPLATE START */
+/* Is possibly replaced with template css further down in document */
+#picktemplate{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: white;
+}
+
+#picktemplate h1{
+	text-align: center;
+    font-family: Arial, Sans-Serif;
+}
+
+#picktemplate img{
+	width: 140px;
+	height: 140px;
+}
+/* PICK TEMPLATE STOP */
+
+/* MENU BUTTONS START*/
+.mbutto {
     text-align: center;
-    position: fixed;
-    top: 0%;
-    left: 50%;
-    margin-top: 7px;
-    margin-left: -50px;
-    border-style: solid;
-    border-width: 1px;
+    font-family: Verdana,Serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 4px;
+    height: 44px;
 }
 
-.navButt {
-    width:32px;
-    vertical-align: middle;
-}
-
-.navButt img {
-    margin-left: 10px;
-    vertical-align: middle;
-    height: 32px;
-}
-
-.navButt:hover {
+.mbutto:hover{
     cursor: pointer;
 }
+/* MENU BUTTONS STOP */
 
-.navHeading {
-    font-size: 2.5em;
-    vertical-align: middle;
-    padding-left: 15px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor:default;
+/* Example title in menu */
+.menutext {
     overflow: hidden;
-}
-
-.navName {
-    font-size:0.8em;
-    color: #FFFFFF;
-    cursor:default;
-    text-decoration:none;
-    text-align:right;
-    overflow:hidden;
-    padding-right:4px;
-}
-
-.navName:hover {
-    font-size:0.8em;
-	text-shadow:1px 1px 4px #50A750;
-    color: #FFFFFF;
-    cursor:default;
-	text-decoration:underline;
-    text-align:right;
-    overflow:hidden;
-    padding-right:4px;
-}
-
-#userName {
-    cursor:pointer;
-}
-
-.loggedout {
-    background-color: #c75050;
-}
-
-.loggedout:hover {
-    background-color: #50a750;
-}
-
-.loggedin {
-    background-color: #50a750;
-}
-
-.loggedin:hover {
-    background-color: #c75050;
-}
-
-#loginbutton{
-    cursor:pointer;
-    height:50px;
-    width: 50px;
+    height: 46px;
     vertical-align: middle;
-    text-align: center;
+    width: 100%;
+    border-radius: 12px;
+    font-family: Verdana,Serif;
+    font-size: 24px;
+    font-weight: normal;
+    padding: 4px;
 }
 
-#div2
-{
-    width:100%;
+/* Extra button spaces */
+.buttospacer {
+    width: 20px;
+}
+
+/* HOTDOG MENU START */
+#hotdogdrop{
+	display: none;
+	right: 0px;
+	height: auto;
+	width: auto;
+	border-color: rgb(0,0,0) transparent;
+	font-family: Arial,Serif;
+	font-size: 14px;
+}
+
+#hotdogdrop table td img{
+	font-family: Arial,Serif;
+	font-size: 14px;
+	color: white;
+	float:right;
+}
+
+#hotdogdrop table td{
+	border-bottom: solid 1px #2A120A;
+	font-family: Arial,Serif;
+	font-size: 14px;
+}
+
+/* SCROLL HOTDOG MENU */
+#table-wrapper {
+	position:relative;
+}
+
+#table-scroll {
+	height:100%;
+	overflow-y:scroll; 
+}
+
+#table-wrapper table {
+	width:100%;
+}
+#table-wrapper table * {
+	color:white;
+}
+/* HOTDOG MENU STOP */
+
+/* DROPDOWN STARTS */
+.dropdown {
+    display: none;
     position: fixed;
     top: 50px;
-    bottom: 0px;
-    left:0px;
-    background:#fff;
-}
-
-
-/* --------------================################================-------------- *
- *                                   Dialog Box                                 *
- * --------------================################================-------------- */
-
-#resultpopover{
-    position:fixed;
-    left:50px;
-    top:70px;
-    right:50px;
-    bottom:50px;
-    z-index:9000;
-    box-shadow:2px 2px 4px #000;
-    padding:4px;
-    background-color: #ccc;
-    border: 2px solid #999;
-}
-
-.floatRightBox{
-    width:220px;
-    min-height:300px;
-    float:left;
-    margin-left:10px;
-    overflow:auto;
-    float:right;
-    z-index:9000;
-    box-shadow:2px 2px 4px #000;
-    padding:4px;
-    background-color: #ccc;
-    border: 2px solid #999;
-}
-
-
-
-#overlay {
-    position: fixed;
-    top: 0;
-    background-color: #000;
-    opacity: 0.6;
-    width: 100%;
-    height: 100%;
-    z-index: 8000;
-}
-
-.receiptBox {
-    display:block;
-    padding:4px;
-    background-color: #ccc;
-    border: 2px solid #999;
-    width: 350px;
-    min-height: 100px;
-    z-index: 9000;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -178px;
-    box-shadow:2px 2px 4px #000;
-}
-.receiptBox select {font-size:14px;float:right;margin-right:4px;}
-
-.receiptBoxheader {
-    height: 25px;
-    background-color: #614875;
-    vertical-align: bottom;
-    padding-left: 10px;
-/*  padding-top: 15px; */
-}
-.receiptBox h3 {
+    z-index: 4000;
     font-size: 14px;
-    margin-top: 10px;
-    line-height: 0.5em;
-    color: #fff;
-    float: left;
-    width: 50%;
-}
-.receiptBoxheader div {
-    padding: 2px 20px 2px 20px;
-    position: absolute;
-    top: 4px;
-    right: 5px;
-    color: #fff;
-    cursor: default;
-    background-color: #c75050;
-    font-family: arial;
-    font-weight: bold;
-    height:20px;
-}
-.receiptBoxheader div:hover {
-    background-color: #ce3d3d;
-}
-.recepitBox form {
-    padding: 10px;
-}
-.recepitBox .text {
-    font-weight: bold;
-    font-size: 0.8em;
+    font-family: Arial,Sans-serif;
 }
 
-.receiptBox .submit {
-    width: 80px;
-    height: 25px;
-    color: #fff;
+.dropdownback {
+    padding-left: 8px;
     background-color: #614875;
-    border: 0px;
-    border-radius: 4px;
-    margin-left: 1px;
-}
- 
-.loginBox {
-    display:block;
-    padding:4px;
-    background-color: #ccc;
-    border: 2px solid #999;
-    width: 350px;
-    min-height: 100px;
-    z-index: 9000;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -178px;
-    box-shadow:2px 2px 4px #000;
+    border-color: rgb(0,0,0) transparent;
+    color: white;
+    font-family: Arial,Serif;
+    font-size: 19px;
+    font-weight: normal;
 }
 
-.loginBox textarea, #import{
-    width:100%;
-    height:200px;
-    margin:auto;
-    margin-top:7px;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    padding:5px;
+/* Codedrop with code files */
+.codedrop {
+	right: 0px;
+    width: -moz-calc(20.0%);
+	width: -webkit-calc(20.0%);  
+    height: -webkit-calc(40.0%);
+    height: -moz-calc(40.0%);
+    padding-left:7px;
+    overflow: auto;
+    border-color: rgb(0,0,0) transparent;	
 }
 
-.loginBox textarea, #receipt {
-    width:100%;
-    height:60px;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+/* General settings drop */
+/* Consider changing names */
+.docudrop {
+ 	right: 0px;
+    width: -moz-calc(25.0%);
+	width: -webkit-calc(25.0%);  
+    height: -webkit-calc(65.0%);
+    height: -moz-calc(65.0%);
+	padding-left:7px;
+	border-color: rgb(0,0,0) transparent;
+    min-width: 270px;
 }
 
-.note {
-    font-size: 0.95em;
-}
+/* Different themes dropdown */
+.themedrop {
+	right: 0px;
+    width: -moz-calc(20.0%);
+	width: -webkit-calc(20.0%);  
+    height: -webkit-calc(40.0%);
+    height: -moz-calc(40.0%);
+}	
 
-/* --------------================################================-------------- *
- *                       		  Pop-up BOX        				   *
- * --------------================################================-------------- */
-
-#playlink {
-    width: 216px;
-}
-
-#editContent td {
-	padding: 5px 5px 0px 5px;
-}
-	
-#editContent select  {
-	padding: 5px;
-	float: none;
-	width: 100%;
-	height: 30px;
-}
-
-#editContent input[type="number"] {
-	height: 30px;
-	border-color: rgb(169, 169, 169);
-}
-
-#editContent input[type="text"] {
-  height: 30px;
-  border-color: rgb(169, 169, 169);
-  width: 100%;
-}
-
-#editContent input.submit-button {
-	margin:0;
-}
-
-#impwords {
-    max-width: 180px;
-    min-width: 180px;
-    margin-left: 0px;
-}
-
-#impword {
-    max-width: 180px;
-    min-width: 180px;
-    margin-left: 0px;
-    
-}
-
-#before, #after {
-    float: left;
-    width: 226px;
-}
-
-#playlink {
-    width: 216px;
-}
-
-.loginBox .inputwrapper {
-    clear:both;
-	width:100%;
-	padding:3px 0 3px 0;
-	height:30px;
-	line-height:30px;
-}
-
-.loginBox .inputwrapper span{
-    float:left;
-}
-
-.loginBox .inputwrapper input, .loginBox .inputwrapper select{
-    float:right;
-}
-
-.loginBox .inputwrapper input[type="checkbox"]{
-    margin-right:200px;
-	height:24px;
-}
-
-.loginBox select {
-    width: 216px;
-    height: 30px;
-    line-height: 18px;
-    color: #6f6f6f;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+/* Images for descriptions */
+.imgdrop {
+    right: 0px;
+    width: -moz-calc(30.0%);
+    width: -webkit-calc(30.0%);
+    height: -webkit-calc(45.0%);
+    height: -moz-calc(45.0%);
+    background: rgb(0, 0, 0) transparent;
     padding: 5px;
-    font-size: 14px;
 }
 
-.loginBoxheader {
-    height: 25px;
-    background-color: #614875;
-    vertical-align: bottom;
-    padding-left: 10px;
-/*  padding-top: 15px; */
+.imgdrop img{
+    width: 20%;
+    padding: 5px;
 }
-.loginBoxheader h3 {
-    font-size: 14px;
-    margin-top: 10px;
-    line-height: 0.5em;
-    color: #fff;
-    float: left;
-    width: 50%;
-}
-.loginBoxheader div {
-    padding: 2px 20px;
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    color: rgb(255, 255, 255);
+
+.forwdrop {
+    right: 20px;
+    height: auto;
+    width: 200px;
     cursor: default;
-    background-color: rgb(199, 80, 80);
-    font-family: arial;
-    font-weight: bold;
-    height: 21px;
-}
-.loginBoxheader div:hover {
-    background-color: #ce3d3d;
-}
-.loginBox form {
-    padding: 10px;
-}
-.loginBox .text {
-    font-weight: bold;
-    font-size: 0.8em;
-}
-
-.loginBox .submit {
-    width: 80px;
-    height: 25px;
-    color: #fff;
+    border-color: rgb(0,0,0) transparent;
     background-color: #614875;
-    border: 0px;
-    border-radius: 4px;
-    margin-left: 1px;
 }
 
-.loginBox .cancel {
-    width: 80px;
+.backwdrop {
+    right: 20px;
+    height: auto;
+    width: 200px;
+    cursor: default;
+    border-color: rgb(0,0,0) transparent;
+    background-color: #614875;
+}
+
+.dropdownitem {
+    display: block;
+    font-size: 14px;
+    font-family: Verdana,Arial,Sans-serif;
+    cursor: default;
+    padding-left: 5px;
+	border-bottom: solid 1px #2A120A;
+	color: white;
+	background: #614875;
+}
+.dropdownitem:hover {
+	background-color: #7D5CA0;
+}
+/* DROPDOWN STOP */
+
+/* BOX TEXT STYLING START */
+.norm {
+    color: #fff;
+    background-color: #272822;
+}
+
+.normtextend{
+    height: 120px;
+    margin: 0 auto;
+    position: relative;
+}
+/* BOX TEXT STYLING STOP */
+
+#playlinkErrorMsg{
+	display: none;
+}
+
+/* TAB-MENU SETTINGS */
+.settingsTabMenu{	
+	border-bottom: solid 2px;
+	padding-left:0px;
+	padding-bottom:0px;
+}
+
+.settingsTabMenu li{
+	display: inline;
+	cursor: default;
+	margin: 5px;
+	padding: 5px 5px 0px 5px;
+	border-style:solid;
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+	border-left-width: 2px;
+	border-right-width: 2px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.settingsTabMenu .activeSetMenuLink{
+	border-bottom-width:3px;
+}
+/* TAB-MENU STOP */
+
+/* TOOLTIPS START */
+.tooltip, .arrow:after, .arrow2:after {
+    background: black;
+}
+
+.tooltip {
+    pointer-events: none;
+    opacity: 0;
+    display: inline-block;
+    position: fixed;
+    padding: 5px 10px;
+    color: orange;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+    font: 10px Arial, Sans-Serif;
+    font-stretch: condensed;
+    text-decoration: none;
+    text-transform: uppercase;
+    z-index: 10000;
+}
+
+.arrow {
+    width: 70px;
+    height: 18px;
+    overflow: hidden;
+    position: absolute;
+	bottom: -16px;
+}
+
+.arrow::after {
+    content: "";
+    position: absolute;
+    top: -20px;
+    width: 25px;
     height: 25px;
-    color: #333;
-    background-color: #ebebeb;
-    border-color: #adadad;
-    border: 1px;
-    border-radius: 4px;
-    margin-left: 1px;
+    left:22.5; /* 22.5 to place the arrow in the middle. arrowwidth/2 - arrow:afterwidth/2=22.5 */
+    -webkit-transform: rotate(45deg);
+    -moz-transform:    rotate(45deg);
+    -ms-transform:     rotate(45deg);
+    -o-transform:      rotate(45deg);
 }
 
-.loginBox .forgotPw {
-    font-family: arial;
-    font-size: 10pt;
-    font-weight: bold;
-    text-decoration: underline;
+.arrow2 {
+    width: 70px;
+    height: 18px;
+    overflow: hidden;
+    position: absolute;
+    top: -16px;
+}
+
+.arrow2::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    width: 25px;
+    height: 25px;
+    left:22.5; /* 22.5 to place the arrow in the middle. arrow2width/2 - arrow2:afterwidth/2=22.5 */
+    -webkit-transform: rotate(45deg);
+    -moz-transform:    rotate(45deg);
+    -ms-transform:     rotate(45deg);
+    -o-transform:      rotate(45deg);
+}
+
+.tooltip.active {
+    opacity: 1;
+    margin-top: 5px;
+    transition-delay: 0.5s !important;
+    -webkit-transition-delay: 1s !important;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition:    all 0.2s ease;
+    -ms-transition:     all 0.2s ease;
+    -o-transition:      all 0.2s ease;
+}
+
+.tooltip.active2 {
+    opacity: 1;
+    margin-top: 5px;
+    transition-delay: 0.5s !important;
+    -webkit-transition-delay: 1s !important;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition:    all 0.2s ease;
+    -ms-transition:     all 0.2s ease;
+    -o-transition:      all 0.2s ease;
+}
+
+.tooltip.out {
+    opacity: 0;
+    margin-top: -5px;
+    transition-delay: 0s !important;
+}
+
+.tooltip.out2 {
+    opacity: 0;
+    margin-top: 15px;
+    transition-delay: 0s !important;
+}
+/* TOOLTIPS STOP */
+
+/*Prevent new lines to enter (which creates screen-errors) when editing names in lists*/
+.norm > [contenteditable="true"] br,
+.butt > [contenteditable="true"] br{
+    display:none;
+}
+
+/* TEMPLATE ICON START */
+/* Icons for picking templates */
+.templateicon{
+    width: 45%;
+    margin: 0px;
+    float: left;
+}
+.templatethumbicon{
+    width: 88%;
+    margin: 2% 1% 2% 1%;
+    padding: 3%;
+}
+.templatethumbicon:hover{
     cursor: pointer;
-    padding-left: 10px;
+}
+/* TEMPLATE ICON STOP */
+
+/* THEME ICON START */
+/* Icons for picking themes */
+.themeicon {
+	height:20px;
+	padding:5px;
 }
 
-.loginBox .form-control {
-    margin: 3px 0px 3px 0px;
+.themeicon:hover {
+	cursor: pointer;
 }
 
-.loginBox .hide {
+.themeicon img{
+	vertical-align: text-bottom;
+}
+
+.themeicon span{
+	padding-left: 6px;
+	font-size:16px;
+}
+
+.themeicon:hover{
+    background-color: black;
+}
+
+.mobilethemebutton{
     display: none;
 }
 
-.loginBox td{
-    margin-left:4px;
+.subbutton span{
+    font-size: 12px;
+}
+/* THEME ICON STOP */
+
+.showdesktop{
+    display: table-cell;
+}
+.showmobile{
+    display: none;
 }
 
-/* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
-
-#HighscoreTable{
-	text-align: center;
+.codebox{
+	padding: 0px !important;
 }
 
-#HighscoreTable th{
-	font-size: 120%;
-	padding-top: 10px;
-	padding-bottom: 10px;
+/* DESCRIPTION BOX STYLE START */
+.descbox{
+	padding: 10px !important;
 }
 
-.highscoreUser {
-	background-color: rgba(99, 102,99, 0.4);
+.descbox h1{
+	color: #000;
+	text-align: left;
+	font-size: 1.8em;
+    font-weight: normal;
+	font-style: normal;
 }
 
-/* --------------================################================-------------- *
- *                                 Form Controls                                *
- * --------------================################================-------------- */
- 
-.form-control {
-    display: block;
-    font-size: 14px;
-    line-height: 18px;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+.desc pre {
+    font-family: "Courier 10 Pitch", Courier, monospace;
+    font-size: 95%;
+    line-height: 140%;
+    white-space: pre;
+    white-space: pre-wrap;
 }
 
-.textinput {
-    display: block;
-    width: 216px;
-    height: 30px;
-    line-height: 18px;
-    color: #202020;
-    background-color: #ffffff;
-    background-image: none;
-    border: 1px solid #cccccc;
-    border-radius: 0;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    padding: 5px;
-    font-size: 14px;
-    letter-spacing: normal;
-    word-spacing: normal;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
+.descbox code {
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 95%;
+    line-height: 140%;
+    white-space: pre;
+    white-space: pre-wrap;
+    background: #ffffff;	
     display: inline-block;
-    text-align: start;
-    border-radius: 0px;
-    box-sizing: border-box;
+    padding: 0em 1em 1em 1em;
+    margin: 0.5em 0px;
+    border: 1px solid #bebab0;	
+}
+/* DESCRIPTION BOX STYLE STOP */
+
+/* USER FEEDBACK BOX START  */
+.alert.success {
+	background-color:#DFF0D8;
+	border-color:#D6E9C6;
+	color:#3C763D;
+    width: 150px;
 }
 
-input.option {
-    float: left;
+.alert.warning{
+	background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
 }
 
-button.option {
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
-    width: 38px;
-    height: 38px;
-    padding: 6px 12px;
-    margin: 2px 0px 2px -38px;
-}
-
-input.submit-button {
-    background-color:#614875;
-    border:0px;
-    width:110px;
-    height:30px;
-    color:#fff;
-    cursor:pointer;
-    margin-bottom:2px;
-    margin-right:44px;
-    font-size:14px;
-    transition:1s background-color;
-    float:right;
-}
-
-input.submit-button:hover {
-    background-color:#7B5A96;
-    border-radius:4px;	
-}
-
-input.submit-button-red {
-    background-color:#c75050;
-    border:0px;
-    width:100px;
-    height:30px;
-    color:#fff;
-    cursor:pointer;
-}
-
-input.submit-button-red:hover {
-    background-color:#DF4F4F;
-    border-radius:4px;	
-}
-
-input.new-item-button {
-    float:right;
-    background-color:#927B9E;
-    border:0px;
-    width:100px;
-    height:28px;
-    color:#fff;
-    cursor:pointer;
-    margin-top:2px;
-    margin-bottom:2px;
-    font-size:14px;
-    border-radius:4px;
-    transition:0.5s background-color;
-}
-
-input.new-item-button:hover {
-    background-color:#614875;
-    border:1px solid #927B9E;
-    border-radius:4px;  
-}
-
-.button-row {
-    width:100%;
-    height:35px;
-    text-align: right;
-}
-
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;}
-
-.list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
-.list th {background:#614875; color:#fff;line-height:28px;}
-
-.innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
-.innertable td {color:#000;line-height:28px;border:none;}
-
-.list tr:hover { background-color: #dbd0d8; }
-
-.list--nomargin {
-    margin: 0!important;
-}
-
-.Trow{
-    font-family: "Lucida Console", Monaco, monospace;
-    font-size: 8pt;
-}
-
-@media print {
-	.Trow {
-	    page-break-inside : avoid
-	}
-	
-	header {display:none;}
-	
-	body {margin:0px}
-	
-	#content {margins:0px; padding:0px; border:none;}
-	
-	#mirth {display:none;}
-}
- 
-/* Clearfix styles */
-.clearfix:before,
-.clearfix:after {
-  content: "";
-  display: table;
-}
- 
-.clearfix:after {
-  clear: both;
-}
- 
-.clearfix {
-  zoom: 1; /* ie 6/7 */
-}
-
-/* DuggaSys Header */
-/*******************/
-
-.head__backanchor {
-	color: #ff0;
-}
-.head__backanchor:visited {
-	color: #ff0;
-}
-.head__backanchor:hover {
-	color: #fff;
-}
-
-
-.duggasys-head__backtext {
-	display: block;
-}
-/* Navigation link styles */
-.duggasys-head--nav a {
-	color: #ffffff;
-	text-decoration: none;
-}
-.duggasys-head--nav a:visited {
-	color: #ffffff;
-}
-.duggasys-head--nav a:hover {
-	color: red;
-}
-
-.duggasys-head--userinfo {
-	float: right;
-	margin: 10px 85px 10px 10px;
-}
-.duggasys-head__profileicon {
-	height: 100%;
-	padding: 5px;
-}
-.duggasys-head__profileicon:hover {
-	height: 100%;
-	padding: 5px;
-}
-.duggasys-head__username {
-
-}
-
-/* End DuggaSys Header */
-/***********************/
-
-/* DuggaSys Sectioneed*/
-.course-menu--settings {
-	float: left;
-	margin-top: 6px;
-}
-
-.course-menu--options {
-	float: right;
-	margin-top: 6px;
-}
-
-/* select element */
-.course-dropdown {
-	height: 30px;
-}
-
-/* End DuggaSys Sectioneed*/
-/**************************/
-
-
-/* DuggaSys resulted*/
-#namecolumn .namecolumnheader {
-	width:200px;
-	height:30px;
-	background: #614875;
-	line-height:30px;
-	color:#FFFFFF;
-	text-align:center;
-}
-#namecolumn {
-	margin-top:10px;
-	float:left;
-}
-#studentswrapper {
-	overflow-y:hidden;
-	overflow-x:scroll;
-}
-#namecolumn .namecolumnstudent{
-	height:64px;
-	width:200px;
-	border-bottom:2px solid #614875;
-	border-left:2px solid #614875;
-	border-right:2px solid #614875;
-	text-align:right;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	padding:10px;
-}
-#divtable {
-	float:left;
-	overflow:scroll;
-	width: calc(100% - 200px);
-}
-#tableheader {
-	background: #614875;
-	color:#FFFFFF;
-	margin-top:10px;
-	float:left;
-	width: calc(100% - 200px);
+.slide-down {
+	border-bottom-left-radius:0;
+	border-bottom-right-radius:0;
+	border-left-width:0;
+	border-right-width:0;
+	border-top-left-radius:0;
+	border-top-right-radius:0;
+	border-top-width:0;
+	height:40px;
 	overflow:hidden;
+	width:100%;
+	z-index:3000;  
 }
-#tableheaderwrapper{
-	min-width:4100px;
+
+.alert strong, .alert p{
+	margin:0px;
+	padding: 0px;
 }
-#tableheaderwrapper div{
-	height:30px;
-	line-height:30px;
-	float:left;
+
+.alert span {
+	margin:0px;
+	padding: 0px;
+	position: absolute;
+    right: 5px;
+    top: 0px;
+    font-weight: bold;
+    cursor: default;
+}
+
+.alert {
+	border:1px solid transparent;
+	border-bottom-left-radius:4px;
+	border-bottom-right-radius:4px;
+	border-top-left-radius:4px;
+	border-top-right-radius:4px;
+	margin: 0px;
+	padding:0px;
+	width: 300px;
+	position: relative;
+}
+/* USER FEEDBACK BOX STOP*/
+
+/* BOXMENU STYLING START */
+.buttomenu2{
+	position: absolute;
+    top:0px;
+    width: -moz-calc(100%);
+    width: -webkit-calc(100%);
+    margin: 0;
+}
+
+/* Select-element for changing boxcontent*/
+.buttomenu2 .boxcontentselect{
+	top: 0px;
+   	bottom:0px;
+   	width: 150px;
+   	margin:0px;
+   	padding: 3px;
+   	-webkit-appearance: none;
+   	-moz-appearance: none;
+   	text-overflow: '';
+   	text-indent: 1px;
+   	outline: none;
+}
+
+/* Select-element for picking a wordlist*/
+.buttomenu2 .wordlistselect{
+	top: 0px;
+   	bottom:0px;
+   	width: 70px;
+   	margin:0px;
+   	padding: 3px;
+   	-webkit-appearance: none;
+   	-moz-appearance: none;
+   	text-overflow: '';
+   	text-indent: 1px;
+   	outline: none;
+}
+/* BOXMENU STYLING STOP */
+
+/* RESIZABLE UI START*/
+/* Resizable jQuery UI fix for absolute positioning east*/
+.ui-resizable-e {
+	right: 0px;
+	bottom: 0px;
+	position: absolute;
+	height: 100%;
+	width: 10px;
+	cursor: ew-resize;
+}
+
+/* Resizable jQuery UI fix for absolute positioning south*/
+.ui-resizable-s {
+	left: 0px;
+	bottom: 0px;
+	position: absolute;
+	height: 10px;
+	width: 100%;
+	cursor: ns-resize;
+}
+/* RESIZABLE UI CSS STOP */
+
+/* DragnDrop CSS */
+#SeqEdit {
+    max-height: 500px;
+	margin-top:10px;
+}
+
+#sortListBox {
+	margin: 5px;
+	padding: 5px 3px 0px 3px;
+	width: 175px;
+	display:inline-block;
 	text-align:center;
 }
-.momentdiv {
-	border-right:2px solid #927b9e;
-	display: inline-block;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-.momentdiv div{
-	padding:5px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-.fumo {
-	border-bottom:2px solid #614875;
-	clear:both;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-/* End DuggaSys resulted*/
-/**************************/
 
-/* --------------================################================-------------- *
- *                                    UMV                                   *
- * --------------================################================-------------- */
- 
- .UmvButton {
+#sortListBox span {
+	color: #000;
+	font-size:16px;
+	margin-top:10px;
+}
+
+#exampleListBox {
+	margin:5px 5px 10px 5px;
+	padding: 5px 3px 0px 3px;
+	width: 175px;
+	display:inline-block;
+	text-align:center;
+	float:right;
+}
+
+#exampleList {
+	max-height:226px;
+	overflow-y:auto;
+}
+
+#sortList {
+	max-height:226px;
+	overflow-y:auto;
+}
+
+#exampleListBox span {
+	color: #000;
+	font-size:16px;
+	margin-top:10px;
+}
+
+#sortList div {
+	margin: 5px 2px 5px 2px;
+	padding: 5px;
+	background: #614875;
+	font-size: 12px;
+	color: #fff;
+	border-bottom: 1px solid #424242;
+	border-top: 1px solid #424242;
+	border-left: 1px solid #424242;
+	border-right: 1px solid #424242;
+	text-align:left;
 	cursor:pointer;
-	background-color:#FFFFFF;
-	border:none;	
-	letter-spacing:0.1em;
-	margin-left:0px;
-	width:8%;
-	padding-top:4px;
-	text-align:center;
-	color:#614875;
-	border-top-right-radius:0.5em;
-	border-bottom-right-radius:0.5em;
 }
 
-/* Searchfield UMV */
-.searchfieldTV{
-	font-family: Calibri,sans-serif;
-	width: 35%; 
-	margin-left:25px;
-	margin-top:-40px;
-	position:absolute;	
+#exampleList div {
+	margin: 5px 2px 5px 2px;
+	padding: 5px;
+	background: #614875;
+	font-size: 12px;
+	color: #fff;
+	border-bottom: 1px solid #424242;
+	border-top: 1px solid #424242;
+	border-left: 1px solid #424242;
+	border-right: 1px solid #424242;
+	text-align:left;
+	cursor:pointer;
 }
 
-/* Searchfield UMV input field*/
-.searchfieldTV input{
-	width: 70%;
-	height: 25px;
-	float:left;
-	position:relative;
-	font-size:0.9em;
-	border:none;
-	border-top-left-radius:0.5em;
-	border-bottom-left-radius:0.5em;
-	box-shadow: inset 2px 2px 5px #A9A;
+.empty {
+	margin: 5px;
+	padding: 10px;
+	background: #614875;
+	cursor:pointer;
 }
 
-/* Searchfield UMV input text field focus */
-.searchfieldTV input[type=text]:focus{
-	box-shadow: inset 2px 2px 5px #988a98;
+#editExample{
+    position: absolute;
+    top:0 auto;
+    width: 464px;
+}
+
+/* Shapes and color for the buttons in Editexample box*/
+.newSequence, .deleteSequence, .updateSequence  {
+    background-color: rgb(97, 72, 117);
+    border: 0px none;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    font-size: 14px;
+    float: right;
+    -webkit-transition: background-color 1s ease 0s;
+    -moz-transition: background-color 1s ease 0s;
+    -o-transition: background-color 1s ease 0s;
+     transition: background-color 1s ease 0s;
+
+}
+
+/* Shapes and color for the buttons in Editexample box*/
+.updateSequence {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-left: 310px;
+    float:left;
+}
+
+/* Hover style for the buttons in Editexample box*/
+.newSequence:hover, .updateSequence:hover, .deleteSequence:hover {
+  background-color:#7B5A96;
+  border-radius:4px;	
+}
+
+#seqSelectBox {
+	padding: 5px;
+	margin-bottom: 5px;
+}
+
+#seqSelectBox select {
+	width:195px;
+}
+
+#status {
+	margin-left:323px;
+	float:right;
+	margin-right:30px;
+	color:green;
+}
+
+.loginBox {
+	top:25%;
 }
