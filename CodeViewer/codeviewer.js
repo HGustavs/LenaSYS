@@ -476,12 +476,24 @@ function editImpRows(editType)
     		if (this.value == row) {exists = true;}
 		});
 		
+		if (rowFrom < 0) { //Negative numbers alert
+			alert("You cannot input the negative numbers " + rowFrom);
+			editContent.reload();
+		}
+		
+		if (rowTo < 0) { //Negative numbers alert
+			alert("You cannot input the negative numbers " + rowTo);
+			editContent.reload();
+		}
+		
 		if (rowFrom && rowTo < 0) { //Negative numbers alert
-		 //   FromTo = $("#improws").text().split(" - ");
-		//	$("#improws").remove();
-		//	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
 			alert("You cannot input the negative numbers " + rowFrom + " and " + rowTo);
 			editContent.reload();
+		}
+		
+		if (rowFrom && rowTo > lineno) { //Cannot add higher number, example we only have 1-10 rows, and it's should not be able to add the number 11 in the row editor
+	       alert("You cannot add numbers that doesn't exist in the current row!");
+		   editContent.reload();
 		}
 		
 		if (exists == false) {
