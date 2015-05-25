@@ -55,7 +55,7 @@ include_once("../Shared/basic.php");
 			}
 			$data = explode(',',$data[0]['exampleseq']);
 			echo "<div id='sortListBox'>";
-			echo "<span>Sequence examples</span>";
+			
 			echo "<div id='sortList' class='dragAndDrop'>";
 			foreach($data as $key => $value){
 				$query = $pdo->prepare("SELECT examplename from codeexample where exampleid=$value");
@@ -98,7 +98,7 @@ include_once("../Shared/basic.php");
 			}
 			$count = 0;
 			echo "<div id='exampleListBox'>";
-			echo "<span>Unused examples</span>";
+			
 			echo "<div id='exampleList' class='dragAndDrop'>";
 			foreach($data as $example){
 				
