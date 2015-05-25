@@ -311,7 +311,6 @@ INSERT INTO impwordlist(exampleid,word,uid) values (5,"createElement",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (5,"innerHTML",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (5,"appendChild",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (5,"appendNode",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (5,"appendChild",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (5,"insertBefore",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (5,"parentNode",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (6,"value",1);
