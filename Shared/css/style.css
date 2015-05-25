@@ -486,12 +486,12 @@ header td {
 }
 #impwords {
     margin-left: 0;
-    max-width: 191px;
-    width: 191px;
+    max-width: 186px;
+    width: 186px;
 }
 #impword {
-    max-width: 191px;
-    width: 191px;
+    max-width: 186px;
+    width: 186px;
 }
 #before, #after {
     float: left;
@@ -661,13 +661,13 @@ input.submit-button {
     border: 0 none;
     color: #fff;
     cursor: pointer;
-    float: right;
+    /* float: right; */
     font-size: 14px;
     height: 30px;
     margin-top: 3px;
-    margin-right: 27px;
+    margin-right: 0px;
     transition: background-color 1s ease 0s;
-    width: 100px;
+    width: 100;
 }
 input.submit-button:hover {
     background-color: #7b5a96;
@@ -843,9 +843,9 @@ body {
     background-color: #7b5a96;
     border-radius: 4px;
 }
-#editExample {
-    position: absolute;
-    width: 442px;
+#editExample td {
+    width: 50%;
+    padding: 5px 5px 0px 5px;
 }
 #namecolumn .namecolumnheader {
     background: none repeat scroll 0 0 #614875;
