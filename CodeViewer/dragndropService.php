@@ -17,16 +17,19 @@ if ($_GET["action"] == "update"){
 		$last = end($item);
 		$count = 1;
 		foreach($item as $example){
-			if($example == $item[0]){
+			if($example == $item[0] && $example == $last){
+				$query = $pdo->prepare("UPDATE codeexample SET beforeid=$example, afterid=$example WHERE exampleid=$example");
+				$query->execute();
+			} else if($example == $item[0]){
 				$query = $pdo->prepare("UPDATE codeexample SET beforeid=$example, afterid=$item[$count] WHERE exampleid=$example");
 				$query->execute();
 				$count++;
 			} else if($example == $last) {
-				$count--;
+				$count = $count-2;
 				$query = $pdo->prepare("UPDATE codeexample SET beforeid=$item[$count], afterid=$example WHERE exampleid=$example");
 				$query->execute();
 			} else {
-				$before = $count-1;
+				$before = $count-2;
 				$query = $pdo->prepare("UPDATE codeexample SET beforeid=$item[$before], afterid=$item[$count] WHERE exampleid=$example");
 				$query->execute();
 				$count++;
