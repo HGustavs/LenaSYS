@@ -140,7 +140,7 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '<a href="mailto:"">';
 	courseHtmlStr += '<img src="img/envelope_purple.svg" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
-	courseHtmlStr += '<div class="course_alert">Img</div>';
+	courseHtmlStr += '<div class="course_alert"> </div>';
 	courseHtmlStr += '<div class="course_type"></div>';
 	courseHtmlStr += '</div>';
 	courseHtmlStr += '</div>';
