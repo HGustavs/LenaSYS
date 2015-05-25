@@ -204,10 +204,9 @@
 }
 
 .normtext .impword {
- color: rgb(34, 34, 34);
-background-color: rgb(245, 195, 225);
-border: 1px solid rgb(66, 66, 66);
-
+    color: #fff;
+    background-color: #794C6E;
+    border: 1px solid #424242;
 }
 
 
