@@ -359,7 +359,6 @@ function returnedResults(data)
 							if (studres != null) {
 								for (var l = 0; l < studres.length; l++) {
 									var resultitem = studres[l];
-									var
 									if ((resultitem['moment'] == moment['lid'])&&(onlyone == true)) {
 										foundgrade = resultitem['grade']; // There is a result to print
 										zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U"); 	// gradesys cid vers moment uid mark
