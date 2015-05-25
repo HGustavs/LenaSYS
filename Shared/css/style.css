@@ -574,12 +574,14 @@ header td {
 
 #impwords {
     max-width: 180px;
-    min-width: 191px;
+    min-width: 180px;
     margin-left: 0px;
 }
 
 #impword {
-    width: 180px;
+    max-width: 180px;
+    min-width: 180px;
+    margin-left: 0px;
     
 }
 
@@ -992,7 +994,7 @@ input.new-item-button:hover {
 #editExample {
 	position: absolute;
 	top: 0 auto;
-	width: 442px;
+	width: 464px;
 
 }
 
