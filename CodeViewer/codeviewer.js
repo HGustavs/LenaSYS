@@ -1215,7 +1215,6 @@ function tokenize(instring,inprefix,insuffix)
 			/* This does not have to be here because a newline creates in coderender function 
 			maketoken('newline',"",i,i,row); */													                
 		
-			
 		}else if(currentCharacter == '<' && instring.charAt(i+1)=='!' && instring.charAt(i+2)=='-' && instring.charAt(i+3)=='-'){ // Comment of <!-- type 
 			i++;
 			currentStr = currentCharacter; 
