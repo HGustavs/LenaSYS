@@ -10,6 +10,8 @@
 	height: -webkit-calc(100%);
 	height: -moz-calc(100%);
 	height: calc(100%);
+	min-width: 10%;
+	max-width: 90%;
 }
 
 #box2wrapper {
@@ -22,6 +24,10 @@
 	height: -webkit-calc(50%);
 	height: -moz-calc(50%);
 	height: calc(50%);
+	min-width: 10%;
+	max-width: 90%;
+	max-height: 90%;
+	min-height: 10%;
 }
 
 #box3wrapper {
@@ -34,4 +40,8 @@
    	height: -webkit-calc(50%);
    	height: -moz-calc(50%);
    	height: calc(50%);
+	min-width: 10%;
+	max-width: 90%;
+	max-height: 90%;
+	min-height: 10%;
 }

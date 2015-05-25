@@ -6,10 +6,12 @@
     left: 0px;
     height: -webkit-calc(100.0%);
     height: -moz-calc(100.0%);
-    height: calc(100.0%);
+    height: calc(100.0%) !important;
     width: -webkit-calc(34.6%);
     width: -moz-calc(34.6%);
     width: calc(34.6%);
+	max-width: 90%;
+	min-width: 10%;
 }
 
 #box2wrapper {
@@ -28,6 +30,8 @@
     z-index: 2;
     max-height: 80%;
     min-height: 10%;
+	max-width: 90%;
+	min-width: 10%;
 }
 
 #box3wrapper {
@@ -46,6 +50,8 @@
     z-index: 2;
     max-height: 80%;
     min-height: 10%;
+	max-width: 90%;
+	min-width: 10%;
 }
 
 #box4wrapper {
@@ -64,4 +70,6 @@
     z-index: 2;
     max-height: 80%;
     min-height: 10%;
+	max-width: 90%;
+	min-width: 10%;
 }
