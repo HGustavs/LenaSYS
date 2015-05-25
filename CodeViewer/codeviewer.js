@@ -1214,6 +1214,24 @@ function tokenize(instring,inprefix,insuffix)
 			maketoken('rowcomment',currentStr,from,i,row);
 			/* This does not have to be here because a newline creates in coderender function 
 			maketoken('newline',"",i,i,row); */													                
+		
+			
+		}else if(currentCharacter == '<' && instring.charAt(i+1)=='!' && instring.charAt(i+2)=='-' && instring.charAt(i+3)=='-'){ // Comment of <!-- type 
+			i++;
+			currentStr = currentCharacter; 
+			while(true){
+				currentCharacter=instring.charAt(i);
+				if (currentCharacter=='\n'||currentCharacter=='\r'||currentCharacter=='') {
+					break;
+				}else{
+					currentStr+=currentCharacter;                
+				}
+				i++;
+			}	
+			//Replace < symbols in the comment so they are not recognised as html by the browser
+			currentStr = currentStr.replace(/\</g, "&#60;"); 
+			maketoken('rowcomment',currentStr,from,i,row);
+		
 		}else if (currentCharacter=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
 			i++;
 			currentStr=currentCharacter; 
