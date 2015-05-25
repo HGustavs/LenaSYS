@@ -507,20 +507,19 @@
     width: 100%;
 }
 #SeqEdit {
-    background-color: #b3b3b3;
-    border: 1px solid #424242;
     margin-top: 10px;
     max-height: 500px;
-    overflow-y: auto;
 }
 #sortListBox {
     background-color: #cccccc;
-    border: 1px solid #424242;
+    border: 0px solid #424242;
     display: inline-block;
     margin: 5px;
     padding: 5px 3px 0;
     text-align: center;
     width: 175px;
+	max-height: 300px;
+	overflow: auto;
 }
 #sortListBox span {
     color: #000;
@@ -529,13 +528,21 @@
 }
 #exampleListBox {
     background-color: #cccccc;
-    border: 1px solid #424242;
+    border: 0px solid #424242;
     display: inline-block;
     float: right;
     margin: 5px 5px 10px;
     padding: 5px 3px 0;
     text-align: center;
     width: 175px;
+	max-height: 300px;
+    overflow: auto;
+  
+}
+
+#exampleListBox Div {
+    opacity: 0.6;
+ 
 }
 #exampleListBox span {
     color: #000;
@@ -546,7 +553,7 @@
     background: none repeat scroll 0 0 #614875;
     border-color: #424242;
     border-style: solid;
-    border-width: 1px;
+    border-width: 0px;
     color: #fff;
     cursor: pointer;
     font-size: 12px;
@@ -558,7 +565,7 @@
     background: none repeat scroll 0 0 #614875;
     border-color: #424242;
     border-style: solid;
-    border-width: 1px;
+    border-width: 0px;
     color: #fff;
     cursor: pointer;
     font-size: 12px;
