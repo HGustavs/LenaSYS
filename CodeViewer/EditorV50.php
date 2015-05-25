@@ -96,7 +96,7 @@ Testing Link:
 			if(isset($_SESSION['uid'])){
 				$userid=$_SESSION['uid'];	// userid of registered users
 			}else{
-				$userid=1;		// Guest ID is intentionally different from registered users, it's set to 1 which no other user is
+				$userid=00;		// Guest ID is intentionally different from registered users, it's set to 00 which no other user is
 			}
 			
 			// Gets username based on uid
@@ -107,10 +107,6 @@ Testing Link:
 			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$username = $row['username'];
-			}
-			//Calls a javascript which stores guests username to browser localstorage
-			if($userid == 1){
-				echo "storeUsername();";
 			}
 			// Logs users who view example, along with the example they have viewed
 			makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);
