@@ -26,6 +26,7 @@ $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $moment=getOP('moment');
+$segment=getOP('segment');
 $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
 $setanswer=gettheOP('setanswer');
@@ -113,6 +114,20 @@ if($userid!="UNK"){
 			$debug="Error updating entries".$error[2];
 		}
 		$savedvariant=$newvariant;
+		//------------------------------
+		//mark segment as started on
+		//------------------------------
+		$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
+		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':coursevers', $coursevers);
+		$query->bindParam(':uid', $userid);
+		$query->bindParam(':did', $duggaid);
+		$query->bindParam(':moment', $segment);
+		$query->bindParam(':variant', $newvariant);
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
 	}
 
 	// Retrieve variant

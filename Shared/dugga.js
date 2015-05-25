@@ -313,7 +313,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&opt="+opt+para,
+				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedDugga
 			});
