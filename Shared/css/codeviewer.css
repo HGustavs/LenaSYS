@@ -659,21 +659,19 @@
 
 /* DragnDrop CSS */
 #SeqEdit {
-	border:1px solid #424242;
 	margin-top:10px;
-	background-color:#b3b3b3;
 	max-height:500px;
-	overflow-y:auto;
+
 }
 
 #sortListBox {
 	margin: 5px;
 	padding: 5px 3px 0px 3px;
-	border: 1px solid #424242;
 	width: 175px;
-	background-color:#cccccc;
+	height: 200px;
 	display:inline-block;
 	text-align:center;
+
 }
 
 #sortListBox span {
@@ -685,13 +683,15 @@
 #exampleListBox {
 	margin:5px 5px 10px 5px;
 	padding: 5px 3px 0px 3px;
-	border: 1px solid #424242;
 	width: 175px;
-	background-color:#cccccc;
+	height: 200px;
 	display:inline-block;
 	text-align:center;
 	float:right;
+
 }
+
+
 
 #exampleListBox span {
 	color: #000;
@@ -726,6 +726,7 @@
 	text-align:left;
 	cursor:pointer;
 }
+
 
 .empty {
 	margin: 5px;

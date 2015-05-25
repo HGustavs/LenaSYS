@@ -574,12 +574,14 @@ header td {
 
 #impwords {
     max-width: 180px;
-    min-width: 191px;
+    min-width: 180px;
     margin-left: 0px;
 }
 
 #impword {
-    width: 180px;
+    max-width: 180px;
+    min-width: 180px;
+    margin-left: 0px;
     
 }
 
@@ -784,14 +786,14 @@ button.option {
 }
 
 input.submit-button {
-    background-color:#614875;
+	background-color:#614875;
     border:0px;
-    width:100px;
+    width: 110px;
     height:30px;
     color:#fff;
     cursor:pointer;
     margin-bottom:2px;
-    margin-left:4px;
+    margin-right: 22px;
     font-size:14px;
     transition:1s background-color;
     float:right;
@@ -977,9 +979,10 @@ input.new-item-button:hover {
 
 /* Shapes and color for the buttons in Editexample box*/
 .updateSequence {
-    margin-top: 26px;
-    margin-bottom: 4px;
-    margin-left: 4px;
+  	margin-top: 15px;
+	margin-bottom: 10px;
+	margin-left: 310px;
+	float: left;
 }
 
 /* Hover style for the buttons in Editexample box*/
@@ -991,7 +994,7 @@ input.new-item-button:hover {
 #editExample {
 	position: absolute;
 	top: 0 auto;
-	width: 442px;
+	width: 464px;
 
 }
 

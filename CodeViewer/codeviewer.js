@@ -157,19 +157,27 @@ function returned(data)
 			
 			//Remove html tags since only markdown should be allowed		
 			desc = dehtmlify(desc, true, 0);
+			//Call the markdown function to parse markdown symbols to html tags
+			desc = parseMarkdown(desc);
 			
+			//Change all asterisks to the html code for asterisks
+			desc = desc.replace(/\*/g, "&#42;");
 			// Highlight important words
 			important = retData.impwords;
 			for(j=0;j<important.length;j++){
-				var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+				var sstr="<span id='IWW' class='impword' onmouseout='dehighlightKeyword(\""+important[j]+"\")' onmouseover='highlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+				//Interpret asterisks in important word as literals and not as character with special meaning
+				if(important[j].indexOf('*') != -1){
+					important[j] = important[j].replace(/\*/g, "&#42;");
+				}	
 				desc=replaceAll(important[j],sstr,desc);
 			}
-			/* Assign Content */
-			//Call the markdown function to parse markdown symbols to html tags
-			desc = parseMarkdown(desc);
+			//Replace the html code for asterisks with asterisks
+			desc = desc.replace(/\&\#42\;/g, "*");
 			//Change the '\n' line breaks to <br> tags
 			desc = addHtmlLineBreak(desc);
 			
+			/* Assign Content */
 			$("#"+contentid).html(desc);			
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
@@ -183,7 +191,13 @@ function returned(data)
 		}else if(boxtype == "IFRAME") {
 			createboxmenu(contentid,boxid,boxtype);
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
-			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "''></iframe>");
+			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "'></iframe>");
+			if($("#"+contentid+"menu").height() == null){
+				boxmenuheight = 0;
+			}else{
+				boxmenuheight= $("#"+contentid+"menu").height();
+			}
+			$("#"+contentid).css("margin-top", boxmenuheight);
 		}else if(boxtype == "NOT DEFINED"){
 			if(retData['writeaccess'] == "w"){
 				createboxmenu(contentid,boxid,boxtype);
@@ -1594,11 +1608,15 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 2){
@@ -1607,12 +1625,16 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
 				$(boxValArray['box1']['id']).width("100%");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 3){
@@ -1621,6 +1643,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 				$("#box2wrapper").css("left", ""); 
@@ -1628,18 +1653,23 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 4){
@@ -1648,6 +1678,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
@@ -1655,12 +1688,16 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){	
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 				alignBoxesWidth(boxValArray, 2, 1);
@@ -1668,6 +1705,7 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 5){
@@ -1676,6 +1714,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight4boxes(boxValArray, 1, 2);
@@ -1683,29 +1724,38 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight4boxes(boxValArray, 2, 1);
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 3, 4);
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 6){
@@ -1717,21 +1767,26 @@ function resizeBoxes(parent, templateId)
 			$(boxValArray['box1']['id']).resizable({
 				containment: parent,
 				handles: "e",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 					$(boxValArray['box1']['id']).height(100 + "%");
 					
 				},
 				stop: function(e, ui) {
-					 
 					setLocalStorageProperties(templateId, boxValArray);
-					 
+					$('iframe').css('pointer-events','auto');
 				}
 			});
 			
 			$(boxValArray['box2']['id']).resizable({
 				containment: parent,
 				handles: "s",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					
 						alignBoxesHeight3stack(boxValArray, 2, 3, 4);
@@ -1743,14 +1798,17 @@ function resizeBoxes(parent, templateId)
 				stop: function(e, ui) {
 					 
 					setLocalStorageProperties(templateId, boxValArray);
+					$('iframe').css('pointer-events','auto');
 					 
 				}
 			});
 			
-			
 			$(boxValArray['box3']['id']).resizable({
 				containment: parent,
 				handles: "s",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					
 					console.log("");
@@ -1763,6 +1821,7 @@ function resizeBoxes(parent, templateId)
 					 
 					$(boxValArray['box4']['id']).css("top", " ");
 					setLocalStorageProperties(templateId, boxValArray);
+					$('iframe').css('pointer-events','auto');
 					 
 				}
 			});
