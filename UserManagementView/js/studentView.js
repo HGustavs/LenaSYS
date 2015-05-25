@@ -97,6 +97,8 @@ function renderStudentView(data)
 	var yearList3 = document.getElementById('Year3');
 	yearList3.innerHTML = htmlStr3;
 	
+	
+	insert_hover_coursereq(data);
 	course_hover_requierments(data);
 	progress_bar_complete(data);
 	console.log("DATA_PRINTED - DONE");
@@ -138,12 +140,45 @@ function createHTMLForCourse(data)
 	courseHtmlStr += '<div class="course_link"><a href="' + course_link + '">Course link</a></div>';
 	courseHtmlStr += '<div class="course_reponsible">' + course_responsible + '<a href="mailto:"">';
 	courseHtmlStr += '<img src="img/envelope_purple.svg" id="mail-icon" width="13" height="10" alt="mail"></a></div>';
-	courseHtmlStr += '<div class="course_alert">Img</div>';
+	courseHtmlStr += '<div class="course_alert"> </div>';
 	courseHtmlStr += '<div class="course_type"></div>';
 	courseHtmlStr += '</div>';
 	courseHtmlStr += '</div>';
 	
 	return courseHtmlStr;
+}
+
+//adds hovereffect to all the courses that has a pre requierment from the database
+function insert_hover_coursereq(data){
+	var regCourses = data['reqCourses'];
+
+	for(var i = 0;i<regCourses.length;i++){
+		var insert_into_div = '#'+regCourses[i]['coursecode']+' .course_alert';
+		console.log(insert_into_div);
+		//regCourses[i]['coursecode']
+		$(insert_into_div).addClass('reg_hover');
+
+	}
+	check_hp_insert_img(data);
+}
+
+//checks and inserts the correct img for warnings on studnet courses
+function check_hp_insert_img(data){
+	var regCourses = data['reqCourses'];
+	console.log(regCourses);
+	for(var i = 0; i<regCourses.length;i++){
+		var insert_img = '#'+regCourses[i]['coursecode']+' .course_alert';
+		var check_hp_course_req = '#'+regCourses[i]['reg_coursecode']+' .points';
+		var split_hp = $(check_hp_course_req).text().split(' ');
+		
+		if(split_hp[0]==0){
+			$(insert_img).html('<img src="./img/stop.png" />')
+		}else if(split_hp[0]>0 && split_hp[0] != split_hp[2] && $(insert_img).has('img').length !=1){
+			$(insert_img).html('<img src="./img/varning.png" />')
+		}else if($(insert_img).has('img').length!=1){
+			$(insert_img).html('<img src="./img/check.png" />')
+		}
+	}
 }
 
 //-----------------------------------------------------------------------
@@ -152,11 +187,8 @@ function createHTMLForCourse(data)
 function course_hover_requierments(data){
 	var regCourses = data['reqCourses'];
 
-	$('.course_alert').on( 'mouseenter',function() {
+	$('.reg_hover').on( 'mouseenter',function() {
 		
-	
-		
-	
 			// Return the closest div parent div ID on the hover effect.
 			var hoverCourse = $(this).closest('.course' , '[id]').attr('id');
 			var rmHoverCourse = '#'+ hoverCourse;
