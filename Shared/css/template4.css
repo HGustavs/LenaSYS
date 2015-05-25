@@ -5,11 +5,15 @@
 	top: 0px;
 	left: 0px;
 	width: -moz-calc(50.0%);
-	width: -webkit-calc(50.0%)
+	width: -webkit-calc(50.0%);
 	width: calc(50.0%);
 	height: -webkit-calc(35%);
 	height: -moz-calc(35%);
 	height: calc(35%);
+	max-width: 90%;
+	min-width: 10%;
+	max-height: 90%;
+	min-height: 10%;
 }
 
 #box2wrapper {
@@ -22,6 +26,10 @@
 	height: -webkit-calc(35%);
 	height: -moz-calc(35%);
 	height: calc(35%);
+	max-width: 90%;
+	min-width: 10%;
+	max-height: 90%;
+	min-height: 10%;
 }
 
 #box3wrapper {
@@ -35,6 +43,8 @@
 	height: -webkit-calc(65%);
 	height: -moz-calc(65%);
 	height: calc(65%);
+	max-height: 90%;
+	min-height: 10%;
 }
 
 
