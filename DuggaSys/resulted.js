@@ -351,18 +351,19 @@ function returnedResults(data)
 							}
 
 							zttr="";
-
+							//--------------------------------------------------------------------
 							// We are now processing the moment entry in the moment object
+							//--------------------------------------------------------------------
 							var foundgrade = null;
+							var onlyone = true;
 							if (studres != null) {
 								for (var l = 0; l < studres.length; l++) {
 									var resultitem = studres[l];
-									if (resultitem['moment'] == moment['lid']) {
-										// There is a result to print
-										foundgrade = resultitem['grade'];
-
-										// gradesys cid vers moment uid mark
-										zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
+									var
+									if ((resultitem['moment'] == moment['lid'])&&(onlyone == true)) {
+										foundgrade = resultitem['grade']; // There is a result to print
+										zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U"); 	// gradesys cid vers moment uid mark
+										onlyone = false;
 									}
 								}
 							}
