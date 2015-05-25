@@ -56,11 +56,11 @@ function renderStudentView(data)
 		
 	}
 		
-	htmlStr += '<div class="year_header"><h3>'+ yearh3[0] + '</h3></div>';
+        htmlStr += "<div class='year_header'><h3> HT-"+ yearh3[0] +"/VT-"+yearh3[1] +"</h3></div>";
 	htmlStr += '<div class="courses_body">';
-	htmlStr2 += '<div class="year_header"><h3>'+ yearh3[1] +'</h3></div>';
+	htmlStr2 += "<div class='year_header'><h3> HT-"+ yearh3[1] +"/VT-"+yearh3[2] +"</h3></div>";
 	htmlStr2 += '<div class="courses_body">';
-	htmlStr3 += '<div class="year_header"><h3>'+ yearh3[2] +'</h3></div>';
+	htmlStr3 += "<div class='year_header'><h3> HT-"+ yearh3[2] +"/VT-"+(yearh3[2] + 1) +"</h3></div>";
 	htmlStr3 += '<div class="courses_body">';
 	
 	//Parse html for each course. 
