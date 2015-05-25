@@ -1608,11 +1608,15 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 2){
@@ -1621,12 +1625,16 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
 				$(boxValArray['box1']['id']).width("100%");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 3){
@@ -1635,6 +1643,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 				$("#box2wrapper").css("left", ""); 
@@ -1642,18 +1653,23 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 4){
@@ -1662,6 +1678,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
@@ -1669,12 +1688,16 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){	
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 				alignBoxesWidth(boxValArray, 2, 1);
@@ -1682,6 +1705,7 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 5){
@@ -1690,6 +1714,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight4boxes(boxValArray, 1, 2);
@@ -1697,29 +1724,38 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight4boxes(boxValArray, 2, 1);
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 3, 4);
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 6){
@@ -1731,21 +1767,26 @@ function resizeBoxes(parent, templateId)
 			$(boxValArray['box1']['id']).resizable({
 				containment: parent,
 				handles: "e",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 					$(boxValArray['box1']['id']).height(100 + "%");
 					
 				},
 				stop: function(e, ui) {
-					 
 					setLocalStorageProperties(templateId, boxValArray);
-					 
+					$('iframe').css('pointer-events','auto');
 				}
 			});
 			
 			$(boxValArray['box2']['id']).resizable({
 				containment: parent,
 				handles: "s",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					
 						alignBoxesHeight3stack(boxValArray, 2, 3, 4);
@@ -1757,14 +1798,17 @@ function resizeBoxes(parent, templateId)
 				stop: function(e, ui) {
 					 
 					setLocalStorageProperties(templateId, boxValArray);
+					$('iframe').css('pointer-events','auto');
 					 
 				}
 			});
 			
-			
 			$(boxValArray['box3']['id']).resizable({
 				containment: parent,
 				handles: "s",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					
 					console.log("");
@@ -1777,6 +1821,7 @@ function resizeBoxes(parent, templateId)
 					 
 					$(boxValArray['box4']['id']).css("top", " ");
 					setLocalStorageProperties(templateId, boxValArray);
+					$('iframe').css('pointer-events','auto');
 					 
 				}
 			});
