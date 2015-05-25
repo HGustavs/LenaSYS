@@ -469,36 +469,12 @@ function editImpRows(editType)
 	var rowTo = $("#improwto").val();
 	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
 
-	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo) {
+	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo && rowFrom > 0 && rowTo > 0 && rowFrom < lineno && rowTo < lineno) {
         alert("You've added " + rowFrom + " and " + rowTo); //Shows you what you've input
 		var exists = false;
 		$('#improws option').each(function() {
     		if (this.value == row) {exists = true;}
 		});
-		
-		if (rowFrom < 0) { //Negative numbers alert
-			alert("You cannot input the negative numbers " + rowFrom);
-			editContent.reload();
-		}
-		
-		if (rowTo < 0) { //Negative numbers alert
-			alert("You cannot input the negative numbers " + rowTo);
-			editContent.reload();
-		}
-		
-		if (rowFrom && rowTo < 0) { //Negative numbers alert
-			alert("You cannot input the negative numbers " + rowFrom + " and " + rowTo);
-			editContent.reload();
-		}
-		
-		if (lineno < 0){
-			alert("Error, please re-enter row!");
-		}
-		
-		if (rowFrom && rowTo > lineno) { //Cannot add higher number, example we only have 1-10 rows, and it's should not be able to add the number 11 in the row editor
-	       alert("You cannot add numbers that doesn't exist in the current row!");
-		   editContent.reload();
-		}
 		
 		if (exists == false) {
 			$("#improws").append('<option>' + row + '</option>');
@@ -511,6 +487,8 @@ function editImpRows(editType)
 		FromTo = $('option:selected', "#improws").text().split(" - ");
 		$('option:selected', "#improws").remove();
     	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
+	}else{
+		alert("Incorrect value(s) for important rows!");
 	}
 }
 
