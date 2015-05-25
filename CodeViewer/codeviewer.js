@@ -80,11 +80,18 @@ function returned(data)
 		$("#afterbutton").css("opacity",0.4);
 		$("#afterbutton").css("pointer-events","none");	
 	}
+	
+	// Disables the play button if there is no playlink
+	if(retData['playlink'] == null || retData['playlink'] == ""){
+		$("#playbutton").css("opacity",0.4);
+		$("#playbutton").css("pointer-events","none");
+	}
+	
 	// Fill Section Name and Example Name
-	var exName=document.getElementById('exampleName');
-	exName.innerHTML=data['examplename'];
-	var exSection=document.getElementById('exampleSection');
-	exSection.innerHTML=data['sectionname']+"&nbsp;:&nbsp;";
+	var exName= $('#exampleName');
+	exName.html(data['examplename']);
+	var exSection= $('#exampleSection');
+	exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
 
 	// User can choose template if no template has been chosen and the user has write access.
 	if((retData['templateid'] == 0)){
@@ -117,13 +124,13 @@ function returned(data)
 		var boxmenuheight = 0;
 	
 		// don't create templatebox if it already exists
-		if(!document.getElementById(contentid)){
+		if($("#" + contentid).length == 0){
 			addTemplatebox(contentid);
 		}
 		
 		if(boxtype == "CODE"){
 			// Print out code example in a code box					
-			document.getElementById(contentid).removeAttribute("contenteditable");
+			$("#"+contentid).removeAttr("contenteditable");
 			$("#"+contentid).removeClass("descbox").addClass("codebox");
 			createboxmenu(contentid,boxid,boxtype);
 			
@@ -148,6 +155,9 @@ function returned(data)
 			var desc = boxcontent;
 			desc = replaceAll("&nbsp;"," ",desc);
 			
+			//Remove html tags since only markdown should be allowed		
+			desc = dehtmlify(desc, true, 0);
+			
 			// Highlight important words
 			important = retData.impwords;
 			for(j=0;j<important.length;j++){
@@ -155,8 +165,6 @@ function returned(data)
 				desc=replaceAll(important[j],sstr,desc);
 			}
 			/* Assign Content */
-			//Remove html tags since only markdown should be allowed		
-			desc = dehtmlify(desc, true, 0);
 			//Call the markdown function to parse markdown symbols to html tags
 			desc = parseMarkdown(desc);
 			//Change the '\n' line breaks to <br> tags
@@ -166,6 +174,16 @@ function returned(data)
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
 			// Make room for the menu by setting padding-top equals to height of menubox
+			if($("#"+contentid+"menu").height() == null){
+				boxmenuheight = 0;
+			}else{
+				boxmenuheight= $("#"+contentid+"menu").height();
+			}
+			$("#"+contentid).css("margin-top", boxmenuheight);
+		}else if(boxtype == "IFRAME") {
+			createboxmenu(contentid,boxid,boxtype);
+			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
+			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "'></iframe>");
 			if($("#"+contentid+"menu").height() == null){
 				boxmenuheight = 0;
 			}else{
@@ -224,9 +242,25 @@ var removedWords = [];
 function editImpWords(editType) 
 {
 	var word = $("#impword").val();
-
+	var left = 0;
+	var right = 0;
+	//Check if the word contains an uneven amount of parenthesis
+	// * if so do not add the word to important words, it will break the page
+	for(var i = 0; i < word.length; i++){
+		if(word[i] == '(' ){
+			left++;
+		}else if (word[i] == ')'){
+			right++;
+		}
+	}
+	//If there is an uneven amount set uneven
+	var uneven = false;
+	if(left != right){
+		uneven = true;
+	}
+	
 	// word can't contain any whitespaces
-	if (editType == "+" && word != "" && /\s/.test(word) == false) {
+	if (editType == "+" && word != "" && /\s/.test(word) == false && uneven == false) {
 		var exists = false;
 		// Checks if the word already exists as an option in the selectbox
 		$('#impwords option').each(function() {
@@ -390,7 +424,7 @@ function changeDirectory(kind)
 	var dir;
 	var str="";
 
-	if ($(kind).val() == "CODE") {
+	if ($(kind).val() == "CODE" || $(kind).val() == "IFRAME") {
 		dir = retData['directory'][0];
 		$('#wordlist').prop('disabled', false);
 	}else if ($(kind).val() == "DOCUMENT") {
@@ -527,9 +561,9 @@ function addTemplatebox(id)
 
 function createboxmenu(contentid, boxid, type)
 {
-	if(!document.getElementById(contentid+"menu")){
+	if($("#"+contentid+"menu").length == 0){
 		var boxmenu = document.createElement("div");
-		document.getElementById(contentid+"wrapper").appendChild(boxmenu);
+		$("#"+contentid+"wrapper").append(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid+"menu");
 		
@@ -545,6 +579,11 @@ function createboxmenu(contentid, boxid, type)
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 				str+= '<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retData['box'][boxid-1][4]+'</span></td>';				
 				str+= '</tr></table>';
+			}else if(type=="IFRAME"){
+				var str = '<table cellspacing="2"><tr>';
+				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';	
+				str+="</tr></table>";
 			}else{
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
@@ -565,7 +604,7 @@ function createboxmenu(contentid, boxid, type)
 		}			
 		$(boxmenu).click(function(event){
 			if($(window).width() <=1100){
-				toggleClass(document.getElementById(boxmenu.parentNode.getAttribute("id")).getAttribute("id"));
+				toggleClass($("#"+boxmenu.parentNode.id).attr("id"));
 			}
 		});
 	}
@@ -578,10 +617,10 @@ function createboxmenu(contentid, boxid, type)
 function createhotdogmenu()
 {
 	// div2 refers to the main content div below the floating menu
-	var content = document.getElementById("div2");
+	var content = $("#div2");
 	// Checks if a hotdogmenu already exists, then calls that, if not a new one is created
-	if(document.getElementById("hotdogdrop")){
-		var hotdogmenu = document.getElementById("hotdogdrop");
+	if($("#hotdogdrop").length < 0){
+		var hotdogmenu = $("#hotdogdrop");
 	}else{
 		var hotdogmenu = document.createElement("span");
 		content.appendChild(hotdogmenu);
@@ -632,7 +671,7 @@ function toggleClass(id)
 //----------------------------------------------------------------------------------
 function displayDrop(dropid)
 {	
-	drop = document.getElementById(dropid);
+	drop = $("#"+dropid);
 	if($(drop).is(":hidden")){
 		$(".dropdown").css({display: "none"});
 		drop.style.display="block";
@@ -806,7 +845,7 @@ function changeboxcontent(boxcontent,boxid)
 
 function hideDrop(dname)
 {
-	var dropd=document.getElementById(dname);
+	var dropd= $("#"+dname);
 	if(dropd!=null) dropd.style.display="none";							
 }
 
@@ -817,7 +856,7 @@ function hideDrop(dname)
 
 function switchDrop(dname)
 {
-	var dropd=document.getElementById(dname); 
+	var dropd=$("#"+dname); 
 	if(dropd.style.display=="block"){
 		$( dropd ).slideUp("fast");							
 	}else{
@@ -834,7 +873,7 @@ function switchDrop(dname)
 //----------------------------------------------------------------------------------
 function issetDrop(dname)
 {
-	var dropd=document.getElementById(dname);
+	var dropd=$("#"+dname);
 	if(dropd.style.display=="block"){
 		return true;
 	}else{
@@ -1237,7 +1276,7 @@ function rendercode(codestring,boxid,wordlistid)
 	tokenize(codestring,"<>+-&","=>&:");
 			
 	// Iterate over token objects and print kind of each token and token type in window 
-	printout=document.getElementById(destinationdiv);
+	printout= $("#"+destinationdiv);
 	str="";
 	cont="";
 	lineno=0;
@@ -1393,7 +1432,7 @@ function rendercode(codestring,boxid,wordlistid)
 	}
 	str+="</div>";
 	// Print out rendered code and border with numbers
-	printout.innerHTML = createCodeborder(lineno,improws) + str;	
+	printout.html(createCodeborder(lineno,improws) + str);	
 	linenumbers();
 }
 
@@ -1457,7 +1496,7 @@ function mobileTheme(id){
 //----------------------------------------------------------------------------------
 function setEditing()
 {
-	var	hotdog = document.getElementById("hidehotdog");
+	var	hotdog = $("#hidehotdog");
 	var	isDesktop = $(hotdog).is(":hidden");
 	if(isDesktop){
 		$("*[contenteditable]").attr("contenteditable","true"); 
