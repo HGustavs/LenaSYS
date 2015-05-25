@@ -11,8 +11,8 @@
     width: -webkit-calc(25.0%);
     width: calc(25.0%);
     height: 100% !important;
-	Min-width: 10%;
-	Max-width: 90%;
+	min-width: 10%;
+	max-width: 90%;
 }
 
 
@@ -31,6 +31,6 @@
     overflow-x: auto;
     z-index: 2;
     height: 100% !important;
-	Min-width: 10%;
-	Max-width: 90%;
+	min-width: 10%;
+	max-width: 90%;
 }
