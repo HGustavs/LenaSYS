@@ -183,7 +183,13 @@ function returned(data)
 		}else if(boxtype == "IFRAME") {
 			createboxmenu(contentid,boxid,boxtype);
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
-			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "''></iframe>");
+			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "'></iframe>");
+			if($("#"+contentid+"menu").height() == null){
+				boxmenuheight = 0;
+			}else{
+				boxmenuheight= $("#"+contentid+"menu").height();
+			}
+			$("#"+contentid).css("margin-top", boxmenuheight);
 		}else if(boxtype == "NOT DEFINED"){
 			if(retData['writeaccess'] == "w"){
 				createboxmenu(contentid,boxid,boxtype);
