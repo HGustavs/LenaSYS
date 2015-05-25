@@ -444,6 +444,7 @@
 /* Container for graph teacherview */
 #graphContainer {
 	overflow-x: auto;
+	margin-bottom: 20px;
 }
 
 /* Graph teacherview */
