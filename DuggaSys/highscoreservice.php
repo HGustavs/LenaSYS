@@ -83,7 +83,6 @@ if(checklogin()){
 		}
 				
 		foreach($query->fetchAll() as $row){
-			$debug = $row;
 			$user = array(
 				"username" => $row["username"],
 				"score" => $row["score"]
