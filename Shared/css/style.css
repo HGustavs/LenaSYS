@@ -563,9 +563,9 @@ header td {
 }
 
 #editContent input[type="text"] {
-	height: 20px;
-	border-color: rgb(169, 169, 169);
-	width: calc(100% - 10px);
+  height: 30px;
+  border-color: rgb(169, 169, 169);
+  width: 100%;
 }
 
 #editContent input.submit-button {
