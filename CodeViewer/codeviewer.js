@@ -476,10 +476,17 @@ function editImpRows(editType)
     		if (this.value == row) {exists = true;}
 		});
 		
+		if (rowFrom < 0) { //Negative numbers alert
+			alert("You cannot input the negative numbers " + rowFrom);
+			editContent.reload();
+		}
+		
+		if (rowTo < 0) { //Negative numbers alert
+			alert("You cannot input the negative numbers " + rowTo);
+			editContent.reload();
+		}
+		
 		if (rowFrom && rowTo < 0) { //Negative numbers alert
-		 //   FromTo = $("#improws").text().split(" - ");
-		//	$("#improws").remove();
-		//	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
 			alert("You cannot input the negative numbers " + rowFrom + " and " + rowTo);
 			editContent.reload();
 		}
