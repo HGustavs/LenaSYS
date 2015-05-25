@@ -157,19 +157,27 @@ function returned(data)
 			
 			//Remove html tags since only markdown should be allowed		
 			desc = dehtmlify(desc, true, 0);
+			//Call the markdown function to parse markdown symbols to html tags
+			desc = parseMarkdown(desc);
 			
+			//Change all asterisks to the html code for asterisks
+			desc = desc.replace(/\*/g, "&#42;");
 			// Highlight important words
 			important = retData.impwords;
 			for(j=0;j<important.length;j++){
-				var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+				var sstr="<span id='IWW' class='impword' onmouseout='dehighlightKeyword(\""+important[j]+"\")' onmouseover='highlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+				//Interpret asterisks in important word as literals and not as character with special meaning
+				if(important[j].indexOf('*') != -1){
+					important[j] = important[j].replace(/\*/g, "&#42;");
+				}	
 				desc=replaceAll(important[j],sstr,desc);
 			}
-			/* Assign Content */
-			//Call the markdown function to parse markdown symbols to html tags
-			desc = parseMarkdown(desc);
+			//Replace the html code for asterisks with asterisks
+			desc = desc.replace(/\&\#42\;/g, "*");
 			//Change the '\n' line breaks to <br> tags
 			desc = addHtmlLineBreak(desc);
 			
+			/* Assign Content */
 			$("#"+contentid).html(desc);			
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
