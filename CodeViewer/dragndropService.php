@@ -72,6 +72,37 @@ elseif ($_GET["action"] == "delete"){
 	$row = $query->fetch(PDO::FETCH_ASSOC);
 	$sequence = $row["seqid"];
 	echo $sequence;
+	$data = array();
+	while($row = $query->fetch(PDO::FETCH_ASSOC)){
+		$data[] = $row;
+	}
+	if(sizeof($data) == 0){
+		$query = $pdo->prepare("SELECT exampleid,examplename from codeexample where cid=$courseID");
+		$query->execute();
+		$d = array();
+		while($row = $query->fetch(PDO::FETCH_ASSOC)){
+			$d[] = $row['exampleid'];
+		}
+		$totalExamples = sizeof($d);
+		for($i = 1; $i <= $totalExamples;$i++){
+			$j = 0;
+			$k = 0;
+			if($i == 1){
+				$j = $i+1;
+				$query = $pdo->prepare("UPDATE codeexample SET beforeid=$i, afterid=$j WHERE exampleid=$i");
+				$query->execute();
+			} else if ($i == $totalExamples){
+				$j = $i-1;
+				$query = $pdo->prepare("UPDATE codeexample SET beforeid=$j, afterid=$i WHERE exampleid=$i");
+				$query->execute();
+			} else {
+				$j = $i+1;
+				$k = $i-1;
+				$query = $pdo->prepare("UPDATE codeexample SET beforeid=$k, afterid=$j WHERE exampleid=$i");
+				$query->execute();
+			}
+		}
+	}
 } 
 else {
 	echo "FORBIDDEN AREA";
