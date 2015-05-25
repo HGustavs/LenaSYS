@@ -177,6 +177,7 @@ function returned(data)
 			//Change the '\n' line breaks to <br> tags
 			desc = addHtmlLineBreak(desc);
 			
+			/* Assign Content */
 			$("#"+contentid).html(desc);			
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
