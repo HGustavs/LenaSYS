@@ -2175,8 +2175,8 @@ function storeUsername(id){
 	if(typeof(Storage) !== "undefined") {
 		if(id === undefined){
 			localStorage.username = "Guest" + "00" + ((Math.random()*50000)+1);
-			userid = localStorage.username;
-		}else if(id == 1){
+			id = localStorage.username;
+		}else if(id == 00){
 			if(localStorage!= undefined){ id = localStorage.username; }
 		}else{
 			localStorage.username = id;
