@@ -659,15 +659,14 @@
 
 /* DragnDrop CSS */
 #SeqEdit {
+    max-height: 500px;
 	margin-top:10px;
 }
 
 #sortListBox {
 	margin: 5px;
 	padding: 5px 3px 0px 3px;
-	border: 1px solid #424242;
-	width: 200px;
-	background-color:#cccccc;
+	width: 175px;
 	display:inline-block;
 	text-align:center;
 }
@@ -681,9 +680,7 @@
 #exampleListBox {
 	margin:5px 5px 10px 5px;
 	padding: 5px 3px 0px 3px;
-	border: 1px solid #424242;
-	width: 200px;
-	background-color:#cccccc;
+	width: 175px;
 	display:inline-block;
 	text-align:center;
 	float:right;
@@ -740,6 +737,12 @@
 	cursor:pointer;
 }
 
+#editExample{
+top: 185px;
+width: 464px;
+margin-left: -232px;
+}
+
 /* Shapes and color for the buttons in Editexample box*/
 .newSequence, .deleteSequence, .updateSequence  {
     background-color: rgb(97, 72, 117);
@@ -760,10 +763,10 @@
 
 /* Shapes and color for the buttons in Editexample box*/
 .updateSequence {
-    margin-top: 0px;
-    margin-bottom: 5px;
-    margin-left: 323px;
-	margin-right:5px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-left: 310px;
+    float:left;
 }
 
 /* Hover style for the buttons in Editexample box*/

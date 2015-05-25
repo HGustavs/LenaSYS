@@ -206,7 +206,7 @@ Testing Link:
 		</div>
 		<!--- Example Content Cog Wheel Dialog END --->
 		<!--- Code Example Cog Wheel Dialog START --->
-		<div id='editExample' class='loginBox' style='width:460px;display:none;'>
+		<div id='editExample' class='loginBox' style='width:464x;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
 				<div onclick='closeEditExample();'>x</div>
@@ -218,7 +218,7 @@ Testing Link:
 				</tr>
 				<tr>
 					<td>Play Link:<input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
-					<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
+					<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:right; margin-right:5px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:right; margin-right:5px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
 				</tr>	
 			</table>
 			<div id="SeqEdit">
