@@ -491,6 +491,10 @@ function editImpRows(editType)
 			editContent.reload();
 		}
 		
+		if (lineno < 0){
+			alert("Error, please re-enter row!");
+		}
+		
 		if (rowFrom && rowTo > lineno) { //Cannot add higher number, example we only have 1-10 rows, and it's should not be able to add the number 11 in the row editor
 	       alert("You cannot add numbers that doesn't exist in the current row!");
 		   editContent.reload();
