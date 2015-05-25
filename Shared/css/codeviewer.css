@@ -738,9 +738,9 @@
 }
 
 #editExample{
-    position: absolute;
-    top:0 auto;
-    width: 464px;
+top: 185px;
+width: 464px;
+margin-left: -232px;
 }
 
 /* Shapes and color for the buttons in Editexample box*/
