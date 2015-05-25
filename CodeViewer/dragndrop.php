@@ -71,8 +71,6 @@ include_once("../Shared/basic.php");
 			echo "</div>";
 			echo "</div>";
 			
-			echo "<img id='exchangeButton' src='../Shared/icons/exchangeButton.svg'>";
-			
 			$query = $pdo->prepare("SELECT exampleid,examplename from codeexample where cid=$courseID");
 			$query->execute();
 			$data = array();
