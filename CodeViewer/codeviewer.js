@@ -213,6 +213,8 @@ function returned(data)
 	}
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
+	//mobile resize fix
+	mobileDesktopResize("#div2", retData["templateid"]);
 }
 
 //---------------------------------------------------------------------------------
@@ -2159,6 +2161,33 @@ function setResizableToPer(boxValArray)
 		$(this).width(newWidth + "%");
 	});
 }
+
+//---------------------------------------------------------------------------------
+// Stops calling of the function when the user is in mobile mode.
+//				Is called at the same time as resizeboxes() in codeviewer.js
+//---------------------------------------------------------------------------------
+
+function mobileDesktopResize(parent, templateId){
+
+	$(window).resize(function(event){
+		 if (!$(event.target).hasClass('ui-resizable')) {
+			
+			var parentWidth = $(parent).width();
+			
+			if(parentWidth < 1100){
+			
+				var numBoxes = $("[id ^=box][id $=wrapper]").length;
+
+				for(var i = 1; i <= numBoxes; i++){
+					$("#box" + i + "wrapper").resizable("destroy");
+				}
+			}else{
+				resizeBoxes("#div2", retData["templateid"]);
+			}
+		}
+	}); 
+}
+
 //----------------------------------------------------------------------------------
 // fixQuotedHtml: replace all "<, and >" with "&lt and &gt". This makes sure the 
 //				  html tags are not rendered by the browser.	
