@@ -671,7 +671,7 @@
 	height: 200px;
 	display:inline-block;
 	text-align:center;
-	overflow: auto;
+
 }
 
 #sortListBox span {
@@ -688,12 +688,10 @@
 	display:inline-block;
 	text-align:center;
 	float:right;
-	overflow: auto;
+
 }
 
-#exampleListBox Div{
-	opacity: 0.6;
-}
+
 
 #exampleListBox span {
 	color: #000;
