@@ -555,7 +555,6 @@ function get_student_data(studentid)
 			var result = JSON.parse(data);
 			renderStudentView(result);
 			$('#class_view').hide();
-			//$('#studentView').show();
 		},
 		error:function() {
 			console.log("error");
