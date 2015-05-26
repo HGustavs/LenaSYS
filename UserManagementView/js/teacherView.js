@@ -393,7 +393,7 @@ function input_search_alternative(){
 		switch(e.wich){
 			case 38: break;	//this is the press up key
 			case 40: break; // this is press down key
-			case 13: console.log('aids'); // this is the enter key
+			case 13: break; // this is the enter key
 			default:
 
 				// checks witch query it will use to get data from php. add more statments for diffrent querys
@@ -419,6 +419,7 @@ function search_alternatives(varible,query) {
 			data: {
 				ssn: varible,
 				query: query,
+				classID: selectedClass
 			},
 			success:function(data) {
 				if(data != null){
@@ -438,6 +439,7 @@ function search_alternatives(varible,query) {
 			data: {
 				usernameSearch: varible,
 				query: query,
+				classID: selectedClass
 			},
 			success:function(data) {
 				if(data != null){
@@ -451,7 +453,6 @@ function search_alternatives(varible,query) {
 		});
 	}
 }
-
 
 //------------------------------------------------------------------------------------------
 //	search_option_pnr(data) - Adds the top five searchresults to the search options
