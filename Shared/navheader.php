@@ -71,8 +71,8 @@
 					if($codeviewerkind) echo "<td class='navButt'id='savebutton' title='Save' onclick='Save();'><img src='../Shared/icons/save_button.svg' /></td>";
 					echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
 					echo "<td id='navHeading' class='navHeading'>";
-					echo "<span id='exampleSection'>Exsect</span>";
-					echo "<span id='exampleName'>Exname</span>";
+					echo "<span id='exampleSection'>Example Section : </span>";
+					echo "<span id='exampleName'> Example Name</span>";
 					echo "</td>";					
 				}else{
 					echo "<td class='navSpacer'></td>";
