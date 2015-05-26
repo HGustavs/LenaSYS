@@ -167,7 +167,9 @@ INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 6',"2D Tile Map and Mouse Coordinates","HTML_Ex6.html",1,2013,'13','11',1,12);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 7',"Isometric Tile Map and Mouse Coordinates","HTML_Ex7.html",1,2013,'14','12',1,13);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 8',"Cookies","HTML_Ex8.html",1,2013,'14','13',5,14);
- 
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'Per Pixel Diffuse Lighting',"Shaderprogrammering","Shader_Ex1.html",1,2013,'16','14',3,15);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'Rim Lighting',"Shaderprogrammering","Shader_Ex2.html",1,2013,'16','15',3,16);
+  
 /* Programming languages that decide highlighting */
  
 INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
@@ -227,6 +229,12 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,14,"HTML_Ex8.html","Code","[viktig=1]",3,"HTML_Ex8.html");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,14,"HTML_Ex8.css","Code","[viktig=1]",4,"HTML_Ex8.css");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (4,14,"HTML_Ex8.js","Code","[viktig=1]",1,"HTML_Ex8.js");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,15,"Description","Document","[viktig=1]",4,"Shader_Ex1.txt");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,15,"JavaScript Code","Code","[viktig=1]",1,"Shader_Ex1.js");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,15,"Shader Output","IFRAME","[viktig=1]",NULL,"Shader_Ex1.html");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,16,"Description","Document","[viktig=1]",4,"Shader_Ex2.txt");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,16,"JavaScript Code","Code","[viktig=1]",1,"Shader_Ex2.js");
+INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,16,"Shader Output","IFRAME","[viktig=1]",NULL,"Shader_Ex2.html");
 
 /* Important rows */
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,2,4,9,1);
@@ -296,6 +304,7 @@ INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (14,4,55,59,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (14,4,62,64,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (14,4,67,70,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (14,4,73,73,1);
+INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (16,2,34,35,1);
 
 /* Important words */
 
