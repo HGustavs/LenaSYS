@@ -10,17 +10,21 @@
 	session_start();
 
 	$pnr = getOP('ssn');
-	$usernameSearch = getOP('usernameSearch');
 	$wichQuery = getOP('query');
+	$class = getOP('classID');
+	$usernameSearch = getOP('usernameSearch');
+	$debug = "DEFAULT";
+	
+	$retrievedData = array();
 
 	//Query for snn
-	$searchPnrQuery = "SELECT ssn,uid,username FROM user WHERE ssn LIKE '%{$pnr}%' ORDER BY ssn DESC";
+	$searchPnrQuery = "SELECT ssn,uid,username FROM user WHERE ssn LIKE '%{$pnr}%' AND superuser IS NULL AND class = '{$class}' ORDER BY ssn DESC";
 	//Query for username
-	$searchUsernameQuery = "SELECT uid,username,ssn FROM user WHERE username LIKE '%{$usernameSearch}%' ORDER BY username DESC";
+	$searchUsernameQuery = "SELECT uid,username,ssn FROM user WHERE username LIKE '%{$usernameSearch}%' AND superuser IS NULL AND class = '{$class}' ORDER BY username DESC";
 
 	//Case 1 searching for snn
 	if($wichQuery == 1){
-		$query = $pdo->prepare($searchPnrQuery);
+			$query = $pdo->prepare($searchPnrQuery);
 
 			$PnrSearchRes = array();
 		
@@ -42,12 +46,13 @@
 
 				$retrievedData 	= array(
 					'user'	=> $PnrSearchRes,
+					'debug' => $debug
 				);
 			}
 	//Case 2 searching for username 
 	}if($wichQuery==2){
 
-		$query = $pdo->prepare($searchUsernameQuery);
+			$query = $pdo->prepare($searchUsernameQuery);
 
 			$PnrSearchRes = array();
 			if(!$query->execute()) {
@@ -68,9 +73,12 @@
 
 				$retrievedData 	= array(
 					'user'	=> $PnrSearchRes,
+					'debug' => $debug
 				);
 			}
 
 
 	}
 	echo json_encode($retrievedData);
+
+?>

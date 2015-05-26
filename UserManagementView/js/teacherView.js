@@ -412,6 +412,7 @@ function input_search_alternative(){
 //	the function will either parse ssn or username data. 
 //----------------------------------------------------------------------------------
 function search_alternatives(varible,query) {
+	console.log("selectedClass: " + selectedClass);
 	if(query==1){	
 		$.ajax({
 			type:"POST",
@@ -419,6 +420,7 @@ function search_alternatives(varible,query) {
 			data: {
 				ssn: varible,
 				query: query,
+				classID: selectedClass
 			},
 			success:function(data) {
 				if(data != null){
@@ -438,6 +440,7 @@ function search_alternatives(varible,query) {
 			data: {
 				usernameSearch: varible,
 				query: query,
+				classID: selectedClass
 			},
 			success:function(data) {
 				if(data != null){
@@ -451,7 +454,6 @@ function search_alternatives(varible,query) {
 		});
 	}
 }
-
 
 //------------------------------------------------------------------------------------------
 //	search_option_pnr(data) - Adds the top five searchresults to the search options
