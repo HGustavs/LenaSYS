@@ -72,13 +72,13 @@ if($ha){ //login for user is successful & has either write access or is superuse
 		}else if($kind=="GFILE"){
 							if(!file_exists ("/templates/".$_FILES['name'])){ // Check if added file name exists.
 									
-									$storefile=mkdir($currcvd."DuggaSys/templates/".$_FILES['name']);
+									$storefile=mkdir($currcvd."/DuggaSys/templates/".$_FILES['name']);
 									$storefile=true;
 							}else{
 									$storefile=true;							
 							}
 							if($selectedfile!="UNK"){ 
-									if(file_exists ($currcvd."DuggaSys/templates/".$_FILES['name'])){ // Check if added file name exists.
+									if(file_exists ($currcvd."/DuggaSys/templates/".$_FILES['name'])){ // Check if added file name exists.
 											$storefile=true;
 									}else{
 											$storefile=false;									
