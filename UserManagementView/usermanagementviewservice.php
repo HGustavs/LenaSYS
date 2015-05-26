@@ -65,7 +65,9 @@
 
 	//###################################### Student queries ##########################################
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
-	$reg_course_student = "SELECT course_req.coursecode as coursecode, course_req.reg_coursecode, user_course.uid FROM course_req,user_course WHERE course_req.cid=user_course.cid and user_course.uid='".$userid."';";
+	$reg_course_student = "SELECT (SELECT course.coursecode from course where course.cid = course_req.cid) AS coursecode, 
+							(SELECT course.coursecode from course where course.cid =course_req.req_cid) AS reg_coursecode
+ 								from course, course_req where course.cid= course_req.cid;";
 	$progressbarQuery = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username = '".$userid."') AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
 						WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
 						
