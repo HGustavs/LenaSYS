@@ -167,8 +167,8 @@ INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 6',"2D Tile Map and Mouse Coordinates","HTML_Ex6.html",1,2013,'13','11',1,12);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 7',"Isometric Tile Map and Mouse Coordinates","HTML_Ex7.html",1,2013,'14','12',1,13);
 INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 8',"Cookies","HTML_Ex8.html",1,2013,'14','13',5,14);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'Per Pixel Diffuse Lighting',"Shaderprogrammering","Shader_Ex1.html",1,2013,'16','14',3,15);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'Rim Lighting',"Shaderprogrammering","Shader_Ex2.html",1,2013,'16','15',3,16);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'Shaderprogrammering',"Per Pixel Diffuse Lighting","Shader_Ex1.html",1,2013,'16','14',3,15);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'Shaderprogrammering',"Rim Lighting","Shader_Ex2.html",1,2013,'16','15',3,16);
   
 /* Programming languages that decide highlighting */
  
