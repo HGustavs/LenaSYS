@@ -89,10 +89,15 @@ function returned(data)
 	
 	// Fill Section Name and Example Name
 	var exName= $('#exampleName');
-	exName.html(data['examplename']);
+	if(data['examplename'] != null){
+		exName.html(data['examplename']);
+	}		
 	var exSection= $('#exampleSection');
-	exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
-
+	if(data['sectionname'] != null){
+		exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
+	}
+	
+	
 	// User can choose template if no template has been chosen and the user has write access.
 	if((retData['templateid'] == 0)){
 		if(retData['writeaccess'] == "w"){
