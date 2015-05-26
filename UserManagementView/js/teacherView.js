@@ -21,6 +21,7 @@ function renderTeacherView(data)
 	}
 	//Render the studentlist 
 	else if(type == "VIEW") {
+		clearView();
 		renderView(data);
 	}
 
@@ -122,6 +123,33 @@ function updateView(classname, classcode)
 	markAsActive(classname, classcode);
 	// AJAX call to request students of 'classname' 
 	AJAXService("VIEW", {classname:classname}, "UMVTEACHER");
+}
+
+//---------------------------------------------------------------
+//	clearView(classname) - clears the views to only display the 
+//	teacher view
+//---------------------------------------------------------------
+function clearView()
+{
+	$('#class_view').show();
+	
+	/* Clear the student view */
+	var titleList = document.getElementById('studentTitle');
+	titleList.innerHTML = "";
+	
+	var progressBar = document.getElementById('completedMainProgress');
+	progressBar.innerHTML = "";
+	
+	var yearList = document.getElementById('Year1');
+	yearList.innerHTML = "";
+	
+	
+	var yearList2 = document.getElementById('Year2');
+	yearList2.innerHTML = "";
+	
+	
+	var yearList3 = document.getElementById('Year3');
+	yearList3.innerHTML = "";
 }
 
 //---------------------------------------------------------------
