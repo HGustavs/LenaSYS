@@ -583,8 +583,7 @@ $(window).load(function() {
 });
 
 $(window).load(function() {
-      $('.loginBox').draggable();
-      $('#editExample').draggable('disable');
+      $('.loginBox').draggable({ handle:'.loginBoxheader'});
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
       	if(event.keyCode == 27) closeWindows();
