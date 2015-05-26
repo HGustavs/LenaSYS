@@ -58,7 +58,7 @@ if($hr){// If we have access rights, read the file securely to document
 			}else if($filekind==2){
 				// Global
 				//--------------------------
-				$file = "../templates/".$row['filename'];
+				$file = "templates/".$row['filename'];
 				if(file_exists ( $file)){
 					$filename = $row['filename'];
 					$readfile = true;
