@@ -393,7 +393,7 @@ function input_search_alternative(){
 		switch(e.wich){
 			case 38: break;	//this is the press up key
 			case 40: break; // this is press down key
-			case 13: console.log('aids'); // this is the enter key
+			case 13: break; // this is the enter key
 			default:
 
 				// checks witch query it will use to get data from php. add more statments for diffrent querys
@@ -412,7 +412,6 @@ function input_search_alternative(){
 //	the function will either parse ssn or username data. 
 //----------------------------------------------------------------------------------
 function search_alternatives(varible,query) {
-	console.log("selectedClass: " + selectedClass);
 	if(query==1){	
 		$.ajax({
 			type:"POST",
