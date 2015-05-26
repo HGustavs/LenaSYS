@@ -109,7 +109,7 @@ Testing Link:
 			if(isset($_SESSION['uid'])){
 				$userid=$_SESSION['uid'];	// userid of registered users
 			}else{
-				$userid="00";		// Guest ID is intentionally different from registered users, it begins with a double-zero to indicate guest
+				$userid=00;		// Guest ID is intentionally different from registered users, it's set to 00 which no other user is
 			}
 			
 			// Gets username based on uid
@@ -120,9 +120,6 @@ Testing Link:
 			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$username = $row['username'];
-			}
-			if($userid == "00"){
-				$username = "Guest" . $userid . rand(0,50000); // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
 			}
 			// Logs users who view example, along with the example they have viewed
 			makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);

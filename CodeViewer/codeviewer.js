@@ -63,6 +63,9 @@ function returned(data)
 	
 	if(retData['debug']!="NONE!") console.log("Returned from setup: " + retData['debug']);
 	
+	//Stores username to localstorage
+	storeUsername(retData['userid']);
+	
 	// Disables before and after button if there are no available example before or after. 
 	// Works by checking if the current example is last or first in the order of examples.
 	if(retData['before']!=null&&retData['after']!=null) {
@@ -2224,4 +2227,23 @@ function parseMarkdown(inString)
 //----------------------------------------------------------------------------------
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>'); 
+}
+//----------------------------------------------------------------------------------
+// storeUsername: Stores guests username to the browsers localstorage
+//                Is called by returned in codeviewer.js
+//----------------------------------------------------------------------------------
+function storeUsername(id){
+	if(typeof(Storage) !== "undefined") {
+		if(id === undefined){
+			localStorage.username = "Guest" + "00" + ((Math.random()*50000)+1);
+			id = localStorage.username;
+		}else if(id == 00){
+			if(localStorage!= undefined){ id = localStorage.username; }
+		}else{
+			localStorage.username = id;
+		}
+		return id;
+	} else {
+		console.log("codeviewer.js storeUsername() webstorage not available");
+	}
 }

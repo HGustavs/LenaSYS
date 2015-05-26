@@ -437,7 +437,8 @@
 			'writeaccess' => $writeAccess,
 			'debug' => $debug,
 			'beforeafter' => $beforeAfters, 
-			'public' => $public
+			'public' => $public,
+			'userid' => $userid
 		);
 		echo json_encode($array);
 	}else{
