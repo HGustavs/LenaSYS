@@ -658,17 +658,11 @@
 /* RESIZABLE UI CSS STOP */
 
 /* DragnDrop CSS */
-#SeqEdit {
-	margin-top:10px;
-}
 
 #sortListBox {
 	margin: 5px;
-	padding: 5px 3px 0px 3px;
-	border: 1px solid #424242;
-	width: 200px;
+	width: 180px !important;
 	background-color:#cccccc;
-	display:inline-block;
 	text-align:center;
 }
 
@@ -680,13 +674,9 @@
 
 #exampleListBox {
 	margin:5px 5px 10px 5px;
-	padding: 5px 3px 0px 3px;
-	border: 1px solid #424242;
-	width: 200px;
+	width: 180px !important;
 	background-color:#cccccc;
-	display:inline-block;
 	text-align:center;
-	float:right;
 }
 
 #exampleList {
@@ -741,9 +731,30 @@
 }
 
 #editExample{
-top: 185px;
-width: 464px;
-margin-left: -232px;
+    top: 185px;
+    width: 464px;
+    margin-left: -232px;
+}
+
+#editExample td {
+    width: 50%;
+    padding: 5px 5px 0px 5px;
+    vertical-align: top;
+}
+
+#editExample input[type="text"] {
+    width: 100%;
+}
+
+#editExample fieldset {
+    border: 1px solid #999;
+    margin-top: 10px;
+    padding-bottom: 5px;
+}
+
+#editExample legend {
+    margin-left: 5px;
+    font-weight: bold;
 }
 
 /* Shapes and color for the buttons in Editexample box*/
@@ -753,10 +764,8 @@ margin-left: -232px;
     height: 30px;
     color: rgb(255, 255, 255);
     cursor: pointer;
-    margin-bottom: 2px;
-    margin-left: 4px;
     font-size: 14px;
-    float: right;
+    margin-top: 5px;
     -webkit-transition: background-color 1s ease 0s;
     -moz-transition: background-color 1s ease 0s;
     -o-transition: background-color 1s ease 0s;
@@ -766,10 +775,7 @@ margin-left: -232px;
 
 /* Shapes and color for the buttons in Editexample box*/
 .updateSequence {
-    margin-top: 0px;
-    margin-bottom: 5px;
-    margin-left: 323px;
-	margin-right:5px;
+    margin-top: 5px;
 }
 
 /* Hover style for the buttons in Editexample box*/
@@ -778,33 +784,19 @@ margin-left: -232px;
   border-radius:4px;	
 }
 
-#seqSelectBox {
-	padding: 5px;
-	margin-bottom: 5px;
-}
-
-#seqSelectBox select {
-	width:195px;
+#sequenceSelector {
+    width: 100%;
 }
 
 #status {
-	margin-left:323px;
-	float:right;
-	margin-right:30px;
 	color:green;
 }
 
 #exchangeButton {
-	position:absolute;
 	width:30px;
-	margin-top:10px;
+    vertical-align: top;
+    margin-top: 30px;
 	height:30px;
-}
-
-.noSequence {
-	float:left;
-	margin-top:10px;
-	padding: 5px;
 }
 
 .loginBox {
