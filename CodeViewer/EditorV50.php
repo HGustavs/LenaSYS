@@ -55,13 +55,25 @@ Testing Link:
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
 	// Database connection
-	pdoConnect();		
+	pdoConnect();	
+
+	$exampleid = getOPG('exampleid');
+	// Fetch examplename from database to use for title
+	$query = $pdo->prepare( "SELECT examplename FROM codeexample WHERE exampleid = :exampleid;");
+	$query->bindParam(':exampleid', $exampleid);
+	$query-> execute();
+	
+	$row = $query -> fetch(PDO::FETCH_ASSOC);
+	$exampleName = $row['examplename'];
+	
+	$title = $exampleName;
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Code Editor v5</title>
+		<link rel="shortcut icon" href="../Shared/icons/Trashcan.ico"/>
 		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
