@@ -1,3 +1,10 @@
+/* testdata for moments*/
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '2', NULL, '2015-05-20 10:49:22', NULL, '97732', NULL, NULL);
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', NULL, '97732', NULL, NULL);
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', NULL, '97732', NULL, NULL);
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', NULL, '97732', NULL, NULL);
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '9', '19', '2034', '2', '2', NULL, '2015-05-21 10:21:47', '2015-05-21 10:23:49', '97732', '2', '0');
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '9', '19', '2034', NULL, '100', NULL, '2015-05-21 14:17:06', NULL, '97732', NULL, NULL);
 
 /* use script like this to insert testdata. Do not have inserts in the script to create the database..*/
 
