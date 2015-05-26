@@ -359,40 +359,39 @@ INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES
 INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG14h','theDEST',199393,'WEBUG',180,100,101);
 
 -- Courses --
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (300, "DA121G","Datorns Grunder",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (300, "DA121G","Datorns grunder",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (301, "DA124G","Programmeringsmetodik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (302, "DA122G","Datakommunikation",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (302, "DA324G","Datakommunikation - Routing",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (303, "IT1435","USEREXPERIENCE",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (304, "DAD3G","Statistik för datavetare",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (305, "DA14G","Objektorienterad programmering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (306, "DHITG","Maskinnäraprogrammering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (307, "IS135G","Databassystem",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (304, "DV130G","Statistik för datavetare",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (305, "IT308G","Objektorienterad programmering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (306, "IT309G","Maskinnära programmering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (307, "IT115G","Datorns grunder",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (308, "MA161G","Diskret matematik",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (309, "DA322G","Operativsystem",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (310, "IT325G","Parallella processer",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (311, "DA327G","Mjukvarukomponenter i C++",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (312, "IT326G","Distribuerade system",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (313, "IT301G","Software engineering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (314, "DV318G","Programvaruutveckling programvaruprojekt",NOW(),1,0,15);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (313, "IT301G","Software Engineering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (314, "DV318G","Programvaruutveckling - programvaruprojekt",NOW(),1,0,15);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (315, "IS317G","Databaskonstruktion",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (316, "DA321G","Programvarutestning",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (317, "DV517G","Systemutveckling-forskning och utveckling",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (317, "DV517G","Systemutveckling - forskning och utveckling",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (318, "DA346G","Algoritmer och datastrukturer",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (319, "DV516G","Examensarbete i Datavetenskap",NOW(),1,0,30);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (320, "IT503G","IT i orginisationer - vetenskap och profession",NOW(),1,0,30);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (319, "DV736A","Examensarbete i datavetenskap",NOW(),1,0,30);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (320, "IT503G","IT i organisationer - vetenskap och profession",NOW(),1,0,30);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (321, "DA133G","Webbutveckling - datorgrafik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (322, "KB126G","Introduktion till User Experience design",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (322, "KB126G","Introduktion till User Experience Design",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (323, "DA147G","Grundläggande programmering med C++",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (324, "DV124G","Webbutveckling - Webbplatsdesign",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (324, "IT108G","Webbutveckling - webbplatsdesign",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (325, "IS134G","Databassystem",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (326, "DV313G","Webbutveckling - XML API",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (327, "DV314G","IT i orginisation - Introduktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (328, "IS324G","Databaskonstruktionen",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (327, "IT110G","IT i organisationer - introduktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (328, "IS324G","Databaskonstruktion",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (329, "IT119G","Datakommunikation - Introduktion",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (330, "DA330G","Webbprogrammering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (331, "MA113G","Algebra och logik ",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (332, "DA131G","Informationssäkerhet - introduktion",NOW(),1,0,7.5);
-
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (331, "MA113G","Algebra och logik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (332, "DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,7.5);
 
 
 -- course and class-- 
@@ -400,7 +399,7 @@ INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) val
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',300);
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',301);
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',302);
-INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',303);
+INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',322);
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',304);
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',305);
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',306);
