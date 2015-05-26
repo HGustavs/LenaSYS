@@ -121,7 +121,7 @@ function returnedAccess(data)
 		}
 		str+="</table>";
 	}
-	var slist=document.getElementById("content");
+	var slist=document.getElementById("accessedcontent");
 	slist.innerHTML=str;
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
