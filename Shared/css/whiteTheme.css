@@ -105,20 +105,20 @@
 	 /* Width of codeborder */
   	margin-left: 32px;
   	padding: 5px 0px 0px 5px;
-  	
 }
 
 .normtext {
-    color: #000;
-    background-color: #F2F2F2;
-    white-space:nowrap;
+    color: rgb(0, 0, 0);
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .impo {
-    color: #000;
-    background-color: rgba(186, 96, 255, 0.09);
-    white-space:nowrap;
-    min-width: 660px;
+    color: rgb(0, 0, 0);
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .normtext .no {
@@ -143,19 +143,31 @@
 }
 
 .normtext .oper {
-    color: #000;
+    color: rgb(0, 0, 0);
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .impo .oper {
-    color: #000;
+    color: rgb(0, 0, 0);
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .normtext .string {
-    color: #000;
+    color: rgb(0, 0, 0);
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .impo .string {
-    color: #000;
+    color: rgb(0, 0, 0);
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .normtext .number {
@@ -190,18 +202,30 @@
 
 .keywordA {
     color: #e90000;
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .keywordB {
     color: #0004ff;
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .keywordC {
     color: rgba(6, 129, 19, 1);
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .keywordD {
     color: rgba(231, 0, 255, 1);
+    background-color: rgb(242, 242, 242);
+    white-space: nowrap;
+    font-family: "Andale Mono",AndaleMono,monospace;
 }
 
 .normtext .impword {
