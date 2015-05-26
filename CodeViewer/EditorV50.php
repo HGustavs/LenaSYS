@@ -55,7 +55,18 @@ Testing Link:
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
 	// Database connection
-	pdoConnect();		
+	pdoConnect();
+	
+	// Fetch examplename from database to use for title		
+	$exampleid = getOPG('exampleid');		
+	$query = $pdo->prepare( "SELECT examplename FROM codeexample WHERE exampleid = :exampleid;");		
+	$query->bindParam(':exampleid', $exampleid);		
+	$query-> execute();		
+			
+	$row = $query -> fetch(PDO::FETCH_ASSOC);		
+	$exampleName = $row['examplename'];		
+	//Title used for the codeviewer page		
+	$title = $exampleName;
 ?>
 <!DOCTYPE html>
 <html>
