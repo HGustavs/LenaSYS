@@ -628,6 +628,7 @@ header td {
     background-color: #614875;
     vertical-align: bottom;
     padding-left: 10px;
+    cursor:move;
 /*  padding-top: 15px; */
 }
 .loginBoxheader h3 {
