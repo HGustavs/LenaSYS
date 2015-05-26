@@ -95,11 +95,11 @@ include_once("../Shared/basic.php");
 				echo "<td style='width: 30px; text-align: center;'>";
 				echo "<img id='exchangeButton' src='../Shared/icons/exchangeButton.svg'>";
 				echo "</td>";
-				$query = $pdo->prepare("SELECT exampleid,examplename from codeexample where cid=$courseID");
+				$query = $pdo->prepare("SELECT exampleid,sectionname,examplename from codeexample where cid=$courseID");
 				$query->execute();
 				$data = array();
 				while($row = $query->fetch(PDO::FETCH_ASSOC)){
-					$data[$row['exampleid']] = array($row['exampleid'],$row['examplename']);
+					$data[$row['exampleid']] = array($row['exampleid'], $row['sectionname'], $row['examplename'],);
 				}
 				
 				$query = $pdo->prepare("SELECT exampleseq from sequence where cid=$courseID");
@@ -128,7 +128,7 @@ include_once("../Shared/basic.php");
 				foreach($data as $example){
 					
 					if(!in_array($example[0], $examp)){
-						echo "<div id='item_$example[0]'>- $example[1]</div>";
+						echo "<div id='item_$example[0]'>- $example[1]: $example[2]</div>";
 						$count++;
 					}	
 				}
