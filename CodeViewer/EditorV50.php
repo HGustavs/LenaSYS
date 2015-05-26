@@ -57,8 +57,8 @@ Testing Link:
 	// Database connection
 	pdoConnect();	
 
-	$exampleid = getOPG('exampleid');
 	// Fetch examplename from database to use for title
+	$exampleid = getOPG('exampleid');
 	$query = $pdo->prepare( "SELECT examplename FROM codeexample WHERE exampleid = :exampleid;");
 	$query->bindParam(':exampleid', $exampleid);
 	$query-> execute();
