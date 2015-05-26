@@ -72,13 +72,13 @@ if($ha){ //login for user is successful & has either write access or is superuse
 		}else if($kind=="GFILE"){
 							if(!file_exists ("/templates/".$_FILES['name'])){ // Check if added file name exists.
 									
-									$storefile=mkdir($currcvd."/templates/".$_FILES['name']);
+									$storefile=mkdir($currcvd."DuggaSys/templates/".$_FILES['name']);
 									$storefile=true;
 							}else{
 									$storefile=true;							
 							}
 							if($selectedfile!="UNK"){ 
-									if(file_exists ($currcvd."/templates/".$_FILES['name'])){ // Check if added file name exists.
+									if(file_exists ($currcvd."DuggaSys/templates/".$_FILES['name'])){ // Check if added file name exists.
 											$storefile=true;
 									}else{
 											$storefile=false;									
@@ -170,7 +170,7 @@ if($ha){ //login for user is successful & has either write access or is superuse
 										}else if($kind=="MFILE"){
 												$movname=$currcvd."/courses/".$cid."/".$fname; //change search path												
 										}else{
-												$movname=$currcvd."/templates/".$fname;	//change search path												
+												$movname=$currcvd."/DuggaSys/templates/".$fname;	//change search path												
 										}
 
 										if(move_uploaded_file($filea["tmp_name"],$movname)){ // check if upload is successful (if it is, the file is uploaded obviously)
