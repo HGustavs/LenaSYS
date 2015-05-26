@@ -55,18 +55,30 @@ Testing Link:
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
 	// Database connection
-	pdoConnect();		
+	pdoConnect();	
+
+	// Fetch examplename from database to use for title
+	$exampleid = getOPG('exampleid');
+	$query = $pdo->prepare( "SELECT examplename FROM codeexample WHERE exampleid = :exampleid;");
+	$query->bindParam(':exampleid', $exampleid);
+	$query-> execute();
+	
+	$row = $query -> fetch(PDO::FETCH_ASSOC);
+	$exampleName = $row['examplename'];
+	//Title used for the codeviewer page
+	$title = $exampleName;
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Code Editor v5</title>
+		<title><?php echo $title; ?></title>
 		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
+		<link rel="shortcut icon" href="../Shared/icons/placeholder.ico"/>
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 		<script type="text/javascript" src="../Shared/dugga.js"></script>
