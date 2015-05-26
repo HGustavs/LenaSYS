@@ -73,12 +73,12 @@ Testing Link:
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title><?php echo $title; ?></title>
-		<link rel="shortcut icon" href="../Shared/icons/placeholder.ico"/>
 		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
+		<link rel="shortcut icon" href="../Shared/icons/placeholder.ico"/>
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 		<script type="text/javascript" src="../Shared/dugga.js"></script>
