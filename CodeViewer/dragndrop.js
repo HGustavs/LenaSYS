@@ -22,6 +22,16 @@ $(function() {
         }
     });
 	
+	$("#exampleList").mouseover(function(){
+		$("#exchangeButton").attr('src','../Shared/icons/exchangeButtonAdd.svg');
+	});
+	$("#sortList").mouseover(function(){
+		$("#exchangeButton").attr('src','../Shared/icons/exchangeButtonDelete.svg');
+	});
+	$("#sortList, #exampleList").mouseleave(function(){
+		$("#exchangeButton").attr('src','../Shared/icons/exchangeButton.svg');
+	});
+	
 	$('.updateSequence').click(function(){
 		var postData = $('#sortList').sortable('serialize');
 		var seqID = $('#sequenceSelector').val();
