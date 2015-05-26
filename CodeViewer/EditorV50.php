@@ -55,30 +55,18 @@ Testing Link:
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
 	// Database connection
-	pdoConnect();	
-
-	// Fetch examplename from database to use for title
-	$exampleid = getOPG('exampleid');
-	$query = $pdo->prepare( "SELECT examplename FROM codeexample WHERE exampleid = :exampleid;");
-	$query->bindParam(':exampleid', $exampleid);
-	$query-> execute();
-	
-	$row = $query -> fetch(PDO::FETCH_ASSOC);
-	$exampleName = $row['examplename'];
-	//Title used for the codeviewer page
-	$title = $exampleName;
+	pdoConnect();		
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title><?php echo $title; ?></title>
+		<title>Code Editor v5</title>
 		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
 		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet" />
 		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
-		<link rel="shortcut icon" href="../Shared/icons/placeholder.ico"/>
 		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 		<script type="text/javascript" src="../Shared/dugga.js"></script>
@@ -223,26 +211,31 @@ Testing Link:
 				<h3>Edit Example</h3>
 				<div onclick='closeEditExample();'>x</div>
 			</div>
-			<table width="100%">
-				<tr>
-					<td>Section Title:<input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
-					<td>Title:<input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
-				</tr>
-				<tr>
-					<td>Play Link:<input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
-					<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:right; margin-right:5px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:right; margin-right:5px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
-				</tr>	
-			</table>
-			<div id="SeqEdit">
-			<?php
-				echo "<script>$('#SeqEdit').load('dragndrop.php?courseid=$courseID');</script>";
-			?>
-			</div>
-			<table width="100%">
-				<tr>
-					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
-				</tr>
-			</table>
+			<fieldset>
+				<legend>Example Info</legend>
+				<table width="100%">
+					<tr>
+						<td>Section Title:<input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
+						<td>Title:<input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
+					</tr>
+					<tr>
+						<td>Play Link:<input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
+						<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
+					</tr>
+					<tr>
+						<td></td>
+						<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
+					</tr>	
+				</table>
+			</fieldset>
+			<fieldset>
+				<legend>Sequence</legend>
+				<div id="SeqEdit">
+					<?php
+						echo "<script>$('#SeqEdit').load('dragndrop.php?courseid=$courseID');</script>";
+					?>
+				</div>
+			</fieldset>
 		</div>
 		<!--- Code Example Cog Wheel Dialog END --->
 		<div id='chooseTemplate' class='loginBox' style='width:464px;display:none;'>
