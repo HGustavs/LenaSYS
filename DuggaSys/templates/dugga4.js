@@ -491,6 +491,9 @@ function drawCross(cx, cy, col, size)
 
 function newbutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
 	var texto = $("#operations").html();
 
 	var valv = $("#function").val();
@@ -513,6 +516,10 @@ function moveupbutton()
 
 function movedownbutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	$('#operations>option:selected').next().each(function() {
 		$(this).prev().before("<option value='" + $(this).val() + "'>" + $(this).html() + "</option>");
 		$(this).remove();
