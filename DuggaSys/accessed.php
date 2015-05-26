@@ -35,7 +35,7 @@
 				//needs to calculate if the user has access to this button before writing out
 			?>		
 		</div>
-		<div id="content" style="padding-top: 0;">
+		<div id="accessedcontent">
 			
 		</div>
 	</div>

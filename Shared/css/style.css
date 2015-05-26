@@ -93,6 +93,14 @@ hr {
     min-height: 200px;
 }
 
+#accessedcontent {
+    margin:0px auto;
+    position:relative;
+    padding: 10px 10px 10px 10px;
+    background: #fff;
+    min-height: 200px;
+}
+
 #newbutton {
     margin:0px auto;
     position:relative;
