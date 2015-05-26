@@ -6,7 +6,6 @@ include_once("../Shared/basic.php");
 	<script src="dragndrop.js"></script>
 </head>
 <body>
-	<div id="wrap">
 		<?php
 			require '../Shared/database.php';
 			pdoConnect();
@@ -28,12 +27,21 @@ include_once("../Shared/basic.php");
 				$data[] = $row;
 			}
 			if(sizeof($data) == 0){
-				echo "<button class='newSequence'>New sequence</button>";
+				echo "<table style='width: 100%'>";
+				echo "<tr>";
+				echo "<td style='width: 70%'>";
 				echo "<p class='noSequence'>There is currently no sequences in the database, please create a new sequence by clicking on the \"New sequence\" button!</p>";
+				echo "</td>";
+				echo "<td style='text-align: right; width: 30%'>";
+				echo "<button class='newSequence'>New sequence</button>";
+				echo "</td>";
+				echo "<tr>";
+				echo "</table>";
 			} else {
-				echo "<div id='seqSelectBox'>";
-				echo "Select Sequence: ";
-				echo "<br>";
+				echo "<table style='width: 100%'>";
+				echo "<tr>";
+				echo "<td>";
+				echo "Select Sequence:";
 				echo "<select id='sequenceSelector'>";
 				echo "<option value='$seqID'>Current: $seqID</option>";
 
@@ -44,10 +52,15 @@ include_once("../Shared/basic.php");
 						}
 					}
 				}
-				echo "</select>";	
+				echo "</select>";
+				echo "</td>";
+				echo "<td style='text-align: right'>";
 				echo "<button class='newSequence'>New sequence</button>";
 				echo "<button class='deleteSequence'>Delete sequence</button>";
-				echo "</div>";
+				echo "</td>";
+				echo "</tr>";
+				echo "<tr>";
+				echo "</table>";
 				
 				
 				$query = $pdo->prepare("SELECT exampleseq from sequence where seqid=$seqID and cid=$courseID");
@@ -58,8 +71,11 @@ include_once("../Shared/basic.php");
 					$data[] = $row;
 				}
 				$data = explode(',',$data[0]['exampleseq']);
-				echo "<div id='sortListBox'>";
-				echo "<span>Sequence examples</span>";
+				echo "<table style='width: 100%'>";
+				echo "<tr>";
+				echo "<td id='sortListBox'>";
+				echo "<fieldset style='padding: 5px;'>";
+				echo "<legend>Sequence examples</legend>";
 				echo "<div id='sortList' class='dragAndDrop'>";
 				foreach($data as $key => $value){
 					$query = $pdo->prepare("SELECT examplename from codeexample where exampleid=$value");
@@ -72,11 +88,13 @@ include_once("../Shared/basic.php");
 						echo "<div class='empty'>No items.</div>";
 					}
 				}
-				echo "</div>";
-				echo "</div>";
+
+				echo "</fieldset>";
+				echo "</td>";
 				
+				echo "<td style='width: 30px; text-align: center;'>";
 				echo "<img id='exchangeButton' src='../Shared/icons/exchangeButton.svg'>";
-				
+				echo "</td>";
 				$query = $pdo->prepare("SELECT exampleid,examplename from codeexample where cid=$courseID");
 				$query->execute();
 				$data = array();
@@ -103,8 +121,9 @@ include_once("../Shared/basic.php");
 					}
 				}
 				$count = 0;
-				echo "<div id='exampleListBox'>";
-				echo "<span>Unused examples</span>";
+				echo "<td id='exampleListBox'>";
+				echo "<fieldset style='padding: 5px;'>";
+				echo "<legend>Unused examples</legend>";
 				echo "<div id='exampleList' class='dragAndDrop'>";
 				foreach($data as $example){
 					
@@ -116,14 +135,21 @@ include_once("../Shared/basic.php");
 				if($count == 0){
 					echo "<div class='empty'>No examples.</div>";
 				}
-				echo "</div>";
-				echo "</div>";
-				
-				echo "<span id='status'></span>";
+				echo "</fieldset>";
+				echo "</table>";
+				echo "<table style='width: 100%'>";
+				echo "</td>";
+				echo "</tr>";
+				echo "<tr>";
+				echo "<td id='status'></td>";
+				echo "<td style='text-align: right'>";
 				echo "<button class='updateSequence'>Save sequence</button>";
+				echo "</td>";
+				echo "</tr>";
+				echo "</table>";
+				
+				
 			}	
 		?>
-
-	</div>
 </body>
 </html>
