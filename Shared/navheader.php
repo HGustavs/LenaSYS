@@ -70,7 +70,7 @@
 					if($codeviewerkind) echo "<td class='navButt' title='Settings' id='hidesettings'><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					if($codeviewerkind) echo "<td class='navButt'id='savebutton' title='Save' onclick='Save();'><img src='../Shared/icons/save_button.svg' /></td>";
 					echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
-					echo "<td id='navHeading' class='navHeading'>";
+					echo "<td id='navHeading' class='navHeading codeheader'>";
 					echo "<span id='exampleSection'>Example Section : </span>";
 					echo "<span id='exampleName'> Example Name</span>";
 					echo "</td>";					
