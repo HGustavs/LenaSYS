@@ -8,7 +8,8 @@ var ClickCounter = {
 	
 	// Initializes the noClicks variable, called at the start of a dugga
 	initialize: function() {
-		this.score = 0;	
+		this.score = 0;
+		this.animateClicks();	
 	},
 	
 	// Called whenever a dugga should count a mouse click, e.g., when a user presses a button

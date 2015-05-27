@@ -167,10 +167,7 @@ function setupClickHandling() {
 }
 
 function ev_mouseup(ev) {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
-
+	
 	handler_mouseup(ev);
 }
 
@@ -321,6 +318,10 @@ function saveClick()
 
 function newOp(operation, operationText) 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	var oplist;
 
 	oplist = document.getElementById('operations');
@@ -330,6 +331,10 @@ function newOp(operation, operationText)
 
 function deletebutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	var elSel = document.getElementById('operations');
 	var i = 0;
 	for ( i = elSel.length - 1; i >= 0; i--) {
@@ -341,6 +346,10 @@ function deletebutton()
 
 function moveupbutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	var elSel = document.getElementById('operations');
 	var ind = elSel.selectedIndex;
 	var val;
@@ -363,6 +372,10 @@ function moveupbutton()
 
 function movedownbutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	var elSel = document.getElementById('operations');
 	var ind = elSel.selectedIndex;
 	var val;
