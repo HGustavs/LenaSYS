@@ -49,7 +49,7 @@ function renderStudentView(data)
 	var courses = year['courses'];
 	var countYear = data['class'].match(/\d+/)[0];
 	var yearh3 = [];
-	console.log(data);
+
 		
 	for(var i=0; i< progress[0]['totalHP']/60 ;i++){
 		yearh3[i]=parseInt(countYear)+i+2000;
@@ -101,7 +101,7 @@ function renderStudentView(data)
 	insert_hover_coursereq(data);
 	course_hover_requierments(data);
 	progress_bar_complete(data);
-	console.log("DATA_PRINTED - DONE");
+
 	
 	// Check if error occurred during execution of SQL queries 
 	if(data['debug'] != "NONE!") {
@@ -154,7 +154,7 @@ function insert_hover_coursereq(data){
 
 	for(var i = 0;i<regCourses.length;i++){
 		var insert_into_div = '#'+regCourses[i]['coursecode']+' .course_alert';
-		console.log(insert_into_div);
+		
 		//regCourses[i]['coursecode']
 		$(insert_into_div).addClass('reg_hover');
 
@@ -165,7 +165,7 @@ function insert_hover_coursereq(data){
 //checks and inserts the correct img for warnings on studnet courses
 function check_hp_insert_img(data){
 	var regCourses = data['reqCourses'];
-	console.log(regCourses);
+
 	for(var i = 0; i<regCourses.length;i++){
 		var insert_img = '#'+regCourses[i]['coursecode']+' .course_alert';
 		var check_hp_course_req = '#'+regCourses[i]['reg_coursecode']+' .points';
