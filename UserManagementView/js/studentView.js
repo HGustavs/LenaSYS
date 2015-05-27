@@ -177,7 +177,7 @@ function check_hp_insert_img(data){
 		
 		if(split_hp[0]==0){
 			$(insert_img).html('<img src="./img/stop.png" />')
-		}else if(split_hp[0]>0 && split_hp[0] != split_hp[2] && $(insert_img).has('img').length !=1){
+		}else if(split_hp[0]>0 && split_hp[0] != split_hp[2] && $(insert_img).has('img').html != '<img src="./img/stop.png" />'){
 			$(insert_img).html('<img src="./img/varning.png" />')
 		}else if($(insert_img).has('img').length!=1){
 			$(insert_img).html('<img src="./img/check.png" />')
