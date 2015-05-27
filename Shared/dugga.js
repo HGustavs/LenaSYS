@@ -85,7 +85,6 @@ function randomstring()
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
-var score;
 function saveDuggaResult(citstr)
 {
 		citstr=querystring['moment']+" "+citstr;
