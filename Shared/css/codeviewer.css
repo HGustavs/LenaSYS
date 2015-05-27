@@ -802,3 +802,7 @@
 .loginBox {
 	top:25%;
 }
+
+.codeheader {
+    font-size: 26px !important;
+}
