@@ -529,16 +529,19 @@ function sendReceiptEmail(){
 function showDuggaInfoPopup()
 {
 
-		if ($("#receiptBox").css("display")!= "block"){
-			$("#duggaInfoBox").css("display","block");
-			$("#overlay").css("display","block");
-		}
+	if ($("#receiptBox").css("display")!= "block"){
+		$("#duggaInfoBox").css("display","block");
+		$("#overlay").css("display","block");
+	}
 }
 
 function hideDuggaInfoPopup()
 {
-		$("#duggaInfoBox").css("display","none");
-		$("#overlay").css("display","none");
+	$("#duggaInfoBox").css("display","none");
+	$("#overlay").css("display","none");
+	if(startDuggaHighScore){
+		startDuggaHighScore();
+	}
 }
 
 //----------------------------------------------------------------------------------
