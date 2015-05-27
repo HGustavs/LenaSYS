@@ -411,7 +411,10 @@ function returnedResults(data)
 			totalwidth+=width;
 			$("#header-"+i).css("width", width);
 		}
+		
 		$(".fumo").css("width", totalwidth+20);
+		$("#tableheaderwrapper").css("width", totalwidth+20);
+		
 		$('#divtable').on('scroll', function () {
 			$('#tableheader').scrollLeft($(this).scrollLeft());
 			$('#studentswrapper').scrollTop($(this).scrollTop());
