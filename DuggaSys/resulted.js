@@ -178,7 +178,6 @@ function returnedResults(data)
 		str += "</div></div>";
 		strtable += "<div id='divtable'>";
 
-		console.log(data);
 		if (data['entries'].length > 0) {
 			for ( i = 0; i < data['entries'].length; i++) {
 				var user = data['entries'][i];
