@@ -80,12 +80,17 @@
 
 
 			if(checklogin()) {
+					    
 					echo "<td class='navName'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";		
 					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
 			}else{
-					echo "<td class='navName'><label id='userName'>Guest</label></td>";		
+					echo "<td class='navName'><label id='userName'></label>";
+					echo '<script type="text/javascript">';
+	                    		echo 'document.write(storeGuestUsername())';
+	                    		echo '</script>';
+	                    		echo "</td>";				
 					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
-			}
+				}
 
 
 		echo "</tr></table>";

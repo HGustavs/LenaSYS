@@ -105,7 +105,7 @@ Testing Link:
 			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible.
 			
 			// userid is set, either as a registered user or as guest
-			// TODO: Check if possible bug; userid is set to 1 if guest in editorService.php, should userid be set there or here?
+			// TODO: Check if possible bug; userid is set to 00 if guest in editorService.php, should userid be set there or here?
 			if(isset($_SESSION['uid'])){
 				$userid=$_SESSION['uid'];	// userid of registered users
 			}else{
@@ -116,16 +116,26 @@ Testing Link:
 			$query = $pdo->prepare( "SELECT username FROM user WHERE uid = :uid");
 			$query->bindParam(':uid', $userid);
 			$query-> execute();
-
+			
+			// USER LOGGING START
+			$username = "";
+			if($userid == "00"){
+				if(isset($_POST['username'])){
+					$username = $_POST['username'];
+				}
+			}else{
+				$username = $userid;
+			}
+			// The while-loop and the if-statement below is used for logging user activity, username should after this block be set for both registered users and guests
 			// This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set
 			while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$username = $row['username'];
 			}
-			if($userid == "00"){
-				$username = "Guest" . $userid . rand(0,50000); // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
-			}
 			// Logs users who view example, along with the example they have viewed
-			makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);
+			if($username !== ""){
+				makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);
+			}
+			// USER LOGGING END
 
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){

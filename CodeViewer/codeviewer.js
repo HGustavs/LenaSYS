@@ -2270,3 +2270,34 @@ function parseMarkdown(inString)
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>'); 
 }
+//----------------------------------------------------------------------------------
+// storeUsername: Stores guests username to the browsers localstorage
+//				  Sends the value to EditorV50.php
+//                Is called by returned in codeviewer.js
+//----------------------------------------------------------------------------------
+function storeGuestUsername(id){
+	if(typeof(Storage) !== "undefined") {
+		if(id === undefined){
+			localStorage.username = "Guest" + "00" + (Math.floor(Math.random() * (50000 - 1 + 1)) + 1);
+			id = localStorage.username;
+		}else if(id == 00){
+			if(localStorage!= undefined){ id = localStorage.username; }
+		}else{
+			localStorage.username = id;
+		}
+		var sUsername = id;
+		//Send variable to use for logging events, EditorV50.php
+		$.ajax({
+			url: 'EditorV50.php',
+			type: 'post',
+			data: {'username' : sUsername},
+			success: function(data){
+				console.log("Guest username: " + sUsername);
+			}
+		});
+		$.post("EditorV50.php",{username: sUsername});
+		return id;
+	} else {
+		console.log("codeviewer.js storeUsername() webstorage not available");
+	}
+}
