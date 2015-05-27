@@ -961,6 +961,7 @@ input.new-item-button:hover {
 /* select element */
 .course-dropdown {
 	height: 30px;
+	margin-top: 6px;
 }
 
 
