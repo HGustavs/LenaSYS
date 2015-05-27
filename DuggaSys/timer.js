@@ -37,6 +37,11 @@ var Timer = {
 		this.score++;
 	},
 	
+	//Show timer
+	showTimer: function(){
+		this.animateTimer();
+	},
+	
 	// Updates the user interface
 	animateTimer: function(){
 		// Calculate hours, minutes and seconds based on timespent

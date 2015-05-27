@@ -47,7 +47,7 @@ $insertparam = false;
 
 if($userid!="UNK"){
 		// See if we already have a result i.e. a chosen variant.
-	$query = $pdo->prepare("SELECT aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$query->bindParam(':uid', $userid);
@@ -62,6 +62,7 @@ if($userid!="UNK"){
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 		$savedvariant=$row['variant'];
 		$savedanswer=$row['useranswer'];
+		$score = $row['score'];
 	}
 	
 	// Get type of dugga
@@ -242,6 +243,7 @@ $array = array(
 		"debug" => $debug,
 		"param" => $param,
 		"answer" => $savedanswer,
+		"score" => $score,
 		"highscoremode" => $highscoremode,
 		"questionanswer" => $questionanswer
 	);

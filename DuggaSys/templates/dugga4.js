@@ -27,6 +27,8 @@ var pushcount = 0;
 var elapsedTime = 0;
 var tickInterval;
 
+var dataV;
+
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
 function setup() 
@@ -43,11 +45,7 @@ function setup()
 
 function returnedDugga(data) 
 {	
-	if(querystring['highscoremode'] == 1) {
-		Timer.startTimer();
-	} else if (querystring['highscoremode'] == 2) {
-		ClickCounter.initialize();
-	}
+	dataV = data;
 	
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
@@ -691,3 +689,24 @@ function foo()
 
 }
 
+//----------------------------------------------------------------------------------
+// High score function, gets called from hideDuggainfoPopup function in dugga.js
+// dataV = global variable with the data set in returnedDugga
+//----------------------------------------------------------------------------------
+
+function startDuggaHighScore(){
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+		if(dataV['score'] > 0){
+			Timer.score = dataV['score'];
+		}
+		Timer.showTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+		if(dataV['score'] > 0){
+			ClickCounter.score = dataV['score'];
+			console.log(ClickCounter.score);
+		}
+		ClickCounter.showClicker();
+	}
+}
