@@ -90,6 +90,9 @@ INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible,
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1015, 1, 'HTML5 Example 6', 12, 2, 15, 1, 1,'45656');
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1016, 1, 'HTML5 Example 7', 13, 2, 16, 1, 1,'45656');
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1017, 1, 'HTML5 Example 8', 14, 2, 17, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1018, 1, 'Shader examples', 'UNK', 1, 18, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1019, 1, 'Shaderprogrammering', 15, 2, 19, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1020, 1, 'Shaderprogrammering', 16, 2, 20, 1, 1,'45656');
 
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2001, 2, 'Biträkningsduggor 1HP', '', 4, 0, 1, 1, '97732', 2001, 2, 0);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2002, 2, 'Biträkningsdugga 1', '1', 3, 1, 1, 1, '97732', 2001, 2, 1);
