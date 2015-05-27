@@ -36,6 +36,7 @@ $param = "";
 $savedanswer = "";
 $highscoremode = "";
 $questionanswer = "";
+$quizfile = "UNK";
 
 $hr=false;
 $insertparam = false;
@@ -61,6 +62,15 @@ if($userid!="UNK"){
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 		$savedvariant=$row['variant'];
 		$savedanswer=$row['useranswer'];
+	}
+	
+	// Get type of dugga
+	$query = $pdo->prepare("SELECT quizFile FROM quiz WHERE id=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+	foreach($query->fetchAll() as $row) {
+		$quizfile = $row['quizFile'];
 	}
 	
 	// Retrieve variant list
@@ -135,11 +145,12 @@ if($userid!="UNK"){
 	$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] === $savedvariant){
+		if($variant["vid"] === $savedvariant || $quizfile === "kryss"){
 			$param.=$variant['param'];
 			$questionanswer.=$variant['questionanswer'];
 		}
 	}
+
 }else{
 	$param="FORBIDDEN!!";
 }
