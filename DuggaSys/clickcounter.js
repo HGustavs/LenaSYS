@@ -21,6 +21,11 @@ var ClickCounter = {
 		this.animateClicks();
 	},
 	
+	//show clicker
+	showClicker: function(){
+		this.animateClicks();
+	},
+	
 	// Updates the click counter user interface in a dugga, uses the same 
 	animateClicks: function() {
 		// Apply some web magic to change the ui counter
