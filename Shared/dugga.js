@@ -487,36 +487,44 @@ function setupLoginLogoutButton(isLoggedIn){
 
 function showReceiptPopup()
 {
-		$("#receiptBox").css("display","block");
-		$("#overlay").css("display","block");
+	$("#receiptBox").css("display","block");
+	$("#overlay").css("display","block");
 }
 
 function hideReceiptPopup()
 {
-		$("#receiptBox").css("display","none");
-		$("#overlay").css("display","none");
+	$("#receiptBox").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 
+function showEmailPopup()
+{
+	var receiptcemail ="";
+	$("#emailPopup").css("display","block");
+	$("#overlay").css("display","block");
+	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item 
+	document.getElementById('email').value = receiptcemail;
+}
+
+function hideEmailPopup()
+{
+	$("#emailPopup").css("display","none");
+	$("#overlay").css("display","none");
+}
+
 //----------------------------------------------------------------------------------
-// A function that asks for users email so the dugga-receipt can be sent to the user.
+// Send dugga receipt to users email, save email in localstorage.
 //----------------------------------------------------------------------------------
 function sendReceiptEmail(){
-
-	var receiptcemail ="";
-	receiptcemail = localStorage.getItem("receiptcemail");
-	//fetches localstorage item, if it is empty the prompt message is empty at first
-	//----------------------------------------------------------------------------------
-	if(receiptcemail != ""){
-		var promtemail = localStorage.getItem("receiptcemail");
-		var email= prompt("Please enter your email",""+promtemail);
-		if (email != null){
-			localStorage.setItem("receiptcemail", email); //save value of propmt into an localStorage variable
+	var receipt = document.getElementById('receipt').value;
+	var email = $("#email").val();	
+		if (email != ""){
+			localStorage.setItem("receiptcemail", email); //save value of input into a localStorage variable
 			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
-		}
+			hideReceiptPopup();
 	}
 }
-
 
 function showDuggaInfoPopup()
 {
