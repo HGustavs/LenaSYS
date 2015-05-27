@@ -88,8 +88,9 @@
     padding-left: 4px;
     padding-right: 6px;
     width: 22px;
-    float: left; 
+    float: left;
 	background-color: #614875;
+	font-family: "Andale Mono", AndaleMono, monospace;
     
 }
 
@@ -99,6 +100,7 @@
     background-color: #9569BD;
     padding-left: 4px;
     padding-right: 6px;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .normtextwrapper{
@@ -111,6 +113,7 @@
     color: #000;
     background-color: #F2F2F2;
     white-space:nowrap;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .impo {
@@ -118,6 +121,7 @@
     background-color: rgba(186, 96, 255, 0.09);
     white-space:nowrap;
     min-width: 660px;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .no {
@@ -138,31 +142,38 @@
 }
 
 .comment {
-    color: rgba(72, 68, 101, 0.83);
+    color: #50a750;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .oper {
     color: #000;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .impo .oper {
     color: #000;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .string {
     color: #000;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .impo .string {
     color: #000;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .number {
     color: #000;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .impo .number {
     color: #000;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .hi {
@@ -189,10 +200,12 @@
 
 .keywordA {
     color: #e90000;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .keywordB {
     color: #0004ff;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .keywordC {
@@ -201,12 +214,14 @@
 
 .keywordD {
     color: rgba(231, 0, 255, 1);
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .impword {
     color: #fff;
     background-color: #9971AF;
     border: 1px solid #424242;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 
@@ -214,6 +229,7 @@
     color: #fff;
     background-color: #614875;
     border: 1px solid #424242;
+	font-family: "Andale Mono", AndaleMono, monospace;
 }
 
 
