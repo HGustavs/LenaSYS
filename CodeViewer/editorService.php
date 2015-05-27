@@ -335,6 +335,16 @@
 			array_push($importantWordList,$row['word']);					
 		}  
 		
+		// Read runlinks
+		$runlinkArray=array();
+		$query = $pdo->prepare( "SELECT runlink FROM codeexample WHERE exampleid = :exampleid;");
+		$query->bindParam(':exampleid', $exampleId);
+		$query->execute();
+		
+		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+			array_push($runlinkArray, $row['runlink']);					
+		}
+		
 		$directories = array();
 		
 		// Read Directory - Codeexamples
@@ -426,6 +436,7 @@
 			'box' => $box,
 			'improws' => $importantRows,
 			'impwords' => $importantWordList,
+			'runlink' => $runlinkArray,
 			'directory' => $directories,
 			'examplename'=> $exampleName,
 			'sectionname'=> $sectionName,
