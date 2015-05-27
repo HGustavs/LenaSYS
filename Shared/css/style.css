@@ -510,7 +510,6 @@ header td {
     position: fixed;
     top: 40%;
     left: 50%;
-    margin-top: -100px;
     margin-left: -178px;
     box-shadow:2px 2px 4px #000;
 }
