@@ -337,7 +337,7 @@
 		
 		// Read runlinks
 		$runlinkArray=array();
-		$query = $pdo->prepare( "SELECT runlink FROM codeexample WHERE exampleid = :exampleid;");
+		$query = $pdo->prepare( "SELECT runlink FROM codeexample;");
 		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 		
