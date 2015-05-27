@@ -26,6 +26,7 @@ $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $moment=getOP('moment');
+$segment=getOP('segment');
 $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
 $setanswer=gettheOP('setanswer');
@@ -35,6 +36,7 @@ $param = "";
 $savedanswer = "";
 $highscoremode = "";
 $questionanswer = "";
+$quizfile = "UNK";
 
 $hr=false;
 $insertparam = false;
@@ -45,7 +47,7 @@ $insertparam = false;
 
 if($userid!="UNK"){
 		// See if we already have a result i.e. a chosen variant.
-	$query = $pdo->prepare("SELECT aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$query->bindParam(':uid', $userid);
@@ -60,6 +62,16 @@ if($userid!="UNK"){
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 		$savedvariant=$row['variant'];
 		$savedanswer=$row['useranswer'];
+		$score = $row['score'];
+	}
+	
+	// Get type of dugga
+	$query = $pdo->prepare("SELECT quizFile FROM quiz WHERE id=:duggaid;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+	foreach($query->fetchAll() as $row) {
+		$quizfile = $row['quizFile'];
 	}
 	
 	// Retrieve variant list
@@ -75,6 +87,7 @@ if($userid!="UNK"){
 			'questionanswer' => $row['variantanswer']
 		);
 		$i++;
+		$insertparam = true;
 	}
 
 	// If there are any variants, randomize
@@ -112,6 +125,20 @@ if($userid!="UNK"){
 			$debug="Error updating entries".$error[2];
 		}
 		$savedvariant=$newvariant;
+		//------------------------------
+		//mark segment as started on
+		//------------------------------
+		$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
+		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':coursevers', $coursevers);
+		$query->bindParam(':uid', $userid);
+		$query->bindParam(':did', $duggaid);
+		$query->bindParam(':moment', $segment);
+		$query->bindParam(':variant', $newvariant);
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
 	}
 
 	// Retrieve variant
@@ -119,11 +146,12 @@ if($userid!="UNK"){
 	$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] === $savedvariant){
+		if($variant["vid"] === $savedvariant || $quizfile === "kryss"){
 			$param.=$variant['param'];
 			$questionanswer.=$variant['questionanswer'];
 		}
 	}
+
 }else{
 	$param="FORBIDDEN!!";
 }
@@ -215,6 +243,7 @@ $array = array(
 		"debug" => $debug,
 		"param" => $param,
 		"answer" => $savedanswer,
+		"score" => $score,
 		"highscoremode" => $highscoremode,
 		"questionanswer" => $questionanswer
 	);

@@ -3,6 +3,9 @@
 //---------------------------------------------------------------------------------------------------------------
 
 var Timer = {	
+	// Determines if the timer should update ui
+	update: 0,
+
 	// Declare the timer variable, will be accessible from this object in a dugga
 	timer: undefined,
 	
@@ -24,11 +27,19 @@ var Timer = {
 	stopTimer: function(){
 		var self = this;
 		clearInterval(self.timer);
+		
+		// Quick fix
+		this.update = 1;
 	},
 	
 	// Increments the time counter by one
 	incrementTimer: function(){
 		this.score++;
+	},
+	
+	//Show timer
+	showTimer: function(){
+		this.animateTimer();
 	},
 	
 	// Updates the user interface
@@ -53,6 +64,8 @@ var Timer = {
 		str += seconds;
 
 		// Push new value to ui thing
-		document.getElementById('scoreElement').innerHTML = str;
+		if(this.update == 0) {
+			document.getElementById('scoreElement').innerHTML = str;
+		}
 	}
 }	

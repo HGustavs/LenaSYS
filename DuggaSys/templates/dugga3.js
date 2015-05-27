@@ -58,7 +58,7 @@ var starty = 30;
 var elapsedTime = 0;
 var previousSync = 0;
 
-
+var dataV;
 
 //----------------------------------------------------------------------------------
 // Setup
@@ -83,11 +83,7 @@ function setup() {
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data) {
-	if(querystring['highscoremode'] == 1) {
-		Timer.startTimer();
-	} else if (querystring['highscoremode'] == 2) {
-		ClickCounter.initialize();
-	}
+	dataV = data;
 	
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
@@ -167,10 +163,7 @@ function setupClickHandling() {
 }
 
 function ev_mouseup(ev) {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
-
+	
 	handler_mouseup(ev);
 }
 
@@ -321,6 +314,10 @@ function saveClick()
 
 function newOp(operation, operationText) 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	var oplist;
 
 	oplist = document.getElementById('operations');
@@ -330,6 +327,10 @@ function newOp(operation, operationText)
 
 function deletebutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	var elSel = document.getElementById('operations');
 	var i = 0;
 	for ( i = elSel.length - 1; i >= 0; i--) {
@@ -341,6 +342,10 @@ function deletebutton()
 
 function moveupbutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	var elSel = document.getElementById('operations');
 	var ind = elSel.selectedIndex;
 	var val;
@@ -363,6 +368,10 @@ function moveupbutton()
 
 function movedownbutton() 
 {
+	if (querystring['highscoremode'] == 2) {
+		ClickCounter.onClick();
+	}
+
 	var elSel = document.getElementById('operations');
 	var ind = elSel.selectedIndex;
 	var val;
@@ -704,3 +713,24 @@ function render()
 
 }
 
+//----------------------------------------------------------------------------------
+// High score function, gets called from hideDuggainfoPopup function in dugga.js
+// dataV = global variable with the data set in returnedDugga
+//----------------------------------------------------------------------------------
+
+function startDuggaHighScore(){
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+		if(dataV['score'] > 0){
+			Timer.score = dataV['score'];
+		}
+		Timer.showTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+		if(dataV['score'] > 0){
+			ClickCounter.score = dataV['score'];
+			console.log(ClickCounter.score);
+		}
+		ClickCounter.showClicker();
+	}
+}

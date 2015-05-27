@@ -25,7 +25,6 @@
 		$noup=true;
 		$loginvar="ACCESS"; 
 		include '../Shared/navheader.php';
-		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
@@ -36,7 +35,7 @@
 				//needs to calculate if the user has access to this button before writing out
 			?>		
 		</div>
-		<div id="content">
+		<div id="accessedcontent">
 			
 		</div>
 	</div>

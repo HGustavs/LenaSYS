@@ -14,19 +14,15 @@ $(function() {
 		dateFormat: "yy-mm-dd",
 		minDate: 0,
 		onSelect: function(date){
-			var date1 = $('#release').datepicker('getDate');
-			var date = new Date( Date.parse( date1 ) );
-			date.setDate( date.getDate());
-			var newDate = date.toDateString();
-			newDate = new Date( Date.parse( newDate ) );
-			$('#deadline').datepicker("option","minDate",newDate);
+			var newDate = $('#release').datepicker('getDate');
+			$('#deadline').datepicker("option","minDate", newDate);
+			
 		}
 	});
 	$('#deadline').datepicker({
-		dateFormat: "yy-mm-dd" 
+		dateFormat: "yy-mm-dd"
 	});
 });
-
 //----------------------------------------
 // Commands:
 //----------------------------------------
@@ -241,7 +237,9 @@ function returnedDugga(data)
 				str+="<td></td>";
 			}else{
 			result++;
-				str+="<td>"+item['release'].substr(0,10)+"</td>";						
+				str+="<td>"+item['release'].substr(0,10)+"</td>";
+				//Set the min-date for a deadline to be the release date
+				$('#deadline').datepicker("option","minDate", item['release']);						
 			}
 				
 			if(item['deadline']==null){

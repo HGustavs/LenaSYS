@@ -38,8 +38,9 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 
 // The query specified below selects only scores associated with users that have returned a dugga with a passing grade
-$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 0 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
+$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 0 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
 $query->bindParam(':did', $duggaid);
+$query->bindParam(':lid', $variant);
 
 if(!$query->execute()){
 	$error=$query->errorInfo();
@@ -71,8 +72,9 @@ if(checklogin()){
 
 	if(count($user) === 0){
 		// This must be tested
-		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did LIMIT 1;");
+		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
 		$query->bindParam(':did', $duggaid);
+		$query->bindParam(':lid', $variant);
 		$query->bindParam(':user', $_SESSION["loginname"]);
 	
 		if(!$query->execute()){
@@ -81,7 +83,6 @@ if(checklogin()){
 		}
 				
 		foreach($query->fetchAll() as $row){
-			$debug = $row;
 			$user = array(
 				"username" => $row["username"],
 				"score" => $row["score"]

@@ -94,7 +94,6 @@ function createVersion()
 
 function selectCourse(cid, coursename, coursecode, visi, vers, edvers) 
 {
-	console.log(cid, coursename, coursecode, visi, vers, edvers);
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#C" + cid).css("border", "2px dashed #FC5");

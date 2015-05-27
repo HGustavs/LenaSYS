@@ -1,3 +1,10 @@
+/* testdata for moments*/
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '2', NULL, '2015-05-20 10:49:22', NULL, '97732', NULL, NULL);
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', NULL, '97732', NULL, NULL);
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', NULL, '97732', NULL, NULL);
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', NULL, '97732', NULL, NULL);
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '9', '19', '2034', '2', '2', NULL, '2015-05-21 10:21:47', '2015-05-21 10:23:49', '97732', '2', '0');
+insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '9', '19', '2034', NULL, '100', NULL, '2015-05-21 14:17:06', NULL, '97732', NULL, NULL);
 
 /* use script like this to insert testdata. Do not have inserts in the script to create the database..*/
 
@@ -83,6 +90,9 @@ INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible,
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1015, 1, 'HTML5 Example 6', 12, 2, 15, 1, 1,'45656');
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1016, 1, 'HTML5 Example 7', 13, 2, 16, 1, 1,'45656');
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1017, 1, 'HTML5 Example 8', 14, 2, 17, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1018, 1, 'Shader examples', 'UNK', 1, 18, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1019, 1, 'Shaderprogrammering', 15, 2, 19, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1020, 1, 'Shaderprogrammering', 16, 2, 20, 1, 1,'45656');
 
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2001, 2, 'Biträkningsduggor 1HP', '', 4, 0, 1, 1, '97732', 2001, 2, 0);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2002, 2, 'Biträkningsdugga 1', '1', 3, 1, 1, 1, '97732', 2001, 2, 1);

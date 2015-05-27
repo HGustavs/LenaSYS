@@ -83,7 +83,12 @@ function setup()
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data)
-{
+{	
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+	}
 
 	console.log(data['param']);
 	var output ="";
@@ -91,6 +96,12 @@ function returnedDugga(data)
 		
 		if(data['param']!="UNK"){
 			quiz(data['param']);
+			//Add onclick event 
+			if(querystring['highscoremode'] == 2) {
+				$("input:radio").click(function(){
+					ClickCounter.onClick();
+				});
+			}
 		}		
 }
 //----------------------------------------------------------------------------------

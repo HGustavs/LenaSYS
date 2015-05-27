@@ -16,7 +16,6 @@ time, mark, audio, video {
     border: 0;  
     font-size: 100%;    
     font: inherit;
-    vertical-align: baseline;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
 }
@@ -90,6 +89,14 @@ hr {
     margin:0px auto;
     position:relative;
     padding: 50px 10px 10px 10px;
+    background: #fff;
+    min-height: 200px;
+}
+
+#accessedcontent {
+    margin:0px auto;
+    position:relative;
+    padding: 10px 10px 10px 10px;
     background: #fff;
     min-height: 200px;
 }
@@ -785,6 +792,9 @@ input.submit-button {
     height:30px;
     color:#fff;
     cursor:pointer;
+    margin-top:6px;
+    margin-bottom:2px;
+    margin-left:4px;
     font-size:14px;
     transition:1s background-color;
     float:right;
@@ -946,6 +956,7 @@ input.new-item-button:hover {
 /* select element */
 .course-dropdown {
 	height: 30px;
+	margin-top: 6px;
 }
 
 /* End DuggaSys Sectioneed*/

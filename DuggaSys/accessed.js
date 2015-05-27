@@ -84,7 +84,7 @@ function returnedAccess(data)
 
 		str+="<table class='list'>";
 
-		str+="<tr><th class='first'>Username</th><th>SSN</th><th>First Name</th><th>Last Name</th><th>Modified</th><th>Access</th><th>PW</th><th class='last'>Settings</th></tr>";
+		str+="<tr><th class='first' style='text-align:left; padding-left:8px; width:140px;'>Username</th><th style='text-align:left; padding-left:8px; width:150px;'>SSN</th><th style='text-align:left; padding-left:8px;'>First Name</th><th style='text-align:left; padding-left:8px;'>Last Name</th><th style='text-align:left; padding-left:8px; width:100px;'>Modified</th><th style='text-align:left; padding-left:8px; width:90px;'>Access</th><th style='text-align:left; padding-left:8px; width:90px;'>Settings</th><th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 			str+="<tr>";
@@ -112,17 +112,16 @@ function returnedAccess(data)
 				str+="<option value='N'>None</option>";
 			}
 			str+="</select>";
-
-			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;'></td>";
-
-			str+="<td><img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\");' ></td>";
-
+			
+			
+			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\");'></td>";
+			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;' style='float:none;'></td>";
 			str+="</tr>";
 		}
 		str+="</table>";
 	}
-	var slist=document.getElementById("content");
+	var slist=document.getElementById("accessedcontent");
 	slist.innerHTML=str;
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
