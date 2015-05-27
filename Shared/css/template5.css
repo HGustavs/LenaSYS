@@ -10,6 +10,10 @@
     width: -webkit-calc(50.0%);
     width: -moz-calc(50.0%); 
     width: calc(50.0%); 
+	max-width: 90%;
+	min-width: 10%;
+	max-height: 90%;
+	min-height: 10%;
 }
 
 #box2wrapper {
@@ -22,6 +26,10 @@
     width: -webkit-calc(50.0%);
     width: -moz-calc(50.0%); 
     width: calc(50.0%);
+	max-width: 90%;
+	min-width: 10%;
+	max-height: 90%;
+	min-height: 10%;
 }
 
 #box3wrapper {
@@ -34,6 +42,10 @@
     width: -webkit-calc(50.0%);
     width: -moz-calc(50.0%); 
     width: calc(50.0%);
+	max-width: 90%;
+	min-width: 10%;
+	max-height: 90%;
+	min-height: 10%;
 }
 
 #box4wrapper {
@@ -45,6 +57,10 @@
     height: calc(50.0%);
     width: -webkit-calc(50.0%);
     width: -moz-calc(50.0%); 
-    width: calc(50.0%); 
+    width: calc(50.0%);
+	max-width: 90%;
+	min-width: 10%;
+	max-height: 90%;
+	min-height: 10%;
 }
 

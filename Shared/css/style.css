@@ -510,7 +510,6 @@ header td {
     position: fixed;
     top: 40%;
     left: 50%;
-    margin-top: -100px;
     margin-left: -178px;
     box-shadow:2px 2px 4px #000;
 }
@@ -558,29 +557,24 @@ header td {
 }
 
 #editContent input[type="number"] {
-	height: 20px;
+	height: 30px;
 	border-color: rgb(169, 169, 169);
 }
 
 #editContent input[type="text"] {
-	height: 20px;
-	border-color: rgb(169, 169, 169);
-	width: calc(100% - 10px);
+  height: 30px;
+  border-color: rgb(169, 169, 169);
+  width: 100%;
 }
 
 #editContent input.submit-button {
 	margin:0;
 }
 
-#impwords {
-    max-width: 180px;
-    min-width: 191px;
+#impwords, #impword {
+    max-width: 184px;
+    min-width: 184px;
     margin-left: 0px;
-}
-
-#impword {
-    width: 180px;
-    
 }
 
 #before, #after {
@@ -633,6 +627,7 @@ header td {
     background-color: #614875;
     vertical-align: bottom;
     padding-left: 10px;
+    cursor:move;
 /*  padding-top: 15px; */
 }
 .loginBoxheader h3 {
@@ -786,12 +781,10 @@ button.option {
 input.submit-button {
     background-color:#614875;
     border:0px;
-    width:100px;
+    width:110px;
     height:30px;
     color:#fff;
     cursor:pointer;
-    margin-bottom:2px;
-    margin-left:4px;
     font-size:14px;
     transition:1s background-color;
     float:right;
@@ -955,47 +948,6 @@ input.new-item-button:hover {
 	height: 30px;
 }
 
-
-
-/* Shapes and color for the buttons in Editexample box*/
-.newSequence, .deleteSequence, .updateSequence  {
-    background-color: rgb(97, 72, 117);
-    border: 0px none;
-    height: 30px;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    margin-bottom: 2px;
-    margin-left: 4px;
-    font-size: 14px;
-    float: right;
-    -webkit-transition: background-color 1s ease 0s;
-    -moz-transition: background-color 1s ease 0s;
-    -o-transition: background-color 1s ease 0s;
-     transition: background-color 1s ease 0s;
-
-}
-
-/* Shapes and color for the buttons in Editexample box*/
-.updateSequence {
-    margin-top: 26px;
-    margin-bottom: 4px;
-    margin-left: 4px;
-}
-
-/* Hover style for the buttons in Editexample box*/
-.newSequence:hover, .updateSequence:hover, .deleteSequence:hover {
-  background-color:#7B5A96;
-  border-radius:4px;	
-}
-
-#editExample {
-	position: absolute;
-	top: 0 auto;
-	width: 442px;
-
-}
-
-
 /* End DuggaSys Sectioneed*/
 /**************************/
 
@@ -1125,4 +1077,3 @@ input.new-item-button:hover {
 .searchfieldTV input[type=text]:focus{
 	box-shadow: inset 2px 2px 5px #988a98;
 }
-

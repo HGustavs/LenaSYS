@@ -658,21 +658,11 @@
 /* RESIZABLE UI CSS STOP */
 
 /* DragnDrop CSS */
-#SeqEdit {
-	border:1px solid #424242;
-	margin-top:10px;
-	background-color:#b3b3b3;
-	max-height:500px;
-	overflow-y:auto;
-}
 
 #sortListBox {
 	margin: 5px;
-	padding: 5px 3px 0px 3px;
-	border: 1px solid #424242;
-	width: 175px;
+	width: 180px !important;
 	background-color:#cccccc;
-	display:inline-block;
 	text-align:center;
 }
 
@@ -684,13 +674,19 @@
 
 #exampleListBox {
 	margin:5px 5px 10px 5px;
-	padding: 5px 3px 0px 3px;
-	border: 1px solid #424242;
-	width: 175px;
+	width: 180px !important;
 	background-color:#cccccc;
-	display:inline-block;
 	text-align:center;
-	float:right;
+}
+
+#exampleList {
+	max-height:226px;
+	overflow-y:auto;
+}
+
+#sortList {
+	max-height:226px;
+	overflow-y:auto;
 }
 
 #exampleListBox span {
@@ -700,9 +696,9 @@
 }
 
 #sortList div {
-	margin: 5px 2px 5px 2px;
+	margin: 1px 2px 1px 2px;
 	padding: 5px;
-	background: #614875;
+	background: #50a750;
 	font-size: 12px;
 	color: #fff;
 	border-bottom: 1px solid #424242;
@@ -714,9 +710,9 @@
 }
 
 #exampleList div {
-	margin: 5px 2px 5px 2px;
+	margin: 1px 2px 1px 2px;
 	padding: 5px;
-	background: #614875;
+	background: #c75050;
 	font-size: 12px;
 	color: #fff;
 	border-bottom: 1px solid #424242;
@@ -734,6 +730,33 @@
 	cursor:pointer;
 }
 
+#editExample{
+    top: 185px;
+    width: 464px;
+    margin-left: -232px;
+}
+
+#editExample td {
+    width: 50%;
+    padding: 5px 5px 0px 5px;
+    vertical-align: top;
+}
+
+#editExample input[type="text"] {
+    width: 100%;
+}
+
+#editExample fieldset {
+    border: 1px solid #999;
+    margin-top: 10px;
+    padding-bottom: 5px;
+}
+
+#editExample legend {
+    margin-left: 5px;
+    font-weight: bold;
+}
+
 /* Shapes and color for the buttons in Editexample box*/
 .newSequence, .deleteSequence, .updateSequence  {
     background-color: rgb(97, 72, 117);
@@ -741,10 +764,8 @@
     height: 30px;
     color: rgb(255, 255, 255);
     cursor: pointer;
-    margin-bottom: 2px;
-    margin-left: 4px;
     font-size: 14px;
-    float: right;
+    margin-top: 5px;
     -webkit-transition: background-color 1s ease 0s;
     -moz-transition: background-color 1s ease 0s;
     -o-transition: background-color 1s ease 0s;
@@ -754,10 +775,7 @@
 
 /* Shapes and color for the buttons in Editexample box*/
 .updateSequence {
-    margin-top: 0px;
-    margin-bottom: 5px;
-    margin-left: 323px;
-	margin-right:5px;
+    margin-top: 5px;
 }
 
 /* Hover style for the buttons in Editexample box*/
@@ -766,22 +784,25 @@
   border-radius:4px;	
 }
 
-#seqSelectBox {
-	padding: 5px;
-	margin-bottom: 5px;
-}
-
-#seqSelectBox select {
-	width:195px;
+#sequenceSelector {
+    width: 100%;
 }
 
 #status {
-	margin-left:323px;
-	float:right;
-	margin-right:30px;
 	color:green;
+}
+
+#exchangeButton {
+	width:30px;
+    vertical-align: top;
+    margin-top: 30px;
+	height:30px;
 }
 
 .loginBox {
 	top:25%;
+}
+
+.codeheader {
+    font-size: 26px !important;
 }

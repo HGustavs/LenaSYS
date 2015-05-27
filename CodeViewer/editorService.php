@@ -90,7 +90,7 @@
 				$query->bindParam(':templateno', $templateNumber);
 				$query->bindParam(':exampleid', $exampleId);
 				$query->bindParam(':cid', $courseId);
-				$query->bindParam(':cversion', $courseVersion);
+				$query->bindParam(':cvers', $courseVersion);
 				$query->execute();
 				
 				// There are at least two boxes, create two boxes to start with

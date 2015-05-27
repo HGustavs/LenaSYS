@@ -66,11 +66,11 @@ function returned(data)
 	// Disables before and after button if there are no available example before or after. 
 	// Works by checking if the current example is last or first in the order of examples.
 	if(retData['before']!=null&&retData['after']!=null) {
-		if (retData['exampleno'] == retData['beforeafter'][0][0] || retData['before'].length == 0) {
+		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
 			$("#beforebutton").css("opacity",0.4);
 			$("#beforebutton").css("pointer-events","none");
 		}
-		if (retData['exampleno'] == retData['beforeafter'][retData['beforeafter'].length - 1][0] || retData['after'].length == 0) {
+		if (retData['exampleno'] == retData['after'][0][0] || retData['after'].length == 0) {
 			$("#afterbutton").css("opacity",0.4);
 			$("#afterbutton").css("pointer-events","none");
 		}
@@ -89,18 +89,23 @@ function returned(data)
 	
 	// Fill Section Name and Example Name
 	var exName= $('#exampleName');
-	exName.html(data['examplename']);
+	if(data['examplename'] != null){
+		exName.html(data['examplename']);
+	}		
 	var exSection= $('#exampleSection');
-	exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
-
+	if(data['sectionname'] != null){
+		exSection.html(data['sectionname']+"&nbsp;:&nbsp;");
+	}
+	
+	
 	// User can choose template if no template has been chosen and the user has write access.
 	if((retData['templateid'] == 0)){
 		if(retData['writeaccess'] == "w"){
-			alert("A template has not been chosen for this example, please choose one");
+			alert("A template has not been chosen for this example. Please choose one.");
 			$("#chooseTemplate").css("display","block");
 			return;
 		}else{
-			alert("There is no template and you do not have the access rights to change this");
+			alert("The administrator of this code example has not yet chosen a template.");
 			return;
 		}
 	}
@@ -157,19 +162,27 @@ function returned(data)
 			
 			//Remove html tags since only markdown should be allowed		
 			desc = dehtmlify(desc, true, 0);
+			//Call the markdown function to parse markdown symbols to html tags
+			desc = parseMarkdown(desc);
 			
+			//Change all asterisks to the html code for asterisks
+			desc = desc.replace(/\*/g, "&#42;");
 			// Highlight important words
 			important = retData.impwords;
 			for(j=0;j<important.length;j++){
-				var sstr="<span id='IWW' class='impword' onmouseover='highlightKeyword(\""+important[j]+"\")' onmouseout='dehighlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+				var sstr="<span id='IWW' class='impword' onmouseout='dehighlightKeyword(\""+important[j]+"\")' onmouseover='highlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+				//Interpret asterisks in important word as literals and not as character with special meaning
+				if(important[j].indexOf('*') != -1){
+					important[j] = important[j].replace(/\*/g, "&#42;");
+				}	
 				desc=replaceAll(important[j],sstr,desc);
 			}
-			/* Assign Content */
-			//Call the markdown function to parse markdown symbols to html tags
-			desc = parseMarkdown(desc);
+			//Replace the html code for asterisks with asterisks
+			desc = desc.replace(/\&\#42\;/g, "*");
 			//Change the '\n' line breaks to <br> tags
 			desc = addHtmlLineBreak(desc);
 			
+			/* Assign Content */
 			$("#"+contentid).html(desc);			
 			$("#"+contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid,boxid,boxtype);
@@ -183,7 +196,13 @@ function returned(data)
 		}else if(boxtype == "IFRAME") {
 			createboxmenu(contentid,boxid,boxtype);
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
-			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "''></iframe>");
+			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "'></iframe>");
+			if($("#"+contentid+"menu").height() == null){
+				boxmenuheight = 0;
+			}else{
+				boxmenuheight= $("#"+contentid+"menu").height();
+			}
+			$("#"+contentid).css("margin-top", boxmenuheight);
 		}else if(boxtype == "NOT DEFINED"){
 			if(retData['writeaccess'] == "w"){
 				createboxmenu(contentid,boxid,boxtype);
@@ -199,6 +218,8 @@ function returned(data)
 	}
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
+	//Disables resizable functionality in mobile theme
+	mobileDesktopResize("#div2", retData["templateid"]);
 }
 
 //---------------------------------------------------------------------------------
@@ -455,20 +476,12 @@ function editImpRows(editType)
 	var rowTo = $("#improwto").val();
 	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
 
-	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo) {
+	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo && rowFrom > 0 && rowTo > 0 && rowFrom <= lineno && rowTo <= lineno) {
         alert("You've added " + rowFrom + " and " + rowTo); //Shows you what you've input
 		var exists = false;
 		$('#improws option').each(function() {
     		if (this.value == row) {exists = true;}
 		});
-		
-		if (rowFrom && rowTo < 0) { //Negative numbers alert
-		 //   FromTo = $("#improws").text().split(" - ");
-		//	$("#improws").remove();
-		//	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
-			alert("You cannot input the negative numbers " + rowFrom + " and " + rowTo);
-			editContent.reload();
-		}
 		
 		if (exists == false) {
 			$("#improws").append('<option>' + row + '</option>');
@@ -481,6 +494,8 @@ function editImpRows(editType)
 		FromTo = $('option:selected', "#improws").text().split(" - ");
 		$('option:selected', "#improws").remove();
     	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
+	}else{
+		alert("Incorrect value(s) for important rows!");
 	}
 }
 
@@ -1188,6 +1203,23 @@ function tokenize(instring,inprefix,insuffix)
 			maketoken('rowcomment',currentStr,from,i,row);
 			/* This does not have to be here because a newline creates in coderender function 
 			maketoken('newline',"",i,i,row); */													                
+		
+		}else if(currentCharacter == '<' && instring.charAt(i+1)=='!' && instring.charAt(i+2)=='-' && instring.charAt(i+3)=='-'){ // Comment of <!-- type 
+			i++;
+			currentStr = currentCharacter; 
+			while(true){
+				currentCharacter=instring.charAt(i);
+				if (currentCharacter=='\n'||currentCharacter=='\r'||currentCharacter=='') {
+					break;
+				}else{
+					currentStr+=currentCharacter;                
+				}
+				i++;
+			}	
+			//Replace < symbols in the comment so they are not recognised as html by the browser
+			currentStr = currentStr.replace(/\</g, "&#60;"); 
+			maketoken('rowcomment',currentStr,from,i,row);
+		
 		}else if (currentCharacter=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
 			i++;
 			currentStr=currentCharacter; 
@@ -1594,11 +1626,15 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 2){
@@ -1607,12 +1643,16 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight2boxes(boxValArray, 1, 2);
 				$(boxValArray['box1']['id']).width("100%");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 3){
@@ -1621,6 +1661,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 				$("#box2wrapper").css("left", ""); 
@@ -1628,18 +1671,23 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 4){
@@ -1648,6 +1696,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
@@ -1655,12 +1706,16 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){	
 				alignBoxesHeight3boxes(boxValArray, 2, 1, 3);
 				alignBoxesWidth(boxValArray, 2, 1);
@@ -1668,6 +1723,7 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 5){
@@ -1676,6 +1732,9 @@ function resizeBoxes(parent, templateId)
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
 			handles: "e,s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 1, 2);
 				alignBoxesHeight4boxes(boxValArray, 1, 2);
@@ -1683,29 +1742,38 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
 			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesHeight4boxes(boxValArray, 2, 1);
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 		
 		$(boxValArray['box3']['id']).resizable({
 			containment: parent,
 			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
 			resize: function(e, ui){
 				alignBoxesWidth(boxValArray, 3, 4);
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
 			}
 		});
 	}else if(templateId == 6){
@@ -1717,21 +1785,26 @@ function resizeBoxes(parent, templateId)
 			$(boxValArray['box1']['id']).resizable({
 				containment: parent,
 				handles: "e",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 					$(boxValArray['box1']['id']).height(100 + "%");
 					
 				},
 				stop: function(e, ui) {
-					 
 					setLocalStorageProperties(templateId, boxValArray);
-					 
+					$('iframe').css('pointer-events','auto');
 				}
 			});
 			
 			$(boxValArray['box2']['id']).resizable({
 				containment: parent,
 				handles: "s",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					
 						alignBoxesHeight3stack(boxValArray, 2, 3, 4);
@@ -1743,14 +1816,17 @@ function resizeBoxes(parent, templateId)
 				stop: function(e, ui) {
 					 
 					setLocalStorageProperties(templateId, boxValArray);
+					$('iframe').css('pointer-events','auto');
 					 
 				}
 			});
 			
-			
 			$(boxValArray['box3']['id']).resizable({
 				containment: parent,
 				handles: "s",
+				start: function(event, ui) {
+					$('iframe').css('pointer-events','none');
+				},
 				resize: function(e, ui){
 					
 					console.log("");
@@ -1763,6 +1839,7 @@ function resizeBoxes(parent, templateId)
 					 
 					$(boxValArray['box4']['id']).css("top", " ");
 					setLocalStorageProperties(templateId, boxValArray);
+					$('iframe').css('pointer-events','auto');
 					 
 				}
 			});
@@ -2088,6 +2165,49 @@ function setResizableToPer(boxValArray)
 		$(this).width(newWidth + "%");
 	});
 }
+
+//---------------------------------------------------------------------------------
+// Stops calling of the function when the user is in mobile mode.
+//				Is called at the same time as resizeboxes() in codeviewer.js
+//---------------------------------------------------------------------------------
+
+function mobileDesktopResize(parent, templateId){
+
+		var windowWidth = $(window).width();
+			
+		if(windowWidth < 1100){
+				var numBoxes = $("[id ^=box][id $=wrapper]").length;
+				for(var i = 1; i <= numBoxes; i++){
+					if ($("#box" + i + "wrapper").hasClass('ui-resizable')) {
+						$("#box" + i + "wrapper").resizable("destroy");
+					}
+				}
+		}
+
+	$(window).resize(function(event){
+		 //This if statement has to do with resizable ui and window events overlapping in certain areas. This rules out the resizable ui ones.
+		 if (!$(event.target).hasClass('ui-resizable')) {
+			var windowWidth = $(window).width();
+			
+			if(windowWidth < 1100){
+				
+					var numBoxes = $("[id ^=box][id $=wrapper]").length;
+
+					for(var i = 1; i <= numBoxes; i++){
+						if ($("#box" + i + "wrapper").hasClass('ui-resizable')) {
+							$("#box" + i + "wrapper").resizable("destroy");
+						}
+					}
+				
+			}else{
+				if (!$("#box1wrapper").hasClass('ui-resizable')) {
+					resizeBoxes("#div2", retData["templateid"]);
+				}
+			}
+		}
+	});
+}
+
 //----------------------------------------------------------------------------------
 // fixQuotedHtml: replace all "<, and >" with "&lt and &gt". This makes sure the 
 //				  html tags are not rendered by the browser.	

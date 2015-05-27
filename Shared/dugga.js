@@ -581,3 +581,12 @@ $(window).load(function() {
       	if(event.keyCode == 27) closeWindows();
       });
 });
+
+$(window).load(function() {
+	$('.loginBox').draggable({ handle:'.loginBoxheader'});
+	$('.loginBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
+	//There is an issue with using this code, it generates errors that stop execution
+	$(window).keyup(function(event){
+		if(event.keyCode == 27) closeWindows();
+	});
+});

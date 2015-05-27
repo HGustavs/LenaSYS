@@ -8,6 +8,8 @@
     width: -moz-calc(100.0%)!important;
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;
+    min-height: 10%;
+	max-height: 90%;
 }
 
 
@@ -23,5 +25,7 @@
     width: -webkit-calc(100.0%)!important;
     width: calc(100.0%)!important;
     font-family: Arial,Sans-Serif;
+    min-height: 10%;
+	max-height: 90%;
 }
 

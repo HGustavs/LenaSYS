@@ -1,0 +1,270 @@
+
+<html>
+	<head>
+		<script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+		<script type="text/javascript" src="webgl-utils.js"></script>
+		<script type="text/javascript" src="webgl-helpers.js"></script>
+		<script type="text/javascript" src="eleph.js"></script>
+		<!--<script type="text/javascript" src="sph.js"></script>-->
+
+<script id="shader-fs" type="x-shader/x-fragment">
+    precision mediump float;
+		
+		varying vec3 vNormal;
+		varying vec3 vLightDir;
+		varying vec3 vEyeVec;
+		
+		void main(void)
+		{
+		  vec3 L = normalize(vLightDir);
+		  vec3 N = normalize(vNormal);
+
+			// Lambert Diffuse Lighting
+			float diffuse=max(dot(N,-L),0.0);
+		
+			vec4 finalColor = vec4(diffuse,0.0,0.0,1.0);
+		 		 	
+			gl_FragColor = finalColor;
+		}
+
+</script>
+
+<script id="shader-vs" type="x-shader/x-vertex">
+
+		attribute vec3 aVertexPosition;
+		attribute vec3 aVertexNormal;
+		
+		uniform mat4 uMVMatrix; 
+		uniform mat4 uPMatrix; 
+		uniform mat4 uNMatrix; 
+		
+		uniform vec3 uLightPosition;
+		
+		varying vec3 vNormal;
+		varying vec3 vLightDir;
+		varying vec3 vEyeVec;
+		
+		void main(void) {
+					
+		 //Transformed vertex position
+		 vec4 vertex = uMVMatrix * vec4(aVertexPosition, 1.0);
+		 
+		 //Transformed normal vector
+		 vNormal = vec3(uNMatrix * vec4(aVertexNormal, 0.0));
+		
+		 //Light position
+		 vLightDir = vec3(uMVMatrix * vec4(uLightPosition, 0.0));
+		 
+		 //Vector Eye
+		 vEyeVec = -vec3(vertex.xyz);
+		 
+		 //Final vertex position
+		 gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+		 		 
+		}
+		
+</script>
+
+
+<script type="text/javascript">
+
+    function initShaders() {
+        var fragmentShader = getShader(gl, "shader-fs");
+        var vertexShader = getShader(gl, "shader-vs");
+
+        shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+
+        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+            alert("Could not initialise shaders");
+        }
+
+        gl.useProgram(shaderProgram);
+
+        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+
+        shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
+        gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+
+        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+        shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
+    
+        shaderProgram.iResolutionUniform = gl.getUniformLocation(shaderProgram, "iResolution");
+        shaderProgram.iGlobalTimeUniform = gl.getUniformLocation(shaderProgram, "iGlobalTime");
+    		
+    }
+
+		var cubeVerticesBuffer;
+		var cubeVerticesColorBuffer;
+		var cubeVerticesIndexBuffer;
+    
+    function initBuffers() 
+    {
+
+			  cubeVerticesBuffer = gl.createBuffer();
+			  gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesBuffer);
+			  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+		  	cubeVerticesNormalBuffer = gl.createBuffer();
+		  	gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesNormalBuffer);
+		  	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cubeNormal), gl.STATIC_DRAW);
+			  
+			  cubeVerticesIndexBuffer = gl.createBuffer();
+			  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVerticesIndexBuffer);
+			  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
+
+    }
+    
+    function drawScene()
+    {
+        gl.uniform2f(shaderProgram.iResolutionUniform,gl.viewportWidth,gl.viewportHeight);
+        gl.uniform1f(shaderProgram.iGlobalTimeUniform,timecount);
+            
+        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+/*
+				// For 2D
+				mat4.ortho(-1, 1, -1, 1, -1, 1, pMatrix)
+        mat4.identity(mvMatrix);
+*/
+
+        // For 3D
+        mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 500.0, pMatrix);
+        mat4.identity(mvMatrix);
+
+				// Orbit Camera
+        mat4.translate(mvMatrix, [0, 0, -158]);
+        mat4.multiply(mvMatrix, moonRotationMatrix);
+
+/*
+				// Tumble Camera
+        mat4.set(moonRotationMatrix,mvMatrix);
+        mat4.translate(mvMatrix, [0, 0, -158]);
+*/
+
+			// --------------------------------------------------------------------------------
+
+        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+        gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+		    mat4.set(mvMatrix, nMatrix);
+		    mat4.inverse(nMatrix);
+		    mat4.transpose(nMatrix);
+        gl.uniformMatrix4fv(shaderProgram.nMatrixUniform, false, nMatrix);
+
+/*
+
+gl.uniformMatrix4fv(prg.uMVMatrix, false, mvMatrix);
+    gl.uniformMatrix4fv(prg.uPMatrix, false, pMatrix);
+    
+
+*/
+
+
+				gl.uniform3f(gl.getUniformLocation(shaderProgram, "uLightPosition"), 0.0, 0.0, -200.0);
+							
+			  gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesBuffer);
+			  gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+
+			  gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesNormalBuffer);
+			  gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+
+			  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVerticesIndexBuffer);
+			  gl.drawElements(gl.TRIANGLES, tricount*3, gl.UNSIGNED_SHORT, 0);
+
+				// --------------------------------------------------------------------------------
+
+    }
+    
+   
+    var mouseDown = false;
+    var lastMouseX = null;
+    var lastMouseY = null;
+
+    var moonRotationMatrix = mat4.create();
+    mat4.identity(moonRotationMatrix);
+
+    function handleMouseDown(event) {
+        mouseDown = true;
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+    }
+
+
+    function handleMouseUp(event) {
+        mouseDown = false;
+    }
+
+
+    function handleMouseMove(event) {
+        if (!mouseDown) {
+            return;
+        }
+        var newX = event.clientX;
+        var newY = event.clientY;
+
+        var deltaX = newX - lastMouseX
+        var newRotationMatrix = mat4.create();
+        mat4.identity(newRotationMatrix);
+        mat4.rotate(newRotationMatrix, deltaX / 30.0, [0, 1, 0]);
+
+        var deltaY = newY - lastMouseY;
+        mat4.rotate(newRotationMatrix, deltaY / 30.0, [1, 0, 0]);
+
+        mat4.multiply(newRotationMatrix, moonRotationMatrix, moonRotationMatrix);
+
+        lastMouseX = newX
+        lastMouseY = newY;
+    }
+
+    var lastTime = 0;
+
+    function animate()
+    {
+        var timeNow = new Date().getTime();
+        if (lastTime != 0) {
+            var elapsed = timeNow - lastTime;
+        }
+        lastTime = timeNow;
+				
+				updatefps(elapsed,"fps");
+    }
+
+    function tick() {
+        requestAnimFrame(tick);
+        drawScene();
+        animate();
+    }
+    
+    function webGLStart(canvas) {
+        var canvas = document.getElementById(canvas);
+        initGL(canvas);
+        initShaders()
+        initBuffers();
+
+        canvas.onmousedown = handleMouseDown;
+        document.onmouseup = handleMouseUp;
+        document.onmousemove = handleMouseMove;
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.enable(gl.DEPTH_TEST);
+
+        tick();
+    }    
+    
+</script>
+
+</head>
+	
+<body onload="webGLStart('canvas');">
+
+<div class='exampleheading'>
+<canvas id="canvas" style="border: none;" width="400" height="400"></canvas>
+<div id="fps"></div>
+
+</div>
+</html>
