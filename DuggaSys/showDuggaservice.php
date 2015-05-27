@@ -62,6 +62,7 @@ if($userid!="UNK"){
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 		$savedvariant=$row['variant'];
 		$savedanswer=$row['useranswer'];
+		$score = $row['score'];
 	}
 	
 	// Get type of dugga
