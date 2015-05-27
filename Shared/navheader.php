@@ -38,8 +38,8 @@
 					break;
 				case 'TEACHERVIEW';
 					echo "<div class='searchfieldTV clearfix'>";
-					echo "<td class='serachC'>";
-					echo "	<input type='text' id='inputSearch' class='my-pull-left' list='searchOptions' placeholder=' Search...' name='studyprogram/Pnr'>";
+					echo "<td class='search'>";
+					echo "	<input type='text' id='inputSearch' class='UmvSearchInput my-pull-left' list='searchOptions' placeholder=' Search...' name='studyprogram/Pnr'>";
 					echo "	<datalist id='searchOptions'> </datalist>";
 					echo "	<div class='UmvButton my-pull-left' id='searchbutton' onclick='display_search_data();'>Search</span></div>";
 					echo "	</td>";
