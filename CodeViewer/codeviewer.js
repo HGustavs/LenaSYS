@@ -2173,6 +2173,17 @@ function setResizableToPer(boxValArray)
 
 function mobileDesktopResize(parent, templateId){
 
+		var windowWidth = $(window).width();
+			
+		if(windowWidth < 1100){
+				var numBoxes = $("[id ^=box][id $=wrapper]").length;
+				for(var i = 1; i <= numBoxes; i++){
+					if ($("#box" + i + "wrapper").hasClass('ui-resizable')) {
+						$("#box" + i + "wrapper").resizable("destroy");
+					}
+				}
+		}
+
 	$(window).resize(function(event){
 		 //This if statement has to do with resizable ui and window events overlapping in certain areas. This rules out the resizable ui ones.
 		 if (!$(event.target).hasClass('ui-resizable')) {
