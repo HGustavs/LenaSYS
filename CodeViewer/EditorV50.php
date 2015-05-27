@@ -232,7 +232,7 @@ Testing Link:
 						<td>Title:<input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
 					</tr>
 					<tr>
-						<td>Play Link:<input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
+						<td>Play Link:<select style="float:none;" id='runlink'></select></td>
 						<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
 					</tr>
 					<tr>

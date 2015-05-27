@@ -311,7 +311,14 @@ function displayEditExample(boxid)
 		str+="<option>"+iw[i]+"</option>";
 	}
 	$("#impwords").html(str);
-
+	
+	var runlinkArray = retData['runlink'];
+	var runlink = "";
+	for(var i = 0; i < runlinkArray.length; i++){
+		runlink += "<option>" + runlinkArray[i] + "</option>";
+	} 
+	$("#runlink").html(runlink);
+	
 	// Set beforeid and afterid if set
 	var beforeid="UNK";
 	if(retData['before']!==null){
