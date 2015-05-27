@@ -437,17 +437,17 @@ INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',331);
 
 
 -- course requirements --
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(309,305,"DA14G","DA322G");
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(309,307,"IS135G","DA322G");
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(319,305,"DA14G","DV516G");
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(319,306,"DHITG","DV516G");
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(319,307,"IS135G","DV516G");
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(319,308,"MA161G","DV516G");
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(319,309,"DA322G","DV516G");
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(319,310,"IT325G","DV516G");
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(319,311,"DA327G","DV516G");
-
-INSERT INTO course_req(cid,req_cid,reg_coursecode,coursecode) values(305,309,"DA322G","DA14G");
+INSERT INTO course_req(cid,req_cid) values(309,305);
+INSERT INTO course_req(cid,req_cid) values(309,307);
+INSERT INTO course_req(cid,req_cid) values(311,301);
+INSERT INTO course_req(cid,req_cid) values(312,309);
+INSERT INTO course_req(cid,req_cid) values(319,305);
+INSERT INTO course_req(cid,req_cid) values(319,306);
+INSERT INTO course_req(cid,req_cid) values(319,307);
+INSERT INTO course_req(cid,req_cid) values(319,308);
+INSERT INTO course_req(cid,req_cid) values(319,309);
+INSERT INTO course_req(cid,req_cid) values(319,310);
+INSERT INTO course_req(cid,req_cid) values(319,311);
 
 -- DVSUG -- 
 insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(200,'a13andka','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Anders','Karlsson','910202-3434','a13andka@student.his.se','DVSUG13h');
@@ -549,7 +549,7 @@ INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('inlämning1',303,2.5
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',304,7.5,'u-3-4-5');
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',305,7.5,'u-3-4-5');
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',306,7.5,'u-3-4-5');
-INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',307,7.5,'u-3-4-5');
+INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',307,5.0,'u-3-4-5');
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',308,7.5,'u-3-4-5');
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',309,7.5,'u-3-4-5');
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',310,7.5,'u-3-4-5');
@@ -574,7 +574,7 @@ INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,200,'salstentamen
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (304,200,'salstentamen',5, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (305,200,'salstentamen',5, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (306,200,'salstentamen',5, 7.5);
-INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (307,200,'salstentamen',5, 7.5);
+INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (307,200,'salstentamen',5, 5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (308,200,'salstentamen',5, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (309,200,'salstentamen',5, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (310,200,'salstentamen',5, 7.5);
@@ -589,9 +589,9 @@ INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (302,201,'salstentamen
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,201,'salstentamen',3, 5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,201,'inlämning1','u', 2.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (304,201,'salstentamen','u', 7.5);
-INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (305,201,'salstentamen','u', 7.5);
+INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (305,201,'salstentamen',4, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (306,201,'salstentamen','u', 7.5);
-INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (307,201,'salstentamen','u', 7.5);
+INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (307,201,'salstentamen',5, 5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (308,201,'salstentamen','u', 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (309,201,'salstentamen','u', 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (310,201,'salstentamen',3, 7.5);
@@ -603,7 +603,7 @@ INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (315,201,'salstentamen
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (316,201,'salstentamen',3, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (317,201,'salstentamen',3, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (318,201,'salstentamen',3, 7.5);
-INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (319,201,'salstentamen',3, 30);
+INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (319,201,'salstentamen','u', 30);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (320,201,'salstentamen',3, 30);
 
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (300,202,'salstentamen',5, 7.5);
