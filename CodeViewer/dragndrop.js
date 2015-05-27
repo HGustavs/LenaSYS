@@ -51,10 +51,12 @@ $(function() {
 	
 	$('.deleteSequence').click(function(){
 		var seqID = $('#sequenceSelector').val();
-		$.post('dragndropService.php?action=delete', {seqid: seqID, courseid: courseID}, function(o) {
+		var r = confirm("Are you sure that you want to delete the selected sequence?");
+		if (r == true) {
+			$.post('dragndropService.php?action=delete', {seqid: seqID, courseid: courseID}, function(o) {
 			$("#SeqEdit").load("dragndrop.php?courseid="+courseID+"&seqid="+o+"");
 			$( "#status" ).html("Sequence deleted!");
 		});
-	
+		}
 	});	
 });
