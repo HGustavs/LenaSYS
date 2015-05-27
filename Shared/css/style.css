@@ -1078,19 +1078,26 @@ input.new-item-button:hover {
  *                                    UMV                                   *
  * --------------================################================-------------- */
  
+.UmvSearchInput{
+	 margin-top:13px;
+ }
  .UmvButton {
 	cursor:pointer;
 	background-color:#FFFFFF;
 	border:none;	
 	letter-spacing:0.1em;
-	margin-left:0px;
-	width:8%;
-	padding-top:4px;
+	margin-top:13px;
+	margin-left:10px;
+	padding:4px;
 	text-align:center;
 	color:#614875;
-	border-top-right-radius:0.5em;
-	border-bottom-right-radius:0.5em;
+	border-radius:0.5em;
+	font-size:0.75em;
 }
+ .UmvButton:hover {
+	 background-color:#F5F0F5;
+}
+
 
 /* Searchfield UMV */
 .searchfieldTV{
