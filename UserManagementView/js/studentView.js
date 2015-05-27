@@ -147,8 +147,10 @@ function createHTMLForCourse(data)
 	
 	return courseHtmlStr;
 }
-
-//adds hovereffect to all the courses that has a pre requierment from the database
+//---------------------------------------------------------------------------
+//insert_hover_coursereq -- Adds hovereffect to all the courses that has a 
+//			    pre requierment from the database.
+//---------------------------------------------------------------------------
 function insert_hover_coursereq(data){
 	var regCourses = data['reqCourses'];
 
@@ -161,8 +163,10 @@ function insert_hover_coursereq(data){
 	}
 	check_hp_insert_img(data);
 }
-
-//checks and inserts the correct img for warnings on studnet courses
+//-----------------------------------------------------------------------
+//check_hp_insert_img(data)-- Checks and inserts the correct img for 
+//			      warnings on student courses.
+//-----------------------------------------------------------------------
 function check_hp_insert_img(data){
 	var regCourses = data['reqCourses'];
 
@@ -181,9 +185,10 @@ function check_hp_insert_img(data){
 	}
 }
 
-//-----------------------------------------------------------------------
-// When hover, fades away courses not requiered 
-//-----------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// course_hover_requierments(data)-- When hover, fades away courses not requiered
+//				     for the course.
+//-------------------------------------------------------------------------------
 function course_hover_requierments(data){
 	var regCourses = data['reqCourses'];
 
@@ -213,9 +218,10 @@ function course_hover_requierments(data){
     });
  
 }
-//-----------------------------------------------------------------------
-//Changes the background color to green when the student have finished the course.
-//-----------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//progress_bar_complete(data)-- Changes the background color to green when the 
+// 			       student have finished the course.
+//----------------------------------------------------------------------------
 function progress_bar_complete(data){
 
 	$( ".progress-bar" ).each(function( index ) {
