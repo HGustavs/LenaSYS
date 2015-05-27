@@ -243,6 +243,7 @@ $array = array(
 		"debug" => $debug,
 		"param" => $param,
 		"answer" => $savedanswer,
+		"score" => $score,
 		"highscoremode" => $highscoremode,
 		"questionanswer" => $questionanswer
 	);
