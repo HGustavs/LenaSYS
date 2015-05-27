@@ -490,14 +490,14 @@ function search_option(data,input){
 	var htmlStr= "";
 	var user = data['user'];
 	
-	if(input==1){
+	if(input==1 & user.length > 0){
 		for(var i = 0; i<8;i++){
 			htmlStr += "<option value='"+user[i]['ssn']+"  "+user[i]['username']+"' class='"+user[i]['uid']+"'></option>";
 			if(i == user.length-1){
 				break;
 			}
 		}
-	}if(input==2){
+	}if(input==2 & user.length > 0){
 		for(var i = 0; i<8;i++){
 			htmlStr += "<option value='"+user[i]['username']+"  "+user[i]['ssn']+"' class='"+user[i]['uid']+"'></option>";
 			if(i == user.length-1){
