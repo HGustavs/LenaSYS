@@ -248,7 +248,7 @@ function AJAXService(opt,apara,kind)
 		}
 		// Informs the user that his input contained nothing.
 		if(apara[key] == "") {
-			alert("Your input contained nothing in " + key);
+			console.log("Your input contained nothing in " + key);
 		}
 	}
 	
@@ -409,7 +409,7 @@ function processLogin() {
 
 					location.reload();				
 				}else{
-					alert("Failed to log in.");
+					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {

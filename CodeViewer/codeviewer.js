@@ -477,7 +477,6 @@ function editImpRows(editType)
 	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
 
 	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo && rowFrom > 0 && rowTo > 0 && rowFrom <= lineno && rowTo <= lineno) {
-        alert("You've added " + rowFrom + " and " + rowTo); //Shows you what you've input
 		var exists = false;
 		$('#improws option').each(function() {
     		if (this.value == row) {exists = true;}
@@ -832,7 +831,6 @@ document.addEventListener("paste", function(e) {
 
 function changeboxcontent(boxcontent,boxid)
 {
-	alert(boxcontent+" "+boxid);
 	AJAXService("changeboxcontent","&boxid="+boxid+"&boxcontent="+boxcontent);	
 }
 
