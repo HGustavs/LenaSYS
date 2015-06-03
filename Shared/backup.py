@@ -22,7 +22,7 @@ lenasysdir = os.getcwd().rsplit("/", 1)[1]
 os.chdir("../")
 os.popen("tar cf ~/%s.tar %s" % (filename, lenasysdir))
 
-os.popen("mysqldump -u %s -p%s -h %s -e --opt -c %s | gzip -c > /tmp/%s.gz" % (dbdata['DB_USER'], dbdata['DB_PASSWORD'], dbdata['DB_HOST'], dbdata['DB_NAME'], "lenasysdb.sql"))
+os.popen("mysqldump –-single-transaction -u %s -p%s -h %s -e --opt -c %s | gzip -c > /tmp/%s.gz" % (dbdata['DB_USER'], dbdata['DB_PASSWORD'], dbdata['DB_HOST'], dbdata['DB_NAME'], "lenasysdb.sql"))
 
 os.popen("tar --append --file ~/%s.tar -C /tmp/ lenasysdb.sql.gz" % (filename))
 
