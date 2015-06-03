@@ -30,4 +30,4 @@ os.popen("rm /tmp/lenasysdb.sql.gz")
 os.popen("bzip2 ~/%s.tar" % (filename))
 
 print("Backup done.")
-print("Backup file: "+filename+".tar")
+print("Backup file: "+filename+".tar.bz2")
