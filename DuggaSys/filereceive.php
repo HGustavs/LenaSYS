@@ -71,18 +71,15 @@ if($ha){ //login for user is successful & has either write access or is superuse
 		//---------------------------------------------------------------------	
 		}else if($kind=="GFILE"){
 							if(!file_exists ("/templates/".$_FILES['name'])){ // Check if added file name exists.
-									
 									$storefile=mkdir($currcvd."/DuggaSys/templates/".$_FILES['name']);
-									$storefile=true;
 							}else{
 									$storefile=true;							
 							}
-							if($selectedfile!="UNK"){ 
-									if(file_exists ($currcvd."/DuggaSys/templates/".$_FILES['name'])){ // Check if added file name exists.
-											$storefile=true;
-									}else{
-											$storefile=false;									
-									}
+
+							if(file_exists ($currcvd."/DuggaSys/templates/".$_FILES['name'])){ // Check if added file name exists.
+									$storefile=true;
+							}else{
+									$storefile=false;									
 							}
 		//  if it is a local file or a Course Local File, check if the file exists under "/courses", if not create the directory
 		//---------------------------------------------------------------------	
@@ -92,21 +89,20 @@ if($ha){ //login for user is successful & has either write access or is superuse
 							}else{
 									$storefile=true;
 							}
-							if($kind=="LFILE"){
+							if($kind=="MFILE"||$kind=="LFILE"){
 									if(!file_exists ($currcvd."/courses/".$cid)){ // Check if added file name exists.
 											$storefile=mkdir($currcvd."/courses/".$cid);
 									}else{
-											$storefile=true;
+											$storefile=true;									
 									}
 							}
-							if($kind=="MFILE"){
-									if($selectedfile!="UNK"){
-											if(!file_exists ($currcvd."/courses/".$cid)){ // Check if added file name exists.
-													$storefile=mkdir($currcvd."/courses/".$cid);
-											}else{
-													$storefile=true;									
-											}
-									}							
+
+							if($kind=="LFILE"){
+									if(!file_exists ($currcvd."/courses/".$cid."/".$vers)){ // Check if added file name exists.
+											$storefile=mkdir($currcvd."/courses/".$cid."/".$vers);
+									}else{
+											$storefile=true;
+									}
 							}
 		}	
 			 		
@@ -166,7 +162,7 @@ if($ha){ //login for user is successful & has either write access or is superuse
 										$fname = preg_replace('/\s+/', '', $fname); // Remove white space and non ascii characters
 
 										if($kind=="LFILE"){
-												$movname=$currcvd."/courses/".$cid."/".$fname;	//change search path										
+												$movname=$currcvd."/courses/".$cid."/".$vers."/".$fname;	//change search path										
 										}else if($kind=="MFILE"){
 												$movname=$currcvd."/courses/".$cid."/".$fname; //change search path												
 										}else{

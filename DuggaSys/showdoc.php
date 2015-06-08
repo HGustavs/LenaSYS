@@ -66,11 +66,11 @@
 								// Global
 								$file = "templates/".$filename;
 							}else if($filekind==3){
-								// Course Local
-								$file = "../courses/".$cid."/".$filename;
-							}else if($filekind==4){
 								// Local
 								$file = "../courses/".$cid."/".$coursevers."/".$filename;
+							}else if($filekind==4){
+								// Course Local
+								$file = "../courses/".$cid."/".$filename;
 							}else{
 								$file = "UNK";					
 							}
@@ -139,9 +139,10 @@ if($readfile == false){
 ?>
 <!-- content START -->
 <div id="content">
-<?php
-echo $bummer;
-?>
+	<br/>
+	<?php
+	echo $bummer;
+	?>
 </div>
 <!-- content END -->
 <?php
