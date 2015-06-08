@@ -1,9 +1,10 @@
 <?php
+		include_once "../Shared/basic.php";
+		include_once "../Shared/sessions.php";
+
 		ob_start();
 		date_default_timezone_set("Europe/Stockholm");
 		// Include basic application services!
-		include_once "../Shared/basic.php";
-		include_once "../Shared/sessions.php";
 		$file;
 		session_start();
 		$readfile = false;
@@ -66,11 +67,11 @@
 								// Global
 								$file = "templates/".$filename;
 							}else if($filekind==3){
-								// Local
-								$file = "../courses/".$cid."/".$coursevers."/".$filename;
-							}else if($filekind==4){
 								// Course Local
 								$file = "../courses/".$cid."/".$filename;
+							}else if($filekind==4){
+								// Local
+								$file = "../courses/".$cid."/".$coursevers."/".$filename;
 							}else{
 								$file = "UNK";					
 							}
@@ -92,18 +93,16 @@
 												case "gif": $ctype="image/gif"; break;
 												case "png": $ctype="image/png"; break;
 												case "jpg": $ctype="image/jpg"; break;
-												default: $ctype="application/force-download";
 											}
 											header("Content-Type: ".$ctype);
-											header('Content-Type: application/octet-stream');
-											header('Content-Disposition: inline; filename="' .$filename.'"');
-											header('Content-Transfer-Encoding: binary');
-											header('Accept-Ranges: bytes');
-		
+//											header('Content-Disposition: inline; filename="' .$filename.'"');
+//											header('Content-Transfer-Encoding: binary');
+//											header('Accept-Ranges: bytes');
+											
 											@readfile($file);
 									}
 								}else{
-									$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";										  
+									$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!".$file."</div>";										  
 								}
 					}
 				}else{
@@ -115,38 +114,34 @@
 		}else{
 				$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 		}		
+		
+		if(!$readfile){
+				echo "<html>";
+				echo "<head>";
+				echo "<link rel='icon' type='image/ico' href='../Shared/icons/favicon.ico'/>";
+				echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
+				echo "<title>Document Viewer</title>";
+				echo "<link type='text/css' href='../Shared/css/style.css' rel='stylesheet'>";
+				echo "<link type='text/css' href='../Shared/css/jquery-ui-1.10.4.min.css' rel='stylesheet'>";  
+				echo "<script src='../Shared/js/jquery-1.11.0.min.js'></script>";
+				echo "<script src='../Shared/js/jquery-ui-1.10.4.min.js'></script>";
+				echo "<script src='../Shared/dugga.js'></script>";
+				echo "</head>";
+				echo "<body>";
+				
+				if($readfile == false){
+					$noup="SECTION";
+					$loginvar="LINK"; 
+					include '../Shared/navheader.php';
+					setcookie("loginvar", $loginvar); 
+				}
+				
+				echo "<div id='content'>";
+				echo "<br/>";
+				echo $bummer;
+				echo "</div>";
+				include '../Shared/loginbox.php';
+				echo "</body>";
+				echo "</html>";		
+		}
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Document Viewer</title>
-	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-  	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
-	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
-	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-	<script src="../Shared/dugga.js"></script>
-</head>
-<body>
-<?php 
-if($readfile == false){
-	$noup="SECTION";
-	$loginvar="LINK"; 
-	include '../Shared/navheader.php';
-	setcookie("loginvar", $loginvar); 
-}
-?>
-<!-- content START -->
-<div id="content">
-	<br/>
-	<?php
-	echo $bummer;
-	?>
-</div>
-<!-- content END -->
-<?php
-include '../Shared/loginbox.php';
-?>
-</body>
-</html>
