@@ -88,24 +88,22 @@ function validateForm()
 {	
 	var result;
 
+	alert(document.getElementById('uploadedlink').value.substr(0,10).toLowerCase());
+
 	//Validation for links
 	if($("#linky").css('display') == 'block'){
-		//Check if the link starts with http:// or https://
-		if(document.getElementById('uploadedlink').value.substr(0,7).toLowerCase() == "http://"){
-			result = true;
-		}
-		else if(document.getElementById('uploadedlink').value.substr(0,8).toLowerCase() == "https://"){
-			result = true;
-		}
-		else{
-			$("#errormessage").css("display","block");
-			$("#errormessage").html("<div class='alert danger'>Link has to start with \"http://\" or \"https://\" </div>");
-			$("#uploadedlink").css("background-color", "rgba(255, 0, 6, 0.2)");
-			result = false;
-		}
-	}
-	//If form is not for links, no need for validation
-	else{
+			//Check if the link starts with http:// or https://
+			if(document.getElementById('uploadedlink').value.substr(0,7).toLowerCase() == "http://"){
+				result = true;
+			}else if(document.getElementById('uploadedlink').value.substr(0,8).toLowerCase() == "https://"){
+					result = true;
+			}else{
+					$("#errormessage").css("display","block");
+					$("#errormessage").html("<div class='alert danger'>Link has to start with \"http://\" or \"https://\" </div>");
+					$("#uploadedlink").css("background-color", "rgba(255, 0, 6, 0.2)");
+					result = false;
+			}
+	}else{
 		result = true;
 	} 
 

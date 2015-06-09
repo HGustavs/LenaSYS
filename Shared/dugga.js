@@ -9,12 +9,12 @@ function toggleloginnewpass(){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
 		status++;
-	}
-	else if(status == 1){
+	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
 		status= 0;
 	}
+
 }
 
 function closeWindows(){
@@ -29,14 +29,14 @@ function closeWindows(){
 
 function changeCSS(cssFile, index)
 {
-	var cssLinkIndex = index;
-	var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
-    var newlink = document.createElement("link");
-    newlink.setAttribute("rel", "stylesheet");
-    newlink.setAttribute("type", "text/css");
-    newlink.setAttribute("href", cssFile);
- 	
-    document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
+		var cssLinkIndex = index;
+		var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
+		var newlink = document.createElement("link");
+		newlink.setAttribute("rel", "stylesheet");
+		newlink.setAttribute("type", "text/css");
+		newlink.setAttribute("href", cssFile);
+		
+		document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
 //----------------------------------------------------------------------------------
@@ -204,51 +204,48 @@ function AJAXService(opt,apara,kind)
 	var para="";
 	for (var key in apara) {
 		var old = apara[key];
-		// Skips any undefined values
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
 			// Handles all the individual elements in an array and adds the array as such: &key=val1,val2,val3
 			// This handles the important words that are sent from the codeviewer
 			if (apara[key].constructor === Array && key != "addedRows" && key != "removedRows") {
-				var array = [];
-				for (var i = 0; i < apara[key].length; i++) {
-					array.push(encodeURIComponent(htmlEntities(apara[key][i])));
-				}
-				para+="&"+key+"="+array;
-			}
-			// Handles all the individual elements in an array and adds the array as such: &key=[val1,val2,val3][val1,val2,val3]
-			// This case is specifically for adding/removing important rows in the codeviewer
-			else if (key == "addedRows" || key == "removedRows") {
-				para+="&"+key+"=";
-				var array = [];
-				for (var i = 0; i < apara[key].length; i++) {
-					var string = "["; 
-					var row = [];
-					for (var j = 0; j < apara[key][i].length; j++) {
-						row.push(apara[key][i][j]);
+					var array = [];
+					for (var i = 0; i < apara[key].length; i++) {
+							array.push(encodeURIComponent(htmlEntities(apara[key][i])));
 					}
-					string += row + "]";
-					array.push(string);
-				}
-				para += array;
-			}
-			else {
-					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@{}\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
-		
-				// Concat the generated regex result to a string again.
-				apara[key] = s.join("");
-		
-				// Informs the user if his input contained illegal characters
-				// that they were removed after parsing.
-				if(old != apara[key]) {
-					alert("Illegal characters removed in " + key);
-				}
-					
-				para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));		
+					para+="&"+key+"="+array;
+			}else if (key == "addedRows" || key == "removedRows") {
+					// Handles all the individual elements in an array and adds the array as such: &key=[val1,val2,val3][val1,val2,val3]
+					// This case is specifically for adding/removing important rows in the codeviewer
+
+					para+="&"+key+"=";
+					var array = [];
+					for (var i = 0; i < apara[key].length; i++) {
+							var string = "["; 
+							var row = [];
+							for (var j = 0; j < apara[key][i].length; j++) {
+									row.push(apara[key][i][j]);
+							}
+							string += row + "]";
+							array.push(string);
+					}
+					para += array;
+			}else{
+					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@={}\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
+			
+					// Concat the generated regex result to a string again.
+					apara[key] = s.join("");
+			
+					// Informs the user that his input contained illegal characters that were removed after parsing.
+					if(old != apara[key]) {
+						alert("Illegal characters removed in " + key);
+					}
+						
+					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));		
 			}
 		}
-		// Informs the user that his input contained nothing.
 		if(apara[key] == "") {
-			console.log("Your input contained nothing in " + key);
+				// Informs the user that his input contained nothing.
+				console.log("Your input contained nothing in " + key);
 		}
 	}
 	

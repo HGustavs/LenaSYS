@@ -510,7 +510,7 @@ function returnedSection(data)
 					if (parseInt(item['kind']) < 2) {
 						str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
 					}else if (parseInt(item['kind']) == 4) {
-						str+="<span style='padding-left:5px;border-bottom:3px solid white'>Course Segment "+item['entryname']+"</span>";
+						str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
 					}else if (parseInt(item['kind']) == 2) {
 						str+="<span><a style='margin-left:15px;' href='../CodeViewer/EditorV50.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 						
@@ -521,9 +521,9 @@ function returnedSection(data)
 						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
 					}else if(parseInt(item['kind']) == 5){
 						if(item['link'].substring(0,4) === "http"){
-							str+= "<a style='cursor:pointer;margin-left:75px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+" (material)</a>";
+							str+= "<a style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
 						}else{
-							str+="<a style='cursor:pointer;margin-left:75px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+" (material)</a>";
+							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 						}
 					}	
 		
