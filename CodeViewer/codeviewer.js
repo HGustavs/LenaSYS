@@ -1399,6 +1399,8 @@ function rendercode(codestring,boxid,wordlistid)
 						}else{
 							cont+="<span class='oper'>"+tokenvalue+"</span>";
 						}
+					}else{
+							cont+="<span class='oper'>"+tokenvalue+"</span>";					
 					}
 				}else if(tokens[i+1].val=="/"){
 					if(htmlArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
