@@ -2236,25 +2236,25 @@ function addHtmlLineBreak(inString){
 
 function parseMarkdown(inString)
 {	
-	var removeExtraTagsNumberedList = new RegExp('</ol>' + '\n' + '<ol>', 'g');
-	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
-	
-	// fymho
+	// append '@@@' to all code block indicators '~~~'
+	inString = inString.replace(/^(\~{3}\n)/gm, '~~~@@@');
 
-	// Split on code 
+	// Split on code block
 	codearray=inString.split('~~~');
 	
 	var str="";
 	var kodblock=0;
-	for(var i=0;i<codearray.length){
+	for(var i=0;i<codearray.length;i++){
 			workstr=codearray[i];
 
-			if(workstr==="###"){
+			//alert(workstr.substr(0,3));
+			if(workstr.substr(0,3)==="@@@"){
 					kodblock=!kodblock;
+					workstr = workstr.substr(3);
 			}
 			
 			if(kodblock){
-					workstr= '<pre><code>'+workstr+'</code></pre>');					
+					workstr= '<pre><code>'+workstr+'</code></pre>';					
 			}else{
 					workstr=markdownBlock(workstr);
 			}
@@ -2273,6 +2273,11 @@ function parseMarkdown(inString)
 //----------------------------------------------------------------------------------
 function markdownBlock(inString)
 {
+	var removeExtraTagsNumberedList = new RegExp('</ol>' + '\n' + '<ol>', 'g');
+	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
+
+	//alert(inString);
+
 	//Regular expressions for italics and bold formatting
 	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');	
 	inString = inString.replace(/\*{2}(.*?\S)\*{2}/g, '<font style="font-weight:bold;">$1</font>');
@@ -2297,5 +2302,7 @@ function markdownBlock(inString)
 	
 	//Regular expression for line
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
+
+	return inString;
 
 }
