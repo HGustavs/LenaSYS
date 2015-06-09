@@ -2211,27 +2211,73 @@ function mobileDesktopResize(parent, templateId){
 function fixQuotedHtml(inString){
 	return inString.replace(/\"\<(.*)\>/g, "\"&lt$1&gt");
 }
+
+//----------------------------------------------------------------------------------
+// addHtmlLineBreak: This function will replace all '\n' line breaks in a string
+//					 with <br> tags.
+//                Is called by returned in codeviewer.js
+//----------------------------------------------------------------------------------
+function addHtmlLineBreak(inString){
+	return inString.replace(/\n/g, '<br>'); 
+}
+
 /********************************************************************************
 
    Markdown, the functions in the next section contains the functions used by
 	the markdown parser.
 
 *********************************************************************************/
+
 //----------------------------------------------------------------------------------
 // parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
 //				  function replace with regular expressions.
 //                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function parseMarkdown(inString)
 {	
 	var removeExtraTagsNumberedList = new RegExp('</ol>' + '\n' + '<ol>', 'g');
 	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
 	
+	// fymho
+
+	// Split on code 
+	codearray=inString.split('~~~');
+	
+	var str="";
+	var kodblock=0;
+	for(var i=0;i<codearray.length){
+			workstr=codearray[i];
+
+			if(workstr==="###"){
+					kodblock=!kodblock;
+			}
+			
+			if(kodblock){
+					workstr= '<pre><code>'+workstr+'</code></pre>');					
+			}else{
+					workstr=markdownBlock(workstr);
+			}
+			str+=workstr;
+	}
+	
+	//Regular expression for code blocks
+	
+	return str;
+}
+
+//----------------------------------------------------------------------------------
+// markdownBlock: 
+//					
+//          
+//----------------------------------------------------------------------------------
+function markdownBlock(inString)
+{
 	//Regular expressions for italics and bold formatting
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');	
+	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');	
 	inString = inString.replace(/\*{2}(.*?\S)\*{2}/g, '<font style="font-weight:bold;">$1</font>');
 	inString = inString.replace(/\*{1}(.*?\S)\*{1}/g, '<font style="font-style:italic;">$1</font>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</font>');
+	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');
 	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<font style="font-weight:bold;">$1</font>');	
 	inString = inString.replace(/\_{1}(.*?\S)\_{1}/g, '<font style="font-style:italic;">$1</font>');
 	
@@ -2251,17 +2297,5 @@ function parseMarkdown(inString)
 	
 	//Regular expression for line
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
-	
-	//Regular expression for code blocks
-	inString = inString.replace(/~{3}((?:\r|\n|.)+?)\~{3}/gm, '<pre><code>$1</code></pre>');
-	
-	return inString;
-}
-//----------------------------------------------------------------------------------
-// addHtmlLineBreak: This function will replace all '\n' line breaks in a string
-//					 with <br> tags.
-//                Is called by returned in codeviewer.js
-//----------------------------------------------------------------------------------
-function addHtmlLineBreak(inString){
-	return inString.replace(/\n/g, '<br>'); 
+
 }
