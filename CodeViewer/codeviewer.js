@@ -59,7 +59,7 @@ function setup()
 function returned(data)
 {	
 	retData=data;
-	console.log(retData);
+//	console.log(retData);
 	
 	if(retData['debug']!="NONE!") console.log("Returned from setup: " + retData['debug']);
 	
@@ -1308,7 +1308,7 @@ function rendercode(codestring,boxid,wordlistid)
 	cbcount=0;
 	cbracket=new Array();
 	
-	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr','relativelayout','textview','webview');
+	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr','relativelayout','textview','webview','manifest','uses','permission','application','activity','intent');
 	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source','textview','webview'); 
 	var htmlTagCount=0;
 	htmlTag=new Array();
@@ -1403,17 +1403,19 @@ function rendercode(codestring,boxid,wordlistid)
 							cont+="<span class='oper'>"+tokenvalue+"</span>";					
 					}
 				}else if(tokens[i+1].val=="/"){
-					if(htmlArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
-						if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
-							pid=htmlTag.pop();
+						if(htmlArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
+							if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+								pid=htmlTag.pop();
+							}else{
+								htmlTagCount++;
+								pid="html"+htmlTagCount+boxid;
+							}
+							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
+							i = i+3;
 						}else{
-							htmlTagCount++;
-							pid="html"+htmlTagCount+boxid;
+								cont+="<span class='oper'>"+tokenvalue+"</span>";						
 						}
-						cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
-						i = i+3;
-					}
-				} else {
+				}else{
 					cont+="<span class='oper'>"+tokenvalue+"</span>";
 				}
 			}else{
@@ -1807,7 +1809,6 @@ function resizeBoxes(parent, templateId)
 						alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 						$(boxValArray['box3']['id']).css("left", " ");
 						$(boxValArray['box2']['id']).css("left", " ");
-						console.log("1");
 					
 				},
 				stop: function(e, ui) {
@@ -1826,7 +1827,6 @@ function resizeBoxes(parent, templateId)
 				},
 				resize: function(e, ui){
 					
-					console.log("");
 					$(boxValArray['box4']['id']).css("top", " ");
 					alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
 					
@@ -2062,7 +2062,7 @@ function initResizableBoxValues(parent)
 		boxHeight = $("#box" + i + "wrapper").height();
 		boxId = "#box" + i + "wrapper";
 		boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
-		console.log("boxId " + boxValueArray["box" + i]["id"] + " boxWidth: " + boxValueArray["box" + i]["width"] + " boxHeight: " + boxValueArray["box" + i]["height"]);
+		//console.log("boxId " + boxValueArray["box" + i]["id"] + " boxWidth: " + boxValueArray["box" + i]["width"] + " boxHeight: " + boxValueArray["box" + i]["height"]);
 	}
 	
 	$(window).resize(function(event){
