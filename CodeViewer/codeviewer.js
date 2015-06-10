@@ -150,7 +150,7 @@ function returned(data)
 			$("#"+contentid).css("margin-top", boxmenuheight-1);
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
-			//Replace '"<', and '>"', in qoutes with "&lt, and &gt"
+			//Replace '<', and '>', in qoutes with &lt, and &gt
 			boxcontent = fixQuotedHtml(boxcontent);
 			// Render code
 			rendercode(boxcontent,boxid,boxwordlist);
@@ -1028,8 +1028,8 @@ function replaceAll(find, replace, str)
 function tokenize(instring,inprefix,insuffix)
 {
 	// replace HTML-entities
-	instring = replaceAll("&lt;","<",instring);
-	instring = replaceAll("&gt;",">",instring);
+	//instring = replaceAll("&lt;","<",instring);
+	//instring = replaceAll("&gt;",">",instring);
 	instring = replaceAll("&amp;","&",instring);
 	// this will replace all "&#9;" in the text that the function tabLine adds were a tab (\t) is placed.
 	instring = replaceAll("&#9;","    ",instring); 
@@ -1399,6 +1399,8 @@ function rendercode(codestring,boxid,wordlistid)
 						}else{
 							cont+="<span class='oper'>"+tokenvalue+"</span>";
 						}
+					}else{
+							cont+="<span class='oper'>"+tokenvalue+"</span>";					
 					}
 				}else if(tokens[i+1].val=="/"){
 					if(htmlArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
@@ -2204,12 +2206,40 @@ function mobileDesktopResize(parent, templateId){
 }
 
 //----------------------------------------------------------------------------------
-// fixQuotedHtml: replace all "<, and >" with "&lt and &gt". This makes sure the 
+// fixQuotedHtml: replace all <, and > with &lt and &gt. This makes sure the 
 //				  html tags are not rendered by the browser.	
 //                
 //----------------------------------------------------------------------------------
 function fixQuotedHtml(inString){
-	return inString.replace(/\"\<(.*)\>/g, "\"&lt$1&gt");
+	// append '@@@' to all string indicators '\"'
+	inString = inString.replace(/\"/g, '\"@@@');
+
+	// Split on code block
+	stringarray=inString.split('\"');
+	
+	var str="";
+	var stringblock=0;
+	for(var i=0;i<stringarray.length;i++){
+			workstr=stringarray[i];
+
+			if(workstr.substr(0,3)==="@@@"){
+					stringblock=!stringblock;
+					workstr = workstr.substr(3);
+			}
+			
+			if(stringblock){
+				// first replace all < with &lt; then all > with &gt;
+				// than put back the quotes.
+				workstr = workstr.replace(/\</g, "&lt;");
+				workstr = workstr.replace(/\>/g, "&gt;");
+				workstr = "\"" + workstr + "\"";
+			}
+
+			str+=workstr;
+	}
+		
+	return str;
+
 }
 
 //----------------------------------------------------------------------------------
