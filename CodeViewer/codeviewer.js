@@ -215,8 +215,7 @@ function returned(data)
 	}
 	// Allows resizing of boxes on the page
 	resizeBoxes("#div2", retData["templateid"]);
-	//Disables resizable functionality in mobile theme
-	mobileDesktopResize("#div2", retData["templateid"]);
+
 }
 
 //---------------------------------------------------------------------------------
@@ -611,45 +610,6 @@ function createboxmenu(contentid, boxid, type)
 }
 
 //----------------------------------------------------------------------------------
-// createhotdogmenu: Creates the menu at the top of a box 
-//                Is called never called, code is kept for future use
-//----------------------------------------------------------------------------------
-function createhotdogmenu()
-{
-	// div2 refers to the main content div below the floating menu
-	var content = $("#div2");
-	// Checks if a hotdogmenu already exists, then calls that, if not a new one is created
-	if($("#hotdogdrop").length < 0){
-		var hotdogmenu = $("#hotdogdrop");
-	}else{
-		var hotdogmenu = document.createElement("span");
-		content.appendChild(hotdogmenu);
-		hotdogmenu.id = "hotdogdrop";
-		hotdogmenu.className = "hotdogdropStyle dropdown dropdownStyle showmobile";
-	}
-
-	str = '<table cellspacing="0" class="showmobile"><tr>';
-	str += '<td class="mbutto mbuttoStyle " title="Back to list" onclick="Up();"><img src="../Shared/icons/home_button.svg" /></td>';
-	str += '<td class="mbutto mbuttoStyle beforebutton " id="beforebutton" title="Previous example" onmousedown="Skip(\"bd\");" onmouseup="Skip(\"bu\");" onclick="Skip(\"bd\")"><img src="../Shared/icons/backward_button.svg" /></td>';
-	str += '<td class="mbutto mbuttoStyle afterbutton " id="afterbutton" title="Next example" onmousedown="Skip(\"fd\");" onmouseup="Skip(\"fu\");" onclick="Skip(\"fd\")"><img src="../Shared/icons/forward_button.svg" /></td>';
-	str += '<td class="mbutto mbuttoStyle playbutton " id="playbutton" title="Open demo" onclick="Play();"><img src="../Shared/icons/play_button.svg" /></td>';
-	str += '</tr>';
-	// TODO: Check if redundant warning, as code is not used for now it's not that much of a priority
-	// Possible crash warning if returned number of boxes is wrong
-	if(retData['numbox']==0 || retData['numbox']==null){
-		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
-		console.log(debug);
-	}
-	for(i=0;i<retData['numbox'];i++){
-		str += "<tr><td class='mbutto mbuttoStyle' title='Show \""+retData['box'][i][3]+"\"' onclick='toggleTabs(\"box"+(i+1)+"wrapper\",this);' colspan='4'>"+retData['box'][i][3]+"<img src='../Shared/icons/hotdogTabButton.svg' /></td></tr>";
-	}		
-	str += '<tr><td class="mbutto mbuttoStyle " title="Change to desktop site" onclick="disableResponsive(&quot;yes&quot;); setEditing();" colspan="4">Desktop site</td></tr>';
-	str += '</table>';
-	hotdogmenu.style.display="block";	
-	hotdogmenu.innerHTML = str;
-}
-
-//----------------------------------------------------------------------------------
 // toggleClass: Modifies class using Jquery to contain "activebox" class selector
 //				Used by createboxmenu(contentid, boxid, type) in codeviewer.js
 //----------------------------------------------------------------------------------
@@ -790,7 +750,8 @@ $(window).resize(function() {
 	var windowHeight = $(window).height();
 	textHeight= windowHeight-50;
 	$("#table-scroll").css("height", textHeight);
-	
+
+/*	
 	// Keep right margin to boxes when user switch from mobile version to desktop version
 	if($(".buttomenu2").height() == null){
 		var boxmenuheight = 0;
@@ -798,7 +759,7 @@ $(window).resize(function() {
 		var boxmenuheight= $(".buttomenu2").height();
 	}
 	$(".box").css("margin-top", boxmenuheight);
-
+*/
 });
 
 document.addEventListener("drop", function(e) {
@@ -1394,7 +1355,8 @@ function rendercode(codestring,boxid,wordlistid)
 	str+="</div>";
 	// Print out rendered code and border with numbers
 	printout.html(createCodeborder(lineno,improws) + str);	
-	linenumbers();
+	
+
 }
 
 //----------------------------------------------------------------------------------
@@ -1425,47 +1387,6 @@ function createCodeborder(lineno,improws){
 	
 	str+="</div>";
 	return str;
-}
-//----------------------------------------------------------------------------------
-//  linenumbers: 
-//                Is called by fadelinenumbers(), rendercode in codeviewer.js
-//----------------------------------------------------------------------------------
-function linenumbers()
-{	
-	if(localStorage.getItem("linenumbers") == "false"){	
-		$( "#numberbutton img" ).attr('src', '../Shared/icons/noNumbers_button.svg'); 
-		$( "#numberbuttonMobile img" ).attr('src', '../Shared/icons/hotdogTabButton2.svg');
-		$( ".codeborder" ).css("display","none");	
-	}
-}
-//----------------------------------------------------------------------------------
-//  mobileTheme
-//                Is called by [this function] in codeviewer.css
-//----------------------------------------------------------------------------------
-function mobileTheme(id){
-	if ($(".mobilethemebutton").is(":hidden")){
-		$(".mobilethemebutton").css("display","table-cell");
-	}
-	else{
-		$(".mobilethemebutton").css("display","none");
-	}
-}
-
-//----------------------------------------------------------------------------------
-//  setEditing: Set the editing properties for mobile and desktop version
-//                Is never called, code is saved for future use
-//----------------------------------------------------------------------------------
-function setEditing()
-{
-	var	hotdog = $("#hidehotdog");
-	var	isDesktop = $(hotdog).is(":hidden");
-	if(isDesktop){
-		$("*[contenteditable]").attr("contenteditable","true"); 
-		$(".tooltip").css("display", "block");
-	}else{ 
-		$("*[contenteditable]").attr("contenteditable","false"); 
-		$(".tooltip").css("display", "none");
-	}
 }
 
 //----------------------------------------------------------------------------------
@@ -2101,48 +2022,6 @@ function setResizableToPer(boxValArray)
 		var newHeight = (elemHeight / ($(boxValArray['parent']['id']).height())) * 100;
 		$(this).height(newHeight + "%");
 		$(this).width(newWidth + "%");
-	});
-}
-
-//---------------------------------------------------------------------------------
-// Stops calling of the function when the user is in mobile mode.
-//				Is called at the same time as resizeboxes() in codeviewer.js
-//---------------------------------------------------------------------------------
-
-function mobileDesktopResize(parent, templateId){
-
-		var windowWidth = $(window).width();
-			
-		if(windowWidth < 1100){
-				var numBoxes = $("[id ^=box][id $=wrapper]").length;
-				for(var i = 1; i <= numBoxes; i++){
-					if ($("#box" + i + "wrapper").hasClass('ui-resizable')) {
-						$("#box" + i + "wrapper").resizable("destroy");
-					}
-				}
-		}
-
-	$(window).resize(function(event){
-		 //This if statement has to do with resizable ui and window events overlapping in certain areas. This rules out the resizable ui ones.
-		 if (!$(event.target).hasClass('ui-resizable')) {
-			var windowWidth = $(window).width();
-			
-			if(windowWidth < 1100){
-				
-					var numBoxes = $("[id ^=box][id $=wrapper]").length;
-
-					for(var i = 1; i <= numBoxes; i++){
-						if ($("#box" + i + "wrapper").hasClass('ui-resizable')) {
-							$("#box" + i + "wrapper").resizable("destroy");
-						}
-					}
-				
-			}else{
-				if (!$("#box1wrapper").hasClass('ui-resizable')) {
-					resizeBoxes("#div2", retData["templateid"]);
-				}
-			}
-		}
 	});
 }
 
