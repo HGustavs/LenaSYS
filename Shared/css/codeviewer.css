@@ -1,5 +1,5 @@
 @font-face{ 
-	font-family: 'MyWebFont';
+	font-family: 'MyWebDGFont';
 	src: url('OpenSans-CondLight-webfont.eot');
 	src: url('OpenSans-CondLight-webfont.eot?iefix') format('eot'),
 	     url('OpenSans-CondLight-webfont.woff') format('woff'),
@@ -8,12 +8,13 @@
 }
 
 
+
 /* DOCUMENT CONTENT STYLE START */
 #docucontent h1 {
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     font-style: italic;
 }
@@ -30,7 +31,7 @@
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     font-style: italic;
 }
@@ -374,7 +375,7 @@
 
 .arrow {
     width: 70px;
-    height: 18px;
+    height: 16px;
     overflow: hidden;
     position: absolute;
 	bottom: -16px;
@@ -395,7 +396,7 @@
 
 .arrow2 {
     width: 70px;
-    height: 18px;
+    height: 16px;
     overflow: hidden;
     position: absolute;
     top: -16px;
@@ -531,16 +532,16 @@
 
 .desc pre {
     font-family: "Courier 10 Pitch", Courier, monospace;
-    font-size: 95%;
-    line-height: 140%;
+    font-size: 14px;
+    line-height: 100%;
     white-space: pre;
     white-space: pre-wrap;
 }
 
 .descbox code {
     font-family: MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-    font-size: 95%;
-    line-height: 140%;
+    font-size: 14px;
+    line-height: 100%;
     white-space: pre;
     white-space: pre-wrap;
     background: #ffffff;	
