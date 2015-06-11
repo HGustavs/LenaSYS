@@ -160,9 +160,6 @@ function returned(data)
 			var desc = boxcontent;
 			desc = replaceAll("&nbsp;"," ",desc);
 			
-			//Remove html tags since only markdown should be allowed		
-			desc = dehtmlify(desc, true, 0);
-			//Call the markdown function to parse markdown symbols to html tags
 			desc = parseMarkdown(desc);
 			
 			//Change all asterisks to the html code for asterisks
@@ -881,62 +878,6 @@ function issetDrop(dname)
 	}else{
 		return false;
 	}
-}
-//----------------------------------------------------------------------------------
-// dehtmlify: Removes most html tags from a string!
-//                Is called by editedExamplename(), returned(data) in codeviewer.js
-//----------------------------------------------------------------------------------
-function dehtmlify(mainstr,ignorebr,maxlength)
-{
-	mod=0;
-	outstr="";
-	
-	if(maxlength==0||mainstr.length<maxlength){
-		ln=mainstr.length;
-	}else{
-		ln=maxlength;
-	}
-	tagstr="";
-	
-	for(i=0;i<ln;i++){
-		currchr=mainstr.charAt(i);
-		if(currchr=="<"){
-			mod=1;
-			tagstr="";
-		}else if(mod==1&&currchr==" "){
-			mod=2;
-		}else if(currchr==">"){
-			mod=0;
-			if(tagstr=="br"||tagstr=="b"||tagstr=="strong"){
-				if(tagstr=="br"&&ignorebr==true){
-					// Ignore BR tag 
-				}else{
-					outstr+="<"+tagstr+">";
-				}
-			}else if(tagstr=="br/"||tagstr=="b/"||tagstr=="strong/"){
-				if(tagstr=="br/"&&ignorebr==true){
-					// Ignore BR tag 
-				}else{
-					outstr+="<"+tagstr+">";
-				}
-			}else if(tagstr=="/br"||tagstr=="/b"||tagstr=="/strong"){
-				if(tagstr=="/br"&&ignorebr==true){
-					// Ignore BR tag 
-				}else{
-					outstr+="<"+tagstr+">";
-				}
-			}
-		}else{
-			if(mod==0){
-				outstr+=currchr;
-			}else if(mod==1){
-				tagstr+=currchr;
-			}else if(mod==2){
-				if(currchr=="/") tagstr+=currchr;
-			}
-		}
-	}
-	return outstr;
 }
 
 //----------------------------------------------------------
@@ -2332,6 +2273,10 @@ function markdownBlock(inString)
 	
 	//Regular expression for line
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
+	
+	// Hyperlink !!! and %%%
+	inString = inString.replace(/\!{3}(.*?\S)\!{3}/g, '<a href="$1">');
+	inString = inString.replace(/\%{3}(.*?\S)\%{3}/g, '$1</a>');
 
 	return inString;
 

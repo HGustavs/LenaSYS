@@ -1,3 +1,13 @@
+@font-face{ 
+	font-family: 'MyWebFont';
+	src: url('OpenSans-CondLight-webfont.eot');
+	src: url('OpenSans-CondLight-webfont.eot?iefix') format('eot'),
+	     url('OpenSans-CondLight-webfont.woff') format('woff'),
+	     url('OpenSans-CondLight-webfont.ttf') format('truetype'),
+	     url('OpenSans-CondLight-webfont.svg#webfont') format('svg');
+}
+
+
 /* DOCUMENT CONTENT STYLE START */
 #docucontent h1 {
     display: block;
@@ -10,7 +20,7 @@
 
 #docucontent span.codestyle{
     color: grey;
-    font-family: Arial,Sans-Serif;
+    font-family: MyWebFont,Arial,Sans-Serif;
     font-style: italic;
 }
 /* DOCUMENT CONTENT STYLE STOP */
@@ -44,7 +54,7 @@
 
 .box span.codestyle{
     color: #666;
-    font-family: Arial,Sans-Serif;
+    font-family: MyWebFont,Arial,Sans-Serif;
 }
 
 /* Base-size for images in description boxes */
@@ -528,7 +538,7 @@
 }
 
 .descbox code {
-    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-family: MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
     font-size: 95%;
     line-height: 140%;
     white-space: pre;
@@ -538,6 +548,7 @@
     padding: 0em 1em 1em 1em;
     margin: 0.5em 0px;
     border: 1px solid #bebab0;	
+    box-shadow: 1px 1px 2px #666;
 }
 /* DESCRIPTION BOX STYLE STOP */
 
