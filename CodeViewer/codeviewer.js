@@ -2050,14 +2050,16 @@ function parseMarkdown(inString)
 	for(var i=0;i<codearray.length;i++){
 			workstr=codearray[i];
 
-			//alert(workstr.substr(0,3));
 			if(workstr.substr(0,3)==="@@@"){
 					kodblock=!kodblock;
 					workstr = workstr.substr(3);
 			}
 			
+			// Converts any < or > tags in code block
 			if(kodblock){
-					workstr= '<pre><code>'+workstr+'</code></pre>';					
+					workstr = workstr.replace(/\</g, "&lt;");
+					workstr = workstr.replace(/\>/g, "&gt;");
+					workstr='<pre><code>'+workstr+'</code></pre>';
 			}else{
 					workstr=markdownBlock(workstr);
 			}
