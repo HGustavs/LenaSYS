@@ -77,7 +77,6 @@ if(checklogin()){
 				$query->bindParam(':lid', $armin[1]);
 				$query->bindParam(':pos', $armin[0]);
 				$query->bindParam(':moment', $armin[2]);
-				//$query->bindParam(':moment', $moment);
 				
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
@@ -85,6 +84,27 @@ if(checklogin()){
 				}
 			}
 		}else if(strcmp($opt,"UPDATE")===0){
+//			$debug=print_r($_POST,true);
+
+
+			// Insert a new code example and update variables accordingly.
+			if($link==-1){
+
+					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,'New Example','New Example',1,:cversion);");
+			
+					$query2->bindParam(':cid', $courseid);
+					$query2->bindParam(':cversion', $coursevers);
+					
+			
+					if(!$query2->execute()) {
+						$error=$query2->errorInfo();
+						$debug="Error updating entries".$error[2];
+					}
+
+					$debug=$pdo->lastInsertId();
+
+			}			
+						
 			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
@@ -362,6 +382,10 @@ if($ha){
 	}
 	
 	$codeexamples=array();
+
+	// New Example
+	array_push($codeexamples,array('exampleid' => "-1",'cid' => '','examplename' => '','sectionname' => '&laquo;New Example&raquo;','runlink' => "",'cversion' => ""));
+
 	$query=$pdo->prepare("SELECT exampleid, cid, examplename, sectionname, runlink, cversion FROM codeexample;");
 	
 	if(!$query->execute()) {

@@ -65,7 +65,10 @@ function returned(data)
 	
 	// Disables before and after button if there are no available example before or after. 
 	// Works by checking if the current example is last or first in the order of examples.
-	if(retData['before']!=null&&retData['after']!=null) {
+	//If there are no examples this disables being able to jump through (the non-existsing) examples
+
+	if(retData['before'].length!=0&& retData['after'].length!=0) {
+		
 		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
 			$("#beforebutton").css("opacity",0.4);
 			$("#beforebutton").css("pointer-events","none");
@@ -74,7 +77,7 @@ function returned(data)
 			$("#afterbutton").css("opacity",0.4);
 			$("#afterbutton").css("pointer-events","none");
 		}
-	}else if(retData['before']==null&&retData['after']==null){ //If there are no examples this disables being able to jump through (the non-existsing) examples
+	}else if(retData['before'].length==0&& retData['after'].legth==0){ 
 		$("#beforebutton").css("opacity",0.4);
 		$("#beforebutton").css("pointer-events","none");
 		$("#afterbutton").css("opacity",0.4);
@@ -82,7 +85,7 @@ function returned(data)
 	}
 	
 	// Disables the play button if there is no playlink
-	if(retData['playlink'] == null || retData['playlink'] == ""){
+	if(typeof retData['playlink'] == 'undefined' || retData['playlink'] == ""){
 		$("#playbutton").css("opacity",0.4);
 		$("#playbutton").css("pointer-events","none");
 	}

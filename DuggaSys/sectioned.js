@@ -12,6 +12,7 @@ var xelink;
 function displaymessage(){
    $(".messagebox").css("display","block");
 }
+
 $(document).ready(function(){
     $(".messagebox").hover(function(){
         $("#testbutton").css("background-color", "red");
@@ -20,6 +21,7 @@ $(document).ready(function(){
         $("#testbutton").css("background-color", "#614875");
     });
 });
+
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode)
 {
 		
