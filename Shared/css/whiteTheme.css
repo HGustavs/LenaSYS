@@ -269,6 +269,7 @@
 
 .keywordC {
     color: rgba(6, 129, 19, 1);
+    font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
     font-size: 12px;
     line-height: 14px;
 }
