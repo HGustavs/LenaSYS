@@ -1,5 +1,5 @@
 @font-face{ 
-	font-family: 'MyWebDGFont';
+	font-family: 'MyWebFont';
 	src: url('OpenSans-CondLight-webfont.eot');
 	src: url('OpenSans-CondLight-webfont.eot?iefix') format('eot'),
 	     url('OpenSans-CondLight-webfont.woff') format('woff'),
@@ -8,13 +8,12 @@
 }
 
 
-
 /* DOCUMENT CONTENT STYLE START */
 #docucontent h1 {
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     font-style: italic;
 }
@@ -31,7 +30,7 @@
     display: block;
     font-family: Arial,Sans-Serif;
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     font-style: italic;
 }
@@ -56,6 +55,8 @@
 .box span.codestyle{
     color: #666;
     font-family: MyWebFont,Arial,Sans-Serif;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 /* Base-size for images in description boxes */
@@ -375,7 +376,7 @@
 
 .arrow {
     width: 70px;
-    height: 16px;
+    height: 18px;
     overflow: hidden;
     position: absolute;
 	bottom: -16px;
@@ -396,7 +397,7 @@
 
 .arrow2 {
     width: 70px;
-    height: 16px;
+    height: 18px;
     overflow: hidden;
     position: absolute;
     top: -16px;
@@ -532,21 +533,21 @@
 
 .desc pre {
     font-family: "Courier 10 Pitch", Courier, monospace;
-    font-size: 14px;
-    line-height: 100%;
+    font-size: 12px;
+    line-height: 14px;
     white-space: pre;
     white-space: pre-wrap;
 }
 
 .descbox code {
     font-family: MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-    font-size: 14px;
-    line-height: 100%;
+    font-size: 12px;
+    line-height: 14px;
     white-space: pre;
     white-space: pre-wrap;
     background: #ffffff;	
     display: inline-block;
-    padding: 0em 1em 1em 1em;
+    padding: 1em;
     margin: 0.5em 0px;
     border: 1px solid #bebab0;	
     box-shadow: 1px 1px 2px #666;

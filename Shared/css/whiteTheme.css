@@ -1,5 +1,5 @@
 @font-face{ 
-	font-family: 'MyWeDbFont';
+	font-family: 'MyWebFont';
 	src: url('OpenSans-CondLight-webfont.eot');
 	src: url('OpenSans-CondLight-webfont.eot?iefix') format('eot'),
 	     url('OpenSans-CondLight-webfont.woff') format('woff'),
@@ -98,10 +98,10 @@
     padding-right: 6px;
     width: 22px;
     float: left;
-		background-color: #614875;
-		font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
+	background-color: #614875;
+	font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .codeborder .impono {
@@ -110,10 +110,9 @@
     background-color: #9569BD;
     padding-left: 4px;
     padding-right: 6px;
-		font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
-		
+	font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .normtextwrapper{
@@ -126,10 +125,9 @@
     color: #000;
     background-color: #F2F2F2;
     white-space:nowrap;
-		font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
-		
+	font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .impo {
@@ -137,9 +135,9 @@
     background-color: rgba(186, 96, 255, 0.09);
     white-space:nowrap;
     min-width: 660px;
-		font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;	
+	font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .normtext .no {
@@ -150,177 +148,164 @@
     width: 22px;
     float: left;
     text-align: right;
+    font-size: 12px;
+    line-height: 14px;
 }
 
+.normtext:hover {
+    background-color: rgba(0,0,0,0.1);
+}
 
 .impo .no {
-    border-right: 2px #444;
     color: white;
     background-color: #9569BD;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .comment {
     color: #50a750;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;	
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .normtext .oper {
     color: #000;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;		
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .impo .oper {
     color: #000;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;		
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .normtext .string {
     color: #03b;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;	
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .impo .string {
     color: #000;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .normtext .number {
     color: #000;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .impo .number {
     color: #000;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .normtext .hi {
     background-color: #9569BD;
     color: #000;
     font-weight: bold;
-
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .impo .hi {
-		font-weight: bold;
-		color: #000000;
-		background-color: #9569BD;
-		line-height: 16px;
-		font-size: 14px;
+   font-weight: bold;
+   color: #000000;
+   background-color: #9569BD;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .normtext .html {
-		background-color: #9569BD;
-		color: #000;
-		line-height: 16px;
-		font-size: 14px;
+	background-color: #9569BD;
+	color: #000;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .impo .html {
 	background-color: #9569BD;
 	color: #000;
-
-	line-height: 16px;
-	font-size: 14px;
-
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .keywordA {
     color: #e90000;
 	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
-
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .keywordB {
     color: #0004ff;
 	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
-
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .keywordC {
     color: rgba(6, 129, 19, 1);
-		line-height: 16px;
-		font-size: 14px;
-
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .keywordD {
     color: rgba(231, 0, 255, 1);
 	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
-
+    font-size: 12px;
+    line-height: 14px;
 }
 
 .normtext .impword {
     color: #fff;
     background-color: #9971AF;
-    border: 1px solid #424242;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
-		border:none;
-
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 
 .impo .impword {
     color: #fff;
     background-color: #614875;
-		font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-		line-height: 16px;
-		font-size: 14px;
+	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 
 .descbox .impword {
    color: #fff;
     background-color: #9971AF;
-		line-height: 16px;
-		font-size: 14px;
-
 }
  
 .descbox .imphi {
 	background-color: #fff;
     color: #000;
-		line-height: 16px;
-		font-size: 14px;
-
 }
 
 .normtext .imphi {
     background-color: #ffffff;
     color: #000;
-		line-height: 16px;
-		font-size: 14px;
     
 }
 
 .impo .imphi {
     background-color: #fff;
     color: #000;
-		line-height: 16px;
-		font-size: 14px;
-		border:none;
 }
 
 .tooltip{
