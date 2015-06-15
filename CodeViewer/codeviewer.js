@@ -1224,13 +1224,20 @@ function rendercode(codestring,boxid,wordlistid)
 		// Make white space characters
 		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
 		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
-			
+
+		if(tokens[i].kind=="rowcomment"||tokens[i].kind=="blockcomment"||tokens[i].kind=="string"||tokens[i].kind=="number"||tokens[i].kind=="name"){
+				// Fix to remove html tags in strings
+				tokenvalue = tokenvalue.replace(/\</g, "&lt;");
+				tokenvalue = tokenvalue.replace(/\>/g, "&gt;");
+		}
+
 		if(tokens[i].kind=="rowcomment"){
 			cont+="<span class='comment'>"+tokenvalue+"</span>";
 		}else if(tokens[i].kind=="blockcomment"){
 			cont+="<span class='comment'>"+tokenvalue+"</span>";
 		}else if(tokens[i].kind=="string"){
 			cont+="<span class='string'>"+tokenvalue+"</span>";
+			console.log("str: "+tokenvalue);
 		}else if(tokens[i].kind=="number"){
 			cont+="<span class='number'>"+tokenvalue+"</span>";
 		}else if(tokens[i].kind=="name"){
@@ -1357,7 +1364,7 @@ function rendercode(codestring,boxid,wordlistid)
 		}
 	}
 	str+="</div>";
-	
+				
 	// Print out rendered code and border with numbers
 	printout.html(createCodeborder(lineno,improws) + str);	
 	

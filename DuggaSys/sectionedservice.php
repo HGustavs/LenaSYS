@@ -122,7 +122,6 @@ if(checklogin()){
 			}
 			
 			// insert into list forthe specific course
-			//---------------------------------------
 			if($kind == 4){
 				$query2 = $pdo->prepare("INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);");
 
