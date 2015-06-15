@@ -1,23 +1,11 @@
 @font-face{ 
     font-family: 'MyWebFont';
-    src: url('OpenSans-CondBold-webfont.eot');
-    src: url('OpenSans-CondBold-webfont.eot?iefix') format('eot'),
-         url('OpenSans-CondBold-webfont.woff') format('woff'),
-         url('OpenSans-CondBold-webfont.ttf') format('truetype'),
-         url('OpenSans-CondBold-webfont.svg#webfont') format('svg');
+    src: url('ubuntu-mono-webfont.eot');
+    src: url('ubuntu-mono-webfont.eot?iefix') format('eot'),
+         url('ubuntu-mono-webfont.woff') format('woff'),
+         url('ubuntu-mono-webfont.ttf') format('truetype'),
+         url('ubuntu-mono-webfont.svg#webfont') format('svg');
 }
-
-@media screen and (min-width: 1600px) {
-    @font-face{ 
-        font-family: 'MyWebFont';
-        src: url('OpenSans-CondLight-webfont.eot');
-        src: url('OpenSans-CondLight-webfont.eot?iefix') format('eot'),
-             url('OpenSans-CondLight-webfont.woff') format('woff'),
-             url('OpenSans-CondLight-webfont.ttf') format('truetype'),
-             url('OpenSans-CondLight-webfont.svg#webfont') format('svg');
-    }
-}
-
 
 /* DOCUMENT CONTENT STYLE START */
 #docucontent h1 {

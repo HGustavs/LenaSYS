@@ -15,28 +15,22 @@
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
 			echo "<td class='navButt' id='home' title='Home'>";
-			switch ($noup) {
-				case 'COURSE':
+
+			if($noup=='COURSE'){
 					echo "<a href='";
 					echo (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-					break;
-				case 'SECTION':
+			}else if($noup=='SECTION'){
 					$cid=getOPG('cid');
+					if($cid=="UNK") $cid=getOPG('courseid'); 
 					$coursevers=getOPG('coursevers');
+					if($coursevers=="UNK") $coursevers=getOPG('cvers');
 					echo "<a href='";
 					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-					break;
-				case 'CODEVIEWER':
-					echo "<a href='";
-					echo (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '../codeviewer/EditorV50.php');
-					echo "'>";
-					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-					break;
-				case 'TEACHERVIEW';
+			}else if($noup=='TEACHERVIEW'){
 					echo "<div class='searchfieldTV clearfix'>";
 					echo "<td class='search'>";
 					echo "	<input type='text' id='inputSearch' class='UmvSearchInput my-pull-left' list='searchOptions' placeholder=' Search...' name='studyprogram/Pnr'>";
@@ -44,17 +38,6 @@
 					echo "	<div class='UmvButton my-pull-left' id='searchbutton' onclick='display_search_data();'>Search</span></div>";
 					echo "	</td>";
 					echo "</div>";
-					break;
-				case 'NONE';
-					// This case is used for pages still under development
-					break;
-				default:
-					// Show generic back button
-					echo "<a href='";
-					echo (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "../DuggaSys/courseed.php");
-					echo "'>";
-					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-					break;
 			}
 	
 			// Either generate code viewer specific nav menu or a spacer

@@ -88,8 +88,6 @@ function validateForm()
 {	
 	var result;
 
-	alert(document.getElementById('uploadedlink').value.substr(0,10).toLowerCase());
-
 	//Validation for links
 	if($("#linky").css('display') == 'block'){
 			//Check if the link starts with http:// or https://

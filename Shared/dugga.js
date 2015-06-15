@@ -83,6 +83,14 @@ function randomstring()
 }
 
 //----------------------------------------------------------------------------------
+// isNumber: 		returns true: the variable only contains numbers
+//					returns false: the variable is not purely numeric
+//                Is called by editImpRows in codeviewer.js
+//----------------------------------------------------------------------------------
+
+function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+
+//----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
 var score;

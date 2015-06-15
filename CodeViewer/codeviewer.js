@@ -61,7 +61,7 @@ function returned(data)
 	retData=data;
 //	console.log(retData);
 	
-	if(retData['debug']!="NONE!") console.log("Returned from setup: " + retData['debug']);
+	if(retData['debug']!="NONE!") alert("Returned from setup: " + retData['debug']);
 	
 	// Disables before and after button if there are no available example before or after. 
 	// Works by checking if the current example is last or first in the order of examples.
@@ -446,18 +446,11 @@ function changeDirectory(kind)
 	}
 
 	for(var i=0;i<dir.length;i++){
-		str+="<option value='" + dir[i] + "'>"+dir[i]+"</option>";
+		console.log(dir[i]);
+		str+="<option value='" + dir[i].filename + "'>"+dir[i].filename+"</option>";
 	}
 	$("#filename").html(str);
 }
-
-//----------------------------------------------------------------------------------
-// isNumber: 		returns true: the variable only contains numbers
-//					returns false: the variable is not purely numeric
-//                Is called by editImpRows in codeviewer.js
-//----------------------------------------------------------------------------------
-
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
 
 //----------------------------------------------------------------------------------
 // editImpRows: Adds and removes important rows
@@ -1237,7 +1230,6 @@ function rendercode(codestring,boxid,wordlistid)
 			cont+="<span class='comment'>"+tokenvalue+"</span>";
 		}else if(tokens[i].kind=="string"){
 			cont+="<span class='string'>"+tokenvalue+"</span>";
-			console.log("str: "+tokenvalue);
 		}else if(tokens[i].kind=="number"){
 			cont+="<span class='number'>"+tokenvalue+"</span>";
 		}else if(tokens[i].kind=="name"){

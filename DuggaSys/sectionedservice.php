@@ -332,28 +332,20 @@ if($ha){
 		);
 	}
 
+	// Reading entries in file database
 	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
 	$query->bindParam(':cid', $courseid);
-	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries".$error[2];
 	}
-	
 	$oldkind=-1;
-	
 	foreach($query->fetchAll() as $row) {
 		if($row['kind']!=$oldkind){
 			array_push($links,array('fileid' => -1,'filename' => "---===######===---"));
 		}
 		$oldkind=$row['kind'];
-		array_push(
-			$links,
-			array(
-				'fileid' => $row['fileid'],
-				'filename' => $row['filename']
-			)
-		);
+		array_push($links,array('fileid' => $row['fileid'],'filename' => $row['filename']));
 	}
 	
 	$versions=array();
@@ -382,9 +374,7 @@ if($ha){
 
 	// New Example
 	array_push($codeexamples,array('exampleid' => "-1",'cid' => '','examplename' => '','sectionname' => '&laquo;New Example&raquo;','runlink' => "",'cversion' => ""));
-
 	$query=$pdo->prepare("SELECT exampleid, cid, examplename, sectionname, runlink, cversion FROM codeexample;");
-	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading code examples".$error[2];

@@ -1,4 +1,5 @@
 <?php 
+
 	//----------------------------------------------------------------------------------
 	// TODO:
 	//	78: Better handle a situation where there are no examples available
@@ -54,7 +55,6 @@
 	}else{
 		$writeAccess="s";	
 	}
-	$debug = "Debug: writeAccess = $writeAccess\n";
 	$appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
 	
 	$exampleCount = 0;
@@ -75,8 +75,7 @@
 		$sectionName=$row['sectionname'];
 		$playlink=$row['runlink'];
 	}	
-	$debug = $debug .' '. "Debug: beforeId/afterId = $beforeId/$afterId at line ". __LINE__ . ". \n";
-	$debug = $debug .' '. "Debug: exampleCount = $exampleCount\n, if zero, there are no examples";
+
 	// TODO: Better handle a situation where there are no examples available
 	if($exampleCount>0){
 		//------------------------------------------------------------------------------------------------
@@ -215,6 +214,8 @@
 				}
 			}
 		}
+		
+		
 		//------------------------------------------------------------------------------------------------
 		// Retrieve Information			
 		//------------------------------------------------------------------------------------------------		
@@ -230,7 +231,7 @@
 		
 		$query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid as templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid and cid = :courseID;");		
 		$query->bindParam(':exampleid', $exampleId);
-		$query->bindParam(':courseID', $courseID);
+		$query->bindParam(':courseID', $courseId);
 		$query->execute();
 
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
@@ -279,7 +280,6 @@
 			$nextExampleCount++;
 		// Iteration to find before examples - We start with $exampleId and at most 5 are collected
 		}while($currentId!=null&&$nextExampleCount<5);
-		$debug= $debug . ' ' . "Debug: Nr upcoming examples found:  $nextExampleCount at line ". __LINE__ . ". \n";
 		
 		$backwardExamples = array();	
 		$currentId=$exampleId;
@@ -295,7 +295,6 @@
 			}
 			$previousExamplesCount++;
 		}while($currentId!=null&&$previousExamplesCount<5);
-		$debug= $debug . ' ' ."Debug: Nr previous examples found:  $previousExamplesCount at line " . __LINE__ . ". \n";
 		
 		// Read important lines
 		$importantRows=array();
@@ -335,45 +334,37 @@
 			array_push($importantWordList,$row['word']);					
 		}  
 		
+		// Read file lists from database and add only .txt to descdir
+
 		$directories = array();
-		
-		// Read Directory - Codeexamples
 		$codeDir=array();
-		if(file_exists('./codeupload')){
-			$dir = opendir('./codeupload');
-			while (($file = readdir($dir)) !== false) {
-				if(endsWith($file,".js") || endsWith($file,".html") || endsWith($file,".php") || endsWith($file,".css") || endsWith($file,".java") || endsWith($file,".xml")){
-					array_push($codeDir,$file);
+		$descDir=array();
+		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
+		$query->bindParam(':cid', $courseId);
+		
+		if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading entries".$error[2];
+		}
+		$oldkind=2;
+		foreach($query->fetchAll() as $row) {
+				if($row['kind']!=$oldkind){
+					array_push($codeDir,array('fileid' => -1,'filename' => "---===######===---"));
+					array_push($descDir,array('fileid' => -1,'filename' => "---===######===---"));
 				}
-			}  
+				$oldkind=$row['kind'];
+				
+				if(endsWith($row['filename'],".txt")){
+						array_push($descDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
+				}
+				array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
 		}
 		array_push($directories, $codeDir);
-
-		// Read Directory - Description
-		$descDir=array();
-		if(file_exists('./descupload')){
-			$dir = opendir('./descupload');
-			while (($file = readdir($dir)) !== false) {
-				if(endsWith($file,".txt")){
-					array_push($descDir,$file);	
-				}
-			}  
-		}
 		array_push($directories, $descDir);
-
-		$images=array();
-		if(file_exists('./imgupload')){
-			// Read Directory - Images
-			$imgDir = opendir('./imgupload');
-			while (($imgFile = readdir($imgDir)) !== false) {
-				if(endsWith($imgFile,".png")){
-					array_push($images,$imgFile);
-				}
-			}		
-		}
 	
 		// Collects information for each box
-		$box=array();   // Array to be filled with the primary keys to all boxes of the example
+		$box=array();   
+		// Array to be filled with the primary keys to all boxes of the example
 		$query = $pdo->prepare( "SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
 		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
@@ -381,42 +372,60 @@
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
 			$boxContent=strtoupper($row['boxcontent']);
 			$filename=$row['filename'];
-			$content="";					
-			if(strcmp("DOCUMENT",$boxContent)===0){ 
-				if(file_exists('./descupload')){ // Checks if the file exists
-					$filename="./descupload/".$filename; // If it exists, it will search for the file in the folder /descupload/
-					$handle = @fopen($filename, "r");
-					if ($handle) {
-						while (($buffer = fgets($handle, 1024)) !== false) {
-							$content=$content.$buffer;
-						}
-						if (!feof($handle)) {
-							$content.="Error: Unexpected end of file ".$descFilename."\n";			    			    
-						}
-						fclose($handle);
+			$content="";
+
+//			$debug.=" #".$filename."# ";
+						
+			$ruery = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) LIMIT 1;");
+			$ruery->bindParam(':cid', $courseId);
+			$ruery->bindParam(':fname', $filename);
+			$sesult = $ruery->execute();
+			if($sow = $ruery->fetch(PDO::FETCH_ASSOC)){
+					$filekind=$sow['kind'];
+					$filename = $sow['filename'];
+
+					$debug.=" :". $sow['kind'].": ";
+			
+					if($filekind==2){
+						// Global
+						$file = "../DuggaSys/templates/".$filename;
+					}else if($filekind==3){
+						// Course Local
+						$file = "../courses/".$courseId."/".$filename;
+					}else if($filekind==4){
+						// Local
+						$file = "../courses/".$courseId."/".$coursevers."/".$filename;
+					}else{
+						$file = "UNK";					
 					}
-				}
-			//If box is not of Document type, code is assumed
+
+					$debug.=$file;
+					
+					if(file_exists ($file)){
+							$file_extension = strtolower(substr(strrchr($filename,"."),1));
+							if(strcmp("DOCUMENT",$boxContent)===0){
+									if($file_extension=="txt"||$file_extension=="md"){
+											// It is a .txt or .md file that exists!
+											$buffer=file_get_contents($file);
+											$content=$content.$buffer;
+									}else{
+											$content.="File: ".$filename." is not correctly formatted.";									
+									}
+							}else{
+									$buffer=file_get_contents($file);
+									
+									$debug.=$buffer;
+									
+									$content=$content.$buffer;
+							}
+					}
 			}else{
-				if(file_exists('./codeupload')){ // Checks if the file exists
-					$filename="./codeupload/".$filename; // If it exists, it will search for the file in the folder /descupload/
-					$handle = @fopen($filename, "r");
-					if ($handle) {
-						while (($buffer = fgets($handle, 1024)) !== false) {
-							$content=$content.$buffer;
-						}
-						if (!feof($handle)) {
-							$content.="Error: Unexpected end of file ".$filename."\n";
-						}
-						fclose($handle);
-					}
-				}else{
-					$content="No file found!"; // Error message if the file doesn't exist 
-				}
+					$content.="File: ".$filename." not found.";
 			}
+				
 			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
 		}
-		$debug = $debug . "File : " . __FILE__ . ". \n";
+
 		$array = array(
 			'before' => $backwardExamples,
 			'after' => $forwardExamples,
@@ -433,7 +442,6 @@
 			'exampleno' => $exampleNumber,
 			'words' => $words,
 			'wordlists' => $wordLists, 
-			'images' => $images,
 			'writeaccess' => $writeAccess,
 			'debug' => $debug,
 			'beforeafter' => $beforeAfters, 
