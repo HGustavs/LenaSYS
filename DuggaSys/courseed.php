@@ -9,7 +9,7 @@ if (file_exists("../.git/refs/heads/master")) {
 	$version = fgets($versionFile);
 	fclose($versionFile);
 } else {
-	$version = ".git folder is missing";
+	$version = "v0.7+";
 }
 ?>
 <!DOCTYPE html>
