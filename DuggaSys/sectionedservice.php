@@ -84,8 +84,6 @@ if(checklogin()){
 				}
 			}
 		}else if(strcmp($opt,"UPDATE")===0){
-//			$debug=print_r($_POST,true);
-
 
 			// Insert a new code example and update variables accordingly.
 			if($link==-1){
@@ -101,7 +99,7 @@ if(checklogin()){
 						$debug="Error updating entries".$error[2];
 					}
 
-					$debug=$pdo->lastInsertId();
+					$link=$pdo->lastInsertId();
 
 			}			
 						

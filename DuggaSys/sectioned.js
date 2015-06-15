@@ -374,6 +374,7 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
+	console.log(retdata);
 
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information

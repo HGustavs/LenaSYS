@@ -37,20 +37,17 @@ if(isset($_SESSION['uid'])){
 }else{
 	$userid="UNK";		
 } 	
+
 //  Handle files! One by one  -- if all is ok add file name to database
-//---------------------------------------------------------------------	
 
 $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
-echo "<pre>";
 if($ha){ //login for user is successful & has either write access or is superuser					
 		$storefile=false;
 		chdir('../'); // Start at the "root-level"
 		$currcvd=getcwd(); // get search path to current directory
 		if($kind=="LINK"&&$link!="UNK"){
-				//  if link isn't in database (e.g no rows are returned), add it to database 
-				//---------------------------------------------------------------------	
-			 	echo "STORING LINK!";
 
+				//  if link isn't in database (e.g no rows are returned), add it to database 
 				$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
 				$query->bindParam(':filename', $link);
 				$query->bindParam(':cid', $cid);
@@ -65,54 +62,48 @@ if($ha){ //login for user is successful & has either write access or is superuse
 						if(!$query->execute()) {
 								$error=$query->errorInfo();
 								echo "Error updating entries".$error[2];
+						}else{
+								$storefile=true;
 						}			 				
 				}
-		//  if it is a global file, check if it exists in directory "/templates", if not create the directory
-		//---------------------------------------------------------------------	
+
 		}else if($kind=="GFILE"){
-							if(!file_exists ("/templates/".$_FILES['name'])){ // Check if added file name exists.
-									$storefile=mkdir($currcvd."/DuggaSys/templates/".$_FILES['name']);
-							}else{
-									$storefile=true;							
-							}
-
-							if(file_exists ($currcvd."/DuggaSys/templates/".$_FILES['name'])){ // Check if added file name exists.
-									$storefile=true;
-							}else{
-									$storefile=false;									
-							}
-		//  if it is a local file or a Course Local File, check if the file exists under "/courses", if not create the directory
-		//---------------------------------------------------------------------	
+				//  if it is a global file, check if "/templates" exists, if not create the directory
+				if(!file_exists ($currcvd."/DuggaSys/templates")){ // Check if added file name exists.
+						$storefile=mkdir($currcvd."/DuggaSys/templates");
+				}else{
+						$storefile=true;							
+				}
 		}else if($kind=="LFILE"||$kind=="MFILE"){
-							if(!file_exists ($currcvd."/courses/".$cid)){ // Check if added file name exists.
-									$storefile=mkdir($currcvd."/courses/".$cid);
-							}else{
-									$storefile=true;
-							}
-							if($kind=="MFILE"||$kind=="LFILE"){
-									if(!file_exists ($currcvd."/courses/".$cid)){ // Check if added file name exists.
-											$storefile=mkdir($currcvd."/courses/".$cid);
-									}else{
-											$storefile=true;									
-									}
-							}
+				//  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
+				if(!file_exists ($currcvd."/courses/".$cid)){ // Check if added file name exists.
+						$storefile=mkdir($currcvd."/courses/".$cid);
+				}else{
+						$storefile=true;
+				}
 
-							if($kind=="LFILE"){
-									if(!file_exists ($currcvd."/courses/".$cid."/".$vers)){ // Check if added file name exists.
-											$storefile=mkdir($currcvd."/courses/".$cid."/".$vers);
-									}else{
-											$storefile=true;
-									}
-							}
+				if($kind=="LFILE"){
+						if(!file_exists ($currcvd."/courses/".$cid."/".$vers)){ // Check if added file name exists.
+								$storefile=mkdir($currcvd."/courses/".$cid."/".$vers);
+						}else{
+								$storefile=true;
+						}
+				}
 		}	
 			 		
-		//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-		//---------------------------------------------------------------------		 		
 		if($storefile){
-				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html");
-				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html");
+				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
+				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain");
+				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt");
+				
+				$swizzled = swizzleArray($_FILES['uploadedfile']);
+				
+				echo "<pre>";
+				print_r($swizzled);
 		
-				foreach ($_FILES as $key => $filea){
+				foreach ($swizzled as $key => $filea){
+					
+						print_r($filea)."<br />";
 						
 						if($selectedfile!="NONE"&&($kind=="GFILE"||$kind=="MFILE")){
 								// Store link to existing file
@@ -127,9 +118,7 @@ if($ha){ //login for user is successful & has either write access or is superuse
 								$query->execute(); 
 								$norows = $query->fetchColumn(); 
 								
-								echo $norows;
 								//  if rows equals to 0 (e.g it doesn't exist) add it yo.
-								//---------------------------------------------------------------------		
 								if($norows==0&&($kind=="GFILE"||$kind=="MFILE")){
 										if($kind=="GFILE"){
 												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal) VALUES(:linkval,'2',:cid,'1');");
@@ -148,14 +137,12 @@ if($ha){ //login for user is successful & has either write access or is superuse
 					
 						}
 						//  if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process.
-						//---------------------------------------------------------------------		
 						if($filea["name"]!=""){
 							
 								$temp = explode(".", $filea["name"]);
 								$extension = end($temp); //stores the file type
-								//  if file type is allowed, continue the uploading process.
-								//---------------------------------------------------------------------		
 								if(in_array($extension, $allowedX)&&in_array($filea['type'], $allowedT)){ 
+										//  if file type is allowed, continue the uploading process.
 				
 										$fname=$filea['name'];
 										$fname=preg_replace('/[[:^print:]]/', '', $fname); // Remove white space and non ascii characters
@@ -184,7 +171,6 @@ if($ha){ //login for user is successful & has either write access or is superuse
 												$norows = $query->fetchColumn(); 
 												
 												//  if returned rows equals 0(the existence of the file is not in the db) add data into the db
-												//---------------------------------------------------------------------	
 												if($norows==0){
 														if($kind=="LFILE"){
 																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'4',:cid);");
@@ -207,30 +193,31 @@ if($ha){ //login for user is successful & has either write access or is superuse
 												$error=true;
 										}
 
-								}else{ //if the file extension is not allowed
+								}else{ 
+									//if the file extension is not allowed
 									if(!in_array($extension, $allowedX)) echo "Extension ".$extension." not allowed.\n";
 									if(!in_array($filea['type'], $allowedT)) echo "Type ".$filea['type']." not allowed.\n";
 									$error=true;
 								}
 						}
-																
 				}			
 		}else{
 			 	echo "No Store File\n";
 			 	$error=true;
-		}
-					
+		}				
 }
 	
 if(!$error){
-//		echo "<meta http-equiv='refresh' content='0;URL=fileed.php?cid=".$cid."&coursevers=".$vers."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
+		echo "<meta http-equiv='refresh' content='0;URL=fileed.php?cid=".$cid."&coursevers=".$vers."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 
 ?>
 </head>
 <body>
 <?php
-//		echo "<script>window.location.replace('fileed.php?cid=".$cid."&coursevers=".$vers."');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
+if(!$error){
+		echo "<script>window.location.replace('fileed.php?cid=".$cid."&coursevers=".$vers."');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
+}
 ?>
 </body>
 </html>

@@ -89,4 +89,23 @@ function endsWith($haystack,$needle,$case=true)
 	return (strcasecmp(substr($haystack, strlen($haystack) - strlen($needle)),$needle)===0);
 }
 
+//---------------------------------------------------------------------------------------------------------------
+// endsWith - Tests if a string ends with another string - defaults to being non-case sensitive
+//---------------------------------------------------------------------------------------------------------------
+
+function swizzleArray(&$filepost) {
+
+    $filearray = array();
+    $filecount = count($filepost['name']);
+    $filekeys = array_keys($filepost);
+
+    for ($i=0; $i<$filecount; $i++) {
+        foreach ($filekeys as $key) {
+            $filearray[$i][$key] = $filepost[$key][$i];
+        }
+    }
+
+    return $filearray;
+}
+
 ?>
