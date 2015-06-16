@@ -143,15 +143,7 @@ INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES
 /* END duggasys test data END */
 
 /* START codeviewver test data START */
-/* Templates for codeexamples */
 
-INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2);
-INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
 
 /* Codeexamples */
 

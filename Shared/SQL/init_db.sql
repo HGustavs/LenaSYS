@@ -42,7 +42,7 @@ CREATE TABLE course(
 		activeversion 		VARCHAR(8),
 		activeedversion 	VARCHAR(8),
 		capacity			int(5),
-		hp					decimal(4,1) not null,
+		hp					decimal(4,1) not null default 7.5,
 		courseHttpPage		varchar(2000),
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
@@ -466,3 +466,13 @@ CREATE EVENT weekly_eventlog_delete ON SCHEDULE EVERY 1 WEEK
 	SET SQL_SAFE_UPDATES = 1;
 END $$
 DELIMITER ;
+
+/* Templates for codeexamples */
+
+INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2);
+INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
