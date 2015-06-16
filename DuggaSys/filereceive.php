@@ -93,8 +93,8 @@ if($ha){ //login for user is successful & has either write access or is superuse
 			 		
 		if($storefile){
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain");
-				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt");
+				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml");
+				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml");
 				
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
 				
