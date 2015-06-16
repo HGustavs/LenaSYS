@@ -394,7 +394,7 @@
 						$file = "../courses/".$courseId."/".$filename;
 					}else if($filekind==4){
 						// Local
-						$file = "../courses/".$courseId."/".$coursevers."/".$filename;
+						$file = "../courses/".$courseId."/".$courseVersion."/".$filename;
 					}else{
 						$file = "UNK";					
 					}
