@@ -373,8 +373,6 @@
 			$boxContent=strtoupper($row['boxcontent']);
 			$filename=$row['filename'];
 			$content="";
-
-//			$debug.=" #".$filename."# ";
 						
 			$ruery = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) LIMIT 1;");
 			$ruery->bindParam(':cid', $courseId);
@@ -383,8 +381,6 @@
 			if($sow = $ruery->fetch(PDO::FETCH_ASSOC)){
 					$filekind=$sow['kind'];
 					$filename = $sow['filename'];
-
-					$debug.=" :". $sow['kind'].": ";
 			
 					if($filekind==2){
 						// Global
@@ -399,7 +395,6 @@
 						$file = "UNK";					
 					}
 
-					$debug.=$file;
 					
 					if(file_exists ($file)){
 							$file_extension = strtolower(substr(strrchr($filename,"."),1));
@@ -413,9 +408,7 @@
 									}
 							}else{
 									$buffer=file_get_contents($file);
-									
-									$debug.=$buffer;
-									
+																		
 									$content=$content.$buffer;
 							}
 					}
