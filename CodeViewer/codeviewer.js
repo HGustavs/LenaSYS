@@ -2086,12 +2086,12 @@ function markdownBlock(inString)
 	//alert(inString);
 
 	//Regular expressions for italics and bold formatting
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');	
-	inString = inString.replace(/\*{2}(.*?\S)\*{2}/g, '<font style="font-weight:bold;">$1</font>');
-	inString = inString.replace(/\*{1}(.*?\S)\*{1}/g, '<font style="font-style:italic;">$1</font>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');
-	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<font style="font-weight:bold;">$1</font>');	
-	inString = inString.replace(/\_{1}(.*?\S)\_{1}/g, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');	
+	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<font style="font-weight:bold;">$1</font>');
+	inString = inString.replace(/\*{2}(.*?\S)\*{2}/g, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\_{4}(.*?\S)\_{4}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');
+	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<font style="font-weight:bold;">$1</font>');	
+	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<font style="font-style:italic;">$1</font>');
 	
 	//Regular expressions for headings
 	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
