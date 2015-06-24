@@ -1,0 +1,23 @@
+LenaSYS supports a simple form of markdown. The following syntax can be used:
+
+Italics
+__this is italic__
+**this is italic**
+
+Bold
+___this is bold___
+***this is bold***
+
+Bold and Italic
+____this is bold and italic____
+****this is bold and italic****
+
+Headings
+# This is a level 1 heading
+## This is a level 2 heading
+### This is a level 3 heading
+
+Links
+!!!http://www.some.where.com!!!%%%The text to be shown as a link%%%
+
+Lists
