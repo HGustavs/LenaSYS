@@ -2111,7 +2111,7 @@ function markdownBlock(inString)
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
 	
 	// Hyperlink !!! and %%%
-	inString = inString.replace(/\!{3}(.*?\S)\!{3}/g, '<a href="$1">');
+	inString = inString.replace(/\!{3}(.*?\S)\!{3}/g, '<a href="$1" target="_blank">');
 	inString = inString.replace(/\%{3}(.*?\S)\%{3}/g, '$1</a>');
 
 	return inString;
