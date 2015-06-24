@@ -20,4 +20,18 @@ Headings
 Links
 !!!http://www.some.where.com!!!%%%The text to be shown as a link%%%
 
-Lists
+Ordered lists
+1. This is item one
+2. This is item two
+
+Unordered lists
+- Item
+- Item
+
+Horizontal line
+---
+
+Code block
+~~~
+var i = 0;
+~~~
