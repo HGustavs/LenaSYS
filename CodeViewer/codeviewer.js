@@ -2116,5 +2116,9 @@ function markdownBlock(inString)
 	inString = inString.replace(/\!{3}(.*?\S)\!{3}/g, '<a href="$1" target="_blank">');
 	inString = inString.replace(/\%{3}(.*?\S)\%{3}/g, '$1</a>');
 
+	// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
+	inString = inString.replace(/\+{3}(.*?\S)\+{3}/g,"<img class='gifimage' src='$1' ");
+	inString = inString.replace(/\@{3}(.*?\S)\@{3}/g," onclick=\"showGif('$1');\" target='_blank' />");
+
 	return inString;
 }
