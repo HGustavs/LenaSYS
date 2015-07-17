@@ -522,37 +522,6 @@
 	padding: 10px !important;
 }
 
-.descbox h1{
-	color: #000;
-	text-align: left;
-	font-size: 1.8em;
-    font-weight: normal;
-	font-style: normal;
-}
-
-.desc pre {
-    font-family: "Courier 10 Pitch", Courier, monospace;
-    font-size: 12px;
-    line-height: 14px;
-    white-space: pre;
-    white-space: pre-wrap;
-}
-
-.descbox code {
-    font-family: MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-    font-size: 12px;
-    line-height: 14px;
-    white-space: pre;
-    white-space: pre-wrap;
-    background: #ffffff;	
-    display: inline-block;
-    padding: 1em;
-    margin: 0.5em 0px;
-    border: 1px solid #bebab0;	
-    box-shadow: 1px 1px 2px #666;
-}
-/* DESCRIPTION BOX STYLE STOP */
-
 /* USER FEEDBACK BOX START  */
 .alert.success {
 	background-color:#DFF0D8;

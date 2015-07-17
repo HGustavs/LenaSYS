@@ -1,0 +1,144 @@
+@font-face{ 
+    font-family: 'MyWebFont';
+    src: url('ubuntu-mono-webfont.eot');
+    src: url('ubuntu-mono-webfont.eot?iefix') format('eot'),
+         url('ubuntu-mono-webfont.woff') format('woff'),
+         url('ubuntu-mono-webfont.ttf') format('truetype'),
+         url('ubuntu-mono-webfont.svg#webfont') format('svg');
+}
+
+.desc {
+		font-family: arial;
+		color: #000;
+		text-align: left;
+	  font-weight: normal;
+		font-style: normal;
+    font-size: 14px;
+}
+
+.desc h1 {
+		color: #000;
+		text-align: left;
+	  font-weight: normal;
+		font-style: normal;
+    font-size: 1.8em;
+    line-height: 1.4em;
+		font-weight: bold;
+
+}
+
+.desc h2 {
+		color: #000;
+		text-align: left;
+	  font-weight: normal;
+		font-style: normal;
+    font-size: 1.5em;
+    line-height: 1.5em; 
+		font-weight: bold;
+
+}
+
+.desc h3 {
+		color: #000;
+		text-align: left;
+	  font-weight: normal;
+		font-style: normal;
+    font-size: 1.3em;
+    line-height: 1.3em; 
+		font-weight: bold;
+
+}
+
+.desc h4 {
+		color: #000;
+		text-align: left;
+	  font-weight: normal;
+		font-style: normal;
+    font-size: 1.2em;
+    line-height: 1.5em;
+		font-weight: bold;
+
+}
+
+.desc h5 {
+		color: #000;
+		text-align: left;
+	  font-weight: normal;
+		font-style: normal;
+    font-size: 1.2em;
+    line-height: 1.5em;
+		font-weight: bold;
+
+}
+
+.desc pre {
+    font-family: "Courier 10 Pitch", Courier, monospace;
+    font-size: 12px;
+    line-height: 14px;
+    white-space: pre;
+    white-space: pre-wrap;
+}
+
+.desc code {
+    font-family: MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 12px;
+    line-height: 14px;
+    white-space: pre;
+    white-space: pre-wrap;
+    background: #ffffff;	
+    display: inline-block;
+    padding: 1em;
+    margin: 0.5em 0px;
+    border: 1px solid #bebab0;	
+    box-shadow: 1px 1px 2px #666;
+}
+
+.desc strong {
+		font-weight: bold;
+}
+
+.desc em {
+		font-style: italic;
+}
+
+.desc ul {
+		margin-left: 16px;
+}
+
+/* gifimage figmd bigmd backmd are styles for showing gif clips for tutorials etc */
+
+.gifimage{
+		width:128px;
+		border:2px solid teal;
+}
+
+.figmd {
+		position:fixed;
+		left:10%;
+		top:10%;
+		width:80%;
+		height:80%;
+		box-shadow:1px 1px 6px #000;
+		border:2px solid teal;
+		z-index:12200;
+		background:#def;
+		display:none;
+}
+
+.bigmd{
+		max-width: 100%;
+		height: 100%;
+		width: auto; 
+}
+
+.backmd{
+		position:fixed;
+		left:0%;
+		top:0%;
+		width:100%;
+		height:100%;
+		opacity:0.75;
+		background:#101;
+		z-index:12000;
+		display:none;
+}

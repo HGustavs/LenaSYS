@@ -2037,6 +2037,7 @@ function addHtmlLineBreak(inString){
 // parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
 //				  function replace with regular expressions.
 //                Is called by returned in codeviewer.js
+//								Identical php code exists in showdoc any changes must be propagated
 //----------------------------------------------------------------------------------
 
 function parseMarkdown(inString)
@@ -2079,19 +2080,14 @@ function parseMarkdown(inString)
 //          
 //----------------------------------------------------------------------------------
 function markdownBlock(inString)
-{
-	var removeExtraTagsNumberedList = new RegExp('</ol>' + '\n' + '<ol>', 'g');
-	var removeExtraTagsUnorderedList = new RegExp('</ul>' + '\n' + '<ul>', 'g');
-
-	//alert(inString);
-
+{	
 	//Regular expressions for italics and bold formatting
-	inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');	
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<font style="font-weight:bold;">$1</font>');
-	inString = inString.replace(/\*{2}(.*?\S)\*{2}/g, '<font style="font-style:italic;">$1</font>');
-	inString = inString.replace(/\_{4}(.*?\S)\_{4}/g, '<font style="font-weight:bold; font-style:italic"><em>$1</em></font>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<font style="font-weight:bold;">$1</font>');	
-	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<font style="font-style:italic;">$1</font>');
+	inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<strong><em>$1</em></strong>');	
+	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<strong>$1</strong>');
+	inString = inString.replace(/\*{2}(.*?\S)\*{2}/g, '<strong>$1</strong>');
+	inString = inString.replace(/\_{4}(.*?\S)\_{4}/g, '<strong><em>$1</em></strong>');
+	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<em>$1</em>');	
+	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<em>$1</em>');
 	
 	//Regular expressions for headings
 	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
@@ -2103,17 +2099,22 @@ function markdownBlock(inString)
 	
 	//Regular expressions for lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
-	inString = inString.replace(removeExtraTagsNumberedList, '');
 	inString = inString.replace(/^\s*\-\s(.*)/gm, '<ul><li>$1</li></ul>');
-	inString = inString.replace(removeExtraTagsUnorderedList, '');
+
+	// Fix for superflous ul tags
+	inString = inString.replace("</ul>\n<ul>","");
+	inString = inString.replace("</ol>\n<ol>","");
 	
 	//Regular expression for line
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
+	
+	// Markdown for hard new lines -- \n\n and \n\n\n
+	inString = inString.replace("\n\n\n","<br><br>");
+	inString = inString.replace("\n\n","<br>");
 	
 	// Hyperlink !!! and %%%
 	inString = inString.replace(/\!{3}(.*?\S)\!{3}/g, '<a href="$1" target="_blank">');
 	inString = inString.replace(/\%{3}(.*?\S)\%{3}/g, '$1</a>');
 
 	return inString;
-
 }
