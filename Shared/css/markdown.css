@@ -121,8 +121,14 @@
 		box-shadow:1px 1px 6px #000;
 		border:2px solid teal;
 		z-index:12200;
-		background:#def;
+		background:#fff;
 		display:none;
+
+    background-image: url('throbber.gif');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+
 }
 
 .bigmd{

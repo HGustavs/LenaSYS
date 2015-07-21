@@ -39,12 +39,13 @@ if(isset($_SESSION['uid'])){
 } 	
 
 //  Handle files! One by one  -- if all is ok add file name to database
+//  login for user is successful & has either write access or is superuser					
 
 $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
-if($ha){ //login for user is successful & has either write access or is superuser					
+if($ha){
 		$storefile=false;
-		chdir('../'); // Start at the "root-level"
-		$currcvd=getcwd(); // get search path to current directory
+		chdir('../'); 
+		$currcvd=getcwd();
 		if($kind=="LINK"&&$link!="UNK"){
 
 				//  if link isn't in database (e.g no rows are returned), add it to database 
@@ -54,7 +55,8 @@ if($ha){ //login for user is successful & has either write access or is superuse
 				$query->execute(); 
 				$norows = $query->fetchColumn(); 
 
-				if($norows==0){ // link isn't in database, insert it
+				if($norows==0){
+						// link isn't in database, insert it
 						$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'1',:cid);");
 						$query->bindParam(':cid', $cid);
 						$query->bindParam(':linkval', $link);
@@ -69,28 +71,28 @@ if($ha){ //login for user is successful & has either write access or is superuse
 
 		}else if($kind=="GFILE"){
 				//  if it is a global file, check if "/templates" exists, if not create the directory
-				if(!file_exists ($currcvd."/DuggaSys/templates")){ // Check if added file name exists.
+				if(!file_exists ($currcvd."/DuggaSys/templates")){ 
 						$storefile=mkdir($currcvd."/DuggaSys/templates");
 				}else{
 						$storefile=true;							
 				}
 		}else if($kind=="LFILE"||$kind=="MFILE"){
 				//  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
-				if(!file_exists ($currcvd."/courses/".$cid)){ // Check if added file name exists.
+				if(!file_exists ($currcvd."/courses/".$cid)){ 
 						$storefile=mkdir($currcvd."/courses/".$cid);
 				}else{
 						$storefile=true;
 				}
 
 				if($kind=="LFILE"){
-						if(!file_exists ($currcvd."/courses/".$cid."/".$vers)){ // Check if added file name exists.
+						if(!file_exists ($currcvd."/courses/".$cid."/".$vers)){ 
 								$storefile=mkdir($currcvd."/courses/".$cid."/".$vers);
 						}else{
 								$storefile=true;
 						}
 				}
 		}	
-			 		
+
 		if($storefile){
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
 				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown");
@@ -145,18 +147,20 @@ if($ha){ //login for user is successful & has either write access or is superuse
 										//  if file type is allowed, continue the uploading process.
 				
 										$fname=$filea['name'];
-										$fname=preg_replace('/[[:^print:]]/', '', $fname); // Remove white space and non ascii characters
-										$fname = preg_replace('/\s+/', '', $fname); // Remove white space and non ascii characters
+										// Remove white space and non ascii characters
+										$fname=preg_replace('/[[:^print:]]/', '', $fname);
+										$fname = preg_replace('/\s+/', '', $fname); 
 
 										if($kind=="LFILE"){
-												$movname=$currcvd."/courses/".$cid."/".$vers."/".$fname;	//change search path										
+												$movname=$currcvd."/courses/".$cid."/".$vers."/".$fname;	
 										}else if($kind=="MFILE"){
-												$movname=$currcvd."/courses/".$cid."/".$fname; //change search path												
+												$movname=$currcvd."/courses/".$cid."/".$fname;
 										}else{
-												$movname=$currcvd."/DuggaSys/templates/".$fname;	//change search path												
+												$movname=$currcvd."/DuggaSys/templates/".$fname;
 										}
 
-										if(move_uploaded_file($filea["tmp_name"],$movname)){ // check if upload is successful (if it is, the file is uploaded obviously)
+										// check if upload is successful 
+										if(move_uploaded_file($filea["tmp_name"],$movname)){ 
 												if($kind=="LFILE"){
 														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
 												}else if($kind=="MFILE"){
@@ -202,7 +206,7 @@ if($ha){ //login for user is successful & has either write access or is superuse
 						}
 				}			
 		}else{
-			 	echo "No Store File\n";
+			 	echo "No file found - check upload_max_filesize and post_max_size in php.ini";
 			 	$error=true;
 		}				
 }

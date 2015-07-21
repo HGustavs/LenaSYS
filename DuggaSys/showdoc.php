@@ -87,6 +87,9 @@
 				$instring = preg_replace("/\+{3}(.*?\S)\+{3}/","<img class='gifimage' src='$1' ",$instring);
 				$instring = preg_replace("/\@{3}(.*?\S)\@{3}/"," onclick=\"showGif('$1');\" target='_blank' />",$instring);
 
+				// Right Arrow for discussing menu options
+				$instring = preg_replace("/\s[\-][\>]\s/","&rarr;",$instring);
+
 				return $instring;		
 		}
 
