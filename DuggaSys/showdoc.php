@@ -237,7 +237,7 @@
 				if($file_extension=="md"){
 						// If markdown -- perform replacements in code
 						$bummer=parseMarkdown($bummer);
-						$bummer="<div class='desc'>".$bummer."</div>";
+						$bummer="<div class='descbox'>".$bummer."</div>";
 				}
 				
 				echo $bummer;
