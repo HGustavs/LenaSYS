@@ -5,6 +5,7 @@
 
 var camera, scene, renderer, rendererDOMElement;
 var object, lineR, lineG, lineB;
+var light, light1;
 var highlightCubes = [];
 var acanvas = document.getElementById("container");
 var material, goalMaterial;
@@ -12,7 +13,12 @@ var rotateObjects = false;
 var backsideCulling = false;
 var highlightVerticies = true; // Used to highlight vertices in the geometry
 
-//var startString = '{"vertice":[{"x":"200","y":"200","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"}],"triangles":["0,1,2"]}';
+// lvl 1
+// {"vertice":[{"x":"200","y":"200","z":"0"},{"x":"-400","y":"-400","z":"0"},{"x":"400","y":"-400","z":"0"}],"triangles":["0,1,2"]}
+// lvl 2
+// {"vertice":[{"x":"200","y":"-300","z":"0"},{"x":"-100","y":"-300","z":"0"},{"x":"-200","y":"100","z":"0"},{"x":"300","y":"0","z":"0"},{"x":"100","y":"400","z":"0"}],"triangles":["0,1,2","0,2,3","3,2,4"]}
+// lvl 3
+// {"vertice":[{"x":"0","y":"-400","z":"0"},{"x":"-400","y":"0","z":"0"},{"x":"0","y":"400","z":"0"},{"x":"400","y":"0","z":"0"},{"x":"0","y":"0","z":"400"}],"triangles":["0,1,4","1,2,4","2,3,4","3,0,4"]}
 var startString = '{"vertice":[],"triangles":[]}';
 //var goal = '{"vertice":[{"x":"400","y":"0","z":"0"},{"x":"-400","y":"0","z":"0"},{"x":"400","y":"0","z":"0"},{"x":"400","y":"0","z":"-800"}],"triangles":["0,1,2","1,2,3"]}';
 
@@ -387,22 +393,20 @@ function init()
 
 	camera = new THREE.PerspectiveCamera(60, rendererDOMElement.width / rendererDOMElement.height, 1, 10000);
 
-	camera.position.z = 1500;
-	camera.position.y = 500;
-
 	scene = new THREE.Scene();
 
 	scene.add(camera);
 
 	// create a point light
-	/*var pointLight = new THREE.PointLight(0xffffff);
+	/*
+	var pointLight = new THREE.PointLight(0xffffff);
 	pointLight.position.x = 200;
 	pointLight.position.y = 200;
 	pointLight.position.z = 330;
 	pointLight.castShadow = true;
 	pointLight.shadowCameraVisible = true;
-	scene.add(pointLight);*/
-
+	scene.add(pointLight);
+*/
 	/*var bump512 = THREE.ImageUtils.loadTexture( 'includes/bump512_2.gif' );
 		var jg = THREE.ImageUtils.loadTexture( 'includes/jg.gif' );
 		texture.anisotropy = renderer.getMaxAnisotropy();
@@ -418,12 +422,15 @@ function init()
 		vertexColors : THREE.FaceColors,
 
 	});
+	/*
 	goalMaterial = new THREE.MeshBasicMaterial({
-		wireframe : true,
+		wireframe : false,
 		wireframeLinewidth : 1,
 		vertexColors : THREE.FaceColors,
 		side : THREE.DoubleSide
 	});
+*/
+	goalMaterial = new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x666666, emissive: 0xff0000, shininess: 10, shading: THREE.SmoothShading, opacity: 0.7, transparent: true, side :  THREE.DoubleSide, wireframe:true} );
 	//material = new THREE.MeshBasicMaterial( {  color: 0x000000,
 	/* ambient : 0xffffff,
 	emissive : 0x000000,
@@ -470,9 +477,15 @@ function init()
 	//scene.add(object);
 
 	// add ambient lighting
-	var ambientLight = new THREE.AmbientLight(0xcccccc);
-	scene.add(ambientLight);
-
+//	var ambientLight = new THREE.AmbientLight(0xcccccc);
+//	scene.add(ambientLight);
+	//scene.add( new THREE.AmbientLight( 0x111111 ) );
+	/*
+	var sphere = new THREE.SphereGeometry( 0.25, 16, 8 );
+	light1 = new THREE.PointLight( 0xff0040, 2.5, 100 );
+	light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xff0040 } ) ) );
+	scene.add( light1 );
+*/
 	//Draw X Y Z Axis
 	var xLineMat = new THREE.LineBasicMaterial({
 		color : new THREE.Color(0xff0000),
@@ -571,7 +584,12 @@ function createGoalObject(goalObjectDataString) {
 		var vertices = goalObjectData.triangles[i].split(',');
 		geom.faces.push(new THREE.Face3(vertices[0], vertices[1], vertices[2]));
 	}
-	geom = addColorsToGeometry(geom);
+	for (var i = 0; i < geom.faces.length; i++) {
+		var face = geom.faces[i];
+		//face.color.setHex( Math.random() * 0xffffff );
+		face.color.setHex(0x777777);
+	}
+	//geom = addColorsToGeometry(geom);
 	goalObject = new THREE.Mesh(geom, goalMaterial);
 	scene.add(goalObject);
 	//populateVerticeList(goalObjectData.vertice);
@@ -644,21 +662,41 @@ function addColorsToGeometry(geom) {
 function rotateAllObjects() {
 	// Note: this code assues object 0 is camera
 	//console.log(scene.children.length);
+	/*
 	for (var i = 1; i < scene.children.length; i++) {
 		scene.children[i].rotation.x += 0.0005;
 		scene.children[i].rotation.y += 0.005;
 		scene.children[i].rotation.z += 0.00015;
 	}
+	*/
+
+	// Move camera
+	var timer = Date.now() * 0.0005;
+
+	camera.position.x = Math.cos( timer ) * 1000;
+	camera.position.z = Math.sin( timer ) * 1000;
+	//camera.position.y = Math.sin( timer ) * 800;
+
+	camera.lookAt( scene.position );
 }
 
 function resetRotationForAllObjects() {
 	//console.log(scene.children.length);
 	// Note: this code assues object 0 is camera
+	/*
 	for (var i = 1; i < scene.children.length; i++) {
 		scene.children[i].rotation.x = 0;
 		scene.children[i].rotation.y = 0;
 		scene.children[i].rotation.z = 0;
 	}
+	*/
+	camera.position.z = 1000;
+	camera.position.x = 500;
+	camera.position.y = 500;
+	camera.lookAt( scene.position );
+
+
+
 }
 
 function highlightVertices(){
@@ -686,13 +724,12 @@ function animate() {
 	fitToContainer();
 	requestAnimationFrame(animate);
 
-	rotateAllObjects();
-
 	if (rotateObjects) {
 		rotateAllObjects();
 	} else {
 		resetRotationForAllObjects();
 	}
+
 	renderer.render(scene, camera);
 
 }
