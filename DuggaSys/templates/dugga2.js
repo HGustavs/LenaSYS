@@ -61,7 +61,7 @@ function returnedDugga(data)
 	if(data['param']=="UNK"){
 			alert("UNKNOWN DUGGA!");
 	}else{
-		retdata=jQuery.parseJSON(data['param'].replace(/\*/g, '"'));
+		retdata=jQuery.parseJSON(data['param']);
 		$("#fargnamn").html(retdata['colorname']);
 		$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
 		// Add our previous answer

@@ -94,7 +94,7 @@ function returnedDugga(data) {
 		if (canvas) {
 			showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
-			retdata = jQuery.parseJSON(data['param'].replace(/\*/g, '"'));
+			retdata = jQuery.parseJSON(data['param']);
 			if (data["answer"] != null) {
 				var previous = data['answer'].split(',');
 				previous.shift();

@@ -63,7 +63,7 @@ function returnedDugga(data)
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
 		}else{		
-			retdata=jQuery.parseJSON(data['param'].replace(/\*/g, '"'));
+			retdata=jQuery.parseJSON(data['param']);
 			$("#talet").html(retdata['tal']);
 			// Add our previous answer
 			if(data['answer'] != null && data['answer'] != "UNK"){

@@ -62,8 +62,7 @@ function returnedDugga(data)
 
 		init();
 		populateLists(startString);
-		//			goalObject = jQuery.parseJSON(data['param'].replace(/&quot;/g, '"'));
-		goalObject = data['param'].replace(/&quot;/g, '"');
+		goalObject = data['param'];
 		createGoalObject(goalObject);
 		animate();
 

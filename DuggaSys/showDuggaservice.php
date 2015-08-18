@@ -35,7 +35,6 @@ $debug="NONE!";
 $param = "";
 $savedanswer = "";
 $highscoremode = "";
-$questionanswer = "";
 $quizfile = "UNK";
 
 $hr=false;
@@ -75,7 +74,7 @@ if($userid!="UNK"){
 	}
 	
 	// Retrieve variant list
-	$query = $pdo->prepare("SELECT vid,param,variantanswer FROM variant WHERE quizID=:duggaid;");
+	$query = $pdo->prepare("SELECT vid,param FROM variant WHERE quizID=:duggaid;");
 	$query->bindParam(':duggaid', $duggaid);
 	$result=$query->execute();
 	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
@@ -84,7 +83,6 @@ if($userid!="UNK"){
 		$variants[$i]=array(
 			'vid' => $row['vid'],
 			'param' => $row['param'],
-			'questionanswer' => $row['variantanswer']
 		);
 		$i++;
 		$insertparam = true;
@@ -148,7 +146,6 @@ if($userid!="UNK"){
 	foreach ($variants as $variant) {
 		if($variant["vid"] === $savedvariant || $quizfile === "kryss"){
 			$param.=$variant['param'];
-			$questionanswer.=$variant['questionanswer'];
 		}
 	}
 
@@ -220,8 +217,10 @@ if(strcmp($opt,"GETVARIANTANSWER")===0){
 	$first = $temp[0];
 	$second = $temp[1];
 	$thrid = $temp[2];
+
+//	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 			
-	$query = $pdo->prepare("SELECT variant.variantanswer FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.uid = :uid and userAnswer.cid = :cid and userAnswer.vers = :vers");
+	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.uid = :uid and userAnswer.cid = :cid and userAnswer.vers = :vers");
 	
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':cid', $first);
@@ -232,6 +231,7 @@ if(strcmp($opt,"GETVARIANTANSWER")===0){
 	
 	foreach($query->fetchAll() as $row) {
 		$setanswer.=$row['variantanswer'].",";
+		$savedanswer.=$row['useranswer'].",";
 	}
 
 	makeLogEntry($userid,2,$pdo,$first);
@@ -239,13 +239,16 @@ if(strcmp($opt,"GETVARIANTANSWER")===0){
 	$param = $setanswer;
 }
 
+$param = str_replace("*##*", '"', $param);
+$savedanswer = str_replace("*##*", '"', $savedanswer);
+
+
 $array = array(
 		"debug" => $debug,
 		"param" => $param,
 		"answer" => $savedanswer,
 		"score" => $score,
 		"highscoremode" => $highscoremode,
-		"questionanswer" => $questionanswer
 	);
 
 echo json_encode($array);

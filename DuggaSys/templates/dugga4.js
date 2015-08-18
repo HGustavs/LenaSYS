@@ -57,7 +57,7 @@ function returnedDugga(data)
 			showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
 
-			retdata = jQuery.parseJSON(data['param'].replace(/\*/g, '"'));
+			retdata = jQuery.parseJSON(data['param']);
 			variant = retdata["variant"];
 
 			if (data["answer"] != null) {

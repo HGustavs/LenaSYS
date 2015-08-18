@@ -45,7 +45,9 @@ function updateVariant()
 
 	var vid=$("#vid").val();
 	var answer=$("#variantanswer").val();
+	answer = answer.replace(/\"/g, '*##*');
 	var parameter=$("#parameter").val();
+	parameter = parameter.replace(/\"/g , '*##*');	
 	
 	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter},"DUGGA");
 }
@@ -134,8 +136,10 @@ function selectVariant(vid,param,answer,template)
 {
 	$("#editVariant").css("display","block"); // Display edit dialog
 	$("#vid").val(vid); // Set Variant ID
-	$("#parameter").val(param); // Set Variant parameter
-	$("#variantanswer").val(answer); // Set Variant answer
+	var pparam = param.replace(/\*##\*/g, '"');
+	$("#parameter").val(pparam); // Set Variant parameter
+	var panswer = answer.replace(/\*##\*/g, '"');
+	$("#variantanswer").val(panswer); // Set Variant answer
 	
 	switch(template){
 		case "dugga1":
