@@ -153,7 +153,18 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
 			}
+	}	
+	else if(strcmp($opt,"SAVVARIPARA")===0){
+			$query = $pdo->prepare("UPDATE variant SET  param=:param WHERE vid=:vid;");
+			$query->bindParam(':vid', $vid);
+			$query->bindParam(':param', $param);
+	
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating user".$error[2];
+			}
 	}
+
 }
 
 //------------------------------------------------------------------------------------------------
@@ -215,17 +226,21 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 	$dir    = './templates';
 	$giles = scandir($dir);
 	$files =array();
+	$duggaPages = array();
 	foreach ($giles as $value){
 		if(endsWith($value,".html")){
 			array_push($files,substr ( $value , 0, strlen($value)-5 ));
+			array_push($duggaPages,file_get_contents("templates/".$value));
 		}		
 	}
+
 }
 
 $array = array(
 	'entries' => $entries,
 	'debug' => $debug,
-	'files' => $files
+	'files' => $files,
+	'duggaPages' => $duggaPages
 	);
 
 

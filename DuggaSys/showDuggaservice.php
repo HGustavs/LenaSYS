@@ -192,6 +192,7 @@ if(checklogin()){
 				}else{
 					// Update Dugga!
 					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, score=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$timeSpent=0;
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
@@ -202,6 +203,7 @@ if(checklogin()){
 				
 				if(!$query->execute()) {
 					$debug="Error updating answer";
+					print_r($pdo->errorInfo());
 				}
 			}
 		}
@@ -241,6 +243,9 @@ if(strcmp($opt,"GETVARIANTANSWER")===0){
 
 $param = str_replace("*##*", '"', $param);
 $savedanswer = str_replace("*##*", '"', $savedanswer);
+$param = str_replace("*###*", '&cap;', $param);
+$savedanswer = str_replace("*###*", '&cap;', $savedanswer);
+if(strcmp($savedanswer,"") == 0){$savedanswer = "UNK";} // Return UNK if we have not submitted any answer
 
 
 $array = array(

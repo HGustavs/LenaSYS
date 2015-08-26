@@ -2,6 +2,44 @@
 //----------------------------------------------------------------------------------
 // Globals
 //----------------------------------------------------------------------------------
+var DEFAULT_CAMERA_POSITION_Z = 1000;
+var	DEFAULT_CAMERA_POSITION_X = 500;
+var	DEFAULT_CAMERA_POSITION_Y = 500;
+
+// Help function 
+function isInteger(id) {
+    return typeof(id) === 'number' &&
+            isFinite(id) &&
+            Math.round(id) === id;
+}
+
+
+function Vertex(_x, _y, _z) {
+    this.x = parseInt(_x);
+    this.y = parseInt(_y);
+    this.z = parseInt(_z);
+}
+Vertex.prototype.toString= function() {
+    return '('+this.x+', '+this.y+', '+this.z+')';
+};
+
+//----------------------------------------------------------------------------------
+// Help function to allow moving of elements from on index to another in array
+// Usage: [0,4,9].move(1,2) will give new array [0,9,4]
+//----------------------------------------------------------------------------------
+Array.prototype.move = function (old_index, new_index) {
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this; // for testing purposes
+};
+
+var vertexL = [];
+var triangleL = [];
 
 var camera, scene, renderer, rendererDOMElement;
 var object, lineR, lineG, lineB;
@@ -67,7 +105,6 @@ function returnedDugga(data)
 		var studentPreviousAnswer = "";
 
 		init();
-		populateLists(startString);
 		goalObject = data['param'];
 		createGoalObject(goalObject);
 		animate();
@@ -78,9 +115,11 @@ function returnedDugga(data)
 function toggleControl() 
 {
 	if (document.getElementById('verticeControl').style.display == 'none') {
+		renderVertexTable();
 		document.getElementById('verticeControl').style.display = 'block';
 		document.getElementById('triangleControl').style.display = 'none';
 	} else {
+		updateVerticeDropdown() ;
 		document.getElementById('verticeControl').style.display = 'none';
 		document.getElementById('triangleControl').style.display = 'block';
 	}
@@ -122,105 +161,32 @@ function submbutton()
 	console.log(answerString);
 }
 
-function populateLists(startString) 
-{
-	var startValues = JSON.parse(startString);
-	populateVerticeList(startValues.vertice);
-	populateTrianlgesList(startValues.triangles);
-	updateGeometry();
-}
 
-function populateVerticeList(vertice) 
+function updateVerticeDropdown() 
 {
-	console.log(vertice);
-	var verticeList = document.getElementById("verticeList");
-	for (var i = 0; i < vertice.length; i++) {
-		addVertexToVerticeList(vertice[i].x, vertice[i].y, vertice[i].z);
-	}
-}
+	var options1 = '<select id="tv1" style="width:100%;" onchange="checkTriangleInput();">'
+	var options2 = '<select id="tv2" style="width:100%;" onchange="checkTriangleInput();">'
+	var options3 = '<select id="tv3" style="width:100%;" onchange="checkTriangleInput();">'
 
-function populateTrianlgesList(triangles) 
-{
-	console.log(triangles);
-	var triangleList = document.getElementById("triangleList");
-	for (var i = 0; i < triangles.length; i++) {
-		triangleList.innerHTML += "<option value='" + triangles[i] + "'>" + triangles[i] + "</option>";
-	}
-}
-
-function deleteTriangle() 
-{
-	var elSel = document.getElementById('triangleList');
-	var i = 0;
-	for ( i = elSel.length - 1; i >= 0; i--) {
-		if (elSel.options[i].selected) {
-			elSel.remove(i);
+	for (var i=0; i < vertexL.length; i++){
+		if (i === 0){
+			options1 += '<option selected value="'+ i +'">' + i + '</option>'
+			options2 += '<option selected value="'+ i +'">' + i + '</option>'
+			options3 += '<option selected value="'+ i +'">' + i + '</option>'
+		} else {
+			options1 += '<option value="'+ i +'">' + i + '</option>'
+			options2 += '<option value="'+ i +'">' + i + '</option>'
+			options3 += '<option value="'+ i +'">' + i + '</option>'			
 		}
 	}
-	updateGeometry();
-}
+	options1 += '</select>'
+	options2 += '</select>'
+	options3 += '</select>'
 
-function moveTriangleUp() 
-{
-	var elSel = document.getElementById('triangleList');
-	var ind = elSel.selectedIndex;
-	var val;
-	var tex;
-
-	if (elSel.selectedIndex > 0) {
-
-		val = elSel.options[ind].value;
-		tex = elSel.options[ind].text;
-
-		elSel.options[ind].value = elSel.options[ind - 1].value;
-		elSel.options[ind].text = elSel.options[ind - 1].text;
-
-		elSel.options[ind - 1].value = val;
-		tex = elSel.options[ind - 1].text = tex;
-
-		elSel.selectedIndex--;
-	}
-	updateGeometry();
-}
-
-function moveTriangleDown() 
-{
-	var elSel = document.getElementById('triangleList');
-	var ind = elSel.selectedIndex;
-	var val;
-	var tex;
-
-	if (elSel.selectedIndex < elSel.length - 1) {
-
-		val = elSel.options[ind].value;
-		tex = elSel.options[ind].text;
-
-		elSel.options[ind].value = elSel.options[ind + 1].value;
-		elSel.options[ind].text = elSel.options[ind + 1].text;
-
-		elSel.options[ind + 1].value = val;
-		tex = elSel.options[ind + 1].text = tex;
-
-		elSel.selectedIndex++;
-	}
-	updateGeometry();
-
-}
-
-function updateVerticeDropdown(selectList) 
-{
-	selectList.innerHTML = "";
-	var verticeList = document.getElementById("verticeList");
-	for (var i = 0; i < verticeList.childNodes.length; i++) {
-		var newOption = document.createElement('option');
-		newOption.value = i;
-		newOption.innerHTML = i;
-		newOption.onclick = function(ev) {
-			ev.stopPropagation();
-			return false;
-		};
-		selectList.appendChild(newOption);
-	}
+	document.getElementById("tv1").innerHTML = options1;
+	document.getElementById("tv2").innerHTML = options2;
+	document.getElementById("tv3").innerHTML = options3;
+	checkTriangleInput();
 }
 
 function newTriangle() 
@@ -229,14 +195,8 @@ function newTriangle()
 	var tv2 = document.getElementById("tv2");
 	var tv3 = document.getElementById("tv3");
 	if (tv1.selectedIndex != -1 && tv2.selectedIndex != -1 && tv3.selectedIndex != -1) {
-		console.log("tv defined");
-		/*
-		 SPARA:
-		 var vertex1=document.getElementById("verticeList").childNodes[tv1.selectedIndex].childNodes[1].value+
-		 document.getElementById("verticeList").childNodes[tv1.selectedIndex].childNodes[3].value+
-		 document.getElementById("verticeList").childNodes[tv1.selectedIndex].childNodes[5].value;*/
-
-		document.getElementById("triangleList").innerHTML += "<option value='" + tv1.selectedIndex + "," + tv2.selectedIndex + "," + tv3.selectedIndex + "'>" + tv1.selectedIndex + "," + tv2.selectedIndex + "," + tv3.selectedIndex + "</option>";
+		triangleL.push([tv1.selectedIndex, tv2.selectedIndex, tv3.selectedIndex]);
+		renderTriangleTable();
 	} else {
 		console.log("tv undefined");
 	}
@@ -253,102 +213,192 @@ function newVertex()
 	var vertexMsg = document.getElementById('vertexMsg');
 
 	if (checkVertexInput(vertexX.value, vertexY.value, vertexZ.value)) {
-		addVertexToVerticeList(vertexX.value, vertexY.value, vertexZ.value);
+		addVertexToVerticeList(parseInt(vertexX.value), parseInt(vertexY.value), parseInt(vertexZ.value));
+		document.getElementById('vertexX');
+		var vertexY = document.getElementById('vertexY');
+		var vertexZ = document.getElementById('vertexZ');
+
 	}
+}
+
+function checkTriangleInput()
+{
+	var tv1 = document.getElementById("tv1");
+	var tv2 = document.getElementById("tv2");
+	var tv3 = document.getElementById("tv3");
+	if ((tv1.selectedIndex != tv2.selectedIndex) &&
+		(tv1.selectedIndex != tv3.selectedIndex) &&
+		(tv2.selectedIndex != tv3.selectedIndex)) {
+		document.getElementById("newTriangleButton").disabled = false;
+	} else {
+		document.getElementById("newTriangleButton").disabled = true;
+	}
+
 }
 
 function checkVertexInput(vertexX, vertexY, vertexZ) 
 {
+	// Only integers are allowed. Hence, check for [0-9] and '-' for negative integers.
 	var vertexMsg = document.getElementById('vertexMsg');
+	var x,y,z;
+	x = /^\-?[0-9]+$/.test(vertexX);
+	y = /^\-?[0-9]+$/.test(vertexY);
+	z = /^\-?[0-9]+$/.test(vertexZ);
 	vertexMsg.innerHTML = "";
-	if ((vertexX != '' && !isNaN(vertexX)) && (vertexY != '' && !isNaN(vertexY)) && (vertexZ != '' && !isNaN(vertexZ))) {
+	if (x && y && z && isInteger(parseInt(vertexX)) && isInteger(parseInt(vertexY)) && isInteger(parseInt(vertexZ))) {
 		return true;
 	} else {
-		vertexMsg.innerHTML = "Incorrect input";
+		vertexMsg.innerHTML = "Endast heltal är godkända som koordinater.";
 		return false;
 	}
 }
 
-function vertexUpdate() 
+function vertexUpdate(index) 
 {
 	if (querystring['highscoremode'] == 2) {
 		ClickCounter.onClick();
 	}	
 
-	var vertexMsg = document.getElementById('vertexMsg');
-	vertexMsg.innerHTML = "";
+	var x = document.getElementById('v_'+index+'_x').value;
+	var y = document.getElementById('v_'+index+'_y').value;
+	var z = document.getElementById('v_'+index+'_z').value;
 
-	var verticeList = document.getElementById("verticeList");
-
-	for (var i = 0; i < verticeList.childNodes.length; i++) {
-		var incorrectInputFound = false;
-		if ((verticeList.childNodes[i].childNodes[1].value == '' || isNaN(verticeList.childNodes[i].childNodes[1].value)) || (verticeList.childNodes[i].childNodes[3].value == '' || isNaN(verticeList.childNodes[i].childNodes[3].value)) || (verticeList.childNodes[i].childNodes[5].value == '' || isNaN(verticeList.childNodes[i].childNodes[5].value))) {
-			incorrectInputFound = true;
-		}
-	}
-
-	if (incorrectInputFound) {
-		vertexMsg.innerHTML = "Incorrect input in vertice list.<br /> Geometry update failed.";
+	if (checkVertexInput(x, y, z)){		
+		vertexL[index].x = parseInt(x);
+		vertexL[index].y = parseInt(y);
+		vertexL[index].z = parseInt(z);
 	} else {
-		updateGeometry();
+		document.getElementById('vertexMsg').innerHTML = "Endast heltal är godkända som koordinater.";
+		document.getElementById('v_'+index+'_x').value = vertexL[index].x;
+		document.getElementById('v_'+index+'_y').value = vertexL[index].y;
+		document.getElementById('v_'+index+'_z').value = vertexL[index].z;
 	}
 
+	console.log("VertixList: "+vertexL);
+
+	updateGeometry();	
 }
 
 function addVertexToVerticeList(vertexX, vertexY, vertexZ) 
 {
-	var verticeList = document.getElementById('verticeList');
-	var newVertxLi = document.createElement('li');
-	newVertxLi.innerHTML = '(<input type="text" value="' + vertexX + '" style="width:30px;" onchange="vertexUpdate();" />' + ',<input type="text" value="' + vertexY + '" style="width:30px;" onchange="vertexUpdate();" />' + ',<input type="text" value="' + vertexZ + '" style="width:30px;" onchange="vertexUpdate();" />)' + '<button onclick="moveVertexUp(this.parentNode);">&uarr;</button>' + '<button onclick="moveVertexDown(this.parentNode);">&darr;</button>' + '<button onclick="deleteVertex(this.parentNode);">X</button>';
-	verticeList.appendChild(newVertxLi);
+
+	var v = new Vertex(vertexX, vertexY, vertexZ);
+	vertexL.push(v);
+	renderVertexTable();
 	updateGeometry();
+
 }
 
-function deleteVertex(vertexLi) 
+function renderVertexTable()
 {
-	var vertexIndex = $(vertexLi).index() + vertexLi.parentNode.start;
-	var triangleList = document.getElementById('triangleList');
-	var vertexInUse = false;
-	for (var i = 0; i < triangleList.options.length; i++) {
-		var vertices = triangleList.options[i].value.split(',');
-		console.log(vertices[0] + " " + vertices[1] + " " + vertices[2]);
-		if (vertices[0] == vertexIndex || vertices[1] == vertexIndex || vertices[2] == vertexIndex) {
-			vertexInUse = true;
+	// Render table
+	var newTableBody = "<tbody>";
+	for (var i=0; i<vertexL.length;i++){
+		newTableBody += "<tr id='v" + i +"'>";
+		newTableBody += '<td style="font-size:11px; text-align: right;">v'+i+'</td>';
+		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_x" type="text" maxlength="4" size="4" value="' + vertexL[i].x + '" onchange="vertexUpdate('+i+');" /></td>';
+		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_y" type="text" maxlength="4" size="4" value="' + vertexL[i].y + '" onchange="vertexUpdate('+i+');" /></td>';
+		newTableBody += '<td><input style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_z" type="text" maxlength="4" size="4" value="' + vertexL[i].z + '" onchange="vertexUpdate('+i+');" /></td>';
+		if (i === 0){
+			newTableBody += '<td><button disabled onclick="moveVertexUp('+i+');">&uarr;</button></td>';
+		} else {
+			newTableBody += '<td><button onclick="moveVertexUp('+i+');">&uarr;</button></td>';			
 		}
+		if (i === vertexL.length-1){
+			newTableBody += '<td><button disabled onclick="moveVertexDown('+i+');">&darr;</button></td>';
+		} else {
+			newTableBody += '<td><button onclick="moveVertexDown('+i+');">&darr;</button></td>';			
+		}
+		if(activeVertex(i)){
+			newTableBody += '<td><button disabled onclick="deleteVertex('+i+');">X</button></td>';			
+		} else {
+			newTableBody += '<td><button onclick="deleteVertex('+i+');">X</button></td>';			
+		}
+		newTableBody += "</tr>";
 	}
-	if (!vertexInUse) {
-		document.getElementById("vertexMsg").innerHTML = "";
-		vertexLi.parentNode.removeChild(vertexLi);
-		updateGeometry();
-	} else {
-		//console.log('in use');
-		document.getElementById("vertexMsg").innerHTML = "Kan inte ta bort. Hörnet används.";
-	}
+	newTableBody += "</tbody>";
+	document.getElementById('verticeList').innerHTML = newTableBody;	
 
 }
 
-function moveVertexUp(vertexLi) 
+function renderTriangleTable()
 {
-	var vertexLiIndex = $(vertexLi).index() + vertexLi.parentNode.start;
-	console.log(vertexLiIndex);
-	console.log(vertexLiIndex + " " + vertexLi.parentNode.childNodes.length);
-	if (vertexLiIndex > vertexLi.parentNode.start) {
-		var vertexLiAbove = vertexLi.parentNode.childNodes[vertexLiIndex - 1];
-		vertexLi.parentNode.insertBefore(vertexLi, vertexLiAbove);
+	// Render table
+	var newTableBody = "<tbody>";
+	for (var i=0; i<triangleL.length;i++){
+		newTableBody += "<tr id='tri" + i +"'>";
+		newTableBody += '<td style="font-size:11px; text-align: right;">triangel '+i+'</td>';
+		newTableBody += '<td><p style="margin:0;">(v'+triangleL[i][0]+',v'+triangleL[i][1]+',v'+triangleL[i][2]+')</p></td>';
+		if (i === 0){
+			newTableBody += '<td><button disabled onclick="moveTriangleUp('+i+');">&uarr;</button></td>';
+		} else {
+			newTableBody += '<td><button onclick="moveTriangleUp('+i+');">&uarr;</button></td>';			
+		}
+		if (i === triangleL.length-1){
+			newTableBody += '<td><button disabled onclick="moveTriangleDown('+i+');">&darr;</button></td>';
+		} else {
+			newTableBody += '<td><button onclick="moveTriangleDown('+i+');">&darr;</button></td>';			
+		}
+		newTableBody += '<td><button onclick="deleteTriangle('+i+');">X</button></td>';			
+		newTableBody += "</tr>";
 	}
-	vertexUpdate();
+	newTableBody += "</tbody>";
+	document.getElementById('triangleList2').innerHTML = newTableBody;	
+
 }
 
-function moveVertexDown(vertexLi) 
+
+function activeVertex(index)
 {
-	var vertexLiIndex = $(vertexLi).index() + vertexLi.parentNode.start;
-	console.log(vertexLiIndex + " " + vertexLi.parentNode.childNodes.length);
-	if (vertexLiIndex < vertexLi.parentNode.childNodes.length - 1) {
-		var vertexLiBelow = vertexLi.parentNode.childNodes[vertexLiIndex + 1];
-		vertexLi.parentNode.insertBefore(vertexLiBelow, vertexLi);
+	var active = false;
+	for (var i = 0; i < triangleL.length; i++) {
+		if (triangleL[i][0] == index || triangleL[i][1] == index || triangleL[i][2] == index) active = true;
 	}
-	vertexUpdate();
+	return active;
 }
+
+function deleteVertex(index) 
+{
+	vertexL.splice(index, 1);
+	renderVertexTable();
+	updateGeometry();	
+}
+
+function moveVertexUp(index) 
+{
+	vertexL.move(index, index-1);
+	renderVertexTable();
+	updateGeometry();	
+}
+
+function moveVertexDown(index) 
+{
+	vertexL.move(index, index+1);
+	renderVertexTable();
+	updateGeometry();	
+}
+
+function deleteTriangle(index) 
+{
+	triangleL.splice(index, 1);
+	renderTriangleTable();
+	updateGeometry();	
+}
+
+function moveTriangleUp(index) 
+{
+	triangleL.move(index, index-1);
+	renderTriangleTable();
+	updateGeometry();	
+}
+
+function moveTriangleDown(index) 
+{
+	triangleL.move(index, index-1);
+	renderTriangleTable();
+	updateGeometry();	
+}
+
 
 function toggleRotate() 
 {
@@ -385,6 +435,10 @@ function fitToContainer()
 function init() 
 {	
 
+	// Disable Triagle Pane until we have at least 3 vertices
+	document.getElementById("trianglePane").disabled = true;
+	document.getElementById("vertexMsg").innerHTML = "För få hörn för att skapa trianglar.";
+
 	rendererDOMElement = renderer.domElement;
 	rendererDOMElement.width = $("#content").width() - 250;
 	rendererDOMElement.height = $("#content").width() - 250;
@@ -397,95 +451,20 @@ function init()
 
 	scene.add(camera);
 
-	// create a point light
-	/*
-	var pointLight = new THREE.PointLight(0xffffff);
-	pointLight.position.x = 200;
-	pointLight.position.y = 200;
-	pointLight.position.z = 330;
-	pointLight.castShadow = true;
-	pointLight.shadowCameraVisible = true;
-	scene.add(pointLight);
-*/
-	/*var bump512 = THREE.ImageUtils.loadTexture( 'includes/bump512_2.gif' );
-		var jg = THREE.ImageUtils.loadTexture( 'includes/jg.gif' );
-		texture.anisotropy = renderer.getMaxAnisotropy();
-	 	texture.magFilter=THREE.LinearFilter;
-	 	texture.minFilter=THREE.LinearMipMapLinearFilter;
-		bump512.wrapT = THREE.RepeatWrapping;
-	 	bump512.wrapS = THREE.RepeatWrapping;
-	 	bump512.repeat.set(4,4);*/
-	
 	material = new THREE.MeshBasicMaterial({
-		wireframe : true,
-		wireframeLinewidth : 1,
+		wireframe : false,
+		wireframeLinewidth : 3,
 		vertexColors : THREE.FaceColors,
 
 	});
-	/*
+
 	goalMaterial = new THREE.MeshBasicMaterial({
-		wireframe : false,
-		wireframeLinewidth : 1,
+		wireframe : true,
+		wireframeLinewidth : 3,
 		vertexColors : THREE.FaceColors,
 		side : THREE.DoubleSide
 	});
-*/
-	goalMaterial = new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x666666, emissive: 0xff0000, shininess: 10, shading: THREE.SmoothShading, opacity: 0.7, transparent: true, side :  THREE.DoubleSide, wireframe:true} );
-	//material = new THREE.MeshBasicMaterial( {  color: 0x000000,
-	/* ambient : 0xffffff,
-	emissive : 0x000000,
-	specular : 0xffffff,
-	shininess : 30,
-	bumpMap : bump512,
-	map: bump512,
-	metal: false,
-	perPixel : true,*/
-	//                                          wireframe: true, wireframeLinewidth: 10, side: THREE.DoubleSide } );
-	/*
-	var geom = new THREE.Geometry();
-	var v1 = new THREE.Vector3(-300,-300,0);
-	var v2 = new THREE.Vector3(300,-300,0);
-	var v3 = new THREE.Vector3(-300,300,0);
 
-	var v4 = new THREE.Vector3(300,300,0);
-	var v5 = new THREE.Vector3(100,500,800);
-	var v6 = new THREE.Vector3(100,500,800);
-
-	geom.vertices.push(v1);
-	geom.vertices.push(v2);
-	geom.vertices.push(v3);
-	geom.vertices.push(v4);*/
-
-	//geom.faces.push( new THREE.Face3( 0, 1, 2) );
-	//geom.faces.push( new THREE.Face3( 1, 3, 2) );
-	//geom.doubleSided=true;
-	//geom.computeFaceNormals();
-
-	//solid_material =  new THREE.MeshBasicMaterial( { color: 0xff0000 });
-	//object = new THREE.Mesh( new THREE.CubeGeometry( 100, 100,100 ), [ new THREE.MeshBasicMaterial( { color: 0xff0000 } ), wireframe_material ] );
-	//object = new THREE.Mesh( geom, material );
-	//object = new THREE.Mesh( geom, new THREE.MeshNormalMaterial() );
-	//object = new THREE.Mesh( geom, [new THREE.MeshLambertMaterial({color:0xCC0000}),wireframe_material] );
-	/*object.geometry.dynamic=true;
-	object.doubleSided=true;
-	console.log(object.doubleSided); //=true;
-	object.flipSided=true;
-	console.log(object.flipSided); //=true;*/
-	//object.position.z = -100;//move a bit back - size of 500 is a bit big
-	//object.rotation.y = -Math.PI * .5;//triangle is pointing in depth, rotate it -90 degrees on Y
-
-	//scene.add(object);
-
-	// add ambient lighting
-//	var ambientLight = new THREE.AmbientLight(0xcccccc);
-//	scene.add(ambientLight);
-	//scene.add( new THREE.AmbientLight( 0x111111 ) );
-	/*
-	var sphere = new THREE.SphereGeometry( 0.25, 16, 8 );
-	light1 = new THREE.PointLight( 0xff0040, 2.5, 100 );
-	light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xff0040 } ) ) );
-	scene.add( light1 );
-*/
 	//Draw X Y Z Axis
 	var xLineMat = new THREE.LineBasicMaterial({
 		color : new THREE.Color(0xff0000),
@@ -540,38 +519,6 @@ function init()
 	scene.add(lineG);
 	scene.add(lineB);
 
-	/*lineGeom = new THREE.Geometry();
-	 lineGeom.vertices.push( new THREE.Vector3( 200, 0, 0) );*/
-
-	/*
-	 faceMaterial = new THREE.MeshFaceMaterial();
-
-	 textMaterialFront = new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading } );
-	 textMaterialSide = new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.SmoothShading } );
-	 textGeo = new THREE.TextGeometry( "Test", {
-	 size: 10,
-	 height: 7,
-	 curveSegments: 6,
-	 font: "helvetiker",
-	 weight: "normal",
-	 style: "normal",
-	 material:0,
-	 extrudeMaterial:1,
-	 bevelThickness: 0,
-	 bevelSize:0,
-	 bevelEnabled:false
-	 });
-
-	 textGeo.materials = [ textMaterialFront, textMaterialSide ];
-	 //textGeo.materials = textMaterialFront;
-
-	 textGeo.computeBoundingBox();
-	 textGeo.computeVertexNormals();
-	 textMesh1 = new THREE.Mesh( textGeo, faceMaterial );
-	 //scene.add(textMesh1);
-	 //window.addEventListener( 'resize', onWindowResize, false );
-	 */
-
 }
 
 function createGoalObject(goalObjectDataString) {
@@ -589,59 +536,42 @@ function createGoalObject(goalObjectDataString) {
 		//face.color.setHex( Math.random() * 0xffffff );
 		face.color.setHex(0x777777);
 	}
-	//geom = addColorsToGeometry(geom);
 	goalObject = new THREE.Mesh(geom, goalMaterial);
 	scene.add(goalObject);
-	//populateVerticeList(goalObjectData.vertice);
-	//populateTrianlgesList(goalObjectData.triangles);
-	//var vertice=goalObjectData.
 }
 
 function updateGeometry() {
-	var verticeList = document.getElementById('verticeList');
-	if (verticeList.childNodes.length > 2) {
+	if (vertexL.length > 2) {
+		//console.log("VertexList: "+ vertexL);
 		document.getElementById("vertexMsg").innerHTML = "";
 		var triangleList = document.getElementById('triangleList');
+		document.getElementById("trianglePane").disabled = false;
 		var geom = new THREE.Geometry();
-		//var v1 = new THREE.Vector3(-300,-300,0);
-		//geom.vertices.push(v1);
-		//var elSel = document.getElementById('operations');
 
-		//oplist=new Array();
-		//console.log("111");
-		for (var i = 0; i < verticeList.childNodes.length; i++) {
-			var x = verticeList.childNodes[i].childNodes[1].value;
-			var y = verticeList.childNodes[i].childNodes[3].value;
-			var z = verticeList.childNodes[i].childNodes[5].value;
-			//console.log(x+" "+y+" "+z);
-			geom.vertices.push(new THREE.Vector3(x, y, z));
+		for (var i = 0; i < vertexL.length; i++) {
+			geom.vertices.push(new THREE.Vector3(vertexL[i].x, vertexL[i].y, vertexL[i].z));
 		}
-		//console.log("222");
-		for (var i = 0; i < triangleList.options.length; i++) {
-			var vertices = triangleList.options[i].value.split(',');
-			//console.log(vertices[0]+" "+vertices[1]+" "+vertices[2]);
-			geom.faces.push(new THREE.Face3(vertices[0], vertices[1], vertices[2]));
-			//geom.faces.push( new THREE.Face3( 1, 3, 2) );
+
+		for (var i = 0; i < triangleL.length; i++) {
+			geom.faces.push(new THREE.Face3(triangleL[i][0], triangleL[i][1], triangleL[i][2]));
 		}
+
 		geom = addColorsToGeometry(geom);
 		scene.remove(object);
 		object = new THREE.Mesh(geom, material);
 		object.geometry.__dirtyVertices = true;
-		scene.add(object);
-
-		
-			
+		scene.add(object);			
 	} else {
-		document.getElementById("vertexMsg").innerHTML = "För få hörn";
+		document.getElementById("vertexMsg").innerHTML = "För få hörn för att skapa trianglar.";
+		document.getElementById("trianglePane").disabled = true;
 	}
 
 	// Clear previous highlightCubes array and remove them from scene
 	while (highlightCubes.length > 0) {scene.remove(highlightCubes.pop());}
 
-	if (highlightVerticies){
-		highlightVertices();
-	}	
-	console.log("No scene obj: "+scene.children.length);
+	if (highlightVerticies){ highlightVertices(); }
+
+	//console.log("No scene obj: "+scene.children.length);
 	resetRotationForAllObjects();
 }
 
@@ -650,7 +580,6 @@ function addColorsToGeometry(geom) {
 	var colorIndex = 0;
 	for (var i = 0; i < geom.faces.length; i++) {
 		var face = geom.faces[i];
-		//face.color.setHex( Math.random() * 0xffffff );
 		face.color.setHex(colors[colorIndex]);
 		colorIndex++;
 		if (colorIndex >= colors.length)
@@ -660,17 +589,7 @@ function addColorsToGeometry(geom) {
 }
 
 function rotateAllObjects() {
-	// Note: this code assues object 0 is camera
-	//console.log(scene.children.length);
-	/*
-	for (var i = 1; i < scene.children.length; i++) {
-		scene.children[i].rotation.x += 0.0005;
-		scene.children[i].rotation.y += 0.005;
-		scene.children[i].rotation.z += 0.00015;
-	}
-	*/
-
-	// Move camera
+	// Actually, move camera
 	var timer = Date.now() * 0.0005;
 
 	camera.position.x = Math.cos( timer ) * 1000;
@@ -681,41 +600,28 @@ function rotateAllObjects() {
 }
 
 function resetRotationForAllObjects() {
-	//console.log(scene.children.length);
-	// Note: this code assues object 0 is camera
-	/*
-	for (var i = 1; i < scene.children.length; i++) {
-		scene.children[i].rotation.x = 0;
-		scene.children[i].rotation.y = 0;
-		scene.children[i].rotation.z = 0;
-	}
-	*/
-	camera.position.z = 1000;
-	camera.position.x = 500;
-	camera.position.y = 500;
+	camera.position.z = DEFAULT_CAMERA_POSITION_Z;
+	camera.position.x = DEFAULT_CAMERA_POSITION_X;
+	camera.position.y = DEFAULT_CAMERA_POSITION_Y;
 	camera.lookAt( scene.position );
-
-
-
 }
 
-function highlightVertices(){
-	
-	for (var i = 0; i < verticeList.childNodes.length; i++) {
+function highlightVertices(){	
+	for (var i = 0; i < vertexL.length; i++) {
 				
 		var cubeGeometry = new THREE.BoxGeometry(25, 25, 25);
 		var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x1ec876 });
-		var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+		var cube = new THREE.Mesh(cubeGeometry, new THREE.MeshNormalMaterial());
 		var sphere = new THREE.Mesh(new THREE.SphereGeometry(25, 25, 25), new THREE.MeshNormalMaterial());
 		
-		sphere.position.x = verticeList.childNodes[i].childNodes[1].value;
-		sphere.position.y = verticeList.childNodes[i].childNodes[3].value;
-		sphere.position.z = verticeList.childNodes[i].childNodes[5].value;
+		cube.position.x = vertexL[i].x;
+		cube.position.y = vertexL[i].y;
+		cube.position.z = vertexL[i].z;
 
-		// Store cube for reference
-		highlightCubes.push(sphere);
+		// Store vertex highlight for reference
+		highlightCubes.push(cube);
 
-		scene.add(sphere);
+		scene.add(cube);
 
 	}
 }

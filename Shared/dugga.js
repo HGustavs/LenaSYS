@@ -197,6 +197,7 @@ function htmlEntities(str) {
 				str=str.replace(/\//g, '&#47;');
 				str=str.replace(/\\/g, '&#92;');
 				str=str.replace(/\?/g, '&#63;');
+
 //				str=str.replace(/\{/g, '&#123;');
 //				str=str.replace(/\}/g, '&#125;');
 		}
@@ -238,7 +239,7 @@ function AJAXService(opt,apara,kind)
 					}
 					para += array;
 			}else{
-					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
+					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}()\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
 			
 					// Concat the generated regex result to a string again.
 					apara[key] = s.join("");
@@ -257,7 +258,6 @@ function AJAXService(opt,apara,kind)
 		}
 	}
 	
-	console.log("Para: " + para);			
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
@@ -281,6 +281,14 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: returnedDugga
+			});
+	}else if(kind=="BDUGGA"){
+			$.ajax({
+				url: "duggaedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedBlankDugga
 			});
 	}else if(kind=="DUGGAHIGHSCORE"){
 			$.ajax({
@@ -479,7 +487,6 @@ function hideLoginPopup()
 function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
-		console.log("Setting button to logout");
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){processLogout();});	
 	}

@@ -88,8 +88,17 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$duggadead=$row['deadline'];
 			
 			$useranswer=$row['aws'];
+			$useranswer = str_replace("*##*", '"', $useranswer);
+			$useranswer = str_replace("*###*", '&cap;', $useranswer);
+			if(strcmp($useranswer,"") == 0){$useranswer = "UNK";} // Return UNK if we have not submitted any user answer
+
 			$duggaparam=$row['param'];
+			$duggaparam = str_replace("*##*", '"', $duggaparam);
+			$duggaparam = str_replace("*###*", '&cap;', $duggaparam);
+
 			$duggaanswer=$row['facit'];
+			$duggaanswer = str_replace("*##*", '"', $duggaanswer);
+			$duggaanswer = str_replace("*###*", '&cap;', $duggaanswer);
 
 			$dugganame="templates/".$duggafile.".js";
 			

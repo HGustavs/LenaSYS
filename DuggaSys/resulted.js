@@ -140,6 +140,10 @@ function leaveCell(thisObj)
 // Renderer
 //----------------------------------------
 
+
+//----------------------------------------
+// returnedResults: The callback function called when result from AJAX-call returns with dugga data
+//----------------------------------------
 function returnedResults(data) 
 {
 	var str = "";

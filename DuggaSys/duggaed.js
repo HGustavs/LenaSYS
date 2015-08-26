@@ -6,6 +6,7 @@
 var sessionkind=0;
 var querystring=parseGet();
 var filez;
+var duggaPages;
 
 AJAXService("GET",{cid:querystring['cid']},"DUGGA");
 
@@ -46,8 +47,11 @@ function updateVariant()
 	var vid=$("#vid").val();
 	var answer=$("#variantanswer").val();
 	answer = answer.replace(/\"/g, '*##*');
+	answer = answer.replace(/&cap;/g , '*###*');		
 	var parameter=$("#parameter").val();
 	parameter = parameter.replace(/\"/g , '*##*');	
+	parameter = parameter.replace(/&cap;/g , '*###*');	
+
 	
 	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter},"DUGGA");
 }
@@ -137,9 +141,9 @@ function selectVariant(vid,param,answer,template)
 	$("#editVariant").css("display","block"); // Display edit dialog
 	$("#vid").val(vid); // Set Variant ID
 	var pparam = param.replace(/\*##\*/g, '"');
-	$("#parameter").val(pparam); // Set Variant parameter
+	$("#parameter").val(param); // Set Variant parameter
 	var panswer = answer.replace(/\*##\*/g, '"');
-	$("#variantanswer").val(panswer); // Set Variant answer
+	$("#variantanswer").val(answer); // Set Variant answer
 	
 	switch(template){
 		case "dugga1":
@@ -188,9 +192,9 @@ var alla = 0;
 function returnedDugga(data)
 {
 	$("content").html();
-	console.log('skit');
 	var result = 0;
 	filez = data['files'];
+	duggaPages = data['duggaPages'];
 	str="";
 	if (data['files'].length > 0) {
 
@@ -283,6 +287,8 @@ function returnedDugga(data)
 					str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
 					str+="<td style='padding:4px;'>";
+					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/PlayT.svg' ";
+					str+=" onclick='getVariantPreview(2,97732,0,2)' >";
 					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 					str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
 					str+="</td>";
@@ -303,6 +309,22 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 }
+
+function getVariantPreview(cid, vers, moment, uid, dugga, duggaVariant){
+	selectedDugga = dugga;
+	selectedVariant = duggaVariant;
+
+	$.getScript("templates/shapes-dugga.js", function() {
+		$("#MarkCont").html(duggaPages[6]);
+		// Todo: Use parameters from this page
+		var p = '[{"Text":"Fyll i enligt even-odd rule genom att klicka i figuren nedan."},[{"kind":0,"x1":178,"y1":12},{"kind":1,"x1":115, "y1":74},{"kind":1,"x1":164, "y1":99},{"kind":1,"x1":178, "y1":12}],[{"kind":0,"x1":37,"y1":32},{"kind":1,"x1":76, "y1":112},{"kind":1,"x1":115, "y1":74},{"kind":1,"x1":37, "y1":32}],[{"kind":0,"x1":13,"y1":174},{"kind":1,"x1":100, "y1":161},{"kind":1,"x1":76, "y1":112},{"kind":1,"x1":13, "y1":174}],[{"kind":0,"x1":155,"y1":153},{"kind":1,"x1":100, "y1":161},{"kind":1,"x1":140, "y1":240},{"kind":1,"x1":155, "y1":153}],[{"kind":0,"x1":242,"y1":140},{"kind":1,"x1":164, "y1":99},{"kind":1,"x1":155, "y1":153},{"kind":1,"x1":242, "y1":140}],[{"kind":0,"x1":164,"y1":99},{"kind":1,"x1":115, "y1":74},{"kind":1,"x1":76, "y1":112},{"kind":1,"x1":100, "y1":161},{"kind":1,"x1":155, "y1":153},{"kind":1,"x1":164, "y1":99}]]';
+		var f = "0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+		showFacit(p,"UNK",f);
+	});
+	$("#resultpopover").css("display", "block");
+	
+}
+
 
 function displayfield(res)
 {

@@ -3,63 +3,84 @@
 </div>
 
 <div>
+    <div id="infobox" class="floatRightBox" style="width:300px;">
+    <div id="quizInstructions"></div>
+    <div class='loginBoxheader'>
+        <h3>Ritverktyg</h3>
+    </div>
+    <input id="vertexPane" class='submit-button' type="button" style="float:left;" onclick="toggleControl();" value="Vertice"/>
+    <input id="trianglePane" class='submit-button' type="button" style="float:left;" onclick="toggleControl();" value="Triangle"/>
+    <div id="verticeControl" style="float:left; display: block;">
+        <table style="width:100%;">
+            <caption>Hörnlista</caption>
+            <thead>
+                <tr><th style="visibility: hidden;">v00</th><th><span style="color: red">X</span></th><th><span style="color: green">Y</span></th><th><span style="color: blue">Z</span></th>
+                    <th style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></th>
+                    <th style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></th>
+                    <th style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></th>
+                    </tr>
+            </thead>
+            <tbody id="verticeList">
+                <td style="visibility: hidden;">v00</td>
+                <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+                <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+                <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
 
-    <div id="infobox" class="floatRightBox">
-        <div id="quizInstructions"></div>
+                <td style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></td>
+                <td style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></td>
+                <td style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></td>
+            </tbody>
+        </table>
+        <table style="width:100%;">
+            <caption>Nytt hörn</caption>
+            <thead>
+                <tr><th style="visibility: hidden;">v00</th><th><span style="color: red">X</span></th><th><span style="color: green">Y</span></th><th><span style="color: blue">Z</span></th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="visibility: hidden;">v00</td>
+                    <td><input style='width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" id="vertexX" maxlength="4" size="4"/></td>
+                    <td><input style='width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" id="vertexY" maxlength="4" size="4"/></td>
+                    <td><input style='width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" id="vertexZ" maxlength="4" size="4"/></td>
+                    <td style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></td>
+                    <td style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></td>
+                    <td style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></td>
+                </tr>  
+                <tr><td style="visibility: hidden;">v00</td><td colspan="3"><button style="width:100%;" onclick="newVertex();">LÄGG TILL</button></td></tr>
+                <tr><td style="visibility: hidden;">v00</td><td colspan="6"><p id="vertexMsg" style="min-height:18px"></p></td></tr>
+            </tbody>
+        </table>    
+    </div>
+    <div id="triangleControl" style="float:left; display: none;">        
+        <table style="width:100%;">
+            <caption>Triangellista</caption>
+            <tbody id="triangleList2">
+                <td style="visibility: hidden;">v00</td>
+                <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+                <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+                <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
 
-        <div class='loginBoxheader'>
-            <h3>Ritverktyg</h3>
-        </div>
-        <input class='submit-button' type="button" style="float:left;" onclick="toggleControl();" value="Vertice"/>
-        <input class='submit-button' type="button" style="float:left;" onclick="toggleControl();" value="Triangle"/>
-        <div id="verticeControl" style="float:left; display: block;">
-            <p>Hörnlista: (<span style="color: red">X</span>,<span style="color: green">Y</span>,<span style="color: blue">Z</span>)</p>
-            <ol id="verticeList" start="0" style="margin-left:4px; list-style-type:none;"></ol>
-            Nytt x:
-            <input type="text" id="vertexX" style="width:30px;"/>
-            y:
-            <input type="text" id="vertexY" style="width:30px;"/>
-            z:
-            <input type="text" id="vertexZ" style="width:30px;"/>
-            <button onclick="newVertex();">
-                LÄGG TILL
-            </button>
-            <p id="vertexMsg" style="min-height:18px"></p>
-        </div>
-        <div id="triangleControl" style="float:left; display: none;">        
-            <p>Trianglar</p>
-            Hörn:
-            <select id="tv1" onclick="updateVerticeDropdown(this)"></select>
-            <select id="tv2" onclick="updateVerticeDropdown(this)"></select>
-            <select id="tv3" onclick="updateVerticeDropdown(this)"></select>
-            <button onclick="newTriangle();">
-                LÄGG TILL
-            </button>
-            <br>
-            Indexlista:
-            <br>
-            <select style="width:150px;" size="10" id="triangleList" name="triangleList"></select>
-            <br />
-            <button onclick="moveTriangleUp();">
-                FLYTTA UPP
-            </button>
-            <button onclick="moveTriangleDown();">
-                FLYTTA NER
-            </button>
-            <br />
-            <button onclick="deleteTriangle();">
-                TA BORT
-            </button>
-            <button type="button" onclick="toggleRotate();">
-                ROTATION PÅ/AV
-            </button>
-            <button type="button" onclick="toggleWireframeMode();">
-                WF PÅ/AV
-            </button>
-            <br />
-            <button type="button" onclick="submbutton();">
-                SKICKA SVAR
-            </button>
+                <td style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></td>
+                <td style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></td>
+                <td style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></td>
+            </tbody>
+        </table>
+
+        <table style="width:100%;">
+            <caption>Ny triangel</caption>
+            <thead>
+                <tr><th><span style="">v1</span></th><th><span style="">v2</span></th><th><span style="">v3</span></th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><select style='width:100%;' id="tv1" onchange="checkTriangleInput();"></select></td>
+                    <td><select style='width:100%;' id="tv2" onchange="checkTriangleInput();"></select></td>
+                    <td><select style='width:100%;' id="tv3" onchange="checkTriangleInput();"></select></td>
+                </tr>  
+                <tr><td colspan="3"><button id="newTriangleButton" style="width:100%;" onclick="newTriangle();">LÄGG TILL</button></td></tr>
+                <tr><td colspan="3"><button style="float: left;" type="button" onclick="toggleWireframeMode();">Wire-Frame PÅ/AV</button><button style="float: right;" type="button" onclick="toggleRotate();">ROTATION PÅ/AV</button></td></tr>
+            </tbody>
+        </table>    
         </div>
         <div id="result"></div>
     </div>
