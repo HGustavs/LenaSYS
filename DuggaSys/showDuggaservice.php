@@ -40,6 +40,9 @@ $quizfile = "UNK";
 $hr=false;
 $insertparam = false;
 $score = 0;
+$timeUsed;
+$stepsUsed;
+
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
@@ -144,7 +147,7 @@ if($userid!="UNK"){
 	$param="NONE!";
 	}
 	foreach ($variants as $variant) {
-		if($variant["vid"] === $savedvariant || $quizfile === "kryss"){
+		if($variant["vid"] == $savedvariant || $quizfile == "kryss"){
 			$param.=$variant['param'];
 		}
 	}
@@ -162,16 +165,19 @@ if(checklogin()){
 	$result = $query->execute();
 
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
+
 		$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
-		if($hr&&$userid!="UNK"){ // The code for modification using sessions
-			if(strcmp($opt,"SAVDU")===0){
+		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
+			if(strcmp($opt,"SAVDU")==0){				
 				// Log the dugga write
 				makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
-				//Seperate timeSpent from $answer
-				$temp = explode("-", $answer);
-				$timeSpent = $temp[1];
+				//Seperate timeUsed, stepsUsed and score from $answer
+				$temp = explode("##!!##", $answer);
 				$answer = $temp[0];
+				$timeUsed = $temp[1];
+				$stepsUsed = $temp[2];
+				$score = $temp[3];
 				
 				// check if the user already has a grade on the assignment
 				$query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
@@ -191,19 +197,22 @@ if(checklogin()){
 					$debug="You have already been graded on this assignment";
 				}else{
 					// Update Dugga!
-					$query = $pdo->prepare("UPDATE userAnswer SET useranswer=:useranswer, score=:timeSpent WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-					$timeSpent=0;
+					$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
 					$query->bindParam(':moment', $moment);
 					$query->bindParam(':useranswer', $answer);
-					$query->bindParam(':timeSpent', $timeSpent);
+					$query->bindParam(':timeUsed', $timeUsed);
+					$query->bindParam(':stepsUsed', $stepsUsed);
+					$query->bindParam(':score', $score);
 				}
 				
 				if(!$query->execute()) {
 					$debug="Error updating answer";
 					print_r($pdo->errorInfo());
+				} else {
+					$savedanswer = $answer;
 				}
 			}
 		}
@@ -214,7 +223,7 @@ if(checklogin()){
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
-if(strcmp($opt,"GETVARIANTANSWER")===0){
+if(strcmp($opt,"GETVARIANTANSWER")==0){
 	$temp = explode(" ", $setanswer);
 	$first = $temp[0];
 	$second = $temp[1];

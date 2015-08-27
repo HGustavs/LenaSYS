@@ -85,8 +85,11 @@ function returnedDugga(data)
 
 function saveClick()
 {
+	Timer.stopTimer();
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
+
 	if (querystring['highscoremode'] == 1) {	
-		Timer.stopTimer();
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
@@ -110,6 +113,22 @@ function saveClick()
 	
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
+}
+
+function reset()
+{
+	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
+	ClickCounter.initialize();
+
+	document.getElementById('H0').innerHTML="0";
+	document.getElementById('H1').innerHTML="0";
+	document.getElementById('H2').innerHTML="0";
+	document.getElementById('H3').innerHTML="0";
+	document.getElementById('H4').innerHTML="0";
+	document.getElementById('H5').innerHTML="0";
 }
 
 function showFacit(param, uanswer, danswer)
@@ -146,9 +165,7 @@ function showFacit(param, uanswer, danswer)
 
 function hexClick(divid)
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
+	ClickCounter.onClick();
 
 	dw=$(window).width();
 	dpos=$("#"+divid).position();

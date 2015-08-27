@@ -3,6 +3,9 @@
 //            This allows us to set and remove whole CSS files
 //----------------------------------------------------------------------------------
 var status = 0;
+var score;
+var timeUsed;
+var stepsUsed;
 function toggleloginnewpass(){
 
 	if(status == 0){
@@ -93,14 +96,14 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
 //----------------------------------------------------------------------------------
-var score;
 function saveDuggaResult(citstr)
 {
 		citstr=querystring['moment']+" "+citstr;
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
-		citstr= citstr + "-" + score;
-		
+		citstr+= "##!!##" + timeUsed;
+		citstr+= "##!!##" + stepsUsed;		
+		citstr+= "##!!##" + score;
 		hexstr="";
 		for(i=0;i<citstr.length;i++){
 				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
@@ -239,7 +242,7 @@ function AJAXService(opt,apara,kind)
 					}
 					para += array;
 			}else{
-					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}()\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
+					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}():|"\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
 			
 					// Concat the generated regex result to a string again.
 					apara[key] = s.join("");
@@ -613,3 +616,18 @@ $(window).load(function() {
 		if(event.keyCode == 27) closeWindows();
 	});
 });
+
+//----------------------------------------------------------------------------------
+// Help function to allow moving of elements from on index to another in array
+// Usage: [0,4,9].move(1,2) will give new array [0,9,4]
+//----------------------------------------------------------------------------------
+Array.prototype.move = function (old_index, new_index) {
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this; // for testing purposes
+};

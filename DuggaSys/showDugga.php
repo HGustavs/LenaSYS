@@ -118,6 +118,7 @@
 					echo "<tr>";
 					echo "<td align='center'>";
 					echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='box-shadow:none;width:160px;height:48px;line-height:48px;' />";
+					echo "<input class='submit-button' type='button' value='Reset' onclick='reset();' style='box-shadow:none;width:160px;height:48px;line-height:48px;' />";
 					echo "</td>";
 					echo "</tr>";
 					echo "</table>";

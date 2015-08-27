@@ -23,21 +23,6 @@ Vertex.prototype.toString= function() {
     return '('+this.x+', '+this.y+', '+this.z+')';
 };
 
-//----------------------------------------------------------------------------------
-// Help function to allow moving of elements from on index to another in array
-// Usage: [0,4,9].move(1,2) will give new array [0,9,4]
-//----------------------------------------------------------------------------------
-Array.prototype.move = function (old_index, new_index) {
-    if (new_index >= this.length) {
-        var k = new_index - this.length;
-        while ((k--) + 1) {
-            this.push(undefined);
-        }
-    }
-    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
-    return this; // for testing purposes
-};
-
 var vertexL = [];
 var triangleL = [];
 
@@ -88,11 +73,19 @@ function setup()
 
 function returnedDugga(data) 
 {
+	Timer.startTimer();
+	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
-		Timer.startTimer();
+		if(data['score'] > 0){
+			Timer.score = data['score'];
+		}
+		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		ClickCounter.initialize();
-	}
+		if(data['score'] > 0){
+			ClickCounter.score = data['score'];
+		}
+		ClickCounter.showClicker();
+	}	
 
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
@@ -103,10 +96,21 @@ function returnedDugga(data)
 
 		//	showDuggaInfoPopup();
 		var studentPreviousAnswer = "";
+		if (data['answer'] != null && data['answer'] != "UNK"){
+			var previous = data['answer'].split(' ');
+			var prevRaw = previous[3];
+			prevRaw = prevRaw.replace(/&quot;/g, '"');
+			var prev = prevRaw.split('|');
+			vertexL = JSON.parse(prev[0]);
+			triangleL = JSON.parse(prev[1]);
+			renderVertexTable();
+			renderTriangleTable();
+		}
 
 		init();
 		goalObject = data['param'];
 		createGoalObject(goalObject);
+		updateGeometry();
 		animate();
 
 	}
@@ -126,39 +130,48 @@ function toggleControl()
 }
 
 
-function submbutton()
+function saveClick()
 {
+	console.log("VertecList: " + vertexL);
+	console.log("TriangleList: " + triangleL);
+	Timer.stopTimer();
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
 	if (querystring['highscoremode'] == 1) {	
-		Timer.stopTimer();
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
+	} else {
+		score = 0;
 	}
 
 	var answerString = "";
-	//var verticeObject=new Object;
-	verticeArray = new Array();
-	var verticeList = document.getElementById("verticeList");
+	answerString += JSON.stringify(vertexL);
+	answerString += "|"+JSON.stringify(triangleL);
 
-	for (var i = 0; i < verticeList.childNodes.length; i++) {
-		var vertex = new Object;
-		vertex.x = verticeList.childNodes[i].childNodes[1].value;
-		vertex.y = verticeList.childNodes[i].childNodes[3].value;
-		vertex.z = verticeList.childNodes[i].childNodes[5].value;
-		verticeArray.push(vertex);
-	}
-
-	//var trianglesObject=new Object;
-	var trianglesArray = new Array();
-	var triangleList = document.getElementById("triangleList");
-	for (var i = 0; i < triangleList.options.length; i++) {
-		trianglesArray.push(triangleList.options[i].value);
-	}
-	var answer = new Object();
-	answer.vertice = verticeArray;
-	answer.triangles = trianglesArray;
-	answerString = JSON.stringify(answer);
+	answerString+=" "+screen.width;
+	answerString+=" "+screen.height;
+	
+	answerString+=" "+$(window).width();
+	answerString+=" "+$(window).height();
 	console.log(answerString);
+	saveDuggaResult(answerString);
+}
+
+function reset()
+{
+	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
+	ClickCounter.initialize();
+
+	vertexL = [];
+	triangleL = [];
+
+	renderVertexTable();
+	renderTriangleTable();
+	updateGeometry();
 }
 
 
@@ -197,6 +210,7 @@ function newTriangle()
 	if (tv1.selectedIndex != -1 && tv2.selectedIndex != -1 && tv3.selectedIndex != -1) {
 		triangleL.push([tv1.selectedIndex, tv2.selectedIndex, tv3.selectedIndex]);
 		renderTriangleTable();
+		ClickCounter.onClick();
 	} else {
 		console.log("tv undefined");
 	}
@@ -214,10 +228,10 @@ function newVertex()
 
 	if (checkVertexInput(vertexX.value, vertexY.value, vertexZ.value)) {
 		addVertexToVerticeList(parseInt(vertexX.value), parseInt(vertexY.value), parseInt(vertexZ.value));
-		document.getElementById('vertexX');
-		var vertexY = document.getElementById('vertexY');
-		var vertexZ = document.getElementById('vertexZ');
-
+		document.getElementById('vertexX').value = "";
+		document.getElementById('vertexY').value = "";
+		document.getElementById('vertexZ').value = "";
+		ClickCounter.onClick();
 	}
 }
 
@@ -255,9 +269,7 @@ function checkVertexInput(vertexX, vertexY, vertexZ)
 
 function vertexUpdate(index) 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}	
+	ClickCounter.onClick();
 
 	var x = document.getElementById('v_'+index+'_x').value;
 	var y = document.getElementById('v_'+index+'_y').value;
@@ -362,6 +374,7 @@ function deleteVertex(index)
 	vertexL.splice(index, 1);
 	renderVertexTable();
 	updateGeometry();	
+	ClickCounter.onClick();
 }
 
 function moveVertexUp(index) 
@@ -369,6 +382,7 @@ function moveVertexUp(index)
 	vertexL.move(index, index-1);
 	renderVertexTable();
 	updateGeometry();	
+	ClickCounter.onClick();
 }
 
 function moveVertexDown(index) 
@@ -376,6 +390,7 @@ function moveVertexDown(index)
 	vertexL.move(index, index+1);
 	renderVertexTable();
 	updateGeometry();	
+	ClickCounter.onClick();
 }
 
 function deleteTriangle(index) 
@@ -383,6 +398,7 @@ function deleteTriangle(index)
 	triangleL.splice(index, 1);
 	renderTriangleTable();
 	updateGeometry();	
+	ClickCounter.onClick();
 }
 
 function moveTriangleUp(index) 
@@ -390,6 +406,7 @@ function moveTriangleUp(index)
 	triangleL.move(index, index-1);
 	renderTriangleTable();
 	updateGeometry();	
+	ClickCounter.onClick();
 }
 
 function moveTriangleDown(index) 
@@ -397,6 +414,7 @@ function moveTriangleDown(index)
 	triangleL.move(index, index-1);
 	renderTriangleTable();
 	updateGeometry();	
+	ClickCounter.onClick();
 }
 
 

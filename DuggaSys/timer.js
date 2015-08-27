@@ -22,6 +22,13 @@ var Timer = {
 		// Call animate timer to initialize ui at 00:00:00
 		this.animateTimer();
 	},
+	// Reset the timer.
+	reset: function(){
+		this.score = 0;
+
+		// Call animate timer to initialize ui at 00:00:00
+		this.animateTimer();
+	},
 	
 	// Stops the timer from counting, called at the end of a dugga
 	stopTimer: function(){
