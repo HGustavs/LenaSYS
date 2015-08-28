@@ -374,7 +374,7 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
-	console.log(retdata);
+	// console.log(retdata);
 
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
@@ -532,7 +532,7 @@ function returnedSection(data)
 		
 					if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' />";
 		
-					if(parseInt(item['kind']) === 3||parseInt(item['kind']) === 4){
+					if(parseInt(item['kind']) === 4){
 						var grady=-1;
 						for(jjj=0;jjj<data['results'].length;jjj++){
 							var lawtem=data['results'][jjj];
@@ -542,22 +542,47 @@ function returnedSection(data)
 							}
 						}
 						
-						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-							str+="<img style='float:right;margin-right:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
+						if(grady==-1 || grady == 0){
+								// Nothing submitted nor marked (White)
+								str+="<img id='korf' style='float:left;margin-left:8px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
+						}else if(grady==null){
+								//	Nothing marked yet (Yellow)
+								str+="<img id='korf' style='float:left;margin-left:8px' title='Status: Handed in\nDate: "+lawtem['submitted']+"' src='../Shared/icons/StopY.svg' />";
+						}else if(grady==1){
+								//	Marked Fail! (Red)								
+								str+="<img id='korf' style='float:left;margin-left:8px' title='Status: Failed\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopR.svg' />";
+						}else if(grady>1){
+								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+								str+="<img id='korf' style='float:left;margin-left:8px' title='Status: Pass\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopG.svg' />";
+						}
+
+					}
+					if(parseInt(item['kind']) === 3){
+						var grady=-1;
+						for(jjj=0;jjj<data['results'].length;jjj++){
+							var lawtem=data['results'][jjj];
+							//alert("G: "+lawtem['grade']);
+							if((lawtem['moment']==item['lid'])){
+								grady=lawtem['grade'];
+							}
 						}
 						
 						if(grady==-1 || grady == 0){
 								// Nothing submitted nor marked (White)
-								str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
+								str+="<img id='korf' style='float:left;margin-left:24px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
 						}else if(grady==null){
 								//	Nothing marked yet (Yellow)
-								str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Handed in\nDate: "+lawtem['submitted']+"' src='../Shared/icons/StopY.svg' />";
+								str+="<img id='korf' style='float:left;margin-left:24px' title='Status: Handed in\nDate: "+lawtem['submitted']+"' src='../Shared/icons/StopY.svg' />";
 						}else if(grady==1){
 								//	Marked Fail! (Red)								
-								str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Failed\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopR.svg' />";
+								str+="<img id='korf' style='float:left;margin-left:24px' title='Status: Failed\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopR.svg' />";
 						}else if(grady>1){
 								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<img id='korf' style='float:right;margin-right:8px' title='Status: Pass\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopG.svg' />";
+								str+="<img id='korf' style='float:left;margin-left:24px' title='Status: Pass\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopG.svg' />";
+						}
+
+						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
+							str+="<img style='float:left;margin-left:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/>";
 						}
 					}				
 													

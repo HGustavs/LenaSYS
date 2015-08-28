@@ -139,15 +139,19 @@ function reset()
 
 function showFacit(param, uanswer, danswer)
 {
-	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
-	var daJSON = jQuery.parseJSON(danswer.replace(/\*/g, '"'));
+	var p = jQuery.parseJSON(param);
+	var daJSON = jQuery.parseJSON(danswer);
 	
 	var da = daJSON['danswer'];
 	var danswer = da.split(' ');
 	
 	$("#talet").html(p['tal']);
 	
-	// Add our previous answer
+	// Add student answer
+	if (uanswer === "UNK"){
+		// For preview mode
+		uanswer = "dummy dummy dummy 00000000 0 0";
+	}
 	var previous = uanswer.split(' ');
 	if (previous.length >= 4){
 		var bitstring = previous[3];

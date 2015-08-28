@@ -144,7 +144,7 @@ function selectVariant(vid,param,answer,template)
 	$("#parameter").val(param); // Set Variant parameter
 	var panswer = answer.replace(/\*##\*/g, '"');
 	$("#variantanswer").val(answer); // Set Variant answer
-	
+	/*
 	switch(template){
 		case "dugga1":
 			var ep=document.getElementById("examplePara");
@@ -183,6 +183,7 @@ function selectVariant(vid,param,answer,template)
 			test.innerHTML = "Example answer: " + "No example available";
 			break;
 	}
+	*/
 }
 
 //----------------------------------------
@@ -287,9 +288,9 @@ function returnedDugga(data)
 					str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
 					str+="<td style='padding:4px;'>";
-					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/PlayT.svg' ";
-					str+=" onclick='getVariantPreview(2,97732,0,2)' >";
-					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+					str+="<img id='variantPlay'"+j+" style='float:right;margin-right:4px;' src='../Shared/icons/PlayT.svg' ";
+					str+=" onclick='getVariantPreview(\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\",\""+item['template']+"\")' >";
+					str+="<img id='dorf'"+j+" style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 					str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
 					str+="</td>";
 
@@ -310,17 +311,37 @@ function returnedDugga(data)
 
 }
 
-function getVariantPreview(cid, vers, moment, uid, dugga, duggaVariant){
-	selectedDugga = dugga;
-	selectedVariant = duggaVariant;
+function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
+	duggaVariantParam = duggaVariantParam.replace(/\*##\*/g, '"');
+	duggaVariantParam = duggaVariantParam.replace(/\*###\*/g, '&cap;');
+	duggaVariantAnswer = duggaVariantAnswer.replace(/\*##\*/g, '"');
+	duggaVariantAnswer = duggaVariantAnswer.replace(/\*###\*/g, '&cap;');
 
-	$.getScript("templates/shapes-dugga.js", function() {
-		$("#MarkCont").html(duggaPages[6]);
-		// Todo: Use parameters from this page
-		var p = '[{"Text":"Fyll i enligt even-odd rule genom att klicka i figuren nedan."},[{"kind":0,"x1":178,"y1":12},{"kind":1,"x1":115, "y1":74},{"kind":1,"x1":164, "y1":99},{"kind":1,"x1":178, "y1":12}],[{"kind":0,"x1":37,"y1":32},{"kind":1,"x1":76, "y1":112},{"kind":1,"x1":115, "y1":74},{"kind":1,"x1":37, "y1":32}],[{"kind":0,"x1":13,"y1":174},{"kind":1,"x1":100, "y1":161},{"kind":1,"x1":76, "y1":112},{"kind":1,"x1":13, "y1":174}],[{"kind":0,"x1":155,"y1":153},{"kind":1,"x1":100, "y1":161},{"kind":1,"x1":140, "y1":240},{"kind":1,"x1":155, "y1":153}],[{"kind":0,"x1":242,"y1":140},{"kind":1,"x1":164, "y1":99},{"kind":1,"x1":155, "y1":153},{"kind":1,"x1":242, "y1":140}],[{"kind":0,"x1":164,"y1":99},{"kind":1,"x1":115, "y1":74},{"kind":1,"x1":76, "y1":112},{"kind":1,"x1":100, "y1":161},{"kind":1,"x1":155, "y1":153},{"kind":1,"x1":164, "y1":99}]]';
-		var f = "0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
-		showFacit(p,"UNK",f);
+	$("#MarkCont").html(duggaPages[template]);
+
+	$.getScript("templates/"+template+".js")
+	  .done(function( script, textStatus ) {	    	    
+		
+		showFacit(duggaVariantParam,"UNK",duggaVariantAnswer);
+		
+	  })
+	  .fail(function( jqxhr, settings, exception ) {
+	  	console.log(jqxhr);
+	  	console.log(settings);
+	  	console.log(exception);	    
+	  	eval(script);
+	  	showFacit(duggaVariantParam,"UNK",duggaVariantAnswer);
 	});
+
+/*
+	$.getScript("templates/"+template+".js", function() {
+		alert("snus");
+		$("#MarkCont").html(duggaPages[template]);
+		alert("snus2");
+
+		showFacit(duggaVariantParam,"UNK",duggaVariantAnswer);
+				alert("snus3");	});
+*/
 	$("#resultpopover").css("display", "block");
 	
 }
@@ -409,4 +430,10 @@ function changeanswer(vidd,num)
 	var answer=$("#variantanswer").val();
 
 	AJAXService("SAVVARIANSWER",{cid:querystring['cid'],vid:vid,variantanswer:answer},"DUGGA");
+}
+
+function closePreview()
+{
+	$("#resultpopover").css("display", "none");
+	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
 }

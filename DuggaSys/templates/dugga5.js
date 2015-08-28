@@ -15,9 +15,9 @@ function isInteger(id) {
 
 
 function Vertex(_x, _y, _z) {
-    this.x = parseInt(_x);
-    this.y = parseInt(_y);
-    this.z = parseInt(_z);
+    this.x = parseInt(_x, 10);
+    this.y = parseInt(_y, 10);
+    this.z = parseInt(_z, 10);
 }
 Vertex.prototype.toString= function() {
     return '('+this.x+', '+this.y+', '+this.z+')';
@@ -53,16 +53,19 @@ var goalObject;
 
 function setup() 
 {
-	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js", function() {
-
+	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
+	.done( function(script) {
 		acanvas = document.getElementById('container');
-		//setInterval("tick();",50);
 		renderer = new THREE.WebGLRenderer();
 		
 		AJAXService("GETPARAM", { }, "PDUGGA");
-
 		acanvas.addEventListener('click', toggleRotate, false);
 
+	})
+	.fail(function( jqxhr, settings, exception ) {
+	  	console.log(jqxhr);
+	  	console.log(settings);
+	  	console.log(exception);	    
 	});
 
 }
@@ -87,16 +90,15 @@ function returnedDugga(data)
 		ClickCounter.showClicker();
 	}	
 
-	if (data['debug'] != "NONE!")
-		alert(data['debug']);
+	if (data['debug'] != "NONE!") {alert(data['debug']);}
 
-	if (data['param'] == "UNK") {
-		alert("UNKNOWN DUGGA!");
+	if (data['param'] == "UNK") { 
+		alert("UNKNOWN DUGGA!");	
 	} else {
 
 		//	showDuggaInfoPopup();
 		var studentPreviousAnswer = "";
-		if (data['answer'] != null && data['answer'] != "UNK"){
+		if (data['answer'] !== null && data['answer'] !== "UNK"){
 			var previous = data['answer'].split(' ');
 			var prevRaw = previous[3];
 			prevRaw = prevRaw.replace(/&quot;/g, '"');
@@ -114,6 +116,45 @@ function returnedDugga(data)
 		animate();
 
 	}
+}
+
+function showFacit(param, uanswer, danswer) {
+
+	// Setup code
+	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
+	.done( function( script, textStatus ) {
+		acanvas = document.getElementById('container');
+		renderer = new THREE.WebGLRenderer();
+		acanvas.addEventListener('click', toggleRotate, false);
+
+		// Parse student answer and dugga answer
+		var studentPreviousAnswer = "";
+		var p = jQuery.parseJSON(param);
+		if (uanswer !== null && uanswer !== "UNK"){
+			var previous = data['answer'].split(' ');
+			var prevRaw = previous[3];
+			prevRaw = prevRaw.replace(/&quot;/g, '"');
+			var prev = prevRaw.split('|');
+			vertexL = JSON.parse(prev[0]);
+			triangleL = JSON.parse(prev[1]);
+			renderVertexTable();
+			renderTriangleTable();
+		}
+
+		init();
+		goalObject = param;
+		createGoalObject(goalObject);
+		updateGeometry();
+		animate();
+		toggleRotate();
+
+	})
+	.fail(function( jqxhr, settings, exception ) {
+	  	console.log(jqxhr);
+	  	console.log(settings);
+	  	console.log(exception);	    
+	});
+
 }
 
 function toggleControl() 
@@ -177,24 +218,24 @@ function reset()
 
 function updateVerticeDropdown() 
 {
-	var options1 = '<select id="tv1" style="width:100%;" onchange="checkTriangleInput();">'
-	var options2 = '<select id="tv2" style="width:100%;" onchange="checkTriangleInput();">'
-	var options3 = '<select id="tv3" style="width:100%;" onchange="checkTriangleInput();">'
+	var options1 = '<select id="tv1" style="width:100%;" onchange="checkTriangleInput();">';
+	var options2 = '<select id="tv2" style="width:100%;" onchange="checkTriangleInput();">';
+	var options3 = '<select id="tv3" style="width:100%;" onchange="checkTriangleInput();">';
 
 	for (var i=0; i < vertexL.length; i++){
 		if (i === 0){
-			options1 += '<option selected value="'+ i +'">' + i + '</option>'
-			options2 += '<option selected value="'+ i +'">' + i + '</option>'
-			options3 += '<option selected value="'+ i +'">' + i + '</option>'
+			options1 += '<option selected value="'+ i +'">' + i + '</option>';
+			options2 += '<option selected value="'+ i +'">' + i + '</option>';
+			options3 += '<option selected value="'+ i +'">' + i + '</option>';
 		} else {
-			options1 += '<option value="'+ i +'">' + i + '</option>'
-			options2 += '<option value="'+ i +'">' + i + '</option>'
-			options3 += '<option value="'+ i +'">' + i + '</option>'			
+			options1 += '<option value="'+ i +'">' + i + '</option>';
+			options2 += '<option value="'+ i +'">' + i + '</option>';
+			options3 += '<option value="'+ i +'">' + i + '</option>';			
 		}
 	}
-	options1 += '</select>'
-	options2 += '</select>'
-	options3 += '</select>'
+	options1 += '</select>';
+	options2 += '</select>';
+	options3 += '</select>';
 
 	document.getElementById("tv1").innerHTML = options1;
 	document.getElementById("tv2").innerHTML = options2;
@@ -227,7 +268,7 @@ function newVertex()
 	var vertexMsg = document.getElementById('vertexMsg');
 
 	if (checkVertexInput(vertexX.value, vertexY.value, vertexZ.value)) {
-		addVertexToVerticeList(parseInt(vertexX.value), parseInt(vertexY.value), parseInt(vertexZ.value));
+		addVertexToVerticeList(parseInt(vertexX.value, 10), parseInt(vertexY.value, 10), parseInt(vertexZ.value, 10));
 		document.getElementById('vertexX').value = "";
 		document.getElementById('vertexY').value = "";
 		document.getElementById('vertexZ').value = "";
@@ -259,7 +300,7 @@ function checkVertexInput(vertexX, vertexY, vertexZ)
 	y = /^\-?[0-9]+$/.test(vertexY);
 	z = /^\-?[0-9]+$/.test(vertexZ);
 	vertexMsg.innerHTML = "";
-	if (x && y && z && isInteger(parseInt(vertexX)) && isInteger(parseInt(vertexY)) && isInteger(parseInt(vertexZ))) {
+	if (x && y && z && isInteger(parseInt(vertexX, 10)) && isInteger(parseInt(vertexY, 10)) && isInteger(parseInt(vertexZ, 10))) {
 		return true;
 	} else {
 		vertexMsg.innerHTML = "Endast heltal är godkända som koordinater.";
@@ -276,9 +317,9 @@ function vertexUpdate(index)
 	var z = document.getElementById('v_'+index+'_z').value;
 
 	if (checkVertexInput(x, y, z)){		
-		vertexL[index].x = parseInt(x);
-		vertexL[index].y = parseInt(y);
-		vertexL[index].z = parseInt(z);
+		vertexL[index].x = parseInt(x, 10);
+		vertexL[index].y = parseInt(y, 10);
+		vertexL[index].z = parseInt(z, 10);
 	} else {
 		document.getElementById('vertexMsg').innerHTML = "Endast heltal är godkända som koordinater.";
 		document.getElementById('v_'+index+'_x').value = vertexL[index].x;
@@ -364,7 +405,7 @@ function activeVertex(index)
 {
 	var active = false;
 	for (var i = 0; i < triangleL.length; i++) {
-		if (triangleL[i][0] == index || triangleL[i][1] == index || triangleL[i][2] == index) active = true;
+		if (triangleL[i][0] == index || triangleL[i][1] == index || triangleL[i][2] == index) {active = true;}
 	}
 	return active;
 }
@@ -420,26 +461,19 @@ function moveTriangleDown(index)
 
 function toggleRotate() 
 {
-	if (rotateObjects)
-		rotateObjects = false;
-	else
-		rotateObjects = true;
+	if (rotateObjects) { rotateObjects = false; } else { rotateObjects = true; }
 }
 
 function toggleWireframeMode() 
 {
-	if (material.wireframe)
-		material.wireframe = false;
-	else
-		material.wireframe = true;
+	if (material.wireframe) { material.wireframe = false; }	else { material.wireframe = true; }
 }
 
 function fitToContainer() 
 {
 	// Make it visually fill the positioned parent
 	divw = $("#content").width();
-	if (divw > 500)
-		divw -= 248;
+	if (divw > 500){ divw -= 248; }
 	if (divw < window.innerHeight) {
 		rendererDOMElement.width = divw;
 		rendererDOMElement.height = divw;
@@ -452,7 +486,6 @@ function fitToContainer()
 
 function init() 
 {	
-
 	// Disable Triagle Pane until we have at least 3 vertices
 	document.getElementById("trianglePane").disabled = true;
 	document.getElementById("vertexMsg").innerHTML = "För få hörn för att skapa trianglar.";
@@ -472,8 +505,7 @@ function init()
 	material = new THREE.MeshBasicMaterial({
 		wireframe : false,
 		wireframeLinewidth : 3,
-		vertexColors : THREE.FaceColors,
-
+		vertexColors : THREE.FaceColors
 	});
 
 	goalMaterial = new THREE.MeshBasicMaterial({
@@ -545,11 +577,11 @@ function createGoalObject(goalObjectDataString) {
 	for (var i = 0; i < goalObjectData.vertice.length; i++) {
 		geom.vertices.push(new THREE.Vector3(goalObjectData.vertice[i].x, goalObjectData.vertice[i].y, goalObjectData.vertice[i].z));
 	}
-	for (var i = 0; i < goalObjectData.triangles.length; i++) {
+	for (i = 0; i < goalObjectData.triangles.length; i++) {
 		var vertices = goalObjectData.triangles[i].split(',');
 		geom.faces.push(new THREE.Face3(vertices[0], vertices[1], vertices[2]));
 	}
-	for (var i = 0; i < geom.faces.length; i++) {
+	for (i = 0; i < geom.faces.length; i++) {
 		var face = geom.faces[i];
 		//face.color.setHex( Math.random() * 0xffffff );
 		face.color.setHex(0x777777);
@@ -570,7 +602,7 @@ function updateGeometry() {
 			geom.vertices.push(new THREE.Vector3(vertexL[i].x, vertexL[i].y, vertexL[i].z));
 		}
 
-		for (var i = 0; i < triangleL.length; i++) {
+		for (i = 0; i < triangleL.length; i++) {
 			geom.faces.push(new THREE.Face3(triangleL[i][0], triangleL[i][1], triangleL[i][2]));
 		}
 
@@ -600,8 +632,7 @@ function addColorsToGeometry(geom) {
 		var face = geom.faces[i];
 		face.color.setHex(colors[colorIndex]);
 		colorIndex++;
-		if (colorIndex >= colors.length)
-			colorIndex = 0;
+		if (colorIndex >= colors.length) { colorIndex = 0; }
 	}
 	return geom;
 }

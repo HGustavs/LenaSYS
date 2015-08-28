@@ -130,8 +130,8 @@ function showFacit(param, uanswer, danswer) {
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
 	var studentPreviousAnswer = "";
-	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
-	if (uanswer != null) {
+	var p = jQuery.parseJSON(param));
+	if (uanswer != null || uanswer != "UNK") {
 		var previous = uanswer.split(',');
 		previous.shift();
 		previous.pop();
@@ -582,7 +582,7 @@ function init(quizGoal, studentPreviousAnswer)
 
 	var oplist = document.getElementById('operations');
 
-	if (studentPreviousAnswer != "") {
+	if (studentPreviousAnswer != null || studentPreviousAnswer != "UNK") {
 		var studentOp = studentPreviousAnswer.split(",");
 		for (var i = 0; i < studentOp.length; i++) {
 			var opArr = studentOp[i].split(" ");
