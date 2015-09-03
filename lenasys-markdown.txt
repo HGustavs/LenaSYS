@@ -21,7 +21,7 @@ Links
 !!!http://www.some.where.com!!!%%%The text to be shown as a link%%%
 
 Animated GIFs
-+++showdoc.php?cid=[COURSE_ID]&fname=[FILENAME_PNG]+++@@@showdoc.php?cid=[COURSE_ID]&fname=FILNAME_ANIMATED_GIFf@@@
++++showdoc.php?cid=[COURSE_ID]&fname=[FILENAME_PNG]+++@@@showdoc.php?cid=[COURSE_ID]&fname=[FILNAME_ANIMATED_GIF]@@@
 
 Ordered lists
 1. This is item one
