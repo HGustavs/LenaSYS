@@ -111,13 +111,27 @@ function returnedDugga(data) {
 	}
 }
 
+function reset()
+{
+	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	while (document.getElementById('operations').options.length > 0) {
+		document.getElementById('operations').remove(0);
+	}
+
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
+	ClickCounter.initialize();
+
+}
+
 function showFacit(param, uanswer, danswer) {
 	running = true;
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
 	var studentPreviousAnswer = "";
-	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
-	if (uanswer != null) {
+	var p = jQuery.parseJSON(param));
+	if (uanswer != null || uanswer != "UNK") {
 		var previous = uanswer.split(',');
 		previous.shift();
 		previous.pop();
@@ -283,8 +297,12 @@ function populateOperationsList()
 
 function saveClick() 
 {
+	Timer.stopTimer();
+
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
+
 	if (querystring['highscoremode'] == 1) {	
-		Timer.stopTimer();
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
@@ -314,10 +332,8 @@ function saveClick()
 
 function newOp(operation, operationText) 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
-
+	ClickCounter.onClick();
+	
 	var oplist;
 
 	oplist = document.getElementById('operations');
@@ -327,9 +343,7 @@ function newOp(operation, operationText)
 
 function deletebutton() 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
+	ClickCounter.onClick();
 
 	var elSel = document.getElementById('operations');
 	var i = 0;
@@ -342,9 +356,7 @@ function deletebutton()
 
 function moveupbutton() 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
+	ClickCounter.onClick();
 
 	var elSel = document.getElementById('operations');
 	var ind = elSel.selectedIndex;
@@ -368,9 +380,7 @@ function moveupbutton()
 
 function movedownbutton() 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
+	ClickCounter.onClick();
 
 	var elSel = document.getElementById('operations');
 	var ind = elSel.selectedIndex;
@@ -403,6 +413,9 @@ function handler_mouseup(ev)
 	selectedPoint = 0;
 	selectedObjId = "";
 	clickstate = 0;
+
+	ClickCounter.onClick();
+
 }
 
 function handler_mousedown(ev) 

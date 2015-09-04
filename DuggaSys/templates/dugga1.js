@@ -43,14 +43,14 @@ function setup()
 
 function returnedDugga(data)
 {
+	Timer.startTimer();
+	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
-		Timer.startTimer();
 		if(data['score'] > 0){
 			Timer.score = data['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		ClickCounter.initialize();
 		if(data['score'] > 0){
 			ClickCounter.score = data['score'];
 			console.log(ClickCounter.score);
@@ -94,90 +94,111 @@ function returnedDugga(data)
 
 function saveClick()
 {
-		if (querystring['highscoremode'] == 1) {	
-			Timer.stopTimer();
-			score = Timer.score;
-		} else if (querystring['highscoremode'] == 2) {
-			score = ClickCounter.score;
-		}
+	Timer.stopTimer();
 
-		// Loop through all bits
-		bitstr="";
-		$(".bit").each(function( index ) {
-				bitstr=bitstr+this.innerHTML;
-		});
-		
-		bitstr+=" "+$("#H0").html();
-		bitstr+=" "+$("#H1").html();
-		
-		bitstr+=" "+screen.width;
-		bitstr+=" "+screen.height;
-		
-		bitstr+=" "+$(window).width();
-		bitstr+=" "+$(window).height();
-		
-		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-		saveDuggaResult(bitstr);
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
+
+	if (querystring['highscoremode'] == 1) {	
+		score = Timer.score;
+	} else if (querystring['highscoremode'] == 2) {
+		score = ClickCounter.score;
+	}
+
+	// Loop through all bits
+	bitstr="";
+	$(".bit").each(function( index ) {
+			bitstr=bitstr+this.innerHTML;
+	});
+	
+	bitstr+=" "+$("#H0").html();
+	bitstr+=" "+$("#H1").html();
+	
+	bitstr+=" "+screen.width;
+	bitstr+=" "+screen.height;
+	
+	bitstr+=" "+$(window).width();
+	bitstr+=" "+$(window).height();
+	
+	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+	saveDuggaResult(bitstr);
+}
+
+function reset()
+{
+	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
+	ClickCounter.initialize();
+
+	resetBitstring();
+	document.getElementById('H0').innerHTML="0";
+	document.getElementById('H1').innerHTML="0";
 }
 
 function showFacit(param, uanswer, danswer)
 {
-			var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
-			var daJSON = jQuery.parseJSON(danswer.replace(/\*/g, '"'));
-			
-			var da = daJSON['danswer'];
-			var danswer = da.split(' ');
-			
-			$("#talet").html(p['tal']);
-			
-			// Add our previous answer
-			var previous = uanswer.split(' ');
-			if (previous.length >= 4){
-				var bitstring = previous[3];
-				var hexvalue1 = previous[4];
-				var hexvalue2 = previous[5]; 
-			}			
-			resetBitstring();
-			
-			// NB: LSB is now on the highest string index
-			for (var i=bitstring.length;i>=0;i--){
-				if (bitstring[i]==1){
-					bitClick("B"+(7-i));
-				}				
-			}
-			
-			// NB: LSB is now on the highest string index
-			for (var i=danswer[0].length;i>0;i--){
+	var p = jQuery.parseJSON(param);
+	var daJSON = jQuery.parseJSON(danswer);
+	
+	var da = daJSON['danswer'];
+	var danswer = da.split(' ');
+	
+	$("#talet").html(p['tal']);
+	
+	// Add student answer
+	if (uanswer === "UNK"){
+		// For preview mode
+		uanswer = "dummy dummy dummy 00000000 0 0";
+	}
+	var previous = uanswer.split(' ');
+	if (previous.length >= 4){
+		var bitstring = previous[3];
+		var hexvalue1 = previous[4];
+		var hexvalue2 = previous[5]; 
+	}			
+	resetBitstring();
+	
+	// NB: LSB is now on the highest string index
+	for (var i=bitstring.length;i>=0;i--){
+		if (bitstring[i]==1){
+			bitClick("B"+(7-i));
+		}				
+	}
+	
+	// NB: LSB is now on the highest string index
+	for (var i=danswer[0].length;i>0;i--){
 
-				if (danswer[0][i-1]==1){
-					// Set border around correct bits
-					document.getElementById("B"+(8-i)).style.border = "4px dotted black";
-				}								 
+		if (danswer[0][i-1]==1){
+			// Set border around correct bits
+			document.getElementById("B"+(8-i)).style.border = "4px dotted black";
+		}								 
 
-				if (danswer[0][i-1] == $("#B"+(8-i)).html()){
-					$("#B"+(8-i)).css("background","green");
-					document.getElementById('B'+(8-i)).innerHTML+= " == " + danswer[0][i-1];
-					
-				} else {
-					$("#B"+(8-i)).css("background","red");
-					document.getElementById('B'+(8-i)).innerHTML+= " != " + danswer[0][i-1];					
-				}
-			}
+		if (danswer[0][i-1] == $("#B"+(8-i)).html()){
+			$("#B"+(8-i)).css("background","green");
+			document.getElementById('B'+(8-i)).innerHTML+= " == " + danswer[0][i-1];
 			
-			if (hexvalue1 == danswer[1]) {
-				document.getElementById('H0').style.background = "green";
-				document.getElementById('H0').innerHTML=hexvalue1 + " == "+danswer[1];
-			} else {
-				document.getElementById('H0').style.background = "red";
-				document.getElementById('H0').innerHTML=hexvalue1 + " != "+danswer[1];			
-			}
-			if (hexvalue2 == danswer[2]) {
-				document.getElementById('H1').style.background = "green";
-				document.getElementById('H1').innerHTML=hexvalue2 + " == "+danswer[2];
-			} else {
-				document.getElementById('H1').style.background = "red";
-				document.getElementById('H1').innerHTML=hexvalue2 + " != "+danswer[2];			
-			}
+		} else {
+			$("#B"+(8-i)).css("background","red");
+			document.getElementById('B'+(8-i)).innerHTML+= " != " + danswer[0][i-1];					
+		}
+	}
+	
+	if (hexvalue1 == danswer[1]) {
+		document.getElementById('H0').style.background = "green";
+		document.getElementById('H0').innerHTML=hexvalue1 + " == "+danswer[1];
+	} else {
+		document.getElementById('H0').style.background = "red";
+		document.getElementById('H0').innerHTML=hexvalue1 + " != "+danswer[1];			
+	}
+	if (hexvalue2 == danswer[2]) {
+		document.getElementById('H1').style.background = "green";
+		document.getElementById('H1').innerHTML=hexvalue2 + " == "+danswer[2];
+	} else {
+		document.getElementById('H1').style.background = "red";
+		document.getElementById('H1').innerHTML=hexvalue2 + " != "+danswer[2];			
+	}
 }
 
 function closeFacit(){
@@ -190,26 +211,22 @@ function closeFacit(){
 
 function bitClick(divid)
 {
-			if (querystring['highscoremode'] == 2) {
-				ClickCounter.onClick();
-			}		
+	ClickCounter.onClick();
 
-			if($("#"+divid).html()=="1"){
-					$("#"+divid).html("0");
-					$("#"+divid).removeClass("ett");
-					$("#"+divid).addClass("noll" );
-			}else{
-					$("#"+divid).html("1");
-					$("#"+divid).addClass("ett" );
-					$("#"+divid).removeClass("noll");
-			}
+	if($("#"+divid).html()=="1"){
+			$("#"+divid).html("0");
+			$("#"+divid).removeClass("ett");
+			$("#"+divid).addClass("noll" );
+	}else{
+			$("#"+divid).html("1");
+			$("#"+divid).addClass("ett" );
+			$("#"+divid).removeClass("noll");
+	}
 }
 
 function hexClick(divid)
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}	
+	ClickCounter.onClick();
 
 	dw=$(window).width();
 	dpos=$("#"+divid).position();

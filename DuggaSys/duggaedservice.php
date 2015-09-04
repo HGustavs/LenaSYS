@@ -230,7 +230,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 	foreach ($giles as $value){
 		if(endsWith($value,".html")){
 			array_push($files,substr ( $value , 0, strlen($value)-5 ));
-			array_push($duggaPages,file_get_contents("templates/".$value));
+			$duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents("templates/".$value);
 		}		
 	}
 

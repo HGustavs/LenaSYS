@@ -100,8 +100,6 @@ function showFacit(param, uanswer, danswer)
 	ctx = canvas.getContext("2d");
 
 	dta = jQuery.parseJSON(param);
-	console.log("Dugga parameter: "+param);
-	console.log("User Answer: " + uanswer);
 	if (uanswer !== "UNK") {
 		var previousAnswer = uanswer.split(' ');
 		bitarray=previousAnswer[3].split(',');
@@ -112,7 +110,6 @@ function showFacit(param, uanswer, danswer)
 		for (var i=0;i<facitarray.length;i++) facitarray[i]=parseInt(facitarray[i]); 
 	}
 
-	console.log("Correct Answer: " + danswer);
 	redrawgfx();
 	document.getElementById('helptxt').innerHTML=dta[0].Text;
 }

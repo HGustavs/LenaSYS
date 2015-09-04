@@ -1,12 +1,15 @@
-    <div id="container">
-        <canvas id='a' style='background-color:#FFFFFF; border:2px solid black;float:left; display:block;'></canvas>
-    </div>
+<div id="container">
+    <canvas id='a' style='background-color:#FFFFFF; border:2px solid black;float:left; display:block;'></canvas>
+</div>
 
-		<div class='floatRightBox'>
-            <div class='loginBoxheader'>
-                <h3>Ritverktyg</h3>
-            </div>
-			Function:<br/>
+<div class='floatRightBox' style="min-width:300px;">
+    <div class='loginBoxheader'>
+        <h3>Ritverktyg</h3>
+    </div>
+ 	<div>
+        <table>
+            <tr><th colspan="2">Function:</th></tr>
+            <tr><td>
 			<select id="function" name="function" >
 					<option value="T1">Translate 1</option>
 					<option value="T2">Translate 2</option>
@@ -37,20 +40,35 @@
 					<option value="PUSH">Push (remember state)</option>
 					<option value="POP">Pop (jump back)</option>
 			</select>			
-
+			
 			<input class='submit-button' type='button' value='New' onclick="newbutton();" />
-			
-			<br>Operations:<br> 
-			
-			<select style="width:185px;float:left;" size="20" id="operations" name="operations"></select>			
+			</td></tr>
+		</table>
 
-			<br/>
-			
-			<input class='submit-button' type='button' value='MOVE UP' onclick="moveupbutton();" />
-			<input class='submit-button' type='button' value='MOVE DOWN' onclick="movedownbutton();" />
-			<input class='submit-button' type='button' value='DELETE' onclick="deletebutton();" />
+		<div style="max-height:320px; height:320px; background-color:#FFF; overflow-y:scroll;">
+			<table style="width:100%;">
+	            <caption>Operations</caption>
+	            <thead>
+	                <tr><th style="visibility: hidden;">v00</th><th style="visibility: hidden;">Op</th>
+	                    <th style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></th>
+	                    <th style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></th>
+	                    <th style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></th>
+	                </tr>
+	            </thead>
+	            <tbody id="operationList">
+	            	<tr>
+		                <td style="visibility: hidden;">v00</td>
+		                <td></td>
 
+		                <td style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></td>
+		                <td style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></td>
+		                <td style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></td>
+	                </tr>
+	            </tbody>
+        	</table>			
 		</div>
+	</div>
+</div>
 <div id='duggaInfoBox' class="loginBox" style="display:none">
   <div>
         <div class='loginBoxheader'>

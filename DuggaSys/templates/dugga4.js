@@ -28,6 +28,8 @@ var elapsedTime = 0;
 var tickInterval;
 
 var dataV;
+var operationList = [];
+var operationsMap = {"D1":"Draw R","D2":"Draw G","D3":"Draw B","T1":"Translate 1","T2":"Translate 2","T3":"Translate 3","T4":"Translate 4","T5":"Translate 5","T6":"Translate 6","T7":"Translate 7","T8":"Translate 8","R0":"Rotate +3","R1":"Rotate +2","R2":"Rotate +1","R3":"Rotate +0.3","R4":"Rotate +0.2","R5":"Rotate -0.2","R6":"Rotate -0.3","R7":"Rotate -1","R8":"Rotate -2","R9":"Rotate -3","S0":"Scale 0.2","S1":"Scale 0.3","S2":"Scale 0.5","S3":"Scale 1.0","S4":"Scale 1.25","PUSH":"Push (remember state)","POP":"Pop (jump back)", "1":"Draw R","2":"Draw G","3":"Draw B","4":"Translate 1","5":"Translate 2","6":"Translate 3","7":"Translate 4","8":"Translate 5","9":"Translate 6","10":"Translate 7","11":"Translate 8","12":"Rotate +3","13":"Rotate +2","14":"Rotate +1","15":"Rotate +0.3","16":"Rotate +0.2","17":"Rotate -0.2","18":"Rotate -0.3","19":"Rotate -1","20":"Rotate -2","21":"Rotate -3","22":"Scale 0.2","23":"Scale 0.3","24":"Scale 0.5","25":"Scale 1.0","26":"Scale 1.25","27":"Push (remember state)","28":"Pop (jump back)"};
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
@@ -47,8 +49,7 @@ function returnedDugga(data)
 {	
 	dataV = data;
 	
-	if (data['debug'] != "NONE!")
-		alert(data['debug']);
+	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
@@ -60,104 +61,19 @@ function returnedDugga(data)
 			retdata = jQuery.parseJSON(data['param']);
 			variant = retdata["variant"];
 
-			if (data["answer"] != null) {
+			if (data["answer"] !== null || data["answer"] !== "UNK") {
 				var previous = data['answer'].split(',');
 				previous.shift();
 				previous.pop();
-				// Clear operations
-				document.getElementById('operations').innerHTML = "";
 
-				var str = "";
-
-				var cstr = "";
 				// Add previous handed in dugga
+				operationList = [];
 				for (var i = 0; i < previous.length; i++) {
-					cstr = previous[i];
-					if (cstr == "D1" || cstr == "0") {
-
-						str += '<option value="D1">Draw R</option>';
-
-					} else if (cstr == "D2" || cstr == "1") {
-						str += '<option value="D2">Draw G</option>';
-
-					} else if (cstr == "D3" || cstr == "2") {
-						str += '<option value="D3">Draw B</option>';
-
-					} else if (cstr == "T1" || cstr == "3") {
-						str += '<option value="T1">Translate 1</option>';
-
-					} else if (cstr == "T2" || cstr == "4") {
-						str += '<option value="T2">Translate 2</option>';
-
-					} else if (cstr == "T3" || cstr == "5") {
-						str += '<option value="T3">Translate 3</option>';
-
-					} else if (cstr == "T4" || cstr == "6") {
-						str += '<option value="T4">Translate 4</option>';
-
-					} else if (cstr == "T5" || cstr == "7") {
-						str += '<option value="T5">Translate 5</option>';
-
-					} else if (cstr == "T6" || cstr == "8") {
-						str += '<option value="T6">Translate 6</option>';
-
-					} else if (cstr == "T7" || cstr == "9") {
-						str += '<option value="T7">Translate 7</option>';
-
-					} else if (cstr == "T8" || cstr == "10") {
-						str += '<option value="T8">Translate 8</option>';
-
-					} else if (cstr == "R0" || cstr == "11") {
-						str += '<option value="R0">Rotate +3</option>';
-
-					} else if (cstr == "R1" || cstr == "12") {
-						str += '<option value="R1">Rotate +2</option>';
-
-					} else if (cstr == "R2" || cstr == "13") {
-						str += '<option value="R2">Rotate +1</option>';
-
-					} else if (cstr == "R3" || cstr == "14") {
-						str += '<option value="R3">Rotate +0.3</option>';
-
-					} else if (cstr == "R4" || cstr == "15") {
-						str += '<option value="R4">Rotate +0.2</option>';
-
-					} else if (cstr == "R5" || cstr == "16") {
-						str += '<option value="R5">Rotate -0.2</option>';
-
-					} else if (cstr == "R6" || cstr == "17") {
-						str += '<option value="R6">Rotate -0.3</option>';
-
-					} else if (cstr == "R7" || cstr == "18") {
-						str += '<option value="R7">Rotate -1</option>';
-
-					} else if (cstr == "R8" || cstr == "19") {
-						str += '<option value="R8">Rotate -2</option>';
-
-					} else if (cstr == "R9" || cstr == "20") {
-						str += '<option value="R9">Rotate -3</option>';
-
-					} else if (cstr == "S0" || cstr == "21") {
-						str += '<option value="S0">Scale 0.2</option>';
-
-					} else if (cstr == "S1" || cstr == "22") {
-						str += '<option value="S1">Scale 0.3</option>';
-
-					} else if (cstr == "S2" || cstr == "23") {
-						str += '<option value="S2">Scale 0.5</option>';
-
-					} else if (cstr == "S3" || cstr == "24") {
-						str += '<option value="S3">Scale 1.0</option>';
-
-					} else if (cstr == "S4" || cstr == "25") {
-						str += '<option value="S4">Scale 1.25</option>';
-					} else if (cstr == "PUSH" || cstr == "26") {
-						str += '<option value="PUSH">Push (remember state)</option>';
-					} else if (cstr == "POP" || cstr == "27") {
-						str += '<option value="POP">Pop (jump back)</option>';
+					if (previous[i] !== ""){
+						operationList.push([operationsMap[previous[i]], previous[i]]);						
 					}
 				}
-				document.getElementById('operations').innerHTML = str;
+				renderOperationList();
 			}
 
 			foo();
@@ -165,10 +81,28 @@ function returnedDugga(data)
 	}
 }
 
+function reset()
+{
+	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+
+	operationList = [];
+	renderOperationList();
+
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
+	ClickCounter.initialize();
+
+}
+
 function saveClick() 
 {
+	Timer.stopTimer();
+
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
+
 	if (querystring['highscoremode'] == 1) {	
-		Timer.stopTimer();
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
@@ -176,12 +110,10 @@ function saveClick()
 
 	// Loop through all bits
 	bitstr = ",";
-	var opList = document.getElementById("operations");
 
-	for (var i = 0; i < document.getElementById('operations').length; i++) {
-		bitstr += opList[i].value;
-		if (i < document.getElementById('operations').length - 1)
-			bitstr += ",";
+	for (var i = 0; i < operationList.length; i++) {
+		bitstr += operationList[i][1];
+		if (i < operationList.length - 1){ bitstr += ","; }
 	}
 
 	bitstr += ",T " + elapsedTime;
@@ -210,116 +142,26 @@ function showFacit(param, uanswer, danswer)
 	context = canvas.getContext("2d");
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
-	if (uanswer != null) {
-		var studentPreviousAnswer = "";
 
-		retdata = jQuery.parseJSON(param.replace(/\*/g, '"'));
-		variant = retdata["variant"];
+	retdata = jQuery.parseJSON(param);
+	variant = retdata["variant"];
 
-		if (uanswer != null) {
-			var previous = uanswer.split(',');
-			previous.shift();
-			previous.pop();
-			// Clear operations
-			document.getElementById('operations').innerHTML = "";
+	if (uanswer !== null || uanswer !== "UNK") {
+		var previous = uanswer.split(',');
+		previous.shift();
+		previous.pop();
 
-			var str = "";
-
-			var cstr = "";
-			// Add previous handed in dugga
-			for (var i = 0; i < previous.length; i++) {
-				cstr = previous[i];
-				if (cstr == "D1" || cstr == "0") {
-
-					str += '<option value="D1">Draw R</option>';
-
-				} else if (cstr == "D2" || cstr == "1") {
-					str += '<option value="D2">Draw G</option>';
-
-				} else if (cstr == "D3" || cstr == "2") {
-					str += '<option value="D3">Draw B</option>';
-
-				} else if (cstr == "T1" || cstr == "3") {
-					str += '<option value="T1">Translate 1</option>';
-
-				} else if (cstr == "T2" || cstr == "4") {
-					str += '<option value="T2">Translate 2</option>';
-
-				} else if (cstr == "T3" || cstr == "5") {
-					str += '<option value="T3">Translate 3</option>';
-
-				} else if (cstr == "T4" || cstr == "6") {
-					str += '<option value="T4">Translate 4</option>';
-
-				} else if (cstr == "T5" || cstr == "7") {
-					str += '<option value="T5">Translate 5</option>';
-
-				} else if (cstr == "T6" || cstr == "8") {
-					str += '<option value="T6">Translate 6</option>';
-
-				} else if (cstr == "T7" || cstr == "9") {
-					str += '<option value="T7">Translate 7</option>';
-
-				} else if (cstr == "T8" || cstr == "10") {
-					str += '<option value="T8">Translate 8</option>';
-
-				} else if (cstr == "R0" || cstr == "11") {
-					str += '<option value="R0">Rotate +3</option>';
-
-				} else if (cstr == "R1" || cstr == "12") {
-					str += '<option value="R1">Rotate +2</option>';
-
-				} else if (cstr == "R2" || cstr == "13") {
-					str += '<option value="R2">Rotate +1</option>';
-
-				} else if (cstr == "R3" || cstr == "14") {
-					str += '<option value="R3">Rotate +0.3</option>';
-
-				} else if (cstr == "R4" || cstr == "15") {
-					str += '<option value="R4">Rotate +0.2</option>';
-
-				} else if (cstr == "R5" || cstr == "16") {
-					str += '<option value="R5">Rotate -0.2</option>';
-
-				} else if (cstr == "R6" || cstr == "17") {
-					str += '<option value="R6">Rotate -0.3</option>';
-
-				} else if (cstr == "R7" || cstr == "18") {
-					str += '<option value="R7">Rotate -1</option>';
-
-				} else if (cstr == "R8" || cstr == "19") {
-					str += '<option value="R8">Rotate -2</option>';
-
-				} else if (cstr == "R9" || cstr == "20") {
-					str += '<option value="R9">Rotate -3</option>';
-
-				} else if (cstr == "S0" || cstr == "21") {
-					str += '<option value="S0">Scale 0.2</option>';
-
-				} else if (cstr == "S1" || cstr == "22") {
-					str += '<option value="S1">Scale 0.3</option>';
-
-				} else if (cstr == "S2" || cstr == "23") {
-					str += '<option value="S2">Scale 0.5</option>';
-
-				} else if (cstr == "S3" || cstr == "24") {
-					str += '<option value="S3">Scale 1.0</option>';
-
-				} else if (cstr == "S4" || cstr == "25") {
-					str += '<option value="S4">Scale 1.25</option>';
-				} else if (cstr == "PUSH" || cstr == "26") {
-					str += '<option value="PUSH">Push (remember state)</option>';
-				} else if (cstr == "POP" || cstr == "27") {
-					str += '<option value="POP">Pop (jump back)</option>';
-				}
+		// Add previous handed in dugga
+		operationList = [];
+		for (var i = 0; i < previous.length; i++) {
+			if (previous[i] !== ""){
+				operationList.push([operationsMap[previous[i]], previous[i]]);						
 			}
-			document.getElementById('operations').innerHTML = str;
 		}
-
-		foo();
-
+		renderOperationList();
 	}
 
+	foo();
 }
 
 function closeFacit() 
@@ -337,8 +179,7 @@ function fitToContainer()
 {
 	// Make it visually fill the positioned parent
 	divw = $("#content").width();
-	if (divw > 500)
-		divw -= 248;
+	if (divw > 500){ divw -= 248; }
 	if (divw < window.innerHeight) {
 		canvas.width = divw;
 		canvas.height = divw;
@@ -487,52 +328,61 @@ function drawCross(cx, cy, col, size)
 	context.stroke();
 }
 
+function renderOperationList()
+{
+	// Render table
+	var newTableBody = "<tbody>";
+	for (var i=0; i<operationList.length;i++){
+		newTableBody += "<tr id='v" + i +"'>";
+		newTableBody += '<td style="font-size:11px; text-align: right;">op'+i+'</td>';
+		newTableBody += '<td><p style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'">'+operationList[i][0]+'</p></td>';
+		if (i === 0){
+			newTableBody += '<td><button disabled onclick="moveOperationUp('+i+');">&uarr;</button></td>';
+		} else {
+			newTableBody += '<td><button onclick="moveOperationUp('+i+');">&uarr;</button></td>';			
+		}
+		if (i === operationList.length-1){
+			newTableBody += '<td><button disabled onclick="moveOperationDown('+i+');">&darr;</button></td>';
+		} else {
+			newTableBody += '<td><button onclick="moveOperationDown('+i+');">&darr;</button></td>';			
+		}
+		newTableBody += '<td><button onclick="deleteOperation('+i+');">X</button></td>';			
+		newTableBody += "</tr>";
+	}
+	newTableBody += "</tbody>";
+	document.getElementById('operationList').innerHTML = newTableBody;	
+
+}
+
 function newbutton() 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
-	var texto = $("#operations").html();
+	ClickCounter.onClick();
 
-	var valv = $("#function").val();
-	var newtext = $('#function > option:selected').text();
-	texto += "<option value='" + valv + "'>" + newtext + "</option>";
-	$("#operations").html(texto);
+	operationList.push([$('#function > option:selected').text(),$("#function").val()]);
+	
+	renderOperationList();
+
 }
 
-function moveupbutton() 
+function moveOperationUp(index) 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
-
-	$('#operations>option:selected').prev().each(function() {
-		$(this).next().after("<option value='" + $(this).val() + "'>" + $(this).html() + "</option>");
-		$(this).remove();
-	});
+	ClickCounter.onClick();
+	operationList.move(index, index-1);
+	renderOperationList();
 }
 
-function movedownbutton() 
+function moveOperationDown(index) 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
-
-	$('#operations>option:selected').next().each(function() {
-		$(this).prev().before("<option value='" + $(this).val() + "'>" + $(this).html() + "</option>");
-		$(this).remove();
-	});
+	ClickCounter.onClick();
+	operationList.move(index, index+1);
+	renderOperationList();
 }
 
-function deletebutton() 
+function deleteOperation(index) 
 {
-	if (querystring['highscoremode'] == 2) {
-		ClickCounter.onClick();
-	}
-
-	$('#operations> option:selected').each(function() {
-		$(this).remove();
-	});
+	ClickCounter.onClick();
+	operationList.splice(index, 1);
+	renderOperationList();
 }
 
 function drawCommand(cstr) 
@@ -668,9 +518,9 @@ function foo()
 
 	context.globalAlpha = 1.0;
 
-	$("#operations > option").each(function() {
-		drawCommand(this.value);
-	});
+	for (i = 0; i<operationList.length;i++){
+		drawCommand(operationList[i][1]);
+	}
 
 	drawCross(0, 0, "#f64", 8);
 
@@ -695,17 +545,17 @@ function foo()
 //----------------------------------------------------------------------------------
 
 function startDuggaHighScore(){
+	Timer.startTimer();
+	ClickCounter.initialize();
+
 	if(querystring['highscoremode'] == 1) {
-		Timer.startTimer();
 		if(dataV['score'] > 0){
 			Timer.score = dataV['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		ClickCounter.initialize();
 		if(dataV['score'] > 0){
 			ClickCounter.score = dataV['score'];
-			console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
 	}

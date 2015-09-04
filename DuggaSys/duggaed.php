@@ -84,7 +84,7 @@ pdoConnect();
 
 	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
-			<button type="button" onclick='$("#resultpopover").css("display", "none")'>Close Preview</button>
+			<button type="button" onclick='closePreview();'>Close Preview</button>
 		</div>
 		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>
 
