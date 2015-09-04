@@ -12,6 +12,9 @@ Bold and Italic
 ____this is bold and italic____
 ****this is bold and italic****
 
+Strike through text
+----this is strike through text----
+
 Headings
 # This is a level 1 heading
 ## This is a level 2 heading
