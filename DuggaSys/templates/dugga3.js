@@ -44,7 +44,7 @@ var retdata = null;
 
 var mx = 100, my = 100, clickstate = 0;
 var gridsize = 5;
-var goal;
+var goal = [];
 
 //Define colors
 var pointColor = "#f52";
@@ -95,7 +95,7 @@ function returnedDugga(data) {
 			showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
 			retdata = jQuery.parseJSON(data['param']);
-			if (data["answer"] != null) {
+			if (data["answer"] !== null || data["answer"] !== "UNK") {
 				var previous = data['answer'].split(',');
 				previous.shift();
 				previous.pop();
@@ -579,20 +579,19 @@ function init(quizGoal, studentPreviousAnswer)
 	goal = quizGoal.split(",");
 	startx = parseInt(goal.shift());
 	starty = parseInt(goal.shift());
-
 	var oplist = document.getElementById('operations');
 
-	if (studentPreviousAnswer != null || studentPreviousAnswer != "UNK") {
+	if (studentPreviousAnswer !== null || studentPreviousAnswer !== "UNK") {
 		var studentOp = studentPreviousAnswer.split(",");
 		for (var i = 0; i < studentOp.length; i++) {
 			var opArr = studentOp[i].split(" ");
-			if (opArr[0] == "L") {
+			if (opArr[0] === "L") {
 				oplist.innerHTML += "<option id='op" + (objectCounter++) + "' value='" + studentOp[i] + "'>Linje</option>";
 
-			} else if (opArr[0] == "Q") {
+			} else if (opArr[0] === "Q") {
 				oplist.innerHTML += "<option id='op" + (objectCounter++) + "' value='" + studentOp[i] + "'>Kvadratisk kurva</option>";
 
-			} else if (opArr[0] == "C") {
+			} else if (opArr[0] === "C") {
 				oplist.innerHTML += "<option id='op" + (objectCounter++) + "' value='" + studentOp[i] + "'>Kubisk kurva</option>";
 				sx = parseInt(opArr[5]);
 				sy = parseInt(opArr[6]);
@@ -661,6 +660,7 @@ function drawPath()
 	sy = starty;
 
 	// Draw students objects
+	/*
 	$("#operations > option").each(function() {
 		var opArr = this.value.split(" ");
 		if (this.id == selectedObjId) {
@@ -672,7 +672,7 @@ function drawPath()
 		sx = parseInt(opArr[opArr.length - 2]);
 		sy = parseInt(opArr[opArr.length - 1]);
 	});
-
+*/
 }
 
 function render() 

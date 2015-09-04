@@ -334,7 +334,7 @@
 			array_push($importantWordList,$row['word']);					
 		}  
 		
-		// Read file lists from database and add only .txt to descdir
+		// Read file lists from database and add only .txt and .md to descdir
 
 		$directories = array();
 		$codeDir=array();
@@ -354,7 +354,7 @@
 				}
 				$oldkind=$row['kind'];
 				
-				if(endsWith($row['filename'],".txt")){
+				if(endsWith($row['filename'],".txt")||endsWith($row['filename'],".md")){
 						array_push($descDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
 				}
 				array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));

@@ -15,7 +15,7 @@
 				
 				// This is a straight 1:1 port of the javascript code
 				foreach ($codearray as $workstr) {
-						if(substr($workstr,0,3)==="@@@"){
+						if(substr($workstr,0,3)=="@@@"){
 								$kodblock=!$kodblock;
 								$workstr=substr($workstr,3);
 						}
@@ -89,6 +89,10 @@
 
 				// Right Arrow for discussing menu options
 				$instring = preg_replace("/\s[\-][\>]\s/","&rarr;",$instring);
+				// Strike trough text
+				$instring = preg_replace("/\-{4}(.*?\S)\-{4}/","<span style=\"text-decoration:line-through;\">$1</span>",$instring);
+
+
 
 				return $instring;		
 		}
