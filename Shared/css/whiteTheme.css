@@ -7,6 +7,8 @@
          url('ubuntu-mono-webfont.svg#webfont') format('svg');
 }
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css">
+
 .buttomenuStyle {
     background-color: #614875;
 }
@@ -99,9 +101,9 @@
     width: 22px;
     float: left;
 	background-color: #614875;
-	font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont,"Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .codeborder .impono {
@@ -110,9 +112,9 @@
     background-color: #9569BD;
     padding-left: 4px;
     padding-right: 6px;
-	font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont,"Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtextwrapper{
@@ -125,9 +127,9 @@
     color: #000;
     background-color: #F2F2F2;
     white-space:nowrap;
-	font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont,"Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .impo {
@@ -135,9 +137,9 @@
     background-color: rgba(186, 96, 255, 0.09);
     white-space:nowrap;
     min-width: 660px;
-	font-family: MyWebFont,"Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont,"Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtext .no {
@@ -148,8 +150,8 @@
     width: 22px;
     float: left;
     text-align: right;
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtext:hover {
@@ -159,141 +161,141 @@
 .impo .no {
     color: white;
     background-color: #9569BD;
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .comment {
     color: #50a750;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtext .oper {
     color: #000;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .impo .oper {
     color: #000;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtext .string {
     color: #03b;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .impo .string {
     color: #000;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtext .number {
     color: #000;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .impo .number {
     color: #000;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtext .hi {
     background-color: #9569BD;
     color: #000;
     font-weight: bold;
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .impo .hi {
    font-weight: bold;
    color: #000000;
    background-color: #9569BD;
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtext .html {
 	background-color: #9569BD;
 	color: #000;
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .impo .html {
 	background-color: #9569BD;
 	color: #000;
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .keywordA {
     color: #e90000;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .keywordB {
     color: #0004ff;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .keywordC {
     color: rgba(6, 129, 19, 1);
-    font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+    font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .keywordD {
     color: rgba(231, 0, 255, 1);
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 .normtext .impword {
     color: #fff;
     background-color: #9971AF;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 
 .impo .impword {
     color: #fff;
     background-color: #614875;
-	font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
 
 
 .descbox .impword {
    color: #fff;
     background-color: #9971AF;
-    font-family: MyWebFont, "Andale Mono", AndaleMono, monospace;
-    font-size: 12px;
-    line-height: 14px;
+    font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+    font-size: 9px;
+    line-height: 11px;
 }
  
 .descbox .imphi {
@@ -327,7 +329,7 @@
 .settingsTabMenuStyle li{
 	background-color: #7D5CA0;
 }
-.settingsTabMenuStyle .activeSetMenuLink{
+.settingsTabMenuSty le .activeSetMenuLink{
 	border-bottom-color: #614875;
 	background-color: #614875;
 }

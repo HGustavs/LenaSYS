@@ -136,7 +136,7 @@ function returned(data)
 			addTemplatebox(contentid);
 		}
 		
-		if(boxtype == "CODE"){
+		if(boxtype === "CODE"){
 			// Print out code example in a code box					
 			$("#"+contentid).removeAttr("contenteditable");
 			$("#"+contentid).removeClass("descbox").addClass("codebox");
@@ -155,12 +155,11 @@ function returned(data)
 			boxcontent = tabLine(boxcontent);
 			// Render code
 			rendercode(boxcontent,boxid,boxwordlist);
-		}else if(boxtype == "DOCUMENT"){
+		}else if(boxtype === "DOCUMENT"){
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
 			var desc = boxcontent;
 			desc = replaceAll("&nbsp;"," ",desc);
-			
 			desc = parseMarkdown(desc);
 			
 			//Change all asterisks to the html code for asterisks
@@ -191,7 +190,7 @@ function returned(data)
 				boxmenuheight= $("#"+contentid+"menu").height();
 			}
 			$("#"+contentid).css("margin-top", boxmenuheight);
-		}else if(boxtype == "IFRAME") {
+		}else if(boxtype === "IFRAME") {
 			createboxmenu(contentid,boxid,boxtype);
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
 			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "'></iframe>");

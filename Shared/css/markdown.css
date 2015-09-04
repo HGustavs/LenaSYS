@@ -7,6 +7,8 @@
          url('ubuntu-mono-webfont.svg#webfont') format('svg');
 }
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css">
+
 .descbox {
 		font-family: arial;
 		color: #000;
@@ -72,7 +74,7 @@
 }
 
 .descbox pre {
-    font-family: "Courier 10 Pitch", Courier, monospace;
+    font-family: Hack, "Courier 10 Pitch", Courier, monospace;
     font-size: 12px;
     line-height: 14px;
     white-space: pre;
@@ -80,9 +82,9 @@
 }
 
 .descbox code {
-    font-family: MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-    font-size: 12px;
-    line-height: 14px;
+    font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 10px;
+    line-height: 12px;
     white-space: pre;
     white-space: pre-wrap;
     background: #ffffff;	
