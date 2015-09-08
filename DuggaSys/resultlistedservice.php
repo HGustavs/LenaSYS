@@ -118,7 +118,7 @@ $lentries=array();
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 
 	// Users connected to the current course (irrespective of version)
-	$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
+	$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn,class,studyProgram from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
 	$query->bindParam(':cid', $cid);
 	
 	if(!$query->execute()) {
@@ -136,7 +136,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			'username' => $row['username'],
 			'firstname' => $row['firstname'],
 			'lastname' => $row['lastname'],
-			'ssn' => $row['ssn']
+			'ssn' => $row['ssn'],
+			'class' => $row['class'],
+			'studyProgram' => $row['studyProgram']
 			);
 			array_push($entries, $entry);
 		}

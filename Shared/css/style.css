@@ -862,7 +862,8 @@ input.new-item-button:hover {
 
 .Trow{
     font-family: "Lucida Console", Monaco, monospace;
-    font-size: 8pt;
+    font-size: 10px;
+    line-height: 10px;
 }
 
 @media print {
