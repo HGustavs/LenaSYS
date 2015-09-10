@@ -232,6 +232,12 @@ Testing Link:
 						<td>Section Title:<input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
 						<td>Title:<input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
 					</tr>
+
+					<tr>
+						<td>Before:<select id='before'></select></td>		
+						<td>After:<select id='after'></select></td>		
+					</tr>
+
 					<tr>
 						<td>Play Link:<input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
 						<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
@@ -241,14 +247,6 @@ Testing Link:
 						<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateExample();' /></td>
 					</tr>	
 				</table>
-			</fieldset>
-			<fieldset>
-				<legend>Sequence</legend>
-				<div id="SeqEdit">
-					<?php
-						echo "<script>$('#SeqEdit').load('dragndrop.php?courseid=$courseID');</script>";
-					?>
-				</div>
 			</fieldset>
 		</div>
 		<!--- Code Example Cog Wheel Dialog END --->
