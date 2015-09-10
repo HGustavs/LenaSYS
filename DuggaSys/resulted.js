@@ -142,6 +142,7 @@ function leaveCell(thisObj)
 
 function returnedResults(data) 
 {
+	var needMarking = 0;
 	var str = "";
 	var zstr = "";
 	var ttr = "";
@@ -162,7 +163,7 @@ function returnedResults(data)
 
 		str += "<table class='list'>";
 
-		str += "<tr><th></th>";
+		str += "<tr><th id='needMarking'></th>";
 
 		for ( j = 0; j < data['moments'].length; j++) {
 			var jtem = data['moments'][j];
@@ -205,7 +206,6 @@ function returnedResults(data)
 						//----------------------------------------------------------------------------------------------------------- Start Standalone
 						// kind == 3 means dugga, moment == null means no parent dugga i.e. standalone
 						if (moment['kind'] == 3 && moment['moment'] == null) {
-							
 							// We are now processing the moment entry in the moment object
 							var foundgrade = null;
 							var useranswer = null;
@@ -223,8 +223,14 @@ function returnedResults(data)
 										marked = resultitem['marked'];
 										variant = resultitem['variant'];
 										
-										if(submitted!=null) submitted=new Date(submitted);
-										if(marked!=null) marked=new Date(marked);
+										if(submitted!=null) {
+											var t = submitted.split(/[- :]/);
+											submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+										}
+										if(marked!=null) {
+											var tt = marked.split(/[- :]/);
+											marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
+										}
 									}
 								}
 							}
@@ -247,14 +253,15 @@ function returnedResults(data)
 							}
 
 							// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
-							if((useranswer!=null&&foundgrade==null)||(foundgrade!=null&&submitted>marked)){
-									yomama="background-color:#ffd";							
-							}else if(foundgrade==1){
+							if(foundgrade==1){
 									yomama="background-color:#fed";							
 							}else if(foundgrade>1){
 									yomama="background-color:#dfe";							
 							}else if(variant!=null&&useranswer==null){
 									yomama="background-color:#F8E8F8";														
+							}else if((useranswer!=null&&foundgrade==null)||(foundgrade!=null&&submitted>marked)){
+									yomama="background-color:#ffd";		
+									needMarking++;					
 							}else{
 									yomama="background-color:#fff";														
 							}
@@ -300,8 +307,14 @@ function returnedResults(data)
 												marked = resultitem['marked'];
 												variant = resultitem['variant'];
 
-												if(submitted!=null) submitted=new Date(submitted);
-												if(marked!=null) marked=new Date(marked);
+												if(submitted!=null) {
+													var t = submitted.split(/[- :]/);
+													submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+												}
+												if(marked!=null) {
+													var tt = marked.split(/[- :]/);
+													marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
+												}
 											}
 										}
 									}
@@ -320,14 +333,15 @@ function returnedResults(data)
 									}
 
 									// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
-									if((useranswer!=null&&foundgrade==null)||(foundgrade!=null&&submitted>marked)){
-											yomama="background-color:#ffd";							
-									}else if(foundgrade==1){
+									if(foundgrade==1 && submitted<marked){
 											yomama="background-color:#fed";							
 									}else if(foundgrade>1){
 											yomama="background-color:#dfe";							
 									}else if(variant!=null&&useranswer==null){
 											yomama="background-color:#F8E8F8";														
+									}else if((useranswer!=null&&foundgrade==null)||(foundgrade==1&&submitted>marked)){
+											yomama="background-color:#ffd";							
+											needMarking++;
 									}else{
 											yomama="background-color:#fff";														
 									}
@@ -403,6 +417,7 @@ function returnedResults(data)
 		
 		var slist = document.getElementById("content");
 		slist.innerHTML = str;
+		document.getElementById("needMarking").innerHTML = needMarking + " unmarked";
 	}
 	if (data['debug'] != "NONE!") alert(data['debug']);
 }
