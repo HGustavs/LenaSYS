@@ -140,19 +140,12 @@ function leaveCell(thisObj)
 // Renderer
 //----------------------------------------
 
-
-//----------------------------------------
-// returnedResults: The callback function called when result from AJAX-call returns with dugga data
-//----------------------------------------
 function returnedResults(data) 
 {
 	var str = "";
-	var strtable = "";
-	var strleft = "<div id='namecolumn'><div class='namecolumnheader'>Students</div><div id='studentswrapper'>";
 	var zstr = "";
 	var ttr = "";
 	var zttr = "";
-	var headercount = 0;
 
 	if (data['dugganame'] != "") {
 		$.getScript(data['dugganame'], function() {
@@ -166,32 +159,33 @@ function returnedResults(data)
 	} else {
 
 		results = data['results'];
-		str += "<div id='tableheader'><div id='tableheaderwrapper'>";
+
+		str += "<table class='list'>";
+
+		str += "<tr><th></th>";
+
 		for ( j = 0; j < data['moments'].length; j++) {
 			var jtem = data['moments'][j];
-			
 			if ((jtem['kind'] == 3 && jtem['moment'] == null) || (jtem['kind'] == 4)) {
 				// Td-s for each variant or non-connected dugga.
-				
-				str += "<div id='header-"+headercount+"'>";
+				str += "<th style='border-left:2px solid white;'>";
 				str += jtem['entryname'];
-				str += "</div>";
-				headercount++;
+				str += "</th>";
 			}
 		}
-		str += "</div></div>";
-		strtable += "<div id='divtable'>";
 
+		str += "</tr>";
+		console.log(data);
 		if (data['entries'].length > 0) {
 			for ( i = 0; i < data['entries'].length; i++) {
 				var user = data['entries'][i];
 
-				strtable += "<div class='fumo'>";
+				str += "<tr class='fumo'>";
 
 				// One row for each student
-				strleft += "<div class='namecolumnstudent'>";
-				strleft += user['firstname'] + " " + user['lastname'] + "<br/>" + user['ssn'];
-				strleft += "</div>";
+				str += "<td>";
+				str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['ssn'];
+				str += "</td>";
 
 				// Each of the section entries (i.e. moments)
 				for ( j = 0; j < data['moments'].length; j++) {
@@ -199,11 +193,14 @@ function returnedResults(data)
 
 					if ((moment['kind'] == 3 && moment['moment'] == null) || (moment['kind'] == 4)) {
 
+						str += "<td style='padding:0px;'>";
+
 						// We have data if there is a set of result elements for this student in this course... otherwise null
 						studres = results[user['uid']];
 						
 						// There are results to display.
-						strtable += "<div class='momentdiv' >";
+						str += "<table width='100%' class='innertable' >";
+						str += "<tr>";
 
 						//----------------------------------------------------------------------------------------------------------- Start Standalone
 						// kind == 3 means dugga, moment == null means no parent dugga i.e. standalone
@@ -263,11 +260,11 @@ function returnedResults(data)
 							}
 							
 							// Standalone Dugga -- we just need to make a dugga entry with the correct marking system.
-							strtable += "<div style='"+yomama+"'>&nbsp;</div>";
+							str += "<td style='"+yomama+"'>&nbsp;</td></tr><tr  style='border-top:2px solid #dbd0d8;' >";
 
-							strtable += "<div style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>"+zstr;
+							str += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>"+zstr;
 
-							strtable += "</div>";
+							str += "</td>";
 						}
 						//------------------------------------------------------------------------------------------------------------- End Standalone
 						
@@ -336,15 +333,15 @@ function returnedResults(data)
 									}
 
 									if (duggacnt > 0){
-										ttr += "<div style='width:220px; float:left;border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
-										ttr += dugga['entryname'] + " <br>";
+										ttr += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+										ttr += dugga['entryname'] + " ";
 									}else{
-										ttr += "<div style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+										ttr += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 									}
 
 									ttr+=zttr;
 
-									ttr += "</div>";
+									ttr += "</td>";
 
 								//--------------------------------------------------------------------------------------------------------- End Dugga
 								
@@ -354,18 +351,18 @@ function returnedResults(data)
 							}
 
 							zttr="";
-							//--------------------------------------------------------------------
+
 							// We are now processing the moment entry in the moment object
-							//--------------------------------------------------------------------
 							var foundgrade = null;
-							var onlyone = true;
 							if (studres != null) {
 								for (var l = 0; l < studres.length; l++) {
 									var resultitem = studres[l];
-									if ((resultitem['moment'] == moment['lid'])&&(onlyone == true)) {
-										foundgrade = resultitem['grade']; // There is a result to print
-										zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U"); 	// gradesys cid vers moment uid mark
-										onlyone = false;
+									if (resultitem['moment'] == moment['lid']) {
+										// There is a result to print
+										foundgrade = resultitem['grade'];
+
+										// gradesys cid vers moment uid mark
+										zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
 									}
 								}
 							}
@@ -382,54 +379,30 @@ function returnedResults(data)
 							}
 							
 							if (duggacnt == 0) {
-								ttr += "<div style='"+yomama+"'>&nbsp;</div>";
-								strtable += "<div style='border-bottom:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+								ttr += "<td style='"+yomama+"'>&nbsp;</td>";
+								str += "<td style='"+yomama+"' colspan='1' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 							} else {
-								strtable += "<div style='border-bottom:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+								str += "<td style='"+yomama+"' colspan='" + duggacnt + "' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
 							}
 							
-							strtable+= moment['entryname'] +" " +zttr;
+							str+= moment['entryname'] +" " +zttr;
 
-							strtable += "</div>";
-							strtable += ttr;
+							str += "</td></tr><tr style='border-top:2px solid #dbd0d8;'>";
+							str += ttr;
 						}
 						//----------------------------------------------------------------------------------------------------------- End Moment
 
-						strtable += "</div>";
-
+						str += "</tr>";
+						str += "</table>";
+						str += "</td>";
 					}
 				}
-				strtable += "</div>";
+				str += "</tr>";
 			}
-			
-			strleft += "</div></div>";
 		}
 		
 		var slist = document.getElementById("content");
-		str = strleft+str+strtable;
 		slist.innerHTML = str;
-		var totalwidth = 0;
-		for ( i = 0; i < $("#divtable > div:first-child").children().length; i++) {
-			var width = $("#divtable > div:first-child").children().eq(i).width();
-			totalwidth+=width;
-			$("#header-"+i).css("width", width);
-		}
-		
-		$(".fumo").css("width", totalwidth+20);
-		$("#tableheaderwrapper").css("width", totalwidth+20);
-		
-		$('#divtable').on('scroll', function () {
-			$('#tableheader').scrollLeft($(this).scrollLeft());
-			$('#studentswrapper').scrollTop($(this).scrollTop());
-		});
-		$(".namecolumnstudent").css("height", $(".fumo").outerHeight());
-		var viewportheight = $(window).height();
-		$('#studentswrapper').css("height", viewportheight-100);
-		$('#divtable').css("height", viewportheight-100);
-		$('#content').css("height", viewportheight-60);
-		
-		
-		
 	}
 	if (data['debug'] != "NONE!") alert(data['debug']);
 }
