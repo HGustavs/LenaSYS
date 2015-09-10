@@ -38,7 +38,7 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 
 // The query specified below selects only scores associated with users that have returned a dugga with a passing grade
-$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 0 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
+$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 1 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
 $query->bindParam(':did', $duggaid);
 $query->bindParam(':lid', $variant);
 

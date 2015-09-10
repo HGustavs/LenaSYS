@@ -39,7 +39,7 @@ $(function()
 
 function padstring(str, padno, kind) // Right Padding
 {
-	if (kind == 1) {
+	if (kind === 1) {
 		if (str.length > padno) {
 			newstr = str.substring(0, padno);
 		} else {
@@ -49,6 +49,7 @@ function padstring(str, padno, kind) // Right Padding
 				newstr += "&nbsp;";
 			}
 		}
+//		newstr += "&#9474;";
 	}
 	return newstr;
 }
@@ -122,8 +123,8 @@ function returnedResults(data)
 						str += "<pre class='Trow'>";
 						str += "&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;";
 						str += "\n";
-						str+=user['ssn']+"<br/>";
-						str += padstring(user['firstname'] + " " + user['lastname'], 24, 1);
+						str += user['ssn']+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9474;"+padstring("",8,1)+padstring("",5,1)+padstring("",5,1)+padstring("",4,1)+padstring("",4,1)+padstring("",4,1)+padstring("",4,1)+padstring("",4,1)+padstring("",4,1)+padstring("",4,1)+padstring("",4,1)+padstring("",4,1)+"<br/>";
+						str += padstring(user['firstname'] + " " + user['lastname'], 23, 1) + "&#9474;";
 						
 						//--------------------------------------------
 						// Each of the section entries (i.e. moments)
@@ -135,7 +136,7 @@ function returnedResults(data)
 						// Each of the section entries (i.e. moments), and the grades of the 'moments' for all students under this course-moment
 						//--------------------------------------------
 						var foundres = null;
-						str += padstring("", 10, 1);
+						str += padstring("", 8, 1);
 						if (studres != null) {
 						
 							for (var l = 0; l < studres.length; l++) {
@@ -162,18 +163,19 @@ function returnedResults(data)
 									else if(resultitem['grade'] == 6){
 									gradeletter = '5';
 									}
-									str += padstring(gradeletter, 6, 1);
+									str += padstring(gradeletter, 4, 1);
 								}
 							}
 						}
-						str += padstring("", 6, 1);
 						str += padstring("", 5, 1);
+						str += padstring("", 5, 1);
+						str += padstring("", 4, 1);
 						//--------------------------------------------
 						// Each of the section entries (i.e. moments), and the grades of the 'moments' for all students under this course-listerie  we're under of kind 3 (tests)
 						//--------------------------------------------
 						for ( j = 0; j < data['moments'].length; j++) {
 							var moment = data['moments'][j];
-								if ((moment['kind'] == 3)) {
+								if ((moment['kind'] === 3)) {
 									if (studres != null) {
 								
 										for (var l = 0; l < studres.length; l++) {
@@ -198,13 +200,13 @@ function returnedResults(data)
 												else if(resultitem['grade'] == 6){
 												gradeletter = '5';
 												}
-												str += padstring(gradeletter, 6, 1);
+												str += padstring(gradeletter, 5, 1);
 											}
 										}
 									}
 								}
 						}
-
+						str += "\n"+padstring(user['studyProgram'],16,1)+ padstring(user['class'],7,1)+"&#9474;<br/>";
 						str += "</pre>";
 					}
 				}
@@ -228,13 +230,11 @@ $("#savelistid").val(listid);
 $("#editlist").css("display","block");
 }
 function updatelist(){
- var listid = $("#savelistid").val();
+var listid = $("#savelistid").val();
 var dateissue = $("#dateissue").val();
 var listnumber = $("#listnumber").val();
 var examdate = $("#examdate").val();
 var listissuer = $("#listissuer").val();
-
-
 
 AJAXService("UPDATELIST",{cid : querystring['cid'],listid:listid,dateissue:dateissue,listissuer:listissuer,listnumber:listnumber,examdate:examdate},"RESULTLIST");
 

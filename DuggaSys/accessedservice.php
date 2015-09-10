@@ -26,7 +26,7 @@ $debug="NONE!";
 // Services
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-	if(strcmp($opt,"UPDATE")===0){
+	if(strcmp($opt,"UPDATE")==0){
 		$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username WHERE uid=:uid;");
 		$query->bindParam(':firstname', $firstname);
 		$query->bindParam(':lastname', $lastname);
@@ -38,7 +38,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
 		}
-	}else if(strcmp($opt,"ACCESS")===0){
+	}else if(strcmp($opt,"ACCESS")==0){
 		$query = $pdo->prepare("UPDATE user_course set access=:val WHERE uid=:uid and cid=:cid;");
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':cid', $cid);
@@ -48,7 +48,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
 		}
-	}else if(strcmp($opt,"CHPWD")===0){
+	}else if(strcmp($opt,"CHPWD")==0){
 		$query = $pdo->prepare("UPDATE user set password=password(:pwd) where uid=:uid;");
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':pwd', $pw);
@@ -57,8 +57,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
 		}
-	}else if(strcmp($opt,"ADDUSR")===0){
-		$debug="Adding Users\n";
+	}else if(strcmp($opt,"ADDUSR")==0){
 		// Import users, create if user does not previously exist.
 		$users=explode("\n", $newusers);
 		
