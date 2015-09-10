@@ -211,7 +211,7 @@ function closeFacit(){
 
 function bitClick(divid)
 {
-	ClickCounter.onClick();
+	 if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
 	if($("#"+divid).html()=="1"){
 			$("#"+divid).html("0");
@@ -226,7 +226,7 @@ function bitClick(divid)
 
 function hexClick(divid)
 {
-	ClickCounter.onClick();
+	 if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
 	dw=$(window).width();
 	dpos=$("#"+divid).position();
