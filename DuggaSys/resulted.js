@@ -28,43 +28,59 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind)
 	str += "<select onchange='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'>";
 
 	// Irrespective of marking system we allways print - and U
-	if (mark == null || mark == 0)
+	if (mark === null || mark === 0){
 		str += "<option selected='selected' value='0'>-</option>";
-	else
+	}
+	else{
 		str += "<option value='0'>-</option>";
-	if (mark == 1)
+	}
+	if (mark === 1){
 		str += "<option selected='selected' value='1'>U</option>";
-	else
+	}
+	else{
 		str += "<option value='1'>U</option>";
+	}
 
 	// Gradesystem: 1== UGVG 2== UG 3== U345
-	if (gradesys == 1) {
-		if (mark == 2)
+	if (gradesys === 1) {
+		if (mark === 2){
 			str += "<option selected='selected' value='2'>G</option>";
-		else
+		}
+		else{
 			str += "<option value='2'>G</option>";
-		if (mark == 3)
+		}
+		if (mark === 3){
 			str += "<option selected='selected' value='3'>VG</option>";
-		else
+		}
+		else{
 			str += "<option value='3'>VG</option>";
-	} else if (gradesys == 2) {
-		if (mark == 2)
+		}
+	} else if (gradesys === 2) {
+		if (mark === 2){
 			str += "<option selected='selected' value='2'>G</option>";
-		else
+		}
+		else{
 			str += "<option value='2'>G</option>";
-	} else if (gradesys == 3) {
-		if (mark == 4)
+		}
+	} else if (gradesys === 3) {
+		if (mark === 4){
 			str += "<option selected='selected' value='4'>3</option>";
-		else
+		}
+		else{
 			str += "<option value='4'>3</option>";
-		if (mark == 5)
+		}
+		if (mark === 5){
 			str += "<option selected='selected' value='5'>4</option>";
-		else
+		}
+		else{
 			str += "<option value='5'>4</option>";
-		if (mark == 6)
+		}
+		if (mark === 6){
 			str += "<option selected='selected' value='6'>5</option>";
-		else
+		}
+		else{
 			str += "<option value='6'>5</option>";
+		}
 	} else {
 		//alert("Unknown Grade System: "+gradesys);
 	}
@@ -132,14 +148,303 @@ function enterCell(thisObj)
 
 function leaveCell(thisObj)
 {
-		if(rProbe!=null&&rProbe!="transparent") $(thisObj).css('backgroundColor',rProbe);		
+		if(rProbe!==null&&rProbe!=="transparent") $(thisObj).css('backgroundColor',rProbe);		
 }
+
+
+//----------------------------------------
+// Sort results
+//----------------------------------------
+function orderResults(moments)
+{
+	console.log(moments);
+	var arr = [];
+	var currentMomentIndex=0;
+	arr[currentMomentIndex] = [];
+	var currentMoment=null;
+	for(var i=0; i < moments.length;i++){
+		if(moments[i].kind === 3 && moments[i].moment === null){
+			// Standalone dugga
+			arr[currentMomentIndex] = moments[i];
+			currentMomentIndex++;
+			alert("Added standalone");
+		} else if (moments[i].kind === 4 && moments[i].moment !== null){
+			if (currentMoment === null){
+				// Moment : first or same as previous
+				arr[currentMomentIndex].push(moments[i]);
+				currentMoment = moments[i].moment;
+			} else if (currentMoment === moments[i].moment) {
+				arr[currentMomentIndex].push(moments[i]);
+			}else {
+				// Moment : new
+				currentMomentIndex++;
+				currentMoment = moments[i].moment;
+				arr[currentMomentIndex] = [];
+				arr[currentMomentIndex].push(moments[i]);
+			}
+		} else if (moments[i].kind === 3 && moments[i].moment !== null){
+				arr[currentMomentIndex].push(moments[i]);
+		}
+	}
+	for (var j=0; j < arr.length; j++){
+		console.log(arr[j].length);
+	}
+	return arr;
+}
+
+//----------------------------------------
+// Render Result Table Header
+//----------------------------------------
+function renderResultTableHeader(data)
+{
+	var str = "<thead>"
+	str += "<tr><th id='needMarking'></th>";
+	for (var i = 0; i < data.length; i++) {
+		if ((data[i][0].kind === 3 && data[i][0].moment === null) || (data[i][0].kind === 4)) {
+			str += "<th style='border-left:2px solid white;'>";
+			str += data[i][0].entryname;
+			str += "</th>";
+		}
+	}
+	str += "</tr></thead>";
+	return str;
+}
+
+//----------------------------------------
+// Render Moment
+//----------------------------------------
+function renderMoment(data, userResults, userId)
+{
+	var str = "";
+	// Each of the section entries (i.e. moments)
+	for ( var j = 0; j < data.length; j++) {
+		str += "<td style='padding:0px;'>";
+		
+		// There are results to display.
+		str += "<table width='100%' class='innertable' >";
+		str += "<tr>";
+
+		if (data[j][0].kind === 3 && data[j][0] === null){
+			//str += renderStandaloneDugga(data[j][0], userResults);
+
+		} else if (data[j][0].kind === 4 && data[j][0] !== null) {
+				str += renderMomentChild(data[j][0], userResults, userId);
+				str += "</tr><tr>";
+			for (var k = 1; k < data[j].length; k++){
+				str += renderMomentChild(data[j][k], userResults, userId);
+				//console.log(data[j][k]);
+			}			
+		} else {
+			alert("Malformed data!");
+		}
+		str += "</tr>";
+		str += "</table>";
+		str += "</td>";
+	}
+	return str;
+
+}
+
+//----------------------------------------
+// Render Standalone Dugga
+//----------------------------------------
+function renderStandaloneDugga(data, userResults)
+{
+	console.log(data);
+	var foundgrade = null;
+	var useranswer = null;
+	var submitted = null;
+	var marked = null;
+	var variant = null;
+	var studres = result[userId];
+
+	if (studres !== null) {
+		for (var l = 0; l < studres.length; l++) {
+			var resultitem = studres[l];
+			if (resultitem['moment'] === data.lid) {
+				// There is a result to print
+				foundgrade = resultitem['grade'];
+				useranswer = resultitem['useranswer'];
+				submitted = resultitem['submitted'];
+				marked = resultitem['marked'];
+				variant = resultitem['variant'];
+				
+				if(submitted!==null) {
+					var t = submitted.split(/[- :]/);
+					submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+				}
+				if(marked!==null) {
+					var tt = marked.split(/[- :]/);
+					marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
+				}
+			}
+		}
+	}
+
+	
+	/*
+	zstr = "";
+	
+	
+	if (foundgrade === null && useranswer === null && submitted === null) {
+		zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
+	} else if (foundgrade !== null) {
+		zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], foundgrade, "U");								
+	}
+	else {
+		zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "U");	
+	}
+	
+	// Fist ... if no result is found i.e. No Fist
+	if(useranswer!==null){
+			zstr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='../Shared/icons/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
+	}
+
+	// If no submission,  white. 
+	// If submitted and not marked or resubmitted U, yellow. 
+	// If G or better, green. 
+	// If U, pink. 
+	// If visited but not saved, lilac
+	if(foundgrade===1){
+			yomama="background-color:#fed";							
+	}else if(foundgrade>1){
+			yomama="background-color:#dfe";							
+	}else if(variant!==null&&useranswer===null){
+			yomama="background-color:#F8E8F8";														
+	}else if((useranswer!==null&&foundgrade===null)||(foundgrade!==null&&submitted>marked)){
+			yomama="background-color:#ffd";		
+			needMarking++;					
+	}else{
+			yomama="background-color:#fff";														
+	}
+	
+	// Standalone Dugga -- we just need to make a dugga entry with the correct marking system.
+	str += "<td style='"+yomama+"'>&nbsp;</td></tr><tr  style='border-top:2px solid #dbd0d8;' >";
+
+	str += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>"+zstr;
+
+	str += "</td>";
+	*/	
+}
+
+
+//----------------------------------------
+// Render Moment child
+//----------------------------------------
+function renderMomentChild(dugga, userResults, userId)
+{
+	var str = "";
+	console.log(userResults);
+	var foundgrade = null;
+	var useranswer = null;
+	var submitted = null;
+	var marked = null;
+	var variant = null;
+	if (userResults !== undefined) {
+		for (var l = 0; l < userResults.length; l++) {
+			var resultitem = userResults[l];
+			if (resultitem['moment'] === dugga.lid) {
+				// There is a result to print
+				foundgrade = resultitem.grade;
+				useranswer = resultitem.useranswer;
+				submitted = resultitem.submitted;
+				marked = resultitem.marked;
+				variant = resultitem.variant	;
+
+				if(submitted!==null) {
+					var t = submitted.split(/[- :]/);
+					submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+				}
+				if(marked!==null) {
+					var tt = marked.split(/[- :]/);
+					marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
+				}
+			}
+		}
+	}
+
+	var zttr="<td>";
+	// If no result is found i.e. No Fist
+	if (foundgrade === null && useranswer === null && submitted === null) {
+		zttr += makeSelect(dugga.gradesystem, querystring['cid'], querystring['coursevers'], dugga.lid, userId, null, "I");
+	}else if (foundgrade !== null){
+		zttr += makeSelect(dugga.gradesystem, querystring['cid'], querystring['coursevers'], dugga['lid'], userId, foundgrade, "U");													
+	}else {
+		zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
+	}
+	if(useranswer!==null){
+			zttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='../Shared/icons/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + userId + "\");' />";
+	}
+
+	// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
+	if(foundgrade===1){
+			yomama="background-color:#fed";							
+	}else if(foundgrade>1){
+			yomama="background-color:#dfe";							
+	}else if(variant!==null&&useranswer===null){
+			yomama="background-color:#F8E8F8";															
+	}else if((useranswer!==null&&foundgrade===null)||(foundgrade===1&&submitted>marked)){
+			yomama="background-color:#ffd";							
+			needMarking++;
+	}else{
+			yomama="background-color:#fff";														
+	}
+	str += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+	str += dugga['entryname'] + " ";
+	str +=zttr;
+	str += "</td>";
+	return str;
+}
+
+/*
+		zttr="";
+
+		// We are now processing the moment entry in the moment object
+		foundgrade = null;
+		if (studres !== undefined) {
+			for (l = 0; l < studres.length; l++) {
+				var resultitem = studres[l];
+				if (resultitem['moment'] === moment['lid']) {
+					// There is a result to print
+					foundgrade = resultitem['grade'];
+
+					// gradesys cid vers moment uid mark
+					zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
+				}
+			}
+		}
+		if (foundgrade === null) {
+			zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
+		}
+
+		if(foundgrade===1){
+				yomama="background-color:#fed";							
+		}else if(foundgrade>1){
+				yomama="background-color:#dfe";							
+		}else{
+				yomama="background-color:#fff";														
+		}
+		
+		if (duggacnt === 0) {
+			ttr += "<td style='"+yomama+"'>&nbsp;</td>";
+			str += "<td style='"+yomama+"' colspan='1' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+		} else {
+			str += "<td style='"+yomama+"' colspan='" + duggacnt + "' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+		}
+		
+		str+= moment['entryname'] +" " +zttr;
+
+		str += "</td></tr><tr style='border-top:2px solid #dbd0d8;'>";
+		str += ttr;
+	}
+*/
+
+
 
 
 //----------------------------------------
 // Renderer
 //----------------------------------------
-
 function returnedResults(data) 
 {
 	var needMarking = 0;
@@ -148,7 +453,7 @@ function returnedResults(data)
 	var ttr = "";
 	var zttr = "";
 
-	if (data['dugganame'] != "") {
+	if (data['dugganame'] !== "") {
 		$.getScript(data['dugganame'], function() {
 			$("#MarkCont").html(data['duggapage']);
 
@@ -160,23 +465,10 @@ function returnedResults(data)
 	} else {
 
 		results = data['results'];
-
+		m = orderResults(data['moments']);
 		str += "<table class='list'>";
+		str += renderResultTableHeader(m);
 
-		str += "<tr><th id='needMarking'></th>";
-
-		for ( j = 0; j < data['moments'].length; j++) {
-			var jtem = data['moments'][j];
-			if ((jtem['kind'] == 3 && jtem['moment'] == null) || (jtem['kind'] == 4)) {
-				// Td-s for each variant or non-connected dugga.
-				str += "<th style='border-left:2px solid white;'>";
-				str += jtem['entryname'];
-				str += "</th>";
-			}
-		}
-
-		str += "</tr>";
-		console.log(data);
 		if (data['entries'].length > 0) {
 			for ( i = 0; i < data['entries'].length; i++) {
 				var user = data['entries'][i];
@@ -185,239 +477,15 @@ function returnedResults(data)
 
 				// One row for each student
 				str += "<td>";
-				str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['ssn'];
+				str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['username'] + "<br/>" + user['ssn'];
 				str += "</td>";
-
-				// Each of the section entries (i.e. moments)
-				for ( j = 0; j < data['moments'].length; j++) {
-					var moment = data['moments'][j];
-
-					if ((moment['kind'] == 3 && moment['moment'] == null) || (moment['kind'] == 4)) {
-
-						str += "<td style='padding:0px;'>";
-
-						// We have data if there is a set of result elements for this student in this course... otherwise null
-						studres = results[user['uid']];
-						
-						// There are results to display.
-						str += "<table width='100%' class='innertable' >";
-						str += "<tr>";
-
-						//----------------------------------------------------------------------------------------------------------- Start Standalone
-						// kind == 3 means dugga, moment == null means no parent dugga i.e. standalone
-						if (moment['kind'] == 3 && moment['moment'] == null) {
-							// We are now processing the moment entry in the moment object
-							var foundgrade = null;
-							var useranswer = null;
-							var submitted = null;
-							var marked = null;
-							var variant = null;
-							if (studres != null) {
-								for (var l = 0; l < studres.length; l++) {
-									var resultitem = studres[l];
-									if (resultitem['moment'] == moment['lid']) {
-										// There is a result to print
-										foundgrade = resultitem['grade'];
-										useranswer = resultitem['useranswer'];
-										submitted = resultitem['submitted'];
-										marked = resultitem['marked'];
-										variant = resultitem['variant'];
-										
-										if(submitted!=null) {
-											var t = submitted.split(/[- :]/);
-											submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-										}
-										if(marked!=null) {
-											var tt = marked.split(/[- :]/);
-											marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
-										}
-									}
-								}
-							}
-
-							zstr = "";
-							
-							// If no result is found i.e. No Fist
-							if (foundgrade == null && useranswer == null && submitted == null) {
-								zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
-							} else if (foundgrade != null) {
-								zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], foundgrade, "U");								
-							}
-							else {
-								zstr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "U");	
-							}
-							
-							// Fist
-							if(useranswer!=null){
-									zstr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='../Shared/icons/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + moment['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
-							}
-
-							// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
-							if(foundgrade==1){
-									yomama="background-color:#fed";							
-							}else if(foundgrade>1){
-									yomama="background-color:#dfe";							
-							}else if(variant!=null&&useranswer==null){
-									yomama="background-color:#F8E8F8";														
-							}else if((useranswer!=null&&foundgrade==null)||(foundgrade!=null&&submitted>marked)){
-									yomama="background-color:#ffd";		
-									needMarking++;					
-							}else{
-									yomama="background-color:#fff";														
-							}
-							
-							// Standalone Dugga -- we just need to make a dugga entry with the correct marking system.
-							str += "<td style='"+yomama+"'>&nbsp;</td></tr><tr  style='border-top:2px solid #dbd0d8;' >";
-
-							str += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>"+zstr;
-
-							str += "</td>";
-						}
-						//------------------------------------------------------------------------------------------------------------- End Standalone
-						
-
-						//----------------------------------------------------------------------------------------------------------- Start Moment
-						if (moment['kind'] == 4) {
-							// Moment - which may or may not have quizes
-
-							ttr = "";
-							duggacnt = 0;
-							for (var k = 0; k < data['moments'].length; k++) {
-								var dugga = data['moments'][k];
-
-								//--------------------------------------------------------------------------------------------------------- Start Dugga
-								// If the id of current item is same as moment of a dugga
-								if ((dugga['moment'] == moment['lid']) && (dugga['kind'] == 3)) {
-
-									duggacnt++;
-
-									// We now have number of listentry, student data, course information etc, are there any results?
-									var foundgrade = null;
-									var useranswer = null;
-									var submitted = null;
-									var marked = null;
-									if (studres != null) {
-										for (var l = 0; l < studres.length; l++) {
-											var resultitem = studres[l];
-											if (resultitem['moment'] == dugga['lid']) {
-												// There is a result to print
-												foundgrade = resultitem['grade'];
-												useranswer = resultitem['useranswer'];
-												submitted = resultitem['submitted'];
-												marked = resultitem['marked'];
-												variant = resultitem['variant'];
-
-												if(submitted!=null) {
-													var t = submitted.split(/[- :]/);
-													submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-												}
-												if(marked!=null) {
-													var tt = marked.split(/[- :]/);
-													marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
-												}
-											}
-										}
-									}
-
-									zttr="";
-									// If no result is found i.e. No Fist
-									if (foundgrade == null && useranswer == null && submitted == null) {
-										zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "I");
-									}else if (foundgrade != null){
-										zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], foundgrade, "U");													
-									}else {
-										zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], user['uid'], null, "U");
-									}
-									if(useranswer!=null){
-											zttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='../Shared/icons/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + user['uid'] + "\",\"" + user['firstname'] + "\",\"" + user['lastname'] + "\");' />";
-									}
-
-									// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
-									if(foundgrade==1 && submitted<marked){
-											yomama="background-color:#fed";							
-									}else if(foundgrade>1){
-											yomama="background-color:#dfe";							
-									}else if(variant!=null&&useranswer==null){
-											yomama="background-color:#F8E8F8";														
-									}else if((useranswer!=null&&foundgrade==null)||(foundgrade==1&&submitted>marked)){
-											yomama="background-color:#ffd";							
-											needMarking++;
-									}else{
-											yomama="background-color:#fff";														
-									}
-
-									if (duggacnt > 0){
-										ttr += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
-										ttr += dugga['entryname'] + " ";
-									}else{
-										ttr += "<td style='"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
-									}
-
-									ttr+=zttr;
-
-									ttr += "</td>";
-
-								//--------------------------------------------------------------------------------------------------------- End Dugga
-								
-								} else if ((dugga['moment'] == moment['lid']) && (dugga['kind'] == 4)) {
-									// Moment in moment
-								}
-							}
-
-							zttr="";
-
-							// We are now processing the moment entry in the moment object
-							var foundgrade = null;
-							if (studres != null) {
-								for (var l = 0; l < studres.length; l++) {
-									var resultitem = studres[l];
-									if (resultitem['moment'] == moment['lid']) {
-										// There is a result to print
-										foundgrade = resultitem['grade'];
-
-										// gradesys cid vers moment uid mark
-										zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
-									}
-								}
-							}
-							if (foundgrade == null) {
-								zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
-							}
-
-							if(foundgrade==1){
-									yomama="background-color:#fed";							
-							}else if(foundgrade>1){
-									yomama="background-color:#dfe";							
-							}else{
-									yomama="background-color:#fff";														
-							}
-							
-							if (duggacnt == 0) {
-								ttr += "<td style='"+yomama+"'>&nbsp;</td>";
-								str += "<td style='"+yomama+"' colspan='1' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
-							} else {
-								str += "<td style='"+yomama+"' colspan='" + duggacnt + "' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
-							}
-							
-							str+= moment['entryname'] +" " +zttr;
-
-							str += "</td></tr><tr style='border-top:2px solid #dbd0d8;'>";
-							str += ttr;
-						}
-						//----------------------------------------------------------------------------------------------------------- End Moment
-
-						str += "</tr>";
-						str += "</table>";
-						str += "</td>";
-					}
-				}
+				str += renderMoment(m, results[user['uid']], user['uid']);
 				str += "</tr>";
 			}
 		}
-		
 		var slist = document.getElementById("content");
 		slist.innerHTML = str;
-		document.getElementById("needMarking").innerHTML = needMarking + " unmarked";
+		document.getElementById("needMarking").innerHTML = needMarking + " unmarked";						
 	}
-	if (data['debug'] != "NONE!") alert(data['debug']);
+	if (data['debug'] !== "NONE!") alert(data['debug']);
 }

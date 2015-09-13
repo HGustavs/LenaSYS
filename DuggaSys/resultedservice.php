@@ -36,7 +36,7 @@ $useranswer="";
 // Services
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-	if(strcmp($opt,"CHGR")===0){
+	if(strcmp($opt,"CHGR")==0){
 		if($ukind=="U"){
 			$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW() WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 			$query->bindParam(':mark', $mark);
@@ -68,7 +68,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 	}
 
-	if(strcmp($opt,"DUGGA")===0){
+	if(strcmp($opt,"DUGGA")==0){
 		$query = $pdo->prepare("SELECT userAnswer.useranswer as aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer as facit FROM userAnswer,listentries,quiz,variant WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;");					
 
 		$query->bindParam(':cid', $cid);
@@ -131,8 +131,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		// Create array entry for each course participant
 
 		$entry = array(
-			'cid' => $row['cid'],
-			'uid' => $row['uid'],
+			'cid' => (int)$row['cid'],
+			'uid' => (int)$row['uid'],
 			'username' => $row['username'],
 			'firstname' => $row['firstname'],
 			'lastname' => $row['lastname'],
@@ -158,11 +158,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		array_push(
 			$lentries[$row['uid']],
 			array(
-				'aid' => $row['quiz'],
-				'variant' => $row['variant'],
-				'moment' => $row['moment'],
-				'grade' => $row['grade'],
-				'uid' => $row['uid'],
+				'aid' => (int)$row['quiz'],
+				'variant' => (int)$row['variant'],
+				'moment' => (int)$row['moment'],
+				'grade' => (int)$row['grade'],
+				'uid' => (int)$row['uid'],
 				'useranswer' => $row['useranswer'],
 				'submitted'=> $row['submitted'],
 				'vers'=> $row['vers'],
@@ -181,20 +181,21 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		$debug="Error updating entries".$error[2];
 	}
 	
+	$currentMoment=null;
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		array_push(
 			$gentries,
 			array(
 				'entryname' => $row['entryname'],
-				'lid' => $row['lid'],
-				'pos' => $row['pos'],
-				'kind' => $row['kind'],
-				'moment' => $row['moment'],
+				'lid' => (int)$row['lid'],
+				'pos' => (int)$row['pos'],
+				'kind' => (int)$row['kind'],
+				'moment' => (int)$row['moment'],
 				'link'=> $row['link'],
-				'visible'=> $row['visible'],
+				'visible'=> (int)$row['visible'],
 				'code_id' => $row['code_id'],
 				'vers' => $row['vers'],
-				'gradesystem' => $row['gradesystem']					
+				'gradesystem' => (int)$row['gradesystem']					
 			)
 		);
 	}
