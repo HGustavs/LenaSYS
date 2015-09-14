@@ -9,6 +9,7 @@ var filez;
 var mmx = 0, mmy = 0;
 var msx = 0, msy = 0;
 var rProbe = null;
+var needMarking=0;
 
 AJAXService("GET", { cid : querystring['cid'] }, "RESULT");
 
@@ -228,10 +229,10 @@ function renderMoment(data, userResults, userId)
 			//str += renderStandaloneDugga(data[j][0], userResults);
 
 		} else if (data[j][0].kind === 4 && data[j][0] !== null) {
-				str += renderMomentChild(data[j][0], userResults, userId);
+				str += renderMomentChild(data[j][0], userResults, userId, 1);
 				str += "</tr><tr>";
 			for (var k = 1; k < data[j].length; k++){
-				str += renderMomentChild(data[j][k], userResults, userId);
+				str += renderMomentChild(data[j][k], userResults, userId, 0);
 				//console.log(data[j][k]);
 			}			
 		} else {
@@ -331,10 +332,11 @@ function renderStandaloneDugga(data, userResults)
 //----------------------------------------
 // Render Moment child
 //----------------------------------------
-function renderMomentChild(dugga, userResults, userId)
+function renderMomentChild(dugga, userResults, userId, moment)
 {
+
 	var str = "";
-	console.log(userResults);
+	//console.log(userResults);
 	var foundgrade = null;
 	var useranswer = null;
 	var submitted = null;
@@ -343,7 +345,12 @@ function renderMomentChild(dugga, userResults, userId)
 	if (userResults !== undefined) {
 		for (var l = 0; l < userResults.length; l++) {
 			var resultitem = userResults[l];
-			if (resultitem['moment'] === dugga.lid) {
+
+			//alert(dugga);
+			if (resultitem.moment === dugga.lid) {
+				//alert("Match for dugga " + resultitem.moment + " for user " + userId);
+							console.log(dugga);
+			console.log(resultitem);
 				// There is a result to print
 				foundgrade = resultitem.grade;
 				useranswer = resultitem.useranswer;
@@ -359,11 +366,12 @@ function renderMomentChild(dugga, userResults, userId)
 					var tt = marked.split(/[- :]/);
 					marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 				}
+				if(submitted !== null && marked !== null && submitted>marked) alert("We have a resubmission");
 			}
 		}
 	}
 
-	var zttr="<td>";
+	var zttr="";
 	// If no result is found i.e. No Fist
 	if (foundgrade === null && useranswer === null && submitted === null) {
 		zttr += makeSelect(dugga.gradesystem, querystring['cid'], querystring['coursevers'], dugga.lid, userId, null, "I");
@@ -377,19 +385,24 @@ function renderMomentChild(dugga, userResults, userId)
 	}
 
 	// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
-	if(foundgrade===1){
+	//alert(foundgrade + " " + variant + " " + useranswer + " " + submitted + " " + marked);
+	if(foundgrade===1 && submitted<marked){
 			yomama="background-color:#fed";							
 	}else if(foundgrade>1){
 			yomama="background-color:#dfe";							
 	}else if(variant!==null&&useranswer===null){
 			yomama="background-color:#F8E8F8";															
-	}else if((useranswer!==null&&foundgrade===null)||(foundgrade===1&&submitted>marked)){
+	}else if((useranswer!==null&&foundgrade===null)||(foundgrade===1&&submitted>marked)||(useranswer!==null&&foundgrade===0)){
 			yomama="background-color:#ffd";							
 			needMarking++;
 	}else{
 			yomama="background-color:#fff";														
 	}
-	str += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+	if (moment){
+		str += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);' colspan='0'>";
+	} else {
+		str += "<td style='border-left:2px solid #dbd0d8;"+yomama+"' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
+	}
 	str += dugga['entryname'] + " ";
 	str +=zttr;
 	str += "</td>";
