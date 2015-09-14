@@ -47,10 +47,12 @@ function updateVariant()
 	var vid=$("#vid").val();
 	var answer=$("#variantanswer").val();
 	answer = answer.replace(/\"/g, '*##*');
-	answer = answer.replace(/&cap;/g , '*###*');		
+	answer = answer.replace(/&cap;/g , '*###*');
+	answer = answer.replace(/&cup;/g , '*####*');		
 	var parameter=$("#parameter").val();
 	parameter = parameter.replace(/\"/g , '*##*');	
-	parameter = parameter.replace(/&cap;/g , '*###*');	
+	parameter = parameter.replace(/&cap;/g , '*###*');
+	parameter = parameter.replace(/&cup;/g , '*####*');	
 
 	
 	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter},"DUGGA");
@@ -140,50 +142,10 @@ function selectVariant(vid,param,answer,template)
 {
 	$("#editVariant").css("display","block"); // Display edit dialog
 	$("#vid").val(vid); // Set Variant ID
-	var pparam = param.replace(/\*##\*/g, '"');
-	$("#parameter").val(param); // Set Variant parameter
-	var panswer = answer.replace(/\*##\*/g, '"');
-	$("#variantanswer").val(answer); // Set Variant answer
-	/*
-	switch(template){
-		case "dugga1":
-			var ep=document.getElementById("examplePara");
-			ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga1;
-			var test=document.getElementById("exampleAnswer");
-			test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga1;
-			break;
-		case "dugga2":
-			var ep=document.getElementById("examplePara");
-			ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga2;
-			var test=document.getElementById("exampleAnswer");
-			test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga2;
-			break;
-		case "dugga3":
-			var ep=document.getElementById("examplePara");
-			ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga3;
-			var test=document.getElementById("exampleAnswer");
-			test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga3;
-			break;
-		case "dugga4":
-			var ep=document.getElementById("examplePara");
-			ep.innerHTML = "Example: " + exampleDugga.exampleParaDugga4;
-			var test=document.getElementById("exampleAnswer");
-			test.innerHTML = "Example: " + exampleDugga.exampleAnswerDugga4;
-			break;
-		case "kryss":
-			var ep=document.getElementById("examplePara");
-			ep.innerHTML = "Example: " + exampleDugga.exampleParaKryss;
-			var test=document.getElementById("exampleAnswer");
-			test.innerHTML = "Example: " + exampleDugga.exampleAnswerKryss;
-			break;
-		default:
-			var ep=document.getElementById("examplePara");
-			ep.innerHTML = "Example parameter: " + "No example available";
-			var test=document.getElementById("exampleAnswer");
-			test.innerHTML = "Example answer: " + "No example available";
-			break;
-	}
-	*/
+	var pparam = parseParameters(param);
+	$("#parameter").val(pparam); // Set Variant parameter
+	var panswer = parseParameters(answer);
+	$("#variantanswer").val(panswer); // Set Variant answer
 }
 
 //----------------------------------------
@@ -281,9 +243,9 @@ function returnedDugga(data)
 					str+="<tr>";
 					str+="<td style='width:30px;'></td>"
 					result++;
-					str+="<td colspan='1'><div style='overflow:hidden;	max-width: 300px;	max-height: 20px;text-overflow: ellipsis;'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+itemz['param']+"' /></td></div></td>";
+					str+="<td colspan='1'><div style='overflow:hidden;	max-width: 300px;	max-height: 20px;text-overflow: ellipsis;'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+parseParameters(itemz['param'])+"' /></td></div></td>";
 					result++;
-					str+="<td colspan='1'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+itemz['variantanswer']+"' /></td>";
+					str+="<td colspan='1'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+parseParameters(itemz['variantanswer'])+"' /></td>";
 
 					str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
@@ -311,18 +273,27 @@ function returnedDugga(data)
 
 }
 
-function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
-	duggaVariantParam = duggaVariantParam.replace(/\*##\*/g, '"');
-	duggaVariantParam = duggaVariantParam.replace(/\*###\*/g, '&cap;');
-	duggaVariantAnswer = duggaVariantAnswer.replace(/\*##\*/g, '"');
-	duggaVariantAnswer = duggaVariantAnswer.replace(/\*###\*/g, '&cap;');
+function parseParameters(str){
+	str = str.replace(/\*##\*/g, '"');
+	str = str.replace(/\*###\*/g, '&cap;');
+	str = str.replace(/\*####\*/g, '&cup;');
+	str=str.replace(/&ouml;/g, 'ö');
+	str=str.replace(/&Ouml;/g, 'Ö');
+	str=str.replace(/&auml;/g, 'ä');
+	str=str.replace(/&Auml;/g, 'Ä');
+	str=str.replace(/&aring;/g, 'å');
+	str=str.replace(/&Aring;/g, 'Å');
 
+	return str;
+}
+
+function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 	$("#MarkCont").html(duggaPages[template]);
 
 	$.getScript("templates/"+template+".js")
 	  .done(function( script, textStatus ) {	    	    
 		
-		showFacit(duggaVariantParam,"UNK",duggaVariantAnswer);
+		showFacit(parseParameters(duggaVariantParam),"UNK",parseParameters(duggaVariantAnswer));
 		
 	  })
 	  .fail(function( jqxhr, settings, exception ) {
@@ -330,18 +301,9 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 	  	console.log(settings);
 	  	console.log(exception);	    
 	  	eval(script);
-	  	showFacit(duggaVariantParam,"UNK",duggaVariantAnswer);
+	  	showFacit(parseParameters(duggaVariantParam),"UNK",parseParameters(duggaVariantAnswer));
 	});
 
-/*
-	$.getScript("templates/"+template+".js", function() {
-		alert("snus");
-		$("#MarkCont").html(duggaPages[template]);
-		alert("snus2");
-
-		showFacit(duggaVariantParam,"UNK",duggaVariantAnswer);
-				alert("snus3");	});
-*/
 	$("#resultpopover").css("display", "block");
 	
 }
