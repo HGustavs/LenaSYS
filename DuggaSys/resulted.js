@@ -336,7 +336,6 @@ function renderMomentChild(dugga, userResults, userId, moment)
 {
 
 	var str = "";
-	//console.log(userResults);
 	var foundgrade = null;
 	var useranswer = null;
 	var submitted = null;
@@ -346,11 +345,7 @@ function renderMomentChild(dugga, userResults, userId, moment)
 		for (var l = 0; l < userResults.length; l++) {
 			var resultitem = userResults[l];
 
-			//alert(dugga);
 			if (resultitem.moment === dugga.lid) {
-				//alert("Match for dugga " + resultitem.moment + " for user " + userId);
-							console.log(dugga);
-			console.log(resultitem);
 				// There is a result to print
 				foundgrade = resultitem.grade;
 				useranswer = resultitem.useranswer;
@@ -366,7 +361,6 @@ function renderMomentChild(dugga, userResults, userId, moment)
 					var tt = marked.split(/[- :]/);
 					marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 				}
-				if(submitted !== null && marked !== null && submitted>marked) alert("We have a resubmission");
 			}
 		}
 	}
@@ -385,7 +379,6 @@ function renderMomentChild(dugga, userResults, userId, moment)
 	}
 
 	// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
-	//alert(foundgrade + " " + variant + " " + useranswer + " " + submitted + " " + marked);
 	if(foundgrade===1 && submitted<marked){
 			yomama="background-color:#fed";							
 	}else if(foundgrade>1){
@@ -409,58 +402,11 @@ function renderMomentChild(dugga, userResults, userId, moment)
 	return str;
 }
 
-/*
-		zttr="";
-
-		// We are now processing the moment entry in the moment object
-		foundgrade = null;
-		if (studres !== undefined) {
-			for (l = 0; l < studres.length; l++) {
-				var resultitem = studres[l];
-				if (resultitem['moment'] === moment['lid']) {
-					// There is a result to print
-					foundgrade = resultitem['grade'];
-
-					// gradesys cid vers moment uid mark
-					zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], resultitem['grade'], "U");
-				}
-			}
-		}
-		if (foundgrade === null) {
-			zttr += makeSelect(moment['gradesystem'], querystring['cid'], querystring['coursevers'], moment['lid'], user['uid'], null, "I");
-		}
-
-		if(foundgrade===1){
-				yomama="background-color:#fed";							
-		}else if(foundgrade>1){
-				yomama="background-color:#dfe";							
-		}else{
-				yomama="background-color:#fff";														
-		}
-		
-		if (duggacnt === 0) {
-			ttr += "<td style='"+yomama+"'>&nbsp;</td>";
-			str += "<td style='"+yomama+"' colspan='1' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
-		} else {
-			str += "<td style='"+yomama+"' colspan='" + duggacnt + "' onmouseover='enterCell(this);' onmouseout='leaveCell(this);'>";
-		}
-		
-		str+= moment['entryname'] +" " +zttr;
-
-		str += "</td></tr><tr style='border-top:2px solid #dbd0d8;'>";
-		str += ttr;
-	}
-*/
-
-
-
-
 //----------------------------------------
 // Renderer
 //----------------------------------------
 function returnedResults(data) 
 {
-	var needMarking = 0;
 	var str = "";
 	var zstr = "";
 	var ttr = "";
