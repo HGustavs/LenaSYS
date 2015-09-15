@@ -129,9 +129,9 @@ function showFacit(param, uanswer, danswer) {
 	running = true;
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
-	var studentPreviousAnswer = "";
-	var p = jQuery.parseJSON(param));
-	if (uanswer != null || uanswer != "UNK") {
+	var studentPreviousAnswer = "UNK";
+	var p = jQuery.parseJSON(param);
+	if (uanswer !== null && uanswer !== "UNK") {
 		var previous = uanswer.split(',');
 		previous.shift();
 		previous.pop();
@@ -580,8 +580,7 @@ function init(quizGoal, studentPreviousAnswer)
 	startx = parseInt(goal.shift());
 	starty = parseInt(goal.shift());
 	var oplist = document.getElementById('operations');
-
-	if (studentPreviousAnswer !== null || studentPreviousAnswer !== "UNK") {
+	if (studentPreviousAnswer !== null && studentPreviousAnswer !== "UNK") {
 		var studentOp = studentPreviousAnswer.split(",");
 		for (var i = 0; i < studentOp.length; i++) {
 			var opArr = studentOp[i].split(" ");
@@ -597,7 +596,7 @@ function init(quizGoal, studentPreviousAnswer)
 				sy = parseInt(opArr[6]);
 
 			} else {
-				alert("Unkown operation - don't know how to draw!\n" + opArr);
+				alert("Unkown operation - don't know how to draw student solution!\n" + opArr) + " : " + studentPreviousAnswer;
 			}
 		}
 	}

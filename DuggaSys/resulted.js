@@ -406,6 +406,7 @@ function returnedResults(data)
 	var zstr = "";
 	var ttr = "";
 	var zttr = "";
+	needMarking=0;
 
 	if (data['dugganame'] !== "") {
 		$.getScript(data['dugganame'], function() {
