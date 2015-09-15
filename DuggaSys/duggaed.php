@@ -63,7 +63,7 @@ pdoConnect();
 	<!-- Edit Dugga Dialog END -->
 	
 	<!-- Edit Variant Dialog START -->
-	<div id='editVariant' class='loginBox' style='width:464px;display:none;'>
+	<div id='editVariant' class='loginBox' style='width:80%; left:20%; display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Variant</h3>
 			<div onclick='closeWindows();'>x</div>

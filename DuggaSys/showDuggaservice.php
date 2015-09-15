@@ -254,6 +254,8 @@ $param = str_replace("*##*", '"', $param);
 $savedanswer = str_replace("*##*", '"', $savedanswer);
 $param = str_replace("*###*", '&cap;', $param);
 $savedanswer = str_replace("*###*", '&cap;', $savedanswer);
+$param = str_replace("*####*", '&cup;', $param);
+$savedanswer = str_replace("*####*", '&cup;', $savedanswer);
 if(strcmp($savedanswer,"") == 0){$savedanswer = "UNK";} // Return UNK if we have not submitted any answer
 
 

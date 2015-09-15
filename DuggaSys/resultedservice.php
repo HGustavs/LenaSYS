@@ -95,10 +95,12 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$duggaparam=$row['param'];
 			$duggaparam = str_replace("*##*", '"', $duggaparam);
 			$duggaparam = str_replace("*###*", '&cap;', $duggaparam);
+			$duggaparam = str_replace("*####*", '&cup;', $duggaparam);
 
 			$duggaanswer=$row['facit'];
 			$duggaanswer = str_replace("*##*", '"', $duggaanswer);
 			$duggaanswer = str_replace("*###*", '&cap;', $duggaanswer);
+			$duggaanswer = str_replace("*####*", '&cup;', $duggaanswer);
 
 			$dugganame="templates/".$duggafile.".js";
 			

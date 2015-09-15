@@ -90,9 +90,9 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind)
 	return str;
 }
 
-function hoverResult(cid, vers, moment, uid, firstname, lastname) 
+function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, marked) 
 {
-	$("#Nameof").html(firstname + " " + lastname);
+	$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
 	
 	// Start counting pixels
 	msx = -1;
@@ -158,7 +158,6 @@ function leaveCell(thisObj)
 //----------------------------------------
 function orderResults(moments)
 {
-	console.log(moments);
 	var arr = [];
 	var currentMomentIndex=0;
 	arr[currentMomentIndex] = [];
@@ -187,9 +186,6 @@ function orderResults(moments)
 				arr[currentMomentIndex].push(moments[i]);
 		}
 	}
-	for (var j=0; j < arr.length; j++){
-		console.log(arr[j].length);
-	}
 	return arr;
 }
 
@@ -214,7 +210,7 @@ function renderResultTableHeader(data)
 //----------------------------------------
 // Render Moment
 //----------------------------------------
-function renderMoment(data, userResults, userId)
+function renderMoment(data, userResults, userId, fname, lname)
 {
 	var str = "";
 	// Each of the section entries (i.e. moments)
@@ -229,10 +225,10 @@ function renderMoment(data, userResults, userId)
 			//str += renderStandaloneDugga(data[j][0], userResults);
 
 		} else if (data[j][0].kind === 4 && data[j][0] !== null) {
-				str += renderMomentChild(data[j][0], userResults, userId, 1);
+				str += renderMomentChild(data[j][0], userResults, userId, fname, lname, 1);
 				str += "</tr><tr>";
 			for (var k = 1; k < data[j].length; k++){
-				str += renderMomentChild(data[j][k], userResults, userId, 0);
+				str += renderMomentChild(data[j][k], userResults, userId, fname, lname, 0);
 				//console.log(data[j][k]);
 			}			
 		} else {
@@ -251,7 +247,6 @@ function renderMoment(data, userResults, userId)
 //----------------------------------------
 function renderStandaloneDugga(data, userResults)
 {
-	console.log(data);
 	var foundgrade = null;
 	var useranswer = null;
 	var submitted = null;
@@ -332,7 +327,7 @@ function renderStandaloneDugga(data, userResults)
 //----------------------------------------
 // Render Moment child
 //----------------------------------------
-function renderMomentChild(dugga, userResults, userId, moment)
+function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 {
 
 	var str = "";
@@ -375,7 +370,7 @@ function renderMomentChild(dugga, userResults, userId, moment)
 		zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
 	}
 	if(useranswer!==null){
-			zttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='../Shared/icons/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga['lid'] + "\",\"" + userId + "\");' />";
+		zttr += "<img id='korf' style='padding-left:8px;margin-top:4px;' src='../Shared/icons/FistV.svg' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\");' />";
 	}
 
 	// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
@@ -438,7 +433,7 @@ function returnedResults(data)
 				str += "<td>";
 				str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['username'] + "<br/>" + user['ssn'];
 				str += "</td>";
-				str += renderMoment(m, results[user['uid']], user['uid']);
+				str += renderMoment(m, results[user['uid']], user['uid'], user['firstname'], user['lastname']);
 				str += "</tr>";
 			}
 		}
