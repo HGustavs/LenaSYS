@@ -96,7 +96,6 @@ function returnedDugga(data) {
 			var studentPreviousAnswer = "UNK";
 			retdata = jQuery.parseJSON(data['param']);
 			if (data["answer"] !== null && data["answer"] !== "UNK") {
-				console.log("U: "+data["answer"]);
 				var previous = data['answer'].split(',');
 				previous.shift();
 				previous.pop();
@@ -263,7 +262,6 @@ function findPos(obj) {
 	if (obj.offsetParent) {
 		curleft = obj.offsetLeft;
 		curtop = obj.offsetTop;
-		console.log("OL " + obj.offsetLeft);
 		while ( obj = obj.offsetParent) {
 			curleft += obj.offsetLeft;
 			curtop += obj.offsetTop;
@@ -284,7 +282,6 @@ function populateOperationsList()
 	var functionList = document.getElementById("function");
 
 	var opList = document.getElementById("operations");
-	console.log(startOperations);
 
 	for (var i = 0; i < startOperations.length; i++) {
 		var text = "";
@@ -748,7 +745,6 @@ function startDuggaHighScore(){
 		ClickCounter.initialize();
 		if(dataV['score'] > 0){
 			ClickCounter.score = dataV['score'];
-			console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
 	}
