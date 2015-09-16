@@ -93,9 +93,10 @@ function returnedDugga(data) {
 	} else {
 		if (canvas) {
 			showDuggaInfoPopup();
-			var studentPreviousAnswer = "";
+			var studentPreviousAnswer = "UNK";
 			retdata = jQuery.parseJSON(data['param']);
-			if (data["answer"] !== null || data["answer"] !== "UNK") {
+			if (data["answer"] !== null && data["answer"] !== "UNK") {
+				console.log("U: "+data["answer"]);
 				var previous = data['answer'].split(',');
 				previous.shift();
 				previous.pop();
@@ -107,6 +108,7 @@ function returnedDugga(data) {
 			}
 
 			init(retdata["linje"], studentPreviousAnswer);
+
 		}
 	}
 }
@@ -405,16 +407,20 @@ function movedownbutton()
 
 function handler_mouseup(ev) 
 {
-	var op = document.getElementById(selectedObjId).value.split(' ');
-	op[selectedPoint * 2 - 1] = gridx;
-	op[selectedPoint * 2] = gridy;
+	if (selectedObjId !== ""){
+		var op = document.getElementById(selectedObjId).value.split(' ');
+		op[selectedPoint * 2 - 1] = gridx;
+		op[selectedPoint * 2] = gridy;
 
-	document.getElementById(selectedObjId).value = op.join(' ');
-	selectedPoint = 0;
-	selectedObjId = "";
-	clickstate = 0;
+		document.getElementById(selectedObjId).value = op.join(' ');
+		selectedPoint = 0;
+		selectedObjId = "";
+		clickstate = 0;		
 
-	ClickCounter.onClick();
+		ClickCounter.onClick();
+
+	}
+
 
 }
 
@@ -623,13 +629,14 @@ function fitToContainer()
 function drawOp(sx, sy, opArr, lineColor, guideLines) 
 {
 
-	if (opArr[0] == "L" || opArr[0] == "81") {
+
+	if (opArr[0] === "L" || opArr[0] === "81") {
 		drawSLine(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), lineColor, guideLines);
 
-	} else if (opArr[0] == "Q" || opArr[0] == "63") {
+	} else if (opArr[0] === "Q" || opArr[0] === "63") {
 		drawSQuadratic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), lineColor, guideLines);
 
-	} else if (opArr[0] == "C" || opArr[0] == "19") {
+	} else if (opArr[0] === "C" || opArr[0] === "19") {
 		drawSCubic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), parseInt(opArr[5]), parseInt(opArr[6]), lineColor, guideLines);
 		sx = parseInt(opArr[5]);
 		sy = parseInt(opArr[6]);
@@ -659,7 +666,7 @@ function drawPath()
 	sy = starty;
 
 	// Draw students objects
-	/*
+	
 	$("#operations > option").each(function() {
 		var opArr = this.value.split(" ");
 		if (this.id == selectedObjId) {
@@ -671,7 +678,7 @@ function drawPath()
 		sx = parseInt(opArr[opArr.length - 2]);
 		sy = parseInt(opArr[opArr.length - 1]);
 	});
-*/
+
 }
 
 function render() 
