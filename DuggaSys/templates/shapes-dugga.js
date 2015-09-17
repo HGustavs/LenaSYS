@@ -152,11 +152,11 @@ function redrawgfx()
 					if(bitarray[j]==0&&facitarray[j]==0){
 						str+='" fill="white" ';
 					}else if(bitarray[j]==1&&facitarray[j]==1){
-						str+='" fill="red" ';		      									
+						str+='" fill="lightgreen" ';		      									
 					}else if(bitarray[j]==0&&facitarray[j]==1){
-						str+='" fill="yellow" ';	      									
+						str+='" fill="lightcoral" ';	      									
 					}else if(bitarray[j]==1&&facitarray[j]==0){
-						str+='" fill="purple" ';						
+						str+='" fill="red" ';						
 					}
 					str+=' stroke="blue" stroke-width="1.5px" />';
 				} 
@@ -183,11 +183,11 @@ function redrawgfx()
 			if(bitarray[j]==0&&facitarray[j]==0){
 				str+='" fill="white" ';
 			}else if(bitarray[j]==1&&facitarray[j]==1){
-				str+='" fill="red" ';		      									
+				str+='" fill="lightgreen" ';		      									
 			}else if(bitarray[j]==0&&facitarray[j]==1){
-				str+='" fill="yellow" ';	      									
+				str+='" fill="lightcoral" ';	      									
 			}else if(bitarray[j]==1&&facitarray[j]==0){
-				str+='" fill="purple" ';						
+				str+='" fill="red" ';						
 			}
 			str+=' stroke="blue" stroke-width="1.5px" />';
 		}
