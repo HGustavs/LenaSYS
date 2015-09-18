@@ -218,7 +218,7 @@ function renderMoment(data, userResults, userId, fname, lname)
 		str += "<td style='padding:0px;'>";
 		
 		// There are results to display.
-		str += "<table width='100%' class='innertable' >";
+		str += "<table width='100%' class='markinginnertable' >";
 		str += "<tr>";
 
 		if (data[j][0].kind === 3 && data[j][0] === null){
@@ -421,7 +421,7 @@ function returnedResults(data)
 
 		results = data['results'];
 		m = orderResults(data['moments']);
-		str += "<table class='list'>";
+		str += "<table class='markinglist'>";
 		str += renderResultTableHeader(m);
 
 		if (data['entries'].length > 0) {

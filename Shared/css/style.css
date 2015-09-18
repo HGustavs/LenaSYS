@@ -1,3 +1,5 @@
+@import url("//cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css");
+
 html, body, div, span, applet, object, 
 iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -859,6 +861,21 @@ input.new-item-button:hover {
 .list--nomargin {
     margin: 0!important;
 }
+
+.markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;}
+
+.markinglist td {border-right:2px solid #dbd0d8;;padding-left:8px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 10px; }
+.markinglist th {background:#614875; color:#fff;}
+
+.markinginnertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
+.markinginnertable td {color:#000;border:none; font-family: hack,"Lucida Console", Monaco, monospace; font-size: 10px; }
+
+.markinglist tr:hover { background-color: #dbd0d8; }
+
+.markinglist--nomargin {
+    margin: 0!important;
+}
+
 
 .Trow{
     font-family: "Lucida Console", Monaco, monospace;
