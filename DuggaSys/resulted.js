@@ -195,7 +195,7 @@ function orderResults(moments)
 function renderResultTableHeader(data)
 {
 	var str = "<thead>"
-	str += "<tr><th id='needMarking'></th>";
+	str += "<tr><th id='needMarking' style='text-align:right;'></th>";
 	for (var i = 0; i < data.length; i++) {
 		if ((data[i][0].kind === 3 && data[i][0].moment === null) || (data[i][0].kind === 4)) {
 			str += "<th style='border-left:2px solid white;'>";
@@ -440,7 +440,7 @@ function returnedResults(data)
 		}
 		var slist = document.getElementById("content");
 		slist.innerHTML = str;
-		document.getElementById("needMarking").innerHTML = needMarking + " unmarked";						
+		document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;						
 	}
 	if (data['debug'] !== "NONE!") alert(data['debug']);
 }
