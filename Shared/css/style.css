@@ -1106,3 +1106,7 @@ input.new-item-button:hover {
 .searchfieldTV input[type=text]:focus{
 	box-shadow: inset 2px 2px 5px #988a98;
 }
+
+.gradeInput {
+    margin:0;
+}
