@@ -28,16 +28,16 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind)
 	var str = "";
 	// Irrespective of marking system we allways print - and U
 	if (mark === null || mark === 0){
-		str += '<input class="gradeInput" type = "radio" name = "grade-'+moment+'-'+ukind+'-'+uid+'" id = "grade-'+moment+'-'+ukind+'-'+uid+'-none" value = "0" checked = "checked" /> <label for = "grade-'+moment+'-'+ukind+'-'+uid+'-none">-</label>';
+		str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-none\" value = \"0\" checked = \"checked\" onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-none\">-</label>";
 	}
 	else{
-		str += '<div style="min-width:95px;"><input class="gradeInput" type = "radio" name = "grade-'+moment+'-'+ukind+'-'+uid+'" id = "grade-'+moment+'-'+ukind+'-'+uid+'-none" value = "0" /> <label for = "grade-'+moment+'-'+ukind+'-'+uid+'-none">-</label>';
+		str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-none\" value = \"0\" onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-none\">-</label>";
 	}
 	if (mark === 1){
-		str += '<input class="gradeInput" type = "radio" name = "grade-'+moment+'-'+ukind+'-'+uid+'" id = "grade-'+moment+'-'+ukind+'-'+uid+'-u" value = "1" checked = "checked" /> <label for = "grade-'+moment+'-'+ukind+'-'+uid+'-u">U</label>';
+		str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-u\" value = \"1\" checked = \"checked\" onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-u\">U</label>";
 	}
 	else{
-		str += '<input class="gradeInput" type = "radio" name = "grade-'+moment+'-'+ukind+'-'+uid+'" id = "grade-'+moment+'-'+ukind+'-'+uid+'-u" value = "1" /> <label for = "grade-'+moment+'-'+ukind+'-'+uid+'-u">U</label>';
+		str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-u\" value = \"1\" onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-u\">U</label>";
 	}
 
 	// Gradesystem: 1== UGVG 2== UG 3== U345
@@ -358,7 +358,11 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 	}
 
 	var zttr="";
-	zttr += '<div style="min-width:95px">'
+	if (moment){
+		zttr += '<div style="display:inline-block;min-width:95px">'
+	} else {
+		zttr += '<div style="min-width:95px">'		
+	}
 	// If no result is found i.e. No Fist
 	if (foundgrade === null && useranswer === null && submitted === null) {
 		zttr += makeSelect(dugga.gradesystem, querystring['cid'], querystring['coursevers'], dugga.lid, userId, null, "I");
