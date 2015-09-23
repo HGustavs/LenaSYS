@@ -92,7 +92,21 @@ function saveClick()
 		
 		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 		saveDuggaResult(bitarray);
-	}
+}
+
+function reset()
+{
+	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
+	ClickCounter.initialize();
+
+	bitarray=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	facitarray = bitarray;
+	redrawgfx();
+
+}
 
 function showFacit(param, uanswer, danswer)
 {

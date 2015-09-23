@@ -173,8 +173,8 @@ function toggleControl()
 
 function saveClick()
 {
-	console.log("VertecList: " + vertexL);
-	console.log("TriangleList: " + triangleL);
+	//console.log("VertecList: " + vertexL);
+	//console.log("TriangleList: " + triangleL);
 	Timer.stopTimer();
 	timeUsed = Timer.score;
 	stepsUsed = ClickCounter.score;
@@ -195,7 +195,7 @@ function saveClick()
 	
 	answerString+=" "+$(window).width();
 	answerString+=" "+$(window).height();
-	console.log(answerString);
+	//console.log(answerString);
 	saveDuggaResult(answerString);
 }
 
@@ -327,7 +327,7 @@ function vertexUpdate(index)
 		document.getElementById('v_'+index+'_z').value = vertexL[index].z;
 	}
 
-	console.log("VertixList: "+vertexL);
+	//console.log("VertixList: "+vertexL);
 
 	updateGeometry();	
 }
