@@ -48,6 +48,7 @@
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play();'><img src='../Shared/icons/play_button.svg' /></td>";
 					if(checklogin()) {
 						echo "<td class='navButt' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+					    echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					}
 
 					if($codeviewerkind) echo "<td class='navButt' title='Settings' id='hidesettings'><img src='../Shared/icons/general_settings_button.svg' /></td>";

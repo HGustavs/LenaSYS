@@ -28,6 +28,9 @@ var dmd=0;					// Variable used to determine forward/backward skipping with the 
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";				
 var querystring = parseGet();
+var courseid;
+var exampleid;
+var cvers;
 
 /********************************************************************************
 
@@ -38,9 +41,9 @@ var querystring = parseGet();
 function setup()
 {
 	try{
-		var courseid = querystring['courseid'];
-		var exampleid = querystring['exampleid'];
-		var cvers = querystring['cvers'];
+		courseid = querystring['courseid'];
+		exampleid = querystring['exampleid'];
+		cvers = querystring['cvers'];
 		
 		AJAXService("EDITEXAMPLE", {
 			courseid : courseid,	
@@ -59,7 +62,12 @@ function setup()
 function returned(data)
 {	
 	retData=data;
-//	console.log(retData);
+	
+	if(retData['writeaccess'] == "w"){
+		alert("A template has not been chosen for this example. Please choose one.");
+		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
+		document.getElementById('fileedButton').style = "display:block;";
+	}
 	
 	if(retData['debug']!="NONE!") alert("Returned from setup: " + retData['debug']);
 	
@@ -2116,8 +2124,8 @@ function markdownBlock(inString)
 	inString = inString.replace(/\%{3}(.*?\S)\%{3}/g, '$1</a>');
 
 	// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
-	inString = inString.replace(/\+{3}(.*?\S)\+{3}/g,"<img class='gifimage' src='$1' ");
-	inString = inString.replace(/\@{3}(.*?\S)\@{3}/g," onclick=\"showGif('$1');\" target='_blank' />");
+	inString = inString.replace(/\+{3}(.*?\S)\+{3}/g,"<div><img src='../../Shared/icons/PlayT.svg'><img class='gifimage' src='$1' ");
+	inString = inString.replace(/\@{3}(.*?\S)\@{3}/g," onclick=\"showGif('$1');\" target='_blank' /></div>");
 
 	return inString;
 }
