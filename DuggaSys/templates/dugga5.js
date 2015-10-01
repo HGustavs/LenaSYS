@@ -157,6 +157,10 @@ function showFacit(param, uanswer, danswer) {
 
 }
 
+function closeFacit(){
+	
+}
+
 function toggleControl() 
 {
 	if (document.getElementById('verticeControl').style.display == 'none') {
