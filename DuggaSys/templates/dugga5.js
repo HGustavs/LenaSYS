@@ -131,7 +131,7 @@ function showFacit(param, uanswer, danswer) {
 		var studentPreviousAnswer = "";
 		var p = jQuery.parseJSON(param);
 		if (uanswer !== null && uanswer !== "UNK"){
-			var previous = data['answer'].split(' ');
+			var previous = uanswer.split(' ');
 			var prevRaw = previous[3];
 			prevRaw = prevRaw.replace(/&quot;/g, '"');
 			var prev = prevRaw.split('|');
