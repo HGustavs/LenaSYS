@@ -64,9 +64,8 @@ function returned(data)
 	retData=data;
 	
 	if(retData['writeaccess'] == "w"){
-		alert("A template has not been chosen for this example. Please choose one.");
 		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
-		document.getElementById('fileedButton').style = "display:block;";
+		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 	
 	if(retData['debug']!="NONE!") alert("Returned from setup: " + retData['debug']);
