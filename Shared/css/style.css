@@ -1110,3 +1110,37 @@ input.new-item-button:hover {
 .gradeInput {
     margin:0;
 }
+
+.badge {
+    background-color: #FFF;
+    color: #000;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding:2px;
+    border:1px solid black;
+    border-radius: 5px;
+    font-size: 9px;
+    position:relative;
+    top:-5px;
+}
+.submit-button {
+    background-color:#614875;
+    border:0px;
+    width:110px;
+    height:30px;
+    color:#fff;
+    cursor:pointer;
+    margin-top:6px;
+    margin-bottom:2px;
+    margin-left:4px;
+    font-size:14px;
+    transition:1s background-color;
+    float:right;
+    line-height: 30px;
+    text-align: center;
+}
+
+.submit-button:hover {
+    background-color:#7B5A96;
+    border-radius:4px;  
+}

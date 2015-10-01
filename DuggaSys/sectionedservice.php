@@ -37,6 +37,7 @@ $coursename=getOP('coursename');
 $versname=getOP('versname');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
+$unmarked = 0;
 
 if($gradesys=="UNK") $gradesys=0;
 
@@ -393,6 +394,28 @@ if($ha){
 			);
 		}
 	}
+
+	// Should be optimized into one query!
+	$query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and (submitted is not null and useranswer is not null and grade is null);");
+	$query->bindParam(':cid', $courseid);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading number of unmarked duggas".$error[2];
+	}else{
+		$row = $query->fetchAll(PDO::FETCH_ASSOC);
+		$unmarked = $row[0]["unmarked"];
+
+	}
+	$query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and (grade = 1 and submitted > marked);");
+	$query->bindParam(':cid', $courseid);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading number of unmarked duggas".$error[2];
+	}else{
+		$row = $query->fetchAll(PDO::FETCH_ASSOC);
+		$unmarked += $row[0]["unmarked"];
+
+	}
 }
 
 $array = array(
@@ -408,7 +431,8 @@ $array = array(
 	'duggor' => $duggor,
 	'results' => $resulties,
 	'versions' => $versions,
-	'codeexamples' => $codeexamples
+	'codeexamples' => $codeexamples,
+	'unmarked' => $unmarked
 );
 
 echo json_encode($array);
