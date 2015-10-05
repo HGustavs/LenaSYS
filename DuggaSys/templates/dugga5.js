@@ -2,6 +2,7 @@
 //----------------------------------------------------------------------------------
 // Globals
 //----------------------------------------------------------------------------------
+var dataV;
 var DEFAULT_CAMERA_POSITION_Z = 1000;
 var	DEFAULT_CAMERA_POSITION_X = 500;
 var	DEFAULT_CAMERA_POSITION_Y = 500;
@@ -76,19 +77,7 @@ function setup()
 
 function returnedDugga(data) 
 {
-	Timer.startTimer();
-	ClickCounter.initialize();
-	if(querystring['highscoremode'] == 1) {
-		if(data['score'] > 0){
-			Timer.score = data['score'];
-		}
-		Timer.showTimer();
-	} else if (querystring['highscoremode'] == 2) {
-		if(data['score'] > 0){
-			ClickCounter.score = data['score'];
-		}
-		ClickCounter.showClicker();
-	}	
+	dataV = data;
 
 	if (data['debug'] != "NONE!") {alert(data['debug']);}
 
@@ -158,7 +147,7 @@ function showFacit(param, uanswer, danswer) {
 }
 
 function closeFacit(){
-	
+
 }
 
 function toggleControl() 
@@ -693,3 +682,24 @@ function animate() {
 
 }
 
+//----------------------------------------------------------------------------------
+// High score function, gets called from hideDuggainfoPopup function in dugga.js
+// dataV = global variable with the data set in returnedDugga
+//----------------------------------------------------------------------------------
+
+function startDuggaHighScore(){
+	Timer.startTimer();	
+	ClickCounter.initialize();
+	if(querystring['highscoremode'] == 1) {
+		if(dataV['score'] > 0){
+			Timer.score = dataV['score'];
+		}
+		Timer.showTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		
+		if(dataV['score'] > 0){
+			ClickCounter.score = dataV['score'];
+		}
+		ClickCounter.showClicker();
+	}
+}

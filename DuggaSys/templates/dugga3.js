@@ -735,14 +735,15 @@ function render()
 //----------------------------------------------------------------------------------
 
 function startDuggaHighScore(){
+	Timer.startTimer();	
+	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
-		Timer.startTimer();
 		if(dataV['score'] > 0){
 			Timer.score = dataV['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		ClickCounter.initialize();
+		
 		if(dataV['score'] > 0){
 			ClickCounter.score = dataV['score'];
 		}
