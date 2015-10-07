@@ -107,7 +107,14 @@ function returnedDugga(data)
 	}
 }
 
-function showFacit(param, uanswer, danswer) {
+function showFacit(param, uanswer, danswer, userStats) {
+
+	$("#duggaInfoBox").css("display","none");
+	document.getElementById('duggaTime').innerHTML=userStats[0];
+	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+	document.getElementById('duggaClicks').innerHTML=userStats[2];
+	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+	$("#duggaStats").css("display","block");
 
 	// Setup code
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")

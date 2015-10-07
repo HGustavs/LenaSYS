@@ -31,6 +31,7 @@ $dugganame="";
 $duggaparam="";
 $duggaanswer="";
 $useranswer="";
+$duggastats="";
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -69,7 +70,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 	}
 
 	if(strcmp($opt,"DUGGA")==0){
-		$query = $pdo->prepare("SELECT userAnswer.useranswer as aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer as facit FROM userAnswer,listentries,quiz,variant WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;");					
+		$query = $pdo->prepare("SELECT userAnswer.useranswer as aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer as facit,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed FROM userAnswer,listentries,quiz,variant WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;");					
 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
@@ -101,6 +102,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$duggaanswer = str_replace("*##*", '"', $duggaanswer);
 			$duggaanswer = str_replace("*###*", '&cap;', $duggaanswer);
 			$duggaanswer = str_replace("*####*", '&cup;', $duggaanswer);
+
+			$duggastats = array($row['timeUsed'],$row['totalTimeUsed'],$row['stepsUsed'],$row['totalStepsUsed']);
 
 			$dugganame="templates/".$duggafile.".js";
 			
@@ -144,7 +147,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 	}
 
 	// All results from current course and vers?
-	$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,marked from userAnswer where cid=:cid;");
+	$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed from userAnswer where cid=:cid;");
 	$query->bindParam(':cid', $cid);
 	
 	if(!$query->execute()) {
@@ -168,7 +171,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				'useranswer' => $row['useranswer'],
 				'submitted'=> $row['submitted'],
 				'vers'=> $row['vers'],
-				'marked' => $row['marked']
+				'marked' => $row['marked'],
+				'timeUsed' => $row['timeUsed'],
+				'totalTimeUsed' => $row['totalTimeUsed'],
+				'stepsUsed' => $row['stepsUsed'],
+				'totalStepsUsed' => $row['totalStepsUsed']
 			)
 		);
 	}
@@ -233,7 +240,8 @@ $array = array(
 	'dugganame' => $dugganame,
 	'duggaparam' => $duggaparam,
 	'duggaanswer' => $duggaanswer,
-	'useranswer' => $useranswer
+	'useranswer' => $useranswer,
+	'duggastats' => $duggastats
 );
 
 

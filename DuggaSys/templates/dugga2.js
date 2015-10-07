@@ -131,27 +131,33 @@ function reset()
 	document.getElementById('H5').innerHTML="0";
 }
 
-function showFacit(param, uanswer, danswer)
+function showFacit(param, uanswer, danswer, userStats)
 {
-		var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
-			
-		$("#fargnamn").html(p['colorname']);
-		$("#fargen").attr("src", "templates/color_"+p['color']+".png");
+	document.getElementById('duggaTime').innerHTML=userStats[0];
+	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+	document.getElementById('duggaClicks').innerHTML=userStats[2];
+	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+	$("#duggaStats").css("display","block");
+	
+	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
 		
-		// Add our previous answer
-		if (uanswer != null){
-			var previous = uanswer.split(' ');
-			if (previous.length >= 9){
-				document.getElementById('H0').innerHTML=previous[4];
-				document.getElementById('H1').innerHTML=previous[5];
-				document.getElementById('H2').innerHTML=previous[6];
-				document.getElementById('H3').innerHTML=previous[7];
-				document.getElementById('H4').innerHTML=previous[8];
-				document.getElementById('H5').innerHTML=previous[9];
-			}
-		}			
-		
-		$('.fouter').css("background","#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8]);
+	$("#fargnamn").html(p['colorname']);
+	$("#fargen").attr("src", "templates/color_"+p['color']+".png");
+	
+	// Add our previous answer
+	if (uanswer != null){
+		var previous = uanswer.split(' ');
+		if (previous.length >= 9){
+			document.getElementById('H0').innerHTML=previous[4];
+			document.getElementById('H1').innerHTML=previous[5];
+			document.getElementById('H2').innerHTML=previous[6];
+			document.getElementById('H3').innerHTML=previous[7];
+			document.getElementById('H4').innerHTML=previous[8];
+			document.getElementById('H5').innerHTML=previous[9];
+		}
+	}			
+	
+	$('.fouter').css("background","#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8]);
 		
 }
 

@@ -88,7 +88,7 @@
   <div>
         <div class='loginBoxheader'>
             <h3>3D-dugga</h3>
-            <div onclick="hideReceiptPopup()">x</div>
+            <div onclick="hideDuggaInfoPopup();">x</div>
         </div>
           <div class="table-wrap">
             <table>
@@ -108,6 +108,20 @@
           </div>
     </div>
 </div>
-
 </div>
-
+<div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Dugga Stats</h3>
+        <div onclick="hideReceiptPopup()">x</div>
+    </div>
+      <div class="table-wrap">
+        <table>
+            <tr>
+                <th>Clicks</th><th>Total Clicks</th><th>Time</th><th>Total time</th>
+            </tr>
+            <tr>
+                <td id="duggaClicks"></td><td id="duggaTotalClicks"></td><td id="duggaTime"></td><td id="duggaTotalTime"></td>                
+            </tr>
+        </table>
+      </div>
+</div>
