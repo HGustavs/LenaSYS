@@ -83,11 +83,15 @@ function returnedDugga(data)
 
 function saveClick()
 {
+	Timer.stopTimer();
+	timeUsed = Timer.score;
+	stepsUsed = ClickCounter.score;
 	if (querystring['highscoremode'] == 1) {	
-		Timer.stopTimer();
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
+	} else {
+		score = 0;
 	}
 		
 		// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
