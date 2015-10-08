@@ -116,6 +116,10 @@ function showFacit(param, uanswer, danswer, userStats) {
 	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 	$("#duggaStats").css("display","block");
 
+	ans = JSON.parse(danswer);
+	console.log(ans.vertex);
+	console.log(ans.triangle);
+
 	// Setup code
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
 	.done( function( script, textStatus ) {
@@ -143,6 +147,22 @@ function showFacit(param, uanswer, danswer, userStats) {
 		updateGeometry();
 		animate();
 		toggleRotate();
+
+		//document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
+		if (vertexL.length === ans.vertex) {
+			document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
+			document.getElementById("vertexPaneNumber").innerHTML+=" = " + ans.vertex;
+		} else {
+			document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
+			document.getElementById("vertexPaneNumber").innerHTML+=" != " + ans.vertex;
+		}
+		if (triangleL.length === ans.triangle) {
+			document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
+			document.getElementById("trianglePaneNumber").innerHTML+=" = " + ans.triangle;
+		} else {
+			document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
+			document.getElementById("trianglePaneNumber").innerHTML+=" != " + ans.triangle;
+		}
 
 	})
 	.fail(function( jqxhr, settings, exception ) {
@@ -371,6 +391,12 @@ function renderVertexTable()
 	}
 	newTableBody += "</tbody>";
 	document.getElementById('verticeList').innerHTML = newTableBody;	
+	document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
+	if (vertexL.length > 0) {
+		document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;";
+	} else {
+		document.getElementById("vertexPaneNumber").style="display:none; line-height: 11px;";
+	}
 
 }
 
@@ -397,6 +423,13 @@ function renderTriangleTable()
 	}
 	newTableBody += "</tbody>";
 	document.getElementById('triangleList2').innerHTML = newTableBody;	
+
+	document.getElementById("trianglePaneNumber").innerHTML=triangleL.length;
+	if (triangleL.length > 0) {
+		document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;";
+	} else {
+		document.getElementById("trianglePaneNumber").style="display:none; line-height: 11px;";
+	}
 
 }
 

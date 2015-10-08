@@ -293,7 +293,7 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 	$.getScript("templates/"+template+".js")
 	  .done(function( script, textStatus ) {	    	    
 		
-		showFacit(parseParameters(duggaVariantParam),"UNK",parseParameters(duggaVariantAnswer));
+		showFacit(parseParameters(duggaVariantParam),"UNK",parseParameters(duggaVariantAnswer),[0,0,0,0]);
 		
 	  })
 	  .fail(function( jqxhr, settings, exception ) {

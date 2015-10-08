@@ -8,8 +8,8 @@
     <div class='loginBoxheader'>
         <h3>Ritverktyg</h3>
     </div>
-    <input id="vertexPane" class='submit-button' type="button" style="float:left;" onclick="toggleControl();" value="Vertice"/>
-    <input id="trianglePane" class='submit-button' type="button" style="float:left;" onclick="toggleControl();" value="Triangle"/>
+    <div id="vertexPane" class='submit-button' type="button" style="float:left;" onclick="toggleControl();">Vertice<span id="vertexPaneNumber" style="display:none" class='badge'></span></div>
+    <div id="trianglePane" class='submit-button' type="button" style="float:left;" onclick="toggleControl();">Triangle<span id="trianglePaneNumber"  style="display:none" class='badge'></span></div>
     <div id="verticeControl" style="float:left; display: block;">
         <table style="width:100%;">
             <caption>Hörnlista</caption>
