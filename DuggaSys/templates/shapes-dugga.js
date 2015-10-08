@@ -148,6 +148,8 @@ function closeFacit(){
 
 function flipbit(bitno)
 {
+	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
+	
 	//bitno++;
 	if(bitarray[bitno]==0){
 		bitarray[bitno]=1;
