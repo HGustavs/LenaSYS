@@ -199,9 +199,6 @@ function returned(data)
 			$("#"+contentid).css("margin-top", boxmenuheight);
 		}else if(boxtype === "IFRAME") {
 			createboxmenu(contentid,boxid,boxtype);
-			console.log(retData);
-			console.log(cvers);
-			console.log(courseid);
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
 
 			// If multiple versions exists use the one with highest priority.
