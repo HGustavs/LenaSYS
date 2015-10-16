@@ -199,14 +199,77 @@ function returned(data)
 			$("#"+contentid).css("margin-top", boxmenuheight);
 		}else if(boxtype === "IFRAME") {
 			createboxmenu(contentid,boxid,boxtype);
+			console.log(retData);
+			console.log(cvers);
+			console.log(courseid);
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
-			$("#box"+boxid).html("<iframe src='codeupload/" + retData['box'][i][5] + "'></iframe>");
-			if($("#"+contentid+"menu").height() == null){
-				boxmenuheight = 0;
-			}else{
-				boxmenuheight= $("#"+contentid+"menu").height();
-			}
-			$("#"+contentid).css("margin-top", boxmenuheight);
+
+			// If multiple versions exists use the one with highest priority.
+			// cvers BEFORE courseid BEFORE global
+			var previewFile = retData['box'][i][5];
+			var previewLink = "";
+			var request = new XMLHttpRequest();  
+			request.open('GET', "../courses/" + courseid + "/"+cvers+"/"+ previewFile, true);
+			request.onreadystatechange = function(){
+			    if (request.readyState === 4){
+			        if (request.status !== 404) {  
+			            previewLink = "../courses/" + courseid + "/"+cvers+"/"+ previewFile;
+						$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
+						if($("#"+contentid+"menu").height() == null){
+							boxmenuheight = 0;
+						}else{
+							boxmenuheight= $("#"+contentid+"menu").height();
+						}
+						$("#"+contentid).css("margin-top", boxmenuheight);
+			        } 
+			    } else {
+					request = new XMLHttpRequest();  
+					request.open('GET', "../courses/" + courseid + "/"+ previewFile, true);
+					request.onreadystatechange = function(){
+					    if (request.readyState === 4){
+					        if (request.status !== 404) {  
+					            previewLink = "../courses/" + courseid + "/"+ previewFile;
+								$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
+								if($("#"+contentid+"menu").height() == null){
+									boxmenuheight = 0;
+								}else{
+									boxmenuheight= $("#"+contentid+"menu").height();
+								}
+								$("#"+contentid).css("margin-top", boxmenuheight);
+
+					        } else {
+								request = new XMLHttpRequest();  
+								request.open('GET', "../courses/" + previewFile, true);
+								request.onreadystatechange = function(){
+								    if (request.readyState === 4){
+								        if (request.status !== 404) {  
+								            previewLink = "../courses/" + previewFile;
+											$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
+											if($("#"+contentid+"menu").height() == null){
+												boxmenuheight = 0;
+											}else{
+												boxmenuheight= $("#"+contentid+"menu").height();
+											}
+											$("#"+contentid).css("margin-top", boxmenuheight);
+
+								        } else {
+								        	alert("Preview Error! " + previewFile + " not found!");
+								        }
+								    }
+								};
+								request.send();				
+
+					        }
+
+					    }
+					};
+					request.send();				
+
+			    }
+			};
+			request.send();
+
+
 		}else if(boxtype == "NOT DEFINED"){
 			if(retData['writeaccess'] == "w"){
 				createboxmenu(contentid,boxid,boxtype);
@@ -1478,7 +1541,7 @@ function closeTemplateWindow()
 function Play()
 {
 	if(retData['playlink']!=null){
-		navigateTo("/codeupload/",retData['playlink']);
+		navigateTo("../courses/",retData['playlink']);
 	}
 }
 
