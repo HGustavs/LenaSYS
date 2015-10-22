@@ -6,6 +6,14 @@
 			echo "<table width='100%'><tr>";
 				
 			include_once "../Shared/basic.php";
+
+			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
+			if(isset($_GET['courseid'])){
+					$_SESSION['courseid']=$_GET['courseid'];
+			}
+			if(isset($_GET['coursevers'])){
+					$_SESSION['coursevers']=$_GET['coursevers'];
+			}
 			
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";

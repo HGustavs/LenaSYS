@@ -13,9 +13,10 @@
 				$codearray=explode('~~~', $inString);
 				$kodblock=0;
 				
+				
 				// This is a straight 1:1 port of the javascript code
 				foreach ($codearray as $workstr) {
-						if(substr($workstr,0,3)=="@@@"){
+						if(substr($workstr,0,3)==="@@@"){
 								$kodblock=!$kodblock;
 								$workstr=substr($workstr,3);
 						}
@@ -90,10 +91,9 @@
 
 				// Right Arrow for discussing menu options
 				$instring = preg_replace("/\s[\-][\>]\s/","&rarr;",$instring);
+
 				// Strike trough text
-				$instring = preg_replace("/\-{4}(.*?\S)\-{4}/","<span style=\"text-decoration:line-through;\">$1</span>",$instring);
-
-
+				$instring = preg_replace("/\-{4}(.*?\S)\-{4}/","<span style=\"text-decoration:line-through;\">$1</span>",$instring)
 
 				return $instring;		
 		}
@@ -111,12 +111,26 @@
 		$fname=getOPG('fname');
 		$coursevers=getOPG('coursevers');
 		
+		// If no course version is given, read course version from session
+		if($cid=="UNK"){
+			if(isset($_SESSION['courseid'])){
+					$cid=$_SESSION['courseid'];
+			}
+		}
+		if($coursevers=="UNK"){
+			if(isset($_SESSION['coursevers'])){
+					$coursevers=$_SESSION['coursevers'];
+			}					
+		}
+		
+		// Read User ID from session
 		if(isset($_SESSION['uid'])){
 			$userid=$_SESSION['uid'];
 		}else{
 			$userid="UNK";		
 		} 	
 		
+		// Get visibility from course table
 		$hr=false;
 		$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 		$query->bindParam(':cid', $cid);
