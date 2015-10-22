@@ -26,6 +26,7 @@ Vertex.prototype.toString= function() {
 
 var vertexL = [];
 var triangleL = [];
+var textureArray = [];
 
 var camera, scene, renderer, rendererDOMElement;
 var object, lineR, lineG, lineB;
@@ -77,6 +78,8 @@ function setup()
 
 function returnedDugga(data) 
 {
+	createTextures();
+
 	dataV = data;
 
 	if (data['debug'] != "NONE!") {alert(data['debug']);}
@@ -108,6 +111,8 @@ function returnedDugga(data)
 }
 
 function showFacit(param, uanswer, danswer, userStats) {
+
+	createTextures();
 
 	$("#duggaInfoBox").css("display","none");
 	document.getElementById('duggaTime').innerHTML=userStats[0];
@@ -688,12 +693,41 @@ function resetRotationForAllObjects() {
 	camera.lookAt( scene.position );
 }
 
+function createTextures(){
+	for (var i=0;i<20;i++){
+		var text = i;
+		var padding = 2;
+		var canvas = document.createElement("canvas");
+		var context = canvas.getContext("2d");
+	    canvas.width = 32;
+	    canvas.height = 32;
+	    context.font = "24px Verdana";
+
+		context.fillStyle = "#ffffff";
+	    context.strokeStyle = 'black';
+	    context.lineWidth = 1;
+		context.fillRect(0, 0, canvas.width, canvas.height);	
+		context.strokeRect(0.5,0.5,canvas.width-1,canvas.height-1);
+	    context.textAlign = "center";
+	    context.textBaseline = "middle";
+	    context.fillStyle = "#ff0000";
+	    context.fillText(text, 16 , 18);
+		textureArray[i] = canvas;			
+	}
+}
+
+
 function highlightVertices(){	
 	for (var i = 0; i < vertexL.length; i++) {
 				
 		var cubeGeometry = new THREE.BoxGeometry(25, 25, 25);
+
+		var xm = new THREE.MeshBasicMaterial({ map: new THREE.Texture(textureArray[i]), transparent: false });
+		xm.map.needsUpdate = true;
+
+
 		var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x1ec876 });
-		var cube = new THREE.Mesh(cubeGeometry, new THREE.MeshNormalMaterial());
+		var cube = new THREE.Mesh(cubeGeometry, xm);
 		var sphere = new THREE.Mesh(new THREE.SphereGeometry(25, 25, 25), new THREE.MeshNormalMaterial());
 		
 		cube.position.x = vertexL[i].x;
