@@ -1,6 +1,8 @@
 <?php
 		include_once "../Shared/basic.php";
 		include_once "../Shared/sessions.php";
+		
+		$file_extension="UNK";
 
 		function parseMarkdown($inString)
 		{	
@@ -12,7 +14,6 @@
 
 				$codearray=explode('~~~', $inString);
 				$kodblock=0;
-				
 				
 				// This is a straight 1:1 port of the javascript code
 				foreach ($codearray as $workstr) {
