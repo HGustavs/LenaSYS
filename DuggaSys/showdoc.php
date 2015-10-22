@@ -20,9 +20,10 @@
 								$workstr=substr($workstr,3);
 						}
 						
+						$workstr=preg_replace("/\</", "&lt;",$workstr);
+						$workstr=preg_replace("/\>/", "&gt;",$workstr);
+
 						if($kodblock){
-								$workstr=preg_replace("/\</", "&lt;",$workstr);
-								$workstr=preg_replace("/\>/", "&gt;",$workstr);
 								$workstr="<pre><code>".$workstr."</code></pre>";
 						}else{
 								$workstr=markdownBlock($workstr);
