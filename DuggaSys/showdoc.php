@@ -165,7 +165,6 @@
 				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fname', $fname);
-				echo "<br><br><br><br><br><br><br><br><br><br>".$fname;
 				$result = $query->execute();
 				if($row = $query->fetch(PDO::FETCH_ASSOC)){
 					$filekind=$row['kind'];
@@ -179,7 +178,7 @@
 		
 							if($filekind==2){
 								// Global
-								$file = "templates/".$filename;
+								$file = "courses/".$filename;
 							}else if($filekind==3){
 								// Course Local
 								$file = "../courses/".$cid."/".$filename;
