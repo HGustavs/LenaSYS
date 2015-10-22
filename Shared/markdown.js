@@ -126,5 +126,11 @@ function markdownBlock(inString)
 	inString = inString.replace(/\+{3}(.*?\S)\+{3}/g,"<div><img src='../../Shared/icons/PlayT.svg'><img class='gifimage' src='$1' ");
 	inString = inString.replace(/\@{3}(.*?\S)\@{3}/g," onclick=\"showGif('$1');\" target='_blank' /></div>");
 
+	// Right Arrow for discussing menu options
+	inString = inString.replace(/\s[\-][\>]\s/gm, "&rarr;");
+
+	// Strike trough text
+	inString = inString.replace(/\-{4}(.*?\S)\-{4}/g, "<span style=\"text-decoration:line-through;\">$1</span>");
+
 	return inString;
 }
