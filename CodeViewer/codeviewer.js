@@ -1411,7 +1411,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 					// Print out important lines
 					for(var kp=0;kp<improws.length;kp++){
 						if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
-							str+="<div class='impo'>"+cont+"</div>";
+							str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
 							break;
 						}else{
 							if(kp == (improws.length-1)){

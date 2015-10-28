@@ -33,7 +33,7 @@ function loadedmd()
 
 function highlightRows(filename,startRow,endRow){
 	if (startRow<=endRow){
-		for (var i=0;i<endRow-startRow;i++) {
+		for (var i=0;i<endRow-startRow+1;i++) {
 			document.getElementById(filename+"-line"+(startRow+i)).className="impo";
 		}
 	} 	
@@ -41,7 +41,7 @@ function highlightRows(filename,startRow,endRow){
 
 function dehighlightRows(filename,startRow,endRow){
 	if (startRow<=endRow){
-		for (var i=0;i<endRow-startRow;i++) {
+		for (var i=0;i<endRow-startRow+1;i++) {
 			document.getElementById(filename+"-line"+(startRow+i)).className="normtext";
 		}
 	}
