@@ -136,6 +136,7 @@ function returned(data)
 		var boxtype=retData['box'][i][1].toUpperCase();
 		var boxcontent=retData['box'][i][2];
 		var boxwordlist=retData['box'][i][3];
+		var boxfilename=retData['box'][i][5];
 		var boxmenuheight = 0;
 	
 		// don't create templatebox if it already exists
@@ -161,7 +162,7 @@ function returned(data)
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
 			// Render code
-			rendercode(boxcontent,boxid,boxwordlist);
+			rendercode(boxcontent,boxid,boxwordlist,boxfilename);
 		}else if(boxtype === "DOCUMENT"){
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
@@ -1233,7 +1234,7 @@ function tokenize(instring,inprefix,insuffix)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
 
-function rendercode(codestring,boxid,wordlistid)
+function rendercode(codestring,boxid,wordlistid,boxfilename)
 {
     var destinationdiv = "box" + boxid;
 	tokens = [];
@@ -1405,7 +1406,7 @@ function rendercode(codestring,boxid,wordlistid)
 				lineno++;
 				// Print out normal rows if no important exists
 				if(improws.length==0){
-					str+="<div class='normtext'>"+cont+"</div>";
+					str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
 				}else{	
 					// Print out important lines
 					for(var kp=0;kp<improws.length;kp++){
@@ -1414,7 +1415,7 @@ function rendercode(codestring,boxid,wordlistid)
 							break;
 						}else{
 							if(kp == (improws.length-1)){
-								str+="<div class='normtext'>"+cont+"</div>";
+								str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
 							}
 						}						
 					}

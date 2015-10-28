@@ -31,6 +31,22 @@ function loadedmd()
 		document.addEventListener("click", screenClick);						
 }
 
+function highlightRows(filename,startRow,endRow){
+	if (startRow<=endRow){
+		for (var i=0;i<endRow-startRow;i++) {
+			document.getElementById(filename+"-line"+(startRow+i)).className="impo";
+		}
+	} 	
+}
+
+function dehighlightRows(filename,startRow,endRow){
+	if (startRow<=endRow){
+		for (var i=0;i<endRow-startRow;i++) {
+			document.getElementById(filename+"-line"+(startRow+i)).className="normtext";
+		}
+	}
+}
+
 /********************************************************************************
 
    Markdown, the functions in the next section contains the functions used by
@@ -132,5 +148,10 @@ function markdownBlock(inString)
 	// Strike trough text
 	inString = inString.replace(/\-{4}(.*?\S)\-{4}/g, "<span style=\"text-decoration:line-through;\">$1</span>");
 
+	// Importand Rows in separate code file ===
+	// ===filename,start row,end row, text to show===
+	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
+
 	return inString;
 }
+
