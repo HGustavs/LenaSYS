@@ -136,6 +136,7 @@ function returned(data)
 		var boxtype=retData['box'][i][1].toUpperCase();
 		var boxcontent=retData['box'][i][2];
 		var boxwordlist=retData['box'][i][3];
+		var boxfilename=retData['box'][i][5];
 		var boxmenuheight = 0;
 	
 		// don't create templatebox if it already exists
@@ -161,7 +162,7 @@ function returned(data)
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
 			// Render code
-			rendercode(boxcontent,boxid,boxwordlist);
+			rendercode(boxcontent,boxid,boxwordlist,boxfilename);
 		}else if(boxtype === "DOCUMENT"){
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
@@ -1233,7 +1234,7 @@ function tokenize(instring,inprefix,insuffix)
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
 
-function rendercode(codestring,boxid,wordlistid)
+function rendercode(codestring,boxid,wordlistid,boxfilename)
 {
     var destinationdiv = "box" + boxid;
 	tokens = [];
@@ -1405,16 +1406,16 @@ function rendercode(codestring,boxid,wordlistid)
 				lineno++;
 				// Print out normal rows if no important exists
 				if(improws.length==0){
-					str+="<div class='normtext'>"+cont+"</div>";
+					str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
 				}else{	
 					// Print out important lines
 					for(var kp=0;kp<improws.length;kp++){
 						if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
-							str+="<div class='impo'>"+cont+"</div>";
+							str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
 							break;
 						}else{
 							if(kp == (improws.length-1)){
-								str+="<div class='normtext'>"+cont+"</div>";
+								str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
 							}
 						}						
 					}
@@ -2094,99 +2095,3 @@ function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>'); 
 }
 
-/********************************************************************************
-
-   Markdown, the functions in the next section contains the functions used by
-	the markdown parser.
-
-*********************************************************************************/
-
-//----------------------------------------------------------------------------------
-// parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
-//				  function replace with regular expressions.
-//                Is called by returned in codeviewer.js
-//								Identical php code exists in showdoc any changes must be propagated
-//----------------------------------------------------------------------------------
-
-function parseMarkdown(inString)
-{	
-	// append '@@@' to all code block indicators '~~~'
-	inString = inString.replace(/^(\~{3}\n)/gm, '~~~@@@');
-
-	// Split on code block
-	codearray=inString.split('~~~');
-	
-	var str="";
-	var kodblock=0;
-	for(var i=0;i<codearray.length;i++){
-			workstr=codearray[i];
-
-			if(workstr.substr(0,3)==="@@@"){
-					kodblock=!kodblock;
-					workstr = workstr.substr(3);
-			}
-			
-			// Converts any < or > tags in code block
-			if(kodblock){
-					workstr = workstr.replace(/\</g, "&lt;");
-					workstr = workstr.replace(/\>/g, "&gt;");
-					workstr='<pre><code>'+workstr+'</code></pre>';
-			}else{
-					workstr=markdownBlock(workstr);
-			}
-			str+=workstr;
-	}
-	
-	//Regular expression for code blocks
-	
-	return str;
-}
-
-//----------------------------------------------------------------------------------
-// markdownBlock: 
-//					
-//          
-//----------------------------------------------------------------------------------
-function markdownBlock(inString)
-{	
-	//Regular expressions for italics and bold formatting
-	inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<strong><em>$1</em></strong>');	
-	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<strong>$1</strong>');
-	inString = inString.replace(/\*{2}(.*?\S)\*{2}/g, '<strong>$1</strong>');
-	inString = inString.replace(/\_{4}(.*?\S)\_{4}/g, '<strong><em>$1</em></strong>');
-	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<em>$1</em>');	
-	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<em>$1</em>');
-	
-	//Regular expressions for headings
-	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
-	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
-	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
-	inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
-	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
-	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
-	
-	//Regular expressions for lists
-	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
-	inString = inString.replace(/^\s*\-\s(.*)/gm, '<ul><li>$1</li></ul>');
-
-	// Fix for superflous ul tags
-	inString = inString.replace("</ul>\n<ul>","");
-	inString = inString.replace("</ol>\n<ol>","");
-	
-	//Regular expression for line
-	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
-	
-	// Markdown for hard new lines -- \n\n and \n\n\n
-	inString = inString.replace("\n\n\n","<br><br>");
-	inString = inString.replace("\n\n","<br>");
-	
-	// Hyperlink !!! and %%%
-	inString = inString.replace(/\!{3}(.*?\S)\!{3}/g, '<a href="$1" target="_blank">');
-	inString = inString.replace(/\%{3}(.*?\S)\%{3}/g, '$1</a>');
-
-	// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
-	inString = inString.replace(/\+{3}(.*?\S)\+{3}/g,"<div><img src='../../Shared/icons/PlayT.svg'><img class='gifimage' src='$1' ");
-	inString = inString.replace(/\@{3}(.*?\S)\@{3}/g," onclick=\"showGif('$1');\" target='_blank' /></div>");
-
-	return inString;
-}

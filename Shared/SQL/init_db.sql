@@ -488,6 +488,7 @@ INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("Plain Text",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("Java",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("SR",1);
  
 /* Wordlist for different programming languages */
 
