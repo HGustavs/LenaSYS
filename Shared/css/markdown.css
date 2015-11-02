@@ -104,7 +104,11 @@
 }
 
 .descbox ul {
-		margin-left: 16px;
+		margin-left: 32px;
+}
+
+.descbox ol {
+		margin-left: 36px;
 }
 
 /* gifimage figmd bigmd backmd are styles for showing gif clips for tutorials etc */
