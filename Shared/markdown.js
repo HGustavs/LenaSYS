@@ -122,9 +122,9 @@ function markdownBlock(inString)
 	inString = inString.replace(/^\s*\-\s(.*)/gm, '<ul><li>$1</li></ul>');
 
 	// Fix for superflous ul tags
-	inString = inString.replace("</ul>\n<ul>","");
-	inString = inString.replace("</ol>\n<ol>","");
-	
+	inString = inString.replace(/\<\/ol\>(\r\n|\n|\r)\<ol\>/gm,"");
+	inString = inString.replace(/\<\/ul\>(\r\n|\n|\r)\<ul\>/gm,"");
+
 	//Regular expression for line
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
 	
@@ -148,7 +148,7 @@ function markdownBlock(inString)
 
 	// Importand Rows in code file in different window ===
 	// ===filename,start row,end row, text to show===
-	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
+	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword2" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
 
 	return inString;
 }
