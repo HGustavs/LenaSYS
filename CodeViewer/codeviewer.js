@@ -184,8 +184,6 @@ function returned(data)
 			}
 			//Replace the html code for asterisks with asterisks
 			desc = desc.replace(/\&\#42\;/g, "*");
-			//Change the '\n' line breaks to <br> tags
-			desc = addHtmlLineBreak(desc);
 			
 			/* Assign Content */
 			$("#"+contentid).html(desc);			

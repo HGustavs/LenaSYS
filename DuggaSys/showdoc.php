@@ -1,4 +1,5 @@
 <?php
+		ini_set("auto_detect_line_endings", true);
 		include_once "../Shared/basic.php";
 		include_once "../Shared/sessions.php";
 		
@@ -8,7 +9,7 @@
 		{	
 				$str="";
 
-				$inString=preg_replace("/^(\~{3}\n)/m", "~~~@@@",$inString);
+				$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
 				
 				$str="";
 
@@ -71,9 +72,9 @@
 				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
 
 				// Hard line break support
-				$instring= str_replace ("\n\n\n","<br><br>",$instring);
-				$instring= str_replace ("\n\n","<br>",$instring);
-				
+				$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
+				$instring= preg_replace ("/(\r\n|\n|\r){2}/","<br>",$instring);
+
 				// Fix for swedish characters
 				$instring= str_replace ("å","&aring;",$instring);				
 				$instring= str_replace ("Å","&Aring;",$instring);				
@@ -83,18 +84,22 @@
 				$instring= str_replace ("Ö","&Ouml;",$instring);				
 				
 				// a href Link
-				$instring = preg_replace("/\!{3}(.*?\S)\!{3}/","<a href='$1' target='_blank'>",$instring);
-				$instring = preg_replace("/\%{3}(.*?\S)\%{3}/","$1</a>",$instring);
+				// !!!url,text to show!!!
+				$instring = preg_replace("/\!{3}(.*?\S),(.*?\S)\!{3}/","<a href='$1' target='_blank'>$2</a>",$instring);
 
 				// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
-				$instring = preg_replace("/\+{3}(.*?\S)\+{3}/","<img class='gifimage' src='$1' ",$instring);
-				$instring = preg_replace("/\@{3}(.*?\S)\@{3}/"," onclick=\"showGif('$1');\" target='_blank' />",$instring);
+				// +++image.png,image.gif+++
+				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<img class='gifimage' src='$1' onclick=\"showGif('$2');\" target='_blank' />",$instring);
 
 				// Right Arrow for discussing menu options
 				$instring = preg_replace("/\s[\-][\>]\s/","&rarr;",$instring);
 
 				// Strike trough text
 				$instring = preg_replace("/\-{4}(.*?\S)\-{4}/","<span style=\"text-decoration:line-through;\">$1</span>",$instring);
+
+				// Importand Rows in code file in different window ===
+				// ===filename,start row,end row, text to show===
+				$inString = preg_replace("/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/", "<span class='impword' onmouseover=\"highlightRows(\'$1\',$2,$3)\" onmouseout=\"dehighlightRows(\'$1\',$2,$3)\">$4</span>", $instring);
 
 				return $instring;		
 		}

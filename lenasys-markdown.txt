@@ -21,10 +21,16 @@ Headings
 ### This is a level 3 heading
 
 Links
+Format: !!!url,text to show!!!
 !!!http://www.some.where.com!!!%%%The text to be shown as a link%%%
 
 Animated GIFs
+Format: +++image.png,image.gif+++	
 +++showdoc.php?cid=[COURSE_ID]&fname=[FILENAME_PNG]+++@@@showdoc.php?cid=[COURSE_ID]&fname=[FILNAME_ANIMATED_GIF]@@@
+
+Importand Rows in code file in different window (only in Codeviewer)
+Format: ===filename,start row,end row, text to show===
+===javascript_source.js,4,10,A cool source code part!===
 
 Ordered lists
 1. This is item one

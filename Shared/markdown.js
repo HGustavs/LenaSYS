@@ -64,7 +64,7 @@ function dehighlightRows(filename,startRow,endRow){
 function parseMarkdown(inString)
 {	
 	// append '@@@' to all code block indicators '~~~'
-	inString = inString.replace(/^(\~{3}\n)/gm, '~~~@@@');
+	inString = inString.replace(/^\~{3}(\r\n|\n|\r)/gm, '~~~@@@');
 
 	// Split on code block
 	codearray=inString.split('~~~');
@@ -89,8 +89,6 @@ function parseMarkdown(inString)
 			}
 			str+=workstr;
 	}
-	
-	//Regular expression for code blocks
 	
 	return str;
 }
@@ -130,17 +128,17 @@ function markdownBlock(inString)
 	//Regular expression for line
 	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
 	
-	// Markdown for hard new lines -- \n\n and \n\n\n
-	inString = inString.replace("\n\n\n","<br><br>");
-	inString = inString.replace("\n\n","<br>");
+	// Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
+	inString = inString.replace(/(\r\n|\n|\r){3}/gm,"<br><br>");
+	inString = inString.replace(/(\r\n|\n|\r){2}/gm,"<br>");
 	
 	// Hyperlink !!! and %%%
-	inString = inString.replace(/\!{3}(.*?\S)\!{3}/g, '<a href="$1" target="_blank">');
-	inString = inString.replace(/\%{3}(.*?\S)\%{3}/g, '$1</a>');
+	// !!!url,text to show!!!	
+	inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
 
 	// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
-	inString = inString.replace(/\+{3}(.*?\S)\+{3}/g,"<div><img src='../../Shared/icons/PlayT.svg'><img class='gifimage' src='$1' ");
-	inString = inString.replace(/\@{3}(.*?\S)\@{3}/g," onclick=\"showGif('$1');\" target='_blank' /></div>");
+	// +++image.png,image.gif+++	
+	inString = inString.replace(/\+{3}(.*?\S),(.*?\S)\+{3}/g,"<div><img src='../../Shared/icons/PlayT.svg'><img class='gifimage' src='$1' onclick=\"showGif('$2');\" target='_blank' /></div>");
 
 	// Right Arrow for discussing menu options
 	inString = inString.replace(/\s[\-][\>]\s/gm, "&rarr;");
@@ -148,7 +146,7 @@ function markdownBlock(inString)
 	// Strike trough text
 	inString = inString.replace(/\-{4}(.*?\S)\-{4}/g, "<span style=\"text-decoration:line-through;\">$1</span>");
 
-	// Importand Rows in separate code file ===
+	// Importand Rows in code file in different window ===
 	// ===filename,start row,end row, text to show===
 	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
 
