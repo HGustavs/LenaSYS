@@ -119,7 +119,7 @@ function markdownBlock(inString)
 	
 	//Regular expressions for lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
-	inString = inString.replace(/^\s*\-\s(.*)/gm, '<ul><li>$1</li></ul>');
+	inString = inString.replace(/^\s*[\-\*]\s(.*)/gm, '<ul><li>$1</li></ul>');
 
 	// Fix for superflous ul tags
 	inString = inString.replace(/\<\/ol\>(\r\n|\n|\r)\<ol\>/gm,"");
