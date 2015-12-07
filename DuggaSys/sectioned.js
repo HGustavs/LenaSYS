@@ -317,9 +317,10 @@ function createVersion(){
 	}
 
 	$("#newCourseVersion").css("display","none");
+	
 	window.setTimeout(function(){
 		changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
-	}, 10);
+	}, 1000);
 }
 
 function showEditVersion(versid, versname)
