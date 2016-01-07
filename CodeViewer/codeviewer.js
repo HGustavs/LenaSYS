@@ -533,7 +533,13 @@ function editImpRows(editType)
 	var rowTo = $("#improwto").val();
 	var row = $("#improwfrom").val() + " - " + $("#improwto").val();
 
-	if (editType == "+" && rowFrom != "" && rowTo != "" && /\s/.test(rowFrom) == false && /\s/.test(rowTo) == false && isNumber(rowFrom) == true && isNumber(rowTo) == true && rowFrom <= rowTo && rowFrom > 0 && rowTo > 0 && rowFrom <= lineno && rowTo <= lineno) {
+	if (editType == "+" && 
+	    isNumber(rowFrom) == true && 
+	    isNumber(rowTo) == true && 
+	    rowFrom <= rowTo && 
+	    rowFrom > 0 && 
+	    rowTo > 0)
+	   {
 		var exists = false;
 		$('#improws option').each(function() {
     		if (this.value == row) {exists = true;}
@@ -551,7 +557,7 @@ function editImpRows(editType)
 		$('option:selected', "#improws").remove();
     	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
 	}else{
-		alert("Incorrect value(s) for important rows!");
+		alert("Incorrect value(s) (from:"+rowFrom+" to: "+rowTo+")  for important rows!");
 	}
 }
 
