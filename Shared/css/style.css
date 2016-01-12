@@ -88,11 +88,13 @@ hr {
 }		
 
 #content {
-    margin:0px auto;
-    position:relative;
-    padding: 50px 10px 10px 10px;
+    position:absolute;
     background: #fff;
-    min-height: 200px;
+    top:50px;
+    left:0;
+    right:0;
+    bottom:0;
+    padding: 15px 10px 5px 10px;
 }
 
 #accessedcontent {
@@ -291,6 +293,7 @@ header {
     z-index: 5000;
     top: 0px;
     left: 0px;
+    box-shadow: 0 10px 10px #888888;
 }
 
 header td {
@@ -520,7 +523,7 @@ header td {
     top: 40%;
     left: 50%;
     margin-left: -178px;
-    box-shadow:2px 2px 4px #000;
+    box-shadow:20px 20px 10px #000;
 }
 
 .loginBox textarea, #import{
@@ -977,6 +980,10 @@ input.new-item-button:hover {
 	margin-top: 6px;
 }
 
+.course-menu-wrapper {
+    padding-bottom: 10px;
+}
+
 /* End DuggaSys Sectioneed*/
 /**************************/
 
@@ -1138,6 +1145,7 @@ input.new-item-button:hover {
     float:right;
     line-height: 30px;
     text-align: center;
+    box-shadow: 5px 5px 5px #888888;
 }
 
 .submit-button:hover {

@@ -161,7 +161,7 @@ function returnedDugga(data)
 	str="";
 	if (data['files'].length > 0) {
 
-		str+="<div style='float:right;'>";
+		str+="<div style='float:right;padding-bottom:10px;'>";
 		str+="<input class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";
 		str+="</div>";
 		str+="<table class='list'>";
