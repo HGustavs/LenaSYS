@@ -93,10 +93,15 @@ function returnedDugga(data)
 			var tmpstr = retdata["query"];
 			tmpstr += "<BR><BR><div style='background-color:#FFF;'><code><pre style='font-family:hack;font-size:12px'>";
 			for (var l = 0;l<retdata["css"].length;l++){
-				if (l !== 0 ) {
-					tmpstr += "   " + retdata["css"][l] + ";<BR>";
+				if (retdata["css"][l].substr(0,1) === "#") {
+					if (l!==0){
+						tmpstr += "}<BR>" + retdata["css"][l] + "<BR>";
+					} else {
+						tmpstr += retdata["css"][l] + "<BR>";	
+					}
+					
 				} else {
-					tmpstr += retdata["css"][l] + "<BR>";
+					tmpstr += "   " + retdata["css"][l] + ";<BR>";
 				}
 			}
 			tmpstr += "}</pre></code></div>";
