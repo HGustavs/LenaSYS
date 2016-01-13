@@ -6,12 +6,9 @@
 
 Example seed
 ---------------------
-	 Example seed - simple
-	 Param: {*variant*:*40 13 7 20 0*}
-	 Answer: Variant
-	 Example seed - complex
-	 Param: {*variant*:*26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0*}
-	 Answer: Variant 
+	 Example seed
+	 Param: {"instructions":"Move and resize the box with id greger until it matches the required format.","query":"Make the greger-box 100px x 100px and with a 25px left side margin and 50px bottom padding",[]}
+	 Answer: 
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -36,6 +33,9 @@ var clickmode=0;
 var clickstate=0;
 var currobj=-1;
 
+var rulerPaddingX=25;
+var rulerPaddingY=25;
+
 // Click Tolerance in Pixels
 var tolerance=8;
 var boxsize=5;
@@ -44,23 +44,35 @@ var boxes=new Array();
 
 // Coordinate Limits
 var minX=25;
-var maxX=500;
+var maxX=525;
 var minY=25;
-var maxY=600;
+var maxY=625;
 
+// Canvas size
+canvasWidth = 625;
+canvasHeight = 625;
+
+var evalstr = "";
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
 function setup() 
 {
 	running = true;
-	canvas = document.getElementById('myCanvas');
-	if (canvas) {
-		context = canvas.getContext("2d");
+	canvas = document.getElementById("myCanvas");
+
+	if (canvas && canvas.getContext) {
+		canvas.addEventListener('mousemove', mouseMove, false);
+		canvas.addEventListener('mousedown', mouseDown, false);
+		canvas.addEventListener('mouseup', mouseUp, false);
+		ctx = canvas.getContext('2d');
+		ctx.font = "18px Arial";
+
 		tickInterval = setInterval("tick();", 50);
 
 		AJAXService("GETPARAM", { }, "PDUGGA");
 	}
+
 }
 
 function returnedDugga(data) 
@@ -74,27 +86,56 @@ function returnedDugga(data)
 	} else {
 		if (canvas) {
 			retdata = jQuery.parseJSON(data['param']);
-			console.log(retdata);
+
+			boxes.length = 0; // Clear array.
+			evalstr = retdata["code"];
 			document.getElementById("duggaInstructions").innerHTML = retdata["instructions"];
-			document.getElementById("duggaQuery").innerHTML = retdata["query"];
-			showDuggaInfoPopup();
+			var tmpstr = retdata["query"];
+			tmpstr += "<BR><BR><div style='background-color:#FFF;'><code><pre style='font-family:hack;font-size:12px'>";
+			for (var l = 0;l<retdata["css"].length;l++){
+				if (l !== 0 ) {
+					tmpstr += "   " + retdata["css"][l] + ";<BR>";
+				} else {
+					tmpstr += retdata["css"][l] + "<BR>";
+				}
+			}
+			tmpstr += "}</pre></code></div>";
+			document.getElementById("duggaQuery").innerHTML = tmpstr;
+
+			//showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
 
-			if (data["answer"] !== null || data["answer"] !== "UNK") {
-
+			if (data["answer"] == null || data["answer"] !== "UNK") {
+				var tmpstr = data["answer"].substr(data["answer"].indexOf("["));
+				tmpstr = tmpstr.substr(0, tmpstr.lastIndexOf("]")+1);
+				tmpstr = tmpstr.replace(/&quot;/g, "\"");
+				var userboxes = jQuery.parseJSON(tmpstr);
+				for (var b=0; b<userboxes.length; b++) {
+					var box = userboxes[b];
+    			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+    		}
+			} else {
+				for (var b=0; b<retdata["boxes"].length; b++) {
+					var box = retdata["boxes"][b];
+    			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+				}
 			}
 
-			initcanvas();
+			drawGraphics();
 		}
 	}
 }
 
 function reset()
 {
+	console.log(JSON.stringify(boxes));
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
 
-	operationList = [];
-	renderOperationList();
+	boxes.length = 0; // Clear array.
+	for (var b=0; b<retdata["boxes"].length; b++) {
+		var box = retdata["boxes"][b];
+		boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+	}
 
 	Timer.stopTimer();
 	Timer.score=0;
@@ -110,6 +151,8 @@ function saveClick()
 	timeUsed = Timer.score;
 	stepsUsed = ClickCounter.score;
 
+	score = 0;
+
 	if (querystring['highscoremode'] == 1) {	
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
@@ -117,13 +160,7 @@ function saveClick()
 	}
 
 	// Loop through all bits
-	bitstr = ",";
-
-	for (var i = 0; i < operationList.length; i++) {
-		bitstr += operationList[i][1];
-		if (i < operationList.length - 1){ bitstr += ","; }
-	}
-
+	bitstr = JSON.stringify(boxes);
 	bitstr += ",T " + elapsedTime;
 
 	bitstr += " " + window.screen.width;
@@ -215,322 +252,334 @@ function startDuggaHighScore(){
 			ClickCounter.score = dataV['score'];
 		}
 		ClickCounter.showClicker();
+	} else {
+		score = 0;
 	}
 }			
-			// Scaleable / Movable Box
-			function movableBox(scx1,scy1,scx2,scy2,scx3,scy3,scx4,scy4,texto,kind,colr,clip,txtcolr) {
-					
-					this.scx1=scx1;
-					this.scy1=scy1;
-					this.scx2=scx2;
-					this.scy2=scy2;
-					this.scx3=scx3;
-					this.scy3=scy3;
-					this.scx4=scx4;
-					this.scy4=scy4;
-					this.texto=texto;
-					this.kind=kind;
-					this.colr=colr;
-					this.clip=clip;
-					this.txtcolr=txtcolr;
-										
-					this.clicktest=function()
-					{
-								var clickmode=0;
-								if(kind==1){
-										if(clickregionX(this.scx1,this.scy1,this.scy2)){
-												clickmode=1;
-										}else if(clickregionX(this.scx2,this.scy1,this.scy2)){
-												clickmode=2;
-										}else if(clickregionY(this.scx1,this.scy1,this.scx2)){
-												clickmode=3;
-										}else if(clickregionY(this.scx1,this.scy2,this.scx2)){
-												clickmode=4;
-										}else if(clickregionX(this.scx3,this.scy3,this.scy4)){
-												clickmode=5;
-										}else if(clickregionX(this.scx4,this.scy3,this.scy4)){
-												clickmode=6;
-										}else if(clickregionY(this.scx3,this.scy3,this.scx4)){
-												clickmode=7;
-										}else if(clickregionY(this.scx3,this.scy4,this.scx4)){
-												clickmode=8;
-										}else if(clickregionXY(this.scx1,this.scy1,this.scx2,this.scy2)){
-												clickmode=9;
-										} 
-								}
-								return clickmode;
-					}
-					
-					this.moveLeft=function(mx)
-					{
-							if(mx<this.scx4&&mx>minX&&mx<maxX){
-									this.scx1=mx;
-									if(this.scx3<this.scx1) this.scx3=this.scx1;							
-							}
-					}
-					
-					this.moveRight=function(mx)
-					{
-							if(mx>this.scx3&&mx>minX&&mx<maxX){
-									this.scx2=mx;
-									if(this.scx4>this.scx2) this.scx4=this.scx2;
-							}
-					}
+// Scaleable / Movable Box
+function movableBox(scx1,scy1,scx2,scy2,scx3,scy3,scx4,scy4,texto,kind,colr,clip,txtcolr,txtx,txty) {
 
-					this.moveTop=function(my)
-					{
-							if(my<this.scy4&&my>minY&&mx<maxY){
-									this.scy1=my;
-									if(this.scy3<this.scy1) this.scy3=this.scy1;
-							}
-					}
+this.scx1=scx1;
+this.scy1=scy1;
+this.scx2=scx2;
+this.scy2=scy2;
+this.scx3=scx3;
+this.scy3=scy3;
+this.scx4=scx4;
+this.scy4=scy4;
+this.texto=texto;
+this.kind=kind;
+this.colr=colr;
+this.clip=clip;
+this.txtcolr=txtcolr;
+this.txtx=txtx;
+this.txty=txty;
+this.txtw=ctx.measureText(texto).width;
+this.txth=19;
 
-					this.moveBottom=function(my)
-					{
-							if(my>this.scy3&&my>minY&&my<maxY){
-									this.scy2=my;
-									if(this.scy4>this.scy2) this.scy4=this.scy2;
-							}
-					}
+this.clicktest=function()
+{
+	var clickmode=0;
+	if(kind==1){
+		if(clickregionX(this.scx1,this.scy1,this.scy2)){
+			clickmode=1;
+		}else if(clickregionX(this.scx2,this.scy1,this.scy2)){
+			clickmode=2;
+		}else if(clickregionY(this.scx1,this.scy1,this.scx2)){
+			clickmode=3;
+		}else if(clickregionY(this.scx1,this.scy2,this.scx2)){
+			clickmode=4;
+		}else if(clickregionX(this.scx3,this.scy3,this.scy4)){
+			clickmode=5;
+		}else if(clickregionX(this.scx4,this.scy3,this.scy4)){
+			clickmode=6;
+		}else if(clickregionY(this.scx3,this.scy3,this.scx4)){
+			clickmode=7;
+		}else if(clickregionY(this.scx3,this.scy4,this.scx4)){
+			clickmode=8;
+		}else if(clickregionXY(this.scx1,this.scy1,this.scx2,this.scy2)){
+			clickmode=9;
+		}
 
-					this.moveInnerLeft=function(mx)
-					{
-							if(mx<this.scx4&&mx>minX&&mx<maxX){
-									this.scx3=mx;
-									if(this.scx3<this.scx1) this.scx1=this.scx3;
-							}
-					}
+		// If we hover over the text in a box.
+		if(clickregionXY(
+			this.scx3+this.txtx,
+			this.scy3+this.txty-this.txth,
+			this.scx3+this.txtx+this.txtw,
+			this.scy3+this.txty)){
+			clickmode=10;
+		} 
+		//console.log(clickmode + ", mx:"+mx+", my:"+my);
 
-					this.moveInnerRight=function(mx)
-					{
-							if(mx>this.scx3&&mx>minX&&mx<maxX){
-									this.scx4=mx;
-									if(this.scx4>this.scx2) this.scx2=this.scx4;
-							}
-					}
-	
-					this.moveInnerTop=function(my)
-					{
-							if(my<this.scy4&&my>minY&&my<maxY){
-									this.scy3=my;
-									if(this.scy3<this.scy1) this.scy1=this.scy3;
-							}
-					}
-					
-					this.moveInnerBottom=function(my)
-					{
-							if(my>this.scy3&&my>minY&&my<maxY){
-									this.scy4=my;
-									if(this.scy4>this.scy2) this.scy2=this.scy4;
-							}
-					}	
-					
-					this.moveBox=function(dx,dy)
-					{
-							if((this.scx1+dx)>minX&&(this.scx4+dx)<maxX&&(this.scy1+dy)>minY&&(this.scy4+dy)<maxY){
-									this.scx1+=dx;
-									this.scx2+=dx;
-									this.scx3+=dx;
-									this.scx4+=dx;
-									this.scy1+=dy;
-									this.scy2+=dy;
-									this.scy3+=dy;
-									this.scy4+=dy;
-							}
-					}
-					
-					this.drawBox=function(no)
-					{
-							if(kind==1){
+	}
+	return clickmode;
+}
 
-									if(no==currobj){
-											scalebox(this.scx1,this.scy1,this.scx2,this.scy2,this.scx3,this.scy3,this.scx4,this.scy4,"#000","#656",10,this.texto,true,this.colr,this.clip,this.txtcolr);			
-									}else{
-											scalebox(this.scx1,this.scy1,this.scx2,this.scy2,this.scx3,this.scy3,this.scx4,this.scy4,"#000","#656",10,this.texto,false,this.colr,this.clip,this.txtcolr);			
-									}
-							}else{
-									shadedBox(this.scx1,this.scy1,this.scx2,this.scy2,texto,8,10,6,this.colr,this.txtcolr);	 					
-							}
-					}				
-			}   
-			
-			//This function is called by the onmousemove event for the canvas element
-			function mouseMove(event){
-						//Find the position of the canvas element
-						var pos=findPos(event); //event.target is the canvas
-						
-						ox=mx;
-						oy=my;
-						mx=pos.x;
-						my=pos.y;
-						
-						var canvas = document.getElementById("myCanvas");
+this.moveLeft=function(mx)
+{
+	if(mx<this.scx4&&mx>minX&&mx<maxX){
+		this.scx1=mx;
+		if(this.scx3<this.scx1) this.scx3=this.scx1;							
+	}
+}
 
-						if(clickmode==1||clickmode==2||clickmode==5||clickmode==6){
-								canvas.style.cursor="ew-resize";						
-						}else if(clickmode==3||clickmode==4||clickmode==7||clickmode==8){
-								canvas.style.cursor="ns-resize";												
-						}else if(clickmode==9){
-								canvas.style.cursor="grab";																		
-						}else{
-								canvas.style.cursor="default";																								
-						}
+this.moveRight=function(mx)
+{
+	if(mx>this.scx3&&mx>minX&&mx<maxX){
+		this.scx2=mx;
+		if(this.scx4>this.scx2) this.scx4=this.scx2;
+	}
+}
 
-						if(clickstate==0){
-								clickmode=0;
-								currobj=-1;
-								for(i=0;i<boxes.length;i++){
-										var tst=boxes[i].clicktest();
-										if(tst!=0){
-												currobj=i;
-												clickmode=tst;
-										}
-								}
-						}else{
-								var dx=mx-ox;
-								var dy=my-oy;
-								
-								if(currobj>=0){
-										if(clickmode==1){
-												boxes[currobj].moveLeft(mx);
-										}else if(clickmode==2){
-												boxes[currobj].moveRight(mx);
-										}else if(clickmode==3){
-												boxes[currobj].moveTop(my);
-										}else if(clickmode==4){
-												boxes[currobj].moveBottom(my);
-										}else if(clickmode==5){
-												boxes[currobj].moveInnerLeft(mx);											
-										}else if(clickmode==6){
-												boxes[currobj].moveInnerRight(mx);											
-										}else if(clickmode==7){
-												boxes[currobj].moveInnerTop(my);											
-										}else if(clickmode==8){
-												boxes[currobj].moveInnerBottom(my);											
-										}else if(clickmode==9){
-												boxes[currobj].moveBox(dx,dy);											
-										}
-								
-								}
-						}
-						
-						// Connecting Boxes.
-						boxes[0].moveRight(boxes[1].scx1);						
+this.moveTop=function(my)
+{
+	if(my<this.scy4&&my>minY&&mx<maxY){
+		this.scy1=my;
+		if(this.scy3<this.scy1) this.scy3=this.scy1;
+	}
+}
+
+this.moveBottom=function(my)
+{
+	if(my>this.scy3&&my>minY&&my<maxY){
+		this.scy2=my;
+		if(this.scy4>this.scy2) this.scy4=this.scy2;
+	}
+}
+
+this.moveInnerLeft=function(mx)
+{
+	if(mx<this.scx4&&mx>minX&&mx<maxX){
+		this.scx3=mx;
+		if(this.scx3<this.scx1) this.scx1=this.scx3;
+	}
+}
+
+this.moveInnerRight=function(mx)
+{
+	if(mx>this.scx3&&mx>minX&&mx<maxX){
+		this.scx4=mx;
+		if(this.scx4>this.scx2) this.scx2=this.scx4;
+	}
+}
+
+this.moveInnerTop=function(my)
+{
+	if(my<this.scy4&&my>minY&&my<maxY){
+		this.scy3=my;
+		if(this.scy3<this.scy1) this.scy1=this.scy3;
+	}
+}
+
+this.moveInnerBottom=function(my)
+{
+	if(my>this.scy3&&my>minY&&my<maxY){
+		this.scy4=my;
+		if(this.scy4>this.scy2) this.scy2=this.scy4;
+	}
+}	
+
+this.moveBox=function(dx,dy)
+{
+	//console.log("B: "+dx+" "+dy+" "+(this.scy1+dy)+" "+(this.scy4+dy)+" "+minY+" "+maxY);
+
+			//if((this.scx1+dx)>minX&&(this.scx4+dx)<maxX&&(this.scy1+dy)>minY&&(this.scy4+dy)<maxY){
+				if(true){
+					this.scx1+=dx;
+					this.scx2+=dx;
+					this.scx3+=dx;
+					this.scx4+=dx;
+					this.scy1+=dy;
+					this.scy2+=dy;
+					this.scy3+=dy;
+					this.scy4+=dy;
+				}
 			}
-			
-			//This function is called when a mouse button is pressed down on the canvas element
-			function mouseDown(event){
-						//Find the position of the canvas element
-						var pos=findPos(event); //event.target is the canvas
-						mx=pos.x;
-						my=pos.y;
-						clickstate=1;
-						
-			}       
 
-			//This function is called when a mouse button is pressed down on the canvas element
-			function mouseUp(event){
-						//Find the position of the canvas element
-						var pos=findPos(event); //event.target is the canvas
-						mx=pos.x;
-						my=pos.y;
-						
-						clickmode=0;
-						clickstate=0;
-
-						var canvas = document.getElementById("myCanvas");
-						canvas.style.cursor="default";
-			}
-			
-			function initcanvas()
+			this.moveText=function(dx,dy)
 			{
-			    var canvas = document.getElementById("myCanvas");
+		//		console.log("Txt: "+dx+" "+dy+" "+(this.scy1+dy)+" "+(this.scy4+dy)+" "+minY+" "+maxY);
+				this.txtx+=dx;
+				this.txty+=dy;
+			}
 
-					var elem = document.getElementById("myCanvas");
-					if (elem && elem.getContext) {
-							elem.addEventListener('mousemove', mouseMove, false);
-							elem.addEventListener('mousedown', mouseDown, false);
-							elem.addEventListener('mouseup', mouseUp, false);
-							
-							ctx = elem.getContext('2d');
-							
-							boxes.push(new movableBox(50,50,350,250,100,100,300,200,"#sven",0,"#26D",1,"#000"));
-							boxes.push(new movableBox(300,50,600,250,350,100,550,200,"#greger",1,"#34b",1,"#000"));
-							boxes.push(new movableBox(50,300,350,450,100,350,300,400,"#egon",1,"#2a3",0,"#000"));
-					
-							drawGraphics();
-					}                      
-					
-			} 
+
+			this.drawBox=function(no)
+			{
+				if(kind==1){
+
+					if(no==currobj){
+						scalebox(this.scx1,this.scy1,this.scx2,this.scy2,this.scx3,this.scy3,this.scx4,this.scy4,"#000","#656",10,this.texto,true,this.colr,this.clip,this.txtcolr,this.txtx,this.txty);			
+					}else{
+						scalebox(this.scx1,this.scy1,this.scx2,this.scy2,this.scx3,this.scy3,this.scx4,this.scy4,"#000","#656",10,this.texto,false,this.colr,this.clip,this.txtcolr,this.txtx,this.txty);			
+					}
+				}else{
+					shadedBox(this.scx1,this.scy1,this.scx2,this.scy2,texto,8,10,6,this.colr,this.txtcolr);	 					
+				}
+			}				
+		}   
+
+//This function is called by the onmousemove event for the canvas element
+function mouseMove(event){
+		//Find the position of the canvas element
+		var pos=findPos(event); //event.target is the canvas
 		
-			function drawGraphics()
-			{
-					// Background
-					ctx.fillStyle="#fff";
-					ctx.fillRect(0,0,600,600);
+		ox=mx;
+		oy=my;
+		mx=pos.x;
+		my=pos.y;
+		
+		var canvas = document.getElementById("myCanvas");
 
-					// Ruler
-					drawRuler(0,575,0,4,7,25,25);
-					
-					// Movable Boxes
-					for(i=0;i<boxes.length;i++){
-								boxes[i].drawBox(i);
-					}
-					
-					ctx.beginPath();
-					ctx.moveTo(mx-10,my-10);
-					ctx.lineTo(mx+10,my+10);
-					ctx.moveTo(mx+10,my-10);
-					ctx.lineTo(mx-10,my+10);
-					ctx.stroke();	  			
-							
-					setTimeout(function(){drawGraphics()}, 30);
+		if(clickmode==1||clickmode==2||clickmode==5||clickmode==6){
+			canvas.style.cursor="ew-resize";						
+		}else if(clickmode==3||clickmode==4||clickmode==7||clickmode==8){
+			canvas.style.cursor="ns-resize";												
+		}else if(clickmode==9||clickmode==10){
+			canvas.style.cursor="grab";																		
+		}else{
+			canvas.style.cursor="default";																								
+		}
+
+		if(clickstate==0){
+			clickmode=0;
+			currobj=-1;
+			for(i=0;i<boxes.length;i++){
+				var tst=boxes[i].clicktest();
+				if(tst!=0){
+					currobj=i;
+					clickmode=tst;
+				}
 			}
+		}else{
+			var dx=mx-ox;
+			var dy=my-oy;
+
+			if(currobj>=0){
+				if(clickmode==1){
+					boxes[currobj].moveLeft(mx);
+				}else if(clickmode==2){
+					boxes[currobj].moveRight(mx);
+				}else if(clickmode==3){
+					boxes[currobj].moveTop(my);
+				}else if(clickmode==4){
+					boxes[currobj].moveBottom(my);
+				}else if(clickmode==5){
+					boxes[currobj].moveInnerLeft(mx);											
+				}else if(clickmode==6){
+					boxes[currobj].moveInnerRight(mx);											
+				}else if(clickmode==7){
+					boxes[currobj].moveInnerTop(my);											
+				}else if(clickmode==8){
+					boxes[currobj].moveInnerBottom(my);											
+				}else if(clickmode==9){
+					boxes[currobj].moveBox(dx,dy);											
+				}else if(clickmode==10){
+					boxes[currobj].moveText(dx,dy);											
+				}
+				
+			}
+		}
+						
+	}
+
+//This function is called when a mouse button is pressed down on the canvas element
+function mouseDown(event){
+		//Find the position of the canvas element
+		var pos=findPos(event); //event.target is the canvas
+		mx=pos.x;
+		my=pos.y;
+		clickstate=1;
+		
+	}       
+
+//This function is called when a mouse button is pressed down on the canvas element
+function mouseUp(event){
+		//Find the position of the canvas element
+		var pos=findPos(event); //event.target is the canvas
+		mx=pos.x;
+		my=pos.y;
+		
+		clickmode=0;
+		clickstate=0;
+
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
+	}
+
+	function drawGraphics()
+	{
+
+	eval(evalstr);
+
+	// Background
+	ctx.fillStyle="#fff";
+	ctx.fillRect(0,0,canvasWidth,canvasHeight);
+
+	// Ruler
+	drawRuler(0,575,0,4,7,rulerPaddingX,rulerPaddingY);
+	
+	// Movable Boxes
+	for(i=0;i<boxes.length;i++){
+		boxes[i].drawBox(i);
+	}
+	
+	/*
+	ctx.beginPath();
+	ctx.moveTo(mx-10,my-10);
+	ctx.lineTo(mx+10,my+10);
+	ctx.moveTo(mx+10,my-10);
+	ctx.lineTo(mx-10,my+10);
+	ctx.stroke();	  			
+  */
+	setTimeout(function(){drawGraphics()}, 30);
+}
+
 
 // Dugga.js
 //Finds the position of any DOM element in the document by recursion - should work in most modern browsers
 function findPos(event) {
-		var curleft = curtop = 0;
-		var obj=event.target;
-		if (obj.offsetParent) {
-					curleft = obj.offsetLeft
-					curtop = obj.offsetTop
-					while (obj = obj.offsetParent) {
-								curleft += obj.offsetLeft
-								curtop += obj.offsetTop
-					}
+	var curleft = curtop = 0;
+	var obj=event.target;
+	if (obj.offsetParent) {
+		curleft = obj.offsetLeft
+		curtop = obj.offsetTop
+		while (obj = obj.offsetParent) {
+			curleft += obj.offsetLeft
+			curtop += obj.offsetTop
 		}
+	}
 		return {x:event.pageX-curleft, y:event.pageY-curtop} //Returns the position of the element as an object
-}
+	}
 
 // Dugga.js
 function clickregionX(x1,y1,y2,clickm){
-  return ((mx>(x1-tolerance))&&(mx<(x1+tolerance))&&(my>(y1-tolerance))&&(my<(y2+tolerance)));
+	return ((mx>(x1-tolerance))&&(mx<(x1+tolerance))&&(my>(y1-tolerance))&&(my<(y2+tolerance)));
 }
 
 // Dugga.js
 function clickregionY(x1,y1,x2,clickm){
-  return ((my>(y1-tolerance))&&(my<(y1+tolerance))&&(mx>(x1-tolerance))&&(mx<(x2+tolerance)));		
+	return ((my>(y1-tolerance))&&(my<(y1+tolerance))&&(mx>(x1-tolerance))&&(mx<(x2+tolerance)));		
 }
 
 // Dugga.js
 function clickregionXY(x1,y1,x2,y2,clickm){
-  return ((my>(y1-tolerance))&&(my<(y2+tolerance))&&(mx>(x1-tolerance))&&(mx<(x2+tolerance)));
+	return ((my>(y1-tolerance))&&(my<(y2+tolerance))&&(mx>(x1-tolerance))&&(mx<(x2+tolerance)));
 }
 
 // Dugga.js
 function shadedBox(x1,y1,x2,y2,texto,ow,oh,lw,colr,txtcolr)
 {
-		ctx.font = "16px Arial";
+	ctx.font = "16px Arial";
 
-		var tcx=x1+(0.5*(x2-x1));
-		var tcy=y1+(0.5*(y2-y1));
-		var tw=ctx.measureText(texto).width*0.5;
-		
-		if(x1>(tcx-tw-ow)) x1=(tcx-tw-ow);
-		if(x2<(tcx+tw+ow)) x2=(tcx+tw+ow);					
-		if(y1>(tcy-oh)) y1=(tcy-oh);
-		if(y2<(tcy+oh)) y2=(tcy+oh);					
+	var tcx=x1+(0.5*(x2-x1));
+	var tcy=y1+(0.5*(y2-y1));
+	var tw=ctx.measureText(texto).width*0.5;
+
+	if(x1>(tcx-tw-ow)) x1=(tcx-tw-ow);
+	if(x2<(tcx+tw+ow)) x2=(tcx+tw+ow);					
+	if(y1>(tcy-oh)) y1=(tcy-oh);
+	if(y2<(tcy+oh)) y2=(tcy+oh);					
 
 		// Rectangle
 		ctx.globalAlpha=0.5;
@@ -574,7 +623,7 @@ function shadedBox(x1,y1,x2,y2,texto,ow,oh,lw,colr,txtcolr)
 		ctx.save();
 		
 		ctx.clip();
-							
+
 		for(var i=x1-(y2-y1);i<x2;i+=lw){
 			ctx.beginPath();		
 			ctx.moveTo(i,y1);
@@ -589,7 +638,7 @@ function shadedBox(x1,y1,x2,y2,texto,ow,oh,lw,colr,txtcolr)
 		ctx.fillText(texto,tcx,tcy+6);
 		
 		ctx.globalAlpha=1.0;					
-}
+	}
 
 // Dugga.js
 function markRect(x1,y1,c1,c2)
@@ -608,10 +657,10 @@ function markRect(x1,y1,c1,c2)
 		ctx.closePath();
 		ctx.fill();
 		ctx.stroke();										
-}
+	}
 
-function scalebox(x1,y1,x2,y2,x3,y3,x4,y4,c1,c2,radius,texto,state,colr,clipmode,txtcolr)
-{
+	function scalebox(x1,y1,x2,y2,x3,y3,x4,y4,c1,c2,radius,texto,state,colr,clipmode,txtcolr,txtX,txtY)
+	{
 		cx1=x1+((x2-x1)*0.5);
 		cy1=y1+((y2-y1)*0.5);
 		cx3=x3+((x4-x3)*0.5);
@@ -642,25 +691,15 @@ function scalebox(x1,y1,x2,y2,x3,y3,x4,y4,c1,c2,radius,texto,state,colr,clipmode
 		ctx.lineTo(x1,y2);
 		ctx.closePath();
 		ctx.stroke();	
-		
+
 		if(texto!=""){
 				ctx.save();
-				
-				if(clipmode){
-						ctx.beginPath();		
-						ctx.moveTo(x3,y3);
-						ctx.lineTo(x4,y3);
-						ctx.lineTo(x4,y4);					
-						ctx.lineTo(x3,y4);
-						ctx.closePath();
-						ctx.clip();
-				}
-				
+
 				ctx.font = "18px Arial";
-				ctx.textAlign = 'center';
+				ctx.textAlign = 'left';
 				ctx.fillStyle = txtcolr;
-				ctx.fillText(texto,cx3,cy3+6);
-				
+				ctx.fillText(texto,x3+txtX,y3+txtY);			
+								
 				ctx.restore();
 		}
 
@@ -675,7 +714,7 @@ function scalebox(x1,y1,x2,y2,x3,y3,x4,y4,c1,c2,radius,texto,state,colr,clipmode
 				markRect(cx3,y3,"#e36","#914");
 				markRect(cx3,y4,"#e36","#914");
 		}		
-}
+	}
 
 // Dugga.js
 function drawRuler(sx,ex,sy,ws,wl,skip,padding)
@@ -738,5 +777,5 @@ function drawRuler(sx,ex,sy,ws,wl,skip,padding)
 			ctx.fillText(i,12,padding+i+3);
 		}
 	}
-					
+
 }
