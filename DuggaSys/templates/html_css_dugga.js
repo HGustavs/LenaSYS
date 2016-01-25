@@ -78,24 +78,23 @@ function returnedDugga(data)
 		document.getElementById("duggaInstructions").innerHTML = retdata["instructions"];
 		showDuggaInfoPopup();
 		document.getElementById("target-window-img").src = "showdoc.php?fname="+retdata["target"];
+		document.getElementById("target-text").innerHTML = retdata["target-text"];
+
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
-			var tmpstr = data["answer"].substr(data["answer"].indexOf("["));
-			tmpstr = tmpstr.substr(0, tmpstr.lastIndexOf("]")+1);
-			tmpstr = tmpstr.replace(/&quot;/g, "\"");
-			var previousAnswer = jQuery.parseJSON(tmpstr);
-			console.log(previousAnswer);
-			previousAnswer[0] = previousAnswer[0].replace(/\!\!lt\!\!/g,"<");
-			previousAnswer[0] = previousAnswer[0].replace(/\!\!gt\!\!/g,">");
-			previousAnswer[0] = previousAnswer[0].replace(/\!\!semi\!\!/g,";");			
-			previousAnswer[0] = previousAnswer[0].replace(/\&\#47\;/g,"/");			
-			previousAnswer[0] = previousAnswer[0].replace(/\&\#63\;/g,"?");
-			document.getElementById("content-window").value = previousAnswer[0];
-			previousAnswer[1] = previousAnswer[1].replace(/\&\#47\;/g,"/");
-			previousAnswer[1] = previousAnswer[1].replace(/\&\#63\;/g,"?");
-			document.getElementById("url-input").value = previousAnswer[1];
+			var userCode = data["answer"].substr(data["answer"].indexOf("###HTMLSTART###")+15,data["answer"].indexOf("###HTMLEND###")-28);
+			userCode =  reverseHtmlEntities(userCode);
+			var userUrl = data["answer"].substr(data["answer"].indexOf("###URLSTART###"),data["answer"].indexOf("###URLEND###"));
+			var res = userUrl.split(",");
+			userUrl = res[0]; 
+			userUrl = userUrl.replace("###URLSTART###", "");
+			userUrl = userUrl.replace("###URLEND###", "");
+			userUrl =  reverseHtmlEntities(userUrl);
+			document.getElementById("content-window").value = userCode;
+			document.getElementById("url-input").value = userUrl;
+
 			changedTxt();
-			refreshdUrl()
+			refreshdUrl();
 		}
 
 
@@ -104,14 +103,10 @@ function returnedDugga(data)
 
 function reset()
 {
-	console.log(JSON.stringify(boxes));
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
 
-	boxes.length = 0; // Clear array.
-	for (var b=0; b<retdata["boxes"].length; b++) {
-		var box = retdata["boxes"][b];
-		boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
-	}
+	document.getElementById("content-window").value = "";
+	document.getElementById("url-input").value = "";
 
 	Timer.stopTimer();
 	Timer.score=0;
@@ -135,14 +130,10 @@ function saveClick()
 		score = ClickCounter.score;
 	}
 
-	// Loop through all bits
-	var tmp = [document.getElementById("content-window").value, document.getElementById("url-input").value];
 
-	tmp[0] = tmp[0].replace(/\</g,"!!lt!!");
-	tmp[0] = tmp[0].replace(/\>/g,"!!gt!!");
-	tmp[0] = tmp[0].replace(/\;/g,"!!semi!!");
+	bitstr = htmlEntities("###HTMLSTART###"+document.getElementById("content-window").value+"###HTMLEND###");
+	bitstr += htmlEntities("###URLSTART###"+document.getElementById("url-input").value+"###URLEND###");
 
-	bitstr = JSON.stringify(tmp);
 	bitstr += ",T " + elapsedTime;
 
 	bitstr += " " + window.screen.width;
@@ -161,7 +152,7 @@ function showFacit(param, uanswer, danswer, userStats)
 	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 	document.getElementById('duggaClicks').innerHTML=userStats[2];
 	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-	$("#duggaStats").css("display","block");
+	$("#duggaStats").css("display","none");
 
 	/* reset */
 	sf = 2.0;
@@ -171,30 +162,34 @@ function showFacit(param, uanswer, danswer, userStats)
 	elapsedTime = 0;
 
 	running = true;
-	canvas = document.getElementById('a');
-	context = canvas.getContext("2d");
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
 
 	retdata = jQuery.parseJSON(param);
-	variant = retdata["variant"];
+
+	document.getElementById("target-window-img").src = "showdoc.php?fname="+retdata["target"];
 
 	if (uanswer !== null || uanswer !== "UNK") {
-		var previous = uanswer.split(',');
-		previous.shift();
-		previous.pop();
+		
+			var userCode = uanswer.substr(uanswer.indexOf("###HTMLSTART###"),uanswer.indexOf("###HTMLEND###"));
+			userCode = userCode.replace("###HTMLSTART###", "");
+			userCode = userCode.replace("###HTMLEND###", "");
 
-		// Add previous handed in dugga
-		operationList = [];
-		for (var i = 0; i < previous.length; i++) {
-			if (previous[i] !== ""){
-				operationList.push([operationsMap[previous[i]], previous[i]]);						
-			}
-		}
-		renderOperationList();
+			userCode =  reverseHtmlEntities(userCode);
+			var userUrl = uanswer.substr(uanswer.indexOf("###URLSTART###"),uanswer.indexOf("###URLEND###"));
+			var res = userUrl.split(",");
+			userUrl = res[0]; 
+			userUrl = userUrl.replace("###URLSTART###", "");
+			userUrl = userUrl.replace("###URLEND###", "");
+			userUrl =  reverseHtmlEntities(userUrl);
+
+			document.getElementById("content-window").value = userCode;
+			$("#code-preview-label").css("display","none");
+			$("#preview-code-window").css("display","none");
+			document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="'+userUrl+'"></iframe>'
+			
 	}
 
-	foo();
 }
 
 function closeFacit() 
@@ -238,6 +233,31 @@ function startDuggaHighScore(){
 		score = 0;
 	}
 }			
+function reverseHtmlEntities(str) {
+													
+		befstr=str;
+		if(str!=undefined && str != null){
+				str=str.replace(/\&amp\;/g, '&');
+				str=str.replace(/\&lt\;/g, '<');
+				str=str.replace(/\&gt\;/g, '>');
+				str=str.replace(/\&ouml\;/g, 'ö');
+				str=str.replace(/\&Ouml\;/g, 'Ö');
+				str=str.replace(/\&auml\;/g, 'ä');
+				str=str.replace(/\&Auml\;/g, 'Ä');
+				str=str.replace(/\&aring\;/g, 'å');
+				str=str.replace(/\&Aring\;/g, 'Å');
+				str=str.replace(/\&quot\;/g, '"');
+				str=str.replace(/\&#47\;/g, '/');
+				str=str.replace(/\&#92\;/g, '\\');
+				str=str.replace(/\&#63\;/g, '?');
+				str=str.replace(/\\n/g, '\n');
+
+//				str=str.replace(/\{/g, '&#123;');
+//				str=str.replace(/\}/g, '&#125;');
+		}
+   	return str;
+}
+
 function changedTxt()
 {
 		document.getElementById("preview-code-window").innerHTML=document.getElementById("content-window").value;
@@ -246,4 +266,13 @@ function changedTxt()
 function refreshdUrl()
 {
 		document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+document.getElementById("url-input").value+'"></iframe>'
+}
+
+
+function processpreview()
+{
+		content=document.getElementById("content-window").value;
+		content=encodeURIComponent(content);
+		
+		document.getElementById("preview-code-window").src="preview.php?prev="+content;
 }

@@ -1,35 +1,53 @@
 <div id="container" style="">
-<table style="width:100%">
-<tr>
-	<td valign="top"><div style="margin:15px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);"><div style="margin: 15px;"><p>Target</p></div><div id="target-window" style="min-width:400px;min-height:400px;max-width:600px;max-height:600px;overflow:scroll;"><img style="margin:5px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 5px 0 rgba(0,0,0,0.1);" id="target-window-img" src="" /></div></div></td>
-	<td valign="top"><div style="margin:15px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);"><div><p>Skriv/klistra in kod</p></div><textarea id="content-window" onkeyup="changedTxt();" style="min-width:400px;min-height:600px;margin: 15px;"></textarea><div style="min-height:50px; margin: 15px;"><label>URL:</label><input style="border:1px solid black;" id="url-input" type="text" name="url"><span class="submit-button" onclick="refreshdUrl()">Refresh!</span></div></div></td>
-	<td valign="top"><div style="margin:15px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);"><div><p>Preview av inklistrad kod</p></div><div id="preview-code-window" style="border:1px solid red;overflow:scroll;min-width:400px;min-height:400px; margin:5px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 5px 0 rgba(0,0,0,0.1);"></div><div style="margin: 15px;"><p>Preview URL</p></div><div id="url-preview-window" style="border:1px solid red;overflow:scroll;min-width:400px;min-height:400px;margin:5px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 5px 0 rgba(0,0,0,0.1);"></div></div></td>
-</tr>
-</table>
+    <table style="width:100%">
+        <tr>
+            <td valign="top">
+                <div style="margin:15px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);overflow:hidden;">
+                    <div style="margin: 15px;"><p class='loginBoxheader' style="color:#FFF; overflow:hidden;">Webbplatsutseende som skall skapas</p><p style="font: italic bold;">Extrakrav: <span id="target-text"></span></p></div>
+                    <div id="target-window" style="min-width:200px;min-height:400px;max-width:600px;max-height:600px;overflow:scroll;"><img style="margin:5px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 5px 0 rgba(0,0,0,0.1);" id="target-window-img" src="" /></div>
+                </div>
+            </td>
+            <td valign="top">
+                <div style="margin:15px; box-shadow: 0 2px 7px 0 rgba(0,0,0,0.5),0 2px 12px 0 rgba(0,0,0,0.1);overflow:hidden;">
+                    <div style="margin: 15px;"><p class='loginBoxheader' style="color:#FFF: overflow:hidden">Skriv/klistra in kod</p></div>
+                    <textarea id="content-window" onkeyup="processpreview();" style="min-height:500px;margin: 15px;overflow:scroll;"></textarea>
+                    <div style="min-height:75px; margin: 15px;"><label>Adress (URL) till publiserad version:</label><br><input style="border:1px solid black;" id="url-input" type="text" name="url"><span class="submit-button" onclick="refreshdUrl()">Uppdatera URL</span></div>
+                </div>
+            </td>
+            <td valign="top">
+                <div style="margin:15px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);overflow:hidden;">
+                    <div id="code-preview-label" style="margin: 15px;overflow:hidden"><p class='loginBoxheader' style="color:#FFF">Förhandsgranskning av inklistrad programkod</p></div>
+                    <iframe id="preview-code-window" style="border:1px solid red;overflow:hidden; margin:5px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 5px 0 rgba(0,0,0,0.1);"></iframe>
+                    <div style="margin: 15px;"><p class='loginBoxheader' style="color:#FFF;overflow:hidden;">Förhandsgranskning av publicerad version (URL). Skall se identisk ut med ovan ovanstående.</p></div>
+                    <div id="url-preview-window" style="border:1px solid red;overflow:scroll;min-width:400px;min-height:400px;margin:5px; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 5px 0 rgba(0,0,0,0.1);"></div>
+                </div>
+            </td>
+       </tr>
+   </table>
 </div>
 
 <div id='duggaInfoBox' class="loginBox" style="display:none">
   <div>
-        <div class='loginBoxheader'>
-            <h3 style="width: 75%;">Dugga - HTML/CSS</h3>
-            <div onclick="hideDuggaInfoPopup()">x</div>
-        </div>
-          <div class="table-wrap">
-            <table>
-                <tr>
-                    <td>
-                        <p id="duggaInstructions" style="margin-left: 4px;"></p>
-                        <p style="margin-left: 4px;">Lycka till!</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type='button' class='submit-button' style="float: right;" onclick="hideDuggaInfoPopup();" value='Stäng'>
-                    </td>
-                </tr>
-            </table>
-          </div>
+    <div class='loginBoxheader'>
+        <h3 style="width: 75%;">Dugga - HTML/CSS</h3>
+        <div onclick="hideDuggaInfoPopup()">x</div>
     </div>
+    <div class="table-wrap">
+        <table>
+            <tr>
+                <td>
+                    <p id="duggaInstructions" style="margin-left: 4px;"></p>
+                    <p style="margin-left: 4px;">Lycka till!</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type='button' class='submit-button' style="float: right;" onclick="hideDuggaInfoPopup();" value='Stäng'>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 </div>
 
 <div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
