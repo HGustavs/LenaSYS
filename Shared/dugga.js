@@ -242,10 +242,11 @@ function AJAXService(opt,apara,kind)
 					}
 					para += array;
 			}else{
-					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}():|"\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
+//					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}():|"\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
 			
 					// Concat the generated regex result to a string again.
-					apara[key] = s.join("");
+//					apara[key] = s.join("");
+					apara[key] = old;
 			
 					// Informs the user that his input contained illegal characters that were removed after parsing.
 					if(old != apara[key]) {
