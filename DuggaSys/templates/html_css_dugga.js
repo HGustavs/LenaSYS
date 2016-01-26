@@ -186,7 +186,7 @@ function showFacit(param, uanswer, danswer, userStats)
 			document.getElementById("content-window").value = userCode;
 			$("#code-preview-label").css("display","none");
 			$("#preview-code-window").css("display","none");
-			document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="'+userUrl+'"></iframe>'
+			document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="'+userUrl+'"></iframe>'+'<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl) +'"></iframe>'
 			
 	}
 
