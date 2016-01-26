@@ -186,38 +186,55 @@ function showFacit(param, uanswer, danswer, userStats)
 	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 	$("#duggaStats").css("display","block");
 
-	/* reset */
-	sf = 2.0;
-	speed = 0.1;
-	v = 0;
-	pushcount = 0;
-	elapsedTime = 0;
+	canvas = document.getElementById("myCanvas");
+	ctx = canvas.getContext('2d');
+	ctx.font = "18px Arial";
 
-	running = true;
-	canvas = document.getElementById('a');
-	context = canvas.getContext("2d");
-	tickInterval = setInterval("tick();", 50);
-	var studentPreviousAnswer = "";
+	
+		if (canvas) {
+			retdata = jQuery.parseJSON(param);
 
-	retdata = jQuery.parseJSON(param);
-	variant = retdata["variant"];
-
-	if (uanswer !== null || uanswer !== "UNK") {
-		var previous = uanswer.split(',');
-		previous.shift();
-		previous.pop();
-
-		// Add previous handed in dugga
-		operationList = [];
-		for (var i = 0; i < previous.length; i++) {
-			if (previous[i] !== ""){
-				operationList.push([operationsMap[previous[i]], previous[i]]);						
+			boxes.length = 0; // Clear array.
+			evalstr = retdata["code"];
+			document.getElementById("duggaInstructions").innerHTML = retdata["instructions"];
+			var tmpstr = retdata["query"];
+			tmpstr += "<BR><BR><div style='background-color:#FFF;'><code><pre style='font-family:hack;font-size:12px'>";
+			for (var l = 0;l<retdata["css"].length;l++){
+				if (retdata["css"][l].substr(0,1) === "#") {
+					if (l!==0){
+						tmpstr += "}<BR>" + retdata["css"][l] + "<BR>";
+					} else {
+						tmpstr += retdata["css"][l] + "<BR>";	
+					}
+					
+				} else {
+					tmpstr += "   " + retdata["css"][l] + ";<BR>";
+				}
 			}
-		}
-		renderOperationList();
-	}
+			tmpstr += "}</pre></code></div>";
+			document.getElementById("duggaQuery").innerHTML = tmpstr;
 
-	foo();
+			//showDuggaInfoPopup();
+			var studentPreviousAnswer = "";
+
+			if (uanswer == null || uanswer !== "UNK") {
+				var tmpstr = uanswer.substr(uanswer.indexOf("["));
+				tmpstr = tmpstr.substr(0, tmpstr.lastIndexOf("]")+1);
+				tmpstr = tmpstr.replace(/&quot;/g, "\"");
+				var userboxes = jQuery.parseJSON(tmpstr);
+				for (var b=0; b<userboxes.length; b++) {
+					var box = userboxes[b];
+    			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+    		}
+			} else {
+				for (var b=0; b<retdata["boxes"].length; b++) {
+					var box = retdata["boxes"][b];
+    			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+				}
+			}
+
+			drawGraphics();
+		}
 }
 
 function closeFacit() 
