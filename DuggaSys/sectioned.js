@@ -552,16 +552,16 @@ function returnedSection(data)
 						
 						if(grady==-1 || grady == 0){
 								// Nothing submitted nor marked (White)
-								str+="<img id='korf' style='float:left;margin-left:8px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
+								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; margin-bottom:3px; background: radial-gradient(white, grey, white);border-radius:13px;border:1px solid #000;' ></div>";
 						}else if(grady==null){
 								//	Nothing marked yet (Yellow)
-								str+="<img id='korf' style='float:left;margin-left:8px' title='Status: Handed in\nDate: "+lawtem['submitted']+"' src='../Shared/icons/StopY.svg' />";
+								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Handed in\nDate: "+lawtem['submitted']+"' ></div> ";
 						}else if(grady==1){
 								//	Marked Fail! (Red)								
-								str+="<img id='korf' style='float:left;margin-left:8px' title='Status: Failed\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopR.svg' />";
+								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(red 55%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Failed\nDate: "+lawtem['marked']+"' ></div>";
 						}else if(grady>1){
 								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<img id='korf' style='float:left;margin-left:8px' title='Status: Pass\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopG.svg' />";
+								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(green 55%, grey, white 60%);border-radius:13px;border:1px solid #000;'  title='Status: Pass\nDate: "+lawtem['marked']+"' ></div>";
 						}
 
 					}
@@ -577,16 +577,16 @@ function returnedSection(data)
 						
 						if(grady==-1 || grady == 0){
 								// Nothing submitted nor marked (White)
-								str+="<img id='korf' style='float:left;margin-left:24px' title='Status: Not Handed In' src='../Shared/icons/StopN.svg' />";
+								str+="<div id='korf' style='width:22px; height:22px; diplay:inline-box;float:left;margin-left:30px; background: radial-gradient(white, grey, white);border-radius:11px;border:1px solid #000;' ></div>";
 						}else if(grady==null){
 								//	Nothing marked yet (Yellow)
-								str+="<img id='korf' style='float:left;margin-left:24px' title='Status: Handed in\nDate: "+lawtem['submitted']+"' src='../Shared/icons/StopY.svg' />";
+								str+="<div id='korf' style='width:22px; height:22px; diplay:inline-box;float:left;margin-left:30px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:11px; border:1px solid #000;' title='Status: Handed in\nDate: "+lawtem['submitted']+"' ></div> ";
 						}else if(grady==1){
 								//	Marked Fail! (Red)								
-								str+="<img id='korf' style='float:left;margin-left:24px' title='Status: Failed\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopR.svg' />";
+								str+="<div id='korf' style='width:22px; height:22px; diplay:inline-box;float:left;margin-left:30px; background: radial-gradient(red 55%, grey, white 60%);border-radius:11px;border:1px solid #000;' title='Status: Failed\nDate: "+lawtem['marked']+"' ></div>";
 						}else if(grady>1){
 								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<img id='korf' style='float:left;margin-left:24px' title='Status: Pass\nDate: "+lawtem['marked']+"' src='../Shared/icons/StopG.svg' />";
+								str+="<div id='korf' style='width:22px; height:22px; diplay:inline-box;float:left;margin-left:30px; background: radial-gradient(green 55%, grey, white 60%);border-radius:11px;border:1px solid #000;'  title='Status: Pass\nDate: "+lawtem['marked']+"' ></div>";
 						}
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
