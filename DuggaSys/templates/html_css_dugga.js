@@ -93,7 +93,7 @@ function returnedDugga(data)
 			document.getElementById("content-window").value = userCode;
 			document.getElementById("url-input").value = userUrl;
 
-			changedTxt();
+			processpreview();
 			refreshdUrl();
 		}
 
@@ -168,6 +168,7 @@ function showFacit(param, uanswer, danswer, userStats)
 	retdata = jQuery.parseJSON(param);
 
 	document.getElementById("target-window-img").src = "showdoc.php?fname="+retdata["target"];
+	document.getElementById("target-text").innerHTML = retdata["target-text"];
 
 	if (uanswer !== null || uanswer !== "UNK") {
 		
@@ -186,7 +187,7 @@ function showFacit(param, uanswer, danswer, userStats)
 			document.getElementById("content-window").value = userCode;
 			$("#code-preview-label").css("display","none");
 			$("#preview-code-window").css("display","none");
-			document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="'+userUrl+'"></iframe>'+'<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl) +'"></iframe>'
+			document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="'+userUrl+'"></iframe>'+'<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl)+'"></iframe>'
 			
 	}
 
@@ -265,7 +266,7 @@ function changedTxt()
 
 function refreshdUrl()
 {
-		document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+document.getElementById("url-input").value+'"></iframe>'
+		document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+document.getElementById("url-input").value+'?name='+(new Date).getTime()+'"></iframe>'
 }
 
 
