@@ -130,6 +130,10 @@ function saveClick()
 		score = ClickCounter.score;
 	}
 
+	if (document.getElementById("content-window").value.length > MAX_SUBMIT_LENGTH){
+		alert("Din kod är för lång. Svaret går att göra mindre. Inget har sparats.");
+		return;
+	}
 
 	bitstr = htmlEntities("###HTMLSTART###"+document.getElementById("content-window").value+"###HTMLEND###");
 	bitstr += htmlEntities("###URLSTART###"+document.getElementById("url-input").value+"###URLEND###");
