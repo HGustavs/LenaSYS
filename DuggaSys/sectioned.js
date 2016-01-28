@@ -623,7 +623,7 @@ function returnedSection(data)
 								} else {
 									marked = null;
 								}
-								if (submitted !== null && marked === null) {
+								if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
 									status="pending";
 								} 
 
