@@ -6,6 +6,7 @@ var status = 0;
 var score;
 var timeUsed;
 var stepsUsed;
+var MAX_SUBMIT_LENGTH = 5000;
 function toggleloginnewpass(){
 
 	if(status == 0){
@@ -184,26 +185,28 @@ function parseGet(){
 //----------------------------------------------------------------------------------
 
 function htmlEntities(str) {
-													
+		
+	if (typeof str === "string"){					
 		befstr=str;
 		if(str!=undefined && str != null){
-				str=str.replace(/\&/g, '&amp;');
-				str=str.replace(/\</g, '&lt;');
-				str=str.replace(/\>/g, '&gt;');
-				str=str.replace(/\ö/g, '&ouml;');
-				str=str.replace(/\Ö/g, '&Ouml;');
-				str=str.replace(/\ä/g, '&auml;');
-				str=str.replace(/\Ä/g, '&Auml;');
-				str=str.replace(/\å/g, '&aring;');
-				str=str.replace(/\Å/g, '&Aring;');
-				str=str.replace(/\"/g, '&quot;');
-				str=str.replace(/\//g, '&#47;');
-				str=str.replace(/\\/g, '&#92;');
-				str=str.replace(/\?/g, '&#63;');
+			str=str.replace(/\&/g, '&amp;');
+			str=str.replace(/\</g, '&lt;');
+			str=str.replace(/\>/g, '&gt;');
+			str=str.replace(/\ö/g, '&ouml;');
+			str=str.replace(/\Ö/g, '&Ouml;');
+			str=str.replace(/\ä/g, '&auml;');
+			str=str.replace(/\Ä/g, '&Auml;');
+			str=str.replace(/\å/g, '&aring;');
+			str=str.replace(/\Å/g, '&Aring;');
+			str=str.replace(/\"/g, '&quot;');
+			str=str.replace(/\//g, '&#47;');
+			str=str.replace(/\\/g, '&#92;');
+			str=str.replace(/\?/g, '&#63;');
 
 //				str=str.replace(/\{/g, '&#123;');
 //				str=str.replace(/\}/g, '&#125;');
 		}
+	}
    	return str;
 }
 
@@ -211,7 +214,7 @@ function htmlEntities(str) {
 // AJAX Service: Generic AJAX Calling Function with Prepared Parameters
 //----------------------------------------------------------------------------------
 
-function AJAXService(opt,apara,kind)	
+function AJAXService(opt,apara,kind)
 {
 	var para="";
 	for (var key in apara) {
@@ -252,7 +255,6 @@ function AJAXService(opt,apara,kind)
 					if(old != apara[key]) {
 						alert("Illegal characters removed in " + key);
 					}
-						
 					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));		
 			}
 		}
