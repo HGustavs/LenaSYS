@@ -542,40 +542,14 @@ function returnedSection(data)
 		
 					if(parseInt(item['kind']) === 4){
 						var grady=-1;
+						var lastSubmit = null;
 						for(jjj=0;jjj<data['results'].length;jjj++){
 							var lawtem=data['results'][jjj];
 							//alert("G: "+lawtem['grade']);
 							if((lawtem['moment']==item['lid'])){
 								grady=lawtem['grade'];
-							}
-						}
-						
-						if(grady==-1 || grady == 0){
-								// Nothing submitted nor marked (White)
-								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; margin-bottom:3px; background: radial-gradient(white, grey, white);border-radius:13px;border:1px solid #000;' ></div>";
-						}else if(grady==null){
-								//	Nothing marked yet (Yellow)
-								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Handed in\nDate: "+lawtem['submitted']+"' ></div> ";
-						}else if(grady==1){
-								//	Marked Fail! (Red)								
-								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(red 55%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Failed\nDate: "+lawtem['marked']+"' ></div>";
-						}else if(grady>1){
-								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(green 55%, grey, white 60%);border-radius:13px;border:1px solid #000;'  title='Status: Pass\nDate: "+lawtem['marked']+"' ></div>";
-						}
 
-					}
-					if(parseInt(item['kind']) === 3){
-						var grady=-1;
-						var status ="";
-						var marked;
-						var submitted;
-						for(jjj=0;jjj<data['results'].length;jjj++){
-							var lawtem=data['results'][jjj];
-							console.log(lawtem);
-							if((lawtem['moment']==item['lid'])){
-								grady=lawtem['grade'];
-
+								status="";
 								var st = lawtem['submitted'];
 								if (st !== null) {
 									var sts = st.split(" ");
@@ -593,16 +567,74 @@ function returnedSection(data)
 
 								if (submitted !== null && marked === null) {
 									status="pending";
-								}
+								} 
 
 								if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
 									status="pending";
+								} 
+
+								if (lastSubmit === null){
+									lastSubmit = submitted;
+								} else if (submitted !== null) {
+									if (lastSubmit.getTime() < submitted.getTime()){
+										lastSubmit=submitted;
+									}
 								}
 							}
 						}
 						
+						if(status===""){
+								// Nothing submitted nor marked (White)
+								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; margin-bottom:3px; background: radial-gradient(white, grey, white);border-radius:13px;border:1px solid #000;' ></div>";
+						}else if(status === "pending"){
+								//	Nothing marked yet (Yellow)
+								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Handed in\nDate: "+lastSubmit+"' ></div> ";
+						}else if(grady==1){
+								//	Marked Fail! (Red)								
+								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(red 55%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div>";
+						}else if(grady>1){
+								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+								str+="<div id='korf' style='width:26px; height:26px; diplay:inline-box;float:left;margin-left:8px; background: radial-gradient(green 55%, grey, white 60%);border-radius:13px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div>";
+						}
 
-						if((grady==-1 || grady == 0 || grady==null)) {
+					}
+					if(parseInt(item['kind']) === 3){
+						var grady=-1;
+						var status ="";
+						var marked;
+						var submitted;
+						for(jjj=0;jjj<data['results'].length;jjj++){
+							var lawtem=data['results'][jjj];
+							console.log(lawtem);
+							if((lawtem['moment']==item['lid'])){
+								grady=lawtem['grade'];
+								status="";
+								var st = lawtem['submitted'];
+								if (st !== null) {
+									var sts = st.split(" ");
+									submitted = new Date(sts[0]+"T"+sts[1]);									
+								} else {
+									submitted = null;
+								}
+								var mt = lawtem['marked'];
+								if (mt !== null) {
+									var mts = mt.split(" ");
+									marked = new Date(mts[0]+"T"+mts[1]);									
+								} else {
+									marked = null;
+								}
+								if (submitted !== null && marked === null) {
+									status="pending";
+								} 
+
+								if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
+									status="pending";
+								} 
+							}
+						}
+						
+
+						if((grady==-1 || grady == 0 || grady==null) && status==="") {
 								// Nothing submitted nor marked (White)
 								str+="<div id='korf' style='width:22px; height:22px; diplay:inline-box;float:left;margin-left:30px; background: radial-gradient(white, grey, white);border-radius:11px;border:1px solid #000;' ></div>";
 						}else if(status === "pending"){
