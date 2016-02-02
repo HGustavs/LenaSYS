@@ -89,11 +89,25 @@ if(checklogin()){
 			// Insert a new code example and update variables accordingly.
 			if($link==-1){
 
-					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,'New Example','New Example',1,:cversion);");
+					// Find section name - Last preceding section name if none - assigns UNK - so we know that nothing was found
+					$sname = "UNK";
+					$queryz = $pdo->prepare("SELECT entryname FROM listentries WHERE cid=:cid AND kind=1 AND (pos < (SELECT pos FROM listentries WHERE lid=:lid)) ORDER BY pos DESC LIMIT 1;");
+					$queryz->bindParam(':cid', $courseid);
+					$queryz->bindParam(':lid', $sectid);
+					if(!$queryz->execute()) {
+						$error=$queryz->errorInfo();
+						$debug="Error reading entries".$error[2];
+					}
+					foreach($queryz->fetchAll() as $row) {
+								$sname=$row['entryname'];
+					}
+
+					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 			
 					$query2->bindParam(':cid', $courseid);
 					$query2->bindParam(':cversion', $coursevers);
-					
+					$query2->bindParam(':ename', $sectname);					
+					$query2->bindParam(':sname', $sname);					
 			
 					if(!$query2->execute()) {
 						$error=$query2->errorInfo();
