@@ -53,6 +53,7 @@ canvasWidth = 625;
 canvasHeight = 625;
 
 var evalstr = "";
+var facit=false; // When true - dashed lines is always visable
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
@@ -117,12 +118,12 @@ function returnedDugga(data)
 				var userboxes = jQuery.parseJSON(tmpstr);
 				for (var b=0; b<userboxes.length; b++) {
 					var box = userboxes[b];
-    			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
-    		}
+					boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+				}
 			} else {
 				for (var b=0; b<retdata["boxes"].length; b++) {
 					var box = retdata["boxes"][b];
-    			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+					boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
 				}
 			}
 
@@ -189,10 +190,11 @@ function showFacit(param, uanswer, danswer, userStats)
 	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext('2d');
 	ctx.font = "18px Arial";
+	facit = true;
 
 	
-		if (canvas) {
-			retdata = jQuery.parseJSON(param);
+	if (canvas) {
+		retdata = jQuery.parseJSON(param);
 
 			boxes.length = 0; // Clear array.
 			evalstr = retdata["code"];
@@ -224,24 +226,24 @@ function showFacit(param, uanswer, danswer, userStats)
 				var userboxes = jQuery.parseJSON(tmpstr);
 				for (var b=0; b<userboxes.length; b++) {
 					var box = userboxes[b];
-    			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
-    		}
+					boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+				}
 			} else {
 				for (var b=0; b<retdata["boxes"].length; b++) {
 					var box = retdata["boxes"][b];
-    			boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
+					boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
 				}
 			}
 
 			drawGraphics();
 		}
-}
+	}
 
-function closeFacit() 
-{
-	clearInterval(tickInterval);
-	running = false;
-}
+	function closeFacit() 
+	{
+		clearInterval(tickInterval);
+		running = false;
+	}
 
 //--------------------================############================--------------------
 //                                  Local Functions
@@ -280,126 +282,126 @@ function startDuggaHighScore(){
 }			
 			// Scaleable / Movable Box
 			function movableBox(scx1,scy1,scx2,scy2,scx3,scy3,scx4,scy4,texto,kind,colr,clip,txtcolr,txtx,txty) {
-					
-					this.scx1=scx1;
-					this.scy1=scy1;
-					this.scx2=scx2;
-					this.scy2=scy2;
-					this.scx3=scx3;
-					this.scy3=scy3;
-					this.scx4=scx4;
-					this.scy4=scy4;
-					this.texto=texto;
-					this.kind=kind;
-					this.colr=colr;
-					this.clip=clip;
-					this.txtcolr=txtcolr;
-					this.txtx=txtx;
-					this.txty=txty;
-					this.txtw=ctx.measureText(texto).width;
-					this.txth=19;
 
-					this.clicktest=function()
-					{
-								var clickmode=0;
-								if(kind==1){
+				this.scx1=scx1;
+				this.scy1=scy1;
+				this.scx2=scx2;
+				this.scy2=scy2;
+				this.scx3=scx3;
+				this.scy3=scy3;
+				this.scx4=scx4;
+				this.scy4=scy4;
+				this.texto=texto;
+				this.kind=kind;
+				this.colr=colr;
+				this.clip=clip;
+				this.txtcolr=txtcolr;
+				this.txtx=txtx;
+				this.txty=txty;
+				this.txtw=ctx.measureText(texto).width;
+				this.txth=19;
 
-										if(clickregionX(this.scx1,this.scy1,this.scy2)){
-												clickmode=1;
-										}else if(clickregionX(this.scx2,this.scy1,this.scy2)){
-												clickmode=2;
-										}else if(clickregionY(this.scx1,this.scy1,this.scx2)){
-												clickmode=3;
-										}else if(clickregionY(this.scx1,this.scy2,this.scx2)){
-												clickmode=4;
-										}else if(clickregionX(this.scx3,this.scy3,this.scy4)){
-												clickmode=5;
-										}else if(clickregionX(this.scx4,this.scy3,this.scy4)){
-												clickmode=6;
-										}else if(clickregionY(this.scx3,this.scy3,this.scx4)){
-												clickmode=7;
-										}else if(clickregionY(this.scx3,this.scy4,this.scx4)){
-												clickmode=8;
-										}else if(clickregionXY(this.scx1,this.scy1,this.scx2,this.scy2)){
-												clickmode=9;
-										}
-										if(clickregionXY(this.scx3+this.txtx,this.scy3+this.txty-this.txth,this.scx3+this.txtx+this.txtw,this.scy3+this.txty)){
-												clickmode=10;
-										} 
+				this.clicktest=function()
+				{
+					var clickmode=0;
+					if(kind==1){
 
-								}
-								return clickmode;
-					}
-					
-					this.moveLeft=function(mx)
-					{
-							if(mx<this.scx4&&mx>minX&&mx<maxX){
-									this.scx1=mx;
-									if(this.scx3<this.scx1) this.scx3=this.scx1;							
-							}
-					}
-					
-					this.moveRight=function(mx)
-					{
-							if(mx>this.scx3&&mx>minX&&mx<maxX){
-									this.scx2=mx;
-									if(this.scx4>this.scx2) this.scx4=this.scx2;
-							}
-					}
+						if(clickregionX(this.scx1,this.scy1,this.scy2)){
+							clickmode=1;
+						}else if(clickregionX(this.scx2,this.scy1,this.scy2)){
+							clickmode=2;
+						}else if(clickregionY(this.scx1,this.scy1,this.scx2)){
+							clickmode=3;
+						}else if(clickregionY(this.scx1,this.scy2,this.scx2)){
+							clickmode=4;
+						}else if(clickregionX(this.scx3,this.scy3,this.scy4)){
+							clickmode=5;
+						}else if(clickregionX(this.scx4,this.scy3,this.scy4)){
+							clickmode=6;
+						}else if(clickregionY(this.scx3,this.scy3,this.scx4)){
+							clickmode=7;
+						}else if(clickregionY(this.scx3,this.scy4,this.scx4)){
+							clickmode=8;
+						}else if(clickregionXY(this.scx1,this.scy1,this.scx2,this.scy2)){
+							clickmode=9;
+						}
+						if(clickregionXY(this.scx3+this.txtx,this.scy3+this.txty-this.txth,this.scx3+this.txtx+this.txtw,this.scy3+this.txty)){
+							clickmode=10;
+						} 
 
-					this.moveTop=function(my)
-					{
-							if(my<this.scy4&&my>minY&&mx<maxY){
-									this.scy1=my;
-									if(this.scy3<this.scy1) this.scy3=this.scy1;
-							}
 					}
+					return clickmode;
+				}
 
-					this.moveBottom=function(my)
-					{
-							if(my>this.scy3&&my>minY&&my<maxY){
-									this.scy2=my;
-									if(this.scy4>this.scy2) this.scy4=this.scy2;
-							}
+				this.moveLeft=function(mx)
+				{
+					if(mx<this.scx4&&mx>minX&&mx<maxX){
+						this.scx1=mx;
+						if(this.scx3<this.scx1) this.scx3=this.scx1;							
 					}
+				}
 
-					this.moveInnerLeft=function(mx)
-					{
-							if(mx<this.scx4&&mx>minX&&mx<maxX){
-									this.scx3=mx;
-									if(this.scx3<this.scx1) this.scx1=this.scx3;
-							}
+				this.moveRight=function(mx)
+				{
+					if(mx>this.scx3&&mx>minX&&mx<maxX){
+						this.scx2=mx;
+						if(this.scx4>this.scx2) this.scx4=this.scx2;
 					}
+				}
 
-					this.moveInnerRight=function(mx)
-					{
-							if(mx>this.scx3&&mx>minX&&mx<maxX){
-									this.scx4=mx;
-									if(this.scx4>this.scx2) this.scx2=this.scx4;
-							}
+				this.moveTop=function(my)
+				{
+					if(my<this.scy4&&my>minY&&mx<maxY){
+						this.scy1=my;
+						if(this.scy3<this.scy1) this.scy3=this.scy1;
 					}
-	
-					this.moveInnerTop=function(my)
-					{
-							if(my<this.scy4&&my>minY&&my<maxY){
-									this.scy3=my;
-									if(this.scy3<this.scy1) this.scy1=this.scy3;
-							}
+				}
+
+				this.moveBottom=function(my)
+				{
+					if(my>this.scy3&&my>minY&&my<maxY){
+						this.scy2=my;
+						if(this.scy4>this.scy2) this.scy4=this.scy2;
 					}
-					
-					this.moveInnerBottom=function(my)
-					{
-							if(my>this.scy3&&my>minY&&my<maxY){
-									this.scy4=my;
-									if(this.scy4>this.scy2) this.scy2=this.scy4;
-							}
-					}	
-					
-					this.moveBox=function(dx,dy)
-					{
-							
+				}
+
+				this.moveInnerLeft=function(mx)
+				{
+					if(mx<this.scx4&&mx>minX&&mx<maxX){
+						this.scx3=mx;
+						if(this.scx3<this.scx1) this.scx1=this.scx3;
+					}
+				}
+
+				this.moveInnerRight=function(mx)
+				{
+					if(mx>this.scx3&&mx>minX&&mx<maxX){
+						this.scx4=mx;
+						if(this.scx4>this.scx2) this.scx2=this.scx4;
+					}
+				}
+
+				this.moveInnerTop=function(my)
+				{
+					if(my<this.scy4&&my>minY&&my<maxY){
+						this.scy3=my;
+						if(this.scy3<this.scy1) this.scy1=this.scy3;
+					}
+				}
+
+				this.moveInnerBottom=function(my)
+				{
+					if(my>this.scy3&&my>minY&&my<maxY){
+						this.scy4=my;
+						if(this.scy4>this.scy2) this.scy2=this.scy4;
+					}
+				}	
+
+				this.moveBox=function(dx,dy)
+				{
+
 							//if((this.scx1+dx)>minX&&(this.scx4+dx)<maxX&&(this.scy1+dy)>minY&&(this.scy4+dy)<maxY){
-							if(true){
+								if(true){
 									this.scx1+=dx;
 									this.scx2+=dx;
 									this.scx3+=dx;
@@ -408,58 +410,64 @@ function startDuggaHighScore(){
 									this.scy2+=dy;
 									this.scy3+=dy;
 									this.scy4+=dy;
+								}
 							}
-					}
 
-					this.moveText=function(dx,dy)
-					{
-							this.txtx+=dx;
-							this.txty+=dy;
-					}
-					
-										
-					this.drawBox=function(no)
-					{
-							if(kind==1){
+							this.moveText=function(dx,dy)
+							{
+								this.txtx+=dx;
+								this.txty+=dy;
+							}
+
+
+							this.drawBox=function(no)
+							{
+								if(kind==1){
 
 									if(no==currobj){
-											scalebox(this.scx1,this.scy1,this.scx2,this.scy2,this.scx3,this.scy3,this.scx4,this.scy4,"#000","#656",10,this.texto,true,this.colr,this.clip,this.txtcolr,this.txtx,this.txty);			
+										scalebox(this.scx1,this.scy1,this.scx2,this.scy2,this.scx3,this.scy3,this.scx4,this.scy4,"#000","#656",10,this.texto,true,this.colr,this.clip,this.txtcolr,this.txtx,this.txty);			
 
-											ctx.globalAlpha=0.5;
-											ctx.lineWidth=2;
-											ctx.strokeStyle="#5b5";
-											ctx.beginPath();
-											ctx.moveTo(0,this.scy1);
-											ctx.lineTo(25,this.scy1);
-											ctx.moveTo(0,this.scy2);
-											ctx.lineTo(25,this.scy2);
-											ctx.moveTo(this.scx1,0);
-											ctx.lineTo(this.scx1,25);
-											ctx.moveTo(this.scx2,0);
-											ctx.lineTo(this.scx2,25);
-											ctx.stroke();
-											ctx.strokeStyle="#b5b";
-											ctx.beginPath();
-											ctx.moveTo(0,this.scy3);
-											ctx.lineTo(25,this.scy3);
-											ctx.moveTo(0,this.scy4);
-											ctx.lineTo(25,this.scy4);
-											ctx.moveTo(this.scx3,0);
-											ctx.lineTo(this.scx3,25);
-											ctx.moveTo(this.scx4,0);
-											ctx.lineTo(this.scx4,25);
-											ctx.stroke();
-											ctx.globalAlpha=1.0;
+										ctx.globalAlpha=0.5;
+										ctx.lineWidth=2;
+										ctx.strokeStyle="#5b5";
+										ctx.beginPath();
+										ctx.moveTo(0,this.scy1);
+										ctx.lineTo(25,this.scy1);
+										ctx.moveTo(0,this.scy2);
+										ctx.lineTo(25,this.scy2);
+										ctx.moveTo(this.scx1,0);
+										ctx.lineTo(this.scx1,25);
+										ctx.moveTo(this.scx2,0);
+										ctx.lineTo(this.scx2,25);
+										ctx.stroke();
+										ctx.strokeStyle="#b5b";
+										ctx.beginPath();
+										ctx.moveTo(0,this.scy3);
+										ctx.lineTo(25,this.scy3);
+										ctx.moveTo(0,this.scy4);
+										ctx.lineTo(25,this.scy4);
+										ctx.moveTo(this.scx3,0);
+										ctx.lineTo(this.scx3,25);
+										ctx.moveTo(this.scx4,0);
+										ctx.lineTo(this.scx4,25);
+										ctx.stroke();
+										ctx.globalAlpha=1.0;
 
 									}else{
+										if (facit){
+											scalebox(this.scx1,this.scy1,this.scx2,this.scy2,this.scx3,this.scy3,this.scx4,this.scy4,"#000","#656",10,this.texto,true,this.colr,this.clip,this.txtcolr,this.txtx,this.txty);			
+										} else {
 											scalebox(this.scx1,this.scy1,this.scx2,this.scy2,this.scx3,this.scy3,this.scx4,this.scy4,"#000","#656",10,this.texto,false,this.colr,this.clip,this.txtcolr,this.txtx,this.txty);			
+										}
+
+
 									}
-							}else{
+								}else{									
 									shadedBox(this.scx1,this.scy1,this.scx2,this.scy2,texto,8,10,6,this.colr,this.txtcolr);	 					
-							}
-					}				
-			}   
-			
+								}
+							}				
+						}   
+
 			//This function is called by the onmousemove event for the canvas element
 			function mouseMove(event){
 						//Find the position of the canvas element
@@ -473,59 +481,59 @@ function startDuggaHighScore(){
 						var canvas = document.getElementById("myCanvas");
 
 						if(clickmode==1||clickmode==2||clickmode==5||clickmode==6){
-								canvas.style.cursor="ew-resize";						
+							canvas.style.cursor="ew-resize";						
 						}else if(clickmode==3||clickmode==4||clickmode==7||clickmode==8){
-								canvas.style.cursor="ns-resize";												
+							canvas.style.cursor="ns-resize";												
 						}else if(clickmode==9||clickmode==10){
-								canvas.style.cursor="grab";																		
+							canvas.style.cursor="grab";																		
 						}else{
-								canvas.style.cursor="default";																								
+							canvas.style.cursor="default";																								
 						}
 
 						if(clickstate==0){
-								clickmode=0;
-								currobj=-1;
-								for(i=0;i<boxes.length;i++){
-										var tst=boxes[i].clicktest();
-										if(tst!=0){
-												currobj=i;
-												clickmode=tst;
-										}
+							clickmode=0;
+							currobj=-1;
+							for(i=0;i<boxes.length;i++){
+								var tst=boxes[i].clicktest();
+								if(tst!=0){
+									currobj=i;
+									clickmode=tst;
 								}
+							}
 						}else{
-								var dx=mx-ox;
-								var dy=my-oy;
-								
-								if(currobj>=0){
-										if(clickmode==1){
-												boxes[currobj].moveLeft(mx);
-										}else if(clickmode==2){
-												boxes[currobj].moveRight(mx);
-										}else if(clickmode==3){
-												boxes[currobj].moveTop(my);
-										}else if(clickmode==4){
-												boxes[currobj].moveBottom(my);
-										}else if(clickmode==5){
-												boxes[currobj].moveInnerLeft(mx);											
-										}else if(clickmode==6){
-												boxes[currobj].moveInnerRight(mx);											
-										}else if(clickmode==7){
-												boxes[currobj].moveInnerTop(my);											
-										}else if(clickmode==8){
-												boxes[currobj].moveInnerBottom(my);											
-										}else if(clickmode==9){
-												boxes[currobj].moveBox(dx,dy);											
-										}else if(clickmode==10){
-												boxes[currobj].moveText(dx,dy);											
-										}
-								
+							var dx=mx-ox;
+							var dy=my-oy;
+
+							if(currobj>=0){
+								if(clickmode==1){
+									boxes[currobj].moveLeft(mx);
+								}else if(clickmode==2){
+									boxes[currobj].moveRight(mx);
+								}else if(clickmode==3){
+									boxes[currobj].moveTop(my);
+								}else if(clickmode==4){
+									boxes[currobj].moveBottom(my);
+								}else if(clickmode==5){
+									boxes[currobj].moveInnerLeft(mx);											
+								}else if(clickmode==6){
+									boxes[currobj].moveInnerRight(mx);											
+								}else if(clickmode==7){
+									boxes[currobj].moveInnerTop(my);											
+								}else if(clickmode==8){
+									boxes[currobj].moveInnerBottom(my);											
+								}else if(clickmode==9){
+									boxes[currobj].moveBox(dx,dy);											
+								}else if(clickmode==10){
+									boxes[currobj].moveText(dx,dy);											
 								}
+								
+							}
 						}
 						
 						// Connecting Boxes.
 						boxes[0].moveRight(boxes[1].scx1);						
-			}
-			
+					}
+
 			//This function is called when a mouse button is pressed down on the canvas element
 			function mouseDown(event){
 						//Find the position of the canvas element
@@ -534,9 +542,9 @@ function startDuggaHighScore(){
 						my=pos.y;
 						clickstate=1;
 						
-			}       
+					}       
 
-			//This function is called when a mouse button is pressed down on the canvas element
+			//This function is called when a mouse button is released from the canvas element
 			function mouseUp(event){
 						//Find the position of the canvas element
 						var pos=findPos(event); //event.target is the canvas
@@ -548,13 +556,13 @@ function startDuggaHighScore(){
 
 						var canvas = document.getElementById("myCanvas");
 						canvas.style.cursor="default";
-			}
+					}
 
 
-	function drawGraphics()
-	{
+					function drawGraphics()
+					{
 
-	eval(evalstr);
+						eval(evalstr);
 
 	// Background
 	ctx.fillStyle="#fff";
@@ -575,53 +583,53 @@ function startDuggaHighScore(){
 	ctx.moveTo(mx+10,my-10);
 	ctx.lineTo(mx-10,my+10);
 	ctx.stroke();	  			
-  */
+	*/
 	setTimeout(function(){drawGraphics()}, 30);
 }
 
 
 function findPos(event) {
-		var curleft = curtop = 0;
-		var obj=event.target;
-		if (obj.offsetParent) {
-					curleft = obj.offsetLeft
-					curtop = obj.offsetTop
-					while (obj = obj.offsetParent) {
-								curleft += obj.offsetLeft
-								curtop += obj.offsetTop
-					}
+	var curleft = curtop = 0;
+	var obj=event.target;
+	if (obj.offsetParent) {
+		curleft = obj.offsetLeft
+		curtop = obj.offsetTop
+		while (obj = obj.offsetParent) {
+			curleft += obj.offsetLeft
+			curtop += obj.offsetTop
 		}
+	}
 		return {x:event.pageX-curleft, y:event.pageY-curtop} //Returns the position of the element as an object
-}
+	}
 
 // Dugga.js
 function clickregionX(x1,y1,y2,clickm){
-  return ((mx>(x1-tolerance))&&(mx<(x1+tolerance))&&(my>(y1-tolerance))&&(my<(y2+tolerance)));
+	return ((mx>(x1-tolerance))&&(mx<(x1+tolerance))&&(my>(y1-tolerance))&&(my<(y2+tolerance)));
 }
 
 // Dugga.js
 function clickregionY(x1,y1,x2,clickm){
-  return ((my>(y1-tolerance))&&(my<(y1+tolerance))&&(mx>(x1-tolerance))&&(mx<(x2+tolerance)));		
+	return ((my>(y1-tolerance))&&(my<(y1+tolerance))&&(mx>(x1-tolerance))&&(mx<(x2+tolerance)));		
 }
 
 // Dugga.js
 function clickregionXY(x1,y1,x2,y2,clickm){
-  return ((my>(y1-tolerance))&&(my<(y2+tolerance))&&(mx>(x1-tolerance))&&(mx<(x2+tolerance)));
+	return ((my>(y1-tolerance))&&(my<(y2+tolerance))&&(mx>(x1-tolerance))&&(mx<(x2+tolerance)));
 }
 
 // Dugga.js
 function shadedBox(x1,y1,x2,y2,texto,ow,oh,lw,colr,txtcolr)
 {
-		ctx.font = "16px Arial";
+	ctx.font = "16px Arial";
 
-		var tcx=x1+(0.5*(x2-x1));
-		var tcy=y1+(0.5*(y2-y1));
-		var tw=ctx.measureText(texto).width*0.5;
-		
-		if(x1>(tcx-tw-ow)) x1=(tcx-tw-ow);
-		if(x2<(tcx+tw+ow)) x2=(tcx+tw+ow);					
-		if(y1>(tcy-oh)) y1=(tcy-oh);
-		if(y2<(tcy+oh)) y2=(tcy+oh);					
+	var tcx=x1+(0.5*(x2-x1));
+	var tcy=y1+(0.5*(y2-y1));
+	var tw=ctx.measureText(texto).width*0.5;
+
+	if(x1>(tcx-tw-ow)) x1=(tcx-tw-ow);
+	if(x2<(tcx+tw+ow)) x2=(tcx+tw+ow);					
+	if(y1>(tcy-oh)) y1=(tcy-oh);
+	if(y2<(tcy+oh)) y2=(tcy+oh);					
 
 		// Rectangle
 		ctx.globalAlpha=0.5;
@@ -665,7 +673,7 @@ function shadedBox(x1,y1,x2,y2,texto,ow,oh,lw,colr,txtcolr)
 		ctx.save();
 		
 		ctx.clip();
-							
+
 		for(var i=x1-(y2-y1);i<x2;i+=lw){
 			ctx.beginPath();		
 			ctx.moveTo(i,y1);
@@ -680,7 +688,7 @@ function shadedBox(x1,y1,x2,y2,texto,ow,oh,lw,colr,txtcolr)
 		ctx.fillText(texto,tcx,tcy+6);
 		
 		ctx.globalAlpha=1.0;					
-}
+	}
 
 // Dugga.js
 function markRect(x1,y1,c1,c2)
@@ -699,38 +707,38 @@ function markRect(x1,y1,c1,c2)
 		ctx.closePath();
 		ctx.fill();
 		ctx.stroke();										
-}
+	}
 
-function drawDashedLine(sx,sy,ex,ey,dashlen)
-{
-				
-	var dx=ex-sx;
-	var dy=ey-sy;
-					
-	len=Math.sqrt((dx*dx)+(dy*dy));
-	notimes=Math.round(len/dashlen);
-	
-	dx=dx/notimes;
-	dy=dy/notimes;
-			
-	var xk,yk;
-	xk=sx;
-	yk=sy;
-	xh=dx/2.0;
-	yh=dy/2.0;
-	for(var i=0;i<notimes;i++){
+	function drawDashedLine(sx,sy,ex,ey,dashlen)
+	{
+
+		var dx=ex-sx;
+		var dy=ey-sy;
+
+		len=Math.sqrt((dx*dx)+(dy*dy));
+		notimes=Math.round(len/dashlen);
+
+		dx=dx/notimes;
+		dy=dy/notimes;
+
+		var xk,yk;
+		xk=sx;
+		yk=sy;
+		xh=dx/2.0;
+		yh=dy/2.0;
+		for(var i=0;i<notimes;i++){
 
 			ctx.moveTo(xk,yk);				
 			ctx.lineTo(xk+xh,yk+yh);
-		
+
 			xk+=dx;
 			yk+=dy;
-	}
-											
-}
+		}
 
-function scalebox(x1,y1,x2,y2,x3,y3,x4,y4,c1,c2,radius,texto,state,colr,clipmode,txtcolr,txtX,txtY)
-{
+	}
+
+	function scalebox(x1,y1,x2,y2,x3,y3,x4,y4,c1,c2,radius,texto,state,colr,clipmode,txtcolr,txtX,txtY)
+	{
 		cx1=x1+((x2-x1)*0.5);
 		cy1=y1+((y2-y1)*0.5);
 		cx3=x3+((x4-x3)*0.5);
@@ -753,34 +761,34 @@ function scalebox(x1,y1,x2,y2,x3,y3,x4,y4,c1,c2,radius,texto,state,colr,clipmode
 		ctx.globalAlpha=1.0;								
 		
 		if(texto!=""){
-				ctx.save();
+			ctx.save();
 
-				ctx.font = "18px Arial";
-				ctx.textAlign = 'left';
-				ctx.fillStyle = txtcolr;
-				ctx.fillText(texto,x3+txtX,y3+txtY);			
+			ctx.font = "18px Arial";
+			ctx.textAlign = 'left';
+			ctx.fillStyle = txtcolr;
+			ctx.fillText(texto,x3+txtX,y3+txtY);			
 
-				if(state){
-						ctx.beginPath();
-						var txtw=ctx.measureText(texto).width;
-						drawDashedLine(x3+txtX-4,y3+txtY+8,x3+txtX+txtw+4,y3+txtY+8,4);				
-						drawDashedLine(x3+txtX-4,y3-20+txtY,x3+txtX+txtw+4,y3-20+txtY,4);				
-						drawDashedLine(x3+txtX-4,y3-20+txtY,x3+txtX-4,y3+txtY+8,4);				
-						drawDashedLine(x3+txtX+txtw+4,y3-20+txtY,x3+txtX+txtw+4,y3+txtY+8,4);				
-						ctx.stroke();
+			if(state){
+				ctx.beginPath();
+				var txtw=ctx.measureText(texto).width;
+				drawDashedLine(x3+txtX-4,y3+txtY+8,x3+txtX+txtw+4,y3+txtY+8,4);				
+				drawDashedLine(x3+txtX-4,y3-20+txtY,x3+txtX+txtw+4,y3-20+txtY,4);				
+				drawDashedLine(x3+txtX-4,y3-20+txtY,x3+txtX-4,y3+txtY+8,4);				
+				drawDashedLine(x3+txtX+txtw+4,y3-20+txtY,x3+txtX+txtw+4,y3+txtY+8,4);				
+				ctx.stroke();
 
-						ctx.globalAlpha=0.10;
-						ctx.lineWidth=2;
-						ctx.strokeStyle="#888";
-						ctx.fillRect(0,y3-20+txtY,25,28);
-						ctx.fillRect(x3+txtX-4,0,txtw+8,25);
+				ctx.globalAlpha=0.10;
+				ctx.lineWidth=2;
+				ctx.strokeStyle="#888";
+				ctx.fillRect(0,y3-20+txtY,25,28);
+				ctx.fillRect(x3+txtX-4,0,txtw+8,25);
 
-						ctx.globalAlpha=0.5;
-						ctx.globalAlpha=1.0;
-						
-				}
-								
-				ctx.restore();
+				ctx.globalAlpha=0.5;
+				ctx.globalAlpha=1.0;
+
+			}
+
+			ctx.restore();
 		}
 
 		if(state){
@@ -793,18 +801,18 @@ function scalebox(x1,y1,x2,y2,x3,y3,x4,y4,c1,c2,radius,texto,state,colr,clipmode
 				drawDashedLine(x1,y1,x2,y1,4);
 				drawDashedLine(x1,y2,x2,y2,4);
 				ctx.stroke();	
-		
+
 				markRect(x1,cy1,"#2d4","#172");
 				markRect(x2,cy1,"#2d4","#172");
 				markRect(cx1,y1,"#2d4","#172");
 				markRect(cx1,y2,"#2d4","#172");
-		
+
 				markRect(x3,cy3,"#e36","#914");
 				markRect(x4,cy3,"#e36","#914");
 				markRect(cx3,y3,"#e36","#914");
 				markRect(cx3,y4,"#e36","#914");
-		}		
-}
+			}		
+		}
 // Dugga.js
 function drawRuler(sx,ex,sy,ws,wl,skip,padding)
 {
