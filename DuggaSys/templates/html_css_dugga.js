@@ -67,6 +67,9 @@ function setup()
 
 function returnedDugga(data) 
 {	
+
+	$("#content").css({"position":"relative","top":"50px"});
+
 	dataV = data;
 	
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
@@ -90,6 +93,7 @@ function returnedDugga(data)
 			userUrl = userUrl.replace("###URLSTART###", "");
 			userUrl = userUrl.replace("###URLEND###", "");
 			userUrl =  reverseHtmlEntities(userUrl);
+
 			document.getElementById("content-window").value = userCode;
 			document.getElementById("url-input").value = userUrl;
 
@@ -97,6 +101,10 @@ function returnedDugga(data)
 			refreshdUrl();
 		}
 
+		var max = 0;    
+		$('.dugga-col').each(function() {
+		    max = Math.max($(this).height(), max);
+		}).height(max);
 
 	}
 }
@@ -188,11 +196,36 @@ function showFacit(param, uanswer, danswer, userStats)
 			userUrl = userUrl.replace("###URLEND###", "");
 			userUrl =  reverseHtmlEntities(userUrl);
 
-			document.getElementById("content-window").value = userCode;
-			$("#code-preview-label").css("display","none");
-			$("#preview-code-window").css("display","none");
-			document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="'+userUrl+'"></iframe>'+'<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl)+'"></iframe>'
+			var markWindowHeight = $("#MarkCont").height();
 			
+			$("#MarkCont").css({"overflow":"hidden"});
+
+			document.getElementById("input-col").style.height = (markWindowHeight-55)+"px";
+			document.getElementById("content-window").value = userCode;
+			document.getElementById("content-window").style.fontSize = "12px";
+			document.getElementById("url-input").value = userUrl;
+			document.getElementById("target-col").style.display = "none";
+			document.getElementById("validation-col").style.display = "table-cell";
+			document.getElementById("preview-col").style.height = (markWindowHeight-55)+"px";
+
+			document.getElementById("code-preview-label").style.display = "none";
+			document.getElementById("code-preview-window-wrapper").style.display = "none";
+			var iframeX = $("#preview-col").width();
+			var iframeY = $("#preview-col").height();
+
+			document.getElementById("url-preview-label").innerHTML = '<div id="url-preview-label" style=""><h2 class="loginBoxheader" style="padding:5px; padding-bottom:10px; margin-top:0; color:#FFF;overflow:hidden; text-align:center;">Förhandsgranskning av publicerad kod</h2></div>';
+			document.getElementById("url-preview-window").innerHTML= '<iframe style="width: '+800+'px; height:'+768+'px; border: 1px solid black; overflow:scroll; transform:scale('+iframeX/800+'); transform-origin:0 0; box-sizing:border-box;" src="'+userUrl+'"></iframe>';
+
+			document.getElementById("validation-col").style.height = (markWindowHeight-55)+"px";
+
+			
+			document.getElementById("url-validation-window").innerHTML = '<iframe style="width: 400px; height:1200px; border: 1px solid black; overflow:hidden; transform:scale(1); transform-origin:0 0; box-sizing:border-box;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl)+'"></iframe>';
+
+
+
+			$( "#MarkCont" ).append( '<img id="facit-target-window-img" style="width:200px; height:200px;overflow:hidden; position:absolute; bottom:50px;right:11px;border:1px solid black;" src="'+document.getElementById("target-window-img").src+'" />' );
+
+
 	}
 
 }
@@ -263,14 +296,9 @@ function reverseHtmlEntities(str) {
    	return str;
 }
 
-function changedTxt()
-{
-		document.getElementById("preview-code-window").innerHTML=document.getElementById("content-window").value;
-}
-
 function refreshdUrl()
 {
-		document.getElementById("url-preview-window").innerHTML = '<iframe style="min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+document.getElementById("url-input").value+'?name='+(new Date).getTime()+'"></iframe>'
+		document.getElementById("url-preview-window").innerHTML = '<iframe style="box-sizing:border-box;min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+document.getElementById("url-input").value+'?name='+(new Date).getTime()+'"></iframe>'
 }
 
 
@@ -279,5 +307,5 @@ function processpreview()
 		content=document.getElementById("content-window").value;
 		content=encodeURIComponent(content);
 		
-		document.getElementById("preview-code-window").src="preview.php?prev="+content;
+		document.getElementById("code-preview-window").src="preview.php?prev="+content;
 }
