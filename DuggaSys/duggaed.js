@@ -35,6 +35,17 @@ function deleteVariant()
 	$("#editVariant").css("display","none");
 }
 
+function toggleVariant()
+{
+	var vid=$("#vid").val();
+	if ($("#toggleVariantButton").val()==="Disable") {
+		if(confirm("Do you really want to disable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"1"},"DUGGA");
+	} else {
+		if(confirm("Do you really want to enable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"0"},"DUGGA");
+	}
+	$("#editVariant").css("display","none");
+}
+
 function addVariant(cid,qid)
 {
 	AJAXService("ADDVARI",{cid:cid,qid:qid},"DUGGA");
@@ -138,7 +149,7 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 	$("#template").html(str);
 }
 
-function selectVariant(vid,param,answer,template)
+function selectVariant(vid,param,answer,template,dis)
 {
 	$("#editVariant").css("display","block"); // Display edit dialog
 	$("#vid").val(vid); // Set Variant ID
@@ -146,6 +157,11 @@ function selectVariant(vid,param,answer,template)
 	$("#parameter").val(pparam); // Set Variant parameter
 	var panswer = parseParameters(answer);
 	$("#variantanswer").val(panswer); // Set Variant answer
+	if(dis.localeCompare("1")===0){
+		$("#toggleVariantButton").val("Enable"); // Set Variant answer
+	} else {
+		$("#toggleVariantButton").val("Disable"); // Set Variant answer
+	}
 }
 
 //----------------------------------------
@@ -240,7 +256,12 @@ function returnedDugga(data)
 				str+="<table width='100%' class='innertable'>";
 				for(j=0;j<variantz.length;j++){
 					var itemz=variantz[j];
-					str+="<tr>";
+					str+="<tr";
+					if(itemz['disabled'].localeCompare("1")===0){
+						str += " class='disabled-dugga' style='opacity:0.2;'>"
+					} else {
+						str += ">"
+					}
 					str+="<td style='width:30px;'></td>"
 					result++;
 					str+="<td colspan='1'><div style='overflow:hidden;	max-width: 300px;	max-height: 20px;text-overflow: ellipsis;'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+parseParameters(itemz['param'])+"' /></td></div></td>";
@@ -248,12 +269,12 @@ function returnedDugga(data)
 					str+="<td colspan='1'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+parseParameters(itemz['variantanswer'])+"' /></td>";
 
 					str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
-
+					
 					str+="<td style='padding:4px;'>";
-					str+="<img id='variantPlay'"+j+" style='float:right;margin-right:4px;' src='../Shared/icons/PlayT.svg' ";
+					str+="<img id='variantPlay"+j+"' style='float:right;margin-right:4px;' src='../Shared/icons/PlayT.svg' ";
 					str+=" onclick='getVariantPreview(\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\",\""+item['template']+"\")' >";
-					str+="<img id='dorf'"+j+" style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\");' >";
+					str+="<img id='dorf"+j+"' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+					str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+htmlEntities(itemz['param'])+"\",\""+htmlEntities(itemz['variantanswer'])+"\",\"UNK\",\""+itemz['disabled']+"\");' >";
 					str+="</td>";
 
 					str+="</tr>";
