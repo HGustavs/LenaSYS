@@ -214,12 +214,12 @@ function showFacit(param, uanswer, danswer, userStats)
 			var iframeY = $("#preview-col").height();
 
 			document.getElementById("url-preview-label").innerHTML = '<div id="url-preview-label" style=""><h2 class="loginBoxheader" style="padding:5px; padding-bottom:10px; margin-top:0; color:#FFF;overflow:hidden; text-align:center;">Förhandsgranskning av publicerad kod</h2></div>';
-			document.getElementById("url-preview-window").innerHTML= '<iframe style="width: '+800+'px; height:'+768+'px; border: 1px solid black; overflow:scroll; transform:scale('+iframeX/800+'); transform-origin:0 0; box-sizing:border-box;" src="'+userUrl+'"></iframe>';
+			document.getElementById("url-preview-window").innerHTML= '<iframe style="pointer-events: none; width: '+800+'px; height:'+768+'px; border: 1px solid black; overflow:scroll; transform:scale('+iframeX/800+'); transform-origin:0 0; box-sizing:border-box;" src="'+userUrl+'"></iframe>';
 
 			document.getElementById("validation-col").style.height = (markWindowHeight-55)+"px";
 
 			
-			document.getElementById("url-validation-window").innerHTML = '<iframe style="width: 400px; height:1200px; border: 1px solid black; overflow:hidden; transform:scale(1); transform-origin:0 0; box-sizing:border-box;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl)+'"></iframe>';
+			document.getElementById("url-validation-window").innerHTML = '<iframe style="pointer-events: none;width: 400px; height:1200px; border: 1px solid black; overflow:hidden; transform:scale(1); transform-origin:0 0; box-sizing:border-box;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl)+'"></iframe>';
 
 
 
