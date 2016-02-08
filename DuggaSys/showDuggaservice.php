@@ -71,7 +71,7 @@ if($userid!="UNK"){
 	$query = $pdo->prepare("SELECT quizFile FROM quiz WHERE id=:duggaid;");
 	$query->bindParam(':duggaid', $duggaid);
 	$result=$query->execute();
-	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"quizfile Querying Error!");
 	foreach($query->fetchAll() as $row) {
 		$quizfile = $row['quizFile'];
 	}
@@ -80,7 +80,7 @@ if($userid!="UNK"){
 	$query = $pdo->prepare("SELECT vid,param FROM variant WHERE quizID=:duggaid;");
 	$query->bindParam(':duggaid', $duggaid);
 	$result=$query->execute();
-	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
 	$i=0;
 	foreach($query->fetchAll() as $row) {
 		$variants[$i]=array(
