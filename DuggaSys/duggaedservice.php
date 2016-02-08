@@ -23,6 +23,7 @@ $vid = getOP('vid');
 
 $param = getOP('parameter');
 $answer = getOP('variantanswer');
+$disabled = getOP('disabled');
 
 $uid = getOP('uid');
 
@@ -67,6 +68,15 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$query->bindParam(':vid', $vid);
 		$query->bindParam(':param', $param);
 		$query->bindParam(':variantanswer', $answer);
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating user".$error[2];
+		}	
+	}else if(strcmp($opt,"TOGGLEVARI")===0){
+		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled WHERE vid=:vid;");
+		$query->bindParam(':vid', $vid);
+		$query->bindParam(':disabled', $disabled, PDO::PARAM_INT);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -186,7 +196,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 
-		$queryz = $pdo->prepare("SELECT vid,quizID,param,variantanswer,modified FROM variant WHERE quizID=:qid ORDER BY vid;");
+		$queryz = $pdo->prepare("SELECT vid,quizID,param,variantanswer,modified,disabled FROM variant WHERE quizID=:qid ORDER BY vid;");
 		$queryz->bindParam(':qid',  $row['id']);
 
 		if(!$queryz->execute()){
@@ -202,6 +212,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				'param' => $rowz['param'],
 				'variantanswer' => $rowz['variantanswer'],
 				'modified' => $rowz['modified'],
+				'disabled' => $rowz['disabled'],
 				);
 
 			array_push($mass, $entryz);

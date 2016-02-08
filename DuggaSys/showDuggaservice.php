@@ -59,6 +59,7 @@ if($userid!="UNK"){
 	$savedvariant="UNK";
 	$newvariant="";
 	$variants=array();
+	$safe_variants=array();
 	$savedanswer="UNK";
 
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -91,10 +92,25 @@ if($userid!="UNK"){
 		$insertparam = true;
 	}
 
+	// Retrieve variant list
+	$query = $pdo->prepare("SELECT vid,param FROM variant WHERE quizID=:duggaid and disabled=0;");
+	$query->bindParam(':duggaid', $duggaid);
+	$result=$query->execute();
+	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
+	$i=0;
+	foreach($query->fetchAll() as $row) {
+		$safe_variants[$i]=array(
+			'vid' => $row['vid'],
+			'param' => $row['param'],
+		);
+		$i++;
+		$insertparam = true;
+	}
+
 	// If there are any variants, randomize
 	if($savedvariant==""||$savedvariant=="UNK"){
-		$randomno=rand(0,sizeof($variants)-1);
-		if(sizeof($variants)>0) $newvariant=$variants[$randomno]['vid'];
+		$randomno=rand(0,sizeof($safe_variants)-1);
+		if(sizeof($safe_variants)>0) $newvariant=$safe_variants[$randomno]['vid'];
 	}else{
 			
 	}

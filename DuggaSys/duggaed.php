@@ -75,6 +75,7 @@ pdoConnect();
 		</div>	
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
+			<input id="toggleVariantButton" style='float:left;' class='submit-button' type='button' value='Disable' onclick='toggleVariant();' />
 			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();' />
 		</div>	
 	</div>
