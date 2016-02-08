@@ -80,9 +80,10 @@ function parseMarkdown(inString)
 			}
 			
 			// Converts any < or > tags in code block
+			workstr = workstr.replace(/\</g, "&lt;");
+			workstr = workstr.replace(/\>/g, "&gt;");
+
 			if(kodblock){
-					workstr = workstr.replace(/\</g, "&lt;");
-					workstr = workstr.replace(/\>/g, "&gt;");
 					workstr='<pre><code>'+workstr+'</code></pre>';
 			}else{
 					workstr=markdownBlock(workstr);

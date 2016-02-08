@@ -8,6 +8,8 @@
 		function parseMarkdown($inString)
 		{	
 				$str="";
+				$inString=preg_replace("/\</", "&lt;",$inString);
+				$inString=preg_replace("/\>/", "&gt;",$inString);
 
 				$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
 				
@@ -22,9 +24,6 @@
 								$kodblock=!$kodblock;
 								$workstr=substr($workstr,3);
 						}
-						
-						$workstr=preg_replace("/\</", "&lt;",$workstr);
-						$workstr=preg_replace("/\>/", "&gt;",$workstr);
 
 						if($kodblock){
 								$workstr="<pre><code>".$workstr."</code></pre>";
