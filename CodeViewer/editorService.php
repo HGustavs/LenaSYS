@@ -365,11 +365,10 @@
 		// Collects information for each box
 		$box=array();   
 		// Array to be filled with the primary keys to all boxes of the example
-		$query = $pdo->prepare( "SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
-		$query->bindParam(':exampleid', $exampleId);
-		$query->execute();
-
-		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
+		$queryy = $pdo->prepare( "SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
+		$queryy->bindParam(':exampleid', $exampleId);
+		$queryy->execute();
+		while ($row = $queryy->FETCH(PDO::FETCH_ASSOC)){
 			$boxContent=strtoupper($row['boxcontent']);
 			$filename=$row['filename'];
 			$content="";
@@ -395,7 +394,6 @@
 						$file = "UNK";					
 					}
 
-					
 					if(file_exists ($file)){
 							$file_extension = strtolower(substr(strrchr($filename,"."),1));
 							if(strcmp("DOCUMENT",$boxContent)===0){
@@ -406,12 +404,14 @@
 									}else{
 											$content.="File: ".$filename." is not correctly formatted.";									
 									}
+							}else if(strcmp("IFRAME",$boxContent)===0){
+									$content=$file;
 							}else{
 									$buffer=file_get_contents($file);
-																		
 									$content=$content.$buffer;
 							}
 					}
+					$ruery->closeCursor();
 			}else{
 					$content.="File: ".$filename." not found.";
 			}
