@@ -63,6 +63,9 @@ function dehighlightRows(filename,startRow,endRow){
 
 function parseMarkdown(inString)
 {	
+	inString = inString.replace(/\</g, "&lt;");
+	inString = inString.replace(/\>/g, "&gt;");
+
 	// append '@@@' to all code block indicators '~~~'
 	inString = inString.replace(/^\~{3}(\r\n|\n|\r)/gm, '~~~@@@');
 
@@ -77,13 +80,10 @@ function parseMarkdown(inString)
 			if(workstr.substr(0,3)==="@@@"){
 					kodblock=!kodblock;
 					workstr = workstr.substr(3);
-			}
-			
-			// Converts any < or > tags in code block
-			workstr = workstr.replace(/\</g, "&lt;");
-			workstr = workstr.replace(/\>/g, "&gt;");
+			}			
 
 			if(kodblock){
+
 					workstr='<pre><code>'+workstr+'</code></pre>';
 			}else{
 					workstr=markdownBlock(workstr);
