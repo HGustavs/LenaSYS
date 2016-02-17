@@ -212,7 +212,6 @@ function returned(data)
 					previewLink=previewFile;
 			}else{
 					previewLink=retData['box'][i][2];;
-					alert("Error in preview linkz: "+previewFile);
 			}			
 
 			$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
