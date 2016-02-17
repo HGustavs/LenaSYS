@@ -1699,17 +1699,13 @@ function resizeBoxes(parent, templateId)
 					$('iframe').css('pointer-events','none');
 				},
 				resize: function(e, ui){
-					
 						alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 						$(boxValArray['box3']['id']).css("left", " ");
 						$(boxValArray['box2']['id']).css("left", " ");
-					
 				},
 				stop: function(e, ui) {
-					 
 					setLocalStorageProperties(templateId, boxValArray);
 					$('iframe').css('pointer-events','auto');
-					 
 				}
 			});
 			
@@ -1720,18 +1716,13 @@ function resizeBoxes(parent, templateId)
 					$('iframe').css('pointer-events','none');
 				},
 				resize: function(e, ui){
-					
 					$(boxValArray['box4']['id']).css("top", " ");
 					alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
-					
-					
 				},
 				stop: function(e, ui) {
-					 
 					$(boxValArray['box4']['id']).css("top", " ");
 					setLocalStorageProperties(templateId, boxValArray);
 					$('iframe').css('pointer-events','auto');
-					 
 				}
 			});
 		}
