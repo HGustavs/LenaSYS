@@ -339,7 +339,7 @@
 		$directories = array();
 		$codeDir=array();
 		$descDir=array();
-		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
+		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid ORDER BY kind,filename");
 		$query->bindParam(':cid', $courseId);
 		
 		if(!$query->execute()) {

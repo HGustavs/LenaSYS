@@ -204,67 +204,24 @@ function returned(data)
 			// cvers BEFORE courseid BEFORE global
 			var previewFile = retData['box'][i][5];
 			var previewLink = "";
-			var request = new XMLHttpRequest();  
-			request.open('GET', "../courses/" + courseid + "/"+cvers+"/"+ previewFile, true);
-			request.onreadystatechange = function(){
-			    if (request.readyState === 4){
-			        if (request.status !== 404) {  
-			            previewLink = "../courses/" + courseid + "/"+cvers+"/"+ previewFile;
-						$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
-						if($("#"+contentid+"menu").height() == null){
-							boxmenuheight = 0;
-						}else{
-							boxmenuheight= $("#"+contentid+"menu").height();
-						}
-						$("#"+contentid).css("margin-top", boxmenuheight);
-			        } 
-			    } else {
-					request = new XMLHttpRequest();  
-					request.open('GET', "../courses/" + courseid + "/"+ previewFile, true);
-					request.onreadystatechange = function(){
-					    if (request.readyState === 4){
-					        if (request.status !== 404) {  
-					            previewLink = "../courses/" + courseid + "/"+ previewFile;
-								$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
-								if($("#"+contentid+"menu").height() == null){
-									boxmenuheight = 0;
-								}else{
-									boxmenuheight= $("#"+contentid+"menu").height();
-								}
-								$("#"+contentid).css("margin-top", boxmenuheight);
+			
+			// Remove html-entitied slashes...
+			previewFile=previewFile.replace(/&#47;/g, "/");
+			if(previewFile.indexOf("http://")==0||previewFile.indexOf("https://")==0){
+					// Preview to external link
+					previewLink=previewFile;
+			}else{
+					previewLink=retData['box'][i][2];;
+					alert("Error in preview linkz: "+previewFile);
+			}			
 
-					        } else {
-								request = new XMLHttpRequest();  
-								request.open('GET', "../courses/" + previewFile, true);
-								request.onreadystatechange = function(){
-								    if (request.readyState === 4){
-								        if (request.status !== 404) {  
-								            previewLink = "../courses/" + previewFile;
-											$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
-											if($("#"+contentid+"menu").height() == null){
-												boxmenuheight = 0;
-											}else{
-												boxmenuheight= $("#"+contentid+"menu").height();
-											}
-											$("#"+contentid).css("margin-top", boxmenuheight);
-
-								        } else {
-								        	alert("Preview Error! " + previewFile + " not found!");
-								        }
-								    }
-								};
-								request.send();				
-
-					        }
-
-					    }
-					};
-					request.send();				
-
-			    }
-			};
-			request.send();
-
+			$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
+			if($("#"+contentid+"menu").height() == null){
+				boxmenuheight = 0;
+			}else{
+				boxmenuheight= $("#"+contentid+"menu").height();
+			}
+			$("#"+contentid).css("margin-top", boxmenuheight);
 
 		}else if(boxtype == "NOT DEFINED"){
 			if(retData['writeaccess'] == "w"){
@@ -288,7 +245,7 @@ function returned(data)
 // This functions convert tabs to "&#9;""
 // The indexOf() method returns the position of the first time of a specified value 
 // (in this example is the search word "\t" which stands for tab) in a string.
-// This method returns then -1 if the "search word" dosn't exist in the string. 
+// This method returns then -1 if the "search word" does not exist in the string. 
 // Text.slice truncates the text string were the tab is placed by useing tabindex 
 // as a index. And then adds "&#9;" to the text string. "&#9;" replace the tab 
 // utill "tokenize" functions is called then &#9; is being replaces by 4 spaces. 
@@ -513,7 +470,6 @@ function changeDirectory(kind)
 	}
 
 	for(var i=0;i<dir.length;i++){
-		console.log(dir[i]);
 		str+="<option value='" + dir[i].filename + "'>"+dir[i].filename+"</option>";
 	}
 	$("#filename").html(str);
