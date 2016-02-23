@@ -506,13 +506,13 @@ function editImpRows(editType)
 			$("#improwto").val("");
 			addedRows.push([openBoxID,rowFrom,rowTo]);
 		}
-	}
-	else if (editType == "-") {
+	}else if (editType == "-") {
 		FromTo = $('option:selected', "#improws").text().split(" - ");
 		$('option:selected', "#improws").remove();
     	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
 	}else{
-		alert("Incorrect value(s) (from:"+rowFrom+" to: "+rowTo+")  for important rows!");
+		alert((editType=="+") +" "+ (isNumber(rowFrom))+" "+ (isNumber(rowTo)) + " "+ (rowFrom <= rowTo)+ " "+ (rowFrom > 0)+ " "+ (rowTo > 0));
+		alert("Incorrect value(s) (from: "+rowFrom+" to: "+rowTo+")  for important rows!");
 	}
 }
 
