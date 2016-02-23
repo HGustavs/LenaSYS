@@ -266,14 +266,14 @@ CREATE TABLE word(
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
-	boxid			INTEGER UNSIGNED NOT NULL,
+	boxid					INTEGER UNSIGNED NOT NULL,
 	exampleid 		MEDIUMINT UNSIGNED NOT NULL,
-	boxtitle		VARCHAR(20),
+	boxtitle			VARCHAR(20),
 	boxcontent		VARCHAR(64),
-	filename		VARCHAR(64),
-	settings		VARCHAR(1024),
+	filename			VARCHAR(256),
+	settings			VARCHAR(1024),
 	wordlistid		MEDIUMINT UNSIGNED,
-	segment			TEXT,
+	segment				TEXT,
 	CONSTRAINT pk_box PRIMARY KEY(boxid, exampleid),
 	CONSTRAINT fk_box_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -461,7 +461,7 @@ update user set superuser=1 where username="Toddler";
 
 /**
  * Clears the eventlog table on a weekly basis
- */
+ * If this is for some reason needed - comment out. In all other cases, this should not run by default.
 DELIMITER $$
 CREATE EVENT weekly_eventlog_delete ON SCHEDULE EVERY 1 WEEK 
 		DO
@@ -471,6 +471,7 @@ CREATE EVENT weekly_eventlog_delete ON SCHEDULE EVERY 1 WEEK
 	SET SQL_SAFE_UPDATES = 1;
 END $$
 DELIMITER ;
+ */
 
 /* Templates for codeexamples */
 
