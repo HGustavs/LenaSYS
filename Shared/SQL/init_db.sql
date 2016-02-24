@@ -306,6 +306,22 @@ CREATE TABLE impwordlist(
 	CONSTRAINT fk_impwordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
+CREATE TABLE submission(
+		subid	  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		uid				INTEGER,
+		cid				INTEGER,
+		vers			INTEGER,
+		did			  INTEGER,
+		fieldnme  VARCHAR(64),
+		filepath	VARCHAR(256),
+		filename	VARCHAR(128),
+		extension	VARCHAR(32),
+		mime			VARCHAR(64),
+		kind			INTEGER,
+		updtime		TIMESTAMP,
+		PRIMARY KEY(subid) 
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
 CREATE TABLE eventlog(
 	eid 			BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	type 			TINYINT DEFAULT 0,
@@ -556,3 +572,4 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"float","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"native","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"super","D",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"while","A",1);
+

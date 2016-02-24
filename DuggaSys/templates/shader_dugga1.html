@@ -1,0 +1,78 @@
+<div class='instructions-container' style="width:50%">
+<div class='instructions-button' onclick='toggleInstructions()'><h3>Instructions</h3></div>	
+	<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " >
+			<div><strong>Notera: Screenshots &auml;r endast f&ouml;rslag p&aring; hur&nbsp;renderingarna <em>kan</em> se ut, renderingarna m&aring;ste inte se ut exakt som screenshots. Det exakta utseendet&nbsp;&auml;r styrt av parameterv&auml;rden, och det&nbsp;exakta v&auml;rdet p&aring; parametrarna &auml;r inte intressant, det &auml;r algoritmen som &auml;r viktig inte om en parameter har ett exakt v&auml;rde.</strong></div>
+			<div>&nbsp;&nbsp;</div>
+			<div><strong>Deluppgift 1: Ladda ner renderingsmilj&ouml;n och testa den</strong></div>
+			<p class="Normal">Ladda hem&nbsp;<a href="Example1.zip">example1.zip</a>. Provk&ouml;r renderaren med f&ouml;ljande steg.</p>
+			<p class="Normal">1. Starta AQSIS renderaren fr&aring;n startmenyn. Ett f&ouml;nster skall sedan visas som till&aring;ter att man kan ladda in en modell och en shader.</p>
+			<p class="Normal">2. B&ouml;rja med att kompilera shadern. V&auml;lj compile shader i menyn och v&auml;lj sedan den nerladdade shaderfilen.</p>
+			<p class="Normal"><img src="templates/shader_dugga1_compile1.png" alt="" /></p>
+			<p class="Normal">&nbsp;3. I samma meny som compile shader finns menyalternativet render file, anv&auml;nd det menyalternativet f&ouml;r att rendera filen.</p>
+			<p class="Normal">Ett f&ouml;nster skall d&aring; &ouml;ppnas som visar objektet n&auml;r det renderas med shadern.</p>
+			<p class="Normal"><img src="templates/shader_dugga1_compile2.png" alt="" /></p>
+			<p><strong>Deluppgift 2: <strong>Step, Mix och&nbsp;Mod</strong>&nbsp;</strong>Modifiera enkelshader enligt f&ouml;ljande specifikation:</p>
+			<p>&nbsp;</p>
+			<ul>
+			    <li>Shadern skall ha tv&aring; stycken f&auml;rger och en <a href="functions_intro.html">frekvens</a> som inparametrar.</li>
+			    <li>Den ena f&auml;rgen skall vara gul och den andra bl&aring; och frekvensen skall ha v&auml;rdet 8 
+			    <li>Funktionen <a href="functions_intro.html">step(tr&ouml;skel,x)</a> har tv&aring; parametrar, ett kontinuerligt v&auml;rde och ett tr&ouml;skelv&auml;rde. N&auml;r det kontinuerliga v&auml;rdet &auml;r l&auml;gre &auml;n tr&ouml;skeln antar funktionen 0 och n&auml;r den &auml;r h&ouml;gre antar funktionen v&auml;rdet 1.</li>
+			    <li>Funktionen <a href="functions_intro.html">mod(x, period)</a> g&ouml;r s&aring; att en funktion som inte &auml;r periodisk (exv step) kan fungera p&aring; samma s&auml;tt som en periodisk funktion.</li>
+			    <li>Funktionen mix(f&auml;rg1,f&auml;rg2,mixv&auml;rde) blandar tv&aring; f&auml;rger, om v&auml;rdet &auml;r 0 s&aring; returneras den f&ouml;rsta f&auml;rgen och n&auml;r v&auml;rdet &auml;r 1 s&aring; returneras den andra f&auml;rgen.</li>
+			    <li>Med hj&auml;lp av s och t koordinaterna, skapa en randig badboll med tv&aring; f&auml;rger. De gula och de bl&aring; f&auml;lten skall vara lika breda. &nbsp;</li>
+			</ul>
+			<p><img src="templates/shader_dugga1_screechnot1.jpg" alt="" /></p>
+			<div><strong>Deluppgift 3: Smoothstep, Mod och Mix </strong></div>
+			<p>Modifiera enkelshader enligt f&ouml;ljande speficikation:</p>
+			<ul>
+			    <li>Funktionen <a href="functions_intro.html">smoothstep(t1,t2,x)</a> g&ouml;r en mjukt övergång mellan 0 och 1 d&auml;r v&auml;rdet startar p&aring; 0 och n&auml;rmar sig 1 fr&aring;n tr&ouml;skeln fram till andra tr&ouml;skeln d&auml;r v&auml;rdet har antagit v&auml;rdet 1. <em>Notera att inga funktioner ut&ouml;ver mod mix och smoothstep skall anv&auml;ndas.</em></li>
+			    <li>Modifiera badbollshadern s&aring; att det &auml;r mjuka &ouml;verg&aring;ngar mellan de bl&aring; och gula f&auml;lten. &Ouml;verg&aring;ngarna skall vara en fj&auml;rdedel s&aring; breda som f&auml;lten.</li>
+			    <li>L&auml;gg till en ytterligare f&auml;rg (vit) och en in-parameter f. Toppen/Botten av badbollen skall anta f&auml;rgen vit f enheter fr&aring;n toppen av badbollen. N&auml;r tr&ouml;skeln har passerats skall badbollen vara randig enligt tidigare kod. Endast smoothstep mix och f&auml;rger skall anv&auml;ndas.</li>
+			</ul>
+			<p><img src="templates/shader_dugga1_screechnot2.jpg" alt="" /></p>
+			<p>&nbsp;<strong>Deluppgift 4: Step/Smoothstep och noise</strong></p>
+			<p>Modifiera enkelshader enligt f&ouml;ljande speficikation:</p>
+			<ul>
+			    <li>Modifiera shadern s&aring; att sf&auml;ren belyses med diffus belysning med hjälp av fr&aring;n exemplen. L&auml;gg slutligen till parametrar s&aring; att belysningens beteende kan styras med en inparameter som styr belysningens styrka.</li>
+			</ul>
+			<p><img src="templates/shader_dugga1_screechnot3.jpg" alt="" /></p>
+			<ul>
+			    <li>Ge bollen en v&aring;gig yta genom att br&auml;kna en ny normal (sk. bump mapping baserad p&aring; programkoden nedan) som ger bollen en h&ouml;jd yta d&auml;r det bl&aring; bandet g&aring;r och en op&aring;verkad yta d&auml;r det&nbsp;gula bandet g&aring;r.</li>
+			</ul>
+			<p><img src="templates/shader_dugga1_screechnot4.jpg" alt="" /></p>
+			<ul>
+			    <li>Basera din programkod p&aring; en noise funktion baserad p&aring; värdet på P variabeln (som är punktens position i världen) enligt kodexempel . </li>
+					<li>L&auml;gg till ett brus med noise som bump map, liknande kodexemplen fr&aring;n f&ouml;rel&auml;sningarna.</li>
+			    <li>L&auml;gg slutligen samman v&auml;rdet fr&aring;n bruset med v&auml;rdet fr&aring;n&nbsp;bump-funktionen s&aring; att endast de bl&aring; segmenten av bollen p&aring;verkas, enligt screenshots nedan)</li>
+			</ul>
+			<p><img src="templates/shader_dugga1_screechnot5.jpg" alt="" /></p>
+			<p><img src="templates/shader_dugga1_screechnot6.jpg" alt="" /></p>
+			<p><strong>Krav p&aring; rapporten:</strong></p>
+			<p class="Normal">F&ouml;r uppgift 1 s&aring; skall rapporten best&aring; av den kommenterade programkoden. Samt en reflektion varf&ouml;r de parametrar som valts ut som inparametrar f&ouml;r shadern (vad som g&ouml;r dem l&auml;mpliga som parametrar), och tankar kring f&ouml;rdelar och nackdelar med att arbeta med procedurella shaders j&auml;mf&ouml;rt med att arbeta med artistgenererade m&aring;lade texturer.</p>
+			Det finns en diskussion i booken p&aring; sidan <a href='http://books.google.se/books?id=6_4VaJiOx7EC&lpg=PA537&dq=regular%20patterns%20advanced%20renderman&hl=sv&pg=PA243#v=onepage&q=regular%20patterns%20advanced%20renderman&f=false'>245</a> som man kan utg&aring; ifr&aring;n.
+
+	</div>
+</div>
+
+<div class='instructions-container' style="left:51%;width:48%;position:absolute;top:16px;">
+	<div class='instructions-button' onclick='toggleInstructions()'><h3>Instructions</h3></div>	
+	<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " >
+			<embed src="templates/Dokumentmallen.pdf" width="100%" height="1000px" type='application/pdf'>
+	</div>	
+	<br/>
+	<div>
+			<form enctype="multipart/form-data" method="post" action="filereceive_dugga.php" >
+						<input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" />
+						<input type="submit" name="okGo" value="Upload">
+						<input type='hidden' id='cid' name='cid' value='111' />
+						<input type='hidden' id='coursevers' name='coursevers' value='2222' />
+						<input type='hidden' id='did' name='did' value='33333' />
+						<input type='hidden' id='segment' name='segment' value='777' />
+
+						<input type='hidden' id='field' name='field' value='Inl1Dokument' />
+						<input type='hidden' id='kind' name='kind' value='1' />
+
+			 </form>
+	</div>
+</div>
+
