@@ -56,8 +56,8 @@
 
 <div class='instructions-container' style="left:51%;width:48%;position:absolute;top:16px;">
 	<div class='instructions-button' onclick='toggleInstructions()'><h3>Instructions</h3></div>	
-	<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " >
-			<embed src="templates/Dokumentmallen.pdf" width="100%" height="1000px" type='application/pdf'>
+	<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="pdffile" >
+<!--			<embed src="templates/Dokumentmallen.pdf" width="100%" height="1000px" type='application/pdf'> -->
 	</div>	
 	<br/>
 	<div>
@@ -75,4 +75,9 @@
 			 </form>
 	</div>
 </div>
+<script>
+	// document.getElementById("pdffile").innerHTML="<embed src='templates/Dokumentmallen.pdf' width='100%' height='1000px' type='application/pdf'>";		
+	// Borde bara vara att pytsa in path och file här....
+	document.getElementById("pdffile").innerHTML="<embed src='templates/toddler.pdf' width='100%' height='1000px' type='application/pdf'>";		
 
+</script>

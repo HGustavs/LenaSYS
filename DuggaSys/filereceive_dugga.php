@@ -112,7 +112,7 @@ if($ha){
 
 												$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,now());");
 												
-												$filepath=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$loginname."/";
+												$filepath="/submissions/".$cid."/".$vers."/".$duggaid."/".$loginname."/";
 
 												$query->bindParam(':uid', $userid);
 												$query->bindParam(':cid', $cid);

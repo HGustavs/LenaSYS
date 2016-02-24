@@ -274,6 +274,31 @@ $param = str_replace("*####*", '&cup;', $param);
 $savedanswer = str_replace("*####*", '&cup;', $savedanswer);
 if(strcmp($savedanswer,"") == 0){$savedanswer = "UNK";} // Return UNK if we have not submitted any answer
 
+$files= array();
+$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by filename,updtime;");
+$query->bindParam(':uid', $userid);
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':vers', $coursevers);
+$query->bindParam(':did', $duggaid);
+	
+$result = $query->execute();
+foreach($query->fetchAll() as $row) {
+		$entry = array(
+			'uid' => $row['uid'],
+			'subid' => $row['subid'],
+			'vers' => $row['vers'],
+			'did' => $row['did'],
+			'fieldnme' => $row['fieldnme'],
+			'filename' => $row['filename'],	
+			'filepath' => $row['filepath'],	
+			'extension' => $row['extension'],
+			'mime' => $row['mime'],
+			'updtime' => $row['updtime'],
+			'kind' => $row['kind'],							
+
+		);
+		array_push($files, $entry);		
+}
 
 $array = array(
 		"debug" => $debug,
@@ -281,6 +306,7 @@ $array = array(
 		"answer" => $savedanswer,
 		"score" => $score,
 		"highscoremode" => $highscoremode,
+		"files" => $files,
 	);
 
 echo json_encode($array);
