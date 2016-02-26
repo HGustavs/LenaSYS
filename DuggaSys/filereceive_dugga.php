@@ -45,6 +45,8 @@ $error=false;
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 	$loginname=$_SESSION['loginname'];
+	$lastname=$_SESSION['lastname'];
+	$firstname=$_SESSION['firstname'];
 }else{
 	$userid="UNK";		
 } 	
@@ -101,32 +103,25 @@ if($ha){
 										}
 								}
 
-								if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$loginname)){
-										if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$loginname)){
-												echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/userid";
+								// Create a file area with format Lastname-Firstname-Login
+
+								$userdir = $lastname."-".$firstname."-".$loginname;
+
+								if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
+										if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
+												echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/".$userdir;
 												$error=true;
 										}
 								}
 																
-							  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$loginname."/".$fname;	
-
-								echo "<pre>";
-								$query = $pdo->prepare("SELECT * FROM submission WHERE did=:did and filename=:fname;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
-								$query->bindParam(':did', $did);
-								$query->bindParam(':fname', $fname);
-								$query->execute();      
-								foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-											print_r($row);
-								}															  
-		
-							  $seq=400;
+							  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname;	
 		
 								// check if upload is successful 
 								if(move_uploaded_file($filea["tmp_name"],$movname)){ 
 
 												$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,now());");
 												
-												$filepath="/submissions/".$cid."/".$vers."/".$duggaid."/".$loginname."/";
+												$filepath="/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
 
 												$query->bindParam(':uid', $userid);
 												$query->bindParam(':cid', $cid);
