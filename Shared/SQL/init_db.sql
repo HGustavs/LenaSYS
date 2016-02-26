@@ -312,6 +312,7 @@ CREATE TABLE submission(
 		cid				INTEGER,
 		vers			INTEGER,
 		did			  INTEGER,
+		seq				INTEGER,
 		fieldnme  VARCHAR(64),
 		filepath	VARCHAR(256),
 		filename	VARCHAR(128),
