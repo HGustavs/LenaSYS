@@ -83,7 +83,7 @@ function login($username, $password, $savelogin)
 
 //echo "SELECT uid,username,password,superuser FROM user WHERE username=:username and password=password(':pwd') LIMIT 1";
 
-	$query = $pdo->prepare("SELECT uid,username,password,superuser FROM user WHERE username=:username and password=password(:pwd) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username and password=password(:pwd) LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);
@@ -97,6 +97,8 @@ function login($username, $password, $savelogin)
 		$_SESSION["loginname"]=$row['username'];
 		$_SESSION["passwd"]=$row['password'];
 		$_SESSION["superuser"]=$row['superuser'];
+		$_SESSION["lastname"]=$row['lastname'];
+		$_SESSION["firstname"]=$row['firstname'];
 
 		// Save some login details in cookies.
 		if($savelogin) {
