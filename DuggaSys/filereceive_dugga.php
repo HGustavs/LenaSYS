@@ -36,6 +36,9 @@ $duggaid=getOP('did');
 $fieldtype=getOP('field');
 $fieldkind=getOP('kind');
 
+$cid=2;
+$did=1;
+
 $error=false;
 
 					
@@ -106,11 +109,22 @@ if($ha){
 								}
 																
 							  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$loginname."/".$fname;	
+
+								echo "<pre>";
+								$query = $pdo->prepare("SELECT * FROM submission WHERE did=:did and filename=:fname;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+								$query->bindParam(':did', $did);
+								$query->bindParam(':fname', $fname);
+								$query->execute();      
+								foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+											print_r($row);
+								}															  
+		
+							  $seq=400;
 		
 								// check if upload is successful 
 								if(move_uploaded_file($filea["tmp_name"],$movname)){ 
 
-												$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,now());");
+												$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,now());");
 												
 												$filepath="/submissions/".$cid."/".$vers."/".$duggaid."/".$loginname."/";
 
@@ -124,6 +138,7 @@ if($ha){
 												$query->bindParam(':mime', $filea['type']);
 												$query->bindParam(':field', $fieldtype);
 												$query->bindParam(':kind', $fieldkind);
+												$query->bindParam(':seq', $seq);
 												
 												if(!$query->execute()) {
 													$error=$query->errorInfo();
@@ -153,7 +168,7 @@ if(!$error){
 <body>
 <?php
 if(!$error){
-		echo "<script>window.gocation.replace('fileed.php?cid=".$cid."&coursevers=".$vers."');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
+		// echo "<script>window.gocation.replace('fileed.php?cid=".$cid."&coursevers=".$vers."');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 ?>
 </body>
