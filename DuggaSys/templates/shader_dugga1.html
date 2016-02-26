@@ -55,29 +55,146 @@
 </div>
 
 <div class='instructions-container' style="left:51%;width:48%;position:absolute;top:16px;">
-	<div class='instructions-button' onclick='toggleInstructions()'><h3>Instructions</h3></div>	
-	<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="pdffile" >
-<!--			<embed src="templates/Dokumentmallen.pdf" width="100%" height="1000px" type='application/pdf'> -->
+	<div class='instructions-button' onclick='toggleInstructions()'><h3>Upload PDF</h3></div>	
+	<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="Inl1Dokument" >
+
+		<br/>
+		<div id="Inl1DokumentPrev" style="background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;">&lt;PDF Preview&gt;</div>
+		<table>
+			<tr>
+				<td>
+						<form enctype="multipart/form-data" method="post" action="filereceive_dugga.php" >
+								<input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" />
+								<input type="submit" name="okGo" value="Upload">
+								<input type='hidden' id='cid' name='cid' value='111' />
+								<input type='hidden' id='coursevers' name='coursevers' value='2222' />
+								<input type='hidden' id='did' name='did' value='33333' />
+								<input type='hidden' id='segment' name='segment' value='777' />
+			
+								<input type='hidden' id='field' name='field' value='Inl1Dokument' />
+								<input type='hidden' id='kind' name='kind' value='1' />
+						 </form>
+				</td>
+				<td>
+						<span id="Inl1DokumentFile" style="margin:4px;" >&lt;Upload file&gt;</span>
+				</td>
+				<td>
+						<span id="Inl1DokumentDate" style="margin:4px;" >&lt;File Date&gt;</span>
+				</td>
+			</tr>
+		</table>
+		
+		<br/>
+		<br/>
+		<br/>
+
+		<table>
+			<tr>
+				<td>
+						<form enctype="multipart/form-data" method="post" action="filereceive_dugga.php" >
+								<input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" />
+								<input type="submit" name="okGo" value="Upload">
+								<input type='hidden' id='cid' name='cid' value='111' />
+								<input type='hidden' id='coursevers' name='coursevers' value='2222' />
+								<input type='hidden' id='did' name='did' value='33333' />
+								<input type='hidden' id='segment' name='segment' value='777' />
+			
+								<input type='hidden' id='field' name='field' value='Inl2Dokument' />
+								<input type='hidden' id='kind' name='kind' value='1' />
+						 </form>
+				</td>
+				<td>
+						<span id="Inl2DokumentFile" style="margin:4px;" >&lt;Upload file&gt;</span>
+				</td>
+				<td>
+						<span id="Inl2DokumentDate" style="margin:4px;" >&lt;File Date&gt;</span>
+				</td>
+			</tr>
+		</table>
+		
+		<br/>
+		<br/>
+		<br/>
+
+		<div id="Inl3DokumentPrev" style="background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;">&lt;Multi List Preview&gt;</div>
+		<table>
+			<tr>
+				<td>
+						<form enctype="multipart/form-data" method="post" action="filereceive_dugga.php" >
+								<input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" />
+								<input type="submit" name="okGo" value="Upload">
+								<input type='hidden' id='cid' name='cid' value='111' />
+								<input type='hidden' id='coursevers' name='coursevers' value='2222' />
+								<input type='hidden' id='did' name='did' value='33333' />
+								<input type='hidden' id='segment' name='segment' value='777' />
+			
+								<input type='hidden' id='field' name='field' value='Inl3Dokument' />
+								<input type='hidden' id='kind' name='kind' value='1' />
+						 </form>
+				</td>
+			</tr>
+		</table>
+
+
+		
 	</div>	
-	<br/>
-	<div>
-			<form enctype="multipart/form-data" method="post" action="filereceive_dugga.php" >
-						<input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" />
-						<input type="submit" name="okGo" value="Upload">
-						<input type='hidden' id='cid' name='cid' value='111' />
-						<input type='hidden' id='coursevers' name='coursevers' value='2222' />
-						<input type='hidden' id='did' name='did' value='33333' />
-						<input type='hidden' id='segment' name='segment' value='777' />
-
-						<input type='hidden' id='field' name='field' value='Inl1Dokument' />
-						<input type='hidden' id='kind' name='kind' value='1' />
-
-			 </form>
-	</div>
 </div>
+
 <script>
-	// document.getElementById("pdffile").innerHTML="<embed src='templates/Dokumentmallen.pdf' width='100%' height='1000px' type='application/pdf'>";		
+	
 	// Borde bara vara att pytsa in path och file här....
-	document.getElementById("pdffile").innerHTML="<embed src='templates/toddler.pdf' width='100%' height='1000px' type='application/pdf'>";		
+	var filez=JSON.parse('[{"uid":"2","subid":"43","vers":"97732","did":"1","fieldnme":"Inl1Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:28","kind":"1","seq":""},{"uid":"2","subid":"42","vers":"97732","did":"1","fieldnme":"Inl1Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:25","kind":"1","seq":""},{"uid":"2","subid":"41","vers":"97732","did":"1","fieldnme":"Inl1Dokument","filename":"Pokumentnallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:17:56","kind":"1","seq":""},{"uid":"2","subid":"43","vers":"97732","did":"1","fieldnme":"Inl2Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:28","kind":"1","seq":""},{"uid":"2","subid":"42","vers":"97732","did":"1","fieldnme":"Inl2Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:25","kind":"1","seq":""},{"uid":"2","subid":"41","vers":"97732","did":"1","fieldnme":"Inl2okument","filename":"Pokumentnallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:17:56","kind":"1","seq":""},{"uid":"2","subid":"43","vers":"97732","did":"1","fieldnme":"Inl3Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:28","kind":"1","seq":""},{"uid":"2","subid":"42","vers":"97732","did":"1","fieldnme":"Inl3Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:25","kind":"1","seq":""},{"uid":"2","subid":"41","vers":"97732","did":"1","fieldnme":"Inl3Dokument","filename":"Pokumentnallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:17:56","kind":"1","seq":""}]');
+
+	// Latest version of any file in a field - unsure about naming of the function
+	function findfilevers(cfield,ctype)
+	{
+			// Iterate over elements in files array
+			var foundfile=null;
+			var oldfile="";
+			var tab="<table>";
+			for(var i=0;i<filez.length;i++){
+					if(cfield==filez[i].fieldnme){
+							if(ctype=="zip"||ctype=="pdf"){
+									foundfile=filez[i];
+									break;							
+							}else{
+									// Each new filename make row in table.
+									if(oldfile!=filez[i].filename){
+											var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;											
+											tab+="<tr'><td style='padding:4px;'>";
+											tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";
+											tab+="</td><td style='padding:4px;'>";
+											tab+=filez[i].updtime;
+											tab+="</td></tr>";		
+									}
+									oldfile=filez[i].filename;
+							}
+					}
+			}
+			tab+="</table>"			
+			
+			if(foundfile!=null){
+					var filelink=foundfile.filepath+foundfile.filename+foundfile.seq+"."+foundfile.extension;
+					if(ctype=="pdf"){
+							// Copy the file name and generate the preview if we are submitting a .pdf
+							document.getElementById(cfield+"File").innerHTML=foundfile.filename+"."+foundfile.extension;
+							document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;
+							document.getElementById(cfield+"Prev").innerHTML="<embed src='"+filelink+"' width='100%' height='1000px' type='application/pdf'>";
+					}else if(ctype="zip"){
+							document.getElementById(cfield+"File").innerHTML="<a href='"+filelink+"'>"+foundfile.filename+"."+foundfile.extension;+"</a>";
+							document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;					
+					}
+			}else if(ctype=="multi"){
+					document.getElementById(cfield+"Prev").innerHTML=tab;
+			}	
+	} 
+	
+	findfilevers("Inl1Dokument","pdf");
+	findfilevers("Inl2Dokument","zip");
+	findfilevers("Inl3Dokument","multi");
+	
+	
+	// document.getElementById("pdffile").innerHTML="<embed src='templates/Dokumentmallen.pdf' width='100%' height='1000px' type='application/pdf'>";	
+	//document.getElementById("pdffile").innerHTML="<embed src='templates/toddler.pdf' width='100%' height='1000px' type='application/pdf'>";		
 
 </script>

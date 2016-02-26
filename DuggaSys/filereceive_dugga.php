@@ -37,7 +37,8 @@ $fieldtype=getOP('field');
 $fieldkind=getOP('kind');
 
 $cid=2;
-$did=1;
+$duggaid=1;
+$vers=97732;
 
 $error=false;
 
@@ -61,7 +62,10 @@ if($ha){
 		$currcvd=getcwd();
 		
 		//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-		$allowedT = array("application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download");
+		$allowedT = array("application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download");
+		
+		
+		
 		$allowedX = array("pdf","zip","rar");
 		
 		$swizzled = swizzleArray($_FILES['uploadedfile']);
@@ -70,18 +74,24 @@ if($ha){
 			
 				//  if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process.
 				if($filea["name"]!=""){
-					
-						$temp = explode(".", $filea["name"]);
-						$extension = end($temp); //stores the file type
+						$fname=$filea['name'];
+
+						// Remove white space and non ascii characters
+						$fname=preg_replace('/[[:^print:]]/', '', $fname);
+						$fname = preg_replace('/\s+/', '', $fname); 
+
+						
+						$posPeriod = strrpos($fname, ".");
+						if ($posPeriod !== false){
+							$extension = substr($fname, $posPeriod+1);
+							$fname = substr($fname, 0, $posPeriod);								
+						} else {
+							$extension = "UNK";
+						}
 		
 						if(in_array($extension, $allowedX)&&in_array($filea['type'], $allowedT)){ 
 								//  if file type is allowed, continue the uploading process.
 		
-								$fname=$filea['name'];
-								// Remove white space and non ascii characters
-								$fname=preg_replace('/[[:^print:]]/', '', $fname);
-								$fname = preg_replace('/\s+/', '', $fname); 
-
 								if(!file_exists ($currcvd."/submissions/".$cid)){
 										if(!mkdir($currcvd."/submissions/".$cid)){
 												echo "Error creating folder: ".$currcvd."/submissions/cid";
@@ -104,8 +114,7 @@ if($ha){
 								}
 
 								// Create a file area with format Lastname-Firstname-Login
-
-								$userdir = $lastname."-".$firstname."-".$loginname;
+								$userdir = $lastname."_".$firstname."_".$loginname;
 
 								if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
 										if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
@@ -114,14 +123,24 @@ if($ha){
 										}
 								}
 																
-							  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname;	
-		
+								$seq=0;
+								$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE did=:did and filename=:fname and cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+								$query->bindParam(':did', $duggaid);
+								$query->bindParam(':cid', $cid);
+								$query->bindParam(':fname', $fname);
+								$query->execute();
+								foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+											$seq=$row['Dusty']+1;
+								}															  
+
+							  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
+			
 								// check if upload is successful 
 								if(move_uploaded_file($filea["tmp_name"],$movname)){ 
 
 												$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,now());");
 												
-												$filepath="/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
+												$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
 
 												$query->bindParam(':uid', $userid);
 												$query->bindParam(':cid', $cid);
