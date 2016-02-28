@@ -459,6 +459,9 @@ function changeDirectory(kind)
 	var dir;
 	var str="";
 
+	var chosen=$("#filename").val();
+	alert(chosen);
+
 	if ($(kind).val() == "CODE") {
 		dir = retData['directory'][0];
 		$('#wordlist').prop('disabled', false);
@@ -472,7 +475,11 @@ function changeDirectory(kind)
 	}
 
 	for(var i=0;i<dir.length;i++){
-		str+="<option value='" + dir[i].filename + "'>"+dir[i].filename+"</option>";
+		if(chosen==dir[i].filename){
+				str+="<option selected='selected' value='" + dir[i].filename + "'>"+dir[i].filename+"</option>";		
+		}else{
+				str+="<option value='" + dir[i].filename + "'>"+dir[i].filename+"</option>";		
+		}
 	}
 	$("#filename").html(str);
 }
