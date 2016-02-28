@@ -459,9 +459,12 @@ function changeDirectory(kind)
 	var dir;
 	var str="";
 
-	if ($(kind).val() == "CODE" || $(kind).val() == "IFRAME") {
+	if ($(kind).val() == "CODE") {
 		dir = retData['directory'][0];
 		$('#wordlist').prop('disabled', false);
+	}else if($(kind).val() == "IFRAME"){
+		dir = retData['directory'][2];
+		$('#wordlist').prop('disabled', 'disabled');	
 	}else if ($(kind).val() == "DOCUMENT") {
 		dir = retData['directory'][1];
 		$('#wordlist').val('4');

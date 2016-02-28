@@ -335,9 +335,11 @@
 		$directories = array();
 		$codeDir=array();
 		$descDir=array();
+		$prevDir=array();		
 		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid ORDER BY kind,filename");
 		$query->bindParam(':cid', $courseId);
 		
+		// We add only local files to code (no reading code from external sources) and allow preview to files or links.				
 		if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error reading entries".$error[2];
@@ -347,16 +349,19 @@
 				if($row['kind']!=$oldkind){
 					array_push($codeDir,array('fileid' => -1,'filename' => "---===######===---"));
 					array_push($descDir,array('fileid' => -1,'filename' => "---===######===---"));
+					array_push($prevDir,array('fileid' => -1,'filename' => "---===######===---"));
 				}
 				$oldkind=$row['kind'];
 				
 				if(endsWith($row['filename'],".txt")||endsWith($row['filename'],".md")){
 						array_push($descDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));			
 				}
-				array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+				if($row['kind']!=1) array_push($codeDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+				array_push($prevDir,array('fileid' => $row['fileid'],'filename' => $row['filename']));				
 		}
 		array_push($directories, $codeDir);
 		array_push($directories, $descDir);
+		array_push($directories, $prevDir);
 	
 		// Collects information for each box
 		$box=array();   
