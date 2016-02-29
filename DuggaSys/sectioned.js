@@ -168,7 +168,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}else if(kind==5){
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
-			if(xelink==iitem['fileid']){
+			if(xelink==iitem['filename']){
 				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
 			}else{
 				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
@@ -180,12 +180,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","none");
 	}
 	$("#editSection").css("display","block");
+	
 }
 
 function changedType()
 {
 	kind=$("#type").val();		
 	iistr="";
+	
 	if(kind==0){	
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
@@ -227,7 +229,7 @@ function changedType()
 	}else if(kind==5){
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
-			if(xelink==iitem['fileid']){
+			if(xelink==iitem['filename']){
 				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
 			}else{
 				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
