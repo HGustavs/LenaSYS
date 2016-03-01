@@ -420,6 +420,7 @@ var openBoxID;
 
 function displayEditContent(boxid)
 {	
+
 	var box = retData['box'][boxid-1]; 	// The information stored about the box is fetched
 	openBoxID = boxid;				// Keeps track of the currently open box. Used when saving the box content.
 
@@ -428,6 +429,7 @@ function displayEditContent(boxid)
 
 	changeDirectory($("#boxcontent"));
 	
+	box[5]=box[5].replace(/&#47;/g, "/"); 
 	$("#filename").val(box[5]);
 
 	var wordl=retData['wordlists'];
@@ -460,7 +462,6 @@ function changeDirectory(kind)
 	var str="";
 
 	var chosen=$("#filename").val();
-	alert(chosen);
 
 	if ($(kind).val() == "CODE") {
 		dir = retData['directory'][0];
@@ -938,7 +939,6 @@ function maketoken(kind,val,from,to,rowno)
 function error(str,val,row)
 {
 	var debug = "Tokenizer error: "+ str+val+ " at row "+row;
-	console.log(debug);
 	alert("Tokenizer Error: "+str+val+" at row "+row);
 }
 
@@ -1945,7 +1945,6 @@ function initResizableBoxValues(parent)
 		boxHeight = $("#box" + i + "wrapper").height();
 		boxId = "#box" + i + "wrapper";
 		boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
-		//console.log("boxId " + boxValueArray["box" + i]["id"] + " boxWidth: " + boxValueArray["box" + i]["width"] + " boxHeight: " + boxValueArray["box" + i]["height"]);
 	}
 	
 	$(window).resize(function(event){
