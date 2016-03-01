@@ -271,7 +271,7 @@
 				$currentId=null;
 			}					
 			if($currentId!=null){
-				array_push($forwardExamples,$beforeAfter[$currentId]);
+				if(isset($beforeAfter[$currentId])) array_push($forwardExamples,$beforeAfter[$currentId]);
 			}
 			$nextExampleCount++;
 		// Iteration to find before examples - We start with $exampleId and at most 5 are collected
@@ -287,7 +287,7 @@
 				$currentId=null;
 			}					
 			if($currentId!=null){
-				array_push($backwardExamples,$beforeAfter[$currentId]);
+				if(isset($beforeAfter[$currentId]))	array_push($backwardExamples,$beforeAfter[$currentId]);
 			}
 			$previousExamplesCount++;
 		}while($currentId!=null&&$previousExamplesCount<5);

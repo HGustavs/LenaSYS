@@ -75,7 +75,6 @@ function returned(data)
 	//If there are no examples this disables being able to jump through (the non-existsing) examples
 
 	if(retData['before'].length!=0&& retData['after'].length!=0) {
-		
 		if (retData['exampleno'] == retData['before'][0][0] || retData['before'].length == 0) {
 			$("#beforebutton").css("opacity",0.4);
 			$("#beforebutton").css("pointer-events","none");
