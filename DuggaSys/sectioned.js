@@ -587,16 +587,16 @@ function returnedSection(data)
 						
 						if(status===""){
 								// Nothing submitted nor marked (White)
-								str+="<div id='korf' style='width:26px; height:26px; display:inline-box;float:left;margin-left:8px; margin-bottom:3px; background: radial-gradient(white, grey, white);border-radius:13px;border:1px solid #000;' ></div>";
+								str+="<div id='korf' style='width:26px; height:26px; display:inline-block;float:left;margin-left:8px; margin-bottom:3px; background: radial-gradient(white, grey, white);border-radius:13px;border:1px solid #000;' ></div>";
 						}else if(status === "pending"){
 								//	Nothing marked yet (Yellow)
-								str+="<div id='korf' style='width:26px; height:26px; display:inline-box;float:left;margin-left:8px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Handed in\nDate: "+lastSubmit+"' ></div> ";
+								str+="<div id='korf' style='width:26px; height:26px; display:inline-block;float:left;margin-left:8px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Handed in\nDate: "+lastSubmit+"' ></div> ";
 						}else if(grady==1){
 								//	Marked Fail! (Red)								
-								str+="<div id='korf' style='width:26px; height:26px; display:inline-box;float:left;margin-left:8px; background: radial-gradient(red 55%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div>";
+								str+="<div id='korf' style='width:26px; height:26px; display:inline-block;float:left;margin-left:8px; background: radial-gradient(red 55%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div>";
 						}else if(grady>1){
 								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<div id='korf' style='width:26px; height:26px; display:inline-box;float:left;margin-left:8px; background: radial-gradient(green 55%, grey, white 60%);border-radius:13px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div>";
+								str+="<div id='korf' style='width:26px; height:26px; display:inline-block;float:left;margin-left:8px; background: radial-gradient(green 55%, grey, white 60%);border-radius:13px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div>";
 						}
 
 					}
@@ -638,16 +638,16 @@ function returnedSection(data)
 
 						if((grady==-1 || grady == 0 || grady==null) && status==="") {
 								// Nothing submitted nor marked (White)
-								str+="<div id='korf' style='width:22px; height:22px; display:inline-box;float:left;margin-left:30px; background: radial-gradient(white, grey, white);border-radius:11px;border:1px solid #000;' ></div>";
+								str+="<div id='korf' style='width:22px; height:22px; display:inline-block;float:left;margin-left:30px; background: radial-gradient(white, grey, white);border-radius:11px;border:1px solid #000;' ></div>";
 						}else if(status === "pending"){
 								//	Nothing marked yet (Yellow)
-								str+="<div id='korf' style='width:22px; height:22px; display:inline-box;float:left;margin-left:30px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:11px; border:1px solid #000;' title='Status: Handed in\nDate: "+submitted+"' ></div> ";
+								str+="<div id='korf' style='width:22px; height:22px; display:inline-block;float:left;margin-left:30px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:11px; border:1px solid #000;' title='Status: Handed in\nDate: "+submitted+"' ></div> ";
 						}else if(grady==1){
 								//	Marked Fail! (Red)								
-								str+="<div id='korf' style='width:22px; height:22px; display:inline-box;float:left;margin-left:30px; background: radial-gradient(red 55%, grey, white 60%);border-radius:11px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div>";
+								str+="<div id='korf' style='width:22px; height:22px; display:inline-block;float:left;margin-left:30px; background: radial-gradient(red 55%, grey, white 60%);border-radius:11px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div>";
 						}else if(grady>1){
 								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<div id='korf' style='width:22px; height:22px; display:inline-box;float:left;margin-left:30px; background: radial-gradient(green 55%, grey, white 60%);border-radius:11px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div>";
+								str+="<div id='korf' style='width:22px; height:22px; display:inline-block;float:left;margin-left:30px; background: radial-gradient(green 55%, grey, white 60%);border-radius:11px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div>";
 						}
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
