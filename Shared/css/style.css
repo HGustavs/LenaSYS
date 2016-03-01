@@ -895,7 +895,7 @@ input.new-item-button:hover {
 	
 	body {margin:0px}
 	
-	#content {margins:0px; padding:0px; border:none;}
+	#content {margin:0px; padding:0px; border:none;}
 	
 	#mirth {display:none;}
 }
