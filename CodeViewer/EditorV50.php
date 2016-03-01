@@ -229,8 +229,8 @@ Testing Link:
 				<legend>Example Info</legend>
 				<table width="100%">
 					<tr>
-						<td>Section Title:<input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
-						<td>Title:<input class='form-control textinput' type='text' id='secttitle' value='&lt;Section Title&gt;' /></td>		
+						<td>Section Title:<input class='form-control textinput' type='text' id='secttitle' value='&lt;Secrion Title&gt;' /></td>		
+						<td>Title:<input class='form-control textinput' type='text' id='title' value='&lt;Title&gt;' /></td>		
 					</tr>
 
 					<tr>
