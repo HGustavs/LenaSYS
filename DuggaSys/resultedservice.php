@@ -122,112 +122,114 @@ $gentries=array();
 $sentries=array();
 $lentries=array();
 
-if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-	// Users connected to the current course (irrespective of version)
-	$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
-	$query->bindParam(':cid', $cid);
-	
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		$debug="Error updating entries".$error[2];
-	}
-	
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		// Create array entry for each course participant
-
-		$entry = array(
-			'cid' => (int)$row['cid'],
-			'uid' => (int)$row['uid'],
-			'username' => $row['username'],
-			'firstname' => $row['firstname'],
-			'lastname' => $row['lastname'],
-			'ssn' => $row['ssn']
-		);
-		array_push($entries, $entry);
-	}
-
-	// All results from current course and vers?
-	$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed from userAnswer where cid=:cid;");
-	$query->bindParam(':cid', $cid);
-	
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		$debug="Error updating entries".$error[2];
-	}
-	
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		if(!isset($lentries[$row['uid']])){
-				$lentries[$row['uid']]=array();
+if(strcmp($opt,"DUGGA")!==0){
+	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+		// Users connected to the current course (irrespective of version)
+		$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
+		$query->bindParam(':cid', $cid);
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
 		}
 		
-		array_push(
-			$lentries[$row['uid']],
-			array(
-				'aid' => (int)$row['quiz'],
-				'variant' => (int)$row['variant'],
-				'moment' => (int)$row['moment'],
-				'grade' => (int)$row['grade'],
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			// Create array entry for each course participant
+
+			$entry = array(
+				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
-				'useranswer' => $row['useranswer'],
-				'submitted'=> $row['submitted'],
-				'vers'=> $row['vers'],
-				'marked' => $row['marked'],
-				'timeUsed' => $row['timeUsed'],
-				'totalTimeUsed' => $row['totalTimeUsed'],
-				'stepsUsed' => $row['stepsUsed'],
-				'totalStepsUsed' => $row['totalStepsUsed']
-			)
-		);
-	}
+				'username' => $row['username'],
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname'],
+				'ssn' => $row['ssn']
+			);
+			array_push($entries, $entry);
+		}
 
-	// All dugga/moment entries from all versions of course
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,gradesystem FROM listentries WHERE listentries.cid=:cid and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
-	$query->bindParam(':cid', $cid);
-	$result=$query->execute();
-	
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		$debug="Error updating entries".$error[2];
-	}
-	
-	$currentMoment=null;
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		array_push(
-			$gentries,
-			array(
-				'entryname' => $row['entryname'],
-				'lid' => (int)$row['lid'],
-				'pos' => (int)$row['pos'],
-				'kind' => (int)$row['kind'],
-				'moment' => (int)$row['moment'],
-				'link'=> $row['link'],
-				'visible'=> (int)$row['visible'],
-				'code_id' => $row['code_id'],
-				'vers' => $row['vers'],
-				'gradesystem' => (int)$row['gradesystem']					
-			)
-		);
-	}
+		// All results from current course and vers?
+		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed from userAnswer where cid=:cid;");
+		$query->bindParam(':cid', $cid);
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+		
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			if(!isset($lentries[$row['uid']])){
+					$lentries[$row['uid']]=array();
+			}
+			
+			array_push(
+				$lentries[$row['uid']],
+				array(
+					'aid' => (int)$row['quiz'],
+					'variant' => (int)$row['variant'],
+					'moment' => (int)$row['moment'],
+					'grade' => (int)$row['grade'],
+					'uid' => (int)$row['uid'],
+					'useranswer' => $row['useranswer'],
+					'submitted'=> $row['submitted'],
+					'vers'=> $row['vers'],
+					'marked' => $row['marked'],
+					'timeUsed' => $row['timeUsed'],
+					'totalTimeUsed' => $row['totalTimeUsed'],
+					'stepsUsed' => $row['stepsUsed'],
+					'totalStepsUsed' => $row['totalStepsUsed']
+				)
+			);
+		}
 
-	// All extant versions of course
-	$query = $pdo->prepare("SELECT cid,coursecode,vers FROM vers");
-	$result=$query->execute();
-	
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		$debug="Error updating entries".$error[2];
+		// All dugga/moment entries from all versions of course
+		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,gradesystem FROM listentries WHERE listentries.cid=:cid and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
+		$query->bindParam(':cid', $cid);
+		$result=$query->execute();
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+		
+		$currentMoment=null;
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$gentries,
+				array(
+					'entryname' => $row['entryname'],
+					'lid' => (int)$row['lid'],
+					'pos' => (int)$row['pos'],
+					'kind' => (int)$row['kind'],
+					'moment' => (int)$row['moment'],
+					'link'=> $row['link'],
+					'visible'=> (int)$row['visible'],
+					'code_id' => $row['code_id'],
+					'vers' => $row['vers'],
+					'gradesystem' => (int)$row['gradesystem']					
+				)
+			);
+		}
+
+		// All extant versions of course
+		$query = $pdo->prepare("SELECT cid,coursecode,vers FROM vers");
+		$result=$query->execute();
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+		
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$sentries,
+				array(
+					'cid' => $row['cid'],
+					'coursecode' => $row['coursecode'],
+					'vers' => $row['vers']
+				)
+			);
+		}		
 	}
-	
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		array_push(
-			$sentries,
-			array(
-				'cid' => $row['cid'],
-				'coursecode' => $row['coursecode'],
-				'vers' => $row['vers']
-			)
-		);
-	}		
 }
 		
 $array = array(
