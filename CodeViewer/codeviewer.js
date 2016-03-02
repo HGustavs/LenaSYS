@@ -83,7 +83,7 @@ function returned(data)
 			$("#afterbutton").css("opacity",0.4);
 			$("#afterbutton").css("pointer-events","none");
 		}
-	}else if(retData['before'].length==0&& retData['after'].legth==0){ 
+	}else if(retData['before'].length==0&& retData['after'].length==0){ 
 		$("#beforebutton").css("opacity",0.4);
 		$("#beforebutton").css("pointer-events","none");
 		$("#afterbutton").css("opacity",0.4);
