@@ -125,7 +125,7 @@ if($userid!="UNK"){
 		$query->bindParam(':variant', $newvariant);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error updating entries".$error[2];
+			$debug="Error updating entries (128)".$error[2];
 		}
 		$savedvariant=$newvariant;
 
@@ -139,7 +139,7 @@ if($userid!="UNK"){
 		$query->bindParam(':variant', $newvariant);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error updating entries".$error[2];
+			$debug="Error updating entries (142)".$error[2];
 		}
 		$savedvariant=$newvariant;
 		//------------------------------
@@ -154,7 +154,7 @@ if($userid!="UNK"){
 		$query->bindParam(':variant', $newvariant);
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error updating entries".$error[2];
+			$debug="Error updating entries (157)".$error[2];
 		}
 	}
 
@@ -275,7 +275,7 @@ $savedanswer = str_replace("*####*", '&cup;', $savedanswer);
 if(strcmp($savedanswer,"") == 0){$savedanswer = "UNK";} // Return UNK if we have not submitted any answer
 
 $files= array();
-$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by filename,updtime desc;");
+$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by filename,updtime desc;");
 $query->bindParam(':uid', $userid);
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
@@ -294,7 +294,8 @@ foreach($query->fetchAll() as $row) {
 			'extension' => $row['extension'],
 			'mime' => $row['mime'],
 			'updtime' => $row['updtime'],
-			'kind' => $row['kind'],							
+			'kind' => $row['kind'],	
+			'seq' => $row['seq'],	
 
 		);
 		array_push($files, $entry);		

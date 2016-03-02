@@ -35,13 +35,7 @@ $segment=getOP('segment');
 $duggaid=getOP('did');
 $fieldtype=getOP('field');
 $fieldkind=getOP('kind');
-
-$cid=2;
-$duggaid=1;
-$vers=97732;
-
 $error=false;
-
 					
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -62,7 +56,7 @@ if($ha){
 		$currcvd=getcwd();
 		
 		//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-		$allowedT = array("application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download");
+		$allowedT = array("application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download", "application/x-zip-compressed");
 		
 		
 		
@@ -174,7 +168,7 @@ if($ha){
 }
 	
 if(!$error){
-		// echo "<meta http-equiv='refresh' content='0;URL=fileed.php?cid=".$cid."&coursevers=".$vers."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
+		 echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 
 ?>
@@ -182,7 +176,9 @@ if(!$error){
 <body>
 <?php
 if(!$error){
-		// echo "<script>window.gocation.replace('fileed.php?cid=".$cid."&coursevers=".$vers."');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
+
+	//cid=11&coursevers=12345&did=55&moment=543&segment=0&highscoremode=0
+		echo "<script>window.gocation.replace('showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 ?>
 </body>

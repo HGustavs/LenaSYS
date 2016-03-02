@@ -634,3 +634,71 @@ Array.prototype.move = function (old_index, new_index) {
     this.splice(new_index, 0, this.splice(old_index, 1)[0]);
     return this; // for testing purposes
 };
+
+// Latest version of any file in a field - unsure about naming of the function
+function findfilevers(filez, cfield,ctype)
+{
+
+		// Iterate over elements in files array
+		var foundfile=null;
+		var oldfile="";
+		var tab="<table>";
+		for(var i=0;i<filez.length;i++){
+				if(cfield==filez[i].fieldnme){
+						if(ctype=="zip"||ctype=="pdf"){
+								foundfile=filez[i];
+								break;							
+						}else{
+								// Each new filename make row in table.
+								if(oldfile!=filez[i].filename){
+										var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;											
+										tab+="<tr'><td style='padding:4px;'>";
+										tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";
+										tab+="</td><td style='padding:4px;'>";
+										tab+=filez[i].updtime;
+										tab+="</td></tr>";		
+								}
+								oldfile=filez[i].filename;
+						}
+				}
+		}
+		tab+="</table>"			
+
+		if(foundfile!=null){
+				var filelink=foundfile.filepath+foundfile.filename+foundfile.seq+"."+foundfile.extension;
+				if(ctype=="pdf"){
+						// Copy the file name and generate the preview if we are submitting a .pdf
+						document.getElementById(cfield+"File").innerHTML=foundfile.filename+"."+foundfile.extension;
+						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;
+						document.getElementById(cfield+"Prev").innerHTML="<embed src='"+filelink+"' width='100%' height='1000px' type='application/pdf'>";
+				}else if(ctype="zip"){
+						document.getElementById(cfield+"File").innerHTML="<a href='"+filelink+"'>"+foundfile.filename+"."+foundfile.extension;+"</a>";
+						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;					
+				}
+		}else if(ctype=="multi"){
+				document.getElementById(cfield+"Prev").innerHTML=tab;
+		}	
+} 
+	
+
+function makeForm(cfield, ctype){
+
+	if (inParams !== "UNK") {
+
+		var form = "";
+		form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php' >";
+		form +="<input name='uploadedfile[]' type='file' multiple='multiple' />";
+		form +="<input type='submit' name='okGo' value='Upload'>";
+		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
+		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
+		form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
+		form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
+		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
+		form +="<input type='hidden' name='field' value='"+cfield+"' />";
+		form +="<input type='hidden' name='kind' value='1' />";
+		form +="</form>";
+
+		document.getElementById(cfield).innerHTML=form;
+	}
+
+}
