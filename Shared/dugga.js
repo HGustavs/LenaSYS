@@ -643,6 +643,8 @@ function findfilevers(filez, cfield,ctype)
 		var foundfile=null;
 		var oldfile="";
 		var tab="<table>";
+		tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>"
+		tab +="<tbody>"
 		for(var i=0;i<filez.length;i++){
 				if(cfield==filez[i].fieldnme){
 						if(ctype=="zip"||ctype=="pdf"){
@@ -662,6 +664,7 @@ function findfilevers(filez, cfield,ctype)
 						}
 				}
 		}
+		tab+="</tbody>"
 		tab+="</table>"			
 
 		if(foundfile!=null){
