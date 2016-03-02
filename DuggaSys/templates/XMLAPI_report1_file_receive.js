@@ -8,6 +8,8 @@ function setup()
 {
 	inParams = parseGet();
 	makeForm("Inl1Document","pdf");
+	makeForm("Inl1ZipDocument","zip");
+//	makeForm("Inl3Document","multi");
 
 	AJAXService("GETPARAM", { }, "PDUGGA");
 }
@@ -34,6 +36,8 @@ function returnedDugga(data)
 		}
 
 		findfilevers(data["files"], "Inl1Document","pdf");
+		findfilevers(data["files"], "Inl1ZipDocument","zip");
+//		findfilevers(data["files"], "Inl3Document","multi");
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
 
@@ -108,6 +112,8 @@ function showFacit(param, uanswer, danswer, userStats)
 		}
 
 		findfilevers(data["files"], "Inl1Document","pdf");
+		findfilevers(data["files"], "Inl1ZipDocument","zip");
+//		findfilevers(data["files"], "Inl3Document","multi");
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
 

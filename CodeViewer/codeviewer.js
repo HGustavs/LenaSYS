@@ -428,8 +428,12 @@ function displayEditContent(boxid)
 
 	changeDirectory($("#boxcontent"));
 	
-	box[5]=box[5].replace(/&#47;/g, "/"); 
-	$("#filename").val(box[5]);
+	if(box[5]!=null){
+			box[5]=box[5].replace(/&#47;/g, "/"); 
+			$("#filename").val(box[5]);
+	}else{
+			$("#filename").val("");
+	}
 
 	var wordl=retData['wordlists'];
 	var str="";
