@@ -40,9 +40,9 @@ function returnedDugga(data)
 		duggaParams = jQuery.parseJSON(data['param']);
 		
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src=showdoc.php?cid=12&fname="+duggaParams["filelink"]+" width='100%' height='1000px' type='application/pdf'>";
-		}else if(duggaParams["type"]==="html"){
-				// Can we do this?
+				document.getElementById("snus").innerHTML="<embed src=showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+" width='100%' height='1000px' type='application/pdf'>";
+		}else if(duggaParams["type"]==="md"){
+				document.getElementById("snus").innerHTML="";
 		}else if (duggaParams["type"]==="html"){
 				// Can we do this?
 		}
@@ -127,8 +127,8 @@ function showFacit(param, uanswer, danswer, userStats)
 		duggaParams = jQuery.parseJSON(param);
 
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src=showdoc.php?cid=12&fname="+duggaParams["filelink"]+" width='100%' height='1000px' type='application/pdf'>";
-		}else if(duggaParams["type"]==="html"){
+				document.getElementById("snus").innerHTML="<embed src=showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+" width='100%' height='1000px' type='application/pdf'>";
+		}else if(duggaParams["type"]==="md"){
 				// Can we do this?
 		}else if (duggaParams["type"]==="html"){
 				// Can we do this?
