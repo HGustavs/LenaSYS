@@ -186,7 +186,9 @@ function createFileUploadArea(fileuploadfileds){
 		form +="</form>";
 		
 		if (type === "pdf"){
+			str +="Pdf Preview:<br/>"; 
 			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;PDF Preview&gt;</div>";
+			str +="Pdf Upload:<br/>"; 
 			str +="<table>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
@@ -201,6 +203,7 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</tr>";
 			str += "</table>";
 		} else if (type === "zip") {
+			str +="Zip / Rar file upload:<br/>"; 
 			str +="<table>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
@@ -216,6 +219,7 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</table>";
 		} else if (type === "multi"){
 			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;Multilist preview&gt;</div>";
+			str +="Multiple File Upload:<br/>"; 
 			str +="<table>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
