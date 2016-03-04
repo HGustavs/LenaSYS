@@ -115,6 +115,8 @@
 		$fid=getOPG('fid');
 		$fname=getOPG('fname');
 		$coursevers=getOPG('coursevers');
+
+		$hdrs=getOPG('headers');
 		
 		// If no course version is given, read course version from session
 		if($cid=="UNK"){
@@ -160,7 +162,7 @@
 				if($row = $query->fetch(PDO::FETCH_ASSOC)){
 					if(file_exists ( $row['filename'])){
 					}else{
-						$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exists!</div>";
+						$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 					}
 				}else{
 					$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
@@ -233,29 +235,35 @@
 		}		
 		
 		if(!$readfile){
-				echo "<html>";
-				echo "<head>";
-				echo "<link rel='icon' type='image/ico' href='../Shared/icons/favicon.ico'/>";
-				echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
-				echo "<title>Document Viewer</title>";
-				echo "<link type='text/css' href='../Shared/css/style.css' rel='stylesheet'>";
-				echo "<link type='text/css' href='../Shared/css/markdown.css' rel='stylesheet'>";
-				echo "<link type='text/css' href='../Shared/css/jquery-ui-1.10.4.min.css' rel='stylesheet'>";  
-				echo "<script src='../Shared/js/jquery-1.11.0.min.js'></script>";
-				echo "<script src='../Shared/js/jquery-ui-1.10.4.min.js'></script>";
-				echo "<script src='../Shared/dugga.js'></script>";
-				echo "<script src='../Shared/markdown.js'></script>";				
-				echo "</head>";
-				echo "<body onload='loadedmd();'>";
+				if($hdrs=="none"){
 				
-				if($readfile == false){
+				}else{
+						echo "<html>";
+						echo "<head>";
+						echo "<link rel='icon' type='image/ico' href='../Shared/icons/favicon.ico'/>";
+						echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
+						echo "<title>Document Viewer</title>";
+						echo "<link type='text/css' href='../Shared/css/style.css' rel='stylesheet'>";
+						echo "<link type='text/css' href='../Shared/css/markdown.css' rel='stylesheet'>";
+						echo "<link type='text/css' href='../Shared/css/jquery-ui-1.10.4.min.css' rel='stylesheet'>";  
+						echo "<script src='../Shared/js/jquery-1.11.0.min.js'></script>";
+						echo "<script src='../Shared/js/jquery-ui-1.10.4.min.js'></script>";
+						echo "<script src='../Shared/dugga.js'></script>";
+						echo "<script src='../Shared/markdown.js'></script>";				
+						echo "</head>";
+						echo "<body onload='loadedmd();'>";
+				}
+				
+				if($hdrs=="none"){
+					
+				}else if($readfile == false){
 					$noup="SECTION";
 					$loginvar="LINK"; 
 					include '../Shared/navheader.php';
 					setcookie("loginvar", $loginvar); 
 				}
 								
-				echo "<div id='content'>";
+				if($hdrs!="none") echo "<div id='content'>";
 
 				// Only .md files are supported
 				if($file_extension=="md"){
@@ -265,14 +273,19 @@
 				}
 				
 				echo $bummer;
-				echo "</div>";
-				include '../Shared/loginbox.php';
 
-				// Code for supporting markdown gif clips for animated tutorials				
-				echo "<div id='figmd' class='figmd'><img id='bigmd' src='' class='bigmd' /></div>";
-				echo "<div id='backmd' class='backmd'></div>";
+				if($hdrs!="none"){
+						echo "</div>";
+						
+						include '../Shared/loginbox.php';
+		
+						// Code for supporting markdown gif clips for animated tutorials				
+						echo "<div id='figmd' class='figmd'><img id='bigmd' src='' class='bigmd' /></div>";
+						echo "<div id='backmd' class='backmd'></div>";
+
+						echo "</body>";
+						echo "</html>";		
+				}
 				
-				echo "</body>";
-				echo "</html>";		
 		}
 ?>
