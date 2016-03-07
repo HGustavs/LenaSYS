@@ -56,7 +56,7 @@ if($ha){
 		$currcvd=getcwd();
 		
 		//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-		$allowedT = array("application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download", "application/x-zip-compressed");
+		$allowedT = array("application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download", "application/x-zip-compressed", "binary/octet-stream");
 		
 		
 		
