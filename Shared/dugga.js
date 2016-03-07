@@ -705,3 +705,11 @@ function makeForm(cfield, ctype){
 	}
 
 }
+
+//----------------------------------------------------------------------------------
+// show/hide dugga instructions
+//----------------------------------------------------------------------------------
+function toggleInstructions()
+{
+	$(".instructions-content").slideToggle("slow");
+}

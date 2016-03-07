@@ -41,10 +41,10 @@ function returnedDugga(data)
 		
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src=showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+" width='100%' height='1000px' type='application/pdf'>";
-		}else if(duggaParams["type"]==="md"){
-				document.getElementById("snus").innerHTML="";
-		}else if (duggaParams["type"]==="html"){
-				// Can we do this?
+		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
+				document.getElementById("snus").innerHTML="<iframe src=showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none width='100%' height='1000px'></iframe>";
+		}else {
+			// UNK 
 		}
 
 		duggaFiles = data['files'];
