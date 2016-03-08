@@ -709,7 +709,7 @@ function makeForm(cfield, ctype){
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
-function toggleInstructions()
+function toggleInstructions(element)
 {
-	$(".instructions-content").slideToggle("slow");
+	$(element).parent().find(".instructions-content").slideToggle("slow");
 }
