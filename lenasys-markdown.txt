@@ -22,7 +22,10 @@ Headings
 
 Links
 Format: !!!url,text to show!!!
-!!!http://www.some.where.com!!!%%%The text to be shown as a link%%%
+!!!http://www.some.where.com,The text to be shown as a link!!!
+
+IMG with external url
+|||url|||
 
 Animated GIFs
 Format: +++image.png,image.gif+++	

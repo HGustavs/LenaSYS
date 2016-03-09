@@ -86,6 +86,10 @@
 				// !!!url,text to show!!!
 				$instring = preg_replace("/\!{3}(.*?\S),(.*?\S)\!{3}/","<a href='$1' target='_blank'>$2</a>",$instring);
 
+				// External img src !!!
+				// |||src|||	
+				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
+
 				// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
 				// +++image.png,image.gif+++
 				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<img class='gifimage' src='$1' onclick=\"showGif('$2');\" target='_blank' />",$instring);
