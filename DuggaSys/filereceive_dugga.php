@@ -68,8 +68,7 @@ if($ha){
 
 				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,null,null,null,:kind,:seq,now());");
 				
-				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
-				
+			
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':vers', $vers);
@@ -202,7 +201,7 @@ if($ha){
 }
 	
 if(!$error){
-		 echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
+		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 
 ?>

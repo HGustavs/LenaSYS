@@ -139,7 +139,7 @@ function markdownBlock(inString)
 
 	// External img src !!!
 	// |||src|||	
-	inString = inString.replace(/\|{3}(.*?\S)|{3}/g, '<img src="$1" />');
+	inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img src="$1" />');
 
 	// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
 	// +++image.png,image.gif+++	
