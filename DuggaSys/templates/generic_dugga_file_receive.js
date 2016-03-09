@@ -176,7 +176,13 @@ function createFileUploadArea(fileuploadfileds){
 
 		var form = "";
 		form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php' >";
-		form +="<input name='uploadedfile[]' type='file' multiple='multiple' />";
+
+		if(type=="link"){
+				var form = "";
+				form +="<input name='link' type='text' size='40' maxlength='64' />";
+		}else{
+				form +="<input name='uploadedfile[]' type='file' multiple='multiple' />";
+		}
 		form +="<input type='submit' name='okGo' value='Upload'>";
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
@@ -198,6 +204,23 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</td>";
 			str += "<td>";
 			str += "<span id='"+fieldname+"File' style='margin:4px;' >No file uploaded</span>";
+			str += "</td>";
+			str += "<td>";
+			str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
+			str += "</td>";
+			str += "</tr>";
+			str += "</table>";
+		if (type === "link"){
+			str +="Pdf Preview:<br/>"; 
+			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;HTML Link Preview&gt;</div>";
+			str +="Pdf Upload:<br/>"; 
+			str +="<table>";
+			str +="<tr>";
+			str +="<td id='"+fieldname+"'>";
+			str += form;
+			str += "</td>";
+			str += "<td>";
+			str += "<span id='"+fieldname+"File' style='margin:4px;' >No Link Uploaded</span>";
 			str += "</td>";
 			str += "<td>";
 			str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
