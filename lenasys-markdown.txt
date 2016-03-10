@@ -29,7 +29,7 @@ IMG with external url
 
 Animated GIFs
 Format: +++image.png,image.gif+++	
-+++showdoc.php?cid=[COURSE_ID]&fname=[FILENAME_PNG]+++@@@showdoc.php?cid=[COURSE_ID]&fname=[FILNAME_ANIMATED_GIF]@@@
++++showdoc.php?cid=[COURSE_ID]&fname=[FILENAME_PNG],showdoc.php?cid=[COURSE_ID]&fname=[FILNAME_ANIMATED_GIF]+++
 
 Importand Rows in code file in different window (only in Codeviewer)
 Format: ===filename,start row,end row, text to show===
