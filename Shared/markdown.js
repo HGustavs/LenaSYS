@@ -141,6 +141,10 @@ function markdownBlock(inString)
 	// |||src|||	
 	inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img src="$1" />');
 
+	// External mp4 src !!!
+	// ==[src]==	
+	inString = inString.replace(/\={2}\[(.*?\S)\]\={2}/g, '<video width="80%" style="display:block; margin: 10px auto;" controls><source src="$1" type="video/mp4"></video>');
+
 	// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
 	// +++image.png,image.gif+++	
 	inString = inString.replace(/\+{3}(.*?\S),(.*?\S)\+{3}/g,"<div><img src='../../Shared/icons/PlayT.svg'><img class='gifimage' src='$1' onclick=\"showGif('$2');\" target='_blank' /></div>");

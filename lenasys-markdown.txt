@@ -27,6 +27,9 @@ Format: !!!url,text to show!!!
 IMG with external url
 |||url|||
 
+// External mp4 src
+// ==[src]==	
+
 Animated GIFs
 Format: +++image.png,image.gif+++	
 +++showdoc.php?cid=[COURSE_ID]&fname=[FILENAME_PNG],showdoc.php?cid=[COURSE_ID]&fname=[FILNAME_ANIMATED_GIF]+++
