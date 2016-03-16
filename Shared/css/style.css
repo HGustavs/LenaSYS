@@ -195,7 +195,6 @@ hr {
 }
 
 .item {
-    display: block;
     font-family: Calibri,Sans-Serif;
     padding-top:7px;
     min-height:30px;
@@ -225,6 +224,12 @@ hr {
     min-height:26px;
 }
 
+#Sectionlist .spacerLeft {
+    height:30px;
+    width:14px;
+    margin-left:22px;
+    border-left:2px solid black;
+}
 
 #Sectionlist .quiz {
     color:#434343;
