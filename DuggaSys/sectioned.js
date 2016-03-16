@@ -79,13 +79,10 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	str="";
 	if(kind==0) str+="<option selected='selected' value='0'>Header</option>"
 	else str+="<option value='0'>Header</option>";
-	
 	if(kind==1) str+="<option selected='selected' value='1'>Section</option>"
 	else str+="<option value='1'>Section</option>";
-	
 	if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
 	else str+="<option value='2'>Code</option>";
-	
 	if(retdata['duggor'].length == 0){
 		str+="<option disabled>Test</option>";
 		displaymessage();
@@ -93,10 +90,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
 		else str+="<option value='3'>Test</option>";
 	}
-	
 	if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
 	else str+="<option value='4'>Moment</option>";
-	
 	if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
 	else str+="<option value='5'>Link</option>";
 	$("#type").html(str);
@@ -105,7 +100,6 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	str="";
 	if(evisible==0) str+="<option selected='selected' value='0'>Hidden</option>"
 	else str+="<option value='0'>Hidden</option>";
-	
 	if(evisible==1) str+="<option selected='selected' value='1'>Public</option>"
 	else str+="<option value='1'>Public</option>";
 	$("#visib").html(str);
@@ -114,28 +108,46 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	str = "";
 	if(highscoremode==0) str +="<option selected='selected' value ='0'>None</option>" 
 	else str +="<option value ='0'>None</option>"; 
-
 	if(highscoremode==1) str +="<option selected='selected' value ='1'>Time based</option>" 
 	else str +="<option value ='1'>Time based</option>"; 
-
 	if(highscoremode==2) str +="<option selected='selected' value ='2'>Click based</option>" 
 	else str +="<option value ='2'>Click based</option>"; 
 	$("#highscoremode").html(str);
 	
+	// Set tabs
+	str = "";
+	if(gradesys==0||gradesys==null) str +="<option selected='selected' value ='0'>0</option>" 
+	else str +="<option value ='0'>0</option>"; 
+	if(gradesys==1) str +="<option selected='selected' value ='1'>1</option>" 
+	else str +="<option value ='1'>1</option>"; 
+	if(gradesys==2) str +="<option selected='selected' value ='2'>2</option>" 
+	else str +="<option value ='2'>2</option>"; 
+	if(gradesys>2||gradesys<0) str +="<option selected='selected' value ='3'>3</option>" 
+	else str +="<option value ='3'>3</option>"; 
+
+	$("#tabs").html(str);
+		
 	// Set Link
 	$("#link").val(elink);
 	
 	// Show dialog
 	iistr="";
-	if(kind==0){	
+	
+	// Header
+	if(kind==0){
+		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+	// Section
 	}else if(kind==1){
+		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+	// Code
 	}else if(kind==2){
+		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -148,6 +160,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+	// Dugga
 	}else if(kind==3){
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
 			var iitem=retdata['duggor'][ii];
@@ -161,11 +174,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
+	// Moment
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
+	// Link
 	}else if(kind==5){
+		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			if(xelink==iitem['filename']){
@@ -192,10 +208,12 @@ function changedType()
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-tabs").css("display","none");
 	}else if(kind==1){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-tabs").css("display","none");
 	}else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
@@ -209,6 +227,7 @@ function changedType()
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-tabs").css("display","block");
 	}else if(kind==3){
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
 			var iitem=retdata['duggor'][ii];
@@ -222,11 +241,14 @@ function changedType()
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
+		$("#inputwrapper-tabs").css("display","none");	
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-tabs").css("display","none");
 	}else if(kind==5){
+		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			if(xelink==iitem['filename']){
@@ -251,6 +273,7 @@ function deleteItem()
 
 function updateItem()
 {
+	tabs=$("#tabs").val();
 	lid=$("#lid").val();
 	kind=$("#type").val();
 	link=$("#link").val();
@@ -259,6 +282,8 @@ function updateItem()
 	visibility=$("#visib").val();
 	moment=$("#moment").val();
 	gradesys=$("#gradesys").val();
+	// Storing tabs in gradesys column!
+	if (kind==2||kind==5) gradesys=tabs;
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode},"SECTION");
 	$("#editSection").css("display","none");
 }
