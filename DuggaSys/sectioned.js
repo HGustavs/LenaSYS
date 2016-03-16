@@ -116,20 +116,20 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	
 	// Set tabs
 	str = "";
-	if(gradesys==0||gradesys==null) str +="<option selected='selected' value ='0'>0</option>" 
-	else str +="<option value ='0'>0</option>"; 
-	if(gradesys==1) str +="<option selected='selected' value ='1'>1</option>" 
-	else str +="<option value ='1'>1</option>"; 
-	if(gradesys==2) str +="<option selected='selected' value ='2'>2</option>" 
-	else str +="<option value ='2'>2</option>"; 
-	if(gradesys==3) str +="<option selected='selected' value ='3'>3</option>" 
-	else str +="<option value ='3'>3</option>"; 
-	if(gradesys==4) str +="<option selected='selected' value ='4'>4</option>" 
-	else str +="<option value ='4'>4</option>"; 
-	if(gradesys==5) str +="<option selected='selected' value ='5'>5</option>" 
-	else str +="<option value ='5'>5</option>"; 
-	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>6</option>" 
-	else str +="<option value ='6'>6</option>"; 
+	if(gradesys==0||gradesys==null) str +="<option selected='selected' value ='0'>0 tabs</option>" 
+	else str +="<option value ='0'>0 tabs</option>"; 
+	if(gradesys==1) str +="<option selected='selected' value ='1'>1 tab</option>" 
+	else str +="<option value ='1'>1 tab</option>"; 
+	if(gradesys==2) str +="<option selected='selected' value ='2'>2 tabs</option>" 
+	else str +="<option value ='2'>2 tabs</option>"; 
+	if(gradesys==3) str +="<option selected='selected' value ='3'>3 tabs</option>" 
+	else str +="<option value ='3'>3 tabs</option>"; 
+	if(gradesys==4) str +="<option selected='selected' value ='4'>end</option>" 
+	else str +="<option value ='4'>end</option>"; 
+	if(gradesys==5) str +="<option selected='selected' value ='5'>1 tab + end</option>" 
+	else str +="<option value ='5'>1 tab + end</option>"; 
+	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>2 tabs + end</option>" 
+	else str +="<option value ='6'>2 tabs + end</option>"; 
 
 	$("#tabs").html(str);
 		
