@@ -122,8 +122,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str +="<option value ='1'>1</option>"; 
 	if(gradesys==2) str +="<option selected='selected' value ='2'>2</option>" 
 	else str +="<option value ='2'>2</option>"; 
-	if(gradesys>2||gradesys<0) str +="<option selected='selected' value ='3'>3</option>" 
+	if(gradesys==3) str +="<option selected='selected' value ='3'>3</option>" 
 	else str +="<option value ='3'>3</option>"; 
+	if(gradesys==4) str +="<option selected='selected' value ='4'>4</option>" 
+	else str +="<option value ='4'>4</option>"; 
+	if(gradesys==5) str +="<option selected='selected' value ='5'>5</option>" 
+	else str +="<option value ='5'>5</option>"; 
+	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>6</option>" 
+	else str +="<option value ='6'>6</option>"; 
 
 	$("#tabs").html(str);
 		
@@ -497,22 +503,46 @@ function returnedSection(data)
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
 					if(parseInt(item['kind']) === 0 ){
 						// Styling for header row
-						for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
-						}						
+						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
+							for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
+								str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+							}													
+						} else if (parseInt(item['gradesys']) == 4){
+							str+="<td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}else if (parseInt(item['gradesys']) == 5){
+							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}else if (parseInt(item['gradesys']) == 6){
+							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}
 						str+="</td><td class='header item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 						kk=0;
 					}else if(parseInt(item['kind']) === 1 ){
 						//Styling for section row
-						for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
+							for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
+								str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+							}													
+						} else if (parseInt(item['gradesys']) == 4){
+							str+="<td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}else if (parseInt(item['gradesys']) == 5){
+							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}else if (parseInt(item['gradesys']) == 6){
+							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
 						}
 						str+="<td class='section item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 						kk=0;
 					}else if(parseInt(item['kind']) === 2 ){
 						// Styling for example row
-						for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
+							for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
+								str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+							}													
+						} else if (parseInt(item['gradesys']) == 4){
+							str+="<td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}else if (parseInt(item['gradesys']) == 5){
+							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}else if (parseInt(item['gradesys']) == 6){
+							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
 						}
 						str+="<td";
 						if(kk%2==0){
@@ -649,8 +679,16 @@ function returnedSection(data)
 						kk=0;
 					}else if(parseInt(item['kind']) === 5 ){
 						// Styling for link row
-						for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
+							for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
+								str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+							}													
+						} else if (parseInt(item['gradesys']) == 4){
+							str+="<td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}else if (parseInt(item['gradesys']) == 5){
+							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
+						}else if (parseInt(item['gradesys']) == 6){
+							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
 						}
 						str+="<td";
 						if(kk%2==0){

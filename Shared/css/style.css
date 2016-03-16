@@ -231,6 +231,16 @@ hr {
     border-left:2px solid black;
 }
 
+#Sectionlist .spacerEnd {
+    height:16px;
+    width:20px;
+    margin-left:22px;
+    margin-bottom: 14px;
+    border-left:2px solid black;
+    border-bottom: 2px solid black;
+    overflow: hidden;
+}
+
 #Sectionlist .quiz {
     color:#434343;
     font-size: 12pt;
