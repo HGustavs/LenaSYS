@@ -162,6 +162,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","none");
 	// Dugga
 	}else if(kind==3){
+		$("#inputwrapper-tabs").css("display","none");
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
 			var iitem=retdata['duggor'][ii];
 			if(xelink==iitem['id']){
@@ -176,6 +177,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","block");
 	// Moment
 	}else if(kind==4){
+		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
