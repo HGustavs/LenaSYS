@@ -7,6 +7,7 @@
 	<title>Dugga Viewer</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
 	<link type="text/css" href="templates/dugga.css" rel="stylesheet">
 
 	
