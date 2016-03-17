@@ -483,7 +483,7 @@ function returnedSection(data)
 		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 
 		if(retdata["writeaccess"]){
-			str += "<input class='new-item-button' type='button' value='New Item' onclick='newItem();'/></div>";
+			str += "<td><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/><td></div>";
 		}else{
 			str += "</div>";
 		}
@@ -498,6 +498,7 @@ function returnedSection(data)
 			var kk=0;
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
+				var deadline = item['deadline'];
 				str += "<div><table style='width:100%'><tr style='height:32px;'>";
 				// If visible or we are a teacher/superuser
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
@@ -552,7 +553,6 @@ function returnedSection(data)
 						}
 						kk++;
 					}else if(parseInt(item['kind']) === 3 ){
-						console.log(item);
 						// Styling for quiz row
 						str+="<td style='width:42px;'><div class='spacerLeft'></div></td>";
 						var grady=-1;
@@ -561,7 +561,6 @@ function returnedSection(data)
 						var submitted;
 						for(jjj=0;jjj<data['results'].length;jjj++){
 							var lawtem=data['results'][jjj];
-							console.log(lawtem);
 							if((lawtem['moment']==item['lid'])){
 								grady=lawtem['grade'];
 								status="";
@@ -606,15 +605,16 @@ function returnedSection(data)
 
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-							str+="<td><img style='float:left;margin-left:8px' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 						}						
-						
+											
 						str += "<td";
 						if(kk%2==0){
 							str+=" class='example item hi' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}else{
 							str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
+						
 						kk++;
 					}else if(parseInt(item['kind']) === 4 ){
 												var grady=-1;
@@ -727,15 +727,17 @@ function returnedSection(data)
 						}else{
 							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 						}
-					}	
-		
-					if(data['writeaccess']) str+="<img id='dorf' style='float:right;margin-right:8px;margin-top:3px;' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' />";
-		
-					if(parseInt(item['kind']) === 3){
+					}						
+														
+					str+="</td>";
+					if (deadline!== null || deadline==="undefined"){
+						str +="<td style='text-align:right'><span style=''>"+deadline+"</span></div></td>";	
+					} else {
 
-					}				
-													
-					str+="</td></tr>";
+					}
+					if(data['writeaccess']) str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
+
+					str += "</tr>";
 				}
 				str +="</table></div>"
 			}								
