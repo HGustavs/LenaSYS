@@ -505,13 +505,11 @@ function returnedSection(data)
 				// Content table 		
 				str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
 				if(kk%2==0){
-					str+=" class='hi norm' ";
-					alert("hi");
+					str+=" class='hi' ";
 				}else{
-					str+=" class='lo norm' ";
-					alert("lo");
+					str+=" class='lo' ";
 				}
-				str+=">";
+				str+=" >";
 
 				// If visible or we are a teacher/superuser
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		

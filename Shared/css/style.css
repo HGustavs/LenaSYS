@@ -249,11 +249,6 @@ hr {
     min-height:26px;
 }
 
-#Sectionlist .norm {
-    color:#fff;
-    background-color: #f0f0f0;
-}
-
 #Sectionlist .course {
     padding:6px;
     text-align: center;
@@ -265,10 +260,6 @@ hr {
     clear:both;
 }
 
-.hi { background-color:#dad8db; }
-
-.lo { background-color:#eae8eb;}
-
 .item a {
     text-decoration:none;
     color: #775886;
@@ -278,12 +269,41 @@ hr {
     text-decoration:underline;
 }
 
+#Sectionlist .norm{
+    background-color:#fff;
+    color: #000;
+}
+
 #Sectionlist .norm:hover {
     background-color:#c6cdb8;
     color: #000;
 }
 
-.hidden {opacity:0.5;border-radius:4px;margin-left:16px;}
+
+#Sectionlist .hi:hover {
+    background-color:#c6cdb8;
+    color: #000;
+}
+
+#Sectionlist .lo:hover {
+    background-color:#c6cdb8;
+    color: #000;
+}
+
+.hi { 
+	    background-color:#dad8db; 
+}
+
+.lo {
+			background-color:#eae8eb;
+}
+
+
+.hidden {
+	opacity:0.5;
+	border-radius:4px;
+	margin-left:16px;
+}
 
 p {
     margin: .5em auto .5em auto;
