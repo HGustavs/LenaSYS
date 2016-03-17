@@ -499,9 +499,21 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
-				str += "<div><table style='width:100%;table-layout:fixed;'><tr style='height:32px;'>";
+				str += "<div>";
+
+
+				// Content table 		
+				str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
+				if(kk%2==0){
+					str+=" class='hi norm' ";
+					alert("hi");
+				}else{
+					str+=" class='lo norm' ";
+					alert("lo");
+				}
+				str+=">";
+
 				// If visible or we are a teacher/superuser
-				
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
 
 					// Make tabs
@@ -529,9 +541,9 @@ function returnedSection(data)
 					}else if(parseInt(item['kind']) === 2 ){
 						str+="<td";
 						if(kk%2==0){
-							str+=" class='example item hi' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
+							str+=" class='example item' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 						}else{
-							str+=" class='example item lo' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
 						kk++;
 					}else if(parseInt(item['kind']) === 3 ){
@@ -591,10 +603,11 @@ function returnedSection(data)
 						}						
 											
 						str += "<td ";
+
 						if(kk%2==0){
-							str+=" class='example item hi' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}else{
-							str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
 						
 						kk++;
@@ -664,9 +677,9 @@ function returnedSection(data)
 
 						str+="<td";
 						if(kk%2==0){
-							str+=" class='example item hi' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
+							str+=" class='example item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 						}else{
-							str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
 						kk++;
 					}
@@ -704,10 +717,12 @@ function returnedSection(data)
 
 					// Add generic td for deadlines if one exists
 					if (deadline!== null || deadline==="undefined"){
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;'>"+deadline+"</td>";	
+						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;' ";
+						str+=" >"+deadline+"</td>";
 					} else {
 
 					}
+	
 					if(data['writeaccess']) str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
 
 					str += "</tr>";

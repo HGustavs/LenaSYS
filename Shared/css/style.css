@@ -278,7 +278,7 @@ hr {
     text-decoration:underline;
 }
 
-#Sectionlist .norm:hover, #Sectionlist .example:hover, #Sectionlist .test:hover, #Sectionlist .hidden:hover{
+#Sectionlist .norm:hover {
     background-color:#c6cdb8;
     color: #000;
 }
