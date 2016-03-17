@@ -238,6 +238,7 @@ hr {
     margin-bottom: 14px;
     border-left:2px solid black;
     border-bottom: 2px solid black;
+    border-bottom-left-radius: 6px;
     overflow: hidden;
 }
 
