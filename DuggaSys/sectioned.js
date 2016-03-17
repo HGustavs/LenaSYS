@@ -499,62 +499,44 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
-				str += "<div><table style='width:100%'><tr style='height:32px;'>";
+				str += "<div><table style='width:100%;table-layout:fixed;'><tr style='height:32px;'>";
 				// If visible or we are a teacher/superuser
+				
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
+
+					// Make tabs
+					if(parseInt(item['kind']) === 0 || parseInt(item['kind']) === 1 || parseInt(item['kind']) === 2 || parseInt(item['kind']) === 5 ){
+							if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
+									for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
+										str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td>";
+									}													
+							} else if (parseInt(item['gradesys']) == 4){
+									str+="<td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
+							}else if (parseInt(item['gradesys']) == 5){
+									str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
+							}else if (parseInt(item['gradesys']) == 6){
+									str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
+							}
+					}
+
 					if(parseInt(item['kind']) === 0 ){
 						// Styling for header row
-						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
-							for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-								str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
-							}													
-						} else if (parseInt(item['gradesys']) == 4){
-							str+="<td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 5){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 6){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}
 						str+="</td><td class='header item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 						kk=0;
 					}else if(parseInt(item['kind']) === 1 ){
-						//Styling for section row
-						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
-							for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-								str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
-							}													
-						} else if (parseInt(item['gradesys']) == 4){
-							str+="<td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 5){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 6){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}
 						str+="<td class='section item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 						kk=0;
 					}else if(parseInt(item['kind']) === 2 ){
-						// Styling for example row
-						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
-							for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-								str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
-							}													
-						} else if (parseInt(item['gradesys']) == 4){
-							str+="<td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 5){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 6){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}
 						str+="<td";
 						if(kk%2==0){
-							str+=" class='example item hi' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
+							str+=" class='example item hi' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 						}else{
-							str+=" class='example item lo' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item lo' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
 						kk++;
 					}else if(parseInt(item['kind']) === 3 ){
 						// Styling for quiz row
-						str+="<td style='width:42px;'><div class='spacerLeft'></div></td>";
+						str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
 						var grady=-1;
 						var status ="";
 						var marked;
@@ -591,16 +573,16 @@ function returnedSection(data)
 
 						if((grady==-1 || grady == 0 || grady==null) && status==="") {
 								// Nothing submitted nor marked (White)
-								str+="<td style='width:42px; height:31.5px; vertical-align:bottom;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(white, grey, white);border-radius:11px;border:1px solid #000;' ></div></td>";
+								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(white, grey, white);border-radius:11px;border:1px solid #000;' ></div></td>";
 						}else if(status === "pending"){
 								//	Nothing marked yet (Yellow)
-								str+="<td style='width:42px; height:31.5px; vertical-align:bottom;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:11px; border:1px solid #000;' title='Status: Handed in\nDate: "+submitted+"' ></div></td>";
+								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:11px; border:1px solid #000;' title='Status: Handed in\nDate: "+submitted+"' ></div></td>";
 						}else if(grady==1){
 								//	Marked Fail! (Red)								
-								str+="<td style='width:42px; height:31.5px; vertical-align:bottom;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(red 55%, grey, white 60%);border-radius:11px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div></td>";
+								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(red 55%, grey, white 60%);border-radius:11px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div></td>";
 						}else if(grady>1){
 								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<td style='width:42px; height:31.5px; vertical-align:bottom;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(green 55%, grey, white 60%);border-radius:11px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div></td>";
+								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(green 55%, grey, white 60%);border-radius:11px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div></td>";
 						}
 
 
@@ -608,7 +590,7 @@ function returnedSection(data)
 							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 						}						
 											
-						str += "<td";
+						str += "<td ";
 						if(kk%2==0){
 							str+=" class='example item hi' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}else{
@@ -661,16 +643,16 @@ function returnedSection(data)
 						
 						if(status===""){
 								// Nothing submitted nor marked (White)
-								str+="<td style='width:42px; height:31.5px; vertical-align:bottom;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(white, grey, white);border-radius:13px;border:1px solid #000;' ></div></td>";
+								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(white, grey, white);border-radius:13px;border:1px solid #000;' ></div></td>";
 						}else if(status === "pending"){
 								//	Nothing marked yet (Yellow)
-								str+="<td style='width:42px; height:31.5px; vertical-align:bottom;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Handed in\nDate: "+lastSubmit+"' ></div></td>";
+								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Handed in\nDate: "+lastSubmit+"' ></div></td>";
 						}else if(grady==1){
 								//	Marked Fail! (Red)								
-								str+="<td style='width:42px; height:31.5px; vertical-align:bottom;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(red 55%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div></td>";
+								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(red 55%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div></td>";
 						}else if(grady>1){
 								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<td style='width:42px; height:31.5px; vertical-align:bottom'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(green 55%, grey, white 60%);border-radius:13px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div></td>";
+								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(green 55%, grey, white 60%);border-radius:13px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div></td>";
 						}
 						//new moment bool equals true
 						momentexists = item['lid'];
@@ -679,18 +661,7 @@ function returnedSection(data)
 						str+="<td class='moment item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						kk=0;
 					}else if(parseInt(item['kind']) === 5 ){
-						// Styling for link row
-						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
-							for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-								str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
-							}													
-						} else if (parseInt(item['gradesys']) == 4){
-							str+="<td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 5){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 6){
-							str+="<td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerLeft'></div></td><td style='width:36px;'><div class='spacerEnd'></div></td>";
-						}
+
 						str+="<td";
 						if(kk%2==0){
 							str+=" class='example item hi' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
@@ -730,8 +701,10 @@ function returnedSection(data)
 					}						
 														
 					str+="</td>";
+
+					// Add generic td for deadlines if one exists
 					if (deadline!== null || deadline==="undefined"){
-						str +="<td style='text-align:right'><span style=''>"+deadline+"</span></div></td>";	
+						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;'>"+deadline+"</td>";	
 					} else {
 
 					}
