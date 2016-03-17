@@ -7,7 +7,7 @@
 Example seed
 ---------------------
 	 Example seed
-	 Param: {"type":"pdf","filelink":"instructions.pdf", "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip"},{"fieldname":"Inl3Document","type":"multi"}]}
+	 Param: {"type":"pdf","filelink":"instructions.pdf", "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip", "instruction":"Zip your project folder and submit the file here."},{"fieldname":"Inl3Document","type":"multi", "instruction":"Upload all of your graphics, i.e., all the generated png and svg files."}]}
 	 Answer: 
 -------------==============######## Documentation End ###########==============-------------
 */
@@ -60,9 +60,12 @@ function returnedDugga(data)
 		}
 
 		createFileUploadArea(duggaParams["submissions"]);
-
 		for (var k=0; k < duggaParams["submissions"].length; k++){
 			findfilevers(data["files"], duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type);
+    		if (duggaParams['uploadInstruction'] !== null){
+				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
+			}
+
 		}
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
@@ -195,7 +198,12 @@ function createFileUploadArea(fileuploadfileds){
 		form +="</form>";
 		
 		if (type === "pdf"){
-			str +="Pdf Preview:<br/>"; 
+			str += "<div style='border:1px solid #614875'>";
+			str += "<div class='loginBoxheader'>";
+			str += "<h3>Pdf Submission and Preview</h3>";
+			str += "</div>";
+			str += "<div style='padding:5px;'>";
+			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
 			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;PDF Preview&gt;</div>";
 			str +="Pdf Upload:<br/>"; 
 			str +="<table>";
@@ -211,10 +219,16 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</td>";
 			str += "</tr>";
 			str += "</table>";
+			str += "</div>";
+			str += "</div>"
 		} else if (type === "link"){
-			str +="Link Preview:<br/>"; 
+			str += "<div style='border:1px solid #614875'>";
+			str += "<div class='loginBoxheader'>";
+			str += "<h3>Link Submission and Preview</h3>";
+			str += "</div>";
+			str += "<div style='padding:5px;'>";
+			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
 			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;HTML Link Preview&gt;</div>";
-			str +="Link Upload:<br/>"; 
 			str +="<table>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
@@ -228,8 +242,15 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</td>";
 			str += "</tr>";
 			str += "</table>";
+			str += "</div>"
+			str += "</div>"			
 		} else if (type === "zip") {
-			str +="Zip / Rar file upload:<br/>"; 
+			str += "<div style='border:1px solid #614875'>";
+			str += "<div class='loginBoxheader'>";
+			str += "<h3>Zip / Rar file Upload</h3>";
+			str += "</div>";
+			str += "<div style='padding:5px;'>";
+			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
 			str +="<table>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
@@ -243,7 +264,15 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</td>";
 			str += "</tr>";
 			str += "</table>";
+			str += "</div>"
+			str += "</div>"
 		} else if (type === "multi"){
+			str += "<div style='border:1px solid #614875'>";
+			str += "<div class='loginBoxheader'>";
+			str += "<h3>Multiple file Upload</h3>";
+			str += "</div>";
+			str += "<div style='padding:5px;'>";
+			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
 			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;Multilist preview&gt;</div>";
 			str +="Multiple File Upload:<br/>"; 
 			str +="<table>";
@@ -259,6 +288,8 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</td>";
 			str += "</tr>";
 			str += "</table>";
+			str += "</div>"
+			str += "</div>"
 		}
 
 	}
