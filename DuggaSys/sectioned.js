@@ -552,6 +552,7 @@ function returnedSection(data)
 						}
 						kk++;
 					}else if(parseInt(item['kind']) === 3 ){
+						console.log(item);
 						// Styling for quiz row
 						str+="<td style='width:42px;'><div class='spacerLeft'></div></td>";
 						var grady=-1;
