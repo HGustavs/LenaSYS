@@ -510,7 +510,84 @@ function returnedSection(data)
 					str+=" class='lo' ";
 				}
 				str+=" >";
+				
+				if(parseInt(item['kind']) === 3|| parseInt(item['kind']) === 4){
 
+							// Styling for quiz row
+							if(parseInt(item['kind']) === 3) str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+
+							var grady=-1;
+							var status ="";
+							var marked;
+							var submitted;
+							var lastSubmit = null;
+
+							for(jjj=0;jjj<data['results'].length;jjj++){
+								var lawtem=data['results'][jjj];
+								if((lawtem['moment']==item['lid'])){
+									grady=lawtem['grade'];
+									status="";
+									var st = lawtem['submitted'];
+									if (st !== null) {
+										var sts = st.split(" ");
+										submitted = new Date(sts[0]+"T"+sts[1]);									
+									} else {
+										submitted = null;
+									}
+									var mt = lawtem['marked'];
+									if (mt !== null) {
+										var mts = mt.split(" ");
+										marked = new Date(mts[0]+"T"+mts[1]);									
+									} else {
+										marked = null;
+									}
+									
+									if(parseInt(item['kind']) === 3){
+											if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
+												status="pending";
+											} 
+			
+											if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
+												status="pending";
+											} 
+									}else{
+											if (submitted !== null && marked === null) {
+												status="pending";
+											} 
+			
+											if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
+												status="pending";
+											} 
+			
+											if (lastSubmit === null){
+												lastSubmit = submitted;
+											}else if (submitted !== null) {
+												if (lastSubmit.getTime() < submitted.getTime()){
+													lastSubmit=submitted;
+												}
+											}
+									}
+								}
+							}
+	
+							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'>";
+							if((grady==-1 || grady == 0 || grady==null) && status==="") {
+									// Nothing submitted nor marked (White)
+									str+="<div class='WhiteLight' ></div>";
+							}else if(status === "pending"){
+									//	Nothing marked yet (Yellow)
+									str+="<div class='YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";
+							}else if(grady==1){
+									//	Marked Fail! (Red)								
+									str+="<div class='RedLight' title='Status: Failed\nDate: "+marked+"' ></div>";
+							}else if(grady>1){
+									//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+									str+="<div class='GreenLight'  title='Status: Pass\nDate: "+marked+"' ></div>";
+							}
+							str+="</td>";
+				
+				}
+				
 				// If visible or we are a teacher/superuser
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
 
@@ -545,56 +622,6 @@ function returnedSection(data)
 						}
 						kk++;
 					}else if(parseInt(item['kind']) === 3 ){
-						// Styling for quiz row
-						str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
-						var grady=-1;
-						var status ="";
-						var marked;
-						var submitted;
-						for(jjj=0;jjj<data['results'].length;jjj++){
-							var lawtem=data['results'][jjj];
-							if((lawtem['moment']==item['lid'])){
-								grady=lawtem['grade'];
-								status="";
-								var st = lawtem['submitted'];
-								if (st !== null) {
-									var sts = st.split(" ");
-									submitted = new Date(sts[0]+"T"+sts[1]);									
-								} else {
-									submitted = null;
-								}
-								var mt = lawtem['marked'];
-								if (mt !== null) {
-									var mts = mt.split(" ");
-									marked = new Date(mts[0]+"T"+mts[1]);									
-								} else {
-									marked = null;
-								}
-								if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
-									status="pending";
-								} 
-
-								if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
-									status="pending";
-								} 
-							}
-						}
-						
-
-						if((grady==-1 || grady == 0 || grady==null) && status==="") {
-								// Nothing submitted nor marked (White)
-								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(white, grey, white);border-radius:11px;border:1px solid #000;' ></div></td>";
-						}else if(status === "pending"){
-								//	Nothing marked yet (Yellow)
-								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:11px; border:1px solid #000;' title='Status: Handed in\nDate: "+submitted+"' ></div></td>";
-						}else if(grady==1){
-								//	Marked Fail! (Red)								
-								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(red 55%, grey, white 60%);border-radius:11px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div></td>";
-						}else if(grady>1){
-								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:22px; height:22px; margin: 0px 10px; background: radial-gradient(green 55%, grey, white 60%);border-radius:11px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div></td>";
-						}
-
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
 							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
@@ -610,61 +637,7 @@ function returnedSection(data)
 						
 						kk++;
 					}else if(parseInt(item['kind']) === 4 ){
-												var grady=-1;
-						var lastSubmit = null;
-						for(jjj=0;jjj<data['results'].length;jjj++){
-							var lawtem=data['results'][jjj];
-							//alert("G: "+lawtem['grade']);
-							if((lawtem['moment']==item['lid'])){
-								grady=lawtem['grade'];
-
-								status="";
-								var st = lawtem['submitted'];
-								if (st !== null) {
-									var sts = st.split(" ");
-									submitted = new Date(sts[0]+"T"+sts[1]);									
-								} else {
-									submitted = null;
-								}
-								var mt = lawtem['marked'];
-								if (mt !== null) {
-									var mts = mt.split(" ");
-									marked = new Date(mts[0]+"T"+mts[1]);									
-								} else {
-									marked = null;
-								}
-
-								if (submitted !== null && marked === null) {
-									status="pending";
-								} 
-
-								if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
-									status="pending";
-								} 
-
-								if (lastSubmit === null){
-									lastSubmit = submitted;
-								} else if (submitted !== null) {
-									if (lastSubmit.getTime() < submitted.getTime()){
-										lastSubmit=submitted;
-									}
-								}
-							}
-						}
-						
-						if(status===""){
-								// Nothing submitted nor marked (White)
-								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(white, grey, white);border-radius:13px;border:1px solid #000;' ></div></td>";
-						}else if(status === "pending"){
-								//	Nothing marked yet (Yellow)
-								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(yellow 50%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Handed in\nDate: "+lastSubmit+"' ></div></td>";
-						}else if(grady==1){
-								//	Marked Fail! (Red)								
-								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(red 55%, grey, white 60%);border-radius:13px;border:1px solid #000;' title='Status: Failed\nDate: "+marked+"' ></div></td>";
-						}else if(grady>1){
-								//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-								str+="<td style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'><div id='korf' style='width:26px; height:26px;margin:0px 8px; background: radial-gradient(green 55%, grey, white 60%);border-radius:13px;border:1px solid #000;'  title='Status: Pass\nDate: "+marked+"' ></div></td>";
-						}
+					
 						//new moment bool equals true
 						momentexists = item['lid'];
 									
@@ -725,7 +698,7 @@ function returnedSection(data)
 
 					str += "</tr>";
 				}
-				str +="</table></div>"
+				str +="</table></div>";
 			}								
 		}else{
 			// No items were returned! 

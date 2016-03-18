@@ -298,6 +298,41 @@ hr {
 			background-color:#eae8eb;
 }
 
+.WhiteLight{
+		width:22px;
+		height:22px;
+		margin: 0px 10px;
+		background: radial-gradient(white, grey, white);
+		border-radius:11px;
+		border:1px solid #000;
+}
+
+
+.YellowLight{
+		width:26px; 
+		height:26px;
+		margin:0px 8px;
+		background: radial-gradient(yellow 50%, grey, white 60%);
+		border-radius:13px;
+		border:1px solid #000;
+}
+
+.RedLight{
+		width:22px;
+		height:22px;
+		margin: 0px 10px;
+		background: radial-gradient(red 55%, grey, white 60%);
+		border-radius:11px;border:1px solid #000;
+}
+
+.RedLight{
+		width:22px;
+		height:22px;
+		margin: 0px 10px;
+		background: radial-gradient(green 55%, grey, white 60%);
+		border-radius:11px;
+		border:1px solid #000;
+}
 
 .hidden {
 	opacity:0.5;
