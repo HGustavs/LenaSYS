@@ -501,6 +501,8 @@ function returnedSection(data)
 				var deadline = item['deadline'];
 				str += "<div>";
 
+				// If visible or we are a teacher/superuser
+				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
 
 				// Content table 		
 				str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
@@ -571,7 +573,7 @@ function returnedSection(data)
 							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'>";
 							if((grady==-1 || grady == 0 || grady==null) && status==="") {
 									// Nothing submitted nor marked (White)
-									str+="<div class='WhiteLight' ></div>";
+									str+="<div class='WhiteLight'></div>";
 							}else if(status === "pending"){
 									//	Nothing marked yet (Yellow)
 									str+="<div class='YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";
@@ -586,8 +588,6 @@ function returnedSection(data)
 				
 				}
 				
-				// If visible or we are a teacher/superuser
-				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
 
 					// Make tabs
 					if(parseInt(item['kind']) === 0 || parseInt(item['kind']) === 1 || parseInt(item['kind']) === 2 || parseInt(item['kind']) === 5 ){
