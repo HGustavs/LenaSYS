@@ -529,15 +529,13 @@ function returnedSection(data)
 									status="";
 									var st = lawtem['submitted'];
 									if (st !== null) {
-										var sts = st.split(" ");
-										submitted = new Date(sts[0]+"T"+sts[1]);									
+										submitted = new Date(st);									
 									} else {
 										submitted = null;
 									}
 									var mt = lawtem['marked'];
 									if (mt !== null) {
-										var mts = mt.split(" ");
-										marked = new Date(mts[0]+"T"+mts[1]);									
+										marked = new Date(mt);									
 									} else {
 										marked = null;
 									}

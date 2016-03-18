@@ -212,7 +212,7 @@ if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 $ha = (checklogin() && (hasAccess($userid, $courseid, 'w') || isSuperUser($userid)));
 
 $resulties=array();
-$query = $pdo->prepare("SELECT moment,grade,submitted,marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+$query = $pdo->prepare("SELECT moment,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
 $query->bindParam(':uid', $userid);
