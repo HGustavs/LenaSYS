@@ -198,7 +198,7 @@ function createFileUploadArea(fileuploadfileds){
 		form +="</form>";
 		
 		if (type === "pdf"){
-			str += "<div style='border:1px solid #614875'>";
+			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
 			str += "<div class='loginBoxheader'>";
 			str += "<h3>Pdf Submission and Preview</h3>";
 			str += "</div>";
@@ -222,7 +222,7 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</div>";
 			str += "</div>"
 		} else if (type === "link"){
-			str += "<div style='border:1px solid #614875'>";
+			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
 			str += "<div class='loginBoxheader'>";
 			str += "<h3>Link Submission and Preview</h3>";
 			str += "</div>";
@@ -245,7 +245,7 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</div>"
 			str += "</div>"			
 		} else if (type === "zip") {
-			str += "<div style='border:1px solid #614875'>";
+			str += "<div style='border:1px solid #614875'; margin: 5px auto;>";
 			str += "<div class='loginBoxheader'>";
 			str += "<h3>Zip / Rar file Upload</h3>";
 			str += "</div>";
@@ -267,7 +267,7 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</div>"
 			str += "</div>"
 		} else if (type === "multi"){
-			str += "<div style='border:1px solid #614875'>";
+			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
 			str += "<div class='loginBoxheader'>";
 			str += "<h3>Multiple file Upload</h3>";
 			str += "</div>";
