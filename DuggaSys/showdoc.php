@@ -193,7 +193,7 @@
 		
 							if($filekind==2){
 								// Global
-								$file = "courses/".$filename;
+								$file = "../courses/global/".$filename;
 							}else if($filekind==3){
 								// Course Local
 								$file = "../courses/".$cid."/".$filename;

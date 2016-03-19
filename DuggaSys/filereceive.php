@@ -71,8 +71,8 @@ if($ha){
 
 		}else if($kind=="GFILE"){
 				//  if it is a global file, check if "/templates" exists, if not create the directory
-				if(!file_exists ($currcvd."/DuggaSys/templates")){ 
-						$storefile=mkdir($currcvd."/DuggaSys/templates");
+				if(!file_exists ($currcvd."/courses/global")){ 
+						$storefile=mkdir($currcvd."/courses/global");
 				}else{
 						$storefile=true;							
 				}
@@ -156,7 +156,7 @@ if($ha){
 										}else if($kind=="MFILE"){
 												$movname=$currcvd."/courses/".$cid."/".$fname;
 										}else{
-												$movname=$currcvd."/DuggaSys/templates/".$fname;
+												$movname=$currcvd."/courses/global/".$fname;
 										}
 
 										// check if upload is successful 
