@@ -177,7 +177,7 @@
 					$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 				}
 			}else if($fname!="UNK"){
-				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
+				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fname', $fname);
 				$result = $query->execute();

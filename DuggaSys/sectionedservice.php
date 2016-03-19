@@ -333,7 +333,7 @@ if($ha){
 		);
 	}
 
-	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
+	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE isGlobal='1' ORDER BY filename");
 	$query->bindParam(':cid', $courseid);
 	
 	if(!$query->execute()) {
