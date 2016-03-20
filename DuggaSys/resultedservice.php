@@ -93,12 +93,14 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$useranswer = str_replace("*###*", '&cap;', $useranswer);
 			if(strcmp($useranswer,"") == 0){$useranswer = "UNK";} // Return UNK if we have not submitted any user answer
 
-			$duggaparam=$row['param'];
+			$duggaparam=html_entity_decode($row['param']);
+
 			$duggaparam = str_replace("*##*", '"', $duggaparam);
 			$duggaparam = str_replace("*###*", '&cap;', $duggaparam);
 			$duggaparam = str_replace("*####*", '&cup;', $duggaparam);
 
-			$duggaanswer=$row['facit'];
+			$duggaanswer=html_entity_decode($row['facit']);
+
 			$duggaanswer = str_replace("*##*", '"', $duggaanswer);
 			$duggaanswer = str_replace("*###*", '&cap;', $duggaanswer);
 			$duggaanswer = str_replace("*####*", '&cup;', $duggaanswer);

@@ -164,7 +164,7 @@ if($userid!="UNK"){
 	}
 	foreach ($variants as $variant) {
 		if($variant["vid"] == $savedvariant || $quizfile == "kryss"){
-			$param.=$variant['param'];
+			$param.=html_entity_decode($variant['param']);
 		}
 	}
 
