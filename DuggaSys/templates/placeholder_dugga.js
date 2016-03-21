@@ -105,7 +105,7 @@ function reset()
 
 function showFacit(param, uanswer, danswer)
 {
-	var p = jQuery.parseJSON(param);
+	var p = jQuery.parseJSON(decodeURIComponent(param));
 	var daJSON = jQuery.parseJSON(danswer);
 	
 }

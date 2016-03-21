@@ -38,12 +38,29 @@ function returnedDugga(data)
 		alert("UNKNOWN DUGGA!");
 	} else {
 		duggaParams = jQuery.parseJSON(data['param']);
-		
+
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
         		$("#snus").html(result);
+        		// Placeholder code
+				var pl = duggaParams.placeholders;
+				if (pl !== undefined) {
+					for (var m=0;m<pl.length;m++){
+						for (placeholderId in pl[m]) {
+							if (document.getElementById("placeholder-"+placeholderId) !== null){
+								for (placeholderDataKey in pl[m][placeholderId]) {
+									if (pl[m][placeholderId][placeholderDataKey] !== ""){
+										document.getElementById("placeholder-"+placeholderId).innerHTML='<a href="'+pl[m][placeholderId][placeholderDataKey]+'" target="_blank">'+placeholderDataKey+'</a>';
+									} else {
+										document.getElementById("placeholder-"+placeholderId).innerHTML=placeholderDataKey;
+									}
+								}
+							}
+						}
+					}					
+				}
     		}});
 		}else if(duggaParams["type"]==="link"){
 			document.getElementById("snus").innerHTML="<iframe src='"+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
