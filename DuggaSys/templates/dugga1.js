@@ -144,8 +144,8 @@ function showFacit(param, uanswer, danswer, userStats)
 	document.getElementById('duggaClicks').innerHTML=userStats[2];
 	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 	$("#duggaStats").css("display","block");
-	var p = jQuery.parseJSON(param);
-	var daJSON = jQuery.parseJSON(danswer);
+	var p = jQuery.parseJSON(decodeURIComponent(param));
+	var daJSON = jQuery.parseJSON(decodeURIComponent(danswer));
 	
 	var da = daJSON['danswer'];
 	var danswer = da.split(' ');

@@ -149,7 +149,7 @@ function showFacit(param, uanswer, danswer, userStats)
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
 
-	retdata = jQuery.parseJSON(param);
+	retdata = jQuery.parseJSON(decodeURIComponent(param));
 	variant = retdata["variant"];
 
 	if (uanswer !== null || uanswer !== "UNK") {

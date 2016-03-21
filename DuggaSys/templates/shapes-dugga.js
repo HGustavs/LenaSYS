@@ -123,14 +123,14 @@ function showFacit(param, uanswer, danswer, userStats)
 	var canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
 
-	dta = jQuery.parseJSON(param);
+	dta = jQuery.parseJSON(decodeURIComponent(param));
 	if (uanswer !== "UNK") {
 		var previousAnswer = uanswer.split(' ');
 		bitarray=previousAnswer[3].split(',');
 		for (var i=0;i<bitarray.length;i++) bitarray[i]=parseInt(bitarray[i]); 
 	}
 	if (danswer !== "UNK") {
-		facitarray=danswer.split(',');
+		facitarray=decodeURIComponent(danswer).split(',');
 		for (var i=0;i<facitarray.length;i++) facitarray[i]=parseInt(facitarray[i]); 
 	}
 
