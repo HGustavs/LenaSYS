@@ -194,7 +194,7 @@ function showFacit(param, uanswer, danswer, userStats)
 
 	
 	if (canvas) {
-		retdata = jQuery.parseJSON(param);
+		retdata = jQuery.parseJSON(decodeURIComponent(param));
 
 			boxes.length = 0; // Clear array.
 			evalstr = retdata["code"];

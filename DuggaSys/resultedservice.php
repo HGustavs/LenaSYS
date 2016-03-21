@@ -95,15 +95,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 			$duggaparam=html_entity_decode($row['param']);
 
-			$duggaparam = str_replace("*##*", '"', $duggaparam);
-			$duggaparam = str_replace("*###*", '&cap;', $duggaparam);
-			$duggaparam = str_replace("*####*", '&cup;', $duggaparam);
-
 			$duggaanswer=html_entity_decode($row['facit']);
-
-			$duggaanswer = str_replace("*##*", '"', $duggaanswer);
-			$duggaanswer = str_replace("*###*", '&cap;', $duggaanswer);
-			$duggaanswer = str_replace("*####*", '&cup;', $duggaanswer);
 
 			$duggastats = array($row['timeUsed'],$row['totalTimeUsed'],$row['stepsUsed'],$row['totalStepsUsed']);
 
