@@ -245,6 +245,13 @@ function showFacit(param, uanswer, danswer, userStats)
 		running = false;
 	}
 
+	function defaultDuggaParameters() 
+	{
+		if (p === null){
+			return {"instructions":"Move and resize the box with id greger until it matches the required format.","query":"Make the greger-box 100px x 100px and with a 25px left side margin and 50px bottom padding",[]};
+		}
+	}
+
 //--------------------================############================--------------------
 //                                  Local Functions
 //--------------------================############================--------------------
