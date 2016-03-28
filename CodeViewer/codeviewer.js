@@ -160,6 +160,7 @@ function returned(data)
 			$("#"+contentid).css("margin-top", boxmenuheight-1);
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
+			
 			// Render code
 			rendercode(boxcontent,boxid,boxwordlist,boxfilename);
 		}else if(boxtype === "DOCUMENT"){
@@ -1208,7 +1209,7 @@ function tokenize(instring,inprefix,insuffix)
 
 function rendercode(codestring,boxid,wordlistid,boxfilename)
 {
-    var destinationdiv = "box" + boxid;
+  var destinationdiv = "box" + boxid;
 	tokens = [];
 	
 	important = [];
@@ -1263,6 +1264,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 				// Fix to remove html tags in strings
 				tokenvalue = tokenvalue.replace(/\</g, "&lt;");
 				tokenvalue = tokenvalue.replace(/\>/g, "&gt;");
+				tokenvalue = tokenvalue.replace(/&/g,"&amp;");
 		}
 
 		if(tokens[i].kind=="rowcomment"){
