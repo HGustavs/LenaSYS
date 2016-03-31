@@ -1,5 +1,4 @@
 <?php 
-
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
@@ -54,7 +53,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 						// Error handling to $debug		
 		}
 	}else if(strcmp($opt,"ADDVARI")===0){
-		$querystring='INSERT INTO variant(quizID,param,variantanswer,creator) values (:qid,"New","Variant",:uid)';	
+		$querystring='INSERT INTO variant(quizID,creator) values (:qid,:uid)';	
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':qid', $qid);
 		$stmt->bindParam(':uid', $userid);
@@ -182,9 +181,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 //------------------------------------------------------------------------------------------------
 
 $entries=array();
-
 $files=array();
-
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified FROM quiz WHERE cid=:cid ORDER BY id;");
@@ -209,8 +206,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 			$entryz = array(
 				'vid' => $rowz['vid'],
-				'param' => $rowz['param'],
-				'variantanswer' => $rowz['variantanswer'],
+				'param' => html_entity_decode($rowz['param']),
+				'variantanswer' => html_entity_decode($rowz['variantanswer']),
 				'modified' => $rowz['modified'],
 				'disabled' => $rowz['disabled'],
 				);
@@ -253,8 +250,12 @@ $array = array(
 	'files' => $files,
 	'duggaPages' => $duggaPages
 	);
-
-
+/*$t = json_encode($array);
+if (!$t){
+	echo "Failed: ". $t;
+} else {
+	echo "success: ". $t;
+}*/
 echo json_encode($array);
 
 

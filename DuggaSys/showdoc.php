@@ -94,6 +94,9 @@
 				// ==[src]==	
 				$instring = preg_replace("/\={2}\[(.*?\S)\]\={2}/","<video width='80%' style='display:block; margin: 10px auto;' controls><source src='$1' type='video/mp4'></video>",$instring);
 
+				// External mp4 src !!!
+				// ==[src]==	
+				$instring = preg_replace("/\={2}\{(.*?\S)}\={2}/","<span id='placeholder-$1'></span>",$instring);
 
 				// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
 				// +++image.png,image.gif+++

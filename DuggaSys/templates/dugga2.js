@@ -139,7 +139,7 @@ function showFacit(param, uanswer, danswer, userStats)
 	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 	$("#duggaStats").css("display","block");
 	
-	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
+	var p = JSON.parse(decodeURIComponent(param));
 		
 	$("#fargnamn").html(p['colorname']);
 	$("#fargen").attr("src", "templates/color_"+p['color']+".png");

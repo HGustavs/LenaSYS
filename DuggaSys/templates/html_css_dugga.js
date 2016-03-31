@@ -177,7 +177,7 @@ function showFacit(param, uanswer, danswer, userStats)
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
 
-	retdata = jQuery.parseJSON(param);
+	retdata = jQuery.parseJSON(decodeURIComponent(param));
 
 	document.getElementById("target-window-img").src = "showdoc.php?fname="+retdata["target"];
 	document.getElementById("target-text").innerHTML = retdata["target-text"];

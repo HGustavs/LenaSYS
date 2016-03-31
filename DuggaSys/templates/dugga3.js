@@ -137,7 +137,7 @@ function showFacit(param, uanswer, danswer, userStats)
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
 	var studentPreviousAnswer = "UNK";
-	var p = jQuery.parseJSON(param);
+	var p = jQuery.parseJSON(decodeURIComponent(param));
 	if (uanswer !== null && uanswer !== "UNK") {
 		var previous = uanswer.split(',');
 		previous.shift();

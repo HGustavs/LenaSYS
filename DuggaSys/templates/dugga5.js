@@ -121,9 +121,9 @@ function showFacit(param, uanswer, danswer, userStats) {
 	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 	$("#duggaStats").css("display","block");
 
-	ans = JSON.parse(danswer);
-	console.log(ans.vertex);
-	console.log(ans.triangle);
+	ans = JSON.parse(decodeURIComponent(danswer));
+	//console.log(ans.vertex);
+	//console.log(ans.triangle);
 
 	// Setup code
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
@@ -134,7 +134,7 @@ function showFacit(param, uanswer, danswer, userStats) {
 
 		// Parse student answer and dugga answer
 		var studentPreviousAnswer = "";
-		var p = jQuery.parseJSON(param);
+		var p = jQuery.parseJSON(decodeURIComponent(param));
 		if (uanswer !== null && uanswer !== "UNK"){
 			var previous = uanswer.split(' ');
 			var prevRaw = previous[3];
@@ -147,7 +147,7 @@ function showFacit(param, uanswer, danswer, userStats) {
 		}
 
 		init();
-		goalObject = param;
+		goalObject = decodeURIComponent(param);
 		createGoalObject(goalObject);
 		updateGeometry();
 		animate();

@@ -97,7 +97,7 @@ function swizzleArray(&$filepost) {
 
     $filearray = array();
     $filecount = count($filepost['name']);
-    $filekeys = array_keys($filepost);
+    if ($filepost !== null) $filekeys = array_keys($filepost);
 
     for ($i=0; $i<$filecount; $i++) {
         foreach ($filekeys as $key) {
