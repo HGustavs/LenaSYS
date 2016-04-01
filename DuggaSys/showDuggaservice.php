@@ -22,7 +22,7 @@ if(isset($_SESSION['uid'])){
 } 
 
 $opt=getOP('opt');
-$courseid=getOP('courseid');
+$cid=getOP('cid');
 $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $moment=getOP('moment');
@@ -50,7 +50,7 @@ $stepsUsed;
 if($userid!="UNK"){
 		// See if we already have a result i.e. a chosen variant.
 	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 	$query->bindParam(':coursevers', $coursevers);
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':moment', $moment);
@@ -118,7 +118,7 @@ if($userid!="UNK"){
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
 	if(($savedvariant=="")&&($newvariant!="")){
 		$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':cid', $cid);
 		$query->bindParam(':coursevers', $coursevers);
 		$query->bindParam(':uid', $userid);
 		$query->bindParam(':moment', $moment);
@@ -131,7 +131,7 @@ if($userid!="UNK"){
 
 	}else if(($savedvariant=="UNK")&&($newvariant!="")){
 		$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
-		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':cid', $cid);
 		$query->bindParam(':coursevers', $coursevers);
 		$query->bindParam(':uid', $userid);
 		$query->bindParam(':did', $duggaid);
@@ -146,7 +146,7 @@ if($userid!="UNK"){
 		//mark segment as started on
 		//------------------------------
 		$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
-		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':cid', $cid);
 		$query->bindParam(':coursevers', $coursevers);
 		$query->bindParam(':uid', $userid);
 		$query->bindParam(':did', $duggaid);
@@ -177,16 +177,16 @@ if($userid!="UNK"){
 
 if(checklogin()){
 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 	$result = $query->execute();
 
 	if($row = $query->fetch(PDO::FETCH_ASSOC)){
 
-		$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
+		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0);
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
 			if(strcmp($opt,"SAVDU")==0){				
 				// Log the dugga write
-				makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
+				makeLogEntry($userid,2,$pdo,$cid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
 				//Seperate timeUsed, stepsUsed and score from $answer
 				$temp = explode("##!!##", $answer);
@@ -197,7 +197,7 @@ if(checklogin()){
 				
 				// check if the user already has a grade on the assignment
 				$query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-				$query->bindParam(':cid', $courseid);
+				$query->bindParam(':cid', $cid);
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':moment', $moment);
@@ -214,7 +214,7 @@ if(checklogin()){
 				}else{
 					// Update Dugga!
 					$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':cid', $cid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
 					$query->bindParam(':moment', $moment);
@@ -277,7 +277,7 @@ if(strcmp($savedanswer,"") == 0){$savedanswer = "UNK";} // Return UNK if we have
 $files= array();
 $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by filename,updtime desc;");
 $query->bindParam(':uid', $userid);
-$query->bindParam(':cid', $courseid);
+$query->bindParam(':cid', $cid);
 $query->bindParam(':vers', $coursevers);
 $query->bindParam(':did', $duggaid);
 	

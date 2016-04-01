@@ -132,8 +132,8 @@
 		
 		// If no course version is given, read course version from session
 		if($cid=="UNK"){
-			if(isset($_SESSION['courseid'])){
-					$cid=$_SESSION['courseid'];
+			if(isset($_SESSION['cid'])){
+					$cid=$_SESSION['cid'];
 			}
 		}
 		if($coursevers=="UNK"){
