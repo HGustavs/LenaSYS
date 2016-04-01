@@ -200,7 +200,7 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php' >";
 
 		if(type=="link"){
-				form +="<input name='link' type='text' size='40' maxlength='64' />";
+				form +="<input name='link' type='text' size='40' maxlength='256' />";
 		}else{
 				form +="<input name='uploadedfile[]' type='file' multiple='multiple' />";
 		}
