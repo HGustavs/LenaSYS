@@ -127,6 +127,7 @@
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
+				echo  "<div id='scoreElement'></div>";
 			}else if ($userid=="UNK"){
 				echo "<div class='err'><span style='font-weight:bold;'>Not logged in!</span>You need to be logged in if you want to do duggor. There is a log in button in the top right corner.</div>";
 			}else{
@@ -153,11 +154,11 @@
 	<!-- Login Box (receiptbox) End! -->
 
 	<!-- Timer START -->
-
+	<!--
 	<div id='scoreElement'>
 
 	</div>
-
+	-->
 	<!-- content END -->
 
 	<?php
