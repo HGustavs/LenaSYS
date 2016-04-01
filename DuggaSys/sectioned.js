@@ -704,6 +704,11 @@ function returnedSection(data)
 			str+="<span>You either have no access or there isn't anything under this course</span>";
 			str+="</div>";
 		}
+		if(retdata["writeaccess"]){
+			str += "<td><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/><td></div>";
+		}else{
+			str += "</div>";
+		}
 					
 		str+="</div>";
 		var slist=document.getElementById('Sectionlist');
