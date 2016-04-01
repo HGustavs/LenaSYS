@@ -34,7 +34,7 @@
 	$exampleId=getOP('exampleid');
 	$boxId=getOP('boxid');
 	$opt=getOP('opt');
-	$cid=getOP('cid');
+	$courseId=getOP('courseid');
 	$courseVersion=getOP('cvers');
 	$templateNumber=getOP('templateno');
 	$beforeId=getOP('beforeid');
@@ -50,7 +50,7 @@
 		$userid="1";
 	}
 	// Checks and sets user rights
-	if(checklogin() && (hasAccess($userid, $cid, 'w'))){
+	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
 		$writeAccess="w";
 	}else{
 		$writeAccess="s";	
@@ -67,7 +67,7 @@
 		$exampleCount++;
 		$exampleId=$row['exampleid'];
 		$exampleName=$row['examplename'];
-		$cid=$row['cid'];
+		$courseID=$row['cid'];
 		$cversion=$row['cversion'];
 		$beforeId=$row['beforeid'];
 		$afterId=$row['afterid'];
@@ -81,14 +81,14 @@
 		//------------------------------------------------------------------------------------------------
 		// Perform Update Action
 		//------------------------------------------------------------------------------------------------
-		if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+		if(checklogin() && (hasAccess($_SESSION['uid'], $courseId, 'w') || isSuperUser($_SESSION['uid']))) {
 			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Add word to wordlist
 				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
 				$query->bindParam(':templateno', $templateNumber);
 				$query->bindParam(':exampleid', $exampleId);
-				$query->bindParam(':cid', $cid);
+				$query->bindParam(':cid', $courseId);
 				$query->bindParam(':cvers', $courseVersion);
 				$query->execute();
 				
@@ -121,7 +121,7 @@
 				$query->bindParam(':examplename', $exampleName);
 				$query->bindParam(':sectionname', $sectionName);
 				$query->bindParam(':exampleid', $exampleId);
-				$query->bindParam(':cid', $cid);
+				$query->bindParam(':cid', $courseId);
 				$query->bindParam(':cvers', $courseVersion);
 				$query->execute();
 				
@@ -130,7 +130,7 @@
 					$query = $pdo->prepare( "UPDATE codeexample SET beforeid = :beforeid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
 					$query->bindParam(':beforeid', $beforeId);
 					$query->bindParam(':exampleid', $exampleId);
-					$query->bindParam(':cid', $cid);
+					$query->bindParam(':cid', $courseId);
 					$query->bindParam(':cvers', $courseVersion);
 					$query->execute();
 				}
@@ -138,7 +138,7 @@
 					$query = $pdo->prepare( "UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
 					$query->bindParam(':afterid', $afterId);
 					$query->bindParam(':exampleid', $exampleId);
-					$query->bindParam(':cid', $cid);
+					$query->bindParam(':cid', $courseId);
 					$query->bindParam(':cvers', $courseVersion);
 					$query->execute();
 				}
@@ -229,9 +229,9 @@
 		$public="";
 		$entryname="";
 		
-		$query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid as templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid and cid = :cid;");		
+		$query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid as templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid and cid = :courseID;");		
 		$query->bindParam(':exampleid', $exampleId);
-		$query->bindParam(':cid', $cid);
+		$query->bindParam(':courseID', $courseId);
 		$query->execute();
 
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
@@ -250,7 +250,7 @@
 		$beforeAfters = array();
 		
 		$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample where cid = :cid and cversion = :cvers order by sectionname, examplename;");
-		$query->bindParam(':cid', $cid);
+		$query->bindParam(':cid', $courseId);
 		$query->bindParam(':cvers', $courseVersion);
 		$query->execute();
 
@@ -337,7 +337,7 @@
 		$descDir=array();
 		$prevDir=array();		
 		$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid ORDER BY kind,filename");
-		$query->bindParam(':cid', $cid);
+		$query->bindParam(':cid', $courseId);
 		
 		// We add only local files to code (no reading code from external sources) and allow preview to files or links.				
 		if(!$query->execute()) {
@@ -375,7 +375,7 @@
 			$content="";
 						
 			$ruery = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) LIMIT 1;");
-			$ruery->bindParam(':cid', $cid);
+			$ruery->bindParam(':cid', $courseId);
 			$ruery->bindParam(':fname', $filename);
 			$sesult = $ruery->execute();
 			if($sow = $ruery->fetch(PDO::FETCH_ASSOC)){
@@ -387,10 +387,10 @@
 						$file = "../DuggaSys/templates/".$filename;
 					}else if($filekind==3){
 						// Course Local
-						$file = "../courses/".$cid."/".$filename;
+						$file = "../courses/".$courseId."/".$filename;
 					}else if($filekind==4){
 						// Local
-						$file = "../courses/".$cid."/".$courseVersion."/".$filename;
+						$file = "../courses/".$courseId."/".$courseVersion."/".$filename;
 					}else{
 						$file = "UNK";					
 					}

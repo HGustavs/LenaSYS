@@ -45,7 +45,7 @@ Missing/desired Features:
 	Changing language -- All Strings in File that can be translated to fit other languages.... including language change.
 -------------------------------------------------------------------------------------------
 Testing Link: 
-	EditorV50.php?exampleid=1&cid=1&cvers=2013
+	EditorV50.php?exampleid=1&courseid=1&cvers=2013
 ------------------------------------------------------------------------------------------->
 <?php
 	session_start();
@@ -92,7 +92,7 @@ Testing Link:
 		<div id="content">
 		<?php 
 			$exampleid = getOPG('exampleid');
-			$cid = getOPG('cid');
+			$courseID = getOPG('courseid');
 			$cvers = getOPG('cvers');
 
 			// Fetch content from database
@@ -126,16 +126,16 @@ Testing Link:
 				$username = "Guest" . $userid . rand(0,50000); // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
 			}
 			// Logs users who view example, along with the example they have viewed
-			makeLogEntry($username,1,$pdo,$exampleid." ".$cid." ".$cvers);
+			makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);
 
-			// This checks if cid and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
-			if($cid!="UNK"&&$exampleid!="UNK"){
-				//checks if $cid exists. 
-				if(courseexists($cid)){ 
+			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
+			if($courseID!="UNK"&&$exampleid!="UNK"){
+				//checks if $courseid exists. 
+				if(courseexists($courseID)){ 
 					// If the course exists- check login credentials
 					// Logged in and with credentials - show full editor otherwise show viewer version 
 					if(checklogin()){
-						$ha=getAccessType($_SESSION['uid'], $cid);
+						$ha=getAccessType($_SESSION['uid'], $courseID);
 						if($ha == "w"){
 							// Allow to edit this course (full editor)
 							$codeviewerkind=true;
@@ -163,11 +163,11 @@ Testing Link:
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course does not seem to exist!</div>";
 				}
 			}else{
-				// If $cid is "UNK" and $exampleid is also "UNK"
-				// This will show an error message if the cid or the Code Example doesnt exist. 
+				// If $courseID is "UNK" and $exampleid is also "UNK"
+				// This will show an error message if the courseid or the Code Example doesnt exist. 
 				$codeviewer = false;
 				include '../Shared/navheader.php';
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&cid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
+				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
 			echo "</div>";
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
