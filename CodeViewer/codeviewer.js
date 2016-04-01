@@ -11,7 +11,7 @@ Execution Order
 
 Testing Link:
 
-EditorV50.php?exampleid=1&courseid=1&cvers=2013
+EditorV50.php?exampleid=1&cid=1&cvers=2013
  
 -------------==============######## Documentation End ###########==============-------------
 */
@@ -28,7 +28,7 @@ var dmd=0;					// Variable used to determine forward/backward skipping with the 
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";				
 var querystring = parseGet();
-var courseid;
+var cid;
 var exampleid;
 var cvers;
 
@@ -41,12 +41,12 @@ var cvers;
 function setup()
 {
 	try{
-		courseid = querystring['courseid'];
+		cid = querystring['cid'];
 		exampleid = querystring['exampleid'];
 		cvers = querystring['cvers'];
 		
 		AJAXService("EDITEXAMPLE", {
-			courseid : courseid,	
+			cid : cid,	
 			exampleid : exampleid,
 			cvers : cvers
 		}, "CODEVIEW");
@@ -64,7 +64,7 @@ function returned(data)
 	retData=data;
 	
 	if(retData['writeaccess'] == "w"){
-		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
+		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+cid+"&coursevers="+cvers+"');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 	
@@ -201,7 +201,7 @@ function returned(data)
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
 
 			// If multiple versions exists use the one with highest priority.
-			// cvers BEFORE courseid BEFORE global
+			// cvers BEFORE cid BEFORE global
 			var previewFile = retData['box'][i][5];
 			var previewLink = "";
 			
@@ -384,7 +384,7 @@ function updateExample()
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
 	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before option:selected").val()!=beforeid&&beforeid!="UNK")||($("#after option:selected").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retData['playlink'])||($("#title").val()!=retData['examplename'])||($("#secttitle").val()!=retData['sectionname'])){
-		var courseid = querystring['courseid'];
+		var cid = querystring['cid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
 		var playlink = $("#playlink").val();
@@ -394,7 +394,7 @@ function updateExample()
 		var afterid = $("#after option:selected").val();
 				
 		AJAXService("EDITEXAMPLE", {
-			courseid : courseid,
+			cid : cid,
 			cvers : cvers,
 			exampleid : exampleid,
 			beforeid : beforeid,
@@ -1459,13 +1459,13 @@ function updateTemplate()
 	templateno=$("#templateno").val();
 	$("#chooseTemplate").css("display","none");
 	try{
-		var courseid = querystring['courseid'];
+		var cid = querystring['cid'];
 		var exampleid = querystring['exampleid'];
 		var cvers = querystring['cvers'];
 		var templateno = $("#templateno").val();
 		
 		AJAXService("SETTEMPL", {
-			courseid : courseid,	
+			cid : cid,	
 			exampleid : exampleid,
 			cvers : cvers,
 			templateno : templateno
