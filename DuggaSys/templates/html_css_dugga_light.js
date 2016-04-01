@@ -114,12 +114,6 @@ function returnedDugga(data)
 		if (data["answer"] == null || data["answer"] !== "UNK") {
 			var userCode = data["answer"].substr(data["answer"].indexOf("###HTMLSTART###")+15,data["answer"].indexOf("###HTMLEND###")-28);
 			userCode =  reverseHtmlEntities(userCode);
-			var userUrl = data["answer"].substr(data["answer"].indexOf("###URLSTART###"),data["answer"].indexOf("###URLEND###"));
-			var res = userUrl.split(",");
-			userUrl = res[0]; 
-			userUrl = userUrl.replace("###URLSTART###", "");
-			userUrl = userUrl.replace("###URLEND###", "");
-			userUrl =  reverseHtmlEntities(userUrl);
 
 			document.getElementById("content-window").value = userCode;
 
@@ -140,7 +134,6 @@ function reset()
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
 
 	document.getElementById("content-window").value = "";
-	document.getElementById("url-input").value = "";
 
 	Timer.stopTimer();
 	Timer.score=0;
@@ -201,11 +194,33 @@ function showFacit(param, uanswer, danswer, userStats)
 	running = true;
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
-
+	inParams = parseGet();
 	retdata = jQuery.parseJSON(decodeURIComponent(param));
-
-	document.getElementById("target-window-img").src = "showdoc.php?fname="+retdata["target"];
-	document.getElementById("target-text").innerHTML = retdata["target-text"];
+	duggaParams = retdata;
+	if(duggaParams["type"]==="pdf"){
+			document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+	}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
+		$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
+    		$("#snus").html(result);
+    		// Placeholder code
+			var pl = duggaParams.placeholders;
+			if (pl !== undefined) {
+				for (var m=0;m<pl.length;m++){
+					for (placeholderId in pl[m]) {
+						if (document.getElementById("placeholder-"+placeholderId) !== null){
+							for (placeholderDataKey in pl[m][placeholderId]) {
+								if (pl[m][placeholderId][placeholderDataKey] !== ""){
+									document.getElementById("placeholder-"+placeholderId).innerHTML='<a href="'+pl[m][placeholderId][placeholderDataKey]+'" target="_blank">'+placeholderDataKey+'</a>';
+								} else {
+									document.getElementById("placeholder-"+placeholderId).innerHTML=placeholderDataKey;
+								}
+							}
+						}
+					}
+				}					
+			}
+		}});
+	}
 
 	if (uanswer !== null || uanswer !== "UNK") {
 		
@@ -214,12 +229,6 @@ function showFacit(param, uanswer, danswer, userStats)
 			userCode = userCode.replace("###HTMLEND###", "");
 
 			userCode =  reverseHtmlEntities(userCode);
-			var userUrl = uanswer.substr(uanswer.indexOf("###URLSTART###"),uanswer.indexOf("###URLEND###"));
-			var res = userUrl.split(",");
-			userUrl = res[0]; 
-			userUrl = userUrl.replace("###URLSTART###", "");
-			userUrl = userUrl.replace("###URLEND###", "");
-			userUrl =  reverseHtmlEntities(userUrl);
 
 			var markWindowHeight = $("#MarkCont").height();
 			
@@ -228,9 +237,8 @@ function showFacit(param, uanswer, danswer, userStats)
 			document.getElementById("input-col").style.height = (markWindowHeight-55)+"px";
 			document.getElementById("content-window").value = userCode;
 			document.getElementById("content-window").style.fontSize = "12px";
-			document.getElementById("url-input").value = userUrl;
-			document.getElementById("target-col").style.display = "none";
-			document.getElementById("validation-col").style.display = "table-cell";
+			document.getElementById("target-col").style.display = "block";
+			document.getElementById("validation-col").style.display = "none";
 			document.getElementById("preview-col").style.height = (markWindowHeight-55)+"px";
 
 			document.getElementById("code-preview-label").style.display = "none";
@@ -238,18 +246,7 @@ function showFacit(param, uanswer, danswer, userStats)
 			var iframeX = $("#preview-col").width();
 			var iframeY = $("#preview-col").height();
 
-			document.getElementById("url-preview-label").innerHTML = '<div id="url-preview-label" style=""><h2 class="loginBoxheader" style="padding:5px; padding-bottom:10px; margin-top:0; color:#FFF;overflow:hidden; text-align:center;">Förhandsgranskning av publicerad kod</h2></div>';
-			document.getElementById("url-preview-window").innerHTML= '<iframe style="pointer-events: none; width: '+800+'px; height:'+768+'px; border: 1px solid black; overflow:scroll; transform:scale('+iframeX/800+'); transform-origin:0 0; box-sizing:border-box;" src="'+userUrl+'"></iframe>';
-
 			document.getElementById("validation-col").style.height = (markWindowHeight-55)+"px";
-
-			
-			document.getElementById("url-validation-window").innerHTML = '<iframe style="pointer-events: none;width: 400px; height:1200px; border: 1px solid black; overflow:hidden; transform:scale(1); transform-origin:0 0; box-sizing:border-box;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl)+'"></iframe>';
-
-
-
-			$( "#MarkCont" ).append( '<img id="facit-target-window-img" style="width:200px; height:200px;overflow:hidden; position:absolute; bottom:50px;right:11px;border:1px solid black;" src="'+document.getElementById("target-window-img").src+'" />' );
-
 
 	}
 
