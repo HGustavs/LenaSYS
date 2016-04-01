@@ -274,7 +274,7 @@ var removedWords = [];
 
 function editImpWords(editType) 
 {
-	var word = $("#impword").val();
+	var word = " " + $("#impword").val() + " ";
 	var left = 0;
 	var right = 0;
 	//Check if the word contains an uneven amount of parenthesis
