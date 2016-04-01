@@ -21,7 +21,7 @@ if(isset($_SESSION['uid'])){
 } 
 
 $opt=getOP('opt');
-$courseid=getOP('courseid');
+$cid=getOP('cid');
 $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $variant=getOP('lid');

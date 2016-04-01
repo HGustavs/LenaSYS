@@ -11,7 +11,7 @@ Execution Order
 
 Testing Link:
 
-EditorV50.php?exampleid=1&courseid=1&cvers=2013
+EditorV50.php?exampleid=1&cid=1&cvers=2013
  
 -------------==============######## Documentation End ###########==============-------------
 */
@@ -28,7 +28,7 @@ var dmd=0;					// Variable used to determine forward/backward skipping with the 
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";				
 var querystring = parseGet();
-var courseid;
+var cid;
 var exampleid;
 var cvers;
 
@@ -41,12 +41,12 @@ var cvers;
 function setup()
 {
 	try{
-		courseid = querystring['courseid'];
+		cid = querystring['cid'];
 		exampleid = querystring['exampleid'];
 		cvers = querystring['cvers'];
 		
 		AJAXService("EDITEXAMPLE", {
-			courseid : courseid,	
+			cid : cid,	
 			exampleid : exampleid,
 			cvers : cvers
 		}, "CODEVIEW");
@@ -64,7 +64,7 @@ function returned(data)
 	retData=data;
 	
 	if(retData['writeaccess'] == "w"){
-		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
+		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+cid+"&coursevers="+cvers+"');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 	
@@ -201,7 +201,7 @@ function returned(data)
 			$("#"+contentid).removeClass("codebox", "descbox").addClass("framebox");
 
 			// If multiple versions exists use the one with highest priority.
-			// cvers BEFORE courseid BEFORE global
+			// cvers BEFORE cid BEFORE global
 			var previewFile = retData['box'][i][5];
 			var previewLink = "";
 			
@@ -384,7 +384,7 @@ function updateExample()
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
 	if((removedWords.length > 0)||(addedWords.length > 0)||($("#before option:selected").val()!=beforeid&&beforeid!="UNK")||($("#after option:selected").val()!=afterid&&afterid!="UNK")||($("#playlink").val()!=retData['playlink'])||($("#title").val()!=retData['examplename'])||($("#secttitle").val()!=retData['sectionname'])){
-		var courseid = querystring['courseid'];
+		var cid = querystring['cid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
 		var playlink = $("#playlink").val();
@@ -394,7 +394,7 @@ function updateExample()
 		var afterid = $("#after option:selected").val();
 				
 		AJAXService("EDITEXAMPLE", {
-			courseid : courseid,
+			cid : cid,
 			cvers : cvers,
 			exampleid : exampleid,
 			beforeid : beforeid,
@@ -416,13 +416,13 @@ function updateExample()
 // displayEditContent: Displays the dialogue box for editing a content pane
 //                Is called by createboxmenu in codeviewer.js
 //----------------------------------------------------------------------------------
-var openBoxID;
+var openboxid;
 
 function displayEditContent(boxid)
 {	
 
 	var box = retData['box'][boxid-1]; 	// The information stored about the box is fetched
-	openBoxID = boxid;				// Keeps track of the currently open box. Used when saving the box content.
+	openboxid = boxid;				// Keeps track of the currently open box. Used when saving the box content.
 
 	$("#boxtitle").val(box[4]);
 	$("#boxcontent").val(box[1]);  
@@ -519,12 +519,12 @@ function editImpRows(editType)
 			$("#improws").append('<option>' + row + '</option>');
 			$("#improwfrom").val("");
 			$("#improwto").val("");
-			addedRows.push([openBoxID,rowFrom,rowTo]);
+			addedRows.push([openboxid,rowFrom,rowTo]);
 		}
 	}else if (editType == "-") {
 		FromTo = $('option:selected', "#improws").text().split(" - ");
 		$('option:selected', "#improws").remove();
-    	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
+    	removedRows.push([openboxid,FromTo[0],FromTo[1]]);
 	}else{
 		alert((editType=="+") +" "+ (isNumber(rowFrom))+" "+ (isNumber(rowTo)) + " "+ (rowFrom <= rowTo)+ " "+ (rowFrom > 0)+ " "+ (rowTo > 0));
 		alert("Incorrect value(s) (from: "+rowFrom+" to: "+rowTo+")  for important rows!");
@@ -537,7 +537,7 @@ function editImpRows(editType)
 //----------------------------------------------------------------------------------
 function updateContent() 
 {
-	var box = retData['box'][openBoxID-1];
+	var box = retData['box'][openboxid-1];
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
@@ -1459,13 +1459,13 @@ function updateTemplate()
 	templateno=$("#templateno").val();
 	$("#chooseTemplate").css("display","none");
 	try{
-		var courseid = querystring['courseid'];
+		var cid = querystring['cid'];
 		var exampleid = querystring['exampleid'];
 		var cvers = querystring['cvers'];
 		var templateno = $("#templateno").val();
 		
 		AJAXService("SETTEMPL", {
-			courseid : courseid,	
+			cid : cid,	
 			exampleid : exampleid,
 			cvers : cvers,
 			templateno : templateno
@@ -1523,13 +1523,13 @@ function Play()
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
-function resizeBoxes(parent, templateId) 
+function resizeBoxes(parent, templateid) 
 {
 	var boxValArray = initResizableBoxValues(parent);
 	var remainWidth;
 		
-	if(templateId == 1){
-		getLocalStorageProperties(templateId, boxValArray);
+	if(templateid == 1){
+		getLocalStorageProperties(templateid, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1541,12 +1541,12 @@ function resizeBoxes(parent, templateId)
 				alignBoxesWidth(boxValArray, 1, 2);
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 2){
-		getLocalStorageProperties(templateId, boxValArray);
+	}else if(templateid == 2){
+		getLocalStorageProperties(templateid, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1559,12 +1559,12 @@ function resizeBoxes(parent, templateId)
 				$(boxValArray['box1']['id']).width("100%");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 3){
-		getLocalStorageProperties(templateId, boxValArray);
+	}else if(templateid == 3){
+		getLocalStorageProperties(templateid, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1578,7 +1578,7 @@ function resizeBoxes(parent, templateId)
 				$("#box1wrapper").css("height", "100%");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1594,12 +1594,12 @@ function resizeBoxes(parent, templateId)
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 4){
-		getLocalStorageProperties(templateId, boxValArray);
+	}else if(templateid == 4){
+		getLocalStorageProperties(templateid, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1613,7 +1613,7 @@ function resizeBoxes(parent, templateId)
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1630,12 +1630,12 @@ function resizeBoxes(parent, templateId)
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 5){
-		getLocalStorageProperties(templateId, boxValArray);
+	}else if(templateid == 5){
+		getLocalStorageProperties(templateid, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1649,7 +1649,7 @@ function resizeBoxes(parent, templateId)
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1665,7 +1665,7 @@ function resizeBoxes(parent, templateId)
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1680,13 +1680,13 @@ function resizeBoxes(parent, templateId)
 				alignBoxesWidth(boxValArray, 3, 4);
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateId, boxValArray);
+				setLocalStorageProperties(templateid, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 6){
+	}else if(templateid == 6){
 		
-			getLocalStorageProperties(templateId, boxValArray);
+			getLocalStorageProperties(templateid, boxValArray);
 			$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
 			
 		
@@ -1702,7 +1702,7 @@ function resizeBoxes(parent, templateId)
 					
 				},
 				stop: function(e, ui) {
-					setLocalStorageProperties(templateId, boxValArray);
+					setLocalStorageProperties(templateid, boxValArray);
 					$('iframe').css('pointer-events','auto');
 				}
 			});
@@ -1719,7 +1719,7 @@ function resizeBoxes(parent, templateId)
 						$(boxValArray['box2']['id']).css("left", " ");
 				},
 				stop: function(e, ui) {
-					setLocalStorageProperties(templateId, boxValArray);
+					setLocalStorageProperties(templateid, boxValArray);
 					$('iframe').css('pointer-events','auto');
 				}
 			});
@@ -1736,7 +1736,7 @@ function resizeBoxes(parent, templateId)
 				},
 				stop: function(e, ui) {
 					$(boxValArray['box4']['id']).css("top", " ");
-					setLocalStorageProperties(templateId, boxValArray);
+					setLocalStorageProperties(templateid, boxValArray);
 					$('iframe').css('pointer-events','auto');
 				}
 			});
@@ -1940,7 +1940,7 @@ function initResizableBoxValues(parent)
 	var parentHeight = $(parent).height();
 	var boxwidth;
 	var boxheight;
-	var boxId;
+	var boxid;
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	var boxValueArray = new Array();
 	boxValueArray["parent"] = {"id": parent, "width": parentWidth, "height": parentHeight};
@@ -1948,8 +1948,8 @@ function initResizableBoxValues(parent)
 	for (var i = 1; i <= numBoxes; i++) {
 		boxWidth = $("#box" + i + "wrapper").width();
 		boxHeight = $("#box" + i + "wrapper").height();
-		boxId = "#box" + i + "wrapper";
-		boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
+		boxid = "#box" + i + "wrapper";
+		boxValueArray["box" + i] = {"id": boxid, "width": boxWidth, "height": boxHeight};
 	}
 	
 	$(window).resize(function(event){
@@ -1965,7 +1965,7 @@ function initResizableBoxValues(parent)
 //Saves the measurments in percent for the boxes on the screen in local storage.
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
-function setLocalStorageProperties(templateId, boxValArray)
+function setLocalStorageProperties(templateid, boxValArray)
 {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;	
 	var widthPer;
@@ -1981,8 +1981,8 @@ function setLocalStorageProperties(templateId, boxValArray)
 		widthPer = Math.floor(widthPer, 100);
 		heightPer = Math.floor(heightPer, 100);
 		
-		localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
-		localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
+		localStorage.setItem("template" + templateid +  "box" + i + "widthPercent", widthPer);
+		localStorage.setItem("template" + templateid +  "box" + i + "heightPercent", heightPer);
 	}
 	setResizableToPer(boxValArray);
 }
@@ -1993,16 +1993,16 @@ function setLocalStorageProperties(templateId, boxValArray)
 //		  TODO: Add handling for when localstorage is null or < 0
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
-function getLocalStorageProperties(templateId, boxValArray)
+function getLocalStorageProperties(templateid, boxValArray)
 {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	for(var i = 1; i <= numBoxes; i++){
 		//Sanity checks
-		if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "widthPercent") > 0){
-			if(localStorage.getItem("template" + templateId + "box" + i + "heightPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "heightPercent") > 0){
-				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
-				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
-				erasePercentGap(templateId, boxValArray);
+		if(localStorage.getItem("template" + templateid + "box" + i + "widthPercent") != null && localStorage.getItem("template" + templateid + "box" + i + "widthPercent") > 0){
+			if(localStorage.getItem("template" + templateid + "box" + i + "heightPercent") != null && localStorage.getItem("template" + templateid + "box" + i + "heightPercent") > 0){
+				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateid + "box" + i + "widthPercent") + "%");
+				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateid +  "box" + i + "heightPercent") + "%");
+				erasePercentGap(templateid, boxValArray);
 			}
 		}
 	}
@@ -2012,23 +2012,23 @@ function getLocalStorageProperties(templateId, boxValArray)
 //removes percentage based gap
 //                Is called by getLocalStorageProperties in codeviewer.js
 //----------------------------------------------------------------------------------
-function erasePercentGap(templateId, boxValArray)
+function erasePercentGap(templateid, boxValArray)
 {
-	if(templateId == 1){	
+	if(templateid == 1){	
 		alignBoxesWidth(boxValArray, 1, 2);
-	}else if(templateId == 2){
+	}else if(templateid == 2){
 		alignBoxesHeight2boxes(boxValArray, 1, 2);
-	}else if(templateId == 3){
+	}else if(templateid == 3){
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
 		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-	}else if(templateId == 4){
+	}else if(templateid == 4){
 		alignBoxesWidth(boxValArray, 1, 2);
 		alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-	}else if(templateId == 5){
+	}else if(templateid == 5){
 		alignBoxesWidth(boxValArray, 1, 2);
 		alignBoxesWidth(boxValArray, 3, 4);
 		alignBoxesHeight4boxes(boxValArray, 1, 2);
-	}else if(templateId == 6){
+	}else if(templateid == 6){
 		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 	}
