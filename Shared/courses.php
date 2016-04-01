@@ -45,7 +45,7 @@ function getCourseId($coursename)
 	}
 }
 
-function getCourseName($courseid)
+function getCourseName($cid)
 {
 	global $pdo;
 
@@ -54,7 +54,7 @@ function getCourseName($courseid)
 	}
 
 	$query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 
 	if($query->execute() && $query->rowCount() > 0) {
 		$course = $query->fetch();

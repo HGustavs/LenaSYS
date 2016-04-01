@@ -53,7 +53,7 @@ var filez;
 function setup()
 {
 	
-		$.ajax({url: "editorService.php", type: "POST", data: "courseid="+querystring['courseid']+"&exampleid="+querystring['exampleid']+"&opt=List", dataType: "json", success: returned});
+		$.ajax({url: "editorService.php", type: "POST", data: "cid="+querystring['cid']+"&exampleid="+querystring['exampleid']+"&opt=List", dataType: "json", success: returned});
 		<-- Try to keep ajax or jquery calls on a single line		
 }
 

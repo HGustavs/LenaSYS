@@ -8,8 +8,8 @@
 			include_once "../Shared/basic.php";
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
-			if(isset($_GET['courseid'])){
-					$_SESSION['courseid']=$_GET['courseid'];
+			if(isset($_GET['cid'])){
+					$_SESSION['cid']=$_GET['cid'];
 			}
 			if(isset($_GET['coursevers'])){
 					$_SESSION['coursevers']=$_GET['coursevers'];
@@ -31,11 +31,11 @@
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}else if($noup=='SECTION'){
 					$cid=getOPG('cid');
-					if($cid=="UNK") $cid=getOPG('courseid'); 
+					if($cid=="UNK") $cid=getOPG('cid'); 
 					$coursevers=getOPG('coursevers');
 					if($coursevers=="UNK") $coursevers=getOPG('cvers');
 					echo "<a href='";
-					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
+					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?cid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}else if($noup=='TEACHERVIEW'){
