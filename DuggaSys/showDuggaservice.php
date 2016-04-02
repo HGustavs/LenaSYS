@@ -78,43 +78,55 @@ if($userid!="UNK"){
 	}
 	
 	// Retrieve variant list
-	$query = $pdo->prepare("SELECT vid,param FROM variant WHERE quizID=:duggaid;");
+	$firstvariant=-1;
+	$query = $pdo->prepare("SELECT vid,param,disabled FROM variant WHERE quizID=:duggaid;");
 	$query->bindParam(':duggaid', $duggaid);
 	$result=$query->execute();
 	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
 	$i=0;
 	foreach($query->fetchAll() as $row) {
+		if($row['disabled']==0) $firstvariant=$i;
 		$variants[$i]=array(
 			'vid' => $row['vid'],
 			'param' => $row['param'],
+			'disabled' => $row['disabled']
 		);
 		$i++;
 		$insertparam = true;
 	}
 
-	// Retrieve variant list
-	$query = $pdo->prepare("SELECT vid,param FROM variant WHERE quizID=:duggaid and disabled=0;");
-	$query->bindParam(':duggaid', $duggaid);
-	$result=$query->execute();
-	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
-	$i=0;
-	foreach($query->fetchAll() as $row) {
-		$safe_variants[$i]=array(
-			'vid' => $row['vid'],
-			'param' => $row['param'],
-		);
-		$i++;
-		$insertparam = true;
+	// If selected variant is not found - pick another from working list.
+	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
+	$foundvar=-1;
+	foreach ($variants as $key => $value){
+			if($savedvariant==$value['vid']&&$value['disabled']==0) $foundvar=$key;
+	}
+	if($foundvar==-1){
+			$savedvariant="";
 	}
 
 	// If there are any variants, randomize
 	if($savedvariant==""||$savedvariant=="UNK"){
-		$randomno=rand(0,sizeof($safe_variants)-1);
-		if(sizeof($safe_variants)>0) $newvariant=$safe_variants[$randomno]['vid'];
+		// Randomize at most 8 times
+		$cnt=0;
+		do{
+				$randomno=rand(0,sizeof($safe_variants)-1);
+				
+				// If there is a variant choose one at random
+				if(sizeof($variants)>0){
+						if($variants[$randomno]['disabled']!=0){
+								$newvariant=$variants[$randomno]['vid'];						
+						}
+				} 
+				$cnt++;
+		}while($cnt<8&&$newvariant=="");
+		
+		// if none has been chosen and there is a first one take that one.
+		if($newvariant=="" && $firstvariant!=-1) $newvariant=$firstvariant;
 	}else{
-			
+		// There is a variant already -- do nothing!	
 	}
-
+	
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
 	if(($savedvariant=="")&&($newvariant!="")){
 		$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
@@ -245,8 +257,6 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	$second = $temp[1];
 	$thrid = $temp[2];
 
-//	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-			
 	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.uid = :uid and userAnswer.cid = :cid and userAnswer.vers = :vers");
 	
 	$query->bindParam(':uid', $userid);
