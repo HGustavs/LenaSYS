@@ -17,9 +17,12 @@ session_start();
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
+	$loginname=$_SESSION['loginname'];
+	$lastname=$_SESSION['lastname'];
+	$firstname=$_SESSION['firstname'];
 }else{
 	$userid="1";		
-} 
+} 	
 
 $opt=getOP('opt');
 $courseid=getOP('courseid');
@@ -293,6 +296,21 @@ $query->bindParam(':did', $duggaid);
 	
 $result = $query->execute();
 foreach($query->fetchAll() as $row) {
+		
+		if($row['kind']=="3"){
+				// Read file contents
+
+				$currcvd=getcwd();
+
+				$userdir = $lastname."_".$firstname."_".$loginname;
+			  $movname=$currcvd."/submissions/".$courseid."/".$coursevers."/".$duggaid."/".$userdir."/".$row['filename'].$row['seq'].".".$row['extension'];	
+
+			  $content=file_get_contents($movname);
+		
+		}else{
+				$content="Egon!";						
+		}
+	
 		$entry = array(
 			'uid' => $row['uid'],
 			'subid' => $row['subid'],
@@ -306,7 +324,7 @@ foreach($query->fetchAll() as $row) {
 			'updtime' => $row['updtime'],
 			'kind' => $row['kind'],	
 			'seq' => $row['seq'],	
-
+			'content' => $content
 		);
 		array_push($files, $entry);		
 }

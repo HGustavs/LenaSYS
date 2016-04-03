@@ -69,6 +69,9 @@ function returnedDugga(data)
 		}
 
 		duggaFiles = data['files'];
+		
+	  console.log(duggaFiles);
+	
 
 		if (duggaFiles.length > 0){
 
@@ -201,9 +204,15 @@ function createFileUploadArea(fileuploadfileds){
 
 		if(type=="link"){
 				form +="<input name='link' type='text' size='40' maxlength='256' />";
+				form +="<input type='hidden' name='kind' value='2' />";
+		}else if(type=="text"){
+				form +="<textarea rows='20' name='inputtext'  id='inputtext' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;	box-sizing: border-box;	width: 100%;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;' >Fumho</textarea>";
+				form +="<input type='hidden' name='kind' value='3' />";
 		}else{
 				form +="<input name='uploadedfile[]' type='file' multiple='multiple' />";
+				form +="<input type='hidden' name='kind' value='1' />";
 		}
+		
 		form +="<input type='submit' name='okGo' value='Upload'>";
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
@@ -211,7 +220,6 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
-		form +="<input type='hidden' name='kind' value='1' />";
 		form +="</form>";
 		
 		if (type === "pdf"){
@@ -307,6 +315,22 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</table>";
 			str += "</div>"
 			str += "</div>"
+		} else if (type === "text"){
+			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
+			str += "<div class='loginBoxheader'>";
+			str += "<h3>Text Submission</h3>";
+			str += "</div>";
+			str += "<div style='padding:5px;'>";
+			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
+			str +="<table style='width:100%;'>";
+			str +="<tr>";
+			str +="<td id='"+fieldname+"'>";
+			str += form;
+			str += "</td>";
+			str += "</tr>";
+			str += "</table>";
+			str += "</div>"
+			str += "</div>"			
 		}
 
 	}

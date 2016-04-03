@@ -29,6 +29,7 @@ session_start();
 pdoConnect(); // Connect to database and start session
 
 $link=getOP('link');			
+$inputtext=getOP('inputtext');			
 $cid=getOP('cid');
 $vers=getOP('coursevers');
 $moment=getOP('moment');
@@ -37,6 +38,8 @@ $duggaid=getOP('did');
 $fieldtype=getOP('field');
 $fieldkind=getOP('kind');
 $error=false;
+
+$seq=0;
 					
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -53,10 +56,89 @@ if(isset($_SESSION['uid'])){
 $ha = checklogin();
 if($ha){
 
-		if($link!="UNK"){
+		// Create folder if link textinput or file
+		if($link=="UNK"){
+				$currcvd=getcwd();
 
-				$seq=0;
-				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid and did=:did and filepath=:fname and cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+				if(!file_exists ($currcvd."/submissions/".$cid)){
+						if(!mkdir($currcvd."/submissions/".$cid)){
+								echo "Error creating folder: ".$currcvd."/submissions/cid";
+								$error=true;
+						}
+				}
+		
+				if(!file_exists ($currcvd."/submissions/".$cid."/".$vers)){
+						if(!mkdir($currcvd."/submissions/".$cid."/".$vers)){
+								echo "Error creating folder: ".$currcvd."/submissions/cid/vers";
+								$error=true;
+						}
+				}
+		
+				if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid)){
+						if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid)){
+								echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid";
+								$error=true;
+						}
+				}
+		
+				// Create a file area with format Lastname-Firstname-Login
+				$userdir = $lastname."_".$firstname."_".$loginname;
+		
+				if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
+						if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
+								echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/".$userdir;
+								$error=true;
+						}
+				}
+		}
+
+		if($inputtext!="UNK"){
+				
+				$fname=$fieldtype;
+				
+				$extension="txt";
+				$mime="txt";
+
+				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+				$query->bindParam(':did', $duggaid);
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':fname', $fname);
+				$query->bindParam(':uid', $userid);
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					echo "Error reading submissions a".$error[2];
+				}			 				
+				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+							$seq=$row['Dusty'];
+				}
+				$seq++;		  
+
+				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
+			  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
+			  file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
+			  
+				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,now());");
+				
+				$query->bindParam(':uid', $userid);
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':vers', $vers);
+				$query->bindParam(':did', $duggaid);
+				$query->bindParam(':filepath', $filepath);
+				$query->bindParam(':filename', $fname);
+				$query->bindParam(':extension', $extension);
+				$query->bindParam(':mime', $mime);
+				$query->bindParam(':field', $fieldtype);
+				$query->bindParam(':kind', $fieldkind);
+				$query->bindParam(':seq', $seq);
+				
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					echo "Error updating file entries".$error[2];
+				}			 				
+
+		}else if($link!="UNK"){
+
+				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filepath=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':cid', $cid);
@@ -84,9 +166,7 @@ if($ha){
 				}			 				
 		}else{
 				// chdir('../'); 
-				
-				$currcvd=getcwd();
-				
+								
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
 				$allowedT = array("application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download", "application/x-zip-compressed", "binary/octet-stream");
 				$allowedX = array("pdf","zip","rar");
@@ -114,40 +194,9 @@ if($ha){
 				
 								if(in_array($extension, $allowedX)&&in_array($filea['type'], $allowedT)){ 
 										//  if file type is allowed, continue the uploading process.
-				
-										if(!file_exists ($currcvd."/submissions/".$cid)){
-												if(!mkdir($currcvd."/submissions/".$cid)){
-														echo "Error creating folder: ".$currcvd."/submissions/cid";
-														$error=true;
-												}
-										}
-		
-										if(!file_exists ($currcvd."/submissions/".$cid."/".$vers)){
-												if(!mkdir($currcvd."/submissions/".$cid."/".$vers)){
-														echo "Error creating folder: ".$currcvd."/submissions/cid/vers";
-														$error=true;
-												}
-										}
-		
-										if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid)){
-												if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid)){
-														echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid";
-														$error=true;
-												}
-										}
-		
-										// Create a file area with format Lastname-Firstname-Login
-										$userdir = $lastname."_".$firstname."_".$loginname;
-		
-										if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
-												if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
-														echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/".$userdir;
-														$error=true;
-												}
-										}
-																		
+																						
 										$seq=0;
-										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid amd did=:did and filename=:fname and cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
 										$query->bindParam(':did', $duggaid);
 										$query->bindParam(':cid', $cid);
 										$query->bindParam(':fname', $fname);
@@ -209,9 +258,9 @@ if(!$error){
 <body>
 <?php
 if(!$error){
-
-	//cid=11&coursevers=12345&did=55&moment=543&segment=0&highscoremode=0
 		echo "<script>window.gocation.replace('showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
+}else{
+		echo $error;
 }
 ?>
 </body>
