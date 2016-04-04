@@ -1,5 +1,13 @@
 <?php
-include_once("../Shared/sessions.php");
+	include_once "../../coursesyspw.php";
+	include_once "../Shared/sessions.php";
+	// continue if logged in, else redirect to loginprompt
+	session_start();
+	if(!checklogin()){
+		header("Location: ../Shared/loginprompt.php");
+	}
+	pdoConnect();
+
 
 $OC_db = mysql_connect(localhost,root,kaka) or err("Could not connect to database ".mysql_errno(),$hdr);
 	mysql_set_charset('utf8',$OC_db);
@@ -21,35 +29,37 @@ $OC_db = mysql_connect(localhost,root,kaka) or err("Could not connect to databas
 	}
 }
 
+	// Fetch logged in users ID
+	$uid = $_SESSION['uid'];
 
-	$uid = $_POST['uid'];
+	// Fetch data from the form
 	$curPass = $_POST['curPass'];
 	$password = $_POST['newPass'];
 	$checkPass = $_POST['checkPass'];
 
+	// Fetch the logged in users password
 	$query = $pdo->prepare('SELECT password FROM user WHERE uid=:uid');
 	$query->bindParam(':uid', $uid);
 	$query->execute();
 	$resultPass = $query->fetch();
 
+	// Fetch the hashed version of the form password data
 	$query = $pdo->prepare('SELECT password FROM user WHERE password=password(:pwd)');
 	$query->bindParam(':pwd', $curPass);
 	$query->execute();
 	$resultPassCheck = $query->fetch();
 
-	echo $resultPass['password'] . " : Current Password<br \>";
-	echo $resultPassCheck['password'] . " : Pass Check <br \>";
-	echo $_SESSION['uid']. "Session UID <br \>";
-
+	// Put the results in variables
 	$currentPW = $resultPass['password'];
 	$PWCheck = $resultPassCheck['password'];
 	
+	// Check if the "Current Password" data matches with the logged in users password
 	if($currentPW == $PWCheck)
 	{
+			// Check if the user submitted identical passwords in the "New Password" fields
 			if($password == $checkPass) 
 		{
-			// Passwords Match
-
+			// Change the current password
 			$query = $pdo->prepare("UPDATE user SET password=password(:pwd) where uid=:uid");
 
 			$query->bindParam(':uid', $uid);
@@ -57,31 +67,27 @@ $OC_db = mysql_connect(localhost,root,kaka) or err("Could not connect to databas
 
 			$query->execute();
 
-
-			echo "Your password has been changed!";
+			// Send feedback
+			$errmsg = "Your password has been changed!";
+			 header("Location:studentView.php?errmsg=".$errmsg);
 		}
 
 		else
 		{
-			echo "Your passwords do not match!";
+			// If the user submitted different data in the "New Password" fields
+			// Send feedback
+			$errmsg = "Your passwords do not match!";
+			 header("Location:studentView.php?errmsg=".$errmsg);
 		}
 	}
 
 	else
-	{
-		echo "Incorrect login password";
+	{	
+		// If the user submitted incorrect data in the "Current Password" field
+		// Send feedback
+		$errmsg = "Incorrect current password!";
+			 header("Location:studentView.php?errmsg=".$errmsg);
 	}
 
-
-	/*
-	$query = $pdo->prepare("UPDATE user SET password=password(:pwd) where uid=:uid");
-
-	$query->bindParam(':uid', $uid);
-	$query->bindParam(':pwd', $password);
-
-	$query->execute();
-
-
-	*/
-
+	die();
 ?>
