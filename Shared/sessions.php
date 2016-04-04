@@ -115,15 +115,15 @@ function login($username, $password, $savelogin)
 /**
  * Check if a specified user ID has the requested access on a specified course
  * @param int $userId User ID of the user to look up
- * @param int $courseId ID of the course to look up access for
+ * @param int $cid ID of the course to look up access for
  * @param string $access_type A single letter denoting read or write access 
  * (r and w respectively)
  * @return bool Returns true if the user has the requested access on the course
  * and false if they don't.
  */
-function hasAccess($userId, $courseId, $access_type)
+function hasAccess($userId, $cid, $access_type)
 {
-	$access = getAccessType($userId, $courseId);
+	$access = getAccessType($userId, $cid);
 
 	if($access_type === 'w') {
 		return strtolower($access) == 'w';
@@ -162,10 +162,10 @@ function isSuperUser($userId)
 /**
  * Returns the access a specified user has on the specified course
  * @param int $userId User ID of the user to look up
- * @param int $courseId Course ID of the course to look up access on
+ * @param int $cid Course ID of the course to look up access on
  * @return string Returns the access for the user on the selected course (r or w)
  */
-function getAccessType($userId, $courseId)
+function getAccessType($userId, $cid)
 {
 		global $pdo;
 	
@@ -175,7 +175,7 @@ function getAccessType($userId, $courseId)
 	
 		$query = $pdo->prepare('SELECT access FROM user_course WHERE uid=:uid AND cid=:cid LIMIT 1');
 		$query->bindParam(':uid', $userId);
-		$query->bindParam(':cid', $courseId);
+		$query->bindParam(':cid', $cid);
 		$query->execute();
 	
 		// Fetch data from the database

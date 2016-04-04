@@ -13,7 +13,7 @@ function courseexists($coursename)
 	}
 
 	if(!is_numeric($coursename)) {
-		$coursename = getCourseId($coursename);
+		$coursename = getcid($coursename);
 	}
 
 	$query = $pdo->prepare('SELECT COUNT(cid) FROM course WHERE cid=:course');
@@ -26,7 +26,7 @@ function courseexists($coursename)
 	}
 }
 
-function getCourseId($coursename)
+function getcid($coursename)
 {
 	global $pdo;
 

@@ -274,7 +274,7 @@ var removedWords = [];
 
 function editImpWords(editType) 
 {
-	var word = " " + $("#impword").val() + " ";
+	var word = $("#impword").val();
 	var left = 0;
 	var right = 0;
 	//Check if the word contains an uneven amount of parenthesis
@@ -416,13 +416,13 @@ function updateExample()
 // displayEditContent: Displays the dialogue box for editing a content pane
 //                Is called by createboxmenu in codeviewer.js
 //----------------------------------------------------------------------------------
-var openboxid;
+var openBoxID;
 
 function displayEditContent(boxid)
 {	
 
 	var box = retData['box'][boxid-1]; 	// The information stored about the box is fetched
-	openboxid = boxid;				// Keeps track of the currently open box. Used when saving the box content.
+	openBoxID = boxid;				// Keeps track of the currently open box. Used when saving the box content.
 
 	$("#boxtitle").val(box[4]);
 	$("#boxcontent").val(box[1]);  
@@ -519,12 +519,12 @@ function editImpRows(editType)
 			$("#improws").append('<option>' + row + '</option>');
 			$("#improwfrom").val("");
 			$("#improwto").val("");
-			addedRows.push([openboxid,rowFrom,rowTo]);
+			addedRows.push([openBoxID,rowFrom,rowTo]);
 		}
 	}else if (editType == "-") {
 		FromTo = $('option:selected', "#improws").text().split(" - ");
 		$('option:selected', "#improws").remove();
-    	removedRows.push([openboxid,FromTo[0],FromTo[1]]);
+    	removedRows.push([openBoxID,FromTo[0],FromTo[1]]);
 	}else{
 		alert((editType=="+") +" "+ (isNumber(rowFrom))+" "+ (isNumber(rowTo)) + " "+ (rowFrom <= rowTo)+ " "+ (rowFrom > 0)+ " "+ (rowTo > 0));
 		alert("Incorrect value(s) (from: "+rowFrom+" to: "+rowTo+")  for important rows!");
@@ -537,7 +537,7 @@ function editImpRows(editType)
 //----------------------------------------------------------------------------------
 function updateContent() 
 {
-	var box = retData['box'][openboxid-1];
+	var box = retData['box'][openBoxID-1];
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
@@ -1523,13 +1523,13 @@ function Play()
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
-function resizeBoxes(parent, templateid) 
+function resizeBoxes(parent, templateId) 
 {
 	var boxValArray = initResizableBoxValues(parent);
 	var remainWidth;
 		
-	if(templateid == 1){
-		getLocalStorageProperties(templateid, boxValArray);
+	if(templateId == 1){
+		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1541,12 +1541,12 @@ function resizeBoxes(parent, templateid)
 				alignBoxesWidth(boxValArray, 1, 2);
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateid == 2){
-		getLocalStorageProperties(templateid, boxValArray);
+	}else if(templateId == 2){
+		getLocalStorageProperties(templateId, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1559,12 +1559,12 @@ function resizeBoxes(parent, templateid)
 				$(boxValArray['box1']['id']).width("100%");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateid == 3){
-		getLocalStorageProperties(templateid, boxValArray);
+	}else if(templateId == 3){
+		getLocalStorageProperties(templateId, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1578,7 +1578,7 @@ function resizeBoxes(parent, templateid)
 				$("#box1wrapper").css("height", "100%");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1594,12 +1594,12 @@ function resizeBoxes(parent, templateid)
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateid == 4){
-		getLocalStorageProperties(templateid, boxValArray);
+	}else if(templateId == 4){
+		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1613,7 +1613,7 @@ function resizeBoxes(parent, templateid)
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1630,12 +1630,12 @@ function resizeBoxes(parent, templateid)
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateid == 5){
-		getLocalStorageProperties(templateid, boxValArray);
+	}else if(templateId == 5){
+		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1649,7 +1649,7 @@ function resizeBoxes(parent, templateid)
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1665,7 +1665,7 @@ function resizeBoxes(parent, templateid)
 				$("#box2wrapper").css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1680,13 +1680,13 @@ function resizeBoxes(parent, templateid)
 				alignBoxesWidth(boxValArray, 3, 4);
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateid == 6){
+	}else if(templateId == 6){
 		
-			getLocalStorageProperties(templateid, boxValArray);
+			getLocalStorageProperties(templateId, boxValArray);
 			$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
 			
 		
@@ -1702,7 +1702,7 @@ function resizeBoxes(parent, templateid)
 					
 				},
 				stop: function(e, ui) {
-					setLocalStorageProperties(templateid, boxValArray);
+					setLocalStorageProperties(templateId, boxValArray);
 					$('iframe').css('pointer-events','auto');
 				}
 			});
@@ -1719,7 +1719,7 @@ function resizeBoxes(parent, templateid)
 						$(boxValArray['box2']['id']).css("left", " ");
 				},
 				stop: function(e, ui) {
-					setLocalStorageProperties(templateid, boxValArray);
+					setLocalStorageProperties(templateId, boxValArray);
 					$('iframe').css('pointer-events','auto');
 				}
 			});
@@ -1736,7 +1736,7 @@ function resizeBoxes(parent, templateid)
 				},
 				stop: function(e, ui) {
 					$(boxValArray['box4']['id']).css("top", " ");
-					setLocalStorageProperties(templateid, boxValArray);
+					setLocalStorageProperties(templateId, boxValArray);
 					$('iframe').css('pointer-events','auto');
 				}
 			});
@@ -1940,7 +1940,7 @@ function initResizableBoxValues(parent)
 	var parentHeight = $(parent).height();
 	var boxwidth;
 	var boxheight;
-	var boxid;
+	var boxId;
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	var boxValueArray = new Array();
 	boxValueArray["parent"] = {"id": parent, "width": parentWidth, "height": parentHeight};
@@ -1948,8 +1948,8 @@ function initResizableBoxValues(parent)
 	for (var i = 1; i <= numBoxes; i++) {
 		boxWidth = $("#box" + i + "wrapper").width();
 		boxHeight = $("#box" + i + "wrapper").height();
-		boxid = "#box" + i + "wrapper";
-		boxValueArray["box" + i] = {"id": boxid, "width": boxWidth, "height": boxHeight};
+		boxId = "#box" + i + "wrapper";
+		boxValueArray["box" + i] = {"id": boxId, "width": boxWidth, "height": boxHeight};
 	}
 	
 	$(window).resize(function(event){
@@ -1965,7 +1965,7 @@ function initResizableBoxValues(parent)
 //Saves the measurments in percent for the boxes on the screen in local storage.
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
-function setLocalStorageProperties(templateid, boxValArray)
+function setLocalStorageProperties(templateId, boxValArray)
 {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;	
 	var widthPer;
@@ -1981,8 +1981,8 @@ function setLocalStorageProperties(templateid, boxValArray)
 		widthPer = Math.floor(widthPer, 100);
 		heightPer = Math.floor(heightPer, 100);
 		
-		localStorage.setItem("template" + templateid +  "box" + i + "widthPercent", widthPer);
-		localStorage.setItem("template" + templateid +  "box" + i + "heightPercent", heightPer);
+		localStorage.setItem("template" + templateId +  "box" + i + "widthPercent", widthPer);
+		localStorage.setItem("template" + templateId +  "box" + i + "heightPercent", heightPer);
 	}
 	setResizableToPer(boxValArray);
 }
@@ -1993,16 +1993,16 @@ function setLocalStorageProperties(templateid, boxValArray)
 //		  TODO: Add handling for when localstorage is null or < 0
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
-function getLocalStorageProperties(templateid, boxValArray)
+function getLocalStorageProperties(templateId, boxValArray)
 {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	for(var i = 1; i <= numBoxes; i++){
 		//Sanity checks
-		if(localStorage.getItem("template" + templateid + "box" + i + "widthPercent") != null && localStorage.getItem("template" + templateid + "box" + i + "widthPercent") > 0){
-			if(localStorage.getItem("template" + templateid + "box" + i + "heightPercent") != null && localStorage.getItem("template" + templateid + "box" + i + "heightPercent") > 0){
-				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateid + "box" + i + "widthPercent") + "%");
-				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateid +  "box" + i + "heightPercent") + "%");
-				erasePercentGap(templateid, boxValArray);
+		if(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "widthPercent") > 0){
+			if(localStorage.getItem("template" + templateId + "box" + i + "heightPercent") != null && localStorage.getItem("template" + templateId + "box" + i + "heightPercent") > 0){
+				$("#box" + i + "wrapper").width(localStorage.getItem("template" + templateId + "box" + i + "widthPercent") + "%");
+				$("#box" + i + "wrapper").height(localStorage.getItem("template" + templateId +  "box" + i + "heightPercent") + "%");
+				erasePercentGap(templateId, boxValArray);
 			}
 		}
 	}
@@ -2012,23 +2012,23 @@ function getLocalStorageProperties(templateid, boxValArray)
 //removes percentage based gap
 //                Is called by getLocalStorageProperties in codeviewer.js
 //----------------------------------------------------------------------------------
-function erasePercentGap(templateid, boxValArray)
+function erasePercentGap(templateId, boxValArray)
 {
-	if(templateid == 1){	
+	if(templateId == 1){	
 		alignBoxesWidth(boxValArray, 1, 2);
-	}else if(templateid == 2){
+	}else if(templateId == 2){
 		alignBoxesHeight2boxes(boxValArray, 1, 2);
-	}else if(templateid == 3){
+	}else if(templateId == 3){
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
 		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-	}else if(templateid == 4){
+	}else if(templateId == 4){
 		alignBoxesWidth(boxValArray, 1, 2);
 		alignBoxesHeight3boxes(boxValArray, 1, 2, 3);
-	}else if(templateid == 5){
+	}else if(templateId == 5){
 		alignBoxesWidth(boxValArray, 1, 2);
 		alignBoxesWidth(boxValArray, 3, 4);
 		alignBoxesHeight4boxes(boxValArray, 1, 2);
-	}else if(templateid == 6){
+	}else if(templateId == 6){
 		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 	}

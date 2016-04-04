@@ -6,7 +6,7 @@
 	//	84: Redundant? Is set a couple of rows above
 	//	106: Check what viktig is and what it's for
 	//	107: Should only bind with the file used (if used) and not to one by default
-	//	128: Check for better way to get and set before/afterid
+	//	128: Check for better way to get and set before/afterId
 	//	Change variables to a fitting or standardized manner: 
 	//		forward_examples
 	//		currid
@@ -31,19 +31,19 @@
 	session_start();
 	
 	// Global variables
-	$exampleid=getOP('exampleid');
-	$boxid=getOP('boxid');
+	$exampleId=getOP('exampleid');
+	$boxId=getOP('boxid');
 	$opt=getOP('opt');
 	$cid=getOP('cid');
 	$courseVersion=getOP('cvers');
 	$templateNumber=getOP('templateno');
-	$beforeid=getOP('beforeid');
-	$afterid=getOP('afterid');
+	$beforeId=getOP('beforeid');
+	$afterId=getOP('afterid');
 	$sectionName=getOP('sectionname');
 	$exampleName=getOP('examplename');
 	$playlink=getOP('playlink');
 	$debug="NONE!";
-	// Checks user ID, if user has none a guest id is set
+	// Checks user id, if user has none a guest id is set
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
@@ -60,17 +60,17 @@
 	$exampleCount = 0;
 	
 		$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
-    $query->bindParam(':exampleid', $exampleid);
+    $query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 		$exampleCount++;
-		$exampleid=$row['exampleid'];
+		$exampleId=$row['exampleid'];
 		$exampleName=$row['examplename'];
 		$cid=$row['cid'];
 		$cversion=$row['cversion'];
-		$beforeid=$row['beforeid'];
-		$afterid=$row['afterid'];
+		$beforeId=$row['beforeid'];
+		$afterId=$row['afterid'];
 		$public=$row['public'];
 		$sectionName=$row['sectionname'];
 		$playlink=$row['runlink'];
@@ -87,7 +87,7 @@
 				// Add word to wordlist
 				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
 				$query->bindParam(':templateno', $templateNumber);
-				$query->bindParam(':exampleid', $exampleid);
+				$query->bindParam(':exampleid', $exampleId);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':cvers', $courseVersion);
 				$query->execute();
@@ -101,7 +101,7 @@
 				for($i=1;$i<$boxCount+1;$i++){
 					$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");		
 					$query->bindParam(':i', $i);
-					$query->bindParam(':exampleid', $exampleid);
+					$query->bindParam(':exampleid', $exampleId);
 					$query->bindValue(':boxtitle', 'Title');
 					$query->bindValue(':boxcontent', 'Code');
 					$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
@@ -112,32 +112,32 @@
 				if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
 				if(isset($_POST['examplename'])) {$exampleName = $_POST['examplename'];}
 				if(isset($_POST['sectionname'])) {$sectionName = $_POST['sectionname'];}
-				if(isset($_POST['beforeid'])) {$beforeid = $_POST['beforeid'];}
-				if(isset($_POST['afterid'])) {$afterid = $_POST['afterid'];}
+				if(isset($_POST['beforeid'])) {$beforeId = $_POST['beforeid'];}
+				if(isset($_POST['afterid'])) {$afterId = $_POST['afterid'];}
 
 				// Change content of example
 				$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
 				$query->bindParam(':playlink', $playlink);
 				$query->bindParam(':examplename', $exampleName);
 				$query->bindParam(':sectionname', $sectionName);
-				$query->bindParam(':exampleid', $exampleid);
+				$query->bindParam(':exampleid', $exampleId);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':cvers', $courseVersion);
 				$query->execute();
 				
-				// TODO: Check for better way to get and set before/afterid
-				if($beforeid!="UNK"){
+				// TODO: Check for better way to get and set before/afterId
+				if($beforeId!="UNK"){
 					$query = $pdo->prepare( "UPDATE codeexample SET beforeid = :beforeid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
-					$query->bindParam(':beforeid', $beforeid);
-					$query->bindParam(':exampleid', $exampleid);
+					$query->bindParam(':beforeid', $beforeId);
+					$query->bindParam(':exampleid', $exampleId);
 					$query->bindParam(':cid', $cid);
 					$query->bindParam(':cvers', $courseVersion);
 					$query->execute();
 				}
-				if($afterid!="UNK"){
+				if($afterId!="UNK"){
 					$query = $pdo->prepare( "UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
-					$query->bindParam(':afterid', $afterid);
-					$query->bindParam(':exampleid', $exampleid);
+					$query->bindParam(':afterid', $afterId);
+					$query->bindParam(':exampleid', $exampleId);
 					$query->bindParam(':cid', $cid);
 					$query->bindParam(':cvers', $courseVersion);
 					$query->execute();
@@ -149,7 +149,7 @@
 					// Loops through the array of added words and inserts them one by one.
 					foreach ($addedWords as $word) {
 						$query = $pdo->prepare("INSERT INTO impwordlist(exampleid,word,uid) VALUES (:exampleid,:word,:uid);");		
-						$query->bindParam(':exampleid', $exampleid);
+						$query->bindParam(':exampleid', $exampleId);
 						$query->bindParam(':word', $word);
 						$query->bindParam(':uid', $_SESSION['uid']);
 						$query->execute();
@@ -162,14 +162,14 @@
 					// Loops through the array of removed words and deletes them one by one.
 					foreach ($removedWords as $word) {
 						$query = $pdo->prepare("DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;");		
-						$query->bindParam(':exampleid', $exampleid);
+						$query->bindParam(':exampleid', $exampleId);
 						$query->bindParam(':word', $word);
 						$query->execute();
 					}
 				}			
 			}else if(strcmp('EDITCONTENT',$opt)===0) {
-				$exampleid = $_POST['exampleid'];
-				$boxid = $_POST['boxid'];
+				$exampleId = $_POST['exampleid'];
+				$boxId = $_POST['boxid'];
 				$boxTitle = $_POST['boxtitle'];
 				$boxContent = $_POST['boxcontent'];
 				$wordlist = $_POST['wordlist'];
@@ -182,8 +182,8 @@
 				$query->bindParam(':boxcontent', $boxContent);
 				$query->bindParam(':wordlist', $wordlist);
 				$query->bindParam(':filename', $filename);
-				$query->bindParam(':boxid', $boxid);
-				$query->bindParam(':exampleid', $exampleid);
+				$query->bindParam(':boxid', $boxId);
+				$query->bindParam(':exampleid', $exampleId);
 				$query->execute();
 
 				if (isset($_POST['addedRows'])) {
@@ -191,8 +191,8 @@
 					foreach ($matches[1] as $match) { 
 						$row = explode(",", $match);
 						$query = $pdo->prepare("INSERT INTO improw(boxid,exampleid,istart,iend,uid) VALUES (:boxid,:exampleid,:istart,:iend,:uid);");
-						$query->bindValue(':boxid', $boxid);
-						$query->bindValue(':exampleid', $exampleid);
+						$query->bindValue(':boxid', $boxId);
+						$query->bindValue(':exampleid', $exampleId);
 						$query->bindValue(':istart', $row[1]);
 						$query->bindValue(':iend', $row[2]);
 						$query->bindValue(':uid', $_SESSION['uid']);
@@ -205,8 +205,8 @@
 					foreach ($matches[1] as $match) { 
 						$row = explode(",", $match);
 						$query = $pdo->prepare("DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exampleid=:exampleid;");
-						$query->bindValue(':boxid', $boxid);
-						$query->bindValue(':exampleid', $exampleid);
+						$query->bindValue(':boxid', $boxId);
+						$query->bindValue(':exampleid', $exampleId);
 						$query->bindValue(':istart', $row[1]);
 						$query->bindValue(':iend', $row[2]);
 						$query->execute();
@@ -221,7 +221,7 @@
 		//------------------------------------------------------------------------------------------------		
 		// Read exampleid, examplename and runlink etc from codeexample and template
 		$exampleName="";
-		$templateid="";
+		$templateId="";
 		$styleSheet="";
 		$numBox="";
 		$exampleNumber=0;
@@ -230,7 +230,7 @@
 		$entryname="";
 		
 		$query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid as templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid and cid = :cid;");		
-		$query->bindParam(':exampleid', $exampleid);
+		$query->bindParam(':exampleid', $exampleId);
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 
@@ -240,7 +240,7 @@
 			$public=$row['public'];
 			$playlink=$row['runlink'];
 			$sectionName=$row['sectionname'];
-			$templateid=$row['templateid'];
+			$templateId=$row['templateid'];
 			$styleSheet=$row['stylesheet'];
 			$numBox=$row['numbox'];					
 		}
@@ -259,43 +259,43 @@
 				array_push($beforeAfters,array($row['exampleid'],$row['sectionname'],$row['examplename'],$row['beforeid'],$row['afterid']));
 		}  
 
-		// Iteration to find after examples - We start with $exampleid and at most 5 are collected
+		// Iteration to find after examples - We start with $exampleId and at most 5 are collected
 		$nextExampleCount = 0;
 		$forwardExamples = array();	
-		$currentid=$exampleid;				
+		$currentId=$exampleId;				
 
 		do{
-			if(isset($beforeAfter[$currentid])){
-				$currentid=$beforeAfter[$currentid][4];
+			if(isset($beforeAfter[$currentId])){
+				$currentId=$beforeAfter[$currentId][4];
 			}else{
-				$currentid=null;
+				$currentId=null;
 			}					
-			if($currentid!=null){
-				if(isset($beforeAfter[$currentid])) array_push($forwardExamples,$beforeAfter[$currentid]);
+			if($currentId!=null){
+				if(isset($beforeAfter[$currentId])) array_push($forwardExamples,$beforeAfter[$currentId]);
 			}
 			$nextExampleCount++;
-		// Iteration to find before examples - We start with $exampleid and at most 5 are collected
-		}while($currentid!=null&&$nextExampleCount<5);
+		// Iteration to find before examples - We start with $exampleId and at most 5 are collected
+		}while($currentId!=null&&$nextExampleCount<5);
 		
 		$backwardExamples = array();	
-		$currentid=$exampleid;
+		$currentId=$exampleId;
 		$previousExamplesCount = 0;
 		do{
-			if(isset($beforeAfter[$currentid])){
-				$currentid=$beforeAfter[$currentid][3];
+			if(isset($beforeAfter[$currentId])){
+				$currentId=$beforeAfter[$currentId][3];
 			}else{
-				$currentid=null;
+				$currentId=null;
 			}					
-			if($currentid!=null){
-				if(isset($beforeAfter[$currentid]))	array_push($backwardExamples,$beforeAfter[$currentid]);
+			if($currentId!=null){
+				if(isset($beforeAfter[$currentId]))	array_push($backwardExamples,$beforeAfter[$currentId]);
 			}
 			$previousExamplesCount++;
-		}while($currentid!=null&&$previousExamplesCount<5);
+		}while($currentId!=null&&$previousExamplesCount<5);
 		
 		// Read important lines
 		$importantRows=array();
 		$query = $pdo->prepare("SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY istart;");
-		$query->bindParam(':exampleid', $exampleid);
+		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 		
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
@@ -323,7 +323,7 @@
 		// Read important wordlist
 		$importantWordList=array();
 		$query = $pdo->prepare( "SELECT word,label FROM impwordlist WHERE exampleid = :exampleid ORDER BY word;");
-		$query->bindParam(':exampleid', $exampleid);
+		$query->bindParam(':exampleid', $exampleId);
 		$query->execute();
 		
 		while ($row = $query->FETCH(PDO::FETCH_ASSOC)){
@@ -367,7 +367,7 @@
 		$box=array();   
 		// Array to be filled with the primary keys to all boxes of the example
 		$queryy = $pdo->prepare( "SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
-		$queryy->bindParam(':exampleid', $exampleid);
+		$queryy->bindParam(':exampleid', $exampleId);
 		$queryy->execute();
 		while ($row = $queryy->FETCH(PDO::FETCH_ASSOC)){
 			$boxContent=strtoupper($row['boxcontent']);
@@ -423,7 +423,7 @@
 		$array = array(
 			'before' => $backwardExamples,
 			'after' => $forwardExamples,
-			'templateid' => $templateid,
+			'templateid' => $templateId,
 			'stylesheet' => $styleSheet,
 			'numbox' => $numBox,
 			'box' => $box,
