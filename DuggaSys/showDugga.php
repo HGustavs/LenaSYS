@@ -105,6 +105,7 @@
 	<!-- content START -->
 	<div id="content">
 		<?php
+			
 
 			// Log USERID for Dugga Access
 			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
@@ -118,7 +119,13 @@
 					echo "<table width='100%'>";
 					echo "<tr>";
 					echo "<td align='center'>";
-					echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
+
+					//only shows save button if quiz is not graded
+					if (!getUserAnswerHasGrade($userid, $cid, $quizid)) {
+						echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
+					}
+					
+
 					echo "<input class='submit-button' type='button' value='Reset' onclick='reset();' style='width:160px;height:48px;line-height:48px;' />";
 					echo "</td>";
 					echo "</tr>";
@@ -127,7 +134,6 @@
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
-				echo  "<!-- Timer START --><div id='scoreElement'></div>";
 			}else if ($userid=="UNK"){
 				echo "<div class='err'><span style='font-weight:bold;'>Not logged in!</span>You need to be logged in if you want to do duggor. There is a log in button in the top right corner.</div>";
 			}else{
@@ -152,6 +158,12 @@
 		</div>	
 	</div>
 	<!-- Login Box (receiptbox) End! -->
+
+	<!-- Timer START -->
+
+	<div id='scoreElement'>
+
+	</div>
 
 	<!-- content END -->
 
