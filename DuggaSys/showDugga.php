@@ -123,12 +123,6 @@
 					if (!getUserAnswerHasGrade($userid, $cid, $quizid)) {
 						echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
 					}
-					
-
-					echo "<input class='submit-button' type='button' value='Reset' onclick='reset();' style='width:160px;height:48px;line-height:48px;' />";
-					echo "</td>";
-					echo "</tr>";
-					echo "</table>";
 					include '../Shared/submitTable.php';
 
 
