@@ -14,8 +14,8 @@
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src="timer.js"></script>
-	<script src="clickcounter.js"></script>
+//	<script src="timer.js"></script>
+//	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
 
 <?php
@@ -127,7 +127,6 @@
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
-				echo  "<!-- Timer START --><div id='scoreElement'></div>";
 			}else if ($userid=="UNK"){
 				echo "<div class='err'><span style='font-weight:bold;'>Not logged in!</span>You need to be logged in if you want to do duggor. There is a log in button in the top right corner.</div>";
 			}else{
@@ -152,6 +151,12 @@
 		</div>	
 	</div>
 	<!-- Login Box (receiptbox) End! -->
+
+	<!-- Timer START -->
+
+	<div id='scoreElement'>
+
+	</div>
 
 	<!-- content END -->
 
