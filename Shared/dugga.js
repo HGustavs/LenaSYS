@@ -22,9 +22,9 @@ function toggleloginnewpass(){
 }
 
 function closeWindows(){
-
+	//changed .loginBox to #loginBox to stop lockbox from closing when login box is closed
 	$("#loginBox").css("display", "none");
-	//$("#overlay").css("display","none");
+	//removed "display:none" on #overlay
 	$("#login #username").val("");
 	$("#login #password").val("");
 	
