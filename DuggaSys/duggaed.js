@@ -117,9 +117,9 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 	//----------------------------------------------------
 	var str="";
 	if(autograde==0) str+="<option selected='selected' value='0'>Off</option>"
-	else str+="<option value='0'>Hidden</option>";
+	else str+="<option value='0'>Off</option>";
 	if(autograde==1) str+="<option selected='selected' value='1'>On</option>"
-	else str+="<option value='1'>Public</option>";
+	else str+="<option value='1'>On</option>";
 	$("#autograde").html(str);
 						
 	str="";
