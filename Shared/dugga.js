@@ -25,6 +25,7 @@ function closeWindows(){
 
 	$(".loginBox").css("display", "none");
 	$("#overlay").css("display","none");
+	$("#resultpopover").css("display","none");
 	$("#login #username").val("");
 	$("#login #password").val("");
 	
