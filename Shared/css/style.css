@@ -518,6 +518,16 @@ header td {
     z-index: 8000;
 }
 
+#overlayLock {
+    position: fixed;
+    top: 0;
+    background-color: #000;
+    opacity: 0.6;
+    width: 100%;
+    height: 100%;
+    z-index: 8000;
+}
+
 .receiptBox {
     display:block;
     padding:4px;
@@ -599,10 +609,16 @@ header td {
 }
 
 .loginTransparent {
-    background-color: transparent;
-    border: 0;
+    display:block;
+    padding:4px;
+    width: 350px;
+    min-height: 100px;
+    z-index: 9000;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    margin-left: -178px;
     text-align: center;
-    box-shadow: 0 0 0;
 }
 
 .loginBox textarea, #import{
