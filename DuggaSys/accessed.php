@@ -57,6 +57,14 @@
 			<p>Example:<br/>
 			000000-0000 Lastname, Firstname a12firla@student.his.se<br/>
 			111111-1111 Lastname, Firstname b12firla@student.his.se</p>
+			<div>
+			
+			<br/>
+			<p>You can add existing teachers fron this list.</p>
+			<?php
+				include_once "formerTeacher.php";
+			?>
+			</div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Add Users' onclick='addUsers();' />

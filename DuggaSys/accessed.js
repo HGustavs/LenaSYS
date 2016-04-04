@@ -74,6 +74,18 @@ function resetPw(uid,username)
 }
 
 //----------------------------------------
+// Add teatcher quick
+//----------------------------------------
+
+function AddTeatcher($i) {
+	if($i != "-1"){
+		var textArea = document.getElementById('import');
+		textArea.value += $i + '\n';
+	}
+
+}
+
+//----------------------------------------
 // Renderer
 //----------------------------------------
 function returnedAccess(data)
