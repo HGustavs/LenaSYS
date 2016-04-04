@@ -172,16 +172,20 @@ function returned(data)
 			
 			//Change all asterisks to the html code for asterisks
 			desc = desc.replace(/\*/g, "&#42;");
+
 			// Highlight important words
 			important = retData.impwords;
 			for(j=0;j<important.length;j++){
-				var sstr="<span id='IWW' class='impword' onmouseout='dehighlightKeyword(\""+important[j]+"\")' onmouseover='highlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";														
+				var sstr="<span id='IWW' class='impword' onmouseout='dehighlightKeyword(\""+important[j]+"\")' onmouseover='highlightKeyword(\""+important[j]+"\")'>"+important[j]+"</span>";							
 				//Interpret asterisks in important word as literals and not as character with special meaning
 				if(important[j].indexOf('*') != -1){
 					important[j] = important[j].replace(/\*/g, "&#42;");
-				}	
-				desc=replaceAll(important[j],sstr,desc);
+				}
+				//make sure that not partial words gets highlighted
+				var regExp = new RegExp("\\b"+ important[j] + "\\b", "gi");
+				desc=replaceAll(regExp,sstr,desc);
 			}
+
 			//Replace the html code for asterisks with asterisks
 			desc = desc.replace(/\&\#42\;/g, "*");
 			
