@@ -127,7 +127,7 @@ function markdownBlock(inString)
 	inString = inString.replace(/\<\/ul\>(\r\n|\n|\r)\<ul\>/gm,"");
 
 	//Regular expression for line
-	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
+	inString = inString.replace(/\-{3,}/g, '<hr>');
 	
 	// Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
 	inString = inString.replace(/(\r\n|\n|\r){3}/gm,"<br><br>");
