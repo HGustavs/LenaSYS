@@ -305,10 +305,14 @@ foreach($query->fetchAll() as $row) {
 				$userdir = $lastname."_".$firstname."_".$loginname;
 			  $movname=$currcvd."/submissions/".$courseid."/".$coursevers."/".$duggaid."/".$userdir."/".$row['filename'].$row['seq'].".".$row['extension'];	
 
-			  $content=file_get_contents($movname);
+			  if (file_exists ($movname)){
+						$content=file_get_contents($movname);
+			  }else{
+						$content="Empty";			  
+			  }
 		
 		}else{
-				$content="Egon!";						
+				$content="Empty";						
 		}
 	
 		$entry = array(
