@@ -115,8 +115,6 @@
 			if($duggafile!="UNK"&&$userid!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
-
-<<<<<<< HEAD
 					echo "<table width='100%'>";
 					echo "<tr>";
 					echo "<td align='center'>";
@@ -131,10 +129,8 @@
 					echo "</td>";
 					echo "</tr>";
 					echo "</table>";
-=======
 					include '../Shared/submitTable.php';
 
->>>>>>> bd180645e84c2fef4d19716060c87ede77b2b4e9
 
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
