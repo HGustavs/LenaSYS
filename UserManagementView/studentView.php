@@ -86,7 +86,62 @@
 	
 		
 		</div>
-	
+		
+			<div id="pwchange">
+			<!-- Form for changing the password -->
+			<table id="pwtable">
+				<form method="POST" action="changepw.php">
+					<th>
+						<?php
+							// Fetch the error message from the changepw file
+							if(isset($_GET['errmsg'])){
+   								 $errmsg=$_GET['errmsg'];
+   								 echo $errmsg;
+							}else{
+							// Default error message
+  			 					 echo "Change your password";
+							}
+						?>
+					</th>
+					<tr>
+						<td>
+							<label class="text"><br \>Current Password</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="curPass" placeholder="Current Password" class='form-control textinput' type='password' >
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="text"><br \>New Password</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="newPass" placeholder="New Password" class='form-control textinput' type='password' >
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="text"><br \>Repeat Password</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="checkPass" placeholder="Repeat Password" class='form-control textinput' type='password' >
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type='submit' id="changepwsubmit" value='Change Password'>
+						</td>
+					</tr>
+			</form>
+		</table>
+		</div>
+
 	</div>
 
     <script src="js/studentView.js"></script>

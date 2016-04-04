@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
@@ -14,8 +13,8 @@
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-//	<script src="timer.js"></script>
-//	<script src="clickcounter.js"></script>
+	<script src="timer.js"></script>
+	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
 
 <?php
@@ -62,7 +61,7 @@
 	}
 
 	//If we have permission, and if file exists, include javascript file.			
-	if($hr || $userid=="UNK"){
+	if($hr){
 		if(isSuperUser($userid)){
 			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
 		}else{
@@ -101,86 +100,49 @@
 		$loginvar="PDUGGA"; 
 		include '../Shared/navheader.php';
 	?>
-
-	<!-- content START -->
-	<div id="content">
-		<?php
-			
-
-			// Log USERID for Dugga Access
-			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-
-			// Put information in event log irrespective of whether we are allowed to or not.
-			// If we have access rights, read the file securely to document
-			if($duggafile!="UNK"&&$userid!="UNK"){
-				if(file_exists ( "templates/".$duggafile.".html")){
-					readfile("templates/".$duggafile.".html");
-
-<<<<<<< HEAD
-					echo "<table width='100%'>";
-					echo "<tr>";
-					echo "<td align='center'>";
-
-					//only shows save button if quiz is not graded
-					if (!getUserAnswerHasGrade($userid, $cid, $quizid)) {
-						echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
-					}
-					
-
-					echo "<input class='submit-button' type='button' value='Reset' onclick='reset();' style='width:160px;height:48px;line-height:48px;' />";
-					echo "</td>";
-					echo "</tr>";
-					echo "</table>";
-=======
-					include '../Shared/submitTable.php';
-
->>>>>>> bd180645e84c2fef4d19716060c87ede77b2b4e9
-
-				}else{
-					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
-				}
-			}else if ($userid=="UNK"){
-				//check if dugga template exists
-				if(file_exists ( "templates/".$duggafile.".html")){
-					readfile("templates/".$duggafile.".html");
-					include '../Shared/submitTable.php';
-				}else{
-					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
-				}
-			}else{
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the dugga. Contact LENASys-admin.</div>";
-			}
-		?>
-
-	</div>
-
-	<!-- LoginBox (receiptbox) Start! -->
-	<div id='receiptBox' class="loginBox" style="display:none">
-		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div onclick="hideReceiptPopup()">x</div></div>
-		<div id='receiptInfo'></div>
-		<textarea id="receipt" autofocus readonly></textarea>
-		<div class="button-row">
-			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'> 
-			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>	
-		</div>
-		<div id='emailPopup' style="display:none">
-			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
-			<div class="button-row"><input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Email'></div>
-		</div>	
-	</div>
-	<!-- Login Box (receiptbox) End! -->
-
-	<!-- content END -->
-
-	<?php
-		if ($userid=="UNK") {
-			include '../Shared/lockbox.php';
-		}
-	?>
-
+			<div>
+				<table>
+					<form method="POST" action="changepw.php">
+					<tr>
+						<td>
+							<label class="text">Current Password</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="curPass" placeholder="Current Password" class='form-control textinput' type='password' >
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="text">New Password</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="newPass" placeholder="New Password" class='form-control textinput' type='password' >
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="text">Repeat Password</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="checkPass" placeholder="Repeat Password" class='form-control textinput' type='password' >
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type='submit' class='submit-button' value='Change Password'>
+						</td>
+					</tr>
+					</form>
+				</table>
+			</div>
 	<?php
 		include '../Shared/loginbox.php';
 	?>
-	
 </body>
 </html>
