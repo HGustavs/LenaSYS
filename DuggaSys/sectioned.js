@@ -499,7 +499,13 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
-				str += "<div>";
+
+				if (parseInt(item['kind']) === 4 || parseInt(item['kind']) === 0) {
+					str += "<div class='divMoment'>";
+				}else{
+					str += "<div>";
+				}
+				
 
 				// If visible or we are a teacher/superuser
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
@@ -570,7 +576,7 @@ function returnedSection(data)
 								}
 							}
 	
-							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'>";
+							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;' onclick='collapseLight(this)'>";
 							if((grady==-1 || grady == 0 || grady==null) && status==="") {
 									// Nothing submitted nor marked (White)
 									str+="<div class='WhiteLight'></div>";
@@ -810,3 +816,13 @@ function returnedHighscore(data){
 	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
 }
+
+function collapseLight(elem){
+	var a = "div." + elem.closest('div').className;
+  	//alert(a);
+  	$(elem).closest('div').nextUntil(a).fadeToggle(400);
+}
+
+
+
+
