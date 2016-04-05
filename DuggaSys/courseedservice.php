@@ -54,8 +54,9 @@ if($ha){
 	if(strcmp($opt,"DEL")===0){
 	
 	}else if(strcmp($opt,"NEW")===0){
-		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
+		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator,hp) VALUES(:coursecode,:coursename,0,:usrid,:hp)");
 		
+		$query->bindParam(':hp', '7.5');
 		$query->bindParam(':usrid', $userid);
 		$query->bindParam(':coursecode', $coursecode);
 		$query->bindParam(':coursename', $coursename);
