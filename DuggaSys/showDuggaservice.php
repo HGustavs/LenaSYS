@@ -93,7 +93,7 @@ if($userid!="UNK"){
 	}
 
 	// Retrieve variant list
-	$query = $pdo->prepare("SELECT vid,param FROM variant WHERE quizID=:duggaid and disabled=0;");
+	$query = $pdo->prepare("SELECT vid,param FROM variant WHERE quizID=:duggaid AND disabled=0;");
 	$query->bindParam(':duggaid', $duggaid);
 	$result=$query->execute();
 	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"Field Querying Error!");
@@ -196,7 +196,7 @@ if(checklogin()){
 				$score = $temp[3];
 				
 				// check if the user already has a grade on the assignment
-				$query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+				$query = $pdo->prepare("SELECT grade FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':uid', $userid);
@@ -247,7 +247,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 
 //	$query = $pdo->prepare("SELECT score,aid,cid,quiz,useranswer,variant,moment,vers,uid,marked FROM userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 			
-	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.uid = :uid and userAnswer.cid = :cid and userAnswer.vers = :vers");
+	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID AND userAnswer.uid = :uid AND userAnswer.cid = :cid AND userAnswer.vers = :vers");
 	
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':cid', $first);
@@ -275,7 +275,7 @@ $savedanswer = str_replace("*####*", '&cup;', $savedanswer);
 if(strcmp($savedanswer,"") == 0){$savedanswer = "UNK";} // Return UNK if we have not submitted any answer
 
 $files= array();
-$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by filename,updtime desc;");
+$query = $pdo->prepare("SELECT subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq FROM submission WHERE uid=:uid AND vers=:vers AND cid=:cid AND did=:did ORDER BY filename,updtime desc;");
 $query->bindParam(':uid', $userid);
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);

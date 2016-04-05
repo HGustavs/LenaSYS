@@ -22,13 +22,13 @@ INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, em
 INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (1717, 'b94bejoh', 'Berit', 'Johansson', '19900412-2554', password('password'), '1', 'b90bejoh@student.his.se');
 
 /* Insert courses */
-INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) values (1, 'DV12G', 'Webbprogrammering', NOW(), 1, 1, '45656', '7.5');
-INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) values (2, 'IT118G', 'Webbutveckling - datorgrafik', NOW(), 1, 1, '97732', '7.5');
+INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1, 'DV12G', 'Webbprogrammering', NOW(), 1, 1, '45656', '7.5');
+INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (2, 'IT118G', 'Webbutveckling - datorgrafik', NOW(), 1, 1, '97732', '7.5');
 
 /* Insert versions of courses (The column vers should be the same as "anmälningskod", number with 5 digts) */
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) values(1, 'DV12G', 'Webbprogrammering', 'UNK', '45656', 'HT15');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) values('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97732', 'HT15');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) values('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97731', 'HT14');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES(1, 'DV12G', 'Webbprogrammering', 'UNK', '45656', 'HT15');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97732', 'HT15');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97731', 'HT14');
 
 /* Insert tests */
 INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
@@ -101,7 +101,6 @@ INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible,
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2013, 2, 'Frågeduggor 1HP', '', 4, 12, 1, 1, '97732', 2013, 2, 0);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2014, 2, 'Frågedugga 1', '9', 3, 13, 1, 1, '97732', 2013, 2, 1);
 
-
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2015, 2, 'Bit count test 1HP', '', 4, 0, 1, 1, '97731', 2015, 2, 0);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2016, 2, 'Bit count test 1', '1', 3, 1, 1, 1, '97731', 2015, 2, 1);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2017, 2, 'Bit count test 2', '2', 3, 2, 1, 1, '97731', 2015, 0, 1);
@@ -145,28 +144,24 @@ INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES
 /* START codeviewver test data START */
 
 /* Codeexamples */
-
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,2013,'2','1',1,1);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'PHP Example 2',"PHP Startup","PHP_Ex2.php",1,2013,'3','1',1,2);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'PHP Example 3',"PHP Variables","PHP_Ex3.php",1,2013,'4','2',1,3);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'JavaScript Example 1',"Events, DOM access and console.log","JavaScript_Ex1.html",1,2013,'5','3',3,4);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'JavaScript Example 2',"Adding and removing elements in the DOM","JavaScript_Ex2.html",1,2013,'6','4',4,5);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'JavaScript Example 3',"Validating form data","JavaScript_Ex3.html",1,2013,'7','5',3,6);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 1',"Basic canvas graphics","HTML_Ex1.html",1,2013,'8','6',6,7);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 2',"Canvas Gradients and Transformations","HTML_Ex2.html",1,2013,'9','7',2,8);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 3',"Animation and drawing images","HTML_Ex3.html",1,2013,'10','8',2,9);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 4',"Shadows","HTML_Ex4.html",1,2013,'11','9',2,10);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 5',"Reading mouse coordinates","HTML_Ex5.html",1,2013,'12','10',1,11);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 6',"2D Tile Map and Mouse Coordinates","HTML_Ex6.html",1,2013,'13','11',1,12);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 7',"Isometric Tile Map and Mouse Coordinates","HTML_Ex7.html",1,2013,'14','12',1,13);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'HTML5 Example 8',"Cookies","HTML_Ex8.html",1,2013,'15','13',5,14);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'Shaderprogrammering',"Per Pixel Diffuse Lighting","Shader_Ex1.html",1,2013,'16','14',3,15);
-INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) values (1,'Shaderprogrammering',"Rim Lighting","Shader_Ex2.html",1,2013,'16','15',3,16);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,2013,'2','1',1,1);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 2',"PHP Startup","PHP_Ex2.php",1,2013,'3','1',1,2);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 3',"PHP Variables","PHP_Ex3.php",1,2013,'4','2',1,3);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 1',"Events, DOM access and console.log","JavaScript_Ex1.html",1,2013,'5','3',3,4);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 2',"Adding and removing elements in the DOM","JavaScript_Ex2.html",1,2013,'6','4',4,5);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 3',"Validating form data","JavaScript_Ex3.html",1,2013,'7','5',3,6);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 1',"Basic canvas graphics","HTML_Ex1.html",1,2013,'8','6',6,7);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 2',"Canvas Gradients and Transformations","HTML_Ex2.html",1,2013,'9','7',2,8);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 3',"Animation and drawing images","HTML_Ex3.html",1,2013,'10','8',2,9);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 4',"Shadows","HTML_Ex4.html",1,2013,'11','9',2,10);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 5',"Reading mouse coordinates","HTML_Ex5.html",1,2013,'12','10',1,11);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 6',"2D Tile Map and Mouse Coordinates","HTML_Ex6.html",1,2013,'13','11',1,12);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 7',"Isometric Tile Map and Mouse Coordinates","HTML_Ex7.html",1,2013,'14','12',1,13);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 8',"Cookies","HTML_Ex8.html",1,2013,'15','13',5,14);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'Shaderprogrammering',"Per Pixel Diffuse Lighting","Shader_Ex1.html",1,2013,'16','14',3,15);
+INSERT INTO codeexample(cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'Shaderprogrammering',"Rim Lighting","Shader_Ex2.html",1,2013,'16','15',3,16);
  
-
-
 /* Boxes for codeexamples */
-
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,1,"Description","Document","[viktig=1]",4,"PHP_Ex1.txt");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,1,"PHP_Ex1.php","Code","[viktig=1]",2,"PHP_Ex1.php");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,2,"Description","Document","[viktig=1]",4,"PHP_Ex2.txt");
@@ -208,6 +203,7 @@ INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (1,16,"Description","Document","[viktig=1]",4,"Shader_Ex2.txt");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (2,16,"JavaScript Code","Code","[viktig=1]",1,"Shader_Ex2.js");
 INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,wordlistid,filename) VALUES (3,16,"Shader Output","IFRAME","[viktig=1]",NULL,"Shader_Ex2.html");
+
 /* Important rows */
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (1,2,4,9,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (2,2,3,5,1);
@@ -279,59 +275,58 @@ INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (14,4,73,73,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (16,2,34,35,1);
 
 /* Important words */
-
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"echo",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (1,"Hello!",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (2,"Hello!",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (4,"onclick",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (4,"onload",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (4,"initializeEvents",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (4,"console.log",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (4,"changeBackground",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (5,"createElement",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (5,"innerHTML",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (5,"appendChild",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (5,"appendNode",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (5,"insertBefore",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (5,"parentNode",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"value",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"isNaN",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"className",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"options",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"selectedIndex",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"length",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"onclick",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"onload",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"onchange",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"onkeyup",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (6,"onblur",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (7,"canvas",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (7,"fillRect",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (7,"getContext",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (7,"strokeStyle",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (7,"strokeRect",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (7,"fillStyle",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (7,"fillText",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (8,"beginPath",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (8,"createLinearGradient",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (8,"save()",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (8,"rotate",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (8,"restore()",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (8,"closePath",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (9,"new Image()",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (9,"src",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (9,"drawImage",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (10,"shadowColor",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (10,"shadowOffsetX",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (10,"shadowOffsetY",1);
-INSERT INTO impwordlist(exampleid,word,uid) values (10,"shadowBlur",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (1,"echo",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (1,"Hello!",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (2,"Hello!",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (4,"onclick",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (4,"onload",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (4,"initializeEvents",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (4,"console.log",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (4,"changeBackground",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (5,"createElement",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (5,"innerHTML",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (5,"appendChild",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (5,"appendNode",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (5,"insertBefore",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (5,"parentNode",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"value",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"isNaN",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"className",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"options",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"selectedIndex",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"length",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"onclick",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"onload",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"onchange",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"onkeyup",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (6,"onblur",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (7,"canvas",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (7,"fillRect",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (7,"getContext",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (7,"strokeStyle",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (7,"strokeRect",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (7,"fillStyle",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (7,"fillText",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (8,"beginPath",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (8,"createLinearGradient",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (8,"save()",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (8,"rotate",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (8,"restore()",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (8,"closePath",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (9,"new Image()",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (9,"src",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (9,"drawImage",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (10,"shadowColor",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (10,"shadowOffsetX",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (10,"shadowOffsetY",1);
+INSERT INTO impwordlist(exampleid,word,uid) VALUES (10,"shadowBlur",1);
 /* END codeviewver test data END */
 
 -- START UMV test data START --
 
 -- Users -- 
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) values(100,'stei','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Joe','Steinhauer','340101-0101','joe.steinhauer@his.se', 0, 1);
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) values(101,'brom','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Marcus','Brohede','340101-1232','marcus.brohede@his.se', 0, 1);
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) VALUES(100,'stei','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Joe','Steinhauer','340101-0101','joe.steinhauer@his.se', 0, 1);
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) VALUES(101,'brom','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Marcus','Brohede','340101-1232','marcus.brohede@his.se', 0, 1);
 
 -- CLass --
 INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('DVSUG13h','theGreat',199191,'DVSUG',180,100,100);
@@ -339,40 +334,39 @@ INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES
 INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG14h','theDEST',199393,'WEBUG',180,100,101);
 
 -- Courses --
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (300, "DA121G","Datorns grunder",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (301, "DA124G","Programmeringsmetodik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (302, "DA324G","Datakommunikation - Routing",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (303, "IT1435","USEREXPERIENCE",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (304, "DV130G","Statistik för datavetare",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (305, "IT308G","Objektorienterad programmering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (306, "IT309G","Maskinnära programmering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (307, "IT115G","Datorns grunder",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (308, "MA161G","Diskret matematik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (309, "DA322G","Operativsystem",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (310, "IT325G","Parallella processer",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (311, "DA327G","Mjukvarukomponenter i C++",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (312, "IT326G","Distribuerade system",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (313, "IT301G","Software Engineering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (314, "DV318G","Programvaruutveckling - programvaruprojekt",NOW(),1,0,15);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (315, "IS317G","Databaskonstruktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (316, "DA321G","Programvarutestning",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (317, "DV517G","Systemutveckling - forskning och utveckling",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (318, "DA346G","Algoritmer och datastrukturer",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (319, "DV736A","Examensarbete i datavetenskap",NOW(),1,0,30);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (320, "IT503G","IT i organisationer - vetenskap och profession",NOW(),1,0,30);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (321, "DA133G","Webbutveckling - datorgrafik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (322, "KB126G","Introduktion till User Experience Design",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (323, "DA147G","Grundläggande programmering med C++",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (324, "IT108G","Webbutveckling - webbplatsdesign",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (325, "IS134G","Databassystem",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (326, "DV313G","Webbutveckling - XML API",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (327, "IT110G","IT i organisationer - introduktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (328, "IS324G","Databaskonstruktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (329, "IT119G","Datakommunikation - Introduktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (330, "DA330G","Webbprogrammering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (331, "MA113G","Algebra och logik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (332, "DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,7.5);
-
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (300, "DA121G","Datorns grunder",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (301, "DA124G","Programmeringsmetodik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (302, "DA324G","Datakommunikation - Routing",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (303, "IT1435","USEREXPERIENCE",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (304, "DV130G","Statistik för datavetare",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (305, "IT308G","Objektorienterad programmering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (306, "IT309G","Maskinnära programmering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (307, "IT115G","Datorns grunder",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (308, "MA161G","Diskret matematik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (309, "DA322G","Operativsystem",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (310, "IT325G","Parallella processer",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (311, "DA327G","Mjukvarukomponenter i C++",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (312, "IT326G","Distribuerade system",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (313, "IT301G","Software Engineering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (314, "DV318G","Programvaruutveckling - programvaruprojekt",NOW(),1,0,15);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (315, "IS317G","Databaskonstruktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (316, "DA321G","Programvarutestning",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (317, "DV517G","Systemutveckling - forskning och utveckling",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (318, "DA346G","Algoritmer och datastrukturer",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (319, "DV736A","Examensarbete i datavetenskap",NOW(),1,0,30);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (320, "IT503G","IT i organisationer - vetenskap och profession",NOW(),1,0,30);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (321, "DA133G","Webbutveckling - datorgrafik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (322, "KB126G","Introduktion till User Experience Design",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (323, "DA147G","Grundläggande programmering med C++",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (324, "IT108G","Webbutveckling - webbplatsdesign",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (325, "IS134G","Databassystem",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (326, "DV313G","Webbutveckling - XML API",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (327, "IT110G","IT i organisationer - introduktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (328, "IS324G","Databaskonstruktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (329, "IT119G","Datakommunikation - Introduktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (330, "DA330G","Webbprogrammering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (331, "MA113G","Algebra och logik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (332, "DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,7.5);
 
 -- course and class-- 
 -- DVSUG --
@@ -415,112 +409,102 @@ INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',329);
 INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',330);
 INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',331);
 
-
 -- course requirements --
-INSERT INTO course_req(cid,req_cid) values(309,305);
-INSERT INTO course_req(cid,req_cid) values(309,307);
-INSERT INTO course_req(cid,req_cid) values(311,301);
-INSERT INTO course_req(cid,req_cid) values(312,309);
-INSERT INTO course_req(cid,req_cid) values(319,305);
-INSERT INTO course_req(cid,req_cid) values(319,306);
-INSERT INTO course_req(cid,req_cid) values(319,307);
-INSERT INTO course_req(cid,req_cid) values(319,308);
-INSERT INTO course_req(cid,req_cid) values(319,309);
-INSERT INTO course_req(cid,req_cid) values(319,310);
-INSERT INTO course_req(cid,req_cid) values(319,311);
+INSERT INTO course_req(cid,req_cid) VALUES(309,305);
+INSERT INTO course_req(cid,req_cid) VALUES(309,307);
+INSERT INTO course_req(cid,req_cid) VALUES(311,301);
+INSERT INTO course_req(cid,req_cid) VALUES(312,309);
+INSERT INTO course_req(cid,req_cid) VALUES(319,305);
+INSERT INTO course_req(cid,req_cid) VALUES(319,306);
+INSERT INTO course_req(cid,req_cid) VALUES(319,307);
+INSERT INTO course_req(cid,req_cid) VALUES(319,308);
+INSERT INTO course_req(cid,req_cid) VALUES(319,309);
+INSERT INTO course_req(cid,req_cid) VALUES(319,310);
+INSERT INTO course_req(cid,req_cid) VALUES(319,311);
 
 -- DVSUG -- 
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(200,'a13andka','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Anders','Karlsson','910202-3434','a13andka@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(201,'a13sveth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sven','Torbjörnsson','890502-2344','a13sveth@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(202,'a13saeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sven','Torbjörnsson','890502-2445','a13saeth@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(203,'a13sbeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sten','Torbjörnsson','890502-2674','a13sbeth@student.his.se','DVSUG13h');			
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(204,'c13sneth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Syen','Torbjörnsson','890502-2944','a13sneth@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(205,'b13sceth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Suen','Torbjörnsson','890502-2389','a13sceth@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(206,'a13steth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Rddn','Torbjörnsson','890702-1389','a13steth@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(207,'b13syeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Suen','Torbjörnsson','790202-2389','a13syeth@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(208,'a13eyeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Eyde','Torbjörnsson','790222-2489','a13syeth@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(209,'a13eydth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','tuen','Torbjörnsson','730202-2379','a13syeth@student.his.se','DVSUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(210,'c13dddth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','tuen','Torbjörnsson','781202-2389','a13syeth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(200,'a13andka','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Anders','Karlsson','910202-3434','a13andka@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(201,'a13sveth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sven','Torbjörnsson','890502-2344','a13sveth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(202,'a13saeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sven','Torbjörnsson','890502-2445','a13saeth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(203,'a13sbeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sten','Torbjörnsson','890502-2674','a13sbeth@student.his.se','DVSUG13h');			
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(204,'c13sneth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Syen','Torbjörnsson','890502-2944','a13sneth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(205,'b13sceth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Suen','Torbjörnsson','890502-2389','a13sceth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(206,'a13steth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Rddn','Torbjörnsson','890702-1389','a13steth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(207,'b13syeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Suen','Torbjörnsson','790202-2389','a13syeth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(208,'a13eyeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Eyde','Torbjörnsson','790222-2489','a13syeth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(209,'a13eydth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','tuen','Torbjörnsson','730202-2379','a13syeth@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(210,'c13dddth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','tuen','Torbjörnsson','781202-2389','a13syeth@student.his.se','DVSUG13h');
 
 -- WEBUG -- 
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(211,'c13aaath','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Tuen','Torbjörnsson','781902-3381','a13syeth@student.his.se','WEBUG13h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(212,'c13timan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Tim','Andersson','901202-2399','c13timan@student.his.se','WEBUG14h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(213,'a13siman','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Simon','Andersson','931202-2489','a13siman@student.his.se','WEBUG14h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(214,'a13henan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Henrik','Andersson','891202-3489','a13henan@student.his.se','WEBUG14h');
-insert into user(uid,username, password,firstname,lastname,ssn,email,class) values(215,'a13jacan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Jacob','Andersson Svensson','751202-2389','a13jacan@student.his.se','WEBUG14h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(211,'c13aaath','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Tuen','Torbjörnsson','781902-3381','a13syeth@student.his.se','WEBUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(212,'c13timan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Tim','Andersson','901202-2399','c13timan@student.his.se','WEBUG14h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(213,'a13siman','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Simon','Andersson','931202-2489','a13siman@student.his.se','WEBUG14h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(214,'a13henan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Henrik','Andersson','891202-3489','a13henan@student.his.se','WEBUG14h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(215,'a13jacan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Jacob','Andersson Svensson','751202-2389','a13jacan@student.his.se','WEBUG14h');
 
 -- Course with user --
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,300,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,301,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,302,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,304,0,'R',2,'VT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,305,0,'R',2,'VT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,306,0,'R',2,'VT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,307,0,'R',2,'VT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,308,0,'R',3,'HT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,309,0,'R',3,'HT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,310,0,'R',3,'HT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,311,0,'R',3,'HT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,312,0,'R',4,'VT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,313,0,'R',4,'VT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(200,314,0,'R',4,'VT-15');
 
-insert into user_course(uid,cid,result,access,period,term) values(200,300,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(200,301,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(200,302,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(200,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(200,304,0,'R',2,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(200,305,0,'R',2,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(200,306,0,'R',2,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(200,307,0,'R',2,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(200,308,0,'R',3,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(200,309,0,'R',3,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(200,310,0,'R',3,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(200,311,0,'R',3,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(200,312,0,'R',4,'VT-15');
-insert into user_course(uid,cid,result,access,period,term) values(200,313,0,'R',4,'VT-15');
-insert into user_course(uid,cid,result,access,period,term) values(200,314,0,'R',4,'VT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,300,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,301,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,302,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,304,0,'R',2,'VT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,305,0,'R',2,'VT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,306,0,'R',2,'VT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,307,0,'R',2,'VT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,308,0,'R',3,'HT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,309,0,'R',3,'HT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,310,0,'R',3,'HT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,311,0,'R',3,'HT-14');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,312,0,'R',4,'VT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,313,0,'R',4,'VT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,314,0,'R',4,'VT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,315,0,'R',4,'VT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,316,0,'R',4,'HT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,317,0,'R',4,'HT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,318,0,'R',4,'HT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,319,0,'R',4,'HT-15');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(201,320,0,'R',4,'VT-16');
 
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(202,300,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(202,301,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(202,302,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(202,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(202,304,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(202,305,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(202,306,0,'R',1,'HT-13');
 
-insert into user_course(uid,cid,result,access,period,term) values(201,300,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(201,301,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(201,302,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(201,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(201,304,0,'R',2,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(201,305,0,'R',2,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(201,306,0,'R',2,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(201,307,0,'R',2,'VT-14');
-insert into user_course(uid,cid,result,access,period,term) values(201,308,0,'R',3,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(201,309,0,'R',3,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(201,310,0,'R',3,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(201,311,0,'R',3,'HT-14');
-insert into user_course(uid,cid,result,access,period,term) values(201,312,0,'R',4,'VT-15');
-insert into user_course(uid,cid,result,access,period,term) values(201,313,0,'R',4,'VT-15');
-insert into user_course(uid,cid,result,access,period,term) values(201,314,0,'R',4,'VT-15');
-insert into user_course(uid,cid,result,access,period,term) values(201,315,0,'R',4,'VT-15');
-insert into user_course(uid,cid,result,access,period,term) values(201,316,0,'R',4,'HT-15');
-insert into user_course(uid,cid,result,access,period,term) values(201,317,0,'R',4,'HT-15');
-insert into user_course(uid,cid,result,access,period,term) values(201,318,0,'R',4,'HT-15');
-insert into user_course(uid,cid,result,access,period,term) values(201,319,0,'R',4,'HT-15');
-insert into user_course(uid,cid,result,access,period,term) values(201,320,0,'R',4,'VT-16');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(203,300,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(203,301,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(203,302,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(203,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(203,304,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(203,305,0,'R',1,'HT-13');
 
-
-insert into user_course(uid,cid,result,access,period,term) values(202,300,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(202,301,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(202,302,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(202,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(202,304,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(202,305,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(202,306,0,'R',1,'HT-13');
-
-
-insert into user_course(uid,cid,result,access,period,term) values(203,300,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(203,301,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(203,302,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(203,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(203,304,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(203,305,0,'R',1,'HT-13');
-
-
-insert into user_course(uid,cid,result,access,period,term) values(204,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(205,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(206,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(207,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(208,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(209,303,0,'R',1,'HT-13');
-insert into user_course(uid,cid,result,access,period,term) values(210,303,0,'R',1,'HT-13');
-
-
-
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(204,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(205,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(206,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(207,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(208,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(209,303,0,'R',1,'HT-13');
+INSERT INTO user_course(uid,cid,result,access,period,term) VALUES(210,303,0,'R',1,'HT-13');
 
 -- Examination/subparts --
-
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',300,7.5,'u-3-4-5');
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',301,7.5,'u-3-4-5');
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',302,7.5,'u-3-4-5');
@@ -546,7 +530,6 @@ INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',319,30
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',320,30,'u-3-4-5');
 
 -- Student results/Credits --
-
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (300,200,'salstentamen',5, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (301,200,'salstentamen',5, 7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (302,200,'salstentamen',5, 7.5);
@@ -606,19 +589,19 @@ INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,205,'salstentamen
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,206,'salstentamen',3,7.5);
 INSERT INTO partresult(cid,uid,partname,grade, hp) VALUES (303,207,'salstentamen',4,7.5);
 
-/* Insert into list */
-INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2001,'Christina Sjogren',2);
-INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2004,'Christina Sjogren',2);
-INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2010,'Christina Sjogren',2);
-INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2013,'Christina Sjogren',2);
-INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2016,'Christina Sjogren',2);
-INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2019,'Christina Sjogren',2);
-INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',2022,'Christina Sjogren',2);
+/* INSERT INTO list */
+INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',2001,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',2004,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',2010,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',2013,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',2016,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',2019,'Christina Sjogren',2);
+INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',2022,'Christina Sjogren',2);
 
 -- END UMV test data END --
 
 /* testdata for moments*/
-insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '2', NULL, '2015-05-20 10:49:22', NULL, '97732', NULL, NULL);
-insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', NULL, '97732', NULL, NULL);
-insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', NULL, '97732', NULL, NULL);
-insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', NULL, '97732', NULL, NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '5', '13', '2007', NULL, '2', NULL, '2015-05-20 10:49:22', NULL, '97732', NULL, NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', NULL, '97732', NULL, NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', NULL, '97732', NULL, NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', NULL, '97732', NULL, NULL);

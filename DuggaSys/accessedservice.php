@@ -27,7 +27,7 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"UPDATE")==0){
-		$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username WHERE uid=:uid;");
+		$query = $pdo->prepare("UPDATE user SET firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username WHERE uid=:uid;");
 		$query->bindParam(':firstname', $firstname);
 		$query->bindParam(':lastname', $lastname);
 		$query->bindParam(':ssn', $ssn);
@@ -39,7 +39,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"ACCESS")==0){
-		$query = $pdo->prepare("UPDATE user_course set access=:val WHERE uid=:uid and cid=:cid;");
+		$query = $pdo->prepare("UPDATE user_course SET access=:val WHERE uid=:uid AND cid=:cid;");
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':val', $val);
@@ -49,7 +49,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"CHPWD")==0){
-		$query = $pdo->prepare("UPDATE user set password=password(:pwd) where uid=:uid;");
+		$query = $pdo->prepare("UPDATE user SET password=password(:pwd) WHERE uid=:uid;");
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':pwd', $pw);
 
@@ -88,7 +88,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			
 			//$debug.=$ssn." ".$username."#".$firstname."#".$lastname."\n";
 			$uid="UNK";
-			$userquery = $pdo->prepare("SELECT uid,username FROM user WHERE username=:username or ssn=:ssn");
+			$userquery = $pdo->prepare("SELECT uid,username FROM user WHERE username=:username OR ssn=:ssn");
 			$userquery->bindParam(':username', $username);
 			$userquery->bindParam(':ssn', $ssn);
 			
@@ -96,7 +96,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			// assigned password which can be printed later.
 			if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
 				$rnd=makeRandomString(9);
-				$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now());';	
+				$querystring='INSERT INTO user(username, email, firstname, lastname, ssn, password,addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now());';	
 				$stmt = $pdo->prepare($querystring);
 				$stmt->bindParam(':username', $username);
 				$stmt->bindParam(':email', $saveemail);
@@ -121,7 +121,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			// We have a user, connect to current course
 			if($uid!="UNK"){
 				// Foo!
-				$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access) VALUES(:uid, :cid,'R')");
+				$stmt = $pdo->prepare("INSERT INTO user_course(uid, cid, access) VALUES(:uid, :cid,'R')");
 				$stmt->bindParam(':uid', $uid);
 				$stmt->bindParam(':cid', $cid);
 
@@ -142,7 +142,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 //------------------------------------------------------------------------------------------------
 $entries=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,modified FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
+	$query = $pdo->prepare("SELECT user.uid AS uid,username,access,firstname,lastname,ssn,modified FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();

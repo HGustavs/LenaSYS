@@ -49,7 +49,7 @@ if($ha){
 		if($kind=="LINK"&&$link!="UNK"){
 
 				//  if link isn't in database (e.g no rows are returned), add it to database 
-				$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
+				$query = $pdo->prepare("SELECT COUNT(fileid,filename,kind,cid,isGlobal) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
 				$query->bindParam(':filename', $link);
 				$query->bindParam(':cid', $cid);
 				$query->execute(); 
@@ -110,9 +110,9 @@ if($ha){
 						if($selectedfile!="NONE"&&($kind=="GFILE"||$kind=="MFILE")){
 								// Store link to existing file
 								if($kind=="GFILE"){
-										$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
+										$query = $pdo->prepare("SELECT COUNT(fileid,filename,kind,cid,isGlobal) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
 								}else if($kind=="MFILE"){
-										$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
+										$query = $pdo->prepare("SELECT COUNT(fileid,filename,kind,cid,isGlobal) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
 								}
 								
 								$query->bindParam(':filename', $selectedfile);
@@ -162,11 +162,11 @@ if($ha){
 										// check if upload is successful 
 										if(move_uploaded_file($filea["tmp_name"],$movname)){ 
 												if($kind=="LFILE"){
-														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$query = $pdo->prepare("SELECT COUNT(fileid,filename,kind,cid,isGlobal) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
 												}else if($kind=="MFILE"){
-														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$query = $pdo->prepare("SELECT COUNT(fileid,filename,kind,cid,isGlobal) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;" ); // 1=Link 2=Global 3=Course Local 4=Local
 												}else{					
-														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;" ); // 1=Link 2=Global 3=Course Local 4=Local	
+														$query = $pdo->prepare("SELECT COUNT(fileid,filename,kind,cid,isGlobal) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;" ); // 1=Link 2=Global 3=Course Local 4=Local	
 												}
 												
 												$query->bindParam(':filename', $fname);
