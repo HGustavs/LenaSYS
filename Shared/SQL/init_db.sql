@@ -499,6 +499,8 @@ INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (7,"template7.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (8,"template8.css",3);
 
 /* Programming languages that decide highlighting */
  

@@ -1796,7 +1796,42 @@ function resizeBoxes(parent, templateid)
 					$('iframe').css('pointer-events','auto');
 				}
 			});
-		}
+		} else if(templateid == 8){
+		getLocalStorageProperties(templateid, boxValArray);
+		
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+				$("#box2wrapper").css("left", ""); 
+				$("#box1wrapper").css("height", "100%");
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateid, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignBoxesHeight2boxes(boxValArray, 2, 3);
+				$(boxValArray['box2']['id']).css("left", " ");
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateid, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+	}
 };
 
 //----------------------------------------------------------------------------------
@@ -2087,6 +2122,12 @@ function erasePercentGap(templateid, boxValArray)
 	}else if(templateid == 6){
 		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}else if(templateid == 7){
+		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}else if(templateid == 8){
+		alignBoxesHeight2boxes(boxValArray, 2, 3);
+		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 	}
 }
 

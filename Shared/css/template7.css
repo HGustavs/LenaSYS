@@ -3,7 +3,7 @@
 #box1wrapper {
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: 66%;
     height: -webkit-calc(100.0%);
     height: -moz-calc(100.0%);
     height: calc(100.0%) !important;
@@ -17,7 +17,7 @@
 #box2wrapper {
     position: absolute;
     top: 0px;
-    right: 0px;
+    right: 34%;
     height: -webkit-calc(40.0%);
     height: -moz-calc(40.0%);
     height: calc(40.0%);
@@ -37,7 +37,7 @@
 #box3wrapper {
     position: absolute;
     top: 40%;
-    right: 0px;
+    right: 34%;
     height: -webkit-calc(30.0%);
     height: -moz-calc(30.0%);
     height: calc(30.0%);
@@ -56,7 +56,7 @@
 
 #box4wrapper {
     position: absolute;
-    right: 0px;
+    right: 34%;
     bottom: 0px;
     height: -webkit-calc(30.0%);
     height: -moz-calc(30.0%);
