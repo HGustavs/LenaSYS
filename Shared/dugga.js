@@ -279,9 +279,6 @@ function AJAXService(opt,apara,kind)
 		}
 	}
 	
-	$currenttime = x;
-	
-	
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
