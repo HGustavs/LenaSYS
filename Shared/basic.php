@@ -170,6 +170,7 @@ function logUserEvent($uid, $eventType, $description) {
 //------------------------------------------------------------------------------------------------
 //
 //  Creates a new service event in the log.db database.
+//  The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format)
 //
 
 function logServiceEvent($uuid, $eventType, $service, $timestamp = null) {

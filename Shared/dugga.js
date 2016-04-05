@@ -276,14 +276,26 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
-	
+
+	var sendConfirmation = function(service) {
+		$.ajax({
+			url: "serviceconfirmation.php",
+			type: "POST",
+			data: "uuid="+uuid+"&timestamp="+timestamp+"&service="+service,
+			dataType: "json"
+		});
+	}
+
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedCourse
+				success: function(data) {
+					returnedCourse(data);
+					sendConfirmation("courseedservice.php");
+				}
 			});
 	}else if(kind=="VARIANTPDUGGA"){
 			$.ajax({
@@ -339,7 +351,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedSection
+				success: function(data) {
+					returnedSection(data);
+					sendConfirmation("sectionedservice.php");
+				}
 			});
 	}else if(kind=="PDUGGA"){
 			$.ajax({
