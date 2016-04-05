@@ -219,7 +219,13 @@ function AJAXService(opt,apara,kind)
 {
 	var para="";
 	var timestamp = Date.now();
-	var uuid = "dkfihbgiusdnfgsdfg";
+	var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for(var i=0; i<15; i++){
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+	var uuid = text;
 		
 	apara.push('log': {'uuid' : uuid, 'timestamp': timestamp});
 	
