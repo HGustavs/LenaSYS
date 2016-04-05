@@ -303,7 +303,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedanswersDugga
+				success: function(data) {
+					returnedanswersDugga(data);
+					sendConfirmation("showDuggaservice.php");
+				}
 			});
 	}else if(kind=="DUGGA"){
 			$.ajax({
@@ -311,7 +314,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					returnedDugga(data);
+					sendConfirmation("duggaedservice.php");
+				}
 			});
 	}else if(kind=="BDUGGA"){
 			$.ajax({
@@ -319,7 +325,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedBlankDugga
+				success: function(data) {
+					returnedBlankDugga(data);
+					sendConfirmation("duggaedservice.php");
+				}
 			});
 	}else if(kind=="DUGGAHIGHSCORE"){
 			$.ajax({
@@ -327,7 +336,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedHighscore
+				success: function(data) {
+					returnedHighscore(data);
+					sendConfirmation("highscoreservice.php");
+				}
 			});
 	}else if(kind=="FILE"){
 			$.ajax({
@@ -335,7 +347,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedFile
+				success: function(data) {
+					returnedFile(data);
+					sendConfirmation("fileedservice.php");
+				}
 			})
 	}else if(kind=="ACCESS"){
 			$.ajax({
@@ -343,7 +358,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedAccess
+				success: function(data) {
+					returnedAccess(data);
+					sendConfirmation("accessedservice.php");
+				}
 			});
 	}else if(kind=="SECTION"){
 			$.ajax({
@@ -362,7 +380,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					returnedDugga(data);
+					sendConfirmation("showDuggaservice.php");
+				}
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
@@ -370,7 +391,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedResults
+				success: function(data) {
+					returnedResults(data);
+					sendConfirmation("resultedservice.php");
+				}
 			});
 	}else if(kind=="RESULTLIST"){
 			$.ajax({
@@ -378,7 +402,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedResults
+				success: function(data) {
+					returnedResults(data);
+					sendConfirmation("resultlistedservice.php");
+				} 
 			});
 	}else if(kind=="CODEVIEW"){
 			$.ajax({
@@ -386,7 +413,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returned
+				success: function(data) {
+					returned(data);
+					sendConfirmation("editorService.php");
+				}
 			});
 	}else if(kind=="BOXCONTENT"){
 			$.ajax({
