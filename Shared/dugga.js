@@ -227,10 +227,8 @@ function AJAXService(opt,apara,kind)
     }
 	var uuid = text;
 
-	apara.log = {
-		'uuid' : uuid,
-		'timestamp': timestamp
-	};
+	apara.log_uuid = uuid;
+	apara.log_timestamp = timestamp;
 	
 	for (var key in apara) {
 		var old = apara[key];
