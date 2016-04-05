@@ -655,10 +655,10 @@ function returnedSection(data)
 					}
 
 					if(kk==1){
-						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:8px; margin-left:4px;' "
+						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.png);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
 						else str+="style='box-shadow: 0px 3px 2px #aaa inset;' ";				
 					}else{
-						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5;border-radius:8px; margin-left:4px;' ";
+						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5;border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.png);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
 					}
 		
 					str+=">";
@@ -693,10 +693,7 @@ function returnedSection(data)
 
 					}
 	
-					if(data['writeaccess']){
-						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
-						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/UpT.svg' onclick='moveRowToTop(\""+item['lid']+"\");'";
-					}
+					if(data['writeaccess']) str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
 
 					str += "</tr>";
 				}
@@ -731,7 +728,6 @@ function returnedSection(data)
 			$("#Sectionlistc").sortable({
 				helper: 'clone',		
 				update:  function (event, ui) {	
-					console.log(event);
 					str="";
 					$("#Sectionlist").find(".item").each(function(i) {
 						if(i>0) str+=",";
@@ -814,12 +810,4 @@ function returnedHighscore(data){
 
 	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
-}
-
-function moveRowToTop(itemId){
-	//finding the row based on the associated itemId and moves it to the top of the Sectionlistc
-	row = $("#Sectionlistc").find("#I" + itemId).parent().parent().parent().parent();
-	$('#Sectionlistc').sortable('option', 'update')(null, {
-    	item: row.prependTo(row.parent())
-	});
 }
