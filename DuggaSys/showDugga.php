@@ -115,9 +115,6 @@
 			if($duggafile!="UNK"&&$userid!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
-					echo "<table width='100%'>";
-					echo "<tr>";
-					echo "<td align='center'>";
 					echo "<table width='100%'><tr><td align='center'>";
 					//only shows save button if quiz is not graded
 					if (!getUserAnswerHasGrade($userid, $cid, $quizid)) {
@@ -129,6 +126,7 @@
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
+				echo  "<!-- Timer START --><div id='scoreElement'></div>";
 			}else if ($userid=="UNK"){
 				//check if dugga template exists
 				if(file_exists ( "templates/".$duggafile.".html")){
