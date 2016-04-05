@@ -36,6 +36,22 @@ function logEvent($eventType, $description) {
 
 
 //------------------------------------------------------------------------------------------------
+// logUserEvent
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new userbased event in the log.db database.
+//
+
+function logUserEvent($uid, $eventType, $description) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description) VALUES (:uid, :eventType, :description)');
+	$query->bindParam(':uid', $uid);
+	$query->bindParam(':eventType', $eventType);
+	$query->bindParam(':description', $description);
+	$query->execute();
+}
+
+
+//------------------------------------------------------------------------------------------------
 // EventTypes
 //------------------------------------------------------------------------------------------------
 //
@@ -48,24 +64,6 @@ abstract class EventTypes {
 	const LoginSuccess = 3;
 	const LoginFail = 4;
 }
-
-//------------------------------------------------------------------------------------------------
-// logUserEvent
-//------------------------------------------------------------------------------------------------
-//
-//  Creates a new userbased event in the log.db database.
-//
-
-function logUserEvent() {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description) VALUES (:uid, :eventType, :description)');
-	$query->bindParam(':uid', $uid);
-	$query->bindParam(':eventType', $eventType);
-	$query->bindParam(':description', $description);
-	$query->execute();
-}
-
-
-
 
 
 ?>
