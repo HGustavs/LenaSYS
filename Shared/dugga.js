@@ -218,7 +218,7 @@ function mysqlDateTime(date) {
 		if(-10 < d && d < 0) return "-0" + (-1*d).toString();
 		return d.toString();
 	}
-	return date.getUTCFullYear() + "-" + twoDigits(1 + date.getUTCMonth()) + "-" + twoDigits(date.getUTCDate()) + " " + twoDigits(date.getUTCHours()) + ":" + twoDigits(date.getUTCMinutes()) + ":" + twoDigits(date.getUTCSeconds());
+	return date.getFullYear() + "-" + twoDigits(1 + date.getMonth()) + "-" + twoDigits(date.getDate()) + " " + twoDigits(date.getHours()) + ":" + twoDigits(date.getMinutes()) + ":" + twoDigits(date.getSeconds());
 }
 
 //----------------------------------------------------------------------------------
