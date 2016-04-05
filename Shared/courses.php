@@ -13,7 +13,7 @@ function courseexists($coursename)
 	}
 
 	if(!is_numeric($coursename)) {
-		$coursename = getCourseId($coursename);
+		$coursename = getcid($coursename);
 	}
 
 	$query = $pdo->prepare('SELECT COUNT(cid) FROM course WHERE cid=:course');
@@ -26,7 +26,7 @@ function courseexists($coursename)
 	}
 }
 
-function getCourseId($coursename)
+function getcid($coursename)
 {
 	global $pdo;
 
@@ -45,7 +45,7 @@ function getCourseId($coursename)
 	}
 }
 
-function getCourseName($courseid)
+function getCourseName($cid)
 {
 	global $pdo;
 
@@ -54,7 +54,7 @@ function getCourseName($courseid)
 	}
 
 	$query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 
 	if($query->execute() && $query->rowCount() > 0) {
 		$course = $query->fetch();

@@ -21,7 +21,7 @@ if(isset($_SESSION['uid'])){
 } 
 
 $opt=getOP('opt');
-$courseid=getOP('courseid');
+$cid=getOP('cid');
 $coursevers=getOP('coursevers');
 $moment=getOP('moment');
 $sectid=getOP('lid');
@@ -48,7 +48,7 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 
 if(checklogin()){
-	$ha = hasAccess($userid, $courseid, 'w') || isSuperUser($userid);
+	$ha = hasAccess($userid, $cid, 'w') || isSuperUser($userid);
 
 	if($ha){
 		// The code for modification using sessions
@@ -61,7 +61,7 @@ if(checklogin()){
 			}
 		}else if(strcmp($opt,"NEW")===0){
 			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator) VALUES(:cid,:cvs,'New Item','', '0', '100','0',:usrid)");
-			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':cid', $cid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
 			
@@ -92,7 +92,7 @@ if(checklogin()){
 					// Find section name - Last preceding section name if none - assigns UNK - so we know that nothing was found
 					$sname = "UNK";
 					$queryz = $pdo->prepare("SELECT entryname FROM listentries WHERE vers=:cversion AND cid=:cid AND (kind=1 or kind=0) AND (pos < (SELECT pos FROM listentries WHERE lid=:lid)) ORDER BY pos DESC LIMIT 1;");
-					$queryz->bindParam(':cid', $courseid);
+					$queryz->bindParam(':cid', $cid);
 					$queryz->bindParam(':cversion', $coursevers);
 					$queryz->bindParam(':lid', $sectid);
 					if(!$queryz->execute()) {
@@ -105,7 +105,7 @@ if(checklogin()){
 
 					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 			
-					$query2->bindParam(':cid', $courseid);
+					$query2->bindParam(':cid', $cid);
 					$query2->bindParam(':cversion', $coursevers);
 					$query2->bindParam(':ename', $sectname);					
 					$query2->bindParam(':sname', $sname);					
@@ -141,7 +141,7 @@ if(checklogin()){
 			if($kind == 4){
 				$query2 = $pdo->prepare("INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);");
 
-				$query2->bindParam(':cid', $courseid);
+				$query2->bindParam(':cid', $cid);
 				$query2->bindParam(':lid', $sectid);
 
 				if(!$query2->execute()) {
@@ -151,7 +151,7 @@ if(checklogin()){
 			}
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
-			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
 			$query->bindParam(':versname', $versname);				
@@ -165,7 +165,7 @@ if(checklogin()){
 			
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
-			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
 			$query->bindParam(':versname', $versname);				
@@ -176,7 +176,7 @@ if(checklogin()){
 			}
 		}else if(strcmp($opt,"CHGVERS")===0){
 			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
-			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':cid', $cid);
 			$query->bindParam(':vers', $versid);		
 
 			if(!$query->execute()) {
@@ -192,7 +192,7 @@ if(checklogin()){
 //------------------------------------------------------------------------------------------------
 
 $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
-$query->bindParam(':cid', $courseid);
+$query->bindParam(':cid', $cid);
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
@@ -200,7 +200,7 @@ if(!$query->execute()) {
 }
 
 if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-	$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
+	$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0);
 	
 	if (!$hr) {
 		if (checklogin()) {
@@ -209,11 +209,11 @@ if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 	}
 }
 
-$ha = (checklogin() && (hasAccess($userid, $courseid, 'w') || isSuperUser($userid)));
+$ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 
 $resulties=array();
 $query = $pdo->prepare("SELECT moment,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
-$query->bindParam(':cid', $courseid);
+$query->bindParam(':cid', $cid);
 $query->bindParam(':vers', $coursevers);
 $query->bindParam(':uid', $userid);
 $result=$query->execute();
@@ -237,11 +237,11 @@ foreach($query->fetchAll() as $row) {
 }
 
 $entries=array();
-$reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)));
+$reada = (checklogin() && (hasAccess($userid, $cid, 'r')||isSuperUser($userid)));
 
 if($reada || $userid == "guest"){
 	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
 	
@@ -273,7 +273,7 @@ if($reada || $userid == "guest"){
 }
 
 $query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
-$query->bindParam(':cid', $courseid);
+$query->bindParam(':cid', $cid);
 
 $coursename = "Course not Found!";
 $coursecode = "Coursecode not found!";
@@ -316,7 +316,7 @@ $codeexamples = array();
 
 if($ha){
 	$query = $pdo->prepare("SELECT id,qname FROM quiz WHERE cid=:cid ORDER BY qname");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -334,7 +334,7 @@ if($ha){
 	}
 
 	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE isGlobal='1' ORDER BY filename");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -353,7 +353,7 @@ if($ha){
 
 	// Reading entries in file database
 	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries".$error[2];
@@ -415,7 +415,7 @@ if($ha){
 
 	// Should be optimized into one query!
 	$query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and (submitted is not null and useranswer is not null and grade is null);");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading number of unmarked duggas".$error[2];
@@ -425,7 +425,7 @@ if($ha){
 
 	}
 	$query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and (grade = 1 and submitted > marked);");
-	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading number of unmarked duggas".$error[2];
@@ -444,7 +444,7 @@ $array = array(
 	'coursename' => $coursename,
 	'coursevers' => $coursevers,
 	'coursecode' => $coursecode,
-	'courseid' => $courseid,
+	'cid' => $cid,
 	'links' => $links,
 	'duggor' => $duggor,
 	'results' => $resulties,
