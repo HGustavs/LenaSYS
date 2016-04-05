@@ -622,7 +622,8 @@ function returnedSection(data)
 					}else if(parseInt(item['kind']) === 3 ){
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+
 						}						
 											
 						str += "<td ";
