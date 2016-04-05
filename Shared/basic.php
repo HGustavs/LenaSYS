@@ -172,7 +172,10 @@ function logUserEvent($uid, $eventType, $description) {
 //  Creates a new service event in the log.db database.
 //
 
-function logServiceEvent($uuid, $eventType, $service, $timestamp = date('Y-m-d H:i:s')) {
+function logServiceEvent($uuid, $eventType, $service, $timestamp = null) {
+	if (is_null($timestamp)) {
+		$timestamp = date('Y-m-d H:i:s');
+	}
 	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp) VALUES (:uuid, :eventType, :service, :timestamp)');
 	$query->bindParam(':uuid', $uuid);
 	$query->bindParam(':eventType', $eventType);
