@@ -12,6 +12,7 @@
 + three periods ... denotes any section of random code
 + this file contains coding style for both javascript and php
 + We use tabs rather than space and each tab corresponds to 2 spaces to view properly on the web add ts parameter https://github.com/HGustavs/LenaSYS/blob/master/code_standard.js?ts=2
++ All variables use the camelCase naming standard. Start the variable with a lower case letter and begin each new word with a capital letter. For example "var myExampleVariable" is following the standard correctly.
 
 ``` javascript
 /********************************************************************************
