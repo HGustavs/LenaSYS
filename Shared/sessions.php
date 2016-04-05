@@ -83,7 +83,7 @@ function login($username, $password, $savelogin)
 
 //echo "SELECT uid,username,password,superuser FROM user WHERE username=:username and password=password(':pwd') LIMIT 1";
 
-	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username and password=password(:pwd) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username AND password=password(:pwd) LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);
@@ -147,7 +147,7 @@ function isSuperUser($userId)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare('SELECT count(uid) AS count FROM user WHERE uid=:1 AND superuser=1');
+	$query = $pdo->prepare('SELECT COUNT(uid) AS count FROM user WHERE uid=:1 AND superuser=1');
 	$query->bindParam(':1', $userId);
 	$query->execute();
 	$result = $query->fetch();

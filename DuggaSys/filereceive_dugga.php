@@ -56,7 +56,7 @@ if($ha){
 		if($link!="UNK"){
 
 				$seq=0;
-				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid and did=:did and filepath=:fname and cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+				$query = $pdo->prepare("SELECT COUNT(subid,uid,cid,vers,did,seq,fieldnme,filepath,filename,extension,mime,kind,updtime) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filepath=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':cid', $cid);
@@ -147,7 +147,7 @@ if($ha){
 										}
 																		
 										$seq=0;
-										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid amd did=:did and filename=:fname and cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+										$query = $pdo->prepare("SELECT COUNT(subid,uid,cid,vers,did,seq,fieldnme,filepath,filename,extension,mime,kind,updtime) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
 										$query->bindParam(':did', $duggaid);
 										$query->bindParam(':cid', $cid);
 										$query->bindParam(':fname', $fname);

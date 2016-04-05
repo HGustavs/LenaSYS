@@ -21,7 +21,7 @@ if(isset($_SESSION['uid'])){
 } 
 
 $opt=getOP('opt');
-$courseid=getOP('courseid');
+$cid=getOP('cid');
 $coursevers=getOP('coursevers');
 $duggaid=getOP('did');
 $variant=getOP('lid');
@@ -38,7 +38,7 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 
 // The query specified below selects only scores associated with users that have returned a dugga with a passing grade
-$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 1 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
+$query = $pdo->prepare("SELECT username, score FROM userAnswer, user WHERE userAnswer.grade > 1 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
 $query->bindParam(':did', $duggaid);
 $query->bindParam(':lid', $variant);
 
@@ -72,7 +72,7 @@ if(checklogin()){
 
 	if(count($user) === 0){
 		// This must be tested
-		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
+		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user WHERE user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
 		$query->bindParam(':did', $duggaid);
 		$query->bindParam(':lid', $variant);
 		$query->bindParam(':user', $_SESSION["loginname"]);

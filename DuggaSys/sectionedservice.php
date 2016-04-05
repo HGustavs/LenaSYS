@@ -74,7 +74,7 @@ if(checklogin()){
 			
 			foreach ($orderarr as $key => $value){
 				$armin=explode("XX",$value);
-				$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
+				$query = $pdo->prepare("UPDATE listentries SET pos=:pos,moment=:moment WHERE lid=:lid;");
 				$query->bindParam(':lid', $armin[1]);
 				$query->bindParam(':pos', $armin[0]);
 				$query->bindParam(':moment', $armin[2]);
@@ -103,7 +103,7 @@ if(checklogin()){
 								$sname=$row['entryname'];
 					}
 
-					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) VALUES (:cid,:ename,:sname,1,:cversion);");
 			
 					$query2->bindParam(':cid', $courseid);
 					$query2->bindParam(':cversion', $coursevers);
@@ -119,7 +119,7 @@ if(checklogin()){
 
 			}			
 						
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries SET highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':highscoremode', $highscoremode);
@@ -139,7 +139,7 @@ if(checklogin()){
 			
 			// insert into list forthe specific course
 			if($kind == 4){
-				$query2 = $pdo->prepare("INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);");
+				$query2 = $pdo->prepare("INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',:lid,'Christina Sjogren',:cid);");
 
 				$query2->bindParam(':cid', $courseid);
 				$query2->bindParam(':lid', $sectid);
@@ -150,7 +150,7 @@ if(checklogin()){
 				}
 			}
 		}else if(strcmp($opt,"NEWVRS")===0){
-			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) VALUES(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
@@ -240,7 +240,7 @@ $entries=array();
 $reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)));
 
 if($reada || $userid == "guest"){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -414,7 +414,7 @@ if($ha){
 	}
 
 	// Should be optimized into one query!
-	$query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and (submitted is not null and useranswer is not null and grade is null);");
+	$query=$pdo->prepare("SELECT count(aid,cid,quiz,variant,moment,grade,uid,unseranswer,submitted,marked,vers,creator,score,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed) AS unmarked FROM userAnswer WHERE cid=:cid AND (submitted IS NOT NULL AND useranswer IS NOT NULL AND grade IS NULL);");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -424,7 +424,7 @@ if($ha){
 		$unmarked = $row[0]["unmarked"];
 
 	}
-	$query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and (grade = 1 and submitted > marked);");
+	$query=$pdo->prepare("SELECT count(aid,cid,quiz,variant,moment,grade,uid,unseranswer,submitted,marked,vers,creator,score,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed) AS unmarked FROM userAnswer WHERE cid=:cid AND (grade = 1 AND submitted > marked);");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
