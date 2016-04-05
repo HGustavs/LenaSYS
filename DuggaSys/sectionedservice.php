@@ -414,7 +414,7 @@ if($ha){
 	}
 
 	// Should be optimized into one query!
-	$query=$pdo->prepare("SELECT count(*) AS unmarked FROM userAnswer WHERE cid=:cid AND (submitted IS NOT NULL AND useranswer IS NOT NULL AND grade IS NULL);");
+	$query=$pdo->prepare("SELECT count(*) AS unmarked FROM userAnswer WHERE cid=:cid AND submitted IS NOT NULL AND useranswer IS NOT NULL AND grade IS NULL;");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -424,7 +424,7 @@ if($ha){
 		$unmarked = $row[0]["unmarked"];
 
 	}
-	$query=$pdo->prepare("SELECT count(*) AS unmarked FROM userAnswer WHERE cid=:cid AND (grade = 1 AND submitted > marked);");
+	$query=$pdo->prepare("SELECT count(*) AS unmarked FROM userAnswer WHERE cid=:cid AND grade = 1 AND submitted > marked;");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
