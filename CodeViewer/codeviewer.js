@@ -347,6 +347,7 @@ function displayEditExample(boxid)
 	var bestr="";
 	var afstr="";
 	var ba=retData['beforeafter'];
+
 	for(var i=0; i<ba.length; i++){
 		if(ba[i][0] == beforeid){
 			bestr+="<option selected='selected' value='"+ba[i][0]+"'>"+ba[i][1]+":"+ba[i][2]+"</option>";
@@ -1684,10 +1685,65 @@ function resizeBoxes(parent, templateid)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateid == 6){
+	} else if(templateid == 6) {
+		getLocalStorageProperties(templateid, boxValArray);
+		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
+		
+	
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+				$(boxValArray['box1']['id']).height(100 + "%");
+				
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateid, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+					alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+					$(boxValArray['box3']['id']).css("left", " ");
+					$(boxValArray['box2']['id']).css("left", " ");
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateid, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box3']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				$(boxValArray['box4']['id']).css("top", " ");
+				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+			},
+			stop: function(e, ui) {
+				$(boxValArray['box4']['id']).css("top", " ");
+				setLocalStorageProperties(templateid, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+	} else if(templateid == 7) {
 		
 			getLocalStorageProperties(templateid, boxValArray);
-			$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
+			$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
 			
 		
 			$(boxValArray['box1']['id']).resizable({
