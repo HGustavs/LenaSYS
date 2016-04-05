@@ -117,7 +117,7 @@ if($userid!="UNK"){
 				
 				// If there is a variant choose one at random
 				if(sizeof($variants)>0){
-						if($variants[$randomno]['disabled']===0){
+						if($variants[$randomno]['disabled']==0){
 								$newvariant=$variants[$randomno]['vid'];						
 						}
 				} 
