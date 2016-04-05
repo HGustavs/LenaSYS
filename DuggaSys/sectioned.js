@@ -327,7 +327,7 @@ function createVersion(){
 	var versid = $("#versid").val();
 	var versname = $("#versname").val();
 	var coursecode = $("#course-coursecode").text();
-	var courseid = $("#course-courseid").text();
+	var cid = $("#course-cid").text();
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
@@ -354,7 +354,7 @@ function createVersion(){
 	$("#newCourseVersion").css("display","none");
 	
 	window.setTimeout(function(){
-		changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
+		changeURL("sectioned.php?cid=" + cid + "&coursename=" + coursename + "&coursevers=" + versid);
 	}, 1000);
 }
 
@@ -397,7 +397,7 @@ function goToVersion(selected)
 
 function accessCourse() {
 	var coursevers = $("#course-coursevers").text();
-	window.location.href = "accessed.php?cid=" + querystring['courseid']+"&coursevers="+coursevers;
+	window.location.href = "accessed.php?cid=" + querystring['cid']+"&coursevers="+coursevers;
 	resetinputs();
 	//resets all inputs
 }
@@ -423,10 +423,10 @@ function returnedSection(data)
 			if (retdata['versions'].length > 0) {
 				for ( i = 0; i < retdata['versions'].length; i++) {
 					var item = retdata['versions'][i];
-					if (retdata['courseid'] == item['cid']) {
+					if (retdata['cid'] == item['cid']) {
 						var vvers = item['vers'];
 						var vname = item['versname'];
-						str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+						str += "<option value='?cid=" + retdata['cid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
 						if(retdata['coursevers']==vvers){
 							str += "selected";
 							var versionname=vname;
@@ -444,7 +444,7 @@ function returnedSection(data)
 			
 			str+="<div class='course-menu--options'>";
 			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";
-			str+="<div class='submit-button' style='display:inline;' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>Results"
+			str+="<div class='submit-button' style='display:inline;' type='button' value='Results' onclick='changeURL(\"resulted.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"\")'/>Results"
 			
 			if(data['unmarked']>0){
 				str+="<span class='badge' id='unmarked'>";
@@ -452,9 +452,9 @@ function returnedSection(data)
 				str+="</span>";
 			}
 			str+="</div>";
-			str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
-			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
-			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='Files' onclick='changeURL(\"fileed.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"\")'/>";
+			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="</div>";
 			str+="</div>";
 		}else{
@@ -463,10 +463,10 @@ function returnedSection(data)
 			if (retdata['versions'].length > 0) {
 				for ( i = 0; i < retdata['versions'].length; i++) {
 					var item = retdata['versions'][i];
-					if (retdata['courseid'] == item['cid']) {
+					if (retdata['cid'] == item['cid']) {
 						var vvers = item['vers'];
 						var vname = item['versname'];
-						str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+						str += "<option value='?cid=" + retdata['cid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
 						if(retdata['coursevers']==vvers){
 							str += "selected";
 							var versionname=vname;
@@ -480,7 +480,7 @@ function returnedSection(data)
 		}
 	
 		// Course Name
-		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
+		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-cid' style='display: none; margin-right:10px;'>"+data.cid+"</div>";
 
 		if(retdata["writeaccess"]){
 			str += "<td><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/><td></div>";
@@ -667,18 +667,18 @@ function returnedSection(data)
 					}else if (parseInt(item['kind']) == 4) {
 						str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
 					}else if (parseInt(item['kind']) == 2) {
-						str+="<span><a style='margin-left:15px;' href='../CodeViewer/EditorV50.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
+						str+="<span><a style='margin-left:15px;' href='../CodeViewer/EditorV50.php?exampleid="+item['link']+"&cid="+querystring['cid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 						
 					}else if (parseInt(item['kind']) == 3 ) {
 						//-----------------------------
 						//Dugga!
 						//-----------------------------
-						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
+						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
 					}else if(parseInt(item['kind']) == 5){
 						if(item['link'].substring(0,4) === "http"){
 							str+= "<a style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
 						}else{
-							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
+							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 						}
 					}						
 														
@@ -744,7 +744,7 @@ function returnedSection(data)
 			});							
 		}
 	}else{
-		str="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-coursevers' style='display: inline-block; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
+		str="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-coursevers' style='display: inline-block; margin-right:10px;'>"+data.coursevers+"</div><div id='course-cid' style='display: none; margin-right:10px;'>"+data.cid+"</div></div>";
 		str+="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;

@@ -150,7 +150,7 @@ function navigateExample(exampleno)
 {
 		surl=window.location.href;
 		surl=surl.substring(0,surl.lastIndexOf("/")); 
-		window.location.href = surl+"/EditorV50.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
+		window.location.href = surl+"/EditorV50.php?exampleid="+exampleno+"&cid="+querystring['cid']+"&cvers="+querystring['cvers'];
 }
 
 //----------------------------------------------------------------------------------
@@ -325,7 +325,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				data: "cid="+querystring['cid']+"&coursename="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedSection
 			});
@@ -333,7 +333,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
-				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
+				data: "cid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedDugga
 			});
