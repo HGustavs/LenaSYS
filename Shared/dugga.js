@@ -218,6 +218,11 @@ function htmlEntities(str) {
 function AJAXService(opt,apara,kind)
 {
 	var para="";
+	var timestamp = Date.now();
+	var uuid = "dkfihbgiusdnfgsdfg";
+		
+	apara.push('log': {'uuid' : uuid, 'timestamp': timestamp});
+	
 	for (var key in apara) {
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
@@ -265,6 +270,9 @@ function AJAXService(opt,apara,kind)
 		}
 	}
 	
+	$currenttime = x;
+	
+	
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
@@ -274,13 +282,13 @@ function AJAXService(opt,apara,kind)
 				success: returnedCourse
 			});
 	}else if(kind=="VARIANTPDUGGA"){
-		$.ajax({
-			url: "showDuggaservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedanswersDugga
-		});
+			$.ajax({
+				url: "showDuggaservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedanswersDugga
+			});
 	}else if(kind=="DUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
@@ -362,13 +370,13 @@ function AJAXService(opt,apara,kind)
 				success: returned
 			});
 	}else if(kind=="BOXCONTENT"){
-		$.ajax({
-			url: "editorService.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returned
-		});
+			$.ajax({
+				url: "editorService.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returned
+			});
 	}else if(kind=="UMVSTUDENT") {
 			$.ajax({
 				url: "usermanagementviewservice.php",
