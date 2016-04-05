@@ -58,7 +58,7 @@ function dehighlightRows(filename,startRow,endRow){
 // parseMarkdown: Translates markdown symbols to html tags. Uses the javascript
 //				  function replace with regular expressions.
 //                Is called by returned in codeviewer.js
-//								Identical php code exists in showdoc any changes must be propagated
+//				  Identical php code exists in showdoc any changes must be propagated
 //----------------------------------------------------------------------------------
 
 function parseMarkdown(inString)
@@ -75,22 +75,20 @@ function parseMarkdown(inString)
 	var str="";
 	var kodblock=0;
 	for(var i=0;i<codearray.length;i++){
-			workstr=codearray[i];
+		workstr=codearray[i];
+		if(workstr.substr(0,3)==="@@@"){
+			kodblock=!kodblock;
+			workstr = workstr.substr(3);
+		}			
 
-			if(workstr.substr(0,3)==="@@@"){
-					kodblock=!kodblock;
-					workstr = workstr.substr(3);
-			}			
-
-			if(kodblock){
-
-					workstr='<pre><code>'+workstr+'</code></pre>';
-			}else{
-					workstr=markdownBlock(workstr);
-			}
-			str+=workstr;
+		if(kodblock && workstr != ""){
+			workstr='<pre><code>'+workstr+'</code></pre>';
+		}else{
+			workstr=markdownBlock(workstr);
+		}
+		str+=workstr;
 	}
-	
+
 	return str;
 }
 
