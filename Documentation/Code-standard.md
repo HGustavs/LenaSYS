@@ -1,6 +1,6 @@
 # Review considerations of importance
 
-* Small code is impprtant - a small solution is better, reuse important
+* Small code is important - a small solution is better, reuse important
 * Minimize use of libraries such as jquery
 * Innerhtml better than dom .addchild etc
 * Static code better than dynamic.
