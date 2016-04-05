@@ -1,12 +1,19 @@
 <?php
 
-// Open log database and create table if it does not exist
+// Open log database and create tables if they do not exist
 $log_db = new PDO('sqlite:../log.db');
 $sql = '
 	CREATE TABLE IF NOT EXISTS logEntries (
 		id INTEGER PRIMARY KEY,
 		eventType INTEGER,
 		description TEXT,
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
+	CREATE TABLE IF NOT EXISTS logUserEntries (
+		id INTEGER PRIMARY KEY,
+		uid INTEGER(10),
+		eventType INTEGER,
+		description VARCHAR(50),
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 ';
@@ -41,5 +48,24 @@ abstract class EventTypes {
 	const LoginSuccess = 3;
 	const LoginFail = 4;
 }
+
+//------------------------------------------------------------------------------------------------
+// logUserEvent
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new userbased event in the log.db database.
+//
+
+function logUserEvent() {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO logUserEntries (uid, eventType, description) VALUES (:uid, :eventType, :description)');
+	$query->bindParam(':uid', $uid);
+	$query->bindParam(':eventType', $eventType);
+	$query->bindParam(':description', $description);
+	$query->execute();
+}
+
+
+
+
 
 ?>
