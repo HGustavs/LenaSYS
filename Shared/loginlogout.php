@@ -29,12 +29,12 @@ if($opt=="LOGIN"){
 			$res["username"] = $username;
 
 			// Log USERID for Dugga Access
-			makeLogEntry($username,3,$pdo,"");			
+			logUserEvent($username,EventTypes::LoginSuccess,"");			
 
 		}else{
 			addlogintry(); // If to many attempts has been commited, it will jump to this
 			// As login has failed we log the attempt
-			makeLogEntry($username,4,$pdo,"");
+			logUserEvent($username,EventTypes::LoginFail,"");
 		}
 		
 		// Return the data as JSON
