@@ -226,8 +226,11 @@ function AJAXService(opt,apara,kind)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
 	var uuid = text;
-		
-	apara.push('log': {'uuid' : uuid, 'timestamp': timestamp});
+
+	apara.log = {
+		'uuid' : uuid,
+		'timestamp': timestamp
+	};
 	
 	for (var key in apara) {
 		var old = apara[key];
