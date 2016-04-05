@@ -424,7 +424,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returned
+				success: function(data) {
+					returned(data);
+					sendConfirmation("editorService.php");
+				}
 			});
 	}else if(kind=="UMVSTUDENT") {
 			$.ajax({
@@ -432,7 +435,10 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: renderStudentView
+				success: function(data) {
+					renderStudentView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
 			});
 	}else if(kind=="UMVTEACHER") {
 			$.ajax({
@@ -440,7 +446,10 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: renderTeacherView
+				success: function(data) {
+					renderTeacherView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
 			});
 	}
 }
