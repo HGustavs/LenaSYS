@@ -129,7 +129,7 @@ $sql = '
 		uuid CHAR(15),
 		eventType INTEGER,
 		service VARCHAR(15),
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+		timestamp INTEGER
 	);
 ';
 $log_db->exec($sql);
@@ -174,7 +174,7 @@ function logUserEvent($uid, $eventType, $description) {
 
 function logServiceEvent($uuid, $eventType, $service, $timestamp = null) {
 	if (is_null($timestamp)) {
-		$timestamp = date('Y-m-d H:i:s');
+		$timestamp = round(microtime(true) * 1000);
 	}
 	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp) VALUES (:uuid, :eventType, :service, :timestamp)');
 	$query->bindParam(':uuid', $uuid);
