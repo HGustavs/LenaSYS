@@ -180,7 +180,9 @@ function returned(data)
 				if(important[j].indexOf('*') != -1){
 					important[j] = important[j].replace(/\*/g, "&#42;");
 				}	
-				desc=replaceAll(important[j],sstr,desc);
+				//make sure that not partial words gets highlighted
+				var regExp = new RegExp("\\b"+ important[j] + "\\b", "gi");
+				desc=replaceAll(regExp,sstr,desc);
 			}
 			//Replace the html code for asterisks with asterisks
 			desc = desc.replace(/\&\#42\;/g, "*");
