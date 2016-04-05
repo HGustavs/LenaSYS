@@ -228,7 +228,7 @@ function mysqlDateTime(date) {
 function AJAXService(opt,apara,kind)
 {
 	var para="";
-	var timestamp = mysqlDateTime(Date.now());
+	var timestamp = mysqlDateTime(new Date());
 	var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
