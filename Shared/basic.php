@@ -124,6 +124,13 @@ $sql = '
 		description VARCHAR(50),
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
+	CREATE TABLE IF NOT EXISTS serviceLogEntries (
+		id INTEGER PRIMARY KEY,
+		uuid CHAR(15),
+		eventType INTEGER,
+		service VARCHAR(15),
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
 ';
 $log_db->exec($sql);
 
@@ -158,6 +165,22 @@ function logUserEvent($uid, $eventType, $description) {
 	$query->execute();
 }
 
+//------------------------------------------------------------------------------------------------
+// logServiceEvent
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new service event in the log.db database.
+//
+
+function logServiceEvent($uuid, $eventType, $service, $timestamp = date('Y-m-d H:i:s')) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp) VALUES (:uuid, :eventType, :service, :timestamp)');
+	$query->bindParam(':uuid', $uuid);
+	$query->bindParam(':eventType', $eventType);
+	$query->bindParam(':service', $service);
+	$query->bindParam(':timestamp', $timestamp);
+	$query->execute();
+}
+
 
 //------------------------------------------------------------------------------------------------
 // EventTypes
@@ -171,6 +194,10 @@ abstract class EventTypes {
 	const DuggaWrite = 2;
 	const LoginSuccess = 3;
 	const LoginFail = 4;
+	const ServiceClientStart = 5;
+	const ServiceServerStart = 6;
+	const ServiceServerEnd = 7;
+	const ServiceClientEnd = 8;
 }
 
 
