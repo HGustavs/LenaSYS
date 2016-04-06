@@ -126,7 +126,7 @@ Testing Link:
 				$username = "Guest" . $userid . rand(0,50000); // Guests have a random number between 0 and 50k added, this means there's a very small chance some guests have the same ID. These are only used for logging at the moment so this should not be an issue
 			}
 			// Logs users who view example, along with the example they have viewed
-			makeLogEntry($username,1,$pdo,$exampleid." ".$courseID." ".$cvers);
+			logUserEvent($username, EventTypes::DuggaRead, $exampleid." ".$courseID." ".$cvers);
 
 			// This checks if courseID and exampleid is not UNK and if it is UNK then it will appliances codeviewer "false" and a error message will be presented
 			if($courseID!="UNK"&&$exampleid!="UNK"){

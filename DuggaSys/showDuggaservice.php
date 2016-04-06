@@ -29,8 +29,13 @@ $moment=getOP('moment');
 $segment=getOP('segment');
 $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
+$log_uuid = getOP('log_uuid');
+$log_timestamp = getOP('log_timestamp');
 $setanswer=gettheOP('setanswer');
-$debug="NONE!";	
+$debug="NONE!";
+
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "showDuggaservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php");
 
 $param = "";
 $savedanswer = "";
@@ -186,7 +191,7 @@ if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
 			if(strcmp($opt,"SAVDU")==0){				
 				// Log the dugga write
-				makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
+				logUserEvent($userid, EventTypes::DuggaWrite, $courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
 				//Seperate timeUsed, stepsUsed and score from $answer
 				$temp = explode("##!!##", $answer);
@@ -261,7 +266,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 		$savedanswer.=$row['useranswer'].",";
 	}
 
-	makeLogEntry($userid,2,$pdo,$first);
+	logUserEvent($userid, EventTypes::DuggaWrite, $first);
 	$insertparam = true;
 	$param = $setanswer;
 }
@@ -311,4 +316,5 @@ $array = array(
 	);
 
 echo json_encode($array);
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php");
 ?>

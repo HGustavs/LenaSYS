@@ -218,6 +218,18 @@ function htmlEntities(str) {
 function AJAXService(opt,apara,kind)
 {
 	var para="";
+	var timestamp = Date.now();
+	var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for(var i=0; i<15; i++){
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+	var uuid = text;
+
+	apara.log_uuid = uuid;
+	apara.log_timestamp = timestamp;
+	
 	for (var key in apara) {
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
@@ -264,30 +276,48 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
-	
+
+	var sendConfirmation = function(service) {
+		$.ajax({
+			url: "serviceconfirmation.php",
+			type: "POST",
+			data: "uuid="+uuid+"&timestamp="+timestamp+"&service="+service,
+			dataType: "json"
+		});
+	}
+
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedCourse
+				success: function(data) {
+					returnedCourse(data);
+					sendConfirmation("courseedservice.php");
+				}
 			});
 	}else if(kind=="VARIANTPDUGGA"){
-		$.ajax({
-			url: "showDuggaservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedanswersDugga
-		});
+			$.ajax({
+				url: "showDuggaservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedanswersDugga(data);
+					sendConfirmation("showDuggaservice.php");
+				}
+			});
 	}else if(kind=="DUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					returnedDugga(data);
+					sendConfirmation("duggaedservice.php");
+				}
 			});
 	}else if(kind=="BDUGGA"){
 			$.ajax({
@@ -295,7 +325,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedBlankDugga
+				success: function(data) {
+					returnedBlankDugga(data);
+					sendConfirmation("duggaedservice.php");
+				}
 			});
 	}else if(kind=="DUGGAHIGHSCORE"){
 			$.ajax({
@@ -303,7 +336,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedHighscore
+				success: function(data) {
+					returnedHighscore(data);
+					sendConfirmation("highscoreservice.php");
+				}
 			});
 	}else if(kind=="FILE"){
 			$.ajax({
@@ -311,7 +347,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedFile
+				success: function(data) {
+					returnedFile(data);
+					sendConfirmation("fileedservice.php");
+				}
 			})
 	}else if(kind=="ACCESS"){
 			$.ajax({
@@ -319,7 +358,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedAccess
+				success: function(data) {
+					returnedAccess(data);
+					sendConfirmation("accessedservice.php");
+				}
 			});
 	}else if(kind=="SECTION"){
 			$.ajax({
@@ -327,7 +369,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedSection
+				success: function(data) {
+					returnedSection(data);
+					sendConfirmation("sectionedservice.php");
+				}
 			});
 	}else if(kind=="PDUGGA"){
 			$.ajax({
@@ -335,7 +380,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					returnedDugga(data);
+					sendConfirmation("showDuggaservice.php");
+				}
 			});
 	}else if(kind=="RESULT"){
 			$.ajax({
@@ -343,7 +391,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedResults
+				success: function(data) {
+					returnedResults(data);
+					sendConfirmation("resultedservice.php");
+				}
 			});
 	}else if(kind=="RESULTLIST"){
 			$.ajax({
@@ -351,7 +402,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedResults
+				success: function(data) {
+					returnedResults(data);
+					sendConfirmation("resultlistedservice.php");
+				} 
 			});
 	}else if(kind=="CODEVIEW"){
 			$.ajax({
@@ -359,23 +413,32 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returned
+				success: function(data) {
+					returned(data);
+					sendConfirmation("editorService.php");
+				}
 			});
 	}else if(kind=="BOXCONTENT"){
-		$.ajax({
-			url: "editorService.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returned
-		});
+			$.ajax({
+				url: "editorService.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returned(data);
+					sendConfirmation("editorService.php");
+				}
+			});
 	}else if(kind=="UMVSTUDENT") {
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: renderStudentView
+				success: function(data) {
+					renderStudentView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
 			});
 	}else if(kind=="UMVTEACHER") {
 			$.ajax({
@@ -383,7 +446,10 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: renderTeacherView
+				success: function(data) {
+					renderTeacherView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
 			});
 	}
 }

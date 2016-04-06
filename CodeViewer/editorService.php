@@ -29,6 +29,12 @@
 	// Connect to database and start session
 	pdoConnect();
 	session_start();
+
+	$log_uuid = getOP('log_uuid');
+	$log_timestamp = getOP('log_timestamp');
+
+	logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "editorService.php", $log_timestamp);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "editorService.php");
 	
 	// Global variables
 	$exampleId=getOP('exampleid');
@@ -448,5 +454,7 @@
 		 	'debug' => $debug
 		);		
 		echo json_encode($array);
+
 	}
+	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "editorService.php");
 ?>

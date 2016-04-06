@@ -20,6 +20,11 @@
 	$retrievedData =  null;
 	$studentid = getOP('studentid');
 	$renderstudent = getOP('renderstudent');
+	$log_uuid = getOP('log_uuid');
+	$log_timestamp = getOP('log_timestamp');
+
+	logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "usermanagementviewservice.php", $log_timestamp);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "usermanagementviewservice.php");
 
 	/* Failer handling for incorrect userid */
 
@@ -332,5 +337,6 @@
 	
 	//Pass the data
 	echo json_encode($retrievedData);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "usermanagementviewservice.php");
 	
 ?>
