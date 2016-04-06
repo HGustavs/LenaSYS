@@ -202,7 +202,7 @@ function getUserAnswerHasGrade($userid, $courseid, $quizid)
 			pdoConnect();
 		}
 
-		$query = $pdo->prepare('SELECT * FROM userAnswer WHERE uid=:uid AND cid=:cid AND quiz=:qid AND grade > 0 LIMIT 1');
+		$query = $pdo->prepare('SELECT * FROM userAnswer WHERE uid=:uid AND cid=:cid AND quiz=:qid AND grade > 1');
 		$query->bindParam(':uid', $userid);
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':qid', $quizid);
