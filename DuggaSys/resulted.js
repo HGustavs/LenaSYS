@@ -10,6 +10,11 @@ var mmx = 0, mmy = 0;
 var msx = 0, msy = 0;
 var rProbe = null;
 var needMarking=0;
+var passedMarking=0;
+
+var amountPassed = [];
+var savedAmount = [];
+var count = 0;
 
 AJAXService("GET", { cid : querystring['cid'] }, "RESULT");
 
@@ -225,13 +230,33 @@ function renderResultTableHeader(data)
 }
 
 //----------------------------------------
+// Render the total amount of succeeded
+//----------------------------------------
+
+function renderResultTableFooter()
+{
+		var str = ""
+		str += "<tr><th id='needMarking' style='text-align:right;'></th>";
+		for (var i = 0; i < amountPassed.length; i++) {
+					str += "<th style='border-left:2px solid white;'>";
+					str += amountPassed[i];
+					str += "</th>";
+		}
+		str += "</tr>";
+		return str;
+}
+
+//----------------------------------------
 // Render Moment
 //----------------------------------------
 function renderMoment(data, userResults, userId, fname, lname)
 {
 	var str = "";
 	// Each of the section entries (i.e. moments)
+
 	for ( var j = 0; j < data.length; j++) {
+			count=j;
+			amountPassed[count]=0;
 			str += "<td style='padding:0px;'>";
 			
 			// There are results to display.
@@ -242,6 +267,7 @@ function renderMoment(data, userResults, userId, fname, lname)
 					//str += renderStandaloneDugga(data[j][0], userResults);
 	
 			} else if (data[j][0].kind === 4 && data[j][0] !== null) {
+
 						str += renderMomentChild(data[j][0], userResults, userId, fname, lname, 1);
 						str += "</tr><tr>";
 				for (var k = 1; k < data[j].length; k++){
@@ -254,6 +280,9 @@ function renderMoment(data, userResults, userId, fname, lname)
 			str += "</tr>";
 			str += "</table>";
 			str += "</td>";
+
+			savedAmount[count]+=amountPassed[count];
+			amountPassed[count]=savedAmount[count];
 	}
 	return str;
 
@@ -355,6 +384,7 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 		var variant = null;
 		if (userResults !== undefined) {
 				for (var l = 0; l < userResults.length; l++) {
+						
 						var resultitem = userResults[l];
 						if (resultitem.moment === dugga.lid) {
 								// There is a result to print
@@ -398,7 +428,9 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 		if(foundgrade===1 && submitted<marked){
 				yomama="background-color:#faa";							
 		}else if(foundgrade>1){
-				yomama="background-color:#dfe";							
+				yomama="background-color:#dfe";
+				passedMarking++;
+				amountPassed[count]++;							
 		}else if(variant!==null&&useranswer===null){
 				yomama="background-color:#F8E8F8";															
 		}else if((useranswer!==null&&foundgrade===null)||(foundgrade===1&&submitted>marked)||(useranswer!==null&&foundgrade===0)){
@@ -428,6 +460,11 @@ function returnedResults(data)
 		var ttr = "";
 		var zttr = "";
 		needMarking=0;
+		passedMarking=0;
+
+		var amountPassed = [];
+		var x = 0;
+		var y = 0;
 	
 		if (data['dugganame'] !== "") {
 				$.getScript(data['dugganame'], function() {
@@ -442,9 +479,14 @@ function returnedResults(data)
 		} else {
 	
 				results = data['results'];
-				m = orderResults(data['moments']);
+ 				m = orderResults(data['moments']);
 				str += "<table class='markinglist'>";
 				str += renderResultTableHeader(m);
+
+				// Sets every entry of savedAmount to 0, so it can interact properly with amountPassed in renderMoment.
+				for ( k = 0; k < m.length; k++) {
+					savedAmount[k]=0;
+				}
 		
 				if (data['entries'].length > 0) {
 						for ( i = 0; i < data['entries'].length; i++) {
@@ -457,9 +499,14 @@ function returnedResults(data)
 								str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['username'] + "<br/>" + user['ssn'];
 								str += "</td>";
 								str += renderMoment(m, results[user['uid']], user['uid'], user['firstname'], user['lastname']);
+								str += "<td>";
+								str += "Total passed: " + passedMarking;
+								str += "</td>";
+								passedMarking=0;
 								str += "</tr>";
 						}
 				}
+				str += renderResultTableFooter();
 				var slist = document.getElementById("content");
 				slist.innerHTML = str;
 				document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;						
