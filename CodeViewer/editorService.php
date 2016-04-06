@@ -85,7 +85,7 @@
 			$writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 			if(strcmp('SETTEMPL',$opt)===0){
 				// Add word to wordlist
-				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+				$query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");		
 				$query->bindParam(':templateno', $templateNumber);
 				$query->bindParam(':exampleid', $exampleId);
 				$query->bindParam(':cid', $cid);
@@ -116,7 +116,7 @@
 				if(isset($_POST['afterid'])) {$afterId = $_POST['afterid'];}
 
 				// Change content of example
-				$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+				$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");		
 				$query->bindParam(':playlink', $playlink);
 				$query->bindParam(':examplename', $exampleName);
 				$query->bindParam(':sectionname', $sectionName);
@@ -127,7 +127,7 @@
 				
 				// TODO: Check for better way to get and set before/afterId
 				if($beforeId!="UNK"){
-					$query = $pdo->prepare( "UPDATE codeexample SET beforeid = :beforeid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+					$query = $pdo->prepare( "UPDATE codeexample SET beforeid = :beforeid WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");		
 					$query->bindParam(':beforeid', $beforeId);
 					$query->bindParam(':exampleid', $exampleId);
 					$query->bindParam(':cid', $cid);
@@ -135,7 +135,7 @@
 					$query->execute();
 				}
 				if($afterId!="UNK"){
-					$query = $pdo->prepare( "UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid and cid = :cid and cversion = :cvers;");		
+					$query = $pdo->prepare( "UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");		
 					$query->bindParam(':afterid', $afterId);
 					$query->bindParam(':exampleid', $exampleId);
 					$query->bindParam(':cid', $cid);
@@ -229,7 +229,7 @@
 		$public="";
 		$entryname="";
 		
-		$query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid as templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid and cid = :cid;");		
+		$query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid AS templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid AND cid = :courseID;");		
 		$query->bindParam(':exampleid', $exampleId);
 		$query->bindParam(':cid', $cid);
 		$query->execute();
@@ -249,7 +249,7 @@
 		$beforeAfter = array();
 		$beforeAfters = array();
 		
-		$query = $pdo->prepare( "select exampleid, sectionname, examplename, beforeid, afterid from codeexample where cid = :cid and cversion = :cvers order by sectionname, examplename;");
+		$query = $pdo->prepare( "SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':cvers', $courseVersion);
 		$query->execute();
@@ -374,7 +374,7 @@
 			$filename=$row['filename'];
 			$content="";
 						
-			$ruery = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) LIMIT 1;");
+			$ruery = $pdo->prepare("SELECT filename,kind FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:fname) LIMIT 1;");
 			$ruery->bindParam(':cid', $cid);
 			$ruery->bindParam(':fname', $filename);
 			$sesult = $ruery->execute();

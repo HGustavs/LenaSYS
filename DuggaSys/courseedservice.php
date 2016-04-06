@@ -54,7 +54,7 @@ if($ha){
 	if(strcmp($opt,"DEL")===0){
 	
 	}else if(strcmp($opt,"NEW")===0){
-		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
+		$query = $pdo->prepare("INSERT INTO course(coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
 		
 		$query->bindParam(':usrid', $userid);
 		$query->bindParam(':coursecode', $coursecode);
@@ -65,7 +65,7 @@ if($ha){
 			$debug="Error updating entries".$error[2];
 		}
 	}else if(strcmp($opt,"NEWVRS")===0){
-		$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+		$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) VALUES(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
 		
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':coursecode', $coursecode);
@@ -102,7 +102,7 @@ $entries=array();
 if($ha){
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
 }else{
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
+	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 AND visibility<3 ORDER BY coursename");
 }
 
 if(!$query->execute()) {
