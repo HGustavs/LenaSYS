@@ -41,6 +41,7 @@ if($opt=="LOGIN"){
 		echo json_encode($res);
 
 }else{
+		logUserEvent($_SESSION['loginname'],EventTypes::Logout,"");
 		// Parts of Logout copied from http://stackoverflow.com/a/3948312 and slightly modified, licensed under cc by-sa
 		// unset all of the session variables.
 		$_SESSION = array();
