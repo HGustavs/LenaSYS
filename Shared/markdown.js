@@ -82,7 +82,7 @@ function parseMarkdown(inString)
 					workstr = workstr.substr(3);
 			}			
 
-			if(kodblock){
+			if(kodblock && workstr != ""){
 
 					workstr='<pre><code>'+workstr+'</code></pre>';
 			}else{
