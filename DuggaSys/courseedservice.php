@@ -29,6 +29,7 @@ $versid=getOP('versid');
 $versname=getOP('versname');
 $coursenamealt=getOP('coursenamealt');
 $coursecode=getOP('coursecode');
+$hp = '7.5';
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -54,8 +55,9 @@ if($ha){
 	if(strcmp($opt,"DEL")===0){
 	
 	}else if(strcmp($opt,"NEW")===0){
-		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
+		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator,hp) VALUES(:coursecode,:coursename,0,:usrid,:hp)");
 		
+		$query->bindParam(':hp', $hp);
 		$query->bindParam(':usrid', $userid);
 		$query->bindParam(':coursecode', $coursecode);
 		$query->bindParam(':coursename', $coursename);
