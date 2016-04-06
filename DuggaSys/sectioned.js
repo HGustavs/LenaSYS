@@ -692,7 +692,10 @@ function returnedSection(data)
 
 					}
 	
-					if(data['writeaccess']) str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
+					if(data['writeaccess']){
+						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
+						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/UpT.svg' onclick='moveRowToTop(\""+item['lid']+"\");'";
+					}
 
 					str += "</tr>";
 				}
@@ -727,6 +730,7 @@ function returnedSection(data)
 			$("#Sectionlistc").sortable({
 				helper: 'clone',		
 				update:  function (event, ui) {	
+					console.log(event);
 					str="";
 					$("#Sectionlist").find(".item").each(function(i) {
 						if(i>0) str+=",";
@@ -809,4 +813,12 @@ function returnedHighscore(data){
 
 	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
+}
+
+function moveRowToTop(itemId){
+	//finding the row based on the associated itemId and moves it to the top of the Sectionlistc
+	row = $("#Sectionlistc").find("#I" + itemId).parent().parent().parent().parent();
+	$('#Sectionlistc').sortable('option', 'update')(null, {
+    	item: row.prependTo(row.parent())
+	});
 }

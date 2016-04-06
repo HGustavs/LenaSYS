@@ -4,6 +4,7 @@ include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,7 +85,7 @@ pdoConnect();
 
 	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
-			<button type="button" onclick='closePreview();'>Close Preview</button>
+			<div onclick='closePreview();'>x</div>
 		</div>
 		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>
 
@@ -93,4 +94,14 @@ pdoConnect();
 	<!-- // navheader:Result Popover End, Edit VAriant Start 
 	//--------------------------------------------------------------------------------------------------- -->
 </body>
+<script type='text/javascript'>
+	var elem = $('#resultpopover')[0];
+
+	$(document).on('keydown', function (e){
+	if (e.keyCode === 27){
+		$(elem).css("display", "none");
+	}
+	});
+</script>
 </html>
+

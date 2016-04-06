@@ -54,8 +54,9 @@ if($ha){
 	if(strcmp($opt,"DEL")===0){
 	
 	}else if(strcmp($opt,"NEW")===0){
-		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
+		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator,hp) VALUES(:coursecode,:coursename,0,:usrid,:hp)");
 		
+		$query->bindParam(':hp', '7.5');
 		$query->bindParam(':usrid', $userid);
 		$query->bindParam(':coursecode', $coursecode);
 		$query->bindParam(':coursename', $coursename);
@@ -101,9 +102,10 @@ $entries=array();
 
 if($ha){
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
-}else{
+}else if (isset($_SESSION['uid'])){
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
-}
+}else
+	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>1 and visibility<3 ORDER BY coursename");
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
