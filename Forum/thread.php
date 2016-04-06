@@ -43,14 +43,30 @@ if (file_exists("../.git/refs/heads/master")) {
 	<div id="content">
 		<!-- Section List -->
 		<div id='threadHeader'>
-			<div id="threadTitle">
-					DV12GHT15: PHP Example 1
+			<div id="threadTopic">
+					DV12G HT15: PHP Example 1
 			</div>
 			<div id="threadDescr">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+				<p> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
 			</div>
 			<div id="threadDetails">
 				Created <span id="threadDate">Mar 3 2016</span> by <span id="threadCreator">John Doe</span>
+			</div>
+		</div>
+
+		<div id="threadComments">
+			<div id="threadCommentsTitle">
+				Comments
+			</div>
+			<div class="threadComment">
+				<div class="commentDetails">
+					<span id="commentUser">d13berli</span>
+				</div>
+				<div class="commentContent">
+						<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+				</div>
+				<div class="commentDate"> Mar 4 2016 </div>
 			</div>
 		</div>
 	</div>

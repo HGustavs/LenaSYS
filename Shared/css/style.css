@@ -1246,7 +1246,7 @@ input.new-item-button:hover {
   background-color: #eae8eb;
 }
 
-#threadTitle {
+#threadTopic {
   color: #fff;
   padding: 10px 25px;
   float: left;
@@ -1260,7 +1260,7 @@ input.new-item-button:hover {
   padding: 10px 25px;
   clear: both;
   color: #000;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 #threadDetails {
@@ -1269,5 +1269,47 @@ input.new-item-button:hover {
   color: #775886;
   float: right;
   display: block;
+  font-size: 14px;
+}
+
+#threadComments {
+  clear:both;
+  margin-top: 25px;
+  overflow: hidden;
+}
+#threadCommentsTitle {
+  background-color: #927b9e;
+  color: #fff;
+  padding: 10px 25px;
+  text-align: center;
+  float: left;
+  font-size: 20px;
+  width: 100%;
+}
+
+.threadComment {
+  clear: both;
+  border-left: 2px solid #927b9e;
+  padding: 10px 20px;
+  background-color: #eae8eb;
+  overflow: hidden;
+}
+
+
+.commentDetails {
+  color: #775886;
+}
+.commentUser {
+
+}
+
+.commentContent {
+
+}
+
+.commentDate {
+  clear: both;
+  float: right;
+  color: #775886;
   font-size: 14px;
 }
