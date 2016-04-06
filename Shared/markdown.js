@@ -159,6 +159,9 @@ function markdownBlock(inString)
 	// ===filename,start row,end row, text to show===
 	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword2" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
 
+	// Three or more dots should always be converted to an ellipsis.
+	inString = inString.replace(/\.{3,}/g, "&hellip;");
+
 	return inString;
 }
 
