@@ -173,6 +173,7 @@ function returnedDugga(data)
 	if (data['files'].length > 0) {
 
 		str+="<div style='float:right;padding-bottom:10px;'>";
+		str+="<input class='submit-button' style='width:170px' type='button' value='Add Dugga Template' onclick='showAddDuggaTemplate();'/>";
 		str+="<input class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";
 		str+="</div>";
 		str+="<table class='list'>";
@@ -408,4 +409,15 @@ function closePreview()
 {
 	$("#resultpopover").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
+}
+
+function addDuggaTemplate(){
+
+}
+
+function showAddDuggaTemplate(){
+	$("#addDuggaTemplate").css("display","block");
+}
+function hideAddDuggaTemplate(){
+	$("#addDuggaTemplate").css("display","none");
 }

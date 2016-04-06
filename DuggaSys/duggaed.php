@@ -41,6 +41,26 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 
+	<!-- addDuggaTemplate Dialog START -->
+	<div id='addDuggaTemplate' class='loginBox' style='width:464px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Add template</h3>
+			<div onclick='hideAddDuggaTemplate();'>x</div>
+		</div>
+		<form enctype="multipart/form-data" action="filereceiveDuggaTemplate.php" method="POST">
+			<div style='padding:5px;'>
+				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>			
+			</div> 
+			<div style='padding:5px;'>
+				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
+			</div>
+			(.png, .html and .js are allowed)
+			<div style ='padding:5px, display:none' id='errormessage'>
+			</div> 
+		</form>
+	</div>
+	<!-- addDuggaTemplate Dialog END -->
+
 	<!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
