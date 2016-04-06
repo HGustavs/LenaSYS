@@ -71,7 +71,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			}							
 		}
 
-		$query = $pdo->prepare("UPDATE duggaTries SET grade=:mark WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers;");
+		if($mark == "1"){
+			$query = $pdo->prepare("UPDATE duggaTries SET grade=:mark, dugga_lock = 1 WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers ORDER BY time desc LIMIT 1;");
+		}else{
+			$query = $pdo->prepare("UPDATE duggaTries SET grade=:mark WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers ORDER BY time desc LIMIT 1;");
+		}
 		$query->bindParam(":mark",$mark);
 		$query->bindParam(":uid",$luid);
 		$query->bindParam(":cid",$cid);
@@ -80,7 +84,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error updating entries (189)\n".$error[2] . "mark: " . $mark .  "uid: " . $luid . ", cid: " . $cid . ", moment: " . $moment . ", vers: " . $vers;
+			$debug="Error updating entries (189)\n".$error[2];
 		}
 	}
 
