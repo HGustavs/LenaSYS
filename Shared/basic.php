@@ -1,32 +1,6 @@
 <?php
 
 //------------------------------------------------------------------------------------------------
-// makeLogEntry
-//------------------------------------------------------------------------------------------------
-//
-// Reads service Parameter from POST encoding using entities
-//
-// 1,2 Signify Reading and Writing of Dugga
-// 3,4 Signify Sucessful and Failed Login
-
-function makeLogEntry($userid,$entrytype,$pdo,$etext)
-{
-			$userag=$etext."|".$_SERVER['HTTP_USER_AGENT'];
-			if(strlen($userag)>1024) substr ($userag,0,1024);
-			$query = $pdo->prepare("INSERT INTO eventlog(address,raddress, type, user, eventtext) VALUES(:address,:raddress, :type, :user, :eventtext)");
-		
-			$query->bindParam(':user', $userid);
-			$query->bindParam(':type', $entrytype);
-		
-			$query->bindParam(':address', $_SERVER['REMOTE_ADDR']);
-			$query->bindParam(':raddress', $_SERVER['HTTP_CLIENT_IP']);
-			$query->bindParam(':eventtext', $userag);
-			
-			return ($query->execute() && $query->rowCount() > 0);
-}
-
-
-//------------------------------------------------------------------------------------------------
 // getOP
 //------------------------------------------------------------------------------------------------
 //
