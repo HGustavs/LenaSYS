@@ -124,7 +124,8 @@ $sql = '
 		eventType INTEGER,
 		description VARCHAR(50),
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-		userAgent TEXT
+		userAgent TEXT,
+		remoteAddress VARCHAR(15)
 	);
 	CREATE TABLE IF NOT EXISTS serviceLogEntries (
 		id INTEGER PRIMARY KEY,
@@ -162,11 +163,12 @@ function logEvent($eventType, $description) {
 //
 
 function logUserEvent($uid, $eventType, $description) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description, userAgent) VALUES (:uid, :eventType, :description, :userAgent)');
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description, userAgent, remoteAddress) VALUES (:uid, :eventType, :description, :userAgent, :remoteAddress)');
 	$query->bindParam(':uid', $uid);
 	$query->bindParam(':eventType', $eventType);
 	$query->bindParam(':description', $description);
 	$query->bindParam(':userAgent', $_SERVER['HTTP_USER_AGENT']);
+	$query->bindParam(':remoteAddress', $_SERVER['REMOTE_ADDR']);
 	$query->execute();
 }
 
