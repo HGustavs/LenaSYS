@@ -374,7 +374,7 @@
 			$filename=$row['filename'];
 			$content="";
 						
-			$ruery = $pdo->prepare("SELECT filename,kind FROM fileLink WHERE cid=:cid and UPPER(filename)=UPPER(:fname) LIMIT 1;");
+			$ruery = $pdo->prepare("SELECT filename,kind FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:fname) LIMIT 1;");
 			$ruery->bindParam(':cid', $courseId);
 			$ruery->bindParam(':fname', $filename);
 			$sesult = $ruery->execute();
