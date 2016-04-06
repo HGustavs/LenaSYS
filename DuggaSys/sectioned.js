@@ -570,7 +570,7 @@ function returnedSection(data)
 								}
 							}
 	
-							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;'>";
+							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;'>";
 							if((grady==-1 || grady == 0 || grady==null) && status==="") {
 									// Nothing submitted nor marked (White)
 									str+="<div class='WhiteLight'></div>";
@@ -622,7 +622,8 @@ function returnedSection(data)
 					}else if(parseInt(item['kind']) === 3 ){
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+
 						}						
 											
 						str += "<td ";
