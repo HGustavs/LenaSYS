@@ -17,10 +17,8 @@ session_start();
 if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 	if (isset($_POST['query'])) {
 		switch ($_POST['query']) {
-			case 'test':
-				echo json_encode(array(
-					'testdata' => 'kebab'
-				));
+			case 'generalStats':
+				generalStats();
 				break;
 		}
 	} else {
@@ -28,4 +26,13 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 	}
 } else {
 	die('access denied');
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves general stats from the log			
+//------------------------------------------------------------------------------------------------
+function generalStats() {
+	$log_db = $GLOBALS['log_db'];
+	$result = $log_db->query('SELECT COUNT(*) AS nUserLogEntries FROM userLogEntries;');
+	echo json_encode($result);
 }
