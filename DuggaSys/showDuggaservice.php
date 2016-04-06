@@ -60,15 +60,17 @@ if($userid!="UNK"){
 	$result = $query->execute();
 
 	$savedvariant="UNK";
-	$newvariant="";
+	$newvariant="UNK";
 	$variants=array();
 	$safe_variants=array();
 	$savedanswer="UNK";
+	$isIndb=false;
 
 	if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 		$savedvariant=$row['variant'];
 		$savedanswer=$row['useranswer'];
 		$score = $row['score'];
+		$isIndb=true;
 	}
 	
 	// Get type of dugga
@@ -105,7 +107,7 @@ if($userid!="UNK"){
 			if($savedvariant==$value['vid']&&$value['disabled']==0) $foundvar=$key;
 	}
 	if($foundvar==-1){
-			$savedvariant="";
+			$savedvariant="UNK";
 	}
 
 	// If there are any variants, randomize
@@ -122,57 +124,60 @@ if($userid!="UNK"){
 						}
 				} 
 				$cnt++;
-		}while($cnt<8&&$newvariant=="");
+		}while($cnt<8&&$newvariant=="UNK");
 		
 		// if none has been chosen and there is a first one take that one.
-		if($newvariant=="" && $firstvariant!=-1) $newvariant=$firstvariant;
+		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
 	}else{
 		// There is a variant already -- do nothing!	
 	}
 	
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
-	if(($savedvariant=="")&&($newvariant!="")){
-		$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-		$query->bindParam(':cid', $courseid);
-		$query->bindParam(':coursevers', $coursevers);
-		$query->bindParam(':uid', $userid);
-		$query->bindParam(':moment', $moment);
-		$query->bindParam(':variant', $newvariant);
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating entries (128)".$error[2];
-		}
-		$savedvariant=$newvariant;
+	if ($newvariant=="UNK"){
 
-	}else if(($savedvariant=="UNK")&&($newvariant!="")){
-		$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
-		$query->bindParam(':cid', $courseid);
-		$query->bindParam(':coursevers', $coursevers);
-		$query->bindParam(':uid', $userid);
-		$query->bindParam(':did', $duggaid);
-		$query->bindParam(':moment', $moment);
-		$query->bindParam(':variant', $newvariant);
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating entries (142)".$error[2];
-		}
-		$savedvariant=$newvariant;
-		//------------------------------
-		//mark segment as started on
-		//------------------------------
-		$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
-		$query->bindParam(':cid', $courseid);
-		$query->bindParam(':coursevers', $coursevers);
-		$query->bindParam(':uid', $userid);
-		$query->bindParam(':did', $duggaid);
-		$query->bindParam(':moment', $segment);
-		$query->bindParam(':variant', $newvariant);
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating entries (157)".$error[2];
+	} else if ($newvariant!="UNK") {
+		if($isIndb){
+			$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursevers', $coursevers);
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':moment', $moment);
+			$query->bindParam(':variant', $newvariant);
+			if(!$query->execute() || $query->rowCount()==0) {
+				$error=$query->errorInfo();
+				$debug="Error updating variant (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
+			}
+			$savedvariant=$newvariant;
+
+		}else if(!$isIndb){
+			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursevers', $coursevers);
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':did', $duggaid);
+			$query->bindParam(':moment', $moment);
+			$query->bindParam(':variant', $newvariant);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
+			}
+			$savedvariant=$newvariant;
+			//------------------------------
+			//mark segment as started on
+			//------------------------------
+			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':coursevers', $coursevers);
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':did', $duggaid);
+			$query->bindParam(':moment', $segment);
+			$query->bindParam(':variant', $newvariant);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
+			}
 		}
 	}
-
 	// Retrieve variant
 	if($insertparam == false){
 	$param="NONE!";
@@ -219,10 +224,12 @@ if(checklogin()){
 				
 				
 				$query->execute();
+				$grade = null;
 
 				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 					$grade=$row['grade'];
 				}
+
 				if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
 					//if grade equal G, VG, 3, 4, 5, or 6
 					$debug="You have already been graded on this assignment";
@@ -239,9 +246,9 @@ if(checklogin()){
 					$query->bindParam(':score', $score);
 				}
 				
-				if(!$query->execute()) {
-					$debug="Error updating answer";
-					print_r($pdo->errorInfo());
+				if(!$query->execute() || $query->rowCount()==0) {
+					$error=$query->errorInfo();
+					$debug="Error updating answer. (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
 				} else {
 					$savedanswer = $answer;
 				}
