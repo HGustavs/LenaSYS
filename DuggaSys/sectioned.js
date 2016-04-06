@@ -499,13 +499,7 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
-
-				if (parseInt(item['kind']) === 4 || parseInt(item['kind']) === 0) {
-					str += "<div class='divMoment'>";
-				}else{
-					str += "<div>";
-				}
-				
+				str += "<div>";
 
 				// If visible or we are a teacher/superuser
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
@@ -576,7 +570,7 @@ function returnedSection(data)
 								}
 							}
 	
-							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:bottom;overflow:hidden;' onclick='collapseLight(this)'>";
+							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;'>";
 							if((grady==-1 || grady == 0 || grady==null) && status==="") {
 									// Nothing submitted nor marked (White)
 									str+="<div class='WhiteLight'></div>";
@@ -698,7 +692,10 @@ function returnedSection(data)
 
 					}
 	
-					if(data['writeaccess']) str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
+					if(data['writeaccess']){
+						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
+						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/UpT.svg' onclick='moveRowToTop(\""+item['lid']+"\");'";
+					}
 
 					str += "</tr>";
 				}
@@ -733,6 +730,7 @@ function returnedSection(data)
 			$("#Sectionlistc").sortable({
 				helper: 'clone',		
 				update:  function (event, ui) {	
+					console.log(event);
 					str="";
 					$("#Sectionlist").find(".item").each(function(i) {
 						if(i>0) str+=",";
@@ -817,12 +815,10 @@ function returnedHighscore(data){
 	$("#HighscoreBox").css("display", "block");
 }
 
-function collapseLight(elem){
-	var a = "div." + elem.closest('div').className;
-  	//alert(a);
-  	$(elem).closest('div').nextUntil(a).fadeToggle(400);
+function moveRowToTop(itemId){
+	//finding the row based on the associated itemId and moves it to the top of the Sectionlistc
+	row = $("#Sectionlistc").find("#I" + itemId).parent().parent().parent().parent();
+	$('#Sectionlistc').sortable('option', 'update')(null, {
+    	item: row.prependTo(row.parent())
+	});
 }
-
-
-
-
