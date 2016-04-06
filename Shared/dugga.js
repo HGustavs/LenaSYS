@@ -129,7 +129,7 @@ function savequizResult(citstr)
 	citstr=querystring['coursevers']+" "+citstr;
 	citstr=querystring['cid']+" "+citstr;
 	AJAXService("SAVDU",{answer:citstr},"PDUGGA");	
-	alert('inlämnat');
+	alert('Returned');
 }
 
 

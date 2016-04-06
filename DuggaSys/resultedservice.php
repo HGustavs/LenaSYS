@@ -23,6 +23,7 @@ $vers = getOP('vers');
 $moment = getOP('moment');
 $mark = getOP('mark');
 $ukind = getOP('ukind');
+$duggaid=getOP('did');
 
 $debug="NONE!";
 
@@ -38,6 +39,7 @@ $duggastats="";
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"CHGR")==0){
+
 		if($ukind=="U"){
 			$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW() WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 			$query->bindParam(':mark', $mark);
@@ -51,7 +53,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
-			}				
+			}
+
 		}else if($ukind=="I"){						
 			$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW());");
 			$query->bindParam(':mark', $mark);
@@ -65,7 +68,19 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries\n".$error[2];
-			}								
+			}							
+		}
+
+		$query = $pdo->prepare("UPDATE duggaTries SET grade=:mark WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers;");
+		$query->bindParam(":mark",$mark);
+		$query->bindParam(":uid",$luid);
+		$query->bindParam(":cid",$cid);
+		$query->bindParam(":moment",$moment);
+		$query->bindParam(":vers",$vers);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries (189)\n".$error[2] . "mark: " . $mark .  "uid: " . $luid . ", cid: " . $cid . ", moment: " . $moment . ", vers: " . $vers;
 		}
 	}
 
