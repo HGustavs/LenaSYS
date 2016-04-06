@@ -17,12 +17,13 @@
 			
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
-
+			echo "<td class='navButt'><a href='../Forum/forum.php'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
 			echo "<td class='navButt' id='home' title='Home'>";
+			
 
 			if($noup=='COURSE'){
 					echo "<a href='";
@@ -69,8 +70,6 @@
 				}else{
 					echo "<td class='navSpacer'></td>";
 			}
-			echo "<td style='margin-left: 80%;'><i class='fa fa-2x fa-comments'></i></td>";
-
 
 			if(checklogin()) {
 					echo "<td class='navName'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";		
@@ -81,6 +80,7 @@
 			}
 
 
+		
 		echo "</tr></table>";
 	?>
 </header>
