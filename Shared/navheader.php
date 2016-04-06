@@ -20,7 +20,7 @@
 
 			// Show analytic link if user is superuser.
 			if($_SESSION["superuser"] == 1){
-				echo "<td class='navButt' id='analytic' title='Analytic Tool'><a href='../DuggaSys/analytictool.php'><img src='../Shared/icons/analytic.svg'></a></td>";
+				echo "<td class='navButt' id='analytic' title='Analytic Tool'><a href='../DuggaSys/analytictool.php'><img style='fill:white;' src='../Shared/icons/analytic.svg'></a></td>";
 			}
 			
 			// Generate different back buttons depending on which page is including
