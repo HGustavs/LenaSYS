@@ -1,6 +1,6 @@
 <!-- Navigation Header! -->
 <!-- New Version includes code for Code Viewer -->
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<header>
 		<?php
 			echo "<table width='100%'><tr>";
@@ -69,6 +69,7 @@
 				}else{
 					echo "<td class='navSpacer'></td>";
 			}
+			echo "<td style='margin-left: 80%;'><i class='fa fa-2x fa-comments'></i></td>";
 
 
 			if(checklogin()) {
