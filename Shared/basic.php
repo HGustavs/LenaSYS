@@ -115,21 +115,24 @@ $sql = '
 		id INTEGER PRIMARY KEY,
 		eventType INTEGER,
 		description TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+		userAgent TEXT
 	);
 	CREATE TABLE IF NOT EXISTS userLogEntries (
 		id INTEGER PRIMARY KEY,
 		uid INTEGER(10),
 		eventType INTEGER,
 		description VARCHAR(50),
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+		userAgent TEXT
 	);
 	CREATE TABLE IF NOT EXISTS serviceLogEntries (
 		id INTEGER PRIMARY KEY,
 		uuid CHAR(15),
 		eventType INTEGER,
 		service VARCHAR(15),
-		timestamp INTEGER
+		timestamp INTEGER,
+		userAgent TEXT
 	);
 ';
 $log_db->exec($sql);
@@ -143,9 +146,10 @@ $log_db->exec($sql);
 //
 
 function logEvent($eventType, $description) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO logEntries (eventType, description) VALUES (:eventType, :description)');
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO logEntries (eventType, description, userAgent) VALUES (:eventType, :description, :userAgent)');
 	$query->bindParam(':eventType', $eventType);
 	$query->bindParam(':description', $description);
+	$query->bindParam(':userAgent', $_SERVER['HTTP_USER_AGENT']);
 	$query->execute();
 }
 
@@ -158,10 +162,11 @@ function logEvent($eventType, $description) {
 //
 
 function logUserEvent($uid, $eventType, $description) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description) VALUES (:uid, :eventType, :description)');
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description, userAgent) VALUES (:uid, :eventType, :description, :userAgent)');
 	$query->bindParam(':uid', $uid);
 	$query->bindParam(':eventType', $eventType);
 	$query->bindParam(':description', $description);
+	$query->bindParam(':userAgent', $_SERVER['HTTP_USER_AGENT']);
 	$query->execute();
 }
 
@@ -177,11 +182,12 @@ function logServiceEvent($uuid, $eventType, $service, $timestamp = null) {
 	if (is_null($timestamp)) {
 		$timestamp = round(microtime(true) * 1000);
 	}
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp) VALUES (:uuid, :eventType, :service, :timestamp)');
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp, userAgent) VALUES (:uuid, :eventType, :service, :timestamp, :userAgent)');
 	$query->bindParam(':uuid', $uuid);
 	$query->bindParam(':eventType', $eventType);
 	$query->bindParam(':service', $service);
 	$query->bindParam(':timestamp', $timestamp);
+	$query->bindParam(':userAgent', $_SERVER['HTTP_USER_AGENT']);
 	$query->execute();
 }
 
