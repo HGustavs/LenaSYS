@@ -265,7 +265,8 @@ function AJAXService(opt,apara,kind)
 		}
 	}
 	
-	if(kind=="COURSE"){
+	switch(kind){
+		case "COURSE":
 			$.ajax({
 				url: "courseedservice.php",
 				type: "POST",
@@ -273,15 +274,19 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedCourse
 			});
-	}else if(kind=="VARIANTPDUGGA"){
-		$.ajax({
+		break;
+
+		case "VARIANTPDUGGA":
+			$.ajax({
 			url: "showDuggaservice.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",
 			success: returnedanswersDugga
 		});
-	}else if(kind=="DUGGA"){
+		break;
+
+		case "DUGGA":
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
@@ -289,7 +294,9 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedDugga
 			});
-	}else if(kind=="BDUGGA"){
+		break;
+
+		case "BDUGGA":
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
@@ -297,7 +304,9 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedBlankDugga
 			});
-	}else if(kind=="DUGGAHIGHSCORE"){
+		break;
+
+		case "DUGGAHIGHSCORE":
 			$.ajax({
 				url: "highscoreservice.php",
 				type: "POST",
@@ -305,15 +314,19 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedHighscore
 			});
-	}else if(kind=="FILE"){
+		break;
+
+		case "FILE":
 			$.ajax({
 				url: "fileedservice.php",
 				type: "POST",
 				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedFile
-			})
-	}else if(kind=="ACCESS"){
+			});
+		break;
+
+		case "ACCESS":
 			$.ajax({
 				url: "accessedservice.php",
 				type: "POST",
@@ -321,7 +334,9 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedAccess
 			});
-	}else if(kind=="SECTION"){
+		break;
+
+		case "SECTION":
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
@@ -329,7 +344,9 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedSection
 			});
-	}else if(kind=="PDUGGA"){
+		break;
+
+		case "PDUGGA":
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
@@ -337,7 +354,9 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedDugga
 			});
-	}else if(kind=="RESULT"){
+		break;
+
+		case "RESULT":
 			$.ajax({
 				url: "resultedservice.php",
 				type: "POST",
@@ -345,7 +364,9 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="RESULTLIST"){
+		break;
+
+		case "RESULTLIST":
 			$.ajax({
 				url: "resultlistedservice.php",
 				type: "POST",
@@ -353,7 +374,9 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="CODEVIEW"){
+		break;
+
+		case "CODEVIEW":
 			$.ajax({
 				url: "editorService.php",
 				type: "POST",
@@ -361,15 +384,19 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returned
 			});
-	}else if(kind=="BOXCONTENT"){
-		$.ajax({
+		break;
+
+		case "BOXCONTENT":
+			$.ajax({
 			url: "editorService.php",
 			type: "POST",
 			data: "opt="+opt+para,
 			dataType: "json",
 			success: returned
 		});
-	}else if(kind=="UMVSTUDENT") {
+		break;
+
+		case "UMVSTUDENT":
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
@@ -377,7 +404,9 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: renderStudentView
 			});
-	}else if(kind=="UMVTEACHER") {
+		break;
+
+		case "UMVTEACHER":
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
@@ -385,6 +414,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: renderTeacherView
 			});
+		break;
 	}
 }
 
