@@ -41,5 +41,5 @@ function generalStats() {
 		WHERE
 			eventType = '.EventTypes::LoginFail.';
 	')->fetchAll(PDO::FETCH_ASSOC);
-	echo json_encode($result);
+	echo json_encode($result[0]);
 }
