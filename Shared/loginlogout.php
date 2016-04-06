@@ -55,6 +55,8 @@ if($opt=="LOGIN"){
 			);
 		}
 		
+		logUserEvent($_SESSION['loginname'],EventTypes::Logout,"");
+		
 		// Finally, destroy the session.
 		session_destroy();
 		
