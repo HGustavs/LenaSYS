@@ -29,8 +29,13 @@ $moment=getOP('moment');
 $segment=getOP('segment');
 $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
+$log_uuid = getOP('log_uuid');
+$log_timestamp = getOP('log_timestamp');
 $setanswer=gettheOP('setanswer');
-$debug="NONE!";	
+$debug="NONE!";
+
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "showDuggaservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php");
 
 $param = "";
 $savedanswer = "";
@@ -311,4 +316,5 @@ $array = array(
 	);
 
 echo json_encode($array);
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php");
 ?>

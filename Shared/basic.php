@@ -208,6 +208,7 @@ abstract class EventTypes {
 	const ServiceServerStart = 6;
 	const ServiceServerEnd = 7;
 	const ServiceClientEnd = 8;
+	const Logout = 9;
 }
 
 
