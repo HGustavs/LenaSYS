@@ -217,7 +217,7 @@ function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers)
 		$query2->execute();
 
 		
-		if($query->rowCount() > 0 || $query2->rowCount()/2 > 2) {
+		if($query->rowCount() > 0 || $query2->rowCount() > 2) {
 			return true;
 		} else {
 			return false;

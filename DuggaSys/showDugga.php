@@ -170,7 +170,7 @@
 			$query->bindParam(":cid",$cid);
 			$result = $query->execute();
 
-			if (($query->rowCount()/2) > 2) {
+			if (($query->rowCount()) > 2) {
 				//echo "<h1 style='position:fixed;top:70%;left:40%;'>" . $query->rowCount()/2 . "</h1>";
 				include '../Shared/duggaTriedLock.php';
 			}
