@@ -232,8 +232,6 @@ $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mi
 $query->bindParam(':uid', $userid);
 $query->bindParam(':cid', $cid);
 $query->bindParam(':vers', $coursevers);
-
-$debug = $coursevers;
 	
 $result = $query->execute();
 foreach($query->fetchAll() as $row) {
