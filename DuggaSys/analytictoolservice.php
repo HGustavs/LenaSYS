@@ -33,6 +33,13 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 //------------------------------------------------------------------------------------------------
 function generalStats() {
 	$log_db = $GLOBALS['log_db'];
-	$result = $log_db->query('SELECT COUNT(*) AS nUserLogEntries FROM userLogEntries;');
+	$result = $log_db->query('
+		SELECT
+			COUNT(*) AS loginFails
+		FROM
+			userLogEntries
+		WHERE
+			eventType = '.EventTypes::LoginFail.';
+	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
