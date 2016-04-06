@@ -1239,3 +1239,35 @@ input.new-item-button:hover {
  /* --------------================################================-------------- *
   *                                    Thread                                   *
   * --------------================################================-------------- */
+
+#threadHeader {
+  clear:both;
+  overflow: hidden;
+  background-color: #eae8eb;
+}
+
+#threadTitle {
+  color: #fff;
+  padding: 10px 25px;
+  float: left;
+  font-size: 24px;
+  background-color: #614875;
+  width: 100%;
+}
+
+
+#threadDescr {
+  padding: 10px 25px;
+  clear: both;
+  color: #000;
+  font-size: 14px;
+}
+
+#threadDetails {
+  padding: 10px 25px;
+  clear: both;
+  color: #775886;
+  float: right;
+  display: block;
+  font-size: 14px;
+}
