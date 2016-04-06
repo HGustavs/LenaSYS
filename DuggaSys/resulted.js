@@ -127,11 +127,11 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		console.log("course: "+ cid, " vers: " + vers + " moment: " + moment + " uid: " + uid);
 		console.log("gs "+gradeSystem+ " cid: " + querystring['cid'] + " cvers: " + querystring['coursevers']);
 
-		var menu = "<div class='loginBox' style='width:464px;display:block;'>";
+		var menu = "<div class='' style='width:100px;display:block;'>";
 		menu +=	"<div class='loginBoxheader'>";
-		menu += "<h3>Marking dugga for "+ firstname + " " + lastname +"</h3>";
+		menu += "<h3>Grade</h3>";
 		menu += "</div>";
-		menu += "<table width='100%'>";
+		menu += "<table>";
 		menu += "<tr><td>";
 		if (foundgrade === null && submitted === null) {
 			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I");
@@ -145,7 +145,7 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		menu += "</div> <!-- Menu Dialog END -->";
 		document.getElementById('markMenuPlaceholder').innerHTML=menu;
 
-		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid }, "RESULT");
+		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : querystring['coursevers'] }, "RESULT");
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind) 
@@ -464,7 +464,7 @@ function returnedResults(data)
 		
 					//alert(data['duggaparam']+"\n"+data['useranswer'] + "\n" + data['duggaanswer']);
 					//console.log(data['duggastats']);
-					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats']);
+					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats'], data['files']);
 				});
 				$("#resultpopover").css("display", "block");
 				//alert(data['duggaanswer']);
