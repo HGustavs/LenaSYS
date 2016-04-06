@@ -15,9 +15,14 @@
 					$_SESSION['coursevers']=$_GET['coursevers'];
 			}
 			
-			// Always show home button which links to course homepage
+			// Always show home button which links to course homepage.
 			echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 
+			// Show analytic link if user is superuser.
+			if($_SESSION["superuser"] == 1){
+				echo "<td class='navButt' id='analytic' title='Analytic Tool'><a href='../DuggaSys/analytictool.php'><img src='../Shared/icons/Analytic.svg'></a></td>";
+			}
+			
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
