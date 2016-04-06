@@ -161,7 +161,9 @@ function markdownBlock(inString)
 
 	// Three or more dots should always be converted to an ellipsis.
 	inString = inString.replace(/\.{3,}/g, "&hellip;");
+	
+	// Iframe, website inside a inline frame - (--url,width,height--)
+	inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
 
 	return inString;
 }
-
