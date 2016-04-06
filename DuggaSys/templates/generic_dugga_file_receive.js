@@ -133,7 +133,7 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files)
 {
 	document.getElementById('duggaTime').innerHTML=userStats[0];
 	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
@@ -141,43 +141,53 @@ function showFacit(param, uanswer, danswer, userStats)
 	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 	$("#duggaStats").css("display","none");
 
-
+	inParams = parseGet();
 	$("#content").css({"position":"relative","top":"50px"});
 
-	dataV = data;
-	
-	if (data['debug'] != "NONE!") { alert(data['debug']); }
-
-	if (data['param'] == "UNK") {
+	if (param == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
 		duggaParams = jQuery.parseJSON(param);
 
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src=showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+" width='100%' height='1000px' type='application/pdf'>";
-		}else if(duggaParams["type"]==="md"){
-				// Can we do this?
-		}else if (duggaParams["type"]==="html"){
-				// Can we do this?
-		}	
-
-		duggaFiles = data['files'];
-
-		if (duggaFiles.length > 0){
-
-		} else {
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
+			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
+        		$("#snus").html(result);
+        		// Placeholder code
+				var pl = duggaParams.placeholders;
+				if (pl !== undefined) {
+					for (var m=0;m<pl.length;m++){
+						for (placeholderId in pl[m]) {
+							if (document.getElementById("placeholder-"+placeholderId) !== null){
+								for (placeholderDataKey in pl[m][placeholderId]) {
+									if (pl[m][placeholderId][placeholderDataKey] !== ""){
+										document.getElementById("placeholder-"+placeholderId).innerHTML='<a href="'+pl[m][placeholderId][placeholderDataKey]+'" target="_blank">'+placeholderDataKey+'</a>';
+									} else {
+										document.getElementById("placeholder-"+placeholderId).innerHTML=placeholderDataKey;
+									}
+								}
+							}
+						}
+					}					
+				}
+    		}});
+		}else if(duggaParams["type"]==="link"){
+			document.getElementById("snus").innerHTML="<iframe src='"+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
+		}else {
+			// UNK 
 		}
 
-		findfilevers(data["files"], "Inl1Document","pdf");
-		findfilevers(data["files"], "Inl2Document","zip");
-		findfilevers(data["files"], "Inl3Document","multi");
+		$("#snus").parent().find(".instructions-content").slideToggle("slow");
 
-		if (data["answer"] == null || data["answer"] !== "UNK") {
-
-			// We have previous answer
+		createFileUploadArea(duggaParams["submissions"]);
+		for (var k=0; k < duggaParams["submissions"].length; k++){
+			findfilevers(files, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type);
+    		if (duggaParams['uploadInstruction'] !== null){
+				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
+			}
 
 		}
-
 
 	}
 }
