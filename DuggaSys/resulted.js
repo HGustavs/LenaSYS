@@ -255,12 +255,10 @@ function renderResultTableFooter()
 //----------------------------------------
 // Render Moment
 //----------------------------------------
-function renderMoment(data, userResults, userId, fname, lname)
+function renderMoment(data, userResults, userId, fname, lname, locked)
 {
-	console.log(data);
 	var str = "";
 	// Each of the section entries (i.e. moments)
-
 	for ( var j = 0; j < data.length; j++) {
 			count=j;
 			amountPassed[count]=0;
@@ -275,10 +273,10 @@ function renderMoment(data, userResults, userId, fname, lname)
 	
 			} else if (data[j][0].kind === 4 && data[j][0] !== null) {
 
-						str += renderMomentChild(data[j][0], userResults, userId, fname, lname, 1);
+						str += renderMomentChild(data[j][0], userResults, userId, fname, lname, 1, locked);
 						str += "</tr><tr>";
 				for (var k = 1; k < data[j].length; k++){
-						str += renderMomentChild(data[j][k], userResults, userId, fname, lname, 0);
+						str += renderMomentChild(data[j][k], userResults, userId, fname, lname, 0, locked);
 						//console.log(data[j][k]);
 				}			
 			} else {
@@ -380,15 +378,15 @@ function renderStandaloneDugga(data, userResults)
 //----------------------------------------
 // Render Moment child
 //----------------------------------------
-function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
+function renderMomentChild(dugga, userResults, userId, fname, lname, moment, locked)
 {
-
 		var str = "";
 		var foundgrade = null;
 		var useranswer = null;
 		var submitted = null;
 		var marked = null;
 		var variant = null;
+
 		if (userResults !== undefined) {
 				for (var l = 0; l < userResults.length; l++) {
 						
@@ -419,6 +417,13 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 		} else {
 			zttr += '<div style="min-width:95px">'		
 		}
+		
+		for (k = 0; k < locked.length; k++){
+			if (locked[k]['moment'] === dugga.lid) {
+				var momentLock = locked[k];
+			}
+		}
+
 		// If no result is found i.e. No Fist
 		if (foundgrade === null && useranswer === null && submitted === null) {
 			zttr += makeSelect(dugga.gradesystem, querystring['cid'], querystring['coursevers'], dugga.lid, userId, null, "I");
@@ -468,11 +473,14 @@ function returnedResults(data)
 		var zttr = "";
 		needMarking=0;
 		passedMarking=0;
-
 		var amountPassed = [];
 		var x = 0;
 		var y = 0;
-	
+
+		//get user locks
+		var locked = data['locked'];
+		//console.log(locked);
+
 		if (data['dugganame'] !== "") {
 				$.getScript(data['dugganame'], function() {
 					$("#MarkCont").html(data['duggapage']);
@@ -494,18 +502,25 @@ function returnedResults(data)
 				for ( k = 0; k < m.length; k++) {
 					savedAmount[k]=0;
 				}
-		
+
 				if (data['entries'].length > 0) {
 						for ( i = 0; i < data['entries'].length; i++) {
 								var user = data['entries'][i];
-				
+								var userLock = null;
 								str += "<tr class='fumo'>";
-				
+								
+								//check if the current user has any locks
+								for (k = 0; k < locked.length; k++){
+									if (locked[k]['uid'] == user['uid']) {
+										userLock = locked[k];
+									}
+								}
+
 								// One row for each student
 								str += "<td>";
 								str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['username'] + "<br/>" + user['ssn'];
 								str += "</td>";
-								str += renderMoment(m, results[user['uid']], user['uid'], user['firstname'], user['lastname']);
+								str += renderMoment(m, results[user['uid']], user['uid'], user['firstname'], user['lastname'], userLock);
 								str += "<td>";
 								str += "Total passed: " + passedMarking;
 								str += "</td>";

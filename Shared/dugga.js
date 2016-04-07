@@ -364,7 +364,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-		break;
+		break;		
 
 		case "RESULTLIST":
 			$.ajax({

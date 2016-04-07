@@ -134,6 +134,7 @@ $entries=array();
 $gentries=array();
 $sentries=array();
 $lentries=array();
+$locked=array();
 
 if(strcmp($opt,"DUGGA")!==0){
 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
@@ -241,7 +242,28 @@ if(strcmp($opt,"DUGGA")!==0){
 					'vers' => $row['vers']
 				)
 			);
-		}		
+		}
+
+		//fetch status on locked duggaas after too many attempts by users
+		$query = $pdo->prepare("SELECT FK_uid as uid, FK_cid as cid, FK_vers as vers, FK_moment as moment, count(dugga_lock) as nrLocks FROM duggaTries WHERE dugga_lock = 1 GROUP BY FK_uid,FK_moment,FK_vers;");
+
+		if (!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+
+		foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+			array_push(
+				$locked,
+				array(
+					'uid' => $row['uid'],
+					'cid' => $row['cid'],
+					'vers' => $row['vers'],
+					'moment' => $row['moment'],
+					'nrLocks' => $row['nrLocks']
+				)
+			);
+		}
 	}
 }
 		
@@ -256,7 +278,8 @@ $array = array(
 	'duggaparam' => $duggaparam,
 	'duggaanswer' => $duggaanswer,
 	'useranswer' => $useranswer,
-	'duggastats' => $duggastats
+	'duggastats' => $duggastats,
+	'locked' => $locked
 );
 
 
