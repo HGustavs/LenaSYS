@@ -534,6 +534,40 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
+//Function for marking//
+function showMarkingWindow()
+{
+
+	if($("#marking").css("display") == 'block'){
+		hideMarkingWindow();
+	}
+	else{
+		$("#marking").css("display","block");
+	}
+}
+
+function hideMarkingWindow()
+{
+	$("#marking").css("display","none");
+}
+//--------------------//
+
+function showDugga()
+{
+	$("#resultpopover").css("display", "block");
+}
+
+function hideDugga()
+{
+	$("#resultpopover").css("display", "none");
+	$("#duggaStats").css("display", "none");
+}
+
+function hideDuggaStats()
+{
+	$("#duggaStats").css("display","none");
+}
+
 function showReceiptPopup()
 {
 	$("#receiptBox").css("display","block");
