@@ -37,7 +37,6 @@ pdoConnect();
 		<div id="coursesForForum"></div>
 		<!-- Section List -->
 		<div id='Sectionlist'></div>
-		<?php include '../Forum/loadThreads.php';?>
 	</div>
 	<!-- content END -->
 
