@@ -1,0 +1,4 @@
+<?php
+	
+?>
+<script>getThreads();</script>

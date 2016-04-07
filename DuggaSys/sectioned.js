@@ -407,6 +407,11 @@ function accessCourse() {
 //----------------------------------------
 var momentexists=0;
 var resave = false;
+
+function getThreads()
+{
+	console.log("asd");
+}
 function returnedSection(data)
 {
 	retdata=data;

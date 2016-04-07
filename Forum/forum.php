@@ -36,10 +36,11 @@ pdoConnect();
 	<div id="content">
 		<!-- Section List -->
 		<div id='Sectionlist'>
-		<div class="course">
-			<div id="course-coursename" style="display: inline-block; margin-right:10px;">Forum</div>
+			<div class="course">
+				<div id="course-coursename" style="display: inline-block; margin-right:10px;">Forum</div>
+			</div>
+			<div class="coursesForForum"><?php include 'forumCourses.php';?></div>
 		</div>
-		<div class="coursesForForum"><?php include 'forumCourses.php';?></div>
 	</div>
 	<!-- content END -->
 
