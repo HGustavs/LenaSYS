@@ -10,9 +10,6 @@
     width: -webkit-calc(34.6%);
     width: -moz-calc(34.6%);
     width: calc(34.6%);
-     overflow: scroll;
-    overflow-y: auto;
-    overflow-x: auto;
     z-index: 2;
     max-width: 90%;
     min-width: 10%;

@@ -1529,7 +1529,7 @@ function resizeBoxes(parent, templateId)
 {
 	var boxValArray = initResizableBoxValues(parent);
 	var remainWidth;
-		
+
 	if(templateId == 1) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
@@ -1741,8 +1741,8 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateid == 7) {
-		getLocalStorageProperties(templateid, boxValArray);
+	} else if(templateId == 7) {
+		getLocalStorageProperties(templateId, boxValArray);
 		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
 		
 	
@@ -1758,7 +1758,7 @@ function resizeBoxes(parent, templateId)
 				
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1775,7 +1775,7 @@ function resizeBoxes(parent, templateId)
 					$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1792,12 +1792,12 @@ function resizeBoxes(parent, templateId)
 			},
 			stop: function(e, ui) {
 				$(boxValArray['box4']['id']).css("top", " ");
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	} else if(templateid == 8){
-		getLocalStorageProperties(templateid, boxValArray);
+	} else if(templateId == 8) {
+		getLocalStorageProperties(templateId, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -1811,7 +1811,7 @@ function resizeBoxes(parent, templateId)
 				$("#box1wrapper").css("height", "100%");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -1827,7 +1827,7 @@ function resizeBoxes(parent, templateId)
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
-				setLocalStorageProperties(templateid, boxValArray);
+				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
@@ -2122,10 +2122,10 @@ function erasePercentGap(templateId, boxValArray)
 	}else if(templateId == 6){
 		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-	}else if(templateid == 7){
+	}else if(templateId == 7){
 		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-	}else if(templateid == 8){
+	}else if(templateId == 8){
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
 		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 	}
