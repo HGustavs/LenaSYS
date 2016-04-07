@@ -100,8 +100,9 @@
 				
 				// There are at least two boxes, create two boxes to start with
 				if($templateNumber==1||$templateNumber==2) $boxCount=2;
-				if($templateNumber==3||$templateNumber==4) $boxCount=3;
-				if($templateNumber==5||$templateNumber==6) $boxCount=4;
+				if($templateNumber==3||$templateNumber==4 ||$templateNumber==8) $boxCount=3;
+				if($templateNumber==5||$templateNumber==6 ||$templateNumber==7) $boxCount=4;
+				
 				
 				// Create appropriate number of boxes
 				for($i=1;$i<$boxCount+1;$i++){
