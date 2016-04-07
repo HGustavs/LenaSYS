@@ -229,7 +229,7 @@ if(strcmp($opt,"DUGGA")!==0){
 
 $files= array();
 $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq from submission where uid=:uid and vers=:vers and cid=:cid order by filename,updtime desc;");
-$query->bindParam(':uid', $userid);
+$query->bindParam(':uid', $luid);
 $query->bindParam(':cid', $cid);
 $query->bindParam(':vers', $coursevers);
 	
