@@ -29,11 +29,8 @@ $vers = getOP('vers');
 $moment = getOP('moment');
 $mark = getOP('mark');
 $ukind = getOP('ukind');
-<<<<<<< HEAD
 $duggaid=getOP('did');
-=======
 $coursevers=getOP('coursevers');
->>>>>>> 6e444d8110ab57ba1186cbacbaedff97acadb2e4
 
 $debug="NONE!";
 
@@ -88,6 +85,21 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 		$query->bindParam(":mark",$mark);
 		$query->bindParam(":uid",$luid);
+		$query->bindParam(":cid",$cid);
+		$query->bindParam(":moment",$moment);
+		$query->bindParam(":vers",$vers);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries (189)\n".$error[2];
+		}
+	}
+
+	// Run if unlocking a dugga is requested
+	if (strcmp($opt, "CHFAILS")==0) {
+		//update these particular last duggas and remove the lock, thus resetting the three time limit of failures
+		$query = $pdo->prepare("UPDATE duggaTries SET dugga_lock = 0 WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers;");
+		$query->bindParam(":uid", $luid);
 		$query->bindParam(":cid",$cid);
 		$query->bindParam(":moment",$moment);
 		$query->bindParam(":vers",$vers);
@@ -255,7 +267,7 @@ if(strcmp($opt,"DUGGA")!==0){
 		}
 
 		//fetch status on locked duggaas after too many attempts by users
-		$query = $pdo->prepare("SELECT FK_uid as uid, FK_cid as cid, FK_vers as vers, FK_moment as moment, count(dugga_lock) as nrLocks FROM duggaTries WHERE dugga_lock = 1 GROUP BY FK_uid,FK_moment,FK_vers;");
+		$query = $pdo->prepare("SELECT FK_uid as uid, FK_cid as cid, FK_vers as vers, FK_moment as moment, SUM(dugga_lock) as nrLocks FROM duggaTries WHERE dugga_lock = 1 GROUP BY FK_uid,FK_moment,FK_vers;");
 
 		if (!$query->execute()) {
 			$error=$query->errorInfo();
@@ -263,16 +275,18 @@ if(strcmp($opt,"DUGGA")!==0){
 		}
 
 		foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-			array_push(
-				$locked,
-				array(
-					'uid' => $row['uid'],
-					'cid' => $row['cid'],
-					'vers' => $row['vers'],
-					'moment' => $row['moment'],
-					'nrLocks' => $row['nrLocks']
-				)
-			);
+			if ($row['nrLocks'] >= 3) {
+				array_push(
+					$locked,
+					array(
+						'uid' => $row['uid'],
+						'cid' => $row['cid'],
+						'vers' => $row['vers'],
+						'moment' => $row['moment'],
+						'nrLocks' => $row['nrLocks']
+					)
+				);
+			}
 		}
 	}
 }
