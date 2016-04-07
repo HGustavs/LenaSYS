@@ -107,7 +107,7 @@
 		<?php
 
 			// Log USERID for Dugga Access
-			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			logUserEvent($userid, EventTypes::DuggaRead, $cid." ".$vers." ".$quizid." ".$duggafile);
 
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document

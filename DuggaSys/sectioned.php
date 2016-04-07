@@ -38,6 +38,7 @@ if(isset($_GET['coursename'])){
 	
 	<!-- content START -->
 	<div id="content">
+		<div id="coursesForForum"></div>
 		<!-- Section List -->
 		<div id='Sectionlist'></div>
 	</div>
