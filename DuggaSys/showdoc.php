@@ -25,7 +25,7 @@
 								$workstr=substr($workstr,3);
 						}
 
-						if($kodblock){
+						if($kodblock && $workstr != ""){
 								$workstr="<pre><code>".$workstr."</code></pre>";
 						}else{
 								$workstr=markdownBlock($workstr);
