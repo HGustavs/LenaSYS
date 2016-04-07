@@ -1746,7 +1746,7 @@ function resizeBoxes(parent, templateId)
 };
 
 //----------------------------------------------------------------------------------
-//width adjustment for template(1,3) (Two boxes beside eachother.)
+//width adjustment for template 1, 4 and 8 (Two boxes beside eachother.)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
@@ -1768,7 +1768,7 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 }
 
 //----------------------------------------------------------------------------------
-//width adjustment for template 3. 
+//width adjustment for template 3 & 8. 
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
@@ -1845,7 +1845,7 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 }
 
 //----------------------
-// WIDTH MEASURMENT FOR TEMPLATE 6
+// WIDTH MEASURMENT FOR TEMPLATE 6 & 7
 //----------------------
 
 function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
@@ -1875,7 +1875,7 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 }
 	
 //----------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 6
+// HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
 //----------------------
 	
 function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
@@ -1911,7 +1911,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 }
 	
 //----------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 6
+// HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
 //----------------------
 	
 function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
