@@ -29,7 +29,15 @@ $versid=getOP('versid');
 $versname=getOP('versname');
 $coursenamealt=getOP('coursenamealt');
 $coursecode=getOP('coursecode');
+
 $hp = '7.5';
+
+$log_uuid = getOP('log_uuid');
+$log_timestamp = getOP('log_timestamp');
+
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "courseseedservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseseedservice.php");
+
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -158,6 +166,6 @@ $array = array(
 	);
 
 echo json_encode($array);
-
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseseedservice.php");
 ?>
 

@@ -407,6 +407,7 @@ function accessCourse() {
 //----------------------------------------
 var momentexists=0;
 var resave = false;
+
 function returnedSection(data)
 {
 	retdata=data;

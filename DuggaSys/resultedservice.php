@@ -10,6 +10,12 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
+$log_uuid = getOP('log_uuid');
+$log_timestamp = getOP('log_timestamp');
+
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "resultedservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php");
+
 if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 }else{
@@ -242,5 +248,5 @@ $array = array(
 
 
 echo json_encode($array);
-
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php");
 ?>

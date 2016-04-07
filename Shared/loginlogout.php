@@ -29,18 +29,21 @@ if($opt=="LOGIN"){
 			$res["username"] = $username;
 
 			// Log USERID for Dugga Access
-			makeLogEntry($username,3,$pdo,"");			
+			logUserEvent($username,EventTypes::LoginSuccess,"");			
 
 		}else{
 			addlogintry(); // If to many attempts has been commited, it will jump to this
 			// As login has failed we log the attempt
-			makeLogEntry($username,4,$pdo,"");
+			logUserEvent($username,EventTypes::LoginFail,"");
 		}
 		
 		// Return the data as JSON
 		echo json_encode($res);
 
 }else{
+		//Adds a row to the logging table for the userlogout.
+		logUserEvent($_SESSION['loginname'],EventTypes::Logout,"");
+		
 		// Parts of Logout copied from http://stackoverflow.com/a/3948312 and slightly modified, licensed under cc by-sa
 		// unset all of the session variables.
 		$_SESSION = array();
