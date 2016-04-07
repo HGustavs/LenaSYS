@@ -280,5 +280,22 @@
  	margin: 0;
 	font-size:1.4em;
 	color:#fff;
+	
 }
 
+#pwtable {
+	margin: auto;
+	font-weight: bold;
+}
+
+#changepwsubmit{
+    width: 150px;
+    height: 25px;
+    color: #fff;
+    background-color: #614875;
+    border: 0px;
+    border-radius: 4px;
+    margin-top: 2px;
+    margin-left: 1px;
+    float: right;
+}

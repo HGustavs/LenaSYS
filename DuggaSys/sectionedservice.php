@@ -37,7 +37,12 @@ $coursename=getOP('coursename');
 $versname=getOP('versname');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
+$log_uuid = getOP('log_uuid');
+$log_timestamp = getOP('log_timestamp');
 $unmarked = 0;
+
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "sectionedservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "sectionedservice.php");
 
 if($gradesys=="UNK") $gradesys=0;
 
@@ -454,5 +459,6 @@ $array = array(
 );
 
 echo json_encode($array);
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php");
 ?>
 

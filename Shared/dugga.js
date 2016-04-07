@@ -22,7 +22,7 @@ function toggleloginnewpass(){
 }
 
 function closeWindows(){
-
+	//changed .loginBox to #loginBox to stop lockbox from closing when login box is closed
 	$(".loginBox").css("display", "none");
 	$("#overlay").css("display","none");
 	$("#resultpopover").css("display","none");
@@ -219,6 +219,18 @@ function htmlEntities(str) {
 function AJAXService(opt,apara,kind)
 {
 	var para="";
+	var timestamp = Date.now();
+	var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for(var i=0; i<15; i++){
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+	var uuid = text;
+
+	apara.log_uuid = uuid;
+	apara.log_timestamp = timestamp;
+	
 	for (var key in apara) {
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
@@ -266,126 +278,207 @@ function AJAXService(opt,apara,kind)
 		}
 	}
 	
-	if(kind=="COURSE"){
+	var sendConfirmation = function(service) {
+		$.ajax({
+			url: "serviceconfirmation.php",
+			type: "POST",
+			data: "uuid="+uuid+"&timestamp="+timestamp+"&service="+service,
+			dataType: "json"
+		});
+	}
+	
+	switch(kind){
+		case "COURSE":
 			$.ajax({
 				url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedCourse
+				success: function(data) {
+					returnedCourse(data);
+					sendConfirmation("courseedservice.php");
+				}
 			});
-	}else if(kind=="VARIANTPDUGGA"){
-		$.ajax({
-			url: "showDuggaservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedanswersDugga
-		});
-	}else if(kind=="DUGGA"){
+			break;
+		case "VARIANTPDUGGA":
+			$.ajax({
+				url: "showDuggaservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedanswersDugga(data);
+					sendConfirmation("showDuggaservice.php");
+				}
+			});
+			break;
+		case "DUGGA":
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					returnedDugga(data);
+					sendConfirmation("duggaedservice.php");
+				}
 			});
-	}else if(kind=="BDUGGA"){
+			break;
+		case "BDUGGA":
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedBlankDugga
+				success: function(data) {
+					returnedBlankDugga(data);
+					sendConfirmation("duggaedservice.php");
+				}
 			});
-	}else if(kind=="DUGGAHIGHSCORE"){
+			break;
+		case "DUGGAHIGHSCORE":
 			$.ajax({
 				url: "highscoreservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedHighscore
+				success: function(data) {
+					returnedHighscore(data);
+					sendConfirmation("highscoreservice.php");
+				}
 			});
-	}else if(kind=="FILE"){
+			break;
+		case "FILE":
 			$.ajax({
 				url: "fileedservice.php",
 				type: "POST",
 				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedFile
-			})
-	}else if(kind=="ACCESS"){
+				success: function(data) {
+					returnedFile(data);
+					sendConfirmation("fileedservice.php");
+				}
+			});
+			break;
+		case "ACCESS":
 			$.ajax({
 				url: "accessedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedAccess
+				success: function(data) {
+					returnedAccess(data);
+					sendConfirmation("accessedservice.php");
+				}
 			});
-	}else if(kind=="SECTION"){
+			break;
+		case "SECTION":
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedSection
+				success: function(data) {
+					returnedSection(data);
+					sendConfirmation("sectionedservice.php");
+				}
 			});
-	}else if(kind=="PDUGGA"){
+			break;
+		case "PDUGGA":
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					returnedDugga(data);
+					sendConfirmation("showDuggaservice.php");
+				}
 			});
-	}else if(kind=="RESULT"){
+			break;
+		case "RESULT":
 			$.ajax({
 				url: "resultedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedResults
+				success: function(data) {
+					returnedResults(data);
+					sendConfirmation("resultedservice.php");
+				}
 			});
-	}else if(kind=="RESULTLIST"){
+			break;
+		case "RESULTLIST":
 			$.ajax({
 				url: "resultlistedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedResults
+				success: function(data) {
+					returnedResults(data);
+					sendConfirmation("resultlistedservice.php");
+				} 
 			});
-	}else if(kind=="CODEVIEW"){
+			break;
+		case "CODEVIEW":
 			$.ajax({
 				url: "editorService.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returned
+				success: function(data) {
+					returned(data);
+					sendConfirmation("editorService.php");
+				}
 			});
-	}else if(kind=="BOXCONTENT"){
-		$.ajax({
-			url: "editorService.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returned
-		});
-	}else if(kind=="UMVSTUDENT") {
+			break;
+		case "BOXCONTENT":
+			$.ajax({
+				url: "editorService.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returned(data);
+					sendConfirmation("editorService.php");
+				}
+			});
+			break;
+		case "UMVSTUDENT":
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: renderStudentView
+				success: function(data) {
+					renderStudentView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
 			});
-	}else if(kind=="UMVTEACHER") {
+			break;
+		case "UMVTEACHER":
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: renderTeacherView
+				success: function(data) {
+					renderTeacherView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
 			});
+		case "GETCOURSETHREAD":
+			$.ajax({
+				url: "usermanagementviewservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					renderTeacherView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
+			});
+			break;
 	}
 }
 
@@ -503,6 +596,40 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){showLoginPopup();});		
 	}
+}
+
+//Function for marking//
+function showMarkingWindow()
+{
+
+	if($("#marking").css("display") == 'block'){
+		hideMarkingWindow();
+	}
+	else{
+		$("#marking").css("display","block");
+	}
+}
+
+function hideMarkingWindow()
+{
+	$("#marking").css("display","none");
+}
+//--------------------//
+
+function showDugga()
+{
+	$("#resultpopover").css("display", "block");
+}
+
+function hideDugga()
+{
+	$("#resultpopover").css("display", "none");
+	$("#duggaStats").css("display", "none");
+}
+
+function hideDuggaStats()
+{
+	$("#duggaStats").css("display","none");
 }
 
 function showReceiptPopup()
@@ -719,4 +846,117 @@ function makeForm(cfield, ctype){
 function toggleInstructions(element)
 {
 	$(element).parent().find(".instructions-content").slideToggle("slow");
+}//---------------------------------------------------------------------------------------------------------------
+// Click counter - Used by highscore system implementations in dugga's to count the number of button clicks
+//---------------------------------------------------------------------------------------------------------------
+
+var ClickCounter = {
+	// Used to count clicks
+	score: 0,
+	
+	// Initializes the noClicks variable, called at the start of a dugga
+	initialize: function() {
+		this.score = 0;
+		this.animateClicks();	
+	},
+	
+	// Called whenever a dugga should count a mouse click, e.g., when a user presses a button
+	onClick: function() {
+		// Increments the click counter by one
+		this.score++;
+		
+		// Calls animate clicks to directly update the click counter user interface 
+		this.animateClicks();
+	},
+	
+	//show clicker
+	showClicker: function(){
+		this.animateClicks();
+	},
+	
+	// Updates the click counter user interface in a dugga, uses the same 
+	animateClicks: function() {
+		// Apply some web magic to change the ui counter
+		var str = "<p>";
+		str += this.score;
+		document.getElementById('scoreElement').innerHTML = str;
+	}
 }
+//---------------------------------------------------------------------------------------------------------------
+// Timer - Used in dugga's to count the amount of time spent on a dugga
+//---------------------------------------------------------------------------------------------------------------
+
+var Timer = {	
+	// Determines if the timer should update ui
+	update: 0,
+
+	// Declare the timer variable, will be accessible from this object in a dugga
+	timer: undefined,
+	
+	// Counts the amount of time spent on a dugga
+	score: 0,
+	
+	// Called at the start of a dugga to initialize the object
+	startTimer: function(){
+		var self = this;
+		
+		// Sets the update interval of the timer, calls animate timer on increment
+		this.timer = setInterval( function(){self.incrementTimer(); self.animateTimer();}, 1000 );
+		
+		// Call animate timer to initialize ui at 00:00:00
+		this.animateTimer();
+	},
+	// Reset the timer.
+	reset: function(){
+		this.score = 0;
+
+		// Call animate timer to initialize ui at 00:00:00
+		this.animateTimer();
+	},
+	
+	// Stops the timer from counting, called at the end of a dugga
+	stopTimer: function(){
+		var self = this;
+		clearInterval(self.timer);
+		
+		// Quick fix
+		this.update = 1;
+	},
+	
+	// Increments the time counter by one
+	incrementTimer: function(){
+		this.score++;
+	},
+	
+	//Show timer
+	showTimer: function(){
+		this.animateTimer();
+	},
+	
+	// Updates the user interface
+	animateTimer: function(){
+		// Calculate hours, minutes and seconds based on timespent
+		var hours = Math.floor(this.score / 3600);
+		var minutes = Math.floor(this.score / 60) % 60;
+		var seconds = this.score % 60;
+
+		// Create a nice looking clock thing with the information we have
+		var str = "<p>";
+		str += hours + ":";
+		
+		if(minutes < 10){
+			str += 0;
+		}
+
+		str += minutes + ":";
+		if(seconds < 10){
+			str += 0;
+		}
+		str += seconds;
+
+		// Push new value to ui thing
+		if(this.update == 0) {
+			document.getElementById('scoreElement').innerHTML = str;
+		}
+	}
+}	

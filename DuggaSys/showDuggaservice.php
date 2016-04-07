@@ -32,8 +32,13 @@ $moment=getOP('moment');
 $segment=getOP('segment');
 $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
+$log_uuid = getOP('log_uuid');
+$log_timestamp = getOP('log_timestamp');
 $setanswer=gettheOP('setanswer');
-$debug="NONE!";	
+$debug="NONE!";
+
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "showDuggaservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php");
 
 $param = "";
 $savedanswer = "";
@@ -206,7 +211,7 @@ if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
 			if(strcmp($opt,"SAVDU")==0){				
 				// Log the dugga write
-				makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
+				logUserEvent($userid, EventTypes::DuggaWrite, $courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
 				//Seperate timeUsed, stepsUsed and score from $answer
 				$temp = explode("##!!##", $answer);
@@ -216,7 +221,7 @@ if(checklogin()){
 				$score = $temp[3];
 				
 				// check if the user already has a grade on the assignment
-				$query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+				$query = $pdo->prepare("SELECT grade, opened from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 				$query->bindParam(':cid', $courseid);
 				$query->bindParam(':coursevers', $coursevers);
 				$query->bindParam(':uid', $userid);
@@ -228,14 +233,28 @@ if(checklogin()){
 
 				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 					$grade=$row['grade'];
+					$opened=$row['opened'];
 				}
 
 				if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
 					//if grade equal G, VG, 3, 4, 5, or 6
 					$debug="You have already been graded on this assignment";
-				}else{
-					// Update Dugga!
+				}
+				else if($opened != null){
+					//if dugga has been previously opened
 					$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':coursevers', $coursevers);
+					$query->bindParam(':uid', $userid);
+					$query->bindParam(':moment', $moment);
+					$query->bindParam(':useranswer', $answer);
+					$query->bindParam(':timeUsed', $timeUsed);
+					$query->bindParam(':stepsUsed', $stepsUsed);
+					$query->bindParam(':score', $score);
+				}
+				else{
+					// Update Dugga!
+					$query = $pdo->prepare("UPDATE userAnswer SET opened=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':coursevers', $coursevers);
 					$query->bindParam(':uid', $userid);
@@ -281,7 +300,7 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 		$savedanswer.=$row['useranswer'].",";
 	}
 
-	makeLogEntry($userid,2,$pdo,$first);
+	logUserEvent($userid, EventTypes::DuggaWrite, $first);
 	$insertparam = true;
 	$param = $setanswer;
 }
@@ -350,4 +369,5 @@ $array = array(
 	);
 
 echo json_encode($array);
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php");
 ?>

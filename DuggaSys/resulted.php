@@ -53,13 +53,16 @@ pdoConnect();
 	//--------------------------------------------------------------------------------------------------- -->
 
 	<div id='resultpopover' class='resultPopover' style='display:none'>
+
 		<script>
 		$(window).keyup(function(event){
 			if(event.keyCode == 27) closeWindows();
 		});
 		</script>
 		<div class='loginBoxheader'>
-			<h3 style='width:100%;' id='Nameof'>Show Results</h3><div onclick='closeWindows();'>x</div>
+			<h3 style='width:100%;' id='Nameof'>Show Results</h3>
+			<div onclick='closeWindows();'>x</div>
+
 		</div>
 		<div id="MarkCont" style="position:absolute; left:4px; right:104px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
 		<div id='markMenuPlaceholder' style="position:absolute; right:2px; top:34px; background:#bbb; width:100px;"></div>

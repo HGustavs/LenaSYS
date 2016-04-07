@@ -30,6 +30,15 @@ $versname=getOP('versname');
 $coursenamealt=getOP('coursenamealt');
 $coursecode=getOP('coursecode');
 
+$hp = '7.5';
+
+$log_uuid = getOP('log_uuid');
+$log_timestamp = getOP('log_timestamp');
+
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "courseseedservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseseedservice.php");
+
+
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
@@ -54,8 +63,9 @@ if($ha){
 	if(strcmp($opt,"DEL")===0){
 	
 	}else if(strcmp($opt,"NEW")===0){
-		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
+		$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator,hp) VALUES(:coursecode,:coursename,0,:usrid,:hp)");
 		
+		$query->bindParam(':hp', $hp);
 		$query->bindParam(':usrid', $userid);
 		$query->bindParam(':coursecode', $coursecode);
 		$query->bindParam(':coursename', $coursename);
@@ -101,9 +111,10 @@ $entries=array();
 
 if($ha){
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
-}else{
+}else if (isset($_SESSION['uid'])){
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
-}
+}else
+	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>1 and visibility<3 ORDER BY coursename");
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
@@ -155,6 +166,6 @@ $array = array(
 	);
 
 echo json_encode($array);
-
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseseedservice.php");
 ?>
 

@@ -14,8 +14,8 @@
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src="timer.js"></script>
-	<script src="clickcounter.js"></script>
+//	<script src="timer.js"></script>
+//	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
 
 <?php
@@ -62,7 +62,7 @@
 	}
 
 	//If we have permission, and if file exists, include javascript file.			
-	if($hr){
+	if($hr || $userid=="UNK"){
 		if(isSuperUser($userid)){
 			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
 		}else{
@@ -105,30 +105,35 @@
 	<!-- content START -->
 	<div id="content">
 		<?php
+			
 
 			// Log USERID for Dugga Access
-			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
+			logUserEvent($userid, EventTypes::DuggaRead, $cid." ".$vers." ".$quizid." ".$duggafile);
 
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
 			if($duggafile!="UNK"&&$userid!="UNK"){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
+					echo "<table width='100%'><tr><td align='center'>";
+					//only shows save button if quiz is not graded
+					if (!getUserAnswerHasGrade($userid, $cid, $quizid)) {
+						echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
+					}
+					echo "<input class='submit-button' type='button' value='Reset' onclick='reset();' style='width:160px;height:48px;line-height:48px;' /></td></tr></table>";
 
-					echo "<table width='100%'>";
-					echo "<tr>";
-					echo "<td align='center'>";
-					echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
-					echo "<input class='submit-button' type='button' value='Reset' onclick='reset();' style='width:160px;height:48px;line-height:48px;' />";
-					echo "</td>";
-					echo "</tr>";
-					echo "</table>";
 
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
+				echo  "<!-- Timer START --><div id='scoreElement'></div>";
 			}else if ($userid=="UNK"){
-				echo "<div class='err'><span style='font-weight:bold;'>Not logged in!</span>You need to be logged in if you want to do duggor. There is a log in button in the top right corner.</div>";
+				//check if dugga template exists
+				if(file_exists ( "templates/".$duggafile.".html")){
+					readfile("templates/".$duggafile.".html");
+				}else{
+					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
+				}
 			}else{
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the dugga. Contact LENASys-admin.</div>";
 			}
@@ -152,13 +157,13 @@
 	</div>
 	<!-- Login Box (receiptbox) End! -->
 
-	<!-- Timer START -->
-
-	<div id='scoreElement'>
-
-	</div>
-
 	<!-- content END -->
+
+	<?php
+		if ($userid=="UNK") {
+			include '../Shared/lockbox.php';
+		}
+	?>
 
 	<?php
 		include '../Shared/loginbox.php';

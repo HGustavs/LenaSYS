@@ -10,14 +10,30 @@ AJAXService("GET",{cid:querystring['cid']},"ACCESS");
 
 function addUsers()
 {
-	newusers=$("#import").val();
+	var newusers=$("#import").val();
 	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newusers},"ACCESS");
 	$("#createUsers").css("display","none");
+}
+
+function addSelectedUsers()
+{
+	var addUsers=document.getElementById("filterFrame").contentWindow.document.getElementById("addSelected").val;
+	
+	addUsers = addUsers.replace("undefined", "");
+	
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:addUsers},"ACCESS");
+	
+	$("#addUsers").css("display","none");
 }
 
 function showCreateUsersPopup()
 {
 	$("#createUsers").css("display","block");
+}
+
+function showAddUsersPopup()
+{
+	$("#addUsers").css("display","block");
 }
 
 function hideCreateUsersPopup()
@@ -71,6 +87,44 @@ function resetPw(uid,username)
 	window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20LENASys%20Login%20is%20"+username+"%0AYour%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
 	
 	AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd},"ACCESS");
+}
+
+function filterSelections(){
+	var access = $("#teacherStudent").val();
+	var course = $("#filterCourses").val();
+	document.getElementById('filterFrame').src = "searchFrame.php?access="+access+"&course="+course+"";
+	document.getElementById('filterFrame').reload;
+}
+
+function checkBox(checkBox){
+	var isChecked = checkBox.checked;
+	
+	//get the cell in which your dropdown is
+	var cell      = checkBox.parentNode;
+
+	//get the row of that cell
+	var row       = cell.parentNode;
+
+	//get the array of all cells in that row 
+	var cells     = row.getElementsByTagName("td");
+
+	//get the first input element in the second cell
+	var textfield = cells[4].getElementsByTagName("input")[0];
+	
+	//get parent window.
+	var parentWindow = document.getElementById('addSelected'); 
+	
+	
+	if(isChecked)
+	{
+		parentWindow.val += textfield.value+"\n";
+	}
+	else
+	{
+	   var fullValue = parentWindow.val;
+	   
+	   parentWindow.val = fullValue.replace(textfield.value+"\n", "");
+	}
 }
 
 //----------------------------------------

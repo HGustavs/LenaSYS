@@ -4,6 +4,7 @@ include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,6 +40,26 @@ pdoConnect();
 	<?php 
 		include '../Shared/loginbox.php';
 	?>
+
+	<!-- addDuggaTemplate Dialog START -->
+	<div id='addDuggaTemplate' class='loginBox' style='width:464px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Add template</h3>
+			<div onclick='hideAddDuggaTemplate();'>x</div>
+		</div>
+		<form enctype="multipart/form-data" action="filereceiveDuggaTemplate.php" method="POST">
+			<div style='padding:5px;'>
+				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>			
+			</div> 
+			<div style='padding:5px;'>
+				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
+			</div>
+			(.png, .html and .js are allowed)
+			<div style ='padding:5px, display:none' id='errormessage'>
+			</div> 
+		</form>
+	</div>
+	<!-- addDuggaTemplate Dialog END -->
 
 	<!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBox' style='width:464px;display:none;'>
@@ -84,7 +105,7 @@ pdoConnect();
 
 	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
-			<button type="button" onclick='closePreview();'>Close Preview</button>
+			<div onclick='closePreview();'>x</div>
 		</div>
 		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>
 
@@ -93,4 +114,14 @@ pdoConnect();
 	<!-- // navheader:Result Popover End, Edit VAriant Start 
 	//--------------------------------------------------------------------------------------------------- -->
 </body>
+<script type='text/javascript'>
+	var elem = $('#resultpopover')[0];
+
+	$(document).on('keydown', function (e){
+	if (e.keyCode === 27){
+		$(elem).css("display", "none");
+	}
+	});
+</script>
 </html>
+

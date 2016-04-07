@@ -180,7 +180,9 @@ function returned(data)
 				if(important[j].indexOf('*') != -1){
 					important[j] = important[j].replace(/\*/g, "&#42;");
 				}	
-				desc=replaceAll(important[j],sstr,desc);
+				//make sure that not partial words gets highlighted
+				var regExp = new RegExp("\\b"+ important[j] + "\\b", "g");
+				desc = desc.replace(regExp,sstr);
 			}
 			//Replace the html code for asterisks with asterisks
 			desc = desc.replace(/\&\#42\;/g, "*");
@@ -1740,11 +1742,101 @@ function resizeBoxes(parent, templateId)
 					$('iframe').css('pointer-events','auto');
 				}
 			});
-		}
+		}else if(templateId == 7) {
+		getLocalStorageProperties(templateId, boxValArray);
+		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
+		
+	
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "w",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+				$(boxValArray['box1']['id']).height(100 + "%");
+				
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+					alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+					$(boxValArray['box3']['id']).css("left", " ");
+					$(boxValArray['box2']['id']).css("left", " ");
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box3']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				$(boxValArray['box4']['id']).css("top", " ");
+				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+			},
+			stop: function(e, ui) {
+				$(boxValArray['box4']['id']).css("top", " ");
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+	} else if(templateId == 8) {
+		getLocalStorageProperties(templateId, boxValArray);
+		
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "w",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+				$("#box2wrapper").css("left", ""); 
+				$("#box1wrapper").css("height", "100%");
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignBoxesHeight2boxes(boxValArray, 2, 3);
+				$(boxValArray['box2']['id']).css("left", " ");
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+	}
 };
 
 //----------------------------------------------------------------------------------
-//width adjustment for template(1,3) (Two boxes beside eachother.)
+//width adjustment for template 1, 4 and 8 (Two boxes beside eachother.)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
@@ -1766,7 +1858,7 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 }
 
 //----------------------------------------------------------------------------------
-//width adjustment for template 3. 
+//width adjustment for template 3 & 8. 
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
 function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
@@ -1843,7 +1935,7 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 }
 
 //----------------------
-// WIDTH MEASURMENT FOR TEMPLATE 6
+// WIDTH MEASURMENT FOR TEMPLATE 6 & 7
 //----------------------
 
 function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
@@ -1873,7 +1965,7 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 }
 	
 //----------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 6
+// HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
 //----------------------
 	
 function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
@@ -1909,7 +2001,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 }
 	
 //----------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 6
+// HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
 //----------------------
 	
 function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
@@ -2031,6 +2123,12 @@ function erasePercentGap(templateId, boxValArray)
 	}else if(templateId == 6){
 		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}else if(templateId == 7){
+		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+	}else if(templateId == 8){
+		alignBoxesHeight2boxes(boxValArray, 2, 3);
+		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
 	}
 }
 

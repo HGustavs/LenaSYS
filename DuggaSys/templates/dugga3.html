@@ -58,17 +58,28 @@
 <div id="debugCanvas" style="display:none;font-size: 8px; position: fixed; bottom: 60px; left: 90%;"></div>
 <div id="debugActiveObj" style="display:none;font-size: 8px; position: fixed; bottom: 80px; left: 90%;"></div>
 
+<button id='markButton' type='button' onclick='showMarkingWindow()'>Mark</button>
+<div id='marking' class='markWindow' style='display:none'>
+	<div class='loginBoxheader'>
+		<h3>Marking</h3>
+			<div onclick='hideMarkingWindow()'>x</div>
+	</div>
+		<textarea placeholder='Add a comment here...'></textarea>
+		<input id='markButton' type='submit' value='submit' style='margin-bottom:4px;margin-right:4px;'></input>
+	</table>
+</div>
+
 <div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
     <div class='loginBoxheader'>
         <h3>Dugga Stats</h3>
-        <div onclick="hideReceiptPopup()">x</div>
+        <div onclick="hideDuggaStats()">x</div>
     </div>
-    <div class="table-wrap">
-        <table>
+      <div class="table-wrap">
+        <table style="border: 1px solid black;">
             <tr><th></th><th>Highscore</th><th>Total</th></tr>
             <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
             <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
             <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
         </table>
-    </div>
+      </div>
 </div>
