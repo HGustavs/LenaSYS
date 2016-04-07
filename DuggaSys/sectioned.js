@@ -687,7 +687,7 @@ function returnedSection(data)
 
 					// Add generic td for deadlines if one exists
 					if (deadline!== null || deadline==="undefined"){
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;' ";
+						str +="<td style='text-align:right;word-wrap:break-word;' ";
 						str+=" >"+deadline+"</td>";
 					} else {
 
