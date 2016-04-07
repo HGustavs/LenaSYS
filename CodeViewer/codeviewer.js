@@ -182,7 +182,7 @@ function returned(data)
 				}	
 				//make sure that not partial words gets highlighted
 				var regExp = new RegExp("\\b"+ important[j] + "\\b", "gi");
-				desc=replaceAll(regExp,sstr,desc);
+				desc = desc.replace(regExp,sstr);
 			}
 			//Replace the html code for asterisks with asterisks
 			desc = desc.replace(/\&\#42\;/g, "*");
