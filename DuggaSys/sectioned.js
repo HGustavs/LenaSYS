@@ -674,7 +674,7 @@ function returnedSection(data)
 						//-----------------------------
 						//Dugga!
 						//-----------------------------
-						str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
+						str+="<div style='margin-left:15px'><a style='cursor:pointer;word-wrap:break-word;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a></div>";
 					}else if(parseInt(item['kind']) == 5){
 						if(item['link'].substring(0,4) === "http"){
 							str+= "<a style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
