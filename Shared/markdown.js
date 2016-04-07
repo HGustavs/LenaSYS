@@ -82,7 +82,7 @@ function parseMarkdown(inString)
 					workstr = workstr.substr(3);
 			}			
 
-			if(kodblock){
+			if(kodblock && workstr != ""){
 
 					workstr='<pre><code>'+workstr+'</code></pre>';
 			}else{
@@ -127,7 +127,7 @@ function markdownBlock(inString)
 	inString = inString.replace(/\<\/ul\>(\r\n|\n|\r)\<ul\>/gm,"");
 
 	//Regular expression for line
-	inString = inString.replace(/^(\-{3}\n)/gm, '<hr>');
+	inString = inString.replace(/\-{3,}/g, '<hr>');
 	
 	// Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
 	inString = inString.replace(/(\r\n|\n|\r){3}/gm,"<br><br>");
@@ -159,6 +159,11 @@ function markdownBlock(inString)
 	// ===filename,start row,end row, text to show===
 	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword2" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
 
+	// Three or more dots should always be converted to an ellipsis.
+	inString = inString.replace(/\.{3,}/g, "&hellip;");
+	
+	// Iframe, website inside a inline frame - (--url,width,height--)
+	inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
+
 	return inString;
 }
-

@@ -30,6 +30,8 @@ $(function()
 
 function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 		console.log(e);
+		
+		closeWindows();
 	
 		var pressed = e.target.className;
 	
@@ -130,12 +132,39 @@ function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid }, "RESULT");
 }
 
+function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid) 
+{
+		$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+		console.log("course: "+ cid, " vers: " + vers + " moment: " + moment + " uid: " + uid);
+		console.log("gs "+gradeSystem+ " cid: " + querystring['cid'] + " cvers: " + querystring['coursevers']);
+
+		var menu = "<div class='' style='width:100px;display:block;'>";
+		menu +=	"<div class='loginBoxheader'>";
+		menu += "<h3>Grade</h3>";
+		menu += "</div>";
+		menu += "<table>";
+		menu += "<tr><td>";
+		if (foundgrade === null && submitted === null) {
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I");
+		}else if (foundgrade !== null){
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U");													
+		}else {
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U");
+		}
+		menu += "</td></tr>";
+		menu += "</table>";
+		menu += "</div> <!-- Menu Dialog END -->";
+		document.getElementById('markMenuPlaceholder').innerHTML=menu;
+
+		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : querystring['coursevers'] }, "RESULT");
+}
+
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind) 
 {
 		AJAXService("CHGR", { cid : cid, vers : vers, moment : moment, luid : uid, mark : newMark, ukind : ukind }, "RESULT");
 }
 
-function moveDist(e) 
+/*function moveDist(e) 
 {
 		mmx = e.clientX;
 		mmy = e.clientY;
@@ -151,11 +180,11 @@ function moveDist(e)
 				document.getElementById('MarkCont').innerHTML="";
 			}
 		}
-}
+}*/
 
 function enterCell(thisObj)
 {
-		rProbe=$(thisObj).css('backgroundColor');
+		rProbe=$(thisObj).css('background-color');
 		if(rProbe!="transparent"){
 				if(rProbe=="rgb(248, 232, 248)"){
 						cliffton="rgb(208,192,208)";
@@ -166,12 +195,14 @@ function enterCell(thisObj)
 				}else if(rProbe=="rgb(255, 238, 221)"){
 						cliffton="rgb(215,198,181)";		
 				}else if(rProbe=="rgb(255, 255, 255)"){
-						cliffton="rgb(215,215,215)";		
+						cliffton="rgb(215,215,215)";
+				}else if(rProbe=="rgb(255, 170, 170)"){
+						cliffton="rgb(229,153,153)";	
 				}else{
 						cliffton="#FFF";
 				}
 		
-				$(thisObj).css('backgroundColor',cliffton);
+				$(thisObj).css('background-color',cliffton);
 		}
 }
 
@@ -242,7 +273,7 @@ function renderResultTableHeader(data)
 function renderResultTableFooter()
 {
 		var str = ""
-		str += "<tr><th id='needMarking' style='text-align:right;'></th>";
+		str += "<tr><th id='hasMarking' style='text-align:center;'></th>";
 		for (var i = 0; i < amountPassed.length; i++) {
 					str += "<th style='border-left:2px solid white;'>";
 					str += amountPassed[i];
@@ -433,7 +464,9 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment, loc
 			zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
 		}
 		if(useranswer!==null){
-			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\");' />";
+
+			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\",\"" + foundgrade + "\",\"" + dugga.gradesystem + "\",\"" + dugga["lid"] + "\");' />";
+
 		}
 		zttr += '</div>'
 		// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
@@ -487,7 +520,7 @@ function returnedResults(data)
 		
 					//alert(data['duggaparam']+"\n"+data['useranswer'] + "\n" + data['duggaanswer']);
 					//console.log(data['duggastats']);
-					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats']);
+					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats'], data['files']);
 				});
 				$("#resultpopover").css("display", "block");
 				//alert(data['duggaanswer']);
@@ -531,7 +564,8 @@ function returnedResults(data)
 				str += renderResultTableFooter();
 				var slist = document.getElementById("content");
 				slist.innerHTML = str;
-				document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;						
+				document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;
+				document.getElementById("hasMarking").innerHTML = "Passed grades:";						
 		}
 		if (data['debug'] !== "NONE!") alert(data['debug']);
 }

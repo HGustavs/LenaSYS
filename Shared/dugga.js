@@ -24,7 +24,8 @@ function toggleloginnewpass(){
 function closeWindows(){
 	//changed .loginBox to #loginBox to stop lockbox from closing when login box is closed
 	$(".loginBox").css("display", "none");
-	$('#overlay').css("display","none");
+	$("#overlay").css("display","none");
+	$("#resultpopover").css("display","none");
 	$("#login #username").val("");
 	$("#login #password").val("");
 	
@@ -218,6 +219,18 @@ function htmlEntities(str) {
 function AJAXService(opt,apara,kind)
 {
 	var para="";
+	var timestamp = Date.now();
+	var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for(var i=0; i<15; i++){
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+	var uuid = text;
+
+	apara.log_uuid = uuid;
+	apara.log_timestamp = timestamp;
+	
 	for (var key in apara) {
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
@@ -265,6 +278,15 @@ function AJAXService(opt,apara,kind)
 		}
 	}
 	
+	var sendConfirmation = function(service) {
+		$.ajax({
+			url: "serviceconfirmation.php",
+			type: "POST",
+			data: "uuid="+uuid+"&timestamp="+timestamp+"&service="+service,
+			dataType: "json"
+		});
+	}
+	
 	switch(kind){
 		case "COURSE":
 			$.ajax({
@@ -272,149 +294,191 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedCourse
+				success: function(data) {
+					returnedCourse(data);
+					sendConfirmation("courseedservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "VARIANTPDUGGA":
 			$.ajax({
-			url: "showDuggaservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedanswersDugga
-		});
-		break;
-
+				url: "showDuggaservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedanswersDugga(data);
+					sendConfirmation("showDuggaservice.php");
+				}
+			});
+			break;
 		case "DUGGA":
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					returnedDugga(data);
+					sendConfirmation("duggaedservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "BDUGGA":
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedBlankDugga
+				success: function(data) {
+					returnedBlankDugga(data);
+					sendConfirmation("duggaedservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "DUGGAHIGHSCORE":
 			$.ajax({
 				url: "highscoreservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedHighscore
+				success: function(data) {
+					returnedHighscore(data);
+					sendConfirmation("highscoreservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "FILE":
 			$.ajax({
 				url: "fileedservice.php",
 				type: "POST",
 				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedFile
+				success: function(data) {
+					returnedFile(data);
+					sendConfirmation("fileedservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "ACCESS":
 			$.ajax({
 				url: "accessedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedAccess
+				success: function(data) {
+					returnedAccess(data);
+					sendConfirmation("accessedservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "SECTION":
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedSection
+				success: function(data) {
+					returnedSection(data);
+					sendConfirmation("sectionedservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "PDUGGA":
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
 				dataType: "json",
-				success: returnedDugga
+				success: function(data) {
+					returnedDugga(data);
+					sendConfirmation("showDuggaservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "RESULT":
 			$.ajax({
 				url: "resultedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedResults
+				success: function(data) {
+					returnedResults(data);
+					sendConfirmation("resultedservice.php");
+				}
 			});
-		break;		
-
+			break;		
 		case "RESULTLIST":
 			$.ajax({
 				url: "resultlistedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedResults
+				success: function(data) {
+					returnedResults(data);
+					sendConfirmation("resultlistedservice.php");
+				} 
 			});
-		break;
-
+			break;
 		case "CODEVIEW":
 			$.ajax({
 				url: "editorService.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returned
+				success: function(data) {
+					returned(data);
+					sendConfirmation("editorService.php");
+				}
 			});
-		break;
-
+			break;
 		case "BOXCONTENT":
 			$.ajax({
-			url: "editorService.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returned
-		});
-		break;
-
+				url: "editorService.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returned(data);
+					sendConfirmation("editorService.php");
+				}
+			});
+			break;
 		case "UMVSTUDENT":
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: renderStudentView
+				success: function(data) {
+					renderStudentView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
 			});
-		break;
-
+			break;
 		case "UMVTEACHER":
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: renderTeacherView
+				success: function(data) {
+					renderTeacherView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
 			});
-		break;
+		case "GETCOURSETHREAD":
+			$.ajax({
+				url: "usermanagementviewservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					renderTeacherView(data);
+					sendConfirmation("usermanagementviewservice.php");
+				}
+			});
+			break;
 	}
 }
 
@@ -532,6 +596,40 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){showLoginPopup();});		
 	}
+}
+
+//Function for marking//
+function showMarkingWindow()
+{
+
+	if($("#marking").css("display") == 'block'){
+		hideMarkingWindow();
+	}
+	else{
+		$("#marking").css("display","block");
+	}
+}
+
+function hideMarkingWindow()
+{
+	$("#marking").css("display","none");
+}
+//--------------------//
+
+function showDugga()
+{
+	$("#resultpopover").css("display", "block");
+}
+
+function hideDugga()
+{
+	$("#resultpopover").css("display", "none");
+	$("#duggaStats").css("display", "none");
+}
+
+function hideDuggaStats()
+{
+	$("#duggaStats").css("display","none");
 }
 
 function showReceiptPopup()
