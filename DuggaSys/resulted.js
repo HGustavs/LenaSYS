@@ -238,7 +238,7 @@ function renderResultTableHeader(data)
 function renderResultTableFooter()
 {
 		var str = ""
-		str += "<tr><th id='needMarking' style='text-align:right;'></th>";
+		str += "<tr><th id='hasMarking' style='text-align:center;'></th>";
 		for (var i = 0; i < amountPassed.length; i++) {
 					str += "<th style='border-left:2px solid white;'>";
 					str += amountPassed[i];
@@ -511,7 +511,8 @@ function returnedResults(data)
 				str += renderResultTableFooter();
 				var slist = document.getElementById("content");
 				slist.innerHTML = str;
-				document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;						
+				document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;
+				document.getElementById("hasMarking").innerHTML = "Passed grades:";						
 		}
 		if (data['debug'] !== "NONE!") alert(data['debug']);
 }
