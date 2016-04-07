@@ -268,7 +268,7 @@ CREATE TABLE word(
 CREATE TABLE box(
 	boxid					INTEGER UNSIGNED NOT NULL,
 	exampleid 		MEDIUMINT UNSIGNED NOT NULL,
-	boxtitle			VARCHAR(20),
+	boxtitle			VARCHAR(64),
 	boxcontent		VARCHAR(64),
 	filename			VARCHAR(256),
 	settings			VARCHAR(1024),
