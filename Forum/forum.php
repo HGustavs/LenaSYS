@@ -37,9 +37,8 @@ pdoConnect();
 		<div id='Sectionlist'>
 		<div class="course">
 			<div id="course-coursename" style="display: inline-block; margin-right:10px;">Forum</div>
-			
 		</div>
-		<?php include 'forumCourses.php';?>
+		<div class="coursesForForum"><?php include 'forumCourses.php';?></div>
 	</div>
 	<!-- content END -->
 
