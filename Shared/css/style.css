@@ -491,6 +491,42 @@ header td {
     background-color: #ccc;
     border: 2px solid #999;
 }
+/* Style for button, reuseble */
+#markButton{
+	position:absolute;
+	right:0px;
+	bottom:0px;
+	width:100px;
+	height:50px;
+	box-shadow:2px 2px 4px #000;
+	margin-bottom:10px;
+	margin-right:10px;
+	
+}
+
+.markWindow{
+	display:block;
+	padding: 4px;
+	position:absolute;
+	background-color:#ccc;
+	width:600px;
+	height:300px;
+	bottom:0px;
+	box-shadow:2px 2px 4px #000;
+	border: 2px solid #999;
+	bottom:0%;
+    right:30%;
+}
+
+.markWindow textarea{
+	position:absolute;
+	resize:none;
+	height:84%;
+	width:50%;
+	font-family:arial;
+	font-size:14px;
+	margin-top:4px;
+}
 
 .floatRightBox{
     width:220px;

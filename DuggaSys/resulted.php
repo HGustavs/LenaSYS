@@ -52,9 +52,10 @@ pdoConnect();
 	<!-- // navheader:Result Popover START 
 	//--------------------------------------------------------------------------------------------------- -->
 
-	<div id='resultpopover' class='resultPopover' style='display:none' onmousemove='moveDist(event);'>
+	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
 			<h3 style='width:100%;' id='Nameof'>Show Results</h3>
+			<div onClick='hideDugga();'>x</div>
 		</div>
 		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>
 	</div>
