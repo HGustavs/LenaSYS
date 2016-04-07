@@ -30,6 +30,8 @@ $(function()
 
 function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 		console.log(e);
+		
+		closeWindows();
 	
 		var pressed = e.target.className;
 	
@@ -122,6 +124,33 @@ function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		msy = -1;
 
 		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid }, "RESULT");
+}
+
+function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid) 
+{
+		$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+		console.log("course: "+ cid, " vers: " + vers + " moment: " + moment + " uid: " + uid);
+		console.log("gs "+gradeSystem+ " cid: " + querystring['cid'] + " cvers: " + querystring['coursevers']);
+
+		var menu = "<div class='' style='width:100px;display:block;'>";
+		menu +=	"<div class='loginBoxheader'>";
+		menu += "<h3>Grade</h3>";
+		menu += "</div>";
+		menu += "<table>";
+		menu += "<tr><td>";
+		if (foundgrade === null && submitted === null) {
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I");
+		}else if (foundgrade !== null){
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U");													
+		}else {
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U");
+		}
+		menu += "</td></tr>";
+		menu += "</table>";
+		menu += "</div> <!-- Menu Dialog END -->";
+		document.getElementById('markMenuPlaceholder').innerHTML=menu;
+
+		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : querystring['coursevers'] }, "RESULT");
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind) 
@@ -423,7 +452,9 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 			zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
 		}
 		if(useranswer!==null){
-			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onClick='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\");' />";
+
+			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\",\"" + foundgrade + "\",\"" + dugga.gradesystem + "\",\"" + dugga["lid"] + "\");' />";
+
 		}
 		zttr += '</div>'
 		// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
@@ -474,7 +505,7 @@ function returnedResults(data)
 		
 					//alert(data['duggaparam']+"\n"+data['useranswer'] + "\n" + data['duggaanswer']);
 					//console.log(data['duggastats']);
-					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats']);
+					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats'], data['files']);
 				});
 				$("#resultpopover").css("display", "block");
 				//alert(data['duggaanswer']);

@@ -29,6 +29,7 @@ $vers = getOP('vers');
 $moment = getOP('moment');
 $mark = getOP('mark');
 $ukind = getOP('ukind');
+$coursevers=getOP('coursevers');
 
 $debug="NONE!";
 
@@ -231,7 +232,48 @@ if(strcmp($opt,"DUGGA")!==0){
 		}		
 	}
 }
+
+$files= array();
+$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq from submission where uid=:uid and vers=:vers and cid=:cid order by filename,updtime desc;");
+$query->bindParam(':uid', $luid);
+$query->bindParam(':cid', $cid);
+$query->bindParam(':vers', $coursevers);
+	
+$result = $query->execute();
+foreach($query->fetchAll() as $row) {
 		
+		if($row['kind']=="3"){
+				// Read file contents
+
+				$currcvd=getcwd();
+
+				$userdir = $lastname."_".$firstname."_".$loginname;
+			  $movname=$currcvd."/submissions/".$courseid."/".$coursevers."/".$duggaid."/".$userdir."/".$row['filename'].$row['seq'].".".$row['extension'];	
+
+			  $content=file_get_contents($movname);
+		
+		}else{
+				$content="Egon!";						
+		}
+	
+		$entry = array(
+			'uid' => $row['uid'],
+			'subid' => $row['subid'],
+			'vers' => $row['vers'],
+			'did' => $row['did'],
+			'fieldnme' => $row['fieldnme'],
+			'filename' => $row['filename'],	
+			'filepath' => $row['filepath'],	
+			'extension' => $row['extension'],
+			'mime' => $row['mime'],
+			'updtime' => $row['updtime'],
+			'kind' => $row['kind'],	
+			'seq' => $row['seq'],	
+			'content' => $content
+		);
+		array_push($files, $entry);		
+}		
+
 $array = array(
 	'entries' => $entries,
 	'moments' => $gentries,
@@ -243,7 +285,8 @@ $array = array(
 	'duggaparam' => $duggaparam,
 	'duggaanswer' => $duggaanswer,
 	'useranswer' => $useranswer,
-	'duggastats' => $duggastats
+	'duggastats' => $duggastats,
+	'files' => $files
 );
 
 
