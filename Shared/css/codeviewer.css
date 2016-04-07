@@ -636,6 +636,15 @@
 	width: 100%;
 	cursor: ns-resize;
 }
+/* Resizable jQuery UI fix for absolute positioning west*/
+.ui-resizable-w {
+    left: 0px;
+    bottom: 0px;
+    position: absolute;
+    height: 90%;
+    width: 10px;
+    cursor: ew-resize;
+}
 /* RESIZABLE UI CSS STOP */
 
 /* DragnDrop CSS */
