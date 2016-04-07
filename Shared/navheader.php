@@ -1,6 +1,6 @@
 <!-- Navigation Header! -->
 <!-- New Version includes code for Code Viewer -->
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<header>
 		<?php
 			echo "<table width='100%'><tr>";
@@ -17,12 +17,13 @@
 			
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
-
+			echo "<td class='navButt'><a href='#'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
 			echo "<td class='navButt' id='home' title='Home'>";
+			
 
 			if($noup=='COURSE'){
 					echo "<a href='";
@@ -70,7 +71,6 @@
 					echo "<td class='navSpacer'></td>";
 			}
 
-
 			if(checklogin()) {
 					echo "<td class='navName'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";		
 					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
@@ -80,6 +80,7 @@
 			}
 
 
+		
 		echo "</tr></table>";
 	?>
 </header>
