@@ -419,23 +419,18 @@ function returnedSection(data)
 		if(data['writeaccess']) {
 			str+="<div class='course-menu-wrapper clearfix'>";			
 			str+="<div class='course-menu--settings'>";
-			str+="<select class='course-dropdown' onchange='goToVersion(this)'>";
 			if (retdata['versions'].length > 0) {
 				for ( i = 0; i < retdata['versions'].length; i++) {
 					var item = retdata['versions'][i];
 					if (retdata['courseid'] == item['cid']) {
 						var vvers = item['vers'];
 						var vname = item['versname'];
-						str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
 						if(retdata['coursevers']==vvers){
-							str += "selected";
 							var versionname=vname;
 						}
-						str += ">" + vname + " - " + vvers + "</option>";
 					}
 				}
 			}
-			str+="</select>";
 			str+="<input type='button' class='submit-button' value='Edit version' title='Edit the selected version' onclick='showEditVersion";
 			str+='("'+querystring['coursevers']+'","'+versionname+'")';
 			str+=";'>";	
@@ -457,26 +452,6 @@ function returnedSection(data)
 			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="</div>";
 			str+="</div>";
-		}else{
-			str+="<div class='course-menu--settings'>";
-			str+="<select class='course-dropdown' onchange='goToVersion(this)'>";
-			if (retdata['versions'].length > 0) {
-				for ( i = 0; i < retdata['versions'].length; i++) {
-					var item = retdata['versions'][i];
-					if (retdata['courseid'] == item['cid']) {
-						var vvers = item['vers'];
-						var vname = item['versname'];
-						str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-						if(retdata['coursevers']==vvers){
-							str += "selected";
-							var versionname=vname;
-						}
-						str += ">" + vname + " - " + vvers + "</option>";
-					}
-				}
-			}
-			str+="</select>";
-			str += "</div>";	
 		}
 	
 		// Course Name
