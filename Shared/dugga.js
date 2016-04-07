@@ -385,6 +385,17 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: renderTeacherView
 			});
+
+	}
+	else if(kind=="GETCOURSETHREAD") {
+			$.ajax({
+				url: "usermanagementviewservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: renderTeacherView
+			});
+			
 	}
 }
 
