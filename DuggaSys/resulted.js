@@ -129,7 +129,7 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind)
 		AJAXService("CHGR", { cid : cid, vers : vers, moment : moment, luid : uid, mark : newMark, ukind : ukind }, "RESULT");
 }
 
-function moveDist(e) 
+/*function moveDist(e) 
 {
 		mmx = e.clientX;
 		mmy = e.clientY;
@@ -145,11 +145,11 @@ function moveDist(e)
 				document.getElementById('MarkCont').innerHTML="";
 			}
 		}
-}
+} */
 
 function enterCell(thisObj)
 {
-		rProbe=$(thisObj).css('background-color');
+		rProbe=$(thisObj).css('backgroundColor');
 		if(rProbe!="transparent"){
 				if(rProbe=="rgb(248, 232, 248)"){
 						cliffton="rgb(208,192,208)";
@@ -160,14 +160,12 @@ function enterCell(thisObj)
 				}else if(rProbe=="rgb(255, 238, 221)"){
 						cliffton="rgb(215,198,181)";		
 				}else if(rProbe=="rgb(255, 255, 255)"){
-						cliffton="rgb(215,215,215)";
-				}else if(rProbe=="rgb(255, 170, 170)"){
-						cliffton="rgb(229,153,153)";
+						cliffton="rgb(215,215,215)";		
 				}else{
 						cliffton="#FFF";
 				}
 		
-				$(thisObj).css('background-color',cliffton);
+				$(thisObj).css('backgroundColor',cliffton);
 		}
 }
 
@@ -423,7 +421,7 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 			zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
 		}
 		if(useranswer!==null){
-			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onmouseover='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\");' />";
+			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onClick='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\");' />";
 		}
 		zttr += '</div>'
 		// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
