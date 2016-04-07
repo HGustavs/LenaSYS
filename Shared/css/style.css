@@ -1255,6 +1255,14 @@ input.new-item-button:hover {
   width: 100%;
 }
 
+#threadOptions {
+  float: right;
+  margin-right: 25px;
+}
+
+#threadOptions input {
+  margin-right: 10px;
+}
 
 #threadDescr {
   padding: 10px 25px;
@@ -1276,6 +1284,7 @@ input.new-item-button:hover {
   clear:both;
   margin-top: 25px;
   overflow: hidden;
+  background-color: #eae8eb;
 }
 #threadCommentsTitle {
   background-color: #927b9e;
@@ -1289,10 +1298,10 @@ input.new-item-button:hover {
 
 .threadComment {
   clear: both;
-  border-left: 2px solid #927b9e;
   padding: 10px 20px;
   background-color: #eae8eb;
   overflow: hidden;
+  border-left: 2px solid #927b9e;
 }
 
 
@@ -1312,4 +1321,9 @@ input.new-item-button:hover {
   float: right;
   color: #775886;
   font-size: 14px;
+}
+
+.replyComment {
+  margin-left: 50px;
+
 }
