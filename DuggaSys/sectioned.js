@@ -576,7 +576,7 @@ function returnedSection(data)
 								}
 							}
 	
-							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden; onclick='collapseLight(this)''>";
+							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;' onclick='collapseLight(this)'>";
 
 							if((grady==-1 || grady == 0 || grady==null) && status==="") {
 									// Nothing submitted nor marked (White)
