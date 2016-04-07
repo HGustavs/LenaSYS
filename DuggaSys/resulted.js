@@ -145,11 +145,11 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind)
 				document.getElementById('MarkCont').innerHTML="";
 			}
 		}
-} */
+}*/
 
 function enterCell(thisObj)
 {
-		rProbe=$(thisObj).css('backgroundColor');
+		rProbe=$(thisObj).css('background-color');
 		if(rProbe!="transparent"){
 				if(rProbe=="rgb(248, 232, 248)"){
 						cliffton="rgb(208,192,208)";
@@ -160,12 +160,14 @@ function enterCell(thisObj)
 				}else if(rProbe=="rgb(255, 238, 221)"){
 						cliffton="rgb(215,198,181)";		
 				}else if(rProbe=="rgb(255, 255, 255)"){
-						cliffton="rgb(215,215,215)";		
+						cliffton="rgb(215,215,215)";
+				}else if(rProbe=="rgb(255, 170, 170)"){
+						cliffton="rgb(229,153,153)";	
 				}else{
 						cliffton="#FFF";
 				}
 		
-				$(thisObj).css('backgroundColor',cliffton);
+				$(thisObj).css('background-color',cliffton);
 		}
 }
 
