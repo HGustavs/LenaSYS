@@ -68,7 +68,7 @@
 				$instring= str_replace ("</ol>\n<ol>","",$instring);
 
 				//Regular expression for line
-				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
+				$instring = preg_replace("/\-{3,}/", "<hr>",$instring);
 
 				// Hard line break support
 				$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
@@ -111,7 +111,14 @@
 				// Importand Rows in code file in different window ===
 				// ===filename,start row,end row, text to show===
 				$inString = preg_replace("/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/", "<span class='impword' onmouseover=\"highlightRows(\'$1\',$2,$3)\" onmouseout=\"dehighlightRows(\'$1\',$2,$3)\">$4</span>", $instring);
-
+				
+				// Three or more dots should always be converted to an ellipsis.
+				$instring = preg_replace("/\.{3,}/","&hellip;",$instring);
+				
+				// Iframe, website inside a inline frame
+				// (--url,width,height--)
+				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>',$instring);
+				
 				return $instring;		
 		}
 
