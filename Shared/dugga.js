@@ -960,3 +960,24 @@ var Timer = {
 		}
 	}
 }	
+
+//---------------------------------------------------------------------------------------------------------------
+// Click logging for analytics
+//---------------------------------------------------------------------------------------------------------------
+$(function() {
+	$(document).bind('click', function(e) {
+		var data = {
+			log: 'click',
+			data: {
+				target: e.target.baseURI
+			}
+		};
+		$.ajax({
+			url: '../DuggaSys/logservice.php',
+			type: 'POST',
+			dataType: 'json', 
+			data: JSON.stringify(data),
+    		contentType: "application/json",
+		});
+	});
+});
