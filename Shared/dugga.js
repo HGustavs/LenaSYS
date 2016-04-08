@@ -130,7 +130,7 @@ function savequizResult(citstr)
 	citstr=querystring['coursevers']+" "+citstr;
 	citstr=querystring['cid']+" "+citstr;
 	AJAXService("SAVDU",{answer:citstr},"PDUGGA");	
-	alert('inlämnat');
+	alert('Returned');
 }
 
 
@@ -407,7 +407,7 @@ function AJAXService(opt,apara,kind)
 					sendConfirmation("resultedservice.php");
 				}
 			});
-			break;
+			break;		
 		case "RESULTLIST":
 			$.ajax({
 				url: "resultlistedservice.php",
