@@ -19,48 +19,55 @@ if(isset($_SESSION['uid'])){
 	$userid="1";		
 } 
 
+//$cid = $_GET["cid"];
 $access = $_GET["access"];
-$course = $_GET["course"];
+$class = $_GET["class"];
 
 
-$query = $pdo->prepare("SELECT DISTINCT  user.ssn, user.firstname, user.lastname, user.email, user_course.access, user.class 
-FROM user 
-LEFT JOIN user_course ON (user.uid=user_course.uid) 
-WHERE user_course.access=:access OR user.class=:class 
-ORDER BY user_course.access DESC, user.class DESC");
+$queryString = "SELECT users.ssn, users.firstname, users.lastname, users.email, user_course.access, users.class 
+FROM (SELECT * FROM user AS A WHERE NOT EXISTS (SELECT * FROM user_course AS B WHERE A.uid = B.uid and B.cid=:cid)) AS users 
+LEFT JOIN user_course on users.uid=user_course.uid 
+WHERE users.class=:class OR user_course.access=:access 
+GROUP BY (users.ssn) 
+ORDER BY user_course.access DESC, users.class";
 
-$query->bindParam(':access', $access);
-$query->bindParam(':class', $course);
-
-if ($access == -1 && $course != -1){
-$query = $pdo->prepare("SELECT DISTINCT  user.ssn, user.firstname, user.lastname, user.email, user_course.access, user.class 
-FROM user 
-LEFT JOIN user_course ON (user.uid=user_course.uid) 
-WHERE  user.class=:class
-ORDER BY user_course.access DESC, user.class DESC");
-
-$query->bindParam(':class', $course);
+if ($access == -1 && $class != -1){
+$queryString = "SELECT users.ssn, users.firstname, users.lastname, users.email, user_course.access, users.class 
+FROM (SELECT * FROM user AS A WHERE NOT EXISTS (SELECT * FROM user_course AS B WHERE A.uid = B.uid and B.cid=:cid)) AS users 
+LEFT JOIN user_course on users.uid=user_course.uid 
+WHERE users.class=:class
+GROUP BY (users.ssn) 
+ORDER BY user_course.access DESC, users.class";
 }
 
-if ($access != -1 && $course == -1){
-$query = $pdo->prepare("SELECT DISTINCT  user.ssn, user.firstname, user.lastname, user.email, user_course.access, user.class 
-FROM user 
-LEFT JOIN user_course ON (user.uid=user_course.uid) 
-WHERE user_course.access=:access
-ORDER BY user_course.access DESC, user.class DESC");
-
-$query->bindParam(':access', $access);
+if ($access != -1 && $class == -1){
+$queryString = "SELECT users.ssn, users.firstname, users.lastname, users.email, user_course.access, users.class 
+FROM (SELECT * FROM user AS A WHERE NOT EXISTS (SELECT * FROM user_course AS B WHERE A.uid = B.uid and B.cid=:cid)) AS users 
+LEFT JOIN user_course on users.uid=user_course.uid 
+WHERE user_course.access=:access 
+GROUP BY (users.ssn) 
+ORDER BY user_course.access DESC, users.class";
 }
 
 
-if ($access == -1 && $course == -1){
-	$query = $pdo->prepare("SELECT DISTINCT  user.ssn, user.firstname, user.lastname, user.email, user_course.access, user.class 
-FROM user 
-LEFT JOIN user_course ON (user.uid=user_course.uid) 
-ORDER BY user_course.access DESC, user.class DESC");
+if ($access == -1 && $class == -1){
+$queryString = "SELECT users.ssn, users.firstname, users.lastname, users.email, user_course.access, users.class 
+FROM (SELECT * FROM user AS A WHERE NOT EXISTS (SELECT * FROM user_course AS B WHERE A.uid = B.uid and B.cid=2)) AS users 
+LEFT JOIN user_course on users.uid=user_course.uid 
+GROUP BY (users.ssn) 
+ORDER BY user_course.access DESC, users.class";
 }
 
+$query = $pdo->prepare($queryString);
 
+if($access != -1){
+	$query->bindParam(':access', $access);
+}
+if($class != -1){
+	$query->bindParam(':class', $class);
+}
+
+$query->bindParam(':cid', $cid);
 
 $query->execute();
 
@@ -76,16 +83,16 @@ foreach($rawData as  $filterd)
 		$currentAccess = $filterd['access'];
 		switch ($currentAccess){
 			case "W":
-				echo "<tr class='loginBoxheader' ><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Teacher</th><th></th><th></th><th></th><th></th></tr>";
+				echo "<tr class='loginBoxheader' ><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Teachers</th><th></th><th></th><th></th><th></th></tr>";
 			break;
 			case "R":
-				echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Student</th><th></th><th></th><th></th><th></th></tr>";
+				echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Students</th><th></th><th></th><th></th><th></th></tr>";
 			break;
 			case "N":
 				echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Free students</th><th></th><th></th><th></th><th></th></tr>";
 			break;
 			case NULL:
-				echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Unassigned</th><th></th><th></th><th></th><th></th></tr>";
+				echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Unassigned users</th><th></th><th></th><th></th><th></th></tr>";
 			break;
 		}
 	}

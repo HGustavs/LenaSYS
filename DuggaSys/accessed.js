@@ -91,8 +91,8 @@ function resetPw(uid,username)
 
 function filterSelections(){
 	var access = $("#teacherStudent").val();
-	var course = $("#filterCourses").val();
-	document.getElementById('filterFrame').src = "searchFrame.php?access="+access+"&course="+course+"";
+	var clas = $("#filterCourses").val();
+	document.getElementById('filterFrame').src = "searchFrame.php?access="+access+"&class="+clas+"&cid="+querystring['cid'];
 	document.getElementById('filterFrame').reload;
 }
 

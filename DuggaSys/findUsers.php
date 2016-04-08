@@ -20,7 +20,7 @@ $query->execute();
 
 $rawData = $query->fetchAll();
 
-
+$cid = $_GET["cid"];
 
 echo"<table style=\"dispalay:block;float:right;\">";
 echo"	<td>";
@@ -43,7 +43,7 @@ echo"		</tr>";
 echo"	</td>";
 echo"</table>";
 
-echo "<iframe id=\"filterFrame\" src=\"searchFrame.php?access=-1&course=-1\"  style=\"width:100%; border:1px solid black; overflow:scroll;\">";
+echo "<iframe id=\"filterFrame\" src=\"searchFrame.php?access=-1&class=-1&cid=" . $cid . "\"  style=\"width:100%; border:1px solid black; overflow:scroll;\">";
 			
 echo "</iframe>";
  
