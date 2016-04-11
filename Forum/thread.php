@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
+include_once "../../threadservice.php";
 pdoConnect();
 
 if (file_exists("../.git/refs/heads/master")) {
@@ -10,12 +10,6 @@ if (file_exists("../.git/refs/heads/master")) {
 	fclose($versionFile);
 } else {
 	$version = "v0.7+";
-}
-
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";
 }
 ?>
 <!DOCTYPE html>
