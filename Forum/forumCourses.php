@@ -1,7 +1,8 @@
 <?php
-	require_once(dirname(__FILE__) . '/../Shared/database.php');
+require_once(dirname(__FILE__) . '/../Shared/database.php');
+
 	global $pdo;
-	
+
 	if($pdo == null)
 	{
 		pdoConnect();
@@ -36,35 +37,4 @@
 
 	}
 	echo "</table>";
-	
-	function loadComments($courseID)
-	{
-		require_once(dirname(__FILE__) . '/../Shared/database.php');
-		global $pdo;
-		$course=$courseID;
-		if($pdo == null)
-		{
-			pdoConnect();
-		}
-		
-		$array=array();
-		
-		$query = $pdo->prepare("SELECT threadComment.* FROM threadComment,thread WHERE threadComment.threadID=thread.threadID and thread.courseID=:course;");
-		$query->bindParam(':course', $course);
-		
-		if($query->execute() && $query->rowCount() > 0)
-		{
-			$result = $query->fetchAll();
-			$json=json_encode($result);
-			echo $json;
-
-
-		}
-		else{
-			echo "No results";
-		}
-		
-		
-	}
-	loadComments(1);
 ?>
