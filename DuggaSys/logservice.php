@@ -33,7 +33,6 @@ function logClick($data) {
 }
 
 function logMousemove($data) {
-	var_dump($data);
 	logMousemoveEvent($data['page'],$data['mouseX'],$data['mouseY']);
 }
 ?>
