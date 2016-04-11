@@ -280,7 +280,7 @@ function AJAXService(opt,apara,kind)
 	
 	var sendConfirmation = function(service) {
 		$.ajax({
-			url: "serviceconfirmation.php",
+			url: "../DuggaSys/serviceconfirmation.php",
 			type: "POST",
 			data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
 			dataType: "json"
