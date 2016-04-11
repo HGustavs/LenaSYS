@@ -20,6 +20,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'generalStats':
 				generalStats();
 				break;
+			case 'serviceAvgDuration':
+				serviceAvgDuration();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -42,4 +45,25 @@ function generalStats() {
 			eventType = '.EventTypes::LoginFail.';
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result[0]);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves average duration for services in the log		
+//------------------------------------------------------------------------------------------------
+function serviceAvgDuration() {
+	$result = $GLOBALS['log_db']->query('
+		SELECT DISTINCT
+			service,
+			(
+				SELECT AVG(duration) FROM (
+					SELECT s1.service AS subService, (s2.timestamp - s1.timestamp) AS duration
+					FROM serviceLogEntries s1
+					JOIN serviceLogEntries s2 ON s1.uuid=s2.uuid AND s2.eventType='.EventTypes::ServiceClientEnd.'
+					WHERE s1.eventType='.EventTypes::ServiceClientStart.'
+				)
+				WHERE service=subService
+			) AS avgDuration
+		FROM serviceLogEntries;
+	')->fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
 }
