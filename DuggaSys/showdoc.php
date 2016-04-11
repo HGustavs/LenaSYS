@@ -87,8 +87,9 @@
 				$instring = preg_replace("/\!{3}(.*?\S),(.*?\S)\!{3}/","<a href='$1' target='_blank'>$2</a>",$instring);
 
 				// External img src !!!
-				// |||src|||	
-				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
+				// |||src|||
+				// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
+				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/", '<img src="$1" onmouseover="originalImg(this)" onmouseout="thumbnailImg(this)" width="20%" style="border: 3px solid #614875;" />',$instring);
 
 				// External mp4 src !!!
 				// ==[src]==	

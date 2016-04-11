@@ -47,6 +47,15 @@ function dehighlightRows(filename,startRow,endRow){
 	}
 }
 
+//Functions for markdown image zoom rollover
+function originalImg(x) {
+	x.style.width = "100%";
+}
+
+function thumbnailImg(x) {
+	x.style.width = "20%";
+}
+
 /********************************************************************************
 
    Markdown, the functions in the next section contains the functions used by
@@ -138,8 +147,9 @@ function markdownBlock(inString)
 	inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
 
 	// External img src !!!
-	// |||src|||	
-	inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img src="$1" />');
+	// |||src|||
+	// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
+	inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img src="$1" onmouseover="originalImg(this)" onmouseout="thumbnailImg(this)" width="20%" style="border: 3px solid #614875;" />');
 
 	// External mp4 src !!!
 	// ==[src]==	
