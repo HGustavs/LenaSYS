@@ -60,30 +60,30 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind)
 	
 		// Irrespective of marking system we allways print - and U
 		if (mark === null || mark === 0){
-				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uc.png","Uc");			
+				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uc.svg","Uc");			
 		} else if (mark === 1) {
-				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/U.png","U");			
+				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/U.svg","U");			
 		} else {
-				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uh.png","Uh");			
+				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uh.svg","Uh");			
 		}
 	
 		// Gradesystem: 1== UGVG 2== UG 3== U345
 		if (gradesys === 1) {
 			if (mark === 2){
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/G.png","G");			
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VGh.png","VGh");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/G.svg","G");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VGh.svg","VGh");			
 			} else if (mark === 3) {
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gh.png","Gh");			
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VG.png","VG");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gh.svg","Gh");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VG.svg","VG");			
 			} else {
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.png","Gc");			
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VGc.png","GVc");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.svg","Gc");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VGc.svg","GVc");			
 			}
 		} else if (gradesys === 2) {
 				if (mark === 2){
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/G.png","G");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/G.svg","G");			
 				} else {
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.png","Gc");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.svg","Gc");			
 				}
 		} else if (gradesys === 3){
 			/*
@@ -423,7 +423,7 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 			zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
 		}
 		if(useranswer!==null){
-			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onClick='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\");' />";
+			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.svg' onClick='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\");' />";
 		}
 		zttr += '</div>'
 		// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac

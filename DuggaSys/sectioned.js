@@ -605,7 +605,7 @@ function returnedSection(data)
 					}else if(parseInt(item['kind']) === 3 ){
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.svg' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 
 						}						
 											
@@ -638,10 +638,10 @@ function returnedSection(data)
 					}
 
 					if(kk==1){
-						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.png);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
+						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
 						else str+="style='box-shadow: 0px 3px 2px #aaa inset;' ";				
 					}else{
-						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5;border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.png);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
+						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5;border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
 					}
 		
 					str+=">";

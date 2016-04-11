@@ -117,15 +117,15 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	}
 	
 	if (visi == 1) {
-		str += "<option selected='selected' value='1'>Public</option>";
+		str += "<option selected='selected' value='1'>Login</option>";
 	} else {
-		str += "<option value='1'>Public</option>";
+		str += "<option value='1'>Login</option>";
 	}
 	
 	if (visi == 2) {
-		str += "<option selected='selected' value='2'>Login</option>";
+		str += "<option selected='selected' value='2'>Public</option>";
 	} else {
-		str += "<option value='2'>Login</option>";
+		str += "<option value='2'>Public</option>";
 	}
 	
 	if (visi == 3) {
