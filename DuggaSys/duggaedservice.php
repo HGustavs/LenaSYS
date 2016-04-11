@@ -48,7 +48,7 @@ $debug="NONE!";
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring='insert into quiz(cid,autograde,gradesystem,qname,quizFile,creator) values (:cid,1,1,"New Dugga","test.html",:uid)';	
+		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator) VALUES (:cid,1,1,'New Dugga','test.html',:uid)";	
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':cid', $cid);
 		$stmt->bindParam(':uid', $userid);
@@ -59,7 +59,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 						// Error handling to $debug		
 		}
 	}else if(strcmp($opt,"ADDVARI")===0){
-		$querystring='INSERT INTO variant(quizID,creator) values (:qid,:uid)';	
+		$querystring="INSERT INTO variant(quizID,creator,disabled) VALUES (:qid,:uid,0)";	
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':qid', $qid);
 		$stmt->bindParam(':uid', $userid);

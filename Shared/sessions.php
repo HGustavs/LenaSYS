@@ -187,4 +187,35 @@ function getAccessType($userId, $courseId)
 		}
 }
 
+/**
+ * Returns the access a specified user has on the specified course
+ * @param int $userId User ID of the user to look up
+ * @param int $courseId Course ID of the course to look up access on
+ * @param int $quizid Quiz ID of the quiz to look up
+ * @return returns true/false depending on if user has grade on a quiz in a certain course
+ */
+function getUserAnswerHasGrade($userid, $courseid, $quizid)
+{
+		global $pdo;
+	
+		if($pdo == null) {
+			pdoConnect();
+		}
+
+		$query = $pdo->prepare('SELECT * FROM userAnswer WHERE uid=:uid AND cid=:cid AND quiz=:qid AND grade > 1');
+		$query->bindParam(':uid', $userid);
+		$query->bindParam(':cid', $courseid);
+		$query->bindParam(':qid', $quizid);
+
+		$query->execute();
+
+		
+		if($query->rowCount() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+
+}
+
 ?>

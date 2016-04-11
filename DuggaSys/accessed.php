@@ -30,10 +30,21 @@
 	<!-- content START -->
 	<div id="wrappall">
 		<div id="newbutton">
-			<?PHP
-				echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/></div>";
-				//needs to calculate if the user has access to this button before writing out
-			?>		
+			<table style="float:right;">
+				<tr>
+					<td>	
+						<?PHP
+							echo "<div style='float:right;'><input class='submit-button' type='button' value='Create Users' onclick='showCreateUsersPopup();'/></div>";
+							//needs to calculate if the user has access to this button before writing out
+						?>
+					</td>
+					<td>
+						<?PHP
+							echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showAddUsersPopup();'/></div>";
+							//needs to calculate if the user has access to this button before writing out
+						?>
+					</td>
+				</table>
 		</div>
 		<div id="accessedcontent">
 			
@@ -63,6 +74,24 @@
 			<textarea id="import" ></textarea>
 		</div>
 	</div>
+	
+	<div id='addUsers' class='loginBox' style='width:464px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Add Users</h3>
+			<div onclick='closeWindows();'>x</div>
+		</div>
+		<div class='note'>
+			<p>Check the users below to add them to his corse.</p>
+			<br/>
+			<div>
+				<?PHP
+					include_once "findUsers.php";
+				?>
+				<input class='submit-button' type='button' value='Add Users' onclick='addSelectedUsers();' />
+			</div>
+		</div>
+	</div>
+
 	
 	<!-- Edit User Dialog END -->
 	<!-- Add Users Dialog START -->

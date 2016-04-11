@@ -139,7 +139,8 @@ CREATE TABLE userAnswer (
 	grade 			TINYINT(2),
 	uid 			INT UNSIGNED NOT NULL,
 	useranswer		varchar(2048),
-	submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	opened	 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	submitted		TIMESTAMP NULL,
 	marked			TIMESTAMP NULL,
 	vers			VARCHAR(8),
 	creator 		INTEGER,
@@ -268,7 +269,7 @@ CREATE TABLE word(
 CREATE TABLE box(
 	boxid					INTEGER UNSIGNED NOT NULL,
 	exampleid 		MEDIUMINT UNSIGNED NOT NULL,
-	boxtitle			VARCHAR(20),
+	boxtitle			VARCHAR(64),
 	boxcontent		VARCHAR(64),
 	filename			VARCHAR(256),
 	settings			VARCHAR(1024),
@@ -492,13 +493,15 @@ DELIMITER ;
 
 /* Templates for codeexamples */
 
-INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (0,"template0.css",0);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2);
-INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (3,"template3.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (7,"template7.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (8,"template8.css",3);
 
 /* Programming languages that decide highlighting */
  
