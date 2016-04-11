@@ -91,7 +91,7 @@ function returned(data)
 	}
 	
 	// Disables the play button if there is no playlink
-	if(typeof retData['playlink'] == 'undefined' || retData['playlink'] == ""){
+	if(typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
 		$("#playbutton").css("opacity",0.4);
 		$("#playbutton").css("pointer-events","none");
 	}
@@ -1520,7 +1520,6 @@ function Play()
 		navigateTo("../courses/",retData['playlink']);
 	}
 }
-
 //-----------------------------------------------------------------------------
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
