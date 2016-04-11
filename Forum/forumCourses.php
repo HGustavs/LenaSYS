@@ -55,22 +55,16 @@
 		if($query->execute() && $query->rowCount() > 0)
 		{
 			$result = $query->fetchAll();
-			//print_r($result);
+			$json=json_encode($result);
+			echo $json;
 
-			/*
-			foreach($result as $val)
-			{
-				echo $val['text'];
-				echo "</br>";
-				
-			}
-			*/
+
 		}
 		else{
-			return false;
+			echo "No results";
 		}
 		
-		return $result;
+		
 	}
 	loadComments(1);
 ?>
