@@ -6,6 +6,13 @@ include_once "../Shared/basic.php";
 // Connect to database and start session
 pdoConnect();
 session_start();
+
+$log_uuid = getOP('log_uuid');
+$log_timestamp = getOP('log_timestamp');
+
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "accessedservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php");
+
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
@@ -22,6 +29,7 @@ $username = getOP('username');
 $val = getOP('val');
 $newusers = getOP('newusers');
 $debug="NONE!";	
+
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
@@ -166,4 +174,5 @@ $array = array(
 	"debug" => $debug,
 );
 echo json_encode($array);
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "accessedservice.php");
 ?>

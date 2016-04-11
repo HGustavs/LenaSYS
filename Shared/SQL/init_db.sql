@@ -139,7 +139,8 @@ CREATE TABLE userAnswer (
 	grade 			TINYINT(2),
 	uid 			INT UNSIGNED NOT NULL,
 	useranswer		varchar(2048),
-	submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	opened	 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	submitted		TIMESTAMP NULL,
 	marked			TIMESTAMP NULL,
 	vers			VARCHAR(8),
 	creator 		INTEGER,
@@ -154,6 +155,28 @@ CREATE TABLE userAnswer (
 	CONSTRAINT fk_useranswer_joins_quiz FOREIGN KEY (quiz) REFERENCES quiz(id),
 	CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
 	CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/**
+* Table that stores the tries, different from the userAnswer table as that table updates
+* the most recent try at a dugga. this table however records every try, and that is then
+* used for checking if a dugga should be locked or not because of too many failed attempts.
+*/
+CREATE TABLE duggaTries (
+	id 				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	FK_cid 			INT UNSIGNED NOT NULL,
+	FK_vers 		VARCHAR(8),
+	FK_moment 		INT UNSIGNED NOT NULL,
+	FK_uid	 		INT UNSIGNED NOT NULL,
+	FK_quiz 		INT(11) NOT NULL,
+	grade 			TINYINT(2) DEFAULT 0,
+	time 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	dugga_lock		TINYINT(2) DEFAULT 0,
+
+	CONSTRAINT pk_duggaTries PRIMARY KEY(id),
+	CONSTRAINT duggaTries_to_course FOREIGN KEY (FK_cid) REFERENCES course(cid),
+	CONSTRAINT duggaTries_to_user FOREIGN KEY (FK_uid) REFERENCES user(uid),
+	CONSTRAINT duggaTries_to_quiz FOREIGN KEY (FK_quiz) REFERENCES quiz(id)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
@@ -268,7 +291,7 @@ CREATE TABLE word(
 CREATE TABLE box(
 	boxid					INTEGER UNSIGNED NOT NULL,
 	exampleid 		MEDIUMINT UNSIGNED NOT NULL,
-	boxtitle			VARCHAR(20),
+	boxtitle			VARCHAR(64),
 	boxcontent		VARCHAR(64),
 	filename			VARCHAR(256),
 	settings			VARCHAR(1024),
@@ -492,13 +515,15 @@ DELIMITER ;
 
 /* Templates for codeexamples */
 
-INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (0,"template0.css",0);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2);
-INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (3,"template3.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
 INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (7,"template7.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (8,"template8.css",3);
 
 /* Programming languages that decide highlighting */
  

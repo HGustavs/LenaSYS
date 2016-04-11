@@ -69,6 +69,9 @@ function returnedDugga(data)
 		}
 
 		duggaFiles = data['files'];
+		
+	  console.log(duggaFiles);
+	
 
 		if (duggaFiles.length > 0){
 
@@ -130,7 +133,7 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files)
 {
 	document.getElementById('duggaTime').innerHTML=userStats[0];
 	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
@@ -138,43 +141,53 @@ function showFacit(param, uanswer, danswer, userStats)
 	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 	$("#duggaStats").css("display","none");
 
-
+	inParams = parseGet();
 	$("#content").css({"position":"relative","top":"50px"});
 
-	dataV = data;
-	
-	if (data['debug'] != "NONE!") { alert(data['debug']); }
-
-	if (data['param'] == "UNK") {
+	if (param == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
 		duggaParams = jQuery.parseJSON(param);
 
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src=showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+" width='100%' height='1000px' type='application/pdf'>";
-		}else if(duggaParams["type"]==="md"){
-				// Can we do this?
-		}else if (duggaParams["type"]==="html"){
-				// Can we do this?
-		}	
-
-		duggaFiles = data['files'];
-
-		if (duggaFiles.length > 0){
-
-		} else {
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
+			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
+        		$("#snus").html(result);
+        		// Placeholder code
+				var pl = duggaParams.placeholders;
+				if (pl !== undefined) {
+					for (var m=0;m<pl.length;m++){
+						for (placeholderId in pl[m]) {
+							if (document.getElementById("placeholder-"+placeholderId) !== null){
+								for (placeholderDataKey in pl[m][placeholderId]) {
+									if (pl[m][placeholderId][placeholderDataKey] !== ""){
+										document.getElementById("placeholder-"+placeholderId).innerHTML='<a href="'+pl[m][placeholderId][placeholderDataKey]+'" target="_blank">'+placeholderDataKey+'</a>';
+									} else {
+										document.getElementById("placeholder-"+placeholderId).innerHTML=placeholderDataKey;
+									}
+								}
+							}
+						}
+					}					
+				}
+    		}});
+		}else if(duggaParams["type"]==="link"){
+			document.getElementById("snus").innerHTML="<iframe src='"+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
+		}else {
+			// UNK 
 		}
 
-		findfilevers(data["files"], "Inl1Document","pdf");
-		findfilevers(data["files"], "Inl2Document","zip");
-		findfilevers(data["files"], "Inl3Document","multi");
+		$("#snus").parent().find(".instructions-content").slideToggle("slow");
 
-		if (data["answer"] == null || data["answer"] !== "UNK") {
-
-			// We have previous answer
+		createFileUploadArea(duggaParams["submissions"]);
+		for (var k=0; k < duggaParams["submissions"].length; k++){
+			findfilevers(files, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type);
+    		if (duggaParams['uploadInstruction'] !== null){
+				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
+			}
 
 		}
-
 
 	}
 }
@@ -200,10 +213,16 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php' >";
 
 		if(type=="link"){
-				form +="<input name='link' type='text' size='40' maxlength='64' />";
+				form +="<input name='link' type='text' size='40' maxlength='256' />";
+				form +="<input type='hidden' name='kind' value='2' />";
+		}else if(type=="text"){
+				form +="<textarea rows='20' name='inputtext'  id='inputtext' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;	box-sizing: border-box;	width: 100%;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;' >Fumho</textarea>";
+				form +="<input type='hidden' name='kind' value='3' />";
 		}else{
 				form +="<input name='uploadedfile[]' type='file' multiple='multiple' />";
+				form +="<input type='hidden' name='kind' value='1' />";
 		}
+		
 		form +="<input type='submit' name='okGo' value='Upload'>";
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
@@ -211,7 +230,6 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
-		form +="<input type='hidden' name='kind' value='1' />";
 		form +="</form>";
 		
 		if (type === "pdf"){
@@ -307,6 +325,22 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</table>";
 			str += "</div>"
 			str += "</div>"
+		} else if (type === "text"){
+			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
+			str += "<div class='loginBoxheader'>";
+			str += "<h3>Text Submission</h3>";
+			str += "</div>";
+			str += "<div style='padding:5px;'>";
+			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
+			str +="<table style='width:100%;'>";
+			str +="<tr>";
+			str +="<td id='"+fieldname+"'>";
+			str += form;
+			str += "</td>";
+			str += "</tr>";
+			str += "</table>";
+			str += "</div>"
+			str += "</div>"			
 		}
 
 	}

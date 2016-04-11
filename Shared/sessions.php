@@ -194,7 +194,7 @@ function getAccessType($userId, $courseId)
  * @param int $quizid Quiz ID of the quiz to look up
  * @return returns true/false depending on if user has grade on a quiz in a certain course
  */
-function getUserAnswerHasGrade($userid, $courseid, $quizid)
+function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers)
 {
 		global $pdo;
 	
@@ -202,15 +202,22 @@ function getUserAnswerHasGrade($userid, $courseid, $quizid)
 			pdoConnect();
 		}
 
-		$query = $pdo->prepare('SELECT * FROM userAnswer WHERE uid=:uid AND cid=:cid AND quiz=:qid AND grade > 0 LIMIT 1');
+		$query = $pdo->prepare('SELECT * FROM userAnswer WHERE uid=:uid AND cid=:cid AND quiz=:qid AND grade > 1');
 		$query->bindParam(':uid', $userid);
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':qid', $quizid);
 
+		$query2 = $pdo->prepare("SELECT * FROM duggaTries WHERE FK_uid=:uid AND FK_cid=:cid AND FK_quiz=:qid AND FK_vers=:vers AND dugga_lock=1");
+		$query2->bindParam(':uid', $userid);
+		$query2->bindParam(':cid', $courseid);
+		$query2->bindParam(':qid', $quizid);
+		$query2->bindParam(':vers', $vers);
+
 		$query->execute();
+		$query2->execute();
 
 		
-		if($query->rowCount() > 0) {
+		if($query->rowCount() > 0 || $query2->rowCount() > 2) {
 			return true;
 		} else {
 			return false;

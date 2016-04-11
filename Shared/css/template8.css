@@ -1,0 +1,47 @@
+/* This template makes three boxes, one to the left and two to the right of the fist one.
+   The two to the right is, one on top of the other */
+#box1wrapper{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	width: -moz-calc(50.0%);
+	width: -webkit-calc(50.0%);
+	width: calc(50.0%);
+	height: -webkit-calc(100%);
+	height: -moz-calc(100%);
+	height: calc(100%);
+	min-width: 10%;
+	max-width: 90%;
+}
+
+#box2wrapper {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: -moz-calc(50.0%);
+	width: -webkit-calc(50.0%);
+	width: calc(50.0%);
+	height: -webkit-calc(50%);
+	height: -moz-calc(50%);
+	height: calc(50%);
+	min-width: 10%;
+	max-width: 90%;
+	max-height: 90%;
+	min-height: 10%;
+}
+
+#box3wrapper {
+	position: absolute;
+   	left: 0px;
+   	bottom: 0px;
+   	width: -moz-calc(50%);
+   	width: -webkit-calc(50%);
+   	width: calc(50%);
+   	height: -webkit-calc(50%);
+   	height: -moz-calc(50%);
+   	height: calc(50%);
+	min-width: 10%;
+	max-width: 90%;
+	max-height: 90%;
+	min-height: 10%;
+}

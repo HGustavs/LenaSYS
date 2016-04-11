@@ -30,6 +30,8 @@ $(function()
 
 function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 		console.log(e);
+		
+		closeWindows();
 	
 		var pressed = e.target.className;
 	
@@ -37,8 +39,10 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "Gc") {
 				changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind);
-		} else if (pressed === "VGc"){
+				AJAXService("CHFAILS",{ cid : cid, moment : moment,vers : vers, luid : uid}, "RESULT");
+		} else if (pressed === "GVc"){
 				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
+				AJAXService("CHFAILS",{ cid : cid, moment : moment,vers : vers, luid : uid}, "RESULT");
 		} else if (pressed === "U") {
 				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
 		} 
@@ -54,10 +58,9 @@ function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls){
 
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind) 
-{
-	
+{	
 		var str = "";
-	
+
 		// Irrespective of marking system we allways print - and U
 		if (mark === null || mark === 0){
 				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uc.png","Uc");			
@@ -124,9 +127,40 @@ function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid }, "RESULT");
 }
 
+function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid) 
+{
+		$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+		console.log("course: "+ cid, " vers: " + vers + " moment: " + moment + " uid: " + uid);
+		console.log("gs "+gradeSystem+ " cid: " + querystring['cid'] + " cvers: " + querystring['coursevers']);
+
+		var menu = "<div class='' style='width:100px;display:block;'>";
+		menu +=	"<div class='loginBoxheader'>";
+		menu += "<h3>Grade</h3>";
+		menu += "</div>";
+		menu += "<table>";
+		menu += "<tr><td>";
+		if (foundgrade === null && submitted === null) {
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I");
+		}else if (foundgrade !== null){
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U");													
+		}else {
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U");
+		}
+		menu += "</td></tr>";
+		menu += "</table>";
+		menu += "</div> <!-- Menu Dialog END -->";
+		document.getElementById('markMenuPlaceholder').innerHTML=menu;
+
+		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : querystring['coursevers'] }, "RESULT");
+}
+
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind) 
 {
 		AJAXService("CHGR", { cid : cid, vers : vers, moment : moment, luid : uid, mark : newMark, ukind : ukind }, "RESULT");
+}
+//call to unlock a dugga
+function unlockDugga(cid, moment, vers, uid){
+	AJAXService("CHFAILS",{ cid : cid, moment : moment,vers : vers, luid : uid}, "RESULT");
 }
 
 /*function moveDist(e) 
@@ -145,11 +179,11 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind)
 				document.getElementById('MarkCont').innerHTML="";
 			}
 		}
-} */
+}*/
 
 function enterCell(thisObj)
 {
-		rProbe=$(thisObj).css('backgroundColor');
+		rProbe=$(thisObj).css('background-color');
 		if(rProbe!="transparent"){
 				if(rProbe=="rgb(248, 232, 248)"){
 						cliffton="rgb(208,192,208)";
@@ -160,12 +194,14 @@ function enterCell(thisObj)
 				}else if(rProbe=="rgb(255, 238, 221)"){
 						cliffton="rgb(215,198,181)";		
 				}else if(rProbe=="rgb(255, 255, 255)"){
-						cliffton="rgb(215,215,215)";		
+						cliffton="rgb(215,215,215)";
+				}else if(rProbe=="rgb(255, 170, 170)"){
+						cliffton="rgb(229,153,153)";	
 				}else{
 						cliffton="#FFF";
 				}
 		
-				$(thisObj).css('backgroundColor',cliffton);
+				$(thisObj).css('background-color',cliffton);
 		}
 }
 
@@ -236,7 +272,7 @@ function renderResultTableHeader(data)
 function renderResultTableFooter()
 {
 		var str = ""
-		str += "<tr><th id='needMarking' style='text-align:right;'></th>";
+		str += "<tr><th id='hasMarking' style='text-align:center;'></th>";
 		for (var i = 0; i < amountPassed.length; i++) {
 					str += "<th style='border-left:2px solid white;'>";
 					str += amountPassed[i];
@@ -249,11 +285,10 @@ function renderResultTableFooter()
 //----------------------------------------
 // Render Moment
 //----------------------------------------
-function renderMoment(data, userResults, userId, fname, lname)
+function renderMoment(data, userResults, userId, fname, lname, locked)
 {
 	var str = "";
 	// Each of the section entries (i.e. moments)
-
 	for ( var j = 0; j < data.length; j++) {
 			count=j;
 			amountPassed[count]=0;
@@ -268,10 +303,10 @@ function renderMoment(data, userResults, userId, fname, lname)
 	
 			} else if (data[j][0].kind === 4 && data[j][0] !== null) {
 
-						str += renderMomentChild(data[j][0], userResults, userId, fname, lname, 1);
+						str += renderMomentChild(data[j][0], userResults, userId, fname, lname, 1,locked);
 						str += "</tr><tr>";
 				for (var k = 1; k < data[j].length; k++){
-						str += renderMomentChild(data[j][k], userResults, userId, fname, lname, 0);
+						str += renderMomentChild(data[j][k], userResults, userId, fname, lname, 0, locked);
 						//console.log(data[j][k]);
 				}			
 			} else {
@@ -373,15 +408,16 @@ function renderStandaloneDugga(data, userResults)
 //----------------------------------------
 // Render Moment child
 //----------------------------------------
-function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
+function renderMomentChild(dugga, userResults, userId, fname, lname, moment, locked)
 {
-
 		var str = "";
 		var foundgrade = null;
 		var useranswer = null;
 		var submitted = null;
 		var marked = null;
 		var variant = null;
+		var lock = false;
+
 		if (userResults !== undefined) {
 				for (var l = 0; l < userResults.length; l++) {
 						
@@ -392,8 +428,18 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 								useranswer = resultitem.useranswer;
 								submitted = resultitem.submitted;
 								marked = resultitem.marked;
-								variant = resultitem.variant	;
-				
+								variant = resultitem.variant;
+
+								//If lock is not null loop through them and see if there is a match
+								if (locked !== null) {
+									for (var i = 0; i < locked.length; i++) {
+										//if a match, set lock to true
+										if (locked[i]['uid'] == userId && resultitem.moment == locked[i]['moment']) {
+											lock = true;
+										}
+									}
+								}
+								
 								if(submitted!==null) {
 									var t = submitted.split(/[- :]/);
 									submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
@@ -406,12 +452,14 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 				}
 		}
 
+		
 		var zttr="";
 		if (moment){
 			zttr += '<div style="display:inline-block;min-width:95px">'
 		} else {
 			zttr += '<div style="min-width:95px">'		
 		}
+
 		// If no result is found i.e. No Fist
 		if (foundgrade === null && useranswer === null && submitted === null) {
 			zttr += makeSelect(dugga.gradesystem, querystring['cid'], querystring['coursevers'], dugga.lid, userId, null, "I");
@@ -421,8 +469,14 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment)
 			zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
 		}
 		if(useranswer!==null){
-			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onClick='hoverResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\");' />";
+
+			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\",\"" + foundgrade + "\",\"" + dugga.gradesystem + "\",\"" + dugga["lid"] + "\");' />";
+
 		}
+		if(lock == true){
+			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/duggaLock.png' title='Unlock " + dugga['entryname'] + "' onclick='unlockDugga(\"" + querystring['cid'] + "\",\"" + dugga.lid + "\",\"" + querystring['coursevers'] + "\",\"" + userId + "\");' />";
+		}
+
 		zttr += '</div>'
 		// If no submission - white. If submitted and not marked or resubmitted U - yellow. If G or better, green. If U, pink. visited but not saved lilac
 		if(foundgrade===1 && submitted<marked){
@@ -461,18 +515,20 @@ function returnedResults(data)
 		var zttr = "";
 		needMarking=0;
 		passedMarking=0;
-
 		var amountPassed = [];
 		var x = 0;
 		var y = 0;
-	
+
+		//get user locks
+		var locked = data['locked'];
+
 		if (data['dugganame'] !== "") {
 				$.getScript(data['dugganame'], function() {
 					$("#MarkCont").html(data['duggapage']);
 		
 					//alert(data['duggaparam']+"\n"+data['useranswer'] + "\n" + data['duggaanswer']);
 					//console.log(data['duggastats']);
-					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats']);
+					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats'], data['files']);
 				});
 				$("#resultpopover").css("display", "block");
 				//alert(data['duggaanswer']);
@@ -487,18 +543,17 @@ function returnedResults(data)
 				for ( k = 0; k < m.length; k++) {
 					savedAmount[k]=0;
 				}
-		
+
 				if (data['entries'].length > 0) {
 						for ( i = 0; i < data['entries'].length; i++) {
 								var user = data['entries'][i];
-				
 								str += "<tr class='fumo'>";
-				
+
 								// One row for each student
 								str += "<td>";
 								str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['username'] + "<br/>" + user['ssn'];
 								str += "</td>";
-								str += renderMoment(m, results[user['uid']], user['uid'], user['firstname'], user['lastname']);
+								str += renderMoment(m, results[user['uid']], user['uid'], user['firstname'], user['lastname'], locked);
 								str += "<td>";
 								str += "Total passed: " + passedMarking;
 								str += "</td>";
@@ -509,7 +564,8 @@ function returnedResults(data)
 				str += renderResultTableFooter();
 				var slist = document.getElementById("content");
 				slist.innerHTML = str;
-				document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;						
+				document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;
+				document.getElementById("hasMarking").innerHTML = "Passed grades:";						
 		}
 		if (data['debug'] !== "NONE!") alert(data['debug']);
 }
