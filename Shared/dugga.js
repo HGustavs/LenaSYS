@@ -876,10 +876,12 @@ var ClickCounter = {
 	
 	// Updates the click counter user interface in a dugga, uses the same 
 	animateClicks: function() {
-		// Apply some web magic to change the ui counter
-		var str = "<p>";
-		str += this.score;
-		document.getElementById('scoreElement').innerHTML = str;
+		// Apply some web magic to change the ui counter and check if the timerbox is shown
+		if ($('#scoreElement').length != 0) {
+			var str = "<p>";
+			str += this.score;
+			document.getElementById('scoreElement').innerHTML = str;
+		}
 	}
 }
 //---------------------------------------------------------------------------------------------------------------
@@ -954,8 +956,8 @@ var Timer = {
 		}
 		str += seconds;
 
-		// Push new value to ui thing
-		if(this.update == 0) {
+		// Push new value to ui thing and check if the timerbox is shown
+		if ($('#scoreElement').length != 0 && this.update == 0) {
 			document.getElementById('scoreElement').innerHTML = str;
 		}
 	}
