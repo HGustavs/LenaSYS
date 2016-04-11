@@ -27,8 +27,9 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-	<script src="forum.js"></script>
 	<script src="../Shared/dugga.js"></script>
+	<script src="forum.js"></script>
+
 </head>
 <body>
 
@@ -47,7 +48,6 @@ if (file_exists("../.git/refs/heads/master")) {
 					DV12G HT15: PHP Example 1
 
 					<?php
-						echo $userId;
 						if(isSuperUser($userid)){
 							echo '<div id="threadOptions">';
 								echo '<input class="new-item-button" type="button" value="Delete">';

@@ -467,17 +467,19 @@ function AJAXService(opt,apara,kind)
 					sendConfirmation("usermanagementviewservice.php");
 				}
 			});
-		case "GETCOMMENTS":
+			break;
+		case "GETTHREAD":
+		console.log("opt="+opt);
+		console.log("para=" + para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
-				data: "threadId="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedComments(data);
-					sendConfirmation("forumservice.php");
-				}
+				data: "opt="+opt+para,
+				dataType: "text",
+				success: returnedThread,
+				error: testerror
 			});
+			break;
 		case "GETCOURSETHREAD":
 			$.ajax({
 				url: "usermanagementviewservice.php",

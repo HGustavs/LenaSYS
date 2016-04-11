@@ -12,8 +12,8 @@ session_start();
 $log_uuid = getOP('log_uuid');
 $log_timestamp = getOP('log_timestamp');
 
-logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "threadservice.php", $log_timestamp);
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "threadservice.php");
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "forumservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "forumservice.php");
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -25,6 +25,7 @@ $cid = getOP('cid');
 
 $uid = getOP('uid');
 
+$opt = getOP('opt');
 $threadId = getOP('threadId');
 
 $debug="NONE!";
@@ -33,24 +34,18 @@ $debug="NONE!";
 // Services
 //------------------------------------------------------------------------------------------------
 
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
+if(checklogin())
+{
+	if(strcmp($opt,"GETTHREAD")===0){
+		$query = $pdo->prepare("SELECT * FROM thread WHERE threadID=:threadId");
+		$query->bindParam(':threadId', $threadId);
 
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
 
-
-	if(strcmp($opt,"GETCOMMENTS")===0){
-		$querystring="SELECT * FROM thread WHERE threadID=:threadId";
-		$stmt = $pdo->prepare($querystring);
-		$stmt->bindParam(':threadId', $threadId);
-
-		try{
-			$stmt->execute();
-			$comments = $stmt->fetchAll();
-			echo "dwadawd";
-
-		}catch (PDOException $e){
-			echo "failure";
-
-						// Error handling to $debug
+		}else{
+			$comments = $query->fetch(PDO::FETCH_ASSOC);
 		}
 	}
 
@@ -64,6 +59,17 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 
 }
+
+$array = array(
+	'comments' => $comments
+	);
+/*$t = json_encode($array);
+if (!$t){
+	echo "Failed: ". $t;
+} else {
+	echo "success: ". $t;
+}*/
+echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
 

@@ -4,6 +4,7 @@
 
 *********************************************************************************/
 var sessionkind=0;
+var querystring=parseGet();
 
 
 function replyUI()
@@ -18,16 +19,27 @@ function replyUI()
 function getThread()
 {
 	var threadId = 1;
-  AJAXService("GETCOMMENTS",{threadId:threadId},"GETCOMMENTS");
+  AJAXService("GETTHREAD",{threadId:threadId},"GETTHREAD");
 }
 
 //----------------------------------------
 // Renderer
 //----------------------------------------
 
-function returnedComments(comments)
+function returnedThread(comments)
 {
 	console.log(comments);
+}
+
+function testerror(jqXHR, textStatus, errorThrown)
+{
+	console.log("textStatus:" + textStatus);
+  console.log('jqXHR.responseText: ' + jqXHR.responseText);
+	console.log('errorThrown: ' + errorThrown.stack);
+
+
+
+
 }
 
 function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template)
