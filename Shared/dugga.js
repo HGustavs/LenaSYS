@@ -282,7 +282,7 @@ function AJAXService(opt,apara,kind)
 		$.ajax({
 			url: "serviceconfirmation.php",
 			type: "POST",
-			data: "uuid="+uuid+"&timestamp="+timestamp+"&service="+service,
+			data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
 			dataType: "json"
 		});
 	}
