@@ -21,15 +21,12 @@ var elapsedTime = 0;
 function setup() 
 {
 	inParams = parseGet();
-
 	AJAXService("GETPARAM", { }, "PDUGGA");
 }
 
 function returnedDugga(data) 
 {	
-
 	$("#content").css({"position":"relative","top":"50px"});
-
 	dataV = data;
 	
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
@@ -37,8 +34,8 @@ function returnedDugga(data)
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		duggaParams = jQuery.parseJSON(data['param']);
-
+		duggaParams = JSON.parse(data['param']);
+		console.log(duggaParams);
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
@@ -70,7 +67,6 @@ function returnedDugga(data)
 
 		duggaFiles = data['files'];
 		
-	  console.log(duggaFiles);
 	
 
 		if (duggaFiles.length > 0){
@@ -186,7 +182,6 @@ function showFacit(param, uanswer, danswer, userStats, files)
     		if (duggaParams['uploadInstruction'] !== null){
 				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 			}
-
 		}
 
 	}
@@ -218,8 +213,14 @@ function createFileUploadArea(fileuploadfileds){
 		}else if(type=="text"){
 				form +="<textarea rows='20' name='inputtext'  id='inputtext' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;	box-sizing: border-box;	width: 100%;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;' >Fumho</textarea>";
 				form +="<input type='hidden' name='kind' value='3' />";
-		}else{
-				form +="<input name='uploadedfile[]' type='file' multiple='multiple' />";
+		}
+		//only in multi type you its possible to upload multiple files. In types like pfd and zip its only one file
+		else if (type == "multi") {
+				form +="<input name='uploadedfile[]' type='file' multiple='true'  />";
+				form +="<input type='hidden' name='kind' value='1' />";
+		}
+		else{
+				form +="<input name='uploadedfile[]' type='file'  />";
 				form +="<input type='hidden' name='kind' value='1' />";
 		}
 		
@@ -230,6 +231,7 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
+		form +="<input type='hidden' name='type' value='"+type+"' />";
 		form +="</form>";
 		
 		if (type === "pdf"){
