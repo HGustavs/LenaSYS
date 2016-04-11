@@ -969,7 +969,11 @@ $(function() {
 		var data = {
 			log: 'click',
 			data: {
-				target: e.target.baseURI
+				target: e.target.baseURI,
+				mouseX: e.clientX,
+				mouseY: e.clientY,
+			clientResX: window.screen.availWidth,
+			clientResY: window.screen.availHeight
 			}
 		};
 		$.ajax({
@@ -979,5 +983,30 @@ $(function() {
 			data: JSON.stringify(data),
     		contentType: "application/json",
 		});
+	});
+});
+
+//---------------------------------------------------------------------------------------------------------------
+// Mousemove logging for analytics
+//---------------------------------------------------------------------------------------------------------------
+
+$(document).mousemove(function(e){
+	console.log(e.clientX + " - " + e.clientY);
+	
+	var data = {
+		log: 'mousemove',
+		data: {
+			page: window.location.href,
+			mouseX: e.clientX,
+			mouseY: e.clientY
+		}
+	}
+	
+	$.ajax({
+		url: '../DuggaSys/logservice.php',
+		type: 'POST',
+		dataType: 'json', 
+		data: JSON.stringify(data),
+		contentType: "application/json",
 	});
 });
