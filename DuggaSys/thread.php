@@ -27,7 +27,7 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-	<script src="../Forum/forum.js"></script>
+	<script src="forum.js"></script>
 	<script src="../Shared/dugga.js"></script>
 </head>
 <body>

@@ -469,13 +469,13 @@ function AJAXService(opt,apara,kind)
 			});
 		case "GETCOMMENTS":
 			$.ajax({
-				url: "../Forum/forumservice.php",
+				url: "forumservice.php",
 				type:"POST",
 				data: "threadId="+opt+para,
 				dataType: "json",
 				success: function(data) {
 					returnedComments(data);
-					sendConfirmation("../Forum/forumservice.php");
+					sendConfirmation("forumservice.php");
 				}
 			});
 		case "GETCOURSETHREAD":
