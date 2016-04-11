@@ -29,7 +29,7 @@ if (!is_null($json) && isset($json['log']) && isset($json['data'])) {
 }
 
 function logClick($data) {
-	logClickEvent(json_encode($data));
+	logClickEvent($data['target'], $data['mouseX'], $data['mouseX'], $data['mouseY'], $data['clientResX'], $data['clientResY']);
 }
 
 function logMousemove($data) {
