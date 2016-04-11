@@ -501,7 +501,7 @@ header td {
 	box-shadow:2px 2px 4px #000;
 	margin-bottom:10px;
 	margin-right:10px;
-	
+
 }
 
 .markWindow{
@@ -1339,13 +1339,51 @@ input.new-item-button:hover {
   font-size: 14px;
 }
 
+.threadMakeComment {
+  clear:both;
+  margin-top: 25px;
+  padding-bottom: 15px;
+  overflow: hidden;
+  background-color: #eae8eb;
+}
+
+.makeCommentHeader {
+  background-color: #927b9e;
+  color: #fff;
+  padding: 10px 25px;
+  float: left;
+  font-size: 20px;
+  width: 100%;
+}
+
+.makeCommentInputWrapper {
+  box-sizing: border-box;
+  clear: both;
+  width: 100%;
+  padding: 20px;
+}
+
+.commentInput {
+  font-size: 0.9em;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 100px;
+  width: 100%;
+  resize: none;
+}
+
+.commentSubmitButton {
+
+}
+
+
 #threadComments {
   clear:both;
   margin-top: 25px;
   overflow: hidden;
   background-color: #eae8eb;
 }
-#threadCommentsTitle {
+#threadCommentsHeader {
   background-color: #927b9e;
   color: #fff;
   padding: 10px 25px;

@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
+include_once "../../threadservice.php";
 pdoConnect();
 
 if (file_exists("../.git/refs/heads/master")) {
@@ -27,8 +27,6 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-	<script src="../Shared/dugga.js"></script>
-	<script src="courseed.js"></script>
 </head>
 <body>
 
@@ -46,11 +44,20 @@ if (file_exists("../.git/refs/heads/master")) {
 			<div id="threadTopic">
 					DV12G HT15: PHP Example 1
 
-					<div id="threadOptions">
-						<input class="new-item-button" type="button" value="Delete">
-						<input class="new-item-button" type="button" value="Edit">
-						<input class="new-item-button" type="button" value="Lock">
-					</div>
+					<?php
+						echo $userId;
+						if(isSuperUser($userid)){
+							echo '<div id="threadOptions">';
+								echo '<input class="new-item-button" type="button" value="Delete">';
+								echo '<input class="new-item-button" type="button" value="Edit">';
+								echo '<input class="new-item-button" type="button" value="Lock">';
+							echo '</div>';
+						}else{
+
+						}
+					 ?>
+
+
 			</div>
 
 
@@ -59,12 +66,22 @@ if (file_exists("../.git/refs/heads/master")) {
 				<p> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
 			</div>
 			<div id="threadDetails">
-				Skapad <span id="threadDate">3 mar 2016</span> av <span id="threadCreator">John Doe</span>
+				Created <span id="threadDate">3 mar 2016</span> by <span id="threadCreator">a97marbr</span>
+			</div>
+		</div>
+
+		<div class="threadMakeComment">
+			<div class="makeCommentHeader">
+				Comment
+			</div>
+			<div class="makeCommentInputWrapper">
+				<textarea class="commentInput" name="commentInput" placeholder="Leave a comment"></textarea>
+				<input class="submit-button commentSubmitButton" type="button" value="Submit" onclick="reply();">
 			</div>
 		</div>
 
 		<div id="threadComments">
-			<div id="threadCommentsTitle">
+			<div id="threadCommentsHeader">
 				Kommentarer (2)
 			</div>
 
@@ -74,6 +91,11 @@ if (file_exists("../.git/refs/heads/master")) {
 				</div>
 				<div class="commentContent">
 						<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+				</div>
+				<div class="commentFooter">
+					<input class="submit-button" type="button" value="Reply" onclick="replyUI();">
+					<input class="submit-button" type="button" value="Edit" onclick="editUI();">
+					<input class="submit-button" type="button" value="Delete" onclick="deleteComment();">
 				</div>
 				<div class="commentDate"> 07:30 4 mar 2016 </div>
 			</div>
@@ -89,10 +111,6 @@ if (file_exists("../.git/refs/heads/master")) {
 			</div>
 		</div>
 	</div>
-
-
-
-
 
 	<!-- version identification -->
 	<div id="version" class='version'>Master hash <br /><?php echo $version ?></div>
