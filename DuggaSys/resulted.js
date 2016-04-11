@@ -132,6 +132,7 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
 		console.log("course: "+ cid, " vers: " + vers + " moment: " + moment + " uid: " + uid);
 		console.log("gs "+gradeSystem+ " cid: " + querystring['cid'] + " cvers: " + querystring['coursevers']);
+
 		var menu = "<div class='' style='width:100px;display:block;'>";
 		menu +=	"<div class='loginBoxheader'>";
 		menu += "<h3>Grade</h3>";
@@ -149,6 +150,7 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		menu += "</table>";
 		menu += "</div> <!-- Menu Dialog END -->";
 		document.getElementById('markMenuPlaceholder').innerHTML=menu;
+
 		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : querystring['coursevers'] }, "RESULT");
 }
 
