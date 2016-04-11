@@ -58,24 +58,26 @@
 	
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
+				if(isSuperUser($userid)) {
 					echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
-					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
-					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
-					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play();'><img src='../Shared/icons/play_button.svg' /></td>";
-					if(checklogin()) {
-						echo "<td class='navButt' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-					    echo "<td class='navButt' id='fileedButton' onclick='' style='display:hidden;' ><img src='../Shared/icons/files_icon.svg' /></td>";
-					}
+				}
+				echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
+				echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
+				echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play();'><img src='../Shared/icons/play_button.svg' /></td>";
+				if(checklogin()) {
+					echo "<td class='navButt' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				    echo "<td class='navButt' id='fileedButton' onclick='' style='display:hidden;' ><img src='../Shared/icons/files_icon.svg' /></td>";
+				}
 
-					if($codeviewerkind) echo "<td class='navButt' title='Settings' id='hidesettings'><img src='../Shared/icons/general_settings_button.svg' /></td>";
-					if($codeviewerkind) echo "<td class='navButt' id='savebutton' title='Save' onclick='Save();'><img src='../Shared/icons/save_button.svg' /></td>";
-					echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
-					echo "<td id='navHeading' class='navHeading codeheader'>";
-					echo "<span id='exampleSection'>Example Section : </span>";
-					echo "<span id='exampleName'> Example Name</span>";
-					echo "</td>";					
-				}else{
-					echo "<td class='navSpacer'></td>";
+				if($codeviewerkind) echo "<td class='navButt' title='Settings' id='hidesettings'><img src='../Shared/icons/general_settings_button.svg' /></td>";
+				if($codeviewerkind) echo "<td class='navButt' id='savebutton' title='Save' onclick='Save();'><img src='../Shared/icons/save_button.svg' /></td>";
+				echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
+				echo "<td id='navHeading' class='navHeading codeheader'>";
+				echo "<span id='exampleSection'>Example Section : </span>";
+				echo "<span id='exampleName'> Example Name</span>";
+				echo "</td>";					
+			}else{
+				echo "<td class='navSpacer'></td>";
 			}
 
 			if(checklogin()) {
