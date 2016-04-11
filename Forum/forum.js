@@ -4,24 +4,34 @@
 
 *********************************************************************************/
 var sessionkind=0;
-var querystring=parseGet();
+
+
+function replyUI()
+{
+	getThread();
+}
 
 //----------------------------------------
 // Commands:
 //----------------------------------------
 
-function deleteVariant()
+function getThread()
 {
-	var vid=$("#vid").val();
-	if(confirm("Do you really want to delete this Variant?")) AJAXService("DELVARI",{cid:querystring['cid'],vid:vid},"DUGGA");
-	$("#editVariant").css("display","none");
+	var threadId = 1;
+  AJAXService("GETCOMMENTS",{threadId:threadId},"GETCOMMENTS");
 }
 
 //----------------------------------------
 // Renderer
 //----------------------------------------
 
-function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
+function returnedComments(comments)
+{
+	console.log(comments);
+}
+
+function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template)
+{
 	$("#MarkCont").html(duggaPages[template]);
 
 	$.getScript("templates/"+template+".js")

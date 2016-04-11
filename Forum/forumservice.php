@@ -25,6 +25,8 @@ $cid = getOP('cid');
 
 $uid = getOP('uid');
 
+$threadId = getOP('threadId');
+
 $debug="NONE!";
 
 //------------------------------------------------------------------------------------------------
@@ -33,17 +35,24 @@ $debug="NONE!";
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
-	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator) VALUES (:cid,1,1,'New Dugga','test.html',:uid)";
+
+
+	if(strcmp($opt,"GETCOMMENTS")===0){
+		$querystring="SELECT * FROM thread WHERE threadID=:threadId";
 		$stmt = $pdo->prepare($querystring);
-		$stmt->bindParam(':cid', $cid);
-		$stmt->bindParam(':uid', $userid);
+		$stmt->bindParam(':threadId', $threadId);
 
 		try{
 			$stmt->execute();
+			$comments = $stmt->fetchAll();
+			echo "dwadawd";
+
 		}catch (PDOException $e){
+			echo "failure";
+
 						// Error handling to $debug
 		}
+	}
 
 }
 
@@ -56,19 +65,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 }
 
-$array = array(
-	'entries' => $entries,
-	'debug' => $debug,
-	'files' => $files,
-	'duggaPages' => $duggaPages
-	);
-/*$t = json_encode($array);
-if (!$t){
-	echo "Failed: ". $t;
-} else {
-	echo "success: ". $t;
-}*/
-echo json_encode($array);
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "duggaedservice.php");
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
 
 ?>
