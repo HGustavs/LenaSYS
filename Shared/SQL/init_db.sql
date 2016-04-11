@@ -451,7 +451,7 @@ CREATE TABLE list (
 create table thread(
     threadID int(10) unsigned not null AUTO_INCREMENT,
     courseID int(10) unsigned not null,
-    userID int(10) unsigned,
+    userID int(10) unsigned not null,
     topic varchar(50) not null,
     dateCreated timestamp default CURRENT_TIMESTAMP,
     lastEdited timestamp,
@@ -466,7 +466,7 @@ create table thread(
 create table threadComment(
     commentID int(10) NOT NULL AUTO_INCREMENT,
     threadID int(10) unsigned not null,
-    userID int(10) unsigned,
+    userID int(10) unsigned not null,
     text varchar(2500) not null,
     dateCreated timestamp default CURRENT_TIMESTAMP,
     lastEdited timestamp,
