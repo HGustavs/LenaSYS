@@ -36,6 +36,16 @@ $debug="NONE!";
 
 if(checklogin())
 {
+
+
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieve Information
+//------------------------------------------------------------------------------------------------
+
+if(checklogin()){
+
 	if(strcmp($opt,"GETTHREAD")===0){
 		$query = $pdo->prepare("SELECT * FROM thread WHERE threadID=:threadId");
 		$query->bindParam(':threadId', $threadId);
@@ -45,23 +55,14 @@ if(checklogin())
 			exit($debug);
 
 		}else{
-			$comments = $query->fetch(PDO::FETCH_ASSOC);
+			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
 	}
 
 }
 
-//------------------------------------------------------------------------------------------------
-// Retrieve Information
-//------------------------------------------------------------------------------------------------
-
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
-
-
-}
-
 $array = array(
-	'comments' => $comments
+	'thread' => $thread
 	);
 /*$t = json_encode($array);
 if (!$t){

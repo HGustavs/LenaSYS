@@ -22,44 +22,19 @@ function getThread()
   AJAXService("GETTHREAD",{threadId:threadId},"GETTHREAD");
 }
 
-//----------------------------------------
-// Renderer
-//----------------------------------------
-
-function returnedThread(comments)
-{
-	console.log(comments);
-}
-
 function testerror(jqXHR, textStatus, errorThrown)
 {
 	console.log("textStatus:" + textStatus);
   console.log('jqXHR.responseText: ' + jqXHR.responseText);
 	console.log('errorThrown: ' + errorThrown.stack);
-
-
-
-
 }
 
-function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template)
+//----------------------------------------
+// Renderer
+//----------------------------------------
+
+function returnedThread(thread)
 {
-	$("#MarkCont").html(duggaPages[template]);
-
-	$.getScript("templates/"+template+".js")
-	  .done(function( script, textStatus ) {
-
-		showFacit(duggaVariantParam,"UNK",duggaVariantAnswer,[0,0,0,0]);
-
-	  })
-	  .fail(function( jqxhr, settings, exception ) {
-	  	console.log(jqxhr);
-	  	console.log(settings);
-	  	console.log(exception);
-	  	eval(script);
-	  	showFacit(duggaVariantParam,"UNK",duggaVariantAnswer);
-	});
-
-	$("#resultpopover").css("display", "block");
-
+	console.log(thread);
+	$('#threadTopic').html(thread[0]['topic']);
 }

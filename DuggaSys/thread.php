@@ -1,4 +1,4 @@
-<?php
+ <?php
 session_start();
 include_once "forumservice.php";
 
@@ -45,8 +45,6 @@ if (file_exists("../.git/refs/heads/master")) {
 		<!-- Section List -->
 		<div id='threadHeader'>
 			<div id="threadTopic">
-					DV12G HT15: PHP Example 1
-
 					<?php
 						if(isSuperUser($userid)){
 							echo '<div id="threadOptions">';
