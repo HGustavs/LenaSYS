@@ -17,7 +17,8 @@ session_start();
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="guest";		
+	$userid="0";
+	
 } 
 
 $opt=getOP('opt');
