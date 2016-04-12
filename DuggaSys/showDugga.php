@@ -14,8 +14,8 @@
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-//	<script src="timer.js"></script>
-//	<script src="clickcounter.js"></script>
+<!--<script src="timer.js"></script>-->
+<!--<script src="clickcounter.js"></script>-->
 	<script>var querystring=parseGet();</script>
 
 <?php
@@ -117,16 +117,16 @@
 					readfile("templates/".$duggafile.".html");
 					echo "<table width='100%'><tr><td align='center'>";
 					//only shows save button if quiz is not graded
-					if (!getUserAnswerHasGrade($userid, $cid, $quizid)) {
+					if (!getUserAnswerHasGrade($userid, $cid, $quizid,$vers)) {
+						echo  "<!-- Timer START --><div id='scoreElement'></div>";
 						echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
 					}
 					echo "<input class='submit-button' type='button' value='Reset' onclick='reset();' style='width:160px;height:48px;line-height:48px;' /></td></tr></table>";
 
-
 				}else{
 					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 				}
-				echo  "<!-- Timer START --><div id='scoreElement'></div>";
+				
 			}else if ($userid=="UNK"){
 				//check if dugga template exists
 				if(file_exists ( "templates/".$duggafile.".html")){
@@ -162,7 +162,20 @@
 	<?php
 		if ($userid=="UNK") {
 			include '../Shared/lockbox.php';
+		}else{
+
+			$query = $pdo->prepare('SELECT *  FROM duggaTries WHERE FK_uid = :uid AND FK_cid = :cid AND FK_quiz = :quiz AND grade = 1 AND dugga_lock = 1;');
+			$query->bindParam(":uid",$userid);
+			$query->bindParam(":quiz",$quizid);
+			$query->bindParam(":cid",$cid);
+			$result = $query->execute();
+
+			if (($query->rowCount()) > 2) {
+				//echo "<h1 style='position:fixed;top:70%;left:40%;'>" . $query->rowCount()/2 . "</h1>";
+				include '../Shared/duggaTriedLock.php';
+			}
 		}
+		
 	?>
 
 	<?php
