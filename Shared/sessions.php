@@ -1,4 +1,12 @@
 <?php
+if (!file_exists("../../coursesyspw.php")) {
+	session_start();
+	$url = $_SERVER['REQUEST_URI'];
+	$_SESSION['url'] = $url;
+	header("Location: ../DuggaSys/error.php");
+	http_response_code(302);
+	exit();
+}
 require_once(dirname(__FILE__) . '/../Shared/database.php');
 require_once(dirname(__FILE__) . '/constants.php');
 //---------------------------------------------------------------------------------------------------------------
