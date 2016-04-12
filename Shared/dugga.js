@@ -480,6 +480,7 @@ function AJAXService(opt,apara,kind)
 				error: testerror
 			});
 			break;
+
 		case "MAKECOMMENT":
 			console.log("opt="+opt);
 			console.log("para=" + para);
@@ -490,7 +491,19 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: showComment,
 				error: error
-				
+			});
+			break;
+
+		case "GETCOMMENTS":
+		console.log("opt="+opt);
+		console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedComments,
+				error: testerror
 			});
 			break;
 		case "GETCOURSETHREAD":

@@ -1305,13 +1305,17 @@ input.new-item-button:hover {
   background-color: #eae8eb;
 }
 
-#threadTopic {
+#threadTopicWrapper {
   color: #fff;
   padding: 10px 25px;
   float: left;
   font-size: 24px;
   background-color: #614875;
   width: 100%;
+}
+.threadTopic {
+  width: auto;
+  float: left;
 }
 
 #threadOptions {
@@ -1324,7 +1328,7 @@ input.new-item-button:hover {
 }
 
 #threadDescr {
-  padding: 10px 25px;
+  padding: 20px 20px;
   clear: both;
   color: #000;
   font-size: 16px;
@@ -1376,7 +1380,6 @@ input.new-item-button:hover {
 
 }
 
-
 #threadComments {
   clear:both;
   margin-top: 25px;
@@ -1418,9 +1421,4 @@ input.new-item-button:hover {
   float: right;
   color: #775886;
   font-size: 14px;
-}
-
-.replyComment {
-  margin-left: 50px;
-
 }
