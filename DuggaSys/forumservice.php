@@ -21,15 +21,9 @@ if(isset($_SESSION['uid'])){
 	$userid="1";
 }
 
-
-
-
 $cid = getOP('cid');
-
 $uid = getOP('uid');
-
 $opt = getOP('opt');
-
 $threadId = getOP('threadId');
 $userID = getOP('userID');
 $text = getOP('text');
@@ -53,7 +47,7 @@ if(checklogin())
 if(checklogin()){
 
 	if(strcmp($opt,"GETTHREAD")===0){
-		$query = $pdo->prepare("SELECT * FROM thread WHERE threadID=:threadId");
+		$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
 		$query->bindParam(':threadId', $threadId);
 
 		if(!$query->execute()){
@@ -65,7 +59,7 @@ if(checklogin()){
 		}
 	}else if(strcmp($opt,"MAKECOMMENT")===0)
 	{
-		$query = $pdo->prepare("INSERT INTO threadComment (threadID, userID, text) VALUES (:threadID, :userID, :text)");
+		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
 		$query->bindParam(':threadID', $threadId);
 		$query->bindParam(':userID', $userID);
 		$query->bindParam(':text', $text);
@@ -80,7 +74,7 @@ if(checklogin()){
 
 
 	else if(strcmp($opt,"GETCOMMENTS")===0){
-	$query = $pdo->prepare("SELECT * FROM threadComment WHERE threadID=:threadId ORDER BY dateCreated ASC;");
+	$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
 	$query->bindParam(':threadId', $threadId);
 
 	if(!$query->execute()){
