@@ -22,11 +22,8 @@ if(isset($_SESSION['uid'])){
 }
 
 $cid = getOP('cid');
-
 $uid = getOP('uid');
-
 $opt = getOP('opt');
-
 $threadId = getOP('threadId');
 $userID = getOP('userID');
 $text = getOP('text');

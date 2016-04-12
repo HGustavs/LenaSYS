@@ -21,7 +21,7 @@ function initThread()
 
 function threadAccess()
 {
-
+	console.log(querystring);
 }
 
 function getThread()
