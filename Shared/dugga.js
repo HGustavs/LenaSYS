@@ -475,8 +475,20 @@ function AJAXService(opt,apara,kind)
 				url: "forumservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
-				dataType: "text",
+				dataType: "JSON",
 				success: returnedThread,
+				error: testerror
+			});
+			break;
+		case "GETCOMMENTS":
+		console.log("opt="+opt);
+		console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "JSON",
+				success: returnedComments,
 				error: testerror
 			});
 			break;

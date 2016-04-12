@@ -21,11 +21,15 @@ if(isset($_SESSION['uid'])){
 	$userid="1";
 }
 
+
+
+
 $cid = getOP('cid');
 
 $uid = getOP('uid');
 
 $opt = getOP('opt');
+
 $threadId = getOP('threadId');
 
 $debug="NONE!";
@@ -59,11 +63,29 @@ if(checklogin()){
 		}
 	}
 
+	else if(strcmp($opt,"GETCOMMENTS")===0){
+	$query = $pdo->prepare("SELECT * FROM threadComment WHERE threadID=:threadId ORDER BY dateCreated ASC;");
+	$query->bindParam(':threadId', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+
+	}else{
+		$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+}
+
 }
 
 $array = array(
-	'thread' => $thread
+
+	'thread' => $thread,
+	'comments' => $comments
 	);
+
+
+
 /*$t = json_encode($array);
 if (!$t){
 	echo "Failed: ". $t;
