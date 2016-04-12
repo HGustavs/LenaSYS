@@ -6,7 +6,7 @@
 
 Example seed
 ---------------------
-	 NB! This dugga requires a png-file corresponding to the specific colors, e.g., color_red.png
+	 NB! This dugga requires a svg-file corresponding to the specific colors, e.g., color_red.svg
 	 Param: {*color*:*red*,*colorname*:*Röd*}
 	 Answer: Variant
 
@@ -63,7 +63,7 @@ function returnedDugga(data)
 	}else{
 		retdata=jQuery.parseJSON(data['param']);
 		$("#fargnamn").html(retdata['colorname']);
-		$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
+		$("#fargen").attr("src", "templates/color_"+retdata['color']+".svg");
 		// Add our previous answer
 		if (data['answer'] != null){
 			var previous = data['answer'].split(' ');
@@ -142,7 +142,7 @@ function showFacit(param, uanswer, danswer, userStats)
 	var p = JSON.parse(decodeURIComponent(param));
 		
 	$("#fargnamn").html(p['colorname']);
-	$("#fargen").attr("src", "templates/color_"+p['color']+".png");
+	$("#fargen").attr("src", "templates/color_"+p['color']+".svg");
 	
 	// Add our previous answer
 	if (uanswer != null){

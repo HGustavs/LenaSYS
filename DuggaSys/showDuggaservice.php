@@ -271,6 +271,17 @@ if(checklogin()){
 				} else {
 					$savedanswer = $answer;
 				}
+				
+				$query = $pdo->prepare("INSERT INTO duggaTries(FK_cid,FK_vers,FK_moment,FK_uid,FK_quiz) VALUES(:cid,:coursevers,:moment,:uid,:quiz);");
+				$query->bindParam(":cid",$courseid);
+				$query->bindParam(':moment', $moment);
+				$query->bindParam(':coursevers', $coursevers);
+				$query->bindParam(":uid",$userid);
+				$query->bindParam(":quiz",$duggaid);
+				if (!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating entries (157)".$error[2];
+				}
 			}
 		}
 	}

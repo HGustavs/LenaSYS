@@ -158,6 +158,28 @@ CREATE TABLE userAnswer (
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
+* Table that stores the tries, different from the userAnswer table as that table updates
+* the most recent try at a dugga. this table however records every try, and that is then
+* used for checking if a dugga should be locked or not because of too many failed attempts.
+*/
+CREATE TABLE duggaTries (
+	id 				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	FK_cid 			INT UNSIGNED NOT NULL,
+	FK_vers 		VARCHAR(8),
+	FK_moment 		INT UNSIGNED NOT NULL,
+	FK_uid	 		INT UNSIGNED NOT NULL,
+	FK_quiz 		INT(11) NOT NULL,
+	grade 			TINYINT(2) DEFAULT 0,
+	time 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	dugga_lock		TINYINT(2) DEFAULT 0,
+
+	CONSTRAINT pk_duggaTries PRIMARY KEY(id),
+	CONSTRAINT duggaTries_to_course FOREIGN KEY (FK_cid) REFERENCES course(cid),
+	CONSTRAINT duggaTries_to_user FOREIGN KEY (FK_uid) REFERENCES user(uid),
+	CONSTRAINT duggaTries_to_quiz FOREIGN KEY (FK_quiz) REFERENCES quiz(id)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/**
  * This view pulls the top 10 fastest quiz finishing students and lists them
  */
 DROP VIEW IF EXISTS highscore_quiz_time;

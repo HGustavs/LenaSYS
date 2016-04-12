@@ -211,7 +211,7 @@ function changedType()
 {
 	kind=$("#type").val();		
 	iistr="";
-	
+	console.log(kind);
 	if(kind==0){	
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
@@ -284,7 +284,12 @@ function updateItem()
 	tabs=$("#tabs").val();
 	lid=$("#lid").val();
 	kind=$("#type").val();
-	link=$("#link").val();
+	link;
+	//only tests has links to duggas
+	if(kind == 3)
+		link=$("#link").val();
+	else
+		link = "UNK";
 	highscoremode=$("#highscoremode").val();
 	sectionname=$("#sectionname").val();
 	visibility=$("#visib").val();
@@ -411,7 +416,7 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
-	// console.log(retdata);
+	 console.log(retdata);
 
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
@@ -475,7 +480,6 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
-
 				if (parseInt(item['kind']) === 4 || parseInt(item['kind']) === 0) {
  					str += "<div class='divMoment'>";
  				}else{
@@ -676,7 +680,10 @@ function returnedSection(data)
 
 					}
 	
-					if(data['writeaccess']) str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
+					if(data['writeaccess']) {
+						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' /></td>";
+						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/UpT.svg' onclick='moveRowToTop(\""+item['lid']+"\");'";
+					}
 
 					str += "</tr>";
 				}
