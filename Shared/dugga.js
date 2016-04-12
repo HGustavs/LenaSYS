@@ -469,8 +469,8 @@ function AJAXService(opt,apara,kind)
 			});
 			break;
 		case "GETTHREAD":
-		console.log("opt="+opt);
-		console.log("para=" + para);
+			console.log("opt="+opt);
+			console.log("para=" + para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
@@ -480,6 +480,20 @@ function AJAXService(opt,apara,kind)
 				error: testerror
 			});
 			break;
+
+		case "MAKECOMMENT":
+			console.log("opt="+opt);
+			console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: showComment,
+				error: error
+			});
+			break;
+
 		case "GETCOMMENTS":
 		console.log("opt="+opt);
 		console.log("para=" + para);
@@ -487,7 +501,7 @@ function AJAXService(opt,apara,kind)
 				url: "forumservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
-				dataType: "JSON",
+				dataType: "json",
 				success: returnedComments,
 				error: testerror
 			});
