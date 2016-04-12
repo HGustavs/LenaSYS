@@ -1,8 +1,7 @@
 <?php
 if (!file_exists("../../coursesyspw.php")) {
 	session_start();
-	$url = $_SERVER['REQUEST_URI'];
-	$_SESSION['url'] = $url;
+	$_SESSION['url'] = $_SERVER['REQUEST_URI'];
 	header("Location: ../DuggaSys/error.php");
 	http_response_code(302);
 	exit();

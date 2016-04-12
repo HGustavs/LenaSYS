@@ -1,16 +1,6 @@
 <?php
 session_start();
 
-/*if (file_exists("../../coursesyspw.php")) {
-	include_once "../../coursesyspw.php";
-	include_once "../Shared/sessions.php";
-	pdoConnect();
-}else{
-	header("Location: error.php");
-	http_response_code(302);
-	exit();
-}*/
-
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
