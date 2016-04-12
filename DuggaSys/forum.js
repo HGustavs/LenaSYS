@@ -1,3 +1,8 @@
+
+$(document).ready(function() {
+	getThread();
+})
+
 /********************************************************************************
 
    Globals
@@ -6,11 +11,6 @@
 var sessionkind=0;
 var querystring=parseGet();
 
-
-function replyUI()
-{
-	getThread();
-}
 
 //----------------------------------------
 // Commands:
@@ -33,8 +33,13 @@ function testerror(jqXHR, textStatus, errorThrown)
 // Renderer
 //----------------------------------------
 
-function returnedThread(thread)
+function returnedThread(array)
 {
-	console.log(thread);
-	$('#threadTopic').html(thread[0]['topic']);
+	console.log(array);
+	$(".threadTopic").html(array["thread"]["topic"]);
+	$("#threadDescr").html(array["thread"]["description"]);
+	var str = "<span id='threadDate'>";
+			str += 	array["thread"]["dateCreated"].substring(0, 16);
+			str += "</span> by <span id='threadCreator'>a97marbr</span>";
+	$("#threadDetails").html(str);
 }
