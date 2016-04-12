@@ -149,6 +149,7 @@ CREATE TABLE userAnswer (
 	totalTimeUsed int(11) DEFAULT '0',
 	stepsUsed int(11) DEFAULT NULL,
 	totalStepsUsed int(11) DEFAULT '0',
+	marking_comment LONGTEXT, 
 	CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
 	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
 	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
