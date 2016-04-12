@@ -76,7 +76,7 @@ if (file_exists("../.git/refs/heads/master")) {
 			</div>
 			<div class="makeCommentInputWrapper">
 				<textarea class="commentInput" name="commentInput" placeholder="Leave a comment"></textarea>
-				<input class="submit-button commentSubmitButton" type="button" value="Submit" onclick="reply();">
+				<input class="submit-button commentSubmitButton" type="button" value="Submit" onclick="makeComment();">
 			</div>
 		</div>
 

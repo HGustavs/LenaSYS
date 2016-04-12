@@ -19,7 +19,7 @@ function replyUI()
 function getThread()
 {
 	var threadId = 1;
-  AJAXService("GETTHREAD",{threadId:threadId},"GETTHREAD");
+	AJAXService("GETTHREAD",{threadId:threadId},"GETTHREAD");
 }
 
 function testerror(jqXHR, textStatus, errorThrown)
@@ -36,5 +36,27 @@ function testerror(jqXHR, textStatus, errorThrown)
 function returnedThread(thread)
 {
 	console.log(thread);
-	$('#threadTopic').html(thread[0]['topic']);
+	//$('#threadTopic').html(thread[0]['topic']);
+}
+
+function makeComment()
+{
+	var threadId = 1;
+	var userID = 1;
+	var text = "hehe";
+	AJAXService("MAKECOMMENT",{threadId:threadId,userID:userID,text:text},"MAKECOMMENT");
+}
+
+function showComment(comment)
+{
+	console.log("asd");
+	console.log(comment);
+}
+
+function error(xhr, status, error)
+{
+	console.log("ERROOR");
+	console.log(error);
+	console.log(status);
+	console.log(xhr);
 }

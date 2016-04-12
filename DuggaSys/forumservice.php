@@ -27,6 +27,8 @@ $uid = getOP('uid');
 
 $opt = getOP('opt');
 $threadId = getOP('threadId');
+$userID = getOP('userID');
+$text = getOP('text');
 
 $debug="NONE!";
 
@@ -57,7 +59,21 @@ if(checklogin()){
 		}else{
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
+	}else if(strcmp($opt,"MAKECOMMENT")===0)
+	{
+		$query = $pdo->prepare("INSERT INTO threadComment (threadID, userID, text) VALUES (:threadID, :userID, :text)");
+		$query->bindParam(':threadID', $threadId);
+		$query->bindParam(':userID', $userID);
+		$query->bindParam(':text', $text);
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$thread = $query->fetch(PDO::FETCH_ASSOC);
+		}
 	}
+
 
 }
 
