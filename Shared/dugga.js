@@ -489,7 +489,10 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: showComment,
+				success: function(data) {
+					showComment(data);
+					sendConfirmation("forumservice.php");
+				},
 				error: error
 			});
 			break;
@@ -502,7 +505,10 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedComments,
+				success: function(data) {
+					returnedComments(data);
+					sendConfirmation("forumservice.php");
+				},
 				error: testerror
 			});
 			break;
