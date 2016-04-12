@@ -106,7 +106,8 @@ else:
       with open("/tmp/testdata.sql", "w") as f:
          f.write(SQL)
       os.popen("mysql -h %s -u %s -p%s < /tmp/testdata.sql" % (lenasysDatabaseHost, mysqlRoot, mysqlRootPwd))
-   
+	  
+   print("Installation done!")
    
 #  
 #  open testdata pipe it to new file
@@ -115,6 +116,6 @@ else:
 
    
 
-print("Installation done!")
+
 sys.exit()
 
