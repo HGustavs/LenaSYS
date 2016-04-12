@@ -2,7 +2,6 @@ var querystring=parseGet();
 var retdata;
 
 AJAXService("get",{},"SECTION");
-AJAXService("GET", { cid : querystring['cid'] }, "RESULT");
 
 //----------------------------------------
 // Commands:
