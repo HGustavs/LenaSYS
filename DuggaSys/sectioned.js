@@ -638,8 +638,7 @@ function returnedSection(data)
 					}
 
 					if(kk==1){
-						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.png);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
-						else str+="style='box-shadow: 0px 3px 2px #aaa inset;' ";				
+						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.png);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";			
 					}else{
 						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5;border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.png);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
 					}
