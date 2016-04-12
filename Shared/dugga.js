@@ -475,7 +475,7 @@ function AJAXService(opt,apara,kind)
 				url: "forumservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
-				dataType: "JSON",
+				dataType: "json",
 				success: returnedThread,
 				error: testerror
 			});
