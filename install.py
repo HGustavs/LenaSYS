@@ -97,15 +97,15 @@ else:
    fh2.write("?>\n")
    fh2.close()
    
-print("Would you like to use testdata.sql to initiate database? yes/no.")
-initTest = raw_input("[no]>")
-if (initTest.lower() == "y") or (initTest.lower() == "yes"):
-   os.popen("cp Shared/SQL/testdata.sql /tmp/")
-   with open("/tmp/testdata.sql") as f:
-      SQL=f.read().replace('imperious', lenasysDatabaseName)
-   with open("/tmp/testdata.sql", "w") as f:
-      f.write(SQL)
-   os.popen("mysql -h %s -u %s -p%s < /tmp/testdata.sql" % (lenasysDatabaseHost, mysqlRoot, mysqlRootPwd))
+   print("Would you like to use testdata.sql to initiate database? yes/no.")
+   initTest = raw_input("[no]>")
+   if (initTest.lower() == "y") or (initTest.lower() == "yes"):
+      os.popen("cp Shared/SQL/testdata.sql /tmp/")
+      with open("/tmp/testdata.sql") as f:
+         SQL=f.read().replace('imperious', lenasysDatabaseName)
+      with open("/tmp/testdata.sql", "w") as f:
+         f.write(SQL)
+      os.popen("mysql -h %s -u %s -p%s < /tmp/testdata.sql" % (lenasysDatabaseHost, mysqlRoot, mysqlRootPwd))
    
    
 #  
