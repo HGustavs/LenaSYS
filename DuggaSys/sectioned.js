@@ -249,6 +249,7 @@ function changedType()
 			}else{
 				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
 			}
+		}
 			$("#link").html(iistr);
 			$("#inputwrapper-link").css("display","block");
 			$("#inputwrapper-gradesystem").css("display","none");
@@ -434,7 +435,6 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
-	 console.log(retdata);
 
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
