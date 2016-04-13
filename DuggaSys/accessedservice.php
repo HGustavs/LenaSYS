@@ -67,52 +67,39 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 	}else if(strcmp($opt,"ADDUSR")==0){
 		// Import users, create if user does not previously exist.
-		$users=explode("\n", $newusers);
-		
-		foreach ($users as $user) {
-			$ssn = "";
-			$name = "";
-			$username1 = "";
-	
-			// Split on whitespace.
-			$components = preg_split('/[\s]+/', $user);
-	
-			// If there's 3 or more components (it will be 4 in most cases)
-			// then continue with extracting data.
-			if(count($components) >= 3) {
-				$ssn = array_shift($components);
-				$username1 = array_pop($components);
-				$name = trim(implode(' ', $components));
-			} else {
-				// If there's not enough data to work with on this row, continue to the
-				// next one.
-				continue;
-			}
-			$saveemail = $username1;
+		//$users=explode("\n", $newusers);
+		$newusers = str_ireplace("&quot;", "\"", $newusers);
+		$obj = json_decode($newusers, true);
+		//$debug = $obj;
+		//echo json_encode(array( "debug" => $debug));
+		foreach($obj as $entry)
+		{
 			
-			// Assemble this into more useful bits.
-			list($lastname, $firstname)=(explode(", ",$name));
-			list($username, $garbage)=(explode("@",$username1));
+			$username = explode("@",$entry['email']);
+			$username = $username[0];
+			
+			
 			
 			//$debug.=$ssn." ".$username."#".$firstname."#".$lastname."\n";
 			$uid="UNK";
 			$userquery = $pdo->prepare("SELECT uid,username FROM user WHERE username=:username or ssn=:ssn");
 			$userquery->bindParam(':username', $username);
-			$userquery->bindParam(':ssn', $ssn);
+			$userquery->bindParam(':ssn', $entry['ssn']);
 			
 			// If there isn't we'll register a new user and give them a randomly
 			// assigned password which can be printed later.
-			if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
+			if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) 
+			{
 				$rnd=makeRandomString(9);
-				$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now());';	
+				$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password), :date);';	
 				$stmt = $pdo->prepare($querystring);
 				$stmt->bindParam(':username', $username);
-				$stmt->bindParam(':email', $saveemail);
-				$stmt->bindParam(':firstname', $firstname);
-				$stmt->bindParam(':lastname', $lastname);
-				$stmt->bindParam(':ssn', $ssn);
+				$stmt->bindParam(':email', $entry['email']);
+				$stmt->bindParam(':firstname', $entry['firstname']);
+				$stmt->bindParam(':lastname', $entry['lastname']);
+				$stmt->bindParam(':ssn', $entry['ssn']);
 				$stmt->bindParam(':password', $rnd);
-				
+				$stmt->bindparam(':date', $entry['date']);
 				if(!$stmt->execute()) {
 					$error=$stmt->errorInfo();
 					$debug.="Error updating entries".$error[2];
@@ -120,19 +107,20 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$debug.=" ".$uid;
 				}
 				$uid=$pdo->lastInsertId();
-				// Save uid and password in array, send to client for delegation!
-			}else if($userquery->rowCount() > 0){
+			}
+			else if($userquery->rowCount() > 0){
 				$usr = $userquery->fetch(PDO::FETCH_ASSOC);
 				$uid = $usr['uid'];
 			}
-				
-			// We have a user, connect to current course
-			if($uid!="UNK"){
+			
+			
+			if($uid!="UNK")
+			{
 				// Foo!
-				$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access) VALUES(:uid, :cid,'R')");
+				$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access) VALUES(:uid, :cid,:access)");
 				$stmt->bindParam(':uid', $uid);
 				$stmt->bindParam(':cid', $cid);
-
+				$stmt->bindParam(':access', $entry['access']);
 				// Insert the user into the database.
 				try {
 					$stmt->execute();
