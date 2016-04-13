@@ -47,7 +47,7 @@ if(checklogin())
 if(checklogin()){
 
 	if(strcmp($opt,"GETUSER")===0){
-		$threadAccess = NULL;
+		$threadAccess = null;
 
 		$query = $pdo->prepare("SELECT uid, username, superuser, class FROM user WHERE uid=:userid;");
 		$query->bindParam(':userid', $userid);
@@ -55,7 +55,6 @@ if(checklogin()){
 		if(!$query->execute()){
 			$error=$query->errorInfo();
 			exit($debug);
-
 		}else{
 			$user = $query->fetch(PDO::FETCH_ASSOC);
 		}
@@ -75,13 +74,11 @@ if(checklogin()){
 			{
 				$threadAccess = "op";
 			}else{
-
 				// Check if user is super
-				if ($user['superuser']===1)
+				if (isSuperUser($userid))
 				{
 					$threadAccess = "super";
 				}else{
-
 					// Check if user is super
 					$query = $pdo->prepare("SELECT uid FROM threadaccess WHERE threadid=:threadId AND uid=:userid;");
 					$query->bindParam(':threadId', $threadId);
@@ -108,7 +105,6 @@ if(checklogin()){
 		if(!$query->execute()){
 			$error=$query->errorInfo();
 			exit($debug);
-
 		}else{
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
@@ -139,22 +135,12 @@ if(checklogin()){
 }
 
 $array = array(
-	'user' => $user,
-	'threadAccess' => $threadAccess,
 	'thread' => $thread,
-	'comments' => $comments
+	'comments' => $comments,
+	'user' => $user,
+	'threadAccess' => $threadAccess
 	);
 
-
-
-/*$t = json_encode($array);
-if (!$t){
-	echo "Failed: ". $t;
-} else {
-	echo "success: ". $t;
-}*/
 echo json_encode($array);
-
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
-
 ?>

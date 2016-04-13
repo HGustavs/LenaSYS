@@ -26,6 +26,7 @@ function threadAccess()
 
 function getThread()
 {
+	console.log("getthread");
 	AJAXService("GETTHREAD",{threadId:querystring["threadId"]},"GETTHREAD");
 }
 
@@ -56,13 +57,15 @@ function testerror(jqXHR, textStatus, errorThrown)
 
 function returnedUser(array)
 {
-	console.log(array);
-
 	if (array["threadAccess"]){
 		getComments();
 		getThread();
 	}else {
-		
+		var str = "<div class='err'>";
+				str +=	"<span style='font-weight:bold'>You do not have access to this thread!</span>";
+				str +=	" You are either not logged in or the thread creator has not given you access.";
+				str +="</div>";
+		$("#content").html(str);
 	}
 }
 
@@ -80,20 +83,11 @@ function returnedThread(array)
 
 function returnedComments(array)
 {
-
-
-
-
-
 	// Adds the comment header with the amount of comments.
 	var commentLength = array["comments"].length;
 	var threadCommentsHeaderStr = "<div id=\"threadCommentsHeader\"> Comments ("  +  commentLength  + ") </div>"
 
 	$("#threadComments").append(threadCommentsHeaderStr);
-
-
-
-
 
 	// Iterates through all the comments
 	$.each(array["comments"], function(index, value){
@@ -111,11 +105,7 @@ function returnedComments(array)
 
 		// Appends the comment
 		$("#threadComments").append(threadCommentStr);
-
-
 	});
-
-
 }
 
 function showComment(comment)

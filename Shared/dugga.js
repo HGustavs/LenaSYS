@@ -473,11 +473,12 @@ function AJAXService(opt,apara,kind)
 				url: "forumservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
-				datatype: "json",
+				dataType: "json",
 				success: function(data) {
 					returnedUser(data);
 					sendConfirmation("forumservice.php");
-				}
+				},
+				error: testerror
 			});
 			break;
 		case "GETTHREAD":
