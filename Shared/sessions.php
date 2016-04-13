@@ -112,6 +112,10 @@ function login($username, $password, $savelogin)
 			setcookie('username', $row['username'], time()+60*60*24*30, '/');
 			setcookie('password', $password, time()+60*60*24*30, '/');
 		}
+//		update last login.
+		$query = $pdo->prepare("UPDATE user SET lastvisit=now() WHERE uid=:uid");
+		$query->bindParam(':uid', $row['uid']);
+		$query->execute();
 		return true;
 
 	} else {
