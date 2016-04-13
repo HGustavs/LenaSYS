@@ -560,10 +560,15 @@ function returnedResults(data)
 						}
 				}
 				str += renderResultTableFooter();
-				var slist = document.getElementById("content");
-				slist.innerHTML = str;
-				document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;
-				document.getElementById("hasMarking").innerHTML = "Passed grades:";						
+
+				//wait with setting the html value until the document has loaded, this avoids the frequent blank screen
+				$(function(){
+					var slist = document.getElementById("content");
+					slist.innerHTML = str;
+					document.getElementById("needMarking").innerHTML = "Students: " + data['entries'].length + "<BR />Unmarked : " + needMarking;
+					document.getElementById("hasMarking").innerHTML = "Passed grades:";	
+				});
+				
 		}
 		if (data['debug'] !== "NONE!") alert(data['debug']);
 }

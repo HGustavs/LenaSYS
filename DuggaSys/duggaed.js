@@ -288,8 +288,13 @@ function returnedDugga(data)
 
 	}
 	alla = result;
-	var slist=document.getElementById("content");
-	slist.innerHTML=str;
+
+	//wait with setting the html value until the document has loaded, this avoids the frequent blank screen
+	$(function(){
+		var slist=document.getElementById("content");
+		slist.innerHTML=str;
+	});
+
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 }
