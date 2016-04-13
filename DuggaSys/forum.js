@@ -14,17 +14,13 @@ var querystring = parseGet();
 function initThread()
 {
 	console.log(querystring);
-	AJAXService("GETUSER","UNK","GETUSER");
-	
-	threadAccess();
+	AJAXService("GETUSER",{threadId:querystring["threadId"]},"GETUSER");
 
-	getComments();
-	getThread();
+	threadAccess();
 }
 
 function threadAccess()
 {
-
 
 }
 
@@ -58,9 +54,20 @@ function testerror(jqXHR, textStatus, errorThrown)
 // Renderer
 //----------------------------------------
 
+function returnedUser(array)
+{
+	console.log(array);
+
+	if (array["threadAccess"]){
+		getComments();
+		getThread();
+	}else {
+		
+	}
+}
+
 function returnedThread(array)
 {
-
 	console.log(array);
 	$(".threadTopic").html(array["thread"]["topic"]);
 	$("#threadDescr").html(array["thread"]["description"]);
