@@ -980,6 +980,9 @@ $(function() {
 			clientResY: window.screen.availHeight
 			}
 		};
+		
+		alert(e.target.id);
+		
 		$.ajax({
 			url: '../DuggaSys/logservice.php',
 			type: 'POST',
