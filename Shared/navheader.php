@@ -14,7 +14,7 @@
 			if(isset($_GET['coursevers'])){
 					$_SESSION['coursevers']=$_GET['coursevers'];
 			}
-			
+				
 			// Always show home button which links to course homepage.
 			echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 
@@ -63,7 +63,6 @@
 					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play();'><img src='../Shared/icons/play_button.svg' /></td>";
 					if(checklogin()) {
-						echo "<td class='navButt' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
 					    echo "<td class='navButt' id='fileedButton' onclick='' style='display:hidden;' ><img src='../Shared/icons/files_icon.svg' /></td>";
 					}
 
