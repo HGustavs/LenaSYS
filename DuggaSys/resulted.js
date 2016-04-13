@@ -53,7 +53,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls){
-	return "<img style=\"width:24px;height:24px\" src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+","+vers+","+moment+","+uid+","+mark+",'"+ukind+"');\"  />";
+	return "<img style=\"width:24px;height:24px\" src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+","+vers+","+moment+","+uid+","+mark+",'"+ukind+"');\" title='Grade this'/>";
 }
 
 
