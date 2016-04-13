@@ -717,8 +717,13 @@ function returnedSection(data)
 		}
 					
 		str+="</div>";
-		var slist=document.getElementById('Sectionlist');
-		slist.innerHTML=str;	
+
+		//wait with setting the html value until the document has loaded, this avoids the frequent blank screen
+		$(function(){
+			var slist=document.getElementById('Sectionlist');
+			slist.innerHTML=str;	
+		});
+
 		if(resave == true){
 			str="";
 			$("#Sectionlist").find(".item").each(function(i) {

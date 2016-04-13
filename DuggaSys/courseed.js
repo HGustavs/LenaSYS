@@ -226,8 +226,11 @@ function returnedCourse(data)
 
 	str += "</div>";
 
-	var slist = document.getElementById('Courselist');
-	slist.innerHTML = str;
+	//wait with setting the html value until the document has loaded, this avoids the frequent blank screen
+	$(function(){
+		var slist = document.getElementById('Courselist');
+		slist.innerHTML = str;
+	});
 
 	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
