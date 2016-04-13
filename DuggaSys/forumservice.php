@@ -46,7 +46,18 @@ if(checklogin())
 
 if(checklogin()){
 
-	if(strcmp($opt,"GETTHREAD")===0){
+	if(strcmp($opt,"GETUSER")===0){
+		$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
+		$query->bindParam(':threadId', $threadId);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}else if(strcmp($opt,"GETTHREAD")===0){
 		$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
 		$query->bindParam(':threadId', $threadId);
 
@@ -57,8 +68,7 @@ if(checklogin()){
 		}else{
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
-	}else if(strcmp($opt,"MAKECOMMENT")===0)
-	{
+	}else if(strcmp($opt,"MAKECOMMENT")===0){
 		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
 		$query->bindParam(':threadID', $threadId);
 		$query->bindParam(':userID', $userID);
@@ -70,27 +80,22 @@ if(checklogin()){
 		}else{
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
+	}else if(strcmp($opt,"GETCOMMENTS")===0){
+		$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
+		$query->bindParam(':threadId', $threadId);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
 	}
-
-
-	else if(strcmp($opt,"GETCOMMENTS")===0){
-	$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
-	$query->bindParam(':threadId', $threadId);
-
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
-
-	}else{
-		$comments = $query->fetchAll(PDO::FETCH_ASSOC);
-	}
-}
-
-
 }
 
 $array = array(
-
+	'user' => $user,
 	'thread' => $thread,
 	'comments' => $comments
 	);

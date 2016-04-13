@@ -468,19 +468,31 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
+		case "GETUSER":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				datatype: "json",
+				success: function(data) {
+					returnedUser(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
 		case "GETTHREAD":
-			console.log("opt="+opt);
-			console.log("para=" + para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedThread,
+				success: function(data) {
+					returnedThread(data);
+					sendConfirmation("forumservice.php");
+				},
 				error: testerror
 			});
 			break;
-
 		case "MAKECOMMENT":
 			console.log("opt="+opt);
 			console.log("para=" + para);

@@ -13,6 +13,9 @@ var querystring = parseGet();
 
 function initThread()
 {
+	console.log(querystring);
+	AJAXService("GETUSER","UNK","GETUSER");
+	
 	threadAccess();
 
 	getComments();
@@ -21,7 +24,8 @@ function initThread()
 
 function threadAccess()
 {
-	console.log(querystring);
+
+
 }
 
 function getThread()
