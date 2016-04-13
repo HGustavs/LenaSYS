@@ -459,12 +459,17 @@ function returnedSection(data)
 		}
 		
 		//Start of forum
-		str+="<div class='course'><div id='coure-coursename' style='display: inline-block; margin-right:10px;'>Forum</div></div>";
-		str+="<div id='Sectionlistc'>"
+		str+="<div class='course' style='text-align:left;'><div id='coure-coursename' style='display: inline-block;margin-left:10px;'>Forum</div></div>";
+		str+="<div id='Sectionlistc' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
 		for(var i=0;i<5;i++){
-			str+="<p><a href='#'>"+data['thread'][i]['topic']+"</a></p>";
+			if(i%2==0){
+				str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+			}else{
+				str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+			}
+			
 		}
-		str+="</div>";
+		str+="</table></div>";
 		
 		str+="</div>";
 		

@@ -384,18 +384,6 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
-		case "FORUM":
-			$.ajax({
-				url: "sectionedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					setupForum(data);
-					sendConfirmation("sectionedservice.php");
-				}
-			});
-			break;
 		case "PDUGGA":
 			$.ajax({
 				url: "showDuggaservice.php",

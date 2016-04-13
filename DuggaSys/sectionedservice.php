@@ -188,15 +188,6 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
-		}else if(strcmp($opt, "FORUM")===0){
-			$query = $pdo->prepare("SELECT topic FROM thread WHERE cid=:cid");
-			$query->bindParam(':cid', $courseid);
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error: " + $error;
-			}else{
-				$threads = $query->fetchAll(PDO::FETCH_ASSOC);
-			}
 		}
 	}
 }
@@ -450,7 +441,7 @@ if($ha){
 	}
 	
 	$threads = array();
-	$query = $pdo->prepare("SELECT topic,datecreated FROM thread WHERE cid=:cid");
+	$query = $pdo->prepare("SELECT thread.threadid,thread.cid,thread.hidden,thread.topic,thread.datecreated FROM thread,threadaccess WHERE ((thread.cid=:cid AND thread.hidden is null) OR (thread.cid=:cid AND thread.hidden=1 AND thread.uid=threadaccess.uid AND thread.threadid=threadaccess.threadid)) ORDER BY thread.datecreated DESC;");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -461,7 +452,10 @@ if($ha){
 				$threads,
 				array(
 					'topic' => $row['topic'],
-					'datecreated' => $row['datecreated']
+					'datecreated' => $row['datecreated'],
+					'cid' => $row['cid'],
+					'threadid' => $row['threadid'],
+					'hidden' => $row['hidden']
 				)
 			);
 		}
