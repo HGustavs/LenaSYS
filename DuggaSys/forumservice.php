@@ -44,93 +44,91 @@ if(checklogin())
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
-if(checklogin()){
+if(strcmp($opt,"ACCESSCHECK")===0){
+	$threadAccess = null;
 
-	if(strcmp($opt,"GETUSER")===0){
-		$threadAccess = null;
+	$query = $pdo->prepare("SELECT uid, username, superuser, class FROM user WHERE uid=:userid;");
+	$query->bindParam(':userid', $userid);
 
-		$query = $pdo->prepare("SELECT uid, username, superuser, class FROM user WHERE uid=:userid;");
-		$query->bindParam(':userid', $userid);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else{
+		$user = $query->fetch(PDO::FETCH_ASSOC);
+	}
 
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
+	$query = $pdo->prepare("SELECT uid, hidden FROM thread WHERE threadid=:threadId;");
+	$query->bindParam(':threadId', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else{
+		$thread = $query->fetch(PDO::FETCH_ASSOC);
+	}
+
+	if (!$thread['hidden']){
+		$threadAccess = "public";
+	}
+
+	if ($thread['uid']===$userid){
+		$threadAccess = "op";
+	}else {
+		// Check if user is super
+		if (isSuperUser($userid))
+		{
+			$threadAccess = "super";
 		}else{
-			$user = $query->fetch(PDO::FETCH_ASSOC);
-		}
+			// Check if user is super
+			$query = $pdo->prepare("SELECT uid FROM threadaccess WHERE threadid=:threadId AND uid=:userid;");
+			$query->bindParam(':threadId', $threadId);
+			$query->bindParam(':userid', $userid);
 
-		// Check if user is OP
-		$query = $pdo->prepare("SELECT uid FROM thread WHERE threadid=:threadId AND uid=:userid;");
-		$query->bindParam(':threadId', $threadId);
-		$query->bindParam(':userid', $userid);
-
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
-		}else{
-			$return = $query->fetch(PDO::FETCH_ASSOC);
-
-			if ($return)
-			{
-				$threadAccess = "op";
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
 			}else{
-				// Check if user is super
-				if (isSuperUser($userid))
+				$return = $query->fetch(PDO::FETCH_ASSOC);
+
+				if ($return)
 				{
-					$threadAccess = "super";
-				}else{
-					// Check if user is super
-					$query = $pdo->prepare("SELECT uid FROM threadaccess WHERE threadid=:threadId AND uid=:userid;");
-					$query->bindParam(':threadId', $threadId);
-					$query->bindParam(':userid', $userid);
-
-					if(!$query->execute()){
-						$error=$query->errorInfo();
-						exit($debug);
-					}else{
-						$return = $query->fetch(PDO::FETCH_ASSOC);
-
-						if ($return)
-						{
-							$threadAccess = "normal";
-						}
-					}
+					$threadAccess = "normal";
 				}
 			}
 		}
-	}else if(strcmp($opt,"GETTHREAD")===0){
-		$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
-		$query->bindParam(':threadId', $threadId);
+	}
+}else if(strcmp($opt,"GETTHREAD")===0){
+	$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
+	$query->bindParam(':threadId', $threadId);
 
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
-		}else{
-			$thread = $query->fetch(PDO::FETCH_ASSOC);
-		}
-	}else if(strcmp($opt,"MAKECOMMENT")===0){
-		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
-		$query->bindParam(':threadID', $threadId);
-		$query->bindParam(':userID', $userID);
-		$query->bindParam(':text', $text);
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else{
+		$thread = $query->fetch(PDO::FETCH_ASSOC);
+	}
+}else if(strcmp($opt,"MAKECOMMENT")===0){
+	$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
+	$query->bindParam(':threadID', $threadId);
+	$query->bindParam(':userID', $userID);
+	$query->bindParam(':text', $text);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
 
-		}else{
-			$thread = $query->fetch(PDO::FETCH_ASSOC);
-		}
-	}else if(strcmp($opt,"GETCOMMENTS")===0){
-		$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
-		$query->bindParam(':threadId', $threadId);
+	}else{
+		$thread = $query->fetch(PDO::FETCH_ASSOC);
+	}
+}else if(strcmp($opt,"GETCOMMENTS")===0){
+	$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
+	$query->bindParam(':threadId', $threadId);
 
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
 
-		}else{
-			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
-		}
+	}else{
+		$comments = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 }
 

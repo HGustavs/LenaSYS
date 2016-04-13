@@ -468,7 +468,7 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
-		case "GETUSER":
+		case "ACCESSCHECK":
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",

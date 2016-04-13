@@ -14,7 +14,7 @@ var querystring = parseGet();
 function initThread()
 {
 	console.log(querystring);
-	AJAXService("GETUSER",{threadId:querystring["threadId"]},"GETUSER");
+	AJAXService("ACCESSCHECK",{threadId:querystring["threadId"]},"ACCESSCHECK");
 
 	threadAccess();
 }
