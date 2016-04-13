@@ -23,7 +23,8 @@
 				echo "<td class='navButt' id='analytic' title='Analytic Tool'><a href='../DuggaSys/analytictool.php'><img style='fill:white;' src='../Shared/icons/analytic.svg'></a></td>";
 			}
 			
-			echo "<td class='navButt'><a href='#'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
+			
+			echo "<td class='navButt' id='forum' title='Forum'><a href='#'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
 
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
