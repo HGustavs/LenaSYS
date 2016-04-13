@@ -27,6 +27,9 @@ $opt = getOP('opt');
 $threadId = getOP('threadId');
 $userID = getOP('userID');
 $text = getOP('text');
+$courseId = getOP('courseId');
+$topicT = getOP('topic');
+$descriptionT = getOP('description');
 
 $debug="NONE!";
 
@@ -49,6 +52,21 @@ if(checklogin()){
 	if(strcmp($opt,"GETTHREAD")===0){
 		$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
 		$query->bindParam(':threadId', $threadId);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$thread = $query->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+	else if(strcmp($opt,"CREATETHREAD")===0){
+		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :userID, :topic, :description)");
+		$query->bindParam(':courseId', $courseId);
+		$query->bindParam(':userID', $userID);
+		$query->bindParam(':topic', $topicT);
+		$query->bindParam(':description', $descriptionT);
 
 		if(!$query->execute()){
 			$error=$query->errorInfo();

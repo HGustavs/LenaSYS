@@ -480,6 +480,19 @@ function AJAXService(opt,apara,kind)
 				error: testerror
 			});
 			break;
+			
+		case "CREATETHREAD":
+			console.log("opt="+opt);
+			console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: showThread,
+				error: error
+			});
+			break;
 
 		case "MAKECOMMENT":
 			console.log("opt="+opt);
