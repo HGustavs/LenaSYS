@@ -71,13 +71,13 @@
 		</div>
 		<div class='note'>
 			<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
-			<p>SSN&lt;space&gt;Lastname,&lt;space&gt;Firstname&lt;space&gt;Anmkod&lt;space&gt;Type of registration&lt;space&gt;Study program&lt;space&gt;Year of admittance&lt;space&gt;Email&lt;linebreak&gt;</p>
+			<p>SSN&lt;space&gt;Lastname,&lt;space&gt;Firstname&lt;space&gt;Anmkod&lt;space&gt;Type of registration&lt;space&gt;Study program&lt;space&gt;Year of addmittance(YYYY-MM-DD)&lt;space&gt;Email&lt;linebreak&gt;</p>
 			<p>Example:<br/>
-			000000-0000 Lastname, Firstname 45656 student WEBUG15h 2012 a12firla@student.his.se<br/>
-			111111-1111 Lastname, Firstname 45656 teacher FREE 2012 b12firla@student.his.se<br/>
+			000000-0000 Lastname, Firstname 45656 student WEBUG15h 2012-12-24 a12firla@student.his.se<br/>
+			111111-1111 Lastname, Firstname 45656 teacher FREE 2015-01-15 b12firla@student.his.se<br/>
 			If a student dosn't have study program, follow this exampel: <br/>
-			111111-1111 Lastname, Firstname 45656 student : 2015 b15firla@student.his.se <br/>
-			111111-1111 Lastname, Firstname 45656 none : 2015 b15firla@student.his.se </p>
+			111111-1111 Lastname, Firstname 45656 student : 2015-04-13 b15firla@student.his.se <br/>
+			111111-1111 Lastname, Firstname 45656 none : 2015-03-18 b15firla@student.his.se </p>
 			
 		</div>
 		<div style='padding:5px;'>

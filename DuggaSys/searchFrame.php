@@ -26,7 +26,7 @@ $access = $_GET["access"];
 $class = $_GET["class"];
 
 
-$queryString = "SELECT users.ssn, users.lastname, users.firstname, course.access, users.class, EXTRACT(YEAR FROM users.addedtime) AS date, users.email 
+$queryString = "SELECT users.ssn, users.lastname, users.firstname, course.access, users.class, DATE_FORMAT(addedtime,'%Y-%m-%d') AS date, users.email 
 FROM user AS users 
 LEFT JOIN user_course AS course ON users.uid=course.uid
 WHERE users.uid NOT IN (SELECT user_course.uid FROM user_course WHERE user_course.cid=:cid) GROUP BY (users.uid)";

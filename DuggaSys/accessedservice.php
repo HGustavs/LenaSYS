@@ -90,8 +90,13 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			// assigned password which can be printed later.
 			if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) 
 			{
+				
+				$date = $entry['date']." 00:00:00";
+				$date = str_ireplace("&#47;", "-", $date);
+				
+				echo json_encode(array("Date" => $date));
 				$rnd=makeRandomString(9);
-				$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password), :date);';	
+				$querystring="INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password), :date)";	
 				$stmt = $pdo->prepare($querystring);
 				$stmt->bindParam(':username', $username);
 				$stmt->bindParam(':email', $entry['email']);
@@ -99,7 +104,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$stmt->bindParam(':lastname', $entry['lastname']);
 				$stmt->bindParam(':ssn', $entry['ssn']);
 				$stmt->bindParam(':password', $rnd);
-				$stmt->bindparam(':date', $entry['date']);
+				$stmt->bindparam(':date', $date);
 				if(!$stmt->execute()) {
 					$error=$stmt->errorInfo();
 					$debug.="Error updating entries".$error[2];
