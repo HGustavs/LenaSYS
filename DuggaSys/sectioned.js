@@ -24,6 +24,26 @@ $(document).ready(function(){
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode)
 {
+	
+	// Ensures that you can't change anything if the moment is hidden.
+	if(evisible==1){
+		$('#sectionname').prop('disabled', true);
+		$('#type').prop('disabled', true);
+		$('#link').prop('disabled', true);
+		$('#gradesys').prop('disabled', true);
+		$('#tabs').prop('disabled', true);
+		$('#highscoremode').prop('disabled', true);
+		$('#moment').prop('disabled', true);
+	}
+	else{
+		$('#sectionname').prop('disabled', false);
+		$('#type').prop('disabled', false);
+		$('#link').prop('disabled', false);
+		$('#gradesys').prop('disabled', false);
+		$('#tabs').prop('disabled', false);
+		$('#highscoremode').prop('disabled', false);
+		$('#moment').prop('disabled', false);
+	}
 		
 	xelink=elink;
 		
@@ -211,7 +231,6 @@ function changedType()
 {
 	kind=$("#type").val();		
 	iistr="";
-	
 	if(kind==0){	
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
@@ -231,45 +250,45 @@ function changedType()
 				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
 			}
 		}
-		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","none");
-		$("#inputwrapper-highscore").css("display","none");
-		$("#inputwrapper-tabs").css("display","block");
-	}else if(kind==3){
-		for(var ii=0;ii<retdata['duggor'].length;ii++){
-			var iitem=retdata['duggor'][ii];
-			if(xelink==iitem['id']){
-				iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-			}else{
-				iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+			$("#link").html(iistr);
+			$("#inputwrapper-link").css("display","block");
+			$("#inputwrapper-gradesystem").css("display","none");
+			$("#inputwrapper-highscore").css("display","none");
+			$("#inputwrapper-tabs").css("display","block");
+		}else if(kind==3){
+			for(var ii=0;ii<retdata['duggor'].length;ii++){
+				var iitem=retdata['duggor'][ii];
+				if(xelink==iitem['id']){
+					iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+				}else{
+					iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+				}
 			}
-		}
-		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","block");
-		$("#inputwrapper-tabs").css("display","none");	
-	}else if(kind==4){
-		$("#inputwrapper-link").css("display","none");
-		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","none");
-		$("#inputwrapper-tabs").css("display","none");
-	}else if(kind==5){
-		$("#inputwrapper-tabs").css("display","block");
-		for(var ii=0;ii<retdata['links'].length;ii++){
-			var iitem=retdata['links'][ii];
-			if(xelink==iitem['filename']){
-				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-			}else{
-				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+			$("#link").html(iistr);
+			$("#inputwrapper-link").css("display","block");
+			$("#inputwrapper-gradesystem").css("display","block");
+			$("#inputwrapper-highscore").css("display","block");
+			$("#inputwrapper-tabs").css("display","none");	
+		}else if(kind==4){
+			$("#inputwrapper-link").css("display","none");
+			$("#inputwrapper-gradesystem").css("display","block");
+			$("#inputwrapper-highscore").css("display","none");
+			$("#inputwrapper-tabs").css("display","none");
+		}else if(kind==5){
+			$("#inputwrapper-tabs").css("display","block");
+			for(var ii=0;ii<retdata['links'].length;ii++){
+				var iitem=retdata['links'][ii];
+				if(xelink==iitem['filename']){
+					iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
+				}else{
+					iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+				}
 			}
+			$("#link").html(iistr);
+			$("#inputwrapper-link").css("display","block");
+			$("#inputwrapper-gradesystem").css("display","none");
+			$("#inputwrapper-highscore").css("display","none");
 		}
-		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","none");
-		$("#inputwrapper-highscore").css("display","none");
-	}
 }
 
 function deleteItem()
@@ -284,7 +303,12 @@ function updateItem()
 	tabs=$("#tabs").val();
 	lid=$("#lid").val();
 	kind=$("#type").val();
-	link=$("#link").val();
+	link;
+	//only tests has links to duggas
+	if(kind == 3)
+		link=$("#link").val();
+	else
+		link = "UNK";
 	highscoremode=$("#highscoremode").val();
 	sectionname=$("#sectionname").val();
 	visibility=$("#visib").val();
@@ -411,7 +435,6 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
-	// console.log(retdata);
 
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
@@ -475,7 +498,6 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
-
 				if (parseInt(item['kind']) === 4 || parseInt(item['kind']) === 0) {
  					str += "<div class='divMoment'>";
  				}else{
@@ -605,7 +627,7 @@ function returnedSection(data)
 					}else if(parseInt(item['kind']) === 3 ){
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.png' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.svg' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 
 						}						
 											
@@ -637,11 +659,8 @@ function returnedSection(data)
 						kk++;
 					}
 
-					if(kk==1){
-						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5; box-shadow: 0px 3px 2px #aaa inset; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 25px;padding-left: 23px;background-position:left center;' ";
-						else str+="style='box-shadow: 0px 3px 2px #aaa inset;' ";				
-					}else{
-						if (parseInt(item['visible']) === 0) str+=" style='opacity: 0.5;border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 25px;padding-left: 23px;background-position:left center;' ";
+					if(parseInt(item['visible']) === 0){
+						str+=" style='opacity: 0.5; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 35px;padding-left: 20px;' ";
 					}
 		
 					str+=">";
