@@ -369,7 +369,7 @@ foreach($query->fetchAll() as $row) {
 		);
 		array_push($files, $entry);		
 }
-
+$param = setDefaultParamsIfEmpty($param);
 $array = array(
 		"debug" => $debug,
 		"param" => $param,
@@ -381,4 +381,13 @@ $array = array(
 
 echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php");
+
+//sets some default parameters if none were found
+function setDefaultParamsIfEmpty($p) {
+   if ($p=== null || $p === "UNK"){
+      return '{"type":"md", "filelink":"Assignment8.md",   "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip"}]}';
+   }
+   else
+   	return p;
+}
 ?>
