@@ -411,12 +411,12 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
-	// console.log(retdata);
-
+	console.log(retdata);
+	
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
 		str="";
-
+		
 		if(data['writeaccess']) {
 			str+="<div class='course-menu-wrapper clearfix'>";			
 			str+="<div class='course-menu--settings'>";
@@ -432,6 +432,9 @@ function returnedSection(data)
 					}
 				}
 			}
+			
+			
+			
 			str+="<input type='button' class='submit-button' value='Edit version' title='Edit the selected version' onclick='showEditVersion";
 			str+='("'+querystring['coursevers']+'","'+versionname+'")';
 			str+=";'>";	
@@ -454,7 +457,17 @@ function returnedSection(data)
 			str+="</div>";
 			str+="</div>";
 		}
-	
+		
+		//Start of forum
+		str+="<div class='course'><div id='coure-coursename' style='display: inline-block; margin-right:10px;'>Forum</div></div>";
+		str+="<div id='Sectionlistc'>"
+		for(var i=0;i<5;i++){
+			str+="<p><a href='#'>"+data['thread'][i]['topic']+"</a></p>";
+		}
+		str+="</div>";
+		
+		str+="</div>";
+		
 		// Course Name
 		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 
@@ -466,6 +479,7 @@ function returnedSection(data)
 
 
 		str+="<div id='Sectionlistc' >";
+		
 			
 		var groupitems = 0;
 				
@@ -732,6 +746,7 @@ function returnedSection(data)
 							
 			});							
 		}
+		
 	}else{
 		str="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-coursevers' style='display: inline-block; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
 		str+="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
@@ -741,6 +756,12 @@ function returnedSection(data)
 		
 	}
 	if(data['debug']!="NONE!") alert(data['debug']);
+	
+}
+
+function setupForum(data)
+{
+	console.log(data);
 }
 
 function showHighscore(did, lid)

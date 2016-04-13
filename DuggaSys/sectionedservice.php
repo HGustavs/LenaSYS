@@ -188,6 +188,15 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
+		}else if(strcmp($opt, "FORUM")===0){
+			$query = $pdo->prepare("SELECT topic FROM thread WHERE cid=:cid");
+			$query->bindParam(':cid', $courseid);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error: " + $error;
+			}else{
+				$threads = $query->fetchAll(PDO::FETCH_ASSOC);
+			}
 		}
 	}
 }
@@ -439,6 +448,24 @@ if($ha){
 		$unmarked += $row[0]["unmarked"];
 
 	}
+	
+	$threads = array();
+	$query = $pdo->prepare("SELECT topic,datecreated FROM thread WHERE cid=:cid");
+	$query->bindParam(':cid', $courseid);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error: " + $error;
+	}else{
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$threads,
+				array(
+					'topic' => $row['topic'],
+					'datecreated' => $row['datecreated']
+				)
+			);
+		}
+	}
 }
 
 $array = array(
@@ -455,7 +482,8 @@ $array = array(
 	'results' => $resulties,
 	'versions' => $versions,
 	'codeexamples' => $codeexamples,
-	'unmarked' => $unmarked
+	'unmarked' => $unmarked,
+	'thread' => $threads
 );
 
 echo json_encode($array);
