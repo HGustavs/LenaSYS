@@ -8,6 +8,7 @@
 *.xml
 .metadata
 .project
+.DS_Store
 
 # All files inside folders
 courses/*
