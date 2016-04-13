@@ -19,53 +19,19 @@ if(isset($_SESSION['uid'])){
 	$userid="1";		
 } 
 
-//$cid = $_GET["cid"];
+$cid = $_GET["cid"];
+
+// These will be used as sorting parameters
 $access = $_GET["access"];
 $class = $_GET["class"];
 
 
-$queryString = "SELECT users.ssn, users.firstname, users.lastname, users.email, user_course.access, users.class 
-FROM (SELECT * FROM user AS A WHERE NOT EXISTS (SELECT * FROM user_course AS B WHERE A.uid = B.uid and B.cid=:cid)) AS users 
-LEFT JOIN user_course on users.uid=user_course.uid 
-WHERE users.class=:class OR user_course.access=:access 
-GROUP BY (users.ssn) 
-ORDER BY user_course.access DESC, users.class";
-
-if ($access == -1 && $class != -1){
-$queryString = "SELECT users.ssn, users.firstname, users.lastname, users.email, user_course.access, users.class 
-FROM (SELECT * FROM user AS A WHERE NOT EXISTS (SELECT * FROM user_course AS B WHERE A.uid = B.uid and B.cid=:cid)) AS users 
-LEFT JOIN user_course on users.uid=user_course.uid 
-WHERE users.class=:class
-GROUP BY (users.ssn) 
-ORDER BY user_course.access DESC, users.class";
-}
-
-if ($access != -1 && $class == -1){
-$queryString = "SELECT users.ssn, users.firstname, users.lastname, users.email, user_course.access, users.class 
-FROM (SELECT * FROM user AS A WHERE NOT EXISTS (SELECT * FROM user_course AS B WHERE A.uid = B.uid and B.cid=:cid)) AS users 
-LEFT JOIN user_course on users.uid=user_course.uid 
-WHERE user_course.access=:access 
-GROUP BY (users.ssn) 
-ORDER BY user_course.access DESC, users.class";
-}
-
-
-if ($access == -1 && $class == -1){
-$queryString = "SELECT users.ssn, users.firstname, users.lastname, users.email, user_course.access, users.class 
-FROM (SELECT * FROM user AS A WHERE NOT EXISTS (SELECT * FROM user_course AS B WHERE A.uid = B.uid and B.cid=2)) AS users 
-LEFT JOIN user_course on users.uid=user_course.uid 
-GROUP BY (users.ssn) 
-ORDER BY user_course.access DESC, users.class";
-}
+$queryString = "SELECT users.ssn, users.lastname, users.firstname, course.access, users.class, EXTRACT(YEAR FROM users.addedtime) AS date, users.email 
+FROM user AS users 
+LEFT JOIN user_course AS course ON users.uid=course.uid
+WHERE users.uid NOT IN (SELECT user_course.uid FROM user_course WHERE user_course.cid=:cid) GROUP BY (users.uid)";
 
 $query = $pdo->prepare($queryString);
-
-if($access != -1){
-	$query->bindParam(':access', $access);
-}
-if($class != -1){
-	$query->bindParam(':class', $class);
-}
 
 $query->bindParam(':cid', $cid);
 
@@ -73,43 +39,143 @@ $query->execute();
 
 $rawData = $query->fetchAll();
 
-echo"<div id=\"FilterLists\"><table class=\"class='list'\" style=\"float:left;\">";
+$teachers = array();
+$students = array();
+$nones = array();
+$nulls = array();
 
-$currentAccess = "-1";
+// This way of sorting should be faster then MySql's standard sorting since it wants to use index.
+// This method of sorting is a bucket sort.
+// 
 
-foreach($rawData as  $filterd)
-{
-	if($currentAccess !=  $filterd['access']){
-		$currentAccess = $filterd['access'];
-		switch ($currentAccess){
-			case "W":
-				echo "<tr class='loginBoxheader' ><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Teachers</th><th></th><th></th><th></th><th></th></tr>";
-			break;
-			case "R":
-				echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Students</th><th></th><th></th><th></th><th></th></tr>";
-			break;
-			case "N":
-				echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Free students</th><th></th><th></th><th></th><th></th></tr>";
-			break;
-			case NULL:
-				echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Unassigned users</th><th></th><th></th><th></th><th></th></tr>";
-			break;
-		}
+foreach($rawData as  $filterd){
+	switch ($filterd['access']){
+		case"W":
+			 array_push($teachers, $filterd);
+		break;
+		case"R":
+			 array_push($students, $filterd);
+		break;
+		case"N":
+			 array_push($nones, $filterd);
+		break;
+		case NULL:
+			 array_push($nulls, $filterd);
+		break;
 	}
-	
-	echo"<tr>";
-	echo"<td><input type=\"checkbox\" onchange=\"checkBox(this);\"></td>" .
-	"<td><p>  " . $filterd['lastname'] . " </p></td>" .
-	"<td><p> " . $filterd['firstname'] . " </p></td>" .
-	"<td><p> " . $filterd['class'] . " </p></td>";
-	echo"<td><p style=\"display:none;\">";
-	echo"<input type=\"hidden\" value=\"" . $filterd['ssn'] . " " . $filterd['firstname'] . " " .$filterd['lastname'] . " " .$filterd['email'] . "\">";
-	echo"</p></td></tr>";
-	
 }
 
+echo"<div id=\"FilterLists\"><table class=\"class='list'\" style=\"float:left;\">";
+
+echo"<tbody id=\"teachers\" style=\"\">";
+if(sizeof($teachers) > 0){
+	echo "<tr class='loginBoxheader' ><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Teachers</th><th></th><th></th><th></th><th></th></tr>";
+	foreach($teachers as  $filterd)
+	{
+		echo"<tr>";
+		echo"<td><input type=\"checkbox\" onchange=\"checkBox(this);\"></td>" .
+		"<td><p>  " . $filterd['lastname'] . " </p></td>" .
+		"<td><p> " . $filterd['firstname'] . " </p></td>" .
+		"<td><p> " . $filterd['class'] . " </p></td>";
+		echo"<td><p style=\"display:none;\">";
+		echo"<input type=\"hidden\" value=\"[" . 
+		$filterd['ssn'] . "] [" .
+		$filterd['lastname'] . "] [" .
+		$filterd['firstname'] . 
+		"] [anmkod] [" .
+		$filterd['access'] . "] [" .
+		$filterd['class'] . "] [" .
+		$filterd['date'] . "] [" .
+		$filterd['email'] .
+		"]\">";
+		echo"</p></td></tr>";
+	}
+}
+echo"</tbody>";
+
+echo"<tbody id=\"students\" style=\"\">";
+if(sizeof($students) > 0){
+	echo"<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Students</th><th></th><th></th><th></th><th></th></tr>";
+	foreach($students as  $filterd)
+	{
+		echo"<tr>";
+		echo"<td><input type=\"checkbox\" onchange=\"checkBox(this);\"></td>" .
+		"<td><p>  " . $filterd['lastname'] . " </p></td>" .
+		"<td><p> " . $filterd['firstname'] . " </p></td>" .
+		"<td><p> " . $filterd['class'] . " </p></td>";
+		echo"<td><p style=\"display:none;\">";
+		echo"<input type=\"hidden\" value=\"[" . 
+		$filterd['ssn'] . "] [" .
+		$filterd['lastname'] . "] [" .
+		$filterd['firstname'] . 
+		"] [anmkod] [" .
+		$filterd['access'] . "] [" .
+		$filterd['class'] . "] [" .
+		$filterd['date'] . "] [" .
+		$filterd['email'] .
+		"]\">";
+		echo"</p></td></tr>";
+	}
+
+}
+echo"</tbody>";
+
+echo"<tbody id=\"nones\" style=\"\">";
+if(sizeof($nones) > 0){
+	echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Free students</th><th></th><th></th><th></th><th></th></tr>";
+	foreach($nones as  $filterd)
+	{
+		echo"<tr>";
+		echo"<td><input type=\"checkbox\" onchange=\"checkBox(this);\"></td>" .
+		"<td><p>  " . $filterd['lastname'] . " </p></td>" .
+		"<td><p> " . $filterd['firstname'] . " </p></td>" .
+		"<td><p> " . $filterd['class'] . " </p></td>";
+		echo"<td><p style=\"display:none;\">";
+		echo"<input type=\"hidden\" value=\"[" . 
+		$filterd['ssn'] . "] [" .
+		$filterd['lastname'] . "] [" .
+		$filterd['firstname'] . 
+		"] [anmkod] [" .
+		$filterd['access'] . "] [" .
+		$filterd['class'] . "] [" .
+		$filterd['date'] . "] [" .
+		$filterd['email'] .
+		"]\">";
+		echo"</p></td></tr>";
+	}
+
+}
+echo"</tbody>";
+
+echo"<tbody id=\"nulls\" style=\"\">";
+if(sizeof($nulls) > 0){
+
+	echo "<tr class='loginBoxheader'><th class='first' style='color:white; text-align:left; padding-left:8px; width:140px;'>Unassigned users</th><th></th><th></th><th></th><th></th></tr>";
+	foreach($nulls as  $filterd)
+	{
+		echo"<tr>";
+		echo"<td><input type=\"checkbox\" onchange=\"checkBox(this);\"></td>" .
+		"<td><p>  " . $filterd['lastname'] . " </p></td>" .
+		"<td><p> " . $filterd['firstname'] . " </p></td>" .
+		"<td><p> " . $filterd['class'] . " </p></td>";
+		echo"<td><p style=\"display:none;\">";
+		echo"<input type=\"hidden\" value=\"[" . 
+		$filterd['ssn'] . "] [" .
+		$filterd['lastname'] . "] [" .
+		$filterd['firstname'] . 
+		"] [anmkod] [" .
+		$filterd['access'] . "] [" .
+		$filterd['class'] . "] [" .
+		$filterd['date'] . "] [" .
+		$filterd['email'] .
+		"]\">";
+		echo"</p></td></tr>";
+	}	
+	
+}
+echo"</tbody>";
 echo"</table>
-</div>
+
 </div>";
 
 echo "<input id='addSelected' value=\"\" type='hidden' />";

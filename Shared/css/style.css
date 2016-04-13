@@ -848,6 +848,26 @@ header td {
 
 /* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
 
+.errorBlock{
+    text-align: center;
+    margin-top: 10%;
+}
+.errorBlock h1,h2,p{
+    color: #000;
+}
+.errorBlock h1{font-size: 3em; font-weight: 200;}
+.errorBlock h2{text-transform: capitalize;}
+.errorBlock p{margin-bottom: 50px;}
+.errorBlock a{
+    text-decoration: none;
+    margin: 0 auto;
+    color: #fff;
+    padding: 20px 20px;
+    background-color: #614875;
+}
+
+/* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
+
 #HighscoreTable{
 	text-align: center;
 }
