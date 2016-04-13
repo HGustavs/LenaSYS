@@ -304,6 +304,8 @@ function renderMoment(data, userResults, userId, fname, lname, locked)
 						str += renderMomentChild(data[j][0], userResults, userId, fname, lname, 1,locked);
 						str += "</tr><tr>";
 				for (var k = 1; k < data[j].length; k++){
+					//only show moments that are visible in the sectionlist
+					if(data[j][k]['visible'] === 1)
 						str += renderMomentChild(data[j][k], userResults, userId, fname, lname, 0, locked);
 						//console.log(data[j][k]);
 				}			
@@ -516,7 +518,6 @@ function returnedResults(data)
 		var amountPassed = [];
 		var x = 0;
 		var y = 0;
-
 		//get user locks
 		var locked = data['locked'];
 
@@ -536,7 +537,6 @@ function returnedResults(data)
  				m = orderResults(data['moments']);
 				str += "<table class='markinglist'>";
 				str += renderResultTableHeader(m);
-
 				// Sets every entry of savedAmount to 0, so it can interact properly with amountPassed in renderMoment.
 				for ( k = 0; k < m.length; k++) {
 					savedAmount[k]=0;
