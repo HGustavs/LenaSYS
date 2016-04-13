@@ -468,14 +468,14 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
-		case "ACCESSCHECK":
+		case "THREADACCESSCHECK":
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					returnedUser(data);
+					accessCheck(data);
 					sendConfirmation("forumservice.php");
 				},
 				error: testerror

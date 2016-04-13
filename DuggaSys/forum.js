@@ -14,19 +14,11 @@ var querystring = parseGet();
 function initThread()
 {
 	console.log(querystring);
-	AJAXService("ACCESSCHECK",{threadId:querystring["threadId"]},"ACCESSCHECK");
-
-	threadAccess();
-}
-
-function threadAccess()
-{
-
+	AJAXService("ACCESSCHECK",{threadId:querystring["threadId"]},"THREADACCESSCHECK");
 }
 
 function getThread()
 {
-	console.log("getthread");
 	AJAXService("GETTHREAD",{threadId:querystring["threadId"]},"GETTHREAD");
 }
 
@@ -55,11 +47,27 @@ function testerror(jqXHR, textStatus, errorThrown)
 // Renderer
 //----------------------------------------
 
-function returnedUser(array)
+function accessCheck(array)
 {
+	console.log(array);
 	if (array["threadAccess"]){
 		getComments();
 		getThread();
+
+		if (array["threadAccess"] === "super"){
+			var str = "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete'>";
+			str += "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock'>";
+
+			$("#threadOptions").html(str);
+		}else if (array["threadAccess"] === "op")
+		{
+			console.log("OPOPO");
+			var str = "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete'>";
+			str += "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock'>";
+			str += "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
+
+			$("#threadOptions").html(str);
+		}
 	}else {
 		var str = "<div class='err'>";
 				str +=	"<span style='font-weight:bold'>You do not have access to this thread!</span>";
@@ -71,7 +79,6 @@ function returnedUser(array)
 
 function returnedThread(array)
 {
-	console.log(array);
 	$(".threadTopic").html(array["thread"]["topic"]);
 	$("#threadDescr").html(array["thread"]["description"]);
 	var str = "<span id='threadDate'>";

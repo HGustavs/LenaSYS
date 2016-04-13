@@ -18,7 +18,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "forumservice.php");
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="1";
+	$userid="UNK";
 }
 
 $cid = getOP('cid');
@@ -32,16 +32,6 @@ $debug="NONE!";
 
 //------------------------------------------------------------------------------------------------
 // Services
-//------------------------------------------------------------------------------------------------
-
-if(checklogin())
-{
-
-
-}
-
-//------------------------------------------------------------------------------------------------
-// Retrieve Information
 //------------------------------------------------------------------------------------------------
 
 if(strcmp($opt,"ACCESSCHECK")===0){
@@ -97,7 +87,13 @@ if(strcmp($opt,"ACCESSCHECK")===0){
 			}
 		}
 	}
-}else if(strcmp($opt,"GETTHREAD")===0){
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieve Information
+//------------------------------------------------------------------------------------------------
+
+if(strcmp($opt,"GETTHREAD")===0){
 	$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
 	$query->bindParam(':threadId', $threadId);
 

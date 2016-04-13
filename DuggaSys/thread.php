@@ -50,17 +50,7 @@ if (file_exists("../.git/refs/heads/master")) {
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">
 				<div class="threadTopic"></div>
-				<?php
-					if(isSuperUser($userid)){
-						echo '<div id="threadOptions">';
-							echo '<input class="new-item-button" type="button" value="Delete">';
-							echo '<input class="new-item-button" type="button" value="Edit">';
-							echo '<input class="new-item-button" type="button" value="Lock">';
-						echo '</div>';
-					}else{
-
-					}
-				 ?>
+				<div id="threadOptions"></div>
 			</div>
 
 
