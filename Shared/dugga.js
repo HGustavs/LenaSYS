@@ -973,16 +973,13 @@ $(function() {
 		var data = {
 			log: 'click',
 			data: {
-				target: e.target.baseURI,
-				mouseX: e.clientX,
-				mouseY: e.clientY,
-			clientResX: window.screen.availWidth,
-			clientResY: window.screen.availHeight
+					target: e.target.id,
+					mouseX: e.clientX,
+					mouseY: e.clientY,
+				clientResX: window.screen.availWidth,
+				clientResY: window.screen.availHeight
 			}
 		};
-		
-		alert(e.target.id);
-		
 		$.ajax({
 			url: '../DuggaSys/logservice.php',
 			type: 'POST',
@@ -998,8 +995,6 @@ $(function() {
 //---------------------------------------------------------------------------------------------------------------
 
 $(document).mousemove(function(e){
-	console.log(e.clientX + " - " + e.clientY);
-	
 	var data = {
 		log: 'mousemove',
 		data: {
