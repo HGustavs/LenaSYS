@@ -75,7 +75,7 @@ if($ha){
 			$debug="Error updating entries".$error[2];
 		}
 	}else if(strcmp($opt,"NEWVRS")===0){
-		$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+		$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) VALUES(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
 		
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':coursecode', $coursecode);
