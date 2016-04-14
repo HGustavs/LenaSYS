@@ -13,6 +13,7 @@ CREATE TABLE user(
 		lastupdated		TIMESTAMP,
 		addedtime  		TIMESTAMP,
 		lastvisit		TIMESTAMP,
+		admittanceyear	TIMESTAMP,
 		newpassword		TINYINT(1) NULL,
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
