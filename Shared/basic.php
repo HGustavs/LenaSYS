@@ -125,6 +125,13 @@ $sql = '
 		mouseY TEXT,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
+	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
+		id INTEGER PRIMARY KEY,
+		type INTEGER,
+		courseid INTEGER,	
+		exampleid INTEGER,	
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	):
 ';
 $log_db->exec($sql);
 
@@ -216,6 +223,21 @@ function logMousemoveEvent($page, $mouseX, $mouseY) {
 }
 
 //------------------------------------------------------------------------------------------------
+// logMousemoveEvent
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new click event in the log.db database.
+//
+
+function logExampleLoadEvent($courseid, $exampleid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, exampleid, type) VALUES (:courseid, :exampleid, :type)');
+	$query->bindParam(':courseid', $courseid);
+	$query->bindParam(':exampleid', $exampleid);
+	$query->bindParam(':type', $type);
+	$query->execute();
+}
+
+//------------------------------------------------------------------------------------------------
 // EventTypes
 //------------------------------------------------------------------------------------------------
 //
@@ -232,7 +254,6 @@ abstract class EventTypes {
 	const ServiceServerEnd = 7;
 	const ServiceClientEnd = 8;
 	const Logout = 9;
+	const pageLoad = 10;
 }
-
-
 ?>
