@@ -107,7 +107,7 @@ if(strcmp($opt,"ACCESSCHECK")===0){
 {
 	$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
 	$query->bindParam(':threadID', $threadId);
-	$query->bindParam(':userID', $userID);
+	$query->bindParam(':userID', $userid);
 	$query->bindParam(':text', $text);
 	if(!$query->execute()){
 		$error=$query->errorInfo();

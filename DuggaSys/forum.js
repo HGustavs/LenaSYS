@@ -38,10 +38,32 @@ function createThread()
 
 function makeComment()
 {
-	var threadId = 1;
-	var userID = 1;
-	var text = "hehe";
-	AJAXService("MAKECOMMENT",{threadId:threadId,userID:userID,text:text},"MAKECOMMENT");
+	var threadId = querystring["threadId"];
+	//var userID = 1;
+	var text = $(".commentInput").val();
+	
+	if(text.length > 0)
+	{	
+		AJAXService("MAKECOMMENT",{threadId:threadId,text:text},"MAKECOMMENT");
+	}
+	else
+	{
+		
+	}
+}
+
+function checkComment()
+{
+	var text = $(".commentInput").val();
+	
+	if(text.length > 0)
+	{
+		$(".commentSubmitButton").css("background-color", "#614875");
+	}
+	else
+	{
+		$(".commentSubmitButton").css("background-color", "buttonface");
+	}
 }
 
 

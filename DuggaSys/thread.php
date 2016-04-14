@@ -60,12 +60,12 @@ if (file_exists("../.git/refs/heads/master")) {
 			</div>
 		</div>
 
-		<div class="threadMakeComment">
+		<div class="threadMakeComment" style="display: show">
 			<div class="makeCommentHeader">
 				Comment
 			</div>
 			<div class="makeCommentInputWrapper">
-				<textarea class="commentInput" name="commentInput" placeholder="Leave a comment"></textarea>
+				<textarea class="commentInput" name="commentInput" placeholder="Leave a comment" onkeyup="checkComment();"></textarea>
 				<input class="submit-button commentSubmitButton" type="button" value="Submit" onclick="makeComment();">
 			</div>
 		</div>
