@@ -12,7 +12,7 @@ function addUsers()
 {
 	var rawNewUsers=$("#import").val().split("\n");
 	var newUsers = [];
-	var length = rawNewUsers.length-1;
+	var length = rawNewUsers.length;
 	var segments = "";
 	var numberOfSegments = 0;
 	for(i=0;i<length;i++)

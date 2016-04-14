@@ -96,7 +96,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				
 				echo json_encode(array("Date" => $date));
 				$rnd=makeRandomString(9);
-				$querystring="INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password), :date)";	
+				$querystring="INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime, admittanceyear) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password), NOW(), :date)";	
 				$stmt = $pdo->prepare($querystring);
 				$stmt->bindParam(':username', $username);
 				$stmt->bindParam(':email', $entry['email']);
