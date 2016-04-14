@@ -63,8 +63,8 @@
 					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play();'><img src='../Shared/icons/play_button.svg' /></td>";
 					if(checklogin()) {
-						echo "<td class='navButt' id='egEdit' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-					    echo "<td class='navButt' id='fileedButton' onclick='' style='display:hidden;' ><img src='../Shared/icons/files_icon.svg' /></td>";
+						echo "<td class='navButt' id='egEdit' title='Edit example' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+					    echo "<td class='navButt' id='fileedButton' title='Edit files' onclick='' style='display:hidden;' ><img src='../Shared/icons/files_icon.svg' /></td>";
 					}
 
 					if($codeviewerkind) echo "<td class='navButt' title='Settings' id='hidesettings'><img src='../Shared/icons/general_settings_button.svg' /></td>";
