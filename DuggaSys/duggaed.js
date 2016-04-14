@@ -237,7 +237,7 @@ function returnedDugga(data)
 			
 			str+="<td style='padding:4px;'>";
 			str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' title='Add variant'";
-			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");' >";
+			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");collapseLight(this," + item['did'] + ");' >";
 			str+="</td>";
 
 
@@ -439,11 +439,12 @@ function hideAddDuggaTemplate(){
 }
 
 function collapseLight(elem,qid){
+	if ($(elem).is('img')){
+		elem = $(elem).parent('.fumo');
+	}
 	//get the right element to collapse and collapse to the next moment.
    	$(elem).next('.fuma').fadeToggle(400);
-
-   	if (true) {
-   		//call ajax with the section id as a paramenter
-   		AJAXService("SETCOLLAPSE",{qid:qid},"DUGGA");
-   	}
+	
+	//call ajax with the section id as a paramenter
+	AJAXService("SETCOLLAPSE",{qid:qid},"DUGGA");
    }
