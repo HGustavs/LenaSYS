@@ -128,8 +128,8 @@ $sql = '
 	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
 		id INTEGER PRIMARY KEY,
 		type INTEGER,
-		courseid INTEGER,	
-		exampleid INTEGER,	
+		courseid TEXT,	
+		exampleid TEXT,	
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	):
 ';

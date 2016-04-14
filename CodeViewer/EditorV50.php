@@ -100,7 +100,7 @@ Testing Link:
 			$cvers = getOPG('cvers');
 			
 			// Adding page logging 
-			logExampleLoadEvent($courseID, $exampleid, 10);
+			logExampleLoadEvent($courseID, $exampleid, EventTypes::pageLoad);
 
 			// Fetch content from database
 			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
