@@ -104,6 +104,7 @@ CREATE TABLE quiz (
 	cid 			INTEGER UNSIGNED NOT NULL,
 	autograde 		TINYINT(1) NOT NULL DEFAULT 0, /* bool */
 	gradesystem 	TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
+	collapsed		TINYINT(1) DEFAULT 0,
 	qname 			VARCHAR(255) NOT NULL DEFAULT '',
 	quizFile 		VARCHAR(255) NOT NULL DEFAULT 'default',
 	qrelease 		DATETIME,
