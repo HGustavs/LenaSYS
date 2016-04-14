@@ -127,9 +127,17 @@ $sql = '
 	);
 	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
 		id INTEGER PRIMARY KEY,
-		type TEXT,
-		courseid TEXT,	
-		exampleid TEXT,	
+		type INTEGER,
+		courseid INTEGER,	
+		exampleid INTEGER,	
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
+	CREATE TABLE IF NOT EXISTS duggaLoadLogEntries(
+		id INTEGER PRIMARY KEY,
+		type INTEGER,
+		cid INTEGER,	
+		vers INTEGER,	
+		quizid INTEGER,	
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 ';
@@ -223,10 +231,10 @@ function logMousemoveEvent($page, $mouseX, $mouseY) {
 }
 
 //------------------------------------------------------------------------------------------------
-// logMousemoveEvent
+// Log page load for examples.
 //------------------------------------------------------------------------------------------------
 //
-//  Creates a new click event in the log.db database.
+//  Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
 //
 
 function logExampleLoadEvent($courseid, $exampleid, $type) {
@@ -236,6 +244,23 @@ function logExampleLoadEvent($courseid, $exampleid, $type) {
 	$query->bindParam(':type', $type);
 	$query->execute();
 }
+
+//------------------------------------------------------------------------------------------------
+// Log page load for examples.
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new entry to the duggaLoadLogEntries when a user opens a new dugga.
+//
+
+function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, vers, quizid, type) VALUES (:cid, :vers, :quizid, :type)');
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $vers);
+	$query->bindParam(':quizid', $quizid);
+	$query->bindParam(':type', $type);
+	$query->execute();
+}
+
 
 //------------------------------------------------------------------------------------------------
 // EventTypes
