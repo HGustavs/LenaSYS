@@ -441,8 +441,9 @@ if($ha){
 	}
 	
 	$threads = array();
-	$query = $pdo->prepare("SELECT thread.threadid,thread.cid,thread.hidden,thread.topic,thread.datecreated FROM thread,threadaccess WHERE ((thread.cid=:cid AND thread.hidden is null) OR (thread.cid=:cid AND thread.hidden=1 AND thread.uid=threadaccess.uid AND thread.threadid=threadaccess.threadid)) ORDER BY thread.datecreated DESC;");
+	$query = $pdo->prepare("SELECT thread.topic,thread.cid,thread.datecreated,thread.threadid,thread.hidden FROM thread WHERE ((thread.cid=:cid AND thread.hidden is null)) ORDER BY thread.datecreated DESC;");
 	$query->bindParam(':cid', $courseid);
+	//$query->bindParam(':uid', $userid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error: " + $error;
