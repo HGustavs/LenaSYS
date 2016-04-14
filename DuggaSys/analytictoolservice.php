@@ -26,6 +26,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'passwordGuessing':
 				passwordGuessing();
 				break;
+			case 'serviceUsage':
+				serviceUsage();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -87,5 +90,21 @@ function passwordGuessing(){
 		GROUP BY uid, remoteAddress
 		HAVING tries > 10;
 	')->fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves service usage.		
+//------------------------------------------------------------------------------------------------
+
+function serviceUsage(){
+	$result = $GLOBALS['log_db']->query('
+		SELECT
+			service AS service,
+			COUNT(*) as hits
+		FROM serviceLogEntries
+		WHERE eventType = '.EventTypes::ServiceClientStart.'
+		GROUP BY service
+	')->fetchAl(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
