@@ -493,6 +493,8 @@ function returnedSection(data)
 		str+="<div id='Sectionlistc' >";
 			
 		var groupitems = 0;
+
+		var collapsedArr = [];
 				
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
@@ -502,6 +504,7 @@ function returnedSection(data)
 				var deadline = item['deadline'];
 				if (parseInt(item['kind']) === 4 || parseInt(item['kind']) === 0) {
  					str += "<div class='divMoment'>";
+ 					collapsedArr.push(item['collapsed']);
  				}else{
  					str += "<div>";
  				}
@@ -713,7 +716,7 @@ function returnedSection(data)
 			str+="</div>";
 		}
 		if(retdata["writeaccess"]){
-			str += "<td><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/><td></div>";
+			str += "</div><td><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/><td>";
 		}else{
 			str += "</div>";
 		}
@@ -723,7 +726,16 @@ function returnedSection(data)
 		//wait with setting the html value until the document has loaded, this avoids the frequent blank screen
 		$(function(){
 			var slist=document.getElementById('Sectionlist');
-			slist.innerHTML=str;	
+			slist.innerHTML=str;
+
+			//Run through the divs to see which ones to hide
+			var c = 0;
+			$('div.divMoment').each(function(index, el) {
+				//if collapsed is 1, run collapse function
+				if (collapsedArr[c] == 1)
+					collapseLight(this);
+				c++;
+			});
 		});
 
 		if(resave == true){
@@ -830,9 +842,17 @@ function returnedHighscore(data){
 }
 
 function collapseLight(elem){
+	//get the right element to collapse and collapse to the next moment.
  	var a = "div." + elem.closest('div').className;
-   	//alert(a);
    	$(elem).closest('div').nextUntil(a).fadeToggle(400);
+   	//get id of the moment so we can update if the moment is collapsed or not
+   	var getIdStr = $(elem).closest('td').next('td').attr('id');
+   	if (getIdStr) {
+   		var lengthOf = getIdStr.length;
+   		var lid = getIdStr.substring(1,lengthOf);
+   		//call ajax with the section id as a paramenter
+   		AJAXService("SETCOLLAPSE",{lid:lid},"SECTION");
+   	}
    }
 
 function moveRowToTop(itemId){
