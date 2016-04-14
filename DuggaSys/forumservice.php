@@ -18,18 +18,12 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "forumservice.php");
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="1";
+	$userid="UNK";
 }
 
-
-
-
 $cid = getOP('cid');
-
 $uid = getOP('uid');
-
 $opt = getOP('opt');
-
 $threadId = getOP('threadId');
 $userID = getOP('userID');
 $text = getOP('text');
@@ -40,47 +34,89 @@ $debug="NONE!";
 // Services
 //------------------------------------------------------------------------------------------------
 
-if(checklogin())
-{
+if(strcmp($opt,"ACCESSCHECK")===0){
+	$threadAccess = null;
 
+	$query = $pdo->prepare("SELECT uid, username, superuser, class FROM user WHERE uid=:userid;");
+	$query->bindParam(':userid', $userid);
 
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else{
+		$user = $query->fetch(PDO::FETCH_ASSOC);
+	}
+
+	$query = $pdo->prepare("SELECT uid, hidden FROM thread WHERE threadid=:threadId;");
+	$query->bindParam(':threadId', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else{
+		$thread = $query->fetch(PDO::FETCH_ASSOC);
+	}
+
+	if (!$thread['hidden']){
+		$threadAccess = "public";
+	}
+
+	if ($thread['uid']===$userid){
+		$threadAccess = "op";
+	}else {
+		// Check if user is super
+		if (isSuperUser($userid))
+		{
+			$threadAccess = "super";
+		}else{
+			// Check if user is super
+			$query = $pdo->prepare("SELECT uid FROM threadaccess WHERE threadid=:threadId AND uid=:userid;");
+			$query->bindParam(':threadId', $threadId);
+			$query->bindParam(':userid', $userid);
+
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
+			}else{
+				$return = $query->fetch(PDO::FETCH_ASSOC);
+
+				if ($return)
+				{
+					$threadAccess = "normal";
+				}
+			}
+		}
+	}
 }
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
-if(checklogin()){
+if(strcmp($opt,"GETTHREAD")===0){
+	$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
+	$query->bindParam(':threadId', $threadId);
 
-	if(strcmp($opt,"GETTHREAD")===0){
-		$query = $pdo->prepare("SELECT * FROM thread WHERE threadID=:threadId");
-		$query->bindParam(':threadId', $threadId);
-
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
-
-		}else{
-			$thread = $query->fetch(PDO::FETCH_ASSOC);
-		}
-	}else if(strcmp($opt,"MAKECOMMENT")===0)
-	{
-		$query = $pdo->prepare("INSERT INTO threadComment (threadID, userID, text) VALUES (:threadID, :userID, :text)");
-		$query->bindParam(':threadID', $threadId);
-		$query->bindParam(':userID', $userID);
-		$query->bindParam(':text', $text);
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
-
-		}else{
-			$thread = $query->fetch(PDO::FETCH_ASSOC);
-		}
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else{
+		$thread = $query->fetch(PDO::FETCH_ASSOC);
 	}
+}else if(strcmp($opt,"MAKECOMMENT")===0){
+	$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
+	$query->bindParam(':threadID', $threadId);
+	$query->bindParam(':userID', $userID);
+	$query->bindParam(':text', $text);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
 
-
-	else if(strcmp($opt,"GETCOMMENTS")===0){
-	$query = $pdo->prepare("SELECT * FROM threadComment WHERE threadID=:threadId ORDER BY dateCreated ASC;");
+	}else{
+		$thread = $query->fetch(PDO::FETCH_ASSOC);
+	}
+}else if(strcmp($opt,"GETCOMMENTS")===0){
+	$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
 	$query->bindParam(':threadId', $threadId);
 
 	if(!$query->execute()){
@@ -92,25 +128,13 @@ if(checklogin()){
 	}
 }
 
-
-}
-
 $array = array(
-
 	'thread' => $thread,
-	'comments' => $comments
+	'comments' => $comments,
+	'user' => $user,
+	'threadAccess' => $threadAccess
 	);
 
-
-
-/*$t = json_encode($array);
-if (!$t){
-	echo "Failed: ". $t;
-} else {
-	echo "success: ". $t;
-}*/
 echo json_encode($array);
-
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
-
 ?>
