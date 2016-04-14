@@ -23,6 +23,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'serviceAvgDuration':
 				serviceAvgDuration();
 				break;
+			case 'passwordGuessing':
+				passwordGuessing();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -64,6 +67,25 @@ function serviceAvgDuration() {
 				WHERE service=subService
 			) AS avgDuration
 		FROM serviceLogEntries;
+	')->fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves possible password guessing.		
+//------------------------------------------------------------------------------------------------
+
+function passwordGuessing(){
+	$result = $GLOBALS['log_db']->query('
+		SELECT 
+			uid AS userName, 
+			remoteAddress AS remoteAddresss, 
+			userAgent AS userAgent,
+			COUNT(*) AS  tries
+		FROM userLogEntries 
+		WHERE eventType = '.EventTypes::LoginFail.'
+		GROUP BY uid, remoteAddress
+		HAVING tries > 10;
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
