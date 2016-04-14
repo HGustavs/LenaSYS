@@ -388,6 +388,6 @@ function setDefaultParamsIfEmpty($p) {
       return '{"type":"md", "filelink":"Assignment8.md",   "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip"}]}';
    }
    else
-   	return p;
+   	return $p;
 }
 ?>
