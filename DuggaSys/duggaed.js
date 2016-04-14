@@ -162,6 +162,7 @@ function selectVariant(vid,param,answer,template,dis)
 // Renderer
 //----------------------------------------
 var alla = 0;
+var collapsedArr = [];
 function returnedDugga(data)
 {
 	$("content").html();
@@ -183,7 +184,8 @@ function returnedDugga(data)
 			
 			var item=data['entries'][i];
 			
-			str+="<tr class='fumo'>";
+			str+="<tr class='fumo' onclick='collapseLight(this," + item['did'] + ")'>";
+			collapsedArr.push(item['collapsed']);
 			result++;
 			str+="<td style='width:170px'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			if(item['autograde']=="1"){
@@ -248,7 +250,7 @@ function returnedDugga(data)
 			var variantz=item['variants'];
 			
 			if(variantz.length>0){
-				str+="<tr class='fumo'><td colspan='9' style='padding:0px;'>";
+				str+="<tr class='fuma'><td colspan='9' style='padding:0px;'>";
 				str+="<table width='100%' class='innertable'>";
 				for(j=0;j<variantz.length;j++){
 					var itemz=variantz[j];
@@ -293,6 +295,15 @@ function returnedDugga(data)
 	$(function(){
 		var slist=document.getElementById("content");
 		slist.innerHTML=str;
+
+		//Run through the divs to see which ones to hide
+		var c = 0;
+		$('tr.fumo').each(function(index, el) {
+			//if collapsed is 1, run collapse function
+			if (collapsedArr[c] == 1)
+				collapseLight(this);
+			c++;
+		});
 	});
 
 	if(data['debug']!="NONE!") alert(data['debug']);
@@ -426,3 +437,13 @@ function showAddDuggaTemplate(){
 function hideAddDuggaTemplate(){
 	$("#addDuggaTemplate").css("display","none");
 }
+
+function collapseLight(elem,qid){
+	//get the right element to collapse and collapse to the next moment.
+   	$(elem).next('.fuma').fadeToggle(400);
+
+   	if (true) {
+   		//call ajax with the section id as a paramenter
+   		AJAXService("SETCOLLAPSE",{qid:qid},"DUGGA");
+   	}
+   }
