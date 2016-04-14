@@ -131,7 +131,7 @@ $sql = '
 		courseid TEXT,	
 		exampleid TEXT,	
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	):
+	);
 ';
 $log_db->exec($sql);
 
