@@ -52,9 +52,6 @@ h4 {
     font-size: 1.2em;
     line-height: 1.5em;
 }
-body {
-    background: #ddd;
-}
 hr {
     border: 0;
     border-bottom: 1px dashed #ccc;
@@ -1384,7 +1381,7 @@ input.new-item-button:hover {
   clear:both;
   margin-top: 25px;
   overflow: hidden;
-  background-color: #eae8eb;
+  background-color: #FFF;
 }
 #threadCommentsHeader {
   background-color: #927b9e;
@@ -1401,9 +1398,9 @@ input.new-item-button:hover {
   padding: 10px 20px;
   background-color: #eae8eb;
   overflow: hidden;
-  border-left: 2px solid #927b9e;
+  border: 2px solid #927b9e;
+  margin-top: 20px;
 }
-
 
 .commentDetails {
   color: #775886;
@@ -1412,7 +1409,21 @@ input.new-item-button:hover {
 
 }
 
+.allComments {
+	background-color: white;
+}
+
 .commentContent {
+	min-height: 100px;
+	background-color: white;
+	border: 1px solid #A1A1A1;
+}
+
+.commentContent p{
+	padding: 5px;
+}
+
+.commentFooter {
 
 }
 
