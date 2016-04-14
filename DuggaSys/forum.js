@@ -49,19 +49,19 @@ function testerror(jqXHR, textStatus, errorThrown)
 
 function accessCheck(array)
 {
-	console.log(array);
 	if (array["threadAccess"]){
 		getComments();
 		getThread();
 
-		if (array["threadAccess"] === "super"){
+		if (array["threadAccess"] === "public"){
+			$('.threadMakeComment').hide();
+		}else if (array["threadAccess"] === "super"){
 			var str = "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete'>";
 			str += "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock'>";
 
 			$("#threadOptions").html(str);
 		}else if (array["threadAccess"] === "op")
 		{
-			console.log("OPOPO");
 			var str = "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete'>";
 			str += "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock'>";
 			str += "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
