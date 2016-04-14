@@ -166,6 +166,8 @@
 	?>
 
 	<?php
+		// Adding page logging 
+		
 		include '../Shared/loginbox.php';
 	?>
 	
