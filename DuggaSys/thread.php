@@ -46,6 +46,10 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<!-- content START -->
 	<div id="content">
+    <?php
+      $threadAccess;
+      getThreadAccess();
+     ?>
 		<!-- Section List -->
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">

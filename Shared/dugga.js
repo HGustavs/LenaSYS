@@ -468,19 +468,6 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
-		case "THREADACCESSCHECK":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					accessCheck(data);
-					sendConfirmation("forumservice.php");
-				},
-				error: testerror
-			});
-			break;
 		case "GETTHREAD":
 			$.ajax({
 				url: "forumservice.php",
@@ -491,7 +478,7 @@ function AJAXService(opt,apara,kind)
 					returnedThread(data);
 					sendConfirmation("forumservice.php");
 				},
-				error: testerror
+				error: error
 			});
 			break;
 		case "CREATETHREAD":
@@ -534,7 +521,7 @@ function AJAXService(opt,apara,kind)
 					returnedComments(data);
 					sendConfirmation("forumservice.php");
 				},
-				error: testerror
+				error: error
 			});
 			break;
 		case "GETCOURSETHREAD":

@@ -37,7 +37,9 @@ $debug="NONE!";
 // Services
 //------------------------------------------------------------------------------------------------
 
-if(strcmp($opt,"ACCESSCHECK")===0){
+function getThreadAccess()
+{
+	global $threadAccess;
 	$threadAccess = null;
 
 	$query = $pdo->prepare("SELECT uid, username, superuser, class FROM user WHERE uid=:userid;");
@@ -82,7 +84,6 @@ if(strcmp($opt,"ACCESSCHECK")===0){
 				exit($debug);
 			}else{
 				$return = $query->fetch(PDO::FETCH_ASSOC);
-
 				if ($return)
 				{
 					$threadAccess = "normal";
@@ -90,67 +91,112 @@ if(strcmp($opt,"ACCESSCHECK")===0){
 			}
 		}
 	}
-}else if(strcmp($opt,"CREATETHREAD")===0){
-	$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :userID, :topic, :description)");
-	$query->bindParam(':courseId', $courseId);
-	$query->bindParam(':userID', $userID);
-	$query->bindParam(':topic', $topicT);
-	$query->bindParam(':description', $descriptionT);
+}
 
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
+if(strcmp($opt,"CREATETHREAD")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :userID, :topic, :description)");
+		$query->bindParam(':courseId', $courseId);
+		$query->bindParam(':userID', $userID);
+		$query->bindParam(':topic', $topicT);
+		$query->bindParam(':description', $descriptionT);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}else{
+			$thread = $query->fetch(PDO::FETCH_ASSOC);
+		}
 	}else{
-		$thread = $query->fetch(PDO::FETCH_ASSOC);
+		$errArray = array(
+			errMsgBold => "Access denied!",
+			errMsgBody => "You do not have access to the thread."
+		);
+		echo json_encode($errArray);
+		exit();
 	}
-}else if(strcmp($opt,"MAKECOMMENT")===0)
-{
-	$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
-	$query->bindParam(':threadID', $threadId);
-	$query->bindParam(':userID', $userID);
-	$query->bindParam(':text', $text);
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
-	}else{
-		$comments = $query->fetch(PDO::FETCH_ASSOC);
+}else if(strcmp($opt,"MAKECOMMENT")===0){
+	// Access check
+	if ($threadAccess==="normal" || $threadAccess==="super" || $threadAccess==="op"){
+		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
+		$query->bindParam(':threadID', $threadId);
+		$query->bindParam(':userID', $userID);
+		$query->bindParam(':text', $text);
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}else{
+			$comments = $query->fetch(PDO::FETCH_ASSOC);
+		}
+	}else {
+		$errArray = array(
+			errMsgBold => "Access denied!",
+			errMsgBody => "You must log in to create a thread."
+		);
+		echo json_encode($errArray);
+		exit();
 	}
 }
+
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
-else if(strcmp($opt,"GETTHREAD")===0){
-	$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
-	$query->bindParam(':threadId', $threadId);
 
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
+else if(strcmp($opt,"GETTHREAD")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
+		$query->bindParam(':threadId', $threadId);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}else{
+			$thread = $query->fetch(PDO::FETCH_ASSOC);
+		}
 	}else{
-		$thread = $query->fetch(PDO::FETCH_ASSOC);
+		$errArray = array(
+			errMsgBold => "Access denied!",
+			errMsgBody => "You do not have access to the thread. getthread" . $threadAccess
+		);
+		echo json_encode($errArray);
+		exit();
 	}
 }else if(strcmp($opt,"GETCOMMENTS")===0){
-	$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
-	$query->bindParam(':threadId', $threadId);
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
+		$query->bindParam(':threadId', $threadId);
 
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
 
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
 	}else{
-		$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		$errArray = array(
+			errMsgBold => "Access denied!",
+			errMsgBody => "You do not have access to the thread. getcomment"
+		);
+		echo json_encode($errArray);
+		exit();
 	}
 }
 
-$array = array(
-	'thread' => $thread,
-	'comments' => $comments,
-	'user' => $user,
-	'threadAccess' => $threadAccess
+if ($opt!=="UNK"){
+	$array = array(
+		'thread' => $thread,
+		'comments' => $comments,
+		'user' => $user,
+		'threadAccess' => $threadAccess
 	);
+	echo json_encode($array);
+}
 
-echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
 ?>
