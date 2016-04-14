@@ -439,6 +439,27 @@ if($ha){
 		$unmarked += $row[0]["unmarked"];
 
 	}
+	
+	$threads = array();
+	$query = $pdo->prepare("SELECT thread.threadid,thread.cid,thread.hidden,thread.topic,thread.datecreated FROM thread,threadaccess WHERE ((thread.cid=:cid AND thread.hidden is null) OR (thread.cid=:cid AND thread.hidden=1 AND thread.uid=threadaccess.uid AND thread.threadid=threadaccess.threadid)) ORDER BY thread.datecreated DESC;");
+	$query->bindParam(':cid', $courseid);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error: " + $error;
+	}else{
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$threads,
+				array(
+					'topic' => $row['topic'],
+					'datecreated' => $row['datecreated'],
+					'cid' => $row['cid'],
+					'threadid' => $row['threadid'],
+					'hidden' => $row['hidden']
+				)
+			);
+		}
+	}
 }
 
 $array = array(
@@ -455,7 +476,8 @@ $array = array(
 	'results' => $resulties,
 	'versions' => $versions,
 	'codeexamples' => $codeexamples,
-	'unmarked' => $unmarked
+	'unmarked' => $unmarked,
+	'thread' => $threads
 );
 
 echo json_encode($array);
