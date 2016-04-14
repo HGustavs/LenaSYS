@@ -68,7 +68,11 @@ Testing Link:
 	$exampleName = $row['examplename'];		
 	//Title used for the codeviewer page		
 	$title = $exampleName;
+
+	
+	
 ?>
+
 <!DOCTYPE html>
 <html>
 	<head>
