@@ -99,8 +99,7 @@ Testing Link:
 			$courseID = getOPG('courseid');
 			$cvers = getOPG('cvers');
 			
-			// Adding page logging 
-			logExampleLoadEvent($courseID, $exampleid, EventTypes::pageLoad);
+			
 
 			// Fetch content from database
 			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
@@ -284,6 +283,10 @@ Testing Link:
 		</div>		
 		<!--- Template Choosing Box --->
 		<?php
+		
+			// Adding page logging 
+			logExampleLoadEvent($courseID, $exampleid, EventTypes::pageLoad);
+			
 			include '../Shared/loginbox.php';
 		?>		
 	</body>
