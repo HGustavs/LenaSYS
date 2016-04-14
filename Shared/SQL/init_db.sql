@@ -89,6 +89,7 @@ CREATE TABLE listentries (
 	vers			VARCHAR(8),
 	moment			INT UNSIGNED,
 	gradesystem 	TINYINT(1),
+	collapsed		TINYINT(1) DEFAULT 0,
 	highscoremode		INT DEFAULT 0,
 	CONSTRAINT 		pk_listentries PRIMARY KEY(lid),
 	
