@@ -98,6 +98,9 @@ Testing Link:
 			$exampleid = getOPG('exampleid');
 			$courseID = getOPG('courseid');
 			$cvers = getOPG('cvers');
+			
+			// Adding page logging 
+			logExampleLoadEvent($courseID, $exampleid, 10);
 
 			// Fetch content from database
 			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
