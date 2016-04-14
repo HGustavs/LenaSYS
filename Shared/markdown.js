@@ -127,20 +127,35 @@ function markdownBlock(inString)
 	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
 	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
 	
-	//Regular expressions for lists
+	//Regular expressions for ordered lists
 	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
-	inString = inString.replace(/^\s*[\-\*]\s(.*)/gm, '<ul><li>$1</li></ul>');
-
-	// Fix for superflous ul tags
+	
+	// Fix for superflous ol tags
 	inString = inString.replace(/\<\/ol\>(\r\n|\n|\r)\<ol\>/gm,"");
-	inString = inString.replace(/\<\/ul\>(\r\n|\n|\r)\<ul\>/gm,"");
+	
+	//Regular expressions for unordered lists
+	// (***) to start a list
+	// * Bullet
+	// 		(***) to start a sublist
+	// 		* Sub-bullet
+	// 		(/***) to close the sublist
+	// (/***) to close the list
+	inString = inString.replace(/[(]\*{3}[)]/gm, '<ul>');
+	inString = inString.replace(/[\-\*]{1}\s(.*)/gm, '<li>$1</li>');
+	inString = inString.replace(/[(][\/]\*{3}[)]/gm, '</ul>');
 
 	//Regular expression for line
 	inString = inString.replace(/\-{3,}/g, '<hr>');
 	
 	// Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
-	inString = inString.replace(/(\r\n|\n|\r){3}/gm,"<br><br>");
-	inString = inString.replace(/(\r\n|\n|\r){2}/gm,"<br>");
+	inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
+	inString = inString.replace(/(\r\n){2}/gm,"<br>");
+	
+	inString = inString.replace(/(\n){3}/gm,"<br><br>");
+	inString = inString.replace(/(\n){2}/gm,"<br>");
+	
+	inString = inString.replace(/(\r){3}/gm,"<br><br>");
+	inString = inString.replace(/(\r){2}/gm,"<br>");
 	
 	// Hyperlink !!!
 	// !!!url,text to show!!!	
