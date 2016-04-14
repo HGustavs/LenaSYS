@@ -90,6 +90,7 @@ CREATE TABLE listentries (
 	vers			VARCHAR(8),
 	moment			INT UNSIGNED,
 	gradesystem 	TINYINT(1),
+	collapsed		TINYINT(1) DEFAULT 0,
 	highscoremode		INT DEFAULT 0,
 	CONSTRAINT 		pk_listentries PRIMARY KEY(lid),
 	
@@ -104,6 +105,7 @@ CREATE TABLE quiz (
 	cid 			INTEGER UNSIGNED NOT NULL,
 	autograde 		TINYINT(1) NOT NULL DEFAULT 0, /* bool */
 	gradesystem 	TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
+	collapsed		TINYINT(1) DEFAULT 0,
 	qname 			VARCHAR(255) NOT NULL DEFAULT '',
 	quizFile 		VARCHAR(255) NOT NULL DEFAULT 'default',
 	qrelease 		DATETIME,
