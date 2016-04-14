@@ -27,6 +27,9 @@ $opt = getOP('opt');
 $threadId = getOP('threadId');
 $userID = getOP('userID');
 $text = getOP('text');
+$courseId = getOP('courseId');
+$topicT = getOP('topic');
+$descriptionT = getOP('description');
 
 $debug="NONE!";
 
@@ -87,15 +90,12 @@ if(strcmp($opt,"ACCESSCHECK")===0){
 			}
 		}
 	}
-}
-
-//------------------------------------------------------------------------------------------------
-// Retrieve Information
-//------------------------------------------------------------------------------------------------
-
-if(strcmp($opt,"GETTHREAD")===0){
-	$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
-	$query->bindParam(':threadId', $threadId);
+}else if(strcmp($opt,"CREATETHREAD")===0){
+	$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :userID, :topic, :description)");
+	$query->bindParam(':courseId', $courseId);
+	$query->bindParam(':userID', $userID);
+	$query->bindParam(':topic', $topicT);
+	$query->bindParam(':description', $descriptionT);
 
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -103,7 +103,8 @@ if(strcmp($opt,"GETTHREAD")===0){
 	}else{
 		$thread = $query->fetch(PDO::FETCH_ASSOC);
 	}
-}else if(strcmp($opt,"MAKECOMMENT")===0){
+}else if(strcmp($opt,"MAKECOMMENT")===0)
+{
 	$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
 	$query->bindParam(':threadID', $threadId);
 	$query->bindParam(':userID', $userID);
@@ -111,7 +112,22 @@ if(strcmp($opt,"GETTHREAD")===0){
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		exit($debug);
+	}else{
+		$comments = $query->fetch(PDO::FETCH_ASSOC);
+	}
+}
 
+//------------------------------------------------------------------------------------------------
+// Retrieve Information
+//------------------------------------------------------------------------------------------------
+
+else if(strcmp($opt,"GETTHREAD")===0){
+	$query = $pdo->prepare("SELECT * FROM thread WHERE threadid=:threadId");
+	$query->bindParam(':threadId', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
 	}else{
 		$thread = $query->fetch(PDO::FETCH_ASSOC);
 	}

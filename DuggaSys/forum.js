@@ -27,6 +27,15 @@ function getComments()
   AJAXService("GETCOMMENTS",{threadId:querystring["threadId"]},"GETCOMMENTS");
 }
 
+function createThread()
+{
+	var courseId = 1;
+	var topic = "Din mormor";
+	var description = "Din mormor är fin";
+	var userID = "1";
+	AJAXService("CREATETHREAD",{courseId:courseId,userID:userID,topic:topic,description:description},"CREATETHREAD");
+}
+
 function makeComment()
 {
 	var threadId = 1;
@@ -87,7 +96,6 @@ function returnedThread(array)
 	$("#threadDetails").html(str);
 }
 
-
 function returnedComments(array)
 {
 	// Adds the comment header with the amount of comments.
@@ -96,23 +104,34 @@ function returnedComments(array)
 
 	$("#threadComments").append(threadCommentsHeaderStr);
 
+	var threadCommentStr="";
+	threadCommentStr = "<div class=\"allComments\">";
+
 	// Iterates through all the comments
 	$.each(array["comments"], function(index, value){
 
-		var threadCommentStr =
+		threadCommentStr +=
 		"<div class=\"threadComment\">" +
-			"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["uid"]  +   "</span></div>" +
+			"<div class=\"commentDetails\"><span id=\"commentUser\">Skrivet av: " + value["uid"]  +   "</span></div>" +
 			"<div class=\"commentContent\"> <p>" +  value["text"]  + "</p></div>" +
 			"<div class=\"commentFooter\">" +
 				"<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">" +
 				"<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">" +
 				"<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment();\">" +
 			"</div>" +
-			"<div class=\"commentDate\">" + value["datecreated"] + "</div></div";
+
+			"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
 
 		// Appends the comment
 		$("#threadComments").append(threadCommentStr);
 	});
+
+	threadCommentStr += "</div>";
+}
+
+function showThread(thread)
+{
+	console.log(thread);
 }
 
 function showComment(comment)
