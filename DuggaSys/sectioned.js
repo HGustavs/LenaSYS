@@ -458,6 +458,8 @@ function returnedSection(data)
 			str+="</div>";
 		}
 		
+		
+		//Start of forum layout
 		if(data['thread']==null){
 			// Nothing will or should happen
 		}else{
@@ -489,6 +491,7 @@ function returnedSection(data)
 			
 			
 		}
+		// End of forum layout
 		
 		str+="</div>";
 		// Course Name

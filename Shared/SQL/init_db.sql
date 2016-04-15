@@ -473,7 +473,7 @@ create table threadcomment(
     replyid int(10),
     type tinyint(1),
     primary key(commentid),
-    foreign key(threadid) references thread(threadid),
+    foreign key(threadid) references thread(threadid) ON DELETE CASCADE,
     foreign key(uid) references user(uid),
     foreign key(replyid) references threadcomment(commentid)
 )CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
