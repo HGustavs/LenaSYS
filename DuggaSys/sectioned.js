@@ -460,12 +460,12 @@ function returnedSection(data)
 		
 		
 		//Start of forum layout
-		if(data['thread']==null){
-			// Nothing will or should happen
+		str+="<div class='course' style='text-align:left;'><div id='coure-coursename' style='display: inline-block;margin-left:10px;'>Forum</div></div>";
+		str+="<div id='Sectionlistc' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
+		
+		if(data['thread'].length==0){
+			str+="<p style='margin-left:5px;'>There are no threads for this course</p>";
 		}else{
-			//Start of forum
-			str+="<div class='course' style='text-align:left;'><div id='coure-coursename' style='display: inline-block;margin-left:10px;'>Forum</div></div>";
-			str+="<div id='Sectionlistc' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
 			//console.log(data['thread'].length);
 			
 			if(data['thread'].length<5){
@@ -487,10 +487,8 @@ function returnedSection(data)
 					
 				}
 			}
-			str+="</table></div>";
-			
-			
 		}
+		str+="</table></div>";
 		// End of forum layout
 		
 		str+="</div>";
