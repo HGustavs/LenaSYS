@@ -24,7 +24,12 @@ if(isset($_SESSION['uid'])){
 $cid = getOP('cid');
 $uid = getOP('uid');
 $opt = getOP('opt');
-$threadId = getOP('threadId');
+
+$threadId = getOPG('threadId');
+if ($threadId==="UNK"){
+	$threadId = getOP('threadId');
+}
+
 $userID = getOP('userID');
 $text = getOP('text');
 $courseId = getOP('courseId');
@@ -33,26 +38,18 @@ $descriptionT = getOP('description');
 
 $debug="NONE!";
 
+$threadAccess = getThreadAccess($pdo, $threadId, $userid);
+
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
 
-function getThreadAccess()
+function getThreadAccess($pdo, $threadId, $userid)
 {
-	global $threadAccess;
-	$threadAccess = null;
+	$threadAccess = NULL;
 
-	$query = $pdo->prepare("SELECT uid, username, superuser, class FROM user WHERE uid=:userid;");
-	$query->bindParam(':userid', $userid);
+	$query = $pdo->prepare("SELECT uid, hidden FROM thread WHERE threadid=:threadId");
 
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
-	}else{
-		$user = $query->fetch(PDO::FETCH_ASSOC);
-	}
-
-	$query = $pdo->prepare("SELECT uid, hidden FROM thread WHERE threadid=:threadId;");
 	$query->bindParam(':threadId', $threadId);
 
 	if(!$query->execute()){
@@ -83,14 +80,14 @@ function getThreadAccess()
 				$error=$query->errorInfo();
 				exit($debug);
 			}else{
-				$return = $query->fetch(PDO::FETCH_ASSOC);
-				if ($return)
+				if ($query->fetch(PDO::FETCH_ASSOC))
 				{
 					$threadAccess = "normal";
 				}
 			}
 		}
 	}
+	return $threadAccess;
 }
 
 if(strcmp($opt,"CREATETHREAD")===0){
@@ -109,12 +106,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
 	}else{
-		$errArray = array(
-			errMsgBold => "Access denied!",
-			errMsgBody => "You do not have access to the thread."
-		);
-		echo json_encode($errArray);
-		exit();
+		$accessDenied = "You do not have access to the thread.";
 	}
 }else if(strcmp($opt,"MAKECOMMENT")===0){
 	// Access check
@@ -130,12 +122,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$comments = $query->fetch(PDO::FETCH_ASSOC);
 		}
 	}else {
-		$errArray = array(
-			errMsgBold => "Access denied!",
-			errMsgBody => "You must log in to create a thread."
-		);
-		echo json_encode($errArray);
-		exit();
+		$accessDenied = "You must log in to create a thread.";
 	}
 }
 
@@ -158,12 +145,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
 	}else{
-		$errArray = array(
-			errMsgBold => "Access denied!",
-			errMsgBody => "You do not have access to the thread. getthread" . $threadAccess
-		);
-		echo json_encode($errArray);
-		exit();
+		$accessDenied = "You do not have access to the thread. getthread";
 	}
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
@@ -179,21 +161,15 @@ else if(strcmp($opt,"GETTHREAD")===0){
 			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}else{
-		$errArray = array(
-			errMsgBold => "Access denied!",
-			errMsgBody => "You do not have access to the thread. getcomment"
-		);
-		echo json_encode($errArray);
-		exit();
+		$accessDenied = "You do not have access to the thread. getcomment";
 	}
 }
 
 if ($opt!=="UNK"){
 	$array = array(
+		'accessDenied' => $accessDenied,
 		'thread' => $thread,
-		'comments' => $comments,
-		'user' => $user,
-		'threadAccess' => $threadAccess
+		'comments' => $comments
 	);
 	echo json_encode($array);
 }

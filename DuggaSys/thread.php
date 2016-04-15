@@ -11,6 +11,7 @@ if (file_exists("../.git/refs/heads/master")) {
 } else {
 	$version = "v0.7+";
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,15 +47,21 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<!-- content START -->
 	<div id="content">
-    <?php
-      $threadAccess;
-      getThreadAccess();
-     ?>
 		<!-- Section List -->
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">
 				<div class="threadTopic"></div>
-				<div id="threadOptions"></div>
+				<div id="threadOptions">
+          <?php
+          if ($threadAccess==="super" || $threadAccess==="op") {
+            echo "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete'>";
+            echo "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock'>";
+          }
+          if ($threadAccess==="op") {
+            echo "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
+          }
+          ?>
+        </div>
 			</div>
 
 
@@ -64,15 +71,20 @@ if (file_exists("../.git/refs/heads/master")) {
 			</div>
 		</div>
 
-		<div class="threadMakeComment">
-			<div class="makeCommentHeader">
-				Comment
-			</div>
-			<div class="makeCommentInputWrapper">
-				<textarea class="commentInput" name="commentInput" placeholder="Leave a comment"></textarea>
-				<input class="submit-button commentSubmitButton" type="button" value="Submit" onclick="makeComment();">
-			</div>
-		</div>
+    <?php
+    if ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op") {
+      echo "<div class='threadMakeComment'>";
+  			echo "<div class='makeCommentHeader'>";
+  				echo "Comment";
+  			echo "</div>";
+  			echo "<div class='makeCommentInputWrapper'>";
+  				echo "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment'></textarea>";
+  				echo "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
+  			echo "</div>";
+  		echo "</div>";
+    }
+    ?>
+
 
 		<div id="threadComments"></div>
 	</div>
