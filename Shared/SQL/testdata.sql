@@ -63,7 +63,6 @@ INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUE
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (19, 9, '{question*Which of these are examples of actual shaders?: A*B32shader, 554shader: B*Context shaders, Shadow shaders and Block shaders: C*Vertex shaders, Pixel shaders and Geometry shaders}', 'C', NOW(), 2);
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (20, 9, '{question*Points, lines and curves are examples of geometrical...: A*Primitives: B*Substitutes: C*Formations: D*Partitions}', 'A', NOW(), 2);
 
-
 /* Insert items on coursepage */
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1001, 1, 'PHP examples', 'UNK', 1, 1, 1, 1,'45656');
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1002, 1, 'PHP Example 1', 1, 2, 2, 1, 1,'45656');
@@ -279,7 +278,6 @@ INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (14,4,73,73,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (16,2,34,35,1);
 
 /* Important words */
-
 INSERT INTO impwordlist(exampleid,word,uid) values (1,"echo",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (1,"Hello!",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (2,"Hello!",1);
@@ -373,7 +371,6 @@ INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) val
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (331, "MA113G","Algebra och logik",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (332, "DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,7.5);
 
-
 -- course and class-- 
 -- DVSUG --
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',300);
@@ -414,7 +411,6 @@ INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',328);
 INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',329);
 INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',330);
 INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',331);
-
 
 -- course requirements --
 INSERT INTO course_req(cid,req_cid) values(309,305);

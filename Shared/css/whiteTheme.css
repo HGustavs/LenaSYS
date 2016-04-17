@@ -275,6 +275,7 @@
 .normtext .impword {
     color: #fff;
     background-color: #9971AF;
+	display: inline-block;
 	font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
     font-size: 9px;
     line-height: 11px;
