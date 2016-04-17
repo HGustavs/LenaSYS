@@ -17,6 +17,13 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php")
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
+
+	$cookieName = crypt(($userid . "duggedC"),"$1$snuskaka$");
+	if (!isset($_COOKIE[$cookieName]) && ini_get('session.use_cookies')){
+		$params = session_get_cookie_params();
+		setcookie($cookieName,"0",time() + (86400 * 15),$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
+	}
+
 }else{
 	$userid="1";		
 } 
@@ -178,19 +185,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
 			}
-	}else if(strcmp($opt, "SETCOLLAPSE")===0){
-		//updates the collapsed state of moments, changes 0 -> 1, 1 -> 0 depending on what it is currently
-		$query = $pdo->prepare("UPDATE quiz SET collapsed= CASE WHEN collapsed=0 THEN 1 ELSE 0 END WHERE id=:qid;");
-		$query->bindParam(':qid', $qid);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating entries".$error[2];
-		}
-		//return true so the site won't update everything again
-		return true;
 	}
-
 }
 
 //------------------------------------------------------------------------------------------------
@@ -201,7 +196,7 @@ $entries=array();
 $files=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
-	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,collapsed,qname,quizFile,qrelease,deadline,modified FROM quiz WHERE cid=:cid ORDER BY id;");
+	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified FROM quiz WHERE cid=:cid ORDER BY id;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -238,7 +233,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'cid' => $row['cid'],
 			'autograde' => $row['autograde'],
 			'gradesystem' => $row['gradesystem'],
-			'collapsed' => $row['collapsed'],
 			'name' => $row['qname'],
 			'template' => $row['quizFile'],
 			'release' => $row['qrelease'],	

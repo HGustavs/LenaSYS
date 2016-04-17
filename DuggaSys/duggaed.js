@@ -162,7 +162,7 @@ function selectVariant(vid,param,answer,template,dis)
 // Renderer
 //----------------------------------------
 var alla = 0;
-var collapsedArr = [];
+
 function returnedDugga(data)
 {
 	$("content").html();
@@ -184,8 +184,7 @@ function returnedDugga(data)
 			
 			var item=data['entries'][i];
 			
-			str+="<tr class='fumo' onclick='collapseLight(this," + item['did'] + ")'>";
-			collapsedArr.push(item['collapsed']);
+			str+="<tr class='fumo' onclick='collapseLight(this)'>";
 			result++;
 			str+="<td style='width:170px'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			if(item['autograde']=="1"){
@@ -237,7 +236,7 @@ function returnedDugga(data)
 			
 			str+="<td style='padding:4px;'>";
 			str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' title='Add variant'";
-			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");collapseLight(this," + item['did'] + ");' >";
+			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");' >";
 			str+="</td>";
 
 
@@ -296,14 +295,25 @@ function returnedDugga(data)
 		var slist=document.getElementById("content");
 		slist.innerHTML=str;
 
-		//Run through the divs to see which ones to hide
-		var c = 0;
-		$('tr.fumo').each(function(index, el) {
-			//if collapsed is 1, run collapse function
-			if (collapsedArr[c] == 1)
-				collapseLight(this);
-			c++;
-		});
+		//create an array for storing the collapsed states
+		var collapsedArr = [];
+		//preform an ajax call to get the collapse states
+		$.ajax({
+	   		url: '../Shared/getCookies.php',
+	   		type: 'POST',
+	   		data: {ckn : 'duggedC'},
+	   	}).done(function(e){
+	   		//set the results to the created array, split on ','
+	   		collapsedArr = e;
+	   		collapsedArr = collapsedArr.split(',');
+
+	   		//Run through the divs to see which ones to hide
+			$('.fumo').each(function(index, el) {
+				if (collapsedArr[index] == 1)
+					$(this).closest('tr').next('.fuma').css('display', 'none');
+			});
+
+	   	});
 	});
 
 	if(data['debug']!="NONE!") alert(data['debug']);
@@ -438,13 +448,29 @@ function hideAddDuggaTemplate(){
 	$("#addDuggaTemplate").css("display","none");
 }
 
-function collapseLight(elem,qid){
-	if ($(elem).is('img')){
-		elem = $(elem).parent('.fumo');
-	}
+function collapseLight(elem){
 	//get the right element to collapse and collapse to the next moment.
-   	$(elem).next('.fuma').fadeToggle(400);
-	
-	//call ajax with the section id as a paramenter
-	AJAXService("SETCOLLAPSE",{qid:qid},"DUGGA");
+   	$(elem).next('.fuma').fadeToggle(0);
+
+   	//create a temporary array and run throug each moment div
+   	var temparr = [];
+   	$('tr.fumo').each(function(index, el) {
+   		//get hidden status of next elements
+   		var hide = $(this).closest('tr').next('.fuma').is(':hidden');
+
+   		//if to hide is true push 1(true) to array, else push 0 to array
+   		if (hide == true){
+   			temparr.push(1)
+   		}else{
+   			temparr.push(0);
+   		}
+   	});
+
+   	//perform an ajax call to set the new value
+   	$.ajax({
+   		url: '../Shared/getCookies.php',
+   		type: 'POST',
+   		data: {ckn : 'duggedC',clist : temparr.toString()},
+   	});
+
    }

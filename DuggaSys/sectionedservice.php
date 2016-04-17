@@ -16,6 +16,13 @@ session_start();
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
+
+	$cookieName = crypt(($userid . "sectC"),"$1$snuskaka$");
+	if (!isset($_COOKIE[$cookieName]) && ini_get('session.use_cookies')){
+		$params = session_get_cookie_params();
+		setcookie($cookieName,"0",time() + (86400 * 15),$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
+	}
+
 }else{
 	$userid="0";
 	
@@ -190,17 +197,6 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
-		}else if(strcmp($opt,"SETCOLLAPSE")===0){
-			//updates the collapsed state of moments, changes 0 -> 1, 1 -> 0 depending on what it is currently
-			$query = $pdo->prepare("UPDATE listentries SET collapsed= CASE WHEN collapsed=0 THEN 1 ELSE 0 END WHERE lid=:lid;");
-			$query->bindParam(':lid', $sectid);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
-			}
-			//return true so the site won't update everything again
-			return true;
 		}
 	}
 }
@@ -258,7 +254,7 @@ $entries=array();
 $reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)));
 
 if($reada || $userid == "guest"){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,listentries.collapsed,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -282,7 +278,6 @@ if($reada || $userid == "guest"){
 				'visible'=> $row['visible'],
 				'highscoremode'=> $row['highscoremode'],
 				'gradesys' => $row['gradesystem'],
-				'collapsed' => $row['collapsed'],
 				'code_id' => $row['code_id'],
 				'deadline'=> $row['deadline'],
 				'qrelease' => $row['qrelease']

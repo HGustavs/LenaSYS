@@ -493,8 +493,6 @@ function returnedSection(data)
 		str+="<div id='Sectionlistc' >";
 			
 		var groupitems = 0;
-
-		var collapsedArr = [];
 				
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
@@ -504,7 +502,6 @@ function returnedSection(data)
 				var deadline = item['deadline'];
 				if (parseInt(item['kind']) === 4 || parseInt(item['kind']) === 0) {
  					str += "<div class='divMoment'>";
- 					collapsedArr.push(item['collapsed']);
  				}else{
  					str += "<div>";
  				}
@@ -728,14 +725,26 @@ function returnedSection(data)
 			var slist=document.getElementById('Sectionlist');
 			slist.innerHTML=str;
 
-			//Run through the divs to see which ones to hide
-			var c = 0;
-			$('div.divMoment').each(function(index, el) {
-				//if collapsed is 1, run collapse function
-				if (collapsedArr[c] == 1)
-					collapseLight(this);
-				c++;
-			});
+			//create an array for storing the collapsed states
+			var collapsedArr = [];
+			//preform an ajax call to get the collapse states
+			$.ajax({
+		   		url: '../Shared/getCookies.php',
+		   		type: 'POST',
+		   		data: {ckn : 'sectC'},
+		   	}).done(function(e){
+		   		//set the results to the created array, split on ','
+		   		collapsedArr = e;
+		   		collapsedArr = collapsedArr.split(',');
+
+		   		//Run through the divs to see which ones to hide
+				$('div.divMoment').each(function(index, el) {
+					if (collapsedArr[index] == 1){
+						var a = "div." + this.closest('div').className;
+   						$(this).closest('div').nextUntil(a).css('display','none');
+					}
+				});
+		   	});
 		});
 
 		if(resave == true){
@@ -844,16 +853,29 @@ function returnedHighscore(data){
 function collapseLight(elem){
 	//get the right element to collapse and collapse to the next moment.
  	var a = "div." + elem.closest('div').className;
-   	$(elem).closest('div').nextUntil(a).fadeToggle(400);
-   	//get id of the moment so we can update if the moment is collapsed or not
-   	var getIdStr = $(elem).closest('td').next('td').attr('id');
-   	if (getIdStr) {
-   		var lengthOf = getIdStr.length;
-   		var lid = getIdStr.substring(1,lengthOf);
-   		//call ajax with the section id as a paramenter
-   		AJAXService("SETCOLLAPSE",{lid:lid},"SECTION");
-   	}
-   }
+   	$(elem).closest('div').nextUntil(a).fadeToggle(0);
+
+   	//create a temporary array and run throug each moment div
+   	var temparr = [];
+   	$('.divMoment').each(function(index, el) {
+   		//get hidden status of next elements
+   		var hide = $(this).closest('div').next('div').is(':hidden');
+
+   		//if to hide is true push 1(true) to array, else push 0 to array
+   		if (hide == true){
+   			temparr.push(1)
+   		}else{
+   			temparr.push(0);
+   		}
+   	});
+
+   	//perform an ajax call to set the new value
+   	$.ajax({
+   		url: '../Shared/getCookies.php',
+   		type: 'POST',
+   		data: {ckn : 'sectC',clist : temparr.toString()},
+   	});
+}
 
 function moveRowToTop(itemId){
 	//finding the row based on the associated itemId and moves it to the top of the Sectionlistc
