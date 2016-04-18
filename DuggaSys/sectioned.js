@@ -500,7 +500,9 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
-				if (parseInt(item['kind']) === 4 || parseInt(item['kind']) === 0) {
+				if (parseInt(item['kind']) === 0) {
+ 					str += "<div class='header'>";
+ 				}else if(parseInt(item['kind']) === 4){
  					str += "<div class='divMoment'>";
  				}else{
  					str += "<div>";

@@ -17,7 +17,7 @@ session_start();
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 
-	$cookieName = crypt(($userid . "sectC"),"$1$snuskaka$");
+	$cookieName = crypt(($userid . "sectC" . $_SESSION['coursename']),"$1$snuskaka$");
 	if (!isset($_COOKIE[$cookieName]) && ini_get('session.use_cookies')){
 		$params = session_get_cookie_params();
 		setcookie($cookieName,"0",time() + (86400 * 365),$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
