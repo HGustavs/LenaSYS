@@ -39,7 +39,7 @@ if (file_exists("../.git/refs/heads/master")) {
 </head>
 <body>
 	<?php
-	$noup="NONE";
+	$noup="COURSE";
 	$loginvar="COURSE";
 	include '../Shared/navheader.php';
 	setcookie("loginvar", $loginvar);
