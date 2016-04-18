@@ -108,7 +108,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$accessDenied = "You must be logged in to create a thread.";
 	}
-<<<<<<< HEAD
+
 }else if(strcmp($opt,"MAKECOMMENT")===0){
 	// Access check
 	if ($threadAccess==="normal" || $threadAccess==="super" || $threadAccess==="op"){
