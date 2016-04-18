@@ -112,7 +112,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 }else if(strcmp($opt,"MAKECOMMENT")===0){
 	// Access check
 	if ($threadAccess==="normal" || $threadAccess==="super" || $threadAccess==="op"){
-		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
+		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text, datecreated) VALUES (:threadID, :userID, :text, current_timestamp)");
 		$query->bindParam(':threadID', $threadId);
 		$query->bindParam(':userID', $userid);
 		$query->bindParam(':text', $text);
