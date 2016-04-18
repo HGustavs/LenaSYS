@@ -81,7 +81,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 if(strcmp($opt,"DUGGA")===0){
 
-	$query = $pdo->prepare("SELECT userAnswer.answer as aws,entryname,quizFile,qrelease,deadline,param FROM userAnswer,listentries,quiz,variant WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;");					
+	$query = $pdo->prepare("SELECT userAnswer.answer AS aws,entryname,quizFile,qrelease,deadline,param FROM userAnswer,listentries,quiz,variant WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;");					
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':vers', $vers);
 	$query->bindParam(':moment', $moment);
@@ -124,7 +124,7 @@ $lentries=array();
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 
 	// Users connected to the current course (irrespective of version)
-	$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn,class,studyProgram from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
+	$query = $pdo->prepare("SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,studyProgram FROM user,user_course WHERE user.uid=user_course.uid AND user_course.cid=:cid;");
 	$query->bindParam(':cid', $cid);
 	
 	if(!$query->execute()) {
@@ -150,7 +150,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 		
 			if(strcmp($opt,"UPDATELIST")===0){
-				$query = $pdo->prepare("UPDATE list set listnr=:listnr, provdatum=:examdate,responsible=:listissuer,responsibledate=:dateissue where listid=:listid");
+				$query = $pdo->prepare("UPDATE list SET listnr=:listnr, provdatum=:examdate,responsible=:listissuer,responsibledate=:dateissue WHERE listid=:listid");
 				$query->bindParam(':listnr', $listnumber);
 				$query->bindParam(':examdate', $examdate);
 				$query->bindParam(':listissuer', $listissuer);
@@ -165,7 +165,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			}
 
 		// All results from current course and vers?
-		$query = $pdo->prepare("select aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed from userAnswer where cid=:cid;");
+		$query = $pdo->prepare("SELECT aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed FROM userAnswer WHERE cid=:cid;");
 		$query->bindParam(':cid', $cid);
 		
 		if(!$query->execute()) {
@@ -201,7 +201,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 
 		// All dugga/moment entries from all versions of course
-		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,gradesystem FROM listentries WHERE listentries.cid=:cid and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
+		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,gradesystem FROM listentries WHERE listentries.cid=:cid AND (listentries.kind=3 OR listentries.kind=4) ORDER BY pos");
 		$query->bindParam(':cid', $cid);
 		$result=$query->execute();
 		
