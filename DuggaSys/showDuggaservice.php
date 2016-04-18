@@ -271,6 +271,17 @@ if(checklogin()){
 				} else {
 					$savedanswer = $answer;
 				}
+				
+				$query = $pdo->prepare("INSERT INTO duggaTries(FK_cid,FK_vers,FK_moment,FK_uid,FK_quiz) VALUES(:cid,:coursevers,:moment,:uid,:quiz);");
+				$query->bindParam(":cid",$courseid);
+				$query->bindParam(':moment', $moment);
+				$query->bindParam(':coursevers', $coursevers);
+				$query->bindParam(":uid",$userid);
+				$query->bindParam(":quiz",$duggaid);
+				if (!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating entries (157)".$error[2];
+				}
 			}
 		}
 	}
@@ -358,7 +369,7 @@ foreach($query->fetchAll() as $row) {
 		);
 		array_push($files, $entry);		
 }
-
+$param = setDefaultParamsIfEmpty($param);
 $array = array(
 		"debug" => $debug,
 		"param" => $param,
@@ -370,4 +381,13 @@ $array = array(
 
 echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php");
+
+//sets some default parameters if none were found
+function setDefaultParamsIfEmpty($p) {
+   if ($p=== null || $p === "UNK"){
+      return '{"type":"md", "filelink":"Assignment8.md",   "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip"}]}';
+   }
+   else
+   	return $p;
+}
 ?>

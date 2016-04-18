@@ -13,6 +13,7 @@ CREATE TABLE user(
 		lastupdated		TIMESTAMP,
 		addedtime  		TIMESTAMP,
 		lastvisit		TIMESTAMP,
+		admittanceyear	TIMESTAMP,
 		newpassword		TINYINT(1) NULL,
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
@@ -149,12 +150,35 @@ CREATE TABLE userAnswer (
 	totalTimeUsed int(11) DEFAULT '0',
 	stepsUsed int(11) DEFAULT NULL,
 	totalStepsUsed int(11) DEFAULT '0',
+	marking_comment LONGTEXT, 
 	CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
 	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
 	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
 	CONSTRAINT fk_useranswer_joins_quiz FOREIGN KEY (quiz) REFERENCES quiz(id),
 	CONSTRAINT fk_useranswer_joins_listentries FOREIGN KEY (moment) REFERENCES listentries(lid),
 	CONSTRAINT fk_useranswer_joins_variant FOREIGN KEY (variant) REFERENCES variant(vid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/**
+* Table that stores the tries, different from the userAnswer table as that table updates
+* the most recent try at a dugga. this table however records every try, and that is then
+* used for checking if a dugga should be locked or not because of too many failed attempts.
+*/
+CREATE TABLE duggaTries (
+	id 				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	FK_cid 			INT UNSIGNED NOT NULL,
+	FK_vers 		VARCHAR(8),
+	FK_moment 		INT UNSIGNED NOT NULL,
+	FK_uid	 		INT UNSIGNED NOT NULL,
+	FK_quiz 		INT(11) NOT NULL,
+	grade 			TINYINT(2) DEFAULT 0,
+	time 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	dugga_lock		TINYINT(2) DEFAULT 0,
+
+	CONSTRAINT pk_duggaTries PRIMARY KEY(id),
+	CONSTRAINT duggaTries_to_course FOREIGN KEY (FK_cid) REFERENCES course(cid),
+	CONSTRAINT duggaTries_to_user FOREIGN KEY (FK_uid) REFERENCES user(uid),
+	CONSTRAINT duggaTries_to_quiz FOREIGN KEY (FK_quiz) REFERENCES quiz(id)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
