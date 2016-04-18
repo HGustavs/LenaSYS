@@ -44,11 +44,11 @@ function makeComment()
 	AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],userID:userID,text:text},"MAKECOMMENT");
 }
 
-function accessDenied()
+function accessDenied(array)
 {
 	var str = "<div class='err'>";
 			str +=	"<span style='font-weight:bold'>";
-			str +=		"Access denied!";
+			str +=		"Access denied! ";
 			str	+=	"</span>";
 			str +=	array["accessDenied"];
 			str +="</div>";
@@ -62,9 +62,8 @@ function accessDenied()
 
 function returnedThread(array)
 {
-	console.log(array);
 	if (array["accessDenied"]){
-		accessDenied();
+		accessDenied(array);
 	}else {
 		$(".threadTopic").html(array["thread"]["topic"]);
 		$("#threadDescr").html(array["thread"]["description"]);
@@ -78,7 +77,7 @@ function returnedThread(array)
 function returnedComments(array)
 {
 	if (array["accessDenied"]){
-		accessDenied();
+		accessDenied(array);
 	}else {
 		// Adds the comment header with the amount of comments.
 		var commentLength = array["comments"].length;

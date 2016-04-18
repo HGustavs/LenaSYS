@@ -92,7 +92,7 @@ function getThreadAccess($pdo, $threadId, $userid)
 
 if(strcmp($opt,"CREATETHREAD")===0){
 	// Access check
-	if ($threadAccess){
+	if (checklogin()){
 		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :userID, :topic, :description)");
 		$query->bindParam(':courseId', $courseId);
 		$query->bindParam(':userID', $userID);
@@ -106,7 +106,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
 	}else{
-		$accessDenied = "You do not have access to the thread.";
+		$accessDenied = "You must be logged in to create a thread.";
 	}
 }else if(strcmp($opt,"MAKECOMMENT")===0){
 	// Access check
@@ -122,7 +122,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$comments = $query->fetch(PDO::FETCH_ASSOC);
 		}
 	}else {
-		$accessDenied = "You must log in to create a thread.";
+		$accessDenied = "You must log in to comment.";
 	}
 }
 
@@ -145,7 +145,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
 		}
 	}else{
-		$accessDenied = "You do not have access to the thread. getthread";
+		$accessDenied = "You do not have access to the thread.";
 	}
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
@@ -161,7 +161,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}else{
-		$accessDenied = "You do not have access to the thread. getcomment";
+		$accessDenied = "You do not have access to the thread.";
 	}
 }
 

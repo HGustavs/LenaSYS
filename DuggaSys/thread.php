@@ -63,8 +63,6 @@ if (file_exists("../.git/refs/heads/master")) {
           ?>
         </div>
 			</div>
-
-
 			<div id="threadDescr"></div>
 			<div id="threadDetails">
 				Created <span id="threadDate">3 mar 2016</span> by <span id="threadCreator">a97marbr</span>
@@ -84,8 +82,6 @@ if (file_exists("../.git/refs/heads/master")) {
   		echo "</div>";
     }
     ?>
-
-
 		<div id="threadComments"></div>
 	</div>
 
