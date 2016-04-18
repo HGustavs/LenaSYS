@@ -23,9 +23,17 @@ require_once(dirname(__FILE__) . '/constants.php');
 	$query->execute();
 }
 
+function checkloginstatus()
+{
+	if($_SESSION['creator']==1 || $_SESSION['superuser']==1){
+		return true;
+	} else {		
+		return false;
+	}
+}	
+
 function checklogin()
 {
-
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
