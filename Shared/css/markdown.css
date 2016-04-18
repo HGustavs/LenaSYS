@@ -10,67 +10,52 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css">
 
 .descbox {
-		font-family: arial;
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 14px;
+	font-family: arial;
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 14px;
 }
 
 .descbox h1 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.8em;
-    line-height: 1.4em;
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1.43em;
+	line-height: 1.4em;
+	font-weight: bold;
 }
 
 .descbox h2 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.5em;
-    line-height: 1.5em; 
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1.29em;
+	line-height: 1.5em; 
+	font-weight: bold;
 }
 
 .descbox h3 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.3em;
-    line-height: 1.3em; 
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1.14em;
+	line-height: 1.3em; 
+	font-weight: bold;
 }
 
 .descbox h4 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.2em;
-    line-height: 1.5em;
-		font-weight: bold;
-
-}
-
-.descbox h5 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.2em;
-    line-height: 1.5em;
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1em;
+	line-height: 1.5em;
+	font-weight: bold;
 }
 
 .descbox pre {
