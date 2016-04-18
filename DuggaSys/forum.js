@@ -114,7 +114,7 @@ function returnedComments(array)
 
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
-				"<div class=\"commentDetails\"><span id=\"commentUser\">Skrivet av: " + value["uid"]  +   "</span></div>" +
+				"<div class=\"commentDetails\"><span id=\"commentUser\">Skrivet av: " + value["username"]  +   "</span></div>" +
 				"<div class=\"commentContent\"> <p>" +  value["text"]  + "</p></div>" +
 				"<div class=\"commentFooter\">" +
 					"<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">" +

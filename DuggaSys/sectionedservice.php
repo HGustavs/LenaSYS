@@ -442,7 +442,7 @@ if($ha){
 	
 }
 $threads = array();
-$query = $pdo->prepare("SELECT DISTINCT thread.topic,thread.cid,thread.datecreated,thread.threadid,thread.hidden FROM thread,threadaccess WHERE ((thread.cid=:cid AND thread.hidden is null) OR (threadaccess.uid=:uid AND thread.hidden=1 AND threadaccess.threadid=thread.threadid AND thread.cid=:cid)) ORDER BY thread.datecreated DESC;");
+$query = $pdo->prepare("SELECT DISTINCT thread.topic,thread.cid,thread.datecreated,thread.threadid,thread.hidden FROM thread,threadaccess WHERE ((thread.cid=:cid AND thread.hidden is null) OR (threadaccess.uid=:uid AND thread.hidden=1 AND threadaccess.threadid=thread.threadid AND thread.cid=:cid)) ORDER BY thread.lastcommentedon DESC;");
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':uid', $userid);
 if(!$query->execute()) {

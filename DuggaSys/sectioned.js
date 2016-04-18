@@ -471,18 +471,18 @@ function returnedSection(data)
 			if(data['thread'].length<5){
 				for(var i=0;i<data['thread'].length;i++){
 					if(i%2==0){
-						str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+						str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='thread.php?threadId="+data['thread'][i]['threadid']+"' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
 					}else{
-						str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+						str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='thread.php?threadId="+data['thread'][i]['threadid']+"' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
 					}
 					
 				}
 			}else {
 				for(var i=0;i<5;i++){
 					if(i%2==0){
-						str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+						str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='thread.php?threadId="+data['thread'][i]['threadid']+"' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
 					}else{
-						str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+						str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='thread.php?threadId="+data['thread'][i]['threadid']+"' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
 					}
 					
 				}
