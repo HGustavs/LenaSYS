@@ -43,7 +43,10 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "U") {
 				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
-		} 
+		} else if (event.ctrlKey && pressed === "VGh") {
+				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
+				AJAXService("CHFAILS",{ cid : cid, moment : moment,vers : vers, luid : uid}, "RESULT");
+		}
 		else {
 			//alert("This grading is not OK!");
 		}
