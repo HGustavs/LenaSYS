@@ -49,7 +49,7 @@ if($ha){
 		if($kind=="LINK"&&$link!="UNK"){
 
 				//  if link isn't in database (e.g no rows are returned), add it to database 
-				$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
+				$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
 				$query->bindParam(':filename', $link);
 				$query->bindParam(':cid', $cid);
 				$query->execute(); 

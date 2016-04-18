@@ -112,9 +112,9 @@ $entries=array();
 if($ha){
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility<3 ORDER BY coursename");
 }else if (isset($_SESSION['uid'])){
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 and visibility<3 ORDER BY coursename");
+	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>0 AND visibility<3 ORDER BY coursename");
 }else
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>1 and visibility<3 ORDER BY coursename");
+	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course WHERE visibility>1 AND visibility<3 ORDER BY coursename");
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();

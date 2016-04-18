@@ -96,7 +96,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			
 			//$debug.=$ssn." ".$username."#".$firstname."#".$lastname."\n";
 			$uid="UNK";
-			$userquery = $pdo->prepare("SELECT uid,username FROM user WHERE username=:username or ssn=:ssn");
+			$userquery = $pdo->prepare("SELECT uid,username FROM user WHERE username=:username OR ssn=:ssn");
 			$userquery->bindParam(':username', $username);
 			$userquery->bindParam(':ssn', $ssn);
 			
