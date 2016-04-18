@@ -38,10 +38,32 @@ function createThread()
 
 function makeComment()
 {
-	var threadId = 1;
-	var userID = 1;
-	var text = "hehe";
-	AJAXService("MAKECOMMENT",{threadId:threadId,userID:userID,text:text},"MAKECOMMENT");
+	var threadId = querystring["threadId"];
+	//var userID = 1;
+	var text = $(".commentInput").val();
+	
+	if(text.length > 0)
+	{	
+		AJAXService("MAKECOMMENT",{threadId:threadId,text:text},"MAKECOMMENT");
+	}
+	else
+	{
+		
+	}
+}
+
+function checkComment()
+{
+	var text = $(".commentInput").val();
+	
+	if(text.length > 0)
+	{
+		$(".commentSubmitButton").css("background-color", "#614875");
+	}
+	else
+	{
+		$(".commentSubmitButton").css("background-color", "buttonface");
+	}
 }
 
 
@@ -104,29 +126,26 @@ function returnedComments(array)
 
 	$("#threadComments").append(threadCommentsHeaderStr);
 
-	var threadCommentStr="";
-	threadCommentStr = "<div class=\"allComments\">";
+	
 
 	// Iterates through all the comments
 	$.each(array["comments"], function(index, value){
-
+		var threadCommentStr="";
 		threadCommentStr +=
 		"<div class=\"threadComment\">" +
-			"<div class=\"commentDetails\"><span id=\"commentUser\">Skrivet av: " + value["uid"]  +   "</span></div>" +
+			"<div class=\"commentDetails\"><span id=\"commentUser\">Skrivet av: " + value["username"]  +   "</span></div>" +
 			"<div class=\"commentContent\"> <p>" +  value["text"]  + "</p></div>" +
 			"<div class=\"commentFooter\">" +
 				"<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">" +
 				"<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">" +
 				"<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment();\">" +
 			"</div>" +
-
-			"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
+			"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div>"+
+		"</div>";
 
 		// Appends the comment
 		$("#threadComments").append(threadCommentStr);
 	});
-
-	threadCommentStr += "</div>";
 }
 
 function showThread(thread)
