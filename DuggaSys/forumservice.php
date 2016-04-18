@@ -132,7 +132,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 		$thread = $query->fetch(PDO::FETCH_ASSOC);
 	}
 }else if(strcmp($opt,"GETCOMMENTS")===0){
-	$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated,user.username FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated ASC;");
+	$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, user.username FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated ASC;");
 	$query->bindParam(':threadId', $threadId);
 
 	if(!$query->execute()){
