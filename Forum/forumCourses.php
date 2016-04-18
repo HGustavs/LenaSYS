@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/../Shared/database.php');
 	}
 	
 	echo "<table style='width: 100%; table-layout: fixed;'>";
-	$query = $pdo->prepare("SELECT distinct coursename,cid FROM course WHERE visibility=1");
+	$query = $pdo->prepare("SELECT DISTINCT coursename,cid FROM course WHERE visibility=1");
 	if($query->execute() && $query->rowCount() > 0)
 	{
 		for($i=1; $i<(($query->rowCount())+1); $i++)

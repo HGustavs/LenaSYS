@@ -56,7 +56,7 @@
 	//###################################### Teacher queries #########################################
 	
 	$classDropMenu = "SELECT class.class,class.classcode FROM class,user WHERE user.uid = '".$userid."' AND class.responsible = user.uid order by class.classcode;";
-	$studentInformation = "SELECT user.uid, CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class and class.class = '".$classname."' ORDER BY user.lastname ASC;";
+	$studentInformation = "SELECT user.uid, CONCAT(firstname, ' ', lastname) AS fullname,user.username,user.ssn,user.email FROM user,class WHERE class.class = user.class AND class.class = '".$classname."' ORDER BY user.lastname ASC;";
 	
 	$studentResults = "SELECT course.coursename,(SELECT SUM(hp) FROM studentresultCourse WHERE username= :uid 
 							AND studentresultCourse.cid=course.cid) AS result, course.hp FROM user_course, course, programcourse 
@@ -70,9 +70,9 @@
 
 	//###################################### Student queries ##########################################
 	$titleQuery = "SELECT CONCAT(firstname, ' ', lastname) AS fullname, class FROM user WHERE user.uid = '".$userid."';";
-	$reg_course_student = "SELECT (SELECT course.coursecode from course where course.cid = course_req.cid) AS coursecode, 
-							(SELECT course.coursecode from course where course.cid =course_req.req_cid) AS reg_coursecode
- 								from course, course_req where course.cid= course_req.cid;";
+	$reg_course_student = "SELECT (SELECT course.coursecode FROM course WHERE course.cid = course_req.cid) AS coursecode, 
+							(SELECT course.coursecode FROM course WHERE course.cid =course_req.req_cid) AS reg_coursecode
+ 								FROM course, course_req WHERE course.cid= course_req.cid;";
 	$progressbarQuery = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username = '".$userid."') AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
 						WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
 						
