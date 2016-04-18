@@ -40,6 +40,7 @@ pdoConnect();
 				<div id="course-coursename" style="display: inline-block; margin-right:10px;">Forum</div>
 			</div>
 			<div class="coursesForForum"><?php include 'forumCourses.php';?></div>
+			<button id="awesomethreadbutton" onclick="createThread();" style="width: 50px; height: 35px;"></button>
 		</div>
 	</div>
 	<!-- content END -->
