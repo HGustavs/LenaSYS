@@ -458,21 +458,40 @@ function returnedSection(data)
 			str+="</div>";
 		}
 		
-		//Start of forum
+		
+		//Start of forum layout
 		str+="<div class='course' style='text-align:left;'><div id='coure-coursename' style='display: inline-block;margin-left:10px;'>Forum</div></div>";
 		str+="<div id='Sectionlistc' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
-		for(var i=0;i<5;i++){
-			if(i%2==0){
-				str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
-			}else{
-				str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
-			}
+		
+		if(data['thread'].length==0){
+			str+="<p style='margin-left:5px;'>There are no threads for this course</p>";
+		}else{
+			//console.log(data['thread'].length);
 			
+			if(data['thread'].length<5){
+				for(var i=0;i<data['thread'].length;i++){
+					if(i%2==0){
+						str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+					}else{
+						str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+					}
+					
+				}
+			}else {
+				for(var i=0;i<5;i++){
+					if(i%2==0){
+						str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+					}else{
+						str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='#' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+					}
+					
+				}
+			}
 		}
 		str+="</table></div>";
+		// End of forum layout
 		
 		str+="</div>";
-		
 		// Course Name
 		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 

@@ -1373,8 +1373,8 @@ input.new-item-button:hover {
   resize: none;
 }
 
-.commentSubmitButton {
-
+input.commentSubmitButton {
+	background-color: buttonface;
 }
 
 #threadComments {
@@ -1409,12 +1409,12 @@ input.new-item-button:hover {
 
 }
 
-.allComments {
+.commentWrapper {
 	background-color: white;
 }
 
 .commentContent {
-	min-height: 100px;
+	min-height: 10%;
 	background-color: white;
 	border: 1px solid #A1A1A1;
 }

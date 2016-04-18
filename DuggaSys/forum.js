@@ -39,9 +39,30 @@ function createThread()
 
 function makeComment()
 {
-	var userID = 1;
-	var text = "hehe";
-	AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],userID:userID,text:text},"MAKECOMMENT");
+	var text = $(".commentInput").val();
+
+	if(text.length > 0)
+	{
+		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text},"MAKECOMMENT");
+	}
+	else
+	{
+
+	}
+}
+
+function checkComment()
+{
+	var text = $(".commentInput").val();
+
+	if(text.length > 0)
+	{
+		$(".commentSubmitButton").css("background-color", "#614875");
+	}
+	else
+	{
+		$(".commentSubmitButton").css("background-color", "buttonface");
+	}
 }
 
 function accessDenied(array)

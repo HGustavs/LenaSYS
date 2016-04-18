@@ -108,12 +108,13 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$accessDenied = "You must be logged in to create a thread.";
 	}
+<<<<<<< HEAD
 }else if(strcmp($opt,"MAKECOMMENT")===0){
 	// Access check
 	if ($threadAccess==="normal" || $threadAccess==="super" || $threadAccess==="op"){
 		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text) VALUES (:threadID, :userID, :text)");
 		$query->bindParam(':threadID', $threadId);
-		$query->bindParam(':userID', $userID);
+		$query->bindParam(':userID', $userid);
 		$query->bindParam(':text', $text);
 		if(!$query->execute()){
 			$error=$query->errorInfo();
@@ -150,7 +151,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT * FROM threadcomment WHERE threadid=:threadId ORDER BY datecreated ASC;");
+		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, user.username FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated ASC;");
 		$query->bindParam(':threadId', $threadId);
 
 		if(!$query->execute()){

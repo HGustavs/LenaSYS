@@ -76,12 +76,13 @@ if (file_exists("../.git/refs/heads/master")) {
   				echo "Comment";
   			echo "</div>";
   			echo "<div class='makeCommentInputWrapper'>";
-  				echo "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment'></textarea>";
+  				echo "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment' onkeyup='checkComment()'></textarea>";
   				echo "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
   			echo "</div>";
   		echo "</div>";
     }
     ?>
+
 		<div id="threadComments"></div>
 	</div>
 
