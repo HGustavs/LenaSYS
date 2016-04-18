@@ -502,7 +502,7 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					showComment(data);
+					makeCommentSuccess();
 					sendConfirmation("forumservice.php");
 				},
 				error: error

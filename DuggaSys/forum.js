@@ -102,12 +102,9 @@ function returnedComments(array)
 	}else {
 		// Adds the comment header with the amount of comments.
 		var commentLength = array["comments"].length;
-		var threadCommentsHeaderStr = "<div id=\"threadCommentsHeader\"> Comments ("  +  commentLength  + ") </div>"
+		var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
 
-		$("#threadComments").append(threadCommentsHeaderStr);
-
-		var threadCommentStr="";
-		threadCommentStr = "<div class=\"allComments\">";
+		threadCommentStr += "<div class=\"allComments\">";
 
 		// Iterates through all the comments
 		$.each(array["comments"], function(index, value){
@@ -117,19 +114,35 @@ function returnedComments(array)
 				"<div class=\"commentDetails\"><span id=\"commentUser\">Skrivet av: " + value["username"]  +   "</span></div>" +
 				"<div class=\"commentContent\"> <p>" +  value["text"]  + "</p></div>" +
 				"<div class=\"commentFooter\">" +
-					"<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">" +
-					"<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">" +
-					"<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment();\">" +
+						getCommentOptions(index, value['uid'], array['threadAccess'], array['uid']) +
 				"</div>" +
 
 				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
 
 			// Appends the comment
-			$("#threadComments").append(threadCommentStr);
+			$("#threadComments").html(threadCommentStr);
 		});
 
 		threadCommentStr += "</div>";
 	}
+}
+
+function getCommentOptions (index, commentuid, threadAccess, uid){
+	var threadOptions;
+	if (threadAccess){
+		if (threadAccess !== "public"){
+			threadOptions = "<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">";
+
+			console.log("uid " + uid + "commentuid " + commentuid);
+			if (uid === commentuid){
+				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
+			}
+			if (threadAccess === "op" || threadAccess === "super" || uid === commentuid){
+				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment();\">";
+			}
+		}
+	}
+	return threadOptions;
 }
 
 function showThread(thread)
@@ -137,10 +150,9 @@ function showThread(thread)
 	console.log(thread);
 }
 
-function showComment(comment)
+function makeCommentSuccess()
 {
-	console.log("asd");
-	console.log(comment);
+	getComments();
 }
 
 function error(xhr, status, error)

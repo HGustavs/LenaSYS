@@ -149,7 +149,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, user.username FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated ASC;");
+		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated DESC;");
 		$query->bindParam(':threadId', $threadId);
 
 		if(!$query->execute()){
@@ -168,7 +168,9 @@ if ($opt!=="UNK"){
 	$array = array(
 		'accessDenied' => $accessDenied,
 		'thread' => $thread,
-		'comments' => $comments
+		'comments' => $comments,
+		'threadAccess' => $threadAccess,
+		'uid' => $uid
 	);
 	echo json_encode($array);
 }
