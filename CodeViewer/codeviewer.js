@@ -1684,69 +1684,14 @@ function resizeBoxes(parent, templateId)
 			}
 		});
 	}else if(templateId == 6){
-		
-			getLocalStorageProperties(templateId, boxValArray);
-			$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
-			
-		
-			$(boxValArray['box1']['id']).resizable({
-				containment: parent,
-				handles: "e",
-				start: function(event, ui) {
-					$('iframe').css('pointer-events','none');
-				},
-				resize: function(e, ui){
-					alignWidth4boxes(boxValArray, 1, 2, 3, 4);
-					$(boxValArray['box1']['id']).height(100 + "%");
-					
-				},
-				stop: function(e, ui) {
-					setLocalStorageProperties(templateId, boxValArray);
-					$('iframe').css('pointer-events','auto');
-				}
-			});
-			
-			$(boxValArray['box2']['id']).resizable({
-				containment: parent,
-				handles: "s",
-				start: function(event, ui) {
-					$('iframe').css('pointer-events','none');
-				},
-				resize: function(e, ui){
-						alignBoxesHeight3stack(boxValArray, 2, 3, 4);
-						$(boxValArray['box3']['id']).css("left", " ");
-						$(boxValArray['box2']['id']).css("left", " ");
-				},
-				stop: function(e, ui) {
-					setLocalStorageProperties(templateId, boxValArray);
-					$('iframe').css('pointer-events','auto');
-				}
-			});
-			
-			$(boxValArray['box3']['id']).resizable({
-				containment: parent,
-				handles: "s",
-				start: function(event, ui) {
-					$('iframe').css('pointer-events','none');
-				},
-				resize: function(e, ui){
-					$(boxValArray['box4']['id']).css("top", " ");
-					alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
-				},
-				stop: function(e, ui) {
-					$(boxValArray['box4']['id']).css("top", " ");
-					setLocalStorageProperties(templateId, boxValArray);
-					$('iframe').css('pointer-events','auto');
-				}
-			});
-		}else if(templateId == 7) {
+	
 		getLocalStorageProperties(templateId, boxValArray);
-		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
+		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
 		
 	
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
-			handles: "w",
+			handles: "e",
 			start: function(event, ui) {
 				$('iframe').css('pointer-events','none');
 			},
@@ -1794,34 +1739,85 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	} else if(templateId == 8) {
+	} else if(templateId == 7) {
 		getLocalStorageProperties(templateId, boxValArray);
+		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
 		
-		$(boxValArray['box1']['id']).resizable({
+		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
-			handles: "w",
+			handles: "s,e",
 			start: function(event, ui) {
 				$('iframe').css('pointer-events','none');
 			},
 			resize: function(e, ui){
-				alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
-				$("#box2wrapper").css("left", ""); 
-				$("#box1wrapper").css("height", "100%");
+				alignBoxesHeight3stack(boxValArray, 2, 3, 4);
+				alignWidthTemplate7(boxValArray, 2, 3, 4, 1);
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-
+		$(boxValArray['box3']['id']).resizable({
+			containment: parent,
+			handles: "s,e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+				alignWidthTemplate7(boxValArray, 3, 2, 4, 1);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		$(boxValArray['box4']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				$(boxValArray['box4']['id']).css("top", " ");
+				alignBoxesHeight3stackLower(boxValArray, 2, 3, 4);
+				alignWidthTemplate7(boxValArray, 4, 3, 2, 1);
+			},
+			stop: function(e, ui) {
+				$(boxValArray['box4']['id']).css("top", " ");
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+	} else if(templateId == 8) {
+		getLocalStorageProperties(templateId, boxValArray);
+	
 		$(boxValArray['box2']['id']).resizable({
 			containment: parent,
-			handles: "s",
+			handles: "e, s",
 			start: function(event, ui) {
 				$('iframe').css('pointer-events','none');
 			},
 			resize: function(e, ui){
 				alignBoxesHeight2boxes(boxValArray, 2, 3);
+				alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
+				$(boxValArray['box2']['id']).css("left", " ");
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		$(boxValArray['box3']['id']).resizable({
+			containment: parent,
+			handles: "e, s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignBoxesHeight2boxes(boxValArray, 2, 3);
+				alignBoxesWidthTemplate8(boxValArray, 3, 2, 1);
 				$(boxValArray['box2']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
@@ -1875,7 +1871,24 @@ function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlign
 		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
 		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 }
+function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
+{
+		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+		var basePer = 100 - remainWidthPer;
 	
+		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
+		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+
+		//$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
+		
+		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+}
+
 //----------------------------------------------------------------------------------
 //Height adjustment for two boxes on top of eachother.
 //                Is called by resizeBoxes in codeviewer.js
@@ -1932,7 +1945,7 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 }
 
 //----------------------
-// WIDTH MEASURMENT FOR TEMPLATE 6 & 7
+// WIDTH MEASURMENT FOR TEMPLATE 6
 //----------------------
 
 function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
@@ -1959,6 +1972,31 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 		boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 	
+}
+//----------------------
+// WIDTH MEASURMENT FOR TEMPLATE 7
+//----------------------
+
+function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
+	
+		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+			
+		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+		var basePer = 100 - remainWidthPer;	
+		
+		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+		$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
+		$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
+		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+		$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
+		
+		$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
+		
+		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+		
+		boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 }
 	
 //----------------------
@@ -1998,7 +2036,7 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 }
 	
 //----------------------
-// HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
+// HEIGHT MEASURMENT FOR TEMPLATE 6
 //----------------------
 	
 function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
@@ -2121,11 +2159,11 @@ function erasePercentGap(templateId, boxValArray)
 		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 	}else if(templateId == 7){
-		alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+		alignWidthTemplate7(boxValArray, 2, 3, 4, 1);
 		alignBoxesHeight3stack(boxValArray, 2, 3, 4);
 	}else if(templateId == 8){
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
-		alignBoxesWidth3Boxes(boxValArray, 1, 2, 3);
+		alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
 	}
 }
 
