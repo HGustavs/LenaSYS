@@ -467,17 +467,63 @@ function AJAXService(opt,apara,kind)
 					sendConfirmation("usermanagementviewservice.php");
 				}
 			});
-		case "GETCOMMENTS":
+			break;
+		case "GETTHREAD":
 			$.ajax({
-				url: "../Forum/forumservice.php",
+				url: "forumservice.php",
 				type:"POST",
-				data: "threadId="+opt+para,
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedThread(data);
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
+		case "CREATETHREAD":
+			console.log("opt="+opt);
+			console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: showThread,
+				error: error
+			});
+			break;
+		case "MAKECOMMENT":
+			console.log("opt="+opt);
+			console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					showComment(data);
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
+
+		case "GETCOMMENTS":
+		console.log("opt="+opt);
+		console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
 					returnedComments(data);
-					sendConfirmation("../Forum/forumservice.php");
-				}
+					sendConfirmation("forumservice.php");
+				},
+				error: error
 			});
+			break;
 		case "GETCOURSETHREAD":
 			$.ajax({
 				url: "usermanagementviewservice.php",

@@ -10,7 +10,7 @@
 function getOP($name)
 {
 		if(isset($_POST[$name]))	return urldecode($_POST[$name]);
-		else return "UNK";			
+		else return "UNK";
 }
 
 //------------------------------------------------------------------------------------------------
@@ -20,8 +20,8 @@ function gettheOP($name)
 {
 	if(isset($_POST[$name])){
 		return $_POST[$name];
-	}		
-	else return "UNK";			
+	}
+	else return "UNK";
 }
 
 //
@@ -31,7 +31,7 @@ function gettheOP($name)
 function getOPG($name)
 {
 		if(isset($_GET[$name]))	return urldecode($_GET[$name]);
-		else return "UNK";			
+		else return "UNK";
 }
 
 //------------------------------------------------------------------------------------------------

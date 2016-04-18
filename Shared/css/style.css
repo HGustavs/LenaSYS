@@ -52,9 +52,6 @@ h4 {
     font-size: 1.2em;
     line-height: 1.5em;
 }
-body {
-    background: #ddd;
-}
 hr {
     border: 0;
     border-bottom: 1px dashed #ccc;
@@ -1305,13 +1302,17 @@ input.new-item-button:hover {
   background-color: #eae8eb;
 }
 
-#threadTopic {
+#threadTopicWrapper {
   color: #fff;
   padding: 10px 25px;
   float: left;
   font-size: 24px;
   background-color: #614875;
   width: 100%;
+}
+.threadTopic {
+  width: auto;
+  float: left;
 }
 
 #threadOptions {
@@ -1324,7 +1325,7 @@ input.new-item-button:hover {
 }
 
 #threadDescr {
-  padding: 10px 25px;
+  padding: 20px 20px;
   clear: both;
   color: #000;
   font-size: 16px;
@@ -1372,16 +1373,15 @@ input.new-item-button:hover {
   resize: none;
 }
 
-.commentSubmitButton {
-
+input.commentSubmitButton {
+	background-color: buttonface;
 }
-
 
 #threadComments {
   clear:both;
   margin-top: 25px;
   overflow: hidden;
-  background-color: #eae8eb;
+  background-color: #FFF;
 }
 #threadCommentsHeader {
   background-color: #927b9e;
@@ -1398,9 +1398,9 @@ input.new-item-button:hover {
   padding: 10px 20px;
   background-color: #eae8eb;
   overflow: hidden;
-  border-left: 2px solid #927b9e;
+  border: 2px solid #927b9e;
+  margin-top: 20px;
 }
-
 
 .commentDetails {
   color: #775886;
@@ -1409,7 +1409,21 @@ input.new-item-button:hover {
 
 }
 
+.commentWrapper {
+	background-color: white;
+}
+
 .commentContent {
+	min-height: 10%;
+	background-color: white;
+	border: 1px solid #A1A1A1;
+}
+
+.commentContent p{
+	padding: 5px;
+}
+
+.commentFooter {
 
 }
 
@@ -1418,9 +1432,4 @@ input.new-item-button:hover {
   float: right;
   color: #775886;
   font-size: 14px;
-}
-
-.replyComment {
-  margin-left: 50px;
-
 }
