@@ -78,11 +78,24 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			}							
 		}
 
+		//if mark is fail add a dugga lock, else just add grade and remove all previous locks if in case the dugga is locked
 		if($mark == "1"){
 			$query = $pdo->prepare("UPDATE duggaTries SET grade=:mark, dugga_lock = 1 WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers ORDER BY time desc LIMIT 1;");
 		}else{
 			$query = $pdo->prepare("UPDATE duggaTries SET grade=:mark WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers ORDER BY time desc LIMIT 1;");
+			$query2 = $pdo->prepare("UPDATE duggaTries SET dugga_lock = 0 WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers;");
+
+			$query2->bindParam(":uid",$luid);
+			$query2->bindParam(":cid",$cid);
+			$query2->bindParam(":moment",$moment);
+			$query2->bindParam(":vers",$vers);
+
+			if(!$query2->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries (189)\n".$error[2];
+			}
 		}
+
 		$query->bindParam(":mark",$mark);
 		$query->bindParam(":uid",$luid);
 		$query->bindParam(":cid",$cid);

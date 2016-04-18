@@ -500,7 +500,9 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
-				if (parseInt(item['kind']) === 4 || parseInt(item['kind']) === 0) {
+				if (parseInt(item['kind']) === 0) {
+ 					str += "<div class='header'>";
+ 				}else if(parseInt(item['kind']) === 4){
  					str += "<div class='divMoment'>";
  				}else{
  					str += "<div>";
@@ -713,7 +715,7 @@ function returnedSection(data)
 			str+="</div>";
 		}
 		if(retdata["writeaccess"]){
-			str += "<td><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/><td></div>";
+			str += "</div><td><input class='new-item-button' type='button' value='New Item' onclick='newItem();'/><td>";
 		}else{
 			str += "</div>";
 		}
@@ -723,7 +725,28 @@ function returnedSection(data)
 		//wait with setting the html value until the document has loaded, this avoids the frequent blank screen
 		$(function(){
 			var slist=document.getElementById('Sectionlist');
-			slist.innerHTML=str;	
+			slist.innerHTML=str;
+
+			//create an array for storing the collapsed states
+			var collapsedArr = [];
+			//preform an ajax call to get the collapse states
+			$.ajax({
+		   		url: '../Shared/getCookies.php',
+		   		type: 'POST',
+		   		data: {ckn : 'sectC'},
+		   	}).done(function(e){
+		   		//set the results to the created array, split on ','
+		   		collapsedArr = e;
+		   		collapsedArr = collapsedArr.split(',');
+
+		   		//Run through the divs to see which ones to hide
+				$('div.divMoment').each(function(index, el) {
+					if (collapsedArr[index] == 1){
+						var a = "div." + this.closest('div').className;
+   						$(this).closest('div').nextUntil(a).css('display','none');
+					}
+				});
+		   	});
 		});
 
 		if(resave == true){
@@ -830,10 +853,31 @@ function returnedHighscore(data){
 }
 
 function collapseLight(elem){
+	//get the right element to collapse and collapse to the next moment.
  	var a = "div." + elem.closest('div').className;
-   	//alert(a);
-   	$(elem).closest('div').nextUntil(a).fadeToggle(400);
-   }
+   	$(elem).closest('div').nextUntil(a).fadeToggle(0);
+
+   	//create a temporary array and run throug each moment div
+   	var temparr = [];
+   	$('.divMoment').each(function(index, el) {
+   		//get hidden status of next elements
+   		var hide = $(this).closest('div').next('div').is(':hidden');
+
+   		//if to hide is true push 1(true) to array, else push 0 to array
+   		if (hide == true){
+   			temparr.push(1)
+   		}else{
+   			temparr.push(0);
+   		}
+   	});
+
+   	//perform an ajax call to set the new value
+   	$.ajax({
+   		url: '../Shared/getCookies.php',
+   		type: 'POST',
+   		data: {ckn : 'sectC',clist : temparr.toString()},
+   	});
+}
 
 function moveRowToTop(itemId){
 	//finding the row based on the associated itemId and moves it to the top of the Sectionlistc

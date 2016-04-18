@@ -162,6 +162,7 @@ function selectVariant(vid,param,answer,template,dis)
 // Renderer
 //----------------------------------------
 var alla = 0;
+
 function returnedDugga(data)
 {
 	$("content").html();
@@ -183,7 +184,7 @@ function returnedDugga(data)
 			
 			var item=data['entries'][i];
 			
-			str+="<tr class='fumo'>";
+			str+="<tr class='fumo' onclick='collapseLight(this)'>";
 			result++;
 			str+="<td style='width:170px'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			if(item['autograde']=="1"){
@@ -248,7 +249,7 @@ function returnedDugga(data)
 			var variantz=item['variants'];
 			
 			if(variantz.length>0){
-				str+="<tr class='fumo'><td colspan='9' style='padding:0px;'>";
+				str+="<tr class='fuma'><td colspan='9' style='padding:0px;'>";
 				str+="<table width='100%' class='innertable'>";
 				for(j=0;j<variantz.length;j++){
 					var itemz=variantz[j];
@@ -293,6 +294,26 @@ function returnedDugga(data)
 	$(function(){
 		var slist=document.getElementById("content");
 		slist.innerHTML=str;
+
+		//create an array for storing the collapsed states
+		var collapsedArr = [];
+		//preform an ajax call to get the collapse states
+		$.ajax({
+	   		url: '../Shared/getCookies.php',
+	   		type: 'POST',
+	   		data: {ckn : 'duggedC'},
+	   	}).done(function(e){
+	   		//set the results to the created array, split on ','
+	   		collapsedArr = e;
+	   		collapsedArr = collapsedArr.split(',');
+
+	   		//Run through the divs to see which ones to hide
+			$('.fumo').each(function(index, el) {
+				if (collapsedArr[index] == 1)
+					$(this).closest('tr').next('.fuma').css('display', 'none');
+			});
+
+	   	});
 	});
 
 	if(data['debug']!="NONE!") alert(data['debug']);
@@ -426,3 +447,30 @@ function showAddDuggaTemplate(){
 function hideAddDuggaTemplate(){
 	$("#addDuggaTemplate").css("display","none");
 }
+
+function collapseLight(elem){
+	//get the right element to collapse and collapse to the next moment.
+   	$(elem).next('.fuma').fadeToggle(0);
+
+   	//create a temporary array and run throug each moment div
+   	var temparr = [];
+   	$('tr.fumo').each(function(index, el) {
+   		//get hidden status of next elements
+   		var hide = $(this).closest('tr').next('.fuma').is(':hidden');
+
+   		//if to hide is true push 1(true) to array, else push 0 to array
+   		if (hide == true){
+   			temparr.push(1)
+   		}else{
+   			temparr.push(0);
+   		}
+   	});
+
+   	//perform an ajax call to set the new value
+   	$.ajax({
+   		url: '../Shared/getCookies.php',
+   		type: 'POST',
+   		data: {ckn : 'duggedC',clist : temparr.toString()},
+   	});
+
+   }
