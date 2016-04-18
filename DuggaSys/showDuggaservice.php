@@ -95,16 +95,16 @@ if($userid!="UNK"){
 	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
 	$i=0;
 	foreach($query->fetchAll() as $row) {
-		if($row['disabled']==0) $firstvariant=$i;
+		if($row['disabled']==0) {$firstvariant=$i;
 		$variants[$i]=array(
 			'vid' => $row['vid'],
 			'param' => $row['param'],
 			'disabled' => $row['disabled']
-		);
+			);
+		}
 		$i++;
 		$insertparam = true;
 	}
-
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -138,7 +138,7 @@ if($userid!="UNK"){
 	}
 	
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
-	if ($newvariant=="UNK"){
+	if ($newvariant=="UNK" || $newvariant == null){
 
 	} else if ($newvariant!="UNK") {
 		if($isIndb){
@@ -384,7 +384,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php")
 
 //sets some default parameters if none were found
 function setDefaultParamsIfEmpty($p) {
-   if ($p=== null || $p === "UNK"){
+   if ($p=== null || $p === "UNK" || $p === "NONE!"){
       return '{"type":"md", "filelink":"Assignment8.md",   "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip"}]}';
    }
    else
