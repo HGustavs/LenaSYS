@@ -928,6 +928,12 @@ header td {
     box-sizing: border-box;
 }
 
+input{
+	-webkit-appearance: none;
+	-webkit-border-radius:0; 
+    border-radius:0;
+}
+
 input.option {
     float: left;
 }
