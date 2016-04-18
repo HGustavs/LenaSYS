@@ -1414,6 +1414,7 @@ input.commentSubmitButton {
 }
 
 .commentContent {
+  margin-top: 5px;
 	min-height: 10%;
 	background-color: white;
 	border: 1px solid #A1A1A1;
@@ -1428,6 +1429,7 @@ input.commentSubmitButton {
 }
 
 .commentDate {
+  margin-top: 10px;
   clear: both;
   float: right;
   color: #775886;

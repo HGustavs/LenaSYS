@@ -111,7 +111,7 @@ function returnedComments(array)
 
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
-				"<div class=\"commentDetails\"><span id=\"commentUser\">Skrivet av: " + value["username"]  +   "</span></div>" +
+				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
 				"<div class=\"commentContent\"> <p>" +  value["text"]  + "</p></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], array['threadAccess'], array['uid']) +
