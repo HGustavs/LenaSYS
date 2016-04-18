@@ -73,7 +73,7 @@
 	$reg_course_student = "SELECT (SELECT course.coursecode FROM course WHERE course.cid = course_req.cid) AS coursecode, 
 							(SELECT course.coursecode FROM course WHERE course.cid =course_req.req_cid) AS reg_coursecode
  								FROM course, course_req WHERE course.cid= course_req.cid;";
-	$progressbarQuery = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username = '".$userid."') AS completedHP, class.hp as totalHP FROM user_course, course, class, user 
+	$progressbarQuery = "SELECT (SELECT SUM(hp) FROM studentresultCourse WHERE username = '".$userid."') AS completedHP, class.hp AS totalHP FROM user_course, course, class, user 
 						WHERE user_course.uid = '".$userid."' AND user_course.cid = course.cid AND user.class = class.class";
 						
 	$coursesQuery = "SELECT course.coursename, course.coursecode, (SELECT SUM(hp) FROM studentresultCourse

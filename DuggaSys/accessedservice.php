@@ -35,7 +35,7 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"UPDATE")==0){
-		$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username WHERE uid=:uid;");
+		$query = $pdo->prepare("UPDATE user SET firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username WHERE uid=:uid;");
 		$query->bindParam(':firstname', $firstname);
 		$query->bindParam(':lastname', $lastname);
 		$query->bindParam(':ssn', $ssn);

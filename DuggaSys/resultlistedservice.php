@@ -229,7 +229,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 		
 		// All lists
-		$query = $pdo->prepare("SELECT * FROM list WHERE course=:cid");
+		$query = $pdo->prepare("SELECT listnr, listeriesid, provdatum, responsible, responsibledate, course, listid FROM list WHERE course=:cid");
 		$query->bindParam(':cid', $cid);
 		$result=$query->execute();
 		if(!$query->execute()) {
