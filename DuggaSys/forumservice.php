@@ -16,13 +16,12 @@ logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "forumservice.php", $
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "forumservice.php");
 
 if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
+	$uid=$_SESSION['uid'];
 }else{
-	$userid="UNK";
+	$uid="UNK";
 }
 
 $cid = getOP('cid');
-$uid = getOP('uid');
 $opt = getOP('opt');
 
 $threadId = getOPG('threadId');
@@ -30,7 +29,6 @@ if ($threadId==="UNK"){
 	$threadId = getOP('threadId');
 }
 
-$userID = getOP('userID');
 $text = getOP('text');
 $courseId = getOP('courseId');
 $topicT = getOP('topic');
@@ -38,13 +36,13 @@ $descriptionT = getOP('description');
 
 $debug="NONE!";
 
-$threadAccess = getThreadAccess($pdo, $threadId, $userid);
+$threadAccess = getThreadAccess($pdo, $threadId, $uid);
 
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
 
-function getThreadAccess($pdo, $threadId, $userid)
+function getThreadAccess($pdo, $threadId, $uid)
 {
 	$threadAccess = NULL;
 
@@ -63,18 +61,18 @@ function getThreadAccess($pdo, $threadId, $userid)
 		$threadAccess = "public";
 	}
 
-	if ($thread['uid']===$userid){
+	if ($thread['uid']===$uid){
 		$threadAccess = "op";
 	}else {
 		// Check if user is super
-		if (isSuperUser($userid))
+		if (isSuperUser($uid))
 		{
 			$threadAccess = "super";
 		}else{
 			// Check if user is super
-			$query = $pdo->prepare("SELECT uid FROM threadaccess WHERE threadid=:threadId AND uid=:userid;");
+			$query = $pdo->prepare("SELECT uid FROM threadaccess WHERE threadid=:threadId AND uid=:uid;");
 			$query->bindParam(':threadId', $threadId);
-			$query->bindParam(':userid', $userid);
+			$query->bindParam(':uid', $uid);
 
 			if(!$query->execute()){
 				$error=$query->errorInfo();
@@ -93,9 +91,9 @@ function getThreadAccess($pdo, $threadId, $userid)
 if(strcmp($opt,"CREATETHREAD")===0){
 	// Access check
 	if (checklogin()){
-		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :userID, :topic, :description)");
+		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :uid, :topic, :description)");
 		$query->bindParam(':courseId', $courseId);
-		$query->bindParam(':userID', $userID);
+		$query->bindParam(':uid', $uid);
 		$query->bindParam(':topic', $topicT);
 		$query->bindParam(':description', $descriptionT);
 
@@ -112,9 +110,9 @@ if(strcmp($opt,"CREATETHREAD")===0){
 }else if(strcmp($opt,"MAKECOMMENT")===0){
 	// Access check
 	if ($threadAccess==="normal" || $threadAccess==="super" || $threadAccess==="op"){
-		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text, datecreated) VALUES (:threadID, :userID, :text, current_timestamp)");
+		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text, datecreated) VALUES (:threadID, :uid, :text, current_timestamp)");
 		$query->bindParam(':threadID', $threadId);
-		$query->bindParam(':userID', $userid);
+		$query->bindParam(':uid', $uid);
 		$query->bindParam(':text', $text);
 		if(!$query->execute()){
 			$error=$query->errorInfo();
