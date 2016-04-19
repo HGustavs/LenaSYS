@@ -127,7 +127,8 @@ function returnedComments(array)
 	}
 }
 
-function getCommentOptions (index, commentuid, threadAccess, uid){
+function getCommentOptions (index, commentuid, threadAccess, uid)
+{
 	var threadOptions;
 	if (threadAccess){
 		if (threadAccess !== "public"){
@@ -143,6 +144,11 @@ function getCommentOptions (index, commentuid, threadAccess, uid){
 		}
 	}
 	return threadOptions;
+}
+
+function replyUI()
+{
+	makeComment();
 }
 
 function showThread(thread)
