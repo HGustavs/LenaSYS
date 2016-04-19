@@ -41,22 +41,18 @@ function deleteThread()
 }
 
 // Vad ska hända när man deletar en tråd???
-function deleteThreadSuccess()
+function deleteThreadSuccess(data)
 {
-	window.location.replace("courseed.php");
+	if (data["accessDenied"]){
+		accessDenied(data);
+	}else{
+		window.location.replace("courseed.php");
+	}
 }
 
 function getComments()
 {
   AJAXService("GETCOMMENTS",{threadId:querystring["threadId"]},"GETCOMMENTS");
-}
-
-function createThreadUI()
-{
-	$("#threadHeader").hide();
-	$(".threadMakeComment").hide();
-	$("#threadComments").hide();
-	$("#createThreadWrapper").show();
 }
 
 function createThread()
@@ -96,15 +92,10 @@ function checkComment()
 	}
 }
 
-function accessDenied(array)
+function deleteComment(commentid)
 {
-	var str = "<div class='err'>";
-			str +=	"<span style='font-weight:bold'>";
-			str +=		"Access denied! ";
-			str	+=	"</span>";
-			str +=	array["accessDenied"];
-			str +="</div>";
-	$("#content").html(str);
+	console.log(commentid);
+	AJAXService("DELETECOMMENT",{commentid:commentid},"DELETECOMMENT");
 }
 
 
@@ -112,39 +103,50 @@ function accessDenied(array)
 // Renderer
 //----------------------------------------
 
-function returnedThread(array)
+function accessDenied(data)
 {
-	if (array["accessDenied"]){
-		accessDenied(array);
+	var str = "<div class='err'>";
+			str +=	"<span style='font-weight:bold'>";
+			str +=		"Access denied! ";
+			str	+=	"</span>";
+			str +=	data["accessDenied"];
+			str +="</div>";
+	$("#content").html(str);
+}
+
+function returnedThread(data)
+{
+	if (data["accessDenied"]){
+		accessDenied(data);
 	}else {
-		$(".threadTopic").html(array["thread"]["topic"]);
-		$("#threadDescr").html(array["thread"]["description"]);
+		$(".threadTopic").html(data["thread"]["topic"]);
+		$("#threadDescr").html(data["thread"]["description"]);
 		var str = "<span id='threadDate'>";
-				str += 	array["thread"]["datecreated"].substring(0, 16);
+				str += 	data["thread"]["datecreated"].substring(0, 16);
 				str += "</span> by <span id='threadCreator'>a97marbr</span>";
 		$("#threadDetails").html(str);
 	}
 }
 
-function returnedComments(array)
+function returnedComments(data)
 {
-	if (array["accessDenied"]){
-		accessDenied(array);
+	if (data["accessDenied"]){
+		accessDenied(data);
 	}else {
 		// Adds the comment header with the amount of comments.
-		var commentLength = array["comments"].length;
+		var commentLength = data["comments"].length;
 		var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
 
 		threadCommentStr += "<div class=\"allComments\">";
 
 		// Iterates through all the comments
-		$.each(array["comments"], function(index, value){
+		$.each(data["comments"], function(index, value){
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
 				"<div class=\"commentContent\"> <p>" +  value["text"]  + "</p></div>" +
 				"<div class=\"commentFooter\">" +
-						getCommentOptions(index, value['uid'], array['threadAccess'], array['uid'], array['comments'][index]['commentid']) +
+						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
 				"</div>" +
 
 				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
@@ -182,25 +184,37 @@ function replyUI()
 {
 	makeComment();
 }
-function deleteComment(commentid)
+
+function makeCommentSuccess()
 {
-	console.log(commentid);
-	AJAXService("DELETECOMMENT",{commentid:commentid},"DELETECOMMENT");
+	getComments();
 }
 
 function deleteCommentSuccess(data)
 {
 	console.log(data);
+	if (data["accessDenied"]){
+		accessDenied(data);
+	}else{
+		getComments();
+	}
 }
 
-function showThread(thread)
+function lockThreadSuccess(data)
 {
-	console.log(thread);
+	if (data["accessDenied"]){
+		accessDenied(data);
+	}else{
+		getThread();
+	}
 }
 
-function makeCommentSuccess()
+function createThreadUI()
 {
-	getComments();
+	$("#threadHeader").hide();
+	$(".threadMakeComment").hide();
+	$("#threadComments").hide();
+	$("#createThreadWrapper").show();
 }
 
 function error(xhr, status, error)

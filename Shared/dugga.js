@@ -489,7 +489,7 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: showThread,
+				success: getThread,
 				error: error
 			});
 			break;
@@ -543,7 +543,7 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					getComments();
+					deleteCommentSuccess(data);
 					sendConfirmation("forumservice.php");
 				}
 			});
@@ -555,7 +555,7 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					getThread();
+					lockThreadSuccess(data);
 					sendConfirmation("forumservice.php");
 				}
 			});
@@ -567,7 +567,7 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					deleteThreadSuccess();
+					deleteThreadSuccess(data);
 					sendConfirmation("forumservice.php");
 				}
 			});
