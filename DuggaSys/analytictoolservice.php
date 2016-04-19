@@ -90,12 +90,12 @@ function serviceAvgDuration() {
 
 function passwordGuessing(){
 	$result = $GLOBALS['log_db']->query('
-		SELECT 
-			uid AS userName, 
-			remoteAddress AS remoteAddresss, 
+		SELECT
+			uid AS userName,
+			remoteAddress AS remoteAddresss,
 			userAgent AS userAgent,
-			COUNT(*) AS  tries
-		FROM userLogEntries 
+			COUNT(*) AS tries
+		FROM userLogEntries
 		WHERE eventType = '.EventTypes::LoginFail.'
 		GROUP BY uid, remoteAddress
 		HAVING tries > 10;
@@ -108,14 +108,34 @@ function passwordGuessing(){
 //------------------------------------------------------------------------------------------------
 
 function serviceUsage($start, $end, $interval){
-	$result = $GLOBALS['log_db']->query('
+	$dateGroupFormat = "%Y-%m";
+	switch ($interval) {
+		case 'hourly':
+			$dateGroupFormat = "%Y-%m-%d %H";
+			break;
+		case 'daily':
+			$dateGroupFormat = "%Y-%m-%d";
+			break;
+		case 'weekly':
+			$dateGroupFormat = "%Y w%W";
+			break;
+		case 'monthly':
+			$dateGroupFormat = "%Y-%m";
+			break;
+	}
+	$query = $GLOBALS['log_db']->prepare('
 		SELECT
 			service AS service,
-			COUNT(*) as hits
+			strftime(?, datetime(timeStamp/1000, \'unixepoch\')) AS dateTime,
+			COUNT(*) AS hits
 		FROM serviceLogEntries
-		WHERE eventType = '.EventTypes::ServiceClientStart.'
-		GROUP BY service
-	')->fetchAll(PDO::FETCH_ASSOC);
+		WHERE
+			eventType = '.EventTypes::ServiceClientStart.'
+			AND datetime(timeStamp/1000, \'unixepoch\') BETWEEN ? AND ?
+		GROUP BY service, dateTime;
+	');
+	$query->execute(array($dateGroupFormat, $start, $end));
+	$result = $query->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
 
