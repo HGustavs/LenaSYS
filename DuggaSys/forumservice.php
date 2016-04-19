@@ -37,7 +37,7 @@ $commentid = getOP('commentid');
 
 $debug="NONE!";
 
-if ($threadId && $threadId !== "UNK"){
+if (($threadId && $threadId !== "UNK") || $opt){
 	$threadAccess = getThreadAccess($pdo, $threadId, $uid);
 }
 
@@ -129,7 +129,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 }else if(strcmp($opt,"DELETECOMMENT")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("DELETE FROM threadcomment WHERE commentid=:commentid");
+		$query = $pdo->prepare("SELECT uid FROM threadcomment WHERE commentid=:commentid");
 		$query->bindParam(':commentid', $commentid);
 
 		if(!$query->execute()){
@@ -137,42 +137,48 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			exit($debug);
 
 		}else{
-			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+			$comment = $query->fetch(PDO::FETCH_ASSOC);
+
+			if ($comment["uid"]===$uid || $threadAccess==="op" || $threadAccess==="super"){
+				$query = $pdo->prepare("DELETE FROM threadcomment WHERE commentid=:commentid");
+				$query->bindParam(':commentid', $commentid);
+
+				if(!$query->execute()){
+					$error=$query->errorInfo();
+					exit($debug);
+				}
+			}else{
+				$accessDenied = "You can only delete your own comments.";
+			}
 		}
 	}else{
-		$accessDenied = "You do not have access to delete this comment";
+		$accessDenied = "You do not have access to this thread.";
 	}
 }else if(strcmp($opt,"LOCKTHREAD")===0){
 	// Access check
-	if ($threadAccess){
+	if ($threadAccess==="op" || $threadAccess==="super"){
 		$query = $pdo->prepare("UPDATE thread SET locked='1' WHERE threadid=:threadid");
 		$query->bindParam(':threadid', $threadId);
 
 		if(!$query->execute()){
 			$error=$query->errorInfo();
 			exit($debug);
-
-		}else{
-			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}else{
-		$accessDenied = "You do not have access to lock this thread";
+		$accessDenied = "You do not have permission to lock this thread.";
 	}
 }else if(strcmp($opt,"DELETETHREAD")===0){
 	// Access check
-	if ($threadAccess){
+	if ($threadAccess==="op" || $threadAccess==="super"){
 		$query = $pdo->prepare("DELETE FROM thread WHERE threadid=:threadid");
 		$query->bindParam(':threadid', $threadId);
 
 		if(!$query->execute()){
 			$error=$query->errorInfo();
 			exit($debug);
-
-		}else{
-			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}else{
-		$accessDenied = "You do not have access to delete this thread";
+		$accessDenied = "You do not have permisson to delete this thread.";
 	}
 }
 
