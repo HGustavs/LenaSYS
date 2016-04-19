@@ -249,7 +249,7 @@ function returnedDugga(data)
 			var variantz=item['variants'];
 			
 			if(variantz.length>0){
-				str+="<tr class='fuma'><td colspan='9' style='padding:0px;'>";
+				str+="<tr class='fuma'><td colspan='10' style='padding:0px;'>";
 				str+="<table width='100%' class='innertable'>";
 				for(j=0;j<variantz.length;j++){
 					var itemz=variantz[j];
