@@ -158,10 +158,23 @@ function replyComment(array)
 	}else {
 		$.each(array["comments"], function(index, value){
 			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</br></div>"+
-			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
-  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment();\">");
+			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+value["text"]+"</textarea>"+
+  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeReplycomment();\">");
 		});
 		$('.commentInput').css("border-top", "0px");
+	}
+}
+
+function makeReplycomment(){
+	var text = $(".commentInput").val();
+
+	if(text.length > 0)
+	{
+		AJAXService("MAKEREPLYCOMMENT",{threadId:querystring["threadId"],text:text},"MAKEREPLYCOMMENT");
+	}
+	else
+	{
+
 	}
 }
 
