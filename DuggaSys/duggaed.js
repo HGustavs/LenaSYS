@@ -308,6 +308,7 @@ function returnedDugga(data)
 	   		type: 'POST',
 	   		data: {ckn : 'duggedC'},
 	   	}).done(function(e){
+	   		console.log(e);
 	   		//set the results to the created array, split on ','
 	   		collapsedArr = e;
 	   		collapsedArr = collapsedArr.split(',');

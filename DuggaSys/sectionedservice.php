@@ -43,16 +43,15 @@ $log_uuid = getOP('log_uuid');
 $log_timestamp = getOP('log_timestamp');
 $unmarked = 0;
 
-//set the course id to session data so the cookie script can access it
-$_SESSION['cid'] = $courseid;
-
-//create the crypt out of various variables with salt.
-$cookieName = crypt(($userid . "sectC" . $courseid . $coursevers),"$1$snuskaka$");
-//check if cookie exists and that the session is using cookies
-if (!isset($_COOKIE[$cookieName]) && ini_get('session.use_cookies')){
-	$params = session_get_cookie_params();
-	//set the cookie
-	setcookie($cookieName,"0",time() + (86400 * 365),$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
+if (isset($_SESSION['loginname'])) {
+	//prepare the cookie name
+	$cookie = ($_SESSION['loginname'] . "sectC" . $_SESSION['cid'] . $_SESSION['coursevers']);
+	//check if cookie exists and that the session is using cookies
+	if (!isset($_COOKIE[$cookie]) && ini_get('session.use_cookies')){
+		$params = session_get_cookie_params();
+		//set the cookie
+		setcookie($cookie,"0",time() + (86400 * 365),$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
+	}
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "sectionedservice.php", $log_timestamp);
@@ -471,7 +470,7 @@ $array = array(
 	'codeexamples' => $codeexamples,
 	'unmarked' => $unmarked
 );
-
+$debug = $cookieName;
 echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php");
 ?>
