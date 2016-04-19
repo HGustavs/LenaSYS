@@ -1435,3 +1435,19 @@ input.commentSubmitButton {
   color: #775886;
   font-size: 14px;
 }
+
+/* Create thread */
+
+#createThreadWrapper {
+  box-sizing: border-box;
+  color: #fff;
+  padding: 10px 25px;
+  float: left;
+  font-size: 24px;
+  background-color: #614875;
+  width: 100%;
+}
+#createThreadHeader {
+  width: auto;
+  float: left;
+}

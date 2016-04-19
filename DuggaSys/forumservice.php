@@ -37,7 +37,9 @@ $commentid = getOP('commentid');
 
 $debug="NONE!";
 
-$threadAccess = getThreadAccess($pdo, $threadId, $uid);
+if ($threadId && $threadId !== "UNK"){
+	$threadAccess = getThreadAccess($pdo, $threadId, $uid);
+}
 
 //------------------------------------------------------------------------------------------------
 // Services

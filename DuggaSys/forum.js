@@ -13,8 +13,15 @@ var querystring = parseGet();
 
 function initThread()
 {
-	console.log(querystring);
-	getThread();
+	if (querystring["threadId"])
+	{
+		$("#createThreadWrapper").hide();
+		console.log(querystring);
+		getThread();
+	}
+	else {
+		createThreadUI();
+	}
 }
 
 function getThread()
@@ -42,6 +49,14 @@ function deleteThreadSuccess()
 function getComments()
 {
   AJAXService("GETCOMMENTS",{threadId:querystring["threadId"]},"GETCOMMENTS");
+}
+
+function createThreadUI()
+{
+	$("#threadHeader").hide();
+	$(".threadMakeComment").hide();
+	$("#threadComments").hide();
+	$("#createThreadWrapper").show();
 }
 
 function createThread()
@@ -143,8 +158,9 @@ function returnedComments(array)
 }
 
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
-	//console.log(commentid);
-	var threadOptions;
+	// console.log(commentid);
+	var threadOptions = "";
+
 	if (threadAccess){
 		if (threadAccess !== "public"){
 			threadOptions = "<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">";
