@@ -854,8 +854,7 @@ function returnedHighscore(data){
 
 function collapseLight(elem){
 	//get the right element to collapse and collapse to the next moment.
- 	var a = "div." + elem.closest('div').className;
-   	$(elem).closest('div').nextUntil(a).fadeToggle(0);
+   	$(elem).closest('div').nextUntil('div.divMoment').fadeToggle(0);
 
    	//create a temporary array and run throug each moment div
    	var temparr = [];
