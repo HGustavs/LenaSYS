@@ -1414,8 +1414,7 @@ input.commentSubmitButton {
 }
 
 .commentContent {
-  margin-top: 5px;
-	min-height: 10%;
+	min-height: 10vh;
 	background-color: white;
 	border: 1px solid #A1A1A1;
 }
@@ -1434,4 +1433,16 @@ input.commentSubmitButton {
   float: right;
   color: #775886;
   font-size: 14px;
+}
+
+.repliedcomment {
+	background-color: white;
+	border-top: 1px solid  #A1A1A1;
+	border-right: 1px solid #A1A1A1;
+	border-bottom: 0px;
+	border-left: 1px solid #A1A1A1;
+	min-height: 1vh;
+	padding: 5px;
+	color: grey;
+	
 }
