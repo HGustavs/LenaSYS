@@ -33,6 +33,7 @@ $text = getOP('text');
 $courseId = getOP('courseId');
 $topicT = getOP('topic');
 $descriptionT = getOP('description');
+$commentid = getOP('commentid');
 
 $debug="NONE!";
 
@@ -162,7 +163,25 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else{
 		$accessDenied = "You do not have access to the thread.";
 	}
+}else if(strcmp($opt,"REPLYCOMMENT")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("SELECT text FROM threadcomment WHERE commentid=:commentID;");
+		$query->bindParam(':commentID', $commentid);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}else{
+		$accessDenied = "You do not have access to the thread.";
+	}
 }
+
+
 
 if ($opt!=="UNK"){
 	$array = array(

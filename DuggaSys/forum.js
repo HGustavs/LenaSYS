@@ -127,13 +127,12 @@ function returnedComments(array)
 }
 
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
-	console.log(commentid);
 	var threadOptions;
 	if (threadAccess){
 		if (threadAccess !== "public"){
-			threadOptions = "<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">";
+			threadOptions = "<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI("+commentid+");\">";
 
-			console.log("uid " + uid + "commentuid " + commentuid);
+			//console.log("uid " + uid + "commentuid " + commentuid);
 			if (uid === commentuid){
 				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
 			}
@@ -146,10 +145,26 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 }
 
 
-function replyUI()
+function replyUI(commentid)
 {
-	makeComment();
+	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
 }
+
+function replyComment(array)
+{
+	console.log(array);
+	if (array["accessDenied"]){
+		accessDenied(array);
+	}else {
+		$.each(array["comments"], function(index, value){
+			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</br></div>"+
+			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
+  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment();\">");
+		});
+		$('.commentInput').css("border-top", "0px");
+	}
+}
+
 function deleteComment(commentid)
 {
 	console.log(commentid);
