@@ -84,6 +84,12 @@ if (file_exists("../.git/refs/heads/master")) {
     ?>
 
 		<div id="threadComments"></div>
+
+    <div id="createThreadWrapper">
+      <div class="createThreadHeader">
+        Create thread
+      </div>
+    </div>
 	</div>
 
 	<!-- version identification -->
