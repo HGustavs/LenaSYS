@@ -108,13 +108,12 @@ function returnedComments(array)
 
 		// Iterates through all the comments
 		$.each(array["comments"], function(index, value){
-
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
 				"<div class=\"commentContent\"> <p>" +  value["text"]  + "</p></div>" +
 				"<div class=\"commentFooter\">" +
-						getCommentOptions(index, value['uid'], array['threadAccess'], array['uid']) +
+						getCommentOptions(index, value['uid'], array['threadAccess'], array['uid'], array['comments'][index]['commentid']) +
 				"</div>" +
 
 				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
@@ -127,7 +126,8 @@ function returnedComments(array)
 	}
 }
 
-function getCommentOptions (index, commentuid, threadAccess, uid){
+function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
+	console.log(commentid);
 	var threadOptions;
 	if (threadAccess){
 		if (threadAccess !== "public"){
@@ -138,11 +138,16 @@ function getCommentOptions (index, commentuid, threadAccess, uid){
 				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
 			}
 			if (threadAccess === "op" || threadAccess === "super" || uid === commentuid){
-				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment();\">";
+				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment("+commentid+");\">";
 			}
 		}
 	}
 	return threadOptions;
+}
+
+function deleteComment(commentid)
+{
+	console.log(commentid);
 }
 
 function showThread(thread)
