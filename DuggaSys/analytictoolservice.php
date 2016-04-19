@@ -39,6 +39,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'browserPercentage':
 				browserPercentage();
 				break;
+			case 'serviceCrashes':
+				serviceCrashes();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -169,6 +172,19 @@ function browserPercentage(){
 		WHERE eventType = '.EventTypes::ServiceClientStart.'
 		GROUP BY browser
 		ORDER BY percentage DESC
+	')->fetchAll(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+// Retrieves service crashes		
+//------------------------------------------------------------------------------------------------
+
+function serviceCrashes(){
+	$result = $GLOBALS['log_db']->query('
+		SELECT * 
+		FROM serviceLogEntries
+		WHERE uuid NOT IN (SELECT DISTINCT uuid FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceClientEnd.');
 	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
