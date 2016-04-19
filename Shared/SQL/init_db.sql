@@ -458,6 +458,7 @@ create table thread(
     hidden tinyint(1),
     description varchar(2000) not null,
     locked tinyint(1),
+	lastcommentedon timestamp null,
     primary key(threadid),
     foreign key(cid) references course(cid),
     foreign key(uid) references user(uid)
