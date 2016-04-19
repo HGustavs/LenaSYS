@@ -149,7 +149,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated DESC;");
+		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, threadcomment.commentid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated DESC;");
 		$query->bindParam(':threadId', $threadId);
 
 		if(!$query->execute()){
