@@ -589,9 +589,15 @@ function returnedSection(data)
 							}else if(grady==1){
 									//	Marked Fail! (Red)								
 									str+="<div class='RedLight' title='Status: Failed\nDate: "+marked+"' ></div>";
-							}else if(grady>1){
+							}else if(grady==2){
 									//	Marked Pass i.e. G/VG/3/4/5 (Green)		
-									str+="<div class='GreenLight'  title='Status: Pass\nDate: "+marked+"' ></div>";
+									str+="<div class='GreenLight'  title='Grade: G\nDate: "+marked+"' ></div>";
+							}else if(grady==3){
+									//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+									str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
+							}else if(grady>3){
+									//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+									str+="<div class='GreenLight'  title='Status: Unknown - add other grade system\nDate: "+marked+"' ></div>";
 							}
 							str+="</td>";
 				
