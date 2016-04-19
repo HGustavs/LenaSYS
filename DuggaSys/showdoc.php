@@ -57,22 +57,35 @@
 				$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
 				$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
 
-				//Regular expressions for lists both - and * lists are supported
+				//Regular expressions for ordered lists both - and * lists are supported
 				$instring = preg_replace("/^\s*\d*\.\s(.*)/m", "<ol><li>$1</li></ol>",$instring);
 				
-				$instring = preg_replace("/^\s*\-\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
-				$instring = preg_replace("/^\s*\*\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
-
-				// Fix for superflous ul and ol statements
-				$instring= str_replace ("</ul>\n<ul>","",$instring);
+				// Fix for superflous ol statements
 				$instring= str_replace ("</ol>\n<ol>","",$instring);
+				
+				//Regular expressions for unordered lists
+				// (***) to start a list
+				// * Bullet
+				// 		(***) to start a sublist
+				// 		* Sub-bullet
+				// 		(/***) to close the sublist
+				// (/***) to close the list
+				$instring = preg_replace("/[(]\*{3}[)]/", '<ul>',$instring);
+				$instring = preg_replace("/[\-\*]{1}\s(.*)/", '<li>$1</li>',$instring);
+				$instring = preg_replace("/[(][\/]\*{3}[)]/", '</ul>',$instring);
 
 				//Regular expression for line
 				$instring = preg_replace("/\-{3,}/", "<hr>",$instring);
 
 				// Hard line break support
-				$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
-				$instring= preg_replace ("/(\r\n|\n|\r){2}/","<br>",$instring);
+				$instring= preg_replace ("/(\r\n){3}/","<br><br>",$instring);
+				$instring= preg_replace ("/(\r\n){2}/","<br>",$instring);
+	
+				$instring= preg_replace ("/(\n){3}/","<br><br>",$instring);
+				$instring= preg_replace ("/(\n){2}/","<br>",$instring);
+	
+				$instring= preg_replace ("/(\r){3}/","<br><br>",$instring);
+				$instring= preg_replace ("/(\r){2}/","<br>",$instring);
 
 				// Fix for swedish characters
 				$instring= str_replace ("å","&aring;",$instring);				
