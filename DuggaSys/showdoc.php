@@ -112,9 +112,9 @@
 				// ==[src]==	
 				$instring = preg_replace("/\={2}\{(.*?\S)}\={2}/","<span id='placeholder-$1'></span>",$instring);
 
-				// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
-				// +++image.png,image.gif+++
-				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<img class='gifimage' src='$1' onclick=\"showGif('$2');\" target='_blank' />",$instring);
+				// Link to gif animation with thumbnail
+				// +++thumbnail.png,animation.gif+++	
+				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<div class='gifwrapper'><img class='gifimage' id='gifpicture' src='$1' onclick=\"toggleGif('$2', '$1');\" /><div class='playbutton'><img src='../Shared/icons/PlayT.svg' onclick=\"toggleGif('$2', '$1');\"></div></div>",$instring);
 
 				// Right Arrow for discussing menu options
 				$instring = preg_replace("/\s[\-][\>]\s/","&rarr;",$instring);
