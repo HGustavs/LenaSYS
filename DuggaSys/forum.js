@@ -23,6 +23,22 @@ function getThread()
 	getComments();
 }
 
+function lockThread()
+{
+	AJAXService("LOCKTHREAD",{threadId:querystring["threadId"]},"LOCKTHREAD");
+}
+
+function deleteThread()
+{
+	AJAXService("DELETETHREAD",{threadId:querystring["threadId"]},"DELETETHREAD");
+}
+
+// Vad ska hända när man deletar en tråd???
+function deleteThreadSuccess()
+{
+	window.location.replace("courseed.php");
+}
+
 function getComments()
 {
   AJAXService("GETCOMMENTS",{threadId:querystring["threadId"]},"GETCOMMENTS");
@@ -127,13 +143,13 @@ function returnedComments(array)
 }
 
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
-	console.log(commentid);
+	//console.log(commentid);
 	var threadOptions;
 	if (threadAccess){
 		if (threadAccess !== "public"){
 			threadOptions = "<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">";
 
-			console.log("uid " + uid + "commentuid " + commentuid);
+			//console.log("uid " + uid + "commentuid " + commentuid);
 			if (uid === commentuid){
 				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
 			}
@@ -148,6 +164,12 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 function deleteComment(commentid)
 {
 	console.log(commentid);
+	AJAXService("DELETECOMMENT",{commentid:commentid},"DELETECOMMENT");
+}
+
+function deleteCommentSuccess(data)
+{
+	console.log(data);
 }
 
 function showThread(thread)

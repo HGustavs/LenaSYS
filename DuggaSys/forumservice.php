@@ -33,6 +33,7 @@ $text = getOP('text');
 $courseId = getOP('courseId');
 $topicT = getOP('topic');
 $descriptionT = getOP('description');
+$commentid = getOP('commentid');
 
 $debug="NONE!";
 
@@ -122,6 +123,54 @@ if(strcmp($opt,"CREATETHREAD")===0){
 		}
 	}else {
 		$accessDenied = "You must log in to comment.";
+	}
+}else if(strcmp($opt,"DELETECOMMENT")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("DELETE FROM threadcomment WHERE commentid=:commentid");
+		$query->bindParam(':commentid', $commentid);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}else{
+		$accessDenied = "You do not have access to delete this comment";
+	}
+}else if(strcmp($opt,"LOCKTHREAD")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("UPDATE thread SET locked='1' WHERE threadid=:threadid");
+		$query->bindParam(':threadid', $threadId);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}else{
+		$accessDenied = "You do not have access to lock this thread";
+	}
+}else if(strcmp($opt,"DELETETHREAD")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("DELETE FROM thread WHERE threadid=:threadid");
+		$query->bindParam(':threadid', $threadId);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}else{
+		$accessDenied = "You do not have access to delete this thread";
 	}
 }
 

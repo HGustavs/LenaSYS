@@ -536,6 +536,42 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
+		case "DELETECOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getComments();
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "LOCKTHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getThread();
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "DELETETHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					deleteThreadSuccess();
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
 	}
 }
 
