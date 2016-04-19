@@ -27,7 +27,11 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 				passwordGuessing();
 				break;
 			case 'serviceUsage':
-				serviceUsage();
+				serviceUsage(
+					isset($_POST['start']) ? $_POST['start'] : '1970-01-01 00:00',
+					isset($_POST['end']) ? $_POST['end'] : '2100-01-01 00:00',
+					isset($_POST['interval']) ? $_POST['interval'] : 'monthly'
+				);
 				break;
 			case 'osPercentage':
 				osPercentage();
@@ -103,7 +107,7 @@ function passwordGuessing(){
 // Retrieves service usage.		
 //------------------------------------------------------------------------------------------------
 
-function serviceUsage(){
+function serviceUsage($start, $end, $interval){
 	$result = $GLOBALS['log_db']->query('
 		SELECT
 			service AS service,
@@ -111,7 +115,7 @@ function serviceUsage(){
 		FROM serviceLogEntries
 		WHERE eventType = '.EventTypes::ServiceClientStart.'
 		GROUP BY service
-	')->fetchAl(PDO::FETCH_ASSOC);
+	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
 
