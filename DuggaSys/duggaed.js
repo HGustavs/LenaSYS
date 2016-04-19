@@ -287,6 +287,11 @@ function returnedDugga(data)
 
 		str+="</table>";
 
+		str+="<div style='float:right;padding-bottom:10px;'>";
+		str+="<input class='submit-button' style='width:170px' type='button' value='Add Dugga Template' onclick='showAddDuggaTemplate();'/>";
+		str+="<input class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";
+		str+="</div>";
+
 	}
 	alla = result;
 
