@@ -590,13 +590,13 @@ function returnedSection(data)
 									//	Marked Fail! (Red)								
 									str+="<div class='RedLight' title='Status: Failed\nDate: "+marked+"' ></div>";
 							}else if(grady==2){
-									//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+									//	Marked G (Green)		
 									str+="<div class='GreenLight'  title='Grade: G\nDate: "+marked+"' ></div>";
 							}else if(grady==3){
-									//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+									//	Marked VG (Green)		
 									str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
 							}else if(grady>3){
-									//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+									//this seems to be needed for the page to load	
 									str+="<div class='GreenLight'  title='Status: Unknown - add other grade system\nDate: "+marked+"' ></div>";
 							}
 							str+="</td>";
