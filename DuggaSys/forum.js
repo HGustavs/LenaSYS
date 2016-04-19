@@ -158,19 +158,21 @@ function replyComment(array)
 	}else {
 		$.each(array["comments"], function(index, value){
 			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</br></div>"+
-			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+value["text"]+"</textarea>"+
-  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeReplycomment("+value["commentid"]+");\">");
+			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
+  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeReplycomment("+value["commentid"]+","+value["text"]+")\">");
 		});
 		$('.commentInput').css("border-top", "0px");
 	}
 }
 
-function makeReplycomment(commentid){
-	var text = $(".commentInput").val();
+function makeReplycomment(commentid,commenttext){
+	var comment = commenttext;
+	var text =$(".commentInput").val();
+	//console.log(text);
 
 	if(text.length > 0)
 	{
-		AJAXService("MAKEREPLYCOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKEREPLYCOMMENT");
+		AJAXService("MAKEREPLYCOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid,comment:comment},"MAKEREPLYCOMMENT");
 	}
 	else
 	{
