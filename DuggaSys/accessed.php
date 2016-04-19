@@ -34,17 +34,24 @@
 				<tr>
 					<td>	
 						<?PHP
-							echo "<div style='float:right;'><input class='submit-button' type='button' value='Create Users' onclick='showCreateUsersPopup();'/></div>";
-							//needs to calculate if the user has access to this button before writing out
+							if(isset($_SESSION['uid']))
+							{
+								echo "<div style='float:right;'><input class='submit-button' type='button' value='Create Users' onclick='showCreateUsersPopup();'/></div>";
+								//needs to calculate if the user has access to this button before writing out
+							}
 						?>
 					</td>
 					<td>
 						<?PHP
-							echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showAddUsersPopup();'/></div>";
-							//needs to calculate if the user has access to this button before writing out
+							if(isset($_SESSION['uid']))
+							{
+								echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showAddUsersPopup();'/></div>";
+								//needs to calculate if the user has access to this button before writing out
+							}
 						?>
 					</td>
-				</table>
+				</tr>
+			</table>
 		</div>
 		<div id="accessedcontent">
 			
@@ -57,17 +64,21 @@
 	?>
 	
 	<!--- Edit User Dialog START --->
-	<div id='createUsers' class='loginBox' style='width:464px;display:none;'>
+	<div id='createUsers' class='loginBox' style='width:500px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Create Users</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
 		<div class='note'>
 			<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
-			<p>SSN&lt;space&gt;Lastname,&lt;space&gt;Firstname&lt;space&gt;Email&lt;linebreak&gt;</p>
+			<p>SSN&lt;space&gt;Lastname,&lt;space&gt;Firstname&lt;space&gt;Anmkod&lt;space&gt;Type of registration&lt;space&gt;Study program&lt;space&gt;Year of addmittance(YYYY-MM-DD)&lt;space&gt;Email&lt;linebreak&gt;</p>
 			<p>Example:<br/>
-			000000-0000 Lastname, Firstname a12firla@student.his.se<br/>
-			111111-1111 Lastname, Firstname b12firla@student.his.se</p>
+			000000-0000 Lastname, Firstname 45656 student WEBUG15h 2012-12-24 a12firla@student.his.se<br/>
+			111111-1111 Lastname, Firstname 45656 teacher FREE 2015-01-15 b12firla@student.his.se<br/>
+			If a student dosn't have study program, follow this exampel: <br/>
+			111111-1111 Lastname, Firstname 45656 student : 2015-04-13 b15firla@student.his.se <br/>
+			111111-1111 Lastname, Firstname 45656 none : 2015-03-18 b15firla@student.his.se </p>
+			
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Add Users' onclick='addUsers();' />
@@ -87,7 +98,25 @@
 				<?PHP
 					include_once "findUsers.php";
 				?>
-				<input class='submit-button' type='button' value='Add Users' onclick='addSelectedUsers();' />
+				<table style="float:right;">
+					<tr>
+						<td>
+							<p>AnmKod:</p>
+							<?PHP
+								$cid = $_GET["cid"];
+								$query = $pdo->prepare("SELECT activeversion FROM course WHERE cid=:cid");
+								$query->bindParam(':cid', $cid);
+								$query->execute();
+								$data = $query->fetch();
+								echo"<input id='anmKode' type='text' value='" . $data['activeversion'] . "'/>";
+							?>
+							
+						</td>
+						<td>
+							<input class='submit-button' type='button' value='Add Users' onclick='addSelectedUsers();' />
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

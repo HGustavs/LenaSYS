@@ -10,20 +10,85 @@ AJAXService("GET",{cid:querystring['cid']},"ACCESS");
 
 function addUsers()
 {
-	var newusers=$("#import").val();
-	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newusers},"ACCESS");
+	var rawNewUsers=$("#import").val().split("\n");
+	var newUsers = [];
+	var length = rawNewUsers.length;
+	var segments = "";
+	var numberOfSegments = 0;
+	for(i=0;i<length;i++)
+	{
+		segments = rawNewUsers[i].split(" ");
+		numberOfSegments = segments.length;
+		for(j=0;j<numberOfSegments;j++)
+		{
+			segments[j] = segments[j].replace(":","NULL");
+			segments[j] = segments[j].replace("teacher","W");
+			segments[j] = segments[j].replace("student","R");
+			segments[j] = segments[j].replace("none","N");
+			
+		}
+		
+		segments = { ssn:segments[0], lastname:segments[1], firstname:segments[2], anmkod:segments[3], access:segments[4], clas:segments[5], date:segments[6], email:segments[7]};
+
+		newUsers.push(segments);
+
+		
+	}
+	newUsers = JSON.stringify(newUsers);
+	
+	//console.log(newUsers);
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUsers},"ACCESS");
 	$("#createUsers").css("display","none");
 }
 
 function addSelectedUsers()
 {
-	var addUsers=document.getElementById("filterFrame").contentWindow.document.getElementById("addSelected").val;
+	var userRows = document.getElementById("filterFrame").contentWindow.document.getElementById("addSelected").val.split("\n");
+	var anmKode = $("#anmKode").val()
 	
-	addUsers = addUsers.replace("undefined", "");
+	userRows[0] = userRows[0].replace("undefined", "");
 	
-	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:addUsers},"ACCESS");
+	var rows = userRows.length-1;
+
+	var row = "";
+	var segments = 0;
+	var cleanRow = "";
+	var addCleanUsers = [];
+	// Segment scrubbing.
+	// I clean and recreate each part of the string.
+	// I do it this what to avoid regular expressions that might not work with older versions of windows.
+	for(i=0;i<rows;i++)
+	{
+		row = userRows[i];
+		row = row.split(" ");
+		segments = row.length;
+		cleanRow = "";
+		for (j=0;j<segments;j++)
+		{
+			row[j] = row[j].replace("anmkod", anmKode);
+			row[j] = row[j].replace("undefined", "NULL");
+			row[j] = row[j].replace("[]", "NULL");
+			row[j] = row[j].replace("[", "");
+			row[j] = row[j].replace("]", "");
+			
+		}
+		row[4] = row[4].replace("N","R");
+		row[4] = row[4].replace("NULL","R");
+		
+		cleanRow = { ssn:row[0], lastname:row[1], firstname:row[2], anmkod:row[3], access:row[4], clas:row[5], date:row[6], email:row[7]};
+
+		addCleanUsers.push(cleanRow);
+		
+	}
+	addCleanUsers = JSON.stringify(addCleanUsers);
+	
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:addCleanUsers},"ACCESS");
 	
 	$("#addUsers").css("display","none");
+
+	
+	document.getElementById('filterFrame').src = "searchFrame.php?cid="+querystring['cid'];
+	document.getElementById('filterFrame').reload;
 }
 
 function showCreateUsersPopup()
@@ -91,9 +156,50 @@ function resetPw(uid,username)
 
 function filterSelections(){
 	var access = $("#teacherStudent").val();
-	var course = $("#filterCourses").val();
-	document.getElementById('filterFrame').src = "searchFrame.php?access="+access+"&course="+course+"";
-	document.getElementById('filterFrame').reload;
+	var clas = $("#filterCourses").val();
+	
+	var teacherTab = document.getElementById("filterFrame").contentWindow.document.getElementById("teachers");
+	var studentTab = document.getElementById("filterFrame").contentWindow.document.getElementById("students");
+	var noneTab = document.getElementById("filterFrame").contentWindow.document.getElementById("nones");
+	var nullTab = document.getElementById("filterFrame").contentWindow.document.getElementById("nulls");
+
+	switch(access){
+		case "teachers":
+			teacherTab.style = "";
+			studentTab.style = "display:none;";
+			noneTab.style = "display:none;";
+			nullTab.style = "display:none;";
+			console.log("teachers");
+		break;
+		case "students":
+			teacherTab.style = "display:none;";
+			studentTab.style = "";
+			noneTab.style = "display:none;";
+			nullTab.style = "display:none;";
+			console.log("students");
+		break;
+		case "nones":
+			teacherTab.style = "display:none;";
+			studentTab.style = "display:none;";
+			noneTab.style = "";
+			nullTab.style = "display:none;";
+			console.log("nones");
+		break;
+		case "nulls":
+			teacherTab.style = "display:none;";
+			studentTab.style = "display:none;";
+			noneTab.style = "display:none;";
+			nullTab.style = "";
+			console.log("nulls");
+		break;
+		default:
+			teacherTab.style = "";
+			studentTab.style = "";
+			noneTab.style = "";
+			nullTab.style = "";
+			console.log("default");
+		break;
+	}
 }
 
 function checkBox(checkBox){
@@ -168,15 +274,19 @@ function returnedAccess(data)
 			str+="</select>";
 			
 			
-			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' title='" + item['username'] + " settings'";
 			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\");'></td>";
 			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;' style='float:none;'></td>";
 			str+="</tr>";
 		}
 		str+="</table>";
 	}
-	var slist=document.getElementById("accessedcontent");
-	slist.innerHTML=str;
+
+	//wait with setting the html value until the document has loaded, this avoids the frequent blank screen
+	$(function(){
+		var slist=document.getElementById("accessedcontent");
+		slist.innerHTML=str;
+	});
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
 }

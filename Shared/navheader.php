@@ -23,13 +23,13 @@
 				echo "<td class='navButt' id='analytic' title='Analytic Tool'><a href='../DuggaSys/analytictool.php'><img style='fill:white;' src='../Shared/icons/analytic.svg'></a></td>";
 			}
 			
-			echo "<td class='navButt'><a href='#'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
+			echo "<td class='navButt' title='Forum'><a href='#'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
 
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
-			echo "<td class='navButt' id='home' title='Home'>";
+			echo "<td class='navButt' id='home' title='Back'>";
 			
 
 			if($noup=='COURSE'){
@@ -79,11 +79,11 @@
 			}
 
 			if(checklogin()) {
-					echo "<td class='navName'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";		
-					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td class='navName' title='User Settings'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";		
+					echo "<td id='loginbutton' class='loggedin' title='Log Out'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
 			}else{
 					echo "<td class='navName'><label id='userName'>Guest</label></td>";		
-					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td id='loginbutton' class='loggedout' title='Login'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
 			}
 
 

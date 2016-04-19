@@ -53,7 +53,7 @@ pdoConnect();
 	//--------------------------------------------------------------------------------------------------- -->
 
 	<div id='resultpopover' class='resultPopover' style='display:none'>
-
+	<button id='markButton' type='button' onClick='showMarkingWindow()'>Mark</button>
 		<script>
 		$(window).keyup(function(event){
 			if(event.keyCode == 27) closeWindows();
@@ -64,8 +64,11 @@ pdoConnect();
 			<div onclick='closeWindows();'>x</div>
 
 		</div>
+		
+		
 		<div id="MarkCont" style="position:absolute; left:4px; right:104px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
 		<div id='markMenuPlaceholder' style="position:absolute; right:2px; top:34px; background:#bbb; width:100px;"></div>
+		
 	</div>
 	
 	<!-- // navheader:Result Popover End, Edit VAriant Start 

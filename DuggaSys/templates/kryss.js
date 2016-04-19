@@ -57,7 +57,6 @@ function quiz(parameters) {
 		}
 
 		app += "<button class='submit' style='margin:15px;' onclick='checkQuizAnswer();'>Check answers</button>";
-		
 		$("#output").html(app);
 	}
 	else {
@@ -116,9 +115,16 @@ function getCheckedBoxes(){
 
 	}
 	function checkQuizAnswer(){
-		for(var t = 1;t <= idunique; t++){
-			alert("question "+t+ ": "+$("input[type='radio'][name='answers"+t+"']:checked").attr('id'));
-		}
+		$("#answerBox").show();
+		$("#answerTable").empty();
+		 for(var t = 1;t <= idunique; t++){
+		 	var answer = $("input[type='radio'][name='answers"+t+"']:checked").attr('id');
+		 	$("#answerTable").append("<br><strong>Question " + t + ": </strong>" + answer + "<br>");
+		 }
+		 $("#answerTable").append("<br>");
+	}
+	function closeCheckQuizAnswers(){
+		$("#answerBox").hide();
 	}
 
 function saveClick()

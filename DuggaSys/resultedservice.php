@@ -29,6 +29,7 @@ $vers = getOP('vers');
 $moment = getOP('moment');
 $mark = getOP('mark');
 $ukind = getOP('ukind');
+$duggaid=getOP('did');
 $coursevers=getOP('coursevers');
 
 $debug="NONE!";
@@ -45,6 +46,7 @@ $duggastats="";
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"CHGR")==0){
+
 		if($ukind=="U"){
 			$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW() WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 			$query->bindParam(':mark', $mark);
@@ -58,7 +60,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
-			}				
+			}
+
 		}else if($ukind=="I"){						
 			$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW());");
 			$query->bindParam(':mark', $mark);
@@ -72,7 +75,51 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries\n".$error[2];
-			}								
+			}							
+		}
+
+		//if mark is fail add a dugga lock, else just add grade and remove all previous locks if in case the dugga is locked
+		if($mark == "1"){
+			$query = $pdo->prepare("UPDATE duggaTries SET grade=:mark, dugga_lock = 1 WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers ORDER BY time desc LIMIT 1;");
+		}else{
+			$query = $pdo->prepare("UPDATE duggaTries SET grade=:mark WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers ORDER BY time desc LIMIT 1;");
+			$query2 = $pdo->prepare("UPDATE duggaTries SET dugga_lock = 0 WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers;");
+
+			$query2->bindParam(":uid",$luid);
+			$query2->bindParam(":cid",$cid);
+			$query2->bindParam(":moment",$moment);
+			$query2->bindParam(":vers",$vers);
+
+			if(!$query2->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries (189)\n".$error[2];
+			}
+		}
+
+		$query->bindParam(":mark",$mark);
+		$query->bindParam(":uid",$luid);
+		$query->bindParam(":cid",$cid);
+		$query->bindParam(":moment",$moment);
+		$query->bindParam(":vers",$vers);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries (189)\n".$error[2];
+		}
+	}
+
+	// Run if unlocking a dugga is requested
+	if (strcmp($opt, "CHFAILS")==0) {
+		//update these particular last duggas and remove the lock, thus resetting the three time limit of failures
+		$query = $pdo->prepare("UPDATE duggaTries SET dugga_lock = 0 WHERE FK_uid=:uid AND FK_cid=:cid AND FK_moment=:moment AND FK_vers=:vers;");
+		$query->bindParam(":uid", $luid);
+		$query->bindParam(":cid",$cid);
+		$query->bindParam(":moment",$moment);
+		$query->bindParam(":vers",$vers);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries (189)\n".$error[2];
 		}
 	}
 
@@ -122,6 +169,7 @@ $entries=array();
 $gentries=array();
 $sentries=array();
 $lentries=array();
+$locked=array();
 
 if(strcmp($opt,"DUGGA")!==0){
 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
@@ -229,7 +277,30 @@ if(strcmp($opt,"DUGGA")!==0){
 					'vers' => $row['vers']
 				)
 			);
-		}		
+		}
+
+		//fetch status on locked duggaas after too many attempts by users
+		$query = $pdo->prepare("SELECT FK_uid as uid, FK_cid as cid, FK_vers as vers, FK_moment as moment, SUM(dugga_lock) as nrLocks FROM duggaTries WHERE dugga_lock = 1 GROUP BY FK_uid,FK_moment,FK_vers;");
+
+		if (!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
+		}
+
+		foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+			if ($row['nrLocks'] >= 3) {
+				array_push(
+					$locked,
+					array(
+						'uid' => $row['uid'],
+						'cid' => $row['cid'],
+						'vers' => $row['vers'],
+						'moment' => $row['moment'],
+						'nrLocks' => $row['nrLocks']
+					)
+				);
+			}
+		}
 	}
 }
 
@@ -286,6 +357,7 @@ $array = array(
 	'duggaanswer' => $duggaanswer,
 	'useranswer' => $useranswer,
 	'duggastats' => $duggastats,
+	'locked' => $locked,
 	'files' => $files
 );
 
