@@ -29,6 +29,9 @@ if (isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])) {
 			case 'serviceUsage':
 				serviceUsage();
 				break;
+			case 'osPercentage':
+				osPercentage();
+				break;
 		}
 	} else {
 		echo 'N/A';
@@ -106,5 +109,21 @@ function serviceUsage(){
 		WHERE eventType = '.EventTypes::ServiceClientStart.'
 		GROUP BY service
 	')->fetchAl(PDO::FETCH_ASSOC);
+	echo json_encode($result);
+}
+
+//------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+
+function osPercentage(){
+	$result = $GLOBALS['log_db']->query('
+		SELECT
+			operatingSystem,
+			COUNT(*) * 100.0 / (SELECT COUNT(*) FROM serviceLogEntries WHERE eventType = '.EventTypes::ServiceClientStart.') AS percentage
+		FROM serviceLogEntries
+		WHERE eventType = '.EventTypes::ServiceClientStart.'
+		GROUP BY operatingSystem
+		ORDER BY percentage DESC
+	')->fetchAll(PDO::FETCH_ASSOC);
 	echo json_encode($result);
 }
