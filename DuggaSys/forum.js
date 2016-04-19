@@ -159,7 +159,6 @@ function returnedComments(array)
 
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	// console.log(commentid);
-	var threadOptions;
 	var threadOptions = "";
 
 	if (threadAccess){
