@@ -123,8 +123,22 @@ if(checklogin()){
 
 					$link=$pdo->lastInsertId();
 
-			}			
-						
+			}
+			if($kind==3) {
+				$gradesys_temp = 0;
+				$query1 = $pdo->prepare("SELECT gradesystem FROM listentries WHERE moment=:moment");
+				if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
+				else $query1->bindParam(':moment', $moment);
+				
+				if(!$query1->execute()) {
+					$error=$query1->errorInfo();
+					$debug="Error reading entries".$error[2];
+				}
+					
+				foreach($query1->fetchAll() as $row) {
+								$gradesys_temp=$row['gradesystem'];
+				}
+			
 			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
@@ -136,11 +150,12 @@ if(checklogin()){
 			$query->bindParam(':kind', $kind);
 			$query->bindParam(':link', $link);
 			$query->bindParam(':visible', $visibility);
-			$query->bindParam(':gradesys', $gradesys);
+			$query->bindParam(':gradesys', $gradesys_temp);
 	
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
+			}
 			}
 			
 			// insert into list forthe specific course
