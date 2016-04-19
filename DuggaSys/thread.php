@@ -54,8 +54,8 @@ if (file_exists("../.git/refs/heads/master")) {
 				<div id="threadOptions">
           <?php
           if ($threadAccess==="super" || $threadAccess==="op") {
-            echo "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete'>";
-            echo "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock'>";
+            echo "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete' onclick='deleteThread()'>";
+            echo "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock' onclick='lockThread()'>";
           }
           if ($threadAccess==="op") {
             echo "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
