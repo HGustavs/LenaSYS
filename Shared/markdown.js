@@ -6,30 +6,29 @@
 
 Markdown support javascript
 
-	gif clip support javascript
  
 -------------==============######## Documentation End ###########==============-------------
 
 */
 
-function showGif(fname){
-		document.getElementById("figmd").style.display="block";
-		document.getElementById("bigmd").src=fname;
-		document.getElementById("backmd").style.display="block";
+//Functions for gif image
+//Fetches the picture and sets its properties
+function showGif(url, size){
+		document.getElementById("gifpicture").src = url;
+		document.getElementById("gifpicture").style.width = size;
+		$(".playbutton").toggle();
 }
 
-function screenClick(evt)
-{
-		if(evt.target.className!="gifimage"){
-				document.getElementById("figmd").style.display="none";
-				document.getElementById("backmd").style.display="none";
-		}
+//Toggles between thumbnail and gif animation
+function toggleGif(url1, url2){
+	if(document.getElementById("gifpicture").src == url1){
+		showGif(url2, 150 + "px"); //Show thumbnail
+	}
+	else{
+		showGif(url1, 100 + "%"); //Show big animation gif
+	}
 }
 
-function loadedmd()
-{
-		document.addEventListener("click", screenClick);						
-}
 
 function highlightRows(filename,startRow,endRow){
 	if (startRow<=endRow){
@@ -170,9 +169,9 @@ function markdownBlock(inString)
 	// ==[src]==	
 	inString = inString.replace(/\={2}\[(.*?\S)\]\={2}/g, '<video width="80%" style="display:block; margin: 10px auto;" controls><source src="$1" type="video/mp4"></video>');
 
-	// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
-	// +++image.png,image.gif+++	
-	inString = inString.replace(/\+{3}(.*?\S),(.*?\S)\+{3}/g,"<div><img src='../../Shared/icons/PlayT.svg'><img class='gifimage' src='$1' onclick=\"showGif('$2');\" target='_blank' /></div>");
+	// Link to gif animation with thumbnail
+	// +++thumbnail.png,animation.gif+++	
+	inString = inString.replace(/\+{3}(.*?\S),(.*?\S)\+{3}/g,"<div class='gifwrapper'><img class='gifimage' id='gifpicture' src='$1' onclick=\"toggleGif('$2', '$1');\" /><div class='playbutton'><img src='../Shared/icons/PlayT.svg' onclick=\"toggleGif('$2', '$1');\"></div></div>");
 
 	// Right Arrow for discussing menu options
 	inString = inString.replace(/\s[\-][\>]\s/gm, "&rarr;");
