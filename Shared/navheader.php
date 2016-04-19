@@ -19,7 +19,7 @@
 			echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 
 			// Show analytic link if user is superuser.
-			if($_SESSION["superuser"] == 1){
+			if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
 				echo "<td class='navButt' id='analytic' onclick='getButtonID(this)' title='Analytic Tool'><a id='test1' href='../DuggaSys/analytictool.php'><img id='test2' style='fill:white;' src='../Shared/icons/analytic.svg'></a></td>";
 			}
 			
