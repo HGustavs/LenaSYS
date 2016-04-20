@@ -111,16 +111,33 @@ if(strcmp($opt,"CREATETHREAD")===0){
 }else if(strcmp($opt,"MAKECOMMENT")===0){
 	// Access check
 	if ($threadAccess==="normal" || $threadAccess==="super" || $threadAccess==="op"){
-		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text, datecreated) VALUES (:threadID, :uid, :text, current_timestamp)");
-		$query->bindParam(':threadID', $threadId);
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':text', $text);
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
-		}else{
-			$comments = $query->fetch(PDO::FETCH_ASSOC);
+		if ($commentid && $commentid !== "UNK")
+		{
+			$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text, datecreated, replyid) VALUES (:threadID, :uid, :text, current_timestamp, :commentid)");
+			$query->bindParam(':threadID', $threadId);
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':text', $text);
+			$query->bindParam(':commentid', $commentid);
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
+			}else{
+				$comments = $query->fetch(PDO::FETCH_ASSOC);
+			}
 		}
+		else {
+			$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text, datecreated) VALUES (:threadID, :uid, :text, current_timestamp)");
+			$query->bindParam(':threadID', $threadId);
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':text', $text);
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
+			}else{
+				$comments = $query->fetch(PDO::FETCH_ASSOC);
+			}
+		}
+		
 	}else {
 		$accessDenied = "You must log in to comment.";
 	}
@@ -168,7 +185,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, threadcomment.commentid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated DESC;");
+		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, threadcomment.commentid, threadcomment.replyid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated DESC;");
 		$query->bindParam(':threadId', $threadId);
 
 		if(!$query->execute()){

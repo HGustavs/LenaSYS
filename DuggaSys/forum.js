@@ -11,6 +11,28 @@ var querystring = parseGet();
 // Commands:
 //----------------------------------------
 
+$( document ).ready(function() {
+    console.log( "ready!" );
+	console.log("asd");
+	/*$("#replycommentsubmit").click(function() {
+		$('html, body').animate({
+			scrollTop: $("#three").offset().top
+		}, 2000);
+	});*/
+	  $('a[href*="#"]:not([href="#"])').click(function() {
+		if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+		  var target = $(this.hash);
+		  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+		  if (target.length) {
+			$('html, body').animate({
+			  scrollTop: target.offset().top
+			}, 2000);
+			return false;
+		  }
+		}
+	  });
+});
+
 function initThread()
 {
 	console.log(querystring);
@@ -37,13 +59,19 @@ function createThread()
 	AJAXService("CREATETHREAD",{courseId:courseId,userID:userID,topic:topic,description:description},"CREATETHREAD");
 }
 
-function makeComment()
+function makeComment(commentid)
 {
-	var text = $(".commentInput").val();
-
+	var commentcontent="";
+	$(document).ready(function() {
+    var $myDiv = $('.repliedcomment');
+		if ( $myDiv.length){
+			commentcontent=$(".repliedcomment").html();
+		}
+	});
+	var text = commentcontent + $(".commentInput").val();
 	if(text.length > 0)
 	{
-		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text},"MAKECOMMENT");
+		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKECOMMENT");
 	}
 	else
 	{
@@ -130,7 +158,7 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions;
 	if (threadAccess){
 		if (threadAccess !== "public"){
-			threadOptions = "<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI("+commentid+");\">";
+			threadOptions = "<a href =\"#three\"><input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI("+commentid+");\"></a>";
 
 			//console.log("uid " + uid + "commentuid " + commentuid);
 			if (uid === commentuid){
@@ -147,36 +175,21 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 
 function replyUI(commentid)
 {
+	//$("body").scrollTop($(".makeCommentInputWrapper").scrollTop() + 175);
 	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
 }
 
 function replyComment(array)
 {
-	console.log(array);
 	if (array["accessDenied"]){
 		accessDenied(array);
 	}else {
 		$.each(array["comments"], function(index, value){
-			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</br></div>"+
+			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</div>"+
 			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
-  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeReplycomment("+value["commentid"]+","+value["text"]+")\">");
+  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+value["commentid"]+")\">");
 		});
 		$('.commentInput').css("border-top", "0px");
-	}
-}
-
-function makeReplycomment(commentid,commenttext){
-	var comment = commenttext;
-	var text =$(".commentInput").val();
-	//console.log(text);
-
-	if(text.length > 0)
-	{
-		AJAXService("MAKEREPLYCOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid,comment:comment},"MAKEREPLYCOMMENT");
-	}
-	else
-	{
-
 	}
 }
 
@@ -191,11 +204,6 @@ function showThread(thread)
 }
 
 function makeCommentSuccess()
-{
-	getComments();
-}
-
-function makeReplyCommentSuccess()
 {
 	getComments();
 }
