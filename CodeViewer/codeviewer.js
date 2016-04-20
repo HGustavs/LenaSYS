@@ -1202,6 +1202,47 @@ function tokenize(instring,inprefix,insuffix)
 }
 
 //----------------------------------------------------------------------------------
+//	Function to change the popoverbox for different html tags
+//	The case name is the name of the html tag
+//----------------------------------------------------------------------------------
+
+function popoverbox(titleData)
+{
+	var popoverMessage = "test";
+	switch(titleData)
+	{
+		case "html":
+			popoverMessage = "Defines the root of an HTML document";
+			break;
+		case "head":
+			popoverMessage = "Defines information about the document";
+			break;
+		case "body":
+			popoverMessage = "Defines the document's body";
+			break;
+		case "div":
+			popoverMessage = "Defines a section in a document";
+			break;
+		case "span":
+			popoverMessage = "Defines a section in a document";
+			break;
+		case "doctype":
+			popoverMessage = "An instruction to the web browser about what version of HTML the page is written in";
+			break;
+		case "":
+			popoverMessage = "";
+			break;
+		case "":
+			popoverMessage = "";
+			break;
+		case "":
+			popoverMessage = "";
+			break;
+	}
+	return popoverMessage;
+}
+
+//----------------------------------------------------------------------------------
 // Renders a set of tokens from a string into a code viewer div
 // Requires tokens created by a cockford-type tokenizer
 //                Is called by [this function] in [this file]
@@ -1253,7 +1294,6 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 
 	pid="";
 	var iwcounter=0;
-	
 	for(i=0;i<tokens.length;i++){
 		tokenvalue=String(tokens[i].val);
 		// Make white space characters
@@ -1341,7 +1381,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 							if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
 								htmlTag.push(pid);
 							}
-							cont+="&lt"+"<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
+							cont+="&lt"+"<span title='"+popoverbox(tokens[i+1].val)+"' id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
 							cont+="</span>";
 							i=i+1;
 						}else{
@@ -1358,7 +1398,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 								htmlTagCount++;
 								pid="html"+htmlTagCount+boxid;
 							}
-							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
+							cont+="&lt"+tokens[i+1].val +"<span title='"+popoverbox(tokens[i+2].val)+"' id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
 							i = i+3;
 						}else{
 								cont+="<span class='oper'>"+tokenvalue+"</span>";						
@@ -2153,4 +2193,3 @@ function setResizableToPer(boxValArray)
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>'); 
 }
-
