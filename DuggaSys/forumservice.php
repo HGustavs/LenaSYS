@@ -180,6 +180,19 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$accessDenied = "You do not have permisson to delete this thread.";
 	}
+}else if(strcmp($opt,"UNLOCKTHREAD")===0){
+	// Access check
+	if ($threadAccess==="op" || $threadAccess==="super"){
+		$query = $pdo->prepare("UPDATE thread SET locked=null WHERE threadid=:threadid");
+		$query->bindParam(':threadid', $threadId);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}
+	}else{
+		$accessDenied = "You do not have permisson to unlock this thread.";
+	}
 }
 
 

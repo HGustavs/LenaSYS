@@ -482,8 +482,6 @@ function AJAXService(opt,apara,kind)
 			});
 			break;
 		case "CREATETHREAD":
-			console.log("opt="+opt);
-			console.log("para=" + para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
@@ -494,8 +492,6 @@ function AJAXService(opt,apara,kind)
 			});
 			break;
 		case "MAKECOMMENT":
-			console.log("opt="+opt);
-			console.log("para=" + para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
@@ -510,8 +506,6 @@ function AJAXService(opt,apara,kind)
 			break;
 
 		case "GETCOMMENTS":
-		console.log("opt="+opt);
-		console.log("para=" + para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
@@ -555,7 +549,7 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					lockThreadSuccess(data);
+					getThread(data);
 					sendConfirmation("forumservice.php");
 				}
 			});
@@ -568,6 +562,18 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: function(data) {
 					deleteThreadSuccess(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "UNLOCKTHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getThread(data);
 					sendConfirmation("forumservice.php");
 				}
 			});
