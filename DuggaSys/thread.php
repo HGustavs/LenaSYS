@@ -84,7 +84,6 @@ if (file_exists("../.git/refs/heads/master")) {
     ?>
 
 		<div id="threadComments"></div>
-	<a href ="#three"><input type='button' value='Submit''></a>
 	</div>
 
 	<!-- version identification -->

@@ -11,26 +11,12 @@ var querystring = parseGet();
 // Commands:
 //----------------------------------------
 
-$( document ).ready(function() {
-    console.log( "ready!" );
-	console.log("asd");
-	/*$("#replycommentsubmit").click(function() {
+$(document).on('click','#replycommentbutton', function(event) {
+		event.preventDefault();
+		var target = "#" + this.getAttribute('data-target');
 		$('html, body').animate({
-			scrollTop: $("#three").offset().top
-		}, 2000);
-	});*/
-	  $('a[href*="#"]:not([href="#"])').click(function() {
-		if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-		  var target = $(this.hash);
-		  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-		  if (target.length) {
-			$('html, body').animate({
-			  scrollTop: target.offset().top
-			}, 2000);
-			return false;
-		  }
-		}
-	  });
+			scrollTop: $('.makeCommentInputWrapper').offset().top -110
+		}, 1500);
 });
 
 function initThread()
@@ -158,7 +144,7 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions;
 	if (threadAccess){
 		if (threadAccess !== "public"){
-			threadOptions = "<a href =\"#three\"><input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI("+commentid+");\"></a>";
+			threadOptions = "<input id='replycommentbutton' class='submit-button' type='button' value='Reply' onclick='replyUI("+commentid+");'>";
 
 			//console.log("uid " + uid + "commentuid " + commentuid);
 			if (uid === commentuid){
@@ -175,7 +161,6 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 
 function replyUI(commentid)
 {
-	//$("body").scrollTop($(".makeCommentInputWrapper").scrollTop() + 175);
 	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
 }
 
