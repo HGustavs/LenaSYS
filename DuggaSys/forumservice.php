@@ -186,6 +186,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	// Access check
 	if ($threadAccess){
 		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, threadcomment.commentid, threadcomment.replyid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated DESC;");
+
 		$query->bindParam(':threadId', $threadId);
 
 		if(!$query->execute()){
