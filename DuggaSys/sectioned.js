@@ -637,7 +637,7 @@ function returnedSection(data)
 					}else if(parseInt(item['kind']) === 3 ){
 
 						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-							str+="<td><img style='' title='Highscore' src='../Shared/icons/top10.svg' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+							str+="<td><img title='Highscore' src='../Shared/icons/top10.svg' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 
 						}						
 											
@@ -814,6 +814,7 @@ function returnedHighscore(data){
 	str += "<th>Rank</th>";
 	str += "<th>Name</th>";
 	str += "<th>Score</th>";
+	str += "<th>Mark</th>";
 	str += "</tr>";
 
 	if (data['highscores'].length > 0) {
@@ -827,13 +828,15 @@ function returnedHighscore(data){
 			str += "<td>";
 			str += (i + 1);
 			str += "</td>";
-
 			str += "<td>";
 			str += item['username'];
 			str += "</td>"
 			str += "<td>";
 			str += "Score: ";
-			str += item['score']
+			str += item['score'];
+			str += "</td>";
+			str += "<td>";
+			str += "Passed";
 			str += "</td>";
 			str += "</tr>";
 		}
@@ -849,7 +852,10 @@ function returnedHighscore(data){
 		str += "</td>"
 		str += "<td>";
 		str += "Score: ";
-		str += data["user"]["score"]
+		str += data["user"]["score"]; 
+		str += "</td>";
+		str += "<td>";
+		str += "Not passed yet";
 		str += "</td>";
 		str += "</tr>";
 	}
