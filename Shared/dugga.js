@@ -572,6 +572,18 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
+		case "GETCOURSES":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedCourses(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
 	}
 }
 

@@ -98,6 +98,10 @@ function deleteComment(commentid)
 	AJAXService("DELETECOMMENT",{commentid:commentid},"DELETECOMMENT");
 }
 
+function getCourses()
+{
+	AJAXService("GETCOURSES",{},"GETCOURSES");
+}
 
 //----------------------------------------
 // Renderer
@@ -179,7 +183,6 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	return threadOptions;
 }
 
-
 function replyUI()
 {
 	makeComment();
@@ -215,6 +218,31 @@ function createThreadUI()
 	$(".threadMakeComment").hide();
 	$("#threadComments").hide();
 	$("#createThreadWrapper").show();
+
+	getCourses();
+}
+
+function writeText()
+{
+	$("#threadPreviewButton").removeClass("threadActiveButton");
+	$("#threadWriteButton").addClass("threadActiveButton");
+}
+
+function previewText()
+{
+	$("#threadWriteButton").removeClass("threadActiveButton");
+	$("#threadPreviewButton").addClass("threadActiveButton");
+}
+
+function returnedCourses(data) {
+	console.log(data);
+	var str;
+	$.each(data['courses'], function() {
+		str += "<option value='" + this[
+			"cid"
+		] + "'>" + this['coursename'] + "</option>";
+	});
+	$("#createThreadCourseList").html(str);
 }
 
 function error(xhr, status, error)

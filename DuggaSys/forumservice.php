@@ -219,6 +219,16 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else{
 		$accessDenied = "You do not have access to the thread.";
 	}
+}else if(strcmp($opt,"GETCOURSES")===0){
+	$query = $pdo->prepare("SELECT cid, coursename FROM course");
+	$query->bindParam(':threadid', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
 }
 
 if ($opt!=="UNK"){
@@ -227,7 +237,8 @@ if ($opt!=="UNK"){
 		'thread' => $thread,
 		'comments' => $comments,
 		'threadAccess' => $threadAccess,
-		'uid' => $uid
+		'uid' => $uid,
+		'courses' => $courses
 	);
 	echo json_encode($array);
 }
