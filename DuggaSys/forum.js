@@ -16,7 +16,7 @@ function initThread()
 	if (querystring["threadId"])
 	{
 		$("#createThreadWrapper").hide();
-		console.log(querystring);
+		
 		getThread();
 	}
 	else {
@@ -68,9 +68,12 @@ function makeComment()
 {
 	var text = $(".commentInput").val();
 
+	// Parses the string from markdown lingo to the correct html tag.
+	var  markdownParsedString = parseMarkdown(text);
+
 	if(text.length > 0)
 	{
-		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text},"MAKECOMMENT");
+		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:markdownParsedString},"MAKECOMMENT");
 	}
 	else
 	{
@@ -94,7 +97,7 @@ function checkComment()
 
 function deleteComment(commentid)
 {
-	console.log(commentid);
+	
 	AJAXService("DELETECOMMENT",{commentid:commentid},"DELETECOMMENT");
 }
 
@@ -133,6 +136,8 @@ function returnedComments(data)
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
+
+		console.log(data);
 		// Adds the comment header with the amount of comments.
 		var commentLength = data["comments"].length;
 		var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
@@ -141,33 +146,40 @@ function returnedComments(data)
 
 		// Iterates through all the comments
 		$.each(data["comments"], function(index, value){
+
+			
+		
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
-				"<div class=\"commentContent\"> <p>" +  value["text"]  + "</p></div>" +
+				"<div class=\"commentContent\"><div class=\"commentContentText\">" +  value['text']  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
 				"</div>" +
 
 				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
 
-			// Appends the comment
-			$("#threadComments").html(threadCommentStr);
+
+
+
 		});
 
 		threadCommentStr += "</div>";
+
+		// Appends the comments
+		$("#threadComments").html(threadCommentStr);
 	}
 }
 
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
-	// console.log(commentid);
+	
 	var threadOptions = "";
 
 	if (threadAccess){
 		if (threadAccess !== "public"){
 			threadOptions = "<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI();\">";
 
-			//console.log("uid " + uid + "commentuid " + commentuid);
+			
 			if (uid === commentuid){
 				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
 			}
@@ -192,7 +204,7 @@ function makeCommentSuccess()
 
 function deleteCommentSuccess(data)
 {
-	console.log(data);
+	
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else{
