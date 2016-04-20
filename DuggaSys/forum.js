@@ -119,12 +119,47 @@ function returnedThread(data)
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
+		
+		if($('div.threadDeleteAndEdit').length){
+			var buttons = "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete' onclick='deleteThread()'>";
+			if(data['thread']['locked']==1){
+				buttons += "<input class='new-item-button' id='lockThreadButton'type='button' value='Unlock' onclick='unlockThread()'>";
+			}else{
+				buttons += "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock' onclick='lockThread()'>";
+			}
+			$(".threadDeleteAndEdit").html(buttons);
+		}
+		
+		if($('div.opEditThread').length){
+			var button = "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
+			$(".opEditThread").html(button);
+		}
+		
+		
 		$(".threadTopic").html(data["thread"]["topic"]);
 		$("#threadDescr").html(data["thread"]["description"]);
 		var str = "<span id='threadDate'>";
 				str += 	data["thread"]["datecreated"].substring(0, 16);
 				str += "</span> by <span id='threadCreator'>a97marbr</span>";
 		$("#threadDetails").html(str);
+		
+		if(data['thread']['locked']==1){
+			var str = "<p style='margin-left:20px;'>This thread has been locked and can no longer be commented on.</p>";
+			$(".threadMakeComment").html(str);
+		}else{
+			if($('div.threadMakeComment').length){
+				var str = "<div class='threadMakeComment'>";
+				str+= "<div class='makeCommentHeader'>";
+				str += "Comment";
+				str+= "</div>";
+				str += "<div class='makeCommentInputWrapper'>";
+				str += "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment' onkeyup='checkComment()'></textarea>";
+				str += "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
+				str += "</div>";
+				str += "</div>";
+				$(".threadMakeComment").html(str);
+			}	
+		}
 	}
 }
 
@@ -207,6 +242,11 @@ function lockThreadSuccess(data)
 	}else{
 		getThread();
 	}
+}
+
+function unlockThread()
+{
+	AJAXService("UNLOCKTHREAD",{threadId:querystring["threadId"]},"UNLOCKTHREAD");
 }
 
 function createThreadUI()
