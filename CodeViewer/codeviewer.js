@@ -1381,7 +1381,9 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 							if(htmlArrayNoSlash.indexOf(tokens[i+1].val.toLowerCase()) == -1){
 								htmlTag.push(pid);
 							}
-							cont+="&lt"+"<span title='"+popoverbox(tokens[i+1].val)+"' id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
+							cont+="&lt"+"<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
+							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
+							// cont+="&lt"+"<span title='"+popoverbox(tokens[i+1].val)+"' id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
 							cont+="</span>";
 							i=i+1;
 						}else{
@@ -1398,7 +1400,9 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 								htmlTagCount++;
 								pid="html"+htmlTagCount+boxid;
 							}
-							cont+="&lt"+tokens[i+1].val +"<span title='"+popoverbox(tokens[i+2].val)+"' id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
+							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
+							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
+							// cont+="&lt"+tokens[i+1].val +"<span title='"+popoverbox(tokens[i+2].val)+"' id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
 							i = i+3;
 						}else{
 								cont+="<span class='oper'>"+tokenvalue+"</span>";						
