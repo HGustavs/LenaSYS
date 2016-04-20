@@ -11,6 +11,14 @@ var querystring = parseGet();
 // Commands:
 //----------------------------------------
 
+$(document).on('click','#replycommentbutton', function(event) {
+		event.preventDefault();
+		var target = "#" + this.getAttribute('data-target');
+		$('html, body').animate({
+			scrollTop: $('.makeCommentInputWrapper').offset().top -110
+		}, 1500);
+});
+
 function initThread()
 {
 	console.log(querystring);
@@ -37,13 +45,19 @@ function createThread()
 	AJAXService("CREATETHREAD",{courseId:courseId,userID:userID,topic:topic,description:description},"CREATETHREAD");
 }
 
-function makeComment()
+function makeComment(commentid)
 {
-	var text = $(".commentInput").val();
-
+	var commentcontent="";
+	$(document).ready(function() {
+    var $myDiv = $('.repliedcomment');
+		if ( $myDiv.length){
+			commentcontent=$(".repliedcomment").html();
+		}
+	});
+	var text = commentcontent + $(".commentInput").val();
 	if(text.length > 0)
 	{
-		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text},"MAKECOMMENT");
+		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKECOMMENT");
 	}
 	else
 	{
@@ -130,7 +144,7 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions;
 	if (threadAccess){
 		if (threadAccess !== "public"){
-			threadOptions = "<input class=\"submit-button\" type=\"button\" value=\"Reply\" onclick=\"replyUI("+commentid+");\">";
+			threadOptions = "<input id='replycommentbutton' class='submit-button' type='button' value='Reply' onclick='replyUI("+commentid+");'>";
 
 			//console.log("uid " + uid + "commentuid " + commentuid);
 			if (uid === commentuid){
@@ -152,29 +166,15 @@ function replyUI(commentid)
 
 function replyComment(array)
 {
-	console.log(array);
 	if (array["accessDenied"]){
 		accessDenied(array);
 	}else {
 		$.each(array["comments"], function(index, value){
-			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</br></div>"+
-			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+value["text"]+"</textarea>"+
-  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeReplycomment();\">");
+			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</div>"+
+			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
+  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+value["commentid"]+")\">");
 		});
 		$('.commentInput').css("border-top", "0px");
-	}
-}
-
-function makeReplycomment(){
-	var text = $(".commentInput").val();
-
-	if(text.length > 0)
-	{
-		AJAXService("MAKEREPLYCOMMENT",{threadId:querystring["threadId"],text:text},"MAKEREPLYCOMMENT");
-	}
-	else
-	{
-
 	}
 }
 

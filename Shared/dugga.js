@@ -508,6 +508,21 @@ function AJAXService(opt,apara,kind)
 				error: error
 			});
 			break;
+			case "MAKEREPLYCOMMENT":
+			console.log("opt="+opt);
+			console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					makeReplyCommentSuccess();
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
 
 		case "GETCOMMENTS":
 		console.log("opt="+opt);
@@ -534,6 +549,19 @@ function AJAXService(opt,apara,kind)
 					renderTeacherView(data);
 					sendConfirmation("usermanagementviewservice.php");
 				}
+			});
+			break;
+		case "REPLYCOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					replyComment(data);
+					sendConfirmation("forumservice.php");
+				},
+				error: error
 			});
 			break;
 	}

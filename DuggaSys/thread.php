@@ -75,7 +75,7 @@ if (file_exists("../.git/refs/heads/master")) {
   			echo "<div class='makeCommentHeader'>";
   				echo "Comment";
   			echo "</div>";
-  			echo "<div class='makeCommentInputWrapper'>";
+  			echo "<div class='makeCommentInputWrapper' id='three'>";
   				echo "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment' onkeyup='checkComment()'></textarea>";
   				echo "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
   			echo "</div>";
