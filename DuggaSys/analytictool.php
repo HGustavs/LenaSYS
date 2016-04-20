@@ -30,13 +30,23 @@ pdoConnect();
 	include '../Shared/navheader.php';
 
 	
-	// Show analytic link if user is superuser.
-	if($_SESSION["superuser"] == 1){
+	// Show analytics if user is superuser.
+	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
 ?>
 	<!-- content START -->
 	<div id="content">
-		<!-- Section List -->
-		<div id='Sectionlist'></div>
+		<div class="analytic-buttons">
+			<input class="submit-button" style="float:left" type="button" value="General stats" onclick="loadAnalytics('generalStats')">
+			<input class="submit-button" style="float:left" type="button" value="Password guessing" onclick="loadAnalytics('passwordGuessing')">
+			<input class="submit-button" style="float:left" type="button" value="OS Percentage" onclick="loadAnalytics('osPercentage')">
+			<input class="submit-button" style="float:left" type="button" value="Browser percentage" onclick="loadAnalytics('browserPercentage')">
+			<input class="submit-button" style="float:left" type="button" value="Service usage" onclick="loadAnalytics('serviceUsage')">
+			<input class="submit-button" style="float:left" type="button" value="Service speed" onclick="loadAnalytics('serviceAvgDuration')">
+			<input class="submit-button" style="float:left" type="button" value="Service crashes" onclick="loadAnalytics('serviceCrashes')">
+		</div>
+		<div id="analytic-data" style="clear: both; padding: 15px;">
+			
+		</div>
 	</div>
 	<!-- content END -->
 	
