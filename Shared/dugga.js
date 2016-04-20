@@ -280,9 +280,9 @@ function AJAXService(opt,apara,kind)
 
 	var sendConfirmation = function(service) {
 		$.ajax({
-			url: "serviceconfirmation.php",
+			url: "../DuggaSys/serviceconfirmation.php",
 			type: "POST",
-			data: "uuid="+uuid+"&timestamp="+timestamp+"&service="+service,
+			data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
 			dataType: "json"
 		});
 	}
@@ -1016,4 +1016,57 @@ var Timer = {
 			document.getElementById('scoreElement').innerHTML = str;
 		}
 	}
+}	
+
+function getButtonID(obj){
+	alert(obj.id);
 }
+
+//---------------------------------------------------------------------------------------------------------------
+// Click logging for analytics
+//---------------------------------------------------------------------------------------------------------------
+$(function() {
+	$(document).bind('click', function(e) {
+		var data = {
+			log: 'click',
+			data: {
+					target: e.target.id,
+					mouseX: e.clientX,
+					mouseY: e.clientY,
+				clientResX: window.screen.availWidth,
+				clientResY: window.screen.availHeight
+			}
+		};
+		$.ajax({
+			url: '../DuggaSys/logservice.php',
+			type: 'POST',
+			dataType: 'json', 
+			data: JSON.stringify(data),
+    		contentType: "application/json",
+		});
+	});
+});
+
+//---------------------------------------------------------------------------------------------------------------
+// Mousemove logging for analytics
+//---------------------------------------------------------------------------------------------------------------
+
+$(document).mousemove(function(e){
+	var data = {
+		log: 'mousemove',
+		data: {
+			page: window.location.href,
+			mouseX: e.clientX,
+			mouseY: e.clientY
+		}
+	}
+	
+	$.ajax({
+		url: '../DuggaSys/logservice.php',
+		type: 'POST',
+		dataType: 'json', 
+		data: JSON.stringify(data),
+		contentType: "application/json",
+	});
+});
+

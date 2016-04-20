@@ -14,22 +14,22 @@
 			if(isset($_GET['coursevers'])){
 					$_SESSION['coursevers']=$_GET['coursevers'];
 			}
-			
+				
 			// Always show home button which links to course homepage.
 			echo "<td class='navButt' id='home' title='Home'><a href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";
 
 			// Show analytic link if user is superuser.
-			if($_SESSION["superuser"] == 1){
-				echo "<td class='navButt' id='analytic' title='Analytic Tool'><a href='../DuggaSys/analytictool.php'><img style='fill:white;' src='../Shared/icons/analytic.svg'></a></td>";
+			if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
+				echo "<td class='navButt' id='analytic' onclick='getButtonID(this)' title='Analytic Tool'><a id='test1' href='../DuggaSys/analytictool.php'><img id='test2' style='fill:white;' src='../Shared/icons/analytic.svg'></a></td>";
 			}
 			
-			echo "<td class='navButt'><a href='#'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
+			echo "<td class='navButt' id='forum' title='Forum'><a href='#'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
 
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
-			echo "<td class='navButt' id='home' title='Home'>";
+			echo "<td class='navButt' id='return' title='Return'>";
 			
 
 			if($noup=='COURSE'){
@@ -63,8 +63,8 @@
 					echo "<td class='navButt' id='afterbutton' title='Next example' onmousedown='Skip(\"fd\");' onmouseup='Skip(\"fu\");' onclick='Skip(\"f\");'><img src='../Shared/icons/forward_button.svg' /></td>";
 					echo "<td class='navButt' id='playbutton' title='Open demo' onclick='Play();'><img src='../Shared/icons/play_button.svg' /></td>";
 					if(checklogin()) {
-						echo "<td class='navButt' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-					    echo "<td class='navButt' id='fileedButton' onclick='' style='display:hidden;' ><img src='../Shared/icons/files_icon.svg' /></td>";
+						echo "<td class='navButt' id='egEdit' title='Edit example' onclick='displayEditExample();' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
+					    echo "<td class='navButt' id='fileedButton' title='Edit files' onclick='' style='display:hidden;' ><img src='../Shared/icons/files_icon.svg' /></td>";
 					}
 
 					if($codeviewerkind) echo "<td class='navButt' title='Settings' id='hidesettings'><img src='../Shared/icons/general_settings_button.svg' /></td>";
