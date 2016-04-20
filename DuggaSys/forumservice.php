@@ -227,7 +227,18 @@ else if(strcmp($opt,"GETTHREAD")===0){
 			exit($debug);
 
 		}else{
-			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+			//fetches all the comments
+			$comment = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
+			// Decodes special chars
+			$comments = decodeComments($comment);
+
+
+ 
+
+
+
 		}
 	}else{
 		$accessDenied = "You do not have access to the thread.";
@@ -246,4 +257,37 @@ if ($opt!=="UNK"){
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
+
+
+
+
+
+//------------------------------------------------------------------------------------------------
+// Other Functions
+//------------------------------------------------------------------------------------------------
+
+
+
+// Simple function that decodes all the text from encoded chars e.g  "&lt;strong&gt;asda&lt;&#47;strong&gt" becomes "<strong>asd</asd>".
+function decodeComments($encodedComments){
+
+	$decodedComments = array();
+
+	foreach ($encodedComments as $row)
+	{
+		
+		// Decodes
+		$tempText = html_entity_decode($row["text"]);
+
+		// Replaces with the decoded string
+		$row["text"] = $tempText;
+
+		// pushes the updated row to the new $comments array
+		array_push($decodedComments,$row);
+	}
+
+	return $decodedComments;
+
+}
+
 ?>
