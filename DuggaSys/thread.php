@@ -103,12 +103,23 @@ if (file_exists("../.git/refs/heads/master")) {
             </div>
           </div>
           <div id="createThreadOptions">
-            <div class="createThreadOptionLabel">
-              Course
-            </div>
+            <div class="createThreadOptionLabel">Course</div>
             <select id="createThreadCourseList" name="courseList"></select>
-            
+
+            <div class="createThreadOptionLabel">Access</div>
+            <select id="createThreadAccessList" name="courseList">
+              <option>Public</option>
+              <option>Private</option>
+            </select>
+
+            <div class="createThreadOptionLabel">Allow comments</div>
+            <select id="createThreadAccessList" name="courseList">
+              <option>Open</option>
+              <option>Locked</option>
+            </select>
+
           </div>
+          <input id="submitThreadButton" class="submit-button createThreadButton" type="button" value="Submit" onclick="createThread();" style="background-color: rgb(97, 72, 117);">
         </div>
       </div>
     </div>

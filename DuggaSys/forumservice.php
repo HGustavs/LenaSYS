@@ -220,7 +220,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 		$accessDenied = "You do not have access to the thread.";
 	}
 }else if(strcmp($opt,"GETCOURSES")===0){
-	$query = $pdo->prepare("SELECT cid, coursename FROM course");
+	$query = $pdo->prepare("SELECT cid, coursecode, coursename FROM course");
 	$query->bindParam(':threadid', $threadId);
 
 	if(!$query->execute()){

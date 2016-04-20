@@ -226,12 +226,19 @@ function writeText()
 {
 	$("#threadPreviewButton").removeClass("threadActiveButton");
 	$("#threadWriteButton").addClass("threadActiveButton");
+	$("#previewText").hide();
+	$("#createThreadDescr").show();
 }
 
 function previewText()
 {
 	$("#threadWriteButton").removeClass("threadActiveButton");
 	$("#threadPreviewButton").addClass("threadActiveButton");
+	$("#createThreadDescr").hide();
+
+	// Parse preview text...
+
+	$("#previewText").show();
 }
 
 function returnedCourses(data) {
@@ -240,7 +247,7 @@ function returnedCourses(data) {
 	$.each(data['courses'], function() {
 		str += "<option value='" + this[
 			"cid"
-		] + "'>" + this['coursename'] + "</option>";
+		] + "'>" + this["coursecode"] + " - " + this["coursename"] + "</option>";
 	});
 	$("#createThreadCourseList").html(str);
 }

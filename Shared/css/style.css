@@ -1526,10 +1526,16 @@ input.commentSubmitButton {
 #createThreadOptions {
   float: left;
   clear: both;
-  margin-top: 10px;
 }
 
 .createThreadOptionLabel {
   font-size: 0.9em;
+  margin-top: 20px;
   margin-bottom: 10px;
+}
+
+#submitThreadButton {
+  clear:both;
+  margin-right: 0;
+  margin-bottom: 20px;
 }
