@@ -217,17 +217,13 @@
 .normtext .hi {
     background-color: #9569BD;
     color: #000;
-    font-weight: bold;
     font-size: 9px;
-    line-height: 11px;
 }
 
 .impo .hi {
-   font-weight: bold;
-   color: #000000;
-   background-color: #9569BD;
-    font-size: 9px;
-    line-height: 11px;
+	color: #000000;
+	background-color: #9569BD;
+	font-size: 9px;
 }
 
 .normtext .html {
