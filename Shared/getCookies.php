@@ -15,8 +15,6 @@
 
 		//$cookie = crypt(($userid . $COOKIENAME . $courseinfo),"$1$snuskaka$");
 		$cookie = ($userid . $COOKIENAME . $_SESSION['cid'] . $_SESSION['coursevers']);
-		//crypt the cookie name
-		$cookieCrypt = crypt($cookie,"$1$snuskaka$");
 
 		if (($COOKIENAME && isset($_COOKIE[$cookie])) && isset($_POST['clist'])) {
 			setcookie($cookie,$_POST['clist'],$defCookieTimer,'/');

@@ -470,7 +470,7 @@ $array = array(
 	'codeexamples' => $codeexamples,
 	'unmarked' => $unmarked
 );
-$debug = $cookieName;
+
 echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php");
 ?>
