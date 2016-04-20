@@ -458,6 +458,7 @@ create table thread(
     hidden tinyint(1),
     description varchar(2000) not null,
     locked tinyint(1),
+	lastcommentedon timestamp null,
     primary key(threadid),
     foreign key(cid) references course(cid),
     foreign key(uid) references user(uid)
@@ -487,7 +488,7 @@ create table threadaccess(
     foreign key(uid) references user(uid) ON DELETE CASCADE
 )CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
-insert into thread (cid, uid, topic, description, datecreated) values (1, 1, "Example thread", "Example text",current_timestamp);
+insert into thread (cid, uid, topic, description, datecreated, lastcommentedon) values (1, 1, "Example thread", "Example text",current_timestamp,current_timestamp);
 insert into threadcomment (threadid, uid, text, datecreated) values (1, 1, "Example comment",current_timestamp);
 INSERT INTO `threadaccess`(`threadid`, `uid`) VALUES (1, 1);
 

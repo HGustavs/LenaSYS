@@ -20,7 +20,7 @@ if (file_exists("../.git/refs/heads/master")) {
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Course Editor</title>
+	<title>Course Forum</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">
@@ -28,8 +28,15 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+
+	<script src="../Shared/markdown.js"></script>
+
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
+
+	
+
+
   <script type="text/javascript">
     $(document).ready(function(){
       initThread();
@@ -39,7 +46,7 @@ if (file_exists("../.git/refs/heads/master")) {
 </head>
 <body>
 	<?php
-	$noup="NONE";
+	$noup="COURSE";
 	$loginvar="COURSE";
 	include '../Shared/navheader.php';
 	setcookie("loginvar", $loginvar);
@@ -54,11 +61,10 @@ if (file_exists("../.git/refs/heads/master")) {
 				<div id="threadOptions">
           <?php
           if ($threadAccess==="super" || $threadAccess==="op") {
-            echo "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete'>";
-            echo "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock'>";
+            echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
           }
           if ($threadAccess==="op") {
-            echo "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
+            echo "<div class='opEditThread' style='float:right;'></div>";
           }
           ?>
         </div>
@@ -80,10 +86,52 @@ if (file_exists("../.git/refs/heads/master")) {
   				echo "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
   			echo "</div>";
   		echo "</div>";
+		echo "<div class='threadMakeComment'>";
+  			
+		echo "</div>";
     }
     ?>
 
 		<div id="threadComments"></div>
+
+    <div id="createThreadWrapper">
+      <div id="createThreadHeader">
+        Create thread
+      </div>
+      <div id="createThreadBody">
+        <div id="createThreadFormWrapper">
+          <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
+          <div id="createThreadDescrOptions">
+            <button id="threadWriteButton" class="submit-button createThreadButton threadActiveButton" type="button" name="writeDescr" onclick="writeText()">Write</button>
+            <button id="threadPreviewButton" class="submit-button createThreadButton" type="button" name="previewDescr" onclick="previewText()">Preview</button>
+          </div>
+          <div id="createThreadDescrWrapper">
+            <textarea id="createThreadDescr" name="threadDescr" placeholder="Description"></textarea>
+            <div id="previewText">
+
+            </div>
+          </div>
+          <div id="createThreadOptions">
+            <div class="createThreadOptionLabel">Course</div>
+            <select id="createThreadCourseList" name="courseList"></select>
+
+            <div class="createThreadOptionLabel">Access</div>
+            <select id="createThreadAccessList" name="courseList">
+              <option>Public</option>
+              <option>Private</option>
+            </select>
+
+            <div class="createThreadOptionLabel">Allow comments</div>
+            <select id="createThreadAccessList" name="courseList">
+              <option>Open</option>
+              <option>Locked</option>
+            </select>
+
+          </div>
+          <input id="submitThreadButton" class="submit-button createThreadButton" type="button" value="Submit" onclick="createThread();" style="background-color: rgb(97, 72, 117);">
+        </div>
+      </div>
+    </div>
 	</div>
 
 	<!-- version identification -->
