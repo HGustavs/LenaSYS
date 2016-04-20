@@ -180,6 +180,19 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$accessDenied = "You do not have permisson to delete this thread.";
 	}
+}else if(strcmp($opt,"UNLOCKTHREAD")===0){
+	// Access check
+	if ($threadAccess==="op" || $threadAccess==="super"){
+		$query = $pdo->prepare("UPDATE thread SET locked=null WHERE threadid=:threadid");
+		$query->bindParam(':threadid', $threadId);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}
+	}else{
+		$accessDenied = "You do not have permisson to unlock this thread.";
+	}
 }
 
 
@@ -214,7 +227,18 @@ else if(strcmp($opt,"GETTHREAD")===0){
 			exit($debug);
 
 		}else{
-			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+			//fetches all the comments
+			$comment = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
+			// Decodes special chars
+			$comments = decodeComments($comment);
+
+
+ 
+
+
+
 		}
 	}else{
 		$accessDenied = "You do not have access to the thread.";
@@ -244,4 +268,37 @@ if ($opt!=="UNK"){
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
+
+
+
+
+
+//------------------------------------------------------------------------------------------------
+// Other Functions
+//------------------------------------------------------------------------------------------------
+
+
+
+// Simple function that decodes all the text from encoded chars e.g  "&lt;strong&gt;asda&lt;&#47;strong&gt" becomes "<strong>asd</asd>".
+function decodeComments($encodedComments){
+
+	$decodedComments = array();
+
+	foreach ($encodedComments as $row)
+	{
+		
+		// Decodes
+		$tempText = html_entity_decode($row["text"]);
+
+		// Replaces with the decoded string
+		$row["text"] = $tempText;
+
+		// pushes the updated row to the new $comments array
+		array_push($decodedComments,$row);
+	}
+
+	return $decodedComments;
+
+}
+
 ?>

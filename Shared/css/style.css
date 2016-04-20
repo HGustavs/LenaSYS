@@ -1424,6 +1424,20 @@ input.commentSubmitButton {
 	padding: 5px;
 }
 
+.commentContent h1
+{
+
+color: black;
+
+}
+
+.commentContentText
+{
+
+padding: 10px;
+
+}
+
 .commentFooter {
 
 }

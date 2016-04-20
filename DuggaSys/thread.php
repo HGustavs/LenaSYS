@@ -28,8 +28,15 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+
+	<script src="../Shared/markdown.js"></script>
+
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
+
+	
+
+
   <script type="text/javascript">
     $(document).ready(function(){
       initThread();
@@ -54,11 +61,10 @@ if (file_exists("../.git/refs/heads/master")) {
 				<div id="threadOptions">
           <?php
           if ($threadAccess==="super" || $threadAccess==="op") {
-            echo "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete' onclick='deleteThread()'>";
-            echo "<input class='new-item-button' id='lockThreadButton'type='button' value='Lock' onclick='lockThread()'>";
+            echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
           }
           if ($threadAccess==="op") {
-            echo "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
+            echo "<div class='opEditThread' style='float:right;'></div>";
           }
           ?>
         </div>
@@ -71,15 +77,9 @@ if (file_exists("../.git/refs/heads/master")) {
 
     <?php
     if ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op") {
-      echo "<div class='threadMakeComment'>";
-  			echo "<div class='makeCommentHeader'>";
-  				echo "Comment";
-  			echo "</div>";
-  			echo "<div class='makeCommentInputWrapper'>";
-  				echo "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment' onkeyup='checkComment()'></textarea>";
-  				echo "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
-  			echo "</div>";
-  		echo "</div>";
+		echo "<div class='threadMakeComment'>";
+  			
+		echo "</div>";
     }
     ?>
 
