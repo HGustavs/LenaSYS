@@ -489,7 +489,7 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: showThread,
+				success: getThread,
 				error: error
 			});
 			break;
@@ -533,6 +533,54 @@ function AJAXService(opt,apara,kind)
 				success: function(data) {
 					renderTeacherView(data);
 					sendConfirmation("usermanagementviewservice.php");
+				}
+			});
+			break;
+		case "DELETECOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					deleteCommentSuccess(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "LOCKTHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					lockThreadSuccess(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "DELETETHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					deleteThreadSuccess(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "GETCOURSES":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedCourses(data);
+					sendConfirmation("forumservice.php");
 				}
 			});
 			break;
