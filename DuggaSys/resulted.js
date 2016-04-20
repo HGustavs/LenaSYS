@@ -39,11 +39,18 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "Gc") {
 				changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind);
-		} else if (pressed === "GVc"){
+		} else if (pressed === "GVc"){// Seems to work.
 				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "U") {
 				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
-		} else if (event.ctrlKey && pressed === "VGh") {
+		} else if (pressed === "3c") {
+				changeGrade(4, gradesys, cid, vers, moment, uid, mark, ukind);
+		} else if (pressed === "4c") {
+				changeGrade(5, gradesys, cid, vers, moment, uid, mark, ukind);
+		} else if (pressed === "5c") {
+				changeGrade(6, gradesys, cid, vers, moment, uid, mark, ukind);
+		}
+		else if (event.ctrlKey && pressed === "VGh") {
 				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
 				AJAXService("CHFAILS",{ cid : cid, moment : moment,vers : vers, luid : uid}, "RESULT");
 		}
@@ -90,26 +97,23 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind)
 					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.svg","Gc");			
 				}
 		} else if (gradesys === 3){
-			/*
 			if (mark === 4){
-				str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-3\" value = \"4\" checked = \"checked\" onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-3\">3</label>";
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/3.svg","3");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/4h.svg","4h");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/5h.svg","5h");
+			} else if (mark === 5) {
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/3h.svg","3h");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/4.svg","4");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/5h.svg","5h");
+			} else if (mark === 6){
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/3h.svg","3h");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/4h.svg","4h");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/5.svg","5");
+			} else {
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/3c.svg","3c");			
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/4c.svg","4c");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/5c.svg","5c");
 			}
-			else{
-				str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-3\" value = \"4\"  onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-3\">3</label>";
-			}
-			if (mark === 5){
-				str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-4\" value = \"5\" checked = \"checked\" onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-4\">4</label>";
-			}
-			else{
-				str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-4\" value = \"5\"  onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-4\">4</label>";
-			}
-			if (mark === 6){
-				str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-5\" value = \"6\" checked = \"checked\" onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-5\">5</label>";
-			}
-			else{
-				str += "<input class=\"gradeInput\" type = \"radio\" name = \"grade-"+moment+"-"+ukind+"-"+uid+"\" id = \"grade-"+moment+"-"+ukind+"-"+uid+"-5\" value = \"6\"  onclick='changeGrade(this,\"" + gradesys + "\",\"" + cid + "\",\"" + vers + "\",\"" + moment + "\",\"" + uid + "\",\"" + mark + "\",\"" + ukind + "\");'> <label for = \"grade-"+moment+"-"+ukind+"-"+uid+"-5\">5</label>";
-			}
-			*/
 		} else {
 			//alert("Unknown Grade System: "+gradesys);
 		}
@@ -550,7 +554,7 @@ function returnedResults(data)
 
 								// One row for each student
 								str += "<td>";
-								str += user['firstname'] + " " + user['lastname'] + "<br/>" + user['username'] + "<br/>" + user['ssn'];
+								str += user['firstname'] + "<br/>" + user['lastname'] + "<br/>" + user['username'] + "<br/>" + user['ssn'];
 								str += "</td>";
 								str += renderMoment(m, results[user['uid']], user['uid'], user['firstname'], user['lastname'], locked);
 								str += "<td>";
