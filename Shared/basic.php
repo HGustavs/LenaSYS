@@ -10,7 +10,7 @@
 function getOP($name)
 {
 		if(isset($_POST[$name]))	return urldecode($_POST[$name]);
-		else return "UNK";			
+		else return "UNK";
 }
 
 //------------------------------------------------------------------------------------------------
@@ -20,8 +20,8 @@ function gettheOP($name)
 {
 	if(isset($_POST[$name])){
 		return $_POST[$name];
-	}		
-	else return "UNK";			
+	}
+	else return "UNK";
 }
 
 //
@@ -31,7 +31,7 @@ function gettheOP($name)
 function getOPG($name)
 {
 		if(isset($_GET[$name]))	return urldecode($_GET[$name]);
-		else return "UNK";			
+		else return "UNK";
 }
 
 //------------------------------------------------------------------------------------------------
@@ -107,7 +107,40 @@ $sql = '
 		eventType INTEGER,
 		service VARCHAR(15),
 		timestamp INTEGER,
-		userAgent TEXT
+		userAgent TEXT,
+		operatingSystem VARCHAR(100),
+		browser VARCHAR(100)
+	);
+	CREATE TABLE IF NOT EXISTS clickLogEntries (
+		id INTEGER PRIMARY KEY,
+		target TEXT,
+		mouseX TEXT,
+		mouseY TEXT,
+		clientResX TEXT,
+		clientResY TEXT,
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
+	CREATE TABLE IF NOT EXISTS mousemoveLogEntries (
+		id INTEGER PRIMARY KEY,
+		page TEXT,		
+		mouseX TEXT,
+		mouseY TEXT,
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
+	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
+		id INTEGER PRIMARY KEY,
+		type INTEGER,
+		courseid INTEGER,	
+		exampleid INTEGER,	
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+	);
+	CREATE TABLE IF NOT EXISTS duggaLoadLogEntries(
+		id INTEGER PRIMARY KEY,
+		type INTEGER,
+		cid INTEGER,	
+		vers INTEGER,	
+		quizid INTEGER,	
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 ';
 $log_db->exec($sql);
@@ -158,12 +191,77 @@ function logServiceEvent($uuid, $eventType, $service, $timestamp = null) {
 	if (is_null($timestamp)) {
 		$timestamp = round(microtime(true) * 1000);
 	}
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp, userAgent) VALUES (:uuid, :eventType, :service, :timestamp, :userAgent)');
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp, userAgent, operatingSystem, browser) VALUES (:uuid, :eventType, :service, :timestamp, :userAgent, :operatingSystem, :browser)');
 	$query->bindParam(':uuid', $uuid);
 	$query->bindParam(':eventType', $eventType);
 	$query->bindParam(':service', $service);
 	$query->bindParam(':timestamp', $timestamp);
 	$query->bindParam(':userAgent', $_SERVER['HTTP_USER_AGENT']);
+	$query->bindParam(':operatingSystem', getOS());
+	$query->bindParam(':browser', getBrowser());
+	$query->execute();
+}
+
+//------------------------------------------------------------------------------------------------
+// logClickEvent
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new click event in the log.db database.
+//
+
+function logClickEvent($target, $mouseX, $mouseY, $clientResX, $clientResY) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO clickLogEntries (target, mouseX, mouseY, clientResX, clientResY) VALUES (:target, :mouseX, :mouseY, :clientResX, :clientResY)');
+	$query->bindParam(':target', $target);
+	$query->bindParam(':mouseX', $mouseX);
+	$query->bindParam(':mouseY', $mouseY);
+	$query->bindParam(':clientResX', $clientResX);
+	$query->bindParam(':clientResY', $clientResY);
+	$query->execute();
+}
+
+//------------------------------------------------------------------------------------------------
+// logMousemoveEvent
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new click event in the log.db database.
+//
+
+function logMousemoveEvent($page, $mouseX, $mouseY) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO mousemoveLogEntries (page, mouseX, mouseY) VALUES (:page, :mouseX, :mouseY)');
+	$query->bindParam(':page', $page);
+	$query->bindParam(':mouseX', $mouseX);
+	$query->bindParam(':mouseY', $mouseY);
+	$query->execute();
+}
+
+//------------------------------------------------------------------------------------------------
+// Log page load for examples.
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
+//
+
+function logExampleLoadEvent($courseid, $exampleid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, exampleid, type) VALUES (:courseid, :exampleid, :type)');
+	$query->bindParam(':courseid', $courseid);
+	$query->bindParam(':exampleid', $exampleid);
+	$query->bindParam(':type', $type);
+	$query->execute();
+}
+
+//------------------------------------------------------------------------------------------------
+// Log page load for examples.
+//------------------------------------------------------------------------------------------------
+//
+//  Creates a new entry to the duggaLoadLogEntries when a user opens a new dugga.
+//
+
+function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, vers, quizid, type) VALUES (:cid, :vers, :quizid, :type)');
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $vers);
+	$query->bindParam(':quizid', $quizid);
+	$query->bindParam(':type', $type);
 	$query->execute();
 }
 
@@ -185,7 +283,69 @@ abstract class EventTypes {
 	const ServiceServerEnd = 7;
 	const ServiceClientEnd = 8;
 	const Logout = 9;
+	const pageLoad = 10;
 }
 
+function getOS() { 
+	$userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+    $osPlatform = "Unknown";
+    $osArray = array(
+		'/windows nt 10/i'      => 'Windows 10',
+		'/windows nt 6.3/i'     => 'Windows 8.1',
+		'/windows nt 6.2/i'     => 'Windows 8',
+		'/windows nt 6.1/i'     => 'Windows 7',
+		'/windows nt 6.0/i'     => 'Windows Vista',
+		'/windows nt 5.2/i'     => 'Windows Server 2003/XP x64',
+		'/windows nt 5.1/i'     => 'Windows XP',
+		'/windows xp/i'         => 'Windows XP',
+		'/windows nt 5.0/i'     => 'Windows 2000',
+		'/windows me/i'         => 'Windows ME',
+		'/win98/i'              => 'Windows 98',
+		'/win95/i'              => 'Windows 95',
+		'/win16/i'              => 'Windows 3.11',
+		'/macintosh|mac os x/i' => 'Mac OS X',
+		'/mac_powerpc/i'        => 'Mac OS 9',
+		'/linux/i'              => 'Linux',
+		'/ubuntu/i'             => 'Ubuntu',
+		'/iphone/i'             => 'iPhone',
+		'/ipod/i'               => 'iPod',
+		'/ipad/i'               => 'iPad',
+		'/android/i'            => 'Android',
+		'/blackberry/i'         => 'BlackBerry',
+		'/webos/i'              => 'Mobile'
+	);
+
+    foreach ($osArray as $regex => $value) { 
+        if (preg_match($regex, $userAgent)) {
+			$osPlatform = $value;
+		}
+	}
+	return $osPlatform;
+}
+
+function getBrowser() {
+	$userAgent = $_SERVER['HTTP_USER_AGENT'];
+	$browser = "Unknown";
+	$browserArray  =   array(
+		'/msie/i'       => 'Internet Explorer',
+		'/firefox/i'    => 'Firefox',
+		'/safari/i'     => 'Safari',
+		'/chrome/i'     => 'Chrome',
+		'/edge/i'       => 'Edge',
+		'/opera/i'      => 'Opera',
+		'/netscape/i'   => 'Netscape',
+		'/maxthon/i'    => 'Maxthon',
+		'/konqueror/i'  => 'Konqueror',
+		'/mobile/i'     => 'Handheld Browser'
+	);
+
+	foreach ($browserArray as $regex => $value) { 
+        if (preg_match($regex, $userAgent)) {
+			$browser = $value;
+		}
+	}
+	return $browser;
+}
 
 ?>

@@ -1,11 +1,16 @@
 $(function() {
+	loadAnalytics("generalStats");
+});
+
+function loadAnalytics(q) {
 	$.ajax({
 		url: 'analytictoolservice.php',
 		type: 'POST',
 		dataType: 'json',
-		data: {query: 'generalStats'},
+		data: {query: q},
 		success: function(data) {
-			$('#content').append(data.loginFails);
+			$('#analytic-data').empty();
+			$('#analytic-data').append('<pre>' + JSON.stringify(data, null, 4));
 		}
 	});
-});
+}

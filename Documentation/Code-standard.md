@@ -36,13 +36,13 @@ Execution Order
 
 *********************************************************************************/
 
-var retdata;
+var retData;
 var tokens = [];            			// Array to hold the tokens.  <-- we declare arrays with [] comment for important data
 var dmd=0;
-var isdropped=false;   <-- We use false for false and not 0 or null 
+var isDropped=false;   <-- We use false for false and not 0 or null 
 var genSettingsTabMenuValue = "wordlist";
 var codeSettingsTabMenuValue = "implines";				
-var querystring = parseGet(); 		// Reads data from url get link <-- all comments are on the same column vertically
+var queryString = parseGet(); 		// Reads data from url get link <-- all comments are on the same column vertically
 var filez;
 
 /********************************************************************************
@@ -54,7 +54,7 @@ var filez;
 function setup()
 {
 	
-		$.ajax({url: "editorService.php", type: "POST", data: "courseid="+querystring['courseid']+"&exampleid="+querystring['exampleid']+"&opt=List", dataType: "json", success: returned});
+		$.ajax({url: "editorService.php", type: "POST", data: "courseid="+queryString['courseid']+"&exampleid="+queryString['exampleid']+"&opt=List", dataType: "json", success: returned});
 		<-- Try to keep ajax or jquery calls on a single line		
 }
 
@@ -69,10 +69,10 @@ function setup()
 function returned(data) <-- Returned function should exist and work the same in most files
 {	 <-- brackets on same level as function keyword but on the next line
 		test=2; <-- wrong since variable test is not declared using var
-		if(retdata['debug']!="NONE!") alert(retdata['debug']); <-- only for very short code we allow single line if-statements and never allow else with single line if-statements
+		if(retData['debug']!="NONE!") alert(retData['debug']); <-- only for very short code we allow single line if-statements and never allow else with single line if-statements
 		
 		// User can choose template if no template has been choosen and the user has write access.
-		if((retdata['template']['templateid'] == 0)){ <-- any superfluous or redundant parentheses should be removed i.e. outer ones in this case
+		if((retData['template']['templateid'] == 0)){ <-- any superfluous or redundant parentheses should be removed i.e. outer ones in this case
 		    ...
 				for(i=0;i<10;i++)     <-- this is wrong for two reasons, firstly the for loop has undeclared variable i and secondly bracket is on next line, which we only do for functions
 				{
@@ -81,9 +81,9 @@ function returned(data) <-- Returned function should exist and work the same in 
 		
 		} 
 		
-		var a=retdata['template']['templateid']; 		<-- We prefer using varaibles to most cases of double indirection in arrays
+		var a=retData['template']['templateid']; 		<-- We prefer using varaibles to most cases of double indirection in arrays
 		
-		var template=retdata['template'];
+		var template=retData['template'];
 		var a=template['templateid'];								<-- This code split into two rows is preferred
 
 		/* Box comments are not allowed inside functions */ <-- box comments makes boxing out code impractical and should be avoided
@@ -98,8 +98,8 @@ function returned(data) <-- Returned function should exist and work the same in 
 		str+="</div>";
 		element.innerHTML=str;  <-- we use innerHTML to change document and not DOM createElement and appendChild which is hard to read
 		
-		var hotdogmenu = document.createElement("span");    <-- we use innerhtml and strings instead
-		content.appendChild(hotdogmenu);                    <-- we use innerhtml and strings instead
+		var hotdogMenu = document.createElement("span");    <-- we use innerhtml and strings instead
+		content.appendChild(hotdogMenu);                    <-- we use innerhtml and strings instead
 
 // for(u=0;u<10;u++){							<-- We do not use c++ comments to block out code -- c++ comments are used to comment code only either between functions or in functions
 //   if(u%2==0) alert(u);

@@ -445,6 +445,50 @@ CREATE TABLE list (
 	CONSTRAINT PK_list PRIMARY KEY(listid)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
+create table thread(
+    threadid int(10) unsigned not null AUTO_INCREMENT,
+    cid int(10) unsigned not null,
+    uid int(10) unsigned not null,
+    topic varchar(50) not null,
+    datecreated timestamp null,
+    lastedited timestamp not null default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+    hidden tinyint(1),
+    description varchar(2000) not null,
+    locked tinyint(1),
+	lastcommentedon timestamp null,
+    primary key(threadid),
+    foreign key(cid) references course(cid),
+    foreign key(uid) references user(uid)
+)CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
+
+create table threadcomment(
+    commentid int(10) NOT NULL AUTO_INCREMENT,
+    threadid int(10) unsigned not null,
+    uid int(10) unsigned not null,
+    text varchar(2500) not null,
+    datecreated timestamp null,
+    lastedited timestamp not null default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+    replyid int(10),
+    type tinyint(1),
+    primary key(commentid),
+    foreign key(threadid) references thread(threadid) ON DELETE CASCADE,
+    foreign key(uid) references user(uid),
+    foreign key(replyid) references threadcomment(commentid)
+)CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
+
+
+create table threadaccess(
+    threadid int(10) unsigned,
+    uid int(10) unsigned,
+    primary key(threadid, uid),
+    foreign key(threadid) references thread(threadid) ON DELETE CASCADE,
+    foreign key(uid) references user(uid) ON DELETE CASCADE
+)CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
+
+insert into thread (cid, uid, topic, description, datecreated, lastcommentedon) values (1, 1, "Example thread", "Example text",current_timestamp,current_timestamp);
+insert into threadcomment (threadid, uid, text, datecreated) values (1, 1, "Example comment",current_timestamp);
+INSERT INTO `threadaccess`(`threadid`, `uid`) VALUES (1, 1);
+
 /*
 INSERT INTO programkurs VALUES 	(45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),
 								(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),
