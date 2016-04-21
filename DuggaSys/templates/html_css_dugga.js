@@ -62,7 +62,10 @@ function setup()
 	tickInterval = setInterval("tick();", 50);
 
 	AJAXService("GETPARAM", { }, "PDUGGA");
-
+	//update preview window when text change in content-window
+	$('#content-window').bind('input propertychange', function() {
+  	 	processpreview();
+	});
 }
 
 function returnedDugga(data) 

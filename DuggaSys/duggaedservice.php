@@ -39,6 +39,19 @@ $template = getOP('template');
 $release = getOP('release');
 $deadline = getOP('deadline');
 
+if ($_SESSION['loginname']) {
+	//Set the current course id to the session
+	$_SESSION['cid'] = $cid;
+	//prepare the cookie name
+	$cookie = ($_SESSION['loginname'] . "duggedC" . $cid . $_SESSION['coursevers']);
+	//check if cookie exitst and if using cookies
+	if (!isset($_COOKIE[$cookie]) && ini_get('session.use_cookies')){
+		$params = session_get_cookie_params();
+		//set the cookie
+		setcookie($cookie,"0",time() + (86400 * 365),$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
+	}
+}
+
 $debug="NONE!";
 
 //------------------------------------------------------------------------------------------------
@@ -179,7 +192,6 @@ if(checklogin()){
 				$debug="Error updating user".$error[2];
 			}
 	}
-
 }
 
 //------------------------------------------------------------------------------------------------

@@ -1,4 +1,11 @@
 <?php
+if (!file_exists("../../coursesyspw.php")) {
+	session_start();
+	$_SESSION['url'] = $_SERVER['REQUEST_URI'];
+	header("Location: ../DuggaSys/error.php");
+	http_response_code(302);
+	exit();
+}
 require_once(dirname(__FILE__) . '/../Shared/database.php');
 require_once(dirname(__FILE__) . '/constants.php');
 //---------------------------------------------------------------------------------------------------------------
@@ -113,6 +120,10 @@ function login($username, $password, $savelogin)
 			setcookie('username', $row['username'], time()+60*60*24*30, '/');
 			setcookie('password', $password, time()+60*60*24*30, '/');
 		}
+//		update last login.
+		$query = $pdo->prepare("UPDATE user SET lastvisit=now() WHERE uid=:uid");
+		$query->bindParam(':uid', $row['uid']);
+		$query->execute();
 		return true;
 
 	} else {
@@ -202,7 +213,7 @@ function getAccessType($userId, $courseId)
  * @param int $quizid Quiz ID of the quiz to look up
  * @return returns true/false depending on if user has grade on a quiz in a certain course
  */
-function getUserAnswerHasGrade($userid, $courseid, $quizid)
+function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers)
 {
 		global $pdo;
 	
@@ -215,10 +226,17 @@ function getUserAnswerHasGrade($userid, $courseid, $quizid)
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':qid', $quizid);
 
+		$query2 = $pdo->prepare("SELECT * FROM duggaTries WHERE FK_uid=:uid AND FK_cid=:cid AND FK_quiz=:qid AND FK_vers=:vers AND dugga_lock=1");
+		$query2->bindParam(':uid', $userid);
+		$query2->bindParam(':cid', $courseid);
+		$query2->bindParam(':qid', $quizid);
+		$query2->bindParam(':vers', $vers);
+
 		$query->execute();
+		$query2->execute();
 
 		
-		if($query->rowCount() > 0) {
+		if($query->rowCount() > 0 || $query2->rowCount() > 2) {
 			return true;
 		} else {
 			return false;

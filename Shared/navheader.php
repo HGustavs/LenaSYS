@@ -29,8 +29,8 @@
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
-			echo "<td class='navButt' id='return' title='Return'>";
-			
+
+			echo "<td class='navButt' id='return' title='Back'>";
 
 			if($noup=='COURSE'){
 					echo "<a href='";
@@ -80,11 +80,11 @@
 			}
 
 			if(checklogin()) {
-					echo "<td class='navName'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";		
-					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td class='navName' title='User Settings'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";		
+					echo "<td id='loginbutton' class='loggedin' title='Log Out'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
 			}else{
 					echo "<td class='navName'><label id='userName'>Guest</label></td>";		
-					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td id='loginbutton' class='loggedout' title='Login'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
 			}
 
 

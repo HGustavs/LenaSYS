@@ -17,7 +17,8 @@ session_start();
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="guest";		
+	$userid="0";
+	
 } 
 
 $opt=getOP('opt');
@@ -31,6 +32,7 @@ $link=getOP('link');
 $visibility=getOP('visibility');
 $order=getOP('order');
 $gradesys=getOP('gradesys');
+$collapsed=getOP('collapsed');
 $highscoremode=getOP('highscoremode');
 $versid=getOP('versid');
 $coursename=getOP('coursename');
@@ -40,6 +42,17 @@ $coursenamealt=getOP('coursenamealt');
 $log_uuid = getOP('log_uuid');
 $log_timestamp = getOP('log_timestamp');
 $unmarked = 0;
+
+if (isset($_SESSION['loginname'])) {
+	//prepare the cookie name
+	$cookie = ($_SESSION['loginname'] . "sectC" . $_SESSION['cid'] . $_SESSION['coursevers']);
+	//check if cookie exists and that the session is using cookies
+	if (!isset($_COOKIE[$cookie]) && ini_get('session.use_cookies')){
+		$params = session_get_cookie_params();
+		//set the cookie
+		setcookie($cookie,"0",time() + (86400 * 365),$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
+	}
+}
 
 logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "sectionedservice.php", $log_timestamp);
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "sectionedservice.php");
@@ -121,25 +134,40 @@ if(checklogin()){
 					}
 
 					$link=$pdo->lastInsertId();
-
-			}			
-						
-			$query = $pdo->prepare("UPDATE listentries SET highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
-			$query->bindParam(':lid', $sectid);
-			$query->bindParam(':entryname', $sectname);
-			$query->bindParam(':highscoremode', $highscoremode);
-			
-			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
-			else $query->bindParam(':moment', $moment);
+			}
+			if($kind==3) {
+				$gradesys_temp = 0;
+				$query1 = $pdo->prepare("SELECT gradesystem FROM listentries WHERE moment=:moment");
+				if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
+				else $query1->bindParam(':moment', $moment);
 				
-			$query->bindParam(':kind', $kind);
-			$query->bindParam(':link', $link);
-			$query->bindParam(':visible', $visibility);
-			$query->bindParam(':gradesys', $gradesys);
-	
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
+				if(!$query1->execute()) {
+					$error=$query1->errorInfo();
+					$debug="Error reading entries".$error[2];
+				}
+					
+				foreach($query1->fetchAll() as $row) {
+								$gradesys_temp=$row['gradesystem'];
+				}
+				
+				$query = $pdo->prepare("UPDATE listentries SET highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
+
+				$query->bindParam(':lid', $sectid);
+				$query->bindParam(':entryname', $sectname);
+				$query->bindParam(':highscoremode', $highscoremode);
+				
+				if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
+				else $query->bindParam(':moment', $moment);
+					
+				$query->bindParam(':kind', $kind);
+				$query->bindParam(':link', $link);
+				$query->bindParam(':visible', $visibility);
+				$query->bindParam(':gradesys', $gradesys_temp);
+		
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating entries".$error[2];
+				}
 			}
 			
 			// insert into list forthe specific course

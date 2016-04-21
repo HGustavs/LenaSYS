@@ -490,15 +490,14 @@ header td {
 }
 /* Style for button, reuseble */
 #markButton{
+	display:block;
 	position:absolute;
 	right:0px;
 	bottom:0px;
 	width:100px;
 	height:50px;
-	box-shadow:2px 2px 4px #000;
-	margin-bottom:10px;
-	margin-right:10px;
-
+	margin-bottom:4px;
+	margin-right:2px;
 }
 
 .markWindow{
@@ -845,6 +844,26 @@ header td {
 
 /* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
 
+.errorBlock{
+    text-align: center;
+    margin-top: 10%;
+}
+.errorBlock h1,h2,p{
+    color: #000;
+}
+.errorBlock h1{font-size: 3em; font-weight: 200;}
+.errorBlock h2{text-transform: capitalize;}
+.errorBlock p{margin-bottom: 50px;}
+.errorBlock a{
+    text-decoration: none;
+    margin: 0 auto;
+    color: #fff;
+    padding: 20px 20px;
+    background-color: #614875;
+}
+
+/* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
+
 #HighscoreTable{
 	text-align: center;
 }
@@ -903,6 +922,12 @@ header td {
     text-align: start;
     border-radius: 0px;
     box-sizing: border-box;
+}
+
+input{
+	-webkit-appearance: none;
+	-webkit-border-radius:0; 
+    border-radius:0;
 }
 
 input.option {
@@ -1180,13 +1205,25 @@ input.new-item-button:hover {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.fumo {
+.fumo,.fuma {
 	border-bottom:2px solid #614875;
 	clear:both;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+
+.collapseArrow{
+    -moz-transform:rotate(-90deg);
+    -webkit-transform:rotate(-90deg);
+    transform:rotate(-90deg);
+}
+.collapsedArrow{
+   -moz-transform:rotate(0deg);
+    -webkit-transform:rotate(0deg);
+    transform:rotate(0deg);
+}
+
 /* End DuggaSys resulted*/
 /**************************/
 
@@ -1449,7 +1486,6 @@ padding: 10px;
   font-size: 14px;
 }
 
-<<<<<<< HEAD
 .repliedcomment {
 	background-color: white;
 	border-top: 1px solid  #A1A1A1;
@@ -1459,8 +1495,8 @@ padding: 10px;
 	min-height: 1vh;
 	padding: 5px;
 	color: grey;
-	
-=======
+}
+
 /* Create thread */
 
 #createThreadWrapper {
@@ -1563,5 +1599,4 @@ padding: 10px;
   clear:both;
   margin-right: 0;
   margin-bottom: 20px;
->>>>>>> b4bc7acd6a4acccf4e80b13358c3516d16b0db9d
 }

@@ -95,16 +95,16 @@ if($userid!="UNK"){
 	if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"variant Querying Error!");
 	$i=0;
 	foreach($query->fetchAll() as $row) {
-		if($row['disabled']==0) $firstvariant=$i;
+		if($row['disabled']==0) {$firstvariant=$i;
 		$variants[$i]=array(
 			'vid' => $row['vid'],
 			'param' => $row['param'],
 			'disabled' => $row['disabled']
-		);
+			);
+		}
 		$i++;
 		$insertparam = true;
 	}
-
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -138,7 +138,7 @@ if($userid!="UNK"){
 	}
 	
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
-	if ($newvariant=="UNK"){
+	if ($newvariant=="UNK" || $newvariant == null){
 
 	} else if ($newvariant!="UNK") {
 		if($isIndb){
@@ -271,6 +271,17 @@ if(checklogin()){
 				} else {
 					$savedanswer = $answer;
 				}
+				
+				$query = $pdo->prepare("INSERT INTO duggaTries(FK_cid,FK_vers,FK_moment,FK_uid,FK_quiz) VALUES(:cid,:coursevers,:moment,:uid,:quiz);");
+				$query->bindParam(":cid",$courseid);
+				$query->bindParam(':moment', $moment);
+				$query->bindParam(':coursevers', $coursevers);
+				$query->bindParam(":uid",$userid);
+				$query->bindParam(":quiz",$duggaid);
+				if (!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating entries (157)".$error[2];
+				}
 			}
 		}
 	}
@@ -314,7 +325,7 @@ $savedanswer = str_replace("*####*", '&cup;', $savedanswer);
 if(strcmp($savedanswer,"") == 0){$savedanswer = "UNK";} // Return UNK if we have not submitted any answer
 
 $files= array();
-$query = $pdo->prepare("SELECT subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq FROM submission WHERE uid=:uid AND vers=:vers AND cid=:cid AND did=:did ORDER BY fieldnme,updtime desc;");
+$query = $pdo->prepare("SELECT subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq FROM submission WHERE uid=:uid AND vers=:vers AND cid=:cid AND did=:did ORDER BY fieldnme,updtime DESC;");
 $query->bindParam(':uid', $userid);
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
@@ -358,7 +369,7 @@ foreach($query->fetchAll() as $row) {
 		);
 		array_push($files, $entry);		
 }
-
+$param = setDefaultParamsIfEmpty($param);
 $array = array(
 		"debug" => $debug,
 		"param" => $param,
@@ -370,4 +381,13 @@ $array = array(
 
 echo json_encode($array);
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "showDuggaservice.php");
+
+//sets some default parameters if none were found
+function setDefaultParamsIfEmpty($p) {
+   if ($p=== null || $p === "UNK" || $p === "NONE!"){
+      return '{"type":"md", "filelink":"Assignment8.md",   "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip"}]}';
+   }
+   else
+   	return $p;
+}
 ?>

@@ -117,15 +117,15 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	}
 	
 	if (visi == 1) {
-		str += "<option selected='selected' value='1'>Public</option>";
+		str += "<option selected='selected' value='1'>Login</option>";
 	} else {
-		str += "<option value='1'>Public</option>";
+		str += "<option value='1'>Login</option>";
 	}
 	
 	if (visi == 2) {
-		str += "<option selected='selected' value='2'>Login</option>";
+		str += "<option selected='selected' value='2'>Public</option>";
 	} else {
-		str += "<option value='2'>Login</option>";
+		str += "<option value='2'>Public</option>";
 	}
 	
 	if (visi == 3) {
@@ -210,9 +210,9 @@ function returnedCourse(data)
 			}
 			
 			if (data['writeaccess']) {
-				str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeedversion'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
+				str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeedversion'] + "'><img id='dorf' src='../Shared/icons/PenV.svg' title='Edit " + item['coursename'] + "'></a>";
 				str += "<img id='dorf' style='float:right;' src='../Shared/icons/Cogwheel.svg' ";
-				str += " onclick='selectCourse(\"" + item['cid'] + "\",\"" + item['coursename'] + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' >";
+				str += " onclick='selectCourse(\"" + item['cid'] + "\",\"" + item['coursename'] + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='" + item['coursename'] + " settings'>";
 			}
 
 			str += "</span>";
@@ -226,8 +226,11 @@ function returnedCourse(data)
 
 	str += "</div>";
 
-	var slist = document.getElementById('Courselist');
-	slist.innerHTML = str;
+	//wait with setting the html value until the document has loaded, this avoids the frequent blank screen
+	$(function(){
+		var slist = document.getElementById('Courselist');
+		slist.innerHTML = str;
+	});
 
 	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
