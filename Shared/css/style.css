@@ -1216,6 +1216,18 @@ input.new-item-button:hover {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+
+.collapseArrow{
+    -moz-transform:rotate(-90deg);
+    -webkit-transform:rotate(-90deg);
+    transform:rotate(-90deg);
+}
+.collapsedArrow{
+   -moz-transform:rotate(0deg);
+    -webkit-transform:rotate(0deg);
+    transform:rotate(0deg);
+}
+
 /* End DuggaSys resulted*/
 /**************************/
 
