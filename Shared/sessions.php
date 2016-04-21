@@ -16,16 +16,24 @@ require_once(dirname(__FILE__) . '/constants.php');
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare('insert into eventlog (address,type,ts) values (:addr,:type,NOW())');
+	$query = $pdo->prepare('INSERT INTO eventlog (address,type,ts) VALUES (:addr,:type,NOW())');
 	// TODO: Proxy detection?
 	$query->bindParam(':addr', $_SERVER['REMOTE_ADDR']);
 	$query->bindValue(':type', EVENT_LOGINERR);
 	$query->execute();
 }
 
+function checkloginstatus()
+{
+	if($_SESSION['creator']==1 || $_SESSION['superuser']==1){
+		return true;
+	} else {		
+		return false;
+	}
+}	
+
 function checklogin()
 {
-
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
@@ -83,7 +91,7 @@ function login($username, $password, $savelogin)
 
 //echo "SELECT uid,username,password,superuser FROM user WHERE username=:username and password=password(':pwd') LIMIT 1";
 
-	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username and password=password(:pwd) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username AND password=password(:pwd) LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);

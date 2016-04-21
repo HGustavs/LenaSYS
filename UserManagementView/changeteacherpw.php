@@ -60,7 +60,7 @@ $OC_db = mysql_connect(localhost,root,kaka) or err("Could not connect to databas
 			if($password == $checkPass) 
 		{
 			// Change the current password
-			$query = $pdo->prepare("UPDATE user SET password=password(:pwd) where uid=:uid");
+			$query = $pdo->prepare("UPDATE user SET password=password(:pwd) WHERE uid=:uid");
 
 			$query->bindParam(':uid', $uid);
 			$query->bindParam(':pwd', $password);
