@@ -1121,22 +1121,22 @@ $(function() {
 // Mousemove logging for analytics
 //---------------------------------------------------------------------------------------------------------------
 
-$(document).mousemove(function(e){
-	var data = {
-		log: 'mousemove',
-		data: {
-			page: window.location.href,
-			mouseX: e.clientX,
-			mouseY: e.clientY
-		}
-	}
+// $(document).mousemove(function(e){
+// 	var data = {
+// 		log: 'mousemove',
+// 		data: {
+// 			page: window.location.href,
+// 			mouseX: e.clientX,
+// 			mouseY: e.clientY
+// 		}
+// 	}
 	
-	$.ajax({
-		url: '../DuggaSys/logservice.php',
-		type: 'POST',
-		dataType: 'json', 
-		data: JSON.stringify(data),
-		contentType: "application/json",
-	});
-});
+// 	$.ajax({
+// 		url: '../DuggaSys/logservice.php',
+// 		type: 'POST',
+// 		dataType: 'json', 
+// 		data: JSON.stringify(data),
+// 		contentType: "application/json",
+// 	});
+// });
 
