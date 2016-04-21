@@ -14,7 +14,7 @@
 
 		$found=0;
 
-		foreach($pdo->query( 'select * from benchmark where os IS NULL;' ) as $row){
+		foreach($pdo->query( 'SELECT * FROM benchmark WHERE os IS NULL;' ) as $row){
 			// echo "<td>".$row['userAgent']."</td>";
 			
 			$id=$row['id'];
