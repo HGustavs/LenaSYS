@@ -108,7 +108,7 @@ if(checklogin()){
 								$sname=$row['entryname'];
 					}
 
-					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) VALUES(:cid,:ename,:sname,1,:cversion);");
+					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) VALUES (:cid,:ename,:sname,1,:cversion);");
 			
 					$query2->bindParam(':cid', $courseid);
 					$query2->bindParam(':cversion', $coursevers);

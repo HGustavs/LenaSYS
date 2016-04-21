@@ -10,67 +10,52 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css">
 
 .descbox {
-		font-family: arial;
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 14px;
+	font-family: arial;
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 14px;
 }
 
 .descbox h1 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.8em;
-    line-height: 1.4em;
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1.43em;
+	line-height: 1.4em;
+	font-weight: bold;
 }
 
 .descbox h2 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.5em;
-    line-height: 1.5em; 
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1.29em;
+	line-height: 1.5em; 
+	font-weight: bold;
 }
 
 .descbox h3 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.3em;
-    line-height: 1.3em; 
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1.14em;
+	line-height: 1.3em; 
+	font-weight: bold;
 }
 
 .descbox h4 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.2em;
-    line-height: 1.5em;
-		font-weight: bold;
-
-}
-
-.descbox h5 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.2em;
-    line-height: 1.5em;
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1em;
+	line-height: 1.5em;
+	font-weight: bold;
 }
 
 .descbox pre {
@@ -111,46 +96,25 @@
 		margin-left: 36px;
 }
 
-/* gifimage figmd bigmd backmd are styles for showing gif clips for tutorials etc */
+img {
+	border-radius: 2px;
+}
+
+/* "gifimage", "gifwrapper" and "playbutton" are styles for showing gif clips for tutorials etc. */
 
 .gifimage{
-		width:128px;
-		border:2px solid teal;
+		width: 150px;
+		border: 3px solid teal;
 }
 
-.figmd {
-		position:fixed;
-		left:10%;
-		top:10%;
-		width:80%;
-		height:80%;
-		box-shadow:1px 1px 6px #000;
-		border:2px solid teal;
-		z-index:12200;
-		background:#fff;
-		display:none;
-
-    background-image: url('throbber.gif');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-
+.gifwrapper {
+	float: left;
+    position: relative;
 }
 
-.bigmd{
-		max-width: 100%;
-		height: 100%;
-		width: auto; 
-}
-
-.backmd{
-		position:fixed;
-		left:0%;
-		top:0%;
-		width:100%;
-		height:100%;
-		opacity:0.75;
-		background:#101;
-		z-index:12000;
-		display:none;
+.playbutton {
+	position: absolute; 
+	top: 35%;
+	left: 42%;
+    width: auto;
 }

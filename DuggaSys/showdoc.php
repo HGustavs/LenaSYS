@@ -57,22 +57,35 @@
 				$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
 				$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
 
-				//Regular expressions for lists both - and * lists are supported
+				//Regular expressions for ordered lists both - and * lists are supported
 				$instring = preg_replace("/^\s*\d*\.\s(.*)/m", "<ol><li>$1</li></ol>",$instring);
 				
-				$instring = preg_replace("/^\s*\-\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
-				$instring = preg_replace("/^\s*\*\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
-
-				// Fix for superflous ul and ol statements
-				$instring= str_replace ("</ul>\n<ul>","",$instring);
+				// Fix for superflous ol statements
 				$instring= str_replace ("</ol>\n<ol>","",$instring);
+				
+				//Regular expressions for unordered lists
+				// (***) to start a list
+				// * Bullet
+				// 		(***) to start a sublist
+				// 		* Sub-bullet
+				// 		(/***) to close the sublist
+				// (/***) to close the list
+				$instring = preg_replace("/[(]\*{3}[)]/", '<ul>',$instring);
+				$instring = preg_replace("/[\-\*]{1}\s(.*)/", '<li>$1</li>',$instring);
+				$instring = preg_replace("/[(][\/]\*{3}[)]/", '</ul>',$instring);
 
 				//Regular expression for line
 				$instring = preg_replace("/\-{3,}/", "<hr>",$instring);
 
 				// Hard line break support
-				$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
-				$instring= preg_replace ("/(\r\n|\n|\r){2}/","<br>",$instring);
+				$instring= preg_replace ("/(\r\n){3}/","<br><br>",$instring);
+				$instring= preg_replace ("/(\r\n){2}/","<br>",$instring);
+	
+				$instring= preg_replace ("/(\n){3}/","<br><br>",$instring);
+				$instring= preg_replace ("/(\n){2}/","<br>",$instring);
+	
+				$instring= preg_replace ("/(\r){3}/","<br><br>",$instring);
+				$instring= preg_replace ("/(\r){2}/","<br>",$instring);
 
 				// Fix for swedish characters
 				$instring= str_replace ("å","&aring;",$instring);				
@@ -88,8 +101,8 @@
 
 				// External img src !!!
 				// |||src|||
-				// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear				
-				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
+				// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
+				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/", '<img src="$1" onmouseover="originalImg(this)" onmouseout="thumbnailImg(this)" width="20%" style="border: 3px solid #614875;" />',$instring);
 
 				// External mp4 src !!!
 				// ==[src]==	
@@ -99,9 +112,9 @@
 				// ==[src]==	
 				$instring = preg_replace("/\={2}\{(.*?\S)}\={2}/","<span id='placeholder-$1'></span>",$instring);
 
-				// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
-				// +++image.png,image.gif+++
-				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<img class='gifimage' src='$1' onclick=\"showGif('$2');\" target='_blank' />",$instring);
+				// Link to gif animation with thumbnail
+				// +++thumbnail.png,animation.gif+++	
+				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<div class='gifwrapper'><img class='gifimage' id='gifpicture' src='$1' onclick=\"toggleGif('$2', '$1');\" /><div class='playbutton'><img src='../Shared/icons/PlayT.svg' onclick=\"toggleGif('$2', '$1');\"></div></div>",$instring);
 
 				// Right Arrow for discussing menu options
 				$instring = preg_replace("/\s[\-][\>]\s/","&rarr;",$instring);
