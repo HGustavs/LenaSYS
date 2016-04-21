@@ -134,7 +134,6 @@ if(checklogin()){
 					}
 
 					$link=$pdo->lastInsertId();
-
 			}
 			if($kind==3) {
 				$gradesys_temp = 0;
@@ -150,25 +149,25 @@ if(checklogin()){
 				foreach($query1->fetchAll() as $row) {
 								$gradesys_temp=$row['gradesystem'];
 				}
-			
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
-
-			$query->bindParam(':lid', $sectid);
-			$query->bindParam(':entryname', $sectname);
-			$query->bindParam(':highscoremode', $highscoremode);
-			
-			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
-			else $query->bindParam(':moment', $moment);
 				
-			$query->bindParam(':kind', $kind);
-			$query->bindParam(':link', $link);
-			$query->bindParam(':visible', $visibility);
-			$query->bindParam(':gradesys', $gradesys_temp);
-	
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
-			}
+				$query = $pdo->prepare("UPDATE listentries SET highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
+
+				$query->bindParam(':lid', $sectid);
+				$query->bindParam(':entryname', $sectname);
+				$query->bindParam(':highscoremode', $highscoremode);
+				
+				if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
+				else $query->bindParam(':moment', $moment);
+					
+				$query->bindParam(':kind', $kind);
+				$query->bindParam(':link', $link);
+				$query->bindParam(':visible', $visibility);
+				$query->bindParam(':gradesys', $gradesys_temp);
+		
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating entries".$error[2];
+				}
 			}
 			
 			// insert into list forthe specific course
@@ -448,7 +447,7 @@ if($ha){
 	}
 
 	// Should be optimized into one query!
-	$query=$pdo->prepare("SELECT count(*) AS unmarked FROM userAnswer WHERE cid=:cid AND (submitted IS NOT NULL AND useranswer IS NOT NULL AND grade is NULL);");
+	$query=$pdo->prepare("SELECT COUNT(*) AS unmarked FROM userAnswer WHERE cid=:cid AND (submitted IS NOT NULL AND useranswer IS NOT NULL AND grade IS NULL);");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -458,7 +457,7 @@ if($ha){
 		$unmarked = $row[0]["unmarked"];
 
 	}
-	$query=$pdo->prepare("SELECT count(*) AS unmarked FROM userAnswer WHERE cid=:cid AND (grade = 1 AND submitted > marked);");
+	$query=$pdo->prepare("SELECT COUNT(*) AS unmarked FROM userAnswer WHERE cid=:cid AND (grade = 1 AND submitted > marked);");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -468,6 +467,28 @@ if($ha){
 		$unmarked += $row[0]["unmarked"];
 
 	}
+	
+}
+$threads = array();
+$query = $pdo->prepare("SELECT DISTINCT thread.topic,thread.cid,thread.datecreated,thread.threadid,thread.hidden FROM thread,threadaccess WHERE ((thread.cid=:cid AND thread.hidden is null) OR (threadaccess.uid=:uid AND thread.hidden=1 AND threadaccess.threadid=thread.threadid AND thread.cid=:cid)) ORDER BY thread.lastcommentedon DESC;");
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':uid', $userid);
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error: " + $error;
+}else{
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		array_push(
+			$threads,
+			array(
+				'topic' => $row['topic'],
+				'datecreated' => $row['datecreated'],
+				'cid' => $row['cid'],
+				'threadid' => $row['threadid'],
+				'hidden' => $row['hidden']
+			)
+		);
+	}	
 }
 
 $array = array(
@@ -484,7 +505,8 @@ $array = array(
 	'results' => $resulties,
 	'versions' => $versions,
 	'codeexamples' => $codeexamples,
-	'unmarked' => $unmarked
+	'unmarked' => $unmarked,
+	'thread' => $threads
 );
 
 echo json_encode($array);

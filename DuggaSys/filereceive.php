@@ -49,7 +49,7 @@ if($ha){
 		if($kind=="LINK"&&$link!="UNK"){
 
 				//  if link isn't in database (e.g no rows are returned), add it to database 
-				$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
+				$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);" ); 
 				$query->bindParam(':filename', $link);
 				$query->bindParam(':cid', $cid);
 				$query->execute(); 
@@ -95,8 +95,8 @@ if($ha){
 
 		if($storefile){
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream");
-				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl");
+				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream", "text/x-java-source");
+				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl", "cpp");
 				
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
 				
@@ -110,9 +110,9 @@ if($ha){
 						if($selectedfile!="NONE"&&($kind=="GFILE"||$kind=="MFILE")){
 								// Store link to existing file
 								if($kind=="GFILE"){
-										$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
+										$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
 								}else if($kind=="MFILE"){
-										$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
+										$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
 								}
 								
 								$query->bindParam(':filename', $selectedfile);
@@ -162,11 +162,11 @@ if($ha){
 										// check if upload is successful 
 										if(move_uploaded_file($filea["tmp_name"],$movname)){ 
 												if($kind=="LFILE"){
-														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
 												}else if($kind=="MFILE"){
-														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;" ); // 1=Link 2=Global 3=Course Local 4=Local
 												}else{					
-														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;" ); // 1=Link 2=Global 3=Course Local 4=Local	
+														$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;" ); // 1=Link 2=Global 3=Course Local 4=Local	
 												}
 												
 												$query->bindParam(':filename', $fname);

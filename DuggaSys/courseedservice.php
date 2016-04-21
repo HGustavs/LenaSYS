@@ -35,8 +35,8 @@ $hp = '7.5';
 $log_uuid = getOP('log_uuid');
 $log_timestamp = getOP('log_timestamp');
 
-logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "courseseedservice.php", $log_timestamp);
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseseedservice.php");
+logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "courseedservice.php", $log_timestamp);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php");
 
 
 if(isset($_SESSION['uid'])){
@@ -166,6 +166,6 @@ $array = array(
 	);
 
 echo json_encode($array);
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseseedservice.php");
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "courseedservice.php");
 ?>
 

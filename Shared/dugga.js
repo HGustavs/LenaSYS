@@ -28,7 +28,7 @@ function closeWindows(){
 	$("#resultpopover").css("display","none");
 	$("#login #username").val("");
 	$("#login #password").val("");
-	
+
 	window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -40,13 +40,13 @@ function changeCSS(cssFile, index)
 		newlink.setAttribute("rel", "stylesheet");
 		newlink.setAttribute("type", "text/css");
 		newlink.setAttribute("href", cssFile);
-		
+
 		document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
 //----------------------------------------------------------------------------------
 // loadJS: Using Jquery Dynamically Load external JS.
-//          Does not load again if previously loaded same file 
+//          Does not load again if previously loaded same file
 //----------------------------------------------------------------------------------
 
 var JSFiles=[];
@@ -54,20 +54,20 @@ var JSFiles=[];
 function loadJS(src) {
 		if(JSFiles[src]!="Loaded"){
 		   var jsLink = $("<script type='text/javascript' src='"+src+"'>");
-		   $("head").append(jsLink); 
+		   $("head").append(jsLink);
 		   JSFiles[src]="Loaded";
 		}else{
-				// Do nothing if already loaded 			
+				// Do nothing if already loaded
 		}
-}; 
- 
+};
+
 //----------------------------------------------------------------------------------
 // loadCSS: Using Jquery Dynamically Load external CSS
 //----------------------------------------------------------------------------------
 
 function loadCSS(href) {
 		var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
-		$("head").append(cssLink); 
+		$("head").append(cssLink);
 };
 
 //----------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ function randomstring()
 //                Is called by editImpRows in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
@@ -105,13 +105,13 @@ function saveDuggaResult(citstr)
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
 		citstr+= "##!!##" + timeUsed;
-		citstr+= "##!!##" + stepsUsed;		
+		citstr+= "##!!##" + stepsUsed;
 		citstr+= "##!!##" + score;
 		hexstr="";
 		for(i=0;i<citstr.length;i++){
 				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 		}
-		
+
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
@@ -150,7 +150,7 @@ function changeURL(thisurl)
 function navigateExample(exampleno)
 {
 		surl=window.location.href;
-		surl=surl.substring(0,surl.lastIndexOf("/")); 
+		surl=surl.substring(0,surl.lastIndexOf("/"));
 		window.location.href = surl+"/EditorV50.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
 }
 
@@ -161,7 +161,7 @@ function navigateExample(exampleno)
 function navigateTo(prefix,file)
 {
 		surl=window.location.href;
-		surl=surl.substring(0,surl.lastIndexOf("/")); 
+		surl=surl.substring(0,surl.lastIndexOf("/"));
 		window.location.href = surl+prefix+file;
 }
 
@@ -187,8 +187,8 @@ function parseGet(){
 //----------------------------------------------------------------------------------
 
 function htmlEntities(str) {
-		
-	if (typeof str === "string"){					
+
+	if (typeof str === "string"){
 		befstr=str;
 		if(str!=undefined && str != null){
 			str=str.replace(/\&/g, '&amp;');
@@ -231,7 +231,6 @@ function AJAXService(opt,apara,kind)
 	apara.log_uuid = uuid;
 	apara.log_timestamp = timestamp;
 
-	
 	for (var key in apara) {
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
@@ -250,7 +249,7 @@ function AJAXService(opt,apara,kind)
 					para+="&"+key+"=";
 					var array = [];
 					for (var i = 0; i < apara[key].length; i++) {
-							var string = "["; 
+							var string = "[";
 							var row = [];
 							for (var j = 0; j < apara[key][i].length; j++) {
 									row.push(apara[key][i][j]);
@@ -261,16 +260,16 @@ function AJAXService(opt,apara,kind)
 					para += array;
 			}else{
 //					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}():|"\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
-			
+
 					// Concat the generated regex result to a string again.
 //					apara[key] = s.join("");
 					apara[key] = old;
-			
+
 					// Informs the user that his input contained illegal characters that were removed after parsing.
 					if(old != apara[key]) {
 						alert("Illegal characters removed in " + key);
 					}
-					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));		
+					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
 		if(apara[key] == "") {
@@ -278,16 +277,16 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
-	
+
 	var sendConfirmation = function(service) {
 		$.ajax({
-			url: "serviceconfirmation.php",
+			url: "../DuggaSys/serviceconfirmation.php",
 			type: "POST",
-			data: "uuid="+uuid+"&timestamp="+timestamp+"&service="+service,
+			data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
 			dataType: "json"
 		});
 	}
-	
+
 	switch(kind){
 		case "COURSE":
 			$.ajax({
@@ -418,7 +417,7 @@ function AJAXService(opt,apara,kind)
 				success: function(data) {
 					returnedResults(data);
 					sendConfirmation("resultlistedservice.php");
-				} 
+				}
 			});
 			break;
 		case "CODEVIEW":
@@ -468,6 +467,72 @@ function AJAXService(opt,apara,kind)
 					sendConfirmation("usermanagementviewservice.php");
 				}
 			});
+			break;
+		case "GETTHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedThread(data);
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
+		case "CREATETHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: getThread,
+				error: error
+			});
+			break;
+		case "MAKECOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					makeCommentSuccess();
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
+			case "MAKEREPLYCOMMENT":
+			console.log("opt="+opt);
+			console.log("para=" + para);
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					makeReplyCommentSuccess();
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
+
+		case "GETCOMMENTS":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedComments(data);
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
 		case "GETCOURSETHREAD":
 			$.ajax({
 				url: "usermanagementviewservice.php",
@@ -477,6 +542,67 @@ function AJAXService(opt,apara,kind)
 				success: function(data) {
 					renderTeacherView(data);
 					sendConfirmation("usermanagementviewservice.php");
+				}
+			});
+			break;
+		case "REPLYCOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					replyComment(data);
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
+		case "LOCKTHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getThread(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "DELETETHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					deleteThreadSuccess(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "GETCOURSES":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedCourses(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "UNLOCKTHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getThread(data);
+					sendConfirmation("forumservice.php");
 				}
 			});
 			break;
@@ -496,7 +622,7 @@ function processLogin() {
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
-		
+
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -514,15 +640,15 @@ function processLogin() {
 					$("#loginbutton").addClass("loggedin");
 
 					hideLoginPopup();
-					
+
 					$("#login #username").val("");
-					$("#login #password").val("");		
-					
+					$("#login #password").val("");
+
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
-					location.reload();				
+					location.reload();
 				}else{
 					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
@@ -533,7 +659,7 @@ function processLogin() {
 					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
-					
+
 			},
 			error:function() {
 				console.log("error");
@@ -550,7 +676,7 @@ function processLogout() {
 			urlDivided.pop();
 			urlDivided.pop();
 			var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
-			window.location.replace(newURL);			
+			window.location.replace(newURL);
 		},
 		error:function() {
 			console.log("error");
@@ -563,14 +689,14 @@ function showLoginPopup()
 	$("#loginBox").css("display","block");
 	$("#overlay").css("display","block");
 	$("#username").focus();
-		
+
 	// Reset input box color
 	$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
 	$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
-	
+
 	// Reset warning, if applicable
 	$("#login #message").html("<div class='alert danger'></div>");
-	
+
 	window.addEventListener("keypress", loginEventHandler, false);
 }
 
@@ -578,7 +704,7 @@ function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
 		$("#overlay").css("display","none");
-		
+
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -590,12 +716,12 @@ function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
 		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){processLogout();});	
+		$("#loginbutton").click(function(){processLogout();});
 	}
 	else{
 		console.log("Setting button to show login prompt");
 		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){showLoginPopup();});		
+		$("#loginbutton").click(function(){showLoginPopup();});
 	}
 }
 
@@ -651,7 +777,7 @@ function showEmailPopup()
 	var receiptcemail ="";
 	$("#emailPopup").css("display","block");
 	$("#overlay").css("display","block");
-	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item 
+	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
 	document.getElementById('email').value = receiptcemail;
 }
 
@@ -666,7 +792,7 @@ function hideEmailPopup()
 //----------------------------------------------------------------------------------
 function sendReceiptEmail(){
 	var receipt = document.getElementById('receipt').value;
-	var email = $("#email").val();	
+	var email = $("#email").val();
 		if (email != ""){
 			localStorage.setItem("receiptcemail", email); //save value of input into a localStorage variable
 			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
@@ -710,14 +836,14 @@ function loginButtonHover(status) {
 		}, false);
 		document.getElementById("loginbutton").addEventListener("mouseout", function() {
 			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
-		}, false);		
+		}, false);
 	}
 }
 
 //----------------------------------------------------------------------------------
 // A function for redirecting the user to there UserManagementView
 //----------------------------------------------------------------------------------
-function redirectToUMV() 
+function redirectToUMV()
 {
 	window.location.replace("../UserManagementView/redirector.php");
 }
@@ -779,23 +905,23 @@ function findfilevers(filez, cfield,ctype)
 				if(cfield==filez[i].fieldnme){
 						if(ctype=="zip"||ctype=="pdf"||ctype=="link"){
 								foundfile=filez[i];
-								break;							
+								break;
 						}else{
 								// Each new filename make row in table.
 								if(oldfile!=filez[i].filename){
-										var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;											
+										var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 										tab+="<tr'><td style='padding:4px;'>";
 										tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";
 										tab+="</td><td style='padding:4px;'>";
 										tab+=filez[i].updtime;
-										tab+="</td></tr>";		
+										tab+="</td></tr>";
 								}
 								oldfile=filez[i].filename;
 						}
 				}
 		}
 		tab+="</tbody>"
-		tab+="</table>"			
+		tab+="</table>"
 
 		if(foundfile!=null){
 				var filelink=foundfile.filepath+foundfile.filename+foundfile.seq+"."+foundfile.extension;
@@ -806,7 +932,7 @@ function findfilevers(filez, cfield,ctype)
 						document.getElementById(cfield+"Prev").innerHTML="<embed src='"+filelink+"' width='100%' height='1000px' type='application/pdf'>";
 				}else if(ctype=="zip"){
 						document.getElementById(cfield+"File").innerHTML="<a href='"+filelink+"'>"+foundfile.filename+"."+foundfile.extension;+"</a>";
-						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;					
+						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;
 				} else if(ctype=="link"){
 						// Copy the file name and generate the preview if we are submitting a .pdf
 						document.getElementById(cfield+"File").innerHTML=foundfile.filepath;
@@ -815,9 +941,9 @@ function findfilevers(filez, cfield,ctype)
 				}
 		}else if(ctype=="multi"){
 				document.getElementById(cfield+"Prev").innerHTML=tab;
-		}	
-} 
-	
+		}
+}
+
 
 function makeForm(cfield, ctype){
 
@@ -854,28 +980,28 @@ function toggleInstructions(element)
 var ClickCounter = {
 	// Used to count clicks
 	score: 0,
-	
+
 	// Initializes the noClicks variable, called at the start of a dugga
 	initialize: function() {
 		this.score = 0;
-		this.animateClicks();	
+		this.animateClicks();
 	},
-	
+
 	// Called whenever a dugga should count a mouse click, e.g., when a user presses a button
 	onClick: function() {
 		// Increments the click counter by one
 		this.score++;
-		
-		// Calls animate clicks to directly update the click counter user interface 
+
+		// Calls animate clicks to directly update the click counter user interface
 		this.animateClicks();
 	},
-	
+
 	//show clicker
 	showClicker: function(){
 		this.animateClicks();
 	},
-	
-	// Updates the click counter user interface in a dugga, uses the same 
+
+	// Updates the click counter user interface in a dugga, uses the same
 	animateClicks: function() {
 		// Apply some web magic to change the ui counter and check if the timerbox is shown
 		if ($('#scoreElement').length != 0) {
@@ -889,23 +1015,23 @@ var ClickCounter = {
 // Timer - Used in dugga's to count the amount of time spent on a dugga
 //---------------------------------------------------------------------------------------------------------------
 
-var Timer = {	
+var Timer = {
 	// Determines if the timer should update ui
 	update: 0,
 
 	// Declare the timer variable, will be accessible from this object in a dugga
 	timer: undefined,
-	
+
 	// Counts the amount of time spent on a dugga
 	score: 0,
-	
+
 	// Called at the start of a dugga to initialize the object
 	startTimer: function(){
 		var self = this;
-		
+
 		// Sets the update interval of the timer, calls animate timer on increment
 		this.timer = setInterval( function(){self.incrementTimer(); self.animateTimer();}, 1000 );
-		
+
 		// Call animate timer to initialize ui at 00:00:00
 		this.animateTimer();
 	},
@@ -916,26 +1042,26 @@ var Timer = {
 		// Call animate timer to initialize ui at 00:00:00
 		this.animateTimer();
 	},
-	
+
 	// Stops the timer from counting, called at the end of a dugga
 	stopTimer: function(){
 		var self = this;
 		clearInterval(self.timer);
-		
+
 		// Quick fix
 		this.update = 1;
 	},
-	
+
 	// Increments the time counter by one
 	incrementTimer: function(){
 		this.score++;
 	},
-	
+
 	//Show timer
 	showTimer: function(){
 		this.animateTimer();
 	},
-	
+
 	// Updates the user interface
 	animateTimer: function(){
 		// Calculate hours, minutes and seconds based on timespent
@@ -946,7 +1072,7 @@ var Timer = {
 		// Create a nice looking clock thing with the information we have
 		var str = "<p>";
 		str += hours + ":";
-		
+
 		if(minutes < 10){
 			str += 0;
 		}
@@ -963,3 +1089,56 @@ var Timer = {
 		}
 	}
 }	
+
+function getButtonID(obj){
+	alert(obj.id);
+}
+
+//---------------------------------------------------------------------------------------------------------------
+// Click logging for analytics
+//---------------------------------------------------------------------------------------------------------------
+$(function() {
+	$(document).bind('click', function(e) {
+		var data = {
+			log: 'click',
+			data: {
+					target: e.target.id,
+					mouseX: e.clientX,
+					mouseY: e.clientY,
+				clientResX: window.screen.availWidth,
+				clientResY: window.screen.availHeight
+			}
+		};
+		$.ajax({
+			url: '../DuggaSys/logservice.php',
+			type: 'POST',
+			dataType: 'json', 
+			data: JSON.stringify(data),
+    		contentType: "application/json",
+		});
+	});
+});
+
+//---------------------------------------------------------------------------------------------------------------
+// Mousemove logging for analytics
+//---------------------------------------------------------------------------------------------------------------
+
+// $(document).mousemove(function(e){
+// 	var data = {
+// 		log: 'mousemove',
+// 		data: {
+// 			page: window.location.href,
+// 			mouseX: e.clientX,
+// 			mouseY: e.clientY
+// 		}
+// 	}
+	
+// 	$.ajax({
+// 		url: '../DuggaSys/logservice.php',
+// 		type: 'POST',
+// 		dataType: 'json', 
+// 		data: JSON.stringify(data),
+// 		contentType: "application/json",
+// 	});
+// });
+

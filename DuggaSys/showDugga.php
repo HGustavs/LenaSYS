@@ -179,6 +179,9 @@
 	?>
 
 	<?php
+		// Adding page logging 
+		logDuggaLoadEvent($cid, $vers, $quizid, EventTypes::pageLoad);
+		
 		include '../Shared/loginbox.php';
 	?>
 	

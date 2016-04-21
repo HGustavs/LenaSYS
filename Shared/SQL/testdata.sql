@@ -63,7 +63,6 @@ INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUE
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (19, 9, '{question*Which of these are examples of actual shaders?: A*B32shader, 554shader: B*Context shaders, Shadow shaders and Block shaders: C*Vertex shaders, Pixel shaders and Geometry shaders}', 'C', NOW(), 2);
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (20, 9, '{question*Points, lines and curves are examples of geometrical...: A*Primitives: B*Substitutes: C*Formations: D*Partitions}', 'A', NOW(), 2);
 
-
 /* Insert items on coursepage */
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1001, 1, 'PHP examples', 'UNK', 1, 1, 1, 1,'45656');
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1002, 1, 'PHP Example 1', 1, 2, 2, 1, 1,'45656');
@@ -279,7 +278,6 @@ INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (14,4,73,73,1);
 INSERT INTO improw(exampleid,boxid,istart,iend,uid) VALUES (16,2,34,35,1);
 
 /* Important words */
-
 INSERT INTO impwordlist(exampleid,word,uid) values (1,"echo",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (1,"Hello!",1);
 INSERT INTO impwordlist(exampleid,word,uid) values (2,"Hello!",1);
@@ -373,7 +371,6 @@ INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) val
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (331, "MA113G","Algebra och logik",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (332, "DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,7.5);
 
-
 -- course and class-- 
 -- DVSUG --
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',300);
@@ -414,7 +411,6 @@ INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',328);
 INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',329);
 INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',330);
 INSERT INTO programcourse(class,cid) VALUES ('WEBUG13h',331);
-
 
 -- course requirements --
 INSERT INTO course_req(cid,req_cid) values(309,305);
@@ -622,3 +618,8 @@ insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,opened,subm
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,opened,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', '2020-02-20 10:20:20', NULL, '97732', NULL, NULL);
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,opened,submitted,marked,vers,creator,score) values ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', '2020-02-20 10:20:20', NULL, '97732', NULL, NULL);
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,opened,submitted,marked,vers,creator,score) values ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', '2020-02-20 10:20:20', NULL, '97732', NULL, NULL);
+
+/* testdata for forums */
+insert into thread (cid, uid, topic, description, datecreated, lastcommentedon) values (1, 1, "Example thread", "Example text",current_timestamp,current_timestamp);
+insert into threadcomment (threadid, uid, text, datecreated) values (1, 1, "Example comment",current_timestamp);
+INSERT INTO `threadaccess`(`threadid`, `uid`) VALUES (1, 1);

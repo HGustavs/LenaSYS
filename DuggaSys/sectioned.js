@@ -441,21 +441,24 @@ function returnedSection(data)
 		str="";
 
 		if (retdata['versions'].length > 0) {
-				for ( i = 0; i < retdata['versions'].length; i++) {
-					var item = retdata['versions'][i];
-					if (retdata['courseid'] == item['cid']) {
-						var vvers = item['vers'];
-						var vname = item['versname'];
-						if(retdata['coursevers']==vvers){
-							var versionname=vname;
-						}
+
+			for ( i = 0; i < retdata['versions'].length; i++) {
+				var item = retdata['versions'][i];
+				if (retdata['courseid'] == item['cid']) {
+					var vvers = item['vers'];
+					var vname = item['versname'];
+					if(retdata['coursevers']==vvers){
+						var versionname=vname;
 					}
 				}
 			}
+		}
+
 
 		if(data['writeaccess']) {
 			str+="<div class='course-menu-wrapper clearfix'>";			
 			str+="<div class='course-menu--settings'>";
+
 			
 			str+="<input type='button' class='submit-button' value='Edit version' title='Edit the selected version' onclick='showEditVersion";
 			str+='("'+querystring['coursevers']+'","'+versionname+'")';
@@ -478,8 +481,41 @@ function returnedSection(data)
 			str+="<input class='submit-button' type='button' value='List' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/>";
 			str+="</div>";
 			str+="</div>";
+		}	
+		
+		//Start of forum layout
+		str+="<div class='course' style='text-align:left;'><div id='coure-coursename' style='display: inline-block;margin-left:10px;'>Forum</div></div>";
+		str+="<div id='Sectionlistc' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
+		
+		if(data['thread'].length==0){
+			str+="<p style='margin-left:5px;'>There are no threads for this course</p>";
+		}else{
+			//console.log(data['thread'].length);
+			
+			if(data['thread'].length<5){
+				for(var i=0;i<data['thread'].length;i++){
+					if(i%2==0){
+						str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='thread.php?threadId="+data['thread'][i]['threadid']+"' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+					}else{
+						str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='thread.php?threadId="+data['thread'][i]['threadid']+"' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+					}
+					
+				}
+			}else {
+				for(var i=0;i<5;i++){
+					if(i%2==0){
+						str+="<tr class='hi' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='thread.php?threadId="+data['thread'][i]['threadid']+"' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+					}else{
+						str+="<tr class='lo' style='height:32px;'><td class='example item' style='white-space:nowrap;overflow:hidden;'><span><a href='thread.php?threadId="+data['thread'][i]['threadid']+"' style='margin-left:15px;'>"+data['thread'][i]['topic']+"</a></span></td></tr>";
+					}
+					
+				}
+			}
 		}
-
+		str+="</table></div>";
+		// End of forum layout
+		
+		str+="</div>";
 		// Course Name
 		str+="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div><div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 
@@ -491,6 +527,7 @@ function returnedSection(data)
 
 
 		str+="<div id='Sectionlistc' >";
+		
 			
 		var groupitems = 0;
 				
@@ -512,207 +549,209 @@ function returnedSection(data)
 				// If visible or we are a teacher/superuser
 				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
 
-				// Content table 		
-				str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
-				if(kk%2==0){
-					str+=" class='hi' ";
-				}else{
-					str+=" class='lo' ";
-				}
-				str+=" >";
+					// Content table 		
+					str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
+					if(kk%2==0){
+						str+=" class='hi' ";
+					}else{
+						str+=" class='lo' ";
+					}
+					str+=" >";
+					
+					if(parseInt(item['kind']) === 3|| parseInt(item['kind']) === 4){
+
+								// Styling for quiz row
+								if(parseInt(item['kind']) === 3) str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+
+								var grady=-1;
+								var status ="";
+								var marked;
+								var submitted;
+								var lastSubmit = null;
+
+								for(jjj=0;jjj<data['results'].length;jjj++){
+									var lawtem=data['results'][jjj];
+									if((lawtem['moment']==item['lid'])){
+										grady=lawtem['grade'];
+										status="";
+										var st = lawtem['submitted'];
+										if (st !== null) {
+											submitted = new Date(st);									
+										} else {
+											submitted = null;
+										}
+										var mt = lawtem['marked'];
+										if (mt !== null) {
+											marked = new Date(mt);									
+										} else {
+											marked = null;
+										}
+										
+										if(parseInt(item['kind']) === 3){
+												if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
+													status="pending";
+												} 
 				
-				if(parseInt(item['kind']) === 3|| parseInt(item['kind']) === 4){
-
-							// Styling for quiz row
-							if(parseInt(item['kind']) === 3) str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
-
-							var grady=-1;
-							var status ="";
-							var marked;
-							var submitted;
-							var lastSubmit = null;
-
-							for(jjj=0;jjj<data['results'].length;jjj++){
-								var lawtem=data['results'][jjj];
-								if((lawtem['moment']==item['lid'])){
-									grady=lawtem['grade'];
-									status="";
-									var st = lawtem['submitted'];
-									if (st !== null) {
-										submitted = new Date(st);									
-									} else {
-										submitted = null;
-									}
-									var mt = lawtem['marked'];
-									if (mt !== null) {
-										marked = new Date(mt);									
-									} else {
-										marked = null;
-									}
-									
-									if(parseInt(item['kind']) === 3){
-											if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
-												status="pending";
-											} 
-			
-											if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
-												status="pending";
-											} 
-									}else{
-											if (submitted !== null && marked === null) {
-												status="pending";
-											} 
-			
-											if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
-												status="pending";
-											} 
-			
-											if (lastSubmit === null){
-												lastSubmit = submitted;
-											}else if (submitted !== null) {
-												if (lastSubmit.getTime() < submitted.getTime()){
-													lastSubmit=submitted;
+												if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
+													status="pending";
+												} 
+										}else{
+												if (submitted !== null && marked === null) {
+													status="pending";
+												} 
+				
+												if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
+													status="pending";
+												} 
+				
+												if (lastSubmit === null){
+													lastSubmit = submitted;
+												}else if (submitted !== null) {
+													if (lastSubmit.getTime() < submitted.getTime()){
+														lastSubmit=submitted;
+													}
 												}
-											}
+										}
 									}
 								}
-							}
-	
-							str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;' onclick='collapseLight(this)'>";
-
-							if((grady==-1 || grady == 0 || grady==null) && status==="") {
-									// Nothing submitted nor marked (White)
-									str+="<div class='WhiteLight'></div>";
-							}else if(status === "pending"){
-									//	Nothing marked yet (Yellow)
-									str+="<div class='YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";
-							}else if(grady==1){
-									//	Marked Fail! (Red)								
-									str+="<div class='RedLight' title='Status: Failed\nDate: "+marked+"' ></div>";
-							}else if(grady==2){
-									//	Marked G (Green)		
-									str+="<div class='GreenLight'  title='Grade: G\nDate: "+marked+"' ></div>";
-							}else if(grady==3){
-									//	Marked VG (Green)		
-									str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
-							}else if(grady>3){
-									//this seems to be needed for the page to load	
-									str+="<div class='GreenLight'  title='Status: Unknown - add other grade system\nDate: "+marked+"' ></div>";
-							}
-							str+="</td>";
-				
-				}
-				
-
-					// Make tabs
-					if(parseInt(item['kind']) === 0 || parseInt(item['kind']) === 1 || parseInt(item['kind']) === 2 || parseInt(item['kind']) === 5 ){
-							if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
-									for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-										str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td>";
-									}													
-							} else if (parseInt(item['gradesys']) == 4){
-									str+="<td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
-							}else if (parseInt(item['gradesys']) == 5){
-									str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
-							}else if (parseInt(item['gradesys']) == 6){
-									str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
-							}
-					}
-
-					if(parseInt(item['kind']) === 0 ){
-						// Styling for header row
-						str+="</td><td class='header item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
-						kk=0;
-					}else if(parseInt(item['kind']) === 1 ){
-						str+="<td class='section item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
-						kk=0;
-					}else if(parseInt(item['kind']) === 2 ){
-						str+="<td";
-						if(kk%2==0){
-							str+=" class='example item' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
-						}else{
-							str+=" class='example item' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
-						}
-						kk++;
-					}else if(parseInt(item['kind']) === 3 ){
-
-						if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-							str+="<td><img title='Highscore' src='../Shared/icons/top10.svg' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
-
-						}						
-											
-						str += "<td ";
-
-						if(kk%2==0){
-							str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
-						}else{
-							str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
-						}
-						
-						kk++;
-					}else if(parseInt(item['kind']) === 4 ){
-					
-						//new moment bool equals true
-						momentexists = item['lid'];
-									
-						// Styling for moment row
-						str+="<td class='moment item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
-						kk=0;
-					}else if(parseInt(item['kind']) === 5 ){
-
-						str+="<td";
-						if(kk%2==0){
-							str+=" class='example item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
-						}else{
-							str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
-						}
-						kk++;
-					}
-
-					if(parseInt(item['visible']) === 0){
-						str+=" style='opacity: 0.5; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 27px;background-position: left center;padding-left: 20px;' ";
-					}
 		
-					str+=">";
+								str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;' onclick='collapseLight(this)'>";
+
+								if((grady==-1 || grady == 0 || grady==null) && status==="") {
+										// Nothing submitted nor marked (White)
+										str+="<div class='WhiteLight'></div>";
+								}else if(status === "pending"){
+										//	Nothing marked yet (Yellow)
+										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";
+								}else if(grady==1){
+										//	Marked Fail! (Red)								
+										str+="<div class='RedLight' title='Status: Failed\nDate: "+marked+"' ></div>";
+								}else if(grady==2){
+										//	Marked G (Green)		
+										str+="<div class='GreenLight'  title='Grade: G\nDate: "+marked+"' ></div>";
+								}else if(grady==3){
+										//	Marked VG (Green)		
+										str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
+								}else if(grady>3){
+										//this seems to be needed for the page to load	
+										str+="<div class='GreenLight'  title='Status: Unknown - add other grade system\nDate: "+marked+"' ></div>";
+								}
+								str+="</td>";
 					
-					if (parseInt(item['kind']) < 2) {
-						str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
-					}else if (parseInt(item['kind']) == 4) {
-						str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
-					}else if (parseInt(item['kind']) == 2) {
-						str+="<span><a style='margin-left:15px;' href='../CodeViewer/EditorV50.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
-						
-					}else if (parseInt(item['kind']) == 3 ) {
-						//-----------------------------
-						//Dugga!
-						//-----------------------------
-						str+="<div style='margin-left:15px'><a style='cursor:pointer;word-wrap:break-word;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a></div>";
-					}else if(parseInt(item['kind']) == 5){
-						if(item['link'].substring(0,4) === "http"){
-							str+= "<a style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
-						}else{
-							str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
+					}
+					
+
+						// Make tabs
+						if(parseInt(item['kind']) === 0 || parseInt(item['kind']) === 1 || parseInt(item['kind']) === 2 || parseInt(item['kind']) === 5 ){
+								if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
+										for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
+											str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td>";
+										}													
+								} else if (parseInt(item['gradesys']) == 4){
+										str+="<td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
+								}else if (parseInt(item['gradesys']) == 5){
+										str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
+								}else if (parseInt(item['gradesys']) == 6){
+										str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td><td style='width:36px;overflow:hidden;'><div class='spacerEnd'></div></td>";
+								}
 						}
-					}						
-														
-					str+="</td>";
 
-					// Add generic td for deadlines if one exists
-					if (deadline!== null || deadline==="undefined"){
-						str +="<td style='text-align:right;word-wrap:break-word;' ";
-						str+=" >"+deadline+"</td>";
-					} else {
+						if(parseInt(item['kind']) === 0 ){
+							// Styling for header row
+							str+="</td><td class='header item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
+							kk=0;
+						}else if(parseInt(item['kind']) === 1 ){
+							str+="<td class='section item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
+							kk=0;
+						}else if(parseInt(item['kind']) === 2 ){
+							str+="<td";
+							if(kk%2==0){
+								str+=" class='example item' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
+							}else{
+								str+=" class='example item' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							}
+							kk++;
+						}else if(parseInt(item['kind']) === 3 ){
 
+							if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
+								str+="<td><img title='Highscore' src='../Shared/icons/top10.svg' onmouseout='closeWindows();' onmouseover='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
+
+							}						
+												
+							str += "<td ";
+
+							if(kk%2==0){
+								str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							}else{
+								str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							}
+							
+							kk++;
+						}else if(parseInt(item['kind']) === 4 ){
+						
+							//new moment bool equals true
+							momentexists = item['lid'];
+										
+							// Styling for moment row
+							str+="<td class='moment item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							kk=0;
+						}else if(parseInt(item['kind']) === 5 ){
+
+							str+="<td";
+							if(kk%2==0){
+								str+=" class='example item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
+							}else{
+								str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							}
+							kk++;
+						}
+
+						if(parseInt(item['visible']) === 0){
+							str+=" style='opacity: 0.5; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 27px;background-position: left center;padding-left: 20px;' ";
+						}
+			
+						str+=">";
+						
+						if (parseInt(item['kind']) < 2) {
+							str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
+						}else if (parseInt(item['kind']) == 4) {
+							str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
+						}else if (parseInt(item['kind']) == 2) {
+							str+="<span><a style='margin-left:15px;' href='../CodeViewer/EditorV50.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
+							
+						}else if (parseInt(item['kind']) == 3 ) {
+							//-----------------------------
+							//Dugga!
+							//-----------------------------
+							str+="<div style='margin-left:15px'><a style='cursor:pointer;word-wrap:break-word;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a></div>";
+						}else if(parseInt(item['kind']) == 5){
+							if(item['link'].substring(0,4) === "http"){
+								str+= "<a style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
+							}else{
+								str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
+							}
+						}						
+															
+						str+="</td>";
+
+						// Add generic td for deadlines if one exists
+						if (deadline!== null || deadline==="undefined"){
+							str +="<td style='text-align:right;word-wrap:break-word;' ";
+							str+=" >"+deadline+"</td>";
+						} else {
+
+						}
+		
+						if(data['writeaccess']) {
+							str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' title='" + item['entryname'] + " settings'/></td>";
+							str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/UpT.svg' onclick='moveRowToTop(\""+item['lid']+"\");' title='Move " + item['entryname'] + " to top'";
+						}
+
+						str += "</tr>";
 					}
-	
-					if(data['writeaccess']) {
-						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");' title='" + item['entryname'] + " settings'/></td>";
-						str+="<td style='width:24px'><img id='dorf' style='margin:4px' src='../Shared/icons/UpT.svg' onclick='moveRowToTop(\""+item['lid']+"\");' title='Move " + item['entryname'] + " to top'";
-					}
 
-					str += "</tr>";
-				}
 				str +="</table></div>";
+				
 			}								
 		}else{
 			// No items were returned! 
@@ -790,6 +829,7 @@ function returnedSection(data)
 							
 			});							
 		}
+		
 	}else{
 		str="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-coursevers' style='display: inline-block; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
 		str+="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
@@ -799,6 +839,12 @@ function returnedSection(data)
 		
 	}
 	if(data['debug']!="NONE!") alert(data['debug']);
+	
+}
+
+function setupForum(data)
+{
+	console.log(data);
 }
 
 function showHighscore(did, lid)

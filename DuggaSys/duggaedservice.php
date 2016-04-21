@@ -1,4 +1,4 @@
-<?php 
+<?php
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
@@ -18,8 +18,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php")
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="1";		
-} 
+	$userid="1";
+}
 
 $cid = getOP('cid');
 $qid = getOP('qid');
@@ -58,25 +58,25 @@ $debug="NONE!";
 // Services
 //------------------------------------------------------------------------------------------------
 
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
+if(checklogin()){
 
 	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator) VALUES (:cid,1,1,'New Dugga','test.html',:uid)";	
+		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator) VALUES (:cid,1,1,'New Dugga','test.html',:uid)";
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':cid', $cid);
 		$stmt->bindParam(':uid', $userid);
-		
+
 		try{
 			$stmt->execute();
 		}catch (PDOException $e){
-						// Error handling to $debug		
+						// Error handling to $debug
 		}
 	}else if(strcmp($opt,"ADDVARI")===0){
-		$querystring="INSERT INTO variant(quizID,creator,disabled) VALUES (:qid,:uid,0)";	
+		$querystring="INSERT INTO variant(quizID,creator,disabled) VALUES (:qid,:uid,0)";
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':qid', $qid);
 		$stmt->bindParam(':uid', $userid);
-		
+
 		if(!$stmt->execute()) {
 			$error=$stmt->errorInfo();
 			$debug="Error updating entries".$error[2];
@@ -86,20 +86,20 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$query->bindParam(':vid', $vid);
 		$query->bindParam(':param', $param);
 		$query->bindParam(':variantanswer', $answer);
-		
+
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
-		}	
+		}
 	}else if(strcmp($opt,"TOGGLEVARI")===0){
 		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled WHERE vid=:vid;");
 		$query->bindParam(':vid', $vid);
 		$query->bindParam(':disabled', $disabled, PDO::PARAM_INT);
-		
+
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
-		}	
+		}
 	}else if(strcmp($opt,"DELVARI")===0){
 		$query = $pdo->prepare("DELETE FROM variant WHERE vid=:vid;");
 		$query->bindParam(':vid', $vid);
@@ -121,11 +121,11 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 		if($deadline=="null") $query->bindValue(':deadline', null,PDO::PARAM_INT);
 		else $query->bindParam(':deadline', $deadline);
-		
+
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
-		}	
+		}
 	}else if(strcmp($opt,"UPDATEAUTO")===0){
 			$query = $pdo->prepare("UPDATE quiz SET autograde=:autograde WHERE id=:qid;");
 			$query->bindParam(':qid', $qid);
@@ -134,7 +134,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
-			}	
+			}
 	}else if(strcmp($opt,"UPDATEDNAME")===0){
 			$query = $pdo->prepare("UPDATE quiz SET qname=:name WHERE id=:qid;");
 			$query->bindParam(':qid', $qid);
@@ -143,7 +143,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
-			}	
+			}
 	}else if(strcmp($opt,"UPDATEGRADE")===0){
 			$query = $pdo->prepare("UPDATE quiz SET gradesystem=:gradesys WHERE id=:qid;");
 			$query->bindParam(':qid', $qid);
@@ -152,7 +152,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
-			}	
+			}
 	}else if(strcmp($opt,"UPDATETEMPLATE")===0){
 			$query = $pdo->prepare("UPDATE quiz SET quizFile=:template WHERE id=:qid;");
 			$query->bindParam(':qid', $qid);
@@ -161,12 +161,12 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
-			}	
+			}
 	}else if(strcmp($opt,"SAVVARIANSWER")===0){
 			$query = $pdo->prepare("UPDATE variant SET variantanswer=:variantanswer WHERE vid=:vid;");
 			$query->bindParam(':vid', $vid);
 			$query->bindParam(':variantanswer', $answer);
-	
+
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
@@ -176,17 +176,17 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			$query = $pdo->prepare("UPDATE variant SET  param=:param WHERE vid=:vid;");
 			$query->bindParam(':vid', $vid);
 			$query->bindParam(':param', $param);
-	
+
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
 			}
-	}	
+	}
 	else if(strcmp($opt,"SAVVARIPARA")===0){
 			$query = $pdo->prepare("UPDATE variant SET  param=:param WHERE vid=:vid;");
 			$query->bindParam(':vid', $vid);
 			$query->bindParam(':param', $param);
-	
+
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
@@ -195,7 +195,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 }
 
 //------------------------------------------------------------------------------------------------
-// Retrieve Information			
+// Retrieve Information
 //------------------------------------------------------------------------------------------------
 
 $entries=array();
@@ -241,9 +241,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'gradesystem' => $row['gradesystem'],
 			'name' => $row['qname'],
 			'template' => $row['quizFile'],
-			'release' => $row['qrelease'],	
-			'deadline' => $row['deadline'],				
-			'modified' => $row['modified']				
+			'release' => $row['qrelease'],
+			'deadline' => $row['deadline'],
+			'modified' => $row['modified']
 			);
 
 		array_push($entries, $entry);
@@ -257,7 +257,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		if(endsWith($value,".html")){
 			array_push($files,substr ( $value , 0, strlen($value)-5 ));
 			$duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents("templates/".$value);
-		}		
+		}
 	}
 
 }

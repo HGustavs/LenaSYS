@@ -80,7 +80,13 @@ else:
    print("Enter mysql root account password:")
    mysqlRootPwd = raw_input(">")
    os.popen("mysql -h %s -u %s -p%s < /tmp/dbcreate.sql" % (lenasysDatabaseHost, mysqlRoot, mysqlRootPwd))
-   os.popen("mysql -h %s -u %s -p%s %s < Shared/SQL/init_db.sql" % (lenasysDatabaseHost, lenasysRoot, lenasysRootPwd, lenasysDatabaseName))
+   # This copys init_db.sql and replaces imperious database with database name.
+   os.popen("cp Shared/SQL/init_db.sql /tmp/")
+   with open("/tmp/init_db.sql") as f:
+      SQL=f.read().replace('imperious', lenasysDatabaseName)
+   with open("/tmp/init_db.sql", "w") as f:
+      f.write(SQL)
+   os.popen("mysql -h %s -u %s -p%s %s < /tmp/init_db.sql" % (lenasysDatabaseHost, lenasysRoot, lenasysRootPwd, lenasysDatabaseName))
 
    fh2 = open("../coursesyspw.php", "wb")
    fh2.write("<?php\n")
@@ -90,7 +96,26 @@ else:
    fh2.write("define(\"DB_NAME\",\""+lenasysDatabaseName+"\");\n")
    fh2.write("?>\n")
    fh2.close()
+   
+   print("Would you like to use testdata.sql to initiate database? yes/no.")
+   initTest = raw_input("[no]>")
+   if (initTest.lower() == "y") or (initTest.lower() == "yes"):
+      os.popen("cp Shared/SQL/testdata.sql /tmp/")
+      with open("/tmp/testdata.sql") as f:
+         SQL=f.read().replace('imperious', lenasysDatabaseName)
+      with open("/tmp/testdata.sql", "w") as f:
+         f.write(SQL)
+      os.popen("mysql -h %s -u %s -p%s < /tmp/testdata.sql" % (lenasysDatabaseHost, mysqlRoot, mysqlRootPwd))
+	  
    print("Installation done!")
+   
+#  
+#  open testdata pipe it to new file
+#  
+#  
+
+   
+
 
 sys.exit()
 

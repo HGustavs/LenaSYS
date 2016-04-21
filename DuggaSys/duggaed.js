@@ -17,7 +17,7 @@ $(function() {
 		onSelect: function(date){
 			var newDate = $('#release').datepicker('getDate');
 			$('#deadline').datepicker("option","minDate", newDate);
-			
+
 		}
 	});
 	$('#deadline').datepicker({
@@ -58,7 +58,7 @@ function updateVariant()
 	var vid=$("#vid").val();
 	var answer=$("#variantanswer").val();
 	var parameter=$("#parameter").val();
-	
+
 	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter},"DUGGA");
 }
 
@@ -83,7 +83,7 @@ function updateDugga()
 	var template=$("#template").val();
 	var release=$("#release").val();
 	var deadline=$("#deadline").val();
-	
+
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline},"DUGGA");
 }
 
@@ -107,12 +107,12 @@ function hideLoginPopup()
 function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 {
 	$("#editDugga").css("display","block");
-	$("#did").val(did); // Set Variant ID		
+	$("#did").val(did); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#release").val(release); // Set Release date name
 	$("#deadline").val(deadline); // Set Deadline date name
-	
-	//----------------------------------------------------	
+
+	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
 	var str="";
@@ -121,7 +121,7 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 	if(autograde==1) str+="<option selected='selected' value='1'>On</option>"
 	else str+="<option value='1'>On</option>";
 	$("#autograde").html(str);
-						
+
 	str="";
 	if(gradesys==1) str+="<option selected='selected' value='1'>U-G-VG</option>"
 	else str+="<option value='1'>U-G-VG</option>";
@@ -131,7 +131,7 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 	else str+="<option value='3'>U-3-4-5</option>";
 	$("#gradesys").html(str);
 
-	str="";		
+	str="";
 	for(var j=0;j<filez.length;j++){
 		filen=filez[j];
 		if(filen!=".."&&filen!="."){
@@ -181,7 +181,7 @@ function returnedDugga(data)
 		str+="<tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Release</th><th>Deadline</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr>";
 
 		for(i=0;i<data['entries'].length;i++){
-			
+
 			var item=data['entries'][i];
 			
 			str+="<tr class='fumo'><td onclick='collapseLight(this)'><img class='collapseArrow' src='../Shared/icons/DownT.svg'></td>";
@@ -206,7 +206,7 @@ function returnedDugga(data)
 				str+="<td><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
 			}
 			result++;
-			str+="<td><select style='font-size:1em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";		
+			str+="<td><select style='font-size:1em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
 			for(var j=0;j<filez.length;j++){
 				filen=filez[j];
 				if(filen!=".."&&filen!="."){
@@ -216,16 +216,16 @@ function returnedDugga(data)
 			}
 
 			str+="</select></td>";
-			
+
 			if(item['release']==null){
 				str+="<td></td>";
 			}else{
 			result++;
 				str+="<td>"+item['release'].substr(0,10)+"</td>";
 				//Set the min-date for a deadline to be the release date
-				$('#deadline').datepicker("option","minDate", item['release']);						
+				$('#deadline').datepicker("option","minDate", item['release']);
 			}
-				
+
 			if(item['deadline']==null){
 				str+="<td></td>";
 			}else{
@@ -233,7 +233,7 @@ function returnedDugga(data)
 			}
 
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
-			
+
 			str+="<td style='padding:4px;'>";
 			str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' title='Add variant'";
 			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");' >";
@@ -245,9 +245,9 @@ function returnedDugga(data)
 			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");' >";
 			str+="</td>";
 			str+="</tr>";
-			
+
 			var variantz=item['variants'];
-			
+
 			if(variantz.length>0){
 				str+="<tr class='fuma'><td colspan='10' style='padding:0px;'>";
 				str+="<table width='100%' class='innertable'>";
@@ -270,7 +270,7 @@ function returnedDugga(data)
 					str+="<td colspan='1'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+itemz['variantanswer']+"' /></td>";
 
 					str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
-					
+
 					str+="<td style='padding:4px;'>";
 					str+="<img id='variantPlay"+j+"' style='float:right;margin-right:4px;' src='../Shared/icons/PlayT.svg' title='Display'";
 					str+=" onclick='getVariantPreview(\""+paramz+"\",\""+answerz+"\",\""+item['template']+"\")' >";
@@ -337,21 +337,21 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 	$("#MarkCont").html(duggaPages[template]);
 
 	$.getScript("templates/"+template+".js")
-	  .done(function( script, textStatus ) {	    	    
-		
+	  .done(function( script, textStatus ) {
+
 		showFacit(duggaVariantParam,"UNK",duggaVariantAnswer,[0,0,0,0]);
-		
+
 	  })
 	  .fail(function( jqxhr, settings, exception ) {
 	  	console.log(jqxhr);
 	  	console.log(settings);
-	  	console.log(exception);	    
+	  	console.log(exception);
 	  	eval(script);
 	  	showFacit(duggaVariantParam,"UNK",duggaVariantAnswer);
 	});
 
 	$("#resultpopover").css("display", "block");
-	
+
 }
 
 
@@ -369,7 +369,7 @@ function changename(didd,num)
 	$("#name").val(name);
 	var nme=$("#name").val();
 	var did=$("#did").val();
-	
+
 	AJAXService("UPDATEDNAME",{cid:querystring['cid'],qid:did,nme:nme},"DUGGA");
 }
 function changeauto(didd,num)
@@ -381,7 +381,7 @@ function changeauto(didd,num)
 	var autograde=$("#autograde").val();
 	var did=$("#did").val();
 	var autograde=$("#autograde").val();
-	
+
 	AJAXService("UPDATEAUTO",{cid:querystring['cid'],qid:did,autograde:autograde},"DUGGA");
 }
 function changegrade(didd,num)
@@ -392,13 +392,13 @@ function changegrade(didd,num)
 	$("#gradesys").val(auto);
 	var did=$("#did").val();
 	var gradesys=$("#gradesys").val();
-	
+
 	AJAXService("UPDATEGRADE",{cid:querystring['cid'],qid:did,gradesys:gradesys},"DUGGA");
 
 }
 function changefile(didd,num)
 {
-	str="";		
+	str="";
 	for(var j=0;j<filez.length;j++){
 			filen=filez[j];
 			if(filen!=".."&&filen!="."){
@@ -413,7 +413,7 @@ function changefile(didd,num)
 	$("#template").val(templates);
 	var did=$("#did").val();
 	var template=$("#template").val();
-	
+
 	AJAXService("UPDATETEMPLATE",{cid:querystring['cid'],qid:did,template:template},"DUGGA");
 }
 
@@ -425,7 +425,7 @@ function changeparam(vidd,num)
 	$("#parameter").val(paraa);
 	var vid=$("#vid").val();
 	var parameter=$("#parameter").val();
-	
+
 	AJAXService("SAVVARIPARA",{cid:querystring['cid'],vid:vid,parameter:parameter},"DUGGA");
 }
 function changeanswer(vidd,num)
@@ -483,4 +483,5 @@ function collapseLight(elem){
    		data: {ckn : 'duggedC',clist : temparr.toString()},
    	});
 
-   }
+}
+
