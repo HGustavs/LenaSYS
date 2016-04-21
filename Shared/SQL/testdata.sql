@@ -618,3 +618,8 @@ insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,opened,subm
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,opened,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', '2020-02-20 10:20:20', NULL, '97732', NULL, NULL);
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,opened,submitted,marked,vers,creator,score) values ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', '2020-02-20 10:20:20', NULL, '97732', NULL, NULL);
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,opened,submitted,marked,vers,creator,score) values ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', '2020-02-20 10:20:20', NULL, '97732', NULL, NULL);
+
+/* testdata for forums */
+insert into thread (cid, uid, topic, description, datecreated, lastcommentedon) values (1, 1, "Example thread", "Example text",current_timestamp,current_timestamp);
+insert into threadcomment (threadid, uid, text, datecreated) values (1, 1, "Example comment",current_timestamp);
+INSERT INTO `threadaccess`(`threadid`, `uid`) VALUES (1, 1);

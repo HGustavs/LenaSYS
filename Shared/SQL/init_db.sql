@@ -485,10 +485,6 @@ create table threadaccess(
     foreign key(uid) references user(uid) ON DELETE CASCADE
 )CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
-insert into thread (cid, uid, topic, description, datecreated, lastcommentedon) values (1, 1, "Example thread", "Example text",current_timestamp,current_timestamp);
-insert into threadcomment (threadid, uid, text, datecreated) values (1, 1, "Example comment",current_timestamp);
-INSERT INTO `threadaccess`(`threadid`, `uid`) VALUES (1, 1);
-
 /*
 INSERT INTO programkurs VALUES 	(45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),
 								(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),
