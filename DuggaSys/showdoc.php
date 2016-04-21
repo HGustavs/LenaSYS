@@ -87,7 +87,8 @@
 				$instring = preg_replace("/\!{3}(.*?\S),(.*?\S)\!{3}/","<a href='$1' target='_blank'>$2</a>",$instring);
 
 				// External img src !!!
-				// |||src|||	
+				// |||src|||
+				// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear				
 				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
 
 				// External mp4 src !!!
@@ -174,7 +175,7 @@
 			// If we have access rights, read the file securely to document
 			if(is_numeric($fid)){ 
 				// Check if it is a number or a filename
-				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and fileid=:fid;");
+				$query = $pdo->prepare("SELECT filename,kind FROM fileLink WHERE cid=:cid AND fileid=:fid;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fid', $fid);
 				$result = $query->execute();
@@ -187,7 +188,7 @@
 					$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 				}
 			}else if($fname!="UNK"){
-				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
+				$query = $pdo->prepare("SELECT filename,kind FROM fileLink WHERE (cid=:cid or isGlobal='1') AND UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fname', $fname);
 				$result = $query->execute();
