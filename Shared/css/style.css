@@ -633,8 +633,8 @@ header td {
     width: 350px;
     min-height: 100px;
     z-index: 9000;
-    position: fixed;
-    top: 40%;
+    position: fixed !important;
+    top: 30%;
     left: 50%;
     margin-left: -178px;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
@@ -651,6 +651,11 @@ header td {
     left: 50%;
     margin-left: -178px;
     text-align: center;
+}
+
+.loginBox textarea{
+    max-width: 100%;
+    resize: none;
 }
 
 .loginBox textarea, #import{
