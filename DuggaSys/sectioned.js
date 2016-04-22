@@ -614,8 +614,11 @@ function returnedSection(data)
 										}
 									}
 								}
-		
-								str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;' onclick='collapseLight(this)'>";
+								
+								if (item['kind'] == 4)
+									str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;' onclick='collapseLight(this)'>";
+								else
+									str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;'>";
 
 								if((grady==-1 || grady == 0 || grady==null) && status==="") {
 										// Nothing submitted nor marked (White)
