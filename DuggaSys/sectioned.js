@@ -485,7 +485,7 @@ function returnedSection(data)
 		
 		//Start of forum layout
 		str+="<div class='course' style='text-align:left;'><div id='coure-coursename' style='display: inline-block;margin-left:10px;'>Forum</div></div>";
-		str+="<div id='Sectionlistc' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
+		str+="<div id='Sectionlist' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
 		
 		if(data['thread'].length==0){
 			str+="<p style='margin-left:5px;'>There are no threads for this course</p>";
