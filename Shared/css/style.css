@@ -925,13 +925,13 @@ header td {
 }
 
 input{
-	-webkit-appearance: none;
-	-webkit-border-radius:0; 
-    border-radius:0;
+	
 }
 
-input[type="radio"]{
-   -webkit-appearance:radio;
+input[type="button"]{
+   -webkit-appearance: none;
+    -webkit-border-radius:0; 
+    border-radius:0;
 }
 
 input.option {
