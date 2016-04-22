@@ -202,6 +202,7 @@ if(checklogin()){
 			}
 			
 		}else if(strcmp($opt, "CPYVRS")===0){
+			///prepare a stored procedure call, bind params for variables
 			$query = $pdo->prepare("CALL copyVersionItems(:overs,:nvers)");
 			$query->bindParam(":overs",$copycourse,PDO::PARAM_STR);
 			$query->bindParam("nvers",$versid,PDO::PARAM_STR);

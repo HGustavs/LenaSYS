@@ -356,7 +356,7 @@ function createVersion(){
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
 	var copycourse = $("#copyvers").val();
-	console.log(makeactive);
+
 	if(coursevers=="null"){
 		makeactive=true;
 	}
@@ -369,7 +369,8 @@ function createVersion(){
 		coursecode : coursecode,
 		coursename : coursename
 	}, "SECTION");
-
+	
+	//if copy course is not 0, run the copy call
 	if (!copycourse == 0){
 		//create a copy of course version
 		AJAXService("CPYVRS", {
