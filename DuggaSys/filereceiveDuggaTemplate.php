@@ -15,8 +15,13 @@ if(isset($_SESSION['uid'])){
 }else{
 	$userid="UNK";		
 } 
+
+//is it a request to delete template or add template
+$request = getOP('request');
+
 //access if user is superuser
-if (checklogin() && isSuperUser($userid)) {
+$ha = checklogin() && isSuperUser($userid);
+if ($ha && $request == "add") {
 	//allowed fileformats
 	$allowedT = array("image/png", "text/html", "application/javascript");
 	$allowedX = array("png", "html", "js");
@@ -57,11 +62,39 @@ if (checklogin() && isSuperUser($userid)) {
 
 	}
 }
+else if($ha && $request == "remove"){
+	$currcvd=getcwd();
+	//get template to remove	
+	$file = getOP("templateDropdown");
+	//file name for the js- and html file
+	$jsFile = $file.".js";
+	$htmlFile = $file.".html";
+	//add path
+	$jsFile = $currcvd."/templates/".$jsFile;
+	$htmlFile = $currcvd."/templates/".$htmlFile;
+	if (!unlink($jsFile))
+  	{
+ 	 	echo ("Error deleting $jsFile <br>");
+  	}
+	else
+  	{
+  		echo ("Deleted $jsFile <br>");
+  	}
+  	if (!unlink($htmlFile))
+  	{
+ 	 	echo ("Error deleting $htmlFile <br>");
+  	}
+	else
+  	{
+  		echo ("Deleted $htmlFile <br>");
+  	}
+}
 else{
 	echo "not logged in/not superuser.";
 }
 
-
+//return to previous page after 2s
+header("Refresh: 2; URL={$_SERVER["HTTP_REFERER"]}");
 ?>
 </head>
 <body>
