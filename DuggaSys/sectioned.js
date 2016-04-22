@@ -435,6 +435,7 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
+	var storeVersions = [];
 
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
@@ -447,8 +448,11 @@ function returnedSection(data)
 				if (retdata['courseid'] == item['cid']) {
 					var vvers = item['vers'];
 					var vname = item['versname'];
+					storeVersions.push(vvers);
 					if(retdata['coursevers']==vvers){
 						var versionname=vname;
+						//Storing the current version number as it's used later on.
+						var versionversion = vvers;
 					}
 				}
 			}
@@ -465,6 +469,14 @@ function returnedSection(data)
 			str+=";'>";	
 			str+="<input type='button' class='submit-button' value='New version' title='Create a new version of this course' onclick='showCreateVersion();'>";
 			str+="</div>";
+			
+			//This function lists the versions in the the drop down list, leaving the versionversion selected.
+			$.each(storeVersions,function(i,e){
+				if(e == versionversion)
+					$("#copyvers").append('<option value="'+e+'" selected>'+e+'</option>');
+				else
+					$("#copyvers").append('<option value="'+e+'">'+e+'</option>');
+			});
 			
 			str+="<div class='course-menu--options'>";
 			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";
