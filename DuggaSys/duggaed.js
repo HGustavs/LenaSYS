@@ -167,7 +167,6 @@ function returnedDugga(data)
 	var result = 0;
 	filez = data['files'];
 	duggaPages = data['duggaPages'];
-	console.log(data);
 	str="";
 	if (data['files'].length > 0) {
 
