@@ -237,14 +237,12 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	return threadOptions;
 }
 
-<<<<<<< HEAD
 
 function replyUI(commentid)
 {
 	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
 }
 
-<<<<<<< HEAD
 function replyComment(array)
 {
 	if (array["accessDenied"]){
