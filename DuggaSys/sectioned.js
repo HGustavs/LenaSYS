@@ -635,7 +635,16 @@ function returnedSection(data)
 								}else if(grady==3){
 										//	Marked VG (Green)		
 										str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
-								}else if(grady>3){
+								}else if(grady==4){
+										//	Marked VG (Green)		
+										str+="<div class='GreenLight'  title='Grade: 3\nDate: "+marked+"' ></div>";
+								}else if(grady==5){
+										//	Marked VG (Green)		
+										str+="<div class='GreenLight'  title='Grade: 4\nDate: "+marked+"' ></div>";
+								}else if(grady==6){
+										//	Marked VG (Green)		
+										str+="<div class='GreenLight'  title='Grade: 5\nDate: "+marked+"' ></div>";
+								}else if(grady>6){
 										//this seems to be needed for the page to load	
 										str+="<div class='GreenLight'  title='Status: Unknown - add other grade system\nDate: "+marked+"' ></div>";
 								}
