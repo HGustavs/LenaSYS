@@ -200,6 +200,8 @@ if(checklogin()){
 				$debug="Error updating entries".$error[2];
 			}
 			
+		}else if(strcmp($opt, "CPYVRS")===0){
+			
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);

@@ -355,18 +355,31 @@ function createVersion(){
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
+	var copyCourse = $("#copyvers").val();
 	
 	if(coursevers=="null"){
 		makeactive=true;
 	}
-	
-	AJAXService("NEWVRS", {
-		cid : cid,
-		versid : versid,
-		versname : versname,
-		coursecode : coursecode,
-		coursename : coursename
-	}, "SECTION");
+
+	if (copyCourse == 0){
+		//create a fresh course version
+		AJAXService("NEWVRS", {
+			cid : cid,
+			versid : versid,
+			versname : versname,
+			coursecode : coursecode,
+			coursename : coursename
+		}, "SECTION");
+	}else{
+		//create a copy of course version
+		AJAXService("CPYVRS", {
+			cid : cid,
+			versid : versid,
+			versname : versname,
+			coursecode : coursecode,
+			coursename : coursename
+		}, "SECTION");
+	}
 	
 	if(makeactive){
 		AJAXService("CHGVERS", {
@@ -471,6 +484,7 @@ function returnedSection(data)
 			str+="</div>";
 			
 			//This function lists the versions in the the drop down list, leaving the versionversion selected.
+			$("#copyvers").append('<option value="0" selected>Create fresh version</option>');
 			$.each(storeVersions,function(i,e){
 				if(e == versionversion)
 					$("#copyvers").append('<option value="'+e+'" selected>'+e+'</option>');
