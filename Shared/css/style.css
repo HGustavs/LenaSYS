@@ -299,9 +299,13 @@ hr {
 		width:22px;
 		height:22px;
 		margin: 0px 10px;
-		background: radial-gradient(white, grey, white);
+		/*background: radial-gradient(white, grey, white);*/
+		background-image: url("../icons/NoLight.png");
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-position: center;
 		border-radius:11px;
-		border:1px solid #000;
+		/*border:1px solid #000;*/
 }
 
 
@@ -309,27 +313,39 @@ hr {
         width:22px;
         height:22px;
         margin: 0px 10px;
-		background: radial-gradient(yellow 50%, grey, white 60%);
+		/*background: radial-gradient(yellow 50%, grey, white 60%);*/
+		background-image: url("../icons/YellowLight.png");
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-position: center;
         border-radius:11px;
-        border:1px solid #000;
+        /*border:1px solid #000;*/
 }
 
 .RedLight{
 		width:22px;
 		height:22px;
 		margin: 0px 10px;
-		background: radial-gradient(red 55%, grey, white 60%);
+		/*background: radial-gradient(red 55%, grey, white 60%);*/
+		background-image: url("../icons/RedLight.png");
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-position: center;
 		border-radius:11px;
-        border:1px solid #000;
+        /*border:1px solid #000;*/
 }
 
 .GreenLight{
 		width:22px;
 		height:22px;
 		margin: 0px 10px;
-		background: radial-gradient(green 55%, grey, white 60%);
+		/*background: radial-gradient(green 55%, grey, white 60%);*/
+		background-image: url("../icons/GreenLight.png");
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-position: center;
 		border-radius:11px;
-		border:1px solid #000;
+		/*border:1px solid #000;*/
 }
 
 .hidden {
