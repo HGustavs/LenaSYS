@@ -305,7 +305,7 @@ function updateItem()
 	kind=$("#type").val();
 	link;
 	//only tests has links to duggas
-	if(kind == 3)
+	if(kind == 3 || kind == 2)
 		link=$("#link").val();
 	else
 		link = "UNK";
@@ -485,7 +485,7 @@ function returnedSection(data)
 		
 		//Start of forum layout
 		str+="<div class='course' style='text-align:left;'><div id='coure-coursename' style='display: inline-block;margin-left:10px;'>Forum</div></div>";
-		str+="<div id='Sectionlistc' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
+		str+="<div id='Sectionlist' style='margin-bottom:20px;'><table style='width:100%;table-layout:fixed;'>"
 		
 		if(data['thread'].length==0){
 			str+="<p style='margin-left:5px;'>There are no threads for this course</p>";
@@ -614,8 +614,11 @@ function returnedSection(data)
 										}
 									}
 								}
-		
-								str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;' onclick='collapseLight(this)'>";
+								
+								if (item['kind'] == 4)
+									str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;' onclick='collapseLight(this)'>";
+								else
+									str+="<td class='whiteLight' style='width:36px; height:31.5px; vertical-align:center;overflow:hidden;'>";
 
 								if((grady==-1 || grady == 0 || grady==null) && status==="") {
 										// Nothing submitted nor marked (White)
