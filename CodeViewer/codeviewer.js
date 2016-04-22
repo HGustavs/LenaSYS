@@ -970,7 +970,7 @@ function tokenize(instring,inprefix,insuffix)
 	//instring = replaceAll("&gt;",">",instring);
 	instring = replaceAll("&amp;","&",instring);
 	// this will replace all "&#9;" in the text that the function tabLine adds were a tab (\t) is placed.
-	instring = replaceAll("&#9;","    ",instring); 
+	instring = replaceAll("&#9;"," ",instring); 
 
 	var from;                   	// index of the start of the token.
 	var i = 0;                  	// index of the current character.
