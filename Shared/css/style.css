@@ -930,6 +930,10 @@ input{
     border-radius:0;
 }
 
+input[type="radio"]{
+   -webkit-appearance:radio;
+}
+
 input.option {
     float: left;
 }
