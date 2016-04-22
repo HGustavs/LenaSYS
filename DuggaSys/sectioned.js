@@ -355,29 +355,30 @@ function createVersion(){
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
-	var copyCourse = $("#copyvers").val();
+	var copycourse = $("#copyvers").val();
 	
 	if(coursevers=="null"){
 		makeactive=true;
 	}
 
-	if (copyCourse == 0){
-		//create a fresh course version
-		AJAXService("NEWVRS", {
-			cid : cid,
-			versid : versid,
-			versname : versname,
-			coursecode : coursecode,
-			coursename : coursename
-		}, "SECTION");
-	}else{
+	//create a fresh course version
+	AJAXService("NEWVRS", {
+		cid : cid,
+		versid : versid,
+		versname : versname,
+		coursecode : coursecode,
+		coursename : coursename
+	}, "SECTION");
+	
+	if (!copycourse == 0){
 		//create a copy of course version
 		AJAXService("CPYVRS", {
 			cid : cid,
 			versid : versid,
 			versname : versname,
 			coursecode : coursecode,
-			coursename : coursename
+			coursename : coursename,
+			copycourse : copycourse
 		}, "SECTION");
 	}
 	

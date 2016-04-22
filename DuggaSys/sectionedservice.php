@@ -37,6 +37,7 @@ $highscoremode=getOP('highscoremode');
 $versid=getOP('versid');
 $coursename=getOP('coursename');
 $versname=getOP('versname');
+$copycourse=getOP('copycourse');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $log_uuid = getOP('log_uuid');
@@ -201,7 +202,7 @@ if(checklogin()){
 			}
 			
 		}else if(strcmp($opt, "CPYVRS")===0){
-			
+			$query = $pdo->prepare();
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);
