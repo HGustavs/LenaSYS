@@ -202,7 +202,15 @@ if(checklogin()){
 			}
 			
 		}else if(strcmp($opt, "CPYVRS")===0){
-			$query = $pdo->prepare();
+			$query = $pdo->prepare("CALL copyVersionItems(:overs,:nvers)");
+			$query->bindParam(":overs",$copycourse,PDO::PARAM_STR);
+			$query->bindParam("nvers",$versid,PDO::PARAM_STR);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries".$error[2];
+			}
+
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);
