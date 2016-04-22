@@ -925,8 +925,12 @@ header td {
 }
 
 input{
-	-webkit-appearance: none;
-	-webkit-border-radius:0; 
+	
+}
+
+input[type="button"]{
+   -webkit-appearance: none;
+    -webkit-border-radius:0; 
     border-radius:0;
 }
 
