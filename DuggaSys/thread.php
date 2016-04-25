@@ -86,9 +86,6 @@ if (file_exists("../.git/refs/heads/master")) {
   				echo "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
   			echo "</div>";
   		echo "</div>";
-		echo "<div class='threadMakeComment'>";
-  			
-		echo "</div>";
     }
     ?>
 
