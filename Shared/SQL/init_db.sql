@@ -469,6 +469,13 @@ CREATE TABLE list (
 	CONSTRAINT PK_list PRIMARY KEY(listid)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
+CREATE TABLE options(
+	id					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	option				TEXT,
+	value				TEXT,
+	PRIMARY KEY(id)
+) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
+
 create table thread(
     threadid int(10) unsigned not null AUTO_INCREMENT,
     cid int(10) unsigned not null,
