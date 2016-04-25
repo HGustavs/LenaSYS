@@ -134,6 +134,7 @@ function accessDenied(data)
 
 function returnedThread(data)
 {
+	console.log(data);
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
@@ -157,13 +158,13 @@ function returnedThread(data)
 		$(".threadTopic").html(data["thread"]["topic"]);
 		$("#threadDescr").html(data["thread"]["description"]);
 		var str = "<span id='threadDate'>";
-				str += 	data["thread"]["datecreated"].substring(0, 16);
-				str += "</span> by <span id='threadCreator'>a97marbr</span>";
+		str += 	data["thread"]["datecreated"].substring(0, 16);
+		str += "</span> by <span id='threadCreator'>a97marbr</span>";
 		$("#threadDetails").html(str);
 		
 		if(data['thread']['locked']==1){
-			var str = "<p style='margin-left:20px;'>This thread has been locked and can no longer be commented on.</p>";
-			$(".threadMakeComment").html(str);
+			var poo = "<p style='margin-left:20px;'>This thread has been locked and can no longer be commented on.</p>";
+			$(".threadMakeComment").html(poo);
 		}else{
 			if($('div.threadMakeComment').length){
 				var str = "<div class='threadMakeComment'>";
@@ -176,7 +177,7 @@ function returnedThread(data)
 				str += "</div>";
 				str += "</div>";
 				$(".threadMakeComment").html(str);
-			}	
+			}
 		}
 	}
 }
@@ -223,28 +224,26 @@ function returnedComments(data)
 
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions;
-		if (threadAccess !== "public"){
-			threadOptions = "<input id='replycommentbutton' class='submit-button' type='button' value='Reply' onclick='replyUI("+commentid+");'>";
+	if (threadAccess !== "public"){
+		threadOptions = "<input id='replycommentbutton' class='submit-button' type='button' value='Reply' onclick='replyUI("+commentid+");'>";
 
-			if (uid === commentuid){
-				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
-			}
-			if (threadAccess === "op" || threadAccess === "super" || uid === commentuid){
-				threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment("+commentid+");\">";
-			}
+		if (uid === commentuid){
+			threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
+		}
+		if (threadAccess === "op" || threadAccess === "super" || uid === commentuid){
+			threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment("+commentid+");\">";
 		}
 	}
 	return threadOptions;
 }
 
-<<<<<<< HEAD
+
 
 function replyUI(commentid)
 {
 	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
 }
 
-<<<<<<< HEAD
 function replyComment(array)
 {
 	if (array["accessDenied"]){
