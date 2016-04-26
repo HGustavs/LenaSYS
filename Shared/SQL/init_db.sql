@@ -558,6 +558,29 @@ create view studentresultCourse  as
 		and subparts.parthp = partresult.hp
 	where partresult.grade != 'u';
 
+/*
+	A procedure that creates a temporary table to hold all the items from
+	a copied course. Then changes all the version numbers and inserts it
+	back into the database as new data. Ending on dropping the temp table.
+*/
+DELIMITER //
+CREATE PROCEDURE copyVersionItems(IN oldvers INT(10),IN newvers INT(10))
+BEGIN
+SET @oldvers = oldvers;
+SET @newvers = newvers;
+CREATE TEMPORARY TABLE tmpListEntry SELECT cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode FROM listentries WHERE vers = oldvers;
+UPDATE tmpListEntry SET vers = newvers WHERE vers = oldvers;
+INSERT INTO listentries (cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode) SELECT cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode FROM tmpListEntry WHERE vers = newvers;
+DROP TABLE tmpListEntry;
+
+CREATE TEMPORARY TABLE tmpSubmission SELECT uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind FROM submission WHERE vers = oldvers;
+UPDATE tmpSubmission SET vers = newvers WHERE vers = oldvers;
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind) SELECT uid,cid,vers,did,seq,fieldnme,filepath,filename,extension,mime,kind FROM tmpSubmission WHERE vers = newvers;
+DROP TABLE tmpSubmission;
+END //
+DELIMITER ;
+
+
 /* updatesd info in user table */
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
 update user set firstname="Johan", lastname="Grimling" where username="Grimling";

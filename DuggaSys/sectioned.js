@@ -355,11 +355,13 @@ function createVersion(){
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
-	
+	var copycourse = $("#copyvers").val();
+
 	if(coursevers=="null"){
 		makeactive=true;
 	}
-	
+
+	//create a fresh course version
 	AJAXService("NEWVRS", {
 		cid : cid,
 		versid : versid,
@@ -367,6 +369,19 @@ function createVersion(){
 		coursecode : coursecode,
 		coursename : coursename
 	}, "SECTION");
+	
+	//if copy course is not 0, run the copy call
+	if (!copycourse == 0){
+		//create a copy of course version
+		AJAXService("CPYVRS", {
+			cid : cid,
+			versid : versid,
+			versname : versname,
+			coursecode : coursecode,
+			coursename : coursename,
+			copycourse : copycourse
+		}, "SECTION");
+	}
 	
 	if(makeactive){
 		AJAXService("CHGVERS", {
@@ -435,6 +450,7 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
+	var storeVersions = [];
 
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
@@ -447,8 +463,11 @@ function returnedSection(data)
 				if (retdata['courseid'] == item['cid']) {
 					var vvers = item['vers'];
 					var vname = item['versname'];
+					storeVersions.push(vvers);
 					if(retdata['coursevers']==vvers){
 						var versionname=vname;
+						//Storing the current version number as it's used later on.
+						var versionversion = vvers;
 					}
 				}
 			}
@@ -465,6 +484,15 @@ function returnedSection(data)
 			str+=";'>";	
 			str+="<input type='button' class='submit-button' value='New version' title='Create a new version of this course' onclick='showCreateVersion();'>";
 			str+="</div>";
+			
+			//This function lists the versions in the the drop down list, leaving the versionversion selected.
+			$("#copyvers").append('<option value="0" selected>Create fresh version</option>');
+			$.each(storeVersions,function(i,e){
+				if(e == versionversion)
+					$("#copyvers").append('<option value="'+e+'" selected>'+e+'</option>');
+				else
+					$("#copyvers").append('<option value="'+e+'">'+e+'</option>');
+			});
 			
 			str+="<div class='course-menu--options'>";
 			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";

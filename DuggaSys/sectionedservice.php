@@ -37,6 +37,7 @@ $highscoremode=getOP('highscoremode');
 $versid=getOP('versid');
 $coursename=getOP('coursename');
 $versname=getOP('versname');
+$copycourse=getOP('copycourse');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $log_uuid = getOP('log_uuid');
@@ -200,6 +201,17 @@ if(checklogin()){
 				$debug="Error updating entries".$error[2];
 			}
 			
+		}else if(strcmp($opt, "CPYVRS")===0){
+			///prepare a stored procedure call, bind params for variables
+			$query = $pdo->prepare("CALL copyVersionItems(:overs,:nvers)");
+			$query->bindParam(":overs",$copycourse,PDO::PARAM_STR);
+			$query->bindParam("nvers",$versid,PDO::PARAM_STR);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries".$error[2];
+			}
+
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);
