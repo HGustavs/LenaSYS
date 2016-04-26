@@ -23,6 +23,7 @@ if(isset($_SESSION['uid'])){
 
 $cid = getOP('cid');
 $opt = getOP('opt');
+$threadUID = getOP('threadUID');
 
 $threadId = getOPG('threadId');
 if ($threadId==="UNK"){
@@ -228,6 +229,21 @@ else if(strcmp($opt,"MAKEREPLYCOMMENT")===0){
 	}else{
 		$accessDenied = "You do not have permisson to unlock this thread.";
 	}
+}else if(strcmp($opt,"EDITTHREAD")===0){
+	// Access check
+	if ($threadAccess==="op" || $threadAccess==="super"){
+		$query = $pdo->prepare("UPDATE thread SET topic=:topic,description=:description WHERE threadid=:threadid");
+		$query->bindParam(':threadid', $threadId);
+		$query->bindParam(':topic', $topicT);
+		$query->bindParam(':description', $descriptionT);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}
+	}else{
+		$accessDenied = "You do not have permisson to edit this thread.";
+	}
 }
 
 
@@ -298,6 +314,17 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"GETCOURSES")===0){
 	$query = $pdo->prepare("SELECT cid, coursecode, coursename FROM course");
 	$query->bindParam(':threadid', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+}else if(strcmp($opt,"GETTHREADCREATOR")===0){
+	$query = $pdo->prepare("SELECT user.username FROM user,thread WHERE (thread.threadid=:threadid AND thread.uid=user.uid AND user.uid=:threadUID)");
+	$query->bindParam(':threadid', $threadId);
+	$query->bindParam(':threadUID', $threadUID);
 
 	if(!$query->execute()){
 		$error=$query->errorInfo();
