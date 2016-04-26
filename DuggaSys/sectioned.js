@@ -26,7 +26,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 {
 	
 	// Ensures that you can't change anything if the moment is hidden.
-	if(evisible==1){
+	if(evisible!=0){
 		$('#sectionname').prop('disabled', true);
 		$('#type').prop('disabled', true);
 		$('#link').prop('disabled', true);
@@ -122,6 +122,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='0'>Hidden</option>";
 	if(evisible==1) str+="<option selected='selected' value='1'>Public</option>"
 	else str+="<option value='1'>Public</option>";
+	if(evisible==2) str+="<option selected='selected' value='2'>Login</option>"
+	else str+="<option value='2'>Login</option>";
 	$("#visib").html(str);
 	
 	// Add hichscore mode options
@@ -546,8 +548,8 @@ function returnedSection(data)
  				}
 				//str += "<div>";
 
-				// If visible or we are a teacher/superuser
-				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
+				// If public, or we are logged in, or we are a teacher/superuser
+				if (parseInt(item['visible']) === 1 || parseInt(item['visible']) === 2 && data['readaccess'] || data['writeaccess']) {		
 
 					// Content table 		
 					str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
@@ -636,13 +638,13 @@ function returnedSection(data)
 										//	Marked VG (Green)		
 										str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
 								}else if(grady==4){
-										//	Marked VG (Green)		
+										//	Marked 3 (Green)		
 										str+="<div class='GreenLight'  title='Grade: 3\nDate: "+marked+"' ></div>";
 								}else if(grady==5){
-										//	Marked VG (Green)		
+										//	Marked 4 (Green)		
 										str+="<div class='GreenLight'  title='Grade: 4\nDate: "+marked+"' ></div>";
 								}else if(grady==6){
-										//	Marked VG (Green)		
+										//	Marked 5 (Green)		
 										str+="<div class='GreenLight'  title='Grade: 5\nDate: "+marked+"' ></div>";
 								}else if(grady>6){
 										//this seems to be needed for the page to load	
