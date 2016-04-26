@@ -22,6 +22,11 @@ $(function()
 {
 	$("#release").datepicker({ dateFormat : "yy-mm-dd" });
 	$("#deadline").datepicker({ dateFormat : "yy-mm-dd" });
+
+	$("#selectDisplayVersion").change(function() {
+		AJAXService("GET", { cid : querystring['cid'], vers: $(this).val() }, "RESULT");
+	});
+
 });
 
 //----------------------------------------
