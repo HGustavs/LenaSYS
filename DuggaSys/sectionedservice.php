@@ -135,22 +135,6 @@ if(checklogin()){
 
 					$link=$pdo->lastInsertId();
 			}
-			if($kind==3) {
-				$gradesys_temp = 0;
-				$query1 = $pdo->prepare("SELECT gradesystem FROM listentries WHERE moment=:moment LIMIT 1");
-				if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
-				else $query1->bindParam(':moment', $moment);
-				
-				if(!$query1->execute()) {
-					$error=$query1->errorInfo();
-					$debug="Error reading entries".$error[2];
-				}
-					
-				foreach($query1->fetchAll() as $row) {
-								$gradesys_temp=$row['gradesystem'];
-				}
-
-			}
 				
 				$query = $pdo->prepare("UPDATE listentries SET highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
 
@@ -164,10 +148,7 @@ if(checklogin()){
 				$query->bindParam(':kind', $kind);
 				$query->bindParam(':link', $link);
 				$query->bindParam(':visible', $visibility);
-				if ($kind==3)
-					$query->bindParam(':gradesys', $gradesys_temp);
-				else
-					$query->bindParam(':gradesys', $gradesys);
+				$query->bindParam(':gradesys', $gradesys);
 		
 				if(!$query->execute()) {
 					$error=$query->errorInfo();

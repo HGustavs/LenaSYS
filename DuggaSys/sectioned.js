@@ -199,7 +199,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","block");
 	// Moment
 	}else if(kind==4){
@@ -266,7 +266,7 @@ function changedType()
 			}
 			$("#link").html(iistr);
 			$("#inputwrapper-link").css("display","block");
-			$("#inputwrapper-gradesystem").css("display","block");
+			$("#inputwrapper-gradesystem").css("display","none");
 			$("#inputwrapper-highscore").css("display","block");
 			$("#inputwrapper-tabs").css("display","none");	
 		}else if(kind==4){
