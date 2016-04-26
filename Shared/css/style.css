@@ -925,12 +925,12 @@ header td {
 }
 
 input{
-	
+
 }
 
 input[type="button"]{
    -webkit-appearance: none;
-    -webkit-border-radius:0; 
+    -webkit-border-radius:0;
     border-radius:0;
 }
 
@@ -1594,9 +1594,16 @@ padding: 10px;
 }
 
 .createThreadOptionLabel {
+  clear: both;
+  float: left;
   font-size: 0.9em;
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.createThreadOption {
+  float: left;
+  margin: 20px 0 10px 10px;
 }
 
 #submitThreadButton {
