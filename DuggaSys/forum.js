@@ -81,7 +81,7 @@ function makeComment(commentid)
 			commentcontent=$(".repliedcomment").html();
 		}
 	});
-	var text = commentcontent + $(".commentInput").val();
+	var text = commentcontent + $(".commentInput").val() + "\r\n";
 	if(text.length > 0)
 	{
 		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKECOMMENT");
@@ -90,6 +90,8 @@ function makeComment(commentid)
 	{
 
 	}
+	$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
+  	"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment()\">");
 }
 
 function checkComment()
@@ -197,22 +199,24 @@ function returnedComments(data)
 
 		// Iterates through all the comments
 		$.each(data["comments"], function(index, value){
-
-			
+			var text= value["text"];
+			if(!value['replyid']){
+				//console.log(value['replyid']);
+				console.log('hej alla glada laxar');
+				text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>");
+			}else{
+				text = "Citat:<br/><div class=\"replycommentbox\"><p style=\"padding: 5px; margin: 0;\">" + text.replace(/\r\n/g, "</p>").replace(/\n/g, "</div><p style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
+			}
 		
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
-				"<div class=\"commentContent\"><div class=\"commentContentText\">" +  value['text']  +"</div></div>" +
+				"<div class=\"commentContent\"><div class=\"commentContentText\">" +  text  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
 				"</div>" +
 
 				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
-
-
-
-
 		});
 
 		threadCommentStr += "</div>";
@@ -246,12 +250,12 @@ function replyUI(commentid)
 
 function replyComment(array)
 {
+	//"<div class=\"repliedcomment\">"+value["text"]+"</div>"+"
 	if (array["accessDenied"]){
 		accessDenied(array);
 	}else {
 		$.each(array["comments"], function(index, value){
-			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</div>"+
-			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
+			$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+value["text"]+"</textarea>"+
   			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+value["commentid"]+")\">");
 		});
 		$('.commentInput').css("border-top", "0px");

@@ -1604,3 +1604,9 @@ padding: 10px;
   margin-right: 0;
   margin-bottom: 20px;
 }
+
+.replycommentbox {
+	border: 1px solid #A1A1A1;
+	display: inline-block;
+	background-color: #F2F2F2;
+}
