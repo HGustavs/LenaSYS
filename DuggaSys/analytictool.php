@@ -27,8 +27,10 @@ pdoConnect();
 
 <?php
 
+	$noup="NONE";
+	$loginvar="ANALYTIC";
 	include '../Shared/navheader.php';
-
+	setcookie("loginvar", $loginvar);
 	
 	// Show analytics if user is superuser.
 	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
