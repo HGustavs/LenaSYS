@@ -143,9 +143,7 @@ function reset()
 		boxes.push(new movableBox(box.scx1,box.scy1,box.scx2,box.scy2,box.scx3,box.scy3,box.scx4,box.scy4,box.texto,box.kind,box.colr,box.clip,box.txtcolr,box.txtx,box.txty));
 	}
 
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
+	Timer.reset();
 	ClickCounter.initialize();
 
 }
@@ -270,21 +268,19 @@ function tick()
 //----------------------------------------------------------------------------------
 
 function startDuggaHighScore(){
-	Timer.startTimer();
-	ClickCounter.initialize();
-
 	if(querystring['highscoremode'] == 1) {
-		if(dataV['score'] > 0){
-			Timer.score = dataV['score'];
+		Timer.startTimer();
+		if(data['score'] > 0){
+			Timer.score = data['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		if(dataV['score'] > 0){
-			ClickCounter.score = dataV['score'];
+		ClickCounter.initialize();
+		if(data['score'] > 0){
+			ClickCounter.score = data['score'];
+			console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
-	} else {
-		score = 0;
 	}
 }			
 			// Scaleable / Movable Box

@@ -209,11 +209,12 @@ function getAccessType($userId, $courseId)
 /**
  * Returns the access a specified user has on the specified course
  * @param int $userId User ID of the user to look up
+  * @param int $moment moment ID of the dugga to look up
  * @param int $courseId Course ID of the course to look up access on
  * @param int $quizid Quiz ID of the quiz to look up
  * @return returns true/false depending on if user has grade on a quiz in a certain course
  */
-function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers)
+function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers, $moment)
 {
 		global $pdo;
 	
@@ -221,10 +222,11 @@ function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers)
 			pdoConnect();
 		}
 
-		$query = $pdo->prepare('SELECT * FROM userAnswer WHERE uid=:uid AND cid=:cid AND quiz=:qid AND grade > 1');
+		$query = $pdo->prepare('SELECT * FROM userAnswer WHERE uid=:uid AND cid=:cid AND quiz=:qid AND grade > 1 AND moment=:moment');
 		$query->bindParam(':uid', $userid);
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':qid', $quizid);
+		$query->bindParam(':moment', $moment);
 
 		$query2 = $pdo->prepare("SELECT * FROM duggaTries WHERE FK_uid=:uid AND FK_cid=:cid AND FK_quiz=:qid AND FK_vers=:vers AND dugga_lock=1");
 		$query2->bindParam(':uid', $userid);

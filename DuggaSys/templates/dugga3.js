@@ -84,7 +84,7 @@ function setup() {
 
 function returnedDugga(data) {
 	dataV = data;
-	
+
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
@@ -119,9 +119,7 @@ function reset()
 		document.getElementById('operations').remove(0);
 	}
 
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
+	Timer.reset();
 	ClickCounter.initialize();
 
 }
@@ -741,17 +739,17 @@ function render()
 //----------------------------------------------------------------------------------
 
 function startDuggaHighScore(){
-	Timer.startTimer();	
-	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
-		if(dataV['score'] > 0){
-			Timer.score = dataV['score'];
+		Timer.startTimer();
+		if(data['score'] > 0){
+			Timer.score = data['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		
-		if(dataV['score'] > 0){
-			ClickCounter.score = dataV['score'];
+		ClickCounter.initialize();
+		if(data['score'] > 0){
+			ClickCounter.score = data['score'];
+			console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
 	}
