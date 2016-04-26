@@ -12,9 +12,10 @@ session_start();
 $log_uuid = getOP('log_uuid');
 $log_timestamp = getOP('log_timestamp');
 
+/*
 logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "forumservice.php", $log_timestamp);
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "forumservice.php");
-
+*/
 if(isset($_SESSION['uid'])){
 	$uid=$_SESSION['uid'];
 }else{
@@ -280,17 +281,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 
 		}else{
 			//fetches all the comments
-			$comment = $query->fetchAll(PDO::FETCH_ASSOC);
-
-
-			// Decodes special chars
-			$comments = decodeComments($comment);
-
-
- 
-
-
-
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}else{
 		$accessDenied = "You do not have access to the thread.";
@@ -348,8 +339,9 @@ if ($opt!=="UNK"){
 	echo json_encode($array);
 }
 
+/*
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
-
+*/
 
 
 
@@ -360,26 +352,3 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
 
 
 
-// Simple function that decodes all the text from encoded chars e.g  "&lt;strong&gt;asda&lt;&#47;strong&gt" becomes "<strong>asd</asd>".
-function decodeComments($encodedComments){
-
-	$decodedComments = array();
-
-	foreach ($encodedComments as $row)
-	{
-		
-		// Decodes
-		$tempText = html_entity_decode($row["text"]);
-
-		// Replaces with the decoded string
-		$row["text"] = $tempText;
-
-		// pushes the updated row to the new $comments array
-		array_push($decodedComments,$row);
-	}
-
-	return $decodedComments;
-
-}
-
-?>

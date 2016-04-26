@@ -191,9 +191,8 @@ function returnedThread(data)
 			$(".opEditThread").html(button);
 		}
 		
-		
 		$(".threadTopic").html(data["thread"]["topic"]);
-		$("#threadDescr").html(data["thread"]["description"]);
+		$("#threadDescr").html( parseMarkdown(data["thread"]["description"]));
 		var str = "<span id='threadDate'>";
 		str += 	data["thread"]["datecreated"].substring(0, 16);
 		str += "</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid'])+"</span>";
@@ -237,7 +236,7 @@ function returnedComments(data)
 		accessDenied(data);
 	}else {
 
-		//console.log(data);
+		
 		// Adds the comment header with the amount of comments.
 		var commentLength = data["comments"].length;
 		var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
@@ -247,21 +246,21 @@ function returnedComments(data)
 		// Iterates through all the comments
 		$.each(data["comments"], function(index, value){
 
-			
-		
+
+			// Parses the text from the markdown.js file
+			var parseText = parseMarkdown(value['text']);
+
+
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
-				"<div class=\"commentContent\"><div class=\"commentContentText\">" +  value['text']  +"</div></div>" +
+				"<div class=\"commentContent\"><div class=\"commentContentText\">" +  parseText  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
 				"</div>" +
 
-				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
-
-
-
-
+				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div>" + 
+			"</div>";
 		});
 
 		threadCommentStr += "</div>";

@@ -187,6 +187,7 @@ function logUserEvent($uid, $eventType, $description) {
 //  The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format)
 //
 
+/*
 function logServiceEvent($uuid, $eventType, $service, $timestamp = null) {
 	if (is_null($timestamp)) {
 		$timestamp = round(microtime(true) * 1000);
@@ -201,7 +202,7 @@ function logServiceEvent($uuid, $eventType, $service, $timestamp = null) {
 	$query->bindParam(':browser', getBrowser());
 	$query->execute();
 }
-
+*/
 //------------------------------------------------------------------------------------------------
 // logClickEvent
 //------------------------------------------------------------------------------------------------
