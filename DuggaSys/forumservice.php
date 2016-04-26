@@ -95,7 +95,7 @@ function getThreadAccess($pdo, $threadId, $uid)
 if(strcmp($opt,"CREATETHREAD")===0){
 	// Access check
 	if (checklogin()){
-		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :uid, :topic, :description)");
+		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, datecreated, description) VALUES (:courseId, :uid, :topic, current_timestamp, :description)");
 		$query->bindParam(':courseId', $courseId);
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':topic', $topicT);
@@ -105,7 +105,10 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$error=$query->errorInfo();
 			exit($debug);
 		}else{
-			$thread = $query->fetch(PDO::FETCH_ASSOC);
+			$id = $pdo->lastInsertId();
+			$thread = array(
+				"threadid" => $id
+			);
 		}
 	}else{
 		$accessDenied = "You must be logged in to create a thread.";
@@ -140,7 +143,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 				$comments = $query->fetch(PDO::FETCH_ASSOC);
 			}
 		}
-		
+
 	}else {
 		$accessDenied = "You must log in to comment.";
 	}
@@ -287,7 +290,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 			$comments = decodeComments($comment);
 
 
- 
+
 
 
 
@@ -367,7 +370,7 @@ function decodeComments($encodedComments){
 
 	foreach ($encodedComments as $row)
 	{
-		
+
 		// Decodes
 		$tempText = html_entity_decode($row["text"]);
 
