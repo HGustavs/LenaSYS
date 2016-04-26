@@ -194,9 +194,12 @@ function returnedThread(data)
 		
 		$(".threadTopic").html(data["thread"]["topic"]);
 		$("#threadDescr").html(data["thread"]["description"]);
-		var str = "<span id='threadDate'>";
-		str += 	data["thread"]["datecreated"].substring(0, 16);
+		var str = "Created <span id='threadDate'>";
+		str += 	data["thread"]["datecreated"].substring(0, 10);
 		str += "</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid'])+"</span>";
+		if(!(data["thread"]["datecreated"]===data["thread"]["lastedited"])){
+			str += "<br/>Edited <span id='threadEditedDate'>"+data["thread"]["lastedited"];
+		}
 		$("#threadDetails").html(str);
 		
 		if(data['thread']['locked']==1){
