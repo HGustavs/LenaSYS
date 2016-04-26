@@ -76,10 +76,19 @@ function chartDataLongestLabelWidth(data, ctx) {
 	return longest;
 }
 
+function fitCanvasToContainer(canvas){
+	canvas.style.width='100%';
+	canvas.style.height='100%';
+	canvas.width  = canvas.offsetWidth;
+	canvas.height = canvas.offsetHeight;
+}
+
 function drawBarChart(canvas, data) {
 	if (!$.isArray(data)) return;
 	$(canvas).each(function(i, el) {
 		if ($(el).is('canvas')) {
+			fitCanvasToContainer(el);
+			
 			var barWidth = 40;
 			var fontSize = 12;
 

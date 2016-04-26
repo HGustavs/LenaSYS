@@ -49,7 +49,7 @@ pdoConnect();
 		<div id="analytic-data" style="clear: both; padding: 15px;">
 			
 		</div>
-		<div>
+		<div style="height: 300px">
 			<canvas id="analytic-chart"></canvas>
 		</div>
 	</div>
