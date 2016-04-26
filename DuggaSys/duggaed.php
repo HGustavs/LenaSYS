@@ -56,10 +56,32 @@ pdoConnect();
 			</div>
 			(.png, .html and .js are allowed)
 			<div style ='padding:5px, display:none' id='errormessage'>
+			<input type="hidden" name="request" value="add">
 			</div> 
 		</form>
 	</div>
 	<!-- addDuggaTemplate Dialog END -->
+
+	<!-- removeDuggaTemplate Dialog START -->
+	<div id='removeDuggaTemplate' class='loginBox' style='width:464px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Remove template</h3>
+			<div onclick='hideRemoveDuggaTemplate();'>x</div>
+		</div>
+		<form enctype="multipart/form-data" action="filereceiveDuggaTemplate.php" method="POST">
+			<div style='padding:5px;'>
+				<select style='font-size:1em;' id='templateDropdown' name='templateDropdown'> </select>			
+			</div> 
+			<div style='padding:5px;'>
+				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Remove file" /></div></td>
+			</div>
+			both the .html and .js file will be removed 
+			<input type="hidden" name="request" value="remove">
+			<div style ='padding:5px, display:none' id='errormessage'>
+			</div> 
+		</form>
+	</div>
+	<!-- removeDuggaTemplate Dialog END -->
 
 	<!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBox' style='width:464px;display:none;'>
