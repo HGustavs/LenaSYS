@@ -117,6 +117,41 @@ function getCourses()
 	AJAXService("GETCOURSES",{},"GETCOURSES");
 }
 
+function editThread(data)
+{
+	var array = data.split(',');
+	//console.log(array);
+	
+	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;background-color:'>";
+	$(".threadTopic").html(topic);
+	document.getElementById("editTopic").value = array[3];
+	
+	var description = "<textarea id='editDescription' name='description' style='float:left;width:100%;height:auto;min-height:200px;'></textarea>";
+	$("#threadDescr").html(description);
+	document.getElementById("editDescription").value = array[6];
+	
+	var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:auto;float:left;margin-top:30px;'>";
+	$("#threadDescr").append(button);
+}
+
+function submitEditThread()
+{
+	if($("#editTopic").val().length<1){
+		//Better error message pls
+		console.log("Topic and/or description can NOT be empty!");
+	}else if($("#editDescription").val().length<1){
+		console.log("Topic and/or description can NOT be empty!");
+	}else{
+		var topic = $("#editTopic").val();
+		var description = $("#editDescription").val();
+		console.log(topic+description);
+		
+		AJAXService("EDITTHREAD",{threadId:querystring["threadId"],topic:topic,description:description},"EDITTHREAD");
+		
+	}
+	
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -150,7 +185,9 @@ function returnedThread(data)
 		}
 		
 		if($('div.opEditThread').length){
-			var button = "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
+			var arr = $.map(data['thread'], function(el) { return el });
+			//console.log(arr);
+			var button = "<input class='new-item-button' id='editThreadButton'type='button' value='Edit' onclick='editThread(\""+arr+"\");'>";
 			$(".opEditThread").html(button);
 		}
 		
@@ -159,7 +196,7 @@ function returnedThread(data)
 		$("#threadDescr").html(data["thread"]["description"]);
 		var str = "<span id='threadDate'>";
 		str += 	data["thread"]["datecreated"].substring(0, 16);
-		str += "</span> by <span id='threadCreator'>a97marbr</span>";
+		str += "</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid'])+"</span>";
 		$("#threadDetails").html(str);
 		
 		if(data['thread']['locked']==1){
@@ -182,13 +219,25 @@ function returnedThread(data)
 	}
 }
 
+function getUsername(threadUID)
+{
+	AJAXService("GETTHREADCREATOR",{threadId:querystring["threadId"],threadUID:threadUID},"GETTHREADCREATOR");
+}
+
+function showThreadCreator(data)
+{
+	//console.log(data);
+	var str = data['courses'][0]['username'];
+	$("#threadCreator").html(str);
+}
+
 function returnedComments(data)
 {
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
 
-		console.log(data);
+		//console.log(data);
 		// Adds the comment header with the amount of comments.
 		var commentLength = data["comments"].length;
 		var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
@@ -285,6 +334,11 @@ function lockThreadSuccess(data)
 function unlockThread()
 {
 	AJAXService("UNLOCKTHREAD",{threadId:querystring["threadId"]},"UNLOCKTHREAD");
+}
+
+function editThreadPoo()
+{
+	AJAXService("EDITTHREAD",{threadId:querystring["threadId"]},"EDITTHREAD");
 }
 
 function createThreadUI()

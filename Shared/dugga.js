@@ -606,6 +606,30 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
+		case "EDITTHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getThread(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "GETTHREADCREATOR":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					showThreadCreator(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
 	}
 }
 
