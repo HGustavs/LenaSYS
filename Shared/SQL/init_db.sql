@@ -572,8 +572,14 @@ CREATE TEMPORARY TABLE tmpListEntry SELECT cid,entryname,link,kind,pos,creator,t
 UPDATE tmpListEntry SET vers = newvers WHERE vers = oldvers;
 INSERT INTO listentries (cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode) SELECT cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode FROM tmpListEntry WHERE vers = newvers;
 DROP TABLE tmpListEntry;
+
+CREATE TEMPORARY TABLE tmpSubmission SELECT uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind FROM submission WHERE vers = oldvers;
+UPDATE tmpSubmission SET vers = newvers WHERE vers = oldvers;
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind) SELECT uid,cid,vers,did,seq,fieldnme,filepath,filename,extension,mime,kind FROM tmpSubmission WHERE vers = newvers;
+DROP TABLE tmpSubmission;
 END //
 DELIMITER ;
+
 
 /* updatesd info in user table */
 update user set firstname="Toddler", lastname="Kong" where username="Toddler";
