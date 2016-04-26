@@ -540,6 +540,17 @@ function returnedResults(data)
 	
 				results = data['results'];
  				m = orderResults(data['moments']);
+ 				//Creating the drop down list so you can filter different versions
+				str += "<span>Filter course version: </span>";
+ 				str += "<select id='selectDisplayVersion'>";
+ 				//For each item in versions we print out an option. The IF indicates the current course version.
+ 				$.each(data['versions'], function(i,e){
+ 					if(e.cid == querystring['cid'] && e.vers == querystring['coursevers'])
+ 						str += "<option value='"+querystring['coursevers']+"' selected >"+querystring['coursevers']+"</option>";
+ 					else if(e.cid == querystring['cid'])
+ 						str += "<option value='"+e.vers+"'>"+e.vers+"</option>";
+ 				});
+ 				str += "</select>";
 				str += "<table class='markinglist'>";
 				str += renderResultTableHeader(m);
 				// Sets every entry of savedAmount to 0, so it can interact properly with amountPassed in renderMoment.
