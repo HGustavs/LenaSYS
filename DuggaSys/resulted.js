@@ -11,6 +11,7 @@ var msx = 0, msy = 0;
 var rProbe = null;
 var needMarking=0;
 var passedMarking=0;
+var version = "";
 
 var amountPassed = [];
 var savedAmount = [];
@@ -22,10 +23,6 @@ $(function()
 {
 	$("#release").datepicker({ dateFormat : "yy-mm-dd" });
 	$("#deadline").datepicker({ dateFormat : "yy-mm-dd" });
-
-	$("#selectDisplayVersion").change(function() {
-		AJAXService("GET", { cid : querystring['cid'], vers: $(this).val() }, "RESULT");
-	});
 
 });
 
@@ -169,6 +166,11 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind)
 //call to unlock a dugga
 function unlockDugga(cid, moment, vers, uid){
 	AJAXService("CHFAILS",{ cid : cid, moment : moment,vers : vers, luid : uid}, "RESULT");
+}
+//change url to chosen version
+function changeShownVersion(){
+	version = $("#selectDisplayVersion").val();
+	changeURL("resulted.php?cid="+querystring['cid']+"&coursevers="+version);
 }
 
 /*function moveDist(e) 
@@ -547,11 +549,13 @@ function returnedResults(data)
  				m = orderResults(data['moments']);
  				//Creating the drop down list so you can filter different versions
 				str += "<span>Filter course version: </span>";
- 				str += "<select id='selectDisplayVersion'>";
+ 				str += "<select id='selectDisplayVersion' onchange='changeShownVersion()'>";
  				//For each item in versions we print out an option. The IF indicates the current course version.
  				$.each(data['versions'], function(i,e){
- 					if(e.cid == querystring['cid'] && e.vers == querystring['coursevers'])
+ 					if(e.cid == querystring['cid'] && (e.vers == querystring['coursevers'] && version == ""))
  						str += "<option value='"+querystring['coursevers']+"' selected >"+querystring['coursevers']+"</option>";
+ 					else if(e.cid == querystring['cid'] && (e.vers == version && version != ""))
+ 						str += "<option value='"+version+"' selected >"+version+"</option>";
  					else if(e.cid == querystring['cid'])
  						str += "<option value='"+e.vers+"'>"+e.vers+"</option>";
  				});
