@@ -205,7 +205,7 @@ function returnedComments(data)
 				console.log('hej alla glada laxar');
 				text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>");
 			}else{
-				text = "Citat:<br/><div class=\"replycommentbox\"><p style=\"padding: 5px; margin: 0;\">" + text.replace(/\r\n/g, "</p>").replace(/\n/g, "</div><p style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
+				text = "Citat:<br/><div class=\"replycommentbox\"><p style=\"padding: 5px; margin: 0;\">" + text.replace(/\r\n/g, "</p>").replace(/\n/g, "</div><p class=\" \" style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
 			}
 		
 			threadCommentStr +=
@@ -254,11 +254,18 @@ function replyComment(array)
 	if (array["accessDenied"]){
 		accessDenied(array);
 	}else {
+		
 		$.each(array["comments"], function(index, value){
-			$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+value["text"]+"</textarea>"+
+			
+			var text=value["text"];
+			if(value["replyid"]){
+				text = text.replace(/\n/, "<br/>");
+				text=text.replace(/[^.]*(<br\ ?\/?>)/, "");
+			}
+			
+			$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+text+"</textarea>"+
   			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+value["commentid"]+")\">");
 		});
-		$('.commentInput').css("border-top", "0px");
 	}
 }
 

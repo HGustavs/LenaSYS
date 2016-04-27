@@ -282,7 +282,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"REPLYCOMMENT")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT text, commentid FROM threadcomment WHERE commentid=:commentID;");
+		$query = $pdo->prepare("SELECT text, replyid, commentid FROM threadcomment WHERE commentid=:commentID;");
 		$query->bindParam(':commentID', $commentid);
 
 		if(!$query->execute()){
