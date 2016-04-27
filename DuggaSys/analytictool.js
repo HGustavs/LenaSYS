@@ -4,6 +4,9 @@ var analytics = {
 	chartData: null
 };
 
+//------------------------------------------------------------------------------------------------
+// Document ready callback		
+//------------------------------------------------------------------------------------------------
 $(function() {
 	$(window).resize(function() {
 		switch (analytics.chartType) {
@@ -18,12 +21,20 @@ $(function() {
 	loadGeneralStats();
 });
 
+//------------------------------------------------------------------------------------------------
+// Removes the chart data and clears the chart canvas	
+//------------------------------------------------------------------------------------------------
 function resetAnalyticsChart() {
 	analytics.chartType = null;
 	analytics.chartData = null;
 	clearCanvas($("#analytic-chart")[0]);
 }
 
+//------------------------------------------------------------------------------------------------
+// Loads data from the analytictoolservice using an ajax call
+// @parameter q  : what query to run
+// @parameter cb : callback for when data is retrieved, cb(data)
+//------------------------------------------------------------------------------------------------
 function loadAnalytics(q, cb) {
 	$.ajax({
 		url: "analytictoolservice.php",
@@ -40,6 +51,9 @@ function loadAnalytics(q, cb) {
 	});
 }
 
+//------------------------------------------------------------------------------------------------
+// Analytic loaders START	
+//------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
 	});
@@ -100,6 +114,14 @@ function loadServiceCrashes() {
 	});
 }
 
+//------------------------------------------------------------------------------------------------
+// Analytic loaders END	
+//------------------------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------------------------
+// Fits a canvas to its container	
+//------------------------------------------------------------------------------------------------
 function fitCanvasToContainer(canvas){
 	canvas.style.width="100%";
 	canvas.style.height="100%";
@@ -107,12 +129,18 @@ function fitCanvasToContainer(canvas){
 	canvas.height = canvas.offsetHeight;
 }
 
+//------------------------------------------------------------------------------------------------
+// Clears a canvas and resets the transform property
+//------------------------------------------------------------------------------------------------
 function clearCanvas(canvas) {
 	var ctx = canvas.getContext("2d");
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+//------------------------------------------------------------------------------------------------
+// Returns the highest value in the chart data
+//------------------------------------------------------------------------------------------------
 function chartDataMax(data) {
 	var max = 0;
 	$.each(data, function(i, obj) {
@@ -121,6 +149,9 @@ function chartDataMax(data) {
 	return max;
 }
 
+//------------------------------------------------------------------------------------------------
+// Returns the width (in pixels) of the longest label in the data
+//------------------------------------------------------------------------------------------------
 function chartDataLongestLabelWidth(data, ctx) {
 	var longest = 0;
 	$.each(data, function(i, obj) {
@@ -129,6 +160,9 @@ function chartDataLongestLabelWidth(data, ctx) {
 	return longest;
 }
 
+//------------------------------------------------------------------------------------------------
+// Draws a bar chart with the data given
+//------------------------------------------------------------------------------------------------
 function drawBarChart(data) {
 	if (!$.isArray(data)) return;
 
@@ -165,6 +199,9 @@ function drawBarChart(data) {
 	}
 }
 
+//------------------------------------------------------------------------------------------------
+// Generates a random color in hex format and returns it
+//------------------------------------------------------------------------------------------------
 function getRandomColor() {
 	var letters = '0123456789ABCDEF'.split('');
 	var color = '#';
@@ -174,6 +211,9 @@ function getRandomColor() {
 	return color;
 }
 
+//------------------------------------------------------------------------------------------------
+// Draws a pie chart with the data given
+//------------------------------------------------------------------------------------------------
 function drawPieChart(data) {
 	if (!$.isArray(data)) return;
 
