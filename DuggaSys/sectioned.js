@@ -306,8 +306,8 @@ function updateItem()
 	lid=$("#lid").val();
 	kind=$("#type").val();
 	link;
-	//only tests has links to duggas
-	if(kind == 3 || kind == 2)
+	//header and moment do not have links
+	if(kind == 3 || kind == 2 || kind == 5)
 		link=$("#link").val();
 	else
 		link = "UNK";
