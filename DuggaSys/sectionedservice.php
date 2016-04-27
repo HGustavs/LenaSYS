@@ -230,7 +230,7 @@ if(!$query->execute()) {
 }
 
 if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-	$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
+	$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) && $row['visibility'] == 2 || $row['visibility'] == 1);
 	
 	if (!$hr) {
 		if (checklogin()) {
@@ -267,7 +267,7 @@ foreach($query->fetchAll() as $row) {
 }
 
 $entries=array();
-$reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)));
+$reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)) || $row['visibility'] == 2);
 
 if($reada || $userid == "guest"){
 	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND vers=:coursevers ORDER BY pos");
