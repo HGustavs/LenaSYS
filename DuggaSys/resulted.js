@@ -16,7 +16,7 @@ var amountPassed = [];
 var savedAmount = [];
 var count = 0;
 
-AJAXService("GET", { cid : querystring['cid'] }, "RESULT");
+AJAXService("GET", { cid : querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
 
 $(function() 
 {
