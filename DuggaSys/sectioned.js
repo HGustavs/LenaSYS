@@ -606,7 +606,9 @@ function returnedSection(data)
 										status="";
 										var st = lawtem['submitted'];
 										if (st !== null) {
-											submitted = new Date(st);									
+											submitted = new Date(st);
+											//Makes it into a UTC string because otherwise it adds the users timezone to make it incorrect from what the databse has stored.
+											var displaySubmitted = submitted.toUTCString();									
 										} else {
 											submitted = null;
 										}
@@ -626,6 +628,14 @@ function returnedSection(data)
 				
 												if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
 													status="pending";
+												}
+
+												if (lastSubmit === null){
+													lastSubmit = submitted;
+												}else if (submitted !== null) {
+													if (lastSubmit.getTime() < submitted.getTime()){
+														lastSubmit=submitted;
+													}
 												} 
 										}else{
 												if (submitted !== null && marked === null) {
@@ -657,7 +667,7 @@ function returnedSection(data)
 										str+="<div class='WhiteLight'></div>";
 								}else if(status === "pending"){
 										//	Nothing marked yet (Yellow)
-										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";
+										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+displaySubmitted+"' ></div>";
 								}else if(grady==1){
 										//	Marked Fail! (Red)								
 										str+="<div class='RedLight' title='Status: Failed\nDate: "+displayMarked+"' ></div>";
