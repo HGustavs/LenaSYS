@@ -46,11 +46,11 @@ pdoConnect();
 			<input class="submit-button" style="float:left" type="button" value="Service speed" onclick="loadServiceAvgDuration()">
 			<input class="submit-button" style="float:left" type="button" value="Service crashes" onclick="loadServiceCrashes()">
 		</div>
-		<div id="analytic-data" style="clear: both; padding: 15px;">
-			
-		</div>
+		<p id="analytic-info" style="clear: both; padding: 15px;"></p>
 		<div style="height: 300px">
 			<canvas id="analytic-chart"></canvas>
+		</div>
+		<div id="analytic-data" style="padding: 15px;">
 		</div>
 	</div>
 	<!-- content END -->

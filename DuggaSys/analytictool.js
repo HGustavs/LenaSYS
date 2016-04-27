@@ -55,6 +55,7 @@ function loadServiceUsage() {
 }
 
 function loadServiceAvgDuration() {
+	$('#analytic-info').html("The average duration of service call completion in milliseconds.");
 	loadAnalytics("serviceAvgDuration", function(data) {
 		var chartData = [];
 		for (var i = 0; i < data.length; i++) {
