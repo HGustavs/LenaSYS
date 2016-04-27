@@ -232,7 +232,12 @@ if(strcmp($opt,"DUGGA")!==0){
 		}
 
 		// All dugga/moment entries from all versions of course
+
 		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,gradesystem FROM listentries WHERE listentries.cid=:cid AND listentries.vers=:vers AND (listentries.kind=3 OR listentries.kind=4) ORDER BY pos");
+		
+		// Be folk se över denna del.
+		//$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,quiz.gradesystem AS quiz_g, listentries.gradesystem AS list_g FROM listentries  LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND (listentries.kind=3 OR listentries.kind=4) ORDER BY pos");
+
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 		$result=$query->execute();
@@ -256,7 +261,8 @@ if(strcmp($opt,"DUGGA")!==0){
 					'visible'=> (int)$row['visible'],
 					'code_id' => $row['code_id'],
 					'vers' => $row['vers'],
-					'gradesystem' => (int)$row['gradesystem']					
+					'quiz_g' => (int)$row['quiz_g'],
+					'list_g' => (int)$row['list_g']						
 				)
 			);
 		}
