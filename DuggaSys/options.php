@@ -44,8 +44,8 @@ pdoConnect();
 		</div>
 		<div>
 			<p>Fourth round trip logging</p>
-			<button id="srLoggingON">On</button>
-			<button id="srLoggingOFF">Off</button>
+			<button id="FRLoggingON">On</button>
+			<button id="FRLoggingOFF">Off</button>
 		</div>
 	</div>
 	<!-- content END -->
