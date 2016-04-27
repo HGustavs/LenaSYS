@@ -657,7 +657,7 @@ function returnedSection(data)
 										str+="<div class='WhiteLight'></div>";
 								}else if(status === "pending"){
 										//	Nothing marked yet (Yellow)
-										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";console.log("LS: " + lastSubmit);
+										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";
 								}else if(grady==1){
 										//	Marked Fail! (Red)								
 										str+="<div class='RedLight' title='Status: Failed\nDate: "+displayMarked+"' ></div>";
