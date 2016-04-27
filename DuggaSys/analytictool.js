@@ -15,6 +15,12 @@ $(function() {
 	loadGeneralStats();
 });
 
+function resetAnalyticsChart() {
+	analytics.chartType = null;
+	analytics.chartData = null;
+	clearCanvas($("#analytic-chart")[0]);
+}
+
 function loadAnalytics(q, cb) {
 	$.ajax({
 		url: "analytictoolservice.php",
@@ -24,6 +30,7 @@ function loadAnalytics(q, cb) {
 		success: function(data) {
 			$("#analytic-data").empty();
 			$("#analytic-data").append("<pre>" + JSON.stringify(data, null, 4));
+			resetAnalyticsChart();
 			cb(data);
 		}
 	});
