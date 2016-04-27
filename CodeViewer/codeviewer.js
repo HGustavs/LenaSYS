@@ -2204,6 +2204,7 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	
 function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) 
 {
+	
 	//Height of the two boxes between boxOne and boxFour (top most box and bottom most box)
 	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
 	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
@@ -2277,20 +2278,24 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + boxThreeHeight + boxFourHeight));
 	var boxOneHeightPer = (boxOneHeight/(boxValArray['parent']['height'])) * 100;
 
-	
-	if(boxThreeHeightPer <= 10) {
-	
-		boxThreeHeightPer = 10;
+	//Box three and four totalt height
+	var boxThreeAndFourHeightPer =  boxThreeHeightPer + boxFourHeightPer;
 
-		//Set height and top on the boxes
-		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
+	//check if box three and four is at minimum height.
+	if(boxThreeAndFourHeightPer <= 20) {
+		
+		//Set the height to the minimum.
+		boxThreeAndFourHeightPer = 20;
+
+		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
 		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
 
-		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
-		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeAndFourHeightPer/2 + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", "80" + "%");
 
-		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
-		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");		
+		$(boxValArray['box' + boxFour]['id']).css("height", boxThreeAndFourHeightPer/2 + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");		
 		
 	} else {
 
@@ -2340,11 +2345,11 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 		boxFourHeightPer = 10;
 
 		//Set height and top on the boxes
-		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxFourHeightPer) + "%");
 		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
 
 		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
-		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");	
+		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");	
 
 	 } else {
 
