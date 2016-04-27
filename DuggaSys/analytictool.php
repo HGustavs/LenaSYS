@@ -50,8 +50,6 @@ pdoConnect();
 		<div style="height: 300px">
 			<canvas id="analytic-chart"></canvas>
 		</div>
-		<div id="analytic-data" style="padding: 15px;">
-		</div>
 	</div>
 	<!-- content END -->
 	

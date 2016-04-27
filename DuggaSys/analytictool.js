@@ -42,11 +42,11 @@ function loadAnalytics(q, cb) {
 		dataType: "json",
 		data: {query: q},
 		success: function(data) {
-			$("#analytic-data").empty();
-			$("#analytic-data").append("<pre>" + JSON.stringify(data, null, 4));
 			resetAnalyticsChart();
 			$('#analytic-info').empty();
 			cb(data);
+			// temporary JSON-output for debugging purposes
+			$("#analytic-info").append("<pre>" + JSON.stringify(data, null, 4));
 		}
 	});
 }
