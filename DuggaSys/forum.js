@@ -122,7 +122,9 @@ function editThread(data)
 	var array = data.split(',');
 	//console.log(array);
 
-	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;background-color:'>";
+	
+	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;opacity:0.8;'>";
+
 	$(".threadTopic").html(topic);
 	document.getElementById("editTopic").value = array[3];
 
@@ -194,9 +196,12 @@ function returnedThread(data)
 
 		$(".threadTopic").html(data["thread"]["topic"]);
 		$("#threadDescr").html(data["thread"]["description"]);
-		var str = "<span id='threadDate'>";
-		str += 	data["thread"]["datecreated"].substring(0, 16);
+		var str = "Created <span id='threadDate'>";
+		str += 	data["thread"]["datecreated"].substring(0, 10);
 		str += "</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid'])+"</span>";
+		if(!(data["thread"]["datecreated"]===data["thread"]["lastedited"])){
+			str += "<br/>Edited <span id='threadEditedDate'>"+data["thread"]["lastedited"];
+		}
 		$("#threadDetails").html(str);
 
 		if(data['thread']['locked']==1){

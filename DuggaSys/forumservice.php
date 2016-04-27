@@ -129,6 +129,14 @@ if(strcmp($opt,"CREATETHREAD")===0){
 				exit($debug);
 			}else{
 				$comments = $query->fetch(PDO::FETCH_ASSOC);
+				$query = $pdo->prepare("UPDATE thread SET lastcommentedon=current_timestamp WHERE threadid=:threadid");
+				$query->bindParam(':threadid', $threadId);
+				if(!$query->execute()){
+					$error=$query->errorInfo();
+					exit($debug);
+				}else{
+					$lastcommentedon = $query->fetch(PDO::FETCH_ASSOC);
+				}
 			}
 		}
 		else {
@@ -141,6 +149,14 @@ if(strcmp($opt,"CREATETHREAD")===0){
 				exit($debug);
 			}else{
 				$comments = $query->fetch(PDO::FETCH_ASSOC);
+				$query = $pdo->prepare("UPDATE thread SET lastcommentedon=current_timestamp WHERE threadid=:threadid");
+				$query->bindParam(':threadid', $threadId);
+				if(!$query->execute()){
+					$error=$query->errorInfo();
+					exit($debug);
+				}else{
+					$lastcommentedon = $query->fetch(PDO::FETCH_ASSOC);
+				}
 			}
 		}
 
@@ -161,6 +177,14 @@ else if(strcmp($opt,"MAKEREPLYCOMMENT")===0){
 			exit($debug);
 		}else{
 			$comments = $query->fetch(PDO::FETCH_ASSOC);
+			$query = $pdo->prepare("UPDATE thread SET lastcommentedon=current_timestamp WHERE threadid=:threadid");
+				$query->bindParam(':threadid', $threadId);
+				if(!$query->execute()){
+					$error=$query->errorInfo();
+					exit($debug);
+				}else{
+					$lastcommentedon = $query->fetch(PDO::FETCH_ASSOC);
+				}
 		}
 	}else {
 		$accessDenied = "You must log in to comment.";
