@@ -688,7 +688,7 @@ function returnedSection(data)
 										str+="<div class='GreenLight'  title='Grade: 5\nDate: "+displayMarked+"' ></div>";
 								}else if(grady>6){
 										//this seems to be needed for the page to load	
-										str+="<div class='GreenLight'  title='Status: Unknown - add other grade system\nDate: "+displayMarked+"' ></div>";
+										str+="<div class='GreenLight'  title='Status: Unknown grade - Add support for another grade system' ></div>";
 								}
 								str+="</td>";
 					
