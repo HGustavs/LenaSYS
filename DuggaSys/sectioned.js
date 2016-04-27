@@ -306,7 +306,7 @@ function updateItem()
 	lid=$("#lid").val();
 	kind=$("#type").val();
 	link;
-	//header and moment do not have links
+	//Kind 2,3, and 5 have links (Code, Test, Link)
 	if(kind == 3 || kind == 2 || kind == 5)
 		link=$("#link").val();
 	else
