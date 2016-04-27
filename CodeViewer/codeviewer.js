@@ -1869,6 +1869,71 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
+	} else if(templateId == 9) {
+		//getLocalStorageProperties(templateId, boxValArray);
+		//$("#box3wrapper").css("top", localStorage.getItem("template9box2heightPercent") + "%");
+		//$("#box4wrapper").css("top", localStorage.getItem("template9box3heightPercent") + "%");
+		//$("#box5wrapper").css("top", localStorage.getItem("template9box4heightPercent") + "%");
+
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignWidth4boxes(boxValArray, 1, 2, 3, 4);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box3']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		$(boxValArray['box4']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
 	}
 };
 
@@ -2085,22 +2150,173 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	
 function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
-		var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
-		var basePer = 100-(remainHeightPer + alignSecondPer);
-		var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-		var atry2 = (atry/boxValArray['parent']['height'])*100;
-		
-		if(atry2 <= 10){
-			$("#box3wrapper").css({"top": basePer + "%","height": remainHeightPer + "%"});
-		 }else {
-			$("#box4wrapper").height(atry2 + "%"); 
-			$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
-		}
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
+	var basePer = 100-(remainHeightPer + alignSecondPer);
+	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+	var atry2 = (atry/boxValArray['parent']['height'])*100;
+	
+	if(atry2 <= 10){
+		$("#box3wrapper").css({"top": basePer + "%","height": remainHeightPer + "%"});
+	 }else {
+		$("#box4wrapper").height(atry2 + "%"); 
+		$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
+	}
 
 }
 
+function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) 
+{
+	//Get initial values.
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+
+	//fourth and third box height in procent.
+	var boxThreeHeightPer = ($(boxValArray['box' + boxThree]['id']).height() / boxValArray['parent']['height'])*100;	
+	var boxFourHeightPer = ($(boxValArray['box' + boxFour]['id']).height() / boxValArray['parent']['height'])*100;
+
+	var boxTwoHeight = (remainHeightPer - boxThreeHeightPer);
+	var boxOneHeight = 100-(remainHeightPer + boxFourHeightPer);
+	
+	//The combined height of the two upper boxes
+	var secondHalf = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height());
+	var secondHalfPer = (secondHalf/boxValArray['parent']['height'])*100;
+
+	if (remainHeightPer <= 20) {
+	
+		remainHeightPer = 20;
+
+		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeight + "%");
+
+		$(boxValArray['box' + boxTwo]['id']).css("height", (remainHeightPer/2) + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeight + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer/2) + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeight + (remainHeightPer/2)) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", (100-(boxOneHeight+remainHeightPer)) + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeight+remainHeightPer) + "%");		
+		
+	} else {
+
+		$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeight + "%");
+
+		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeight + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeight + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeight) + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeight + boxTwoHeight) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", (100 - (remainHeightPer + boxOneHeight)) + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeight+remainHeightPer) + "%");
+		
+	}
+	
+	//Update array
+	/*alert("$(boxValArray['box' + boxOne]['id']).height() = " + $(boxValArray['box' + boxOne]['id']).height() + "\n" +
+		  "$(boxValArray['box' + boxTwo]['id']).height() = " + $(boxValArray['box' + boxTwo]['id']).height() + "\n" +
+		  "$(boxValArray['box' + boxThree]['id']).height() = " + $(boxValArray['box' + boxThree]['id']).height() + "\n" +
+		  "$(boxValArray['box' + boxFour]['id']).height() = " + $(boxValArray['box' + boxFour]['id']).height());
+	alert("boxValArray['box' + boxOne]['height'] = " + boxValArray['box' + boxOne]['height'] + "\n" +
+		  "boxValArray['box' + boxTwo]['height'] = " + boxValArray['box' + boxTwo]['height'] + "\n" +
+		  "boxValArray['box' + boxThree]['height'] = " + boxValArray['box' + boxThree]['height'] + "\n" +
+		  "boxValArray['box' + boxFour]['height'] = " + boxValArray['box' + boxFour]['height']); */
+	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
+	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
+	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
+	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
+}
+
+function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour){
+	
+	//Get initial values. box three
+
+
+
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
+	var remainHeightPer = (remainHeight/(boxValArray['parent']['height'])) * 100;
+
+	//Fourth box height in procent.
+	var boxFourHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + remainHeight));
+	var boxFourHeightPer = (boxFourHeight /(boxValArray['parent']['height'])) * 100;
+
+
+	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + remainHeight + boxFourHeight));
+	var boxTwoHeightPer = (boxTwoHeight/(boxValArray['parent']['height'])) * 100;
+
+	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + remainHeight + boxFourHeight));
+	var boxOneHeightPer = (boxOneHeight/(boxValArray['parent']['height'])) * 100;
+
+	//The combined height of the two upper boxes
+	//TODO REMOVE
+	//var secondHalf = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height());
+	//var secondHalfPer = (secondHalf/boxValArray['parent']['height'])*100;
+	
+	if(remainHeightPer <= 10) {
+	
+		remainHeightPer = 10;
+
+		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + remainHeightPer) + "%");		
+		
+	} else {
+
+		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + remainHeightPer + boxTwoHeightPer) + "%");
+		
+	}
+	
+	//Update array
+	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
+	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
+	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
+}
+
+function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour)
+{
+	//boxfour
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxThree]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height']) * 100;
+
+	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxThree]['id']).height() + remainHeight));
+	var boxTwoHeightPer = (boxTwoHeight/(boxValArray['parent']['height'])) * 100;
+
+	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + $(boxValArray['box' + boxThree]['id']).height() + remainHeight));
+	var boxOneHeightPer = (boxOneHeight / (boxValArray['parent']['height'])) * 100;
+
+	var boxThreeHeight = (boxValArray['parent']['height'] - (boxOneHeight + boxTwoHeight + remainHeight));
+	var boxThreeHeightPer = boxThreeHeight/(boxValArray['parent']['height']) * 100;
+
+	if(remainHeightPer <= 10){
+
+		remainHeightPer = 10;
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");	
+
+	 } else {
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", remainHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");	
+	}
+}
 //----------------------------------------------------------------------------------
 //Creates an array with all the properties needed for resize function.
 //                Is called by resizeBoxes in codeviewer.js
@@ -2109,8 +2325,8 @@ function initResizableBoxValues(parent)
 {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
-	var boxwidth;
-	var boxheight;
+	var boxWidth;
+	var boxHeight;
 	var boxId;
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	var boxValueArray = new Array();
@@ -2208,6 +2424,10 @@ function erasePercentGap(templateId, boxValArray)
 	}else if(templateId == 8){
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
 		alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
+	}else if(templateId == 9){
+		alignTemplate9Height(boxValArray, 2, 3, 4, 5);
+		alignBoxesHeight3stack(boxValArray, 2, 3, 4, 5);
+		alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
 	}
 }
 
