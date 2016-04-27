@@ -1,16 +1,29 @@
+// Global variables for analytics
+var analytics = {
+	chartType: null,
+	chartData: null
+};
+
 $(function() {
+	$(window).resize(function() {
+		switch (analytics.chartType) {
+			case "bar":
+				drawBarChart(analytics.chartData);
+				break;
+		}
+	});
 	loadGeneralStats();
 });
 
 function loadAnalytics(q, cb) {
 	$.ajax({
-		url: 'analytictoolservice.php',
-		type: 'POST',
-		dataType: 'json',
+		url: "analytictoolservice.php",
+		type: "POST",
+		dataType: "json",
 		data: {query: q},
 		success: function(data) {
-			$('#analytic-data').empty();
-			$('#analytic-data').append('<pre>' + JSON.stringify(data, null, 4));
+			$("#analytic-data").empty();
+			$("#analytic-data").append("<pre>" + JSON.stringify(data, null, 4));
 			cb(data);
 		}
 	});
@@ -50,7 +63,7 @@ function loadServiceAvgDuration() {
 				value: data[i].avgDuration
 			});
 		}
-		drawBarChart($('#analytic-chart'), chartData);
+		drawBarChart(chartData);
 	});
 }
 
@@ -59,6 +72,18 @@ function loadServiceCrashes() {
 	});
 }
 
+function fitCanvasToContainer(canvas){
+	canvas.style.width="100%";
+	canvas.style.height="100%";
+	canvas.width  = canvas.offsetWidth;
+	canvas.height = canvas.offsetHeight;
+}
+
+function clearCanvas(canvas) {
+	var ctx = canvas.getContext("2d");
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 function chartDataMax(data) {
 	var max = 0;
@@ -76,40 +101,35 @@ function chartDataLongestLabelWidth(data, ctx) {
 	return longest;
 }
 
-function fitCanvasToContainer(canvas){
-	canvas.style.width='100%';
-	canvas.style.height='100%';
-	canvas.width  = canvas.offsetWidth;
-	canvas.height = canvas.offsetHeight;
-}
-
-function drawBarChart(canvas, data) {
+function drawBarChart(data) {
 	if (!$.isArray(data)) return;
-	$(canvas).each(function(i, el) {
-		if ($(el).is('canvas')) {
-			fitCanvasToContainer(el);
-			
-			var barWidth = 40;
-			var fontSize = 12;
 
-			var ctx = el.getContext("2d");
-			ctx.font = fontSize + "px Arial";
-			ctx.textAlign = "center";
-			ctx.translate(0, el.height);
+	analytics.chartType = "bar";
+	analytics.chartData = data;
 
-			var barSpacing = chartDataLongestLabelWidth(data, ctx) - barWidth + 10;
-			barSpacing = barSpacing > 50 ? barSpacing : 50;
-			var textAreaHeight = fontSize * 2.2;
-			var barHeightMultiplier = (el.height - textAreaHeight) / chartDataMax(data);
-			
-			for (var i = 0; i < data.length; i++) {
-				ctx.fillStyle = "#614875";
-				ctx.scale(1, -1);
-				ctx.fillRect(barSpacing + i * (barWidth + barSpacing), textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
-				ctx.fillStyle = "black";
-				ctx.scale(1, -1);
-				ctx.fillText(data[i].label, barSpacing + i * (barWidth + barSpacing) + barWidth / 2, -textAreaHeight / 2);
-			}
-		}
-	});
+	var canvas = $("#analytic-chart")[0];
+	var ctx = canvas.getContext("2d");
+
+	fitCanvasToContainer(canvas);
+	clearCanvas(canvas);
+	
+	var barWidth = 40;
+	var fontSize = 12;
+	ctx.font = fontSize + "px Arial";
+	ctx.textAlign = "center";
+	ctx.translate(0, canvas.height);
+
+	var barSpacing = chartDataLongestLabelWidth(data, ctx) - barWidth + 10;
+	barSpacing = barSpacing > 50 ? barSpacing : 50;
+	var textAreaHeight = fontSize * 2.2;
+	var barHeightMultiplier = (canvas.height - textAreaHeight) / chartDataMax(data);
+	
+	for (var i = 0; i < data.length; i++) {
+		ctx.fillStyle = "#614875";
+		ctx.scale(1, -1);
+		ctx.fillRect(barSpacing + i * (barWidth + barSpacing), textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
+		ctx.fillStyle = "black";
+		ctx.scale(1, -1);
+		ctx.fillText(data[i].label, barSpacing + i * (barWidth + barSpacing) + barWidth / 2, -textAreaHeight / 2);
+	}
 }
