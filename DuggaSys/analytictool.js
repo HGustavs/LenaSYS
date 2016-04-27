@@ -65,6 +65,14 @@ function loadOsPercentage() {
 
 function loadBrowserPercentage() {
 	loadAnalytics("browserPercentage", function(data) {
+		var chartData = [];
+		for (var i = 0; i < data.length; i++) {
+			chartData.push({
+				label: data[i].browser,
+				value: data[i].percentage
+			});
+		}
+		drawPieChart(chartData);
 	});
 }
 
