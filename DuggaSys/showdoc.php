@@ -133,6 +133,10 @@
 				// (--url,width,height--)
 				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>',$instring);
 				
+				// Quote text, this will be displayed in an additional box
+				// ^ Text you want to quote ^
+				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote>",$instring);
+				
 				return $instring;		
 		}
 
