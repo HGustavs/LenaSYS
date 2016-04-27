@@ -4,7 +4,7 @@ $("#mouseLoggingON").onclick({
 		type: 'POST',
 		dataType: 'json',
 		data: {
-			option: "mousemoveLogging" ,
+			option: "mouseMoveLogging" ,
 			value: "true"
 		},
 		success: function(data) {
