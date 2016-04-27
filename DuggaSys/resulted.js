@@ -153,7 +153,20 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		menu += "</td></tr>";
 		menu += "</table>";
 		menu += "</div> <!-- Menu Dialog END -->";
+		
+// The marking window //		
+		menu += "<div id='marking' class='markWindow' style='display:none'>";
+		menu += "<div class='loginBoxheader'>";
+		menu += "<h3>Marking</h3>";
+		menu += "<div onclick='hideMarkingWindow()'>x</div>";
+		menu += "</div>";
+		menu += "<textarea placeholder='Add a comment here...'></textarea>";
+		menu += "<input id='markButton' type='submit' value='submit' style='margin-bottom:4px;margin-right:4px;'></input>";
+		menu += "</table>";
+		menu += "</div>";
+//---------------------//		
 		document.getElementById('markMenuPlaceholder').innerHTML=menu;
+		
 		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : querystring['coursevers'] }, "RESULT");
 }
 

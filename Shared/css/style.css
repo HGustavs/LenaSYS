@@ -519,15 +519,15 @@ header td {
 .markWindow{
 	display:block;
 	padding: 4px;
-	position:absolute;
+	position:fixed;
 	background-color:#ccc;
 	width:600px;
 	height:300px;
 	bottom:0px;
 	box-shadow:2px 2px 4px #000;
 	border: 2px solid #999;
-	bottom:0%;
-    right:30%;
+	bottom:10%;
+    right:35%;
 }
 
 .markWindow textarea{
