@@ -978,17 +978,23 @@ function toggleInstructions(element)
 //---------------------------------------------------------------------------------------------------------------
 
 var ClickCounter = {
+
+	// Determines if the Clickcounter should update ui
+	update: false,
 	// Used to count clicks
 	score: 0,
 
 	// Initializes the noClicks variable, called at the start of a dugga
 	initialize: function() {
+		this.update = true;
 		this.score = 0;
 		this.animateClicks();
 	},
 
 	// Called whenever a dugga should count a mouse click, e.g., when a user presses a button
 	onClick: function() {
+		if(!this.update)
+			return;
 		// Increments the click counter by one
 		this.score++;
 
@@ -1082,11 +1088,11 @@ var Timer = {
 			str += 0;
 		}
 		str += seconds;
-
 		// Push new value to ui thing and check if the timerbox is shown
 		if ($('#scoreElement').length != 0 && this.update == 0) {
 			document.getElementById('scoreElement').innerHTML = str;
 		}
+
 	}
 }	
 

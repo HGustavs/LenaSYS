@@ -33,6 +33,7 @@
 	$cid=getOPG('cid');
 	$vers=getOPG('coursevers');
 	$quizid=getOPG('did');
+	$moment=getOPG("moment");
 
 	$duggatitle="UNK";
 	$duggafile="UNK";
@@ -116,8 +117,8 @@
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 					echo "<table width='100%'><tr><td align='center'>";
-					//only shows save button if quiz is not graded
-					if (!getUserAnswerHasGrade($userid, $cid, $quizid,$vers)) {
+					//only shows save button and scorebox if quiz is not graded
+					if (!getUserAnswerHasGrade($userid, $cid, $quizid,$vers, $moment)) {
 						echo  "<!-- Timer START --><div id='scoreElement'></div>";
 						echo "<input class='submit-button' type='button' value='Save' onclick='saveClick();' style='width:160px;height:48px;line-height:48px;' />";
 					}

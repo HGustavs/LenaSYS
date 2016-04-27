@@ -16,7 +16,7 @@ var amountPassed = [];
 var savedAmount = [];
 var count = 0;
 
-AJAXService("GET", { cid : querystring['cid'] }, "RESULT");
+AJAXService("GET", { cid : querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
 
 $(function() 
 {
@@ -34,15 +34,27 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 		closeWindows();
 	
 		var pressed = e.target.className;
-	
-		if (pressed === "Uc"){
-				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+		var btnpressed = event.target.classList[0];
+		if (pressed === "Uc") {
+			$("#gradeUconf").css("display","block");
+			$('#gradeUconf').on('click', function(event){
+				 if( $(event.target).hasClass('U-confirm')) {
+					 changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+					 closeWindows();
+				 }
+			});
 		} else if (pressed === "Gc") {
 				changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "GVc"){// Seems to work.
 				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "U") {
-				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+			$("#gradeUconf").css("display","block");
+			$('#gradeUconf').on('click', function(event){
+				 if( $(event.target).hasClass('U-confirm')) {
+					 changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+					 closeWindows();
+				 }
+			});
 		} else if (pressed === "3c") {
 				changeGrade(4, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "4c") {
@@ -50,9 +62,17 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 		} else if (pressed === "5c") {
 				changeGrade(6, gradesys, cid, vers, moment, uid, mark, ukind);
 		}
-		else if (event.ctrlKey && pressed === "VGh") {
+		else if (event.ctrlKey && pressed === "VGh") { //If grade is G, Ctrl-click on VG to change from G to VG
 				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
 				AJAXService("CHFAILS",{ cid : cid, moment : moment,vers : vers, luid : uid}, "RESULT");
+		} else if (pressed === "Uh") {
+			$("#gradeUconf").css("display","block");
+			$('#gradeUconf').on('click', function(event){
+				 if( $(event.target).hasClass('U-confirm')) {
+					 changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+					 closeWindows();
+				 }
+			});
 		}
 		else {
 			//alert("This grading is not OK!");
@@ -467,15 +487,27 @@ function renderMomentChild(dugga, userResults, userId, fname, lname, moment, loc
 
 		// If no result is found i.e. No Fist
 		if (foundgrade === null && useranswer === null && submitted === null) {
-			zttr += makeSelect(dugga.gradesystem, querystring['cid'], querystring['coursevers'], dugga.lid, userId, null, "I");
+			if (dugga.kind===4) {
+				zttr += makeSelect(dugga.list_g, querystring['cid'], querystring['coursevers'], dugga.lid, userId, null, "I");
+			}else {
+				zttr += makeSelect(dugga.quiz_g, querystring['cid'], querystring['coursevers'], dugga.lid, userId, null, "I");
+			}
 		}else if (foundgrade !== null){
-			zttr += makeSelect(dugga.gradesystem, querystring['cid'], querystring['coursevers'], dugga['lid'], userId, foundgrade, "U");													
+			if (dugga.kind===4) {
+				zttr += makeSelect(dugga.list_g, querystring['cid'], querystring['coursevers'], dugga['lid'], userId, foundgrade, "U");	
+			}else {
+				zttr += makeSelect(dugga.quiz_g, querystring['cid'], querystring['coursevers'], dugga['lid'], userId, foundgrade, "U");		
+			}			
 		}else {
-			zttr += makeSelect(dugga['gradesystem'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
+			if (dugga.kind===4) {
+				zttr += makeSelect(dugga['list_g'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
+			}else {
+				zttr += makeSelect(dugga['quiz_g'], querystring['cid'], querystring['coursevers'], dugga['lid'], userId, null, "U");
+			}
 		}
 		if(useranswer!==null){
 
-			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.svg' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\",\"" + foundgrade + "\",\"" + dugga.gradesystem + "\",\"" + dugga["lid"] + "\");' />";
+			zttr += "<img id='korf' style='width:24px;height:24px;float:right;margin-right:8px;' src='../Shared/icons/FistV.svg' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + querystring['coursevers'] + "\",\"" + dugga.lid + "\",\"" + fname + "\",\"" + lname + "\",\"" + userId + "\",\"" + submitted + "\",\"" + marked + "\",\"" + foundgrade + "\",\"" + dugga.quiz_g + "\",\"" + dugga["lid"] + "\");' />";
 
 		}
 		if(lock == true){

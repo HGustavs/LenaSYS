@@ -34,15 +34,16 @@ function setup()
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data)
-{
-	Timer.startTimer();
-	ClickCounter.initialize();
+{	
+	console.log("dads");
 	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
 		if(data['score'] > 0){
 			Timer.score = data['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
 		if(data['score'] > 0){
 			ClickCounter.score = data['score'];
 			console.log(ClickCounter.score);
@@ -96,9 +97,7 @@ function saveClick()
 function reset()
 {
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
+	Timer.reset();
 	ClickCounter.initialize();
 
 }

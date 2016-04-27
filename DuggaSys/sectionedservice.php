@@ -37,6 +37,7 @@ $highscoremode=getOP('highscoremode');
 $versid=getOP('versid');
 $coursename=getOP('coursename');
 $versname=getOP('versname');
+$copycourse=getOP('copycourse');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $log_uuid = getOP('log_uuid');
@@ -135,22 +136,6 @@ if(checklogin()){
 
 					$link=$pdo->lastInsertId();
 			}
-			if($kind==3) {
-				$gradesys_temp = 0;
-				$query1 = $pdo->prepare("SELECT gradesystem FROM listentries WHERE moment=:moment LIMIT 1");
-				if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
-				else $query1->bindParam(':moment', $moment);
-				
-				if(!$query1->execute()) {
-					$error=$query1->errorInfo();
-					$debug="Error reading entries".$error[2];
-				}
-					
-				foreach($query1->fetchAll() as $row) {
-								$gradesys_temp=$row['gradesystem'];
-				}
-
-			}
 				
 				$query = $pdo->prepare("UPDATE listentries SET highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
 
@@ -164,10 +149,7 @@ if(checklogin()){
 				$query->bindParam(':kind', $kind);
 				$query->bindParam(':link', $link);
 				$query->bindParam(':visible', $visibility);
-				if ($kind==3)
-					$query->bindParam(':gradesys', $gradesys_temp);
-				else
-					$query->bindParam(':gradesys', $gradesys);
+				$query->bindParam(':gradesys', $gradesys);
 		
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
@@ -200,6 +182,17 @@ if(checklogin()){
 				$debug="Error updating entries".$error[2];
 			}
 			
+		}else if(strcmp($opt, "CPYVRS")===0){
+			///prepare a stored procedure call, bind params for variables
+			$query = $pdo->prepare("CALL copyVersionItems(:overs,:nvers)");
+			$query->bindParam(":overs",$copycourse,PDO::PARAM_STR);
+			$query->bindParam("nvers",$versid,PDO::PARAM_STR);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries".$error[2];
+			}
+
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);
@@ -237,7 +230,7 @@ if(!$query->execute()) {
 }
 
 if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-	$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) || $row['visibility'] != 0);
+	$hr = ((checklogin() && hasAccess($userid, $courseid, 'r')) && $row['visibility'] == 2 || $row['visibility'] == 1);
 	
 	if (!$hr) {
 		if (checklogin()) {
@@ -274,7 +267,7 @@ foreach($query->fetchAll() as $row) {
 }
 
 $entries=array();
-$reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)));
+$reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)) || $row['visibility'] == 2);
 
 if($reada || $userid == "guest"){
 	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND vers=:coursevers ORDER BY pos");

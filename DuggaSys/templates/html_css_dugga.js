@@ -85,7 +85,7 @@ function returnedDugga(data)
 		showDuggaInfoPopup();
 		document.getElementById("target-window-img").src = "showdoc.php?fname="+retdata["target"];
 		document.getElementById("target-text").innerHTML = retdata["target-text"];
-
+		
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
 			var userCode = data["answer"].substr(data["answer"].indexOf("###HTMLSTART###")+15,data["answer"].indexOf("###HTMLEND###")-28);
@@ -119,9 +119,7 @@ function reset()
 	document.getElementById("content-window").value = "";
 	document.getElementById("url-input").value = "";
 
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
+	Timer.reset();
 	ClickCounter.initialize();
 
 }
@@ -257,21 +255,19 @@ function tick()
 //----------------------------------------------------------------------------------
 
 function startDuggaHighScore(){
-	Timer.startTimer();
-	ClickCounter.initialize();
-
 	if(querystring['highscoremode'] == 1) {
-		if(dataV['score'] > 0){
-			Timer.score = dataV['score'];
+		Timer.startTimer();
+		if(data['score'] > 0){
+			Timer.score = data['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		if(dataV['score'] > 0){
-			ClickCounter.score = dataV['score'];
+		ClickCounter.initialize();
+		if(data['score'] > 0){
+			ClickCounter.score = data['score'];
+			console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
-	} else {
-		score = 0;
 	}
 }			
 function reverseHtmlEntities(str) {

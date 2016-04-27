@@ -26,7 +26,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 {
 	
 	// Ensures that you can't change anything if the moment is hidden.
-	if(evisible==1){
+	if(evisible!=0){
 		$('#sectionname').prop('disabled', true);
 		$('#type').prop('disabled', true);
 		$('#link').prop('disabled', true);
@@ -122,6 +122,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='0'>Hidden</option>";
 	if(evisible==1) str+="<option selected='selected' value='1'>Public</option>"
 	else str+="<option value='1'>Public</option>";
+	if(evisible==2) str+="<option selected='selected' value='2'>Login</option>"
+	else str+="<option value='2'>Login</option>";
 	$("#visib").html(str);
 	
 	// Add hichscore mode options
@@ -199,7 +201,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","block");
 	// Moment
 	}else if(kind==4){
@@ -266,7 +268,7 @@ function changedType()
 			}
 			$("#link").html(iistr);
 			$("#inputwrapper-link").css("display","block");
-			$("#inputwrapper-gradesystem").css("display","block");
+			$("#inputwrapper-gradesystem").css("display","none");
 			$("#inputwrapper-highscore").css("display","block");
 			$("#inputwrapper-tabs").css("display","none");	
 		}else if(kind==4){
@@ -355,11 +357,13 @@ function createVersion(){
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
-	
+	var copycourse = $("#copyvers").val();
+
 	if(coursevers=="null"){
 		makeactive=true;
 	}
-	
+
+	//create a fresh course version
 	AJAXService("NEWVRS", {
 		cid : cid,
 		versid : versid,
@@ -367,6 +371,19 @@ function createVersion(){
 		coursecode : coursecode,
 		coursename : coursename
 	}, "SECTION");
+	
+	//if copy course is not 0, run the copy call
+	if (!copycourse == 0){
+		//create a copy of course version
+		AJAXService("CPYVRS", {
+			cid : cid,
+			versid : versid,
+			versname : versname,
+			coursecode : coursecode,
+			coursename : coursename,
+			copycourse : copycourse
+		}, "SECTION");
+	}
 	
 	if(makeactive){
 		AJAXService("CHGVERS", {
@@ -435,6 +452,7 @@ var resave = false;
 function returnedSection(data)
 {
 	retdata=data;
+	var storeVersions = [];
 
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
@@ -447,8 +465,11 @@ function returnedSection(data)
 				if (retdata['courseid'] == item['cid']) {
 					var vvers = item['vers'];
 					var vname = item['versname'];
+					storeVersions.push(vvers);
 					if(retdata['coursevers']==vvers){
 						var versionname=vname;
+						//Storing the current version number as it's used later on.
+						var versionversion = vvers;
 					}
 				}
 			}
@@ -465,6 +486,15 @@ function returnedSection(data)
 			str+=";'>";	
 			str+="<input type='button' class='submit-button' value='New version' title='Create a new version of this course' onclick='showCreateVersion();'>";
 			str+="</div>";
+			
+			//This function lists the versions in the the drop down list, leaving the versionversion selected.
+			$("#copyvers").append('<option value="0" selected>Create fresh version</option>');
+			$.each(storeVersions,function(i,e){
+				if(e == versionversion)
+					$("#copyvers").append('<option value="'+e+'" selected>'+e+'</option>');
+				else
+					$("#copyvers").append('<option value="'+e+'">'+e+'</option>');
+			});
 			
 			str+="<div class='course-menu--options'>";
 			str+="<input type='button' class='submit-button' value='Access' title='Give students access to the selected version' onclick='accessCourse();'/>";
@@ -546,8 +576,8 @@ function returnedSection(data)
  				}
 				//str += "<div>";
 
-				// If visible or we are a teacher/superuser
-				if (parseInt(item['visible']) === 1 || data['writeaccess']) {		
+				// If public, or we are logged in, or we are a teacher/superuser
+				if (parseInt(item['visible']) === 1 || parseInt(item['visible']) === 2 && data['readaccess'] || data['writeaccess']) {		
 
 					// Content table 		
 					str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
@@ -635,7 +665,16 @@ function returnedSection(data)
 								}else if(grady==3){
 										//	Marked VG (Green)		
 										str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
-								}else if(grady>3){
+								}else if(grady==4){
+										//	Marked 3 (Green)		
+										str+="<div class='GreenLight'  title='Grade: 3\nDate: "+marked+"' ></div>";
+								}else if(grady==5){
+										//	Marked 4 (Green)		
+										str+="<div class='GreenLight'  title='Grade: 4\nDate: "+marked+"' ></div>";
+								}else if(grady==6){
+										//	Marked 5 (Green)		
+										str+="<div class='GreenLight'  title='Grade: 5\nDate: "+marked+"' ></div>";
+								}else if(grady>6){
 										//this seems to be needed for the page to load	
 										str+="<div class='GreenLight'  title='Status: Unknown - add other grade system\nDate: "+marked+"' ></div>";
 								}
