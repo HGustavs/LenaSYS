@@ -183,6 +183,8 @@ function drawPieChart(data) {
 		total += (isNaN(data[i].value)) ? 0 : Number(data[i].value);
 	}
 
+	var fontSize = 14;
+	var textAreaHeight = fontSize * 2.2;
 	var radius = canvas.height / 2;
 	var last = 0;
 	for (var i = 0; i < data.length; i++) {
@@ -193,5 +195,10 @@ function drawPieChart(data) {
 		ctx.lineTo(radius, radius);
 		ctx.fill();
 		last += (Math.PI*2*(data[i].value/total));
+
+		ctx.fillRect(radius * 2 + 30, i * textAreaHeight + 20, 12, 12);
+		ctx.fillStyle = "black";
+		ctx.font = fontSize + "px Arial";
+		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight);
 	}
 }
