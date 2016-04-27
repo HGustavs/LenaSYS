@@ -10,6 +10,9 @@ $(function() {
 			case "bar":
 				drawBarChart(analytics.chartData);
 				break;
+			case "pie":
+				drawPieChart(analytics.chartData);
+				break;
 		}
 	});
 	loadGeneralStats();
@@ -31,6 +34,7 @@ function loadAnalytics(q, cb) {
 			$("#analytic-data").empty();
 			$("#analytic-data").append("<pre>" + JSON.stringify(data, null, 4));
 			resetAnalyticsChart();
+			$('#analytic-info').empty();
 			cb(data);
 		}
 	});
@@ -48,6 +52,14 @@ function loadPasswordGuessing() {
 
 function loadOsPercentage() {
 	loadAnalytics("osPercentage", function(data) {
+		var chartData = [];
+		for (var i = 0; i < data.length; i++) {
+			chartData.push({
+				label: data[i].operatingSystem,
+				value: data[i].percentage
+			});
+		}
+		drawPieChart(chartData);
 	});
 }
 
@@ -142,5 +154,44 @@ function drawBarChart(data) {
 		ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
 		ctx.fillStyle = "black";
 		ctx.fillText(data[i].label, x + barWidth / 2, -textAreaHeight / 2);
+	}
+}
+
+function getRandomColor() {
+	var letters = '0123456789ABCDEF'.split('');
+	var color = '#';
+	for (var i = 0; i < 6; i++ ) {
+		color += letters[Math.floor(Math.random() * 16)];
+	}
+	return color;
+}
+
+function drawPieChart(data) {
+	if (!$.isArray(data)) return;
+
+	analytics.chartType = "pie";
+	analytics.chartData = data;
+
+	var canvas = $("#analytic-chart")[0];
+	var ctx = canvas.getContext("2d");
+
+	fitCanvasToContainer(canvas);
+	clearCanvas(canvas);
+
+	var total = 0;
+	for (var i = 0; i < data.length; i++) {
+		total += (isNaN(data[i].value)) ? 0 : Number(data[i].value);
+	}
+
+	var radius = canvas.height / 2;
+	var last = 0;
+	for (var i = 0; i < data.length; i++) {
+		ctx.fillStyle = getRandomColor();
+		ctx.beginPath();
+		ctx.moveTo(radius, radius);
+		ctx.arc(radius, radius, radius, last, last + (Math.PI*2*(data[i].value/total)), false);
+		ctx.lineTo(radius, radius);
+		ctx.fill();
+		last += (Math.PI*2*(data[i].value/total));
 	}
 }
