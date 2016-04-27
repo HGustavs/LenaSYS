@@ -122,7 +122,7 @@ function editThread(data)
 	var array = data.split(',');
 	//console.log(array);
 	
-	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;background-color:'>";
+	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;opacity:0.8;'>";
 	$(".threadTopic").html(topic);
 	document.getElementById("editTopic").value = array[3];
 	
