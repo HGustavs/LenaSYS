@@ -201,15 +201,13 @@ function drawBarChart(data) {
 }
 
 //------------------------------------------------------------------------------------------------
-// Generates a random color in hex format and returns it
+// Generates a random pastel color in hex format and returns it
 //------------------------------------------------------------------------------------------------
 function getRandomColor() {
-	var letters = '0123456789ABCDEF'.split('');
-	var color = '#';
-	for (var i = 0; i < 6; i++ ) {
-		color += letters[Math.floor(Math.random() * 16)];
-	}
-	return color;
+	var r = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+	var g = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+	var b = Math.floor((Math.floor(Math.random() * 255) + 255) / 2);
+	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
 //------------------------------------------------------------------------------------------------
