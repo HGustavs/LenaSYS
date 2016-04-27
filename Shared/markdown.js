@@ -188,6 +188,10 @@ function markdownBlock(inString)
 	
 	// Iframe, website inside a inline frame - (--url,width,height--)
 	inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
-
+	
+	// Quote text, this will be displayed in an additional box
+	// ^ Text you want to quote ^
+	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote>");
+	
 	return inString;
 }
