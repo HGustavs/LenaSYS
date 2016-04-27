@@ -88,7 +88,7 @@ function clearCanvas(canvas) {
 function chartDataMax(data) {
 	var max = 0;
 	$.each(data, function(i, obj) {
-		if (max < obj.value) max = obj.value;
+		if (max < Number(obj.value)) max = Number(obj.value);
 	});
 	return max;
 }
@@ -125,11 +125,14 @@ function drawBarChart(data) {
 	var barHeightMultiplier = (canvas.height - textAreaHeight) / chartDataMax(data);
 	
 	for (var i = 0; i < data.length; i++) {
+		var x = barSpacing + i * (barWidth + barSpacing);
 		ctx.fillStyle = "#614875";
 		ctx.scale(1, -1);
-		ctx.fillRect(barSpacing + i * (barWidth + barSpacing), textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
-		ctx.fillStyle = "black";
+		ctx.fillRect(x, textAreaHeight, barWidth, data[i].value * barHeightMultiplier);
 		ctx.scale(1, -1);
-		ctx.fillText(data[i].label, barSpacing + i * (barWidth + barSpacing) + barWidth / 2, -textAreaHeight / 2);
+		ctx.fillStyle = "white";
+		ctx.fillText(Number(data[i].value).toFixed(0), x + barWidth / 2, -data[i].value * barHeightMultiplier);
+		ctx.fillStyle = "black";
+		ctx.fillText(data[i].label, x + barWidth / 2, -textAreaHeight / 2);
 	}
 }
