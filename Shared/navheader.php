@@ -21,7 +21,6 @@
 			// Show analytic link if user is superuser.
 			if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
 				echo "<td class='navButt' id='analytic' title='Analytic Tool'><a id='test1' href='../DuggaSys/analytictool.php'><img id='test2' style='fill:white;' src='../Shared/icons/analytic.svg'></a></td>";
-				echo "<td class='navButt' id='settings' title='Settings'><a id='test1' href='../DuggaSys/options.php'><img id='test3' style='fill:white;' src='../Shared/icons/analytic.svg'></a></td>";
 			}
 			
 			echo "<td class='navButt' id='forum' title='Forum'><a href='#'><i class='fa fa-2x fa-comments' style='margin-left: 10px;color: white;'></i></a></td>";
