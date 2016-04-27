@@ -42,6 +42,11 @@ pdoConnect();
 			<button id="mouseLoggingON">On</button>
 			<button id="mouseLoggingOFF">Off</button>
 		</div>
+		<div>
+			<p>client successfully recieved service request-logging</p>
+			<button id="srLoggingON">On</button>
+			<button id="srLoggingOFF">Off</button>
+		</div>
 	</div>
 	<!-- content END -->
 	
