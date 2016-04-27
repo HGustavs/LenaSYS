@@ -38,7 +38,7 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 		<div>
-			<h1>Mouse movement logging</h1>
+			<p>Mouse movement logging</p>
 			<button id="mouseLoggingON">On</button>
 			<button id="mouseLoggingOFF">Off</button>
 		</div>
