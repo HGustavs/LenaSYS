@@ -1,3 +1,3 @@
-$("#mouseLoggingON").onclick({
+$("#mouseLoggingON").click({
 	alert("test");
 });
