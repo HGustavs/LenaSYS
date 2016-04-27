@@ -118,9 +118,7 @@ function saveClick()
 function reset()
 {
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
+	Timer.reset();
 	ClickCounter.initialize();
 
 	document.getElementById('H0').innerHTML="0";

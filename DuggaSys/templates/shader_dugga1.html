@@ -141,9 +141,29 @@
 </div>
 
 <script>
-	
+	//start highscoremode
+	if(querystring['highscoremode'] == 1) {
+		Timer.startTimer();
+		if(data['score'] > 0){
+			Timer.score = data['score'];
+		}
+		Timer.showTimer();
+	} else if (querystring['highscoremode'] == 2) {
+		ClickCounter.initialize();
+		if(data['score'] > 0){
+			ClickCounter.score = data['score'];
+			console.log(ClickCounter.score);
+		}
+		ClickCounter.showClicker();
+	}
 	// Borde bara vara att pytsa in path och file här....
 	var filez=JSON.parse('[{"uid":"2","subid":"43","vers":"97732","did":"1","fieldnme":"Inl1Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:28","kind":"1","seq":""},{"uid":"2","subid":"42","vers":"97732","did":"1","fieldnme":"Inl1Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:25","kind":"1","seq":""},{"uid":"2","subid":"41","vers":"97732","did":"1","fieldnme":"Inl1Dokument","filename":"Pokumentnallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:17:56","kind":"1","seq":""},{"uid":"2","subid":"43","vers":"97732","did":"1","fieldnme":"Inl2Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:28","kind":"1","seq":""},{"uid":"2","subid":"42","vers":"97732","did":"1","fieldnme":"Inl2Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:25","kind":"1","seq":""},{"uid":"2","subid":"41","vers":"97732","did":"1","fieldnme":"Inl2okument","filename":"Pokumentnallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:17:56","kind":"1","seq":""},{"uid":"2","subid":"43","vers":"97732","did":"1","fieldnme":"Inl3Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:28","kind":"1","seq":""},{"uid":"2","subid":"42","vers":"97732","did":"1","fieldnme":"Inl3Dokument","filename":"Dokumentmallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:18:25","kind":"1","seq":""},{"uid":"2","subid":"41","vers":"97732","did":"1","fieldnme":"Inl3Dokument","filename":"Pokumentnallen","filepath":"submissions/2/97732/1/Kong_Toddler_Toddler/","extension":"pdf","mime":"application/x-download","updtime":"2016-02-26 16:17:56","kind":"1","seq":""}]');
+
+	function reset(){
+		alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+		Timer.reset();
+		ClickCounter.initialize();
+	}
 
 	// Latest version of any file in a field - unsure about naming of the function
 	function findfilevers(cfield,ctype)
