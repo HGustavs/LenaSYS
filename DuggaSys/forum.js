@@ -21,10 +21,11 @@ $(document).on('click','#replycommentbutton', function(event) {
 
 function initThread()
 {
+	console.log(querystring);
 	if (querystring["threadId"])
 	{
 		$("#createThreadWrapper").hide();
-		
+
 		getThread();
 	}
 	else {
@@ -65,11 +66,10 @@ function getComments()
 
 function createThread()
 {
-	var courseId = 1;
-	var topic = "Din mormor";
-	var description = "Din mormor är fin";
-	var userID = "1";
-	AJAXService("CREATETHREAD",{courseId:courseId,userID:userID,topic:topic,description:description},"CREATETHREAD");
+	var courseId = $("#createThreadCourseList").val();
+	var topic = $("#threadTopicInput").val();
+	var description = $("#createThreadDescr").val();
+	AJAXService("CREATETHREAD",{courseId:courseId,topic:topic,description:description},"CREATETHREAD");
 }
 
 function makeComment(commentid)
@@ -108,7 +108,7 @@ function checkComment()
 
 function deleteComment(commentid)
 {
-	
+
 	AJAXService("DELETECOMMENT",{commentid:commentid},"DELETECOMMENT");
 }
 
@@ -121,15 +121,17 @@ function editThread(data)
 {
 	var array = data.split(',');
 	//console.log(array);
+
 	
 	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;opacity:0.8;'>";
+
 	$(".threadTopic").html(topic);
 	document.getElementById("editTopic").value = array[3];
-	
+
 	var description = "<textarea id='editDescription' name='description' style='float:left;width:100%;height:auto;min-height:200px;'></textarea>";
 	$("#threadDescr").html(description);
 	document.getElementById("editDescription").value = array[6];
-	
+
 	var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:auto;float:left;margin-top:30px;'>";
 	$("#threadDescr").append(button);
 }
@@ -145,11 +147,11 @@ function submitEditThread()
 		var topic = $("#editTopic").val();
 		var description = $("#editDescription").val();
 		console.log(topic+description);
-		
+
 		AJAXService("EDITTHREAD",{threadId:querystring["threadId"],topic:topic,description:description},"EDITTHREAD");
-		
+
 	}
-	
+
 }
 
 //----------------------------------------
@@ -173,7 +175,7 @@ function returnedThread(data)
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
-		
+
 		if($('div.threadDeleteAndEdit').length){
 			var buttons = "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete' onclick='deleteThread()'>";
 			if(data['thread']['locked']==1){
@@ -183,15 +185,15 @@ function returnedThread(data)
 			}
 			$(".threadDeleteAndEdit").html(buttons);
 		}
-		
+
 		if($('div.opEditThread').length){
 			var arr = $.map(data['thread'], function(el) { return el });
 			//console.log(arr);
 			var button = "<input class='new-item-button' id='editThreadButton'type='button' value='Edit' onclick='editThread(\""+arr+"\");'>";
 			$(".opEditThread").html(button);
 		}
-		
-		
+
+
 		$(".threadTopic").html(data["thread"]["topic"]);
 		$("#threadDescr").html(data["thread"]["description"]);
 		var str = "Created <span id='threadDate'>";
@@ -201,7 +203,7 @@ function returnedThread(data)
 			str += "<br/>Edited <span id='threadEditedDate'>"+data["thread"]["lastedited"];
 		}
 		$("#threadDetails").html(str);
-		
+
 		if(data['thread']['locked']==1){
 			var poo = "<p style='margin-left:20px;'>This thread has been locked and can no longer be commented on.</p>";
 			$(".threadMakeComment").html(poo);
@@ -250,8 +252,8 @@ function returnedComments(data)
 		// Iterates through all the comments
 		$.each(data["comments"], function(index, value){
 
-			
-		
+
+
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
@@ -289,7 +291,15 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	return threadOptions;
 }
 
-
+function createThreadSuccess(data)
+{
+	if (data["accessDenied"]){
+		accessDenied(array);
+	}else {
+		var url = "thread.php?threadId=" + data['thread']['threadid'];
+		$(location).attr("href", url);
+	}
+}
 
 function replyUI(commentid)
 {
@@ -317,7 +327,7 @@ function makeCommentSuccess()
 
 function deleteCommentSuccess(data)
 {
-	
+
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else{

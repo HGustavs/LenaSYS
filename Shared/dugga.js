@@ -129,7 +129,7 @@ function savequizResult(citstr)
 	citstr=querystring['moment']+" "+citstr;
 	citstr=querystring['coursevers']+" "+citstr;
 	citstr=querystring['cid']+" "+citstr;
-	AJAXService("SAVDU",{answer:citstr},"PDUGGA");	
+	AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 	alert('Returned');
 }
 
@@ -407,7 +407,7 @@ function AJAXService(opt,apara,kind)
 					sendConfirmation("resultedservice.php");
 				}
 			});
-			break;		
+			break;
 		case "RESULTLIST":
 			$.ajax({
 				url: "resultlistedservice.php",
@@ -487,7 +487,10 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: getThread,
+				success: function(data) {
+					createThreadSuccess(data);
+					sendConfirmation("forumservice.php");
+				},
 				error: error
 			});
 			break;
@@ -1112,7 +1115,7 @@ var Timer = {
 			document.getElementById('scoreElement').innerHTML = str;
 		}
 	}
-}	
+}
 
 function getButtonID(obj){
 	alert(obj.id);
@@ -1136,7 +1139,7 @@ $(function() {
 		$.ajax({
 			url: '../DuggaSys/logservice.php',
 			type: 'POST',
-			dataType: 'json', 
+			dataType: 'json',
 			data: JSON.stringify(data),
     		contentType: "application/json",
 		});
@@ -1156,13 +1159,12 @@ $(function() {
 // 			mouseY: e.clientY
 // 		}
 // 	}
-	
+
 // 	$.ajax({
 // 		url: '../DuggaSys/logservice.php',
 // 		type: 'POST',
-// 		dataType: 'json', 
+// 		dataType: 'json',
 // 		data: JSON.stringify(data),
 // 		contentType: "application/json",
 // 	});
 // });
-
