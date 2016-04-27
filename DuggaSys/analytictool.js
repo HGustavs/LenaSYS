@@ -46,7 +46,7 @@ function loadAnalytics(q, cb) {
 			$('#analytic-info').empty();
 			cb(data);
 			// temporary JSON-output for debugging purposes
-			$("#analytic-info").append("<pre>" + JSON.stringify(data, null, 4));
+			$("#analytic-info").append("<pre>" + JSON.stringify(data, null, 4) + "</pre>");
 		}
 	});
 }
@@ -96,8 +96,9 @@ function loadServiceUsage() {
 }
 
 function loadServiceAvgDuration() {
-	$('#analytic-info').html("The average duration of service call completion in milliseconds.");
 	loadAnalytics("serviceAvgDuration", function(data) {
+		$('#analytic-info').append("<p>The average duration of service call completion in milliseconds.</p>");
+
 		var chartData = [];
 		for (var i = 0; i < data.length; i++) {
 			chartData.push({
