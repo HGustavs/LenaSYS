@@ -434,13 +434,13 @@ function AJAXService(opt,apara,kind)
 			break;
 		case "BOXCONTENT":
 			$.ajax({
-				url: "editorService.php",
+				url: "codeviewerService.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
 					returned(data);
-					sendConfirmation("editorService.php");
+					sendConfirmation("codeviewerService.php");
 				}
 			});
 			break;
