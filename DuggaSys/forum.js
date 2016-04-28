@@ -241,8 +241,6 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	return threadOptions;
 }
 
-
-
 function replyUI(commentid)
 {
 	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
