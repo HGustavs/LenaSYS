@@ -37,16 +37,18 @@ pdoConnect();
 ?>
 	<!-- content START -->
 	<div id="content">
-		<div>
-			<p>Mouse movement logging</p>
-			<button id="mouseLoggingON">On</button>
-			<button id="mouseLoggingOFF">Off</button>
-		</div>
-		<div>
-			<p>Fourth round trip logging</p>
-			<button id="FRLoggingON">On</button>
-			<button id="FRLoggingOFF">Off</button>
-		</div>
+		<p>Mouse movement logging</p>
+		<label data-label="mouseMoveLogging" class="switch<?= getOption('mouseMoveLogging')['value'] == '1' ? ' checked' : ''?>">
+			<i class="icon-ok"></i>
+			<i class="icon-remove"></i>
+			<input type="checkbox"<?= getOption('mouseMoveLogging')['value'] == '1' ? ' checked' : ''?>>
+		</label>
+		<p>Fourth round trip logging</p>
+		<label data-label="fourthRound" class="switch<?= getOption('fourthRound')['value'] == '1' ? ' checked' : ''?>">
+			<i class="icon-ok"></i>
+			<i class="icon-remove"></i>
+			<input type="checkbox"<?= getOption('fourthRound')['value'] == '1' ? ' checked' : ''?>>
+		</label>
 	</div>
 	<!-- content END -->
 	

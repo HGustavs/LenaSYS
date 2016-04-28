@@ -14,9 +14,24 @@ $(function() {
 	$("#FRLoggingOFF").click(function() {
 		setOption("fourthRound", "0");
 	});
+
+	$('.switch').change(function(){
+		$(this).toggleClass('checked');
+	});
+
+	$('.switch').click(function(e) {
+		var that = $(this);
+		e.preventDefault();
+		setOption($(this).attr('data-label'), $(this).hasClass('checked') ? '0' : '1', function(data) {
+			if (data.success) {
+				that.find('input').prop('checked');
+				that.find('input').change();
+			}
+		});
+	});
 });
 
-function setOption(label, value) {
+function setOption(label, value, cb) {
 	$.ajax({
 		url: "optionservice.php",
 		type: "POST",
@@ -26,7 +41,7 @@ function setOption(label, value) {
 			value: value
 		},
 		success: function(data) {
-			alert("success: " + data.success);
+			cb(data);
 		}
 	});
 }
