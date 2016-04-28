@@ -1,0 +1,3 @@
+$("#mouseLoggingON").click({
+	alert("test");
+});
