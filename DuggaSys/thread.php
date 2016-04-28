@@ -1,7 +1,4 @@
  <?php
-
-
-
 session_start();
 include_once "forumservice.php";
 
@@ -37,7 +34,7 @@ if (file_exists("../.git/refs/heads/master")) {
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
 
-
+	
 
 
   <script type="text/javascript">
@@ -74,7 +71,7 @@ if (file_exists("../.git/refs/heads/master")) {
 			</div>
 			<div id="threadDescr"></div>
 			<div id="threadDetails">
-				Created <span id="threadDate">3 mar 2016</span> by <span id="threadCreator">a97marb</span>
+				Created <span id="threadDate">3 mar 2016</span> by <span id="threadCreator">a97marbr</span>
 			</div>
 		</div>
 
@@ -94,8 +91,6 @@ if (file_exists("../.git/refs/heads/master")) {
 
 		<div id="threadComments"></div>
 
-
-    <!-- Create thread -->
     <div id="createThreadWrapper">
       <div id="createThreadHeader">
         Create thread
@@ -114,38 +109,21 @@ if (file_exists("../.git/refs/heads/master")) {
             </div>
           </div>
           <div id="createThreadOptions">
-            <div class="createThreadOptionLabel">Course:</div>
-            <select class="createThreadOption" id="createThreadCourseList" name="courseList" onchange="updateClassList()"></select>
+            <div class="createThreadOptionLabel">Course</div>
+            <select id="createThreadCourseList" name="courseList"></select>
 
-            <div class="createThreadOptionLabel">Access:</div>
-            <div class="createThreadRadioWrapper createThreadOption">
-              <input id="threadRadioPublic" class="createThreadRadio" name="threadAccessRadio" type="radio" value="public" onclick="createThreadPublicUI();" checked="checked">
-              <label for="threadRadioPublic">Public</label>
-            </div>
+            <div class="createThreadOptionLabel">Access</div>
+            <select id="createThreadAccessList" name="courseList">
+              <option>Public</option>
+              <option>Private</option>
+            </select>
 
-            <div class="createThreadRadioWrapper createThreadOption">
-              <input id="threadRadioPrivate" class="createThreadRadio" name="threadAccessRadio" type="radio" value="private" onclick="createThreadPrivateUI();">
-              <label for="threadRadioPrivate">Private</label>
-            </div>
+            <div class="createThreadOptionLabel">Allow comments</div>
+            <select id="createThreadAccessList" name="courseList">
+              <option>Open</option>
+              <option>Locked</option>
+            </select>
 
-            <!-- If thread is private -->
-            <div id="createThreadPrivateWrapper">
-              <div class="createThreadOptionLabel">Class:</div>
-              <select class="createThreadOption" id="createThreadClassList" name="courseList" onchange="updateStudentList()"></select>
-              <div class="createThreadOptionLabel">User:</div>
-              <select class="createThreadOption" id="createThreadUserList" name="courseList"></select>
-            </div>
-
-
-            <div class="createThreadOptionLabel">Allow comments:</div>
-            <div class="createThreadRadioWrapper createThreadOption">
-              <input id="threadRadioOpen" class="createThreadRadio" name="threadAllowCommentsRadio" type="radio" value="open" checked="checked">
-              <label for="threadRadioOpen">Open</label>
-            </div>
-            <div class="createThreadRadioWrapper createThreadOption">
-              <input id="threadRadioLocked" class="createThreadRadio" name="threadAllowCommentsRadio" type="radio" value="locked">
-              <label for="threadRadioLocked">Locked</label>
-            </div>
           </div>
           <input id="submitThreadButton" class="submit-button createThreadButton" type="button" value="Submit" onclick="createThread();" style="background-color: rgb(97, 72, 117);">
         </div>
