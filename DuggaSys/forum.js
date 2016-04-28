@@ -119,6 +119,16 @@ function getCourses()
 	AJAXService("GETCOURSES",{},"GETCOURSES");
 }
 
+function getClasses(cid)
+{
+	AJAXService("GETCLASSES",{cid:cid},"GETCLASSES");
+}
+
+function getUsers(programclass)
+{
+	AJAXService("GETUSERS",{class:programclass},"GETUSERS");
+}
+
 function editThread(data)
 {
 	var array = data.split(',');
@@ -153,7 +163,6 @@ function submitEditThread()
 		AJAXService("EDITTHREAD",{threadId:querystring["threadId"],topic:topic,description:description},"EDITTHREAD");
 
 	}
-
 }
 
 //----------------------------------------
@@ -375,6 +384,30 @@ function createThreadUI()
 	getCourses();
 }
 
+function createThreadPublicUI()
+{
+	$("#createThreadPrivateWrapper").slideUp();
+}
+
+function createThreadPrivateUI()
+{
+	updateClassList();
+
+	$("#createThreadPrivateWrapper").slideDown();
+}
+
+function updateClassList()
+{
+	var cid = $("#createThreadCourseList").val();
+	getClasses(cid);
+}
+
+function updateStudentList()
+{
+	var programclass = $("#createThreadClassList").val();
+	getUsers(programclass);
+}
+
 function writeText()
 {
 	$("#threadPreviewButton").removeClass("threadActiveButton");
@@ -395,7 +428,6 @@ function previewText()
 }
 
 function returnedCourses(data) {
-	console.log(data);
 	var str;
 	$.each(data['courses'], function() {
 		str += "<option value='" + this[
@@ -403,6 +435,28 @@ function returnedCourses(data) {
 		] + "'>" + this["coursecode"] + " - " + this["coursename"] + "</option>";
 	});
 	$("#createThreadCourseList").html(str);
+}
+
+function returnedClasses(data) {
+	var str = "";
+	$.each(data['classes'], function() {
+		str += "<option value='" + this[
+			"class"
+		] + "'>" + this["class"] + "</option>";
+	});
+	$("#createThreadClassList").html(str);
+
+	updateStudentList();
+}
+
+function returnedUsers(data) {
+	var str = "<option value='all'>All</option>";
+	$.each(data['users'], function() {
+		str += "<option value='" + this[
+			"uid"
+		] + "'>" + this["username"] + "</option>";
+	});
+	$("#createThreadUserList").html(str);
 }
 
 function error(xhr, status, error)
