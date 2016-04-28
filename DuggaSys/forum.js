@@ -434,8 +434,7 @@ function returnedClasses(data) {
 }
 
 function returnedUsers(data) {
-	console.log(data);
-	var str = "";
+	var str = "<option value='all'>All</option>";
 	$.each(data['users'], function() {
 		str += "<option value='" + this[
 			"uid"
