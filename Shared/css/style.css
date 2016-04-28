@@ -925,12 +925,12 @@ header td {
 }
 
 input{
-	
+
 }
 
 input[type="button"]{
    -webkit-appearance: none;
-    -webkit-border-radius:0; 
+    -webkit-border-radius:0;
     border-radius:0;
 }
 
@@ -1526,10 +1526,17 @@ padding: 10px;
 }
 
 #createThreadFormWrapper {
+  box-sizing: border-box;
   margin: auto;
   clear: both;
   padding: 20px;
-  width: 50%;
+  width: 60%;
+}
+
+@media only screen and (max-width: 1200px) {
+    #createThreadFormWrapper {
+        width: 100%;
+    }
 }
 
 #threadTopicInput {
@@ -1542,8 +1549,22 @@ padding: 10px;
 
 #createThreadDescrOptions {
   margin-top: 10px;
-  width: 100%;
-  height: 25px;
+  width: 99.8%;
+  height: 30px;
+  background: #f2f8fa;
+  border: 1px solid #A9A9A9;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding-top: 5px;
+  border-bottom: none;
+
+}
+
+#threadWriteButton
+{
+
+   margin-left: 10px;
+
 }
 
 .createThreadButton {
@@ -1562,6 +1583,7 @@ padding: 10px;
 
 .threadActiveButton {
   background-color: #7B5A96;
+  
 }
 .threadActiveButton:hover {
   border-radius: 0;
@@ -1594,13 +1616,35 @@ padding: 10px;
 }
 
 .createThreadOptionLabel {
-  font-size: 0.9em;
+  clear: both;
+  float: left;
+  font-size: 1em;
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.createThreadOption {
+  clear: both;
+  float: left;
+}
+
+.createThreadRadioWrapper label {
+  color: rgb(97, 72, 117);
+}
+
+#createThreadPrivateWrapper {
+  display: none;
+  clear: both;
 }
 
 #submitThreadButton {
   clear:both;
   margin-right: 0;
   margin-bottom: 20px;
+}
+
+.replycommentbox {
+	border: 1px solid #A1A1A1;
+	display: inline-block;
+	background-color: #F2F2F2;
 }

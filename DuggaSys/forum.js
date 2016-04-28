@@ -21,10 +21,11 @@ $(document).on('click','#replycommentbutton', function(event) {
 
 function initThread()
 {
+	console.log(querystring);
 	if (querystring["threadId"])
 	{
 		$("#createThreadWrapper").hide();
-		
+
 		getThread();
 	}
 	else {
@@ -65,11 +66,10 @@ function getComments()
 
 function createThread()
 {
-	var courseId = 1;
-	var topic = "Din mormor";
-	var description = "Din mormor är fin";
-	var userID = "1";
-	AJAXService("CREATETHREAD",{courseId:courseId,userID:userID,topic:topic,description:description},"CREATETHREAD");
+	var courseId = $("#createThreadCourseList").val();
+	var topic = $("#threadTopicInput").val();
+	var description = $("#createThreadDescr").val();
+	AJAXService("CREATETHREAD",{courseId:courseId,topic:topic,description:description},"CREATETHREAD");
 }
 
 function makeComment(commentid)
@@ -81,7 +81,7 @@ function makeComment(commentid)
 			commentcontent=$(".repliedcomment").html();
 		}
 	});
-	var text = commentcontent + $(".commentInput").val();
+	var text = commentcontent + $(".commentInput").val() + "\r\n";
 	if(text.length > 0)
 	{
 		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKECOMMENT");
@@ -90,6 +90,8 @@ function makeComment(commentid)
 	{
 
 	}
+	$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
+  	"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment()\">");
 }
 
 function checkComment()
@@ -108,13 +110,59 @@ function checkComment()
 
 function deleteComment(commentid)
 {
-	
+
 	AJAXService("DELETECOMMENT",{commentid:commentid},"DELETECOMMENT");
 }
 
 function getCourses()
 {
 	AJAXService("GETCOURSES",{},"GETCOURSES");
+}
+
+function getClasses(cid)
+{
+	AJAXService("GETCLASSES",{cid:cid},"GETCLASSES");
+}
+
+function getUsers(programclass)
+{
+	AJAXService("GETUSERS",{class:programclass},"GETUSERS");
+}
+
+function editThread(data)
+{
+	var array = data.split(',');
+	//console.log(array);
+
+	
+	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;opacity:0.8;'>";
+
+	$(".threadTopic").html(topic);
+	document.getElementById("editTopic").value = array[3];
+
+	var description = "<textarea id='editDescription' name='description' style='float:left;width:100%;height:auto;min-height:200px;'></textarea>";
+	$("#threadDescr").html(description);
+	document.getElementById("editDescription").value = array[6];
+
+	var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:auto;float:left;margin-top:30px;'>";
+	$("#threadDescr").append(button);
+}
+
+function submitEditThread()
+{
+	if($("#editTopic").val().length<1){
+		//Better error message pls
+		console.log("Topic and/or description can NOT be empty!");
+	}else if($("#editDescription").val().length<1){
+		console.log("Topic and/or description can NOT be empty!");
+	}else{
+		var topic = $("#editTopic").val();
+		var description = $("#editDescription").val();
+		console.log(topic+description);
+
+		AJAXService("EDITTHREAD",{threadId:querystring["threadId"],topic:topic,description:description},"EDITTHREAD");
+
+	}
 }
 
 //----------------------------------------
@@ -138,7 +186,7 @@ function returnedThread(data)
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
-		
+
 		if($('div.threadDeleteAndEdit').length){
 			var buttons = "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete' onclick='deleteThread()'>";
 			if(data['thread']['locked']==1){
@@ -148,20 +196,25 @@ function returnedThread(data)
 			}
 			$(".threadDeleteAndEdit").html(buttons);
 		}
-		
+
 		if($('div.opEditThread').length){
-			var button = "<input class='new-item-button' id='editThreadButton'type='button' value='Edit'>";
+			var arr = $.map(data['thread'], function(el) { return el });
+			//console.log(arr);
+			var button = "<input class='new-item-button' id='editThreadButton'type='button' value='Edit' onclick='editThread(\""+arr+"\");'>";
 			$(".opEditThread").html(button);
 		}
-		
-		
+
 		$(".threadTopic").html(data["thread"]["topic"]);
-		$("#threadDescr").html(data["thread"]["description"]);
-		var str = "<span id='threadDate'>";
-		str += 	data["thread"]["datecreated"].substring(0, 16);
-		str += "</span> by <span id='threadCreator'>a97marbr</span>";
+		$("#threadDescr").html(parseMarkdown(data["thread"]["description"]));
+		var str = "Created <span id='threadDate'>";
+		str += 	data["thread"]["datecreated"].substring(0, 10);
+	
+		str += "</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid'])+"</span>";
+		if(!(data["thread"]["datecreated"]===data["thread"]["lastedited"])){
+			str += "<br/>Edited <span id='threadEditedDate'>"+data["thread"]["lastedited"];
+		}
 		$("#threadDetails").html(str);
-		
+
 		if(data['thread']['locked']==1){
 			var poo = "<p style='margin-left:20px;'>This thread has been locked and can no longer be commented on.</p>";
 			$(".threadMakeComment").html(poo);
@@ -182,13 +235,25 @@ function returnedThread(data)
 	}
 }
 
+function getUsername(threadUID)
+{
+	AJAXService("GETTHREADCREATOR",{threadId:querystring["threadId"],threadUID:threadUID},"GETTHREADCREATOR");
+}
+
+function showThreadCreator(data)
+{
+	//console.log(data);
+	var str = data['courses'][0]['username'];
+	$("#threadCreator").html(str);
+}
+
 function returnedComments(data)
 {
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
 
-		console.log(data);
+		
 		// Adds the comment header with the amount of comments.
 		var commentLength = data["comments"].length;
 		var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
@@ -198,21 +263,25 @@ function returnedComments(data)
 		// Iterates through all the comments
 		$.each(data["comments"], function(index, value){
 
+			var text= parseMarkdown(value['text']);
 			
-		
+			if(!value['replyid']){
+				//console.log(value['replyid']);
+				console.log('hej alla glada laxar');
+				text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>");
+			}else{
+				text = "Citat:<br/><div class=\"replycommentbox\"><p style=\"padding: 5px; margin: 0;\">" + text.replace(/\r\n/g, "</p>").replace(/\n/g, "</div><p class=\" \" style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
+			}
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
-				"<div class=\"commentContent\"><div class=\"commentContentText\">" +  value['text']  +"</div></div>" +
+				"<div class=\"commentContent\"><div class=\"commentContentText\">" +  text  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
 				"</div>" +
 
-				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
-
-
-
-
+				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div>" + 
+			"</div>";
 		});
 
 		threadCommentStr += "</div>";
@@ -236,9 +305,15 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	}
 	return threadOptions;
 }
-
-
-
+function createThreadSuccess(data)
+{
+	if (data["accessDenied"]){
+		accessDenied(array);
+	}else {
+		var url = "thread.php?threadId=" + data['thread']['threadid'];
+		$(location).attr("href", url);
+	}
+}
 function replyUI(commentid)
 {
 	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
@@ -246,15 +321,22 @@ function replyUI(commentid)
 
 function replyComment(array)
 {
+	//"<div class=\"repliedcomment\">"+value["text"]+"</div>"+"
 	if (array["accessDenied"]){
 		accessDenied(array);
 	}else {
+		
 		$.each(array["comments"], function(index, value){
-			$('.makeCommentInputWrapper').html("<div class=\"repliedcomment\">"+value["text"]+"</div>"+
-			"<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
+			
+			var text=value["text"];
+			if(value["replyid"]){
+				text = text.replace(/\n/, "<br/>");
+				text=text.replace(/[^.]*(<br\ ?\/?>)/, "");
+			}
+			
+			$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+text+"</textarea>"+
   			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+value["commentid"]+")\">");
 		});
-		$('.commentInput').css("border-top", "0px");
 	}
 }
 
@@ -265,7 +347,7 @@ function makeCommentSuccess()
 
 function deleteCommentSuccess(data)
 {
-	
+
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else{
@@ -287,6 +369,11 @@ function unlockThread()
 	AJAXService("UNLOCKTHREAD",{threadId:querystring["threadId"]},"UNLOCKTHREAD");
 }
 
+function editThreadPoo()
+{
+	AJAXService("EDITTHREAD",{threadId:querystring["threadId"]},"EDITTHREAD");
+}
+
 function createThreadUI()
 {
 	$("#threadHeader").hide();
@@ -295,6 +382,30 @@ function createThreadUI()
 	$("#createThreadWrapper").show();
 
 	getCourses();
+}
+
+function createThreadPublicUI()
+{
+	$("#createThreadPrivateWrapper").slideUp();
+}
+
+function createThreadPrivateUI()
+{
+	updateClassList();
+
+	$("#createThreadPrivateWrapper").slideDown();
+}
+
+function updateClassList()
+{
+	var cid = $("#createThreadCourseList").val();
+	getClasses(cid);
+}
+
+function updateStudentList()
+{
+	var programclass = $("#createThreadClassList").val();
+	getUsers(programclass);
 }
 
 function writeText()
@@ -317,7 +428,6 @@ function previewText()
 }
 
 function returnedCourses(data) {
-	console.log(data);
 	var str;
 	$.each(data['courses'], function() {
 		str += "<option value='" + this[
@@ -325,6 +435,28 @@ function returnedCourses(data) {
 		] + "'>" + this["coursecode"] + " - " + this["coursename"] + "</option>";
 	});
 	$("#createThreadCourseList").html(str);
+}
+
+function returnedClasses(data) {
+	var str = "";
+	$.each(data['classes'], function() {
+		str += "<option value='" + this[
+			"class"
+		] + "'>" + this["class"] + "</option>";
+	});
+	$("#createThreadClassList").html(str);
+
+	updateStudentList();
+}
+
+function returnedUsers(data) {
+	var str = "<option value='all'>All</option>";
+	$.each(data['users'], function() {
+		str += "<option value='" + this[
+			"uid"
+		] + "'>" + this["username"] + "</option>";
+	});
+	$("#createThreadUserList").html(str);
 }
 
 function error(xhr, status, error)
