@@ -22,6 +22,7 @@ if(isset($_SESSION['uid'])){
 }
 
 $cid = getOP('cid');
+$class = getOP('class');
 $opt = getOP('opt');
 $threadUID = getOP('threadUID');
 
@@ -324,6 +325,26 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else {
 		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
+}else if(strcmp($opt,"GETCLASSES")===0){
+	$query = $pdo->prepare("SELECT class FROM programcourse WHERE cid=:cid");
+	$query->bindParam(':cid', $cid);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$classes = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+}else if(strcmp($opt,"GETUSERS")===0){
+	$query = $pdo->prepare("SELECT uid, username FROM user WHERE class=:class");
+	$query->bindParam(':class', $class);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$users = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
 }else if(strcmp($opt,"GETTHREADCREATOR")===0){
 	$query = $pdo->prepare("SELECT user.username FROM user,thread WHERE (thread.threadid=:threadid AND thread.uid=user.uid AND user.uid=:threadUID)");
 	$query->bindParam(':threadid', $threadId);
@@ -346,7 +367,9 @@ if ($opt!=="UNK"){
 		'comments' => $comments,
 		'threadAccess' => $threadAccess,
 		'uid' => $uid,
-		'courses' => $courses
+		'courses' => $courses,
+		'classes' => $classes,
+		'users' => $users
 	);
 	echo json_encode($array);
 }

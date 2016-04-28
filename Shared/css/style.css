@@ -1526,10 +1526,17 @@ padding: 10px;
 }
 
 #createThreadFormWrapper {
+  box-sizing: border-box;
   margin: auto;
   clear: both;
   padding: 20px;
-  width: 50%;
+  width: 60%;
+}
+
+@media only screen and (max-width: 1200px) {
+    #createThreadFormWrapper {
+        width: 100%;
+    }
 }
 
 #threadTopicInput {
@@ -1596,14 +1603,23 @@ padding: 10px;
 .createThreadOptionLabel {
   clear: both;
   float: left;
-  font-size: 0.9em;
+  font-size: 1em;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
 .createThreadOption {
+  clear: both;
   float: left;
-  margin: 20px 0 10px 10px;
+}
+
+.createThreadRadioWrapper label {
+  color: rgb(97, 72, 117);
+}
+
+#createThreadPrivateWrapper {
+  display: none;
+  clear: both;
 }
 
 #submitThreadButton {

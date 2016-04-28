@@ -597,6 +597,30 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
+		case "GETCLASSES":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedClasses(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "GETUSERS":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedUsers(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
 		case "UNLOCKTHREAD":
 			$.ajax({
 				url: "forumservice.php",
