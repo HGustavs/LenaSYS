@@ -386,7 +386,7 @@ function updateClassList()
 	getClasses(cid);
 }
 
-function updateStudentList()
+function updateUsersList()
 {
 	var programclass = $("#createThreadClassList").val();
 	getUsers(programclass);
@@ -430,7 +430,7 @@ function returnedClasses(data) {
 	});
 	$("#createThreadClassList").html(str);
 
-	updateStudentList();
+	updateUsersList();
 }
 
 function returnedUsers(data) {
