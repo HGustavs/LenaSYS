@@ -55,4 +55,17 @@ function pdoConnect()
 	}
 
 }
+
+function getOption($label) {
+	global $pdo;
+	$query = $pdo->prepare("SELECT label, value FROM options WHERE label = :label;");
+	$query->bindParam(':label', $label);
+	$query->execute();
+	$result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	if (count($result) > 0) {
+		return $result[0];
+	}
+	return NULL;
+}
 ?>

@@ -12,7 +12,7 @@ pdoConnect();
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Analytic Tool</title>
+	<title>Options</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">
@@ -21,14 +21,14 @@ pdoConnect();
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src="analytictool.js"></script>
+	<script src="options.js"></script>
 </head>
 <body>
 
 <?php
 
 	$noup="NONE";
-	$loginvar="ANALYTIC";
+	$loginvar="OPTIONS";
 	include '../Shared/navheader.php';
 	setcookie("loginvar", $loginvar);
 	
@@ -37,19 +37,18 @@ pdoConnect();
 ?>
 	<!-- content START -->
 	<div id="content">
-		<div class="analytic-buttons">
-			<input class="submit-button" style="float:left" type="button" value="General stats" onclick="loadGeneralStats()">
-			<input class="submit-button" style="float:left" type="button" value="Password guessing" onclick="loadPasswordGuessing()">
-			<input class="submit-button" style="float:left" type="button" value="OS Percentage" onclick="loadOsPercentage()">
-			<input class="submit-button" style="float:left" type="button" value="Browser percentage" onclick="loadBrowserPercentage()">
-			<input class="submit-button" style="float:left" type="button" value="Service usage" onclick="loadServiceUsage()">
-			<input class="submit-button" style="float:left" type="button" value="Service speed" onclick="loadServiceAvgDuration()">
-			<input class="submit-button" style="float:left" type="button" value="Service crashes" onclick="loadServiceCrashes()">
-		</div>
-		<div id="analytic-info" style="clear: both; padding: 15px;"></div>
-		<div style="height: 300px">
-			<canvas id="analytic-chart"></canvas>
-		</div>
+		<p>Mouse movement logging</p>
+		<label data-label="mouseMoveLogging" class="switch<?= getOption('mouseMoveLogging')['value'] == '1' ? ' checked' : ''?>">
+			<i class="icon-ok"></i>
+			<i class="icon-remove"></i>
+			<input type="checkbox"<?= getOption('mouseMoveLogging')['value'] == '1' ? ' checked' : ''?>>
+		</label>
+		<p>Fourth round trip logging</p>
+		<label data-label="fourthRound" class="switch<?= getOption('fourthRound')['value'] == '1' ? ' checked' : ''?>">
+			<i class="icon-ok"></i>
+			<i class="icon-remove"></i>
+			<input type="checkbox"<?= getOption('fourthRound')['value'] == '1' ? ' checked' : ''?>>
+		</label>
 	</div>
 	<!-- content END -->
 	
