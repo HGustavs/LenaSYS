@@ -299,37 +299,54 @@ hr {
 		width:22px;
 		height:22px;
 		margin: 0px 10px;
-		background: radial-gradient(white, grey, white);
+		/*background: radial-gradient(white, grey, white);*/
+		background-image: url("../icons/NoLight.png");
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-position: center;
 		border-radius:11px;
-		border:1px solid #000;
+		/*border:1px solid #000;*/
 }
 
 
 .YellowLight{
-		width:22px;
-		height:22px;
-		margin: 0px 10px;
-		background: radial-gradient(yellow 50%, grey, white 60%);
-		border-radius:11px;
-		border:1px solid #000;
+
+        width:22px;
+        height:22px;
+        margin: 0px 10px;
+		/*background: radial-gradient(yellow 50%, grey, white 60%);*/
+		background-image: url("../icons/YellowLight.png");
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-position: center;
+        border-radius:11px;
+        /*border:1px solid #000;*/
 }
 
 .RedLight{
 		width:22px;
 		height:22px;
 		margin: 0px 10px;
-		background: radial-gradient(red 55%, grey, white 60%);
+		/*background: radial-gradient(red 55%, grey, white 60%);*/
+		background-image: url("../icons/RedLight.png");
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-position: center;
 		border-radius:11px;
-		border:1px solid #000;
+        /*border:1px solid #000;*/
 }
 
 .GreenLight{
 		width:22px;
 		height:22px;
 		margin: 0px 10px;
-		background: radial-gradient(green 55%, grey, white 60%);
+		/*background: radial-gradient(green 55%, grey, white 60%);*/
+		background-image: url("../icons/GreenLight.png");
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-position: center;
 		border-radius:11px;
-		border:1px solid #000;
+		/*border:1px solid #000;*/
 }
 
 .hidden {
@@ -626,18 +643,18 @@ header td {
 }
 
 .loginBox {
-	display:block;
-	padding:4px;
-	background-color: #ccc;
-	border: 2px solid #999;
-	width: 350px;
-	min-height: 100px;
-	z-index: 9000;
-	position: fixed;
-	top: 40%;
-	left: 50%;
-	margin-left: -178px;
-	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+    display:block;
+    padding:4px;
+    background-color: #ccc;
+    border: 2px solid #999;
+    width: 350px;
+    min-height: 100px;
+    z-index: 9000;
+    position: fixed !important;
+    top: 30%;
+    left: 50%;
+    margin-left: -178px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
 .loginTransparent {
@@ -651,6 +668,11 @@ header td {
 	left: 50%;
 	margin-left: -178px;
 	text-align: center;
+}
+
+.loginBox textarea{
+    max-width: 100%;
+    resize: none;
 }
 
 .loginBox textarea, #import{

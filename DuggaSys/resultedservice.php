@@ -196,8 +196,9 @@ if(strcmp($opt,"DUGGA")!==0){
 			array_push($entries, $entry);
 		}
 
-		// All results from current course and vers?
-		$query = $pdo->prepare("SELECT aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed FROM userAnswer WHERE cid=:cid;");
+		// Only get specific version of the course for the results
+		$query = $pdo->prepare("SELECT aid,quiz,variant,moment,grade,uid,useranswer,submitted,vers,marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed FROM userAnswer WHERE cid=:cid AND vers=:vers;");
+		$query->bindParam(':vers',$vers);
 		$query->bindParam(':cid', $cid);
 		
 		if(!$query->execute()) {
@@ -231,7 +232,13 @@ if(strcmp($opt,"DUGGA")!==0){
 		}
 
 		// All dugga/moment entries from all versions of course
-		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,gradesystem FROM listentries WHERE listentries.cid=:cid AND (listentries.kind=3 OR listentries.kind=4) ORDER BY pos");
+
+		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,gradesystem FROM listentries WHERE listentries.cid=:cid AND listentries.vers=:vers AND (listentries.kind=3 OR listentries.kind=4) ORDER BY pos");
+		
+		// Be folk se över denna del.
+		//$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,quiz.gradesystem AS quiz_g, listentries.gradesystem AS list_g FROM listentries  LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND (listentries.kind=3 OR listentries.kind=4) ORDER BY pos");
+
+		$query->bindParam(':vers', $vers);
 		$query->bindParam(':cid', $cid);
 		$result=$query->execute();
 		
@@ -254,7 +261,8 @@ if(strcmp($opt,"DUGGA")!==0){
 					'visible'=> (int)$row['visible'],
 					'code_id' => $row['code_id'],
 					'vers' => $row['vers'],
-					'gradesystem' => (int)$row['gradesystem']					
+					'quiz_g' => (int)$row['quiz_g'],
+					'list_g' => (int)$row['list_g']						
 				)
 			);
 		}

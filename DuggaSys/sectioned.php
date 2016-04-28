@@ -79,7 +79,7 @@ if(isset($_GET['coursename'])){
 	<!-- New Verison Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>New Course Verison</h3>
+			<h3>New Course Version</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>		
 		<div style='padding:5px;'>
