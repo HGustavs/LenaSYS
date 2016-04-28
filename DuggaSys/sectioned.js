@@ -567,6 +567,7 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
+				deadline = adjustDeadlineString(deadline);
 				if (parseInt(item['kind']) === 0) {
  					str += "<div class='header'>";
  				}else if(parseInt(item['kind']) === 4){
@@ -984,4 +985,21 @@ function moveRowToTop(itemId){
 	$('#Sectionlistc').sortable('option', 'update')(null, {
     	item: row.prependTo(row.parent())
 	});
+}
+
+//---------------------------------------------------------------------------------------------------
+// adjustDeadlineString: remove seconds and undefined hours/minutes from deadline string
+//--------------------------------------------------------------------------------------------
+function adjustDeadlineString(deadline){
+	if(deadline === null)
+		return null;
+
+	//remove seconds
+	deadline = deadline.substr(0, deadline.length - 3);
+
+	//if hours and minutes are not defined, remove them from the string
+	if(deadline.substr(11, deadline.length - 1) === "00:00")
+		deadline = deadline.substr(0, deadline.length - 6);
+
+	return deadline;
 }
