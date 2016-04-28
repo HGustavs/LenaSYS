@@ -772,7 +772,7 @@ function returnedSection(data)
 						}else if (parseInt(item['kind']) == 4) {
 							str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
 						}else if (parseInt(item['kind']) == 2) {
-							str+="<span><a style='margin-left:15px;' href='../CodeViewer/EditorV50.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
+							str+="<span><a style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 							
 						}else if (parseInt(item['kind']) == 3 ) {
 							//-----------------------------

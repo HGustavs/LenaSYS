@@ -45,7 +45,7 @@ Missing/desired Features:
 	Changing language -- All Strings in File that can be translated to fit other languages.... including language change.
 -------------------------------------------------------------------------------------------
 Testing Link: 
-	EditorV50.php?exampleid=1&courseid=1&cvers=2013
+	codeviewer.php?exampleid=1&courseid=1&cvers=2013
 ------------------------------------------------------------------------------------------->
 <?php
 	session_start();
@@ -112,7 +112,7 @@ Testing Link:
 			$codeviewerkind=false;	// Is used in navheader.php@line61/62: This checks if the user have rights to change the settings in codeviewer by using true or false. True means yes, the user have the rights. Codeviewerkind is in use in navheader.php to make the settings button visible.
 			
 			// userid is set, either as a registered user or as guest
-			// TODO: Check if possible bug; userid is set to 1 if guest in editorService.php, should userid be set there or here?
+			// TODO: Check if possible bug; userid is set to 1 if guest in codeviewerService.php, should userid be set there or here?
 			if(isset($_SESSION['uid'])){
 				$userid=$_SESSION['uid'];	// userid of registered users
 			}else{
@@ -173,7 +173,7 @@ Testing Link:
 				// This will show an error message if the courseid or the Code Example doesnt exist. 
 				$codeviewer = false;
 				include '../Shared/navheader.php';
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./EditorV50.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
+				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./codeviewer.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
 			echo "</div>";
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful

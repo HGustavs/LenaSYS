@@ -11,7 +11,7 @@ Execution Order
 
 Testing Link:
 
-EditorV50.php?exampleid=1&courseid=1&cvers=2013
+codeviewer.php?exampleid=1&courseid=1&cvers=2013
  
 -------------==============######## Documentation End ###########==============-------------
 */
@@ -269,7 +269,7 @@ var tabLine = function(text)
 //----------------------------------------------------------------------------------
 // editImpWords: adds/removes important words to the #impword selectbox
 // and stores each added/removed word in the addedWords array and the removedWords array 
-//                Is called at line 201/204 in EditorV50.php
+//                Is called at line 201/204 in codeviewer.php
 //---------------------------------------------------------------------------------
 var addedWords = [];
 var removedWords = [];
