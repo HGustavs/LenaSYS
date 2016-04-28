@@ -1288,10 +1288,21 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	cbracket=new Array();
 	
 	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr','relativelayout','textview','webview','manifest','uses','permission','application','activity','intent');
-	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source','textview','webview','uses'); 
+	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source','textview','webview','uses');
+	cssArray= new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right', 
+						'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size', 
+						'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'height', 'ime-mode', 'include-source', 'layer-background-color', 'layer-background-image', 'layout-flow', 'layout-grid', 'layout-grid-char', 'layout-grid-char-spacing', 'layout-grid-line', 'layout-grid-mode', 'layout-grid-type', 'left', 'letter-spacing', 'line-break', 'line-height', 'list-style', 'list-style-image', 'list-style-position', 'list-style-type', 'margin', 
+						'margin-bottom', 'margin-left', 'margin-right', 'margin-top', 'marker-offset', 'marks', 'max-height', 'max-width', 'min-height', 'min-width', '-moz-binding', '-moz-border-radius', '-moz-border-radius-topleft', '-moz-border-radius-topright', '-moz-border-radius-bottomright', '-moz-border-radius-bottomleft', '-moz-border-top-colors', '-moz-border-right-colors', '-moz-border-bottom-colors', '-moz-border-left-colors', '-moz-opacity', '-moz-outline', 
+						'-moz-outline-color', '-moz-outline-style', '-moz-outline-width' ,'-moz-user-focus' ,'-moz-user-input', '-moz-user-modify', '-moz-user-select', 'orphans', 'outline', 'outline-color', 'outline-style', 'outline-width', 'overflow', 'overflow-X', 'overflow-Y', 'padding', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'page', 'page-break-after', 'page-break-before', 'page-break-inside', 'pause', 'pause-after', 'pause-before', 'pitch', 
+						'pitch-range','play-during', 'position', 'quotes', '-replace', 'richness', 'right', 'ruby-align', 'ruby-overhang', 'ruby-position', '-set-link-source', 'size', 'speak', 'speak-header', 'speak-numeral', 'speak-punctuation', 'speech-rate', 'stress', 'scrollbar-arrow-color', 'scrollbar-base-color', 'scrollbar-dark-shadow-color', 'scrollbar-face-color', 'scrollbar-highlight-color', 'scrollbar-shadow-color', 'scrollbar-3d-light-color', 'scrollbar-track-color',
+						'table-layout', 'text-align', 'text-align-last', 'text-decoration', 'text-indent', 'text-justify', 'text-overflow', 'text-shadow', 'text-transform', 'text-autospace', 'text-kashida-space', 'text-underline-position', 'top', 'unicode-bidi', '-use-link-source', 'vertical-align', 'visibility', 'voice-family', 'volume', 'white-space', 'widows', 'width', 'word-break', 'z-index', 'zoom', 'word-spacing', 'word-wrap', 'writing-mode');
+	var cssTagCount=0;
 	var htmlTagCount=0;
+	
 	htmlTag=new Array();
+	cssTag=new Array();
 
+	//html part
 	pid="";
 	var iwcounter=0;
 	for(i=0;i<tokens.length;i++){
@@ -1448,6 +1459,165 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	printout.html(createCodeborder(lineno,improws) + str);	
 	
 
+		//css part
+	
+	pid="";
+	var iwcounter=0;
+	for(i=0;i<tokens.length;i++){
+		tokenvalue=String(tokens[i].val);
+		// Make white space characters
+		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
+		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
+
+	 /*	
+		if(tokens[i].kind=="rowcomment"||tokens[i].kind=="blockcomment"||tokens[i].kind=="string"||tokens[i].kind=="number"||tokens[i].kind=="name"){
+				// Fix to remove html tags in strings
+				tokenvalue = tokenvalue.replace(/\</g, "&lt;");
+				tokenvalue = tokenvalue.replace(/\>/g, "&gt;");
+				tokenvalue = tokenvalue.replace(/&/g,"&amp;");
+		}
+	*/
+	
+		if(tokens[i].kind=="rowcomment"){
+			cont+="<span class='comment'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="blockcomment"){
+			cont+="<span class='comment'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="string"){
+			cont+="<span class='string'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="number"){
+			cont+="<span class='number'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="name"){
+			var foundkey=0;	
+			//If tokenvalue exists in the array for important words
+			if(important.indexOf(tokenvalue) != -1){
+				foundkey = 2;
+			//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
+			}else if(keywords[tokenvalue] != null){
+				foundkey = 1;
+			}
+			
+			if(foundkey==1){
+				cont+="<span class='keyword"+keywords[tokenvalue]+"'>"+tokenvalue+"</span>";														
+			}else if(foundkey==2){
+				iwcounter++;
+				cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
+			}else{
+				cont+=tokenvalue;
+			}
+					
+		}else if(tokens[i].kind=="operator"){
+			/*if(tokenvalue=="("){
+				pid="PA"+pcount+boxid; 
+				pcount++;
+				parenthesis.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue==")"){
+				pid=parenthesis.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}*//*else if(tokenvalue=="["){
+				pid="BR"+bcount;
+				bcount++;
+				bracket.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue=="]"){
+				pid=bracket.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}else*/ if(tokenvalue=="{"){
+				pid="CBR"+cbcount+boxid;
+				cbcount++;
+				cbracket.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue=="}"){
+				pid=cbracket.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}else if(tokenvalue=="<"){
+				// This statement checks the character after < to make sure it is a valid tag. 
+				tokenvalue="&lt;";
+				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!" && tokens[i+1].val != "?"){
+					if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
+						var k = 2;
+						var foundEnd = false;
+
+						//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
+						while(i+k<tokens.length){
+								if(tokens[i+k].val == ">"){					
+									foundEnd = true;
+									break;
+								}
+								k++;
+						}
+						
+						if(foundEnd){
+							pid="css"+cssTagCount+boxid;
+							cssTagCount++;
+							if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+								cssTag.push(pid);
+							}
+							cont+="&lt"+"<span id='"+pid+"' class='oper' onmouseover='highlightCss(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightCss(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
+							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
+							// cont+="&lt"+"<span title='"+popoverbox(tokens[i+1].val)+"' id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
+							cont+="</span>";
+							i=i+1;
+						}else{
+							cont+="<span class='oper'>"+tokenvalue+"</span>";
+						}
+					}else{
+							cont+="<span class='oper'>"+tokenvalue+"</span>";					
+					}
+				}else if(tokens[i+1].val=="/"){
+						if(cssArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
+							if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+								pid=cssTag.pop();
+							}else{
+								cssTagCount++;
+								pid="css"+cssTagCount+boxid;
+							}
+							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
+							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
+							// cont+="&lt"+tokens[i+1].val +"<span title='"+popoverbox(tokens[i+2].val)+"' id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
+							i = i+3;
+						}else{
+								cont+="<span class='oper'>"+tokenvalue+"</span>";						
+						}
+				}else{
+					cont+="<span class='oper'>"+tokenvalue+"</span>";
+				}
+			}else{
+				cont+="<span class='oper'>"+tokenvalue+"</span>";										
+			}
+		}else{
+			cont+=tokenvalue;
+		}
+		// tokens.length-1 so the last line will be printed out
+		if(tokens[i].kind=="newline" || i==tokens.length-1){  
+			// Prevent empty lines to be printed out
+			if(cont != ""){
+				// Count how many linenumbers that'll be needed
+				lineno++;
+				// Print out normal rows if no important exists
+				if(improws.length==0){
+					str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+				}else{	
+					// Print out important lines
+					for(var kp=0;kp<improws.length;kp++){
+						if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
+							str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
+							break;
+						}else{
+							if(kp == (improws.length-1)){
+								str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+							}
+						}						
+					}
+				}	
+				cont="";
+			}	
+		}
+	}
+	str+="</div>";
+				
+	// Print out rendered code and border with numbers
+	printout.css(createCodeborder(lineno,improws) + str);	
 }
 
 //----------------------------------------------------------------------------------
