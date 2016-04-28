@@ -36,15 +36,27 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 		closeWindows();
 	
 		var pressed = e.target.className;
-	
-		if (pressed === "Uc"){
-				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+		var btnpressed = event.target.classList[0];
+		if (pressed === "Uc") {
+			$("#gradeUconf").css("display","block");
+			$('#gradeUconf').on('click', function(event){
+				 if( $(event.target).hasClass('U-confirm')) {
+					 changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+					 closeWindows();
+				 }
+			});
 		} else if (pressed === "Gc") {
 				changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "GVc"){// Seems to work.
 				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "U") {
-				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+			$("#gradeUconf").css("display","block");
+			$('#gradeUconf').on('click', function(event){
+				 if( $(event.target).hasClass('U-confirm')) {
+					 changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+					 closeWindows();
+				 }
+			});
 		} else if (pressed === "3c") {
 				changeGrade(4, gradesys, cid, vers, moment, uid, mark, ukind);
 		} else if (pressed === "4c") {
@@ -52,9 +64,17 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 		} else if (pressed === "5c") {
 				changeGrade(6, gradesys, cid, vers, moment, uid, mark, ukind);
 		}
-		else if (event.ctrlKey && pressed === "VGh") {
+		else if (event.ctrlKey && pressed === "VGh") { //If grade is G, Ctrl-click on VG to change from G to VG
 				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
 				AJAXService("CHFAILS",{ cid : cid, moment : moment,vers : vers, luid : uid}, "RESULT");
+		} else if (pressed === "Uh") {
+			$("#gradeUconf").css("display","block");
+			$('#gradeUconf').on('click', function(event){
+				 if( $(event.target).hasClass('U-confirm')) {
+					 changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+					 closeWindows();
+				 }
+			});
 		}
 		else {
 			//alert("This grading is not OK!");

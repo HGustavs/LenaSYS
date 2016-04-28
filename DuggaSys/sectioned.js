@@ -306,8 +306,8 @@ function updateItem()
 	lid=$("#lid").val();
 	kind=$("#type").val();
 	link;
-	//only tests has links to duggas
-	if(kind == 3 || kind == 2)
+	//Kind 2,3, and 5 have links (Code, Test, Link)
+	if(kind == 3 || kind == 2 || kind == 5)
 		link=$("#link").val();
 	else
 		link = "UNK";
@@ -567,6 +567,7 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
+				deadline = adjustDeadlineString(deadline);
 				if (parseInt(item['kind']) === 0) {
  					str += "<div class='header'>";
  				}else if(parseInt(item['kind']) === 4){
@@ -606,13 +607,17 @@ function returnedSection(data)
 										status="";
 										var st = lawtem['submitted'];
 										if (st !== null) {
-											submitted = new Date(st);									
+											submitted = new Date(st);
+											//Makes it into a UTC string because otherwise it adds the users timezone to make it incorrect from what the databse has stored.
+											var displaySubmitted = submitted.toUTCString();									
 										} else {
 											submitted = null;
 										}
 										var mt = lawtem['marked'];
 										if (mt !== null) {
-											marked = new Date(mt);									
+											marked = new Date(mt);
+											//Makes it into a UTC string because otherwise it adds the users timezone to make it incorrect from what the databse has stored.
+											var displayMarked = marked.toUTCString();								
 										} else {
 											marked = null;
 										}
@@ -624,6 +629,14 @@ function returnedSection(data)
 				
 												if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
 													status="pending";
+												}
+
+												if (lastSubmit === null){
+													lastSubmit = submitted;
+												}else if (submitted !== null) {
+													if (lastSubmit.getTime() < submitted.getTime()){
+														lastSubmit=submitted;
+													}
 												} 
 										}else{
 												if (submitted !== null && marked === null) {
@@ -655,28 +668,28 @@ function returnedSection(data)
 										str+="<div class='WhiteLight'></div>";
 								}else if(status === "pending"){
 										//	Nothing marked yet (Yellow)
-										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";
+										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+displaySubmitted+"' ></div>";
 								}else if(grady==1){
 										//	Marked Fail! (Red)								
-										str+="<div class='RedLight' title='Status: Failed\nDate: "+marked+"' ></div>";
+										str+="<div class='RedLight' title='Status: Failed\nDate: "+displayMarked+"' ></div>";
 								}else if(grady==2){
 										//	Marked G (Green)		
-										str+="<div class='GreenLight'  title='Grade: G\nDate: "+marked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: G\nDate: "+displayMarked+"' ></div>";
 								}else if(grady==3){
 										//	Marked VG (Green)		
-										str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: VG\nDate: "+displayMarked+"' ></div>";
 								}else if(grady==4){
 										//	Marked 3 (Green)		
-										str+="<div class='GreenLight'  title='Grade: 3\nDate: "+marked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: 3\nDate: "+displayMarked+"' ></div>";
 								}else if(grady==5){
 										//	Marked 4 (Green)		
-										str+="<div class='GreenLight'  title='Grade: 4\nDate: "+marked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: 4\nDate: "+displayMarked+"' ></div>";
 								}else if(grady==6){
 										//	Marked 5 (Green)		
-										str+="<div class='GreenLight'  title='Grade: 5\nDate: "+marked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: 5\nDate: "+displayMarked+"' ></div>";
 								}else if(grady>6){
 										//this seems to be needed for the page to load	
-										str+="<div class='GreenLight'  title='Status: Unknown - add other grade system\nDate: "+marked+"' ></div>";
+										str+="<div class='GreenLight'  title='Status: Unknown grade - Add support for another grade system' ></div>";
 								}
 								str+="</td>";
 					
@@ -984,4 +997,21 @@ function moveRowToTop(itemId){
 	$('#Sectionlistc').sortable('option', 'update')(null, {
     	item: row.prependTo(row.parent())
 	});
+}
+
+//---------------------------------------------------------------------------------------------------
+// adjustDeadlineString: remove seconds and undefined hours/minutes from deadline string
+//--------------------------------------------------------------------------------------------
+function adjustDeadlineString(deadline){
+	if(deadline === null)
+		return null;
+
+	//remove seconds
+	deadline = deadline.substr(0, deadline.length - 3);
+
+	//if hours and minutes are not defined, remove them from the string
+	if(deadline.substr(11, deadline.length - 1) === "00:00")
+		deadline = deadline.substr(0, deadline.length - 6);
+
+	return deadline;
 }

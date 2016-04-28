@@ -101,5 +101,20 @@ pdoConnect();
 	</table>
 
 	</div> <!-- Edit Variant Dialog END -->
+	
+	<!-- Grade U Confirmation Dialog START -->
+	<div id='gradeUconf' class='loginBox' style='width:460px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Change Grade to U</h3>
+			<div onclick='closeWindows(); closeSelect();'>x</div>
+		</div>
+		<div style='padding:5px;'>
+			<p>Do you want to give the grade U to this student?</p>
+		</div>
+		<div style='padding:5px;'>
+			<input style='float:left;' class='U-confirm submit-button' type='button' value='Yes' onclick='' />
+			<input style='float:right;' class='submit-button' type='button' value='No' onclick='closeWindows()' />
+		</div>
+	</div>
 </body>
 </html>
