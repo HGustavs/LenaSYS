@@ -12,10 +12,11 @@ session_start();
 $log_uuid = getOP('log_uuid');
 $log_timestamp = getOP('log_timestamp');
 
-/*
+
 logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "forumservice.php", $log_timestamp);
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "forumservice.php");
-*/
+
+
 if(isset($_SESSION['uid'])){
 	$uid=$_SESSION['uid'];
 }else{
@@ -339,9 +340,9 @@ if ($opt!=="UNK"){
 	echo json_encode($array);
 }
 
-/*
+
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
-*/
+
 
 
 
