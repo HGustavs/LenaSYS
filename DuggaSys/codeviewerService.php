@@ -33,8 +33,8 @@
 	$log_uuid = getOP('log_uuid');
 	$log_timestamp = getOP('log_timestamp');
 
-	logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "editorService.php", $log_timestamp);
-	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "editorService.php");
+	logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "codeviewerService.php", $log_timestamp);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php");
 	
 	// Global variables
 	$exampleId=getOP('exampleid');
