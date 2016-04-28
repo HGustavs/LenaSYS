@@ -7,7 +7,7 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-$option = getOP('option');
+$label = getOP('label');
 $value = getOP('value');
 
 $debug="NONE!";	
@@ -15,25 +15,16 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
-if(isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid')){
-	if(isset($option)){
-		switch($option){
-			case 'mousemoveLogging':
-				setMouseMoveOption();
-				break;
-			case 'fourthRound':
-				function()
-				break;
-		}
+if(isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])){
+	if(isset($label)){
+		$query = $pdo->prepare("UPDATE options SET value = :value WHERE label = :label");
+		$query->bindParam(':value', $value);
+		$query->bindParam(':label', $label);
+		$query->execute();
+		echo json_encode(array('success' => true));
 	}
 } else {
 	die('access denied');
 }
 
-function setMouseMoveOption(){
-	$query = $pdo->prepare("UPDATE options SET value = :value WHERE option = :option");
-	$query->bindParam(':value', $value);
-	$query->bindParam(':option', $option);
-	$query->execute();
-}
 ?>
