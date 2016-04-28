@@ -127,10 +127,16 @@ function markdownBlock(inString)
 	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
 	
 	//Regular expressions for ordered lists
-	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
-	
-	// Fix for superflous ol tags
-	inString = inString.replace(/\<\/ol\>(\r\n|\n|\r)\<ol\>/gm,"");
+	// (###) to start a list
+	// 1. Digit dot space
+	// 2. Digit dot space
+	// 		(###) to start a sublist
+	// 		1. Digit dot space
+	// 		(/###) to close the sublist
+	// (/###) to close the list
+	inString = inString.replace(/[(]\#{3}[)]/gm, '<ol>');
+	inString = inString.replace(/[\d]{1,}\.\s(.*)/gm, '<li>$1</li>');
+	inString = inString.replace(/[(][\/]\#{3}[)]/gm, '</ol>');
 	
 	//Regular expressions for unordered lists
 	// (***) to start a list
@@ -188,6 +194,10 @@ function markdownBlock(inString)
 	
 	// Iframe, website inside a inline frame - (--url,width,height--)
 	inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
-
+	
+	// Quote text, this will be displayed in an additional box
+	// ^ Text you want to quote ^
+	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote>");
+	
 	return inString;
 }

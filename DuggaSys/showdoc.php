@@ -57,11 +57,17 @@
 				$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
 				$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
 
-				//Regular expressions for ordered lists both - and * lists are supported
-				$instring = preg_replace("/^\s*\d*\.\s(.*)/m", "<ol><li>$1</li></ol>",$instring);
-				
-				// Fix for superflous ol statements
-				$instring= str_replace ("</ol>\n<ol>","",$instring);
+				//Regular expressions for ordered lists
+				// (###) to start a list
+				// 1. Digit dot space
+				// 2. Digit dot space
+				// 		(###) to start a sublist
+				// 		1. Digit dot space
+				// 		(/###) to close the sublist
+				// (/###) to close the list
+				$instring = preg_replace("/[(]\#{3}[)]/", '<ol>',$instring);
+				$instring = preg_replace("/[\d]{1,}\.\s(.*)/", '<li>$1</li>',$instring);
+				$instring = preg_replace("/[(][\/]\#{3}[)]/", '</ol>',$instring);
 				
 				//Regular expressions for unordered lists
 				// (***) to start a list
@@ -132,6 +138,10 @@
 				// Iframe, website inside a inline frame
 				// (--url,width,height--)
 				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>',$instring);
+				
+				// Quote text, this will be displayed in an additional box
+				// ^ Text you want to quote ^
+				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote>",$instring);
 				
 				return $instring;		
 		}
