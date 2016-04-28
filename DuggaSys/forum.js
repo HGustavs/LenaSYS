@@ -292,7 +292,7 @@ function returnedComments(data)
 }
 
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
-	var threadOptions;
+	var threadOptions = "";
 	if (threadAccess !== "public"){
 		threadOptions = "<input id='replycommentbutton' class='submit-button' type='button' value='Reply' onclick='replyUI("+commentid+");'>";
 
