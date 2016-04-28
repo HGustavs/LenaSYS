@@ -1571,7 +1571,7 @@ function resizeBoxes(parent, templateId)
 	var boxValArray = initResizableBoxValues(parent);
 	var remainWidth;
 		
-	if(templateId == 1){
+	if (templateId == 1) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
@@ -1588,7 +1588,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 2){
+	} else if (templateId == 2) {
 		getLocalStorageProperties(templateId, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
@@ -1606,7 +1606,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 3){
+	} else if (templateId == 3) {
 		getLocalStorageProperties(templateId, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
@@ -1641,7 +1641,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 4){
+	} else if (templateId == 4) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
@@ -1677,7 +1677,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 5){
+	} else if (templateId == 5) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
@@ -1727,7 +1727,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 6){
+	} else if (templateId == 6) {
 	
 		getLocalStorageProperties(templateId, boxValArray);
 		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
@@ -1783,7 +1783,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	} else if(templateId == 7) {
+	} else if (templateId == 7) {
 		getLocalStorageProperties(templateId, boxValArray);
 		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
 		
@@ -1834,7 +1834,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	} else if(templateId == 8) {
+	} else if (templateId == 8) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box2']['id']).resizable({
@@ -1869,6 +1869,71 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
+	} else if(templateId == 9) {
+		getLocalStorageProperties(templateId, boxValArray);
+		//$("#box3wrapper").css("top", localStorage.getItem("template9box2heightPercent") + "%");
+		//$("#box4wrapper").css("top", localStorage.getItem("template9box3heightPercent") + "%");
+		//$("#box5wrapper").css("top", localStorage.getItem("template9box4heightPercent") + "%");
+
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box3']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		$(boxValArray['box4']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
 	}
 };
 
@@ -1900,37 +1965,37 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 //----------------------------------------------------------------------------------
 function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-		var basePer = 100 - remainWidthPer;
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;
+
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
 	
-		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-		$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
-		$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-		$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-		
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 }
 function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-		var basePer = 100 - remainWidthPer;
-	
-		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;
 
-		//$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-		
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+
+	//$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
+	
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 }
 
 //----------------------------------------------------------------------------------
@@ -1939,15 +2004,15 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 //----------------------------------------------------------------------------------
 function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 {
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var basePer = 100-remainHeightPer;
-		
-		$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-		$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
-		
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var basePer = 100-remainHeightPer;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 }
 //----------------------------------------------------------------------------------
 //Height adjustment for boxes in template 4. (Two small boxes ontop of a big box.)
@@ -1955,17 +2020,17 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 //----------------------------------------------------------------------------------
 function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 {
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-		var remainHeightPer = (remainHeight / boxValArray['parent']['height'])*100;
-		var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height'])*100;
-		
-		$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
-		$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
-		$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
-		
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-		boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height'])*100;
+	var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height'])*100;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
+	$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
 }
 //----------------------------------------------------------------------------------
 //Height adjustment for boxes in template 5.
@@ -1973,19 +2038,19 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 //----------------------------------------------------------------------------------
 function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 {	
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();	
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var basePer = 100 - remainHeightPer;
-		
-		$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-		$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
-		$(boxValArray['box3']['id']).height(remainHeightPer + "%");
-		$(boxValArray['box4']['id']).height(remainHeightPer + "%");
-		
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-		boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
-		boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();	
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var basePer = 100 - remainHeightPer;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
+	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
+	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
+	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
 }
 
 //----------------------
@@ -1994,27 +2059,27 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 
 function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
 	
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-		
-		
-		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-		var basePer = 100 - remainWidthPer;
-		
-		
-		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-		$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
-		$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-		
-		
-		$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-		$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
-		
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
-		boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+	
+	
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;
+	
+	
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+	
+	
+	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
+	
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 	
 }
 //----------------------
@@ -2023,24 +2088,24 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 
 function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
 	
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-			
-		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-		var basePer = 100 - remainWidthPer;	
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 		
-		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-		$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
-		
-		$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
-		
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		
-		boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;	
+	
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
+	
+	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
+	
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	
+	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 }
 	
 //----------------------
@@ -2049,34 +2114,34 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	
 function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
 
-		//Get initial values.
-		var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
-		var basePer = 100-(remainHeightPer + alignSecondPer);
-		var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-		var atry2 = (atry/boxValArray['parent']['height'])*100;
+	//Get initial values.
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
+	var basePer = 100-(remainHeightPer + alignSecondPer);
+	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+	var atry2 = (atry/boxValArray['parent']['height'])*100;
+	
+	if (remainHeightPer <= 10) {
+	
+			atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+			atry2 = (atry/boxValArray['parent']['height'])*100;
 		
-		if(remainHeightPer <= 10){
-		
-				atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-				atry2 = (atry/boxValArray['parent']['height'])*100;
-			
-				remainHeightPer = 10;
-				$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-				$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
-				$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
-				$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-		}else{
-				$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-				$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
-				$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-		}
-		
-		//Update array
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
-		boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
+			remainHeightPer = 10;
+			$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+			$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+			$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
+			$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
+	} else {
+			$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+			$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+			$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
+	}
+	
+	//Update array
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
+	boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
 }
 	
 //----------------------
@@ -2085,20 +2150,234 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	
 function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
-		var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
-		var basePer = 100-(remainHeightPer + alignSecondPer);
-		var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-		var atry2 = (atry/boxValArray['parent']['height'])*100;
-		
-		if(atry2 <= 10){
-			$("#box3wrapper").css({"top": basePer + "%","height": remainHeightPer + "%"});
-		 }else {
-			$("#box4wrapper").height(atry2 + "%"); 
-			$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
-		}
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
+	var basePer = 100-(remainHeightPer + alignSecondPer);
+	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+	var atry2 = (atry/boxValArray['parent']['height'])*100;
+	
+	if (atry2 <= 10) {
+		$("#box3wrapper").css({"top": basePer + "%","height": remainHeightPer + "%"});
+	 } else {
+		$("#box4wrapper").height(atry2 + "%"); 
+		$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
+	}
 
+}
+
+//----------------------
+// WIDTH MEASURMENT FOR TEMPLATE 9
+//----------------------
+	
+function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive){
+	
+	//Width for the four smaller boxes.
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxOne]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+
+	//Width for the left big box.
+	var basePer = 100 - remainWidthPer;
+	
+	$(boxValArray['box' + boxOne]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxTwo, three and four. Forces it to have left property turned off. Also forced a top property on boxOne.
+	$(boxValArray['box' + boxTwo]['id']).css("left", " ");
+	$(boxValArray['box' + boxThree]['id']).css("left", " ");
+	$(boxValArray['box' + boxFour]['id']).css("left", " ");
+
+	$(boxValArray['box' + boxOne]['id']).css("top", " ");
+	
+	//Sets width for all boxes.
+	$(boxValArray['box' + boxTwo]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxThree]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxFour]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxFive]['id']).width(remainWidthPer + "%");
+	
+	//Updates array.
+	boxValArray['box' + boxOne]['width'] = $(boxValArray['box' + boxOne]['id']).width();
+	boxValArray['box' + boxTwo]['width'] = $(boxValArray['box' + boxTwo]['id']).width();
+	boxValArray['box' + boxThree]['width'] = $(boxValArray['box' + boxThree]['id']).width();
+	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
+	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();	
+}
+
+//----------------------
+// HEIGHT MEASURMENT FOR TEMPLATE 9
+//----------------------
+	
+function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) 
+{
+	
+	//Height of the two boxes between boxOne and boxFour (top most box and bottom most box)
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+
+	//fourth and third box height in percent.
+	var boxThreeHeightPer = ($(boxValArray['box' + boxThree]['id']).height() / boxValArray['parent']['height'])*100;	
+	var boxFourHeightPer = ($(boxValArray['box' + boxFour]['id']).height() / boxValArray['parent']['height'])*100;
+
+	//The second and first box height in percent.
+	var boxTwoHeightPer = (remainHeightPer - boxThreeHeightPer);
+	var boxOneHeightPer = 100-(remainHeightPer + boxFourHeightPer);
+
+	//Set values if the boxes reaches minimum height.
+	if (boxTwoHeightPer <= 10 && boxThreeHeightPer <= 10) {
+		boxTwoHeightPer = 10;
+		boxThreeHeightPer = 10;
+		remainHeightPer = 20;
+
+	} else if (boxTwoHeightPer <= 10) {
+		boxTwoHeightPer = 10;	
+
+	} else if (boxThreeHeightPer <= 10) {
+		boxThreeHeightPer = 10;	
+
+	} 
+
+	//Set height and top on the boxes
+	$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
+	$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
+	$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
+	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+	$(boxValArray['box' + boxFour]['id']).css("height", (100 - (remainHeightPer + boxOneHeightPer)) + "%");
+	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer+remainHeightPer) + "%");
+	
+
+	//Update array
+	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
+	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
+	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
+	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
+}
+
+//----------------------
+// HEIGHT MEASURMENT FOR TEMPLATE 9
+//----------------------
+	
+function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour){
+
+	//Box three height. It is the box that is currently being resized.
+	var boxThreeHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
+	var boxThreeHeightPer = (boxThreeHeight/(boxValArray['parent']['height'])) * 100;
+
+	//Fourth box height in pixels then in percent.
+	var boxFourHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + boxThreeHeight));
+	var boxFourHeightPer = (boxFourHeight /(boxValArray['parent']['height'])) * 100;
+
+	//Second box height in pixels then in percent.
+	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + boxThreeHeight + boxFourHeight));
+	var boxTwoHeightPer = (boxTwoHeight/(boxValArray['parent']['height'])) * 100;
+
+	//First box height in pixels then in percent.
+	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + boxThreeHeight + boxFourHeight));
+	var boxOneHeightPer = (boxOneHeight/(boxValArray['parent']['height'])) * 100;
+
+	//Box three and four totalt height
+	var boxThreeAndFourHeightPer =  boxThreeHeightPer + boxFourHeightPer;
+
+	//check if box three and four is at minimum height.
+	if(boxThreeAndFourHeightPer <= 20) {
+		
+		//Set the height to the minimum.
+		boxThreeAndFourHeightPer = 20;
+
+		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeAndFourHeightPer/2 + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", "80" + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxThreeAndFourHeightPer/2 + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");	
+
+	//Check if box three is at or below minimum height.	
+	} else if (boxThreeHeightPer <= 10) {
+		boxThreeHeightPer = 10;
+
+		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
+		
+	} else {
+
+		//Set height and top on the boxes
+		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
+		
+	}
+	
+	//Update array
+	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
+	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
+	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
+	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
+}
+
+//----------------------
+// HEIGHT MEASURMENT FOR TEMPLATE 9
+//----------------------
+	
+function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour)
+{
+	//Box four height in pixels then in percent. It is the box that is currently being resized.
+	var boxFourHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxThree]['id']).height());
+	var boxFourHeightPer = (boxFourHeight/boxValArray['parent']['height']) * 100;
+
+	//Second box height in pixels then in percent
+	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxThree]['id']).height() + boxFourHeight));
+	var boxTwoHeightPer = (boxTwoHeight/(boxValArray['parent']['height'])) * 100;
+
+	//First box height in pixels then in percent
+	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + $(boxValArray['box' + boxThree]['id']).height() + boxFourHeight));
+	var boxOneHeightPer = (boxOneHeight / (boxValArray['parent']['height'])) * 100;
+
+	//Third box height in pixels then in percent
+	var boxThreeHeight = (boxValArray['parent']['height'] - (boxOneHeight + boxTwoHeight + boxFourHeight));
+	var boxThreeHeightPer = boxThreeHeight/(boxValArray['parent']['height']) * 100;
+
+	if(boxFourHeightPer <= 10){
+
+		boxFourHeightPer = 10;
+
+		//Set height and top on the boxes
+		$(boxValArray['box' + boxThree]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxFourHeightPer) + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");	
+
+	 } else {
+
+	 	//Set height and top on the boxes
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");	
+	}
+
+	//Update array
+	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
+	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
+	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
+	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
 }
 
 //----------------------------------------------------------------------------------
@@ -2109,8 +2388,8 @@ function initResizableBoxValues(parent)
 {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
-	var boxwidth;
-	var boxheight;
+	var boxWidth;
+	var boxHeight;
 	var boxId;
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	var boxValueArray = new Array();
@@ -2141,7 +2420,7 @@ function setLocalStorageProperties(templateId, boxValArray)
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;	
 	var widthPer;
 	var heightPer;
-	
+
 	for(var i = 1; i <= numBoxes; i++){
 		boxValArray['box' + i]['width'] = $(boxValArray['box' + i]['id']).width();
 		boxValArray['box' + i]['height'] = $(boxValArray['box' + i]['id']).height();
@@ -2208,6 +2487,10 @@ function erasePercentGap(templateId, boxValArray)
 	}else if(templateId == 8){
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
 		alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
+	}else if(templateId == 9){
+		alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
+		alignTemplate9Height(boxValArray, 2, 3, 4, 5);
+		alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
 	}
 }
 
