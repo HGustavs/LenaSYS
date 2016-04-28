@@ -195,11 +195,11 @@ function returnedThread(data)
 			$(".opEditThread").html(button);
 		}
 
-
 		$(".threadTopic").html(data["thread"]["topic"]);
-		$("#threadDescr").html(data["thread"]["description"]);
+		$("#threadDescr").html(parseMarkdown(data["thread"]["description"]));
 		var str = "Created <span id='threadDate'>";
 		str += 	data["thread"]["datecreated"].substring(0, 10);
+	
 		str += "</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid'])+"</span>";
 		if(!(data["thread"]["datecreated"]===data["thread"]["lastedited"])){
 			str += "<br/>Edited <span id='threadEditedDate'>"+data["thread"]["lastedited"];
@@ -244,7 +244,7 @@ function returnedComments(data)
 		accessDenied(data);
 	}else {
 
-		//console.log(data);
+		
 		// Adds the comment header with the amount of comments.
 		var commentLength = data["comments"].length;
 		var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
@@ -253,7 +253,9 @@ function returnedComments(data)
 
 		// Iterates through all the comments
 		$.each(data["comments"], function(index, value){
-			var text= value["text"];
+
+			var text= parseMarkdown(value['text']);
+			
 			if(!value['replyid']){
 				//console.log(value['replyid']);
 				console.log('hej alla glada laxar');
@@ -269,7 +271,8 @@ function returnedComments(data)
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
 				"</div>" +
 
-				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div></div>";
+				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div>" + 
+			"</div>";
 		});
 
 		threadCommentStr += "</div>";
