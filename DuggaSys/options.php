@@ -34,21 +34,22 @@ pdoConnect();
 	
 	// Show analytics if user is superuser.
 	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
+		$options = getAllOptions();
 ?>
 	<!-- content START -->
 	<div id="content">
-	<div id="theDiv"></div>
+		<div id="theDiv"></div>
 		<p>Mouse movement logging</p>
-		<label data-label="mouseMoveLogging" class="switch<?= getOption('mouseMoveLogging')['value'] == '1' ? ' checked' : ''?>">
+		<label data-label="mouseMoveLogging" class="switch<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>">
 			<i class="icon-ok"></i>
 			<i class="icon-remove"></i>
-			<input type="checkbox"<?= getOption('mouseMoveLogging')['value'] == '1' ? ' checked' : ''?>>
+			<input type="checkbox"<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>>
 		</label>
 		<p>Fourth round trip logging</p>
-		<label data-label="fourthRound" class="switch<?= getOption('fourthRound')['value'] == '1' ? ' checked' : ''?>">
+		<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
 			<i class="icon-ok"></i>
 			<i class="icon-remove"></i>
-			<input type="checkbox"<?= getOption('fourthRound')['value'] == '1' ? ' checked' : ''?>>
+			<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
 		</label>
 	</div>
 	<!-- content END -->
