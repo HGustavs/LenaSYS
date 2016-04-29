@@ -42,6 +42,9 @@ function setOption(label, value, cb) {
 		},
 		success: function(data) {
 			cb(data);
+			
+			$("#theDiv").append("<div id='toastBar'>Successfully swapped the"+ label +" option </div>");
+			
 		}
 	});
 }

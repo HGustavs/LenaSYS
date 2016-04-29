@@ -26,5 +26,4 @@ if(isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])){
 } else {
 	die('access denied');
 }
-
 ?>
