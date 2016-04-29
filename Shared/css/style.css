@@ -1756,7 +1756,8 @@ padding: 10px;
 
 #toastBar{
 	width: 100%;
-	height: 25px;
+	padding-top: 5px;
+	height: 20px;
 	line-height: 100%;
 	background: #614875;
 	border: 1px solid #000;
@@ -1769,5 +1770,7 @@ padding: 10px;
 	cursor: pointer;
 	background: #F00;
 	width: 25px;
-	height: 25px;
+	padding-top: 5px;
+	margin-top: -5px;
+	height: 20px;
 }
