@@ -1767,5 +1767,7 @@ padding: 10px;
 
 #toastBar a{
 	cursor: pointer;
-	margin-right: 9px;
+	background: #f0f0f0;
+	width: 20px;
+	height: 25px;
 }
