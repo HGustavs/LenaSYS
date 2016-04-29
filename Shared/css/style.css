@@ -1762,8 +1762,10 @@ padding: 10px;
 	color: #FFF;
 	text-align: center;
 	margin-top: 3px;
+	padding-top: 7px;
 }
 
 #toastBar a{
 	cursor: pointer;
+	margin-right: 5px;
 }
