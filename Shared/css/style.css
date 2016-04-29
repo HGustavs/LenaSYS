@@ -1753,3 +1753,10 @@ padding: 10px;
 	display: inline-block;
 	background-color: #F2F2F2;
 }
+
+#toastBar{
+	width: 70%;
+	height: 25px;
+	background: #614875;
+	border: 1px solid #000;
+}
