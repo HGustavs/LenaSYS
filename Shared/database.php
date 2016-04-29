@@ -68,4 +68,12 @@ function getOption($label) {
 	}
 	return NULL;
 }
+
+function getAllOptions() {
+	global $pdo;
+	$query = $pdo->prepare("SELECT label, value FROM options;");
+	$query->execute();
+	$result = $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 ?>
