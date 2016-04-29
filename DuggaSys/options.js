@@ -43,7 +43,17 @@ function setOption(label, value, cb) {
 		success: function(data) {
 			cb(data);
 			
-			$("#theDiv").html("<div id='toastBar'>Successfully swapped the"+ label +" option </div>");
+			var value2;
+			
+			if(value == 1){
+				value2 = "true";
+			}else if(value == 0){
+				value2 = "false";
+			}else{
+				value2 = value;
+			}
+			
+			$("#theDiv").html("<div id='toastBar'>Successfully set the"+ label +" option to "+ value2 +"</div>");
 			
 		}
 	});
