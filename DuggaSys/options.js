@@ -53,7 +53,7 @@ function setOption(label, value, cb) {
 				value2 = value;
 			}
 			
-			$("#theDiv").html("<div id='toastBar'>Successfully set the"+ label +" option to "+ value2 +"</div><div onclick='closeToast();'>X</div>");
+			$("#theDiv").html("<div id='toastBar'>Successfully set the"+ label +" option to "+ value2 +"<div onclick='closeToast();'>X</div></div>");
 			
 		}
 	});
