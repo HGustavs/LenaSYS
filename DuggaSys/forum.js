@@ -78,10 +78,10 @@ function makeComment(commentid)
 	$(document).ready(function() {
     var $myDiv = $('.repliedcomment');
 		if ( $myDiv.length){
-			commentcontent=$(".repliedcomment").html();
+			commentcontent= "^ " + $(".repliedcomment").html() + " ^" ;
 		}
 	});
-	var text = commentcontent + $(".commentInput").val() + "\r\n";
+	var text = commentcontent + $(".commentInput").val() + "\r\n" ;
 	if(text.length > 0)
 	{
 		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKECOMMENT");
@@ -267,15 +267,14 @@ function returnedComments(data)
 			
 			if(!value['replyid']){
 				//console.log(value['replyid']);
-				console.log('hej alla glada laxar');
 				text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>");
 			}else{
-				text = "Citat:<br/><div class=\"replycommentbox\"><p style=\"padding: 5px; margin: 0;\">" + text.replace(/\r\n/g, "</p>").replace(/\n/g, "</div><p class=\" \" style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
+				text = "Citat: (hopefully)<br/><blockquote class=\"descbox\">" + text.replace(/\n/g, "</blockquote><p class=\" \" style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
 			}
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
-				"<div class=\"commentContent\"><div class=\"commentContentText\">" +  text  +"</div></div>" +
+				"<div class=\"commentContent\"><div class=\"commentContentText descbox\">" +  text  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
 				"</div>" +

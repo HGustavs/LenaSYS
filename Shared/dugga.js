@@ -657,6 +657,18 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
+		case "DELETECOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getComments(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
 	}
 }
 
