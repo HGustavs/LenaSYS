@@ -12,8 +12,10 @@ session_start();
 $log_uuid = getOP('log_uuid');
 $log_timestamp = getOP('log_timestamp');
 
+
 logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "forumservice.php", $log_timestamp);
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "forumservice.php");
+
 
 if(isset($_SESSION['uid'])){
 	$uid=$_SESSION['uid'];
@@ -22,7 +24,9 @@ if(isset($_SESSION['uid'])){
 }
 
 $cid = getOP('cid');
+$class = getOP('class');
 $opt = getOP('opt');
+$threadUID = getOP('threadUID');
 
 $threadId = getOPG('threadId');
 if ($threadId==="UNK"){
@@ -94,7 +98,7 @@ function getThreadAccess($pdo, $threadId, $uid)
 if(strcmp($opt,"CREATETHREAD")===0){
 	// Access check
 	if (checklogin()){
-		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, description) VALUES (:courseId, :uid, :topic, :description)");
+		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, datecreated, description) VALUES (:courseId, :uid, :topic, current_timestamp, :description)");
 		$query->bindParam(':courseId', $courseId);
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':topic', $topicT);
@@ -104,7 +108,10 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$error=$query->errorInfo();
 			exit($debug);
 		}else{
-			$thread = $query->fetch(PDO::FETCH_ASSOC);
+			$id = $pdo->lastInsertId();
+			$thread = array(
+				"threadid" => $id
+			);
 		}
 	}else{
 		$accessDenied = "You must be logged in to create a thread.";
@@ -125,6 +132,14 @@ if(strcmp($opt,"CREATETHREAD")===0){
 				exit($debug);
 			}else{
 				$comments = $query->fetch(PDO::FETCH_ASSOC);
+				$query = $pdo->prepare("UPDATE thread SET lastcommentedon=current_timestamp WHERE threadid=:threadid");
+				$query->bindParam(':threadid', $threadId);
+				if(!$query->execute()){
+					$error=$query->errorInfo();
+					exit($debug);
+				}else{
+					$lastcommentedon = $query->fetch(PDO::FETCH_ASSOC);
+				}
 			}
 		}
 		else {
@@ -137,27 +152,17 @@ if(strcmp($opt,"CREATETHREAD")===0){
 				exit($debug);
 			}else{
 				$comments = $query->fetch(PDO::FETCH_ASSOC);
+				$query = $pdo->prepare("UPDATE thread SET lastcommentedon=current_timestamp WHERE threadid=:threadid");
+				$query->bindParam(':threadid', $threadId);
+				if(!$query->execute()){
+					$error=$query->errorInfo();
+					exit($debug);
+				}else{
+					$lastcommentedon = $query->fetch(PDO::FETCH_ASSOC);
+				}
 			}
 		}
-		
-	}else {
-		$accessDenied = "You must log in to comment.";
-	}
-}
-else if(strcmp($opt,"MAKEREPLYCOMMENT")===0){
-	// Access check
-	if ($threadAccess==="normal" || $threadAccess==="super" || $threadAccess==="op"){
-		$query = $pdo->prepare("INSERT INTO threadcomment (threadid, uid, text, datecreated, replyid) VALUES (:threadID, :uid, :text, current_timestamp, :commentid)");
-		$query->bindParam(':threadID', $threadId);
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':text', $text);
-		$query->bindParam(':commentid', $commentid);
-		if(!$query->execute()){
-			$error=$query->errorInfo();
-			exit($debug);
-		}else{
-			$comments = $query->fetch(PDO::FETCH_ASSOC);
-		}
+
 	}else {
 		$accessDenied = "You must log in to comment.";
 	}
@@ -228,6 +233,21 @@ else if(strcmp($opt,"MAKEREPLYCOMMENT")===0){
 	}else{
 		$accessDenied = "You do not have permisson to unlock this thread.";
 	}
+}else if(strcmp($opt,"EDITTHREAD")===0){
+	// Access check
+	if ($threadAccess==="op" || $threadAccess==="super"){
+		$query = $pdo->prepare("UPDATE thread SET topic=:topic,description=:description WHERE threadid=:threadid");
+		$query->bindParam(':threadid', $threadId);
+		$query->bindParam(':topic', $topicT);
+		$query->bindParam(':description', $descriptionT);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}
+	}else{
+		$accessDenied = "You do not have permisson to edit this thread.";
+	}
 }
 
 
@@ -264,16 +284,8 @@ else if(strcmp($opt,"GETTHREAD")===0){
 
 		}else{
 			//fetches all the comments
-			$comment = $query->fetchAll(PDO::FETCH_ASSOC);
 
-
-			// Decodes special chars
-			$comments = decodeComments($comment);
-
-
- 
-
-
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
 
 		}
 	}else{
@@ -282,7 +294,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"REPLYCOMMENT")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT text, commentid FROM threadcomment WHERE commentid=:commentID;");
+		$query = $pdo->prepare("SELECT text, replyid, commentid FROM threadcomment WHERE commentid=:commentID;");
 		$query->bindParam(':commentID', $commentid);
 
 		if(!$query->execute()){
@@ -305,6 +317,37 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else {
 		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
+}else if(strcmp($opt,"GETCLASSES")===0){
+	$query = $pdo->prepare("SELECT class FROM programcourse WHERE cid=:cid");
+	$query->bindParam(':cid', $cid);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$classes = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+}else if(strcmp($opt,"GETUSERS")===0){
+	$query = $pdo->prepare("SELECT uid, username FROM user WHERE class=:class");
+	$query->bindParam(':class', $class);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$users = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+}else if(strcmp($opt,"GETTHREADCREATOR")===0){
+	$query = $pdo->prepare("SELECT user.username FROM user,thread WHERE (thread.threadid=:threadid AND thread.uid=user.uid AND user.uid=:threadUID)");
+	$query->bindParam(':threadid', $threadId);
+	$query->bindParam(':threadUID', $threadUID);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
 }
 
 
@@ -316,43 +359,15 @@ if ($opt!=="UNK"){
 		'comments' => $comments,
 		'threadAccess' => $threadAccess,
 		'uid' => $uid,
-		'courses' => $courses
+		'courses' => $courses,
+		'classes' => $classes,
+		'users' => $users
 	);
 	echo json_encode($array);
 }
+
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "forumservice.php");
 
 
 
-
-
-//------------------------------------------------------------------------------------------------
-// Other Functions
-//------------------------------------------------------------------------------------------------
-
-
-
-// Simple function that decodes all the text from encoded chars e.g  "&lt;strong&gt;asda&lt;&#47;strong&gt" becomes "<strong>asd</asd>".
-function decodeComments($encodedComments){
-
-	$decodedComments = array();
-
-	foreach ($encodedComments as $row)
-	{
-		
-		// Decodes
-		$tempText = html_entity_decode($row["text"]);
-
-		// Replaces with the decoded string
-		$row["text"] = $tempText;
-
-		// pushes the updated row to the new $comments array
-		array_push($decodedComments,$row);
-	}
-
-	return $decodedComments;
-
-}
-
-?>

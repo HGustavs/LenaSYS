@@ -33,8 +33,8 @@
 	$log_uuid = getOP('log_uuid');
 	$log_timestamp = getOP('log_timestamp');
 
-	logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "editorService.php", $log_timestamp);
-	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "editorService.php");
+	logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "codeviewerService.php", $log_timestamp);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php");
 	
 	// Global variables
 	$exampleId=getOP('exampleid');
@@ -102,6 +102,7 @@
 				if($templateNumber==1||$templateNumber==2) $boxCount=2;
 				if($templateNumber==3||$templateNumber==4 ||$templateNumber==8) $boxCount=3;
 				if($templateNumber==5||$templateNumber==6 ||$templateNumber==7) $boxCount=4;
+				if($templateNumber==9) $boxCount=5;
 				
 				
 				// Create appropriate number of boxes

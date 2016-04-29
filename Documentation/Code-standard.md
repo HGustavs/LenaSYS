@@ -54,7 +54,7 @@ var filez;
 function setup()
 {
 	
-		$.ajax({url: "editorService.php", type: "POST", data: "courseid="+queryString['courseid']+"&exampleid="+queryString['exampleid']+"&opt=List", dataType: "json", success: returned});
+		$.ajax({url: "codeviewerService.php", type: "POST", data: "courseid="+queryString['courseid']+"&exampleid="+queryString['exampleid']+"&opt=List", dataType: "json", success: returned});
 		<-- Try to keep ajax or jquery calls on a single line		
 }
 

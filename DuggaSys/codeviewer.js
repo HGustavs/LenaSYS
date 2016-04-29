@@ -11,7 +11,7 @@ Execution Order
 
 Testing Link:
 
-EditorV50.php?exampleid=1&courseid=1&cvers=2013
+codeviewer.php?exampleid=1&courseid=1&cvers=2013
  
 -------------==============######## Documentation End ###########==============-------------
 */
@@ -269,7 +269,7 @@ var tabLine = function(text)
 //----------------------------------------------------------------------------------
 // editImpWords: adds/removes important words to the #impword selectbox
 // and stores each added/removed word in the addedWords array and the removedWords array 
-//                Is called at line 201/204 in EditorV50.php
+//                Is called at line 201/204 in codeviewer.php
 //---------------------------------------------------------------------------------
 var addedWords = [];
 var removedWords = [];
@@ -970,7 +970,7 @@ function tokenize(instring,inprefix,insuffix)
 	//instring = replaceAll("&gt;",">",instring);
 	instring = replaceAll("&amp;","&",instring);
 	// this will replace all "&#9;" in the text that the function tabLine adds were a tab (\t) is placed.
-	instring = replaceAll("&#9;","    ",instring); 
+	instring = replaceAll("&#9;"," ",instring); 
 
 	var from;                   	// index of the start of the token.
 	var i = 0;                  	// index of the current character.
@@ -1288,10 +1288,21 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	cbracket=new Array();
 	
 	htmlArray=new Array('html', 'head', 'body', 'div', 'span', 'doctype', 'title', 'link', 'meta', 'style', 'canvas', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'abbr', 'acronym', 'address', 'bdo', 'blockquote', 'cite', 'q', 'code', 'ins', 'del', 'dfn', 'kbd', 'pre', 'samp', 'var', 'br', 'a', 'base', 'img', 'area', 'map', 'object', 'param', 'ul', 'ol', 'li', 'dl', 'dt', 'dd', 'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot', 'col', 'colgroup', 'caption', 'form', 'input', 'textarea', 'select', 'option', 'optgroup', 'button', 'label', 'fieldset', 'legend', 'script', 'noscript', 'b', 'i', 'tt', 'sub', 'sup', 'big', 'small', 'hr','relativelayout','textview','webview','manifest','uses','permission','application','activity','intent');
-	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source','textview','webview','uses'); 
+	htmlArrayNoSlash= new Array('area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source','textview','webview','uses');
+	cssArray= new Array('accelerator', 'azimuth', 'background', 'background-attachment', 'background-color', 'background-image', 'background-position', 'background-position-x', 'background-position-y', 'background-repeat', 'behavior', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-right', 
+						'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'caption-side', 'clear', 'clip', 'color', 'content', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'elevation', 'empty-cells', 'filter', 'float', 'font', 'font-family', 'font-size', 
+						'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'height', 'ime-mode', 'include-source', 'layer-background-color', 'layer-background-image', 'layout-flow', 'layout-grid', 'layout-grid-char', 'layout-grid-char-spacing', 'layout-grid-line', 'layout-grid-mode', 'layout-grid-type', 'left', 'letter-spacing', 'line-break', 'line-height', 'list-style', 'list-style-image', 'list-style-position', 'list-style-type', 'margin', 
+						'margin-bottom', 'margin-left', 'margin-right', 'margin-top', 'marker-offset', 'marks', 'max-height', 'max-width', 'min-height', 'min-width', '-moz-binding', '-moz-border-radius', '-moz-border-radius-topleft', '-moz-border-radius-topright', '-moz-border-radius-bottomright', '-moz-border-radius-bottomleft', '-moz-border-top-colors', '-moz-border-right-colors', '-moz-border-bottom-colors', '-moz-border-left-colors', '-moz-opacity', '-moz-outline', 
+						'-moz-outline-color', '-moz-outline-style', '-moz-outline-width' ,'-moz-user-focus' ,'-moz-user-input', '-moz-user-modify', '-moz-user-select', 'orphans', 'outline', 'outline-color', 'outline-style', 'outline-width', 'overflow', 'overflow-X', 'overflow-Y', 'padding', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'page', 'page-break-after', 'page-break-before', 'page-break-inside', 'pause', 'pause-after', 'pause-before', 'pitch', 
+						'pitch-range','play-during', 'position', 'quotes', '-replace', 'richness', 'right', 'ruby-align', 'ruby-overhang', 'ruby-position', '-set-link-source', 'size', 'speak', 'speak-header', 'speak-numeral', 'speak-punctuation', 'speech-rate', 'stress', 'scrollbar-arrow-color', 'scrollbar-base-color', 'scrollbar-dark-shadow-color', 'scrollbar-face-color', 'scrollbar-highlight-color', 'scrollbar-shadow-color', 'scrollbar-3d-light-color', 'scrollbar-track-color',
+						'table-layout', 'text-align', 'text-align-last', 'text-decoration', 'text-indent', 'text-justify', 'text-overflow', 'text-shadow', 'text-transform', 'text-autospace', 'text-kashida-space', 'text-underline-position', 'top', 'unicode-bidi', '-use-link-source', 'vertical-align', 'visibility', 'voice-family', 'volume', 'white-space', 'widows', 'width', 'word-break', 'z-index', 'zoom', 'word-spacing', 'word-wrap', 'writing-mode');
+	var cssTagCount=0;
 	var htmlTagCount=0;
+	
 	htmlTag=new Array();
+	cssTag=new Array();
 
+	//html part
 	pid="";
 	var iwcounter=0;
 	for(i=0;i<tokens.length;i++){
@@ -1448,6 +1459,165 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	printout.html(createCodeborder(lineno,improws) + str);	
 	
 
+		//css part
+	
+	pid="";
+	var iwcounter=0;
+	for(i=0;i<tokens.length;i++){
+		tokenvalue=String(tokens[i].val);
+		// Make white space characters
+		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
+		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
+
+	 /*	
+		if(tokens[i].kind=="rowcomment"||tokens[i].kind=="blockcomment"||tokens[i].kind=="string"||tokens[i].kind=="number"||tokens[i].kind=="name"){
+				// Fix to remove html tags in strings
+				tokenvalue = tokenvalue.replace(/\</g, "&lt;");
+				tokenvalue = tokenvalue.replace(/\>/g, "&gt;");
+				tokenvalue = tokenvalue.replace(/&/g,"&amp;");
+		}
+	*/
+	
+		if(tokens[i].kind=="rowcomment"){
+			cont+="<span class='comment'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="blockcomment"){
+			cont+="<span class='comment'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="string"){
+			cont+="<span class='string'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="number"){
+			cont+="<span class='number'>"+tokenvalue+"</span>";
+		}else if(tokens[i].kind=="name"){
+			var foundkey=0;	
+			//If tokenvalue exists in the array for important words
+			if(important.indexOf(tokenvalue) != -1){
+				foundkey = 2;
+			//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
+			}else if(keywords[tokenvalue] != null){
+				foundkey = 1;
+			}
+			
+			if(foundkey==1){
+				cont+="<span class='keyword"+keywords[tokenvalue]+"'>"+tokenvalue+"</span>";														
+			}else if(foundkey==2){
+				iwcounter++;
+				cont+="<span id='IW"+iwcounter+"' class='impword' onmouseover='highlightKeyword(\""+tokenvalue+"\")' onmouseout='dehighlightKeyword(\""+tokenvalue+"\")'>"+tokenvalue+"</span>";														
+			}else{
+				cont+=tokenvalue;
+			}
+					
+		}else if(tokens[i].kind=="operator"){
+			/*if(tokenvalue=="("){
+				pid="PA"+pcount+boxid; 
+				pcount++;
+				parenthesis.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue==")"){
+				pid=parenthesis.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}*//*else if(tokenvalue=="["){
+				pid="BR"+bcount;
+				bcount++;
+				bracket.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue=="]"){
+				pid=bracket.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}else*/ if(tokenvalue=="{"){
+				pid="CBR"+cbcount+boxid;
+				cbcount++;
+				cbracket.push(pid);
+				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
+			}else if(tokenvalue=="}"){
+				pid=cbracket.pop();
+				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
+			}else if(tokenvalue=="<"){
+				// This statement checks the character after < to make sure it is a valid tag. 
+				tokenvalue="&lt;";
+				if(isNumber(tokens[i+1].val) == false && tokens[i+1].val != "/" && tokens[i+1].val != "!" && tokens[i+1].val != "?"){
+					if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) > -1){
+						var k = 2;
+						var foundEnd = false;
+
+						//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
+						while(i+k<tokens.length){
+								if(tokens[i+k].val == ">"){					
+									foundEnd = true;
+									break;
+								}
+								k++;
+						}
+						
+						if(foundEnd){
+							pid="css"+cssTagCount+boxid;
+							cssTagCount++;
+							if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+								cssTag.push(pid);
+							}
+							cont+="&lt"+"<span id='"+pid+"' class='oper' onmouseover='highlightCss(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightCss(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
+							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
+							// cont+="&lt"+"<span title='"+popoverbox(tokens[i+1].val)+"' id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
+							cont+="</span>";
+							i=i+1;
+						}else{
+							cont+="<span class='oper'>"+tokenvalue+"</span>";
+						}
+					}else{
+							cont+="<span class='oper'>"+tokenvalue+"</span>";					
+					}
+				}else if(tokens[i+1].val=="/"){
+						if(cssArray.indexOf(tokens[i+2].val.toLowerCase()) > -1){
+							if(cssArray.indexOf(tokens[i+1].val.toLowerCase()) == -1){
+								pid=cssTag.pop();
+							}else{
+								cssTagCount++;
+								pid="css"+cssTagCount+boxid;
+							}
+							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
+							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
+							// cont+="&lt"+tokens[i+1].val +"<span title='"+popoverbox(tokens[i+2].val)+"' id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
+							i = i+3;
+						}else{
+								cont+="<span class='oper'>"+tokenvalue+"</span>";						
+						}
+				}else{
+					cont+="<span class='oper'>"+tokenvalue+"</span>";
+				}
+			}else{
+				cont+="<span class='oper'>"+tokenvalue+"</span>";										
+			}
+		}else{
+			cont+=tokenvalue;
+		}
+		// tokens.length-1 so the last line will be printed out
+		if(tokens[i].kind=="newline" || i==tokens.length-1){  
+			// Prevent empty lines to be printed out
+			if(cont != ""){
+				// Count how many linenumbers that'll be needed
+				lineno++;
+				// Print out normal rows if no important exists
+				if(improws.length==0){
+					str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+				}else{	
+					// Print out important lines
+					for(var kp=0;kp<improws.length;kp++){
+						if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
+							str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
+							break;
+						}else{
+							if(kp == (improws.length-1)){
+								str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+							}
+						}						
+					}
+				}	
+				cont="";
+			}	
+		}
+	}
+	str+="</div>";
+				
+	// Print out rendered code and border with numbers
+	printout.css(createCodeborder(lineno,improws) + str);	
 }
 
 //----------------------------------------------------------------------------------
@@ -1571,7 +1741,7 @@ function resizeBoxes(parent, templateId)
 	var boxValArray = initResizableBoxValues(parent);
 	var remainWidth;
 		
-	if(templateId == 1){
+	if (templateId == 1) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
@@ -1588,7 +1758,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 2){
+	} else if (templateId == 2) {
 		getLocalStorageProperties(templateId, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
@@ -1606,7 +1776,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 3){
+	} else if (templateId == 3) {
 		getLocalStorageProperties(templateId, boxValArray);
 		
 		$(boxValArray['box1']['id']).resizable({
@@ -1641,7 +1811,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 4){
+	} else if (templateId == 4) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
@@ -1677,7 +1847,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 5){
+	} else if (templateId == 5) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box1']['id']).resizable({
@@ -1727,7 +1897,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	}else if(templateId == 6){
+	} else if (templateId == 6) {
 	
 		getLocalStorageProperties(templateId, boxValArray);
 		$("#box3wrapper").css("top", localStorage.getItem("template6box2heightPercent") + "%");
@@ -1783,7 +1953,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	} else if(templateId == 7) {
+	} else if (templateId == 7) {
 		getLocalStorageProperties(templateId, boxValArray);
 		$("#box3wrapper").css("top", localStorage.getItem("template7box2heightPercent") + "%");
 		
@@ -1834,7 +2004,7 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
-	} else if(templateId == 8) {
+	} else if (templateId == 8) {
 		getLocalStorageProperties(templateId, boxValArray);
 	
 		$(boxValArray['box2']['id']).resizable({
@@ -1869,6 +2039,71 @@ function resizeBoxes(parent, templateId)
 				$('iframe').css('pointer-events','auto');
 			}
 		});
+	} else if(templateId == 9) {
+		getLocalStorageProperties(templateId, boxValArray);
+		//$("#box3wrapper").css("top", localStorage.getItem("template9box2heightPercent") + "%");
+		//$("#box4wrapper").css("top", localStorage.getItem("template9box3heightPercent") + "%");
+		//$("#box5wrapper").css("top", localStorage.getItem("template9box4heightPercent") + "%");
+
+		$(boxValArray['box1']['id']).resizable({
+			containment: parent,
+			handles: "e",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box2']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
+		$(boxValArray['box3']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		$(boxValArray['box4']['id']).resizable({
+			containment: parent,
+			handles: "s",
+			start: function(event, ui) {
+				$('iframe').css('pointer-events','none');
+			},
+			resize: function(e, ui){
+				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
+			},
+			stop: function(e, ui) {
+				setLocalStorageProperties(templateId, boxValArray);
+				$('iframe').css('pointer-events','auto');
+			}
+		});
+		
 	}
 };
 
@@ -1900,37 +2135,37 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 //----------------------------------------------------------------------------------
 function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-		var basePer = 100 - remainWidthPer;
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;
+
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
 	
-		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-		$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
-		$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-		$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-		
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 }
 function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-		var basePer = 100 - remainWidthPer;
-	
-		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;
 
-		//$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-		
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+
+	//$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
+	
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
 }
 
 //----------------------------------------------------------------------------------
@@ -1939,15 +2174,15 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 //----------------------------------------------------------------------------------
 function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 {
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var basePer = 100-remainHeightPer;
-		
-		$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-		$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
-		
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var basePer = 100-remainHeightPer;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 }
 //----------------------------------------------------------------------------------
 //Height adjustment for boxes in template 4. (Two small boxes ontop of a big box.)
@@ -1955,17 +2190,17 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 //----------------------------------------------------------------------------------
 function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 {
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
-		var remainHeightPer = (remainHeight / boxValArray['parent']['height'])*100;
-		var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height'])*100;
-		
-		$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
-		$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
-		$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
-		
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-		boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
+	var remainHeightPer = (remainHeight / boxValArray['parent']['height'])*100;
+	var samePer = (($(boxValArray['box' + boxNumBase]['id']).height()) / boxValArray['parent']['height'])*100;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(samePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(samePer + "%");
+	$(boxValArray['box' + boxNumBig]['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
 }
 //----------------------------------------------------------------------------------
 //Height adjustment for boxes in template 5.
@@ -1973,19 +2208,19 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 //----------------------------------------------------------------------------------
 function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 {	
-		var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();	
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var basePer = 100 - remainHeightPer;
-		
-		$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
-		$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
-		$(boxValArray['box3']['id']).height(remainHeightPer + "%");
-		$(boxValArray['box4']['id']).height(remainHeightPer + "%");
-		
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
-		boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
-		boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
+	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();	
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var basePer = 100 - remainHeightPer;
+	
+	$(boxValArray['box' + boxNumBase]['id']).height(basePer + "%");
+	$(boxValArray['box' + boxNumSame]['id']).height(basePer + "%");
+	$(boxValArray['box3']['id']).height(remainHeightPer + "%");
+	$(boxValArray['box4']['id']).height(remainHeightPer + "%");
+	
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
+	boxValArray['box3']['height'] = $(boxValArray['box3']['id']).height();
+	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
 }
 
 //----------------------
@@ -1994,27 +2229,27 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 
 function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
 	
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-		
-		
-		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-		var basePer = 100 - remainWidthPer;
-		
-		
-		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-		$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
-		$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
-		
-		
-		$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
-		$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
-		
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
-		boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
+	
+	
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;
+	
+	
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("left", " ");
+	$(boxValArray['box' + boxNumBase]['id']).css("top", " ");
+	
+	
+	$(boxValArray['box' + boxNumAlign]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
+	
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumAlign]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumAlignSecond]['id']).width();
+	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 	
 }
 //----------------------
@@ -2023,24 +2258,24 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 
 function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
 	
-		var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
-			
-		var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
-		var basePer = 100 - remainWidthPer;	
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
 		
-		$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
-		$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
-		$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
-		//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
-		$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
-		
-		$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
-		
-		boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
-		
-		boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+	var basePer = 100 - remainWidthPer;	
+	
+	$(boxValArray['box' + boxNumBase]['id']).width(basePer + "%");
+	$(boxValArray['box' + boxNumAlign]['id']).width(basePer + "%");
+	$(boxValArray['box' + boxNumAlignSecond]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxNumAlign. Forces it to have left property turned off. Also forced a top property on boxNumBase.
+	$(boxValArray['box' + boxNumAlign]['id']).css("right", " ");
+	
+	$(boxValArray['box' + boxNumAlignThird]['id']).width(remainWidthPer + "%");
+	
+	boxValArray['box' + boxNumBase]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlign]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	boxValArray['box' + boxNumAlignSecond]['width'] = $(boxValArray['box' + boxNumBase]['id']).width();
+	
+	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 }
 	
 //----------------------
@@ -2049,34 +2284,34 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	
 function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
 
-		//Get initial values.
-		var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
-		var basePer = 100-(remainHeightPer + alignSecondPer);
-		var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-		var atry2 = (atry/boxValArray['parent']['height'])*100;
+	//Get initial values.
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
+	var basePer = 100-(remainHeightPer + alignSecondPer);
+	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+	var atry2 = (atry/boxValArray['parent']['height'])*100;
+	
+	if (remainHeightPer <= 10) {
+	
+			atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+			atry2 = (atry/boxValArray['parent']['height'])*100;
 		
-		if(remainHeightPer <= 10){
-		
-				atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-				atry2 = (atry/boxValArray['parent']['height'])*100;
-			
-				remainHeightPer = 10;
-				$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-				$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
-				$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
-				$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-		}else{
-				$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
-				$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
-				$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
-		}
-		
-		//Update array
-		boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
-		boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
-		boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
+			remainHeightPer = 10;
+			$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+			$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+			$(boxValArray['box' + boxNumAlignSecond]['id']).css("height", atry2 + "%");
+			$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
+	} else {
+			$(boxValArray['box' + boxNumAlign]['id']).css("height", remainHeightPer + "%");
+			$(boxValArray['box' + boxNumAlign]['id']).css("top", basePer + "%");
+			$(boxValArray['box' + boxNumBase]['id']).css("height", basePer + "%");
+	}
+	
+	//Update array
+	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
+	boxValArray['box' + boxNumAlign]['height'] = $(boxValArray['box' + boxNumAlign]['id']).height();
+	boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
 }
 	
 //----------------------
@@ -2085,20 +2320,234 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	
 function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
-		var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
-		var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
-		var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
-		var basePer = 100-(remainHeightPer + alignSecondPer);
-		var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
-		var atry2 = (atry/boxValArray['parent']['height'])*100;
-		
-		if(atry2 <= 10){
-			$("#box3wrapper").css({"top": basePer + "%","height": remainHeightPer + "%"});
-		 }else {
-			$("#box4wrapper").height(atry2 + "%"); 
-			$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
-		}
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlignSecond]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+	var alignSecondPer = ($(boxValArray['box' + boxNumAlignSecond]['id']).height() / boxValArray['parent']['height'])*100;
+	var basePer = 100-(remainHeightPer + alignSecondPer);
+	var atry = boxValArray['parent']['height'] - ($(boxValArray['box' + boxNumBase]['id']).height() + $(boxValArray['box' + boxNumAlign]['id']).height());
+	var atry2 = (atry/boxValArray['parent']['height'])*100;
+	
+	if (atry2 <= 10) {
+		$("#box3wrapper").css({"top": basePer + "%","height": remainHeightPer + "%"});
+	 } else {
+		$("#box4wrapper").height(atry2 + "%"); 
+		$("#box3wrapper").css({"top": basePer + "%", "height": remainHeightPer + "%", "left": " "});
+	}
 
+}
+
+//----------------------
+// WIDTH MEASURMENT FOR TEMPLATE 9
+//----------------------
+	
+function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive){
+	
+	//Width for the four smaller boxes.
+	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxOne]['id']).width();
+	var remainWidthPer = (remainWidth / boxValArray['parent']['width'])*100;
+
+	//Width for the left big box.
+	var basePer = 100 - remainWidthPer;
+	
+	$(boxValArray['box' + boxOne]['id']).width(basePer + "%");
+	//Corrects bug that sets left property on boxTwo, three and four. Forces it to have left property turned off. Also forced a top property on boxOne.
+	$(boxValArray['box' + boxTwo]['id']).css("left", " ");
+	$(boxValArray['box' + boxThree]['id']).css("left", " ");
+	$(boxValArray['box' + boxFour]['id']).css("left", " ");
+
+	$(boxValArray['box' + boxOne]['id']).css("top", " ");
+	
+	//Sets width for all boxes.
+	$(boxValArray['box' + boxTwo]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxThree]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxFour]['id']).width(remainWidthPer + "%");
+	$(boxValArray['box' + boxFive]['id']).width(remainWidthPer + "%");
+	
+	//Updates array.
+	boxValArray['box' + boxOne]['width'] = $(boxValArray['box' + boxOne]['id']).width();
+	boxValArray['box' + boxTwo]['width'] = $(boxValArray['box' + boxTwo]['id']).width();
+	boxValArray['box' + boxThree]['width'] = $(boxValArray['box' + boxThree]['id']).width();
+	boxValArray['box' + boxFour]['width'] = $(boxValArray['box' + boxFour]['id']).width();
+	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();	
+}
+
+//----------------------
+// HEIGHT MEASURMENT FOR TEMPLATE 9
+//----------------------
+	
+function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour) 
+{
+	
+	//Height of the two boxes between boxOne and boxFour (top most box and bottom most box)
+	var remainHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
+	var remainHeightPer = (remainHeight/boxValArray['parent']['height'])*100;
+
+	//fourth and third box height in percent.
+	var boxThreeHeightPer = ($(boxValArray['box' + boxThree]['id']).height() / boxValArray['parent']['height'])*100;	
+	var boxFourHeightPer = ($(boxValArray['box' + boxFour]['id']).height() / boxValArray['parent']['height'])*100;
+
+	//The second and first box height in percent.
+	var boxTwoHeightPer = (remainHeightPer - boxThreeHeightPer);
+	var boxOneHeightPer = 100-(remainHeightPer + boxFourHeightPer);
+
+	//Set values if the boxes reaches minimum height.
+	if (boxTwoHeightPer <= 10 && boxThreeHeightPer <= 10) {
+		boxTwoHeightPer = 10;
+		boxThreeHeightPer = 10;
+		remainHeightPer = 20;
+
+	} else if (boxTwoHeightPer <= 10) {
+		boxTwoHeightPer = 10;	
+
+	} else if (boxThreeHeightPer <= 10) {
+		boxThreeHeightPer = 10;	
+
+	} 
+
+	//Set height and top on the boxes
+	$(boxValArray['box' + boxOne]['id']).css("height", boxOneHeightPer + "%");
+
+	$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
+	$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+	$(boxValArray['box' + boxThree]['id']).css("height", (remainHeightPer - boxTwoHeightPer) + "%");
+	$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+	$(boxValArray['box' + boxFour]['id']).css("height", (100 - (remainHeightPer + boxOneHeightPer)) + "%");
+	$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer+remainHeightPer) + "%");
+	
+
+	//Update array
+	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
+	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
+	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
+	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
+}
+
+//----------------------
+// HEIGHT MEASURMENT FOR TEMPLATE 9
+//----------------------
+	
+function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour){
+
+	//Box three height. It is the box that is currently being resized.
+	var boxThreeHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxFour]['id']).height());
+	var boxThreeHeightPer = (boxThreeHeight/(boxValArray['parent']['height'])) * 100;
+
+	//Fourth box height in pixels then in percent.
+	var boxFourHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + boxThreeHeight));
+	var boxFourHeightPer = (boxFourHeight /(boxValArray['parent']['height'])) * 100;
+
+	//Second box height in pixels then in percent.
+	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + boxThreeHeight + boxFourHeight));
+	var boxTwoHeightPer = (boxTwoHeight/(boxValArray['parent']['height'])) * 100;
+
+	//First box height in pixels then in percent.
+	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + boxThreeHeight + boxFourHeight));
+	var boxOneHeightPer = (boxOneHeight/(boxValArray['parent']['height'])) * 100;
+
+	//Box three and four totalt height
+	var boxThreeAndFourHeightPer =  boxThreeHeightPer + boxFourHeightPer;
+
+	//check if box three and four is at minimum height.
+	if(boxThreeAndFourHeightPer <= 20) {
+		
+		//Set the height to the minimum.
+		boxThreeAndFourHeightPer = 20;
+
+		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeAndFourHeightPer/2 + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", "80" + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxThreeAndFourHeightPer/2 + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");	
+
+	//Check if box three is at or below minimum height.	
+	} else if (boxThreeHeightPer <= 10) {
+		boxThreeHeightPer = 10;
+
+		//Set height and top on the boxes when the lower two boxes are at the minimum height.
+		$(boxValArray['box' + boxTwo]['id']).css("height", (100 - boxOneHeightPer - boxThreeAndFourHeightPer) + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxThreeHeightPer) + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
+		
+	} else {
+
+		//Set height and top on the boxes
+		$(boxValArray['box' + boxTwo]['id']).css("height", boxTwoHeightPer + "%");
+		$(boxValArray['box' + boxTwo]['id']).css("top", boxOneHeightPer + "%");
+
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxThreeHeightPer + boxTwoHeightPer) + "%");
+		
+	}
+	
+	//Update array
+	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
+	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
+	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
+	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
+}
+
+//----------------------
+// HEIGHT MEASURMENT FOR TEMPLATE 9
+//----------------------
+	
+function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour)
+{
+	//Box four height in pixels then in percent. It is the box that is currently being resized.
+	var boxFourHeight = boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxTwo]['id']).height() + $(boxValArray['box' + boxThree]['id']).height());
+	var boxFourHeightPer = (boxFourHeight/boxValArray['parent']['height']) * 100;
+
+	//Second box height in pixels then in percent
+	var boxTwoHeight = (boxValArray['parent']['height'] - ($(boxValArray['box' + boxOne]['id']).height() + $(boxValArray['box' + boxThree]['id']).height() + boxFourHeight));
+	var boxTwoHeightPer = (boxTwoHeight/(boxValArray['parent']['height'])) * 100;
+
+	//First box height in pixels then in percent
+	var boxOneHeight = (boxValArray['parent']['height'] - (boxTwoHeight + $(boxValArray['box' + boxThree]['id']).height() + boxFourHeight));
+	var boxOneHeightPer = (boxOneHeight / (boxValArray['parent']['height'])) * 100;
+
+	//Third box height in pixels then in percent
+	var boxThreeHeight = (boxValArray['parent']['height'] - (boxOneHeight + boxTwoHeight + boxFourHeight));
+	var boxThreeHeightPer = boxThreeHeight/(boxValArray['parent']['height']) * 100;
+
+	if(boxFourHeightPer <= 10){
+
+		boxFourHeightPer = 10;
+
+		//Set height and top on the boxes
+		$(boxValArray['box' + boxThree]['id']).css("height", (100 - boxOneHeightPer - boxTwoHeightPer - boxFourHeightPer) + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", "90" + "%");	
+
+	 } else {
+
+	 	//Set height and top on the boxes
+		$(boxValArray['box' + boxThree]['id']).css("height", boxThreeHeightPer + "%");
+		$(boxValArray['box' + boxThree]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer) + "%");
+
+		$(boxValArray['box' + boxFour]['id']).css("height", boxFourHeightPer + "%");
+		$(boxValArray['box' + boxFour]['id']).css("top", (boxOneHeightPer + boxTwoHeightPer + boxThreeHeightPer) + "%");	
+	}
+
+	//Update array
+	boxValArray['box' + boxOne]['height'] = $(boxValArray['box' + boxOne]['id']).height();
+	boxValArray['box' + boxTwo]['height'] = $(boxValArray['box' + boxTwo]['id']).height();
+	boxValArray['box' + boxThree]['height'] = $(boxValArray['box' + boxThree]['id']).height();
+	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
 }
 
 //----------------------------------------------------------------------------------
@@ -2109,8 +2558,8 @@ function initResizableBoxValues(parent)
 {
 	var parentWidth = $(parent).width();
 	var parentHeight = $(parent).height();
-	var boxwidth;
-	var boxheight;
+	var boxWidth;
+	var boxHeight;
 	var boxId;
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
 	var boxValueArray = new Array();
@@ -2141,7 +2590,7 @@ function setLocalStorageProperties(templateId, boxValArray)
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;	
 	var widthPer;
 	var heightPer;
-	
+
 	for(var i = 1; i <= numBoxes; i++){
 		boxValArray['box' + i]['width'] = $(boxValArray['box' + i]['id']).width();
 		boxValArray['box' + i]['height'] = $(boxValArray['box' + i]['id']).height();
@@ -2208,6 +2657,10 @@ function erasePercentGap(templateId, boxValArray)
 	}else if(templateId == 8){
 		alignBoxesHeight2boxes(boxValArray, 2, 3);
 		alignBoxesWidthTemplate8(boxValArray, 2, 3, 1);
+	}else if(templateId == 9){
+		alignTemplate9Width(boxValArray, 1, 2, 3, 4, 5);
+		alignTemplate9Height(boxValArray, 2, 3, 4, 5);
+		alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
 	}
 }
 

@@ -129,7 +129,7 @@ function savequizResult(citstr)
 	citstr=querystring['moment']+" "+citstr;
 	citstr=querystring['coursevers']+" "+citstr;
 	citstr=querystring['cid']+" "+citstr;
-	AJAXService("SAVDU",{answer:citstr},"PDUGGA");	
+	AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 	alert('Returned');
 }
 
@@ -151,7 +151,7 @@ function navigateExample(exampleno)
 {
 		surl=window.location.href;
 		surl=surl.substring(0,surl.lastIndexOf("/"));
-		window.location.href = surl+"/EditorV50.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
+		window.location.href = surl+"/codeviewer.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
 }
 
 //----------------------------------------------------------------------------------
@@ -407,7 +407,7 @@ function AJAXService(opt,apara,kind)
 					sendConfirmation("resultedservice.php");
 				}
 			});
-			break;		
+			break;
 		case "RESULTLIST":
 			$.ajax({
 				url: "resultlistedservice.php",
@@ -422,25 +422,25 @@ function AJAXService(opt,apara,kind)
 			break;
 		case "CODEVIEW":
 			$.ajax({
-				url: "editorService.php",
+				url: "codeviewerService.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
 					returned(data);
-					sendConfirmation("editorService.php");
+					sendConfirmation("codeviewerService.php");
 				}
 			});
 			break;
 		case "BOXCONTENT":
 			$.ajax({
-				url: "editorService.php",
+				url: "codeviewerService.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
 					returned(data);
-					sendConfirmation("editorService.php");
+					sendConfirmation("codeviewerService.php");
 				}
 			});
 			break;
@@ -487,7 +487,10 @@ function AJAXService(opt,apara,kind)
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: getThread,
+				success: function(data) {
+					createThreadSuccess(data);
+					sendConfirmation("forumservice.php");
+				},
 				error: error
 			});
 			break;
@@ -594,6 +597,30 @@ function AJAXService(opt,apara,kind)
 				}
 			});
 			break;
+		case "GETCLASSES":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedClasses(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "GETUSERS":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					returnedUsers(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
 		case "UNLOCKTHREAD":
 			$.ajax({
 				url: "forumservice.php",
@@ -602,6 +629,30 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: function(data) {
 					getThread(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "EDITTHREAD":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getThread(data);
+					sendConfirmation("forumservice.php");
+				}
+			});
+			break;
+		case "GETTHREADCREATOR":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					showThreadCreator(data);
 					sendConfirmation("forumservice.php");
 				}
 			});
@@ -1094,7 +1145,7 @@ var Timer = {
 		}
 
 	}
-}	
+}
 
 function getButtonID(obj){
 	alert(obj.id);
@@ -1118,7 +1169,7 @@ $(function() {
 		$.ajax({
 			url: '../DuggaSys/logservice.php',
 			type: 'POST',
-			dataType: 'json', 
+			dataType: 'json',
 			data: JSON.stringify(data),
     		contentType: "application/json",
 		});
@@ -1138,13 +1189,12 @@ $(function() {
 // 			mouseY: e.clientY
 // 		}
 // 	}
-	
+
 // 	$.ajax({
 // 		url: '../DuggaSys/logservice.php',
 // 		type: 'POST',
-// 		dataType: 'json', 
+// 		dataType: 'json',
 // 		data: JSON.stringify(data),
 // 		contentType: "application/json",
 // 	});
 // });
-
