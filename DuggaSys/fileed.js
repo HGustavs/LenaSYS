@@ -160,7 +160,7 @@ function returnedFile(data)
 				if(parseInt(item['kind'])==2){
 					str2+="<tr class='fumo'>";
 					str2+="<td>"+item['fileid']+"</td>";
-					str2+="<td>"+item['filename']+"</td>";
+					str2+="<td class='pointer' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");'>"+item['filename']+"</td>";
 					str2+="<td style='padding:4px;'>";
 					str2+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str2+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -177,7 +177,7 @@ function returnedFile(data)
 				if(parseInt(item['kind'])==3){
 					str3+="<tr class='fumo'>";
 					str3+="<td>"+item['fileid']+"</td>";
-					str3+="<td>"+item['filename']+"</td>";
+					str3+="<td class='pointer' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");'>"+item['filename']+"</td>";
 					str3+="<td style='padding:4px;'>";
 					str3+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str3+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -193,7 +193,7 @@ function returnedFile(data)
 				if(parseInt(item['kind'])==4 && item['vers']==vers){
 					str4+="<tr class='fumo'>";
 					str4+="<td>"+item['fileid']+"</td>";
-					str4+="<td>"+item['filename']+"</td>";
+					str4+="<td class='pointer' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");'>"+item['filename']+"</td>";
 					str4+="<td style='padding:4px;'>";
 					str4+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str4+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";

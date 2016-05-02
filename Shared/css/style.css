@@ -1044,6 +1044,8 @@ input.new-item-button:hover {
 	margin: 0!important;
 }
 
+.pointer{cursor: pointer;}
+
 .markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 12px;}
 
 .markinglist td {border-right:2px solid #dbd0d8;;padding-left:8px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 10px; }
