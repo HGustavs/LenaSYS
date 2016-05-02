@@ -667,6 +667,7 @@ header td {
 	left: 0;
 	text-align: left;
 	margin-top: 40px;
+	clear: both;
 }
 
 .loginTransparent img{height: 50px; width: auto; display: inline-block; vertical-align: middle; margin-left: 20px; padding: 5px 0px;}
