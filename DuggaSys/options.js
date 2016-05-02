@@ -53,13 +53,13 @@ function setOption(label, value, cb) {
 				value2 = value;
 			}
 			
-			$("#theDiv").fadeIn("fast").html("<div id='toastBar'>Successfully set the "+ label +" option to "+ value2 +"<a style='float:right;' onclick='closeToast();'>X</a></div>");
-			$("#theDiv").delay('3000').fadeOut('slow');
+			$("#theDiv").toggle("fast").append("<div id='"+label+"'>Successfully set the "+ label +" option to "+ value2 +"<a style='float:right;' onclick='closeToast();'>X</a></div>");
+			$("#"+label).delay('3000').fadeOut('slow');
 			
 		}
 	});
 }
 
 function closeToast(){
-	$("#toastBar").fadeOut("slow");
+	$("#"+this.id).fadeOut("slow");
 }
