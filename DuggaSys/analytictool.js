@@ -249,3 +249,29 @@ function drawPieChart(data) {
 		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight);
 	}
 }
+
+function renderTable(data) {
+	if (!$.isArray(data)) return;
+
+	var str = "<table>";
+	if (data.length > 0) {
+		// Render headings
+		str += "<thead><tr>";
+		$.each(data[0], function(i, s){
+			str += "<th>" + s + "</th>";
+		});
+		str += "</tr></thead><tbody>";
+
+		// Render rows
+		$.each(data, function(i, row) {
+			if (i === 0) return;
+			str += "<tr>";
+			$.each(row, function(j, col) {
+				str += "<td>" + col + "</td>";
+			});
+			str += "</tr>"
+		});
+	}
+	str += "</tbody></table>";
+	return str;
+}
