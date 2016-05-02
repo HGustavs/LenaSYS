@@ -685,7 +685,6 @@ function processLogin() {
 			},
 			success:function(data) {
 				var result = JSON.parse(data);
-				console.log(result["debug"]);
 				if(result['login'] == "success") {
 					$("#userName").html(result['username']);
 					$("#loginbutton").removeClass("loggedout");
