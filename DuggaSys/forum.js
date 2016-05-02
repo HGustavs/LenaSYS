@@ -11,12 +11,12 @@ var querystring = parseGet();
 // Commands:
 //----------------------------------------
 
-$(document).on('click','#replycommentbutton', function(event) {
+$(document).on('click','.replyCommentButton', function(event) {
 		event.preventDefault();
 		var target = "#" + this.getAttribute('data-target');
 		$('html, body').animate({
 			scrollTop: $('.makeCommentInputWrapper').offset().top -110
-		}, 1500);
+		}, 1000);
 });
 
 function initThread()
@@ -287,11 +287,11 @@ function returnedComments(data)
 				//console.log(value['replyid']);
 				text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>");
 			}else{
-				text = "Citat: (hopefully)<br/><blockquote class=\"descbox\">" + text.replace(/\n/g, "</blockquote><p class=\" \" style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
+				text = "<blockquote class=\"descbox\">" + text.replace(/\n/g, "</blockquote><p class=\" \" style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
 			}
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
-				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span class='commentCreated'> - <span>" + (value["datecreated"]).substring(0,16) + "</span></div>" +
+				"<div class=\"commentDetails\"><span class=\"commentUser\">" + value["username"]  +   "</span> - <span class='commentCreated'>" + (value["datecreated"]).substring(0,16) + "</span></div>" +
 				"<div class=\"commentContent\"><div class=\"commentContentText descbox\">" +  text  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
@@ -309,13 +309,13 @@ function returnedComments(data)
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions = "";
 	if (threadAccess !== "public"){
-		threadOptions = "<input id='replycommentbutton' class='submit-button' type='button' value='Reply' onclick='replyUI("+commentid+");'>";
+		threadOptions = "<a href='javascript:replyUI("+commentid+")' class='commentAction replyCommentButton'>Reply</a>";
 
-		if uid === commentuid || threadAccess === "super"){
-			threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
+		if (uid === commentuid || threadAccess === "super"){
+			threadOptions += "<a href='javascript:editUI()' class='commentAction'>Edit</a>";
 		}
 		if (threadAccess === "op" || threadAccess === "super" || uid === commentuid){
-			threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Delete\" onclick=\"deleteComment("+commentid+");\">";
+			threadOptions += "<a href='javascript:deleteComment("+commentid+")' class='commentAction'>Delete</a>";
 		}
 	}
 	return threadOptions;

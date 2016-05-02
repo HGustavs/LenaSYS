@@ -39,9 +39,6 @@ if (file_exists("../.git/refs/heads/master")) {
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
 
-
-
-
   <script type="text/javascript">
     $(document).ready(function(){
       initThread();

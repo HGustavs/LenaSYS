@@ -1527,7 +1527,8 @@ input.commentSubmitButton {
   clear:both;
   margin-top: 25px;
   overflow: hidden;
-  background-color: #FFF;
+	background-color: #eae8eb;
+	border-bottom: 2px solid #927b9e;
 }
 #threadCommentsHeader {
   background-color: #927b9e;
@@ -1540,28 +1541,41 @@ input.commentSubmitButton {
 }
 
 .threadComment {
+	padding: 10px 0;
   clear: both;
-  padding: 10px 20px;
-  background-color: #eae8eb;
+  margin: 0 25px;
   overflow: hidden;
-  border: 2px solid #927b9e;
-  margin-top: 10px;
+  border-bottom: 1px solid #927b9e;
+	margin-bottom: -1px;
 }
 
 .commentDetails {
   color: #775886;
 }
 .commentUser {
-
+	font-weight: bold;
+	font-size: 0.9em;
 }
-
+.commentCreated {
+	font-size: 0.9em;
+}
+.commentAction {
+	float: left;
+	color: #927b9e;
+	margin: 10px 10px 0 0;
+	font-size: 0.9em;
+	text-decoration: none;
+}
+.commentAction:hover {
+	color: #927b9e;
+	text-decoration: underline;
+}
 .commentWrapper {
 	background-color: white;
 }
 
 .commentContent {
-	background-color: white;
-	border: 1px solid #A1A1A1;
+
 }
 
 .commentContent p{
@@ -1570,16 +1584,12 @@ input.commentSubmitButton {
 
 .commentContent h1
 {
-
-color: black;
-
+	color: black;
 }
 
 .commentContentText
 {
-
-padding: 10px;
-
+	padding: 5px 0;
 }
 
 .commentFooter {
@@ -1687,7 +1697,7 @@ padding: 10px;
 
 .threadActiveButton {
   background-color: #7B5A96;
-  
+
 }
 .threadActiveButton:hover {
   border-radius: 0;
@@ -1746,7 +1756,7 @@ padding: 10px;
   clear:both;
 }
 .threadCheckboxLabel {
-  margin-bottom: 5px; 
+  margin-bottom: 5px;
   color: rgb(97, 72, 117);
   float: left;
 }
