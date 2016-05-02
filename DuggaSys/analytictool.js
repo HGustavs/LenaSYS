@@ -73,6 +73,18 @@ function loadGeneralStats() {
 
 function loadPasswordGuessing() {
 	loadAnalytics("passwordGuessing", function(data) {
+		$('#analytic-info').append("<p>Potential brute force attacks.</p>");
+
+		var tableData = [["Username", "Remote address", "User agent", "Tries"]];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].userName,
+				data[i].remoteAddress,
+				data[i].userAgent,
+				data[i].tries
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
 	});
 }
 
