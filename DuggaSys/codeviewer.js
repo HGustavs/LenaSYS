@@ -2041,9 +2041,7 @@ function resizeBoxes(parent, templateId)
 		});
 	} else if(templateId == 9) {
 		getLocalStorageProperties(templateId, boxValArray);
-		//$("#box3wrapper").css("top", localStorage.getItem("template9box2heightPercent") + "%");
-		//$("#box4wrapper").css("top", localStorage.getItem("template9box3heightPercent") + "%");
-		//$("#box5wrapper").css("top", localStorage.getItem("template9box4heightPercent") + "%");
+		 
 
 		$(boxValArray['box1']['id']).resizable({
 			containment: parent,
@@ -2068,6 +2066,10 @@ function resizeBoxes(parent, templateId)
 			},
 			resize: function(e, ui){
 				alignTemplate9Height(boxValArray, 2, 3, 4, 5);
+				$(boxValArray['box2']['id']).css("left", " ");
+				$(boxValArray['box3']['id']).css("left", " ");
+				$(boxValArray['box4']['id']).css("left", " ");
+				$(boxValArray['box5']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -2083,6 +2085,10 @@ function resizeBoxes(parent, templateId)
 			},
 			resize: function(e, ui){
 				alignTemplate9Height3Stack(boxValArray, 2, 3, 4, 5);
+				$(boxValArray['box2']['id']).css("left", " ");
+				$(boxValArray['box3']['id']).css("left", " ");
+				$(boxValArray['box4']['id']).css("left", " ");
+				$(boxValArray['box5']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
@@ -2097,6 +2103,10 @@ function resizeBoxes(parent, templateId)
 			},
 			resize: function(e, ui){
 				alignTemplate9Height2Stack(boxValArray, 2, 3, 4, 5);
+				$(boxValArray['box2']['id']).css("left", " ");
+				$(boxValArray['box3']['id']).css("left", " ");
+				$(boxValArray['box4']['id']).css("left", " ");
+				$(boxValArray['box5']['id']).css("left", " ");
 			},
 			stop: function(e, ui) {
 				setLocalStorageProperties(templateId, boxValArray);
