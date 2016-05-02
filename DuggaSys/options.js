@@ -54,9 +54,8 @@ function setOption(label, value, cb) {
 			}
 			
 			var number = $("#theDiv").children().size() + 1;
-			var number2 = number - 1;
-
-			$("#toastBar"+number2).fadeOut('slow');
+			
+			$("#theDiv").html("");
 			$("#theDiv").show("fast").append("<div id='toastBar"+number+"' class='toastBar'>Successfully set the "+ label +" option to "+ value2 +"</div>");
 			$("#toastBar"+number).delay('3000').fadeOut('slow');
 			
