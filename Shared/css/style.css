@@ -659,16 +659,18 @@ header td {
 
 .loginTransparent {
 	display:block;
-	padding:4px;
-	width: 350px;
-	min-height: 100px;
-	z-index: 9000;
-	position: fixed;
-	top: 40%;
-	left: 50%;
-	margin-left: -178px;
-	text-align: center;
+	height: 60px;
+	width: 100%;
+	background-color: #614875;
+	position: static;
+	bottom: 0;
+	left: 0;
+	text-align: left;
+	margin-top: 40px;
 }
+
+.loginTransparent img{height: 50px; width: auto; display: inline-block; vertical-align: middle; margin-left: 20px; padding: 5px 0px;}
+.loginTransparent p{display: inline-block; vertical-align: middle; padding-left: 15px;}
 
 .loginBox textarea{
     max-width: 100%;
