@@ -1756,7 +1756,7 @@ padding: 10px;
 	background-color: #F2F2F2;
 }
 
-#toastBar{
+.toastBar{
 	width: 100%;
 	padding-top: 5px;
 	height: 20px;
@@ -1768,7 +1768,7 @@ padding: 10px;
 	margin-top: 3px;
 }
 
-#toastBar a{
+.toastBar a{
 	cursor: pointer;
 	background: #F00;
 	width: 25px;
