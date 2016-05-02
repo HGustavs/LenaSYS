@@ -64,7 +64,6 @@ if($opt=="LOGIN"){
 		// Remove the cookies.
 		setcookie('username', '', 0, '/');
 		setcookie('password', '', 0, '/');
-		setcookie('merf', '', 0, '/');
 }
 	
 ?>
