@@ -217,7 +217,7 @@ function returnedThread(data)
 			$(".threadDeleteAndEdit").html(buttons);
 		}
 
-		if($('div.opEditThread').length){
+		if(data['threadAccess']==="op" || data['threadAccess']==="super"){
 			var arr = $.map(data['thread'], function(el) { return el });
 			//console.log(arr);
 			var button = "<input class='new-item-button' id='editThreadButton'type='button' value='Edit' onclick='editThread(\""+arr+"\");'>";
@@ -311,7 +311,7 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	if (threadAccess !== "public"){
 		threadOptions = "<input id='replycommentbutton' class='submit-button' type='button' value='Reply' onclick='replyUI("+commentid+");'>";
 
-		if (uid === commentuid){
+		if uid === commentuid || threadAccess === "super"){
 			threadOptions += "<input class=\"submit-button\" type=\"button\" value=\"Edit\" onclick=\"editUI();\">";
 		}
 		if (threadAccess === "op" || threadAccess === "super" || uid === commentuid){
