@@ -279,13 +279,11 @@ function returnedComments(data)
 			}
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
-				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span></div>" +
+				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span class='commentCreated'> - <span>" + (value["datecreated"]).substring(0,10) + "</span></div>" +
 				"<div class=\"commentContent\"><div class=\"commentContentText descbox\">" +  text  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
 				"</div>" +
-
-				"<div class=\"commentDate\">" + (value["datecreated"]).substring(0,10) + "</div>" + 
 			"</div>";
 		});
 
