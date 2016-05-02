@@ -685,6 +685,7 @@ function processLogin() {
 			},
 			success:function(data) {
 				var result = JSON.parse(data);
+				console.log(result["debug"]);
 				if(result['login'] == "success") {
 					$("#userName").html(result['username']);
 					$("#loginbutton").removeClass("loggedout");
@@ -698,6 +699,8 @@ function processLogin() {
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
+					
+					
 
 					location.reload();
 				}else{
@@ -763,11 +766,27 @@ function hideLoginPopup()
 // setupLoginLogoutButton: Set button to login or logout functionality when navheader loads
 //----------------------------------------------------------------------------------
 
+function getCookie(cname) {
+     var name = cname + "=";
+     var ca = document.cookie.split(';');
+     for(var i = 0; i <ca.length; i++) {
+         var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+         if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+     }
+     return "";
+ }
+
 function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){processLogout();});
+
 	}
 	else{
 		console.log("Setting button to show login prompt");

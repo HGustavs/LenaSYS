@@ -270,7 +270,7 @@ $entries=array();
 $reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)) || $row['visibility'] == 2);
 
 if($reada || $userid == "guest"){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND vers=:coursevers ORDER BY pos");
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,UNIX_TIMESTAMP(ts) AS ts FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -296,7 +296,8 @@ if($reada || $userid == "guest"){
 				'gradesys' => $row['gradesystem'],
 				'code_id' => $row['code_id'],
 				'deadline'=> $row['deadline'],
-				'qrelease' => $row['qrelease']
+				'qrelease' => $row['qrelease'],
+				'ts' => $row['ts']
 			)
 		);
 	}

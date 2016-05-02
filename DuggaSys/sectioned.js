@@ -764,6 +764,9 @@ function returnedSection(data)
 						if(parseInt(item['visible']) === 0){
 							str+=" style='opacity: 0.5; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 27px;background-position: left center;padding-left: 20px;' ";
 						}
+						else if(item['ts'] >= getCookie("lastlogin")){
+							str+=" style='border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/Updatestar.png);background-repeat:no-repeat;background-size:35px 33px;background-position: left center;padding-left: 20px;' ";
+						}
 			
 						str+=">";
 						

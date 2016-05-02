@@ -27,7 +27,7 @@ if($opt=="LOGIN"){
 			// Successfully logged in, return user name
 			$res["login"] = "success";
 			$res["username"] = $username;
-
+			
 			// Log USERID for Dugga Access
 			logUserEvent($username,EventTypes::LoginSuccess,"");			
 
@@ -64,6 +64,7 @@ if($opt=="LOGIN"){
 		// Remove the cookies.
 		setcookie('username', '', 0, '/');
 		setcookie('password', '', 0, '/');
+		setcookie('merf', '', 0, '/');
 }
 	
 ?>
