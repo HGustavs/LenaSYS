@@ -153,7 +153,7 @@ function editThread(data)
 	var array = data.split(',');
 	//console.log(array);
 
-	
+
 	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;opacity:0.8;'>";
 
 	$(".threadTopic").html(topic);
@@ -227,8 +227,8 @@ function returnedThread(data)
 		$(".threadTopic").html(data["thread"]["topic"]);
 		$("#threadDescr").html(parseMarkdown(data["thread"]["description"]));
 		var str = "Created <span id='threadDate'>";
-		str += 	data["thread"]["datecreated"].substring(0, 10);
-	
+		str += 	data["thread"]["datecreated"].substring(0, 16);
+
 		str += "</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid'])+"</span>";
 		if(!(data["thread"]["datecreated"]===data["thread"]["lastedited"])){
 			str += "<br/>Edited <span id='threadEditedDate'>"+data["thread"]["lastedited"];
@@ -236,18 +236,16 @@ function returnedThread(data)
 		$("#threadDetails").html(str);
 
 		if(data['thread']['locked']==1){
-			var poo = "<p style='margin-left:20px;'>This thread has been locked and can no longer be commented on.</p>";
-			$(".threadMakeComment").html(poo);
+			var str = "<p style='margin-left:20px;'>This thread has been locked and can not be commented on.</p>";
+			$(".threadMakeComment").html(str);
 		}else{
 			if($('div.threadMakeComment').length){
-				var str = "<div class='threadMakeComment'>";
-				str+= "<div class='makeCommentHeader'>";
+				var str = "<div class='makeCommentHeader'>";
 				str += "Comment";
 				str+= "</div>";
 				str += "<div class='makeCommentInputWrapper'>";
 				str += "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment' onkeyup='checkComment()'></textarea>";
 				str += "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
-				str += "</div>";
 				str += "</div>";
 				$(".threadMakeComment").html(str);
 			}
@@ -273,7 +271,7 @@ function returnedComments(data)
 		accessDenied(data);
 	}else {
 
-		
+
 		// Adds the comment header with the amount of comments.
 		var commentLength = data["comments"].length;
 		var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
@@ -284,7 +282,7 @@ function returnedComments(data)
 		$.each(data["comments"], function(index, value){
 
 			var text= parseMarkdown(value['text']);
-			
+
 			if(!value['replyid']){
 				//console.log(value['replyid']);
 				text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>");
@@ -293,7 +291,7 @@ function returnedComments(data)
 			}
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
-				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span class='commentCreated'> - <span>" + (value["datecreated"]).substring(0,10) + "</span></div>" +
+				"<div class=\"commentDetails\"><span id=\"commentUser\">" + value["username"]  +   "</span class='commentCreated'> - <span>" + (value["datecreated"]).substring(0,16) + "</span></div>" +
 				"<div class=\"commentContent\"><div class=\"commentContentText descbox\">" +  text  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
@@ -342,15 +340,15 @@ function replyComment(array)
 	if (array["accessDenied"]){
 		accessDenied(array);
 	}else {
-		
+
 		$.each(array["comments"], function(index, value){
-			
+
 			var text=value["text"];
 			if(value["replyid"]){
 				text = text.replace(/\n/, "<br/>");
 				text=text.replace(/[^.]*(<br\ ?\/?>)/, "");
 			}
-			
+
 			$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+text+"</textarea>"+
   			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+value["commentid"]+")\">");
 		});
