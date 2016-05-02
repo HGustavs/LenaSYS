@@ -140,26 +140,6 @@
 			}
 		?>
 
-		<?php
-		if ($userid=="UNK") {
-			include '../Shared/lockbox.php';
-		}else{
-
-			$query = $pdo->prepare('SELECT *  FROM duggaTries WHERE FK_uid = :uid AND FK_cid = :cid AND FK_quiz = :quiz AND FK_vers = :vers AND grade = 1 AND dugga_lock = 1;');
-			$query->bindParam(":uid",$userid);
-			$query->bindParam(":quiz",$quizid);
-			$query->bindParam(":cid",$cid);
-			$query->bindParam(":vers",$vers);
-			$result = $query->execute();
-
-			if (($query->rowCount()) > 2) {
-				//echo "<h1 style='position:fixed;top:70%;left:40%;'>" . $query->rowCount()/2 . "</h1>";
-				include '../Shared/duggaTriedLock.php';
-			}
-		}
-		
-	?>
-
 	</div>
 
 	<!-- LoginBox (receiptbox) Start! -->
@@ -179,6 +159,25 @@
 	<!-- Login Box (receiptbox) End! -->
 
 	<!-- content END -->
+
+	<?php
+		if ($userid=="UNK") {
+			include '../Shared/lockbox.php';
+		}else{
+
+			$query = $pdo->prepare('SELECT *  FROM duggaTries WHERE FK_uid = :uid AND FK_cid = :cid AND FK_quiz = :quiz AND grade = 1 AND dugga_lock = 1;');
+			$query->bindParam(":uid",$userid);
+			$query->bindParam(":quiz",$quizid);
+			$query->bindParam(":cid",$cid);
+			$result = $query->execute();
+
+			if (($query->rowCount()) > 2) {
+				//echo "<h1 style='position:fixed;top:70%;left:40%;'>" . $query->rowCount()/2 . "</h1>";
+				include '../Shared/duggaTriedLock.php';
+			}
+		}
+		
+	?>
 
 	<?php
 		// Adding page logging 
