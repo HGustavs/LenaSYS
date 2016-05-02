@@ -482,6 +482,7 @@ function AJAXService(opt,apara,kind)
 			});
 			break;
 		case "CREATETHREAD":
+			console.log(para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",

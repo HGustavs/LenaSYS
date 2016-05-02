@@ -35,8 +35,10 @@ if ($threadId==="UNK"){
 
 $text = getOP('text');
 $courseId = getOP('courseId');
-$topicT = getOP('topic');
-$descriptionT = getOP('description');
+$topic = getOP('topic');
+$description = getOP('description');
+$accessList = explode(',', getOP('accessList'));
+$lockedStatus = getOP('lockedStatus');
 $commentid = getOP('commentid');
 
 $debug="NONE!";
@@ -98,11 +100,25 @@ function getThreadAccess($pdo, $threadId, $uid)
 if(strcmp($opt,"CREATETHREAD")===0){
 	// Access check
 	if (checklogin()){
-		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, datecreated, description) VALUES (:courseId, :uid, :topic, current_timestamp, :description)");
-		$query->bindParam(':courseId', $courseId);
+		if (!$accessList) {
+			$hidden = NULL;
+		}else {
+			$hidden = 1;
+		}
+		if ($lockedStatus==="open") {
+			$locked = NULL;
+		}else {
+			$locked = 1;
+		}
+
+		$query = $pdo->prepare("INSERT INTO thread (cid, uid, topic, datecreated, hidden, description, locked, lastcommentedon) VALUES (:cid, :uid, :topic, current_timestamp, :hidden, :description, :locked, current_timestamp)");
+		$query->bindParam(':cid', $cid);
 		$query->bindParam(':uid', $uid);
-		$query->bindParam(':topic', $topicT);
-		$query->bindParam(':description', $descriptionT);
+		$query->bindParam(':topic', $topic);
+		$query->bindParam(':hidden', $hidden);
+		$query->bindParam(':description', $description);
+		$query->bindParam(':locked', $locked);
+
 
 		if(!$query->execute()){
 			$error=$query->errorInfo();
@@ -112,6 +128,29 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$thread = array(
 				"threadid" => $id
 			);
+
+			// Give thread creator access
+			$query = $pdo->prepare("INSERT INTO threadaccess (threadid, uid) VALUES (:threadid, :uid)");
+			$query->bindParam(':threadid', $id);
+			$query->bindParam(':uid', $uid);
+
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
+			}
+
+			if ($hidden){
+				for ($i = 0; $i < count($accessList); $i++){
+					$query = $pdo->prepare("INSERT INTO threadaccess (threadid, uid) VALUES (:threadid, :uid)");
+					$query->bindParam(':threadid', $id);
+					$query->bindParam(':uid', $accessList[$i]);
+
+					if(!$query->execute()){
+						$error=$query->errorInfo();
+						exit($debug);
+					}
+				}
+			}
 		}
 	}else{
 		$accessDenied = "You must be logged in to create a thread.";

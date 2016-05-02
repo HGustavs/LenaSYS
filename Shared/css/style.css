@@ -1741,6 +1741,16 @@ padding: 10px;
   clear: both;
 }
 
+.threadUsersCheckbox {
+  float: left;
+  clear:both;
+}
+.threadCheckboxLabel {
+  margin-bottom: 5px; 
+  color: rgb(97, 72, 117);
+  float: left;
+}
+
 #submitThreadButton {
   clear:both;
   margin-right: 0;
