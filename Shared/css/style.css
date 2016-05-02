@@ -424,7 +424,6 @@ header td {
 	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	user-select: none;
 	cursor:default;
 	overflow: hidden;
 }
@@ -1090,9 +1089,6 @@ input.new-item-button:hover {
   clear: both;
 }
 
-.clearfix {
-  zoom: 1; /* ie 6/7 */
-}
 
 /* DuggaSys Header */
 /*******************/
