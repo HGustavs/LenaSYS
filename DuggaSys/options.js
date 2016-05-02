@@ -55,7 +55,7 @@ function setOption(label, value, cb) {
 			
 			var number = $("#theDiv").length + 1;
 
-			$("#theDiv").toggle("fast").append("<div id='toastBar"+number+"' class='toastBar'>Successfully set the "+ label +" option to "+ value2 +"<a style='float:right;' onclick='closeToast();'>X</a></div>");
+			$("#theDiv").toggle("fast").append("<div id='toastBar"+number+"' class='toastBar' style='display:none;'>Successfully set the "+ label +" option to "+ value2 +"<a style='float:right;' onclick='closeToast();'>X</a></div>");
 			$("#toastBar"+number).delay('3000').fadeOut('slow');
 			
 		}
