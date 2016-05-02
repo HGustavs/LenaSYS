@@ -1753,3 +1753,20 @@ padding: 10px;
 	display: inline-block;
 	background-color: #F2F2F2;
 }
+
+.threadConfirmButtons {
+	padding-top:5%;
+}
+
+.threadConfirmButtons input {
+	padding:10px;
+}
+
+.threadConfirmButtons input:nth-child(1) {
+	margin-left:20px;
+}
+
+.threadConfirmButtons input:nth-child(2) {
+	float:right;
+	margin-right:20px;
+}

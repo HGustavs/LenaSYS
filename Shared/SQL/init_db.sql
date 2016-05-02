@@ -491,7 +491,7 @@ create table thread(
     locked tinyint(1),
 	lastcommentedon timestamp null,
     primary key(threadid),
-    foreign key(cid) references course(cid),
+    foreign key(cid) references course(cid) ON DELETE CASCADE,
     foreign key(uid) references user(uid)
 )CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
@@ -507,7 +507,7 @@ create table threadcomment(
     primary key(commentid),
     foreign key(threadid) references thread(threadid) ON DELETE CASCADE,
     foreign key(uid) references user(uid),
-    foreign key(replyid) references threadcomment(commentid)
+    foreign key(replyid) references threadcomment(commentid) ON DELETE SET NULL
 )CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
 
