@@ -66,10 +66,24 @@ function getComments()
 
 function createThread()
 {
-	var courseId = $("#createThreadCourseList").val();
+	var cid = $("#createThreadCourseList").val();
 	var topic = $("#threadTopicInput").val();
 	var description = $("#createThreadDescr").val();
-	AJAXService("CREATETHREAD",{courseId:courseId,topic:topic,description:description},"CREATETHREAD");
+	var accessList = new Array();
+	if ($('input:radio[name=threadAccessRadio]:checked').val()==="public") {
+		accessList = false;
+	}else {
+		$.each($(".threadUsersCheckbox"), function() {
+			if ($(this).is(':checked')) {
+				accessList.push($(this).val());
+			}
+		});
+	}
+
+	var lockedStatus = $("input:radio[name=threadAllowCommentsRadio]:checked").val();
+
+	console.log(accessList);
+	AJAXService("CREATETHREAD",{cid:cid,topic:topic,description:description, accessList:accessList,lockedStatus:lockedStatus},"CREATETHREAD");
 }
 
 function makeComment(commentid)
@@ -281,7 +295,7 @@ function returnedComments(data)
 }
 
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
-	var threadOptions;
+	var threadOptions = "";
 	if (threadAccess !== "public"){
 		threadOptions = "<input id='replycommentbutton' class='submit-button' type='button' value='Reply' onclick='replyUI("+commentid+");'>";
 
@@ -298,7 +312,7 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 function createThreadSuccess(data)
 {
 	if (data["accessDenied"]){
-		accessDenied(array);
+		accessDenied(data);
 	}else {
 		var url = "thread.php?threadId=" + data['thread']['threadid'];
 		$(location).attr("href", url);
@@ -419,6 +433,8 @@ function returnedCourses(data) {
 		] + "'>" + this["coursecode"] + " - " + this["coursename"] + "</option>";
 	});
 	$("#createThreadCourseList").html(str);
+
+	updateClassList();
 }
 
 function returnedClasses(data) {
@@ -434,13 +450,13 @@ function returnedClasses(data) {
 }
 
 function returnedUsers(data) {
-	var str = "<option value='all'>All</option>";
+	var str = "<input id='threadCheckboxAll' class='threadUsersCheckbox' type='checkbox' value='all'><label class='threadCheckboxLabel' for='threadCheckboxAll'>All</label>";
 	$.each(data['users'], function() {
-		str += "<option value='" + this[
-			"uid"
-		] + "'>" + this["username"] + "</option>";
+		str += "<input id='threadCheckbox" + this['uid'] + "' class='threadUsersCheckbox' type='checkbox' value='" + this["uid"] +
+		"'>" +
+		"<label class='threadCheckboxLabel' for='threadCheckbox" + this["uid"] + "'>" + this["username"] + "</label>";
 	});
-	$("#createThreadUserList").html(str);
+	$("#createThreadUsersWrapper").html(str);
 }
 
 function error(xhr, status, error)
