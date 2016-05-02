@@ -1182,7 +1182,7 @@ $(function() {
 
 
 
-if(getOption("mouseMoveOption") == 1){
+if(getOptionValue("mouseMoveOption") == 1){
 	$(document).mousemove(function(e){
 	 	var data = {
 	 		log: 'mousemove',
@@ -1205,7 +1205,7 @@ if(getOption("mouseMoveOption") == 1){
 	});
 }
 
-function getOption(label){
+function getOptionValue(label){
 	$.ajax({
 		url: '../DuggaSys/optionservice.php',
 		type: 'POST',
