@@ -60,5 +60,5 @@ function setOption(label, value, cb) {
 }
 
 function closeToast(){
-	$("#theDiv").html("");
+	$("#theDiv").fadeOut("slow");
 }
