@@ -38,7 +38,7 @@ pdoConnect();
 ?>
 	<!-- content START -->
 	<div id="content">
-		<div id="theDiv"></div>
+		<div id="settingsToast"></div>
 		<p>Mouse movement logging</p>
 		<label data-label="mouseMoveLogging" class="switch<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>">
 			<i class="icon-ok"></i>
