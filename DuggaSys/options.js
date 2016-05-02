@@ -63,5 +63,5 @@ function setOption(label, value, cb) {
 }
 
 function closeToast(){
-	$("#"+this.parent().id).fadeOut("slow");
+	$("#"+this.parent.id).fadeOut("slow");
 }
