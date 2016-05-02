@@ -45,8 +45,6 @@ function loadAnalytics(q, cb) {
 			resetAnalyticsChart();
 			$('#analytic-info').empty();
 			cb(data);
-			// temporary JSON-output for debugging purposes
-			$("#analytic-info").append("<pre>" + JSON.stringify(data, null, 4) + "</pre>");
 		}
 	});
 }
@@ -138,6 +136,7 @@ function loadBrowserPercentage() {
 
 function loadServiceUsage() {
 	loadAnalytics("serviceUsage", function(data) {
+		$('#analytic-info').append("<p>TODO: line chart with interaction</p>");
 	});
 }
 
@@ -169,6 +168,7 @@ function loadServiceAvgDuration() {
 
 function loadServiceCrashes() {
 	loadAnalytics("serviceCrashes", function(data) {
+		$('#analytic-info').append("<p>TODO: Crash output</p>");
 	});
 }
 
