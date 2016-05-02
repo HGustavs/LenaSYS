@@ -90,6 +90,17 @@ function loadPasswordGuessing() {
 
 function loadOsPercentage() {
 	loadAnalytics("osPercentage", function(data) {
+		$('#analytic-info').append("<p>OS percentage for main page views.</p>");
+
+		var tableData = [["Operating system", "Percentage"]];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].operatingSystem,
+				data[i].percentage
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+
 		var chartData = [];
 		for (var i = 0; i < data.length; i++) {
 			chartData.push({
@@ -103,6 +114,17 @@ function loadOsPercentage() {
 
 function loadBrowserPercentage() {
 	loadAnalytics("browserPercentage", function(data) {
+		$('#analytic-info').append("<p>Browser percentage for main page views.</p>");
+
+		var tableData = [["Browser", "Percentage"]];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].browser,
+				data[i].percentage
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+
 		var chartData = [];
 		for (var i = 0; i < data.length; i++) {
 			chartData.push({
