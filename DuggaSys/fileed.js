@@ -20,6 +20,7 @@ Execution order:
 var sessionkind=0;
 var querystring=parseGet();
 var filez;
+var vers = querystring['coursevers'];
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
@@ -189,7 +190,7 @@ function returnedFile(data)
 			str4+="<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>";
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
-				if(parseInt(item['kind'])==4){
+				if(parseInt(item['kind'])==4 && item['vers']==vers){
 					str4+="<tr class='fumo'>";
 					str4+="<td>"+item['fileid']+"</td>";
 					str4+="<td>"+item['filename']+"</td>";

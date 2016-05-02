@@ -214,9 +214,9 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
-			if(xelink==iitem['filename']){
+			if(xelink==iitem['filename'] && (iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'])){
 				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-			}else{
+			}else if((iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'] || iitem['fileid'] == -1)){
 				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
 			}
 		}
@@ -280,9 +280,9 @@ function changedType()
 			$("#inputwrapper-tabs").css("display","block");
 			for(var ii=0;ii<retdata['links'].length;ii++){
 				var iitem=retdata['links'][ii];
-				if(xelink==iitem['filename']){
+				if(xelink==iitem['filename'] && (iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'])){
 					iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-				}else{
+				}else if((iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'] || iitem['fileid'] == -1)){
 					iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
 				}
 			}
