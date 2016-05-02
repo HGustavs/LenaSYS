@@ -698,7 +698,7 @@ function processLogin() {
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
-
+					
 					location.reload();
 				}else{
 					console.log("Failed to log in.");
@@ -768,6 +768,7 @@ function setupLoginLogoutButton(isLoggedIn){
 	if(isLoggedIn == "true"){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){processLogout();});
+
 	}
 	else{
 		console.log("Setting button to show login prompt");
