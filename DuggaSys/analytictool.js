@@ -56,6 +56,18 @@ function loadAnalytics(q, cb) {
 //------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
+		$('#analytic-info').append("<p>General statistics about the system.</p>");
+
+		var tableData = [["Stat", "Value"]];
+		for (var stat in data) {
+			if (data.hasOwnProperty(stat)) {
+				tableData.push([
+					stat,
+					data[stat]
+				]);
+			}
+		}
+		$('#analytic-info').append(renderTable(tableData));
 	});
 }
 
