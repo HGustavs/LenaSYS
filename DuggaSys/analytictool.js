@@ -253,7 +253,7 @@ function drawPieChart(data) {
 function renderTable(data) {
 	if (!$.isArray(data)) return;
 
-	var str = "<table>";
+	var str = '<table class="list">';
 	if (data.length > 0) {
 		// Render headings
 		str += "<thead><tr>";
