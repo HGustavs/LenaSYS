@@ -1770,3 +1770,12 @@ padding: 10px;
 #settingsToast{
 	height: 35px;
 }
+
+.setting{
+	float: left;
+	margin-right: 20px;
+}
+
+.setting label {
+	margin: 0 auto;
+}
