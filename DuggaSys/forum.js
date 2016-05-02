@@ -78,7 +78,7 @@ function makeComment(commentid)
 	$(document).ready(function() {
     var $myDiv = $('.repliedcomment');
 		if ( $myDiv.length){
-			commentcontent= "^ " + $(".repliedcomment").html() + " ^" ;
+			commentcontent= $(".repliedcomment").html();
 		}
 	});
 	var text = commentcontent + $(".commentInput").val() + "\r\n" ;
@@ -269,7 +269,7 @@ function returnedComments(data)
 				//console.log(value['replyid']);
 				text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>");
 			}else{
-				text = "Citat: (hopefully)<br/><blockquote class=\"descbox\">" + text.replace(/\n/g, "</blockquote><p class=\" \" style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\">") + "</p>";
+				text = "Citat: (hopefully)<br/>" + text + "<p style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\"></p>";
 			}
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
@@ -328,9 +328,17 @@ function replyComment(array)
 		$.each(array["comments"], function(index, value){
 			
 			var text=value["text"];
+			console.log(text);
+			
 			if(value["replyid"]){
+				text = text.replace("^ ", "<p>din mamma</p>");
+				text = text.replace(" ^", "<p>din mamma</p>");
+				console.log(text);
 				text = text.replace(/\n/, "<br/>");
-				text=text.replace(/[^.]*(<br\ ?\/?>)/, "");
+				text=text.replace(/[^.]*(<br\ ?\/?>)/, "^ ");
+				//console.log(text);
+				text = text.replace(/\r\n/, " ^\r\n");
+				//console.log(text);
 			}
 			
 			$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+text+"</textarea>"+
