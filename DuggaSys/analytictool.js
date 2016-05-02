@@ -99,6 +99,17 @@ function loadServiceAvgDuration() {
 	loadAnalytics("serviceAvgDuration", function(data) {
 		$('#analytic-info').append("<p>The average duration of service call completion in milliseconds.</p>");
 
+		var tableData = [
+			["Service", "Average duration (ms)"]
+		];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].service,
+				data[i].avgDuration
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+
 		var chartData = [];
 		for (var i = 0; i < data.length; i++) {
 			chartData.push({
