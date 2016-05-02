@@ -383,7 +383,7 @@ if($ha){
 	}
 
 	// Reading entries in file database
-	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
+	$query = $pdo->prepare("SELECT fileid,filename,kind,vers FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -395,7 +395,7 @@ if($ha){
 			array_push($links,array('fileid' => -1,'filename' => "---===######===---"));
 		}
 		$oldkind=$row['kind'];
-		array_push($links,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+		array_push($links,array('fileid' => $row['fileid'],'filename' => $row['filename'], 'vers' => $row['vers']));
 	}
 	
 	$versions=array();
