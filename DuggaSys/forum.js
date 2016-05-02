@@ -46,6 +46,11 @@ function lockThread()
 
 function deleteThread()
 {
+	$('#threadDeleteConfirm').css('display','inline-block');
+}
+
+function confirmDeleteThread()
+{
 	AJAXService("DELETETHREAD",{threadId:querystring["threadId"]},"DELETETHREAD");
 }
 
@@ -144,7 +149,8 @@ function editThread(data)
 	$("#threadDescr").html(description);
 	document.getElementById("editDescription").value = array[6];
 
-	var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:auto;float:left;margin-top:30px;'>";
+	var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:120px;float:left;margin-top:30px;'>";
+	button += "<input class='new-item-button' type='button' value='Cancel' onclick='getThread()' style='float:left;margin-top:30px;margin-left:10px;'>";
 	$("#threadDescr").append(button);
 }
 

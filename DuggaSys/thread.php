@@ -59,6 +59,20 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<!-- content START -->
 	<div id="content">
+		<!-- Invisible box for confirming a thread's deletion -->
+		<div id='threadDeleteConfirm' class="loginBox" style="display:none">
+			<div id='login'>
+				<div class='loginBoxheader'>
+					<h3>Confirm thread deletion</h3>
+					<div onclick="closeWindows()">x</div>
+				</div>
+				<div class="threadConfirmButtons">
+					<input type='button' class='yes-delete-thread' value="Yes, delete thread" onclick="confirmDeleteThread()">
+					<input type='button' class='no-delete-thread' value="No, keep thread" onclick="closeWindows()">
+				</div>
+			</div>
+		</div>
+		
 		<!-- Section List -->
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">

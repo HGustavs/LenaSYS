@@ -666,7 +666,8 @@ function AJAXService(opt,apara,kind)
 				success: function(data) {
 					getComments(data);
 					sendConfirmation("forumservice.php");
-				}
+				},
+				error:error
 			});
 			break;
 	}
