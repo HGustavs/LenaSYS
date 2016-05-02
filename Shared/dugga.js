@@ -1181,8 +1181,9 @@ $(function() {
 //---------------------------------------------------------------------------------------------------------------
 
 
-// $(document).mousemove(function(e){
-	if(getOption("mouseMoveOption") == 1){
+
+if(getOption("mouseMoveOption") == 1){
+	$(document).mousemove(function(e){
 	 	var data = {
 	 		log: 'mousemove',
 	 		data: {
@@ -1201,8 +1202,8 @@ $(function() {
 	 		data: JSON.stringify(data),
 	 		contentType: "application/json"
 	 	});
-	}
-});
+	});
+}
 
 function getOption(label){
 	$.ajax({
