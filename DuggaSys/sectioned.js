@@ -214,9 +214,9 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
-			if(xelink==iitem['filename']){
+			if(xelink==iitem['filename'] && (iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'])){
 				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-			}else{
+			}else if((iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'] || iitem['fileid'] == -1)){
 				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
 			}
 		}
@@ -280,9 +280,9 @@ function changedType()
 			$("#inputwrapper-tabs").css("display","block");
 			for(var ii=0;ii<retdata['links'].length;ii++){
 				var iitem=retdata['links'][ii];
-				if(xelink==iitem['filename']){
+				if(xelink==iitem['filename'] && (iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'])){
 					iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-				}else{
+				}else if((iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'] || iitem['fileid'] == -1)){
 					iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
 				}
 			}
@@ -588,7 +588,7 @@ function returnedSection(data)
 						str+=" class='lo' ";
 					}
 					str+=" >";
-					
+
 					if(parseInt(item['kind']) === 3|| parseInt(item['kind']) === 4){
 
 								// Styling for quiz row
@@ -607,17 +607,13 @@ function returnedSection(data)
 										status="";
 										var st = lawtem['submitted'];
 										if (st !== null) {
-											submitted = new Date(st);
-											//Makes it into a UTC string because otherwise it adds the users timezone to make it incorrect from what the databse has stored.
-											var displaySubmitted = submitted.toUTCString();									
+											submitted = new Date(st*1000);									
 										} else {
 											submitted = null;
 										}
 										var mt = lawtem['marked'];
 										if (mt !== null) {
-											marked = new Date(mt);
-											//Makes it into a UTC string because otherwise it adds the users timezone to make it incorrect from what the databse has stored.
-											var displayMarked = marked.toUTCString();								
+											marked = new Date(mt*1000);							
 										} else {
 											marked = null;
 										}
@@ -668,25 +664,25 @@ function returnedSection(data)
 										str+="<div class='WhiteLight'></div>";
 								}else if(status === "pending"){
 										//	Nothing marked yet (Yellow)
-										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+displaySubmitted+"' ></div>";
+										str+="<div class='YellowLight' title='Status: Handed in\nDate: "+submitted+"' ></div>";
 								}else if(grady==1){
 										//	Marked Fail! (Red)								
-										str+="<div class='RedLight' title='Status: Failed\nDate: "+displayMarked+"' ></div>";
+										str+="<div class='RedLight' title='Status: Failed\nDate: "+marked+"' ></div>";
 								}else if(grady==2){
 										//	Marked G (Green)		
-										str+="<div class='GreenLight'  title='Grade: G\nDate: "+displayMarked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: G\nDate: "+marked+"' ></div>";
 								}else if(grady==3){
 										//	Marked VG (Green)		
-										str+="<div class='GreenLight'  title='Grade: VG\nDate: "+displayMarked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: VG\nDate: "+marked+"' ></div>";
 								}else if(grady==4){
 										//	Marked 3 (Green)		
-										str+="<div class='GreenLight'  title='Grade: 3\nDate: "+displayMarked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: 3\nDate: "+marked+"' ></div>";
 								}else if(grady==5){
 										//	Marked 4 (Green)		
-										str+="<div class='GreenLight'  title='Grade: 4\nDate: "+displayMarked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: 4\nDate: "+marked+"' ></div>";
 								}else if(grady==6){
 										//	Marked 5 (Green)		
-										str+="<div class='GreenLight'  title='Grade: 5\nDate: "+displayMarked+"' ></div>";
+										str+="<div class='GreenLight'  title='Grade: 5\nDate: "+marked+"' ></div>";
 								}else if(grady>6){
 										//this seems to be needed for the page to load	
 										str+="<div class='GreenLight'  title='Status: Unknown grade - Add support for another grade system' ></div>";
@@ -763,6 +759,9 @@ function returnedSection(data)
 
 						if(parseInt(item['visible']) === 0){
 							str+=" style='opacity: 0.5; border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/visibility_hidden.svg);background-repeat:no-repeat;background-size:35px 27px;background-position: left center;padding-left: 20px;' ";
+						}
+						else if(item['ts'] >= getCookie("lastlogin")){
+							str+=" style='border-radius:0px; margin-left:4px; background-image:url(../Shared/icons/Updatestar.png);background-repeat:no-repeat;background-size:35px 33px;background-position: left center;padding-left: 20px;' ";
 						}
 			
 						str+=">";

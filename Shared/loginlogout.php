@@ -27,7 +27,7 @@ if($opt=="LOGIN"){
 			// Successfully logged in, return user name
 			$res["login"] = "success";
 			$res["username"] = $username;
-
+			
 			// Log USERID for Dugga Access
 			logUserEvent($username,EventTypes::LoginSuccess,"");			
 
