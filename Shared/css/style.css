@@ -1771,7 +1771,6 @@ padding: 10px;
 	height: 35px;
 }
 
-
 .setting {
   float: left;
   width: 23%;
@@ -1787,9 +1786,4 @@ padding: 10px;
 
 .allSettings{
 	border: 1px solid;
-}
-
-
-.setting label {
-	margin: 0 auto;
 }
