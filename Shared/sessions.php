@@ -143,7 +143,7 @@ function login($username, $password, $savelogin)
 			
 //		update last login.
 		$query = $pdo->prepare("UPDATE user SET lastvisit=now() WHERE uid=:uid");
-		$query->bindParam(':uid', $row['uid']);
+		$query->bindParam(':uid', $_SESSION['uid']);
 		$query->execute();
 		return true;
 
