@@ -79,7 +79,7 @@ if (file_exists("../.git/refs/heads/master")) {
           if ($threadAccess==="super" || $threadAccess==="op") {
             echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
           }
-          if ($threadAccess==="op") {
+          if ($threadAccess==="op" || $threadAccess==="super") {
             echo "<div class='opEditThread' style='float:right;'></div>";
           }
           ?>
@@ -170,6 +170,11 @@ if (file_exists("../.git/refs/heads/master")) {
 	<!-- content END -->
 	<?php
 	include '../Shared/loginbox.php';
+	?>
+
+</body>
+</html>
+hp';
 	?>
 
 </body>
