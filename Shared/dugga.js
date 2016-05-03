@@ -1220,4 +1220,3 @@ function getOptionValue(label, cb){
 		success: cb
 	});
 }
-

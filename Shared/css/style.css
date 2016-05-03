@@ -1771,19 +1771,24 @@ padding: 10px;
 	height: 35px;
 }
 
-.allSettings{
-	border: 1px solid;
-	width: 505px;
-	height: auto;
+
+.setting {
+  float: left;
+  width: 30%;
+  background: #ccc;
+  margin: 10px 1%;
+  padding: 1%;
 }
 
-.setting{
-	float: left;
-	margin: 10px;
-	padding: 10px;
-	border: 1px solid;
-	width: 210px;
+@media all and (max-width: 900px) {
+.setting {
+    width: 48%
 }
+
+.allSettings{
+	border: 1px solid;
+}
+
 
 .setting label {
 	margin: 0 auto;
