@@ -306,6 +306,10 @@ else if(strcmp($opt,"GETTHREAD")===0){
 			exit($debug);
 		}else{
 			$thread = $query->fetch(PDO::FETCH_ASSOC);
+
+			if (!$thread){
+				$accessDenied = "Error, cannot find thread.";
+			}
 		}
 	}else{
 		$accessDenied = "You do not have access to the thread.";

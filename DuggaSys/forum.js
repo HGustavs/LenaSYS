@@ -202,11 +202,9 @@ function accessDenied(data)
 
 function returnedThread(data)
 {
-	console.log(data);
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
-
 		if($('div.threadDeleteAndEdit').length){
 			var buttons = "<input class='new-item-button' id='deleteThreadButton' type='button' value='Delete' onclick='deleteThread()'>";
 			if(data['thread']['locked']==1){
