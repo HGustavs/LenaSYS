@@ -1672,68 +1672,11 @@ input.commentSubmitButton {
   width: 100%;
 }
 
-#createThreadDescrOptions {
-  margin-top: 10px;
-  width: 99.8%;
-  height: 30px;
-  background: #f2f8fa;
-  border: 1px solid #A9A9A9;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  padding-top: 5px;
-  border-bottom: none;
 
-}
 
-#threadWriteButton
-{
 
-   margin-left: 10px;
 
-}
 
-.createThreadButton {
-  float: left;
-  margin: 0 10px 0 0;
-  width: 70px;
-}
-.createThreadButton:hover {
-  cursor: pointer;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.createThreadButton:focus {
-  outline: none;
-}
-
-.threadActiveButton {
-  background-color: #7B5A96;
-
-}
-.threadActiveButton:hover {
-  border-radius: 0;
-}
-
-#createThreadDescrWrapper {
-  box-sizing: border-box;
-  clear: both;
-  float: left;
-  width: 100%;
-}
-
-#createThreadDescr {
-  padding: 10px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.8em;
-  box-sizing: border-box;
-  width: 100%;
-  resize: vertical;
-  height: 100px;
-}
-
-#previewText {
-  display: none;
-}
 
 #createThreadOptions {
   float: left;
@@ -1762,16 +1705,6 @@ input.commentSubmitButton {
   clear: both;
 }
 
-.threadUsersCheckbox {
-  float: left;
-  clear:both;
-}
-.threadCheckboxLabel {
-  margin-bottom: 5px;
-  color: rgb(97, 72, 117);
-  float: left;
-}
-
 #submitThreadButton {
   clear:both;
   margin-right: 0;
@@ -1783,6 +1716,8 @@ input.commentSubmitButton {
 	display: inline-block;
 	background-color: #F2F2F2;
 }
+
+
 
 .threadConfirmButtons {
 	padding-top:5%;
@@ -1799,4 +1734,200 @@ input.commentSubmitButton {
 .threadConfirmButtons input:nth-child(2) {
 	float:right;
 	margin-right:20px;
+}
+
+
+
+.threadUsersCheckbox {
+  float: left;
+  clear:both;
+}
+.threadCheckboxLabel {
+  margin-bottom: 5px;
+  color: rgb(97, 72, 117);
+  float: left;
+}
+
+#submitThreadButton {
+  clear:both;
+  margin-right: 0;
+  margin-bottom: 20px;
+
+
+
+ /* --------------================################================-------------- *
+  *                                   FORUM EDITOR                               *
+  * --------------================################================-------------- */
+
+#editorDescrOptions {
+  margin-top: 10px;
+  width: 99.8%;
+  height: 30px;
+  background: #f2f8fa;
+  border: 1px solid #A9A9A9;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding-top: 5px;
+  border-bottom: none;
+
+}
+
+
+.editorButton {
+  float: left;
+  margin: 0 10px 0 0;
+  width: 70px;
+}
+.editorButton:hover {
+  cursor: pointer;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.editorButton:focus {
+  outline: none;
+}
+
+.editorActiveButton {
+  background-color: #7B5A96;
+
+}
+.editorActiveButton:hover {
+  border-radius: 0;
+}
+
+#editorDescrWrapper {
+  box-sizing: border-box;
+  clear: both;
+  float: left;
+  width: 100%;
+  min-height: 110px;
+}
+
+#editorDescr {
+  padding: 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+  box-sizing: border-box;
+  width: 100%;
+  resize: vertical;
+  height: 100px;
+}
+
+
+
+#editorWriteButton
+{
+
+   margin-left: 10px;
+
+}
+
+
+#editorPreviewText
+{
+
+  display: none;
+  padding: 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+  background-color: #F6F4F7;
+  border: 1px solid rgb(169, 169, 169);
+
+
+}
+
+.editorMarkdownIcon {
+    display:inline;
+    float:left;
+    position:relative;
+    margin:0;
+    padding:7px 5px 5px 0px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
+/* Dropdown Menus */
+
+
+.editorDropdownLink { 
+    color:#044264;
+    font-size:11px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+ul#editorBarMenu {
+    margin: 0; padding: 0;
+    width: 100%;
+    
+    font-size: 1.1em;
+}
+
+
+
+/* sub menu class */
+ul#editorBarMenu li .editorSubMenu {
+    -moz-border-radius-bottomleft:5px;
+    -moz-border-radius-bottomright:5px;
+    background:none repeat scroll 0 0 #ECF3F9;
+    border-color:-moz-use-text-color #C3D3E1 #C3D3E1;
+    border:1px solid #C3D3E1;
+    display:none;
+    font-size:11px;
+    color: black;
+    left:0;
+    margin:0;
+    padding:0;
+    position:absolute;
+    top: 30px;
+    left: -40px;
+    width: 150px;
+    z-index:999;
+    text-align: center;
+ 
+}
+
+
+.editorSubMenu li
+{
+
+cursor: pointer;
+text-decoration: none;
+list-style: none;
+
+}
+.editorSubMenu li:hover
+{
+
+text-decoration: underline;
+
+}
+
+.editorSubMenu h1,h2,h3
+{
+
+color: black;
+
+}
+
+ul#editorBarMenu li .single { 
+    width:150px !important;
+}
+
+
+
+ul#editorBarMenu li .editorSubMenu ul {
+    float:left;
+    width:160px;
+    margin:7px 0;
+}
+
+ul#editorBarMenu li .editorSubMenu li {
+    width:135px;
+    margin:0; 
+    padding:5px 10px 0;
 }

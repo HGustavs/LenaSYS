@@ -115,17 +115,15 @@ if (file_exists("../.git/refs/heads/master")) {
       </div>
       <div id="createThreadBody">
         <div id="createThreadFormWrapper">
-          <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
-          <div id="createThreadDescrOptions">
-            <button id="threadWriteButton" class="submit-button createThreadButton threadActiveButton" type="button" name="writeDescr" onclick="writeText()">Write</button>
-            <button id="threadPreviewButton" class="submit-button createThreadButton" type="button" name="previewDescr" onclick="previewText()">Preview</button>
-          </div>
-          <div id="createThreadDescrWrapper">
-            <textarea id="createThreadDescr" name="threadDescr" placeholder="Description"></textarea>
-            <div id="previewText">
+        <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
 
-            </div>
-          </div>
+
+
+        <?php include_once "forumEditor.php"; ?>
+
+
+
+
           <div id="createThreadOptions">
             <div class="createThreadOptionLabel">Course:</div>
             <select class="createThreadOption" id="createThreadCourseList" name="courseList" onchange="updateClassList()"></select>

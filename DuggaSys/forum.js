@@ -73,7 +73,7 @@ function createThread()
 {
 	var cid = $("#createThreadCourseList").val();
 	var topic = $("#threadTopicInput").val();
-	var description = $("#createThreadDescr").val();
+	var description = $("#editorDescr").val();
 	var accessList = new Array();
 	if ($('input:radio[name=threadAccessRadio]:checked').val()==="public") {
 		accessList = false;
@@ -439,24 +439,7 @@ function updateUsersList()
 	getUsers(programclass);
 }
 
-function writeText()
-{
-	$("#threadPreviewButton").removeClass("threadActiveButton");
-	$("#threadWriteButton").addClass("threadActiveButton");
-	$("#previewText").hide();
-	$("#createThreadDescr").show();
-}
 
-function previewText()
-{
-	$("#threadWriteButton").removeClass("threadActiveButton");
-	$("#threadPreviewButton").addClass("threadActiveButton");
-	$("#createThreadDescr").hide();
-
-	// Parse preview text...
-
-	$("#previewText").show();
-}
 
 function returnedCourses(data) {
 	var str;
@@ -498,4 +481,57 @@ function error(xhr, status, error)
 	console.log(error);
 	console.log(status);
 	console.log(xhr);
+}
+
+
+
+
+
+
+// Forum Editor Functions
+
+
+$( document ).ready(function() {
+
+    $(".editorDropdown").hover(function(e) {
+    	e.stopPropagation();
+        $(this).children("div.editorSubMenu").slideDown(200);
+    }, function(e) {
+    	e.stopPropagation();
+        $(this).children("div.editorSubMenu").slideUp(200).clearQueue();
+    });
+
+
+    $( document ).tooltip();
+    
+});
+
+function writeText()
+{
+	$("#editorPreviewButton").removeClass("editorActiveButton");
+	$("#editorWriteButton").addClass("editorActiveButton");
+	$("#editorPreviewText").hide();
+	$("#editorDescr").show();
+}
+
+function previewText()
+{
+	$("#editorWriteButton").removeClass("editorActiveButton");
+	$("#editorPreviewButton").addClass("editorActiveButton");
+
+
+	// Parses text to preview
+	var parseText = parseMarkdown($("#editorDescr").val());
+
+	if(!parseText)
+	{
+		$("#editorPreviewText").html("Nothing to preview!");
+	}
+	else
+	{
+		$("#editorPreviewText").html(parseText);
+	}
+
+	$("#editorDescr").hide();
+	$("#editorPreviewText").show();
 }
