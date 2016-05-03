@@ -74,16 +74,17 @@ if (file_exists("../.git/refs/heads/master")) {
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">
 				<div class="threadTopic"></div>
+				<div class="threadLockedIcon" style="float:left;"></div>
 				<div id="threadOptions">
-          <?php
-          if ($threadAccess==="super" || $threadAccess==="op") {
-            echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
-          }
-          if ($threadAccess==="op" || $threadAccess==="super") {
-            echo "<div class='opEditThread' style='float:right;'></div>";
-          }
-          ?>
-        </div>
+				  <?php
+				  if ($threadAccess==="super" || $threadAccess==="op") {
+					echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
+				  }
+				  if ($threadAccess==="op" || $threadAccess==="super") {
+					echo "<div class='opEditThread' style='float:right;'></div>";
+				  }
+				  ?>
+				</div>
 			</div>
 			<div id="threadDescr"></div>
 			<div id="threadDetails">
