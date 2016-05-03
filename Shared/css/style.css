@@ -1456,6 +1456,7 @@ input.new-item-button:hover {
   background-color: #614875;
   width: 100%;
 }
+
 .threadTopic {
   width: auto;
   float: left;
@@ -1475,6 +1476,7 @@ input.new-item-button:hover {
   clear: both;
   color: #000;
   font-size: 16px;
+	width: 75%;
 }
 
 #threadDetails {
@@ -1530,6 +1532,7 @@ input.commentSubmitButton {
 	background-color: #eae8eb;
 	border-bottom: 2px solid #927b9e;
 }
+
 #threadCommentsHeader {
   background-color: #927b9e;
   color: #fff;
@@ -1544,9 +1547,17 @@ input.commentSubmitButton {
 	padding: 10px 0;
   clear: both;
   margin: 0 25px;
+	margin: auto;
   overflow: hidden;
   border-bottom: 1px solid #927b9e;
 	margin-bottom: -1px;
+	width: 75%;
+}
+
+@media only screen and (max-width: 1200px) {
+	#threadComment {
+		width: 100%;
+	}
 }
 
 .commentDetails {
