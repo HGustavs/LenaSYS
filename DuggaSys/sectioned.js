@@ -216,7 +216,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 			var iitem=retdata['links'][ii];
 			if(xelink==iitem['filename'] && (iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'])){
 				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-			}else if((iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'] || iitem['fileid'] == -1)){
+			}else if(iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'] || iitem['fileid'] == -1){
 				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
 			}
 		}
@@ -282,7 +282,7 @@ function changedType()
 				var iitem=retdata['links'][ii];
 				if(xelink==iitem['filename'] && (iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'])){
 					iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-				}else if((iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'] || iitem['fileid'] == -1)){
+				}else if(iitem['vers'] == 0 || iitem['vers'] == querystring['coursevers'] || iitem['fileid'] == -1){
 					iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
 				}
 			}

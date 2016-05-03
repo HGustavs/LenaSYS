@@ -383,7 +383,7 @@ if($ha){
 	}
 
 	// Reading entries in file database
-	$query = $pdo->prepare("SELECT fileid,filename,kind,vers FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
+	$query = $pdo->prepare("SELECT fileid,filename,kind,vers FROM fileLink WHERE cid=:cid AND kind>0 ORDER BY kind,filename");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
