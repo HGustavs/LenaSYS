@@ -236,7 +236,7 @@ function returnedThread(data)
 		if(data['thread']['locked']==1){
 			//var str = "<p style='margin-left:20px;'>This thread has been locked and can not be commented on.</p>";
 			//$(".threadMakeComment").html(str);
-			var str = "<span><i class='fa fa-lock' aria-hidden='true'></i></span>";
+			var str = "<span style='padding-right:30px;'><i class='fa fa-lock fa-lg fa-spin' style='color:#ff4d4d' aria-hidden='true'></i></span>";
 			$(".threadLockedIcon").html(str);
 		}else{
 			if($('div.threadMakeComment').length){
@@ -375,6 +375,8 @@ function lockThreadSuccess(data)
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else{
+		var str = "<span style='padding-right:30px;'><i class='fa fa-lock fa-lg fa-spin' style='color:#ff4d4d' aria-hidden='true'></i></span>";
+		$(".threadLockedIcon").html(str);
 		getThread();
 	}
 }
@@ -382,6 +384,12 @@ function lockThreadSuccess(data)
 function unlockThread()
 {
 	AJAXService("UNLOCKTHREAD",{threadId:querystring["threadId"]},"UNLOCKTHREAD");
+}
+
+function unlockThreadSuccess()
+{
+	$('.threadLockedIcon').html('');
+	getThread();
 }
 
 function editThreadPoo()

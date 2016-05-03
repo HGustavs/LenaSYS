@@ -629,7 +629,7 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					getThread(data);
+					unlockThreadSuccess(data);
 					sendConfirmation("forumservice.php");
 				}
 			});

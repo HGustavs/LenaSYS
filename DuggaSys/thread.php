@@ -73,8 +73,8 @@ if (file_exists("../.git/refs/heads/master")) {
 		<!-- Section List -->
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">
-				<div class="threadTopic"></div>
 				<div class="threadLockedIcon" style="float:left;"></div>
+				<div class="threadTopic"></div>
 				<div id="threadOptions">
 				  <?php
 				  if ($threadAccess==="super" || $threadAccess==="op") {
