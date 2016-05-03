@@ -68,7 +68,7 @@ function createThread()
 {
 	var courseId = $("#createThreadCourseList").val();
 	var topic = $("#threadTopicInput").val();
-	var description = $("#createThreadDescr").val();
+	var description = $("#editorDescr").val();
 	AJAXService("CREATETHREAD",{courseId:courseId,topic:topic,description:description},"CREATETHREAD");
 }
 
@@ -307,7 +307,7 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 function createThreadSuccess(data)
 {
 	if (data["accessDenied"]){
-		accessDenied(array);
+		accessDenied(data);
 	}else {
 		var url = "thread.php?threadId=" + data['thread']['threadid'];
 		$(location).attr("href", url);
@@ -474,20 +474,20 @@ $( document ).ready(function() {
 
 function writeText()
 {
-	$("#threadPreviewButton").removeClass("threadActiveButton");
-	$("#threadWriteButton").addClass("threadActiveButton");
+	$("#editorPreviewButton").removeClass("editorActiveButton");
+	$("#editorWriteButton").addClass("editorActiveButton");
 	$("#editorPreviewText").hide();
-	$("#createThreadDescr").show();
+	$("#editorDescr").show();
 }
 
 function previewText()
 {
-	$("#threadWriteButton").removeClass("threadActiveButton");
-	$("#threadPreviewButton").addClass("threadActiveButton");
+	$("#editorWriteButton").removeClass("editorActiveButton");
+	$("#editorPreviewButton").addClass("editorActiveButton");
 
 
 	// Parses text to preview
-	var parseText = parseMarkdown($("#createThreadDescr").val());
+	var parseText = parseMarkdown($("#editorDescr").val());
 
 	if(!parseText)
 	{
@@ -498,6 +498,6 @@ function previewText()
 		$("#editorPreviewText").html(parseText);
 	}
 
-	$("#createThreadDescr").hide();
+	$("#editorDescr").hide();
 	$("#editorPreviewText").show();
 }

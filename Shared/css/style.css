@@ -1652,65 +1652,9 @@ padding: 10px;
   width: 100%;
 }
 
-#createThreadDescrOptions {
-  margin-top: 10px;
-  width: 99.8%;
-  height: 30px;
-  background: #f2f8fa;
-  border: 1px solid #A9A9A9;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  padding-top: 5px;
-  border-bottom: none;
 
-}
 
-#threadWriteButton
-{
 
-   margin-left: 10px;
-
-}
-
-.createThreadButton {
-  float: left;
-  margin: 0 10px 0 0;
-  width: 70px;
-}
-.createThreadButton:hover {
-  cursor: pointer;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.createThreadButton:focus {
-  outline: none;
-}
-
-.threadActiveButton {
-  background-color: #7B5A96;
-  
-}
-.threadActiveButton:hover {
-  border-radius: 0;
-}
-
-#createThreadDescrWrapper {
-  box-sizing: border-box;
-  clear: both;
-  float: left;
-  width: 100%;
-  min-height: 110px;
-}
-
-#createThreadDescr {
-  padding: 10px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.8em;
-  box-sizing: border-box;
-  width: 100%;
-  resize: vertical;
-  height: 100px;
-}
 
 
 
@@ -1759,6 +1703,69 @@ padding: 10px;
  /* --------------================################================-------------- *
   *                                   FORUM EDITOR                               *
   * --------------================################================-------------- */
+
+#editorDescrOptions {
+  margin-top: 10px;
+  width: 99.8%;
+  height: 30px;
+  background: #f2f8fa;
+  border: 1px solid #A9A9A9;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding-top: 5px;
+  border-bottom: none;
+
+}
+
+
+.editorButton {
+  float: left;
+  margin: 0 10px 0 0;
+  width: 70px;
+}
+.editorButton:hover {
+  cursor: pointer;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.editorButton:focus {
+  outline: none;
+}
+
+.editorActiveButton {
+  background-color: #7B5A96;
+  
+}
+.editorActiveButton:hover {
+  border-radius: 0;
+}
+
+#editorDescrWrapper {
+  box-sizing: border-box;
+  clear: both;
+  float: left;
+  width: 100%;
+  min-height: 110px;
+}
+
+#editorDescr {
+  padding: 10px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+  box-sizing: border-box;
+  width: 100%;
+  resize: vertical;
+  height: 100px;
+}
+
+
+
+#editorWriteButton
+{
+
+   margin-left: 10px;
+
+}
 
 
 #editorPreviewText
