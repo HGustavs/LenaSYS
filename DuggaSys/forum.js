@@ -307,13 +307,13 @@ function returnedComments(data)
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions = "";
 	if (threadAccess !== "public"){
-		threadOptions = "<a href='javascript:replyUI("+commentid+")' class='commentAction replyCommentButton'>Reply</a>";
+		threadOptions = "<a href='#' onclick='replyUI("+commentid+");return false;' class='commentAction replyCommentButton'>Reply</a>";
 
 		if (uid === commentuid || threadAccess === "super"){
-			threadOptions += "<a href='javascript:editUI()' class='commentAction'>Edit</a>";
+			threadOptions += "<a href='#' onclick='editUI();return false;' class='commentAction'>Edit</a>";
 		}
 		if (threadAccess === "op" || threadAccess === "super" || uid === commentuid){
-			threadOptions += "<a href='javascript:deleteComment("+commentid+")' class='commentAction'>Delete</a>";
+			threadOptions += "<a href='#' onclick='deleteComment("+commentid+");return false;' class='commentAction'>Delete</a>";
 		}
 	}
 	return threadOptions;
