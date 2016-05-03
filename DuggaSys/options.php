@@ -64,22 +64,6 @@ pdoConnect();
 						<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
 					</label>
 				</div>
-				<div class="setting">
-					<p>Fourth round trip logging</p>
-					<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
-						<i class="icon-ok"></i>
-						<i class="icon-remove"></i>
-						<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
-					</label>
-				</div>
-				<div class="setting">
-					<p>Fourth round trip logging</p>
-					<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
-						<i class="icon-ok"></i>
-						<i class="icon-remove"></i>
-						<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
-					</label>
-				</div>
 			</div>
 	</div>
 	<!-- content END -->
