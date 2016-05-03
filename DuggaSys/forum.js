@@ -234,8 +234,10 @@ function returnedThread(data)
 		$("#threadDetails").html(str);
 
 		if(data['thread']['locked']==1){
-			var str = "<p style='margin-left:20px;'>This thread has been locked and can not be commented on.</p>";
-			$(".threadMakeComment").html(str);
+			//var str = "<p style='margin-left:20px;'>This thread has been locked and can not be commented on.</p>";
+			//$(".threadMakeComment").html(str);
+			var str = "<span><i class='fa fa-lock' aria-hidden='true'></i></span>";
+			$(".threadLockedIcon").html(str);
 		}else{
 			if($('div.threadMakeComment').length){
 				var str = "<div class='makeCommentHeader'>";
