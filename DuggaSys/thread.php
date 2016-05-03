@@ -39,9 +39,6 @@ if (file_exists("../.git/refs/heads/master")) {
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
 
-
-
-
   <script type="text/javascript">
     $(document).ready(function(){
       initThread();
@@ -72,7 +69,7 @@ if (file_exists("../.git/refs/heads/master")) {
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Section List -->
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">
@@ -94,6 +91,8 @@ if (file_exists("../.git/refs/heads/master")) {
 			</div>
 		</div>
 
+    <div id="threadComments"></div>
+
     <?php
     if ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op") {
       echo "<div class='threadMakeComment'>";
@@ -107,9 +106,6 @@ if (file_exists("../.git/refs/heads/master")) {
   		echo "</div>";
     }
     ?>
-
-		<div id="threadComments"></div>
-
 
     <!-- Create thread -->
     <div id="createThreadWrapper">
