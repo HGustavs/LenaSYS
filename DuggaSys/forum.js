@@ -100,7 +100,7 @@ function makeComment(commentid)
 			commentcontent= $(".repliedcomment").html();
 		}
 	});
-	var text = commentcontent + $(".commentInput").val() + "\r\n" ;
+	var text = commentcontent + $(".commentInput").val();
 	if(text.length > 0)
 	{
 		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKECOMMENT");
@@ -282,13 +282,7 @@ function returnedComments(data)
 		$.each(data["comments"], function(index, value){
 
 			var text= parseMarkdown(value['text']);
-
-			if(!value['replyid']){
-				//console.log(value['replyid']);
-				text = text.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>");
-			}else{
-				text = "Citat: (hopefully)<br/>" + text + "<p style=\"display: block; padding: 0px; margin: 15px 0px 0px 0px;\"></p>";
-			}
+			
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span class=\"commentUser\">" + value["username"]  +   "</span> - <span class='commentCreated'>" + (value["datecreated"]).substring(0,16) + "</span></div>" +
@@ -309,7 +303,7 @@ function returnedComments(data)
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions = "";
 	if (threadAccess !== "public"){
-		threadOptions = "<a href='#' onclick='replyUI("+commentid+");return false;' class='commentAction replyCommentButton'>Reply</a>";
+		threadOptions = "<a href='#' onclick='getcommentsofdomparent(event,"+commentid+");return false;' class='commentAction replyCommentButton'>Reply</a>";
 
 		if (uid === commentuid || threadAccess === "super"){
 			threadOptions += "<a href='#' onclick='editUI();return false;' class='commentAction'>Edit</a>";
@@ -329,38 +323,15 @@ function createThreadSuccess(data)
 		$(location).attr("href", url);
 	}
 }
-function replyUI(commentid)
+
+function getcommentsofdomparent(event, commentid)
 {
-	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
-}
-
-function replyComment(array)
-{
-	//"<div class=\"repliedcomment\">"+value["text"]+"</div>"+"
-	if (array["accessDenied"]){
-		accessDenied(array);
-	}else {
-
-		$.each(array["comments"], function(index, value){
-
-			var text=value["text"];
-			console.log(text);
-			
-			if(value["replyid"]){
-				text = text.replace("^ ", "<p>din mamma</p>");
-				text = text.replace(" ^", "<p>din mamma</p>");
-				console.log(text);
-				text = text.replace(/\n/, "<br/>");
-				text=text.replace(/[^.]*(<br\ ?\/?>)/, "^ ");
-				//console.log(text);
-				text = text.replace(/\r\n/, " ^\r\n");
-				//console.log(text);
-			}
-
-			$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+text+"</textarea>"+
-  			"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+value["commentid"]+")\">");
-		});
-	}
+	var target = event.target;
+	var text = $(target).parent().prev().children().first().clone().children().remove().end().text();
+	text = "^ " + text + " ^" + "\r\n";
+	console.log(text);
+	$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+text+"</textarea>"+
+  	"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+commentid+")\">");
 }
 
 function makeCommentSuccess()
