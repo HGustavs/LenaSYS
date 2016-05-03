@@ -141,7 +141,7 @@
 				
 				// Quote text, this will be displayed in an additional box
 				// ^ Text you want to quote ^
-				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br>",$instring);
+				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote>",$instring);
 				
 				return $instring;		
 		}
