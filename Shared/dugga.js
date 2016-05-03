@@ -482,6 +482,7 @@ function AJAXService(opt,apara,kind)
 			});
 			break;
 		case "CREATETHREAD":
+			console.log(para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
@@ -666,7 +667,8 @@ function AJAXService(opt,apara,kind)
 				success: function(data) {
 					getComments(data);
 					sendConfirmation("forumservice.php");
-				}
+				},
+				error:error
 			});
 			break;
 	}

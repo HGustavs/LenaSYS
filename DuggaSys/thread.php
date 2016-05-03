@@ -39,9 +39,6 @@ if (file_exists("../.git/refs/heads/master")) {
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
 
-
-
-
   <script type="text/javascript">
     $(document).ready(function(){
       initThread();
@@ -59,6 +56,20 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<!-- content START -->
 	<div id="content">
+		<!-- Invisible box for confirming a thread's deletion -->
+		<div id='threadDeleteConfirm' class="loginBox" style="display:none">
+			<div id='login'>
+				<div class='loginBoxheader'>
+					<h3>Confirm thread deletion</h3>
+					<div onclick="closeWindows()">x</div>
+				</div>
+				<div class="threadConfirmButtons">
+					<input type='button' class='yes-delete-thread' value="Yes, delete thread" onclick="confirmDeleteThread()">
+					<input type='button' class='no-delete-thread' value="No, keep thread" onclick="closeWindows()">
+				</div>
+			</div>
+		</div>
+
 		<!-- Section List -->
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">
@@ -80,6 +91,8 @@ if (file_exists("../.git/refs/heads/master")) {
 			</div>
 		</div>
 
+    <div id="threadComments"></div>
+
     <?php
     if ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op") {
       echo "<div class='threadMakeComment'>";
@@ -93,9 +106,6 @@ if (file_exists("../.git/refs/heads/master")) {
   		echo "</div>";
     }
     ?>
-
-		<div id="threadComments"></div>
-
 
     <!-- Create thread -->
     <div id="createThreadWrapper">
@@ -133,9 +143,9 @@ if (file_exists("../.git/refs/heads/master")) {
             <!-- If thread is private -->
             <div id="createThreadPrivateWrapper">
               <div class="createThreadOptionLabel">Class:</div>
-              <select class="createThreadOption" id="createThreadClassList" name="courseList" onchange="updateStudentList()"></select>
+              <select class="createThreadOption" id="createThreadClassList" name="classList" onchange="updateUsersList()"></select>
               <div class="createThreadOptionLabel">User:</div>
-              <select class="createThreadOption" id="createThreadUserList" name="courseList"></select>
+              <div class="createThreadOption" id="createThreadUsersWrapper"></div>
             </div>
 
 
