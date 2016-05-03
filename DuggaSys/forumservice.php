@@ -277,8 +277,8 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	if ($threadAccess==="op" || $threadAccess==="super"){
 		$query = $pdo->prepare("UPDATE thread SET topic=:topic,description=:description WHERE threadid=:threadid");
 		$query->bindParam(':threadid', $threadId);
-		$query->bindParam(':topic', $topicT);
-		$query->bindParam(':description', $descriptionT);
+		$query->bindParam(':topic', $topic);
+		$query->bindParam(':description', $description);
 
 		if(!$query->execute()){
 			$error=$query->errorInfo();
