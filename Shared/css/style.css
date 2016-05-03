@@ -1771,9 +1771,18 @@ padding: 10px;
 	height: 35px;
 }
 
+.allSettings{
+	border: 1px solid;
+	width: 505px;
+	height: auto;
+}
+
 .setting{
 	float: left;
-	margin-right: 20px;
+	margin: 10px;
+	padding: 10px;
+	border: 1px solid;
+	width: 210px;
 }
 
 .setting label {

@@ -39,25 +39,27 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 		<div id="settingsToast"></div>
-		<div id="allSettings">
-			<div class="setting">
-				<p>Mouse movement logging</p>
-				<label data-label="mouseMoveLogging" class="switch<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>">
-					<i class="icon-ok"></i>
-					<i class="icon-remove"></i>
-					<input type="checkbox"<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>>
-				</label>
+			<div class="allSettings">
+			<h2>Logging</h2>
+				<div class="setting">
+					<p>Mouse movement logging</p>
+					<label data-label="mouseMoveLogging" class="switch<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>">
+						<i class="icon-ok"></i>
+						<i class="icon-remove"></i>
+						<input type="checkbox"<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>>
+					</label>
+				</div>
+				
+				<div class="setting">
+					<p>Fourth round trip logging</p>
+					<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
+						<i class="icon-ok"></i>
+						<i class="icon-remove"></i>
+						<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
+					</label>
+				</div>
+				<p>.</p>
 			</div>
-			
-			<div class="setting">
-				<p>Fourth round trip logging</p>
-				<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
-					<i class="icon-ok"></i>
-					<i class="icon-remove"></i>
-					<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
-				</label>
-			</div>
-		</div>
 	</div>
 	<!-- content END -->
 	
