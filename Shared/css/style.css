@@ -1832,7 +1832,7 @@ input.commentSubmitButton {
   font-size: 0.8em;
   box-sizing: border-box;
   width: 100%;
-  height: 100px;
+  min-height: 100px;
   background-color: #F6F4F7;
   border: 1px solid rgb(169, 169, 169);
 
