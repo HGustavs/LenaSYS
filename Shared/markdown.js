@@ -47,12 +47,12 @@ function dehighlightRows(filename,startRow,endRow){
 }
 
 //Functions for markdown image zoom rollover
-function originalImg(x) {
-	x.style.width = "100%";
+function originalImg(x,size) {
+	x.style.width = size + "px";
 }
 
-function thumbnailImg(x) {
-	x.style.width = "20%";
+function thumbnailImg(x,size) {
+	x.style.width = size + "px";
 }
 
 /********************************************************************************
@@ -167,9 +167,9 @@ function markdownBlock(inString)
 	inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
 
 	// External img src !!!
-	// |||src|||
+	// |||src,thumbnail width in px,full size width in px|||
 	// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
-	inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img src="$1" onmouseover="originalImg(this)" onmouseout="thumbnailImg(this)" width="20%" style="border: 3px solid #614875;" />');
+	inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
 
 	// External mp4 src !!!
 	// ==[src]==	
@@ -197,7 +197,7 @@ function markdownBlock(inString)
 	
 	// Quote text, this will be displayed in an additional box
 	// ^ Text you want to quote ^
-	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote>");
+	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br>");
 	
 	return inString;
 }
