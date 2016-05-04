@@ -706,8 +706,6 @@ function processLogin() {
 								type:"POST",
 								url: "../Shared/allowCookiesForUser.php",
 								success:function(data) {								
-									console.log(data);
-									window.alert("success");
 								},
 								error:function() {
 									console.log("error");
