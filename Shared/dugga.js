@@ -279,12 +279,14 @@ function AJAXService(opt,apara,kind)
 	}
 
 	var sendConfirmation = function(service) {
-		$.ajax({
-			url: "../DuggaSys/serviceconfirmation.php",
-			type: "POST",
-			data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
-			dataType: "json"
-		});
+		if (options.fourthRound == 1) {
+			$.ajax({
+				url: "../DuggaSys/serviceconfirmation.php",
+				type: "POST",
+				data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
+				dataType: "json"
+			});
+		}
 	}
 
 	switch(kind){
@@ -482,6 +484,7 @@ function AJAXService(opt,apara,kind)
 			});
 			break;
 		case "CREATETHREAD":
+			console.log(para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
@@ -628,7 +631,7 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					getThread(data);
+					unlockThreadSuccess(data);
 					sendConfirmation("forumservice.php");
 				}
 			});
@@ -655,6 +658,19 @@ function AJAXService(opt,apara,kind)
 					showThreadCreator(data);
 					sendConfirmation("forumservice.php");
 				}
+			});
+			break;
+		case "DELETECOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getComments(data);
+					sendConfirmation("forumservice.php");
+				},
+				error:error
 			});
 			break;
 	}
@@ -1147,10 +1163,6 @@ var Timer = {
 	}
 }
 
-function getButtonID(obj){
-	alert(obj.id);
-}
-
 //---------------------------------------------------------------------------------------------------------------
 // Click logging for analytics
 //---------------------------------------------------------------------------------------------------------------
@@ -1180,21 +1192,28 @@ $(function() {
 // Mousemove logging for analytics
 //---------------------------------------------------------------------------------------------------------------
 
-// $(document).mousemove(function(e){
-// 	var data = {
-// 		log: 'mousemove',
-// 		data: {
-// 			page: window.location.href,
-// 			mouseX: e.clientX,
-// 			mouseY: e.clientY
-// 		}
-// 	}
+$(function() {
+	if (options.mouseMoveLogging == 1) {
+		$(document).mousemove(function(e){
+			var data = {
+				log: 'mousemove',
+				data: {
+					page: window.location.href,
+					mouseX: e.clientX,
+					mouseY: e.clientY,
+					clientResX: window.screen.availWidth,
+					clientResY: window.screen.availHeight
+				}
+			}
 
-// 	$.ajax({
-// 		url: '../DuggaSys/logservice.php',
-// 		type: 'POST',
-// 		dataType: 'json',
-// 		data: JSON.stringify(data),
-// 		contentType: "application/json",
-// 	});
-// });
+			$.ajax({
+				url: '../DuggaSys/logservice.php',
+				type: 'POST',
+				dataType: 'json',
+				data: JSON.stringify(data),
+				contentType: "application/json"
+			});
+		});
+	}
+});
+

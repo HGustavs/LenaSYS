@@ -95,7 +95,7 @@ function passwordGuessing(){
 	$result = $GLOBALS['log_db']->query('
 		SELECT
 			uid AS userName,
-			remoteAddress AS remoteAddresss,
+			remoteAddress AS remoteAddress,
 			userAgent AS userAgent,
 			COUNT(*) AS tries
 		FROM userLogEntries

@@ -45,8 +45,6 @@ function loadAnalytics(q, cb) {
 			resetAnalyticsChart();
 			$('#analytic-info').empty();
 			cb(data);
-			// temporary JSON-output for debugging purposes
-			$("#analytic-info").append("<pre>" + JSON.stringify(data, null, 4) + "</pre>");
 		}
 	});
 }
@@ -56,16 +54,51 @@ function loadAnalytics(q, cb) {
 //------------------------------------------------------------------------------------------------
 function loadGeneralStats() {
 	loadAnalytics("generalStats", function(data) {
+		$('#analytic-info').append("<p>General statistics about the system.</p>");
+
+		var tableData = [["Stat", "Value"]];
+		for (var stat in data) {
+			if (data.hasOwnProperty(stat)) {
+				tableData.push([
+					stat,
+					data[stat]
+				]);
+			}
+		}
+		$('#analytic-info').append(renderTable(tableData));
 	});
 }
 
 function loadPasswordGuessing() {
 	loadAnalytics("passwordGuessing", function(data) {
+		$('#analytic-info').append("<p>Potential brute force attacks.</p>");
+
+		var tableData = [["Username", "Remote address", "User agent", "Tries"]];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].userName,
+				data[i].remoteAddress,
+				data[i].userAgent,
+				data[i].tries
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
 	});
 }
 
 function loadOsPercentage() {
 	loadAnalytics("osPercentage", function(data) {
+		$('#analytic-info').append("<p>OS percentage for main page views.</p>");
+
+		var tableData = [["Operating system", "Percentage"]];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].operatingSystem,
+				data[i].percentage
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+
 		var chartData = [];
 		for (var i = 0; i < data.length; i++) {
 			chartData.push({
@@ -79,6 +112,17 @@ function loadOsPercentage() {
 
 function loadBrowserPercentage() {
 	loadAnalytics("browserPercentage", function(data) {
+		$('#analytic-info').append("<p>Browser percentage for main page views.</p>");
+
+		var tableData = [["Browser", "Percentage"]];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].browser,
+				data[i].percentage
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
+
 		var chartData = [];
 		for (var i = 0; i < data.length; i++) {
 			chartData.push({
@@ -92,12 +136,24 @@ function loadBrowserPercentage() {
 
 function loadServiceUsage() {
 	loadAnalytics("serviceUsage", function(data) {
+		$('#analytic-info').append("<p>TODO: line chart with interaction</p>");
 	});
 }
 
 function loadServiceAvgDuration() {
 	loadAnalytics("serviceAvgDuration", function(data) {
 		$('#analytic-info').append("<p>The average duration of service call completion in milliseconds.</p>");
+
+		var tableData = [
+			["Service", "Average duration (ms)"]
+		];
+		for (var i = 0; i < data.length; i++) {
+			tableData.push([
+				data[i].service,
+				data[i].avgDuration
+			]);
+		}
+		$('#analytic-info').append(renderTable(tableData));
 
 		var chartData = [];
 		for (var i = 0; i < data.length; i++) {
@@ -112,6 +168,7 @@ function loadServiceAvgDuration() {
 
 function loadServiceCrashes() {
 	loadAnalytics("serviceCrashes", function(data) {
+		$('#analytic-info').append("<p>TODO: Crash output</p>");
 	});
 }
 
@@ -248,4 +305,30 @@ function drawPieChart(data) {
 		ctx.font = fontSize + "px Arial";
 		ctx.fillText(data[i].label, radius * 2 + 50, i * textAreaHeight + textAreaHeight);
 	}
+}
+
+function renderTable(data) {
+	if (!$.isArray(data)) return;
+
+	var str = '<table class="list">';
+	if (data.length > 0) {
+		// Render headings
+		str += "<thead><tr>";
+		$.each(data[0], function(i, s){
+			str += "<th>" + s + "</th>";
+		});
+		str += "</tr></thead><tbody>";
+
+		// Render rows
+		$.each(data, function(i, row) {
+			if (i === 0) return;
+			str += "<tr>";
+			$.each(row, function(j, col) {
+				str += "<td>" + col + "</td>";
+			});
+			str += "</tr>"
+		});
+	}
+	str += "</tbody></table>";
+	return str;
 }

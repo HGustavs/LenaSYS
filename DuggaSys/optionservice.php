@@ -9,6 +9,7 @@ session_start();
 
 $label = getOP('label');
 $value = getOP('value');
+$getOption = getOP('getOption');
 
 $debug="NONE!";	
 
@@ -27,4 +28,14 @@ if(isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])){
 	die('access denied');
 }
 
+if(isset($getOption)){
+	if(isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])){
+		$query = $pdo->prepare("SELECT value FROM options WHERE label = :getOption");
+		$query->bindParam(':getOption', $getOption);
+		$query->execute();
+		echo $query->fetch(PDO::FETCH_ASSOC);
+	} else {
+		die('access denied');
+	}
+}
 ?>
