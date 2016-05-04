@@ -197,7 +197,7 @@ function markdownBlock(inString)
 	
 	// Quote text, this will be displayed in an additional box
 	// ^ Text you want to quote ^
-	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote>");
+	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
 	
 	return inString;
 }

@@ -484,6 +484,7 @@ function AJAXService(opt,apara,kind)
 			});
 			break;
 		case "CREATETHREAD":
+			console.log(para);
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",
@@ -630,7 +631,7 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					getThread(data);
+					unlockThreadSuccess(data);
 					sendConfirmation("forumservice.php");
 				}
 			});
@@ -657,6 +658,19 @@ function AJAXService(opt,apara,kind)
 					showThreadCreator(data);
 					sendConfirmation("forumservice.php");
 				}
+			});
+			break;
+		case "DELETECOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getComments(data);
+					sendConfirmation("forumservice.php");
+				},
+				error:error
 			});
 			break;
 	}
