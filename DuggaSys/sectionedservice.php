@@ -242,7 +242,7 @@ if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 $ha = (checklogin() && (hasAccess($userid, $courseid, 'w') || isSuperUser($userid)));
 
 $resulties=array();
-$query = $pdo->prepare("SELECT moment,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+$query = $pdo->prepare("SELECT moment,grade,UNIX_TIMESTAMP(submitted) AS submitted,UNIX_TIMESTAMP(marked) AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
 $query->bindParam(':uid', $userid);
@@ -270,7 +270,7 @@ $entries=array();
 $reada = (checklogin() && (hasAccess($userid, $courseid, 'r')||isSuperUser($userid)) || $row['visibility'] == 2);
 
 if($reada || $userid == "guest"){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND vers=:coursevers ORDER BY pos");
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,UNIX_TIMESTAMP(ts) AS ts FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid AND vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -296,7 +296,8 @@ if($reada || $userid == "guest"){
 				'gradesys' => $row['gradesystem'],
 				'code_id' => $row['code_id'],
 				'deadline'=> $row['deadline'],
-				'qrelease' => $row['qrelease']
+				'qrelease' => $row['qrelease'],
+				'ts' => $row['ts']
 			)
 		);
 	}
@@ -382,7 +383,7 @@ if($ha){
 	}
 
 	// Reading entries in file database
-	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind>1 ORDER BY kind,filename");
+	$query = $pdo->prepare("SELECT fileid,filename,kind,vers FROM fileLink WHERE cid=:cid AND kind>0 ORDER BY kind,filename");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -394,7 +395,7 @@ if($ha){
 			array_push($links,array('fileid' => -1,'filename' => "---===######===---"));
 		}
 		$oldkind=$row['kind'];
-		array_push($links,array('fileid' => $row['fileid'],'filename' => $row['filename']));
+		array_push($links,array('fileid' => $row['fileid'],'filename' => $row['filename'], 'vers' => $row['vers']));
 	}
 	
 	$versions=array();

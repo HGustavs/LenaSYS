@@ -641,6 +641,17 @@ header td {
 	margin-left: 1px;
 }
 
+.inputwrapper .background {
+	position: absolute;
+	right:10px;
+	font-family: "Comic Sans MS", "Comic Sans";
+	color:gray;
+	margin-top:5px;
+	-webkit-user-select: none; /* Chrome/Safari */        
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE10+ */
+}
+
 .loginBox {
     display:block;
     padding:4px;
@@ -656,18 +667,29 @@ header td {
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
+#editVariant {
+	min-width: 80%;
+	min-height: 390px;
+	height:390px;
+	max-width: 95%;
+	max-height: 95%;
+}
+
 .loginTransparent {
 	display:block;
-	padding:4px;
-	width: 350px;
-	min-height: 100px;
-	z-index: 9000;
-	position: fixed;
-	top: 40%;
-	left: 50%;
-	margin-left: -178px;
-	text-align: center;
+	height: 60px;
+	width: 100%;
+	background-color: #614875;
+	position: static;
+	bottom: 0;
+	left: 0;
+	text-align: left;
+	margin-top: 40px;
+	clear: both;
 }
+
+.loginTransparent img{height: 50px; width: auto; display: inline-block; vertical-align: middle; margin-left: 20px; padding: 5px 0px;}
+.loginTransparent p{display: inline-block; vertical-align: middle; padding-left: 15px;}
 
 .loginBox textarea{
     max-width: 100%;
@@ -789,6 +811,7 @@ header td {
 	padding-left: 10px;
 	cursor:move;
 /*  padding-top: 15px; */
+
 }
 .loginBoxheader h3 {
 	font-size: 14px;
@@ -813,6 +836,7 @@ header td {
 .loginBoxheader div:hover {
 	background-color: #ce3d3d;
 }
+
 .loginBox form {
 	padding: 10px;
 }
@@ -1042,6 +1066,8 @@ input.new-item-button:hover {
 .list--nomargin {
 	margin: 0!important;
 }
+
+.pointer{cursor: pointer;}
 
 .markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 12px;}
 

@@ -205,6 +205,7 @@ CREATE TABLE fileLink(
 	filename		VARCHAR(128) NOT NULL,
 	kind			INTEGER,	
 	cid				INT UNSIGNED NOT NULL,
+	vers			VARCHAR(8) DEFAULT 0,
 	isGlobal		BOOLEAN DEFAULT 0,
 	CONSTRAINT pk_filelink PRIMARY KEY (fileid),
 	CONSTRAINT fk_filelink_joins_course FOREIGN KEY (cid) REFERENCES course (cid)

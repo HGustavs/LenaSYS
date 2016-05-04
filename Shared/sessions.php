@@ -120,9 +120,30 @@ function login($username, $password, $savelogin)
 			setcookie('username', $row['username'], time()+60*60*24*30, '/');
 			setcookie('password', $password, time()+60*60*24*30, '/');
 		}
+		
+			// Finds the latest edit of a moment, all the edits of all the moments and their associated ID's.
+			$query = $pdo->prepare('SELECT lid, ts, UNIX_TIMESTAMP(MAX(ts)) AS max FROM listentries');
+			$query->execute();
+			
+			$row = $query->fetch(PDO::FETCH_ASSOC);
+			$_SESSION['max'] = $row['max'];
+			
+			setcookie('updated', $row['max'], time()+60*60*24*30, '/');
+			
+			// Finds the latest visit of the user.
+			$query = $pdo->prepare('SELECT UNIX_TIMESTAMP(lastvisit) AS lastvisit FROM user WHERE username=:username');
+			$query->bindParam(':username', $username);
+			$query->execute();
+			
+			$row = $query->fetch(PDO::FETCH_ASSOC);
+			$_SESSION['lastvisit'] = $row['lastvisit'];
+
+			// This cookie must be set BEFORE the table updates, in order to get the previous date.
+			setcookie('lastlogin', $row['lastvisit'], time()+60*60*24*30, '/');
+			
 //		update last login.
 		$query = $pdo->prepare("UPDATE user SET lastvisit=now() WHERE uid=:uid");
-		$query->bindParam(':uid', $row['uid']);
+		$query->bindParam(':uid', $_SESSION['uid']);
 		$query->execute();
 		return true;
 
@@ -244,6 +265,18 @@ function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers, $moment)
 			return false;
 		}
 
+}
+/**
+ * Returns if user has allowed cookies
+ * @param string $username
+ * @return boolean
+ */
+function userAllowedCookies($username){
+	if(!isset($_COOKIE[$username."_allow_cookies"])){
+		return false;
+	}
+	else
+		return true;
 }
 
 ?>

@@ -24,12 +24,15 @@ if($opt=="LOGIN"){
 			$res["login"] = "failed";
 			$res["reason"] = "Too many failed attempts, try again later";
 		}else if(login($username, $password, $savelogin)){
-			// Successfully logged in, return user name
+
+			// Successfully logged in, return user name and if cookies has been allowed by user
 			$res["login"] = "success";
 			$res["username"] = $username;
-
+			$res["cookiesAllowed"] = userAllowedCookies($username);
+										
 			// Log USERID for Dugga Access
-			logUserEvent($username,EventTypes::LoginSuccess,"");			
+			logUserEvent($username,EventTypes::LoginSuccess,"");
+				
 
 		}else{
 			addlogintry(); // If to many attempts has been commited, it will jump to this
@@ -65,6 +68,5 @@ if($opt=="LOGIN"){
 		setcookie('username', '', 0, '/');
 		setcookie('password', '', 0, '/');
 }
-	
 ?>
  

@@ -337,7 +337,7 @@ function renderMoment(data, userResults, userId, fname, lname, locked)
 						str += "</tr><tr>";
 				for (var k = 1; k < data[j].length; k++){
 					//only show moments that are visible in the sectionlist
-					if(data[j][k]['visible'] === 1)
+					if(data[j][k]['visible'] === 1 || data[j][k]['visible'] === 2)
 						str += renderMomentChild(data[j][k], userResults, userId, fname, lname, 0, locked);
 						//console.log(data[j][k]);
 				}			

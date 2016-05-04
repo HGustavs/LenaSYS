@@ -105,17 +105,17 @@ pdoConnect();
 	<!-- Edit Dugga Dialog END -->
 	
 	<!-- Edit Variant Dialog START -->
-	<div id='editVariant' class='loginBox' style='width:80%; left:20%; display:none;'>
+	<div id='editVariant' class='loginBox' style='width:80%; left:20%; display:none; position: relative;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Variant</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
-		<div style='padding:5px;'>
+		<div class='inputTextAreaTest' style='height:80%;'>
 			<input type='hidden' id='vid' value='Toddler' />
-			<div class='inputwrapper' style='height:100px'><span>Param:</span><textarea id='parameter' placeholder='Variant Param'></textarea></div>
-			<div class='inputwrapper' style='height:100px'><span>Answer:</span><textarea id='variantanswer' placeholder='Variant Param'></textarea></div>
+			<div class='inputwrapper' style='height:50%;'><span></span><div class="background">Input parameter here...</div><textarea id='parameter' style='height:100%' placeholder='Variant Param'></textarea></div>
+			<div class='inputwrapper' style='height:50%'><span></span><div class="background">Input answer here...</div><textarea id='variantanswer' style='height:100%' placeholder='Variant Param'></textarea></div>
 		</div>	
-		<div style='padding:5px;'>
+		<div style='position: absolute; bottom:5px;'>
 			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
 			<input id="toggleVariantButton" style='float:left;' class='submit-button' type='button' value='Disable' onclick='toggleVariant();' />
 			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();' />
