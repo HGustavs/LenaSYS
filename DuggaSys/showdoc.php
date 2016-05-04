@@ -106,9 +106,9 @@
 				$instring = preg_replace("/\!{3}(.*?\S),(.*?\S)\!{3}/","<a href='$1' target='_blank'>$2</a>",$instring);
 
 				// External img src !!!
-				// |||src|||
+				// |||src,thumbnail width in px,full size width in px|||
 				// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
-				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/", '<img src="$1" onmouseover="originalImg(this)" onmouseout="thumbnailImg(this)" width="20%" style="border: 3px solid #614875;" />',$instring);
+				$instring = preg_replace("/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/", '<img src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />',$instring);
 
 				// External mp4 src !!!
 				// ==[src]==	
@@ -141,7 +141,7 @@
 				
 				// Quote text, this will be displayed in an additional box
 				// ^ Text you want to quote ^
-				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote>",$instring);
+				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br>",$instring);
 				
 				return $instring;		
 		}

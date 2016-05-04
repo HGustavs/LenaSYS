@@ -108,8 +108,9 @@
 	box-shadow: 0px 0px 5px #cccccc;
 }
 
-img {
+.descbox img {
 	border-radius: 2px;
+	margin: 2px 0px 2px 0px;
 }
 
 /* "gifimage", "gifwrapper" and "playbutton" are styles for showing gif clips for tutorials etc. */
