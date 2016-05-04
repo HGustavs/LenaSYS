@@ -672,6 +672,8 @@ header td {
 	min-width: 80%;
 	min-height: 390px;
 	height:390px;
+	max-width: 95%;
+	max-height: 95%;
 }
 
 .loginTransparent {
