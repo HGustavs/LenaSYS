@@ -143,7 +143,7 @@ function login($username, $password, $savelogin)
 			
 //		update last login.
 		$query = $pdo->prepare("UPDATE user SET lastvisit=now() WHERE uid=:uid");
-		$query->bindParam(':uid', $_SESSION['uid']);
+		$query->bindParam(':uid', $row['uid']);
 		$query->execute();
 		return true;
 
@@ -265,6 +265,18 @@ function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers, $moment)
 			return false;
 		}
 
+}
+/**
+ * Returns if user has allowed cookies
+ * @param string $username
+ * @return boolean
+ */
+function userAllowedCookies($username){
+	if(!isset($_COOKIE[$username."_allow_cookies"])){
+		return false;
+	}
+	else
+		return true;
 }
 
 ?>

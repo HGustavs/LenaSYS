@@ -698,8 +698,28 @@ function processLogin() {
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
-					
-					location.reload();
+
+					if(result["cookiesAllowed"] == false){
+						//byt ut window.confirm till en dialog istället
+						if (window.confirm("Do you accept cookies on this user. If not you will be logged out")) {
+							$.ajax({
+								type:"POST",
+								url: "../Shared/allowCookiesForUser.php",
+								success:function(data) {								
+									console.log(data);
+									window.alert("success");
+								},
+								error:function() {
+									console.log("error");
+								}
+							});
+
+						}
+						else{
+							processLogout();
+						}
+					}	
+					location.reload();			
 				}else{
 					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
