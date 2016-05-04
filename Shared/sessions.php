@@ -266,5 +266,17 @@ function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers, $moment)
 		}
 
 }
+/**
+ * Returns if user has allowed cookies
+ * @param string $username
+ * @return boolean
+ */
+function userAllowedCookies($username){
+	if(!isset($_COOKIE[$username."_allow_cookies"])){
+		return false;
+	}
+	else
+		return true;
+}
 
 ?>
