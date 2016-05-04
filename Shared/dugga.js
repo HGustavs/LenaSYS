@@ -279,12 +279,14 @@ function AJAXService(opt,apara,kind)
 	}
 
 	var sendConfirmation = function(service) {
-		$.ajax({
-			url: "../DuggaSys/serviceconfirmation.php",
-			type: "POST",
-			data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
-			dataType: "json"
-		});
+		if (options.fourthRound == 1) {
+			$.ajax({
+				url: "../DuggaSys/serviceconfirmation.php",
+				type: "POST",
+				data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
+				dataType: "json"
+			});
+		}
 	}
 
 	switch(kind){
