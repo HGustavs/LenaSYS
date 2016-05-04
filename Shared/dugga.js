@@ -1180,21 +1180,43 @@ $(function() {
 // Mousemove logging for analytics
 //---------------------------------------------------------------------------------------------------------------
 
-// $(document).mousemove(function(e){
-// 	var data = {
-// 		log: 'mousemove',
-// 		data: {
-// 			page: window.location.href,
-// 			mouseX: e.clientX,
-// 			mouseY: e.clientY
-// 		}
-// 	}
+$(function() {
+	getOptionValue("mouseMoveOption", function(option) {
+		console.log(option);
+		if (option == 1) {
+			$(document).mousemove(function(e){
+				var data = {
+			 		log: 'mousemove',
+			 		data: {
+			 			page: window.location.href,
+			 			mouseX: e.clientX,
+			 			mouseY: e.clientY,
+						clientResX: window.screen.availWidth,
+						clientResY: window.screen.availHeight
+					}
+				}
 
-// 	$.ajax({
-// 		url: '../DuggaSys/logservice.php',
-// 		type: 'POST',
-// 		dataType: 'json',
-// 		data: JSON.stringify(data),
-// 		contentType: "application/json",
-// 	});
-// });
+			 	$.ajax({
+			 		url: '../DuggaSys/logservice.php',
+			 		type: 'POST',
+			 		dataType: 'json',
+			 		data: JSON.stringify(data),
+			 		contentType: "application/json"
+			 	});
+			});
+		}
+	});
+});
+
+function getOptionValue(label, cb){
+	$.ajax({
+		url: '../DuggaSys/optionservice.php',
+		type: 'POST',
+		dataType: 'json',
+		data: {
+			getOption: label
+		},
+		contentType: "application/json",
+		success: cb
+	});
+}

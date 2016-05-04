@@ -34,22 +34,37 @@ pdoConnect();
 	
 	// Show analytics if user is superuser.
 	if(isset($_SESSION["superuser"]) && $_SESSION["superuser"] == 1){
+		$options = getAllOptions();
 ?>
 	<!-- content START -->
 	<div id="content">
-	<div id="theDiv"></div>
-		<p>Mouse movement logging</p>
-		<label data-label="mouseMoveLogging" class="switch<?= getOption('mouseMoveLogging')['value'] == '1' ? ' checked' : ''?>">
-			<i class="icon-ok"></i>
-			<i class="icon-remove"></i>
-			<input type="checkbox"<?= getOption('mouseMoveLogging')['value'] == '1' ? ' checked' : ''?>>
-		</label>
-		<p>Fourth round trip logging</p>
-		<label data-label="fourthRound" class="switch<?= getOption('fourthRound')['value'] == '1' ? ' checked' : ''?>">
-			<i class="icon-ok"></i>
-			<i class="icon-remove"></i>
-			<input type="checkbox"<?= getOption('fourthRound')['value'] == '1' ? ' checked' : ''?>>
-		</label>
+		<div id="settingsToast"></div>
+			<div class="allSettings">
+			
+			<div id="Sectionlist" style="margin-bottom:20px;">
+				<div class="course">
+					<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Loggning</div>
+				</div>
+			</div>
+			
+				<div class="setting">
+					<p>Mouse movement logging</p>
+					<label data-label="mouseMoveLogging" class="switch<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>">
+						<i class="icon-ok"></i>
+						<i class="icon-remove"></i>
+						<input type="checkbox"<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>>
+					</label>
+				</div>
+				
+				<div class="setting">
+					<p>Fourth round trip logging</p>
+					<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
+						<i class="icon-ok"></i>
+						<i class="icon-remove"></i>
+						<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
+					</label>
+				</div>
+			</div>
 	</div>
 	<!-- content END -->
 	

@@ -29,6 +29,8 @@ $(function() {
 			}
 		});
 	});
+	
+	
 });
 
 function setOption(label, value, cb) {
@@ -53,12 +55,47 @@ function setOption(label, value, cb) {
 				value2 = value;
 			}
 			
-			$("#theDiv").html("<div id='toastBar'>Successfully set the"+ label +" option to "+ value2 +"<a onclick='closeToast();'>X</a></div>");
+			var number = $("#settingsToast").children().size() + 1;
+
+			$("#settingsToast").html("");
+			$("#settingsToast").show("fast").append("<div id='toastBar"+number+"' class='toastBar'>Successfully set the "+ label +" option to "+ value2 +"</div>");
+			$("#toastBar"+number).delay('3000').fadeOut('slow');
 			
 		}
 	});
 }
 
-function closeToast(){
-	$("#theDiv").html();
+$(window).resize(function(){
+  equalheight('.allSettings .setting');
+});
+
+equalheight = function(container){
+
+var currentTallest = 0,
+     currentRowStart = 0,
+     rowDivs = new Array(),
+     $el,
+     topPosition = 0;
+ $(container).each(function() {
+
+   $el = $(this);
+   $($el).height('auto')
+   topPostion = $el.position().top;
+
+   if (currentRowStart != topPostion) {
+     for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+       rowDivs[currentDiv].height(currentTallest);
+     }
+     rowDivs.length = 0; // empty the array
+     currentRowStart = topPostion;
+     currentTallest = $el.height();
+     rowDivs.push($el);
+   } else {
+     rowDivs.push($el);
+     currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+  }
+   for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+     rowDivs[currentDiv].height(currentTallest);
+   }
+ });
 }
