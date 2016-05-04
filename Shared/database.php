@@ -76,4 +76,17 @@ function getAllOptions() {
 	return $query->fetchAll(PDO::FETCH_KEY_PAIR);
 }
 
+function getAllPublicOptions() {
+	global $pdo;
+	$query = $pdo->prepare("
+		SELECT label, value
+		FROM options
+		WHERE
+			label = 'mouseMoveLogging'
+			OR label = 'fourthRound';
+	");
+	$query->execute();
+	return $query->fetchAll(PDO::FETCH_KEY_PAIR);	
+}
+
 ?>
