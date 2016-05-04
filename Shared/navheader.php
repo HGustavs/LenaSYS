@@ -99,10 +99,7 @@
 </script>
 
 <script type="text/javascript">
-	var options = {
-		mouseMoveLogging: '<?= getOption("mouseMoveLogging"); ?>',
-		fourthRound : '<?= getOption("forthRound"); ?>'
-	};
+	var options = <?= json_encode(getAllPublicOptions()) ?>;
 </script>
 
 
