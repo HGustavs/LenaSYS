@@ -28,6 +28,8 @@ if (file_exists("../.git/refs/heads/master")) {
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+	<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
+
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -36,9 +38,6 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
-
-
-
 
   <script type="text/javascript">
     $(document).ready(function(){
@@ -57,26 +56,43 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<!-- content START -->
 	<div id="content">
+		<!-- Invisible box for confirming a thread's deletion -->
+		<div id='threadDeleteConfirm' class="loginBox" style="display:none">
+			<div id='login'>
+				<div class='loginBoxheader'>
+					<h3>Confirm thread deletion</h3>
+					<div onclick="closeWindows()">x</div>
+				</div>
+				<div class="threadConfirmButtons">
+					<input type='button' class='yes-delete-thread' value="Yes, delete thread" onclick="confirmDeleteThread()">
+					<input type='button' class='no-delete-thread' value="No, keep thread" onclick="closeWindows()">
+				</div>
+			</div>
+		</div>
+
 		<!-- Section List -->
 		<div id='threadHeader'>
 			<div id="threadTopicWrapper">
+				<div class="threadLockedIcon" style="float:left;"></div>
 				<div class="threadTopic"></div>
 				<div id="threadOptions">
-          <?php
-          if ($threadAccess==="super" || $threadAccess==="op") {
-            echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
-          }
-          if ($threadAccess==="op") {
-            echo "<div class='opEditThread' style='float:right;'></div>";
-          }
-          ?>
-        </div>
+				  <?php
+				  if ($threadAccess==="super" || $threadAccess==="op") {
+					echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
+				  }
+				  if ($threadAccess==="op" || $threadAccess==="super") {
+					echo "<div class='opEditThread' style='float:right;'></div>";
+				  }
+				  ?>
+				</div>
 			</div>
-			<div id="threadDescr"></div>
+      <div id="threadDescr"></div>
 			<div id="threadDetails">
-				Created <span id="threadDate">3 mar 2016</span> by <span id="threadCreator">a97marb</span>
+				Created <span id="threadDate"></span> by <span id="threadCreator"></span>
 			</div>
 		</div>
+
+    <div id="threadComments"></div>
 
     <?php
     if ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op") {
@@ -92,9 +108,6 @@ if (file_exists("../.git/refs/heads/master")) {
     }
     ?>
 
-		<div id="threadComments"></div>
-
-
     <!-- Create thread -->
     <div id="createThreadWrapper">
       <div id="createThreadHeader">
@@ -102,17 +115,15 @@ if (file_exists("../.git/refs/heads/master")) {
       </div>
       <div id="createThreadBody">
         <div id="createThreadFormWrapper">
-          <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
-          <div id="createThreadDescrOptions">
-            <button id="threadWriteButton" class="submit-button createThreadButton threadActiveButton" type="button" name="writeDescr" onclick="writeText()">Write</button>
-            <button id="threadPreviewButton" class="submit-button createThreadButton" type="button" name="previewDescr" onclick="previewText()">Preview</button>
-          </div>
-          <div id="createThreadDescrWrapper">
-            <textarea id="createThreadDescr" name="threadDescr" placeholder="Description"></textarea>
-            <div id="previewText">
+        <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
 
-            </div>
-          </div>
+
+
+        <?php include_once "forumEditor.php"; ?>
+
+
+
+
           <div id="createThreadOptions">
             <div class="createThreadOptionLabel">Course:</div>
             <select class="createThreadOption" id="createThreadCourseList" name="courseList" onchange="updateClassList()"></select>
@@ -131,9 +142,9 @@ if (file_exists("../.git/refs/heads/master")) {
             <!-- If thread is private -->
             <div id="createThreadPrivateWrapper">
               <div class="createThreadOptionLabel">Class:</div>
-              <select class="createThreadOption" id="createThreadClassList" name="courseList" onchange="updateStudentList()"></select>
+              <select class="createThreadOption" id="createThreadClassList" name="classList" onchange="updateUsersList()"></select>
               <div class="createThreadOptionLabel">User:</div>
-              <select class="createThreadOption" id="createThreadUserList" name="courseList"></select>
+              <div class="createThreadOption" id="createThreadUsersWrapper"></div>
             </div>
 
 
@@ -158,6 +169,11 @@ if (file_exists("../.git/refs/heads/master")) {
 	<!-- content END -->
 	<?php
 	include '../Shared/loginbox.php';
+	?>
+
+</body>
+</html>
+hp';
 	?>
 
 </body>

@@ -6,6 +6,7 @@
 			echo "<table width='100%'><tr>";
 				
 			include_once "../Shared/basic.php";
+			include_once "../Shared/database.php";
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if(isset($_GET['courseid'])){
@@ -95,6 +96,10 @@
 </header>
 <script type="text/javascript">
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
+</script>
+
+<script type="text/javascript">
+	var options = <?= json_encode(getAllPublicOptions()) ?>;
 </script>
 
 
