@@ -1327,10 +1327,6 @@ input.new-item-button:hover {
 	box-shadow: inset 2px 2px 5px #988a98;
 }
 
-.gradeInput {
-	margin:0;
-}
-
 .badge {
 	background-color: #FFF;
 	color: #000;
