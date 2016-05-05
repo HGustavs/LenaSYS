@@ -1012,20 +1012,6 @@ input.submit-button:hover {
 	border-radius:4px;
 }
 
-input.submit-button-red {
-	background-color:#c75050;
-	border:0px;
-	width:100px;
-	height:30px;
-	color:#fff;
-	cursor:pointer;
-}
-
-input.submit-button-red:hover {
-	background-color:#DF4F4F;
-	border-radius:4px;
-}
-
 input.new-item-button {
 	float:right;
 	background-color:#927B9E;
@@ -1079,29 +1065,29 @@ input.new-item-button:hover {
 
 .markinglist tr:hover { background-color: #dbd0d8; }
 
-.markinglist--nomargin {
-	margin: 0!important;
-}
-
-
 .Trow{
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 10px;
 	line-height: 10px;
 }
 
+/* What is the intention of this? */
 @media print {
 	.Trow {
-		page-break-inside : avoid
+		page-break-inside: avoid;
 	}
 
-	header {display:none;}
+	header {
+		display: none;
+	}
 
-	body {margin:0px}
+	body {
+		margin: 0px
+	}
 
-	#content {margin:0px; padding:0px; border:none;}
-
-	#mirth {display:none;}
+	#content {
+		margin: 0px; padding:0px; border:none;
+	}
 }
 
 /* Clearfix styles */
