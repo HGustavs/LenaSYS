@@ -44,7 +44,14 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating file list ".$error[2];
-		}						
+		}
+		$querystring='DELETE FROM listentries WHERE link=:fname';
+		$query = $pdo->prepare($querystring);
+		$query->bindParam(':fname', $filename);
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating file list ".$error[2];
+		}
 		// Remove from filesystem? Only for local files ... Course-wide and Global files could be used elsewhere
 		// TODO:		
 	}

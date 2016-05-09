@@ -32,8 +32,8 @@ function closeEditFile()
 }
 
 function deleteFile(fileid,filename){
-		if(confirm("Do you really want to delete the file/link: "+filename)){
-				AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
+		if(confirm("Do you really want to delete the file/link: "+filename+"? This will also delete all links pertaining to this file.")){
+				AJAXService("DELFILE",{fid:fileid,filename:filename,cid:querystring['cid']},"FILE");
 		}
 }
 
