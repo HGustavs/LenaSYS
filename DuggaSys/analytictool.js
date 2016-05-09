@@ -168,7 +168,52 @@ function loadServiceAvgDuration() {
 
 function loadServiceCrashes() {
 	loadAnalytics("serviceCrashes", function(data) {
-		$('#analytic-info').append("<p>TODO: Crash output</p>");
+		$('#analytic-info').append("<p>Service requests with missing steps</p><hr>");
+
+		var crashes = {};
+		$.each(data, function(i, step) {
+			if (crashes[step.uuid] === undefined) {
+				crashes[step.uuid] = {
+					service: step.service,
+					userAgent: step.userAgent,
+					operatingSystem: step.operatingSystem,
+					browser: step.browser,
+					steps: {}
+				};
+			}
+			crashes[step.uuid].steps[step.eventType] = new Date(Number(step.timestamp));
+		});
+
+
+		function pad(n, width) {
+			n = n + '';
+			return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+		}
+
+		function formatDate(date) {
+			var year = date.getFullYear();
+			var month = date.getMonth();
+			var day = date.getDate();
+			var hour = date.getHours();
+			var minute = date.getMinutes();
+			var seconds = date.getSeconds();
+			var millis = date.getMilliseconds();
+			return year + "-" + pad(month, 2) + "-" + pad(day, 2) + " " + pad(hour, 2) + ":" + pad(minute, 2) + ":" + pad(seconds, 2) + "." + pad(millis, 3);
+		}
+
+		$.each(crashes, function(i, crash) {
+			var str = "<div>";
+			str += "Service: " + crash.service;
+			str += "<br>User agent: " + crash.userAgent;
+			str += "<br>OS: " + crash.operatingSystem;
+			str += "<br>Browser: " + crash.browser;
+			str += "<br><br>Client start: " + formatDate(crash.steps[5]);
+			str += "<br>Server start: " + (crash.steps[6] === undefined ? 'missing' : formatDate(crash.steps[6]));
+			str += "<br>Server end: " + (crash.steps[7] === undefined ? 'missing' : formatDate(crash.steps[7]));
+			str += "<br>Client end (fourth round trip): " + (crash.steps[8] === undefined ? 'missing' : formatDate(crash.steps[8]));
+			str += "<br><hr></div>";
+			$('#analytic-info').append(str);
+		});
 	});
 }
 
