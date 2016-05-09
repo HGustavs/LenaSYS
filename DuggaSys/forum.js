@@ -303,7 +303,7 @@ function returnedComments(data)
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions = "";
 	if (threadAccess !== "public"){
-		threadOptions = "<a href='#' onclick='getcommentsofdomparent(event,"+commentid+");return false;' class='commentAction replyCommentButton'>Reply</a>";
+		threadOptions = "<a href='#' onclick='getcommentreply(event,"+commentid+");return false;' class='commentAction replyCommentButton'>Reply</a>";
 
 		if (uid === commentuid || threadAccess === "super"){
 			threadOptions += "<a href='#' onclick='editUI();return false;' class='commentAction'>Edit</a>";
@@ -324,12 +324,15 @@ function createThreadSuccess(data)
 	}
 }
 
-function getcommentsofdomparent(event, commentid)
+function getcommentreply(event, commentid)
 {
 	var target = event.target;
+	console.log(target);
 	var text = $(target).parent().prev().children().first().clone().children().remove().end().text();
-	text = "^ " + text + " ^" + "\r\n";
-	console.log(text);
+	//console.log(text);
+	text = "^ " + text + " ^"  + "\r\n";
+	//console.log(text);
+	//document.write(text);
 	$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+text+"</textarea>"+
   	"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+commentid+")\">");
 }
