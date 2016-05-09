@@ -27,6 +27,7 @@ function initThread()
 		$("#createThreadWrapper").hide();
 
 		getThread();
+		$("#editorDescr").on("keyup", checkComment);
 	}
 	else {
 		createThreadUI();
@@ -100,7 +101,7 @@ function makeComment(commentid)
 			commentcontent= $(".repliedcomment").html();
 		}
 	});
-	var text = commentcontent + $(".commentInput").val();
+	var text = commentcontent + $("#editorDescr").val();
 	if(text.length > 0)
 	{
 		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKECOMMENT");
@@ -109,21 +110,21 @@ function makeComment(commentid)
 	{
 
 	}
-	$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\"></textarea>"+
-  	"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment()\">");
+	$('#editorDescr').val("");
+	$("#commentSubmitButton").attr("onclick", "makeComment()");
 }
 
 function checkComment()
 {
-	var text = $(".commentInput").val();
+	var text = $("#editorDescr").val();
 
 	if(text.length > 0)
 	{
-		$(".commentSubmitButton").css("background-color", "#614875");
+		$("#commentSubmitButton").css("background-color", "#614875");
 	}
 	else
 	{
-		$(".commentSubmitButton").css("background-color", "buttonface");
+		$("#commentSubmitButton").css("background-color", "buttonface");
 	}
 }
 
@@ -238,17 +239,9 @@ function returnedThread(data)
 			//$(".threadMakeComment").html(str);
 			var str = "<span style='padding-right:30px;'><i class='fa fa-lock fa-lg fa-spin' style='color:#ff4d4d' aria-hidden='true'></i></span>";
 			$(".threadLockedIcon").html(str);
+			$(".threadMakeComment").hide();
 		}else{
-			if($('div.threadMakeComment').length){
-				var str = "<div class='makeCommentHeader'>";
-				str += "Comment";
-				str+= "</div>";
-				str += "<div class='makeCommentInputWrapper'>";
-				str += "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment' onkeyup='checkComment()'></textarea>";
-				str += "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
-				str += "</div>";
-				$(".threadMakeComment").html(str);
-			}
+			$(".threadMakeComment").show();
 		}
 	}
 }
@@ -282,7 +275,7 @@ function returnedComments(data)
 		$.each(data["comments"], function(index, value){
 
 			var text= parseMarkdown(value['text']);
-			
+
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
 				"<div class=\"commentDetails\"><span class=\"commentUser\">" + value["username"]  +   "</span> - <span class='commentCreated'>" + (value["datecreated"]).substring(0,16) + "</span></div>" +
@@ -303,7 +296,7 @@ function returnedComments(data)
 function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	var threadOptions = "";
 	if (threadAccess !== "public"){
-		threadOptions = "<a href='#' onclick='getcommentsofdomparent(event,"+commentid+");return false;' class='commentAction replyCommentButton'>Reply</a>";
+		threadOptions = "<a href='#' onclick='getCommentReply(event,"+commentid+");return false;' class='commentAction replyCommentButton'>Reply</a>";
 
 		if (uid === commentuid || threadAccess === "super"){
 			threadOptions += "<a href='#' onclick='editUI();return false;' class='commentAction'>Edit</a>";
@@ -324,14 +317,14 @@ function createThreadSuccess(data)
 	}
 }
 
-function getcommentsofdomparent(event, commentid)
+function getCommentReply(event, commentid)
 {
 	var target = event.target;
 	var text = $(target).parent().prev().children().first().clone().children().remove().end().text();
 	text = "^ " + text + " ^" + "\r\n";
 	console.log(text);
-	$('.makeCommentInputWrapper').html("<textarea class=\"commentInput\" name=\"commentInput\" placeholder=\"Leave a comment\" onkeyup=\"checkComment()\">"+text+"</textarea>"+
-  	"<input class=\"submit-button commentSubmitButton\" type=\"button\" value=\"Submit\" onclick=\"makeComment("+commentid+")\">");
+	$('#editorDescr').val(text);
+  $("#commentSubmitButton").attr("onclick", "makeComment("+commentid+")");
 }
 
 function makeCommentSuccess()
@@ -456,25 +449,22 @@ function error(xhr, status, error)
 
 
 
-
-
-
 // Forum Editor Functions
 
 
 $( document ).ready(function() {
+	initThread();
 
-    $(".editorDropdown").hover(function(e) {
-    	e.stopPropagation();
-        $(this).children("div.editorSubMenu").slideDown(200);
-    }, function(e) {
-    	e.stopPropagation();
-        $(this).children("div.editorSubMenu").slideUp(200).clearQueue();
-    });
+  $(".editorDropdown").hover(function(e) {
+  	e.stopPropagation();
+      $(this).children("div.editorSubMenu").slideDown(200);
+  }, function(e) {
+  	e.stopPropagation();
+      $(this).children("div.editorSubMenu").slideUp(200).clearQueue();
+  });
 
 
-    $( document ).tooltip();
-    
+  $( document ).tooltip();
 });
 
 function writeText()

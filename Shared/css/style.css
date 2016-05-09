@@ -647,7 +647,7 @@ header td {
 	font-family: "Comic Sans MS", "Comic Sans";
 	color:gray;
 	margin-top:5px;
-	-webkit-user-select: none; /* Chrome/Safari */        
+	-webkit-user-select: none; /* Chrome/Safari */
 -moz-user-select: none; /* Firefox */
 -ms-user-select: none; /* IE10+ */
 }
@@ -1533,19 +1533,11 @@ input.new-item-button:hover {
   box-sizing: border-box;
   clear: both;
   width: 100%;
-  padding: 20px;
+  padding: 5px 10px 5px 10px;
+	overflow: hidden;
 }
 
-.commentInput {
-  font-size: 0.9em;
-  box-sizing: border-box;
-  padding: 10px;
-  height: 100px;
-  width: 100%;
-  resize: none;
-}
-
-input.commentSubmitButton {
+#commentSubmitButton {
 	background-color: buttonface;
 }
 
@@ -1695,12 +1687,6 @@ input.commentSubmitButton {
   box-sizing: border-box;
   width: 100%;
 }
-
-
-
-
-
-
 
 #createThreadOptions {
   float: left;
@@ -1877,7 +1863,7 @@ input.commentSubmitButton {
 /* Dropdown Menus */
 
 
-.editorDropdownLink { 
+.editorDropdownLink {
     color:#044264;
     font-size:11px;
     font-weight:bold;
@@ -1887,7 +1873,7 @@ input.commentSubmitButton {
 ul#editorBarMenu {
     margin: 0; padding: 0;
     width: 100%;
-    
+
     font-size: 1.1em;
 }
 
@@ -1912,7 +1898,7 @@ ul#editorBarMenu li .editorSubMenu {
     width: 150px;
     z-index:999;
     text-align: center;
- 
+
 }
 
 
@@ -1929,7 +1915,7 @@ ul#editorBarMenu li .editorSubMenu {
 	color: black;
 }
 
-ul#editorBarMenu li .single { 
+ul#editorBarMenu li .single {
     width:150px !important;
 }
 
@@ -1941,7 +1927,7 @@ ul#editorBarMenu li .editorSubMenu ul {
 
 ul#editorBarMenu li .editorSubMenu li {
     width:135px;
-    margin:0; 
+    margin:0;
     padding:5px 10px 0;
 }
 
@@ -1975,7 +1961,7 @@ ul#editorBarMenu li .editorSubMenu li {
 .allSettings{
 	overflow: auto;
 	padding-bottom: 20px;
-	
+
 	/* Box shadow */
 	-moz-box-shadow: 0 0 5px #888;
 	-webkit-box-shadow: 0 0 5px#888;

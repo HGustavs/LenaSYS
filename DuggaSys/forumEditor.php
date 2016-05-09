@@ -16,7 +16,7 @@
                 <li><h2>Heading 2</h2></li>
                 <li><h3>Heading 3</h3></li>
             </ul>
-        </div>                
+        </div>
     </li>
 </ul>
 <svg aria-hidden="true" class="octicon octicon-bold editorMarkdownIcon" height="16" version="1.1" viewBox="0 0 10 16" width="10" title="Test">
@@ -31,5 +31,5 @@
 </div>
 <div id="editorDescrWrapper">
   <textarea id="editorDescr" name="threadDescr" placeholder="Description"></textarea>
-  <div id="editorPreviewText" name="threadDescr" placeholder="Preview" disabled></div>
+  <div id="editorPreviewText" class="descbox" name="threadDescr" placeholder="Preview" disabled></div>
 </div>

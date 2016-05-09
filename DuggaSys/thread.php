@@ -1,7 +1,5 @@
  <?php
 
-
-
 session_start();
 include_once "forumservice.php";
 
@@ -38,13 +36,6 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-      initThread();
-    });
-  </script>
-
 </head>
 <body>
 	<?php
@@ -95,16 +86,16 @@ if (file_exists("../.git/refs/heads/master")) {
     <div id="threadComments"></div>
 
     <?php
-    if ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op") {
+    if (($threadId && $threadId !== "UNK") && ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op")) {
       echo "<div class='threadMakeComment'>";
-  			echo "<div class='makeCommentHeader'>";
-  				echo "Comment";
-  			echo "</div>";
-  			echo "<div class='makeCommentInputWrapper'>";
-  				echo "<textarea class='commentInput' name='commentInput' placeholder='Leave a comment' onkeyup='checkComment()'></textarea>";
-  				echo "<input class='submit-button commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
-  			echo "</div>";
-  		echo "</div>";
+      echo  "<div class='makeCommentHeader'>";
+      echo    "Comment";
+      echo  "</div>";
+      echo  "<div class='makeCommentInputWrapper'>";
+      include "forumEditor.php";
+      echo "<input class='submit-button' id='commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
+      echo  "</div>";
+      echo "</div>";
     }
     ?>
 
@@ -117,12 +108,7 @@ if (file_exists("../.git/refs/heads/master")) {
         <div id="createThreadFormWrapper">
         <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
 
-
-
-        <?php include_once "forumEditor.php"; ?>
-
-
-
+        <?php include "forumEditor.php"; ?>
 
           <div id="createThreadOptions">
             <div class="createThreadOptionLabel">Course:</div>
