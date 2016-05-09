@@ -721,7 +721,8 @@ function processLogin() {
 							$.ajax({
 								type:"POST",
 								url: "../Shared/allowCookiesForUser.php",
-								success:function(data) {								
+								success:function(data) {	
+									location.reload();								
 								},
 								error:function() {
 									console.log("error");
@@ -732,8 +733,7 @@ function processLogin() {
 						else{
 							processLogout();
 						}
-					}	
-					location.reload();			
+					}			
 				}else{
 					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
