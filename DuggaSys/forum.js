@@ -327,9 +327,8 @@ function createThreadSuccess(data)
 function getcommentreply(event, commentid)
 {
 	var target = event.target;
-	console.log(target);
 	var text = $(target).parent().prev().children().first().clone().children().remove().end().text();
-	//console.log(text);
+	text = text.replace(/(\r\n|\n|\r)/g,"");
 	text = "^ " + text + " ^"  + "\r\n";
 	//console.log(text);
 	//document.write(text);
