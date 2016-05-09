@@ -135,9 +135,55 @@ function loadBrowserPercentage() {
 }
 
 function loadServiceUsage() {
-	loadAnalytics("serviceUsage", function(data) {
-		$('#analytic-info').append("<p>TODO: line chart with interaction</p>");
-	});
+	resetAnalyticsChart();
+	$('#analytic-info').empty();
+	$('#analytic-info').append("<p>Service usage</p>");
+
+	var inputDateFrom = $('<input type="text"></input>')
+		.datepicker({
+			dateFormat: "yy-mm-dd"
+		})
+		.datepicker("setDate", "-1m")
+		.appendTo($('#analytic-info'));
+
+	var inputDateTo = $('<input type="text"></input>')
+		.datepicker({
+			dateFormat: "yy-mm-dd"
+		})
+		.datepicker("setDate", "+1d")
+		.appendTo($('#analytic-info'));
+
+	var selectInterval = $("<select></select>")
+		.append('<option value="hourly">Hourly</option>')
+		.append('<option value="daily" selected>Daily</option>')
+		.append('<option value="weekly">Weekly</option>')
+		.append('<option value="monthly">Monthly</option>')
+		.appendTo($('#analytic-info'));
+
+	function updateServiceUsage() {
+		$.ajax({
+			url: "analytictoolservice.php",
+			type: "POST",
+			dataType: "json",
+			data: {
+				query: "serviceUsage",
+				start: inputDateFrom.val(),
+				end: inputDateTo.val(),
+				interval: selectInterval.val()
+			},
+			success: function(data) {
+				resetAnalyticsChart();
+				$('#content > pre').remove();
+				$('#content').append("<pre>" + JSON.stringify(data, null, 2) + "</pre>");
+			}
+		});
+	}
+
+	inputDateFrom.change(updateServiceUsage);
+	inputDateTo.change(updateServiceUsage);
+	selectInterval.change(updateServiceUsage);
+
+	updateServiceUsage();
 }
 
 function loadServiceAvgDuration() {
