@@ -36,7 +36,7 @@ $debug="NONE!";
 // Services
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	if(strcmp($opt,"DELFILE")===0){
+	if(strcmp($opt,"DELFILE")===0 && isSuperUser($userid)){
 		// Remove from database
 		$querystring='DELETE FROM fileLink WHERE fileid=:fid';
 		$query = $pdo->prepare($querystring);
@@ -54,6 +54,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 		// Remove from filesystem? Only for local files ... Course-wide and Global files could be used elsewhere
 		// TODO:		
+	}
+	else if(strcmp($opt,"DELFILE")===0){
+		$debug="You must be a super user to delete files.";
 	}
 }
 
