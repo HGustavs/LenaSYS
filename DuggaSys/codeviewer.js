@@ -163,6 +163,9 @@ function returned(data)
 			
 			// Render code
 			rendercode(boxcontent,boxid,boxwordlist,boxfilename);
+
+			// set font size
+			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
 		}else if(boxtype === "DOCUMENT"){
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
@@ -1245,7 +1248,6 @@ function popoverbox(titleData)
 // Requires tokens created by a cockford-type tokenizer
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
-
 function rendercode(codestring,boxid,wordlistid,boxfilename)
 {
   var destinationdiv = "box" + boxid;
@@ -1270,8 +1272,8 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 		}
 	}
 	tokenize(codestring,"<>+-&","=>&:");
-			
-	// Iterate over token objects and print kind of each token and token type in window 
+
+	// Iterate over token objects and print kind of each token and token type in window
 	printout= $("#"+destinationdiv);
 	str="";
 	cont="";
@@ -1456,9 +1458,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	// Print out rendered code and border with numbers
 	printout.html(createCodeborder(lineno,improws) + str);	
 	
-
-		//css part
-	
+	//css part
 	pid="";
 	var iwcounter=0;
 	for(i=0;i<tokens.length;i++){
