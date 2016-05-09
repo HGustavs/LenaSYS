@@ -21,6 +21,7 @@ time, mark, audio, video {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
+
 .listbar{
 	margin:0px auto;
 	background-color: #614875;
@@ -29,29 +30,36 @@ time, mark, audio, video {
 	padding-top:1px;
 	height:31px;width:100%;padding:2px;
 }
+
 table {
 	border-collapse: collapse;
 }
+
 th, td {
 	padding: 0;
 }
+
 h1 {
 	color: #fff;
 	font-size: 1.8em;
 	line-height: 1.4em;
 }
+
 h2 {
 	font-size: 1.5em;
 	line-height: 1.5em;
 }
+
 h3 {
 	font-size: 1.3em;
 	line-height: 1.3em;
 }
+
 h4 {
 	font-size: 1.2em;
 	line-height: 1.5em;
 }
+
 hr {
 	border: 0;
 	border-bottom: 1px dashed #ccc;
@@ -275,7 +283,6 @@ hr {
 	color: #000;
 }
 
-
 #Sectionlist .hi:hover {
 	background-color:#c6cdb8;
 	color: #000;
@@ -306,7 +313,6 @@ hr {
 	border-radius:11px;
 	/*border:1px solid #000;*/
 }
-
 
 .YellowLight{
     width:22px;
@@ -359,7 +365,7 @@ p {
 
 /* ---- ---- ---- --- Files page --- ---- ---- ---- */
 
-.fileed-row-wrapper{
+.fileed-row-wrapper {
 	margin-top: 10px;
 }
 
@@ -475,8 +481,7 @@ header td {
 	text-align: center;
 }
 
-#div2
-{
+#div2{
 	width:100%;
 	position: fixed;
 	top: 50px;
@@ -484,7 +489,6 @@ header td {
 	left:0px;
 	background:#fff;
 }
-
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -502,6 +506,7 @@ header td {
 	background-color: #ccc;
 	border: 2px solid #999;
 }
+
 /* Style for button, reuseble */
 #markButton{
 	display:block;
@@ -577,7 +582,11 @@ header td {
 	margin-left: -178px;
 	box-shadow:2px 2px 4px #000;
 }
-.receiptBox select {font-size:14px;float:right;margin-right:4px;}
+.receiptBox select {
+	font-size:14px;
+	float:right;
+	margin-right:4px;
+}
 
 .receiptBox h3 {
 	font-size: 14px;
@@ -587,9 +596,11 @@ header td {
 	float: left;
 	width: 50%;
 }
+
 .recepitBox form {
 	padding: 10px;
 }
+
 .recepitBox .text {
 	font-weight: bold;
 	font-size: 0.8em;
@@ -612,8 +623,8 @@ header td {
 	color:gray;
 	margin-top:5px;
 	-webkit-user-select: none; /* Chrome/Safari */        
--moz-user-select: none; /* Firefox */
--ms-user-select: none; /* IE10+ */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
 }
 
 .loginBox {
@@ -652,8 +663,20 @@ header td {
 	clear: both;
 }
 
-.loginTransparent img{height: 50px; width: auto; display: inline-block; vertical-align: middle; margin-left: 20px; padding: 5px 0px;}
-.loginTransparent p{display: inline-block; vertical-align: middle; padding-left: 15px;}
+.loginTransparent img{
+	height: 50px;
+	width: auto;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 20px;
+	padding: 5px 0px;
+}
+
+.loginTransparent p{
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 15px;
+}
 
 .loginBox textarea{
     max-width: 100%;
@@ -777,6 +800,7 @@ header td {
 /*  padding-top: 15px; */
 
 }
+
 .loginBoxheader h3 {
 	font-size: 14px;
 	margin-top: 10px;
@@ -785,6 +809,7 @@ header td {
 	float: left;
 	width: 50%;
 }
+
 .loginBoxheader div {
 	padding: 2px 20px;
 	position: absolute;
@@ -797,6 +822,7 @@ header td {
 	font-weight: bold;
 	height: 21px;
 }
+
 .loginBoxheader div:hover {
 	background-color: #ce3d3d;
 }
@@ -804,6 +830,7 @@ header td {
 .loginBox form {
 	padding: 10px;
 }
+
 .loginBox .text {
 	font-weight: bold;
 	font-size: 0.8em;
@@ -858,9 +885,20 @@ header td {
 	margin-top: 10%;
 	color: #000;
 }
-.errorBlock h1{font-size: 3em; font-weight: 200;}
-.errorBlock h2{text-transform: capitalize;}
-.errorBlock p{margin-bottom: 50px;}
+
+.errorBlock h1{
+	font-size: 3em;
+	font-weight: 200;
+}
+
+.errorBlock h2{
+	text-transform: capitalize;
+}
+
+.errorBlock p{
+	margin-bottom: 50px;
+}
+
 .errorBlock a{
 	text-decoration: none;
 	margin: 0 auto;
@@ -931,10 +969,6 @@ header td {
 	box-sizing: border-box;
 }
 
-input{
-
-}
-
 input[type="button"]{
    -webkit-appearance: none;
 	-webkit-border-radius:0;
@@ -1001,31 +1035,89 @@ input.new-item-button:hover {
 	text-align: right;
 }
 
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;}
+.list {
+	width:100%;
+	padding:1px;
+	border-left:2px solid #dbd0d8;
+	border-bottom:2px solid #dbd0d8;
+	margin-top:20px;
+}
 
-.list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
-.list th {background:#614875; color:#fff;line-height:28px;}
+.list td {
+	border-right:2px solid #dbd0d8;
+	line-height:28px;
+	padding-left:8px;
+}
 
-.innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
-.innertable td {color:#000;line-height:28px;border:none;}
+.list th {
+	background:#614875;
+	color:#fff;
+	line-height:28px;
+}
 
-.list tr:hover { background-color: #dbd0d8; }
+.innertable {
+	background:#fff;
+	box-shadow:2px 3px 2px #a09098 inset;
+	border-top: 2px solid #dbd0d8;
+	border-bottom: 2px solid #dbd0d8;
+}
+
+.innertable td {
+	color:#000;
+	line-height:28px;
+	border:none;
+}
+
+.list tr:hover {
+	background-color: #dbd0d8;
+}
 
 .list--nomargin {
 	margin: 0!important;
 }
 
-.pointer{cursor: pointer;}
+.pointer{
+	cursor: pointer;
+}
 
-.markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 12px;}
+.markinglist {
+	width:100%;
+	padding:1px;
+	border-left:2px solid #dbd0d8;
+	border-bottom:2px solid #dbd0d8;
+	margin-top:20px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 12px;
+}
 
-.markinglist td {border-right:2px solid #dbd0d8;;padding-left:8px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 10px; }
-.markinglist th {background:#614875; color:#fff;font-style: italic;}
+.markinglist td {
+	border-right:2px solid #dbd0d8
+	;padding-left:8px;
+	font-family: hack,"Lucida Console", Monaco, monospace; font-size: 10px;
+}
 
-.markinginnertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 12px;}
-.markinginnertable td {color:#000;border:none; font-family: hack,"Lucida Console", Monaco, monospace; font-size: 10px; }
+.markinglist th {
+	background:#614875;
+	color:#fff;
+	font-style: italic;
+}
 
-.markinglist tr:hover { background-color: #dbd0d8; }
+.markinginnertable {
+	background:#fff;
+	box-shadow:2px 3px 2px #a09098 inset;
+	border-top: 2px solid #dbd0d8;
+	border-bottom: 2px solid #dbd0d8;
+	font-family: hack,"Lucida Console", Monaco, monospace; font-size: 12px;
+}
+
+.markinginnertable td {
+	color:#000;
+	border:none;
+	font-family: hack,"Lucida Console", Monaco, monospace;
+	font-size: 10px;
+}
+
+.markinglist tr:hover {
+	background-color: #dbd0d8;
+}
 
 .Trow{
 	font-family: "Lucida Console", Monaco, monospace;
@@ -1053,8 +1145,7 @@ input.new-item-button:hover {
 }
 
 /* Clearfix styles */
-.clearfix:before,
-.clearfix:after {
+.clearfix:before, .clearfix:after {
   content: "";
   display: table;
 }
@@ -1122,6 +1213,7 @@ input.new-item-button:hover {
 .UmvSearchInput{
 	 margin-top:13px;
  }
+
  .UmvButton {
 	cursor:pointer;
 	background-color:#FFFFFF;
@@ -1135,6 +1227,7 @@ input.new-item-button:hover {
 	border-radius:0.5em;
 	font-size:0.75em;
 }
+
  .UmvButton:hover {
 	 background-color:#F5F0F5;
 }
@@ -1179,6 +1272,7 @@ input.new-item-button:hover {
 	position:relative;
 	top:-5px;
 }
+
 .submit-button {
 	background-color:#614875;
 	border:0px;
@@ -1220,9 +1314,11 @@ input.new-item-button:hover {
 	-ms-transition: background-color 0.2s ease-in-out;
 	transition: background-color 0.2s ease-in-out;
 }
+
 .switch.checked {
 	background-color: #50a750;
 }
+
 .switch input[type="checkbox"] {
 	cursor: pointer;
 	height: 10px;
@@ -1238,9 +1334,11 @@ input.new-item-button:hover {
 	background: #000;
 	display: none;
 }
+
 .switch.checked input[type="checkbox"] {
 	left: 34px;
 }
+
 .switch input:before {
 	background: #fff;
 	background: -moz-linear-gradient(top, #fff 0%, #f0f0f0 100%);
@@ -1259,6 +1357,7 @@ input.new-item-button:hover {
 	left: -9px;
 	width: 26px;
 }
+
 .switch input:after {
 	background: #f0f0f0;
 	background: -moz-linear-gradient(top, #f0f0f0 0%, #fff 100%);
@@ -1274,12 +1373,13 @@ input.new-item-button:hover {
 	position: absolute;
 	width: 12px;
 }
-.switch .icon-ok,
-.switch .icon-remove {
+
+.switch .icon-ok, .switch .icon-remove {
 	line-height: 28px;
 	text-shadow: 0 -2px 0 rgba(0,0,0,0.2);
 	margin: 0 9px;
 }
+
 .switch .icon-ok {
 	float: left;
 }
