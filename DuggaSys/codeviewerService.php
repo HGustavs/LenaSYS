@@ -182,14 +182,16 @@
 				$boxContent = $_POST['boxcontent'];
 				$wordlist = $_POST['wordlist'];
 				$filename = $_POST['filename'];
+				$fontsize = $_POST['fontsize'];
 				$addedRows = $_POST['addedRows'];
 				$removedRows = $_POST['removedRows'];
 
-				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");	
+				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");	
 				$query->bindParam(':boxtitle', $boxTitle);
 				$query->bindParam(':boxcontent', $boxContent);
 				$query->bindParam(':wordlist', $wordlist);
 				$query->bindParam(':filename', $filename);
+				$query->bindParam(':fontsize', $fontsize);
 				$query->bindParam(':boxid', $boxId);
 				$query->bindParam(':exampleid', $exampleId);
 				$query->execute();
@@ -374,7 +376,7 @@
 		// Collects information for each box
 		$box=array();   
 		// Array to be filled with the primary keys to all boxes of the example
-		$queryy = $pdo->prepare( "SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
+		$queryy = $pdo->prepare("SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment, fontsize FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
 		$queryy->bindParam(':exampleid', $exampleId);
 		$queryy->execute();
 		while ($row = $queryy->FETCH(PDO::FETCH_ASSOC)){
@@ -425,7 +427,7 @@
 					$content.="File: ".$filename." not found.";
 			}
 				
-			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename']));
+			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename'], $row['fontsize']));
 		}
 
 		$array = array(
