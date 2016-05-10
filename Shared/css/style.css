@@ -1972,6 +1972,22 @@ ul#editorBarMenu li .editorSubMenu li {
 	padding: 1%;
 }
 
+.settingdb {
+	float: left;
+	width: 48%;
+	background: #f2f2f2;
+	margin: 10px 1%;
+	padding: 1%;
+}
+.settingdb button {
+	border: solid 2px #614875;
+	background-color: #614875;
+	color: #ffffff;
+	margin-top: 10px; 
+	border-radius: 5px;
+	font-size: 80%; 
+}
+
 .allSettings{
 	overflow: auto;
 	padding-bottom: 20px;

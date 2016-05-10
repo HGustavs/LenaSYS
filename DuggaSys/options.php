@@ -56,7 +56,7 @@ pdoConnect();
 					</label>
 				</div>
 				
-				<div class="setting">
+				<div class="setting" style="margin-bottom:20px;">
 					<p>Fourth round trip logging</p>
 					<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
 						<i class="icon-ok"></i>
@@ -64,7 +64,26 @@ pdoConnect();
 						<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
 					</label>
 				</div>
+				
+				<div id="Sectionlist" style="margin-bottom:20px;">
+				<div class="course">
+					<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Database</div>
+				</div>
 			</div>
+			<div class="settingdb">
+				<form id="theform">
+					<p>Database Name</p>
+					<input type="text" name="database">
+					<p>User Name</p>
+					<input type="text" name="user-name">
+					<p>Password</p>
+					<input type="text" name="password"> 
+					<p>Database Host</p>
+					<input type="text" name="host"> 
+				</form>
+				<button type="submit" form="theform" value="Submit">Submit</button>
+			</div>
+		</div>
 	</div>
 	<!-- content END -->
 	
