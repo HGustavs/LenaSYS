@@ -673,6 +673,19 @@ function AJAXService(opt,apara,kind)
 				error:error
 			});
 			break;
+		case "EDITCOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getComments(data);
+					sendConfirmation("forumservice.php");
+				},
+				error:error
+			});
+			break;
 	}
 }
 

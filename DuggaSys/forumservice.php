@@ -287,6 +287,21 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$accessDenied = "You do not have permisson to edit this thread.";
 	}
+}else if(strcmp($opt,"EDITCOMMENT")===0){
+	// Access check
+	if ($threadAccess==="op" || $threadAccess==="super"){
+		$query = $pdo->prepare("UPDATE threadcomment SET text=:text, datecreated=current_timestamp WHERE commentid=:commentid");
+		//INSERT INTO threadcomment (threadid, uid, text, datecreated, replyid) VALUES (:threadID, :uid, :text, current_timestamp, :commentid)");
+		$query->bindParam(':commentid', $commentid);
+		$query->bindParam(':text', $text);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}
+	}else{
+		$accessDenied = "You do not have permisson to edit this thread.";
+	}
 }
 
 

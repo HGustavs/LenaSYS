@@ -94,6 +94,7 @@ if (file_exists("../.git/refs/heads/master")) {
       echo  "<div id='makeCommentInputWrapper'>";
       include "forumEditor.php";
       echo "<input class='submit-button' id='commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
+	  echo "<input class='submit-button' id='endReplyButton' style='background-color: #C75050; visibility: hidden;'type='button' value='Cancel Reply' onclick='endReplyComment();'>";
       echo  "</div>";
       echo "</div>";
     }
