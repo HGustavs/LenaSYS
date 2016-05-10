@@ -1,9 +1,9 @@
 
-<div id="editorDescrOptions">
-  <button id="editorWriteButton" class="submit-button editorButton editorActiveButton" type="button" name="writeDescr" onclick="writeText()">Write</button>
-  <button id="editorPreviewButton" class="submit-button editorButton" type="button" name="previewDescr" onclick="previewText()">Preview</button>
+<div class="editorDescrOptions">
+  <button class="submit-button editorButton editorActiveButton editorWriteButton" type="button" name="writeDescr" onclick="writeText(event)">Write</button>
+  <button class="submit-button editorButton editorPreviewButton" type="button" name="previewDescr" onclick="previewText(event)">Preview</button>
 
-  <ul id="editorBarMenu">
+  <ul class="editorBarMenu">
     <li class="editorDropdown editorMarkdownIcon">
         <div class="editorDropdownLink" >
           <svg aria-hidden="true" class="octicon octicon-text-size" height="16" version="1.1" viewBox="0 0 18 16" width="18">
@@ -29,7 +29,7 @@
 </svg>
 
 </div>
-<div id="editorDescrWrapper">
-  <textarea id="editorDescr" name="threadDescr" placeholder="Description"></textarea>
-  <div id="editorPreviewText" class="descbox" name="threadDescr" placeholder="Preview" disabled></div>
+<div class="editorDescrWrapper">
+  <textarea class="editorDescr" name="threadDescr" placeholder="Description"></textarea>
+  <div class="editorPreviewText descbox" name="threadDescr" placeholder="Preview" disabled></div>
 </div>

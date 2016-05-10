@@ -87,11 +87,11 @@ if (file_exists("../.git/refs/heads/master")) {
 
     <?php
     if (($threadId && $threadId !== "UNK") && ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op")) {
-      echo "<div class='threadMakeComment'>";
-      echo  "<div class='makeCommentHeader'>";
+      echo "<div id='threadMakeComment'>";
+      echo  "<div id='makeCommentHeader'>";
       echo    "Comment";
       echo  "</div>";
-      echo  "<div class='makeCommentInputWrapper'>";
+      echo  "<div id='makeCommentInputWrapper'>";
       include "forumEditor.php";
       echo "<input class='submit-button' id='commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
       echo  "</div>";
