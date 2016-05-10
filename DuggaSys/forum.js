@@ -334,10 +334,11 @@ function getCommentReply(event, commentid)
 {
 	var target = event.target;
 	var text = $(target).parent().prev().children().first().clone().children().remove().end().text();
+	text = text.replace(/(\r\n|\n|\r)/g,"");
 	text = "^ " + text + " ^" + "\r\n";
 	console.log(text);
 	$("#threadMakeComment").find('.editorDescr').first().val(text);
-  $("#commentSubmitButton").attr("onclick", "makeComment("+commentid+")");
+	$("#commentSubmitButton").attr("onclick", "makeComment("+commentid+")");
 }
 
 function makeCommentSuccess()
