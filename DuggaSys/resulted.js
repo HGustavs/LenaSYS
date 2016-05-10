@@ -36,7 +36,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 		closeWindows();
 	
 		var pressed = e.target.className;
-		var btnpressed = event.target.classList[0];
+		var btnpressed = e.target.classList[0];
 		if (pressed === "Uc") {
 			$("#gradeUconf").css("display","block");
 			$('#gradeUconf').on('click', function(event){
