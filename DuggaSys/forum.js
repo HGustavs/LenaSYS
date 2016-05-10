@@ -332,9 +332,13 @@ function editUI(event, commentid)
 	$("#endReplyButton").css("visibility", "hidden");
 	var target = event.target;
 	var text = $(target).parent().prev().children().text();
-	var yourComment= $(target).parent().prev().children().first().clone().children().remove().end().text();
-	text = text.replace(yourComment," ^" + yourComment);
-	text = "^ " + text;
+	var yourComment= $(target).parent().prev().children().first().clone().children().remove().end().html();
+	if(text === yourComment){
+		
+	}
+	else{
+		text = "^ " + text.replace(yourComment," ^" + yourComment);
+	}
 	
 	$("#threadMakeComment").find('.editorDescr').first().val(text);
 	$("#commentSubmitButton").attr("onclick", "editComment("+commentid+")");
@@ -373,7 +377,6 @@ function getCommentReply(event, commentid, username)
 	text = "^ " + text + " ^" + "\r\n";
 	console.log(text);
 	$("#threadMakeComment").find('.editorDescr').first().val(text);
-	$("#commentSubmitButton").attr("onclick", "endReplyComment("+commentid+")");
 }
 
 function endReplyComment()
