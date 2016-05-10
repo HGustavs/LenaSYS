@@ -88,27 +88,6 @@ pdoConnect();
 						<button type="submit" form="theform" value="Submit">Submit</button>
 					</div>
 				</div>
-			<div class="settingsGroup">	
-					<div id="Sectionlist" style="margin-bottom:20px;">
-						<div class="course">
-							<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Database</div>
-						</div>
-					</div>
-					
-					<div class="setting">
-						<form id="theform">
-							<p>Database Name</p>
-							<input type="text" name="database">
-							<p>User Name</p>
-							<input type="text" name="user-name">
-							<p>Password</p>
-							<input type="text" name="password"> 
-							<p>Database Host</p>
-							<input type="text" name="host"> 
-						</form>
-						<button type="submit" form="theform" value="Submit">Submit</button>
-					</div>
-				</div>
 			
 			</div>
 			
