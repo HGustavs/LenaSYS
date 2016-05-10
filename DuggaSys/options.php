@@ -88,8 +88,6 @@ pdoConnect();
 						<button type="submit" form="theform" value="Submit">Submit</button>
 					</div>
 				</div>
-			</div>
-			
 			<div class="settingsGroup">	
 					<div id="Sectionlist" style="margin-bottom:20px;">
 						<div class="course">
@@ -111,7 +109,9 @@ pdoConnect();
 						<button type="submit" form="theform" value="Submit">Submit</button>
 					</div>
 				</div>
+			
 			</div>
+			
 	</div>
 	<!-- content END -->
 	

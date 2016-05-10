@@ -1966,8 +1966,7 @@ ul#editorBarMenu li .editorSubMenu li {
 }
 
 #settingsWrapper {
-	display: flex;
-	display: -webkit-flex;
+	width: 100%;
 }
 
 .setting {
@@ -2003,6 +2002,8 @@ ul#editorBarMenu li .editorSubMenu li {
 	margin-left: 20px;
 	float: left;
 	width: 48%;
+	min-width: 400px;
+	min-height: 350px;
 	
 	/* Box shadow */
 	-moz-box-shadow: 0 0 5px #888;
@@ -2014,8 +2015,8 @@ ul#editorBarMenu li .editorSubMenu li {
 	padding-top: 0px;
 }
 
-@media all and (max-width: 900px) {
-	.setting {
-		width: 46%;
+@media all and (max-width: 1050px) {
+	.settingsGroup {
+		width: 95%;
 	}
 }
