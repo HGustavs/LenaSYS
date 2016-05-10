@@ -15,7 +15,7 @@ $(document).on('click','.replyCommentButton', function(event) {
 		event.preventDefault();
 		var target = "#" + this.getAttribute('data-target');
 		$('html, body').animate({
-			scrollTop: $('.makeCommentInputWrapper').offset().top -110
+			scrollTop: $('#makeCommentInputWrapper').offset().top -110
 		}, 1000);
 });
 
@@ -27,7 +27,7 @@ function initThread()
 		$("#createThreadWrapper").hide();
 
 		getThread();
-		$("#editorDescr").on("keyup", checkComment);
+		$(".editorDescr").on("keyup", checkComment);
 	}
 	else {
 		createThreadUI();
@@ -74,7 +74,7 @@ function createThread()
 {
 	var cid = $("#createThreadCourseList").val();
 	var topic = $("#threadTopicInput").val();
-	var description = $("#editorDescr").val();
+	var description = $(".editorDescr").first().val();
 	var accessList = new Array();
 	if ($('input:radio[name=threadAccessRadio]:checked').val()==="public") {
 		accessList = false;
@@ -94,15 +94,17 @@ function createThread()
 
 function makeComment(commentid)
 {
-	var commentcontent="";
+	var commentcontent = "";
 	$(document).ready(function() {
     var $myDiv = $('.repliedcomment');
 		if ( $myDiv.length){
-			commentcontent= $(".repliedcomment").html();
+			commentcontent = $(".repliedcomment").html();
 		}
 	});
-	var text = commentcontent + $("#editorDescr").val();
-	if(text.length > 0)
+	var editorDescr = $("#makeCommentInputWrapper").find(".editorDescr");
+	var editorPreview = $("#makeCommentInputWrapper").find(".editorPreviewText");
+	var text = commentcontent + $(editorDescr).val();
+	if(text)
 	{
 		AJAXService("MAKECOMMENT",{threadId:querystring["threadId"],text:text,commentid:commentid},"MAKECOMMENT");
 	}
@@ -110,13 +112,16 @@ function makeComment(commentid)
 	{
 
 	}
-	$('#editorDescr').val("");
+	$(editorDescr).val("");
+	$(editorPreview).html(" ");
+
 	$("#commentSubmitButton").attr("onclick", "makeComment()");
 }
 
 function checkComment()
 {
-	var text = $("#editorDescr").val();
+	var editorDescrElem = $("#makeCommentInputWrapper").find(".editorDescr");
+	var text = $(editorDescrElem).val();
 
 	if(text.length > 0)
 	{
@@ -154,14 +159,12 @@ function editThread(data)
 	var array = data.split(',');
 	//console.log(array);
 
-
-	var topic = "<input type='text' name='topic' id='editTopic' style='margin:0px;height:25px;opacity:0.8;'>";
-
+	var topic = "<input type='text' name='topic' id='threadTopicInput'>";
 	$(".threadTopic").html(topic);
-	document.getElementById("editTopic").value = array[3];
 
-	var description = "<textarea id='editDescription' name='description' style='float:left;width:100%;height:auto;min-height:200px;'></textarea>";
-	$("#threadDescr").html(description);
+	$("#threadTopicInput").val(array[3]);
+
+	$("#threadDescr").load("forumEditor.php");
 	document.getElementById("editDescription").value = array[6];
 
 	var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:120px;float:left;margin-top:30px;'>";
@@ -225,23 +228,33 @@ function returnedThread(data)
 
 		$(".threadTopic").html(data["thread"]["topic"]);
 		$("#threadDescr").html(parseMarkdown(data["thread"]["description"]));
-		var str = "Created <span id='threadDate'>";
-		str += 	data["thread"]["datecreated"].substring(0, 16);
-
-		str += "</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid'])+"</span>";
+		var str = "";
 		if(!(data["thread"]["datecreated"]===data["thread"]["lastedited"])){
-			str += "<br/>Edited <span id='threadEditedDate'>"+data["thread"]["lastedited"];
+			str +=
+			"<span id='threadEditedDetail'>" +
+				"Edited <span id='threadEditedDate'>"+data["thread"]["lastedited"].substring(0, 16) +
+				"</span>" +
+			"</span>";
 		}
+
+		str +=
+		"<span id='threadCreatedDetail'>" +
+			"Created <span id='threadDate'>" +
+			data["thread"]["datecreated"].substring(0, 16) +
+			"</span> by <span id='threadCreator'>"+getUsername(data['thread']['uid']) +
+			"</span>" +
+		"</span>";
+
 		$("#threadDetails").html(str);
 
-		if(data['thread']['locked']==1){
+		if(data['thread']['locked'] === "1"){
 			//var str = "<p style='margin-left:20px;'>This thread has been locked and can not be commented on.</p>";
 			//$(".threadMakeComment").html(str);
 			var str = "<span style='padding-right:30px;'><i class='fa fa-lock fa-lg fa-spin' style='color:#ff4d4d' aria-hidden='true'></i></span>";
 			$(".threadLockedIcon").html(str);
-			$(".threadMakeComment").hide();
+			$("#threadMakeComment").slideUp();
 		}else{
-			$(".threadMakeComment").show();
+			$("#threadMakeComment").slideDown();
 		}
 	}
 }
@@ -323,7 +336,7 @@ function getCommentReply(event, commentid)
 	var text = $(target).parent().prev().children().first().clone().children().remove().end().text();
 	text = "^ " + text + " ^" + "\r\n";
 	console.log(text);
-	$('#editorDescr').val(text);
+	$("#threadMakeComment").find('.editorDescr').first().val(text);
   $("#commentSubmitButton").attr("onclick", "makeComment("+commentid+")");
 }
 
@@ -467,32 +480,37 @@ $( document ).ready(function() {
   $( document ).tooltip();
 });
 
-function writeText()
+function writeText(event)
 {
-	$("#editorPreviewButton").removeClass("editorActiveButton");
-	$("#editorWriteButton").addClass("editorActiveButton");
-	$("#editorPreviewText").hide();
-	$("#editorDescr").show();
+	var button = event.target;
+	$(button).parent().find(".editorPreviewButton").first().removeClass("editorActiveButton");
+	$(button).addClass("editorActiveButton");
+	$(button).parent().parent().find(".editorPreviewText").first().hide();
+	$(button).parent().parent().find(".editorDescr").first().show();
 }
 
-function previewText()
+function previewText(event)
 {
-	$("#editorWriteButton").removeClass("editorActiveButton");
-	$("#editorPreviewButton").addClass("editorActiveButton");
+	var button = event.target;
+	var writeButton = $(button).parent().find(".editorWriteButton").first();
+	var editorDescr = $(button).parent().parent().find(".editorDescr").first();
+	var editorPreview = $(button).parent().parent().find(".editorPreviewText").first();
 
+	$(writeButton).removeClass("editorActiveButton");
+	$(button).addClass("editorActiveButton");
 
 	// Parses text to preview
-	var parseText = parseMarkdown($("#editorDescr").val());
-
+	var parseText = parseMarkdown($(editorDescr).val());
+	console.log(parseText);
 	if(!parseText)
 	{
-		$("#editorPreviewText").html("Nothing to preview!");
+		$(editorPreview).html("Nothing to preview!");
 	}
 	else
 	{
-		$("#editorPreviewText").html(parseText);
+		$(editorPreview).html(parseText);
 	}
 
-	$("#editorDescr").hide();
-	$("#editorPreviewText").show();
+	$(editorDescr).hide();
+	$(editorPreview).show();
 }

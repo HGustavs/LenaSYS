@@ -1512,7 +1512,12 @@ input.new-item-button:hover {
   font-size: 14px;
 }
 
-.threadMakeComment {
+#threadCreatedDetail, #threadEditedDetail {
+	clear: both;
+	float: right;
+}
+
+#threadMakeComment {
   clear:both;
   margin-top: 25px;
   padding-bottom: 15px;
@@ -1520,7 +1525,7 @@ input.new-item-button:hover {
   background-color: #eae8eb;
 }
 
-.makeCommentHeader {
+#makeCommentHeader {
   background-color: #927b9e;
   color: #fff;
   padding: 10px 25px;
@@ -1529,7 +1534,7 @@ input.new-item-button:hover {
   width: 100%;
 }
 
-.makeCommentInputWrapper {
+#makeCommentInputWrapper {
   box-sizing: border-box;
   clear: both;
   width: 100%;
@@ -1683,7 +1688,7 @@ input.new-item-button:hover {
 #threadTopicInput {
   padding: 10px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1em;
+  font-size: 16px;
   box-sizing: border-box;
   width: 100%;
 }
@@ -1769,7 +1774,7 @@ input.new-item-button:hover {
   *                                   FORUM EDITOR                               *
   * --------------================################================-------------- */
 
-#editorDescrOptions {
+.editorDescrOptions {
   margin-top: 10px;
   width: 99.8%;
   height: 30px;
@@ -1805,7 +1810,7 @@ input.new-item-button:hover {
   border-radius: 0;
 }
 
-#editorDescrWrapper {
+.editorDescrWrapper {
   box-sizing: border-box;
   clear: both;
   float: left;
@@ -1813,7 +1818,7 @@ input.new-item-button:hover {
   min-height: 110px;
 }
 
-#editorDescr {
+.editorDescr {
   padding: 10px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.8em;
@@ -1825,7 +1830,7 @@ input.new-item-button:hover {
 
 
 
-#editorWriteButton
+.editorWriteButton
 {
 
    margin-left: 10px;
@@ -1833,7 +1838,7 @@ input.new-item-button:hover {
 }
 
 
-#editorPreviewText
+.editorPreviewText
 {
 
   display: none;
@@ -1870,7 +1875,7 @@ input.new-item-button:hover {
     text-decoration:none;
 }
 
-ul#editorBarMenu {
+ul.editorBarMenu {
     margin: 0; padding: 0;
     width: 100%;
 
@@ -1880,7 +1885,7 @@ ul#editorBarMenu {
 
 
 /* sub menu class */
-ul#editorBarMenu li .editorSubMenu {
+ul.editorBarMenu li .editorSubMenu {
     -moz-border-radius-bottomleft:5px;
     -moz-border-radius-bottomright:5px;
     background:none repeat scroll 0 0 #ECF3F9;
@@ -1915,17 +1920,17 @@ ul#editorBarMenu li .editorSubMenu {
 	color: black;
 }
 
-ul#editorBarMenu li .single {
+ul.editorBarMenu li .single {
     width:150px !important;
 }
 
-ul#editorBarMenu li .editorSubMenu ul {
+ul.editorBarMenu li .editorSubMenu ul {
     float:left;
     width:160px;
     margin:7px 0;
 }
 
-ul#editorBarMenu li .editorSubMenu li {
+ul.editorBarMenu li .editorSubMenu li {
     width:135px;
     margin:0;
     padding:5px 10px 0;
