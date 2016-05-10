@@ -1970,9 +1970,17 @@ ul#editorBarMenu li .editorSubMenu li {
 	padding: 1%;
 	margin: 0 auto;
 }
-.settingsDiv { 
+.multipleSettings { 
 	margin: 0 auto;
+	display: flex;
+	display: -webkit-flex;
 }
+
+.multipleSettings .setting {
+	height: 80px;
+	padding: 1%;
+}
+
 .setting button {
 	border: solid 2px #614875;
 	background-color: #614875;
