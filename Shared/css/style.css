@@ -1965,11 +1965,13 @@ ul#editorBarMenu li .editorSubMenu li {
 }
 
 .setting {
-	float: left;
 	width: 21%;
 	background: #f2f2f2;
-	margin: 10px 1%;
 	padding: 1%;
+	margin: 0 auto;
+}
+.settingsDiv { 
+	margin: 0 auto;
 }
 .setting button {
 	border: solid 2px #614875;

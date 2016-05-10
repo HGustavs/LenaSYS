@@ -45,7 +45,7 @@ pdoConnect();
 					<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Loggning</div>
 				</div>
 			</div>
-			
+			<div class="settingsDiv">
 				<div class="setting">
 					<p>Mouse movement logging</p>
 					<label data-label="mouseMoveLogging" class="switch<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>">
@@ -64,7 +64,7 @@ pdoConnect();
 					</label>
 				</div>
 			</div>	
-			
+			</div>
 			<div class="settingsGroup">	
 				<div id="Sectionlist" style="margin-bottom:20px;">
 					<div class="course">
