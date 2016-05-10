@@ -1376,6 +1376,7 @@ input.new-item-button:hover {
 	font-size: 14px;
 	height: 26px;
 	margin-bottom: 12px;
+	margin: 0 auto;
 	position: relative;
 	width: 26px;
 	-webkit-transition: background-color 0.2s ease-in-out;
@@ -1971,9 +1972,9 @@ ul#editorBarMenu li .editorSubMenu li {
 
 .setting {
 	width: 25%;
-	background: #f2f2f2;
 	padding: 1%;
 	margin: 0 auto;
+	text-align: center;
 }
 .multipleSettings { 
 	margin: 0 auto;
