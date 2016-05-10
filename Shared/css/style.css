@@ -1991,6 +1991,7 @@ ul#editorBarMenu li .editorSubMenu li {
 .allSettings{
 	overflow: auto;
 	padding-bottom: 20px;
+	margin-bottom: 20px;
 	
 	/* Box shadow */
 	-moz-box-shadow: 0 0 5px #888;
