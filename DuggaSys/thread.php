@@ -159,8 +159,3 @@ if (file_exists("../.git/refs/heads/master")) {
 
 </body>
 </html>
-hp';
-	?>
-
-</body>
-</html>
