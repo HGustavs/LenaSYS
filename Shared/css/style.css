@@ -1980,7 +1980,7 @@ ul#editorBarMenu li .editorSubMenu li {
 	font-size: 80%; 
 }
 
-.allSettings{
+.settingsGroup{
 	overflow: auto;
 	padding-bottom: 20px;
 	margin-bottom: 20px;
@@ -1991,7 +1991,7 @@ ul#editorBarMenu li .editorSubMenu li {
 	box-shadow: 0 0 5px #888;
 }
 
-.allSettings #Sectionlist {
+.settingsGroup #Sectionlist {
 	padding-top: 0px;
 }
 

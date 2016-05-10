@@ -39,8 +39,7 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 		<div id="settingsToast"></div>
-			<div class="allSettings">
-			
+			<div class="settingsGroup">
 			<div id="Sectionlist" style="margin-bottom:20px;">
 				<div class="course">
 					<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Loggning</div>
@@ -66,7 +65,7 @@ pdoConnect();
 				</div>
 			</div>	
 			
-			<div class="allSettings">	
+			<div class="settingsGroup">	
 				<div id="Sectionlist" style="margin-bottom:20px;">
 					<div class="course">
 						<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Database</div>
