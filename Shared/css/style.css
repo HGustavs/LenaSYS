@@ -1964,8 +1964,13 @@ ul#editorBarMenu li .editorSubMenu li {
 	height: 35px;
 }
 
+#settingsWrapper {
+	display: flex;
+	display: -webkit-flex;
+}
+
 .setting {
-	width: 15%;
+	width: 25%;
 	background: #f2f2f2;
 	padding: 1%;
 	margin: 0 auto;
@@ -1994,6 +1999,9 @@ ul#editorBarMenu li .editorSubMenu li {
 	overflow: auto;
 	padding-bottom: 20px;
 	margin-bottom: 20px;
+	margin-left: 20px;
+	float: left;
+	width: 48%;
 	
 	/* Box shadow */
 	-moz-box-shadow: 0 0 5px #888;
