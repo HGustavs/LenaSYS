@@ -1974,7 +1974,7 @@ ul#editorBarMenu li .editorSubMenu li {
 
 .settingdb {
 	float: left;
-	width: 48%;
+	width: 21%;
 	background: #f2f2f2;
 	margin: 10px 1%;
 	padding: 1%;
@@ -2004,6 +2004,6 @@ ul#editorBarMenu li .editorSubMenu li {
 
 @media all and (max-width: 900px) {
 	.setting {
-		width: 46%
+		width: 46%;
 	}
 }
