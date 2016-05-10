@@ -73,7 +73,7 @@ pdoConnect();
 					</div>
 				</div>
 				
-				<div class="settingdb">
+				<div class="setting">
 					<form id="theform">
 						<p>Database Name</p>
 						<input type="text" name="database">
