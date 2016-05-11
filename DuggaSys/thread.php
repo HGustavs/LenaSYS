@@ -78,6 +78,7 @@ if (file_exists("../.git/refs/heads/master")) {
   					echo "<div class='opEditThread' style='float:right;'></div>";
   				  }
   				  ?>
+            <div class="privateMembersContainer"></div>
   				</div>
   			</div>
         <div id="threadDescr"></div>
@@ -123,32 +124,40 @@ if (file_exists("../.git/refs/heads/master")) {
 
             <div id="createThreadOptions">
               <div class="createThreadOptionLabel">Course:</div>
-              <select class="createThreadOption" id="createThreadCourseList" name="courseList" onchange="getUsers()"></select>
+              <select class="createThreadOption createThreadCourseList" name="courseList" onchange="getUsers()"></select>
 
               <div class="createThreadOptionLabel">Access:</div>
               <div class="createThreadRadioWrapper createThreadOption">
-                <input id="threadRadioPublic" class="createThreadRadio" name="threadAccessRadio" type="radio" value="public" onclick="createThreadPublicUI();" checked="checked">
-                <label for="threadRadioPublic">Public</label>
+                <label>
+                  <input class="createThreadRadio threadRadioPublic" name="threadAccessRadio" type="radio" value="public" onclick="createThreadPublicUI();" checked="checked">
+                  Public
+                </label>
               </div>
 
               <div class="createThreadRadioWrapper createThreadOption">
-                <input id="threadRadioPrivate" class="createThreadRadio" name="threadAccessRadio" type="radio" value="private" onclick="createThreadPrivateUI();">
-                <label for="threadRadioPrivate">Private</label>
+                <label>
+                  <input class="createThreadRadio threadRadioPrivate" name="threadAccessRadio" type="radio" value="private" onclick="createThreadPrivateUI();">
+                  Private
+                </label>
               </div>
 
               <!-- If thread is private -->
-              <div id="createThreadPrivateWrapper">
+              <div class="createThreadPrivateWrapper">
               </div>
 
 
               <div class="createThreadOptionLabel">Allow comments:</div>
               <div class="createThreadRadioWrapper createThreadOption">
-                <input id="threadRadioOpen" class="createThreadRadio" name="threadAllowCommentsRadio" type="radio" value="open" checked="checked">
-                <label for="threadRadioOpen">Open</label>
+                <label>
+                  <input class="createThreadRadio threadRadioOpen" name="threadAllowCommentsRadio" type="radio" value="open" checked="checked">
+                  Open
+                </label>
               </div>
               <div class="createThreadRadioWrapper createThreadOption">
-                <input id="threadRadioLocked" class="createThreadRadio" name="threadAllowCommentsRadio" type="radio" value="locked">
-                <label for="threadRadioLocked">Locked</label>
+                <label>
+                  <input class="createThreadRadio threadRadioLocked" name="threadAllowCommentsRadio" type="radio" value="locked">
+                  Locked
+                </label>
               </div>
             </div>
             <input id="submitThreadButton" class="submit-button createThreadButton" type="button" value="Submit" onclick="createThread();" style="background-color: rgb(97, 72, 117);">

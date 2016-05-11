@@ -1646,6 +1646,16 @@ input.new-item-button:hover {
 	color: grey;
 }
 
+.editThreadBtn {
+	width:140px;
+	float:right;
+	margin:30px 0 0 20px;
+}
+
+.privateMembersContainer {
+	float: left;
+}
+
 /* Create thread */
 
 #createThreadWrapper {
@@ -1715,7 +1725,7 @@ input.new-item-button:hover {
   color: rgb(97, 72, 117);
 }
 
-#createThreadPrivateWrapper {
+.createThreadPrivateWrapper {
   display: none;
   clear: both;
 	width: 100%;
@@ -1777,13 +1787,6 @@ input.new-item-button:hover {
 .threadUsersCheckbox {
   float: left;
   clear:both;
-}
-
-#submitThreadButton {
-  clear:both;
-  margin-right: 0;
-  margin-bottom: 20px;
-
 }
 
  /* --------------================################================-------------- *

@@ -70,7 +70,7 @@ function getComments()
 
 function createThread()
 {
-	var cid = $("#createThreadCourseList").val();
+	var cid = $("#createThreadOptions .createThreadCourseList:first").val();
 	var topic = $("#threadTopicInput").val();
 	var description = $(".editorDescr").first().val();
 	var accessList = new Array();
@@ -147,7 +147,7 @@ function getUsers(cid)
 	if (cid) {
 		AJAXService("GETUSERS",{cid:cid},"GETUSERS");
 	}else{
-		AJAXService("GETUSERS",{cid:$("#createThreadCourseList").val()},"GETUSERS");
+		AJAXService("GETUSERS",{cid:$(".createThreadCourseList:visible:first").val()},"GETUSERS");
 	}
 }
 
@@ -163,10 +163,10 @@ function editThread(data)
 	$("#threadTopicInput").val(array[3]);
 
 	$("#threadDescr").load("forumEditor.php", function() {
-		$("#threadDescr").find(".editorDescr").first().val(array[6]);
+		$("#threadDescr .editorDescr").val(array[7]);
 
-		var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:120px;float:left;margin-top:30px;'>";
-		button += "<input class='new-item-button' type='button' value='Cancel' onclick='getThread()' style='float:left;margin-top:30px;margin-left:10px;'>";
+		var button = "<input class='new-item-button editThreadBtn' type='button' value='Submit' onclick='submitEditThread()'>";
+		button += "<input class='new-item-button editThreadBtn' type='button' value='Cancel' onclick='getThread()'>";
 		$("#threadDescr").append(button);
 	});
 }
@@ -267,14 +267,14 @@ function returnedThread(data)
 function loadPrivateThreadMembers(data)
 {
 	console.log(data);
-	var str = "<div class='privateMembersContainer' style='float:right;'><select>";
+	var str = "<select>";
 
 	for(var i = 0; i<data['privateMembers'].length; i++){
 		str += "<option>"+data['privateMembers'][i]['username']+"</option>";
 		console.log(data['privateMembers'][i]['username']);
 	}
-	str += "</select></div>";
-	$("#threadOptions").append(str);
+	str += "</select>";
+	$(".privateMembersContainer").html(str);
 }
 
 function getUsername(threadUID)
@@ -404,8 +404,8 @@ function editThreadPoo()
 
 function createThreadPublicUI()
 {
-	$("#createThreadPrivateWrapper").slideUp(function() {
-		$("#createThreadPrivateWrapper").html("");
+	$(".createThreadPrivateWrapper").slideUp(function() {
+		$(".createThreadPrivateWrapper").html("");
 	});
 }
 
@@ -413,7 +413,7 @@ function createThreadPrivateUI()
 {
 	getUsers();
 
-	$("#createThreadPrivateWrapper").slideDown();
+	$(".createThreadPrivateWrapper").slideDown();
 }
 
 function returnedCourses(data) {
@@ -422,7 +422,7 @@ function returnedCourses(data) {
 		str += "<option value='" + this["cid"] + "'>" +
 			this["coursecode"] + " - " + this["coursename"] + "</option>";
 	});
-	$("#createThreadCourseList").html(str);
+	$(".createThreadCourseList:visible:first").html(str);
 
 	getUsers();
 }
@@ -451,11 +451,11 @@ function returnedUsers(data) {
 		str +=
 				"<tr>" +
 					"<td><input id='threadCheckboxAll' class='threadUsersCheckbox' type='checkbox' value='all'></td>" +
-					"<td>All</td>" +
+					"<td style='font-weight:bold'>All</td>" +
 				"</tr>" +
 			"</table>";
 
-		$("#createThreadPrivateWrapper").html(str);
+		$(".createThreadPrivateWrapper").html(str);
 
 		$("#threadCheckboxAll").on("change", function() {
 			if ($(this).is(":checked")) {
@@ -472,7 +472,7 @@ function returnedUsers(data) {
 				"</span>" +
 				"No students found for this course." +
 			"</div>";
-		$("#createThreadPrivateWrapper").html(str);
+		$(".createThreadPrivateWrapper").html(str);
 	}
 }
 
