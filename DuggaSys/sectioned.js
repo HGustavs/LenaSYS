@@ -889,6 +889,7 @@ function returnedSection(data)
 		str+="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;
+		if(data['writeaccess'])
 		showCreateVersion();
 		
 	}
