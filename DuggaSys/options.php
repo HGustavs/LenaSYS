@@ -80,7 +80,7 @@ pdoConnect();
 						<p>User Name</p>
 						<input type="text" name="user-name">
 						<p>Password</p>
-						<input type="text" name="password"> 
+						<input type="password" name="password"> 
 						<p>Database Host</p>
 						<input type="text" name="host"> 
 						<button type="submit" form="databaseForm" value="Submit" id="databaseButton">Submit</button>

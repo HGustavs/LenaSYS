@@ -1989,22 +1989,22 @@ ul#editorBarMenu li .editorSubMenu li {
 .settingsGroup form button {
 	border: solid 1px #614875;
 	background-color: #614875;
-	color: #ffffff;
-	margin-top: 10px; 
+	color: #ffffff; 
 	font-size: 90%; 
-	width: 98%;
-	padding: 7px;
+	width: 96%;
+	padding: 6px;
+	margin: 10px 3px 0px 3px; 
 }
 .settingsGroup form button:hover {
 	color: #ffffff; 
-	background-color: #c3afd0;
-	border: solid 1px #c3afd0;
+	background-color: #927a9f;
+	border: solid 1px #927a9f;
 }
 
 .settingsGroup input {
 	width: 96%;
 	border: 1px solid gray;
-	padding: 7px; 
+	padding: 5px; 
 }
 
 #databaseForm {
