@@ -47,103 +47,126 @@ if (file_exists("../.git/refs/heads/master")) {
 
 	<!-- content START -->
 	<div id="content">
-		<!-- Invisible box for confirming a thread's deletion -->
-		<div id='threadDeleteConfirm' class="loginBox" style="display:none">
-			<div id='login'>
-				<div class='loginBoxheader'>
-					<h3>Confirm thread deletion</h3>
-					<div onclick="closeWindows()">x</div>
-				</div>
-				<div class="threadConfirmButtons">
-					<input type='button' class='yes-delete-thread' value="Yes, delete thread" onclick="confirmDeleteThread()">
-					<input type='button' class='no-delete-thread' value="No, keep thread" onclick="closeWindows()">
-				</div>
-			</div>
-		</div>
-
-		<!-- Section List -->
-		<div id='threadHeader'>
-			<div id="threadTopicWrapper">
-				<div class="threadLockedIcon" style="float:left;"></div>
-				<div class="threadTopic"></div>
-				<div id="threadOptions">
-				  <?php
-				  if ($threadAccess==="super" || $threadAccess==="op") {
-					echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
-				  }
-				  if ($threadAccess==="op" || $threadAccess==="super") {
-					echo "<div class='opEditThread' style='float:right;'></div>";
-				  }
-				  ?>
-				</div>
-			</div>
-      <div id="threadDescr"></div>
-			<div id="threadDetails">
-				Created <span id="threadDate"></span> by <span id="threadCreator"></span>
-			</div>
-		</div>
-
-    <div id="threadComments"></div>
-
     <?php
+    if (($threadId && $threadId !== "UNK")) {
+     ?>
+		   <!-- Invisible box for confirming a thread's deletion -->
+  		<div id='threadDeleteConfirm' class="loginBox" style="display:none">
+  			<div id='login'>
+  				<div class='loginBoxheader'>
+  					<h3>Confirm thread deletion</h3>
+  					<div onclick="closeWindows()">x</div>
+  				</div>
+  				<div class="threadConfirmButtons">
+  					<input type='button' class='yes-delete-thread' value="Yes, delete thread" onclick="confirmDeleteThread()">
+  					<input type='button' class='no-delete-thread' value="No, keep thread" onclick="closeWindows()">
+  				</div>
+  			</div>
+  		</div>
+
+  		<!-- Section List -->
+  		<div id='threadHeader'>
+  			<div id="threadTopicWrapper">
+  				<div class="threadLockedIcon" style="float:left;"></div>
+  				<div class="threadTopic"></div>
+  				<div id="threadOptions">
+  				  <?php
+  				  if ($threadAccess==="super" || $threadAccess==="op") {
+  					echo "<div class='threadDeleteAndEdit' style='float:right;'></div>";
+  				  }
+  				  if ($threadAccess==="op" || $threadAccess==="super") {
+  					echo "<div class='opEditThread' style='float:right;'></div>";
+  				  }
+  				  ?>
+  				</div>
+  			</div>
+        <div id="threadDescr"></div>
+  			<div id="threadDetails">
+  				Created <span id="threadDate"></span> by <span id="threadCreator"></span>
+  			</div>
+  		</div>
+
+      <div id="threadComments"></div>
+    <?php
+    }
+
     if (($threadId && $threadId !== "UNK") && ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op")) {
-      echo "<div id='threadMakeComment'>";
-      echo  "<div id='makeCommentHeader'>";
-      echo    "Comment";
-      echo  "</div>";
-      echo  "<div id='makeCommentInputWrapper'>";
-      include "forumEditor.php";
-      echo "<input class='submit-button' id='commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>";
-      echo  "</div>";
-      echo "</div>";
+    ?>
+      <div id='threadMakeComment'>
+        <div id='makeCommentHeader'>
+          Comment
+        </div>
+        <div id='makeCommentInputWrapper'>
+
+        <?php include "forumEditor.php"; ?>
+
+        <input class='submit-button' id='commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>
+        </div>
+      </div>
+    <?php
     }
     ?>
 
     <!-- Create thread -->
-    <div id="createThreadWrapper">
-      <div id="createThreadHeader">
-        Create thread
-      </div>
-      <div id="createThreadBody">
-        <div id="createThreadFormWrapper">
-        <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
+    <?php
+    if ((!$threadId || $threadId === "UNK") && checklogin()) {
+    ?>
+      <div id="createThreadWrapper">
+        <div id="createThreadHeader">
+          Create thread
+        </div>
+        <div id="createThreadBody">
+          <div id="createThreadFormWrapper">
+          <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
 
-        <?php include "forumEditor.php"; ?>
+          <?php include "forumEditor.php"; ?>
 
-          <div id="createThreadOptions">
-            <div class="createThreadOptionLabel">Course:</div>
-            <select class="createThreadOption" id="createThreadCourseList" name="courseList" onchange="getUsers()"></select>
+            <div id="createThreadOptions">
+              <div class="createThreadOptionLabel">Course:</div>
+              <select class="createThreadOption" id="createThreadCourseList" name="courseList" onchange="getUsers()"></select>
 
-            <div class="createThreadOptionLabel">Access:</div>
-            <div class="createThreadRadioWrapper createThreadOption">
-              <input id="threadRadioPublic" class="createThreadRadio" name="threadAccessRadio" type="radio" value="public" onclick="createThreadPublicUI();" checked="checked">
-              <label for="threadRadioPublic">Public</label>
+              <div class="createThreadOptionLabel">Access:</div>
+              <div class="createThreadRadioWrapper createThreadOption">
+                <input id="threadRadioPublic" class="createThreadRadio" name="threadAccessRadio" type="radio" value="public" onclick="createThreadPublicUI();" checked="checked">
+                <label for="threadRadioPublic">Public</label>
+              </div>
+
+              <div class="createThreadRadioWrapper createThreadOption">
+                <input id="threadRadioPrivate" class="createThreadRadio" name="threadAccessRadio" type="radio" value="private" onclick="createThreadPrivateUI();">
+                <label for="threadRadioPrivate">Private</label>
+              </div>
+
+              <!-- If thread is private -->
+              <div id="createThreadPrivateWrapper">
+              </div>
+
+
+              <div class="createThreadOptionLabel">Allow comments:</div>
+              <div class="createThreadRadioWrapper createThreadOption">
+                <input id="threadRadioOpen" class="createThreadRadio" name="threadAllowCommentsRadio" type="radio" value="open" checked="checked">
+                <label for="threadRadioOpen">Open</label>
+              </div>
+              <div class="createThreadRadioWrapper createThreadOption">
+                <input id="threadRadioLocked" class="createThreadRadio" name="threadAllowCommentsRadio" type="radio" value="locked">
+                <label for="threadRadioLocked">Locked</label>
+              </div>
             </div>
-
-            <div class="createThreadRadioWrapper createThreadOption">
-              <input id="threadRadioPrivate" class="createThreadRadio" name="threadAccessRadio" type="radio" value="private" onclick="createThreadPrivateUI();">
-              <label for="threadRadioPrivate">Private</label>
-            </div>
-
-            <!-- If thread is private -->
-            <div id="createThreadPrivateWrapper">
-            </div>
-
-
-            <div class="createThreadOptionLabel">Allow comments:</div>
-            <div class="createThreadRadioWrapper createThreadOption">
-              <input id="threadRadioOpen" class="createThreadRadio" name="threadAllowCommentsRadio" type="radio" value="open" checked="checked">
-              <label for="threadRadioOpen">Open</label>
-            </div>
-            <div class="createThreadRadioWrapper createThreadOption">
-              <input id="threadRadioLocked" class="createThreadRadio" name="threadAllowCommentsRadio" type="radio" value="locked">
-              <label for="threadRadioLocked">Locked</label>
-            </div>
+            <input id="submitThreadButton" class="submit-button createThreadButton" type="button" value="Submit" onclick="createThread();" style="background-color: rgb(97, 72, 117);">
           </div>
-          <input id="submitThreadButton" class="submit-button createThreadButton" type="button" value="Submit" onclick="createThread();" style="background-color: rgb(97, 72, 117);">
         </div>
       </div>
-    </div>
+    <?php
+    } // End if
+
+    else if ((!$threadId || $threadId === "UNK") && !checklogin()) {
+    ?>
+      <div class="err">
+        <span style="font-weight:bold">Access denied!</span>
+        You must be logged in to access this page.
+      </div>
+    <?php
+    }
+    ?>
 	</div>
 
 	<!-- version identification -->
