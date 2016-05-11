@@ -11,7 +11,7 @@ var querystring = parseGet();
 // Commands:
 //----------------------------------------
 
-$(document).on('click','.replyCommentButton', function(event) {
+$(document).on('click','.replyCommentButton, .editCommentButton', function(event) {
 		event.preventDefault();
 		var target = "#" + this.getAttribute('data-target');
 		$('html, body').animate({
@@ -92,6 +92,8 @@ function createThread()
 
 function makeComment(commentid)
 {
+	$("#makeCommentHeader").html("Comment");
+	$("#endCommentButton").css("visibility", "hidden");
 	var commentcontent = "";
 	$(document).ready(function() {
     var $myDiv = $('.repliedcomment');
@@ -291,6 +293,11 @@ function showThreadCreator(data)
 
 function returnedComments(data)
 {
+	$("#makeCommentInputWrapper").find(".editorDescr").val("");
+	$("#commentSubmitButton").attr("onclick", "makeComment()");
+	$("#commentSubmitButton").attr("value", "Submit");
+	$("#makeCommentHeader").html("Comment");
+	
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
@@ -312,7 +319,7 @@ function returnedComments(data)
 				"<div class=\"commentDetails\"><span class=\"commentUser\">" + value["username"]  +   "</span> - <span class='commentCreated'>" + (value["datecreated"]).substring(0,16) + "</span></div>" +
 				"<div class=\"commentContent\"><div class=\"commentContentText descbox\">" +  text  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
-						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid']) +
+						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid'], value["username"]) +
 				"</div>" +
 			"</div>";
 		});
@@ -324,13 +331,13 @@ function returnedComments(data)
 	}
 }
 
-function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
+function getCommentOptions (index, commentuid, threadAccess, uid, commentid, username){
 	var threadOptions = "";
 	if (threadAccess !== "public"){
-		threadOptions = "<a href='#' onclick='getCommentReply(event,"+commentid+");return false;' class='commentAction replyCommentButton'>Reply</a>";
+		threadOptions = "<a href='#' onclick='getCommentReply("+commentid+", \""+username+"\");return false;' class='commentAction replyCommentButton'>Reply</a>";
 
 		if (uid === commentuid || threadAccess === "super"){
-			threadOptions += "<a href='#' onclick='editUI();return false;' class='commentAction'>Edit</a>";
+			threadOptions += "<a href='#' onclick='editUI("+commentid+");return false;' class='commentAction editCommentButton'>Edit</a>";
 		}
 		if (threadAccess === "op" || threadAccess === "super" || uid === commentuid){
 			threadOptions += "<a href='#' onclick='deleteComment("+commentid+");return false;' class='commentAction'>Delete</a>";
@@ -338,6 +345,50 @@ function getCommentOptions (index, commentuid, threadAccess, uid, commentid){
 	}
 	return threadOptions;
 }
+
+function editUI(commentid)
+{
+	AJAXService("EDITCOMMENTCONTENT",{commentid:commentid},"EDITCOMMENTCONTENT");
+	/*$("#makeCommentHeader").html("Edit Comment");
+	$("#endCommentButton").attr("value", "Cancel edit");
+	$("#endCommentButton").css("visibility", "show");
+	
+	var target = event.target;
+	var text = $(target).parent().prev().children().text();
+	var yourComment= $(target).parent().prev().children().first().clone().children().remove().end().html();
+	if(text !== yourComment){
+		text = "^ " + text.replace(yourComment," ^" + yourComment);
+	}
+	
+	$("#threadMakeComment").find('.editorDescr').first().val(text);
+	$("#commentSubmitButton").attr("onclick", "editComment("+commentid+")");
+	$("#commentSubmitButton").attr("value", "Update Comment");
+	$("#commentSubmitButton").css("width", "125px");
+	checkComment();*/
+}
+
+function editGetComment(array)
+{
+	$("#makeCommentHeader").html("Edit Comment");
+	$("#endCommentButton").attr("value", "Cancel edit");
+	$("#endCommentButton").css("visibility", "show");
+	
+	$.each(array["comments"], function(index, value){
+		$("#threadMakeComment").find('.editorDescr').first().val(value['text']);
+		$("#commentSubmitButton").attr("onclick", "editComment("+value['commentid']+")");
+	});
+	
+	$("#commentSubmitButton").attr("value", "Update Comment");
+	$("#commentSubmitButton").css("width", "125px");
+	checkComment();
+}
+
+function editComment(commentid)
+{
+	var text = $("#makeCommentInputWrapper").find(".editorDescr").val();
+	AJAXService("EDITCOMMENT",{text:text,commentid:commentid},"EDITCOMMENT");
+}
+
 function createThreadSuccess(data)
 {
 	if (data["accessDenied"]){
@@ -348,15 +399,60 @@ function createThreadSuccess(data)
 	}
 }
 
-function getCommentReply(event, commentid)
+function getCommentReply(commentid, username)
 {
+	AJAXService("REPLYCOMMENT",{commentid:commentid},"REPLYCOMMENT");
+	/*$("#commentSubmitButton").attr("onclick", "makeComment()");
+	$("#commentSubmitButton").attr("value", "Submit");
+	$("#threadMakeComment").find('.editorDescr').first().val("");
+	$("#endCommentButton").attr("value", "Cancel Reply");
+	$("#endCommentButton").css("visibility", "show");
+	$("#makeCommentHeader").html("Reply to " + username);
 	var target = event.target;
 	var text = $(target).parent().prev().children().first().clone().children().remove().end().text();
 	text = text.replace(/(\r\n|\n|\r)/g,"");
 	text = "^ " + text + " ^" + "\r\n";
-	console.log(text);
-	$("#threadMakeComment").find('.editorDescr').first().val(text);
-	$("#commentSubmitButton").attr("onclick", "makeComment("+commentid+")");
+	$("#threadMakeComment").find('.editorDescr').first().val(text);*/
+}
+
+function replyCommentSuccess(array)
+{
+	$("#commentSubmitButton").attr("onclick", "makeComment()");
+	$("#commentSubmitButton").attr("value", "Submit");
+	$("#threadMakeComment").find('.editorDescr').first().val("");
+	$("#endCommentButton").attr("value", "Cancel Reply");
+	$("#endCommentButton").css("visibility", "show");
+	
+	var commentLength = array["comments"].length;
+	var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
+
+	threadCommentStr += "<div class=\"allComments\">";
+
+	// Iterates through all the comments
+	$.each(array["comments"], function(index, value){
+		
+		var text = value['text'];
+		
+		text = text.replace("^ ", "");
+		text = text.replace(" ^", "");
+		text = text.replace(/.*[\r\n]/g, "");
+		
+		text = "^ " + text + " ^\r\n";
+		
+		$("#makeCommentHeader").html("Reply to " + value['user.username']);
+		$("#threadMakeComment").find('.editorDescr').first().val(text);
+		
+		$("#commentSubmitButton").attr("onclick", "makeComment("+value['commentid']+")");
+	});
+}
+
+function endReplyComment()
+{
+	$("#makeCommentHeader").html("Comment");
+	$("#threadMakeComment").find('.editorDescr').first().val("");
+	$("#makeCommentInputWrapper").find('.editorPreviewText').first().html("");
+	$("#endCommentButton").css("visibility", "hidden");
+	$("#commentSubmitButton").attr("onclick", "makeComment()");
 }
 
 function makeCommentSuccess()

@@ -299,6 +299,18 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$privateMembers = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
+}else if(strcmp($opt,"EDITCOMMENT")===0){
+	// Access check
+	if ($threadAccess==="op" || $threadAccess==="super"){
+		$query = $pdo->prepare("UPDATE threadcomment SET text=:text, datecreated=current_timestamp WHERE commentid=:commentid");
+		//INSERT INTO threadcomment (threadid, uid, text, datecreated, replyid) VALUES (:threadID, :uid, :text, current_timestamp, :commentid)");
+		$query->bindParam(':commentid', $commentid);
+		$query->bindParam(':text', $text);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}
 	}else{
 		$accessDenied = "You do not have permisson to edit this thread.";
 	}
@@ -353,6 +365,22 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	// Access check
 	if ($threadAccess){
 		$query = $pdo->prepare("SELECT text, replyid, commentid FROM threadcomment WHERE commentid=:commentID;");
+		$query->bindParam(':commentID', $commentid);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}else{
+		$accessDenied = "You do not have access to the thread.";
+	}
+}else if(strcmp($opt,"EDITCOMMENTCONTENT")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("SELECT text, commentid FROM threadcomment WHERE commentid=:commentID;");
 		$query->bindParam(':commentID', $commentid);
 
 		if(!$query->execute()){

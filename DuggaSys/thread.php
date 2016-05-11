@@ -102,6 +102,7 @@ if (file_exists("../.git/refs/heads/master")) {
         <?php include "forumEditor.php"; ?>
 
         <input class='submit-button' id='commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>
+		<input class='submit-button' id='endCommentButton' style='background-color: #C75050; visibility: hidden;'type='button' value='Cancel Reply' onclick='endReplyComment();'>
         </div>
       </div>
     <?php
