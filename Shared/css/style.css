@@ -1993,7 +1993,7 @@ ul#editorBarMenu li .editorSubMenu li {
 	font-size: 90%; 
 	width: 96%;
 	padding: 6px;
-	margin: 10px 3px 0px 3px; 
+	margin: 5px 3px 0px 6px; 
 }
 .settingsGroup form button:hover {
 	color: #ffffff; 
@@ -2008,7 +2008,7 @@ ul#editorBarMenu li .editorSubMenu li {
 }
 
 #databaseForm {
-	margin: 0 auto;  
+	margin: 13px;  
 	width: 98%;
 } 
 
