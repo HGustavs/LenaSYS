@@ -176,9 +176,30 @@ function loadServiceUsage() {
 			},
 			success: function(data) {
 				resetAnalyticsChart();
-				drawLineChart([]);
-				$('#content > pre').remove();
-				$('#content').append("<pre>" + JSON.stringify(data, null, 2) + "</pre>");
+
+				var services = {};
+				$.each(data, function(i, row) {
+					if (!services.hasOwnProperty(row.service)) {
+						services[row.service] = [];
+					}
+					services[row.service].push({
+						X: row.dateTime,
+						Y: row.hits
+					});
+				});
+
+				$('#analytic-info > select.service-select').remove();
+				var serviceSelect = $('<select class="service-select"></select>');
+				for (var service in services) {
+					if (services.hasOwnProperty(service)) {
+						serviceSelect.append('<option value="' + service + '">' + service + '</option>')
+					}
+				}
+				serviceSelect.change(function() {
+					drawLineChart(services[$(this).val()]);
+				});
+				$('#analytic-info').append(serviceSelect);
+				serviceSelect.change();
 			}
 		});
 	}
