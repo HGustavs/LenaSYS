@@ -144,10 +144,11 @@ $sql = '
 	);
 	CREATE TABLE IF NOT EXISTS fileUploadLogEntries(
 		id INTEGER PRIMARY KEY,
-		filename VARCHAR(128) NOT NULL,
+		filename VARCHAR(128),
 		kind INTEGER,	
-		cid	INT UNSIGNED NOT NULL,
-		vers VARCHAR(8) DEFAULT 0,
+		cid	INTEGER,
+		vers VARCHAR(8),
+		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 ';
 $log_db->exec($sql);
