@@ -16,6 +16,9 @@ $(function() {
 			case "pie":
 				drawPieChart(analytics.chartData);
 				break;
+			case "line":
+				drawLineChart(analytics.chartData);
+				break;
 		}
 	});
 	loadGeneralStats();
@@ -173,6 +176,7 @@ function loadServiceUsage() {
 			},
 			success: function(data) {
 				resetAnalyticsChart();
+				drawLineChart([]);
 				$('#content > pre').remove();
 				$('#content').append("<pre>" + JSON.stringify(data, null, 2) + "</pre>");
 			}
@@ -422,4 +426,71 @@ function renderTable(data) {
 	}
 	str += "</tbody></table>";
 	return str;
+}
+
+function drawLineChart(data) {
+	if (!$.isArray(data)) return;
+
+	analytics.chartType = "line";
+	analytics.chartData = data;
+
+	var canvas = $("#analytic-chart")[0];
+	var ctx = canvas.getContext("2d");
+
+	fitCanvasToContainer(canvas);
+	clearCanvas(canvas);
+
+	var xPadding = 30;
+	var yPadding = 30;
+
+	function getMaxY() {
+		var max = 0;
+		for (var i = 0; i < data.length; i++) {
+			if (data[i].Y > max) {
+				max = data[i].Y;
+			}
+		}
+		return max;
+	}
+
+	function getXPixel(val) {
+		return ((canvas.width - xPadding) / data.length) * val + (xPadding * 1.5);
+	}
+
+	function getYPixel(val) {
+		return canvas.height - (((canvas.height - yPadding) / getMaxY()) * val) - yPadding;
+	}
+
+	ctx.lineWidth = 2;
+	ctx.strokeStyle = "#333";
+	ctx.font = "Arial 8pt";
+	ctx.textAlign = "center"
+
+	// Draw L
+	ctx.beginPath();
+	ctx.moveTo(xPadding, 0);
+	ctx.lineTo(xPadding, canvas.height - yPadding);
+	ctx.lineTo(canvas.width, canvas.height -yPadding);
+	ctx.stroke();
+
+	// Draw X values
+	for (var i = 0; i < data.length; i++) {
+		ctx.fillText(data[i].X, getXPixel(i), canvas.height - yPadding + 20);
+	}
+
+	// Draw Y values
+	ctx.textAlign = "right";
+	ctx.textBaseline = "middle";
+	for (var i = 0; i < getMaxY(); i += 10) {
+		ctx.fillText(i, xPadding - 10, getYPixel(i));
+	}
+
+	// Draw line graph
+	ctx.strokeStyle = "#614875";
+	ctx.beginPath();
+	ctx.moveTo(getXPixel(0), getYPixel(data[0].Y));
+	for(var i = 1; i < data.length; i++) {
+		ctx.lineTo(getXPixel(i), getYPixel(data[i].Y));
+	}
+	ctx.stroke();
 }
