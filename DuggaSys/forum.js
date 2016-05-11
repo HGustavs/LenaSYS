@@ -24,13 +24,11 @@ function initThread()
 	console.log(querystring);
 	if (querystring["threadId"])
 	{
-		$("#createThreadWrapper").hide();
-
 		getThread();
 		$(".editorDescr").on("keyup", checkComment);
 	}
 	else {
-		createThreadUI();
+		getCourses();
 	}
 }
 
@@ -258,11 +256,11 @@ function returnedThread(data)
 		}else{
 			$("#threadMakeComment").slideDown();
 		}
-		
+
 		if(data['thread']['hidden'] === "1"){
 			AJAXService("GETPRIVATETHREADMEMBERS",{threadId:querystring["threadId"]},"GETPRIVATETHREADMEMBERS");
 		}
-		
+
 	}
 }
 
@@ -404,23 +402,11 @@ function editThreadPoo()
 	AJAXService("EDITTHREAD",{threadId:querystring["threadId"]},"EDITTHREAD");
 }
 
-function createThreadUI()
-{
-	$("#threadHeader").hide();
-	$(".threadMakeComment").hide();
-	$("#threadComments").hide();
-	$("#createThreadWrapper").show();
-
-	getCourses();
-}
-
 function createThreadPublicUI()
 {
-
 	$("#createThreadPrivateWrapper").slideUp(function() {
 		$("#createThreadPrivateWrapper").html("");
 	});
-
 }
 
 function createThreadPrivateUI()
