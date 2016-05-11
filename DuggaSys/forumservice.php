@@ -287,6 +287,21 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$accessDenied = "You do not have permisson to edit this thread.";
 	}
+}else if(strcmp($opt,"GETPRIVATETHREADMEMBERS")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("SELECT user.username FROM user,threadaccess WHERE (threadaccess.threadid=:threadid AND user.uid=threadaccess.uid)");
+		$query->bindParam(':threadid', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else{
+		$privateMembers = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+	}else{
+		$accessDenied = "You do not have permisson to edit this thread.";
+	}
 }
 
 
@@ -404,7 +419,8 @@ if ($opt!=="UNK"){
 		'uid' => $uid,
 		'courses' => $courses,
 		'classes' => $classes,
-		'users' => $users
+		'users' => $users,
+		'privateMembers' => $privateMembers
 	);
 	echo json_encode($array);
 }
