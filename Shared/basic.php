@@ -148,7 +148,6 @@ $sql = '
 	kind			INTEGER,	
 	cid				INT UNSIGNED NOT NULL,
 	vers			VARCHAR(8) DEFAULT 0,
-	isGlobal		BOOLEAN DEFAULT 0,
 );
 ';
 $log_db->exec($sql);
@@ -281,13 +280,12 @@ function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
 // Creates a new log entry in the file upload log database (log.db, located at the root directory)
 //
 
-function logFileUploadEvent($filename, $kind, $cid, $vers, isGlobal) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO logFileUploadEntries (filename, kind, cid, vers, isGlobal) VALUES (:filename, :kind, :cid, :vers, :isGlobal)');
+function logFileUploadEvent($filename, $kind, $cid, $vers) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO logFileUploadEntries (filename, kind, cid, vers) VALUES (:filename, :kind, :cid, :vers)');
 	$query->bindParam(':filename', $filename);
 	$query->bindParam(':kind', $kind);
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':vers', $vers);
-	$query->bindParam(':isGlobal', $isGlobal);
 	$query->execute();
 }
 
