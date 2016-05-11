@@ -576,9 +576,24 @@ function returnedSection(data)
  					str += "<div>";
  				}
 				//str += "<div>";
+				
+				// This part gets the releasedate of a quiz, the current date, and converts both to the same format so that you may compare them later.
+				var ts = item['qrelease'];
+				if(ts != null){
+					var t = ts.split(/[- :]/);
+				}
+				else{
+					var t = "2000-01-01 00:00:00".split(/[- :]/);
+				}
 
-				// If public, or we are logged in, or we are a teacher/superuser
-				if (parseInt(item['visible']) === 1 || parseInt(item['visible']) === 2 && data['readaccess'] || data['writeaccess']) {		
+				var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+				
+				var s = new Date();
+				
+				var ds = new Date(s.getFullYear(), s.getMonth(), s.getDate(), s.getHours(), s.getMinutes(), s.getSeconds());
+
+				// If public, or we are logged in, or we are a teacher/superuser. Only teachers/superusers can see moments where quizzes have not yet been released.
+				if (d < ds && (parseInt(item['visible']) === 1 || parseInt(item['visible']) === 2 && data['readaccess']) || data['writeaccess']) {		
 
 					// Content table 		
 					str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
