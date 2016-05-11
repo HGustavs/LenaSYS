@@ -905,7 +905,19 @@ function showHighscore(did, lid)
 {
 	AJAXService("GET", {did:did, lid:lid}, "DUGGAHIGHSCORE");
 }
+//Disabling scrolling//
+$(function() {
 
+    var $body = $(document);
+    $body.bind('scroll', function() {
+        // "Disable" the horizontal scroll.
+        if ($body.scrollLeft() !== 0) {
+            $body.scrollLeft(0);
+        }
+    });
+
+}); 
+//-------------------//
 function returnedHighscore(data){
 
 	var str = "";
