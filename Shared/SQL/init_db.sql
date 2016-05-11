@@ -295,6 +295,7 @@ CREATE TABLE box(
 	boxtitle		VARCHAR(64),
 	boxcontent		VARCHAR(64),
 	filename		VARCHAR(256),
+	fontsize		INT NOT NULL DEFAULT '9',
 	settings		VARCHAR(1024),
 	wordlistid		MEDIUMINT UNSIGNED,
 	segment			TEXT,

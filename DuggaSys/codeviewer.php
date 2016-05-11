@@ -1,6 +1,5 @@
-<!-----------------------------------------------------------------------------------------
-                         Code Viewer V5.20 (CV5)  
--------------------------------------------------------------------------------------------
+<!--
+Code Viewer V5.20 (CV5)  
 
 Version History
 
@@ -34,19 +33,17 @@ Version History
 			Updated database with real data
 			Cleaning of code
 			Documentation of functions added
--------------------------------------------------------------------------------------------
 Bugs:
 	Some examples are not properly functioning
--------------------------------------------------------------------------------------------
+
 Fixed Bugs:
--------------------------------------------------------------------------------------------
 Missing/desired Features:
 	Collapsible code
-	Changing language -- All Strings in File that can be translated to fit other languages.... including language change.
--------------------------------------------------------------------------------------------
+	Changing language - All Strings in File that can be translated to fit other languages.... including language change.
+
 Testing Link: 
 	codeviewer.php?exampleid=1&courseid=1&cvers=2013
-------------------------------------------------------------------------------------------->
+-->
 <?php
 	session_start();
 	include_once("../../coursesyspw.php");
@@ -56,7 +53,6 @@ Testing Link:
 	include_once("../Shared/courses.php");
 	// Database connection
 	pdoConnect();
-	
 	
 	// Fetch examplename from database to use for title		
 	$exampleid = getOPG('exampleid');		
@@ -68,11 +64,7 @@ Testing Link:
 	$exampleName = $row['examplename'];		
 	//Title used for the codeviewer page		
 	$title = $exampleName;
-
-	
-	
 ?>
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -99,8 +91,6 @@ Testing Link:
 			$courseID = getOPG('courseid');
 			$cvers = getOPG('cvers');
 			
-			
-
 			// Fetch content from database
 			$query = $pdo->prepare( "SELECT public FROM codeexample WHERE exampleid = :exampleid';");
 			$query->bindParam(':exampleid', $exampleid);
@@ -179,11 +169,11 @@ Testing Link:
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 		?>						
-		<!--- Dropdowns START --->
+		<!-- Dropdowns START -->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
 		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'>Forw</div><span id='forwdropc'>bii</span></span>
-		<!--- Dropdowns END --->
-		<!--- Example Content Cog Wheel Dialog START --->
+		<!-- Dropdowns END -->
+		<!-- Example Content Cog Wheel Dialog START -->
 		<div id='editContent' class='loginBox' style='width:464px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Content</h3>
@@ -207,6 +197,15 @@ Testing Link:
 					<td><select id='filename'></select></td>
 				</tr>
 				<tr>
+					<td>Font size:</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><select id='fontsize'><?php for($i = 9; $i <= 22; $i++) echo '<option value="' . $i . '">' . $i .' px</option>'; ?></select></td>
+					<td>&nbsp;</td>
+				</td>
+				</tr>
+				<tr>
 					<td>Important Rows:</td>
 				</tr>
 				<tr>
@@ -224,8 +223,8 @@ Testing Link:
 				</tr>
 			</table>
 		</div>
-		<!--- Example Content Cog Wheel Dialog END --->
-		<!--- Code Example Cog Wheel Dialog START --->
+		<!-- Example Content Cog Wheel Dialog END -->
+		<!-- Code Example Cog Wheel Dialog START -->
 		<div id='editExample' class='loginBox' style='width:464x;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
@@ -255,7 +254,7 @@ Testing Link:
 				</table>
 			</fieldset>
 		</div>
-		<!--- Code Example Cog Wheel Dialog END --->
+		<!-- Code Example Cog Wheel Dialog END -->
 		<div id='chooseTemplate' class='loginBox' style='width:464px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
@@ -282,9 +281,8 @@ Testing Link:
 				</tr>
 			</table>
 		</div>		
-		<!--- Template Choosing Box --->
+		<!-- Template Choosing Box -->
 		<?php
-		
 			// Adding page logging 
 			logExampleLoadEvent($courseID, $exampleid, EventTypes::pageLoad);
 			

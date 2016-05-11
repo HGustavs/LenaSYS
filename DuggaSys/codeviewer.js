@@ -163,6 +163,9 @@ function returned(data)
 			
 			// Render code
 			rendercode(boxcontent,boxid,boxwordlist,boxfilename);
+
+			// set font size
+			$("#box"+boxid).css("font-size", retData['box'][boxid-1][6] + "px");
 		}else if(boxtype === "DOCUMENT"){
 			// Print out description in a document box
 			$("#"+contentid).removeClass("codebox").addClass("descbox");
@@ -368,12 +371,9 @@ function displayEditExample(boxid)
 
 //----------------------------------------------------------------------------------
 // updateExample: Updates example data in the database if changed
-//                Is called at line 210 in EditorV50.php
-//					Used by file EditorV50.php
 //----------------------------------------------------------------------------------
 function updateExample()
-{
-	
+{	
 	// Set beforeid if set
 	var beforeid="UNK";
 	if(retData['before'].length!=0){
@@ -421,8 +421,7 @@ function updateExample()
 var openBoxID;
 
 function displayEditContent(boxid)
-{	
-
+{
 	var box = retData['box'][boxid-1]; 	// The information stored about the box is fetched
 	openBoxID = boxid;				// Keeps track of the currently open box. Used when saving the box content.
 
@@ -437,6 +436,8 @@ function displayEditContent(boxid)
 	}else{
 			$("#filename").val("");
 	}
+
+	$("#fontsize").val(box[6]);
 
 	var wordl=retData['wordlists'];
 	var str="";
@@ -459,7 +460,6 @@ function displayEditContent(boxid)
 //----------------------------------------------------------------------------------
 // changeDirectory: Changes the directory in which you choose your code or description
 // 					in the Edit Content box.
-//                Is called at line 159 in EditorV50.php
 //----------------------------------------------------------------------------------
 
 function changeDirectory(kind) 
@@ -533,7 +533,6 @@ function editImpRows(editType)
 
 //----------------------------------------------------------------------------------
 // updateContent: Updates the box if changes has been made
-//                Is called at line 174 in EditorV50.php
 //----------------------------------------------------------------------------------
 function updateContent() 
 {
@@ -541,15 +540,16 @@ function updateContent()
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
-	if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
+	if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
 		try {
 			var boxtitle = $("#boxtitle").val();
 			var boxcontent = $("#boxcontent option:selected").val();
 			var wordlist = $("#wordlist").val();
 			var filename = $("#filename option:selected").val();
+			var fontsize = $("#fontsize option:selected").val();
 			var exampleid = querystring['exampleid'];
 			var boxid = box[0];
-			
+
 			AJAXService("EDITCONTENT", {
 				exampleid : exampleid,
 				boxid : boxid,			
@@ -557,6 +557,7 @@ function updateContent()
 				boxcontent : boxcontent,
 				wordlist : wordlist,
 				filename : filename,
+				fontsize : fontsize,
 				addedRows : addedRows,
 				removedRows : removedRows
 			}, "BOXCONTENT");
@@ -613,8 +614,8 @@ function createboxmenu(contentid, boxid, type)
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+= '<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retData['box'][boxid-1][4]+'</span></td>';				
-				str+= '</tr></table>';
+				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retData['box'][boxid-1][4]+'</span></td>';				
+				str+='</tr></table>';
 			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
@@ -623,12 +624,12 @@ function createboxmenu(contentid, boxid, type)
 			}else{
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 showdesktop'>";
-				str+= "<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
-				str+= "<option>Choose content</option>";
-				str+= "<option value='CODE'>Code example</option>";
-				str+= "<option value='DOCUMENT'>Description section</option>";
-				str+= "</select>";
-				str+= '</td></tr></table>';
+				str+="<select class='chooseContentSelect' onchange='changeboxcontent(this.value,\""+boxid+"\",\""+contentid+"\");removeboxmenu(\""+contentid+"menu\");'>";
+				str+="<option>Choose content</option>";
+				str+="<option value='CODE'>Code example</option>";
+				str+="<option value='DOCUMENT'>Description section</option>";
+				str+="</select>";
+				str+='</td></tr></table>';
 			}					
 			boxmenu.innerHTML=str;	
 		// If reader doesn't have write access, only the boxtitle is shown
@@ -1247,7 +1248,6 @@ function popoverbox(titleData)
 // Requires tokens created by a cockford-type tokenizer
 //                Is called by [this function] in [this file]
 //----------------------------------------------------------------------------------
-
 function rendercode(codestring,boxid,wordlistid,boxfilename)
 {
   var destinationdiv = "box" + boxid;
@@ -1272,8 +1272,8 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 		}
 	}
 	tokenize(codestring,"<>+-&","=>&:");
-			
-	// Iterate over token objects and print kind of each token and token type in window 
+
+	// Iterate over token objects and print kind of each token and token type in window
 	printout= $("#"+destinationdiv);
 	str="";
 	cont="";
@@ -1458,9 +1458,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	// Print out rendered code and border with numbers
 	printout.html(createCodeborder(lineno,improws) + str);	
 	
-
-		//css part
-	
+	//css part
 	pid="";
 	var iwcounter=0;
 	for(i=0;i<tokens.length;i++){
