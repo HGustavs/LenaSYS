@@ -112,7 +112,7 @@ if (file_exists("../.git/refs/heads/master")) {
 
           <div id="createThreadOptions">
             <div class="createThreadOptionLabel">Course:</div>
-            <select class="createThreadOption" id="createThreadCourseList" name="courseList" onchange="updateClassList()"></select>
+            <select class="createThreadOption" id="createThreadCourseList" name="courseList" onchange="getUsers()"></select>
 
             <div class="createThreadOptionLabel">Access:</div>
             <div class="createThreadRadioWrapper createThreadOption">
@@ -127,10 +127,6 @@ if (file_exists("../.git/refs/heads/master")) {
 
             <!-- If thread is private -->
             <div id="createThreadPrivateWrapper">
-              <div class="createThreadOptionLabel">Class:</div>
-              <select class="createThreadOption" id="createThreadClassList" name="classList" onchange="updateUsersList()"></select>
-              <div class="createThreadOptionLabel">User:</div>
-              <div class="createThreadOption" id="createThreadUsersWrapper"></div>
             </div>
 
 
