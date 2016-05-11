@@ -360,7 +360,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else {
 		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
-}else if(strcmp($opt,"GETCLASSES")===0){
+}else if(strcmp($opt,"GETUSERS")===0){
 	$query = $pdo->prepare("SELECT class FROM programcourse WHERE cid=:cid");
 	$query->bindParam(':cid', $cid);
 
@@ -370,15 +370,20 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else {
 		$classes = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
-}else if(strcmp($opt,"GETUSERS")===0){
-	$query = $pdo->prepare("SELECT uid, username FROM user WHERE class=:class");
-	$query->bindParam(':class', $class);
 
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
-	}else {
-		$users = $query->fetchAll(PDO::FETCH_ASSOC);
+	if ($classes) {
+		$users = array();
+		for ($i = 0; $i < count($classes); $i++) {
+			$query = $pdo->prepare("SELECT uid, username FROM user WHERE class=:class");
+			$query->bindParam(':class', $classes[$i]['class']);
+
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
+			}else {
+				$users[$classes[$i]['class']] = $query->fetchAll(PDO::FETCH_ASSOC);
+			}
+		}
 	}
 }else if(strcmp($opt,"GETTHREADCREATOR")===0){
 	$query = $pdo->prepare("SELECT user.username FROM user,thread WHERE (thread.threadid=:threadid AND thread.uid=user.uid AND user.uid=:threadUID)");
@@ -403,7 +408,6 @@ if ($opt!=="UNK"){
 		'threadAccess' => $threadAccess,
 		'uid' => $uid,
 		'courses' => $courses,
-		'classes' => $classes,
 		'users' => $users
 	);
 	echo json_encode($array);

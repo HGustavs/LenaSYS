@@ -80,7 +80,7 @@ function createThread()
 		accessList = false;
 	}else {
 		$.each($(".threadUsersCheckbox"), function() {
-			if ($(this).is(':checked')) {
+			if ($(this).is(':checked') && $(this).val()!=="all") {
 				accessList.push($(this).val());
 			}
 		});
@@ -144,18 +144,18 @@ function getCourses()
 	AJAXService("GETCOURSES",{},"GETCOURSES");
 }
 
-function getClasses(cid)
+function getUsers(cid)
 {
-	AJAXService("GETCLASSES",{cid:cid},"GETCLASSES");
-}
-
-function getUsers(programclass)
-{
-	AJAXService("GETUSERS",{class:programclass},"GETUSERS");
+	if (cid) {
+		AJAXService("GETUSERS",{cid:cid},"GETUSERS");
+	}else{
+		AJAXService("GETUSERS",{cid:$("#createThreadCourseList").val()},"GETUSERS");
+	}
 }
 
 function editThread(data)
 {
+	console.log(data);
 	var array = data.split(',');
 	//console.log(array);
 
@@ -164,24 +164,26 @@ function editThread(data)
 
 	$("#threadTopicInput").val(array[3]);
 
-	$("#threadDescr").load("forumEditor.php");
-	document.getElementById("editDescription").value = array[6];
+	$("#threadDescr").load("forumEditor.php", function() {
+		$("#threadDescr").find(".editorDescr").first().val(array[6]);
 
-	var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:120px;float:left;margin-top:30px;'>";
-	button += "<input class='new-item-button' type='button' value='Cancel' onclick='getThread()' style='float:left;margin-top:30px;margin-left:10px;'>";
-	$("#threadDescr").append(button);
+		var button = "<input class='new-item-button' id='submitEditedThread' type='button' value='Submit changes' onclick='submitEditThread()' style='width:120px;float:left;margin-top:30px;'>";
+		button += "<input class='new-item-button' type='button' value='Cancel' onclick='getThread()' style='float:left;margin-top:30px;margin-left:10px;'>";
+		$("#threadDescr").append(button);
+	});
 }
 
 function submitEditThread()
 {
-	if($("#editTopic").val().length<1){
+	var editorDescr = $("#threadDescr").find(".editorDescr").first();
+	if(!$("#threadTopicInput").val()){
 		//Better error message pls
-		console.log("Topic and/or description can NOT be empty!");
-	}else if($("#editDescription").val().length<1){
-		console.log("Topic and/or description can NOT be empty!");
+		console.log("Topic cannot be empty!");
+	}else if(!$(editorDescr).val()){
+		console.log("Description cannot be empty!");
 	}else{
-		var topic = $("#editTopic").val();
-		var description = $("#editDescription").val();
+		var topic = $("#threadTopicInput").val();
+		var description = $(editorDescr).val();
 		console.log(topic+description);
 
 		AJAXService("EDITTHREAD",{threadId:querystring["threadId"],topic:topic,description:description},"EDITTHREAD");
@@ -379,6 +381,7 @@ function unlockThreadSuccess()
 
 function editThreadPoo()
 {
+	console.log("wdawd");
 	AJAXService("EDITTHREAD",{threadId:querystring["threadId"]},"EDITTHREAD");
 }
 
@@ -394,62 +397,78 @@ function createThreadUI()
 
 function createThreadPublicUI()
 {
-	$("#createThreadPrivateWrapper").slideUp();
+
+	$("#createThreadPrivateWrapper").slideUp(function() {
+		$("#createThreadPrivateWrapper").html("");
+	});
+
 }
 
 function createThreadPrivateUI()
 {
-	updateClassList();
+	getUsers();
 
 	$("#createThreadPrivateWrapper").slideDown();
 }
 
-function updateClassList()
-{
-	var cid = $("#createThreadCourseList").val();
-	getClasses(cid);
-}
-
-function updateUsersList()
-{
-	var programclass = $("#createThreadClassList").val();
-	getUsers(programclass);
-}
-
-
-
 function returnedCourses(data) {
 	var str;
 	$.each(data['courses'], function() {
-		str += "<option value='" + this[
-			"cid"
-		] + "'>" + this["coursecode"] + " - " + this["coursename"] + "</option>";
+		str += "<option value='" + this["cid"] + "'>" +
+			this["coursecode"] + " - " + this["coursename"] + "</option>";
 	});
 	$("#createThreadCourseList").html(str);
 
-	updateClassList();
-}
-
-function returnedClasses(data) {
-	var str = "";
-	$.each(data['classes'], function() {
-		str += "<option value='" + this[
-			"class"
-		] + "'>" + this["class"] + "</option>";
-	});
-	$("#createThreadClassList").html(str);
-
-	updateUsersList();
+	getUsers();
 }
 
 function returnedUsers(data) {
-	var str = "<input id='threadCheckboxAll' class='threadUsersCheckbox' type='checkbox' value='all'><label class='threadCheckboxLabel' for='threadCheckboxAll'>All</label>";
-	$.each(data['users'], function() {
-		str += "<input id='threadCheckbox" + this['uid'] + "' class='threadUsersCheckbox' type='checkbox' value='" + this["uid"] +
-		"'>" +
-		"<label class='threadCheckboxLabel' for='threadCheckbox" + this["uid"] + "'>" + this["username"] + "</label>";
-	});
-	$("#createThreadUsersWrapper").html(str);
+	console.log(data);
+	if (data['users']) {
+		var str =
+			"<table id='threadAccessTable'>" +
+				"<tr>" +
+					"<th>Access</th><th>Class</th><th>Username</th><th>" +
+				"</tr>";
+
+		$.each(data['users'], function(className, classObj) {
+			$.each(classObj, function(index, student) {
+				// Table of students
+				str +=
+					"<tr>" +
+						"<td><input id='checkbox"+student['uid']+"' class='threadUsersCheckbox' type='checkbox' value='"+student['uid']+"'></td>" +
+						"<td>" + className + "</td>" +
+						"<td>" + student['username'] + "</td>" +
+					"</tr>";
+			});
+		});
+
+		str +=
+				"<tr>" +
+					"<td><input id='threadCheckboxAll' class='threadUsersCheckbox' type='checkbox' value='all'></td>" +
+					"<td>All</td>" +
+				"</tr>" +
+			"</table>";
+
+		$("#createThreadPrivateWrapper").html(str);
+
+		$("#threadCheckboxAll").on("change", function() {
+			if ($(this).is(":checked")) {
+				$(".threadUsersCheckbox").prop("checked", true);
+			}else {
+				$(".threadUsersCheckbox").prop("checked", false);
+			}
+		});
+	}else {
+		var str =
+			"<div class='err'>" +
+				"<span style='font-weight:bold'>" +
+					"Sorry! " +
+				"</span>" +
+				"No students found for this course." +
+			"</div>";
+		$("#createThreadPrivateWrapper").html(str);
+	}
 }
 
 function error(xhr, status, error)

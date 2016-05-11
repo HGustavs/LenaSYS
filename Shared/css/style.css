@@ -1500,7 +1500,6 @@ input.new-item-button:hover {
   clear: both;
   color: #000;
   font-size: 16px;
-	width: 75%;
 }
 
 #threadDetails {
@@ -1696,6 +1695,7 @@ input.new-item-button:hover {
 #createThreadOptions {
   float: left;
   clear: both;
+	width: 100%;
 }
 
 .createThreadOptionLabel {
@@ -1718,6 +1718,7 @@ input.new-item-button:hover {
 #createThreadPrivateWrapper {
   display: none;
   clear: both;
+	width: 100%;
 }
 
 #submitThreadButton {
@@ -1752,15 +1753,30 @@ input.new-item-button:hover {
 }
 
 
+#threadAccessTable {
+	-webkit-backface-visibility:visible;
+	background-color: white;
+	outline: 2px solid #7B5A96;
+	float: left;
+	margin: 25px 0;
+}
+
+#threadAccessTable th {
+	text-align: left;
+	padding: 10px;
+}
+
+#threadAccessTable tr {
+	border-bottom: 1px solid #7B5A96;
+}
+
+#threadAccessTable td {
+	padding: 5px 10px;
+}
 
 .threadUsersCheckbox {
   float: left;
   clear:both;
-}
-.threadCheckboxLabel {
-  margin-bottom: 5px;
-  color: rgb(97, 72, 117);
-  float: left;
 }
 
 #submitThreadButton {
