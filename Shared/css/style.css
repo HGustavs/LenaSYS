@@ -1986,14 +1986,31 @@ ul#editorBarMenu li .editorSubMenu li {
 	padding: 1%;
 }
 
-.setting button {
-	border: solid 2px #614875;
+.settingsGroup form button {
+	border: solid 1px #614875;
 	background-color: #614875;
 	color: #ffffff;
 	margin-top: 10px; 
-	border-radius: 5px;
-	font-size: 80%; 
+	font-size: 90%; 
+	width: 98%;
+	padding: 7px;
 }
+.settingsGroup form button:hover {
+	color: #ffffff; 
+	background-color: #c3afd0;
+	border: solid 1px #c3afd0;
+}
+
+.settingsGroup input {
+	width: 95%;
+	border: 1px solid gray;
+	padding: 7px; 
+}
+
+#databaseForm {
+	margin: 0 auto;  
+	width: 95%;
+} 
 
 .settingsGroup{
 	overflow: auto;
