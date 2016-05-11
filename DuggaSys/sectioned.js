@@ -454,12 +454,8 @@ function returnedSection(data)
 	retdata=data;
 	var storeVersions = [];
 
-	if(querystring['coursevers']!="null"){
-		// Fill section list with information
-		str="";
-
-		if (retdata['versions'].length > 0) {
-
+	if (retdata['versions'].length > 0) {
+			var versionversion = null;
 			for ( i = 0; i < retdata['versions'].length; i++) {
 				var item = retdata['versions'][i];
 				if (retdata['courseid'] == item['cid']) {
@@ -469,11 +465,16 @@ function returnedSection(data)
 					if(retdata['coursevers']==vvers){
 						var versionname=vname;
 						//Storing the current version number as it's used later on.
-						var versionversion = vvers;
+						versionversion = vvers;
 					}
 				}
 			}
-		}
+	}
+	// if versionversion is null there is no exising course with the name defined in the querystring
+	if(querystring['coursevers']!="null" && versionversion != null){
+		// Fill section list with information
+		str="";
+		
 
 
 		if(data['writeaccess']) {
