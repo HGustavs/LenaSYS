@@ -2036,4 +2036,8 @@ ul#editorBarMenu li .editorSubMenu li {
 	.settingsGroup {
 		width: 95%;
 	}
+	
+	.settingsGroup input {
+	width: 98%;
+	}
 }
