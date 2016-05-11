@@ -502,7 +502,7 @@ function drawLineChart(data) {
 	// Draw Y values
 	ctx.textAlign = "right";
 	ctx.textBaseline = "middle";
-	for (var i = 0; i < getMaxY(); i += 10) {
+	for (var i = 0; i < getMaxY(); i += 5) {
 		ctx.fillText(i, xPadding - 10, getYPixel(i));
 	}
 
