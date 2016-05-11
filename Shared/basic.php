@@ -142,6 +142,14 @@ $sql = '
 		quizid INTEGER,	
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
+	CREATE TABLE IF NOT EXISTS fileUploadLogEntries(
+	id 				INTEGER PRIMARY KEY
+	filename		VARCHAR(128) NOT NULL,
+	kind			INTEGER,	
+	cid				INT UNSIGNED NOT NULL,
+	vers			VARCHAR(8) DEFAULT 0,
+	isGlobal		BOOLEAN DEFAULT 0,
+);
 ';
 $log_db->exec($sql);
 
@@ -265,6 +273,24 @@ function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
 	$query->bindParam(':type', $type);
 	$query->execute();
 }
+
+//------------------------------------------------------------------------------------------------
+// logFileUploadEvent
+//------------------------------------------------------------------------------------------------
+//
+// Creates a new log entry in the file upload log database (log.db, located at the root directory)
+//
+
+function logFileUploadEvent($filename, $kind, $cid, $vers, isGlobal) {
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO logFileUploadEntries (filename, kind, cid, vers, isGlobal) VALUES (:filename, :kind, :cid, :vers, :isGlobal)');
+	$query->bindParam(':filename', $filename);
+	$query->bindParam(':kind', $kind);
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $vers);
+	$query->bindParam(':isGlobal', $isGlobal);
+	$query->execute();
+}
+
 
 
 //------------------------------------------------------------------------------------------------
