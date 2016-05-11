@@ -365,6 +365,22 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else{
 		$accessDenied = "You do not have access to the thread.";
 	}
+}else if(strcmp($opt,"EDITCOMMENTCONTENT")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("SELECT text, commentid FROM threadcomment WHERE commentid=:commentID;");
+		$query->bindParam(':commentID', $commentid);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}else{
+		$accessDenied = "You do not have access to the thread.";
+	}
 }else if(strcmp($opt,"GETCOURSES")===0){
 	$query = $pdo->prepare("SELECT cid, coursecode, coursename FROM course");
 	$query->bindParam(':threadid', $threadId);
