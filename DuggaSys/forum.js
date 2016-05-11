@@ -258,7 +258,25 @@ function returnedThread(data)
 		}else{
 			$("#threadMakeComment").slideDown();
 		}
+		
+		if(data['thread']['hidden'] === "1"){
+			AJAXService("GETPRIVATETHREADMEMBERS",{threadId:querystring["threadId"]},"GETPRIVATETHREADMEMBERS");
+		}
+		
 	}
+}
+
+function loadPrivateThreadMembers(data)
+{
+	console.log(data);
+	var str = "<div class='privateMembersContainer' style='float:right;'><select>";
+
+	for(var i = 0; i<data['privateMembers'].length; i++){
+		str += "<option>"+data['privateMembers'][i]['username']+"</option>";
+		console.log(data['privateMembers'][i]['username']);
+	}
+	str += "</select></div>";
+	$("#threadOptions").append(str);
 }
 
 function getUsername(threadUID)
@@ -336,10 +354,11 @@ function getCommentReply(event, commentid)
 {
 	var target = event.target;
 	var text = $(target).parent().prev().children().first().clone().children().remove().end().text();
+	text = text.replace(/(\r\n|\n|\r)/g,"");
 	text = "^ " + text + " ^" + "\r\n";
 	console.log(text);
 	$("#threadMakeComment").find('.editorDescr').first().val(text);
-  $("#commentSubmitButton").attr("onclick", "makeComment("+commentid+")");
+	$("#commentSubmitButton").attr("onclick", "makeComment("+commentid+")");
 }
 
 function makeCommentSuccess()
@@ -532,4 +551,12 @@ function previewText(event)
 
 	$(editorDescr).hide();
 	$(editorPreview).show();
+}
+
+function error(xhr, status, error)
+{
+	console.log("ERROOR");
+	console.log(error);
+	console.log(status);
+	console.log(xhr);
 }

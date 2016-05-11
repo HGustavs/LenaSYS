@@ -673,6 +673,19 @@ function AJAXService(opt,apara,kind)
 				error:error
 			});
 			break;
+		case "GETPRIVATETHREADMEMBERS":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					loadPrivateThreadMembers(data);
+					sendConfirmation("forumservice.php");
+				},
+				error:error
+			});
+			break;
 	}
 }
 
