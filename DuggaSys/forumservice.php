@@ -287,6 +287,35 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$accessDenied = "You do not have permisson to edit this thread.";
 	}
+}else if(strcmp($opt,"GETPRIVATETHREADMEMBERS")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("SELECT user.username FROM user,threadaccess WHERE (threadaccess.threadid=:threadid AND user.uid=threadaccess.uid)");
+		$query->bindParam(':threadid', $threadId);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else{
+		$privateMembers = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+	}else{
+		$accessDenied = "You do not have permisson to edit this thread.";
+	}
+}else if(strcmp($opt,"EDITCOMMENT")===0){
+	// Access check
+	if ($threadAccess==="op" || $threadAccess==="super"){
+		$query = $pdo->prepare("UPDATE threadcomment SET text=:text, datecreated=current_timestamp WHERE commentid=:commentid");
+		//INSERT INTO threadcomment (threadid, uid, text, datecreated, replyid) VALUES (:threadID, :uid, :text, current_timestamp, :commentid)");
+		$query->bindParam(':commentid', $commentid);
+		$query->bindParam(':text', $text);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}
+	}else{
+		$accessDenied = "You do not have permisson to edit this thread.";
+	}
 }
 
 
@@ -350,6 +379,22 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else{
 		$accessDenied = "You do not have access to the thread.";
 	}
+}else if(strcmp($opt,"EDITCOMMENTCONTENT")===0){
+	// Access check
+	if ($threadAccess){
+		$query = $pdo->prepare("SELECT text, commentid FROM threadcomment WHERE commentid=:commentID;");
+		$query->bindParam(':commentID', $commentid);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+
+		}else{
+			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}else{
+		$accessDenied = "You do not have access to the thread.";
+	}
 }else if(strcmp($opt,"GETCOURSES")===0){
 	$query = $pdo->prepare("SELECT cid, coursecode, coursename FROM course");
 	$query->bindParam(':threadid', $threadId);
@@ -360,7 +405,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else {
 		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
-}else if(strcmp($opt,"GETCLASSES")===0){
+}else if(strcmp($opt,"GETUSERS")===0){
 	$query = $pdo->prepare("SELECT class FROM programcourse WHERE cid=:cid");
 	$query->bindParam(':cid', $cid);
 
@@ -370,15 +415,20 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else {
 		$classes = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
-}else if(strcmp($opt,"GETUSERS")===0){
-	$query = $pdo->prepare("SELECT uid, username FROM user WHERE class=:class");
-	$query->bindParam(':class', $class);
 
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
-	}else {
-		$users = $query->fetchAll(PDO::FETCH_ASSOC);
+	if ($classes) {
+		$users = array();
+		for ($i = 0; $i < count($classes); $i++) {
+			$query = $pdo->prepare("SELECT uid, username FROM user WHERE class=:class");
+			$query->bindParam(':class', $classes[$i]['class']);
+
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
+			}else {
+				$users[$classes[$i]['class']] = $query->fetchAll(PDO::FETCH_ASSOC);
+			}
+		}
 	}
 }else if(strcmp($opt,"GETTHREADCREATOR")===0){
 	$query = $pdo->prepare("SELECT user.username FROM user,thread WHERE (thread.threadid=:threadid AND thread.uid=user.uid AND user.uid=:threadUID)");
@@ -404,7 +454,8 @@ if ($opt!=="UNK"){
 		'uid' => $uid,
 		'courses' => $courses,
 		'classes' => $classes,
-		'users' => $users
+		'users' => $users,
+		'privateMembers' => $privateMembers
 	);
 	echo json_encode($array);
 }

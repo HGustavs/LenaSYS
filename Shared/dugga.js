@@ -558,7 +558,20 @@ function AJAXService(opt,apara,kind)
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: function(data) {
-					replyComment(data);
+					replyCommentSuccess(data);
+					sendConfirmation("forumservice.php");
+				},
+				error: error
+			});
+			break;
+		case "EDITCOMMENTCONTENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					editGetComment(data);
 					sendConfirmation("forumservice.php");
 				},
 				error: error
@@ -661,6 +674,32 @@ function AJAXService(opt,apara,kind)
 			});
 			break;
 		case "DELETECOMMENT":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					getComments(data);
+					sendConfirmation("forumservice.php");
+				},
+				error:error
+			});
+			break;
+		case "GETPRIVATETHREADMEMBERS":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					loadPrivateThreadMembers(data);
+					sendConfirmation("forumservice.php");
+				},
+				error:error
+			});
+			break;
+		case "EDITCOMMENT":
 			$.ajax({
 				url: "forumservice.php",
 				type:"POST",

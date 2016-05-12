@@ -16,6 +16,9 @@ $(function() {
 			case "pie":
 				drawPieChart(analytics.chartData);
 				break;
+			case "line":
+				drawLineChart(analytics.chartData);
+				break;
 		}
 	});
 	loadGeneralStats();
@@ -135,9 +138,77 @@ function loadBrowserPercentage() {
 }
 
 function loadServiceUsage() {
-	loadAnalytics("serviceUsage", function(data) {
-		$('#analytic-info').append("<p>TODO: line chart with interaction</p>");
-	});
+	resetAnalyticsChart();
+	$('#analytic-info').empty();
+	$('#analytic-info').append("<p>Service usage</p>");
+
+	var inputDateFrom = $('<input type="text"></input>')
+		.datepicker({
+			dateFormat: "yy-mm-dd"
+		})
+		.datepicker("setDate", "-1m")
+		.appendTo($('#analytic-info'));
+
+	var inputDateTo = $('<input type="text"></input>')
+		.datepicker({
+			dateFormat: "yy-mm-dd"
+		})
+		.datepicker("setDate", "+1d")
+		.appendTo($('#analytic-info'));
+
+	var selectInterval = $("<select></select>")
+		.append('<option value="hourly">Hourly</option>')
+		.append('<option value="daily" selected>Daily</option>')
+		.append('<option value="weekly">Weekly</option>')
+		.append('<option value="monthly">Monthly</option>')
+		.appendTo($('#analytic-info'));
+
+	function updateServiceUsage() {
+		$.ajax({
+			url: "analytictoolservice.php",
+			type: "POST",
+			dataType: "json",
+			data: {
+				query: "serviceUsage",
+				start: inputDateFrom.val(),
+				end: inputDateTo.val(),
+				interval: selectInterval.val()
+			},
+			success: function(data) {
+				resetAnalyticsChart();
+
+				var services = {};
+				$.each(data, function(i, row) {
+					if (!services.hasOwnProperty(row.service)) {
+						services[row.service] = [];
+					}
+					services[row.service].push({
+						X: row.dateTime,
+						Y: row.hits
+					});
+				});
+
+				$('#analytic-info > select.service-select').remove();
+				var serviceSelect = $('<select class="service-select"></select>');
+				for (var service in services) {
+					if (services.hasOwnProperty(service)) {
+						serviceSelect.append('<option value="' + service + '">' + service + '</option>')
+					}
+				}
+				serviceSelect.change(function() {
+					drawLineChart(services[$(this).val()]);
+				});
+				$('#analytic-info').append(serviceSelect);
+				serviceSelect.change();
+			}
+		});
+	}
+
+	inputDateFrom.change(updateServiceUsage);
+	inputDateTo.change(updateServiceUsage);
+	selectInterval.change(updateServiceUsage);
+
+	updateServiceUsage();
 }
 
 function loadServiceAvgDuration() {
@@ -168,7 +239,52 @@ function loadServiceAvgDuration() {
 
 function loadServiceCrashes() {
 	loadAnalytics("serviceCrashes", function(data) {
-		$('#analytic-info').append("<p>TODO: Crash output</p>");
+		$('#analytic-info').append("<p>Service requests with missing steps</p><hr>");
+
+		var crashes = {};
+		$.each(data, function(i, step) {
+			if (crashes[step.uuid] === undefined) {
+				crashes[step.uuid] = {
+					service: step.service,
+					userAgent: step.userAgent,
+					operatingSystem: step.operatingSystem,
+					browser: step.browser,
+					steps: {}
+				};
+			}
+			crashes[step.uuid].steps[step.eventType] = new Date(Number(step.timestamp));
+		});
+
+
+		function pad(n, width) {
+			n = n + '';
+			return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+		}
+
+		function formatDate(date) {
+			var year = date.getFullYear();
+			var month = date.getMonth();
+			var day = date.getDate();
+			var hour = date.getHours();
+			var minute = date.getMinutes();
+			var seconds = date.getSeconds();
+			var millis = date.getMilliseconds();
+			return year + "-" + pad(month, 2) + "-" + pad(day, 2) + " " + pad(hour, 2) + ":" + pad(minute, 2) + ":" + pad(seconds, 2) + "." + pad(millis, 3);
+		}
+
+		$.each(crashes, function(i, crash) {
+			var str = "<div>";
+			str += "Service: " + crash.service;
+			str += "<br>User agent: " + crash.userAgent;
+			str += "<br>OS: " + crash.operatingSystem;
+			str += "<br>Browser: " + crash.browser;
+			str += "<br><br>Client start: " + formatDate(crash.steps[5]);
+			str += "<br>Server start: " + (crash.steps[6] === undefined ? 'missing' : formatDate(crash.steps[6]));
+			str += "<br>Server end: " + (crash.steps[7] === undefined ? 'missing' : formatDate(crash.steps[7]));
+			str += "<br>Client end (fourth round trip): " + (crash.steps[8] === undefined ? 'missing' : formatDate(crash.steps[8]));
+			str += "<br><hr></div>";
+			$('#analytic-info').append(str);
+		});
 	});
 }
 
@@ -331,4 +447,71 @@ function renderTable(data) {
 	}
 	str += "</tbody></table>";
 	return str;
+}
+
+function drawLineChart(data) {
+	if (!$.isArray(data)) return;
+
+	analytics.chartType = "line";
+	analytics.chartData = data;
+
+	var canvas = $("#analytic-chart")[0];
+	var ctx = canvas.getContext("2d");
+
+	fitCanvasToContainer(canvas);
+	clearCanvas(canvas);
+
+	var xPadding = 30;
+	var yPadding = 30;
+
+	function getMaxY() {
+		var max = 0;
+		for (var i = 0; i < data.length; i++) {
+			if (data[i].Y > max) {
+				max = data[i].Y;
+			}
+		}
+		return max;
+	}
+
+	function getXPixel(val) {
+		return ((canvas.width - xPadding) / data.length) * val + (xPadding * 1.5);
+	}
+
+	function getYPixel(val) {
+		return canvas.height - (((canvas.height - yPadding) / getMaxY()) * val) - yPadding;
+	}
+
+	ctx.lineWidth = 2;
+	ctx.strokeStyle = "#333";
+	ctx.font = "Arial 8pt";
+	ctx.textAlign = "center"
+
+	// Draw L
+	ctx.beginPath();
+	ctx.moveTo(xPadding, 0);
+	ctx.lineTo(xPadding, canvas.height - yPadding);
+	ctx.lineTo(canvas.width, canvas.height -yPadding);
+	ctx.stroke();
+
+	// Draw X values
+	for (var i = 0; i < data.length; i++) {
+		ctx.fillText(data[i].X, getXPixel(i), canvas.height - yPadding + 20);
+	}
+
+	// Draw Y values
+	ctx.textAlign = "right";
+	ctx.textBaseline = "middle";
+	for (var i = 0; i < getMaxY(); i += 5) {
+		ctx.fillText(i, xPadding - 10, getYPixel(i));
+	}
+
+	// Draw line graph
+	ctx.strokeStyle = "#614875";
+	ctx.beginPath();
+	ctx.moveTo(getXPixel(0), getYPixel(data[0].Y));
+	for(var i = 1; i < data.length; i++) {
+		ctx.lineTo(getXPixel(i), getYPixel(data[i].Y));
+	}
+	ctx.stroke();
 }

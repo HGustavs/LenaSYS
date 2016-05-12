@@ -39,30 +39,52 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 		<div id="settingsToast"></div>
-			<div class="allSettings">
-			
-			<div id="Sectionlist" style="margin-bottom:20px;">
-				<div class="course">
-					<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Loggning</div>
-				</div>
-			</div>
-			
-				<div class="setting">
-					<p>Mouse movement logging</p>
-					<label data-label="mouseMoveLogging" class="switch<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>">
-						<i class="icon-ok"></i>
-						<i class="icon-remove"></i>
-						<input type="checkbox"<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>>
-					</label>
+			<div id="settingsWrapper">
+				<div class="settingsGroup">
+					<div id="Sectionlist" style="margin-bottom:20px;">
+						<div class="course">
+							<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Loggning</div>
+						</div>
+					</div>
+					<div class="multipleSettings">
+						<div class="setting">
+							<p>Mouse movement logging</p>
+							<label data-label="mouseMoveLogging" class="switch<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>">
+								<i class="icon-ok"></i>
+								<i class="icon-remove"></i>
+								<input type="checkbox"<?= $options['mouseMoveLogging'] == '1' ? ' checked' : ''?>>
+							</label>
+						</div>
+						
+						<div class="setting">
+							<p>Fourth round trip logging</p>
+							<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
+								<i class="icon-ok"></i>
+								<i class="icon-remove"></i>
+								<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
+							</label>
+						</div>
+					</div>	
 				</div>
 				
-				<div class="setting">
-					<p>Fourth round trip logging</p>
-					<label data-label="fourthRound" class="switch<?= $options['fourthRound'] == '1' ? ' checked' : ''?>">
-						<i class="icon-ok"></i>
-						<i class="icon-remove"></i>
-						<input type="checkbox"<?= $options['fourthRound'] == '1' ? ' checked' : ''?>>
-					</label>
+				<div class="settingsGroup">	
+					<div id="Sectionlist" style="margin-bottom:20px;">
+						<div class="course">
+							<div id="coure-coursename" style="display: inline-block;margin-left:10px;">Database</div>
+						</div>
+					</div>
+					
+					<form id="databaseForm">
+						<p>Database Name</p>
+						<input type="text" name="database">
+						<p>User Name</p>
+						<input type="text" name="user-name">
+						<p>Password</p>
+						<input type="password" name="password"> 
+						<p>Database Host</p>
+						<input type="text" name="host"> 
+						<button type="submit" form="databaseForm" value="Submit" id="databaseButton">Submit</button>
+					</form>			
 				</div>
 			</div>
 	</div>
