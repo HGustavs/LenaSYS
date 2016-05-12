@@ -366,15 +366,24 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"REPLYCOMMENT")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT text, replyid, commentid FROM threadcomment WHERE commentid=:commentID;");
+		$query = $pdo->prepare("SELECT commentid, uid, text, replyid FROM threadcomment WHERE commentid=:commentID;");
 		$query->bindParam(':commentID', $commentid);
 
 		if(!$query->execute()){
 			$error=$query->errorInfo();
 			exit($debug);
-
 		}else{
-			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+			$comments = $query->fetch(PDO::FETCH_ASSOC);
+
+			$query = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
+			$query->bindParam(':uid', $comments['uid']);
+
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
+			}else{
+				$users = $query->fetch(PDO::FETCH_ASSOC);
+			}
 		}
 	}else{
 		$accessDenied = "You do not have access to the thread.";

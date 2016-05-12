@@ -74,7 +74,7 @@ $( document ).ready(function() {
 		        markdownText = (emptyDescription ? "\n" : "") + "---" ;
 		        break;
 		}
-		
+
 
 
 
@@ -374,7 +374,7 @@ function returnedComments(data)
 	$("#commentSubmitButton").attr("onclick", "makeComment()");
 	$("#commentSubmitButton").attr("value", "Submit");
 	$("#makeCommentHeader").html("Comment");
-	
+
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
@@ -429,14 +429,14 @@ function editUI(commentid)
 	/*$("#makeCommentHeader").html("Edit Comment");
 	$("#endCommentButton").attr("value", "Cancel edit");
 	$("#endCommentButton").css("visibility", "show");
-	
+
 	var target = event.target;
 	var text = $(target).parent().prev().children().text();
 	var yourComment= $(target).parent().prev().children().first().clone().children().remove().end().html();
 	if(text !== yourComment){
 		text = "^ " + text.replace(yourComment," ^" + yourComment);
 	}
-	
+
 	$("#threadMakeComment").find('.editorDescr').first().val(text);
 	$("#commentSubmitButton").attr("onclick", "editComment("+commentid+")");
 	$("#commentSubmitButton").attr("value", "Update Comment");
@@ -444,18 +444,17 @@ function editUI(commentid)
 	checkComment();*/
 }
 
-function editGetComment(array)
+function editGetComment(data)
 {
-	$("#makeCommentHeader").html("Edit Comment");
-	$("#endCommentButton").attr("value", "Cancel edit");
+	$("#makeCommentHeader").html("Edit comment");
 	$("#endCommentButton").css("visibility", "show");
-	
-	$.each(array["comments"], function(index, value){
+
+	$.each(data["comments"], function(index, value){
 		$("#threadMakeComment").find('.editorDescr').first().val(value['text']);
 		$("#commentSubmitButton").attr("onclick", "editComment("+value['commentid']+")");
 	});
-	
-	$("#commentSubmitButton").attr("value", "Update Comment");
+
+	$("#commentSubmitButton").attr("value", "Submit");
 	$("#commentSubmitButton").css("width", "125px");
 	checkComment();
 }
@@ -492,35 +491,31 @@ function getCommentReply(commentid, username)
 	$("#threadMakeComment").find('.editorDescr').first().val(text);*/
 }
 
-function replyCommentSuccess(array)
+function replyCommentSuccess(data)
 {
 	$("#commentSubmitButton").attr("onclick", "makeComment()");
 	$("#commentSubmitButton").attr("value", "Submit");
 	$("#threadMakeComment").find('.editorDescr').first().val("");
-	$("#endCommentButton").attr("value", "Cancel Reply");
 	$("#endCommentButton").css("visibility", "show");
-	
-	var commentLength = array["comments"].length;
+
+	var commentLength = data["comments"].length;
 	var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
 
 	threadCommentStr += "<div class=\"allComments\">";
-
+  console.log(data);
 	// Iterates through all the comments
-	$.each(array["comments"], function(index, value){
-		
-		var text = value['text'];
-		
-		text = text.replace("^ ", "");
-		text = text.replace(" ^", "");
-		text = text.replace(/.*[\r\n]/g, "");
-		
-		text = "^ " + text + " ^\r\n";
-		
-		$("#makeCommentHeader").html("Reply to " + value['user.username']);
-		$("#threadMakeComment").find('.editorDescr').first().val(text);
-		
-		$("#commentSubmitButton").attr("onclick", "makeComment("+value['commentid']+")");
-	});
+
+	var text = data["comments"]['text'];
+
+	text = text.replace("^ ", "");
+	text = text.replace(" ^", "");
+	text = text.replace(/.*[\r\n]/g, "");
+
+	text = "^ " + text + " ^\r\n";
+	$("#makeCommentHeader").html("Reply to " + data['users']['username']);
+	$("#threadMakeComment").find('.editorDescr').first().val(text);
+
+	$("#commentSubmitButton").attr("onclick", "makeComment("+data['comments']['commentid']+")");
 }
 
 function endReplyComment()
@@ -682,11 +677,11 @@ function previewText(event)
 	// shows the markdown shortcuts
 	$(event.target).siblings(".markdownShortcutWrapper").hide();
 
-	
+
 
 	// Parses text to preview
 	var parseText = parseMarkdown($(editorDescr).val());
-	
+
 
 	if(!parseText)
 	{
@@ -708,4 +703,3 @@ function error(xhr, status, error)
 	console.log(status);
 	console.log(xhr);
 }
-
