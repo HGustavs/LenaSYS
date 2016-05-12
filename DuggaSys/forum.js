@@ -11,12 +11,88 @@ var querystring = parseGet();
 // Commands:
 //----------------------------------------
 
-$(document).on('click','.replyCommentButton, .editCommentButton', function(event) {
-		event.preventDefault();
-		var target = "#" + this.getAttribute('data-target');
-		$('html, body').animate({
-			scrollTop: $('#makeCommentInputWrapper').offset().top -110
-		}, 1000);
+
+$( document ).ready(function() {
+
+  initThread();
+
+
+	  // Hover handler for certain shortcurts
+
+	  $("body").on({
+	    mouseenter: function(e) {
+	    	e.stopPropagation();
+	      	$(this).children("div.editorSubMenu").slideDown(200);
+	    },
+	    mouseleave: function(e) {
+	    	e.stopPropagation();
+	      	$(this).children("div.editorSubMenu").slideUp(200).clearQueue();
+	    },
+	}, ".editorDropdown");
+
+
+
+	// what happens when you click on one of the markdown shortcus
+
+	$(".markdownShortcut").on("click",function(event){
+
+		var markdownType = $(this).attr("markdown-data");
+
+		var markdownText,
+			thisDescription = $(this).parents(".editorDescrOptions").siblings(".editorDescrWrapper").children(".editorDescr"),
+			emptyDescription = true;
+
+
+		if(!thisDescription.val().trim())
+		{
+			emptyDescription = false;
+		}
+
+
+		// Temporary markdown implementation, should (probably) be updated in the markown.js file later on.
+
+		switch (markdownType) {
+		    case "heading1":
+		        markdownText = (emptyDescription ? "\n" : "") + "# text" ;
+		        break;
+		    case "heading2":
+		        markdownText = (emptyDescription ? "\n" : "") + "## text" ;
+		        break;
+		    case "heading3":
+		        markdownText = (emptyDescription ? "\n" : "") + "### text" ;
+		        break;
+		    case "bold":
+		        markdownText = " ***text***" ;
+		        break;
+		    case "italic":
+		        markdownText = " **text**" ;
+		        break;
+		     case "link":
+		        markdownText = " !!!http://www.google.com, the text to be shown as a link!!!" ;
+		        break;
+		    case "horizontalLine":
+		        markdownText = (emptyDescription ? "\n" : "") + "---" ;
+		        break;
+		}
+		
+
+
+
+		thisDescription.val(thisDescription.val() + markdownText);
+
+	});
+
+
+
+	$(document).on('click','.replyCommentButton, .editCommentButton', function(event) {
+			event.preventDefault();
+			var target = "#" + this.getAttribute('data-target');
+			$('html, body').animate({
+				scrollTop: $('#makeCommentInputWrapper').offset().top -110
+			}, 1000);
+	});
+
+
 });
 
 function initThread()
@@ -585,20 +661,6 @@ function error(xhr, status, error)
 // Forum Editor Functions
 
 
-$( document ).ready(function() {
-	initThread();
-
-  $(".editorDropdown").hover(function(e) {
-  	e.stopPropagation();
-      $(this).children("div.editorSubMenu").slideDown(200);
-  }, function(e) {
-  	e.stopPropagation();
-      $(this).children("div.editorSubMenu").slideUp(200).clearQueue();
-  });
-
-
-  $( document ).tooltip();
-});
 
 function writeText(event)
 {
@@ -607,6 +669,9 @@ function writeText(event)
 	$(button).addClass("editorActiveButton");
 	$(button).parent().parent().find(".editorPreviewText").first().hide();
 	$(button).parent().parent().find(".editorDescr").first().show();
+
+	// hides the markdown shortcuts
+	$(event.target).siblings(".markdownShortcutWrapper").show();
 }
 
 function previewText(event)
@@ -619,9 +684,15 @@ function previewText(event)
 	$(writeButton).removeClass("editorActiveButton");
 	$(button).addClass("editorActiveButton");
 
+	// shows the markdown shortcuts
+	$(event.target).siblings(".markdownShortcutWrapper").hide();
+
+	
+
 	// Parses text to preview
 	var parseText = parseMarkdown($(editorDescr).val());
-	console.log(parseText);
+	
+
 	if(!parseText)
 	{
 		$(editorPreview).html("Nothing to preview!");
@@ -642,3 +713,4 @@ function error(xhr, status, error)
 	console.log(status);
 	console.log(xhr);
 }
+
