@@ -1376,6 +1376,7 @@ input.new-item-button:hover {
 	font-size: 14px;
 	height: 26px;
 	margin-bottom: 12px;
+	margin: 0 auto;
 	position: relative;
 	width: 26px;
 	-webkit-transition: background-color 0.2s ease-in-out;
@@ -1974,30 +1975,73 @@ ul.editorBarMenu li .editorSubMenu li {
 	height: 35px;
 }
 
+#settingsWrapper {
+	width: 100%;
+}
+
 .setting {
-	float: left;
-	width: 21%;
-	background: #f2f2f2;
-	margin: 10px 1%;
+	width: 25%;
+	padding: 1%;
+	margin: 0 auto;
+	text-align: center;
+}
+.multipleSettings { 
+	margin: 0 auto;
+	display: flex;
+	display: -webkit-flex;
+}
+
+.multipleSettings .setting {
+	height: 80px;
 	padding: 1%;
 }
 
-.allSettings{
+.settingsGroup form button {
+	border: solid 1px #614875;
+	background-color: #614875;
+	color: #ffffff; 
+	font-size: 90%; 
+	width: 96%;
+	padding: 6px;
+	margin: 5px 3px 0px 6px; 
+}
+.settingsGroup form button:hover {
+	color: #ffffff; 
+	background-color: #927a9f;
+	border: solid 1px #927a9f;
+}
+
+.settingsGroup input {
+	width: 96%;
+	border: 1px solid gray;
+	padding: 5px; 
+}
+
+#databaseForm {
+	margin: 13px;  
+	width: 98%;
+} 
+
+.settingsGroup{
 	overflow: auto;
 	padding-bottom: 20px;
-
-	/* Box shadow */
+	margin-bottom: 20px;
+	margin-left: 20px;
+	float: left;
+	width: 48%;
+	min-width: 400px;
+	min-height: 350px;
 	-moz-box-shadow: 0 0 5px #888;
 	-webkit-box-shadow: 0 0 5px#888;
 	box-shadow: 0 0 5px #888;
 }
 
-.allSettings #Sectionlist {
+.settingsGroup #Sectionlist {
 	padding-top: 0px;
 }
 
-@media all and (max-width: 900px) {
-	.setting {
-		width: 46%
+@media all and (max-width: 1050px) {
+	.settingsGroup {
+		width: 95%;
 	}
 }

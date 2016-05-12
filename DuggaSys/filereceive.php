@@ -161,12 +161,16 @@ if($ha){
 
 										// check if upload is successful 
 										if(move_uploaded_file($filea["tmp_name"],$movname)){ 
+												$kindNumber;
 												if($kind=="LFILE"){
 														$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$kindNumber=4;
 												}else if($kind=="MFILE"){
 														$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$kindNumber=3;
 												}else{					
-														$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;" ); // 1=Link 2=Global 3=Course Local 4=Local	
+														$query = $pdo->prepare("SELECT COUNT(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=2;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$kindNumber=2;	
 												}
 												
 												$query->bindParam(':filename', $fname);
@@ -193,6 +197,8 @@ if($ha){
 															echo "Error updating file entries".$error[2];
 														}			 				
 												}
+												//Log the file upload.
+												logFileUploadEvent($fname, $kindNumber, $cid, $vers);
 										}else{
 												echo "Error moving file ".$movname;
 												$error=true;
