@@ -44,14 +44,21 @@ if(isset($getOption)){
 	}
 }
 
-if(isset($editDbSetting){
+if(isset($editDbSetting)){
 	if(isset($_SESSION['uid']) && checklogin() && isSuperUser($_SESSION['uid'])){
 		$connection = false;
 		//Create test connection to the new db.		
 		
+		try {
+			$dbh = new PDO('mysql:host='. $db_host .';dbname='. $db_name, $db_user, $db_password);
+			
+			$dbh = null;
+		} catch (PDOException $e) {
+			$connection = false;
+			die();
+		}
 		
-		
-		if($connection == true){
+		if($connection){
 			$myfile = fopen("../Shared/coursesyspw.php", "w");
 
 			fwrite($myfile, '<?php');
