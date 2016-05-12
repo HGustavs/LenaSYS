@@ -24,7 +24,6 @@ if (file_exists("../.git/refs/heads/master")) {
 	<title>Course Forum</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
 
