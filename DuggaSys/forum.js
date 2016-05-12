@@ -167,6 +167,7 @@ function editThread(data)
 	$("#threadDescr").load("forumEditor.php", function() {
 		$("#threadDescr .editorDescr").val(array[7]);
 
+		console.log($("#createThreadOptions").html());
 		var button = "<input class='new-item-button editThreadBtn' type='button' value='Submit' onclick='submitEditThread()'>";
 		button += "<input class='new-item-button editThreadBtn' type='button' value='Cancel' onclick='getThread()'>";
 		$("#threadDescr").append(button);
@@ -490,12 +491,6 @@ function unlockThreadSuccess()
 {
 	$('.threadLockedIcon').html('');
 	getThread();
-}
-
-function editThreadPoo()
-{
-	console.log("wdawd");
-	AJAXService("EDITTHREAD",{threadId:querystring["threadId"]},"EDITTHREAD");
 }
 
 function createThreadPublicUI()
