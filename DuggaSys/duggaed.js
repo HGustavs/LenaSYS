@@ -168,6 +168,7 @@ function returnedDugga(data)
 	filez = data['files'];
 	duggaPages = data['duggaPages'];
 	str="";
+	
 	if (data['files'].length > 0) {
 
 		str+="<div style='float:right;padding-bottom:10px;'>";

@@ -21,6 +21,7 @@ pdoConnect();
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
 </head>
+
 <body>
 	
 	<?php 
