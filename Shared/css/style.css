@@ -647,7 +647,7 @@ header td {
 	font-family: "Comic Sans MS", "Comic Sans";
 	color:gray;
 	margin-top:5px;
-	-webkit-user-select: none; /* Chrome/Safari */        
+	-webkit-user-select: none; /* Chrome/Safari */
 -moz-user-select: none; /* Firefox */
 -ms-user-select: none; /* IE10+ */
 }
@@ -1500,7 +1500,6 @@ input.new-item-button:hover {
   clear: both;
   color: #000;
   font-size: 16px;
-	width: 75%;
 }
 
 #threadDetails {
@@ -1512,7 +1511,12 @@ input.new-item-button:hover {
   font-size: 14px;
 }
 
-.threadMakeComment {
+#threadCreatedDetail, #threadEditedDetail {
+	clear: both;
+	float: right;
+}
+
+#threadMakeComment {
   clear:both;
   margin-top: 25px;
   padding-bottom: 15px;
@@ -1520,7 +1524,7 @@ input.new-item-button:hover {
   background-color: #eae8eb;
 }
 
-.makeCommentHeader {
+#makeCommentHeader {
   background-color: #927b9e;
   color: #fff;
   padding: 10px 25px;
@@ -1529,23 +1533,15 @@ input.new-item-button:hover {
   width: 100%;
 }
 
-.makeCommentInputWrapper {
+#makeCommentInputWrapper {
   box-sizing: border-box;
   clear: both;
   width: 100%;
-  padding: 20px;
+  padding: 5px 10px 5px 10px;
+	overflow: hidden;
 }
 
-.commentInput {
-  font-size: 0.9em;
-  box-sizing: border-box;
-  padding: 10px;
-  height: 100px;
-  width: 100%;
-  resize: none;
-}
-
-input.commentSubmitButton {
+#commentSubmitButton {
 	background-color: buttonface;
 }
 
@@ -1650,6 +1646,16 @@ input.commentSubmitButton {
 	color: grey;
 }
 
+.editThreadBtn {
+	width:140px;
+	float:right;
+	margin:30px 0 0 10px;
+}
+
+.privateMembersContainer {
+	float: left;
+}
+
 /* Create thread */
 
 #createThreadWrapper {
@@ -1691,20 +1697,15 @@ input.commentSubmitButton {
 #threadTopicInput {
   padding: 10px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1em;
+  font-size: 16px;
   box-sizing: border-box;
   width: 100%;
 }
 
-
-
-
-
-
-
 #createThreadOptions {
   float: left;
   clear: both;
+	width: 100%;
 }
 
 .createThreadOptionLabel {
@@ -1724,9 +1725,10 @@ input.commentSubmitButton {
   color: rgb(97, 72, 117);
 }
 
-#createThreadPrivateWrapper {
+.createThreadPrivateWrapper {
   display: none;
   clear: both;
+	width: 100%;
 }
 
 #submitThreadButton {
@@ -1761,29 +1763,37 @@ input.commentSubmitButton {
 }
 
 
+#threadAccessTable {
+	-webkit-backface-visibility:visible;
+	background-color: white;
+	outline: 2px solid #7B5A96;
+	float: left;
+	margin: 25px 0;
+}
+
+#threadAccessTable th {
+	text-align: left;
+	padding: 10px;
+}
+
+#threadAccessTable tr {
+	border-bottom: 1px solid #7B5A96;
+}
+
+#threadAccessTable td {
+	padding: 5px 10px;
+}
 
 .threadUsersCheckbox {
   float: left;
   clear:both;
-}
-.threadCheckboxLabel {
-  margin-bottom: 5px;
-  color: rgb(97, 72, 117);
-  float: left;
-}
-
-#submitThreadButton {
-  clear:both;
-  margin-right: 0;
-  margin-bottom: 20px;
-
 }
 
  /* --------------================################================-------------- *
   *                                   FORUM EDITOR                               *
   * --------------================################================-------------- */
 
-#editorDescrOptions {
+.editorDescrOptions {
   margin-top: 10px;
   width: 99.8%;
   height: 30px;
@@ -1819,7 +1829,7 @@ input.commentSubmitButton {
   border-radius: 0;
 }
 
-#editorDescrWrapper {
+.editorDescrWrapper {
   box-sizing: border-box;
   clear: both;
   float: left;
@@ -1827,7 +1837,7 @@ input.commentSubmitButton {
   min-height: 110px;
 }
 
-#editorDescr {
+.editorDescr {
   padding: 10px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.8em;
@@ -1839,7 +1849,7 @@ input.commentSubmitButton {
 
 
 
-#editorWriteButton
+.editorWriteButton
 {
 
    margin-left: 10px;
@@ -1847,7 +1857,7 @@ input.commentSubmitButton {
 }
 
 
-#editorPreviewText
+.editorPreviewText
 {
 
   display: none;
@@ -1877,24 +1887,24 @@ input.commentSubmitButton {
 /* Dropdown Menus */
 
 
-.editorDropdownLink { 
+.editorDropdownLink {
     color:#044264;
     font-size:11px;
     font-weight:bold;
     text-decoration:none;
 }
 
-ul#editorBarMenu {
+ul.editorBarMenu {
     margin: 0; padding: 0;
     width: 100%;
-    
+
     font-size: 1.1em;
 }
 
 
 
 /* sub menu class */
-ul#editorBarMenu li .editorSubMenu {
+ul.editorBarMenu li .editorSubMenu {
     -moz-border-radius-bottomleft:5px;
     -moz-border-radius-bottomright:5px;
     background:none repeat scroll 0 0 #ECF3F9;
@@ -1912,7 +1922,7 @@ ul#editorBarMenu li .editorSubMenu {
     width: 150px;
     z-index:999;
     text-align: center;
- 
+
 }
 
 
@@ -1929,19 +1939,19 @@ ul#editorBarMenu li .editorSubMenu {
 	color: black;
 }
 
-ul#editorBarMenu li .single { 
+ul.editorBarMenu li .single {
     width:150px !important;
 }
 
-ul#editorBarMenu li .editorSubMenu ul {
+ul.editorBarMenu li .editorSubMenu ul {
     float:left;
     width:160px;
     margin:7px 0;
 }
 
-ul#editorBarMenu li .editorSubMenu li {
+ul.editorBarMenu li .editorSubMenu li {
     width:135px;
-    margin:0; 
+    margin:0;
     padding:5px 10px 0;
 }
 
@@ -1975,7 +1985,7 @@ ul#editorBarMenu li .editorSubMenu li {
 .allSettings{
 	overflow: auto;
 	padding-bottom: 20px;
-	
+
 	/* Box shadow */
 	-moz-box-shadow: 0 0 5px #888;
 	-webkit-box-shadow: 0 0 5px#888;
