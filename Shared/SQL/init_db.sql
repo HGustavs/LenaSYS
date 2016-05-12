@@ -74,7 +74,7 @@ CREATE TABLE user_course(
 	CONSTRAINT pk_user_course PRIMARY KEY(uid, cid),
 	CONSTRAINT user_course_joins_user FOREIGN KEY (uid)REFERENCES user (uid) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT user_course_joins_course FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE listentries (
 	lid 			INT UNSIGNED NOT NULL AUTO_INCREMENT,
