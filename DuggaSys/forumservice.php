@@ -220,7 +220,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$comment = $query->fetch(PDO::FETCH_ASSOC);
 
 			if ($comment["uid"]===$uid || $threadAccess==="op" || $threadAccess==="super"){
-				$query = $pdo->prepare("DELETE FROM threadcomment WHERE commentid=:commentid");
+				$query = $pdo->prepare("UPDATE threadcomment SET deleted = 1 WHERE commentid=:commentid");
 				$query->bindParam(':commentid', $commentid);
 
 				if(!$query->execute()){
@@ -250,7 +250,8 @@ if(strcmp($opt,"CREATETHREAD")===0){
 }else if(strcmp($opt,"DELETETHREAD")===0){
 	// Access check
 	if ($threadAccess==="op" || $threadAccess==="super"){
-		$query = $pdo->prepare("DELETE FROM thread WHERE threadid=:threadid");
+		$query = $pdo->prepare("UPDATE thread SET deleted=1 WHERE threadid=:threadid;");
+		//$query = $pdo->prepare("DELETE FROM thread WHERE threadid=:threadid");
 		$query->bindParam(':threadid', $threadId);
 
 		if(!$query->execute()){
@@ -357,7 +358,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.lastedited, threadcomment.commentid, threadcomment.replyid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated ASC;");
+		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.lastedited, threadcomment.commentid, threadcomment.replyid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid and deleted IS NULL ORDER BY datecreated ASC;");
 
 		$query->bindParam(':threadId', $threadId);
 
