@@ -305,8 +305,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 }else if(strcmp($opt,"EDITCOMMENT")===0){
 	// Access check
 	if ($threadAccess==="op" || $threadAccess==="super"){
-		$query = $pdo->prepare("UPDATE threadcomment SET text=:text, datecreated=current_timestamp WHERE commentid=:commentid");
-		//INSERT INTO threadcomment (threadid, uid, text, datecreated, replyid) VALUES (:threadID, :uid, :text, current_timestamp, :commentid)");
+		$query = $pdo->prepare("UPDATE threadcomment SET text=:text, lastedited=current_timestamp WHERE commentid=:commentid");
 		$query->bindParam(':commentid', $commentid);
 		$query->bindParam(':text', $text);
 
@@ -358,7 +357,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, threadcomment.commentid, threadcomment.replyid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated ASC;");
+		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.lastedited, threadcomment.commentid, threadcomment.replyid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated ASC;");
 
 		$query->bindParam(':threadId', $threadId);
 
