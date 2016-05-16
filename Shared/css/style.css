@@ -2041,7 +2041,6 @@ ul.editorBarMenu li .editorSubMenu li {
 }
 
 #threadPrivateMembers {
-	width:450px;
 	background-color:#eae8eb;
 }
 
@@ -2054,8 +2053,9 @@ ul.editorBarMenu li .editorSubMenu li {
 	width:60px;
 }
 
-.privateThreadTable span {
-	cursor:pointer;
+#private-users-button:hover {
+	background-color:#C75050 !important;
+	border:none !important;
 }
 
 @media all and (max-width: 1050px) {

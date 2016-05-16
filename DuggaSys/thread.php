@@ -67,7 +67,7 @@ if (file_exists("../.git/refs/heads/master")) {
 			<div id='threadPrivateMembers' class="loginBox" style="display:none">
 				<div id='login'>
 					<div class='loginBoxheader'>
-						<h3>Users with access to this thread</h3>
+						<h3>Users</h3>
 						<div onclick="closeWindows()">x</div>
 					</div>
 					<div class="threadMembers">

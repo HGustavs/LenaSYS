@@ -355,7 +355,9 @@ function loadPrivateThreadMembers(data)
 	var str = "<table class='privateThreadTable'>";
 	for(var i = 0; i<data['privateMembers'].length; i++){
 		str += "<tr><td>"+data['privateMembers'][i]['username']+"</td>";
-		str += "<td style='margin-left:20px;'><span title='Remove user access from this thread' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='color:#ff4d4d;font-size:20px;'>&#10006;</span></td></tr>";
+		
+		str += "<td><input class='new-item-button' type='button' id='private-users-button' value='Remove user' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='background-color:#ff4d4d;'></td></tr>";
+		//str += "<td style='margin-left:20px;'><span title='Remove user access from this thread' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='color:#ff4d4d;font-size:20px;'>&#10006;</span></td></tr>";
 	}
 	str += "</table>";
 	$(".threadMembers").html(str);
