@@ -462,6 +462,16 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else {
 		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
+}else if(strcmp($opt,"GETTHREADUSERS")===0){
+	$query = $pdo->prepare("SELECT DISTINCT user.uid,user.username FROM programcourse,user,thread,threadaccess WHERE (thread.threadid=:threadid AND thread.cid=programcourse.cid AND user.class=programcourse.class)");
+	$query->bindParam(':threadid', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$privateClassUsers = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
 }
 
 
@@ -476,7 +486,8 @@ if ($opt!=="UNK"){
 		'courses' => $courses,
 		'classes' => $classes,
 		'users' => $users,
-		'privateMembers' => $privateMembers
+		'privateMembers' => $privateMembers,
+		'privateClassUsers' => $privateClassUsers
 	);
 	echo json_encode($array);
 }
