@@ -337,23 +337,35 @@ function returnedThread(data)
 		}
 
 		if(data['thread']['hidden'] === "1"){
-			AJAXService("GETPRIVATETHREADMEMBERS",{threadId:querystring["threadId"]},"GETPRIVATETHREADMEMBERS");
+			var threadMembers = "<input class='new-item-button' id='privateThreadMembers'type='button' value='Users' onclick='initiateLoadPrivateThreadMembers()'>";
+			$(".privateMembersContainer").html(threadMembers);
 		}
 
 	}
 }
 
+function initiateLoadPrivateThreadMembers()
+{
+	AJAXService("GETPRIVATETHREADMEMBERS",{threadId:querystring["threadId"]},"GETPRIVATETHREADMEMBERS");
+}
+
 function loadPrivateThreadMembers(data)
 {
-	console.log(data);
-	var str = "<select>";
-
+	$('#threadPrivateMembers').css('display','inline-block');
+	var str = "<table class='privateThreadTable'>";
 	for(var i = 0; i<data['privateMembers'].length; i++){
-		str += "<option>"+data['privateMembers'][i]['username']+"</option>";
-		console.log(data['privateMembers'][i]['username']);
+		str += "<tr><td>"+data['privateMembers'][i]['username']+"</td>";
+		
+		str += "<td><input class='new-item-button' type='button' id='private-users-button' value='Remove user' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='background-color:#ff4d4d;'></td></tr>";
+		//str += "<td style='margin-left:20px;'><span title='Remove user access from this thread' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='color:#ff4d4d;font-size:20px;'>&#10006;</span></td></tr>";
 	}
-	str += "</select>";
-	$(".privateMembersContainer").html(str);
+	str += "</table>";
+	$(".threadMembers").html(str);
+}
+
+function deleteThreadMember(memberUID)
+{
+	AJAXService("DELETETHREADMEMBER",{memberUID:memberUID},"DELETETHREADMEMBER");
 }
 
 function getUsername(threadUID)

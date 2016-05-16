@@ -2040,6 +2040,24 @@ ul.editorBarMenu li .editorSubMenu li {
 	padding-top: 0px;
 }
 
+#threadPrivateMembers {
+	background-color:#eae8eb;
+}
+
+.privateThreadTable {
+	table-layout:fixed;
+}
+
+.privateThreadTable td {
+	padding:5px;
+	width:60px;
+}
+
+#private-users-button:hover {
+	background-color:#C75050 !important;
+	border:none !important;
+}
+
 @media all and (max-width: 1050px) {
 	.settingsGroup {
 		width: 95%;
