@@ -352,10 +352,9 @@ function initiateLoadPrivateThreadMembers()
 function loadPrivateThreadMembers(data)
 {
 	$('#threadPrivateMembers').css('display','inline-block');
-	var str = "<table class='privateThreadTable'>";
+	var str = "<table class='privateThreadTable'><tr><td><input class='new-item-button' type='button' value='Add user' onclick='addPrivateThreaduser()'></td></tr>";
 	for(var i = 0; i<data['privateMembers'].length; i++){
 		str += "<tr><td>"+data['privateMembers'][i]['username']+"</td>";
-		
 		str += "<td><input class='new-item-button' type='button' id='private-users-button' value='Remove user' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='background-color:#ff4d4d;'></td></tr>";
 		//str += "<td style='margin-left:20px;'><span title='Remove user access from this thread' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='color:#ff4d4d;font-size:20px;'>&#10006;</span></td></tr>";
 	}
@@ -378,6 +377,64 @@ function showThreadCreator(data)
 	//console.log(data);
 	var str = data['courses'][0]['username'];
 	$("#threadCreator").html(str);
+}
+
+function addPrivateThreaduser()
+{
+	AJAXService("GETTHREADUSERS",{threadId:querystring["threadId"]},"GETTHREADUSERS");
+	
+}
+
+function returnedThreadUsers(data)
+{
+	console.log(data);
+	if (data['privateClassUsers']) {
+		var str =
+			"<table id='threadAccessTable'>" +
+				"<tr>" +
+					"<th>Access</th><th>Username</th><th>" +
+				"</tr>";
+
+		$.each(data['privateClassUsers'], function(index, user) {
+			
+			// Table of students
+			str +=
+				"<tr>" +
+					"<td><input id='checkbox"+user['uid']+"' class='threadUsersCheckbox' type='checkbox' value='"+user['uid']+"'></td>" +
+					"<td>" + user['username'] + "</td>" +
+				"</tr>";
+			
+		});
+
+		str +=
+				"<tr>" +
+					"<td><input id='threadCheckboxAll' class='threadUsersCheckbox' type='checkbox' value='all'></td>" +
+					"<td style='font-weight:bold'>All</td>" +
+				"</tr>" +
+				
+			"</table>";
+			
+		str += "<input class='new-item-button' type='button' value='Add user(s)' onclick=\"deleteThreadMember()\" style='float:right;'>"
+
+		$(".threadMembers").html(str);
+
+		$("#threadCheckboxAll").on("change", function() {
+			if ($(this).is(":checked")) {
+				$(".threadUsersCheckbox").prop("checked", true);
+			}else {
+				$(".threadUsersCheckbox").prop("checked", false);
+			}
+		});
+	}else {
+		var str =
+			"<div class='err'>" +
+				"<span style='font-weight:bold'>" +
+					"Sorry! " +
+				"</span>" +
+				"No students found for this course." +
+			"</div>";
+		$(".threadMembers").html(str);
+	}
 }
 
 function returnedComments(data)
