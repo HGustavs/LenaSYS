@@ -712,6 +712,19 @@ function AJAXService(opt,apara,kind)
 				error:error
 			});
 			break;
+		case "DELETETHREADMEMBER":
+			$.ajax({
+				url: "forumservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: function(data) {
+					initiateLoadPrivateThreadMembers(data);
+					sendConfirmation("forumservice.php");
+				},
+				error:error
+			});
+			break;
 	}
 }
 
