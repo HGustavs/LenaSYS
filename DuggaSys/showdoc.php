@@ -143,6 +143,20 @@
 				// ^ Text you want to quote ^
 				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br>",$instring);
 				
+				//Markdown smileys
+				//Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
+				$instring = preg_replace("/:D/", "<img class='smileyphp' src='../Shared/icons/happy.svg'/>",$instring);
+				$instring = preg_replace("/:\)/", "<img class='smileyphp' src='../Shared/icons/smiling.svg'/>",$instring);
+				$instring = preg_replace("/;\)/", "<img class='smileyphp' src='../Shared/icons/wink.gif'/>",$instring);
+				$instring = preg_replace("/:\(/", "<img class='smileyphp' src='../Shared/icons/sad.svg'/>",$instring);
+				$instring = preg_replace("/:'\(/", "<img class='smileyphp' src='../Shared/icons/crying.svg'/>",$instring);
+				$instring = preg_replace("/:p|:P/", "<img class='smileyphp' src='../Shared/icons/tongue.svg'/>",$instring);
+				$instring = preg_replace("/(:\/)(?!\/|\w|\d)/", "<img class='smileyphp' src='../Shared/icons/confused.svg'/>",$instring);
+				$instring = preg_replace("/:o|:O/", "<img class='smileyphp' src='../Shared/icons/gasp.svg'/>",$instring);
+				$instring = preg_replace("/&lt;3/", "<img class='smileyphp' src='../Shared/icons/heart.svg'/>",$instring);
+				$instring = preg_replace("/\(Y\)|\(y\)/", "<img class='smileyphp' src='../Shared/icons/thumbsup.svg'/>",$instring);
+				$instring = preg_replace("/\(N\)|\(n\)/", "<img class='smileyphp' src='../Shared/icons/thumbsdown.svg'/>",$instring);
+				
 				return $instring;		
 		}
 
