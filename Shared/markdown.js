@@ -169,7 +169,7 @@ function markdownBlock(inString)
 	// External img src !!!
 	// |||src,thumbnail width in px,full size width in px|||
 	// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
-	inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
+	inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
 
 	// External mp4 src !!!
 	// ==[src]==	
@@ -198,6 +198,20 @@ function markdownBlock(inString)
 	// Quote text, this will be displayed in an additional box
 	// ^ Text you want to quote ^
 	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
+	
+	//Markdown smileys
+	//Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
+	inString = inString.replace(/:D/g, "<img class='smileyjs' src='../Shared/icons/happy.svg'/>");
+	inString = inString.replace(/:\)/g, "<img class='smileyjs' src='../Shared/icons/smiling.svg'/>");
+	inString = inString.replace(/;\)/g, "<img class='smileyjs' src='../Shared/icons/wink.gif'/>");
+	inString = inString.replace(/:\(/g, "<img class='smileyjs' src='../Shared/icons/sad.svg'/>");
+	inString = inString.replace(/:'\(/g, "<img class='smileyjs' src='../Shared/icons/crying.svg'/>");
+	inString = inString.replace(/:p|:P/g, "<img class='smileyjs' src='../Shared/icons/tongue.svg'/>");
+	inString = inString.replace(/(:\/)(?!\/|\w|\d)/gm, "<img class='smileyjs' src='../Shared/icons/confused.svg'/>");
+	inString = inString.replace(/:o|:O/g, "<img class='smileyjs' src='../Shared/icons/gasp.svg'/>");
+	inString = inString.replace(/&lt;3/i, "<img class='smileyjs' src='../Shared/icons/heart.svg'/>");
+	inString = inString.replace(/\(Y\)|\(y\)/g, "<img class='smileyjs' src='../Shared/icons/thumbsup.svg'/>");
+	inString = inString.replace(/\(N\)|\(n\)/g, "<img class='smileyjs' src='../Shared/icons/thumbsdown.svg'/>");
 
 	return inString;
 }
