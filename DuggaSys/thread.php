@@ -1,10 +1,7 @@
- <?php
-
+<?php
 session_start();
 include_once "forumservice.php";
-
 pdoConnect();
-
 if (file_exists("../.git/refs/heads/master")) {
 	$versionFile = fopen("../.git/refs/heads/master", "r");
 	$version = fgets($versionFile);
@@ -12,7 +9,6 @@ if (file_exists("../.git/refs/heads/master")) {
 } else {
 	$version = "v0.7+";
 }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,21 +18,17 @@ if (file_exists("../.git/refs/heads/master")) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Course Forum</title>
-
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">
+ 	
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
-
-
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-
 	<script src="../Shared/markdown.js"></script>
-
 	<script src="../Shared/dugga.js"></script>
 	<script src="forum.js"></script>
-</head>
+	
+	</head>
 <body>
 	<?php
 	$noup="COURSE";
@@ -44,7 +36,6 @@ if (file_exists("../.git/refs/heads/master")) {
 	include '../Shared/navheader.php';
 	setcookie("loginvar", $loginvar);
 	?>
-
 	<!-- content START -->
 	<div id="content">
     <?php
@@ -63,7 +54,6 @@ if (file_exists("../.git/refs/heads/master")) {
   				</div>
   			</div>
   		</div>
-
   		<!-- Section List -->
   		<div id='threadHeader'>
   			<div id="threadTopicWrapper">
@@ -86,11 +76,9 @@ if (file_exists("../.git/refs/heads/master")) {
   				Created <span id="threadDate"></span> by <span id="threadCreator"></span>
   			</div>
   		</div>
-
       <div id="threadComments"></div>
     <?php
     }
-
     if (($threadId && $threadId !== "UNK") && ($threadAccess === "normal" || $threadAccess === "super" || $threadAccess === "op")) {
     ?>
       <div id='threadMakeComment'>
@@ -98,9 +86,7 @@ if (file_exists("../.git/refs/heads/master")) {
           Comment
         </div>
         <div id='makeCommentInputWrapper'>
-
         <?php include "forumEditor.php"; ?>
-
         <input class='submit-button' id='commentSubmitButton' type='button' value='Submit' onclick='makeComment();'>
 		<input class='submit-button' id='endCommentButton' style='background-color: #C75050; visibility: hidden;'type='button' value='Cancel Reply' onclick='endReplyComment();'>
         </div>
@@ -108,11 +94,42 @@ if (file_exists("../.git/refs/heads/master")) {
     <?php
     }
     ?>
-
+	
     <!-- Create thread -->
     <?php
     if ((!$threadId || $threadId === "UNK") && checklogin()) {
     ?>
+	<script type="text/javascript">
+	$(document).ready(function(){
+	//call title-textbox, make var of it
+	var titleText = document.getElementById("threadTopicInput");
+	
+	//set "amount" to length of value of above var
+	$("#amountChars p").text(titleText.value.length + "/50");
+	
+	//function to update everytime we press a key (works when holding down as well).
+	$("#threadTopicInput").keydown(function(event){
+		
+		//if string gets longer than "x", x being any desired maximum amount, then...
+		if(titleText.value.length > 50){
+			
+			//...make a temp-var that has the value of the bigger (original) string, but slices it down and replaces it
+			var newText = titleText.value.slice(0, 50);
+			titleText.value = newText;
+			
+			//make color red to indicate that char-limit has been reached
+			//document.getElementById("amountChars").style.color = "Red";
+		
+		}
+		
+		/*just updates the counter
+		else{
+			$("#amountChars p").text(titleText.value.length + "/50");
+			document.getElementById("amountChars").style.color = "Green";
+		}*/
+	})
+	});
+	</script>
       <div id="createThreadWrapper">
         <div id="createThreadHeader">
           Create thread
@@ -120,13 +137,10 @@ if (file_exists("../.git/refs/heads/master")) {
         <div id="createThreadBody">
           <div id="createThreadFormWrapper">
           <input type="text" name="threadTopic" id="threadTopicInput" placeholder="Topic"></input>
-
           <?php include "forumEditor.php"; ?>
-
             <div id="createThreadOptions">
               <div class="createThreadOptionLabel">Course:</div>
               <select class="createThreadOption createThreadCourseList" name="courseList" onchange="getUsers()"></select>
-
               <div class="createThreadOptionLabel">Access:</div>
               <div class="createThreadRadioWrapper createThreadOption">
                 <label>
@@ -134,19 +148,15 @@ if (file_exists("../.git/refs/heads/master")) {
                   Public
                 </label>
               </div>
-
               <div class="createThreadRadioWrapper createThreadOption">
                 <label>
                   <input class="createThreadRadio threadRadioPrivate" name="threadAccessRadio" type="radio" value="private" onclick="createThreadPrivateUI();">
                   Private
                 </label>
               </div>
-
               <!-- If thread is private -->
               <div class="createThreadPrivateWrapper">
               </div>
-
-
               <div class="createThreadOptionLabel">Allow comments:</div>
               <div class="createThreadRadioWrapper createThreadOption">
                 <label>
@@ -167,7 +177,6 @@ if (file_exists("../.git/refs/heads/master")) {
       </div>
     <?php
     } // End if
-
     else if ((!$threadId || $threadId === "UNK") && !checklogin()) {
     ?>
       <div class="err">
@@ -178,13 +187,11 @@ if (file_exists("../.git/refs/heads/master")) {
     }
     ?>
 	</div>
-
 	<!-- version identification -->
 	<div id="version" class='version'>Master hash <br /><?php echo $version ?></div>
 	<!-- content END -->
 	<?php
 	include '../Shared/loginbox.php';
 	?>
-
 </body>
 </html>
