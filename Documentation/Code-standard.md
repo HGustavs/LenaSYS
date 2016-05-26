@@ -129,3 +129,43 @@ function myTest() { <-- Capitals on second word in function name e.g. Test
 		$foo="<div>".$olle."</div>";  <-- html is generated in javascript render function or statically in html file		
 }
 ```
+
+```css
+#docucontent h1 {  <-- first we put the #id styles then we put more general ones
+	color:#000
+	display: block;
+	font-family: Arial,Sans-Serif;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	font-style: italic;
+}
+
+
+.docucontentStyle h1 {
+	color: black;
+}
+
+.box{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	overflow-y: auto;
+	overflow-x: auto;
+	font-family: Arial,Sans-Serif;
+	font-size: 14px;
+	outline: 0 none;
+	background-color: #FFF;
+	color: #000;
+}
+
+.docucontentStyle {
+	background-color: #272822;
+	color: white;
+<-- This is wrong since we have an empty line at end of css code
+<-- I would put this above the related style with h1 added above 
+}
+```
+
