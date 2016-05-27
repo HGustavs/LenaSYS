@@ -104,7 +104,6 @@ if(strcmp($opt,"CREATETHREAD")===0){
 		if (count($accessList) < 1) {
 			$hidden = NULL;
 		}else {
-			$accessDenied = "Thread is hidden.";
 			$hidden = 1;
 		}
 		if ($lockedStatus==="open") {
