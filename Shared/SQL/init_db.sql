@@ -491,7 +491,8 @@ create table thread(
     hidden tinyint(1),
     description varchar(2000) not null,
     locked tinyint(1),
-	lastcommentedon timestamp null,
+    lastcommentedon timestamp null,
+    deleted tinyint(1),
     primary key(threadid),
     foreign key(cid) references course(cid) ON DELETE CASCADE,
     foreign key(uid) references user(uid)
@@ -506,6 +507,7 @@ create table threadcomment(
     lastedited timestamp not null default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
     replyid int(10),
     type tinyint(1),
+    deleted tinyint(1),
     primary key(commentid),
     foreign key(threadid) references thread(threadid) ON DELETE CASCADE,
     foreign key(uid) references user(uid),
