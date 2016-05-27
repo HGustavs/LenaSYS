@@ -233,7 +233,7 @@ function editThread(data)
 {
 	console.log(data);
 	var array = data.split(',');
-	//console.log(array);
+	console.log(array);
 
 	var topic = "<input type='text' name='topic' id='threadTopicInput'>";
 	$(".threadTopic").html(topic);
@@ -241,7 +241,7 @@ function editThread(data)
 	$("#threadTopicInput").val(array[3]);
 
 	$("#threadDescr").load("forumEditor.php", function() {
-		$("#threadDescr .editorDescr").val(array[8]);
+		$("#threadDescr .editorDescr").val(array[6]);
 
 		console.log($("#createThreadOptions").html());
 		var button = "<input class='new-item-button editThreadBtn' type='button' value='Submit' onclick='submitEditThread()'>";
