@@ -125,12 +125,11 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$error=$query->errorInfo();
 			exit($debug);
 		}else{
+			$id = $pdo->lastInsertId();
+			$thread = array(
+				"threadid" => $id
+			);
 			if ($hidden){
-				$id = $pdo->lastInsertId();
-				$thread = array(
-					"threadid" => $id
-				);
-	
 				// Give thread creator access
 				$query = $pdo->prepare("INSERT INTO threadaccess (threadid, uid) VALUES (:threadid, :uid)");
 				$query->bindParam(':threadid', $id);
