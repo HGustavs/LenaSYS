@@ -101,7 +101,7 @@ function getThreadAccess($pdo, $threadId, $uid)
 if(strcmp($opt,"CREATETHREAD")===0){
 	// Access check
 	if (checklogin()){
-		if (count($accessList) < 1) {
+		if (count($accessList) < 1 || $accessList[0] == 'UNK') {
 			$hidden = NULL;
 		}else {
 			$hidden = 1;
