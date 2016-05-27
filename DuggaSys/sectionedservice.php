@@ -473,7 +473,7 @@ $query->bindParam(':cid', $courseid);
 $query->bindParam(':uid', $userid);
 if(!$query->execute()) {
 	$error=$query->errorInfo();
-	$debug="Error: " + $error;
+	$debug="Error: " . $error;
 }else{
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		array_push(
