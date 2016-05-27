@@ -233,7 +233,7 @@ function editThread(data)
 {
 	console.log(data);
 	var array = data.split(',');
-	//console.log(array);
+	console.log(array);
 
 	var topic = "<input type='text' name='topic' id='threadTopicInput'>";
 	$(".threadTopic").html(topic);
