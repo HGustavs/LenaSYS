@@ -74,7 +74,7 @@ $( document ).ready(function() {
 		        markdownText = (emptyDescription ? "\n" : "") + "---" ;
 		        break;
 		}
-		
+
 
 
 
@@ -337,23 +337,34 @@ function returnedThread(data)
 		}
 
 		if(data['thread']['hidden'] === "1"){
-			AJAXService("GETPRIVATETHREADMEMBERS",{threadId:querystring["threadId"]},"GETPRIVATETHREADMEMBERS");
+			var threadMembers = "<input class='new-item-button' id='privateThreadMembers'type='button' value='Users' onclick='initiateLoadPrivateThreadMembers()'>";
+			$(".privateMembersContainer").html(threadMembers);
 		}
 
 	}
 }
 
+function initiateLoadPrivateThreadMembers()
+{
+	AJAXService("GETPRIVATETHREADMEMBERS",{threadId:querystring["threadId"]},"GETPRIVATETHREADMEMBERS");
+}
+
 function loadPrivateThreadMembers(data)
 {
-	console.log(data);
-	var str = "<select>";
-
+	$('#threadPrivateMembers').css('display','inline-block');
+	var str = "<table class='privateThreadTable'><tr><td><input class='new-item-button' type='button' value='Add user' onclick='addPrivateThreaduser()'></td></tr>";
 	for(var i = 0; i<data['privateMembers'].length; i++){
-		str += "<option>"+data['privateMembers'][i]['username']+"</option>";
-		console.log(data['privateMembers'][i]['username']);
+		str += "<tr><td>"+data['privateMembers'][i]['username']+"</td>";
+		str += "<td><input class='new-item-button' type='button' id='private-users-button' value='Remove user' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='background-color:#ff4d4d;'></td></tr>";
+		//str += "<td style='margin-left:20px;'><span title='Remove user access from this thread' onclick=\"deleteThreadMember("+data['privateMembers'][i]['uid']+")\" style='color:#ff4d4d;font-size:20px;'>&#10006;</span></td></tr>";
 	}
-	str += "</select>";
-	$(".privateMembersContainer").html(str);
+	str += "</table>";
+	$(".threadMembers").html(str);
+}
+
+function deleteThreadMember(memberUID)
+{
+	AJAXService("DELETETHREADMEMBER",{memberUID:memberUID},"DELETETHREADMEMBER");
 }
 
 function getUsername(threadUID)
@@ -368,13 +379,71 @@ function showThreadCreator(data)
 	$("#threadCreator").html(str);
 }
 
+function addPrivateThreaduser()
+{
+	AJAXService("GETTHREADUSERS",{threadId:querystring["threadId"]},"GETTHREADUSERS");
+	
+}
+
+function returnedThreadUsers(data)
+{
+	console.log(data);
+	if (data['privateClassUsers']) {
+		var str =
+			"<table id='threadAccessTable'>" +
+				"<tr>" +
+					"<th>Access</th><th>Username</th><th>" +
+				"</tr>";
+
+		$.each(data['privateClassUsers'], function(index, user) {
+			
+			// Table of students
+			str +=
+				"<tr>" +
+					"<td><input id='checkbox"+user['uid']+"' class='threadUsersCheckbox' type='checkbox' value='"+user['uid']+"'></td>" +
+					"<td>" + user['username'] + "</td>" +
+				"</tr>";
+			
+		});
+
+		str +=
+				"<tr>" +
+					"<td><input id='threadCheckboxAll' class='threadUsersCheckbox' type='checkbox' value='all'></td>" +
+					"<td style='font-weight:bold'>All</td>" +
+				"</tr>" +
+				
+			"</table>";
+			
+		str += "<input class='new-item-button' type='button' value='Add user(s)' onclick=\"deleteThreadMember()\" style='float:right;'>"
+
+		$(".threadMembers").html(str);
+
+		$("#threadCheckboxAll").on("change", function() {
+			if ($(this).is(":checked")) {
+				$(".threadUsersCheckbox").prop("checked", true);
+			}else {
+				$(".threadUsersCheckbox").prop("checked", false);
+			}
+		});
+	}else {
+		var str =
+			"<div class='err'>" +
+				"<span style='font-weight:bold'>" +
+					"Sorry! " +
+				"</span>" +
+				"No students found for this course." +
+			"</div>";
+		$(".threadMembers").html(str);
+	}
+}
+
 function returnedComments(data)
 {
 	$("#makeCommentInputWrapper").find(".editorDescr").val("");
 	$("#commentSubmitButton").attr("onclick", "makeComment()");
 	$("#commentSubmitButton").attr("value", "Submit");
 	$("#makeCommentHeader").html("Comment");
-	
+
 	if (data["accessDenied"]){
 		accessDenied(data);
 	}else {
@@ -393,7 +462,7 @@ function returnedComments(data)
 
 			threadCommentStr +=
 			"<div class=\"threadComment\">" +
-				"<div class=\"commentDetails\"><span class=\"commentUser\">" + value["username"]  +   "</span> - <span class='commentCreated'>" + (value["datecreated"]).substring(0,16) + "</span></div>" +
+				"<div class=\"commentDetails\"><span class=\"commentUser\">" + value["username"]  +   "</span> - <span class='commentCreated'>" + (value["lastedited"]).substring(0,16) + "</span></div>" +
 				"<div class=\"commentContent\"><div class=\"commentContentText descbox\">" +  text  +"</div></div>" +
 				"<div class=\"commentFooter\">" +
 						getCommentOptions(index, value['uid'], data['threadAccess'], data['uid'], data['comments'][index]['commentid'], value["username"]) +
@@ -429,14 +498,14 @@ function editUI(commentid)
 	/*$("#makeCommentHeader").html("Edit Comment");
 	$("#endCommentButton").attr("value", "Cancel edit");
 	$("#endCommentButton").css("visibility", "show");
-	
+
 	var target = event.target;
 	var text = $(target).parent().prev().children().text();
 	var yourComment= $(target).parent().prev().children().first().clone().children().remove().end().html();
 	if(text !== yourComment){
 		text = "^ " + text.replace(yourComment," ^" + yourComment);
 	}
-	
+
 	$("#threadMakeComment").find('.editorDescr').first().val(text);
 	$("#commentSubmitButton").attr("onclick", "editComment("+commentid+")");
 	$("#commentSubmitButton").attr("value", "Update Comment");
@@ -444,18 +513,17 @@ function editUI(commentid)
 	checkComment();*/
 }
 
-function editGetComment(array)
+function editGetComment(data)
 {
-	$("#makeCommentHeader").html("Edit Comment");
-	$("#endCommentButton").attr("value", "Cancel edit");
+	$("#makeCommentHeader").html("Edit comment");
 	$("#endCommentButton").css("visibility", "show");
-	
-	$.each(array["comments"], function(index, value){
+
+	$.each(data["comments"], function(index, value){
 		$("#threadMakeComment").find('.editorDescr').first().val(value['text']);
 		$("#commentSubmitButton").attr("onclick", "editComment("+value['commentid']+")");
 	});
-	
-	$("#commentSubmitButton").attr("value", "Update Comment");
+
+	$("#commentSubmitButton").attr("value", "Submit");
 	$("#commentSubmitButton").css("width", "125px");
 	checkComment();
 }
@@ -492,35 +560,31 @@ function getCommentReply(commentid, username)
 	$("#threadMakeComment").find('.editorDescr').first().val(text);*/
 }
 
-function replyCommentSuccess(array)
+function replyCommentSuccess(data)
 {
 	$("#commentSubmitButton").attr("onclick", "makeComment()");
 	$("#commentSubmitButton").attr("value", "Submit");
 	$("#threadMakeComment").find('.editorDescr').first().val("");
-	$("#endCommentButton").attr("value", "Cancel Reply");
 	$("#endCommentButton").css("visibility", "show");
-	
-	var commentLength = array["comments"].length;
+
+	var commentLength = data["comments"].length;
 	var threadCommentStr = "<div id='threadCommentsHeader'>Comments ("  +  commentLength  + ")</div>";
 
 	threadCommentStr += "<div class=\"allComments\">";
-
+  console.log(data);
 	// Iterates through all the comments
-	$.each(array["comments"], function(index, value){
-		
-		var text = value['text'];
-		
-		text = text.replace("^ ", "");
-		text = text.replace(" ^", "");
-		text = text.replace(/.*[\r\n]/g, "");
-		
-		text = "^ " + text + " ^\r\n";
-		
-		$("#makeCommentHeader").html("Reply to " + value['user.username']);
-		$("#threadMakeComment").find('.editorDescr').first().val(text);
-		
-		$("#commentSubmitButton").attr("onclick", "makeComment("+value['commentid']+")");
-	});
+
+	var text = data["comments"]['text'];
+
+	text = text.replace("^ ", "");
+	text = text.replace(" ^", "");
+	text = text.replace(/.*[\r\n]/g, "");
+
+	text = "^ " + text + " ^\r\n";
+	$("#makeCommentHeader").html("Reply to " + data['users']['username']);
+	$("#threadMakeComment").find('.editorDescr').first().val(text);
+
+	$("#commentSubmitButton").attr("onclick", "makeComment("+data['comments']['commentid']+")");
 }
 
 function endReplyComment()
@@ -682,11 +746,11 @@ function previewText(event)
 	// shows the markdown shortcuts
 	$(event.target).siblings(".markdownShortcutWrapper").hide();
 
-	
+
 
 	// Parses text to preview
 	var parseText = parseMarkdown($(editorDescr).val());
-	
+
 
 	if(!parseText)
 	{
@@ -708,4 +772,3 @@ function error(xhr, status, error)
 	console.log(status);
 	console.log(xhr);
 }
-

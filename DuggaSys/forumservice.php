@@ -40,6 +40,7 @@ $description = getOP('description');
 $accessList = explode(',', getOP('accessList'));
 $lockedStatus = getOP('lockedStatus');
 $commentid = getOP('commentid');
+$memberUID = getOP('memberUID');
 
 $debug="NONE!";
 
@@ -219,7 +220,7 @@ if(strcmp($opt,"CREATETHREAD")===0){
 			$comment = $query->fetch(PDO::FETCH_ASSOC);
 
 			if ($comment["uid"]===$uid || $threadAccess==="op" || $threadAccess==="super"){
-				$query = $pdo->prepare("DELETE FROM threadcomment WHERE commentid=:commentid");
+				$query = $pdo->prepare("UPDATE threadcomment SET deleted = 1 WHERE commentid=:commentid");
 				$query->bindParam(':commentid', $commentid);
 
 				if(!$query->execute()){
@@ -249,7 +250,8 @@ if(strcmp($opt,"CREATETHREAD")===0){
 }else if(strcmp($opt,"DELETETHREAD")===0){
 	// Access check
 	if ($threadAccess==="op" || $threadAccess==="super"){
-		$query = $pdo->prepare("DELETE FROM thread WHERE threadid=:threadid");
+		$query = $pdo->prepare("UPDATE thread SET deleted=1 WHERE threadid=:threadid;");
+		//$query = $pdo->prepare("DELETE FROM thread WHERE threadid=:threadid");
 		$query->bindParam(':threadid', $threadId);
 
 		if(!$query->execute()){
@@ -290,22 +292,21 @@ if(strcmp($opt,"CREATETHREAD")===0){
 }else if(strcmp($opt,"GETPRIVATETHREADMEMBERS")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT user.username FROM user,threadaccess WHERE (threadaccess.threadid=:threadid AND user.uid=threadaccess.uid)");
+		$query = $pdo->prepare("SELECT user.username,user.uid FROM user,threadaccess WHERE (threadaccess.threadid=:threadid AND user.uid=threadaccess.uid)");
 		$query->bindParam(':threadid', $threadId);
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		exit($debug);
-	}else{
-		$privateMembers = $query->fetchAll(PDO::FETCH_ASSOC);
-	}
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}else{
+			$privateMembers = $query->fetchAll(PDO::FETCH_ASSOC);
+		}
 	}else{
 		$accessDenied = "You do not have permisson to edit this thread.";
 	}
 }else if(strcmp($opt,"EDITCOMMENT")===0){
 	// Access check
 	if ($threadAccess==="op" || $threadAccess==="super"){
-		$query = $pdo->prepare("UPDATE threadcomment SET text=:text, datecreated=current_timestamp WHERE commentid=:commentid");
-		//INSERT INTO threadcomment (threadid, uid, text, datecreated, replyid) VALUES (:threadID, :uid, :text, current_timestamp, :commentid)");
+		$query = $pdo->prepare("UPDATE threadcomment SET text=:text, lastedited=current_timestamp WHERE commentid=:commentid");
 		$query->bindParam(':commentid', $commentid);
 		$query->bindParam(':text', $text);
 
@@ -316,9 +317,20 @@ if(strcmp($opt,"CREATETHREAD")===0){
 	}else{
 		$accessDenied = "You do not have permisson to edit this thread.";
 	}
+}else if(strcmp($opt,"DELETETHREADMEMBER")===0){
+	// Access check
+	if ($threadAccess==="super"){
+		$query = $pdo->prepare("DELETE FROM threadaccess WHERE uid=:memberUID");
+		$query->bindParam(':memberUID', $memberUID);
+
+		if(!$query->execute()){
+			$error=$query->errorInfo();
+			exit($debug);
+		}
+	}else{
+		$accessDenied = "You do not have permisson to delete members.";
+	}
 }
-
-
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
@@ -346,7 +358,7 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"GETCOMMENTS")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.datecreated, threadcomment.commentid, threadcomment.replyid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid ORDER BY datecreated ASC;");
+		$query = $pdo->prepare("SELECT threadcomment.text, threadcomment.lastedited, threadcomment.commentid, threadcomment.replyid, user.username, user.uid FROM threadcomment, user WHERE threadid=:threadId and user.uid=threadcomment.uid and deleted IS NULL ORDER BY datecreated ASC;");
 
 		$query->bindParam(':threadId', $threadId);
 
@@ -366,15 +378,24 @@ else if(strcmp($opt,"GETTHREAD")===0){
 }else if(strcmp($opt,"REPLYCOMMENT")===0){
 	// Access check
 	if ($threadAccess){
-		$query = $pdo->prepare("SELECT text, replyid, commentid FROM threadcomment WHERE commentid=:commentID;");
+		$query = $pdo->prepare("SELECT commentid, uid, text, replyid FROM threadcomment WHERE commentid=:commentID;");
 		$query->bindParam(':commentID', $commentid);
 
 		if(!$query->execute()){
 			$error=$query->errorInfo();
 			exit($debug);
-
 		}else{
-			$comments = $query->fetchAll(PDO::FETCH_ASSOC);
+			$comments = $query->fetch(PDO::FETCH_ASSOC);
+
+			$query = $pdo->prepare("SELECT username FROM user WHERE uid=:uid;");
+			$query->bindParam(':uid', $comments['uid']);
+
+			if(!$query->execute()){
+				$error=$query->errorInfo();
+				exit($debug);
+			}else{
+				$users = $query->fetch(PDO::FETCH_ASSOC);
+			}
 		}
 	}else{
 		$accessDenied = "You do not have access to the thread.";
@@ -441,6 +462,16 @@ else if(strcmp($opt,"GETTHREAD")===0){
 	}else {
 		$courses = $query->fetchAll(PDO::FETCH_ASSOC);
 	}
+}else if(strcmp($opt,"GETTHREADUSERS")===0){
+	$query = $pdo->prepare("SELECT DISTINCT user.uid,user.username FROM programcourse,user,thread,threadaccess WHERE (thread.threadid=:threadid AND thread.cid=programcourse.cid AND user.class=programcourse.class)");
+	$query->bindParam(':threadid', $threadId);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		exit($debug);
+	}else {
+		$privateClassUsers = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
 }
 
 
@@ -455,7 +486,8 @@ if ($opt!=="UNK"){
 		'courses' => $courses,
 		'classes' => $classes,
 		'users' => $users,
-		'privateMembers' => $privateMembers
+		'privateMembers' => $privateMembers,
+		'privateClassUsers' => $privateClassUsers
 	);
 	echo json_encode($array);
 }
