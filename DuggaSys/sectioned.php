@@ -1,14 +1,8 @@
 <?php
-
 session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
-
-if(isset($_GET['coursename'])){
-		$_SESSION['coursename'] = $_GET['coursename'];
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -16,13 +10,13 @@ if(isset($_GET['coursename'])){
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title><?php echo (isset($_SESSION['coursename']) ? $_SESSION['coursename'] : "Unknown course name"); ?></title>
+	<title>Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<!--<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">-->
-	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -33,20 +27,17 @@ if(isset($_GET['coursename'])){
 
 	<?php
 		$noup="COURSE";
-		$loginvar="SECTION"; 
 		include '../Shared/navheader.php';
-		setcookie("loginvar", $loginvar);
 	?>
-	
+
 	<!-- content START -->
 	<div id="content">
-		<div id="coursesForForum"></div>
 		<!-- Section List -->
 		<div id='Sectionlist'></div>
 	</div>
 	<!-- content END -->
 
-	<?php 
+	<?php
 		include '../Shared/loginbox.php';
 	?>
 
@@ -65,8 +56,8 @@ if(isset($_GET['coursename'])){
 			<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
 			<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
-			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select id='visib'></select></div>
-			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
+			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
+			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-weight:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
 		</div>
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
@@ -75,13 +66,13 @@ if(isset($_GET['coursename'])){
 		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
-	
+
 	<!-- New Verison Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>New Course Version</h3>
+			<h3>New Course Verison</h3>
 			<div onclick='closeWindows();'>x</div>
-		</div>		
+		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
@@ -94,13 +85,13 @@ if(isset($_GET['coursename'])){
 		</div>
 	</div>
 	<!-- New Verison Dialog END -->
-	
+
 	<!-- Edit Verison Dialog START -->
 	<div id='editCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Course Verison</h3>
 			<div onclick='closeWindows();'>x</div>
-		</div>		
+		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name' /></div>
@@ -112,7 +103,7 @@ if(isset($_GET['coursename'])){
 		</div>
 	</div>
 	<!-- Edit Verison Dialog END -->
-	
+
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBox' style='width:500px;display:none;'>
 		<div class='loginBoxheader'>
@@ -121,11 +112,11 @@ if(isset($_GET['coursename'])){
 		</div>
 		<table id ='HighscoreTable' width='100%'>
 			<tr>
-				
+
 			</tr>
 		</table>
 	</div>
 	<!-- HighscoreBox END -->
-				
+
 </body>
 </html>

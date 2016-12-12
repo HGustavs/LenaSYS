@@ -16,7 +16,7 @@ Example seed
 //----------------------------------------------------------------------------------
 // Globals
 //----------------------------------------------------------------------------------
-
+var score = -1;
 var retdata=null;
 var hc=null;
 var ctx;
@@ -31,10 +31,11 @@ var facitarray=[];
 
 function setup()
 {
-
+	window.onresize = function(event) {
+	    redrawgfx();
+	};
 	var canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
-
 
 	AJAXService("GETPARAM",{ },"PDUGGA");
 }
@@ -60,6 +61,8 @@ function returnedDugga(data)
 		ClickCounter.showClicker();
 	}
 	
+	running=true;
+	
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['param']=="UNK"){
@@ -71,9 +74,31 @@ function returnedDugga(data)
 			bitarray=previousAnswer[3].split(',');
 			for (var i=0;i<bitarray.length;i++) bitarray[i]=parseInt(bitarray[i]); 
 		}
-		redrawgfx();
 		document.getElementById('helptxt').innerHTML=dta[0].Text;
-	}		
+	}
+	// Teacher feedback
+	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+			// No feedback
+	} else {
+			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+			var feedbackArr = data["feedback"].split("||");
+			for (var k=feedbackArr.length-1;k>=0;k--){
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			} 		
+			fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackBox').style.display = "block";
+	}
+	$("#submitButtonTable").appendTo("#content");
+	$("#lockedDuggaInfo").prependTo("#content");
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+	if (running) {
+		renderId = requestAnimationFrame(redrawgfx);
+	} else {
+		cancelAnimationFrame(renderId);
+	}
+	
 }
 
 //--------------------================############================--------------------
@@ -101,7 +126,9 @@ function saveClick()
 function reset()
 {
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	Timer.reset();
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
 	ClickCounter.initialize();
 
 	bitarray=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -110,30 +137,44 @@ function reset()
 
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-	$("#duggaStats").css("display","block");
-
+	if (userStats != null){
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+		$("#duggaStats").css("display","block");
+	}
 	var canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
 
-	dta = jQuery.parseJSON(decodeURIComponent(param));
+	dta = jQuery.parseJSON(param);
 	if (uanswer !== "UNK") {
 		var previousAnswer = uanswer.split(' ');
 		bitarray=previousAnswer[3].split(',');
 		for (var i=0;i<bitarray.length;i++) bitarray[i]=parseInt(bitarray[i]); 
 	}
 	if (danswer !== "UNK") {
-		facitarray=decodeURIComponent(danswer).split(',');
+		facitarray=danswer.split(',');
 		for (var i=0;i<facitarray.length;i++) facitarray[i]=parseInt(facitarray[i]); 
 	}
 
 	redrawgfx();
-	document.getElementById('helptxt').innerHTML=dta[0].Text;
+	// Teacher feedback
+	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+	if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+		var feedbackArr = feedback.split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+	}
+	fb += "</tbody></table>";
+	if (feedback !== undefined){
+			document.getElementById('teacherFeedbackTable').innerHTML = fb;
+	}
+
 }
 
 function closeFacit(){
@@ -154,15 +195,30 @@ function flipbit(bitno)
 	}else{
 		bitarray[bitno]=0;        		
 	}
-	
 	redrawgfx();
 }
 
+function fitToContainer() 
+{
+	// Make it visually fill the positioned parent
+	
+	divw = $("#content").width();
+	if (divw < window.innerHeight) {
+		ctx.width = divw;
+		ctx.height = divw;
+	} else {
+		ctx.width = window.innerHeight - 270;
+		ctx.height = ctx.width;
+	}
+	
+}
+	
 //----------------------------------------------------------------------------------
 // redraw shape
 //----------------------------------------------------------------------------------
 function redrawgfx()
 {
+	fitToContainer();
 	if (facitarray.length<1) facitarray = bitarray;
 	
 	str="";
@@ -219,7 +275,9 @@ function redrawgfx()
 	}
 
 
-	document.getElementById('foo').innerHTML=str;        
+	document.getElementById('foo').innerHTML=str;   
+	document.getElementById('foo').setAttribute("height", ctx.height+"px");
+	document.getElementById('foo').setAttribute("width", ctx.width+"px");
 }
 
 
@@ -230,4 +288,3 @@ function toggleInstructions()
 {
 	$(".instructions-content").slideToggle("slow");
 }
-

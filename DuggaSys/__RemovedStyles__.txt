@@ -1,0 +1,7 @@
+Removed Styles!
+
+sectioned
+------------------------------------
+course-menu-wrapper   (useless hard to read wrapper div)
+course-menu--settings (useless hard to read wrapper div)
+new-item-button       (superfluous button style -- ALL buttons are created Equal, except for red buttons and round buttons.)

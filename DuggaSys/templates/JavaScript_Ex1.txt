@@ -1,0 +1,69 @@
+#### **Overview**
+This example shows how events may be set up in several different ways. It also showcases the use of three different methods to access the DOM. Finally the example also utilizes console.log to display debugging information.
+
+#### **Event handling**
+An event may be set inline in the HTML code.
+**Example:**
+~~~
+&#60;p onclick="alert('Click!');"&#62;
+~~~
+
+Events may also be set by setting the event attribute (in this case, onclick) of a DOM element.
+**Example:**
+~~~
+p2.onclick=function(ev){alert("Click!");};
+~~~
+
+The third method to attach an event to an element is using the addEventListener method.
+**Example:**
+~~~
+p3.addEventListener('click', function(ev){alert("Click!");}, false); 
+~~~
+#### **Accessing the DOM**
+There are several ways to access elements in the DOM. One method is getElemenById:
+**getElementById Example:**
+~~~
+var p2=document.getElementById("paragraph2");
+~~~
+This will return the DOM element with the id attribute set to "paragraph2" found at line 42. 
+
+Another method is the querySelector:
+**getElementById Example:**
+~~~
+var p2=document.querySelector("#paragraph2");
+~~~
+This will also return the DOM element with the id attribute set to "paragraph2" found at line 42. However the querySelector method may also be used to select DOM elements based on other criteria than the element id:
+**getElementById Example 2:**
+~~~
+var p2=document.querySelector(
+"li #paragraph2 .demoClass");
+~~~
+This would return any DOM element that is a child of a list element, has the id "paragraph2" and has the CSS class "demoClass" applied to it. If Several DOM elements match the query the first element matching will be returned. 
+
+A third method is querySelectorAll:
+**querySelectorAll Example:**
+~~~
+var p2=document.querySelectorAll("p .demoClass");
+~~~
+The code in the example above will return all paragraph elements in the DOM that has the CSS class "demoClass" applied to them as an array. 
+
+There are also other methods, e.g. getElementsByTagName. Read about this in the course literature. 
+
+#### **console.log**
+You can use console.log to output debugging information. Open the console tab in Firebug or the developer tools found in Chrome to view the output. 
+
+**console.log Example:**
+~~~
+var a="Text";
+var b=10;
+console.log("a:"+a+" b:"+b);
+b++;
+console.log(b);
+~~~
+
+**Console.log Example Output:**
+~~~
+ a: Text b: 10
+11
+~~~
+The example code uses console.log several times, e.g. at line 33 console.log is used to display the current background color of a DOM element. Open the console tab in Firebug or a similar development tool to view the output from console.log in this code example.

@@ -55,38 +55,4 @@ function pdoConnect()
 	}
 
 }
-
-function getOption($label) {
-	global $pdo;
-	$query = $pdo->prepare("SELECT label, value FROM options WHERE label = :label;");
-	$query->bindParam(':label', $label);
-	$query->execute();
-	$result = $query->fetchAll(PDO::FETCH_ASSOC);
-
-	if (count($result) > 0) {
-		return $result[0];
-	}
-	return NULL;
-}
-
-function getAllOptions() {
-	global $pdo;
-	$query = $pdo->prepare("SELECT label, value FROM options;");
-	$query->execute();
-	return $query->fetchAll(PDO::FETCH_KEY_PAIR);
-}
-
-function getAllPublicOptions() {
-	global $pdo;
-	$query = $pdo->prepare("
-		SELECT label, value
-		FROM options
-		WHERE
-			label = 'mouseMoveLogging'
-			OR label = 'fourthRound';
-	");
-	$query->execute();
-	return $query->fetchAll(PDO::FETCH_KEY_PAIR);	
-}
-
 ?>

@@ -21,6 +21,7 @@ Example seed
 var idunique = 0;
 function quiz(parameters) {
 	if(parameters != undefined) {
+		console.log("pram:" + parameters);
 		parameters = parameters.replace(/NONE!/g, '');
 		parameters = parameters.replace(/{/g, '');
 		var qeustionsplit = parameters.split("}");
@@ -56,6 +57,7 @@ function quiz(parameters) {
 		}
 
 		app += "<button class='submit' style='margin:15px;' onclick='checkQuizAnswer();'>Check answers</button>";
+		
 		$("#output").html(app);
 	}
 	else {
@@ -81,22 +83,14 @@ function setup()
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data)
-{		
+{	
 	if(querystring['highscoremode'] == 1) {
 		Timer.startTimer();
-		if(data['score'] > 0){
-			Timer.score = data['score'];
-		}
-		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
 		ClickCounter.initialize();
-		if(data['score'] > 0){
-			ClickCounter.score = data['score'];
-			console.log(ClickCounter.score);
-		}
-		ClickCounter.showClicker();
 	}
 
+	console.log(data['param']);
 	var output ="";
 	if(data['debug']!="NONE!") alert(data['debug']);
 		
@@ -122,16 +116,9 @@ function getCheckedBoxes(){
 
 	}
 	function checkQuizAnswer(){
-		$("#answerBox").show();
-		$("#answerTable").empty();
-		 for(var t = 1;t <= idunique; t++){
-		 	var answer = $("input[type='radio'][name='answers"+t+"']:checked").attr('id');
-		 	$("#answerTable").append("<br><strong>Question " + t + ": </strong>" + answer + "<br>");
-		 }
-		 $("#answerTable").append("<br>");
-	}
-	function closeCheckQuizAnswers(){
-		$("#answerBox").hide();
+		for(var t = 1;t <= idunique; t++){
+			alert("question "+t+ ": "+$("input[type='radio'][name='answers"+t+"']:checked").attr('id'));
+		}
 	}
 
 function saveClick()
@@ -188,15 +175,5 @@ function closeFacit(){
 function toggleInstructions()
 {
     $(".instructions-content").slideToggle("slow");
-}
-
-//----------------------------------------------------------------------------------
-// reset dugga clickcounter/timer
-//----------------------------------------------------------------------------------
-
-function reset(){
-	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	Timer.reset();
-	ClickCounter.initialize();
 }
 

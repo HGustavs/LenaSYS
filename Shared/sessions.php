@@ -1,11 +1,4 @@
 <?php
-if (!file_exists("../../coursesyspw.php")) {
-	session_start();
-	$_SESSION['url'] = $_SERVER['REQUEST_URI'];
-	header("Location: ../DuggaSys/error.php");
-	http_response_code(302);
-	exit();
-}
 require_once(dirname(__FILE__) . '/../Shared/database.php');
 require_once(dirname(__FILE__) . '/constants.php');
 //---------------------------------------------------------------------------------------------------------------
@@ -23,24 +16,16 @@ require_once(dirname(__FILE__) . '/constants.php');
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare('INSERT INTO eventlog (address,type,ts) VALUES (:addr,:type,NOW())');
+	$query = $pdo->prepare('insert into eventlog (address,type,ts) values (:addr,:type,NOW())');
 	// TODO: Proxy detection?
 	$query->bindParam(':addr', $_SERVER['REMOTE_ADDR']);
 	$query->bindValue(':type', EVENT_LOGINERR);
 	$query->execute();
 }
 
-function checkloginstatus()
-{
-	if($_SESSION['creator']==1 || $_SESSION['superuser']==1){
-		return true;
-	} else {		
-		return false;
-	}
-}	
-
 function checklogin()
 {
+
 	// If neither session nor post return not logged in
 	if(array_key_exists('loginname', $_SESSION)){
 		return true;
@@ -98,7 +83,7 @@ function login($username, $password, $savelogin)
 
 //echo "SELECT uid,username,password,superuser FROM user WHERE username=:username and password=password(':pwd') LIMIT 1";
 
-	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username AND password=password(:pwd) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username and password=password(:pwd) LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);
@@ -120,31 +105,6 @@ function login($username, $password, $savelogin)
 			setcookie('username', $row['username'], time()+60*60*24*30, '/');
 			setcookie('password', $password, time()+60*60*24*30, '/');
 		}
-		
-			// Finds the latest edit of a moment, all the edits of all the moments and their associated ID's.
-			$query = $pdo->prepare('SELECT lid, ts, UNIX_TIMESTAMP(MAX(ts)) AS max FROM listentries');
-			$query->execute();
-			
-			$row = $query->fetch(PDO::FETCH_ASSOC);
-			$_SESSION['max'] = $row['max'];
-			
-			setcookie('updated', $row['max'], time()+60*60*24*30, '/');
-			
-			// Finds the latest visit of the user.
-			$query = $pdo->prepare('SELECT UNIX_TIMESTAMP(lastvisit) AS lastvisit FROM user WHERE username=:username');
-			$query->bindParam(':username', $username);
-			$query->execute();
-			
-			$row = $query->fetch(PDO::FETCH_ASSOC);
-			$_SESSION['lastvisit'] = $row['lastvisit'];
-
-			// This cookie must be set BEFORE the table updates, in order to get the previous date.
-			setcookie('lastlogin', $row['lastvisit'], time()+60*60*24*30, '/');
-			
-//		update last login.
-		$query = $pdo->prepare("UPDATE user SET lastvisit=now() WHERE uid=:uid");
-		$query->bindParam(':uid', $_SESSION['uid']);
-		$query->execute();
 		return true;
 
 	} else {
@@ -225,58 +185,6 @@ function getAccessType($userId, $courseId)
 		} else {
 			return false;
 		}
-}
-
-/**
- * Returns the access a specified user has on the specified course
- * @param int $userId User ID of the user to look up
-  * @param int $moment moment ID of the dugga to look up
- * @param int $courseId Course ID of the course to look up access on
- * @param int $quizid Quiz ID of the quiz to look up
- * @return returns true/false depending on if user has grade on a quiz in a certain course
- */
-function getUserAnswerHasGrade($userid, $courseid, $quizid, $vers, $moment)
-{
-		global $pdo;
-	
-		if($pdo == null) {
-			pdoConnect();
-		}
-
-		$query = $pdo->prepare('SELECT * FROM userAnswer WHERE uid=:uid AND cid=:cid AND quiz=:qid AND grade > 1 AND moment=:moment');
-		$query->bindParam(':uid', $userid);
-		$query->bindParam(':cid', $courseid);
-		$query->bindParam(':qid', $quizid);
-		$query->bindParam(':moment', $moment);
-
-		$query2 = $pdo->prepare("SELECT * FROM duggaTries WHERE FK_uid=:uid AND FK_cid=:cid AND FK_quiz=:qid AND FK_vers=:vers AND dugga_lock=1");
-		$query2->bindParam(':uid', $userid);
-		$query2->bindParam(':cid', $courseid);
-		$query2->bindParam(':qid', $quizid);
-		$query2->bindParam(':vers', $vers);
-
-		$query->execute();
-		$query2->execute();
-
-		
-		if($query->rowCount() > 0 || $query2->rowCount() > 2) {
-			return true;
-		} else {
-			return false;
-		}
-
-}
-/**
- * Returns if user has allowed cookies
- * @param string $username
- * @return boolean
- */
-function userAllowedCookies($username){
-	if(!isset($_COOKIE[$username."_allow_cookies"])){
-		return false;
-	}
-	else
-		return true;
 }
 
 ?>

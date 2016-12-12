@@ -24,7 +24,7 @@ Example seed
 //----------------------------------------------------------------------------------
 // Globals
 //----------------------------------------------------------------------------------
-
+var score = -1;
 var running;
 
 // Mouse coordinate globals
@@ -47,11 +47,12 @@ var gridsize = 5;
 var goal = [];
 
 //Define colors
-var pointColor = "#f52";
+var pointColor = "#880";
 var	dashedLineColor = "#F8F";
 //			lineColor = "#49f";
 var targetLineColor = "#aaa";
 var studentLineColor = "#49f";
+var selectedPointColor = "#F2F";
 
 var startx = 10;
 var starty = 30;
@@ -69,12 +70,19 @@ function setup() {
 	canvas = document.getElementById('a');
 	if (canvas) {
 		context = canvas.getContext("2d");
-
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		
 		setupClickHandling();
 
 		AJAXService("GETPARAM", { }, "PDUGGA");
+		
+		// If there is a rendering loop active we should cancel this
+		if (renderId =! undefined) {
+				cancelAnimationFrame(renderId);
+				renderId = undefined;
+		}
 
-		setTimeout("render();", 50);
+		renderId = requestAnimationFrame(render);
 	}
 }
 
@@ -84,7 +92,7 @@ function setup() {
 
 function returnedDugga(data) {
 	dataV = data;
-
+	
 	if (data['debug'] != "NONE!")
 		alert(data['debug']);
 
@@ -110,6 +118,21 @@ function returnedDugga(data) {
 
 		}
 	}
+	// Teacher feedback
+	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+			// No feedback
+	} else {
+			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+			var feedbackArr = data["feedback"].split("||");
+			for (var k=feedbackArr.length-1;k>=0;k--){
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			} 		
+			fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackBox').style.display = "block";
+	}
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 function reset()
@@ -119,23 +142,32 @@ function reset()
 		document.getElementById('operations').remove(0);
 	}
 
-	Timer.reset();
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
 	ClickCounter.initialize();
 
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-	$("#duggaStats").css("display","block");
+	if (userStats != null){
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+		$("#duggaStats").css("display","block");
+	}
 	running = true;
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
+	context.clearRect(0, 0, canvas.width, canvas.height);	
+	if (renderId != undefined){
+			cancelAnimationFrame(renderId);
+			renderId=undefined;
+	}
 	var studentPreviousAnswer = "UNK";
-	var p = jQuery.parseJSON(decodeURIComponent(param));
+	var p = jQuery.parseJSON(param);
 	if (uanswer !== null && uanswer !== "UNK") {
 		var previous = uanswer.split(',');
 		previous.shift();
@@ -147,8 +179,22 @@ function showFacit(param, uanswer, danswer, userStats)
 			document.getElementById('operations').remove(0);
 		}
 	}
-	setTimeout("render();", 50);
+	requestAnimationFrame(render);
 	init(p["linje"], studentPreviousAnswer);
+
+	// Teacher feedback
+	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+	if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+		var feedbackArr = feedback.split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+	}
+	fb += "</tbody></table>";
+	if (feedback !== undefined){
+			document.getElementById('teacherFeedbackTable').innerHTML = fb;
+	}
 
 }
 
@@ -416,12 +462,10 @@ function handler_mouseup(ev)
 		document.getElementById(selectedObjId).value = op.join(' ');
 		selectedPoint = 0;
 		selectedObjId = "";
-		clickstate = 0;		
-
 		ClickCounter.onClick();
 
 	}
-
+	clickstate = 0;		
 
 }
 
@@ -490,16 +534,18 @@ function dashedline(sx, sy, ex, ey, dashlen, linewidth, col)
 
 }
 
-function drawCross(gX, gY, lcolor) 
+function drawCross(gX, gY, lcolor, selected) 
 {
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
+	var size = gridsize / 3;
+	if (selected) size = gridsize / 3.5;
 
 	context.beginPath();
-	context.moveTo((gX - (gridsize / 3)) * sf, (gY + (gridsize / 3)) * sf);
-	context.lineTo((gX + (gridsize / 3)) * sf, (gY - (gridsize / 3)) * sf);
-	context.moveTo((gX + (gridsize / 3)) * sf, (gY + (gridsize / 3)) * sf);
-	context.lineTo((gX - (gridsize / 3)) * sf, (gY - (gridsize / 3)) * sf);
+	context.moveTo((gX - size) * sf, (gY + size) * sf);
+	context.lineTo((gX + size) * sf, (gY - size) * sf);
+	context.moveTo((gX + size) * sf, (gY + size) * sf);
+	context.lineTo((gX - size) * sf, (gY - size) * sf);
 	context.stroke();
 }
 
@@ -516,17 +562,22 @@ function makeString()
 	return s;
 }
 
-function drawSPoint(x, y, lcolor, fcolor) 
+function drawSPoint(x, y, lcolor, fcolor, selected) 
 {
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
 
 	context.fillStyle = fcolor;
-	context.fillRect((x - 1) * sf, (y - 1) * sf, 2 * sf, 2 * sf);
-	context.strokeRect((x - 1) * sf, (y - 1) * sf, 2 * sf, 2 * sf);
+	if (selected){
+		context.fillRect((x - 0.5) * sf, (y - 0.5) * sf, sf, sf);
+		context.strokeRect((x - 0.5) * sf, (y - 0.5) * sf, sf, sf);		
+	} else {
+		context.fillRect((x - 1) * sf, (y - 1) * sf, 2 * sf, 2 * sf);
+		context.strokeRect((x - 1) * sf, (y - 1) * sf, 2 * sf, 2 * sf);				
+	}
 }
 
-function drawSLine(x1, y1, x2, y2, lcolor, guideLines) 
+function drawSLine(x1, y1, x2, y2, lcolor, guideLines, selected) 
 {
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
@@ -535,13 +586,18 @@ function drawSLine(x1, y1, x2, y2, lcolor, guideLines)
 	context.lineTo(x2 * sf, y2 * sf);
 	context.stroke();
 	if (guideLines) {
-		drawSPoint(x2, y2, "#FF0", "#880");
+		if (selected){
+			drawSPoint(x2, y2, "#FF0", selectedPointColor, selected);			
+		} else {
+			drawSPoint(x2, y2, "#FF0", pointColor, selected);
+		}
+		
 	} else {
 		drawCross(x2, y2, "#F40");
 	}
 }
 
-function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines) 
+function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines, selected) 
 {
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
@@ -552,15 +608,19 @@ function drawSQuadratic(x1, y1, x2, y2, x3, y3, lcolor, guideLines)
 	if (guideLines) {
 		dashedline(x1 * sf, y1 * sf, x2 * sf, y2 * sf, 10, 1, dashedLineColor);
 		dashedline(x3 * sf, y3 * sf, x2 * sf, y2 * sf, 10, 1, dashedLineColor);
-
-		drawSPoint(x2, y2, "#FF0", "#880");
-		drawSPoint(x3, y3, "#FF0", "#880");
+		if (selected){
+				drawSPoint(x2, y2, "#FF0", selectedPointColor, selected);
+				drawSPoint(x3, y3, "#FF0", selectedPointColor, selected);
+		} else {
+			drawSPoint(x2, y2, "#FF0", pointColor, selected);
+			drawSPoint(x3, y3, "#FF0", pointColor, selected);		
+		}
 	} else {
 		drawCross(x3, y3, "#F40");
 	}
 }
 
-function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines) 
+function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines, selected) 
 {
 	context.strokeStyle = lcolor;
 	context.lineWidth = 1.5;
@@ -573,9 +633,15 @@ function drawSCubic(x1, y1, x2, y2, x3, y3, x4, y4, lcolor, guideLines)
 		dashedline(x1 * sf, y1 * sf, x2 * sf, y2 * sf, 10, 1, "#F8F");
 		dashedline(x3 * sf, y3 * sf, x4 * sf, y4 * sf, 10, 1, "#F8F");
 
-		drawSPoint(x2, y2, "#FF0", "#880");
-		drawSPoint(x3, y3, "#FF0", "#880");
-		drawSPoint(x4, y4, "#FF0", "#880");
+		if (selected){
+				drawSPoint(x2, y2, "#FF0", selectedPointColor, selected);
+				drawSPoint(x3, y3, "#FF0", selectedPointColor, selected);
+				drawSPoint(x4, y4, "#FF0", selectedPointColor, selected);						
+		} else {
+				drawSPoint(x2, y2, "#FF0", pointColor, selected);
+				drawSPoint(x3, y3, "#FF0", pointColor, selected);
+				drawSPoint(x4, y4, "#FF0", pointColor, selected);			
+		}
 	} else {
 		drawCross(x4, y4, "#F40");
 	}
@@ -627,18 +693,18 @@ function fitToContainer()
 	sf = canvas.width / 100;
 }
 
-function drawOp(sx, sy, opArr, lineColor, guideLines) 
+function drawOp(sx, sy, opArr, lineColor, guideLines, selected) 
 {
 
 
 	if (opArr[0] === "L" || opArr[0] === "81") {
-		drawSLine(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), lineColor, guideLines);
+		drawSLine(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), lineColor, guideLines, selected);
 
 	} else if (opArr[0] === "Q" || opArr[0] === "63") {
-		drawSQuadratic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), lineColor, guideLines);
+		drawSQuadratic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), lineColor, guideLines, selected);
 
 	} else if (opArr[0] === "C" || opArr[0] === "19") {
-		drawSCubic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), parseInt(opArr[5]), parseInt(opArr[6]), lineColor, guideLines);
+		drawSCubic(sx, sy, parseInt(opArr[1]), parseInt(opArr[2]), parseInt(opArr[3]), parseInt(opArr[4]), parseInt(opArr[5]), parseInt(opArr[6]), lineColor, guideLines, selected);
 		sx = parseInt(opArr[5]);
 		sy = parseInt(opArr[6]);
 
@@ -656,7 +722,7 @@ function drawPath()
 	// draw target figure
 	for (var i = 0; i < goal.length; i++) {
 		var op = goal[i].split(' ');
-		drawOp(sx, sy, op, targetLineColor, false);
+		drawOp(sx, sy, op, targetLineColor, false, false);
 		sx = parseInt(op[op.length - 2]);
 		sy = parseInt(op[op.length - 1]);
 	}
@@ -671,11 +737,13 @@ function drawPath()
 	$("#operations > option").each(function() {
 		var opArr = this.value.split(" ");
 		if (this.id == selectedObjId) {
-			opArr[selectedPoint * 2 - 1] = gridx;
-			opArr[selectedPoint * 2] = gridy;
+				opArr[selectedPoint * 2 - 1] = gridx;
+				opArr[selectedPoint * 2] = gridy;
+				drawOp(sx, sy, opArr, studentLineColor, true, true);	
+		} else {
+				drawOp(sx, sy, opArr, studentLineColor, true, false);	
 		}
-		drawOp(sx, sy, opArr, studentLineColor, true);
-
+		
 		sx = parseInt(opArr[opArr.length - 2]);
 		sy = parseInt(opArr[opArr.length - 1]);
 	});
@@ -710,27 +778,26 @@ function render()
 	context.stroke();
 
 	drawPath();
-	$("#operations > option").each(function() {
-		var opArr = this.value.split(" ");
-		for (var i = 1; i < opArr.length; i += 2) {
-			if (opArr[i] == gridx && opArr[i + 1] == gridy) {
-				drawSPoint(gridx, gridy, "#000", "#08F");
-			}
 
-		}
-	});
 	// Draw Crosshair
 	context.beginPath();
 	context.strokeStyle = '#444';
-	context.lineWidth = 1.0;
-	context.moveTo((gridx - gridsize) * sf, gridy * sf);
-	context.lineTo((gridx + gridsize) * sf, gridy * sf);
-	context.moveTo(gridx * sf, (gridy - gridsize) * sf);
-	context.lineTo(gridx * sf, (gridy + gridsize) * sf);
+	context.lineWidth = 1.5;
+	var factor = 1;
+	if (clickstate==1){
+			factor = 2;
+	} 
+	context.moveTo((gridx - gridsize / factor) * sf, gridy * sf);
+	context.lineTo((gridx + gridsize / factor) * sf, gridy * sf);
+	context.moveTo(gridx * sf, (gridy - gridsize / factor) * sf);
+	context.lineTo(gridx * sf, (gridy + gridsize / factor) * sf);
 	context.stroke();
 	
-	if (running) {setTimeout("render();", 100);}
-
+	if (running) {
+		renderId = requestAnimationFrame(render);
+	} else {
+		cancelAnimationFrame(renderId);
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -739,17 +806,17 @@ function render()
 //----------------------------------------------------------------------------------
 
 function startDuggaHighScore(){
+	Timer.startTimer();	
+	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
-		Timer.startTimer();
-		if(data['score'] > 0){
-			Timer.score = data['score'];
+		if(dataV['score'] > 0){
+			Timer.score = dataV['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		ClickCounter.initialize();
-		if(data['score'] > 0){
-			ClickCounter.score = data['score'];
-			console.log(ClickCounter.score);
+		
+		if(dataV['score'] > 0){
+			ClickCounter.score = dataV['score'];
 		}
 		ClickCounter.showClicker();
 	}

@@ -1,0 +1,65 @@
+<div id="container" style="display:flex;">
+    <div id='duggaInfoBox' style="max-width:300px;">
+        <div class='loginBoxheader'>
+            <h3>Dugga 3 - Geometri</h3>
+        </div>
+        <p style="margin-left: 4px;">Kurv-duggan går ut på att fylla i det gråa streck som är ritat. 
+            Till ert förfogande finns 3 typer grafiska element: linje, kubisk kurva och kvadratisk kurva.
+            Rita från röd prick till blå prick.</p>
+        <p style="margin-left: 4px;">Lycka till!</p>
+    </div>
+    <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; cursor:none; display:block;'></canvas>
+    <div id="infobox" style="padding:4px;">
+        <div id="quizInstructions"></div>
+        <div class='loginBoxheader'>
+            <h3>Ritverktyg</h3>
+        </div>
+
+        <div>
+            <p style="margin: 5px 0 0 4px;">Kurvor:</p>
+            <input type="button" class="submit-button" value="Linje" onclick="newOp('L 10 20','Linje');">
+            <input type="button" class="submit-button" value="Kvadratisk" onclick="newOp('Q 20 30 40 20','Kvadratisk kurva');">                    
+            <input type="button" class="submit-button" value="Kubisk" onclick="newOp('C 50 10 20 50 30 50','Kubisk kurva');">                    
+        </div>
+
+        <select style="width:100%; margin-left: 4px;" size="10" id="operations" name="operations"></select>
+
+        <input type="button" class="submit-button" value="FLYTTA UPP" onclick="moveupbutton();">                
+        <input type="button" class="submit-button" value="FLYTTA NER" onclick="movedownbutton();">                
+        <input type="button" class="submit-button" value="TA BORT" onclick="deletebutton();">
+    </div>
+</div>
+
+
+<div id="debug" style="display:none; font-size: 8px; position: fixed; bottom: 20px; left: 90%;">
+    <p>cx:</p>
+    <p>cy:</p>
+</div>
+<div id="debugCanvas" style="display:none;font-size: 8px; position: fixed; bottom: 60px; left: 90%;"></div>
+<div id="debugActiveObj" style="display:none;font-size: 8px; position: fixed; bottom: 80px; left: 90%;"></div>
+
+<div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Dugga Stats</h3>
+        <div onclick="hideReceiptPopup()">x</div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr><th></th><th>Highscore</th><th>Total</th></tr>
+            <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
+            <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
+            <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
+        </table>
+    </div>
+</div>
+<div id="feedbackBox" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Feedback Log</h3>
+        <div onclick="hideReceiptPopup()">x</div>
+    </div>
+    <div class="table-wrap" id="feedbackTable">
+        <table>
+            <tr><th>Date</th><th>Feedback</th></tr>
+        </table>
+    </div>
+</div>

@@ -29,12 +29,6 @@
 	// Connect to database and start session
 	pdoConnect();
 	session_start();
-
-	$log_uuid = getOP('log_uuid');
-	$log_timestamp = getOP('log_timestamp');
-
-	logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "codeviewerService.php", $log_timestamp);
-	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php");
 	
 	// Global variables
 	$exampleId=getOP('exampleid');
@@ -55,6 +49,14 @@
 	}else{
 		$userid="1";
 	}
+
+	$log_uuid = getOP('log_uuid');
+	$log_timestamp = getOP('log_timestamp');
+
+	$log_uuid = getOP('log_uuid');
+	$info=$opt." ".$courseId." ".$courseVersion." ".$exampleName." ".$sectionName." ".$exampleId;
+	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerservice.php",$userid,$info);
+
 	// Checks and sets user rights
 	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
 		$writeAccess="w";
@@ -96,25 +98,34 @@
 				$query->bindParam(':exampleid', $exampleId);
 				$query->bindParam(':cid', $courseId);
 				$query->bindParam(':cvers', $courseVersion);
-				$query->execute();
+
+				// Update code example to reflect change of template
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug.="Error updating code example: ".$error[2];
+				} 
 				
 				// There are at least two boxes, create two boxes to start with
 				if($templateNumber==1||$templateNumber==2) $boxCount=2;
 				if($templateNumber==3||$templateNumber==4 ||$templateNumber==8) $boxCount=3;
 				if($templateNumber==5||$templateNumber==6 ||$templateNumber==7) $boxCount=4;
 				if($templateNumber==9) $boxCount=5;
-				
-				
+								
 				// Create appropriate number of boxes
 				for($i=1;$i<$boxCount+1;$i++){
-					$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");		
-					$query->bindParam(':i', $i);
-					$query->bindParam(':exampleid', $exampleId);
-					$query->bindValue(':boxtitle', 'Title');
-					$query->bindValue(':boxcontent', 'Code');
-					$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
-					$query->bindValue(':filename', 'js1.js'); // TODO: Should only bind with the file used (if used) and not to one by default
-					$query->execute();
+						$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");		
+						$query->bindParam(':i', $i);
+						$query->bindParam(':exampleid', $exampleId);
+						$query->bindValue(':boxtitle', 'Title');
+						$query->bindValue(':boxcontent', 'Code');
+						$query->bindValue(':settings', '[viktig=1]'); //TODO: Check what viktig is and what it's for
+						$query->bindValue(':filename', 'js1.js'); // TODO: Should only bind with the file used (if used) and not to one by default
+
+						// Update code example to reflect change of template
+						if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug.="Error creating new box: ".$error[2];
+						} 
 				}	
 			}else if(strcmp('EDITEXAMPLE',$opt)===0){
 				if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
@@ -253,7 +264,10 @@
 			$templateId=$row['templateid'];
 			$styleSheet=$row['stylesheet'];
 			$numBox=$row['numbox'];					
+
+//			$debug=" T: ".$row['templateid']." N: ".$row['numbox'];
 		}
+		
 		
 		// Read ids and names from before/after list
 		$beforeAfter = array();
@@ -378,13 +392,17 @@
 		// Array to be filled with the primary keys to all boxes of the example
 		$queryy = $pdo->prepare("SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment, fontsize FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
 		$queryy->bindParam(':exampleid', $exampleId);
-		$queryy->execute();
+		
+		if(!$queryy->execute()) {
+			$error=$queryy->errorInfo();
+			$debug="Error reading boxes ".$error[2];
+		}
 		while ($row = $queryy->FETCH(PDO::FETCH_ASSOC)){
 			$boxContent=strtoupper($row['boxcontent']);
 			$filename=$row['filename'];
 			$content="";
 						
-			$ruery = $pdo->prepare("SELECT filename,kind FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:fname) LIMIT 1;");
+			$ruery = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 			$ruery->bindParam(':cid', $courseId);
 			$ruery->bindParam(':fname', $filename);
 			$sesult = $ruery->execute();
@@ -460,5 +478,7 @@
 		echo json_encode($array);
 
 	}
-	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "editorService.php");
+
+	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "codeviewerservice.php",$userid,$info);
+
 ?>

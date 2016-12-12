@@ -1,0 +1,8 @@
+This example shows us how to perform displacement mapping of the scene. 
+Below we see the shader that renders the image. 
+
+Rim lighting mimics the fresnel reflections that appear in very shiny objects such as glass orbs.
+
+In this type of surface the reflection is brighter when the object is angled away from the viewer
+
+By using the dot product between the Eye Vector and the Normal we get this angle, and by using a smoothstep (smoothstep(0.5,0.05,dot(N,E));) we only get the angles that are at angles pointed away from the viewer.

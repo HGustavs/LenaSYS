@@ -9,13 +9,6 @@ include_once "../Shared/basic.php";
 // Connect to database and start session
 pdoConnect();
 session_start();
-
-$log_uuid = getOP('log_uuid');
-$log_timestamp = getOP('log_timestamp');
-
-logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "fileedservice.php", $log_timestamp);
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "fileedservice.php");
-
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
@@ -32,11 +25,15 @@ $kind = getOP('kind');
 
 $debug="NONE!";	
 
+$log_uuid = getOP('log_uuid');
+$info=$opt." ".$cid." ".$coursevers." ".$fid." ".$filename." ".$kind;
+logServiceEvent($userid, EventTypes::ServiceServerStart, "fileedservice.php",$userid,$info);
+
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	if(strcmp($opt,"DELFILE")===0 && isSuperUser($userid)){
+	if(strcmp($opt,"DELFILE")===0){
 		// Remove from database
 		$querystring='DELETE FROM fileLink WHERE fileid=:fid';
 		$query = $pdo->prepare($querystring);
@@ -44,19 +41,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating file list ".$error[2];
-		}
-		$querystring='DELETE FROM listentries WHERE link=:fname';
-		$query = $pdo->prepare($querystring);
-		$query->bindParam(':fname', $filename);
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating file list ".$error[2];
-		}
+		}						
 		// Remove from filesystem? Only for local files ... Course-wide and Global files could be used elsewhere
 		// TODO:		
-	}
-	else if(strcmp($opt,"DELFILE")===0){
-		$debug="You must be a super user to delete files.";
 	}
 }
 
@@ -70,7 +57,7 @@ $files=array();
 $lfiles =array();
 $gfiles =array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT fileid,filename,kind,vers FROM fileLink WHERE (cid=:cid or isGlobal='1') ORDER BY filename;");
+	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE (cid=:cid or isGlobal='1') ORDER BY filename;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -81,8 +68,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		$entry = array(
 			'fileid' => $row['fileid'],
 			'filename' => $row['filename'],
-			'kind' => $row['kind'],
-			'vers' => $row['vers']
+			'kind' => $row['kind']
 		);
 
 		array_push($entries, $entry);
@@ -123,5 +109,7 @@ $array = array(
 );
 
 echo json_encode($array);
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "fileedservice.php");
+
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "fileedservice.php",$userid,$info);
+
 ?>

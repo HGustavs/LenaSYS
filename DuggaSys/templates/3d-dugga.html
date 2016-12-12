@@ -1,0 +1,124 @@
+<div id="container" style="display:flex; justify-content:flex-end;">
+  <div id='duggaInfoBox' style="width:300px;">
+      <div class='loginBoxheader'>
+          <h3>3D-dugga</h3>
+      </div>
+      <p style="margin-left: 4px;">3d-duggan går ut på att placera ut hörn och rita trianglar med hjälp av dessa hörn.</p> 
+      <p style="margin-left: 4px;">Ni skall placera ut så få hörn som möjligt och rita så få trianglar som möjligt. För 2-dimensionella objekt skall ni fylla i båda sidorna. För 3-dimensionella objekt skall ni fylla i de yttre sidorna på objektet.</p>
+      <p style="margin-left: 4px;">Lycka till!</p>
+  </div>
+
+  <div id="foo"></div>
+
+  <div id="infobox" style="width:300px;">
+  <div id="quizInstructions"></div>
+  <div class="pane-container">
+      <div class="pane-header">
+          <div id="vertexPane" class='pane pane-active pane-id-0' onclick="changePane(this);">Vertice<span id="vertexPaneNumber" style="display:none" class='badge'></span></div>
+          <div id="trianglePane" class='pane pane-id-1' onclick="changePane(this);">Triangle<span id="trianglePaneNumber"  style="display:none" class='badge'></span></div>
+      </div>
+      <div class="pane-body">
+          <div id="verticeControl" class="pane-id-0">
+            <table style="width:100%;">
+                <caption>Nytt hörn</caption>
+                <thead>
+                    <tr><th style="visibility: hidden;">v00</th><th><span style="color: red">X</span></th><th><span style="color: green">Y</span></th><th><span style="color: blue">Z</span></th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="visibility: hidden;">v00</td>
+                        <td><input style='width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" id="vertexX" maxlength="4" size="4"/></td>
+                        <td><input style='width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" id="vertexY" maxlength="4" size="4"/></td>
+                        <td><input style='width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" id="vertexZ" maxlength="4" size="4"/></td>
+                        <td style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></td>
+                        <td style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></td>
+                        <td style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></td>
+                    </tr>  
+                    <tr><td style="visibility: hidden;">v00</td><td colspan="3"><button style="width:100%;" onclick="newVertex();">LÄGG TILL</button></td></tr>
+                    <tr><td style="visibility: hidden;">v00</td><td colspan="6"><p id="vertexMsg" style="min-height:18px"></p></td></tr>
+                </tbody>
+            </table>    
+              <table id="verticeListTable" style="width:100%;overflow-y:scroll;" >
+                  <caption>Hörnlista</caption>
+                  <thead>
+                      <tr><th style="visibility: hidden;">v00</th><th><span style="color: red">X</span></th><th><span style="color: green">Y</span></th><th><span style="color: blue">Z</span></th>
+                          <th style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></th>
+                          <th style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></th>
+                          <th style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></th>
+                          </tr>
+                  </thead>
+                  <tbody id="verticeList">
+                      <td style="visibility: hidden;">v00</td>
+                      <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+                      <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+                      <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+
+                      <td style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></td>
+                      <td style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></td>
+                      <td style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></td>
+                  </tbody>
+              </table>
+          </div>
+          <div id="triangleControl" style="display: none;" class="pane-id-1">        
+
+              <table style="width:100%;">
+                  <caption>Ny triangel</caption>
+                  <thead>
+                      <tr><th><span style="">v1</span></th><th><span style="">v2</span></th><th><span style="">v3</span></th></tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td><select style='width:100%;' id="tv1" onchange="checkTriangleInput();"></select></td>
+                          <td><select style='width:100%;' id="tv2" onchange="checkTriangleInput();"></select></td>
+                          <td><select style='width:100%;' id="tv3" onchange="checkTriangleInput();"></select></td>
+                      </tr>  
+                      <tr><td colspan="3"><button id="newTriangleButton" style="width:100%;" onclick="newTriangle();">LÄGG TILL</button></td></tr>
+                      <tr><td colspan="3"><button style="float: left;" type="button" onclick="toggleWireframeMode();">Wire-Frame PÅ/AV</button><button style="float: right;" type="button" onclick="toggleRotate();">ROTATION PÅ/AV</button></td></tr>
+                  </tbody>
+              </table>    
+              <table id="triangleListTable" style="width:100%;" style=" overflow-y:scroll;">
+                  <caption>Triangellista</caption>
+                  <tbody id="triangleList2">
+                      <td style="visibility: hidden;">v00</td>
+                      <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+                      <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+                      <td><input style='visibility: hidden; width:100%; padding:0; margin:0; box-sizing: border-box;' type="text" maxlength="4" size="4"/></td>
+
+                      <td style="visibility: hidden;"><button onclick="moveVertexUp(this.parentNode);">&uarr;</button></td>
+                      <td style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></td>
+                      <td style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></td>
+                  </tbody>
+              </table>
+          </div>
+              <div id="result"></div>
+      </div>
+  </div>
+    
+</div>
+</div>
+
+<div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Dugga Stats</h3>
+        <div onclick="hideReceiptPopup()">x</div>
+    </div>
+      <div class="table-wrap">
+        <table>
+            <tr><th></th><th>Highscore</th><th>Total</th></tr>
+            <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
+            <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
+            <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
+        </table>
+      </div>
+</div>
+<div id="feedbackBox" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Feedback Log</h3>
+        <div onclick="hideReceiptPopup()">x</div>
+    </div>
+    <div class="table-wrap" id="feedbackTable">
+        <table>
+            <tr><th>Date</th><th>Feedback</th></tr>
+        </table>
+    </div>
+</div>

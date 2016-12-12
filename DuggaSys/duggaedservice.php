@@ -1,4 +1,4 @@
-<?php
+<?php 
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
@@ -9,17 +9,11 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-$log_uuid = getOP('log_uuid');
-$log_timestamp = getOP('log_timestamp');
-
-logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "duggaedservice.php", $log_timestamp);
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php");
-
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="1";
-}
+	$userid="1";		
+} 
 
 $cid = getOP('cid');
 $qid = getOP('qid');
@@ -38,45 +32,38 @@ $gradesys = getOP('gradesys');
 $template = getOP('template');
 $release = getOP('release');
 $deadline = getOP('deadline');
-
-if ($_SESSION['loginname']) {
-	//Set the current course id to the session
-	$_SESSION['cid'] = $cid;
-	//prepare the cookie name
-	$cookie = ($_SESSION['loginname'] . "duggedC" . $cid . $_SESSION['coursevers']);
-	//check if cookie exitst and if using cookies
-	if (!isset($_COOKIE[$cookie]) && ini_get('session.use_cookies')){
-		$params = session_get_cookie_params();
-		//set the cookie
-		setcookie($cookie,"0",time() + (86400 * 365),$params["path"], $params["domain"],$params["secure"], $params["httponly"]);
-	}
-}
+$coursevers = getOP('coursevers');
 
 $debug="NONE!";
+
+$log_uuid = getOP('log_uuid');
+$info=$opt." ".$cid." ".$qid." ".$vid." ".$param." ".$answer." ".$disabled." ".$uid." ".$name;
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
 
-if(checklogin()){
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator) VALUES (:cid,1,1,'New Dugga','test.html',:uid)";
+		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator,vers) VALUES (:cid,1,1,'New Dugga','test.html',:uid,:coursevers)";	
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':cid', $cid);
 		$stmt->bindParam(':uid', $userid);
-
+		$stmt->bindParam(':coursevers', $coursevers);
+		
 		try{
 			$stmt->execute();
 		}catch (PDOException $e){
-						// Error handling to $debug
+						// Error handling to $debug		
 		}
 	}else if(strcmp($opt,"ADDVARI")===0){
-		$querystring="INSERT INTO variant(quizID,creator,disabled) VALUES (:qid,:uid,0)";
+		$querystring="INSERT INTO variant(quizID,creator,disabled) VALUES (:qid,:uid,0)";	
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':qid', $qid);
 		$stmt->bindParam(':uid', $userid);
-
+		
 		if(!$stmt->execute()) {
 			$error=$stmt->errorInfo();
 			$debug="Error updating entries".$error[2];
@@ -86,20 +73,20 @@ if(checklogin()){
 		$query->bindParam(':vid', $vid);
 		$query->bindParam(':param', $param);
 		$query->bindParam(':variantanswer', $answer);
-
+		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
-		}
+		}	
 	}else if(strcmp($opt,"TOGGLEVARI")===0){
 		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled WHERE vid=:vid;");
 		$query->bindParam(':vid', $vid);
 		$query->bindParam(':disabled', $disabled, PDO::PARAM_INT);
-
+		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
-		}
+		}	
 	}else if(strcmp($opt,"DELVARI")===0){
 		$query = $pdo->prepare("DELETE FROM variant WHERE vid=:vid;");
 		$query->bindParam(':vid', $vid);
@@ -121,11 +108,11 @@ if(checklogin()){
 
 		if($deadline=="null") $query->bindValue(':deadline', null,PDO::PARAM_INT);
 		else $query->bindParam(':deadline', $deadline);
-
+		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
-		}
+		}	
 	}else if(strcmp($opt,"UPDATEAUTO")===0){
 			$query = $pdo->prepare("UPDATE quiz SET autograde=:autograde WHERE id=:qid;");
 			$query->bindParam(':qid', $qid);
@@ -134,7 +121,7 @@ if(checklogin()){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
-			}
+			}	
 	}else if(strcmp($opt,"UPDATEDNAME")===0){
 			$query = $pdo->prepare("UPDATE quiz SET qname=:name WHERE id=:qid;");
 			$query->bindParam(':qid', $qid);
@@ -143,7 +130,7 @@ if(checklogin()){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
-			}
+			}	
 	}else if(strcmp($opt,"UPDATEGRADE")===0){
 			$query = $pdo->prepare("UPDATE quiz SET gradesystem=:gradesys WHERE id=:qid;");
 			$query->bindParam(':qid', $qid);
@@ -152,7 +139,7 @@ if(checklogin()){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
-			}
+			}	
 	}else if(strcmp($opt,"UPDATETEMPLATE")===0){
 			$query = $pdo->prepare("UPDATE quiz SET quizFile=:template WHERE id=:qid;");
 			$query->bindParam(':qid', $qid);
@@ -161,12 +148,12 @@ if(checklogin()){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
-			}
+			}	
 	}else if(strcmp($opt,"SAVVARIANSWER")===0){
 			$query = $pdo->prepare("UPDATE variant SET variantanswer=:variantanswer WHERE vid=:vid;");
 			$query->bindParam(':vid', $vid);
 			$query->bindParam(':variantanswer', $answer);
-
+	
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
@@ -176,34 +163,36 @@ if(checklogin()){
 			$query = $pdo->prepare("UPDATE variant SET  param=:param WHERE vid=:vid;");
 			$query->bindParam(':vid', $vid);
 			$query->bindParam(':param', $param);
-
+	
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
 			}
-	}
+	}	
 	else if(strcmp($opt,"SAVVARIPARA")===0){
 			$query = $pdo->prepare("UPDATE variant SET  param=:param WHERE vid=:vid;");
 			$query->bindParam(':vid', $vid);
 			$query->bindParam(':param', $param);
-
+	
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
 			}
 	}
+
 }
 
 //------------------------------------------------------------------------------------------------
-// Retrieve Information
+// Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
 $entries=array();
 $files=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
-	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified FROM quiz WHERE cid=:cid ORDER BY id;");
+	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,vers FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
 	$query->bindParam(':cid', $cid);
+	$query->bindParam(':coursevers', $coursevers);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		$debug="Error updating entries".$error[2];
@@ -241,9 +230,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'gradesystem' => $row['gradesystem'],
 			'name' => $row['qname'],
 			'template' => $row['quizFile'],
-			'release' => $row['qrelease'],
-			'deadline' => $row['deadline'],
-			'modified' => $row['modified']
+			'release' => $row['qrelease'],	
+			'deadline' => $row['deadline'],				
+			'modified' => $row['modified']				
 			);
 
 		array_push($entries, $entry);
@@ -257,7 +246,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		if(endsWith($value,".html")){
 			array_push($files,substr ( $value , 0, strlen($value)-5 ));
 			$duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents("templates/".$value);
-		}
+		}		
 	}
 
 }
@@ -267,14 +256,10 @@ $array = array(
 	'debug' => $debug,
 	'files' => $files,
 	'duggaPages' => $duggaPages
-	);
-/*$t = json_encode($array);
-if (!$t){
-	echo "Failed: ". $t;
-} else {
-	echo "success: ". $t;
-}*/
+);
+
 echo json_encode($array);
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "duggaedservice.php");
+
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "duggaedservice.php",$userid,$info);
 
 ?>

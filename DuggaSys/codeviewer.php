@@ -1,3 +1,43 @@
+<?php
+	session_start();
+	include_once("../../coursesyspw.php");
+	include_once("../Shared/basic.php");
+	include_once("../Shared/sessions.php");
+	include_once("../Shared/database.php");
+	include_once("../Shared/courses.php");
+	// Database connection
+	pdoConnect();
+	
+	// Fetch examplename from database to use for title		
+	$exampleid = getOPG('exampleid');		
+	$query = $pdo->prepare( "SELECT examplename FROM codeexample WHERE exampleid = :exampleid;");		
+	$query->bindParam(':exampleid', $exampleid);		
+	$query-> execute();		
+			
+	$row = $query -> fetch(PDO::FETCH_ASSOC);		
+	$exampleName = $row['examplename'];		
+	//Title used for the codeviewer page		
+	$title = $exampleName;
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title><?php echo $title; ?></title>
+		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
+		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
+		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
+		<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
+		<link rel="shortcut icon" href="../Shared/icons/placeholder.ico"/>
+		<script type="text/javascript" src="../Shared/markdown.js"></script>
+		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+		<script type="text/javascript" src="../Shared/dugga.js"></script>
+		<script type="text/javascript" src="codeviewer.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+
 <!--
 Code Viewer V5.20 (CV5)  
 
@@ -44,45 +84,7 @@ Missing/desired Features:
 Testing Link: 
 	codeviewer.php?exampleid=1&courseid=1&cvers=2013
 -->
-<?php
-	session_start();
-	include_once("../../coursesyspw.php");
-	include_once("../Shared/basic.php");
-	include_once("../Shared/sessions.php");
-	include_once("../Shared/database.php");
-	include_once("../Shared/courses.php");
-	// Database connection
-	pdoConnect();
-	
-	// Fetch examplename from database to use for title		
-	$exampleid = getOPG('exampleid');		
-	$query = $pdo->prepare( "SELECT examplename FROM codeexample WHERE exampleid = :exampleid;");		
-	$query->bindParam(':exampleid', $exampleid);		
-	$query-> execute();		
-			
-	$row = $query -> fetch(PDO::FETCH_ASSOC);		
-	$exampleName = $row['examplename'];		
-	//Title used for the codeviewer page		
-	$title = $exampleName;
-?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title><?php echo $title; ?></title>
-		<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
-		<link type="text/css" href="../Shared/css/codeviewer.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/whiteTheme.css" rel="stylesheet" />
-		<link type="text/css" href="../Shared/css/style.css" rel="stylesheet" />
-		<link rel="shortcut icon" href="../Shared/icons/placeholder.ico"/>
-		<script type="text/javascript" src="../Shared/markdown.js"></script>
-		<script type="text/javascript" src="../Shared/js/jquery-1.11.0.min.js"></script>
-		<script type="text/javascript" src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-		<script type="text/javascript" src="../Shared/dugga.js"></script>
-		<script type="text/javascript" src="codeviewer.js"></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
+
 	<body onload="setup();">
 		<!-- content START -->
 		<div id="content">
@@ -165,9 +167,9 @@ Testing Link:
 				include '../Shared/navheader.php';
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./codeviewer.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
-			echo "</div>";
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
+			echo "</div>";
 		?>						
 		<!-- Dropdowns START -->
 		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'>Backw</div><span id='backwdropc'>oii</span></span>
@@ -280,7 +282,8 @@ Testing Link:
 					<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
 				</tr>
 			</table>
-		</div>		
+		</div>
+		<div id="underlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;opacity:0.6;background-color:#000; z-index:8000;"></div>
 		<!-- Template Choosing Box -->
 		<?php
 			// Adding page logging 

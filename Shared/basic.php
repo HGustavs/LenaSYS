@@ -1,11 +1,18 @@
 <?php
 
 //------------------------------------------------------------------------------------------------
+// makeLogEntry
+//------------------------------------------------------------------------------------------------
+
+function makeLogEntry($userid,$entrytype,$pdo,$etext)
+{
+		return false;
+}
+
+
+//------------------------------------------------------------------------------------------------
 // getOP
 //------------------------------------------------------------------------------------------------
-//
-// Reads service Parameter from POST encoding using entities
-//
 
 function getOP($name)
 {
@@ -16,6 +23,7 @@ function getOP($name)
 //------------------------------------------------------------------------------------------------
 // getOP
 //------------------------------------------------------------------------------------------------
+
 function gettheOP($name)
 {
 	if(isset($_POST[$name])){
@@ -23,10 +31,6 @@ function gettheOP($name)
 	}
 	else return "UNK";
 }
-
-//
-// Reads service Parameter from POST encoding using entities
-//
 
 function getOPG($name)
 {
@@ -37,9 +41,6 @@ function getOPG($name)
 //------------------------------------------------------------------------------------------------
 // makeRandomString
 //------------------------------------------------------------------------------------------------
-//
-// Makes a random string of length X
-//
 
 function makeRandomString($length = 6) {
     $validCharacters = "abcdefghijklmnopqrstuxyvwzABCDEFGHIJKLMNOPQRSTUXYVWZ+-*#&@!?";
@@ -64,7 +65,7 @@ function endsWith($haystack,$needle,$case=true)
 }
 
 //---------------------------------------------------------------------------------------------------------------
-// endsWith - Tests if a string ends with another string - defaults to being non-case sensitive
+// swizzleArray - Swizzles rows and columns for file list array
 //---------------------------------------------------------------------------------------------------------------
 
 function swizzleArray(&$filepost) {
@@ -82,8 +83,11 @@ function swizzleArray(&$filepost) {
     return $filearray;
 }
 
-// Open log database and create tables if they do not exist
-$log_db = new PDO('sqlite:../log.db');
+//---------------------------------------------------------------------------------------------------------------
+// connect log database - Open log database and create tables if they do not exist
+//---------------------------------------------------------------------------------------------------------------
+
+$log_db = new PDO('sqlite:../../log/loglena4.db');
 $sql = '
 	CREATE TABLE IF NOT EXISTS logEntries (
 		id INTEGER PRIMARY KEY,
@@ -106,9 +110,13 @@ $sql = '
 		uuid CHAR(15),
 		eventType INTEGER,
 		service VARCHAR(15),
+		userid VARCHAR(8),
 		timestamp INTEGER,
 		userAgent TEXT,
 		operatingSystem VARCHAR(100),
+		info TEXT,
+		referer TEXT,
+		IP TEXT,
 		browser VARCHAR(100)
 	);
 	CREATE TABLE IF NOT EXISTS clickLogEntries (
@@ -122,7 +130,7 @@ $sql = '
 	);
 	CREATE TABLE IF NOT EXISTS mousemoveLogEntries (
 		id INTEGER PRIMARY KEY,
-		page TEXT,		
+		page TEXT,
 		mouseX TEXT,
 		mouseY TEXT,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -130,36 +138,24 @@ $sql = '
 	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
 		id INTEGER PRIMARY KEY,
 		type INTEGER,
-		courseid INTEGER,	
-		exampleid INTEGER,	
+		courseid INTEGER,
+		exampleid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 	CREATE TABLE IF NOT EXISTS duggaLoadLogEntries(
 		id INTEGER PRIMARY KEY,
 		type INTEGER,
-		cid INTEGER,	
-		vers INTEGER,	
-		quizid INTEGER,	
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE IF NOT EXISTS fileUploadLogEntries(
-		id INTEGER PRIMARY KEY,
-		filename VARCHAR(128),
-		kind INTEGER,	
-		cid	INTEGER,
-		vers VARCHAR(8),
+		cid INTEGER,
+		vers INTEGER,
+		quizid INTEGER,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 ';
 $log_db->exec($sql);
 
-
 //------------------------------------------------------------------------------------------------
-// logEvent
+// logEvent - Creates a new log entry in the log database (log.db, located at the root directory)
 //------------------------------------------------------------------------------------------------
-//
-// Creates a new log entry in the log database (log.db, located at the root directory)
-//
 
 function logEvent($eventType, $description) {
 	$query = $GLOBALS['log_db']->prepare('INSERT INTO logEntries (eventType, description, userAgent) VALUES (:eventType, :description, :userAgent)');
@@ -169,13 +165,9 @@ function logEvent($eventType, $description) {
 	$query->execute();
 }
 
-
 //------------------------------------------------------------------------------------------------
-// logUserEvent
+// logUserEvent - Creates a new userbased event in the log.db database.
 //------------------------------------------------------------------------------------------------
-//
-//  Creates a new userbased event in the log.db database.
-//
 
 function logUserEvent($uid, $eventType, $description) {
 	$query = $GLOBALS['log_db']->prepare('INSERT INTO userLogEntries (uid, eventType, description, userAgent, remoteAddress) VALUES (:uid, :eventType, :description, :userAgent, :remoteAddress)');
@@ -188,35 +180,50 @@ function logUserEvent($uid, $eventType, $description) {
 }
 
 //------------------------------------------------------------------------------------------------
-// logServiceEvent
+// logServiceEvent - Creates a new service event in the log.db database. The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format)
 //------------------------------------------------------------------------------------------------
-//
-//  Creates a new service event in the log.db database.
-//  The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format)
-//
 
-
-function logServiceEvent($uuid, $eventType, $service, $timestamp = null) {
+function logServiceEvent($uuid, $eventType, $service, $userid, $info, $timestamp = null) {
 	if (is_null($timestamp)) {
 		$timestamp = round(microtime(true) * 1000);
 	}
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp, userAgent, operatingSystem, browser) VALUES (:uuid, :eventType, :service, :timestamp, :userAgent, :operatingSystem, :browser)');
+	$query = $GLOBALS['log_db']->prepare('INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp, userAgent, operatingSystem, browser, userid, info, referer, IP) VALUES (:uuid, :eventType, :service, :timestamp, :userAgent, :operatingSystem, :browser, :userid, :info, :referer, :IP)');
 	$query->bindParam(':uuid', $uuid);
 	$query->bindParam(':eventType', $eventType);
 	$query->bindParam(':service', $service);
 	$query->bindParam(':timestamp', $timestamp);
+	$query->bindParam(':userid', $userid);
+	$query->bindParam(':info', $info);
+	$referer="";
+
+	if(isset($_SERVER['HTTP_REFERER'])){
+			$referer.=$_SERVER['HTTP_REFERER'];
+	}
+
+	$IP="";
+	if(isset($_SERVER['REMOTE_ADDR'])){
+			$IP.=$_SERVER['REMOTE_ADDR'];
+	}
+	if(isset($_SERVER['HTTP_CLIENT_IP'])){
+			$IP.=" ".$_SERVER['HTTP_CLIENT_IP'];
+	}
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+			$IP.=" ".$_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+
+	$query->bindParam(':referer', $referer);
+	$query->bindParam(':IP', $IP);
 	$query->bindParam(':userAgent', $_SERVER['HTTP_USER_AGENT']);
-	$query->bindParam(':operatingSystem', getOS());
-	$query->bindParam(':browser', getBrowser());
+	$currentOS = getOS();
+	$query->bindParam(':operatingSystem', $currentOS);
+	$currentBrowser = getBrowser();
+	$query->bindParam(':browser', $currentBrowser);
 	$query->execute();
 }
 
 //------------------------------------------------------------------------------------------------
-// logClickEvent
+// logClickEvent - Creates a new click event in the log.db database.
 //------------------------------------------------------------------------------------------------
-//
-//  Creates a new click event in the log.db database.
-//
 
 function logClickEvent($target, $mouseX, $mouseY, $clientResX, $clientResY) {
 	$query = $GLOBALS['log_db']->prepare('INSERT INTO clickLogEntries (target, mouseX, mouseY, clientResX, clientResY) VALUES (:target, :mouseX, :mouseY, :clientResX, :clientResY)');
@@ -229,11 +236,8 @@ function logClickEvent($target, $mouseX, $mouseY, $clientResX, $clientResY) {
 }
 
 //------------------------------------------------------------------------------------------------
-// logMousemoveEvent
+// logMousemoveEvent - Creates a new click event in the log.db database.
 //------------------------------------------------------------------------------------------------
-//
-//  Creates a new click event in the log.db database.
-//
 
 function logMousemoveEvent($page, $mouseX, $mouseY) {
 	$query = $GLOBALS['log_db']->prepare('INSERT INTO mousemoveLogEntries (page, mouseX, mouseY) VALUES (:page, :mouseX, :mouseY)');
@@ -244,11 +248,8 @@ function logMousemoveEvent($page, $mouseX, $mouseY) {
 }
 
 //------------------------------------------------------------------------------------------------
-// Log page load for examples.
+// Log page load for examples. - Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
 //------------------------------------------------------------------------------------------------
-//
-//  Creates a new entry to the exampleLoadLogEntries when a user opens a new example.
-//
 
 function logExampleLoadEvent($courseid, $exampleid, $type) {
 	$query = $GLOBALS['log_db']->prepare('INSERT INTO exampleLoadLogEntries (courseid, exampleid, type) VALUES (:courseid, :exampleid, :type)');
@@ -259,11 +260,8 @@ function logExampleLoadEvent($courseid, $exampleid, $type) {
 }
 
 //------------------------------------------------------------------------------------------------
-// Log page load for examples.
+// Log page load for examples. - Creates a new entry to the duggaLoadLogEntries when a user opens a new dugga.
 //------------------------------------------------------------------------------------------------
-//
-//  Creates a new entry to the duggaLoadLogEntries when a user opens a new dugga.
-//
 
 function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
 	$query = $GLOBALS['log_db']->prepare('INSERT INTO duggaLoadLogEntries (cid, vers, quizid, type) VALUES (:cid, :vers, :quizid, :type)');
@@ -275,29 +273,8 @@ function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
 }
 
 //------------------------------------------------------------------------------------------------
-// logFileUploadEvent
+// EventTypes - Contains constants for log event types
 //------------------------------------------------------------------------------------------------
-//
-// Creates a new log entry in the file upload log database (log.db, located at the root directory)
-//
-
-function logFileUploadEvent($filename, $kind, $cid, $vers) {
-	$query = $GLOBALS['log_db']->prepare('INSERT INTO logFileUploadEntries (filename, kind, cid, vers) VALUES (:filename, :kind, :cid, :vers)');
-	$query->bindParam(':filename', $filename);
-	$query->bindParam(':kind', $kind);
-	$query->bindParam(':cid', $cid);
-	$query->bindParam(':vers', $vers);
-	$query->execute();
-}
-
-
-
-//------------------------------------------------------------------------------------------------
-// EventTypes
-//------------------------------------------------------------------------------------------------
-//
-// Contains constants for log event types
-//
 
 abstract class EventTypes {
 	const DuggaRead = 1;
@@ -312,9 +289,12 @@ abstract class EventTypes {
 	const pageLoad = 10;
 }
 
-function getOS() { 
-	$userAgent = $_SERVER['HTTP_USER_AGENT'];
+//------------------------------------------------------------------------------------------------
+// EventTypes - Contains constants for log event types
+//------------------------------------------------------------------------------------------------
 
+function getOS() {
+	$userAgent = $_SERVER['HTTP_USER_AGENT'];
     $osPlatform = "Unknown";
     $osArray = array(
 		'/windows nt 10/i'      => 'Windows 10',
@@ -341,14 +321,17 @@ function getOS() {
 		'/blackberry/i'         => 'BlackBerry',
 		'/webos/i'              => 'Mobile'
 	);
-
-    foreach ($osArray as $regex => $value) { 
+    foreach ($osArray as $regex => $value) {
         if (preg_match($regex, $userAgent)) {
 			$osPlatform = $value;
 		}
 	}
 	return $osPlatform;
 }
+
+//------------------------------------------------------------------------------------------------
+// EventTypes - Contains constants for log event types
+//------------------------------------------------------------------------------------------------
 
 function getBrowser() {
 	$userAgent = $_SERVER['HTTP_USER_AGENT'];
@@ -365,8 +348,7 @@ function getBrowser() {
 		'/konqueror/i'  => 'Konqueror',
 		'/mobile/i'     => 'Handheld Browser'
 	);
-
-	foreach ($browserArray as $regex => $value) { 
+	foreach ($browserArray as $regex => $value) {
         if (preg_match($regex, $userAgent)) {
 			$browser = $value;
 		}

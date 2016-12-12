@@ -21,52 +21,34 @@ pdoConnect();
 <body>
 	<?php 
 		$noup="SECTION";
-		$loginvar="FILE";
 		include '../Shared/navheader.php';
-		setcookie("loginvar", $loginvar);
 	?>
 		
 	<!-- content START -->
 	<div id="content" >
-		<div class="fileed-row-wrapper clearfix">
-			<div style='width:100%;float:right'>
-				<input class='submit-button' type='button' value='Add Link' onclick='createLink();'/>
-			</div>
-			<div id="alllinks" style='width:100%;'>
-				<table class='list list--nomargin' style='margin-bottom:8px;' >
-					<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
-				</table>
-			</div>
+		<div id="alllinks" style='width:100%;'>
+			<table class='list list--nomargin' style='margin-bottom:8px;' >
+				<tr><th><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>
+				<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
+			</table>
 		</div>
-		<div class="fileed-row-wrapper clearfix">
-			<div style='width:100%;float:right'>
-				<input class='submit-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
-			</div>
-			<div id="allglobalfiles" style='width:100%;'>
-				<table class='list list--nomargin' style='margin-bottom:8px;' >
-					<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>
-				</table>
-			</div>
+		<div id="allglobalfiles" style='width:100%;'>
+			<table class='list list--nomargin' style='margin-bottom:8px;' >
+				<tr><th><input class='submit-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
+				<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>
+			</table>
 		</div>
-		<div class="fileed-row-wrapper clearfix">
-			<div style='width:100%;float:right'>
-				<input class='submit-button' type='button' value='Add File' onclick='createFile("MFILE");'/>
-			</div>
-			<div id="allcoursefiles" style='width:100%;'>
+		<div id="allcoursefiles" style='width:100%;'>
 				<table class='list list--nomargin'>
-					<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>
+						<tr><th><input class='submit-button' type='button' value='Add File' onclick='createFile("MFILE");'/></th></tr>
+						<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>
 				</table>
-			</div>
 		</div>
-		<div class="fileed-row-wrapper clearfix">
-			<div style='width:100%;float:right;display:block'>
-				<input class='submit-button' type='button' value='Add File' onclick='createFile("LFILE");'/>
-			</div>
-			<div id="alllocalfiles" style='width:100%;'>
-				<table class='list list--nomargin'>
+		<div id="alllocalfiles" style='width:100%;'>
+			<table class='list list--nomargin'>
+				<tr><th><input class='submit-button' type='button' value='Add File' onclick='createFile("LFILE");'/></th></tr>
 				<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>
-				</table>
-			</div>
+			</table>
 		</div>
 	</div>
 	<!-- content END -->

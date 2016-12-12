@@ -1,0 +1,6 @@
+This example shows us how to perform per pixel diffuse lighting of the scene. 
+Below we see the shader that renders the image. 
+
+By moving the computation of N and L (normalization) and the diffuse computation using the dot product to the vertex shader we are computing the lighting per pixel instead of per vertex.
+
+For diffuse lighting the difference is almost impossible to notice.

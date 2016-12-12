@@ -412,6 +412,8 @@ function updateExample()
 		addedWords = [];
 		removedWords = [];
 	}
+	
+	$("#editExample").css("display","none");
 }
 
 //----------------------------------------------------------------------------------
@@ -422,8 +424,11 @@ var openBoxID;
 
 function displayEditContent(boxid)
 {
-	var box = retData['box'][boxid-1]; 	// The information stored about the box is fetched
-	openBoxID = boxid;				// Keeps track of the currently open box. Used when saving the box content.
+	// The information stored about the box is fetched
+	var box = retData['box'][boxid-1]; 	
+	
+	// Keeps track of the currently open box. Used when saving the box content.
+	openBoxID = boxid;				
 
 	$("#boxtitle").val(box[4]);
 	$("#boxcontent").val(box[1]);  
@@ -789,15 +794,6 @@ $(window).resize(function() {
 	textHeight= windowHeight-50;
 	$("#table-scroll").css("height", textHeight);
 
-/*	
-	// Keep right margin to boxes when user switch from mobile version to desktop version
-	if($(".buttomenu2").height() == null){
-		var boxmenuheight = 0;
-	}else{
-		var boxmenuheight= $(".buttomenu2").height();
-	}
-	$(".box").css("margin-top", boxmenuheight);
-*/
 });
 
 document.addEventListener("drop", function(e) {
@@ -967,10 +963,7 @@ function replaceAll(find, replace, str)
 function tokenize(instring,inprefix,insuffix)
 {
 	// replace HTML-entities
-	//instring = replaceAll("&lt;","<",instring);
-	//instring = replaceAll("&gt;",">",instring);
 	instring = replaceAll("&amp;","&",instring);
-	// this will replace all "&#9;" in the text that the function tabLine adds were a tab (\t) is placed.
 	instring = replaceAll("&#9;"," ",instring); 
 
 	var from;                   	// index of the start of the token.
@@ -1307,16 +1300,16 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 	var iwcounter=0;
 	for(i=0;i<tokens.length;i++){
 		tokenvalue=String(tokens[i].val);
-		// Make white space characters
-		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
-		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
 
 		if(tokens[i].kind=="rowcomment"||tokens[i].kind=="blockcomment"||tokens[i].kind=="string"||tokens[i].kind=="number"||tokens[i].kind=="name"){
 				// Fix to remove html tags in strings
+				tokenvalue = tokenvalue.replace(/&/g,"&amp;");
 				tokenvalue = tokenvalue.replace(/\</g, "&lt;");
 				tokenvalue = tokenvalue.replace(/\>/g, "&gt;");
-				tokenvalue = tokenvalue.replace(/&/g,"&amp;");
 		}
+		// Make white space characters
+		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
+		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
 
 		if(tokens[i].kind=="rowcomment"){
 			cont+="<span class='comment'>"+tokenvalue+"</span>";
@@ -1393,8 +1386,6 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 								htmlTag.push(pid);
 							}
 							cont+="&lt"+"<span id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
-							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
-							// cont+="&lt"+"<span title='"+popoverbox(tokens[i+1].val)+"' id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
 							cont+="</span>";
 							i=i+1;
 						}else{
@@ -1412,8 +1403,6 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 								pid="html"+htmlTagCount+boxid;
 							}
 							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
-							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
-							// cont+="&lt"+tokens[i+1].val +"<span title='"+popoverbox(tokens[i+2].val)+"' id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
 							i = i+3;
 						}else{
 								cont+="<span class='oper'>"+tokenvalue+"</span>";						
@@ -1429,28 +1418,28 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 		}
 		// tokens.length-1 so the last line will be printed out
 		if(tokens[i].kind=="newline" || i==tokens.length-1){  
-			// Prevent empty lines to be printed out
-			if(cont != ""){
-				// Count how many linenumbers that'll be needed
-				lineno++;
-				// Print out normal rows if no important exists
-				if(improws.length==0){
-					str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
-				}else{	
-					// Print out important lines
-					for(var kp=0;kp<improws.length;kp++){
-						if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
-							str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
-							break;
-						}else{
-							if(kp == (improws.length-1)){
-								str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
-							}
-						}						
-					}
-				}	
-				cont="";
+			// Help empty lines to be printed out
+//			console.log("C:"+cont);
+			if(cont=="") cont="&nbsp;";
+			// Count how many linenumbers that'll be needed
+			lineno++;
+			// Print out normal rows if no important exists
+			if(improws.length==0){
+				str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+			}else{	
+				// Print out important lines
+				for(var kp=0;kp<improws.length;kp++){
+					if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
+						str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
+						break;
+					}else{
+						if(kp == (improws.length-1)){
+							str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+						}
+					}						
+				}
 			}	
+			cont="";
 		}
 	}
 	str+="</div>";
@@ -1466,15 +1455,6 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 		// Make white space characters
 		tokenvalue=tokenvalue.replace(/ /g, '&nbsp;');
 		tokenvalue=tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
-
-	 /*	
-		if(tokens[i].kind=="rowcomment"||tokens[i].kind=="blockcomment"||tokens[i].kind=="string"||tokens[i].kind=="number"||tokens[i].kind=="name"){
-				// Fix to remove html tags in strings
-				tokenvalue = tokenvalue.replace(/\</g, "&lt;");
-				tokenvalue = tokenvalue.replace(/\>/g, "&gt;");
-				tokenvalue = tokenvalue.replace(/&/g,"&amp;");
-		}
-	*/
 	
 		if(tokens[i].kind=="rowcomment"){
 			cont+="<span class='comment'>"+tokenvalue+"</span>";
@@ -1504,23 +1484,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 			}
 					
 		}else if(tokens[i].kind=="operator"){
-			/*if(tokenvalue=="("){
-				pid="PA"+pcount+boxid; 
-				pcount++;
-				parenthesis.push(pid);
-				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-			}else if(tokenvalue==")"){
-				pid=parenthesis.pop();
-				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-			}*//*else if(tokenvalue=="["){
-				pid="BR"+bcount;
-				bcount++;
-				bracket.push(pid);
-				cont+="<span id='"+pid+"' class='oper' onmouseover='highlightop(\"P"+pid+"\",\""+pid+"\");' onmouseout='dehighlightop(\"P"+pid+"\",\""+pid+"\");'>"+tokenvalue+"</span>";												
-			}else if(tokenvalue=="]"){
-				pid=bracket.pop();
-				cont+="<span id='P"+pid+"' class='oper' onmouseover='highlightop(\""+pid+"\",\"P"+pid+"\");' onmouseout='dehighlightop(\""+pid+"\",\"P"+pid+"\");'>"+tokenvalue+"</span>";																						
-			}else*/ if(tokenvalue=="{"){
+			if(tokenvalue=="{"){
 				pid="CBR"+cbcount+boxid;
 				cbcount++;
 				cbracket.push(pid);
@@ -1552,8 +1516,6 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 								cssTag.push(pid);
 							}
 							cont+="&lt"+"<span id='"+pid+"' class='oper' onmouseover='highlightCss(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightCss(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
-							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
-							// cont+="&lt"+"<span title='"+popoverbox(tokens[i+1].val)+"' id='"+pid+"' class='oper' onmouseover='highlightHtml(\"P"+pid+"\",\""+pid+"\");' onmouseout='deHighlightHtml(\"P"+pid+"\",\""+pid+"\");'>"+ tokens[i+1].val;
 							cont+="</span>";
 							i=i+1;
 						}else{
@@ -1571,8 +1533,6 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 								pid="css"+cssTagCount+boxid;
 							}
 							cont+="&lt"+tokens[i+1].val +"<span id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
-							// The line below will call the popoverbox function, use the line below when you're working on issue #1811 to get the title message on each < > tag.
-							// cont+="&lt"+tokens[i+1].val +"<span title='"+popoverbox(tokens[i+2].val)+"' id='P"+pid+"' class='oper' onmouseover='highlightHtml(\""+pid+"\",\"P"+pid+"\");' onmouseout='deHighlightHtml(\""+pid+"\",\"P"+pid+"\");'>"+ tokens[i+2].val +"</span>" +tokens[i+3].val;
 							i = i+3;
 						}else{
 								cont+="<span class='oper'>"+tokenvalue+"</span>";						
@@ -1587,29 +1547,28 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 			cont+=tokenvalue;
 		}
 		// tokens.length-1 so the last line will be printed out
-		if(tokens[i].kind=="newline" || i==tokens.length-1){  
-			// Prevent empty lines to be printed out
-			if(cont != ""){
-				// Count how many linenumbers that'll be needed
-				lineno++;
-				// Print out normal rows if no important exists
-				if(improws.length==0){
-					str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
-				}else{	
-					// Print out important lines
-					for(var kp=0;kp<improws.length;kp++){
-						if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
-							str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
-							break;
-						}else{
-							if(kp == (improws.length-1)){
-								str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
-							}
-						}						
-					}
-				}	
-				cont="";
+		if(tokens[i].kind=="newline" || i==tokens.length-1){
+			// Help empty lines to be printed out
+			if(cont=="") cont="&nbsp;";
+			// Count how many linenumbers that'll be needed
+			lineno++;
+			// Print out normal rows if no important exists
+			if(improws.length==0){
+				str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+			}else{	
+				// Print out important lines
+				for(var kp=0;kp<improws.length;kp++){
+					if(lineno>=parseInt(improws[kp][1])&&lineno<=parseInt(improws[kp][2])){
+						str+="<div id='"+boxfilename+"-line"+lineno+"' class='impo'>"+cont+"</div>";
+						break;
+					}else{
+						if(kp == (improws.length-1)){
+							str+="<div id='"+boxfilename+"-line"+lineno+"' class='normtext'>"+cont+"</div>";
+						}
+					}						
+				}
 			}	
+			cont="";
 		}
 	}
 	str+="</div>";

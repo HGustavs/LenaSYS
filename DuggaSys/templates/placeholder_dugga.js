@@ -34,16 +34,15 @@ function setup()
 //----------------------------------------------------------------------------------
 
 function returnedDugga(data)
-{	
-	console.log("dads");
+{
+	Timer.startTimer();
+	ClickCounter.initialize();
 	if(querystring['highscoremode'] == 1) {
-		Timer.startTimer();
 		if(data['score'] > 0){
 			Timer.score = data['score'];
 		}
 		Timer.showTimer();
 	} else if (querystring['highscoremode'] == 2) {
-		ClickCounter.initialize();
 		if(data['score'] > 0){
 			ClickCounter.score = data['score'];
 			console.log(ClickCounter.score);
@@ -67,6 +66,7 @@ function returnedDugga(data)
 				document.getElementById('instructions').innerHTML = msg;
 			});
 		}		
+		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 //--------------------================############================--------------------
@@ -97,15 +97,20 @@ function saveClick()
 function reset()
 {
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-	Timer.reset();
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
 	ClickCounter.initialize();
 
 }
 
-function showFacit(param, uanswer, danswer)
+function showFacit(param, uanswer, danswer, userStats, files, moment)
 {
-	var p = jQuery.parseJSON(decodeURIComponent(param));
-	var daJSON = jQuery.parseJSON(decodeURIComponent(danswer));
+	if (userStats != null){
+
+	}
+	var p = jQuery.parseJSON(param);
+	var daJSON = jQuery.parseJSON(danswer);
 	
 }
 
@@ -116,4 +121,3 @@ function closeFacit(){
 //--------------------================############================--------------------
 //                                  Local Functions
 //--------------------================############================--------------------
-

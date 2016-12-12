@@ -47,7 +47,7 @@
 
 							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
 						
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
+							<!--<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>-->
 
 						</td>
 					</tr>

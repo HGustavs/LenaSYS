@@ -12,26 +12,27 @@
 				$inString=preg_replace("/\>/", "&gt;",$inString);
 
 				$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
+				$inString=preg_replace("/^\=\|\=(\r\n|\n|\r)/m", "=|=&&&",$inString);
 				
 				$str="";
 
-				$codearray=explode('~~~', $inString);
-				$kodblock=0;
+				//$codearray=explode('~~~', $inString);
+				$codearray=preg_split("/\~{3}|\=\|\=/", $inString);
 				
-				// This is a straight 1:1 port of the javascript code
+				$specialBlockStart=true;
 				foreach ($codearray as $workstr) {
-						if(substr($workstr,0,3)==="@@@"){
-								$kodblock=!$kodblock;
-								$workstr=substr($workstr,3);
+						if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
+								$specialBlockStart=false;
+								$str.="<pre><code>".substr($workstr,3)."</code></pre>";
+						} else if (substr($workstr,0,3)==="&&&" && $specialBlockStart===true){
+								$specialBlockStart=false;
+								$str.="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
+						} else if ($workstr !== "") {
+								$str.=markdownBlock(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
+								$specialBlockStart=true;
+						} else {
+								$str.=$workstr;
 						}
-
-						if($kodblock && $workstr != ""){
-								$workstr="<pre><code>".$workstr."</code></pre>";
-						}else{
-								$workstr=markdownBlock($workstr);
-						}
-    				
-    				$str.=$workstr;
 				}
 		
 				return $str;
@@ -57,41 +58,22 @@
 				$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
 				$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
 
-				//Regular expressions for ordered lists
-				// (###) to start a list
-				// 1. Digit dot space
-				// 2. Digit dot space
-				// 		(###) to start a sublist
-				// 		1. Digit dot space
-				// 		(/###) to close the sublist
-				// (/###) to close the list
-				$instring = preg_replace("/[(]\#{3}[)]/", '<ol>',$instring);
-				$instring = preg_replace("/[\d]{1,}\.\s(.*)/", '<li>$1</li>',$instring);
-				$instring = preg_replace("/[(][\/]\#{3}[)]/", '</ol>',$instring);
+				//Regular expressions for lists both - and * lists are supported
+				$instring = preg_replace("/^\s*\d*\.\s(.*)/m", "<ol><li>$1</li></ol>",$instring);
 				
-				//Regular expressions for unordered lists
-				// (***) to start a list
-				// * Bullet
-				// 		(***) to start a sublist
-				// 		* Sub-bullet
-				// 		(/***) to close the sublist
-				// (/***) to close the list
-				$instring = preg_replace("/[(]\*{3}[)]/", '<ul>',$instring);
-				$instring = preg_replace("/[\-\*]{1}\s(.*)/", '<li>$1</li>',$instring);
-				$instring = preg_replace("/[(][\/]\*{3}[)]/", '</ul>',$instring);
+				$instring = preg_replace("/^\s*\-\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
+				$instring = preg_replace("/^\s*\*\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
+
+				// Fix for superflous ul and ol statements
+				$instring= str_replace ("</ul>\n<ul>","",$instring);
+				$instring= str_replace ("</ol>\n<ol>","",$instring);
 
 				//Regular expression for line
-				$instring = preg_replace("/\-{3,}/", "<hr>",$instring);
+				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
 
 				// Hard line break support
-				$instring= preg_replace ("/(\r\n){3}/","<br><br>",$instring);
-				$instring= preg_replace ("/(\r\n){2}/","<br>",$instring);
-	
-				$instring= preg_replace ("/(\n){3}/","<br><br>",$instring);
-				$instring= preg_replace ("/(\n){2}/","<br>",$instring);
-	
-				$instring= preg_replace ("/(\r){3}/","<br><br>",$instring);
-				$instring= preg_replace ("/(\r){2}/","<br>",$instring);
+				$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
+				$instring= preg_replace ("/(\r\n|\n|\r){2}/","<br>",$instring);
 
 				// Fix for swedish characters
 				$instring= str_replace ("å","&aring;",$instring);				
@@ -106,9 +88,8 @@
 				$instring = preg_replace("/\!{3}(.*?\S),(.*?\S)\!{3}/","<a href='$1' target='_blank'>$2</a>",$instring);
 
 				// External img src !!!
-				// |||src,thumbnail width in px,full size width in px|||
-				// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
-				$instring = preg_replace("/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/", '<img src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />',$instring);
+				// |||src|||	
+				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
 
 				// External mp4 src !!!
 				// ==[src]==	
@@ -118,9 +99,9 @@
 				// ==[src]==	
 				$instring = preg_replace("/\={2}\{(.*?\S)}\={2}/","<span id='placeholder-$1'></span>",$instring);
 
-				// Link to gif animation with thumbnail
-				// +++thumbnail.png,animation.gif+++	
-				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<div class='gifwrapper'><img class='gifimage' id='gifpicture' src='$1' onclick=\"toggleGif('$2', '$1');\" /><div class='playbutton'><img src='../Shared/icons/PlayT.svg' onclick=\"toggleGif('$2', '$1');\"></div></div>",$instring);
+				// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
+				// +++image.png,image.gif,id+++
+				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<div class='gifwrapper'><img class='gifimage' src='$1' onclick=\"toggleGif('$2', '$1', this);\" target='_blank' /><img class='playbutton' src='../Shared/icons/PlayT.svg'></div>",$instring);
 
 				// Right Arrow for discussing menu options
 				$instring = preg_replace("/\s[\-][\>]\s/","&rarr;",$instring);
@@ -130,33 +111,18 @@
 
 				// Importand Rows in code file in different window ===
 				// ===filename,start row,end row, text to show===
-				$inString = preg_replace("/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/", "<span class='impword' onmouseover=\"highlightRows(\'$1\',$2,$3)\" onmouseout=\"dehighlightRows(\'$1\',$2,$3)\">$4</span>", $instring);
-				
+				$instring = preg_replace("/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/", "<span class='impword' onmouseover=\"highlightRows(\'$1\',$2,$3)\" onmouseout=\"dehighlightRows(\'$1\',$2,$3)\">$4</span>", $instring);
+
 				// Three or more dots should always be converted to an ellipsis.
-				$instring = preg_replace("/\.{3,}/","&hellip;",$instring);
+				$instring = preg_replace("/\.{3,}/", "&hellip;", $instring);
 				
-				// Iframe, website inside a inline frame
-				// (--url,width,height--)
-				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>',$instring);
+				// Iframe, website inside a inline frame - (--url,width,height--)
+				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$2px; height:$3px;'></iframe>", $instring);
 				
 				// Quote text, this will be displayed in an additional box
 				// ^ Text you want to quote ^
-				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br>",$instring);
-				
-				//Markdown smileys
-				//Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
-				$instring = preg_replace("/:D/", "<img class='smileyphp' src='../Shared/icons/happy.svg'/>",$instring);
-				$instring = preg_replace("/:\)/", "<img class='smileyphp' src='../Shared/icons/smiling.svg'/>",$instring);
-				$instring = preg_replace("/;\)/", "<img class='smileyphp' src='../Shared/icons/wink.gif'/>",$instring);
-				$instring = preg_replace("/:\(/", "<img class='smileyphp' src='../Shared/icons/sad.svg'/>",$instring);
-				$instring = preg_replace("/:'\(/", "<img class='smileyphp' src='../Shared/icons/crying.svg'/>",$instring);
-				$instring = preg_replace("/:p|:P/", "<img class='smileyphp' src='../Shared/icons/tongue.svg'/>",$instring);
-				$instring = preg_replace("/(:\/)(?!\/|\w|\d)/", "<img class='smileyphp' src='../Shared/icons/confused.svg'/>",$instring);
-				$instring = preg_replace("/:o|:O/", "<img class='smileyphp' src='../Shared/icons/gasp.svg'/>",$instring);
-				$instring = preg_replace("/&lt;3/", "<img class='smileyphp' src='../Shared/icons/heart.svg'/>",$instring);
-				$instring = preg_replace("/\(Y\)|\(y\)/", "<img class='smileyphp' src='../Shared/icons/thumbsup.svg'/>",$instring);
-				$instring = preg_replace("/\(N\)|\(n\)/", "<img class='smileyphp' src='../Shared/icons/thumbsdown.svg'/>",$instring);
-				
+				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br/>", $instring);
+
 				return $instring;		
 		}
 
@@ -212,7 +178,7 @@
 			// If we have access rights, read the file securely to document
 			if(is_numeric($fid)){ 
 				// Check if it is a number or a filename
-				$query = $pdo->prepare("SELECT filename,kind FROM fileLink WHERE cid=:cid AND fileid=:fid;");
+				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and fileid=:fid;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fid', $fid);
 				$result = $query->execute();
@@ -225,7 +191,7 @@
 					$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 				}
 			}else if($fname!="UNK"){
-				$query = $pdo->prepare("SELECT filename,kind FROM fileLink WHERE (cid=:cid or isGlobal='1') AND UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
+				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fname', $fname);
 				$result = $query->execute();

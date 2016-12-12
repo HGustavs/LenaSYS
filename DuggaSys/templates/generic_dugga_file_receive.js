@@ -13,7 +13,7 @@ Example seed
 */
 
 //------------==========########### GLOBALS ###########==========------------
-var inParams = "UNK";
+var score = -1;
 var elapsedTime = 0;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
@@ -21,12 +21,12 @@ var elapsedTime = 0;
 function setup() 
 {
 	inParams = parseGet();
+
 	AJAXService("GETPARAM", { }, "PDUGGA");
 }
 
 function returnedDugga(data) 
 {	
-	$("#content").css({"position":"relative","top":"50px"});
 	dataV = data;
 	
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
@@ -34,8 +34,8 @@ function returnedDugga(data)
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		duggaParams = JSON.parse(data['param']);
-		console.log(duggaParams);
+		duggaParams = jQuery.parseJSON(data['param']);
+
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
@@ -65,23 +65,24 @@ function returnedDugga(data)
 			// UNK 
 		}
 
-		duggaFiles = data['files'];
-		
-	
-
-		if (duggaFiles.length > 0){
-
-		} else {
-			// No files uploaded.
-		}
+		var duggaFiles = data["files"][inParams["moment"]];
 
 		createFileUploadArea(duggaParams["submissions"]);
 		for (var k=0; k < duggaParams["submissions"].length; k++){
-			findfilevers(data["files"], duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type);
+			findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
     		if (duggaParams['uploadInstruction'] !== null){
 				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 			}
 
+		}
+		if (typeof duggaFiles !== "undefined"){
+			for (var version=0; version < duggaFiles.length;version++){				
+				if (duggaFiles[version].kind == "3"){
+					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
+					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+					}
+				}
+			}							
 		}
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
@@ -92,6 +93,7 @@ function returnedDugga(data)
 
 
 	}
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 function reset()
@@ -129,12 +131,14 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats, files)
+function showFacit(param, uanswer, danswer, userStats, files, moment)
 {
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+	if (userStats != null){
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];		
+	}
 	$("#duggaStats").css("display","none");
 
 	inParams = parseGet();
@@ -176,14 +180,36 @@ function showFacit(param, uanswer, danswer, userStats, files)
 
 		$("#snus").parent().find(".instructions-content").slideToggle("slow");
 
+		var duggaFiles = [];
+		if (moment != null) {
+			duggaFiles = files[moment];
+		} 
+
 		createFileUploadArea(duggaParams["submissions"]);
 		for (var k=0; k < duggaParams["submissions"].length; k++){
-			findfilevers(files, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type);
+			findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 1);
     		if (duggaParams['uploadInstruction'] !== null){
 				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 			}
+
 		}
 
+		// ----------------========#############========----------------
+		// This is in show facit marking view NOT official running version!
+		// ----------------========#############========----------------
+
+		for (var version=0; version < duggaFiles.length;version++){				
+				if (duggaFiles[version].kind == "3"){
+					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
+					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+					}
+				}
+		}			
+
+		// Bring up the feedback tools
+		document.getElementById('markMenuPlaceholder').style.display = "block";
+//		document.getElementById('markSaveButton').style.display = "block";
+	
 	}
 }
 
@@ -211,16 +237,10 @@ function createFileUploadArea(fileuploadfileds){
 				form +="<input name='link' type='text' size='40' maxlength='256' />";
 				form +="<input type='hidden' name='kind' value='2' />";
 		}else if(type=="text"){
-				form +="<textarea rows='20' name='inputtext'  id='inputtext' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;	box-sizing: border-box;	width: 100%;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;' >Fumho</textarea>";
+				form +="<textarea rows='20' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 100%;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea>";
 				form +="<input type='hidden' name='kind' value='3' />";
-		}
-		//only in multi type you its possible to upload multiple files. In types like pfd and zip its only one file
-		else if (type == "multi") {
-				form +="<input name='uploadedfile[]' type='file' multiple='true'  />";
-				form +="<input type='hidden' name='kind' value='1' />";
-		}
-		else{
-				form +="<input name='uploadedfile[]' type='file'  />";
+		}else{
+				form +="<input name='uploadedfile[]' type='file' multiple='multiple' onchange='this.form.submit();'/>";
 				form +="<input type='hidden' name='kind' value='1' />";
 		}
 		
@@ -231,105 +251,19 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
-		form +="<input type='hidden' name='type' value='"+type+"' />";
 		form +="</form>";
 		
+		str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
+		str += "<div class='loginBoxheader'>";
 		if (type === "pdf"){
-			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
-			str += "<div class='loginBoxheader'>";
 			str += "<h3>Pdf Submission and Preview</h3>";
-			str += "</div>";
-			str += "<div style='padding:5px;'>";
-			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
-			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;PDF Preview&gt;</div>";
-			str +="Pdf Upload:<br/>"; 
-			str +="<table>";
-			str +="<tr>";
-			str +="<td id='"+fieldname+"'>";
-			str += form;
-			str += "</td>";
-			str += "<td>";
-			str += "<span id='"+fieldname+"File' style='margin:4px;' >No file uploaded</span>";
-			str += "</td>";
-			str += "<td>";
-			str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
-			str += "</td>";
-			str += "</tr>";
-			str += "</table>";
-			str += "</div>";
-			str += "</div>"
 		} else if (type === "link"){
-			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
-			str += "<div class='loginBoxheader'>";
 			str += "<h3>Link Submission and Preview</h3>";
-			str += "</div>";
-			str += "<div style='padding:5px;'>";
-			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
-			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;HTML Link Preview&gt;</div>";
-			str +="<table>";
-			str +="<tr>";
-			str +="<td id='"+fieldname+"'>";
-			str += form;
-			str += "</td>";
-			str += "<td>";
-			str += "<span id='"+fieldname+"File' style='margin:4px;' >No Link Uploaded</span>";
-			str += "</td>";
-			str += "<td>";
-			str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
-			str += "</td>";
-			str += "</tr>";
-			str += "</table>";
-			str += "</div>"
-			str += "</div>"			
 		} else if (type === "zip") {
-			str += "<div style='border:1px solid #614875'; margin: 5px auto;>";
-			str += "<div class='loginBoxheader'>";
 			str += "<h3>Zip / Rar file Upload</h3>";
-			str += "</div>";
-			str += "<div style='padding:5px;'>";
-			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
-			str +="<table>";
-			str +="<tr>";
-			str +="<td id='"+fieldname+"'>";
-			str += form;
-			str += "</td>";
-			str += "<td>";
-			str += "<span id='"+fieldname+"File' style='margin:4px;' >No file uploaded</span>";
-			str += "</td>";
-			str += "<td>";
-			str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
-			str += "</td>";
-			str += "</tr>";
-			str += "</table>";
-			str += "</div>"
-			str += "</div>"
 		} else if (type === "multi"){
-			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
-			str += "<div class='loginBoxheader'>";
 			str += "<h3>Multiple file Upload</h3>";
-			str += "</div>";
-			str += "<div style='padding:5px;'>";
-			str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
-			str +="<div id='"+fieldname+"Prev' style='background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;Multilist preview&gt;</div>";
-			str +="Multiple File Upload:<br/>"; 
-			str +="<table>";
-			str +="<tr>";
-			str +="<td id='"+fieldname+"'>";
-			str += form;
-			str += "</td>";
-			str += "<td>";
-			str += "<span id='"+fieldname+"File' style='margin:4px;' ></span>";
-			str += "</td>";
-			str += "<td>";
-			str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
-			str += "</td>";
-			str += "</tr>";
-			str += "</table>";
-			str += "</div>"
-			str += "</div>"
 		} else if (type === "text"){
-			str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
-			str += "<div class='loginBoxheader'>";
 			str += "<h3>Text Submission</h3>";
 			str += "</div>";
 			str += "<div style='padding:5px;'>";
@@ -344,6 +278,28 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</div>"
 			str += "</div>"			
 		}
+		str += "</div>";
+		str += "<div style='padding:5px;'>";
+		str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
+		str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;Submission history&gt;</div>";
+		if (type !== "text"){	
+			str +="New submission:<br/>"; 
+			str +="<table>";
+			str +="<tr>";
+			str +="<td id='"+fieldname+"'>";
+			str += form;
+		}
+		str += "</td>";
+		str += "<td>";
+		str += "<span id='"+fieldname+"File' style='margin:4px;' ></span>";
+		str += "</td>";
+		str += "<td>";
+		str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
+		str += "</td>";
+		str += "</tr>";
+		str += "</table>";
+		str += "</div>"
+		str += "</div>"
 
 	}
 	document.getElementById("tomten").innerHTML=str;	

@@ -1,12 +1,3 @@
-@font-face{ 
-    font-family: 'MyWebFont';
-    src: url('ubuntu-mono-webfont.eot');
-    src: url('ubuntu-mono-webfont.eot?iefix') format('eot'),
-         url('ubuntu-mono-webfont.woff') format('woff'),
-         url('ubuntu-mono-webfont.ttf') format('truetype'),
-         url('ubuntu-mono-webfont.svg#webfont') format('svg');
-}
-
 .buttomenuStyle {
     background-color: #614875;
 }
@@ -30,7 +21,6 @@
 .hotdogdropStyle{
 	color: white;
 }
-
 .hotdogdropStyle table td{
 	color: white;
 }
@@ -78,7 +68,7 @@
 	background-color: #7D5CA0;
 }
 
-.codeborder {
+.codeborder{
 	position: absolute;
 	top:0px;
 	bottom: 0px;
@@ -87,74 +77,50 @@
 	padding: 5px 0px 0px 0px !important;
 	background-color: #614875;
 	text-align: right;
+	
 	/* Width of .no and .impo */
 	width: 32px !important;
-}
-
-.codeborder .no,
-.codeborder .impono,
-.normtext,
-.comment,
-.impo,
-.impo .oper,
-.impo .number,
-.impo .impword
-.impo .string,
-.impo .hi,
-.impo .html,
-.impo .no,
-.normtext .oper,
-.normtext .number,
-.normtext .impword
-.normtext .string,
-.normtext .hi,
-.normtext .html,
-.normtext .no,
-.keywordA,
-.keywordB,
-.keywordC,
-.keywordD,
-.string,
-.descbox .impword {
-    font-family: Hack,MyWebFont, "Andale Mono", AndaleMono, monospace;
+	
 }
 
 .codeborder .no {
-    background-color: #614875;
     color: #D8D8D8;
-    float: left;
     padding-left: 4px;
     padding-right: 6px;
     width: 22px;
+    float: left;
+		background-color: #614875;
+		font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
 }
 
 .codeborder .impono {
+    color: white;
+    width: 22px;
     background-color: #9569BD;
-    color: #fff;
     padding-left: 4px;
     padding-right: 6px;
-    width: 22px;
+		font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
 }
 
 .normtextwrapper{
-    /* Width of codeborder */
+	 /* Width of codeborder */
   	margin-left: 32px;
   	padding: 5px 0px 0px 5px;
 }
 
-.normtext,
+.normtext {
+  color: #000;
+  background-color: #F2F2F2;
+  white-space:nowrap;
+  font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
+}
+
 .impo {
     color: #000;
-    white-space:nowrap;
-}
-
-.normtext {
-    background-color: #F2F2F2;
-}
-
-.impo {
     background-color: rgba(186, 96, 255, 0.09);
+    white-space:nowrap;
     min-width: 660px;
+	font-family: Hack,'Ubuntu Mono',"Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .no {
@@ -172,33 +138,55 @@
 }
 
 .impo .no {
+    color: white;
     background-color: #9569BD;
-    color: #fff;
 }
 
 .comment {
     color: #50a750;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
-.normtext .oper,
-.impo .oper,
-.impo .string,
-.normtext .number,
-.impo .number,
-.normtext .string,
-.normtext .hi,
-.impo .hi {
+.normtext .oper {
     color: #000;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+}
+
+.impo .oper {
+    color: #000;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .string {
     color: #03b;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
-.normtext .hi,
-.impo .hi {
+.impo .string {
+    color: #000;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+}
+
+.normtext .number {
+    color: #000;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+}
+
+.impo .number {
+    color: #000;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+}
+
+.normtext .hi {
     background-color: #9569BD;
     color: #000;
+    font-weight: bold;
+}
+
+.impo .hi {
+   font-weight: bold;
+   color: #000000;
+   background-color: #9569BD;
 }
 
 .normtext .html {
@@ -213,51 +201,54 @@
 
 .keywordA {
     color: #e90000;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .keywordB {
     color: #0004ff;
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .keywordC {
     color: rgba(6, 129, 19, 1);
+    font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .keywordD {
     color: rgba(231, 0, 255, 1);
+		font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .impword {
-    background-color: #9971AF;
-    color: #fff;
-    display: inline-block;
+  color: #fff;
+  background-color: #9971AF;
 }
 
 .impword2 {
-    background-color: #9971AF;
     color: #fff;
-    padding: 0px 2px 1px 2px;
+    background-color: #9971AF;
 }
 
+
 .impo .impword {
-    background-color: #614875;
-    color: #fff;
+  color: #fff;
+  background-color: #614875;
+  font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .descbox .impword {
-    background-color: #9971AF;
-    color: #fff;
+  color: #fff;
+  background-color: #9971AF;
 }
  
 .descbox .imphi {
-	background-color: #fff;
-    color: #000;
+  background-color: #fff;
+  color: #000;
 }
 
 .normtext .imphi {
-    background-color: #ffffff;
-    color: #000;
-    
+  background-color: #ffffff;
+  color: #000;    
 }
 
 .impo .imphi {
@@ -266,7 +257,7 @@
 }
 
 .tooltip{
-	color: #fff;
+	color:white;
 }
 
 .errormsg{
@@ -317,7 +308,7 @@
     bottom: 0px;
     left: 0px;
     overflow: auto;
-    font-family: Arial,Sans-Serif;
+/*    font-family: Arial,Sans-Serif;*/
     font-size: 14px;
     outline: 0 none;
     background-color: #F2F2F2; 

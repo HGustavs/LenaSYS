@@ -14,12 +14,6 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-$log_uuid = getOP('log_uuid');
-$log_timestamp = getOP('log_timestamp');
-
-logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "highscoreservice.php", $log_timestamp);
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "highscoreservice.php");
-
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
@@ -44,7 +38,7 @@ $debug="NONE!";
 //------------------------------------------------------------------------------------------------
 
 // The query specified below selects only scores associated with users that have returned a dugga with a passing grade
-$query = $pdo->prepare("SELECT username, score FROM userAnswer, user WHERE userAnswer.grade > 1 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
+$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.grade > 1 AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid GROUP BY userAnswer.uid ORDER BY score ASC LIMIT 10;");
 $query->bindParam(':did', $duggaid);
 $query->bindParam(':lid', $variant);
 
@@ -78,7 +72,7 @@ if(checklogin()){
 
 	if(count($user) === 0){
 		// This must be tested
-		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user WHERE user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
+		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where user.username = :user AND user.uid = userAnswer.uid AND userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
 		$query->bindParam(':did', $duggaid);
 		$query->bindParam(':lid', $variant);
 		$query->bindParam(':user', $_SESSION["loginname"]);
@@ -104,6 +98,5 @@ $array = array(
 );
 
 echo json_encode($array);
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "highscoreservice.php");
 ?>
  

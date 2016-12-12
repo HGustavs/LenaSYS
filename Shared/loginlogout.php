@@ -24,19 +24,17 @@ if($opt=="LOGIN"){
 			$res["login"] = "failed";
 			$res["reason"] = "Too many failed attempts, try again later";
 		}else if(login($username, $password, $savelogin)){
-
-			// Successfully logged in, return user name and if cookies has been allowed by user
+			// Successfully logged in, return user name
 			$res["login"] = "success";
 			$res["username"] = $username;
-			$res["cookiesAllowed"] = userAllowedCookies($username);
-										
+
 			// Log USERID for Dugga Access
 			logUserEvent($username,EventTypes::LoginSuccess,"");
-				
 
 		}else{
 			addlogintry(); // If to many attempts has been commited, it will jump to this
 			// As login has failed we log the attempt
+
 			logUserEvent($username,EventTypes::LoginFail,"");
 		}
 		
@@ -46,7 +44,7 @@ if($opt=="LOGIN"){
 }else{
 		//Adds a row to the logging table for the userlogout.
 		logUserEvent($_SESSION['loginname'],EventTypes::Logout,"");
-		
+
 		// Parts of Logout copied from http://stackoverflow.com/a/3948312 and slightly modified, licensed under cc by-sa
 		// unset all of the session variables.
 		$_SESSION = array();
@@ -68,5 +66,6 @@ if($opt=="LOGIN"){
 		setcookie('username', '', 0, '/');
 		setcookie('password', '', 0, '/');
 }
+	
 ?>
  

@@ -2,11 +2,16 @@
 // changeCSS: Changes the CSS and remembers the index of the CSS.
 //            This allows us to set and remove whole CSS files
 //----------------------------------------------------------------------------------
+var renderId; // Used to store active rendering function
+var benchmarkData = performance.timing; // Will be updated after onload event
+
 var status = 0;
 var score;
 var timeUsed;
 var stepsUsed;
+var inParams = "UNK";;
 var MAX_SUBMIT_LENGTH = 5000;
+
 function toggleloginnewpass(){
 
 	if(status == 0){
@@ -22,13 +27,33 @@ function toggleloginnewpass(){
 }
 
 function closeWindows(){
-	//changed .loginBox to #loginBox to stop lockbox from closing when login box is closed
-	$(".loginBox").css("display", "none");
-	$("#overlay").css("display","none");
-	$("#resultpopover").css("display","none");
-	$("#login #username").val("");
-	$("#login #password").val("");
 
+	var index_highest = 0;   
+	var e;
+	// more effective to have a class for the div you want to search and 
+	// pass that to your selector
+	$("*").each(function() {
+	    // always use a radix when using parseInt
+	    var index_current = parseInt($(this).css("zIndex"), 10);
+	    if(index_current > index_highest && this.style.display == "block") {
+	        index_highest = index_current;
+					e=this;
+	    }
+	});
+
+	if (index_highest > 0){
+			e.style.display = "none";
+			/* Overlay is only present for loginbox which 
+			 * has z-index of 9000, so if we closed such a 
+			 * window, hide the overlay and clear any values
+			 * as well.
+			 */
+			if (index_highest < 10000) {
+					$("#overlay").css("display","none");
+					$("#login #username").val("");
+					$("#login #password").val("");
+			}
+	}
 	window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -40,13 +65,13 @@ function changeCSS(cssFile, index)
 		newlink.setAttribute("rel", "stylesheet");
 		newlink.setAttribute("type", "text/css");
 		newlink.setAttribute("href", cssFile);
-
+		
 		document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
 //----------------------------------------------------------------------------------
 // loadJS: Using Jquery Dynamically Load external JS.
-//          Does not load again if previously loaded same file
+//          Does not load again if previously loaded same file 
 //----------------------------------------------------------------------------------
 
 var JSFiles=[];
@@ -54,20 +79,20 @@ var JSFiles=[];
 function loadJS(src) {
 		if(JSFiles[src]!="Loaded"){
 		   var jsLink = $("<script type='text/javascript' src='"+src+"'>");
-		   $("head").append(jsLink);
+		   $("head").append(jsLink); 
 		   JSFiles[src]="Loaded";
 		}else{
-				// Do nothing if already loaded
+				// Do nothing if already loaded 			
 		}
-};
-
+}; 
+ 
 //----------------------------------------------------------------------------------
 // loadCSS: Using Jquery Dynamically Load external CSS
 //----------------------------------------------------------------------------------
 
 function loadCSS(href) {
 		var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
-		$("head").append(cssLink);
+		$("head").append(cssLink); 
 };
 
 //----------------------------------------------------------------------------------
@@ -94,7 +119,7 @@ function randomstring()
 //                Is called by editImpRows in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
+function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
 
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
@@ -105,13 +130,13 @@ function saveDuggaResult(citstr)
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
 		citstr+= "##!!##" + timeUsed;
-		citstr+= "##!!##" + stepsUsed;
+		citstr+= "##!!##" + stepsUsed;		
 		citstr+= "##!!##" + score;
 		hexstr="";
 		for(i=0;i<citstr.length;i++){
 				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 		}
-
+		
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
@@ -129,8 +154,8 @@ function savequizResult(citstr)
 	citstr=querystring['moment']+" "+citstr;
 	citstr=querystring['coursevers']+" "+citstr;
 	citstr=querystring['cid']+" "+citstr;
-	AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-	alert('Returned');
+	AJAXService("SAVDU",{answer:citstr},"PDUGGA");	
+	alert('inlämnat');
 }
 
 
@@ -150,7 +175,7 @@ function changeURL(thisurl)
 function navigateExample(exampleno)
 {
 		surl=window.location.href;
-		surl=surl.substring(0,surl.lastIndexOf("/"));
+		surl=surl.substring(0,surl.lastIndexOf("/")); 
 		window.location.href = surl+"/codeviewer.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
 }
 
@@ -161,7 +186,7 @@ function navigateExample(exampleno)
 function navigateTo(prefix,file)
 {
 		surl=window.location.href;
-		surl=surl.substring(0,surl.lastIndexOf("/"));
+		surl=surl.substring(0,surl.lastIndexOf("/")); 
 		window.location.href = surl+prefix+file;
 }
 
@@ -187,8 +212,8 @@ function parseGet(){
 //----------------------------------------------------------------------------------
 
 function htmlEntities(str) {
-
-	if (typeof str === "string"){
+		
+	if (typeof str === "string"){					
 		befstr=str;
 		if(str!=undefined && str != null){
 			str=str.replace(/\&/g, '&amp;');
@@ -218,19 +243,15 @@ function htmlEntities(str) {
 
 function AJAXService(opt,apara,kind)
 {
+
+	var tex = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for(var i=0; i<15; i++){
+      tex += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+	apara.log_uuid = tex;
+
 	var para="";
-	var timestamp = Date.now();
-	var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for(var i=0; i<15; i++){
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-	var uuid = text;
-
-	apara.log_uuid = uuid;
-	apara.log_timestamp = timestamp;
-
 	for (var key in apara) {
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
@@ -249,7 +270,7 @@ function AJAXService(opt,apara,kind)
 					para+="&"+key+"=";
 					var array = [];
 					for (var i = 0; i < apara[key].length; i++) {
-							var string = "[";
+							var string = "["; 
 							var row = [];
 							for (var j = 0; j < apara[key][i].length; j++) {
 									row.push(apara[key][i][j]);
@@ -260,16 +281,16 @@ function AJAXService(opt,apara,kind)
 					para += array;
 			}else{
 //					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}():|"\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
-
+			
 					// Concat the generated regex result to a string again.
 //					apara[key] = s.join("");
 					apara[key] = old;
-
+			
 					// Informs the user that his input contained illegal characters that were removed after parsing.
 					if(old != apara[key]) {
 						alert("Illegal characters removed in " + key);
 					}
-					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
+					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));		
 			}
 		}
 		if(apara[key] == "") {
@@ -277,466 +298,127 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
-
-	var sendConfirmation = function(service) {
-		if (options.fourthRound == 1) {
-			$.ajax({
-				url: "../DuggaSys/serviceconfirmation.php",
-				type: "POST",
-				data: "uuid="+uuid+"&timestamp="+Date.now()+"&service="+service,
-				dataType: "json"
-			});
-		}
-	}
-
-	switch(kind){
-		case "COURSE":
+	
+	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedCourse(data);
-					sendConfirmation("courseedservice.php");
-				}
+				success: returnedCourse
 			});
-			break;
-		case "VARIANTPDUGGA":
-			$.ajax({
-				url: "showDuggaservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedanswersDugga(data);
-					sendConfirmation("showDuggaservice.php");
-				}
-			});
-			break;
-		case "DUGGA":
+	}else if(kind=="VARIANTPDUGGA"){
+		$.ajax({
+			url: "showDuggaservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedanswersDugga
+		});
+	}else if(kind=="DUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedDugga(data);
-					sendConfirmation("duggaedservice.php");
-				}
+				success: returnedDugga
 			});
-			break;
-		case "BDUGGA":
+	}else if(kind=="BDUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedBlankDugga(data);
-					sendConfirmation("duggaedservice.php");
-				}
+				success: returnedBlankDugga
 			});
-			break;
-		case "DUGGAHIGHSCORE":
+	}else if(kind=="DUGGAHIGHSCORE"){
 			$.ajax({
 				url: "highscoreservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedHighscore(data);
-					sendConfirmation("highscoreservice.php");
-				}
+				success: returnedHighscore
 			});
-			break;
-		case "FILE":
+	}else if(kind=="FILE"){
 			$.ajax({
 				url: "fileedservice.php",
 				type: "POST",
 				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedFile(data);
-					sendConfirmation("fileedservice.php");
-				}
-			});
-			break;
-		case "ACCESS":
+				success: returnedFile
+			})
+	}else if(kind=="ACCESS"){
 			$.ajax({
 				url: "accessedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedAccess(data);
-					sendConfirmation("accessedservice.php");
-				}
+				success: returnedAccess
 			});
-			break;
-		case "SECTION":
+	}else if(kind=="SECTION"){
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedSection(data);
-					sendConfirmation("sectionedservice.php");
-				}
+				success: returnedSection
 			});
-			break;
-		case "PDUGGA":
+	}else if(kind=="PDUGGA"){
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedDugga(data);
-					sendConfirmation("showDuggaservice.php");
-				}
+				success: returnedDugga
 			});
-			break;
-		case "RESULT":
+	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedResults(data);
-					sendConfirmation("resultedservice.php");
-				}
+				success: returnedResults
 			});
-			break;
-		case "RESULTLIST":
+	}else if(kind=="RESULTLIST"){
 			$.ajax({
 				url: "resultlistedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedResults(data);
-					sendConfirmation("resultlistedservice.php");
-				}
+				success: returnedResults
 			});
-			break;
-		case "CODEVIEW":
+	}else if(kind=="CODEVIEW"){
 			$.ajax({
 				url: "codeviewerService.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returned(data);
-					sendConfirmation("codeviewerService.php");
-				}
+				success: returned
 			});
-			break;
-		case "BOXCONTENT":
-			$.ajax({
-				url: "codeviewerService.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returned(data);
-					sendConfirmation("codeviewerService.php");
-				}
-			});
-			break;
-		case "UMVSTUDENT":
+	}else if(kind=="BOXCONTENT"){
+		$.ajax({
+			url: "codeviewerService.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returned
+		});
+	}else if(kind=="UMVSTUDENT") {
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					renderStudentView(data);
-					sendConfirmation("usermanagementviewservice.php");
-				}
+				success: renderStudentView
 			});
-			break;
-		case "UMVTEACHER":
+	}else if(kind=="UMVTEACHER") {
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					renderTeacherView(data);
-					sendConfirmation("usermanagementviewservice.php");
-				}
+				success: renderTeacherView
 			});
-			break;
-		case "GETTHREAD":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedThread(data);
-					sendConfirmation("forumservice.php");
-				},
-				error: error
-			});
-			break;
-		case "CREATETHREAD":
-			console.log(para);
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					createThreadSuccess(data);
-					sendConfirmation("forumservice.php");
-				},
-				error: error
-			});
-			break;
-		case "MAKECOMMENT":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					makeCommentSuccess();
-					sendConfirmation("forumservice.php");
-				},
-				error: error
-			});
-			break;
-			case "MAKEREPLYCOMMENT":
-			console.log("opt="+opt);
-			console.log("para=" + para);
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					makeReplyCommentSuccess();
-					sendConfirmation("forumservice.php");
-				},
-				error: error
-			});
-			break;
-
-		case "GETCOMMENTS":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedComments(data);
-					sendConfirmation("forumservice.php");
-				},
-				error: error
-			});
-			break;
-		case "GETCOURSETHREAD":
-			$.ajax({
-				url: "usermanagementviewservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					renderTeacherView(data);
-					sendConfirmation("usermanagementviewservice.php");
-				}
-			});
-			break;
-		case "REPLYCOMMENT":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					replyCommentSuccess(data);
-					sendConfirmation("forumservice.php");
-				},
-				error: error
-			});
-			break;
-		case "EDITCOMMENTCONTENT":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					editGetComment(data);
-					sendConfirmation("forumservice.php");
-				},
-				error: error
-			});
-			break;
-		case "LOCKTHREAD":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					getThread(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
-		case "DELETETHREAD":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					deleteThreadSuccess(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
-		case "GETCOURSES":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedCourses(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
-		case "GETCLASSES":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedClasses(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
-		case "GETUSERS":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedUsers(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
-		case "UNLOCKTHREAD":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					unlockThreadSuccess(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
-		case "EDITTHREAD":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					getThread(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
-		case "GETTHREADCREATOR":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					showThreadCreator(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
-		case "DELETECOMMENT":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					getComments(data);
-					sendConfirmation("forumservice.php");
-				},
-				error:error
-			});
-			break;
-		case "GETPRIVATETHREADMEMBERS":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					loadPrivateThreadMembers(data);
-					sendConfirmation("forumservice.php");
-				},
-				error:error
-			});
-			break;
-		case "EDITCOMMENT":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					getComments(data);
-					sendConfirmation("forumservice.php");
-				},
-				error:error
-			});
-			break;
-		case "DELETETHREADMEMBER":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					initiateLoadPrivateThreadMembers(data);
-					sendConfirmation("forumservice.php");
-				},
-				error:error
-			});
-			break;
-		case "GETTHREADUSERS":
-			$.ajax({
-				url: "forumservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedThreadUsers(data);
-					sendConfirmation("forumservice.php");
-				}
-			});
-			break;
 	}
 }
 
@@ -753,7 +435,7 @@ function processLogin() {
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
-
+		
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -771,33 +453,15 @@ function processLogin() {
 					$("#loginbutton").addClass("loggedin");
 
 					hideLoginPopup();
-
+					
 					$("#login #username").val("");
-					$("#login #password").val("");
-
+					$("#login #password").val("");		
+					
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
-					if(result["cookiesAllowed"] == false){
-						//byt ut window.confirm till en dialog istället
-						if (window.confirm("Do you accept cookies on this user. If not you will be logged out")) {
-							$.ajax({
-								type:"POST",
-								url: "../Shared/allowCookiesForUser.php",
-								success:function(data) {	
-									location.reload();								
-								},
-								error:function() {
-									console.log("error");
-								}
-							});
-
-						}
-						else{
-							processLogout();
-						}
-					}			
+					location.reload();				
 				}else{
 					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
@@ -808,7 +472,7 @@ function processLogin() {
 					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
-
+					
 			},
 			error:function() {
 				console.log("error");
@@ -825,7 +489,7 @@ function processLogout() {
 			urlDivided.pop();
 			urlDivided.pop();
 			var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
-			window.location.replace(newURL);
+			window.location.replace(newURL);			
 		},
 		error:function() {
 			console.log("error");
@@ -838,14 +502,14 @@ function showLoginPopup()
 	$("#loginBox").css("display","block");
 	$("#overlay").css("display","block");
 	$("#username").focus();
-
+		
 	// Reset input box color
 	$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
 	$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
-
+	
 	// Reset warning, if applicable
 	$("#login #message").html("<div class='alert danger'></div>");
-
+	
 	window.addEventListener("keypress", loginEventHandler, false);
 }
 
@@ -853,7 +517,7 @@ function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
 		$("#overlay").css("display","none");
-
+		
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -865,48 +529,12 @@ function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
 		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){processLogout();});
-
+		$("#loginbutton").click(function(){processLogout();});	
 	}
 	else{
-		console.log("Setting button to show login prompt");
 		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){showLoginPopup();});
+		$("#loginbutton").click(function(){showLoginPopup();});		
 	}
-}
-
-//Function for marking//
-function showMarkingWindow()
-{
-
-	if($("#marking").css("display") == 'block'){
-		hideMarkingWindow();
-	}
-	else{
-		$("#marking").css("display","block");
-	}
-}
-
-function hideMarkingWindow()
-{
-	$("#marking").css("display","none");
-}
-//--------------------//
-
-function showDugga()
-{
-	$("#resultpopover").css("display", "block");
-}
-
-function hideDugga()
-{
-	$("#resultpopover").css("display", "none");
-	$("#duggaStats").css("display", "none");
-}
-
-function hideDuggaStats()
-{
-	$("#duggaStats").css("display","none");
 }
 
 function showReceiptPopup()
@@ -927,7 +555,7 @@ function showEmailPopup()
 	var receiptcemail ="";
 	$("#emailPopup").css("display","block");
 	$("#overlay").css("display","block");
-	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
+	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item 
 	document.getElementById('email').value = receiptcemail;
 }
 
@@ -942,7 +570,7 @@ function hideEmailPopup()
 //----------------------------------------------------------------------------------
 function sendReceiptEmail(){
 	var receipt = document.getElementById('receipt').value;
-	var email = $("#email").val();
+	var email = $("#email").val();	
 		if (email != ""){
 			localStorage.setItem("receiptcemail", email); //save value of input into a localStorage variable
 			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
@@ -986,14 +614,14 @@ function loginButtonHover(status) {
 		}, false);
 		document.getElementById("loginbutton").addEventListener("mouseout", function() {
 			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
-		}, false);
+		}, false);		
 	}
 }
 
 //----------------------------------------------------------------------------------
 // A function for redirecting the user to there UserManagementView
 //----------------------------------------------------------------------------------
-function redirectToUMV()
+function redirectToUMV() 
 {
 	window.location.replace("../UserManagementView/redirector.php");
 }
@@ -1010,6 +638,7 @@ function getCookie(cname) {
 	return "";
 }
 
+// EventListner for when ESC is pressed do a closeWindows()
 $(window).load(function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
@@ -1020,10 +649,6 @@ $(window).load(function() {
 $(window).load(function() {
 	$('.loginBox').draggable({ handle:'.loginBoxheader'});
 	$('.loginBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
-	//There is an issue with using this code, it generates errors that stop execution
-	$(window).keyup(function(event){
-		if(event.keyCode == 27) closeWindows();
-	});
 });
 
 //----------------------------------------------------------------------------------
@@ -1042,58 +667,58 @@ Array.prototype.move = function (old_index, new_index) {
 };
 
 // Latest version of any file in a field - unsure about naming of the function
-function findfilevers(filez, cfield,ctype)
+function findfilevers(filez,cfield,ctype,displaystate)
 {
-
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
 		var tab="<table>";
-		tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>"
-		tab +="<tbody>"
-		for(var i=0;i<filez.length;i++){
-				if(cfield==filez[i].fieldnme){
-						if(ctype=="zip"||ctype=="pdf"||ctype=="link"){
-								foundfile=filez[i];
-								break;
-						}else{
-								// Each new filename make row in table.
-								if(oldfile!=filez[i].filename){
-										var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
-										tab+="<tr'><td style='padding:4px;'>";
-										tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";
-										tab+="</td><td style='padding:4px;'>";
-										tab+=filez[i].updtime;
-										tab+="</td></tr>";
-								}
-								oldfile=filez[i].filename;
-						}
-				}
+		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		tab +="<tbody>";
+		if (typeof filez !== "undefined"){
+			for (var i=filez.length-1;i>=0;i--){
+					if(cfield==filez[i].fieldnme){
+							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;											
+							tab+="<tr'>"
+
+							tab+="<td>";
+							// Button for making / viewing feedback - note - only button for given feedback to students.
+							tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>P</button>";
+							tab+="</td>";
+
+							tab+="<td style='padding:4px;'>";
+							if (ctype == "link"){
+									tab+="<a href='"+filez[i].content+"' >"+filez[i].content+"</a>";	
+							} else {
+									tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";	
+							}
+							tab+="</td><td style='padding:4px;'>";
+							tab+=filez[i].updtime;+"</td>";
+
+							tab+="<td>";
+							// Button for making / viewing feedback - note - only button for given feedback to students.
+							if(filez[i].feedback!=="UNK"||displaystate){
+									tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
+							}
+							tab+="</td>";
+
+							tab+="<td>";
+							if(filez[i].feedback!=="UNK"){
+									tab+=filez[i].feedback.substring(0,64)+"&#8230;";						
+							}else{
+									tab+="&nbsp;";												
+							}
+							tab+="</td>";
+							tab+="</tr>";		
+					}
+			}			
 		}
 		tab+="</tbody>"
-		tab+="</table>"
+		tab+="</table>"			
 
-		if(foundfile!=null){
-				var filelink=foundfile.filepath+foundfile.filename+foundfile.seq+"."+foundfile.extension;
-				if(ctype=="pdf"){
-						// Copy the file name and generate the preview if we are submitting a .pdf
-						document.getElementById(cfield+"File").innerHTML=foundfile.filename+"."+foundfile.extension;
-						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;
-						document.getElementById(cfield+"Prev").innerHTML="<embed src='"+filelink+"' width='100%' height='1000px' type='application/pdf'>";
-				}else if(ctype=="zip"){
-						document.getElementById(cfield+"File").innerHTML="<a href='"+filelink+"'>"+foundfile.filename+"."+foundfile.extension;+"</a>";
-						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;
-				} else if(ctype=="link"){
-						// Copy the file name and generate the preview if we are submitting a .pdf
-						document.getElementById(cfield+"File").innerHTML=foundfile.filepath;
-						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;
-						document.getElementById(cfield+"Prev").innerHTML="<iframe src='"+foundfile.filepath+"' width='100%' height='1000px'></iframe>";
-				}
-		}else if(ctype=="multi"){
-				document.getElementById(cfield+"Prev").innerHTML=tab;
-		}
-}
-
+		document.getElementById(cfield+"Prev").innerHTML=tab;
+} 
+	
 
 function makeForm(cfield, ctype){
 
@@ -1120,183 +745,76 @@ function makeForm(cfield, ctype){
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
+
 function toggleInstructions(element)
 {
 	$(element).parent().find(".instructions-content").slideToggle("slow");
-}//---------------------------------------------------------------------------------------------------------------
-// Click counter - Used by highscore system implementations in dugga's to count the number of button clicks
-//---------------------------------------------------------------------------------------------------------------
-
-var ClickCounter = {
-
-	// Determines if the Clickcounter should update ui
-	update: false,
-	// Used to count clicks
-	score: 0,
-
-	// Initializes the noClicks variable, called at the start of a dugga
-	initialize: function() {
-		this.update = true;
-		this.score = 0;
-		this.animateClicks();
-	},
-
-	// Called whenever a dugga should count a mouse click, e.g., when a user presses a button
-	onClick: function() {
-		if(!this.update)
-			return;
-		// Increments the click counter by one
-		this.score++;
-
-		// Calls animate clicks to directly update the click counter user interface
-		this.animateClicks();
-	},
-
-	//show clicker
-	showClicker: function(){
-		this.animateClicks();
-	},
-
-	// Updates the click counter user interface in a dugga, uses the same
-	animateClicks: function() {
-		// Apply some web magic to change the ui counter and check if the timerbox is shown
-		if ($('#scoreElement').length != 0) {
-			var str = "<p>";
-			str += this.score;
-			document.getElementById('scoreElement').innerHTML = str;
-		}
-	}
-}
-//---------------------------------------------------------------------------------------------------------------
-// Timer - Used in dugga's to count the amount of time spent on a dugga
-//---------------------------------------------------------------------------------------------------------------
-
-var Timer = {
-	// Determines if the timer should update ui
-	update: 0,
-
-	// Declare the timer variable, will be accessible from this object in a dugga
-	timer: undefined,
-
-	// Counts the amount of time spent on a dugga
-	score: 0,
-
-	// Called at the start of a dugga to initialize the object
-	startTimer: function(){
-		var self = this;
-
-		// Sets the update interval of the timer, calls animate timer on increment
-		this.timer = setInterval( function(){self.incrementTimer(); self.animateTimer();}, 1000 );
-
-		// Call animate timer to initialize ui at 00:00:00
-		this.animateTimer();
-	},
-	// Reset the timer.
-	reset: function(){
-		this.score = 0;
-
-		// Call animate timer to initialize ui at 00:00:00
-		this.animateTimer();
-	},
-
-	// Stops the timer from counting, called at the end of a dugga
-	stopTimer: function(){
-		var self = this;
-		clearInterval(self.timer);
-
-		// Quick fix
-		this.update = 1;
-	},
-
-	// Increments the time counter by one
-	incrementTimer: function(){
-		this.score++;
-	},
-
-	//Show timer
-	showTimer: function(){
-		this.animateTimer();
-	},
-
-	// Updates the user interface
-	animateTimer: function(){
-		// Calculate hours, minutes and seconds based on timespent
-		var hours = Math.floor(this.score / 3600);
-		var minutes = Math.floor(this.score / 60) % 60;
-		var seconds = this.score % 60;
-
-		// Create a nice looking clock thing with the information we have
-		var str = "<p>";
-		str += hours + ":";
-
-		if(minutes < 10){
-			str += 0;
-		}
-
-		str += minutes + ":";
-		if(seconds < 10){
-			str += 0;
-		}
-		str += seconds;
-		// Push new value to ui thing and check if the timerbox is shown
-		if ($('#scoreElement').length != 0 && this.update == 0) {
-			document.getElementById('scoreElement').innerHTML = str;
-		}
-
-	}
 }
 
-//---------------------------------------------------------------------------------------------------------------
-// Click logging for analytics
-//---------------------------------------------------------------------------------------------------------------
-$(function() {
-	$(document).bind('click', function(e) {
-		var data = {
-			log: 'click',
-			data: {
-					target: e.target.id,
-					mouseX: e.clientX,
-					mouseY: e.clientY,
-				clientResX: window.screen.availWidth,
-				clientResY: window.screen.availHeight
-			}
-		};
-		$.ajax({
-			url: '../DuggaSys/logservice.php',
-			type: 'POST',
-			dataType: 'json',
-			data: JSON.stringify(data),
-    		contentType: "application/json",
-		});
-	});
-});
+function disableSave(){
+	document.getElementById("saveDuggaButton").disabled = true;
+}
 
-//---------------------------------------------------------------------------------------------------------------
-// Mousemove logging for analytics
-//---------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+// show/hide submission and feedback
+//----------------------------------------------------------------------------------
 
-$(function() {
-	if (options.mouseMoveLogging == 1) {
-		$(document).mousemove(function(e){
-			var data = {
-				log: 'mousemove',
-				data: {
-					page: window.location.href,
-					mouseX: e.clientX,
-					mouseY: e.clientY,
-					clientResX: window.screen.availWidth,
-					clientResY: window.screen.availHeight
-				}
-			}
+function displayPreview(filepath, filename, fileseq, filetype, fileext, fileindex, displaystate)
+{
+		clickedindex=fileindex;
+		var str ="";
+		
+		if(displaystate){
+				document.getElementById("markMenuPlaceholderz").style.display="block";		
+		}else{
+				document.getElementById("markMenuPlaceholderz").style.display="none";
+		} 
 
-			$.ajax({
-				url: '../DuggaSys/logservice.php',
-				type: 'POST',
-				dataType: 'json',
-				data: JSON.stringify(data),
-				contentType: "application/json"
-			});
-		});
-	}
-});
-
+		if (filetype === "text") {
+				str+="<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</textarea>";
+		} else if (filetype === "link"){
+				str += '<iframe allowtransparency="true" style="background: #FFFFFF;" src="'+dataV["files"][inParams["moment"]][fileindex].content+'" width="100%" height="100%" />';			
+		} else {
+		 		if (fileext === "pdf"){
+						str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />'; 			
+		 		} else if (fileext === "zip" || fileext === "rar"){
+		 				str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>'; 			
+		 		} else if (fileext === "txt"){
+		 				str+="<pre style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</pre>";
+		 		}
+		}
+		document.getElementById("popPrev").innerHTML=str;
+		if (dataV["files"][inParams["moment"]][clickedindex].feedback !== "UNK"){
+				document.getElementById("responseArea").innerHTML = dataV["files"][inParams["moment"]][clickedindex].feedback;
+		} else {
+				document.getElementById("responseArea").innerHTML = "No feedback given.";
+		}
+		
+		$("#previewpopover").css("display", "block");
+}
+function displayDuggaStatus(answer,grade,submitted,marked){
+		var str="<div style='display:flex;justify-content:center;align-items:center;'><div class='LightBox'>";
+		// Get proper dates
+		if(submitted!=="UNK") {
+			var t = submitted.split(/[- :]/);
+			submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+		}
+		if(marked!=="UNK") {
+			var tt = marked.split(/[- :]/);
+			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
+		}
+		
+		if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
+				str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga not yet submitted!</div>";
+		} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
+				str+="<div class='StopLight YellowLight' style='margin:4px;'></div></div><div>Dugga submitted."+submitted+"</div>";
+		} else if (grade != "UNK" && grade <= 1 && (submitted.getTime() < marked.getTime()) ) {
+				str+="<div class='StopLight RedLight' style='margin:4px;'></div></div><div>Dugga marked as fail: "+marked+"</div>";
+		} else if (grade > 1) {
+				str+="<div class='StopLight GreenLight' style='margin:4px;'></div></div><div>Dugga marked as pass: "+marked+"</div>";
+		}
+		
+		str+="</div>";
+		$("#duggaStatus").remove();
+		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
+}
