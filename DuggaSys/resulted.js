@@ -23,10 +23,11 @@ var typechanged=false;
 
 var entries;
 var moments;
-var versions;
 var results;
+var versions;
 var clist;
 var onlyPending=false;
+var timeZero=new Date(0);
 
 function setup(){
 	// Benchmarking function
@@ -174,9 +175,8 @@ function redrawtable()
 										}
 										strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\");' />";
 										strt += "</div>";
-										strt += "<div class='text-center'>"
-                    var start=new Date(0);                   
-                    if (student[j].submitted.getTime() !== start.getTime()){
+										strt += "<div class='text-center'>"                                 
+                    if (student[j].submitted.getTime() !== timeZero.getTime()){
                         strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();  
                     }
 										strt += "</div></td>";											
