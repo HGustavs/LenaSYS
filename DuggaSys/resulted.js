@@ -66,14 +66,17 @@ function setup(){
 
 function redrawtable()
 {
-		// Redraw table    
+		str="";
+
+		str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;box-shadow:0px 0px 4px #202 inset;pointer-events:none;border-bottom:2px solid black;border-top:2px solid black;display:none;'></div>";
+		str+="<div id='horizhighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;box-shadow:0px 0px 4px inset;border:4px solid #fc5;pointer-events:none;display:none;'></div>";
 		
-		// Magic heading 
-		str = "<div id='upperDecker' style='z-index:4000;position:absolute;left:8px;display:none;'>";
+		// Redraw Magic heading 
+		str += "<div id='upperDecker' style='z-index:14000;position:absolute;left:8px;display:none;'>";
 		str += "<table class='markinglist'>";
 		str += "<thead>";
 		str += "<tr class='markinglist-header'>";
-		str += "<td><div id='froocht'>&nbsp;</div></th>"
+		str += "<th class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
 		if (momtmp.length > 0){
 				// Make first header row!
 				//    No such header for magic heading - by design
@@ -81,10 +84,10 @@ function redrawtable()
 				// Make second header row!
 				for(var j=0;j<momtmp.length;j++){
 						if(momtmp[j].kind==3){
-								str+="<th id='header"+j+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+								str+="<th id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
 						}else{
 								//str+="<th class='result-header dugga-result-subheadermagic'>Course part grade</th>"								
-								str+="<th id='header"+j+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
+								str+="<th id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
 						}
 				}
 				str+="</tr>";
@@ -93,7 +96,9 @@ function redrawtable()
 		str += "</table>"
 		str += "</div>"
 		
-		str+="<table class='markinglist'>";
+		// Redraw main result table    
+
+		str+="<table class='markinglist' id='markinglist'>";
 		str+="<thead>";
 		str+="<tr class='markinglist-header'>";
 
@@ -141,7 +146,7 @@ function redrawtable()
 						strt+="<tr class='fumo'>"
 						var student=students[i];
 						for(var j=0;j<student.length;j++){
-								strt+="<td id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data";
+								strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data";
 								if(j==0){
 									strt+="'>"+student[j].grade+"</td>";																	
 								}else{
@@ -181,6 +186,37 @@ function redrawtable()
 				str+="</tbody></table>";
 				document.getElementById("content").innerHTML=str;
 		}
+}
+
+function cellIn(ev)
+{
+		var greger=ev.target;
+
+		if(greger.nodeName!="TD") greger=greger.parentElement;
+		if(greger.nodeName!="TD") greger=greger.parentElement;
+
+		$("#horizhighlight").css("display","block");
+		$("#verthighlight").css("display","block");
+
+
+		$("#horizhighlight").css("left",greger.getBoundingClientRect().left+"px");
+		$("#horizhighlight").css("top","65px");
+
+		$("#horizhighlight").css("width",greger.offsetWidth-6+"px");
+		$("#horizhighlight").css("height",$("#markinglist").outerHeight()-3+"px");
+
+		$("#verthighlight").css("top",greger.getBoundingClientRect().top+"px");
+		$("#verthighlight").css("left","11px");
+
+		$("#verthighlight").css("height",greger.offsetHeight-4+"px");
+		$("#verthighlight").css("width",$("#markinglist").outerWidth()+"px");
+
+}
+
+function cellOut(ev)
+{
+		$("#horizhighlight").css("display","none");
+		$("#verthighlight").css("display","none");
 }
 
 // Resort based on our paramters:
@@ -537,16 +573,23 @@ function magicHeading()
 				$("#upperDecker").css("display","none");						
 		}
 		
-		$("#froocht").css("width",$("#subheading").outerWidth()+"px");
+		$("#upperDecker").css("width",$("#markinglist").outerWidth()+"px");
+		
+//		$("#froocht").css("width",$("#subheading").outerWidth()+"px");
 		
 		$(".dugga-result-subheader").each(function(){
 				var elemid=$(this).attr('id');
 				var elemwidth=$(this).width();
 				$("#"+elemid+"magic").css("width",elemwidth+"px");
+				if($(this).hasClass("result-header-inverse")){
+						$("#"+elemid+"magic").addClass("result-header-inverse");
+				} else {
+						$("#"+elemid+"magic").removeClass("result-header-inverse");	
+				}
 				
 		});
 
-		$("#upperDecker").css("top",(window.pageYOffset+50)+"px");
+		$("#upperDecker").css("top",(window.pageYOffset+48)+"px");
 }
 
 $(function()
