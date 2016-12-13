@@ -1605,6 +1605,7 @@ input.large-button {
     padding: 5px 0 5px 0;
     min-width:140px;
     max-width:140px; 	
+    margin: auto;
 }
 #newFeedback {
     width:98%;
@@ -1727,4 +1728,17 @@ input.large-button {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 2px 2px 5px #888;
+}
+
+.vhighlight-border-color{
+    border:4px solid #614875 !important;
+}
+.vhighlight-border-color-inverse{
+    border:4px solid #fecc56 !important;
+}
+
+.hhighlight-border-color{
+    border-bottom:2px solid black !important;
+    border-top:2px solid black !important;
+    box-shadow:0px 0px 4px #202 inset;
 }

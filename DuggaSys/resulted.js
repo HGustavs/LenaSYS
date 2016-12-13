@@ -68,11 +68,11 @@ function redrawtable()
 {
 		str="";
 
-		str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;box-shadow:0px 0px 4px #202 inset;pointer-events:none;border-bottom:2px solid black;border-top:2px solid black;display:none;'></div>";
-		str+="<div id='horizhighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;box-shadow:0px 0px 4px inset;border:4px solid #fc5;pointer-events:none;display:none;'></div>";
+    str+="<div id='horizhighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
+		str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 		
 		// Redraw Magic heading 
-		str += "<div id='upperDecker' style='z-index:14000;position:absolute;left:8px;display:none;'>";
+		str += "<div id='upperDecker' style='z-index:14000;position:absolute;left:start;display:none;'>";
 		str += "<table class='markinglist'>";
 		str += "<thead>";
 		str += "<tr class='markinglist-header'>";
@@ -146,7 +146,7 @@ function redrawtable()
 						strt+="<tr class='fumo'>"
 						var student=students[i];
 						for(var j=0;j<student.length;j++){
-								strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data";
+								strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
 								if(j==0){
 									strt+="'>"+student[j].grade+"</td>";																	
 								}else{
@@ -174,8 +174,12 @@ function redrawtable()
 										}
 										strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\");' />";
 										strt += "</div>";
-										strt += "<div>"+student[j].submitted+" "+student[j].needMarking+"</div>";
-										strt += "</td>";											
+										strt += "<div class='text-center'>"
+                    var start=new Date(0);                   
+                    if (student[j].submitted.getTime() !== start.getTime()){
+                        strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();  
+                    }
+										strt += "</div></td>";											
 								}
 						}
 						strt+="</tr>"
@@ -195,21 +199,33 @@ function cellIn(ev)
 		if(greger.nodeName!="TD") greger=greger.parentElement;
 		if(greger.nodeName!="TD") greger=greger.parentElement;
 
-		$("#horizhighlight").css("display","block");
+    var bodyRect = document.body.getBoundingClientRect(),
+    gregerRect = greger.getBoundingClientRect(),
+    offset   = gregerRect.top - bodyRect.top;
+
 		$("#verthighlight").css("display","block");
+    $("#horizhighlight").css("display","block");
+    $("#horizhighlight").addClass("hhighlight-border-color");
 
+    if($("#header"+greger.cellIndex).hasClass("result-header-inverse")){
+        $("#verthighlight").removeClass("vhighlight-border-color");
+        $("#verthighlight").addClass("vhighlight-border-color-inverse");
+    } else {
+        $("#verthighlight").removeClass("vhighlight-border-color-inverse");
+        $("#verthighlight").addClass("vhighlight-border-color");
+    }
 
-		$("#horizhighlight").css("left",greger.getBoundingClientRect().left+"px");
-		$("#horizhighlight").css("top","65px");
+		$("#verthighlight").css("left",greger.getBoundingClientRect().left+"px");
+		$("#verthighlight").css("top",greger.offsetHeight+47+"px");
 
-		$("#horizhighlight").css("width",greger.offsetWidth-6+"px");
-		$("#horizhighlight").css("height",$("#markinglist").outerHeight()-3+"px");
+		$("#verthighlight").css("width",greger.offsetWidth-8+"px");
+		$("#verthighlight").css("height",$("#markinglist > tbody").outerHeight()+6+"px");
 
-		$("#verthighlight").css("top",greger.getBoundingClientRect().top+"px");
-		$("#verthighlight").css("left","11px");
+		$("#horizhighlight").css("top",offset+"px");
+		$("#horizhighlight").css("left","11px");
 
-		$("#verthighlight").css("height",greger.offsetHeight-4+"px");
-		$("#verthighlight").css("width",$("#markinglist").outerWidth()+"px");
+		$("#horizhighlight").css("height",greger.offsetHeight-4+"px");
+		$("#horizhighlight").css("width",$("#markinglist").outerWidth()+"px");
 
 }
 
