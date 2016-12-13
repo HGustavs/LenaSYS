@@ -124,12 +124,12 @@ function redrawtable()
 				str+="</tr><tr class='markinglist-header'>";
 
 				// Make second header row!
-				str+="<th class='result-header dugga-result-subheader' id='header0'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
+				str+="<th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
 				for(var j=0;j<momtmp.length;j++){
 						if(momtmp[j].kind==3){
-								str+="<th class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+								str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
 						}else{
-								str+="<th class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
+								str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
 						}
 				}
 				str+="</tr></thead><tbody>";
@@ -378,7 +378,43 @@ function resort()
 		}
 	 redrawtable();
 	 $("#header"+columno).addClass("result-header-inverse");
+   if (sortdir<0){
+     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
+   } else {
+     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");     
+   }
+}
 
+// If col and current col are equal we flip sort order otherwise we
+// change to selected column and always start with desc FIFO order for col 1->
+// col 0 get special treatment and is by default sorted on lastname.
+function toggleSortDir(col){
+    console.log("change dir "+ col);
+    var dir;
+    var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+    
+  	if (col != ocol){
+        $("input[name='sortcol']:checked").prop({"checked":false});
+        $("input[name='sorttype']:checked").prop({"checked":false});
+        if (col == 0){
+            $("#sorttype0_1").prop({"checked":true});   
+            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
+        } else {
+            $("#sortcol"+col).prop({"checked":true});          
+            $("#sorttype0").prop({"checked":true});                      
+            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);          
+        }
+        dir=-1;
+        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
+        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);                
+    }	else {
+        $("input[name='sortdir']:checked").each(function() {dir=this.value;});
+        dir=dir*-1;
+        $("input[name='sortdir']:checked").val(dir);
+        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);      
+    }    
+    
+    resort();  
 }
 
 function process()
