@@ -76,7 +76,7 @@ function redrawtable()
 		str += "<table class='markinglist'>";
 		str += "<thead>";
 		str += "<tr class='markinglist-header'>";
-		str += "<th class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+		str += "<th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
 		if (momtmp.length > 0){
 				// Make first header row!
 				//    No such header for magic heading - by design
@@ -84,10 +84,10 @@ function redrawtable()
 				// Make second header row!
 				for(var j=0;j<momtmp.length;j++){
 						if(momtmp[j].kind==3){
-								str+="<th id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+								str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
 						}else{
 								//str+="<th class='result-header dugga-result-subheadermagic'>Course part grade</th>"								
-								str+="<th id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
+								str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
 						}
 				}
 				str+="</tr>";
@@ -380,8 +380,10 @@ function resort()
 	 $("#header"+columno).addClass("result-header-inverse");
    if (sortdir<0){
      $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
+     $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
    } else {
-     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");     
+     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>"); 
+     $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");    
    }
 }
 
