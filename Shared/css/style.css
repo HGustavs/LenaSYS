@@ -1732,9 +1732,11 @@ input.large-button {
 
 .vhighlight-border-color{
     border:4px solid #614875 !important;
+    box-shadow:0px 0px 4px #202 inset;
 }
 .vhighlight-border-color-inverse{
     border:4px solid #fecc56 !important;
+    box-shadow:0px 0px 4px #ffcc55 inset;
 }
 
 .hhighlight-border-color{

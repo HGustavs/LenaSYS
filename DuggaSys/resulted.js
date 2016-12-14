@@ -323,7 +323,25 @@ function resort()
 									 }if (a[sortcolumn].needMarking==false&&b[sortcolumn].needMarking==true){
 											 return -sortdir;
 									 }else{
-											 return 0
+                       if(a[sortcolumn].grade!=-1 && b[sortcolumn].grade == -1){
+                          return sortdir;
+     									} else if(a[sortcolumn].grade==-1 && b[sortcolumn].grade != -1){
+                          return -sortdir;
+     									} else{	
+     											if(a[sortcolumn].grade>b[sortcolumn].grade){		  				
+     													return sortdir;
+     											}else if(a[sortcolumn].grade<b[sortcolumn].grade){
+     													return -sortdir;
+     											}else{
+                              if(a[sortcolumn].submitted>b[sortcolumn].submitted){
+                                  return -sortdir;									
+            									}else if(a[sortcolumn].submitted<b[sortcolumn].submitted){
+                                  return sortdir;
+            									}else{
+            											return 0;
+            									}
+     											}
+     									}
 									 }
 							 });			
 						} else if(colkind2==1){
