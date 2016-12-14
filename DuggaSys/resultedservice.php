@@ -353,12 +353,14 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 			);
 		}
 	}
+}
 
+// Get the files for the dugga we are marking
+if(strcmp($opt,"DUGGA")===0){
 	$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by filename,updtime asc;");
 	$query->bindParam(':uid', $luid);
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':vers', $vers);
-
 
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -421,10 +423,10 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 			);
 
 			// If the filednme key isn't set, create it now
-	  	if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
+			if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
 			array_push($files[$row['segment']], $entry);
-
-	}
+		}
+	
 }
 
 if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
