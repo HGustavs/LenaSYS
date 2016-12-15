@@ -103,7 +103,7 @@ function redrawtable()
 		str+="<thead>";
 		str+="<tr class='markinglist-header'>";
 
-		str+="<th colspan='1' id='subheading' class='result-header'>";
+		str+="<th></th><th colspan='1' id='subheading' class='result-header'>";
 		str+="";
 		str+="</th>";
 
@@ -125,7 +125,7 @@ function redrawtable()
 				str+="</tr><tr class='markinglist-header'>";
 
 				// Make second header row!
-				str+="<th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
+				str+="<th>#</th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
 				for(var j=0;j<momtmp.length;j++){
 						if(momtmp[j].kind==3){
 								str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
@@ -145,8 +145,9 @@ function redrawtable()
             }
             var strt="";
 						strt+="<tr class='fumo'>"
+            strt+="<td class='rowno'><div>"+(i+1)+"</div></td>"
 						var student=students[i];
-						for(var j=0;j<student.length;j++){
+						for(var j=0;j<student.length;j++){                
 								strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
 								if(j==0){
 									strt+="'>"+student[j].grade+"</td>";																	
