@@ -77,7 +77,7 @@ function redrawtable()
 		str += "<table class='markinglist'>";
 		str += "<thead>";
 		str += "<tr class='markinglist-header'>";
-		str += "<th onclick='toggleSortDir(1);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+		str += "<th  id='header' >#</th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
 		if (momtmp.length > 0){
 				// Make first header row!
 				//    No such header for magic heading - by design
@@ -85,10 +85,10 @@ function redrawtable()
 				// Make second header row!
 				for(var j=0;j<momtmp.length;j++){
 						if(momtmp[j].kind==3){
-								str+="<th onclick='toggleSortDir("+(j+2)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+								str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
 						}else{
 								//str+="<th class='result-header dugga-result-subheadermagic'>Course part grade</th>"								
-								str+="<th onclick='toggleSortDir("+(j+2)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
+								str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
 						}
 				}
 				str+="</tr>";
@@ -103,7 +103,7 @@ function redrawtable()
 		str+="<thead>";
 		str+="<tr class='markinglist-header'>";
 
-		str+="<th></th><th colspan='1' id='subheading' class='result-header'>";
+		str+="<th  id='header' ></th><th colspan='1' id='subheading' class='result-header'>";
 		str+="";
 		str+="</th>";
 
@@ -125,12 +125,12 @@ function redrawtable()
 				str+="</tr><tr class='markinglist-header'>";
 
 				// Make second header row!
-				str+="<th  id='header0' >#</th><th class='result-header dugga-result-subheader' id='header1' onclick='toggleSortDir(1);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
+				str+="<th  id='header' >#</th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
 				for(var j=0;j<momtmp.length;j++){
 						if(momtmp[j].kind==3){
-								str+="<th onclick='toggleSortDir("+(j+2)+");' class='result-header dugga-result-subheader' id='header"+(j+2)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+								str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
 						}else{
-								str+="<th onclick='toggleSortDir("+(j+2)+");' class='result-header dugga-result-subheader' id='header"+(j+2)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
+								str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
 						}
 				}
 				str+="</tr></thead><tbody>";
@@ -207,8 +207,8 @@ function cellIn(ev)
 		$("#verthighlight").css("display","block");
     $("#horizhighlight").css("display","block");
     $("#horizhighlight").addClass("hhighlight-border-color");
-
-    if($("#header"+greger.cellIndex).hasClass("result-header-inverse")){
+console.log(greger.cellIndex);
+    if($("#header"+(greger.cellIndex-1)).hasClass("result-header-inverse")){
         $("#verthighlight").removeClass("vhighlight-border-color");
         $("#verthighlight").addClass("vhighlight-border-color-inverse");
     } else {
@@ -321,7 +321,7 @@ function resort()
 											 }
 									 }else if(a[sortcolumn].needMarking==true&&b[sortcolumn].needMarking==false){
 												return sortdir;
-									 }if (a[sortcolumn].needMarking==false&&b[sortcolumn].needMarking==true){
+									 }else if (a[sortcolumn].needMarking==false&&b[sortcolumn].needMarking==true){
 											 return -sortdir;
 									 }else{
                        if(a[sortcolumn].grade!=-1 && b[sortcolumn].grade == -1){
