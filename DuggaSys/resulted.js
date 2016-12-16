@@ -136,6 +136,7 @@ function redrawtable()
 				str+="</tr></thead><tbody>";
 
 				// Make mf table
+        var row=1;
 				for(var i=0;i<students.length;i++){
             var show;
             if (onlyPending){
@@ -145,7 +146,7 @@ function redrawtable()
             }
             var strt="";
 						strt+="<tr class='fumo'>"
-            strt+="<td class='rowno'><div>"+(i+1)+"</div></td>"
+            strt+="<td id='row'"+row+" class='rowno'><div>"+row+"</div></td>"
 						var student=students[i];
 						for(var j=0;j<student.length;j++){                
 								strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
@@ -186,6 +187,7 @@ function redrawtable()
 						strt+="</tr>"
             if(show){
                 str+=strt; 
+                row++;
             }
 				}
 				str+="</tbody></table>";
