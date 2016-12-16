@@ -1746,6 +1746,7 @@ input.large-button {
 }
 .rowno {
     width:40px;
+    min-height: 47px;
 }
 
 .rowno > div {
