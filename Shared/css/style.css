@@ -1515,8 +1515,6 @@ input.large-button {
 .result-header {
     border-left:2px solid white;
     padding-right: 3px;
-    max-width: 170px;
-    min-width: 170px;
     position: relative;
 }
 
@@ -1746,11 +1744,12 @@ input.large-button {
 }
 .rowno {
     width:40px;
-    min-height: 47px;
 }
 
 .rowno > div {
     text-align: right;
     font-size: 20px;
     color:#614875 !important;
+    min-height: 47px;
+    line-height: 47px;
 }
