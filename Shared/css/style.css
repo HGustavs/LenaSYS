@@ -1032,10 +1032,11 @@ input.large-button {
     line-height:48px !important;
 }
 
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;}
+.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-size: 16px;}
 
+.list tbody tr:nth-child(odd) { background-color: #ccc; }
 .list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
-.list th {background:#614875; color:#fff;line-height:28px;}
+.list th {background:#614875; color:#fff;line-height:28px; font-weight: bold;}
 
 .innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
 .innertable td {color:#000;line-height:28px;border:none;}
@@ -1046,13 +1047,17 @@ input.large-button {
     margin: 0!important;
 }
 
+.last {
+    width:110px;
+}
+
 .markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8; font-family: hack,"Lucida Console", Monaco, monospace;}
 
-.markinglist td {border-right:2px solid #dbd0d8;font-size: 10px;}
-.markinglist th {background:#614875; color:#fff;font-style: italic; font-size: 12px;}
+.markinglist  td {border-right:2px solid #dbd0d8;font-size: 10px;}
+.markinglist  th {background:#614875; color:#fff;font-style: italic; font-size: 12px;}
 
 .markinginnertable {background:#fff;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
-.markinginnertable td {color:#000;border:none; }
+.markinginnertable  td {color:#000;border:none; }
 
 
 .markinglist tr:hover {}
@@ -1070,7 +1075,7 @@ input.large-button {
     width:100%;
     margin-top: 2px!important;
 }
-.feedback-list th,td {
+.feedback-list th,.feedback-list td {
     font-size: 12px;
     word-wrap: break-word;
 }
@@ -1358,11 +1363,6 @@ input.large-button {
 }
 #feedbackTable table {
   width: 100%;
-}
-#feedbackTable td {
-    /*font-family: Calibri,sans-serif; */
-    font-size: 12px;
-    padding-left: 5px;
 }
 
 #feedbackTable tbody tr:nth-child(odd) {
