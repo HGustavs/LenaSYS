@@ -1054,7 +1054,7 @@ input.large-button {
 .markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8; font-family: hack,"Lucida Console", Monaco, monospace;}
 
 .markinglist  td {border-right:2px solid #dbd0d8;font-size: 10px;}
-.markinglist  th {background:#614875; color:#fff;font-style: italic; font-size: 12px;}
+.markinglist  th {background:#614875; color:#fff;font-style: italic; font-size: 12px; white-space: nowrap;}
 
 .markinginnertable {background:#fff;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
 .markinginnertable  td {color:#000;border:none; }
