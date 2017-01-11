@@ -8,6 +8,7 @@
 	line-height: 1.5;
 }
 
+/*
 .descbox h1, .descbox h2, .descbox h3
 .descbox h4, .descbox h5, .descbox h6{
 		text-align: left;
@@ -38,6 +39,7 @@
 	line-height: 1.5em;
 	font-weight: bold;
 }
+*/
 
 .descbox pre {
     font-family: Hack, "Courier 10 Pitch", Courier, monospace;
