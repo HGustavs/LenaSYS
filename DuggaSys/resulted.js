@@ -880,7 +880,13 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		if (filetype === "text") {
 				str+="<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>"+allData["files"][allData["duggaentry"]][fileindex].content+"</textarea>";
 		} else if (filetype === "link"){
-				str += '<iframe src="'+allData["files"][allData["duggaentry"]][fileindex].content+'" width="100%" height="100%" />';			
+				var filename=allData["files"][allData["duggaentry"]][fileindex].content;
+				if(window.location.protocol === "https:"){
+						filename=filename.replace("http://", "https://");
+				}else{
+						filename=filename.replace("https://", "http://");				
+				}
+				str += '<iframe src="'+filename+'" width="100%" height="100%" />';			
 		} else {
 		 		if (fileext === "pdf"){
 						str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />'; 			
