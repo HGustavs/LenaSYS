@@ -1,5 +1,12 @@
 <?php
+
+// Set cookie life length and start session
+ini_set('session.gc_maxlifetime', 18000);
+session_set_cookie_params('18000');
+
+// Start session using parameters above
 session_start();
+
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 
