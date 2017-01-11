@@ -773,7 +773,13 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		if (filetype === "text") {
 				str+="<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</textarea>";
 		} else if (filetype === "link"){
-				str += '<iframe allowtransparency="true" style="background: #FFFFFF;" src="'+dataV["files"][inParams["moment"]][fileindex].content+'" width="100%" height="100%" />';			
+				var filename=dataV["files"][inParams["moment"]][fileindex].content;
+				if(window.location.protocol === "https:"){
+						filename=filename.replace("http://", "https://");
+				}else{
+						filename=filename.replace("https://", "http://");				
+				}
+				str += '<iframe allowtransparency="true" style="background: #FFFFFF;" src="'+filename+'" width="100%" height="100%" />';			
 		} else {
 		 		if (fileext === "pdf"){
 						str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />'; 			

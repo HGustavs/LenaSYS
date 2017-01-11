@@ -60,7 +60,13 @@ function returnedDugga(data)
 				}
     		}});
 		}else if(duggaParams["type"]==="link"){
-			document.getElementById("snus").innerHTML="<iframe src='"+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
+			var filename=duggaParams["filelink"];
+			if(window.location.protocol === "https:"){
+					filename=filename.replace("http://", "https://");
+			}else{
+					filename=filename.replace("https://", "http://");				
+			}
+			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
 		}else {
 			// UNK 
 		}
@@ -173,7 +179,13 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 				}
     		}});
 		}else if(duggaParams["type"]==="link"){
-			document.getElementById("snus").innerHTML="<iframe src='"+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
+			var filename=duggaParams["filelink"];
+			if(window.location.protocol === "https:"){
+					filename=filename.replace("http://", "https://");
+			}else{
+					filename=filename.replace("https://", "http://");				
+			}
+			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
 		}else {
 			// UNK 
 		}

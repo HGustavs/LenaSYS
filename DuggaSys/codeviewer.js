@@ -219,6 +219,12 @@ function returned(data)
 					previewLink=retData['box'][i][2];;
 			}			
 
+			if(window.location.protocol === "https:"){
+					previewLink=previewLink.replace("http://", "https://");
+			}else{
+					previewLink=previewLink.replace("https://", "http://");				
+			}
+
 			$("#box"+boxid).html("<iframe src='"+ previewLink + "'></iframe>");
 			if($("#"+contentid+"menu").height() == null){
 				boxmenuheight = 0;
