@@ -218,7 +218,7 @@ if($ha){
 									$extension = "UNK";
 								}
 								
-								if(in_array($extension, $allowedX)&&in_array($filea['type'], $allowedT)){ 
+								if(in_array($extension, $allowedX)){ 
 										//  if file type is allowed, continue the uploading process.
 																						
 										$seq=0;
