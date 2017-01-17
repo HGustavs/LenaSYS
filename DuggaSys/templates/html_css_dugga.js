@@ -216,6 +216,11 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			
 			var userUrl = uanswer.slice(uanswer.indexOf("###URLSTART###")+14,uanswer.indexOf("###URLEND###"));
 			userUrl =  reverseHtmlEntities(userUrl);
+      if(window.location.protocol === "https:"){
+          userUrl=userUrl.replace("http://", "https://");
+      }else{
+          userUrl=userUrl.replace("https://", "http://");				
+      }
 
 			var markWindowHeight = $("#MarkCont").height();
 			
@@ -334,7 +339,14 @@ function reverseHtmlEntities(str) {
 
 function refreshdUrl()
 {
-		document.getElementById("url-preview-window").innerHTML = '<iframe style="box-sizing:border-box;min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+document.getElementById("url-input").value+'?name='+(new Date).getTime()+'"></iframe>'
+    var newUrl = document.getElementById("url-input").value+'?name='+(new Date).getTime();
+    if(window.location.protocol === "https:"){
+        newUrl=newUrl.replace("http://", "https://");
+    }else{
+        newUrl=newUrl.replace("https://", "http://");				
+    }
+
+		document.getElementById("url-preview-window").innerHTML = '<iframe style="box-sizing:border-box;min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+newUrl+'"></iframe>'
 }
 
 
