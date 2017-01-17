@@ -3,20 +3,21 @@ create database imperious;
 use imperious;
 
 /* user contains the users of the system and related  information */
+
 CREATE TABLE user(
-		uid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		username		VARCHAR(80) NOT NULL UNIQUE,
 		firstname		VARCHAR(50) NULL,
 		lastname		VARCHAR(50) NULL,
-		ssn				VARCHAR(20) NULL unique,
+		ssn					VARCHAR(20) NULL UNIQUE,
 		password		VARCHAR(225) NOT NULL,
-		lastupdated		TIMESTAMP,
-		addedtime  		TIMESTAMP,
+		lastupdated	TIMESTAMP,
+		addedtime  	TIMESTAMP,
 		lastvisit		TIMESTAMP,
-		newpassword		TINYINT(1) NULL,
+		newpassword	TINYINT(1) NULL,
 		creator			INT UNSIGNED NULL,
 		superuser		TINYINT(1) NULL,
-		email			VARCHAR(256) DEFAULT NULL,
+		email				VARCHAR(256) DEFAULT NULL,
 		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class),
 		totalHp			decimal(4,1),
 		PRIMARY KEY(uid)
@@ -31,18 +32,21 @@ INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$
 /**
  * Course table contains the most essential information relating to study courses in the database.
  */
+
+/* alter table course alter column hp add default 7.5; */
+ 
 CREATE TABLE course(
-		cid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		cid							INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		coursecode			VARCHAR(45) NULL UNIQUE,
 		coursename			VARCHAR(80) NULL,
-		created				DATETIME,
-		creator				INT UNSIGNED NOT NULL,
+		created					DATETIME,
+		creator					INT UNSIGNED NOT NULL,
 		visibility			TINYINT UNSIGNED NOT NULL DEFAULT 0,
-		updated				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		activeversion 		VARCHAR(8),
-		activeedversion 	VARCHAR(8),
-		capacity			int(5),
-		hp					decimal(4,1) not null default 7.5,
+		updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		activeversion 	VARCHAR(8),
+		activeedversion VARCHAR(8),
+		capacity				int(5),
+		hp							decimal(4,1) not null default 7.5,
 		courseHttpPage		varchar(2000),
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
@@ -168,12 +172,14 @@ CREATE VIEW highscore_quiz_time AS
 	SELECT userAnswer.cid, userAnswer.quiz, userAnswer.uid, userAnswer.grade, userAnswer.score
 		FROM userAnswer ORDER BY userAnswer.score ASC LIMIT 10;
 
+/* Fix for database coursename: alter table vers alter column coursename varchar(80); */
+
 CREATE TABLE vers(
-	cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	vers			VARCHAR(8) NOT NULL,
-	versname		VARCHAR(45) NOT NULL,
+	cid						INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	vers					VARCHAR(8) NOT NULL,
+	versname			VARCHAR(45) NOT NULL,
 	coursecode		VARCHAR(45) NOT NULL,
-	coursename	  	VARCHAR(45) NOT NULL,
+	coursename	  VARCHAR(80) NOT NULL,
 	coursenamealt	VARCHAR(45) NOT NULL,
 	CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),
 	CONSTRAINT pk_vers PRIMARY KEY(cid,vers)
