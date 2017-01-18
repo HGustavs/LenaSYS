@@ -200,16 +200,16 @@ function cellIn(ev)
 		var greger=ev.target;
 
 		if(greger.nodeName!="TD") greger=greger.parentElement;
-		if(greger.nodeName!="TD") greger=greger.parentElement;
+    if(greger.nodeName!="TD") greger=greger.parentElement;
 
     var bodyRect = document.body.getBoundingClientRect(),
     gregerRect = greger.getBoundingClientRect(),
     offset   = gregerRect.top - bodyRect.top;
+    offsetH   = gregerRect.left - bodyRect.left;
 
 		$("#verthighlight").css("display","block");
     $("#horizhighlight").css("display","block");
     $("#horizhighlight").addClass("hhighlight-border-color");
-console.log(greger.cellIndex);
     if($("#header"+(greger.cellIndex-1)).hasClass("result-header-inverse")){
         $("#verthighlight").removeClass("vhighlight-border-color");
         $("#verthighlight").addClass("vhighlight-border-color-inverse");
@@ -217,8 +217,7 @@ console.log(greger.cellIndex);
         $("#verthighlight").removeClass("vhighlight-border-color-inverse");
         $("#verthighlight").addClass("vhighlight-border-color");
     }
-
-		$("#verthighlight").css("left",greger.getBoundingClientRect().left+"px");
+    $("#verthighlight").css("left",offsetH+"px");
 		$("#verthighlight").css("top",greger.offsetHeight+47+"px");
 
 		$("#verthighlight").css("width",greger.offsetWidth-8+"px");
