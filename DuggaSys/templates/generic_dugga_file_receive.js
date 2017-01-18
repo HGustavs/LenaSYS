@@ -148,7 +148,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 	$("#duggaStats").css("display","none");
 
 	inParams = parseGet();
-	$("#content").css({"position":"relative","top":"50px"});
 
 	if (param == "UNK") {
 		alert("UNKNOWN DUGGA!");
