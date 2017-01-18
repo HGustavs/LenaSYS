@@ -1757,7 +1757,7 @@ input.large-button {
     box-shadow:0px 0px 4px #202 inset;
 }
 .rowno {
-    width:40px;
+    /*width:40px;*/
 }
 
 .rowno > div {
