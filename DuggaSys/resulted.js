@@ -200,7 +200,7 @@ function cellIn(ev)
 		var greger=ev.target;
 
 		if(greger.nodeName!="TD") greger=greger.parentElement;
-    if(greger.nodeName!="TD") greger=greger.parentElement;
+    if(greger.nodeName!="TD") greger=greger.parentElement; /* These are two by design */
 
     var bodyRect = document.body.getBoundingClientRect(),
     gregerRect = greger.getBoundingClientRect(),
