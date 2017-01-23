@@ -75,6 +75,10 @@ function returnedDugga(data)
 
 		var linkeddugga=duggaParams["linkeddugga"];
 		$("#feedback-header").html("Feedback on "+linkeddugga)
+    
+    for (){
+    $("#linkedreport").html(<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" /> ) 
+    }
 		//alert(linkeddugga);
 
 		var duggaFiles = data["files"][inParams["moment"]];
