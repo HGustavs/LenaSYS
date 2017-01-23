@@ -320,7 +320,7 @@ CREATE TABLE submission(
 		subid	  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 		uid				INTEGER,
 		cid				INTEGER,
-		vers			INTEGER,
+		vers			VARCHAR(8),
 		did			  INTEGER,
 		seq				INTEGER,
 		fieldnme  VARCHAR(64),
