@@ -74,11 +74,36 @@ function returnedDugga(data)
 		}
 
 		var linkeddugga=duggaParams["linkeddugga"];
-		$("#feedback-header").html("Feedback on "+linkeddugga)
-    
+		console.log(data["files"]);
+		for (var duggas in data["files"]) {
+		    // skip loop if the property is from prototype
+		    if (!data["files"].hasOwnProperty(duggas)) continue;
+		
+				if (duggas == parseInt(linkeddugga)){
+					
+					for (var i=0;i<data["files"][duggas].length;i++){
+						//alert(data["files"][duggas][i]);
+						var obj = data["files"][duggas][i];
+						if (obj["fieldnme"]==duggaParams["reportField"]){
+							//alert(obj["filepath"]+obj["filename"]+obj["seq"]+"."+obj["extension"]);
+							var filepath=obj["filepath"];
+							var filename=obj["filename"];
+							var fileseq=obj["seq"];
+							var fileext=obj["extension"];
+							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"100%\" type=\"application/pdf\" />" );
+							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
+						}
+					}					
+				}
+		}
+
+
+    /*
     for (){
+			if (duggaParams["reportField"]===)
     $("#linkedreport").html(<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" /> ) 
     }
+		*/
 		//alert(linkeddugga);
 
 		var duggaFiles = data["files"][inParams["moment"]];
