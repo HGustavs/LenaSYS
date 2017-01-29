@@ -1152,8 +1152,6 @@ function tokenize(instring,inprefix,insuffix)
 				}
 				i++;
 			}	
-			//Replace < symbols in the comment so they are not recognised as html by the browser
-			currentStr = currentStr.replace(/\</g, "&#60;"); 
 			maketoken('rowcomment',currentStr,from,i,row);
 		
 		}else if (currentCharacter=='/'&&instring.charAt(i+1)=='*'){		// Block comment of /* type
