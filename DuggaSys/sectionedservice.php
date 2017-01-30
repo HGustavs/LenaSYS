@@ -41,6 +41,9 @@ $unmarked = 0;
 
 if($gradesys=="UNK") $gradesys=0;
 
+// Store current day in string
+$today = date("Y-m-d H:i:s");
+
 $debug="NONE!";	
 
 $info=$opt." ".$courseid." ".$coursevers." ".$coursename;
@@ -218,8 +221,40 @@ if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 
 $ha = (checklogin() && ($haswrite || $isSuperUserVar));
 
+// Retrieve quiz entries including release and deadlines
+$duggor=array();
+$releases=array();
+if($ha){
+	$query = $pdo->prepare("SELECT id,qname,qrelease,deadline FROM quiz WHERE cid=:cid AND vers=:vers ORDER BY qname");
+	$query->bindParam(':cid', $courseid);
+	$query->bindParam(':vers', $coursevers);
+	
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+	
+	// Create "duggor" array to store information about quizes and create "releases" to perform checks 
+
+	foreach($query->fetchAll() as $row) {
+		$releases[$row['id']]=array(
+				'release' => $row['qrelease'],
+				'deadline' => $row['deadline']
+		);
+		array_push(
+			$duggor,
+			array(
+				'id' => $row['id'],
+				'qname' => $row['qname'],
+				'release' => $row['qrelease'],
+				'deadline' => $row['deadline']
+			)
+		);
+	}
+}
+
 $resulties=array();
-$query = $pdo->prepare("SELECT moment,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
+$query = $pdo->prepare("SELECT moment,quiz,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
 $query->bindParam(':uid', $userid);
@@ -231,13 +266,21 @@ if(!$query->execute()) {
 }
 
 foreach($query->fetchAll() as $row) {
+	$release=$releases[$row['quiz']]['release'];
+	if($release<$today){
+			$resulty=$row['grade'];	
+			$markedy=$row['marked'];
+	}else{
+			$resulty=0;
+			$markedy=null;
+	}
 	array_push(
 		$resulties,
 		array(
 			'moment' => $row['moment'],
-			'grade' => $row['grade'],
+			'grade' => $resulty,
 			'submitted' => $row['submitted'],
-			'marked' => $row['marked'],
+			'marked' => $markedy,
 			'useranswer' => $row['useranswer']
 		)
 	);
@@ -296,7 +339,6 @@ if($query->execute()) {
 	$debug="Error reading entries".$error[2];
 }
 
-$duggor=array();
 $links=array();
 
 $versions=array();
@@ -323,25 +365,6 @@ if(!$query->execute()) {
 $codeexamples = array();
 
 if($ha){
-	$query = $pdo->prepare("SELECT id,qname FROM quiz WHERE cid=:cid AND vers=:vers ORDER BY qname");
-	$query->bindParam(':cid', $courseid);
-	$query->bindParam(':vers', $coursevers);
-	
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		$debug="Error reading entries".$error[2];
-	}
-	
-	foreach($query->fetchAll() as $row) {
-		array_push(
-			$duggor,
-			array(
-				'id' => $row['id'],
-				'qname' => $row['qname']
-			)
-		);
-	}
-
 	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
 	$query->bindParam(':cid', $courseid);
 	

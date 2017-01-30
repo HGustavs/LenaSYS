@@ -38,7 +38,7 @@ $param = "UNK";
 $savedanswer = "";
 $highscoremode = "";
 $quizfile = "UNK";
-$grade = "";
+$grade = "UNK";
 $submitted = "";
 $marked ="";
 
@@ -49,6 +49,9 @@ $timeUsed;
 $stepsUsed;
 $duggafeedback="UNK";
 $variants=array();
+
+// Create empty array for dugga info!
+$duggainfo=array();
 
 $debug="NONE!";	
 
@@ -81,11 +84,12 @@ if($row = $query->fetch(PDO::FETCH_ASSOC)){
 }
 
 // Get type of dugga
-$query = $pdo->prepare("SELECT quizFile FROM quiz WHERE id=:duggaid;");
+$query = $pdo->prepare("SELECT * FROM quiz WHERE id=:duggaid;");
 $query->bindParam(':duggaid', $duggaid);
 $result=$query->execute();
 if (!$result) err("SQL Query Error: ".$pdo->errorInfo(),"quizfile Querying Error!");
 foreach($query->fetchAll() as $row) {
+	$duggainfo=$row;
 	$quizfile = $row['quizFile'];
 }
 
@@ -287,7 +291,7 @@ if(checklogin()){
 
 				if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
 					//if grade equal G, VG, 3, 4, 5, or 6
-					$debug="You have already been graded on this assignment";
+					$debug="This assignment has already been marked";
 				}else{
 					// Update Dugga!
 					$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
@@ -373,6 +377,10 @@ $query->bindParam(':vers', $coursevers);
 $query->bindParam(':did', $duggaid);
 	
 $result = $query->execute();
+
+// Store current day in string
+$today = date("Y-m-d H:i:s");
+
 foreach($query->fetchAll() as $row) {
 		
 		$content = "UNK";
@@ -384,9 +392,10 @@ foreach($query->fetchAll() as $row) {
 		if(!file_exists($fedbname)) {
 				$feedback="UNK";
 		} else {
-				$feedback=file_get_contents($fedbname);
+			if($today > $duggainfo['qrelease']  || is_null($duggainfo['qrelease'])){
+				$feedback=file_get_contents($fedbname);				
+			}
 		}			
-		
 		
 		if($row['kind']=="3"){
 				// Read file contents
@@ -436,6 +445,12 @@ foreach($query->fetchAll() as $row) {
 
 if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
 
+// Use string compare to clear grade if not released yet!
+if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
+		$grade="UNK";
+		$feedback="UNK";
+}
+
 $array = array(
 		"debug" => $debug,
 		"param" => $param,
@@ -446,7 +461,9 @@ $array = array(
 		"grade" => $grade,
 		"submitted" => $submitted,
 		"marked" => $marked,
-		"files" => $files,
+		"deadline" => $duggainfo['qrelease'],
+		"release" => $duggainfo['deadline'],
+		"files" => $files
 	);
 
 echo json_encode($array);
