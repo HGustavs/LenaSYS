@@ -11,6 +11,10 @@ if (file_exists("../.git/refs/heads/master")) {
 } else {
 	$version = "v0.7+";
 }
+$noup="NONE";
+$loginvar="COURSE";
+setcookie("loginvar", $loginvar);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,10 +36,7 @@ if (file_exists("../.git/refs/heads/master")) {
 <body>
 
 	<?php
-	$noup="NONE";
-	$loginvar="COURSE";
 	include '../Shared/navheader.php';
-	setcookie("loginvar", $loginvar);
 	?>
 
 	<!-- content START -->

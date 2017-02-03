@@ -33,6 +33,8 @@ $segment=getOP('segment');
 $answer=getOP('answer');
 $highscoremode=getOP('highscoremode');
 $setanswer=gettheOP('setanswer');
+$showall=getOP('showall');
+$showall="true";
 
 $param = "UNK";
 $savedanswer = "";
@@ -370,11 +372,15 @@ if(strcmp($submitted,"") == 0){$submitted = "UNK";} // Return UNK if we have not
 if(strcmp($marked,"") == 0){$marked = "UNK";} // Return UNK if we have not been marked
 
 $files= array();
-$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");
+if ($showall==="true"){
+  $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
+} else {
+  $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
+  $query->bindParam(':did', $duggaid);
+}
 $query->bindParam(':uid', $userid);
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
-$query->bindParam(':did', $duggaid);
 	
 $result = $query->execute();
 
