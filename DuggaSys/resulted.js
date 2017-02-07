@@ -2,7 +2,6 @@
 /********************************************************************************
 	 Globals
 *********************************************************************************/
-
 var sessionkind = 0;
 var querystring = parseGet();
 var filez;
@@ -135,10 +134,10 @@ function redrawtable()
 				}
 				str+="</tr></thead><tbody>";
 
-				// Make mf table
+				// Make result table
         var row=1;
 				for(var i=0;i<students.length;i++){
-            var show;
+            var show;		// wont var show=onlyPending; ??
             if (onlyPending){
                 show=false;
             } else {
@@ -490,15 +489,28 @@ function process()
 		
 					var student=new Array;
 					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn});
-					
+										
 					// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 					for(var j=0;j<momtmp.length;j++){
-							var momentresult=restmp[momtmp[j].lid];
-							if(typeof momentresult!='undefined'){							
-									student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer});
+
+							// If it is a feedback quiz -- we have special handling.
+							if(momtmp[j].quizfile=="feedback_dugga"){
+									var momentresult=restmp[momtmp[j].lid];
+									// If moment result does not exist... either make "empty" student result or push mark
+									if(typeof momentresult!='undefined'){							
+											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer});
+									}else{
+											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1});							
+									}							
 							}else{
-									student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1});							
-							}		
+									var momentresult=restmp[momtmp[j].lid];
+									// If moment result does not exist... either make "empty" student result or push mark
+									if(typeof momentresult!='undefined'){							
+											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer});
+									}else{
+											student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1});							
+									}		
+							}
 					}
 					
 					students.push(student);

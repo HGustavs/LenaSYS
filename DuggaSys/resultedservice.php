@@ -306,7 +306,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 		}
 
 		// All dugga/moment entries from current course version
-		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,vers,gradesystem FROM listentries WHERE listentries.cid=:cid and vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
+		$query = $pdo->prepare("SELECT listentries.*, quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 
@@ -329,6 +329,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'visible'=> (int)$row['visible'],
 					'code_id' => $row['code_id'],
 					'vers' => $row['vers'],
+					'quizfile' => $row['quizFile'],
 					'gradesystem' => (int)$row['gradesystem']
 				)
 			);
