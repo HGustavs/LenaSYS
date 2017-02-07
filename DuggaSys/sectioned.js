@@ -495,6 +495,7 @@ function returnedSection(data)
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
+				var released = item['release'];
 				str += "<div>";
 
 				// All are visible according to database
