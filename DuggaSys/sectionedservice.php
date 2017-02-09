@@ -266,13 +266,18 @@ if(!$query->execute()) {
 }
 
 foreach($query->fetchAll() as $row) {
-	$release=$releases[$row['quiz']]['release'];
-	if($release<$today){
-			$resulty=$row['grade'];	
-			$markedy=$row['marked'];
+	if(isset($releases[$row['quiz']])){
+			$release=$releases[$row['quiz']]['release'];
+			if($release<$today){
+					$resulty=$row['grade'];	
+					$markedy=$row['marked'];
+			}else{
+					$resulty=0;
+					$markedy=null;
+			}
 	}else{
 			$resulty=0;
-			$markedy=null;
+			$markedy=null;	
 	}
 	array_push(
 		$resulties,
