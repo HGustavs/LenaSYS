@@ -53,6 +53,7 @@ function setup()
 	}catch(e){
 		alert("Error while setting up: "+e.message)
 	}
+	 		
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -62,14 +63,14 @@ function setup()
 function returned(data)
 {	
 	retData=data;
-	
+		
 	if(retData['writeaccess'] == "w"){
 		document.getElementById('fileedButton').onclick = new Function("changeURL('../DuggaSys/fileed.php?cid="+courseid+"&coursevers="+cvers+"');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 	
 	if(retData['debug']!="NONE!") alert("Returned from setup: " + retData['debug']);
-	
+
 	// Disables before and after button if there are no available example before or after. 
 	// Works by checking if the current example is last or first in the order of examples.
 	//If there are no examples this disables being able to jump through (the non-existsing) examples
@@ -92,8 +93,10 @@ function returned(data)
 	
 	// Disables the play button if there is no playlink
 	if(typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
-		$("#playbutton").css("opacity",0.4);
-		$("#playbutton").css("pointer-events","none");
+			$("#playbutton").css("opacity",0.4);
+			$("#playbutton").css("pointer-events","none");
+	}else{
+			retData['playlink']=retData['playlink'].replace(/\&\#47\;/g,"/"); 
 	}
 	
 	// Fill Section Name and Example Name
@@ -805,15 +808,6 @@ $(window).resize(function() {
 document.addEventListener("drop", function(e) {
     // cancel drop
     e.preventDefault();
-});
-
-document.addEventListener("paste", function(e) {
-    // cancel paste
-    e.preventDefault();
-    // get text representation of clipboard
-    var text = e.clipboardData.getData("text/plain");
-    // insert text manually
-    document.execCommand("insertText", false, text);
 });
 
 /********************************************************************************
@@ -1687,10 +1681,14 @@ function closeTemplateWindow()
 // Play:
 //					Is called at line 195 in EditorV50.php and line 56 in navheader.php
 //----------------------------------------------------------------------------------
-function Play()
+function Play(event)
 {
 	if(retData['playlink']!=null){
-		navigateTo("../courses/",retData['playlink']);
+		if(retData['playlink'].indexOf("http")==0){
+				window.location.href=retData['playlink'];
+		}else{
+				navigateTo("../courses/",retData['playlink']);		
+		}
 	}
 }
 //-----------------------------------------------------------------------------
