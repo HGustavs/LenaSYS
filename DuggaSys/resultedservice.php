@@ -163,6 +163,12 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			if(file_exists ( "templates/".$duggafile.".html")) {
 				$duggapage=file_get_contents("templates/".$duggafile.".html");
 			}
+		} else {
+			
+				
+				$dugganame="templates/feedback_dugga.js";
+				$duggapage=file_get_contents("templates/feedback_dugga.html");
+			
 		}
 	}
 	
@@ -306,7 +312,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 		}
 
 		// All dugga/moment entries from current course version
-		$query = $pdo->prepare("SELECT listentries.*, quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
+		$query = $pdo->prepare("SELECT listentries.*,quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 

@@ -495,12 +495,13 @@ function process()
 
 							// If it is a feedback quiz -- we have special handling.
 							if(momtmp[j].quizfile=="feedback_dugga"){
-									var momentresult=restmp[momtmp[j].lid];
+									var momentresult=restmp[momtmp[j].lid];								
 									// If moment result does not exist... either make "empty" student result or push mark
+									// Pink cell handling needs to be reworked
 									if(typeof momentresult!='undefined'){							
 											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer});
 									}else{
-											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1});							
+											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers']});							
 									}							
 							}else{
 									var momentresult=restmp[momtmp[j].lid];
@@ -1003,17 +1004,17 @@ function returnedResults(data)
 						});
 		});
 	
-		allData = data; /* used by dugga.js */
+		allData = data; // used by dugga.js
 	
 		if (data['dugganame'] !== "") {
-			/*			Display student submission			*/
+				// Display student submission
 				$.getScript(data['dugganame'], function() {
 					$("#MarkCont").html(data['duggapage']);
 					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats'], data['files'],data['moment'],data['duggafeedback']);
 				});
 				$("#resultpopover").css("display", "block");
 		} else {
-			/*			Process and render filtered data			*/
+				// Process and render filtered data
 			process();	
 		}
   }
