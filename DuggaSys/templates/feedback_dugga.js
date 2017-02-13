@@ -172,7 +172,7 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats, files, moment)
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
 	if (userStats != null){
 		document.getElementById('duggaTime').innerHTML=userStats[0];
@@ -231,7 +231,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		if (moment != null) {
 			duggaFiles = files[moment];
 		} 
-
+/*
 		createFileUploadArea(duggaParams["submissions"]);
 		for (var k=0; k < duggaParams["submissions"].length; k++){
 			findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 1);
@@ -240,11 +240,11 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 			}
 
 		}
-
+*/
 		// ----------------========#############========----------------
 		// This is in show facit marking view NOT official running version!
 		// ----------------========#############========----------------
-
+/*
 		for (var version=0; version < duggaFiles.length;version++){				
 				if (duggaFiles[version].kind == "3"){
 					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
@@ -252,10 +252,25 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 					}
 				}
 		}			
-
+*/
 		// Bring up the feedback tools
 		document.getElementById('markMenuPlaceholder').style.display = "block";
 //		document.getElementById('markSaveButton').style.display = "block";
+// Teacher feedback
+
+var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+	var feedbackArr = feedback.split("||");
+	for (var k=feedbackArr.length-1;k>=0;k--){
+		var fb_tmp = feedbackArr[k].split("%%");
+		fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+	} 		
+}
+fb += "</tbody></table>";
+if (document.getElementById('teacherFeedbackTable')){
+		document.getElementById('teacherFeedbackTable').innerHTML = fb;
+}
+
 	
 	}
 }

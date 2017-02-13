@@ -60,8 +60,6 @@ function setup(){
 	
 
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "RESULT");
-	//ajaxStart = new Date();
-	//console.log("ajax star: "+ajaxStart);
 }
 
 function redrawtable()
@@ -161,20 +159,23 @@ function redrawtable()
 										else {strt += " dugga-unassigned"}
 										strt += "'>";
 										strt += "<div class='gradeContainer";
+                    console.log(student[j]);
 										if(student[j].ishere===false){
 											strt += " grading-hidden";
 										}
 										strt += "'>";
-										if (student[j].grade === null){
-												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'I');
-										} else {
-												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U');
+										if (student[j].grade === null ){
+												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'I', student[j].qvariant, student[j].quizId);
+										} else if (student[j].grade === -1 ){
+  												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'IFeedback', student[j].qvariant, student[j].quizId);
+  									}else {
+												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
 										}										
 										strt += "<img id='korf' class='fist";
-										if(student[j].userAnswer===null){
+										if(student[j].userAnswer===null && false){ // Always shows fist. Should be re-evaluated
 											strt += " grading-hidden";
 										}
-										strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\");' />";
+										strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
 										strt += "</div>";
 										strt += "<div class='text-center'>"                                 
                     if (student[j].submitted.getTime() !== timeZero.getTime()){
@@ -495,28 +496,33 @@ function process()
 
 							// If it is a feedback quiz -- we have special handling.
 							if(momtmp[j].quizfile=="feedback_dugga"){
-									var momentresult=restmp[momtmp[j].lid];								
+									var momentresult=restmp[momtmp[j].lid];		
+/*
+                  console.log(restmp);		
+                  console.log(momtmp[j].moment);				
+                  console.log(restmp[momtmp[j].moment].aid + " " + restmp[momtmp[j].moment].variant);	
+                  */			
 									// If moment result does not exist... either make "empty" student result or push mark
 									// Pink cell handling needs to be reworked
 									if(typeof momentresult!='undefined'){							
-											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer});
+											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:restmp[momtmp[j].moment].aid, qvariant:restmp[momtmp[j].moment].variant});
 									}else{
-											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers']});							
+											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:2,quizId:restmp[momtmp[j].moment].aid, qvariant:restmp[momtmp[j].moment].variant});							
 									}							
 							}else{
 									var momentresult=restmp[momtmp[j].lid];
 									// If moment result does not exist... either make "empty" student result or push mark
 									if(typeof momentresult!='undefined'){							
-											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer});
+											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:restmp[momtmp[j].moment].aid, qvariant:restmp[momtmp[j].moment].variant});
 									}else{
-											student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1});							
+											student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:restmp[momtmp[j].moment].aid, qvariant:restmp[momtmp[j].moment].variant});							
 									}		
 							}
 					}
 					
 					students.push(student);
 		}
-			
+			console.log(students);
 		// Update dropdown list
 		var dstr="";
 		for(var j=0;j<moments.length;j++){
@@ -689,18 +695,18 @@ $(function()
 // Commands:
 //----------------------------------------
 
-function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
+function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid){
 
 		closeWindows();
 
 		if ($(e.target ).hasClass("Uc")){
-				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 		} else if ($(e.target ).hasClass("Gc")) {
-				changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind);
+				changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 		} else if ($(e.target ).hasClass("VGc")){
-				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind);
+				changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 		} else if ($(e.target ).hasClass("U")) {
-				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind);
+				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 		}
 		else {
 			//alert("This grading is not OK!");
@@ -708,42 +714,42 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind){
 
 }
 
-function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls){
-	return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"');\"  />";
+function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
+	return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
 
 
-function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind)
+function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
 {
 
 		var str = "";
 
 		// Irrespective of marking system we allways print - and U
-		if (mark === null || mark === 0){
-				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uc.png","Uc");
+		if (mark === null || mark === 0 || mark === -1){
+				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uc.png","Uc", qvariant, qid);
 		} else if (mark === 1) {
-				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/U.png","U");
+				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/U.png","U", qvariant, qid);
 		} else {
-				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uh.png","Uh");
+				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uh.png","Uh", qvariant, qid);
 		}
 
 		// Gradesystem: 1== UGVG 2== UG 3== U345
 		if (gradesys === 1) {
 			if (mark === 2){
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/G.png","G");
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VGh.png","VGh");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/G.png","G", qvariant, qid);
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VGh.png","VGh", qvariant, qid);
 			} else if (mark === 3) {
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gh.png","Gh");
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VG.png","VG");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gh.png","Gh", qvariant, qid);
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VG.png","VG", qvariant, qid);
 			} else {
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.png","Gc");
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VGc.png","VGc");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.png","Gc", qvariant, qid);
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/VGc.png","VGc", qvariant, qid);
 			}
 		} else if (gradesys === 2) {
 				if (mark === 2){
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/G.png","G");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/G.png","G", qvariant, qid);
 				} else {
-					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.png","Gc");
+					str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Gc.png","Gc", qvariant, qid);
 				}
 		} else if (gradesys === 3){
 			/*
@@ -784,7 +790,7 @@ function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid }, "RESULT");
 }
 
-function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid)
+function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid)
 {
 		$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
 
@@ -794,12 +800,14 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		menu += "</div>";
 		menu += "<table>";
 		menu += "<tr><td>";
-		if (foundgrade === null && submitted === null) {
-			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I");
+		if ((foundgrade === null && submitted === null )) {
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
+		}else if (foundgrade == -1){
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "IFeedback", parseInt(qvariant), parseInt(qid));
 		}else if (foundgrade !== null){
-			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U");
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U", parseInt(qvariant), parseInt(qid));
 		}else {
-			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U");
+			menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U", parseInt(qvariant), parseInt(qid));
 		}
 		menu += "</td></tr>";
 		menu += "</table>";
@@ -809,13 +817,13 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 		AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : vers }, "RESULT");
 }
 
-function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind)
+function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
 {
 		var newFeedback = "UNK";
 		if (document.getElementById('newFeedback') !== null){
 				newFeedback = document.getElementById('newFeedback').value;
 		}
-		AJAXService("CHGR", { cid : cid, vers : vers, moment : moment, luid : uid, mark : newMark, ukind : ukind, newFeedback : newFeedback }, "RESULT");
+		AJAXService("CHGR", { cid : cid, vers : vers, moment : moment, luid : uid, mark : newMark, ukind : ukind, newFeedback : newFeedback, qvariant : qvariant, quizId : qid }, "RESULT");
 }
 
 function moveDist(e)
@@ -969,7 +977,7 @@ function returnedResults(data)
 
       if(rowpos !== -1){
         // Regenerate the marking buttons to reflect the new grade
-        var tst = makeSelect(students[rowpos][dpos].gradeSystem, querystring['cid'], students[rowpos][dpos].vers, parseInt(data.duggaid), parseInt(data.duggauser), parseInt(data.results), 'U');
+        var tst = makeSelect(students[rowpos][dpos].gradeSystem, querystring['cid'], students[rowpos][dpos].vers, parseInt(data.duggaid), parseInt(data.duggauser), parseInt(data.results), 'U', null, null);
         tst += "<img id='korf' class='fist";
         if(students[rowpos][dpos].userAnswer===null){
           tst += " grading-hidden";
@@ -1009,7 +1017,7 @@ function returnedResults(data)
 		if (data['dugganame'] !== "") {
 				// Display student submission
 				$.getScript(data['dugganame'], function() {
-					$("#MarkCont").html(data['duggapage']);
+					$("#MarkCont").html(data['duggapage']);          
 					showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats'], data['files'],data['moment'],data['duggafeedback']);
 				});
 				$("#resultpopover").css("display", "block");
