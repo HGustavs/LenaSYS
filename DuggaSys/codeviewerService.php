@@ -142,7 +142,10 @@
 				$query->bindParam(':exampleid', $exampleId);
 				$query->bindParam(':cid', $courseId);
 				$query->bindParam(':cvers', $courseVersion);
-				$query->execute();
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug.="Error updaring example: ".$error[2]." ".__LINE__;
+				} 
 				
 				// TODO: Check for better way to get and set before/afterId
 				if($beforeId!="UNK"){
@@ -151,7 +154,10 @@
 					$query->bindParam(':exampleid', $exampleId);
 					$query->bindParam(':cid', $courseId);
 					$query->bindParam(':cvers', $courseVersion);
-					$query->execute();
+					if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug.="Error updaring example: ".$error[2]." ".__LINE__;
+					} 
 				}
 				if($afterId!="UNK"){
 					$query = $pdo->prepare( "UPDATE codeexample SET afterid = :afterid WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");		
@@ -159,7 +165,10 @@
 					$query->bindParam(':exampleid', $exampleId);
 					$query->bindParam(':cid', $courseId);
 					$query->bindParam(':cvers', $courseVersion);
-					$query->execute();
+					if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug.="Error updaring example: ".$error[2]." ".__LINE__;
+					} 
 				}
 				if(isset($_POST['addedWords'])) {
 					// Converts to array
@@ -171,7 +180,10 @@
 						$query->bindParam(':exampleid', $exampleId);
 						$query->bindParam(':word', $word);
 						$query->bindParam(':uid', $_SESSION['uid']);
-						$query->execute();
+						if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug.="Error updaring example: ".$error[2]." ".__LINE__;
+						} 
 					}
 				}			
 				if(isset($_POST['removedWords'])) {
@@ -183,7 +195,10 @@
 						$query = $pdo->prepare("DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;");		
 						$query->bindParam(':exampleid', $exampleId);
 						$query->bindParam(':word', $word);
-						$query->execute();
+						if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug.="Error deleting impword: ".$error[2]." ".__LINE__;
+						} 
 					}
 				}			
 			}else if(strcmp('EDITCONTENT',$opt)===0) {

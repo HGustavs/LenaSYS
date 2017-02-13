@@ -69,7 +69,7 @@ function returned(data)
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 	
-	if(retData['debug']!="NONE!") alert("Returned from setup: " + retData['debug']);
+	if(retData['debug']!="NONE!") alert(retData['debug']);
 
 	// Disables before and after button if there are no available example before or after. 
 	// Works by checking if the current example is last or first in the order of examples.

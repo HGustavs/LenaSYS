@@ -218,7 +218,7 @@ CREATE TABLE codeexample(
 	sectionname		VARCHAR(64),
 	beforeid		INTEGER,
 	afterid			INTEGER,
-	runlink		 	VARCHAR(64),
+	runlink		 	VARCHAR(256),
 	cversion		INTEGER,
 	public 			tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
 	updated 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
