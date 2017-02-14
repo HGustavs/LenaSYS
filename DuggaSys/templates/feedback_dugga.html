@@ -8,11 +8,24 @@
 
 	<div class='instructions-container'>
 		<div class='instructions-button' onclick='toggleInstructions(this)'><h3 id="report-header">Report</h3></div>	
-		<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="linkedreport"></div>	
+		<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1;height:800px; " id="linkedreport"></div>	
 	</div>
 	<div class='instructions-container'>
 		<div class='instructions-button' onclick='toggleInstructions(this)'><h3 id="feedback-header">Feedback</h3></div>	
-		<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="tomten"></div>	
+		<div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="tomten">
+			
+			<div id="feedbackBoxy" class="loginBox">
+	    <div class='loginBoxheader'>
+	        <h3>Feedback Log</h3>
+	        <div onclick="hideReceiptPopup()">x</div>
+	    </div>
+	    <div class="table-wrap" id="feedbackTable">
+	        <table>
+	            <tr><th>Date</th><th>Feedback</th></tr>
+	        </table>
+	    </div>
+			</div>	
+		</div>	
 	</div>
 </div>
 
@@ -30,14 +43,4 @@
         </table>
     </div>
 </div>
-<div id="feedbackBox" class="loginBox">
-    <div class='loginBoxheader'>
-        <h3>Feedback Log</h3>
-        <div onclick="hideReceiptPopup()">x</div>
-    </div>
-    <div class="table-wrap" id="feedbackTable">
-        <table>
-            <tr><th>Date</th><th>Feedback</th></tr>
-        </table>
-    </div>
-</div>
+

@@ -493,29 +493,22 @@ function process()
 										
 					// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 					for(var j=0;j<momtmp.length;j++){
-
 							// If it is a feedback quiz -- we have special handling.
 							if(momtmp[j].quizfile=="feedback_dugga"){
 									var momentresult=restmp[momtmp[j].lid];		
-/*
-                  console.log(restmp);		
-                  console.log(momtmp[j].moment);				
-                  console.log(restmp[momtmp[j].moment].aid + " " + restmp[momtmp[j].moment].variant);	
-                  */			
 									// If moment result does not exist... either make "empty" student result or push mark
-									// Pink cell handling needs to be reworked
 									if(typeof momentresult!='undefined'){							
-											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:restmp[momtmp[j].moment].aid, qvariant:restmp[momtmp[j].moment].variant});
+											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant});
 									}else{
-											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:2,quizId:restmp[momtmp[j].moment].aid, qvariant:restmp[momtmp[j].moment].variant});							
+											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant});							
 									}							
 							}else{
 									var momentresult=restmp[momtmp[j].lid];
 									// If moment result does not exist... either make "empty" student result or push mark
 									if(typeof momentresult!='undefined'){							
-											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:restmp[momtmp[j].moment].aid, qvariant:restmp[momtmp[j].moment].variant});
+											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant});
 									}else{
-											student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:restmp[momtmp[j].moment].aid, qvariant:restmp[momtmp[j].moment].variant});							
+											student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant});							
 									}		
 							}
 					}
