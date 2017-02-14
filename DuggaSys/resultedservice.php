@@ -30,6 +30,8 @@ $mark = getOP('mark');
 $ukind = getOP('ukind');
 $newDuggaFeedback = getOP('newFeedback');
 $coursevers=getOP('coursevers');
+$qvariant=getOP("qvariant");
+$quizId=getOP("quizId");
 
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
@@ -117,7 +119,42 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$duggaid=$listentry;
 				$lentries=$mark;
 			}
+		}else if($ukind=="IFeedback"){
+			$query = $pdo->prepare("INSERT INTO userAnswer(grade,creator,cid,moment,vers,uid,marked,quiz,variant) VALUES(:mark,:cuser,:cid,:moment,:vers,:uid,NOW(),:quizid,:variant);");
+			$query->bindParam(':mark', $mark);
+			$query->bindParam(':cuser', $userid);
+
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':moment', $listentry);
+			$query->bindParam(':vers', $vers);
+			$query->bindParam(':uid', $luid);			
+			$query->bindParam(':quizid', $quizId);
+			$query->bindParam(':variant', $qvariant);
+
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error updating entries\n".$error[2];
+			} else {
+				$gradeupdated=true;
+				$duggauser=$luid;
+				$duggaid=$listentry;
+				$lentries=$mark;
+				if ($newDuggaFeedback != "UNK"){
+						$query = $pdo->prepare('UPDATE userAnswer SET feedback = CASE WHEN feedback IS NULL THEN :newDuggaFeedback ELSE concat(feedback, concat("||",:newDuggaFeedback)) END WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid;');
+						$newDuggaFeedback = date("Y-m-d h:i") . "%%" . $newDuggaFeedback;
+						$query->bindParam(':newDuggaFeedback', $newDuggaFeedback);
+						$query->bindParam(':cid', $cid);
+						$query->bindParam(':moment', $listentry);
+						$query->bindParam(':vers', $vers);
+						$query->bindParam(':uid', $luid);
+						if(!$query->execute()) {
+							$error=$query->errorInfo();
+							$debug="Error updating dugga feedback".$error[2];
+						}
+				}
+			}
 		}
+		
 	}
 
 	if(strcmp($opt,"DUGGA")==0){
@@ -164,8 +201,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$duggapage=file_get_contents("templates/".$duggafile.".html");
 			}
 		} else {
-			
-				
+
+				$duggaparam=html_entity_decode("{}");
+				$duggaanswer=html_entity_decode("{}");
+				$duggauser=$luid;
+				$duggaentry=$listentry;
 				$dugganame="templates/feedback_dugga.js";
 				$duggapage=file_get_contents("templates/feedback_dugga.html");
 			
@@ -312,7 +352,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 		}
 
 		// All dugga/moment entries from current course version
-		$query = $pdo->prepare("SELECT listentries.*,quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
+		//$query = $pdo->prepare("SELECT listentries.*,quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
+		$query = $pdo->prepare("SELECT listentries.*,quizFile,variant.vid as qvariant FROM listentries,quiz,variant WHERE quiz.id=variant.quizID AND listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 
@@ -336,7 +377,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'code_id' => $row['code_id'],
 					'vers' => $row['vers'],
 					'quizfile' => $row['quizFile'],
-					'gradesystem' => (int)$row['gradesystem']
+					'gradesystem' => (int)$row['gradesystem'],
+					'qvariant' => $row['qvariant']
 				)
 			);
 		}
