@@ -135,11 +135,11 @@ function returnedDugga(data)
 		if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
 				// No feedback
 		} else {
-				var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+				var fb = "<table><thead><tr><th>Feedback</th></tr></thead><tbody>";
 				var feedbackArr = data["feedback"].split("||");
 				for (var k=feedbackArr.length-1;k>=0;k--){
 					var fb_tmp = feedbackArr[k].split("%%");
-					fb+="<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>"+fb_tmp[0]+"</td><td><pre style='margin-left:6px;'>"+fb_tmp[1]+"</pre></td></tr>";
+					fb+="<tr><td><pre style='margin-left:6px;'>"+fb_tmp[1]+"</pre></td></tr>";
 				} 
 				fb += "</tbody></table>";
 				document.getElementById('tomten').innerHTML = fb;		
@@ -197,7 +197,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	$("#duggaStats").css("display","none");
 
 	inParams = parseGet();
-	$("#content").css({"position":"relative","top":"50px"});
 
 	if (param == "UNK") {
 		alert("UNKNOWN DUGGA!");
@@ -277,7 +276,7 @@ if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
 	var feedbackArr = feedback.split("||");
 	for (var k=feedbackArr.length-1;k>=0;k--){
 		var fb_tmp = feedbackArr[k].split("%%");
-		fb+="<tr><td>"+fb_tmp[0]+"</td><td><pre>"+fb_tmp[1]+"</pre></td></tr>";
+		fb+="<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>"+fb_tmp[0]+"</td><td><pre>"+fb_tmp[1]+"</pre></td></tr>";
 	} 		
 }
 fb += "</tbody></table>";

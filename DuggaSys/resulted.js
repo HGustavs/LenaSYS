@@ -158,8 +158,7 @@ function redrawtable()
 										else if (student[j].grade === 0 /*&& student[j].userAnswer === null*/) {strt += " dugga-assigned"}
 										else {strt += " dugga-unassigned"}
 										strt += "'>";
-										strt += "<div class='gradeContainer";
-                    console.log(student[j]);
+										strt += "<div class='gradeContainer";                    
 										if(student[j].ishere===false){
 											strt += " grading-hidden";
 										}
@@ -500,7 +499,7 @@ function process()
 									if(typeof momentresult!='undefined'){							
 											student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant});
 									}else{
-											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant});							
+											student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK"});							
 									}							
 							}else{
 									var momentresult=restmp[momtmp[j].lid];
@@ -514,8 +513,7 @@ function process()
 					}
 					
 					students.push(student);
-		}
-			console.log(students);
+		}			
 		// Update dropdown list
 		var dstr="";
 		for(var j=0;j<moments.length;j++){
@@ -946,7 +944,7 @@ function returnedResults(data)
 {
   if (data.gradeupdated === true){
       // Update background color
-      $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned");
+      $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned dugga-unassigned");
       if (data.results != "1"){
           $("#u"+data.duggauser+"_d"+data.duggaid).addClass("dugga-pass");
       } else {
@@ -961,6 +959,7 @@ function returnedResults(data)
               for (var j=0;j<students[t].length;j++){
                   if (students[t][j].lid == data.duggaid){
                     dpos=j;
+                    students[t][j].grade = parseInt(data.results);
                     break;
                   }
               }
@@ -972,6 +971,7 @@ function returnedResults(data)
         // Regenerate the marking buttons to reflect the new grade
         var tst = makeSelect(students[rowpos][dpos].gradeSystem, querystring['cid'], students[rowpos][dpos].vers, parseInt(data.duggaid), parseInt(data.duggauser), parseInt(data.results), 'U', null, null);
         tst += "<img id='korf' class='fist";
+        //console.log(students[rowpos][dpos]);
         if(students[rowpos][dpos].userAnswer===null){
           tst += " grading-hidden";
         }
