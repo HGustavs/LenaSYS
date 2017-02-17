@@ -93,8 +93,14 @@ function returnedDugga(data)
 		} else {
 			var msg = "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
 			msg+="<img src='../Shared/icons/duggaLock.svg'>";
-			msg+="<p>Not logged in/registered to the course!<br>You can view the assignment but you need to be logged in/registered to the course to save your dugga result.</p>";
+			if (document.getElementById("loginbutton").className==="loggedin"){
+				msg+="<p>Not registered to the course!<br>You can view the assignment but you need to be registered to the course to save your dugga result.</p>";				
+			} else {
+				msg+="<p>Not logged in!<br>You can view the assignment but you need to be logged in and registered to the course to save your dugga result.</p>";
+				
+			}
 			msg+="</div>";
+			
 			document.getElementById("tomten").innerHTML=msg;
 		}
 
