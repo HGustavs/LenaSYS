@@ -35,9 +35,7 @@ function returnedDugga(data)
 		alert("UNKNOWN DUGGA!");
 	} else {
 		duggaParams = jQuery.parseJSON(data['param']);
-
-		console.log(duggaParams);
-
+		$("#submitButtonTable").hide();
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
@@ -74,7 +72,6 @@ function returnedDugga(data)
 		}
 
 		var linkeddugga=duggaParams["linkeddugga"];
-		console.log(data["files"]);
 		for (var duggas in data["files"]) {
 		    // skip loop if the property is from prototype
 		    if (!data["files"].hasOwnProperty(duggas)) continue;
@@ -92,6 +89,7 @@ function returnedDugga(data)
 							var fileext=obj["extension"];
 							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"100%\" type=\"application/pdf\" />" );
 							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
+							$("#report-header").html(filename+" submitted: "+ obj["updtime"]);
 						}
 					}					
 				}
@@ -244,6 +242,30 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		if (moment != null) {
 			duggaFiles = files[moment];
 		} 
+		console.log(files);
+		var linkeddugga=duggaParams["linkeddugga"];
+		for (var duggas in files) {
+		    // skip loop if the property is from prototype
+		    if (!files.hasOwnProperty(duggas)) continue;
+		
+				if (duggas == parseInt(linkeddugga)){
+					
+					for (var i=0;i<files[duggas].length;i++){
+						//alert(data["files"][duggas][i]);
+						var obj = files[duggas][i];
+						if (obj["fieldnme"]==duggaParams["reportField"]){
+							//alert(obj["filepath"]+obj["filename"]+obj["seq"]+"."+obj["extension"]);
+							var filepath=obj["filepath"];
+							var filename=obj["filename"];
+							var fileseq=obj["seq"];
+							var fileext=obj["extension"];
+							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"100%\" type=\"application/pdf\" />" );
+							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
+							$("#report-header").html(filename+" submitted: "+ obj["updtime"]);
+						}
+					}					
+				}
+		}
 /*
 		createFileUploadArea(duggaParams["submissions"]);
 		for (var k=0; k < duggaParams["submissions"].length; k++){
