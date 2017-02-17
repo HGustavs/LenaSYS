@@ -144,7 +144,7 @@
 
 				echo "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
 				echo "<img src='../Shared/icons/duggaLock.svg'>";
-				echo "<p>Not logged in!<br>You can view the assignment but you need to be logged in to save your test result.</p>";
+				echo "<p>Not logged in/registered to the course!<br>You can view the assignment but you need to be logged in/registered to the course to save your dugga result.</p>";
 				echo "</div>";
 
 			}else{

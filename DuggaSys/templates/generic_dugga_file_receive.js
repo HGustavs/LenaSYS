@@ -72,23 +72,30 @@ function returnedDugga(data)
 		}
 
 		var duggaFiles = data["files"][inParams["moment"]];
-
-		createFileUploadArea(duggaParams["submissions"]);
-		for (var k=0; k < duggaParams["submissions"].length; k++){
-			findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
-    		if (duggaParams['uploadInstruction'] !== null){
-				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
-			}
-
-		}
-		if (typeof duggaFiles !== "undefined"){
-			for (var version=0; version < duggaFiles.length;version++){				
-				if (duggaFiles[version].kind == "3"){
-					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
-					}
+		if($("#submitButtonTable").length != 0) {
+			createFileUploadArea(duggaParams["submissions"]);
+			for (var k=0; k < duggaParams["submissions"].length; k++){
+				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
+	    		if (duggaParams['uploadInstruction'] !== null){
+					document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 				}
-			}							
+	
+			}
+			if (typeof duggaFiles !== "undefined"){
+				for (var version=0; version < duggaFiles.length;version++){				
+					if (duggaFiles[version].kind == "3"){
+						if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
+						 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+						}
+					}
+				}							
+			}
+		} else {
+			var msg = "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
+			msg+="<img src='../Shared/icons/duggaLock.svg'>";
+			msg+="<p>Not logged in/registered to the course!<br>You can view the assignment but you need to be logged in/registered to the course to save your dugga result.</p>";
+			msg+="</div>";
+			document.getElementById("tomten").innerHTML=msg;
 		}
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
