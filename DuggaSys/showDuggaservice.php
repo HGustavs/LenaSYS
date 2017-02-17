@@ -454,7 +454,7 @@ if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be o
 // Use string compare to clear grade if not released yet!
 if($today < $duggainfo['qrelease']  && !(is_null($duggainfo['qrelease']))){
 		$grade="UNK";
-		$feedback="UNK";
+		$duggafeedback="UNK";
 }
 
 $array = array(
