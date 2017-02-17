@@ -200,7 +200,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		alert("UNKNOWN DUGGA!");
 	} else {
 		duggaParams = jQuery.parseJSON(param);
-
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
@@ -235,14 +234,12 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		}else {
 			// UNK 
 		}
-
 		$("#snus").parent().find(".instructions-content").slideToggle("slow");
 
 		var duggaFiles = [];
 		if (moment != null) {
 			duggaFiles = files[moment];
 		} 
-		console.log(files);
 		var linkeddugga=duggaParams["linkeddugga"];
 		for (var duggas in files) {
 		    // skip loop if the property is from prototype
@@ -251,7 +248,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 				if (duggas == parseInt(linkeddugga)){
 					
 					for (var i=0;i<files[duggas].length;i++){
-						//alert(data["files"][duggas][i]);
+						console.log(files[duggas][i]);
 						var obj = files[duggas][i];
 						if (obj["fieldnme"]==duggaParams["reportField"]){
 							//alert(obj["filepath"]+obj["filename"]+obj["seq"]+"."+obj["extension"]);

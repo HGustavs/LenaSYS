@@ -201,13 +201,25 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$duggapage=file_get_contents("templates/".$duggafile.".html");
 			}
 		} else {
-
-				$duggaparam=html_entity_decode("{}");
+				//we need the paramters for the variant
+				$queryp = $pdo->prepare("SELECT quizFile,quizID,vid,param FROM quiz,listentries,variant WHERE listentries.cid=:cid AND listentries.vers=:vers AND lid=:moment AND listentries.link=variant.quizID AND variant.quizID=quiz.id LIMIT 1;");
+				$queryp->bindParam(':cid', $cid);
+				$queryp->bindParam(':vers', $vers);
+				$queryp->bindParam(':moment', $listentry);
+		
+				if(!$queryp->execute()) {
+					$error=$queryp->errorInfo();
+					$debug="Error reading param".$error[2]." ". __LINE__;
+				}
+				if ($row = $queryp->fetch(PDO::FETCH_ASSOC)) {
+					$duggaparam=html_entity_decode($row["param"]);
+					$duggaid=$row["quizID"];
+				}
 				$duggaanswer=html_entity_decode("{}");
 				$duggauser=$luid;
 				$duggaentry=$listentry;
-				$dugganame="templates/feedback_dugga.js";
-				$duggapage=file_get_contents("templates/feedback_dugga.html");
+				$dugganame="templates/".$row["quizFile"].".js";
+				$duggapage=file_get_contents("templates/".$row["quizFile"].".html");
 			
 		}
 	}
