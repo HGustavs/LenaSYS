@@ -137,7 +137,7 @@ function returnedDugga(data)
 				var feedbackArr = data["feedback"].split("||");
 				for (var k=feedbackArr.length-1;k>=0;k--){
 					var fb_tmp = feedbackArr[k].split("%%");
-					if (k==1){						
+					if (k==0){						
 						fb= "<textarea rows='"+fb_tmp[1].split('\n').length+"' readonly style='width:98%;padding:2px;'>"+fb_tmp[1]+"</textarea>"+fb;
 					} else {
 						fb+="<tr><td><pre style='margin-left:6px;'>"+fb_tmp[1]+"</pre></td></tr>";						
@@ -145,7 +145,6 @@ function returnedDugga(data)
 				} 
 				fb += "</tbody></table>";
 				document.getElementById('tomten').innerHTML = fb;					
-				//document.getElementById('t').style.display = "block";
 		}
 
 
