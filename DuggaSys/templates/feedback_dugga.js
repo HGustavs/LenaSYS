@@ -133,14 +133,18 @@ function returnedDugga(data)
 		if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
 				// No feedback
 		} else {
-				var fb = "<table><thead><tr><th>Feedback</th></tr></thead><tbody>";
+				var fb = "<table width='100%'><thead><tr><th>Previous feedback</th></tr></thead><tbody>";
 				var feedbackArr = data["feedback"].split("||");
 				for (var k=feedbackArr.length-1;k>=0;k--){
 					var fb_tmp = feedbackArr[k].split("%%");
-					fb+="<tr><td><pre style='margin-left:6px;'>"+fb_tmp[1]+"</pre></td></tr>";
+					if (k==1){						
+						fb= "<textarea rows='"+fb_tmp[1].split('\n').length+"' readonly style='width:98%;padding:2px;'>"+fb_tmp[1]+"</textarea>"+fb;
+					} else {
+						fb+="<tr><td><pre style='margin-left:6px;'>"+fb_tmp[1]+"</pre></td></tr>";						
+					}
 				} 
 				fb += "</tbody></table>";
-				document.getElementById('tomten').innerHTML = fb;		
+				document.getElementById('tomten').innerHTML = fb;					
 				//document.getElementById('t').style.display = "block";
 		}
 
@@ -248,7 +252,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 				if (duggas == parseInt(linkeddugga)){
 					
 					for (var i=0;i<files[duggas].length;i++){
-						console.log(files[duggas][i]);
 						var obj = files[duggas][i];
 						if (obj["fieldnme"]==duggaParams["reportField"]){
 							//alert(obj["filepath"]+obj["filename"]+obj["seq"]+"."+obj["extension"]);
