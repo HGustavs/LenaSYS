@@ -241,7 +241,7 @@ strong {font-weight: bold;}
     	border-radius:4px;	
 }
 						
-table tbody tr:nth-child(even) {background-color:#dad8db;}
+table tbody tr:nth-child(even) {background-color:#F0F0F0;}
 .selectedOp {background-color: #c6cdb8 !important;}
 svg text {
 	pointer-events: none;

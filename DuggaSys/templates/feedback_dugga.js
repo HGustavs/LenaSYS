@@ -133,14 +133,14 @@ function returnedDugga(data)
 		if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
 				// No feedback
 		} else {
-				var fb = "<table width='100%'><thead><tr><th>Previous feedback</th></tr></thead><tbody>";
+				var fb = "<table style='width:100%;border:1px solid #000;'><caption>Previous feedback</caption><thead><tr><th></th></tr></thead><tbody>";
 				var feedbackArr = data["feedback"].split("||");
 				for (var k=feedbackArr.length-1;k>=0;k--){
 					var fb_tmp = feedbackArr[k].split("%%");
-					if (k==0){						
-						fb= "<textarea rows='"+fb_tmp[1].split('\n').length+"' readonly style='width:98%;padding:2px;'>"+fb_tmp[1]+"</textarea>"+fb;
+					if (k==feedbackArr.length-1){						
+						fb= "<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"+fb;
 					} else {
-						fb+="<tr><td><pre style='margin-left:6px;'>"+fb_tmp[1]+"</pre></td></tr>";						
+						fb+="<tr><td><pre style='margin-left:6px;white-space:pre-wrap;color:rgba(0,0,0,0.5)'>"+fb_tmp[1]+"</pre></td></tr>";						
 					}
 				} 
 				fb += "</tbody></table>";
