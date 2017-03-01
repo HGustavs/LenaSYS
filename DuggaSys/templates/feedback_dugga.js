@@ -133,17 +133,23 @@ function returnedDugga(data)
 		if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
 				// No feedback
 		} else {
-				var fb = "<table style='width:100%;border:1px solid #000;'><caption>Previous feedback</caption><thead><tr><th></th></tr></thead><tbody>";
-				var feedbackArr = data["feedback"].split("||");
-				for (var k=feedbackArr.length-1;k>=0;k--){
-					var fb_tmp = feedbackArr[k].split("%%");
-					if (k==feedbackArr.length-1){						
-						fb= "<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"+fb;
-					} else {
-						fb+="<tr><td><pre style='margin-left:6px;white-space:pre-wrap;color:rgba(0,0,0,0.5)'>"+fb_tmp[1]+"</pre></td></tr>";						
-					}
-				} 
-				fb += "</tbody></table>";
+      	var feedbackArr = data["feedback"].split("||");
+        var fb="";
+        if (feedbackArr.length > 1){
+            fb="<table style='width:100%;border:1px solid #000;'><caption>Previous feedback</caption><thead><tr><th></th></tr></thead><tbody>";
+    				for (var k=feedbackArr.length-1;k>=0;k--){
+      					var fb_tmp = feedbackArr[k].split("%%");
+      					if (k==feedbackArr.length-1){						
+      						fb="<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"+fb;
+      					} else {
+      						fb+="<tr><td><pre style='margin-left:6px;white-space:pre-wrap;color:rgba(0,0,0,0.5)'>"+fb_tmp[1]+"</pre></td></tr>";						
+      					}
+    				} 
+    				fb += "</tbody></table>";          
+        } else if (feedbackArr.length == 1){
+            var fb_tmp = feedbackArr[0].split("%%");
+            fb="<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"
+        }
 				document.getElementById('tomten').innerHTML = fb;					
 		}
 
