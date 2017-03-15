@@ -36,7 +36,7 @@ function changeAccess(cid,uid,val)
 	AJAXService("ACCESS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
 
-function selectUser(uid,username,ssn,firstname,lastname,access)
+function selectUser(uid,username,ssn,firstname,lastname,access,className)
 {
 	// Set Name		
 	$("#firstname").val(firstname);
@@ -47,8 +47,8 @@ function selectUser(uid,username,ssn,firstname,lastname,access)
 		
 	//Set SSN
 	$("#ussn").val(ssn);
-	
-	$("#uid").val(uid);
+	if (className != "null" || className != "UNK") {$("#class").val(className);}
+	$("#uid").val(uid);	
 	$("#editUsers").css("display","block");
 }
 
@@ -59,8 +59,9 @@ function updateUser()
 	var firstname=$("#firstname").val();
 	var lastname=$("#lastname").val();
 	var uid=$("#uid").val();
+	var className=$("#class").val();
 	
-	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
+	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 	
 	$("#editUsers").css("display","none");
 }
@@ -90,7 +91,7 @@ function returnedAccess(data)
 
 		str+="<table class='list'>";
 
-		str+="<tr><th class='first' style='text-align:left; padding-left:8px; width:140px;'>Username</th><th style='text-align:left; padding-left:8px; width:150px;'>SSN</th><th style='text-align:left; padding-left:8px;'>First Name</th><th style='text-align:left; padding-left:8px;'>Last Name</th><th style='text-align:left; padding-left:8px; width:100px;'>Modified</th><th style='text-align:left; padding-left:8px; width:90px;'>Access</th><th style='text-align:left; padding-left:8px; width:90px;'>Settings</th><th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
+		str+="<tr><th class='first' style='text-align:left; padding-left:8px; width:140px;'>Username</th><th style='text-align:left; padding-left:8px; width:150px;'>SSN</th><th style='text-align:left; padding-left:8px;'>First Name</th><th style='text-align:left; padding-left:8px;'>Last Name</th><th style='text-align:left; padding-left:8px; width:150px;'>Study program</th><th style='text-align:left; padding-left:8px; width:100px;'>Added</th><th style='text-align:left; padding-left:8px; width:90px;'>Access</th><th style='text-align:left; padding-left:8px; width:90px;'>Settings</th><th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 
@@ -105,6 +106,7 @@ function returnedAccess(data)
 			str+="<td>"+item['ssn']+"</td>";
 			str+="<td>"+item['firstname']+"</td>";
 			str+="<td>"+item['lastname']+"</td>";
+			str+="<td>"+item['class']+"</td>";
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 			
 			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
@@ -128,7 +130,7 @@ function returnedAccess(data)
 			
 			
 			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\");'></td>";
+			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\",\""+item['class']+"\");'></td>";
 			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;' style='float:none;'></td>";
 			str+="</tr>";
 		}

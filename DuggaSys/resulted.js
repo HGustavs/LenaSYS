@@ -269,7 +269,7 @@ function resort()
 				
 						if(columno==0){
 								if(colkind==0){
-										students.sort(function compare(a,b){
+										students.sort(function compare(a,b){                        
 												if(a[0].firstname>b[0].firstname){
 														return sortdir;
 												}else if(a[0].firstname<b[0].firstname){
@@ -288,16 +288,26 @@ function resort()
 											 return 0;
 									 }
 									});
+							 }else if(colkind==2){
+                   students.sort(function compare(a,b){
+                     if(a[0].ssn>b[0].ssn){
+                         return sortdir;
+                     }else if(a[0].ssn<b[0].ssn){
+                         return -sortdir;
+                     }else{
+                         return 0;
+                     }
+                  });
 							 }else{
-									 students.sort(function compare(a,b){
-											 if(a[0].ssn>b[0].ssn){
-													 return sortdir;
-											 }else if(a[0].ssn<b[0].ssn){
-													 return -sortdir;
-											 }else{
-													 return 0;
-											 }
-									 });
+                 students.sort(function compare(a,b){ 
+                  if(a[0].class>b[0].class || b[0].class == undefined){
+                      return sortdir;
+                  }else if(a[0].class<b[0].class || a[0].class == undefined){
+                      return -sortdir;
+                  }else{
+                      return 0;
+                  }
+                 });
 							 }
 							}else{
 							// other columns sort by 
@@ -487,7 +497,7 @@ function process()
 					}
 		
 					var student=new Array;
-					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn});
+					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class});
 										
 					// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 					for(var j=0;j<momtmp.length;j++){
@@ -551,7 +561,8 @@ function process()
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort ascending</label><input name='sortdir' type='radio' class='headercheck' value='-1' id='sortdir-1'><label class='headerlabel' for='sortdir-1'>Sort descending</label></div>";
 		dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 		dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-		dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";
+		dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";		
+    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
 
 		dstr+="<table><tr><td>";
 		for(var j=0;j<momtmp.length;j++){

@@ -19,6 +19,7 @@ $cid = getOP('cid');
 $opt = getOP('opt');
 $uid = getOP('uid');
 $ssn = getOP('ssn');
+$className = getOP('className');
 $firstname = getOP('firstname');
 $lastname = getOP('lastname');
 $username = getOP('username');
@@ -38,12 +39,13 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php"
 
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"UPDATE")==0){
-		$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username WHERE uid=:uid;");
+		$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username,class=:className WHERE uid=:uid;");
 		$query->bindParam(':firstname', $firstname);
 		$query->bindParam(':lastname', $lastname);
 		$query->bindParam(':ssn', $ssn);
 		$query->bindParam(':username', $username);
 		$query->bindParam(':uid', $uid);
+		$query->bindParam(':className', $className);
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -91,6 +93,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$tmp = explode(',', $user[1]);
 					$firstname = trim($tmp[1]);
 					$lastname = trim($tmp[0]);
+					if(isset($user[4])){
+							$className = trim($user[4]);
+					}					
 					$tmp2 = explode('@', $user[count($user)-1]);
 					$username = $tmp2[0];
 					//$debug.=$ssn." ".$username."#".$firstname."#".$lastname."\n";					
@@ -102,7 +107,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					// assigned password which can be printed later.
 					if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
 							$rnd=makeRandomString(9);
-							$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now());';	
+							$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now(),:className);';	
 							$stmt = $pdo->prepare($querystring);
 							$stmt->bindParam(':username', $username);
 							$stmt->bindParam(':email', $saveemail);
@@ -110,6 +115,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							$stmt->bindParam(':lastname', $lastname);
 							$stmt->bindParam(':ssn', $ssn);
 							$stmt->bindParam(':password', $rnd);
+							$stmt->bindParam(':className', $className);
 							
 							if(!$stmt->execute()) {
 								$error=$stmt->errorInfo();
@@ -148,7 +154,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 $entries=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,modified, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -163,6 +169,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
 				'ssn' => $row['ssn'],	
+				'class' => $row['class'],	
 				'modified' => $row['modified'],
 				'newly' => $row['newly']
 			);
