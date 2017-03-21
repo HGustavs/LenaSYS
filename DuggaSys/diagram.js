@@ -76,6 +76,20 @@ var points=[
            ];
 
 //--------------------------------------------------------------------
+// addpoint
+// Creates a new point and returns index of that point
+//--------------------------------------------------------------------
+
+points.addpoint = function (xk,yk,selval)
+{
+		var newpnt={x:xk,y:yk,selected:selval};
+		
+		var pos=this.length;
+		this.push(newpnt);
+		return pos;
+}
+
+//--------------------------------------------------------------------
 // drawpoints
 // Draws each of the points as a cross
 //--------------------------------------------------------------------
@@ -1207,6 +1221,7 @@ function updategfx()
 {		
 		ctx.clearRect(0,0,600,600);
 
+		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
 
 		// Redraw diagram
@@ -1318,12 +1333,51 @@ function mousedownevt(ev)
 
 function mouseupevt(ev)
 {
+		
+		// Code for creating a new class
+				
+		if(md==4){
+				// Add required points
+				var p1=points.addpoint(sx,sy,false);
+				var p2=points.addpoint(cx,cy,false);
+				var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
+		}
+
+		if(uimode=="CreateClass"&&md==4){
+				classB = new Symbol(1);
+				classB.name="New"+diagram.length;		
+
+				classB.operations.push({visibility:"-",text:"makemore()"});		
+				classB.attributes.push({visibility:"+",text:"height:Integer"});
+								
+				classB.topLeft=p1;
+				classB.bottomRight=p2;	
+				classB.middleDivider=p3;	
+
+				diagram.push(classB);
+		}else if(uimode=="CreateERAttr"&&md==4){
+				erAttributeA = new Symbol(2);
+				erAttributeA.name="Attr"+diagram.length;		
+				erAttributeA.topLeft=p1;
+				erAttributeA.bottomRight=p2;	
+				erAttributeA.centerpoint=p3;	
+				diagram.push(erAttributeA);
+
+		}
+
+		// Clear mouse state
 		md=0;
+
 }
 
 function classmode()
 {
 		uimode="CreateClass";
+}
+
+function attrmode()
+{
+		uimode="CreateERAttr";
 }
 
 function cross(xk,yk)

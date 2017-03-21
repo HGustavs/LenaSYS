@@ -38,11 +38,10 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 
-	      <button onclick="classmode();">create class</button><br>
+	      <button onclick="classmode();">create class</button><button onclick="attrmode();">create attribute</button><br>
 	      <canvas id="myCanvas" width="600" height="600" onmousemove="mousemoveevt(event,this);" onmousedown="mousedownevt(event);" onmouseup="mouseupevt(event);"></canvas>
-	      <div id="consloe" style="position:fixed;left:0px;right:0px;bottom:0px;height:144px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;">Toddler</div>
+	      <div id="consloe" style="position:fixed;left:0px;right:0px;bottom:0px;height:144px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;">Application console</div>
 
-	
 	</div>
 	<!-- content END -->
 
