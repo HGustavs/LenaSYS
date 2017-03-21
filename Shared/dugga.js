@@ -363,6 +363,22 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedSection
 			});
+	}else if(kind=="CONTRIBUTION"){
+			$.ajax({
+				url: "contributionservice.php",
+				type: "POST",
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				dataType: "json",
+				success: returnedSection
+			});
+	}else if(kind=="DIAGRAM"){
+			$.ajax({
+				url: "contributionservice.php",
+				type: "POST",
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				dataType: "json",
+				success: returnedSection
+			});
 	}else if(kind=="PDUGGA"){
 			$.ajax({
 				url: "showDuggaservice.php",
