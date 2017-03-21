@@ -1336,7 +1336,7 @@ function mouseupevt(ev)
 		
 		// Code for creating a new class
 				
-		if(md==4){
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr")){
 				// Add required points
 				var p1=points.addpoint(sx,sy,false);
 				var p2=points.addpoint(cx,cy,false);
@@ -1364,6 +1364,8 @@ function mouseupevt(ev)
 				diagram.push(erAttributeA);
 
 		}
+
+		updategfx();		
 
 		// Clear mouse state
 		md=0;
