@@ -73,13 +73,14 @@ CREATE TABLE user_course(
 		creator 		INTEGER,
 		access			VARCHAR(10) NOT NULL,
 		period			INTEGER DEFAULT 1,
-		term				CHAR(5) DEFAULT "VT16",
+		term				CHAR(5) DEFAULT 1,
 		vers				VARCHAR(8),
 		vershistory	TEXT,
 		PRIMARY KEY(uid, cid),
 		FOREIGN KEY (uid)REFERENCES user (uid),
 		FOREIGN KEY (cid) REFERENCES course (cid)
 );
+
 
 CREATE TABLE listentries (
 	lid 			INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -281,6 +282,7 @@ CREATE TABLE box(
 	boxtitle			VARCHAR(20),
 	boxcontent		VARCHAR(64),
 	filename			VARCHAR(256),
+	fontsize
 	settings			VARCHAR(1024),
 	wordlistid		MEDIUMINT UNSIGNED,
 	segment				TEXT,
