@@ -5,22 +5,22 @@ use imperious;
 /* user contains the users of the system and related  information */
 
 CREATE TABLE user(
-		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		username		VARCHAR(80) NOT NULL UNIQUE,
-		firstname		VARCHAR(50) NULL,
-		lastname		VARCHAR(50) NULL,
-		ssn					VARCHAR(20) NULL UNIQUE,
-		password		VARCHAR(225) NOT NULL,
-		lastupdated	TIMESTAMP,
-		addedtime  	TIMESTAMP,
-		lastvisit		TIMESTAMP,
-		newpassword	TINYINT(1) NULL,
-		creator			INT UNSIGNED NULL,
-		superuser		TINYINT(1) NULL,
-		email				VARCHAR(256) DEFAULT NULL,
-		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class),
-		totalHp			decimal(4,1),
-		PRIMARY KEY(uid)
+	uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	username			VARCHAR(80) NOT NULL UNIQUE,
+	firstname			VARCHAR(50) NULL,
+	lastname			VARCHAR(50) NULL,
+	ssn					VARCHAR(20) NULL UNIQUE,
+	password			VARCHAR(225) NOT NULL,
+	lastupdated			TIMESTAMP,
+	addedtime  			DATETIME,
+	lastvisit			DATETIME,
+	newpassword			TINYINT(1) NULL,
+	creator				INT UNSIGNED NULL,
+	superuser			TINYINT(1) NULL,
+	email				VARCHAR(256) DEFAULT NULL,
+	class 				VARCHAR(10) DEFAULT NULL REFERENCES class (class),
+	totalHp				decimal(4,1),
+	PRIMARY KEY(uid)
 
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -403,7 +403,7 @@ CREATE TABLE partresult (
 	partname	varchar(50),
 	grade 		varchar(1) DEFAULT NULL,
 	hp			decimal(3,1) references subparts (parthp),
-	PRIMARY KEY(partname, cid, uid,grade),
+	PRIMARY KEY(partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -412,7 +412,7 @@ CREATE TABLE partresult (
  * this table many to many relation between class and course.
  */
 CREATE TABLE programcourse (
-    class 		varchar(10) DEFAULT NULL,
+    class 		varchar(10) NOT NULL,
 	cid 		INT UNSIGNED NOT NULL,
 	period 		int(1) ,
 	term 		varchar(10),
@@ -486,42 +486,6 @@ update user set ssn="810101-5567" where username="Grimling";
 update user set ssn="444444-5447" where username="Toddler";
 update user set password=password("Kong") where username="Toddler";
 update user set superuser=1 where username="Toddler";
-
-/**
- * Clears the eventlog table on a weekly basis
- * If this is for some reason needed - comment out. In all other cases, this should not run by default.
-DELIMITER $$
-CREATE EVENT weekly_eventlog_delete ON SCHEDULE EVERY 1 WEEK
-		DO
-	BEGIN
-	SET SQL_SAFE_UPDATES = 0;
-		DELETE FROM eventlog;
-	SET SQL_SAFE_UPDATES = 1;
-END $$
-DELIMITER ;
- */
-
- /*
- 	A procedure that creates a temporary table to hold all the items from
- 	a copied course. Then changes all the version numbers and inserts it
- 	back into the database as new data. Ending on dropping the temp table.
- */
- DELIMITER //
- CREATE PROCEDURE copyVersionItems(IN oldvers VARCHAR(8),IN newvers VARCHAR(8))
- BEGIN
- SET @oldvers = oldvers;
- SET @newvers = newvers;
- CREATE TEMPORARY TABLE tmpListEntry SELECT cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode FROM listentries WHERE vers = oldvers COLLATE utf8_unicode_ci;
- UPDATE tmpListEntry SET vers = newvers WHERE vers = oldvers COLLATE utf8_unicode_ci;
- INSERT INTO listentries (cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode) SELECT cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode FROM tmpListEntry WHERE vers = newvers COLLATE utf8_unicode_ci;
- DROP TABLE tmpListEntry;
-
- CREATE TEMPORARY TABLE tmpSubmission SELECT uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind FROM submission WHERE vers = oldvers COLLATE utf8_unicode_ci;
- UPDATE tmpSubmission SET vers = newvers WHERE vers = oldvers COLLATE utf8_unicode_ci;
- INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind) SELECT uid,cid,vers,did,seq,fieldnme,filepath,filename,extension,mime,kind FROM tmpSubmission WHERE vers = newvers COLLATE utf8_unicode_ci;
- DROP TABLE tmpSubmission;
- END //
- DELIMITER ;
 
 /* Templates for codeexamples */
 
