@@ -6,20 +6,20 @@ use imperious;
 
 CREATE TABLE user(
 		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		username		VARCHAR(80) NOT NULL UNIQUE,
-		firstname		VARCHAR(50) NULL,
-		lastname		VARCHAR(50) NULL,
+		username			VARCHAR(80) NOT NULL UNIQUE,
+		firstname			VARCHAR(50) NULL,
+		lastname			VARCHAR(50) NULL,
 		ssn					VARCHAR(20) NULL UNIQUE,
-		password		VARCHAR(225) NOT NULL,
-		lastupdated	TIMESTAMP,
-		addedtime  	TIMESTAMP,
-		lastvisit		TIMESTAMP,
-		newpassword	TINYINT(1) NULL,
-		creator			INT UNSIGNED NULL,
-		superuser		TINYINT(1) NULL,
+		password			VARCHAR(225) NOT NULL,
+		lastupdated			TIMESTAMP,
+		addedtime  			DATETIME,
+		lastvisit			DATETIME,
+		newpassword			TINYINT(1) NULL,
+		creator				INT UNSIGNED NULL,
+		superuser			TINYINT(1) NULL,
 		email				VARCHAR(256) DEFAULT NULL,
-		class 			VARCHAR(10) DEFAULT NULL REFERENCES class (class),
-		totalHp			decimal(4,1),
+		class 				VARCHAR(10) DEFAULT NULL REFERENCES class (class),
+		totalHp				decimal(4,1),
 		PRIMARY KEY(uid)
 
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -284,6 +284,7 @@ CREATE TABLE box(
 	settings			VARCHAR(1024),
 	wordlistid		MEDIUMINT UNSIGNED,
 	segment				TEXT,
+	fontsize			VARCHAR(10),
 	CONSTRAINT pk_box PRIMARY KEY(boxid, exampleid),
 	CONSTRAINT fk_box_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -403,7 +404,7 @@ CREATE TABLE partresult (
 	partname	varchar(50),
 	grade 		varchar(1) DEFAULT NULL,
 	hp			decimal(3,1) references subparts (parthp),
-	PRIMARY KEY(partname, cid, uid,grade),
+	PRIMARY KEY(partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -412,7 +413,7 @@ CREATE TABLE partresult (
  * this table many to many relation between class and course.
  */
 CREATE TABLE programcourse (
-    class 		varchar(10) DEFAULT NULL,
+    class 		varchar(10) NOT NULL,
 	cid 		INT UNSIGNED NOT NULL,
 	period 		int(1) ,
 	term 		varchar(10),
