@@ -1,6 +1,6 @@
-drop database grupp01;
-create database grupp01;
-use grupp01;
+drop database imperious;
+create database imperious;
+use imperious;
 
 /* user contains the users of the system and related  information */
 
