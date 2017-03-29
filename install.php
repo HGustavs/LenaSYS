@@ -31,14 +31,16 @@
     </form>
 
     <?php if (isset($_POST["submitButton"])) {
+        # Check if all fields are filled.
+        $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
+        foreach ($fields AS $fieldname) { //Loop trough each field
+            if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
+                exit ("<span style='color: red;' />Please fill all fields.</span>");
+            }
+        }
+
         # Only create DB if box is ticked.
         if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
-            $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
-            foreach ($fields AS $fieldname) { //Loop trough each field
-                if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
-                    exit ("Please fill all fields.");
-                }
-            }
 
             $username = $_POST["newUser"];
             $password = $_POST["password"];
@@ -53,17 +55,17 @@
                 $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
                 // set the PDO error mode to exception
                 $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "Connected successfully to " . $serverName . "<br>";
+                echo "<span style='color: green;' />Connected successfully to " . $serverName . "</span><br>";
             } catch (PDOException $e) {
-                echo "Connection failed: " . $e->getMessage() . "<br>";
+                echo "<span style='color: red;' />Connection failed: " . $e->getMessage() . "</span><br>";
             }
 
             # Create new database.
             try {
                 $connection->query("CREATE DATABASE " . $databaseName);
-                echo "Database with name " . $databaseName . " created successfully!<br>";
+                echo "<span style='color: green;' />Database with name " . $databaseName . " created successfully!</span><br>";
             } catch (PDOException $e) {
-                echo "Database with name " . $databaseName . " could not be created. Maybe it already exists...<br>";
+                echo "<span style='color: red;' />Database with name " . $databaseName . " could not be created. Maybe it already exists...</span><br>";
             }
 
             # Create new user and grant privileges to created database.
@@ -72,26 +74,58 @@
                 $connection->query("CREATE USER '" . $username . "'@'" . $serverName . "' IDENTIFIED BY '" . $password . "'");
                 $connection->query("GRANT ALL PRIVILEGES ON *.* TO '" . $username . "'@'" . $serverName . "'");
                 $connection->query("FLUSH PRIVILEGES");
-                echo "Successfully created user " . $username . "<br>";
+                echo "<span style='color: green;' />Successfully created user " . $username . "</span><br>";
             } catch (PDOException $e) {
-                echo "Could not create user with name " . $username . ", maybe it already exists...<br>";
+                echo "<span style='color: red;' />Could not create user with name " . $username . ", maybe it already exists...</span><br>";
             }
 
-            #TODO: INIT DATABASE.
-            echo "<br> Database Successfully created with new user! <br>";
+            # Init database
+            $initQuery = file_get_contents("Shared/SQL/init_db.sql");
+            try {
+                $connection->query("USE " . $databaseName);
+                $connection->query($initQuery);
+                echo "<span style='color: green;' />Initiated database. </span><br>";
 
-            # Fill database
-            if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
-                #TODO: FILL DATABASE.
-                echo "Successfully filled database with test data.";
+                # Fill database
+                if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
+                    $testDataQuery = file_get_contents("Shared/SQL/testdata.sql");
+                    try {
+                        $connection->query($testDataQuery);
+                        echo "<span style='color: green;' />Successfully filled database with test data.</span><br>";
+                    } catch (PDOException $e) {
+                        echo "<span style='color: red;' />Failed to fill database with data... </span><br>";
+                    }
+                } else {
+                    echo "Skipped filling database with test data.<br>";
+                }
+            } catch (PDOException $e) {
+                echo "<span style='color: red;' />Failed initialization of database... </span><br>";
             }
         } else {
             echo "Skipped creating database <br>";
         }
 
-        #TODO: Change/create file with settings. (coursesyspw.php)
+        echo "Installation complete.<br>";
 
-        echo "Installation complete!";
+        $putFileHere = dirname(getcwd(), 1);
+        echo "<br><b>To make it work please make a file named 'coursesyspw.php' at " . $putFileHere . "</b><br>";
+        echo "<b>After this - fill the file with the code below:</b>";
+
+        echo "<br><pre>";
+        echo htmlspecialchars("<?php") . "<br>";
+        echo 'define("DB_USER","' . $username . '");<br>';
+        echo 'define("DB_PASSWORD","' . $password . '");<br>';
+        echo 'define("DB_HOST","' . $serverName . '");<br>';
+        echo 'define("DB_NAME","' . $databaseName . '");<br>';
+        echo htmlspecialchars("?>");
+        echo "</pre><br>";
+
+        echo "<b> Now create a directory named 'log' at " . $putFileHere . " with permissions 777.</b><br>";
+        echo "<pre>mkdir " . $putFileHere . "/log</pre>";
+        echo "<pre>chmod 777 " . $putFileHere . "/log</pre>";
+        echo "<b> Inside this directory create a new sqlite file (and change permissions) by running the commands: </b><br>";
+        echo "<pre>sqlite3 " . $putFileHere . "/loglena4.db</pre>";
+        echo "<pre>chmod 777 " . $putFileHere . "/log/loglena4.db</pre><br>";
     }
     ?>
 </body>
