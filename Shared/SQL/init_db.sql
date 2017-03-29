@@ -5,22 +5,22 @@ use imperious;
 /* user contains the users of the system and related  information */
 
 CREATE TABLE user(
-	uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	username			VARCHAR(80) NOT NULL UNIQUE,
-	firstname			VARCHAR(50) NULL,
-	lastname			VARCHAR(50) NULL,
-	ssn					VARCHAR(20) NULL UNIQUE,
-	password			VARCHAR(225) NOT NULL,
-	lastupdated			TIMESTAMP,
-	addedtime  			DATETIME,
-	lastvisit			DATETIME,
-	newpassword			TINYINT(1) NULL,
-	creator				INT UNSIGNED NULL,
-	superuser			TINYINT(1) NULL,
-	email				VARCHAR(256) DEFAULT NULL,
-	class 				VARCHAR(10) DEFAULT NULL REFERENCES class (class),
-	totalHp				decimal(4,1),
-	PRIMARY KEY(uid)
+		uid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		username			VARCHAR(80) NOT NULL UNIQUE,
+		firstname			VARCHAR(50) NULL,
+		lastname			VARCHAR(50) NULL,
+		ssn					VARCHAR(20) NULL UNIQUE,
+		password			VARCHAR(225) NOT NULL,
+		lastupdated			TIMESTAMP,
+		addedtime  			DATETIME,
+		lastvisit			DATETIME,
+		newpassword			TINYINT(1) NULL,
+		creator				INT UNSIGNED NULL,
+		superuser			TINYINT(1) NULL,
+		email				VARCHAR(256) DEFAULT NULL,
+		class 				VARCHAR(10) DEFAULT NULL REFERENCES class (class),
+		totalHp				decimal(4,1),
+		PRIMARY KEY(uid)
 
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -34,19 +34,19 @@ INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$
  */
 
 /* alter table course alter column hp add default 7.5; */
- 
+
 CREATE TABLE course(
-		cid							INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		cid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		coursecode			VARCHAR(45) NULL UNIQUE,
 		coursename			VARCHAR(80) NULL,
-		created					DATETIME,
-		creator					INT UNSIGNED NOT NULL,
+		created				DATETIME,
+		creator				INT UNSIGNED NOT NULL,
 		visibility			TINYINT UNSIGNED NOT NULL DEFAULT 0,
-		updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		activeversion 	VARCHAR(8),
-		activeedversion VARCHAR(8),
-		capacity				int(5),
-		hp							decimal(4,1) not null default 7.5,
+		updated				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		activeversion 		VARCHAR(8),
+		activeedversion 	VARCHAR(8),
+		capacity			int(5),
+		hp					decimal(4,1) not null default 7.5,
 		courseHttpPage		varchar(2000),
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
@@ -55,7 +55,7 @@ CREATE TABLE course(
 /* This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
 CREATE TABLE course_req(
 		cid			INT UNSIGNED NOT NULL,
-		req_cid			INT UNSIGNED NOT NULL,
+		req_cid		INT UNSIGNED NOT NULL,
 		PRIMARY KEY(cid, req_cid),
 		FOREIGN KEY(cid) REFERENCES course(cid),
 		FOREIGN KEY(req_cid) REFERENCES course(cid)
@@ -68,14 +68,14 @@ CREATE TABLE course_req(
 CREATE TABLE user_course(
 		uid					INT UNSIGNED NOT NULL,
 		cid					INT UNSIGNED NOT NULL,
-		result 			DECIMAL(2,1) DEFAULT 0.0,
-		modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		creator 		INTEGER,
-		access			VARCHAR(10) NOT NULL,
-		period			INTEGER DEFAULT 1,
+		result 				DECIMAL(2,1) DEFAULT 0.0,
+		modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		creator 			INTEGER,
+		access				VARCHAR(10) NOT NULL,
+		period				INTEGER DEFAULT 1,
 		term				CHAR(5) DEFAULT "VT16",
 		vers				VARCHAR(8),
-		vershistory	TEXT,
+		vershistory			TEXT,
 		PRIMARY KEY(uid, cid),
 		FOREIGN KEY (uid)REFERENCES user (uid),
 		FOREIGN KEY (cid) REFERENCES course (cid)
@@ -88,14 +88,14 @@ CREATE TABLE listentries (
 	link 			VARCHAR(200),
 	kind 			INT unsigned,
 	pos 			INT,
-	creator 		INT unsigned not null,
-	ts				TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE current_timestamp,
-	code_id 		MEDIUMINT unsigned null default null,
+	creator 		INT unsigned NOT NULL,
+	ts				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	code_id 		MEDIUMINT unsigned NULL DEFAULT NULL,
 	visible 		TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	vers			VARCHAR(8),
 	moment			INT UNSIGNED,
 	gradesystem 	TINYINT(1),
-	highscoremode		INT DEFAULT 0,
+	highscoremode	INT DEFAULT 0,
 	CONSTRAINT 		pk_listentries PRIMARY KEY(lid),
 
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
@@ -115,7 +115,7 @@ CREATE TABLE quiz (
 	deadline 		DATETIME,
 	modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 		INTEGER,
-	vers				VARCHAR(8),
+	vers			VARCHAR(8),
 
 	CONSTRAINT 		pk_quiz PRIMARY KEY (id),
 	CONSTRAINT 		fk_quiz_joins_course FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
@@ -150,12 +150,12 @@ CREATE TABLE userAnswer (
 	marked			TIMESTAMP NULL,
 	vers			VARCHAR(8),
 	creator 		INTEGER,
-	score		INT DEFAULT NULL,
-	timeUsed int(11) DEFAULT NULL,
-	totalTimeUsed int(11) DEFAULT '0',
-	stepsUsed int(11) DEFAULT NULL,
-	totalStepsUsed int(11) DEFAULT '0',
-	feedback text,
+	score			INT DEFAULT NULL,
+	timeUsed 		int(11) DEFAULT NULL,
+	totalTimeUsed 	int(11) DEFAULT '0',
+	stepsUsed 		int(11) DEFAULT NULL,
+	totalStepsUsed 	int(11) DEFAULT '0',
+	feedback 		text,
 	CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
 	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
 	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
@@ -175,11 +175,11 @@ CREATE VIEW highscore_quiz_time AS
 /* Fix for database coursename: alter table vers alter column coursename varchar(80); */
 
 CREATE TABLE vers(
-	cid						INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	vers					VARCHAR(8) NOT NULL,
-	versname			VARCHAR(45) NOT NULL,
+	cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	vers			VARCHAR(8) NOT NULL,
+	versname		VARCHAR(45) NOT NULL,
 	coursecode		VARCHAR(45) NOT NULL,
-	coursename	  VARCHAR(80) NOT NULL,
+	coursename	  	VARCHAR(80) NOT NULL,
 	coursenamealt	VARCHAR(45) NOT NULL,
 	CONSTRAINT fk_vers_joins_course FOREIGN KEY (cid) REFERENCES course(cid),
 	CONSTRAINT pk_vers PRIMARY KEY(cid,vers)
@@ -232,8 +232,8 @@ CREATE TABLE codeexample(
 
 /* Table structure for sequence, holding the sequence order of a specific example sequence */
 CREATE TABLE sequence (
-	seqid 	int(10) unsigned NOT NULL,
-  	cid 	int(10) unsigned NOT NULL,
+	seqid 		int(10) unsigned NOT NULL,
+  	cid 		int(10) unsigned NOT NULL,
   	exampleseq 	text NOT NULL,
   	PRIMARY KEY (cid,seqid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -251,16 +251,16 @@ CREATE TABLE wordlist(
 /**
  * Delete and update all foreign keys before deleting a wordlist
  */
-delimiter //
+DELIMITER //
 CREATE TRIGGER checkwordlists BEFORE DELETE ON wordlist
 FOR EACH ROW
 BEGIN
 	 DELETE FROM word WHERE wordlistid = OLD.wordlistid;
-     IF ((Select count(*) FROM box WHERE wordlistid=OLD.wordlistid)>"0")THEN
+     IF ((SELECT count(*) FROM box WHERE wordlistid=OLD.wordlistid)>"0")THEN
      		UPDATE box SET wordlistid = (SELECT MIN(wordlistid) FROM wordlist WHERE wordlistid != OLD.wordlistid) WHERE wordlistid=OLD.wordlistid;
      END IF;
  END;//
- delimiter ;
+ DELIMITER ;
 
 CREATE TABLE word(
 		wordid		  		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -276,14 +276,14 @@ CREATE TABLE word(
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
-	boxid					INTEGER UNSIGNED NOT NULL,
+	boxid			INTEGER UNSIGNED NOT NULL,
 	exampleid 		MEDIUMINT UNSIGNED NOT NULL,
-	boxtitle			VARCHAR(20),
+	boxtitle		VARCHAR(20),
 	boxcontent		VARCHAR(64),
-	filename			VARCHAR(256),
-	settings			VARCHAR(1024),
+	filename		VARCHAR(256),
+	settings		VARCHAR(1024),
 	wordlistid		MEDIUMINT UNSIGNED,
-	segment				TEXT,
+	segment			TEXT,
 	CONSTRAINT pk_box PRIMARY KEY(boxid, exampleid),
 	CONSTRAINT fk_box_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -318,17 +318,17 @@ CREATE TABLE impwordlist(
 
 CREATE TABLE submission(
 		subid	  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		uid				INTEGER,
-		cid				INTEGER,
-		vers			VARCHAR(8),
-		did			  INTEGER,
-		seq				INTEGER,
-		fieldnme  VARCHAR(64),
+		uid			INTEGER,
+		cid			INTEGER,
+		vers		VARCHAR(8),
+		did			INTEGER,
+		seq			INTEGER,
+		fieldnme  	VARCHAR(64),
 		filepath	VARCHAR(256),
 		filename	VARCHAR(128),
 		extension	VARCHAR(32),
-		mime			VARCHAR(64),
-		kind			INTEGER,
+		mime		VARCHAR(64),
+		kind		INTEGER,
 		segment		INTEGER,
 		updtime		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 		PRIMARY KEY(subid)
@@ -402,7 +402,7 @@ CREATE TABLE partresult (
 	uid			INT UNSIGNED NOT NULL,
 	partname	varchar(50),
 	grade 		varchar(1) DEFAULT NULL,
-	hp			decimal(3,1) references subparts (parthp),
+	hp			decimal(3,1) REFERENCES subparts (parthp),
 	PRIMARY KEY(partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
@@ -412,7 +412,7 @@ CREATE TABLE partresult (
  * this table many to many relation between class and course.
  */
 CREATE TABLE programcourse (
-    class 		varchar(10) NOT NULL,
+	class 		varchar(10) NOT NULL,
 	cid 		INT UNSIGNED NOT NULL,
 	period 		int(1) ,
 	term 		varchar(10),
@@ -447,13 +447,13 @@ Todo: This table has a number of references, such as to course, list etc., this 
 create foreign key constraints for those references so it will need to be revisited and refactored later.
 */
 CREATE TABLE list (
-	listnr INT,
-	listeriesid INT,
-	provdatum DATE,
-	responsible VARCHAR(40),
+	listnr 			INT,
+	listeriesid 	INT,
+	provdatum 		DATE,
+	responsible 	VARCHAR(40),
 	responsibledate DATE,
-	course INT,
-	listid INT AUTO_INCREMENT,
+	course 			INT,
+	listid 			INT AUTO_INCREMENT,
 
 	CONSTRAINT PK_list PRIMARY KEY(listid)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
@@ -472,20 +472,20 @@ INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL
 		SQL code: select hp from studentresult where user = 2 and course_id = 1;
 */
 
-create view studentresultCourse  as
-	select partresult.uid as username, partresult.cid, partresult.hp  from partresult
-	inner join subparts on partresult.partname = subparts.partname
-		and subparts.cid = partresult.cid
-		and subparts.parthp = partresult.hp
-	where partresult.grade != 'u';
+CREATE VIEW studentresultCourse  AS
+	SELECT partresult.uid AS username, partresult.cid, partresult.hp  FROM partresult
+	INNER JOIN subparts ON partresult.partname = subparts.partname
+		AND subparts.cid = partresult.cid
+		AND subparts.parthp = partresult.hp
+	WHERE partresult.grade != 'u';
 
 /* updatesd info in user table */
-update user set firstname="Toddler", lastname="Kong" where username="Toddler";
-update user set firstname="Johan", lastname="Grimling" where username="Grimling";
-update user set ssn="810101-5567" where username="Grimling";
-update user set ssn="444444-5447" where username="Toddler";
-update user set password=password("Kong") where username="Toddler";
-update user set superuser=1 where username="Toddler";
+UPDATE user SET firstname="Toddler", lastname="Kong" WHERE username="Toddler";
+UPDATE user SET firstname="Johan", lastname="Grimling" WHERE username="Grimling";
+UPDATE user SET ssn="810101-5567" WHERE username="Grimling";
+UPDATE user SET ssn="444444-5447" WHERE username="Toddler";
+UPDATE user SET password=password("Kong") WHERE username="Toddler";
+UPDATE user SET superuser=1 WHERE username="Toddler";
 
 /* Templates for codeexamples */
 
