@@ -19,7 +19,7 @@ CREATE TABLE user(
 		superuser			TINYINT(1) NULL,
 		email				VARCHAR(256) DEFAULT NULL,
 		class 				VARCHAR(10) DEFAULT NULL REFERENCES class (class),
-		totalHp				decimal(4,1),
+		totalHp				DECIMAL(4,1),
 		PRIMARY KEY(uid)
 
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -36,18 +36,18 @@ INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$
 /* alter table course alter column hp add default 7.5; */
 
 CREATE TABLE course(
-		cid					INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		coursecode			VARCHAR(45) NULL UNIQUE,
 		coursename			VARCHAR(80) NULL,
 		created				DATETIME,
 		creator				INT UNSIGNED NOT NULL,
 		visibility			TINYINT UNSIGNED NOT NULL DEFAULT 0,
 		updated				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		activeversion 		VARCHAR(8),
-		activeedversion 	VARCHAR(8),
-		capacity			int(5),
-		hp					decimal(4,1) not null default 7.5,
-		courseHttpPage		varchar(2000),
+		activeversion 			VARCHAR(8),
+		activeedversion 		VARCHAR(8),
+		capacity			INT(5),
+		hp				DECIMAL(4,1) NOT NULL DEFAULT 7.5,
+		courseHttpPage			VARCHAR(2000),
 		CONSTRAINT pk_course PRIMARY KEY(cid),
 		CONSTRAINT fk_course_joins_user FOREIGN KEY (creator) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -66,8 +66,8 @@ CREATE TABLE course_req(
  * a tuple in this table joins a user with a course.
  */
 CREATE TABLE user_course(
-		uid					INT UNSIGNED NOT NULL,
-		cid					INT UNSIGNED NOT NULL,
+		uid				INT UNSIGNED NOT NULL,
+		cid				INT UNSIGNED NOT NULL,
 		result 				DECIMAL(2,1) DEFAULT 0.0,
 		modified 			TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 			INTEGER,
@@ -89,13 +89,13 @@ CREATE TABLE listentries (
 	kind 			INT unsigned,
 	pos 			INT,
 	creator 		INT unsigned NOT NULL,
-	ts				TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE current_timestamp,
+	ts			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE current_timestamp,
 	code_id 		MEDIUMINT unsigned NULL DEFAULT NULL,
 	visible 		TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	vers			VARCHAR(8),
 	moment			INT UNSIGNED,
-	gradesystem 	TINYINT(1),
-	highscoremode	INT DEFAULT 0,
+	gradesystem 		TINYINT(1),
+	highscoremode		INT DEFAULT 0,
 	CONSTRAINT 		pk_listentries PRIMARY KEY(lid),
 
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
@@ -105,10 +105,10 @@ CREATE TABLE listentries (
 
 /* Quiz tables */
 CREATE TABLE quiz (
-	id				INT(11) NOT NULL AUTO_INCREMENT,
+	id			INT(11) NOT NULL AUTO_INCREMENT,
 	cid 			INTEGER UNSIGNED NOT NULL,
 	autograde 		TINYINT(1) NOT NULL DEFAULT 0, /* bool */
-	gradesystem 	TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
+	gradesystem 		TINYINT(1) NOT NULL DEFAULT 2, /* 1:U-G-VG & 2:U-G & 3:U-3-5 */
 	qname 			VARCHAR(255) NOT NULL DEFAULT '',
 	quizFile 		VARCHAR(255) NOT NULL DEFAULT 'default',
 	qrelease 		DATETIME,
@@ -138,24 +138,24 @@ CREATE TABLE variant(
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE userAnswer (
-	aid				INT(11) NOT NULL AUTO_INCREMENT,
-	cid				INT UNSIGNED NOT NULL,
+	aid			INT(11) NOT NULL AUTO_INCREMENT,
+	cid			INT UNSIGNED NOT NULL,
 	quiz 			INT(11),
 	variant			INT,
 	moment			INT UNSIGNED NOT NULL,
 	grade 			TINYINT(2),
 	uid 			INT UNSIGNED NOT NULL,
-	useranswer		varchar(16384),
+	useranswer		VARCHAR(16384),
 	submitted 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	marked			TIMESTAMP NULL,
 	vers			VARCHAR(8),
 	creator 		INTEGER,
 	score			INT DEFAULT NULL,
-	timeUsed 		int(11) DEFAULT NULL,
-	totalTimeUsed 	int(11) DEFAULT '0',
-	stepsUsed 		int(11) DEFAULT NULL,
-	totalStepsUsed 	int(11) DEFAULT '0',
-	feedback 		text,
+	timeUsed 		INT(11) DEFAULT NULL,
+	totalTimeUsed 		INT(11) DEFAULT '0',
+	stepsUsed 		INT(11) DEFAULT NULL,
+	totalStepsUsed 		INT(11) DEFAULT '0',
+	feedback 		TEXT,
 	CONSTRAINT pk_useranswer PRIMARY KEY 	(aid),
 	CONSTRAINT fk_useranswer_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
 	CONSTRAINT fk_useranswer_joins_user FOREIGN KEY (uid) REFERENCES user(uid),
@@ -172,10 +172,10 @@ CREATE VIEW highscore_quiz_time AS
 	SELECT userAnswer.cid, userAnswer.quiz, userAnswer.uid, userAnswer.grade, userAnswer.score
 		FROM userAnswer ORDER BY userAnswer.score ASC LIMIT 10;
 
-/* Fix for database coursename: alter table vers alter column coursename varchar(80); */
+/* Fix for database coursename: alter table vers alter column coursename VARCHAR(80); */
 
 CREATE TABLE vers(
-	cid				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	cid			INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	vers			VARCHAR(8) NOT NULL,
 	versname		VARCHAR(45) NOT NULL,
 	coursecode		VARCHAR(45) NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE fileLink(
 	fileid				INT(11) NOT NULL AUTO_INCREMENT,
 	filename			VARCHAR(128) NOT NULL,
 	kind				INTEGER,
-	cid					INT UNSIGNED NOT NULL,
+	cid				INT UNSIGNED NOT NULL,
 	isGlobal			BOOLEAN DEFAULT 0,
 	CONSTRAINT pk_filelink PRIMARY KEY (fileid),
 	CONSTRAINT fk_filelink_joins_course FOREIGN KEY (cid) REFERENCES course (cid)
@@ -213,16 +213,16 @@ CREATE TABLE template(
 
 CREATE TABLE codeexample(
 	exampleid		MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	cid				INT UNSIGNED NOT NULL,
+	cid			INT UNSIGNED NOT NULL,
 	examplename		VARCHAR(64),
 	sectionname		VARCHAR(64),
 	beforeid		INTEGER,
 	afterid			INTEGER,
 	runlink		 	VARCHAR(256),
 	cversion		INTEGER,
-	public 			tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+	public 			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	updated 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	uid				INT UNSIGNED NOT NULL,
+	uid			INT UNSIGNED NOT NULL,
 	templateid		INT UNSIGNED NOT NULL DEFAULT '0',
 	CONSTRAINT pk_codeexample PRIMARY KEY(exampleid),
 	CONSTRAINT fk_codeexample_joins_course FOREIGN KEY (cid) REFERENCES course (cid),
@@ -232,8 +232,8 @@ CREATE TABLE codeexample(
 
 /* Table structure for sequence, holding the sequence order of a specific example sequence */
 CREATE TABLE sequence (
-	seqid 		int(10) unsigned NOT NULL,
-  	cid 		int(10) unsigned NOT NULL,
+	seqid 		INT(10) unsigned NOT NULL,
+  	cid 		INT(10) unsigned NOT NULL,
   	exampleseq 	text NOT NULL,
   	PRIMARY KEY (cid,seqid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -268,7 +268,7 @@ CREATE TABLE word(
 		word 				VARCHAR(64),
 		label				VARCHAR(256),
 		updated 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-		uid					INT UNSIGNED NOT NULL,
+		uid				INT UNSIGNED NOT NULL,
 		CONSTRAINT pk_word PRIMARY KEY(wordid, wordlistid),
 		CONSTRAINT fk_word_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
 		CONSTRAINT fk_word_joins_wordlist FOREIGN KEY(wordlistid) REFERENCES wordlist(wordlistid)
@@ -291,13 +291,13 @@ CREATE TABLE box(
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
 	impid		  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	boxid         	INTEGER UNSIGNED NOT NULL,
-	exampleid    	MEDIUMINT UNSIGNED NOT NULL,
+	boxid         		INTEGER UNSIGNED NOT NULL,
+	exampleid    		MEDIUMINT UNSIGNED NOT NULL,
 	istart			INTEGER,
 	iend			INTEGER,
 	irowdesc		VARCHAR(1024),
-	updated	 		TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	uid				INT UNSIGNED NOT NULL,
+	updated	 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	uid			INT UNSIGNED NOT NULL,
 	CONSTRAINT pk_improw PRIMARY KEY(impid, exampleid, boxid),
 	CONSTRAINT fk_improw_joins_user FOREIGN KEY (uid) REFERENCES user (uid),
 	CONSTRAINT fk_improw_joins_box FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
@@ -310,7 +310,7 @@ CREATE TABLE impwordlist(
 	word 			VARCHAR(64),
 	label			VARCHAR(256),
 	UPDATED 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	uid				INTEGER UNSIGNED NOT NULL,
+	uid			INTEGER UNSIGNED NOT NULL,
 	CONSTRAINT pk_impwordlist PRIMARY KEY(wordid),
 	CONSTRAINT fk_impwordlist_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 	CONSTRAINT fk_impwordlist_joins_user FOREIGN KEY (uid) REFERENCES user (uid)
@@ -318,11 +318,11 @@ CREATE TABLE impwordlist(
 
 CREATE TABLE submission(
 		subid	  	MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-		uid			INTEGER,
-		cid			INTEGER,
+		uid		INTEGER,
+		cid		INTEGER,
 		vers		VARCHAR(8),
-		did			INTEGER,
-		seq			INTEGER,
+		did		INTEGER,
+		seq		INTEGER,
 		fieldnme  	VARCHAR(64),
 		filepath	VARCHAR(256),
 		filename	VARCHAR(128),
@@ -337,7 +337,7 @@ CREATE TABLE submission(
 CREATE TABLE eventlog(
 	eid 			BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	type 			TINYINT DEFAULT 0,
-	ts 				TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	ts 			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	address 		VARCHAR(45),
 	raddress 		VARCHAR(45),
 	user 			VARCHAR(128),
@@ -357,27 +357,27 @@ CREATE TABLE playereditor_playbacks(
  * to have any relation to the rest of the database and kind of stands out oddly.
 
 CREATE TABLE programkurs (
-    pkid int(11) NOT NULL AUTO_INCREMENT,
-    kull varchar(8) DEFAULT NULL,
-    kurskod varchar(6) DEFAULT NULL,
-    kursnamn varchar(100) DEFAULT NULL,
-    anmkod varchar(8) DEFAULT NULL,
-    period mediumint(9) DEFAULT NULL,
-    platser int(11) DEFAULT NULL,
-    termin varchar(45) DEFAULT NULL,
+    pkid	INT(11) NOT NULL AUTO_INCREMENT,
+    kull	VARCHAR(8) DEFAULT NULL,
+    kurskod 	VARCHAR(6) DEFAULT NULL,
+    kursnamn 	VARCHAR(100) DEFAULT NULL,
+    anmkod 	VARCHAR(8) DEFAULT NULL,
+    period 	MEDIUMINT(9) DEFAULT NULL,
+    platser 	INT(11) DEFAULT NULL,
+    termin 	VARCHAR(45) DEFAULT NULL,
     PRIMARY KEY (pkid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 */
 
 CREATE TABLE class (
-    class 		varchar(10) NOT NULL,
+    class 		VARCHAR(10) NOT NULL,
 	responsible	INT UNSIGNED NOT null,
-	classname 	varchar(100) DEFAULT NULL,
-    regcode 	int(8) DEFAULT NULL,
-	classcode 	varchar(8) DEFAULT NULL,
-    hp 			decimal(10,1) DEFAULT NULL,
-	tempo 		int(3) DEFAULT NULL,
-	hpProgress 	decimal(3,1),
+	classname 	VARCHAR(100) DEFAULT NULL,
+    regcode 		INT(8) DEFAULT NULL,
+	classcode 	VARCHAR(8) DEFAULT NULL,
+    hp 			DECIMAL(10,1) DEFAULT NULL,
+	tempo 		INT(3) DEFAULT NULL,
+	hpProgress 	DECIMAL(3,1),
     PRIMARY KEY (class,responsible),
 	FOREIGN KEY (responsible) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -386,10 +386,10 @@ CREATE TABLE class (
  * this table stores the different subparts of each course.
  */
 CREATE TABLE subparts(
-	partname 	varchar(50),
+	partname 	VARCHAR(50),
 	cid 		INT UNSIGNED NOT NULL,
-	parthp 		decimal(3,1) DEFAULT NULL,
-	difgrade	varchar(10),
+	parthp 		DECIMAL(3,1) DEFAULT NULL,
+	difgrade	VARCHAR(10),
 	PRIMARY KEY (partname,cid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -400,9 +400,9 @@ CREATE TABLE subparts(
 CREATE TABLE partresult (
     cid 		INT UNSIGNED NOT NULL,
 	uid			INT UNSIGNED NOT NULL,
-	partname	varchar(50),
-	grade 		varchar(1) DEFAULT NULL,
-	hp			decimal(3,1) REFERENCES subparts (parthp),
+	partname	VARCHAR(50),
+	grade 		VARCHAR(1) DEFAULT NULL,
+	hp		DECIMAL(3,1) REFERENCES subparts (parthp),
 	PRIMARY KEY(partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
@@ -412,10 +412,10 @@ CREATE TABLE partresult (
  * this table many to many relation between class and course.
  */
 CREATE TABLE programcourse (
-	class 		varchar(10) NOT NULL,
+	class 		VARCHAR(10) NOT NULL,
 	cid 		INT UNSIGNED NOT NULL,
-	period 		int(1) ,
-	term 		varchar(10),
+	period 		INT(1) ,
+	term 		VARCHAR(10),
 	PRIMARY KEY(cid, class),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (class) REFERENCES class (class)
@@ -425,13 +425,13 @@ CREATE TABLE programcourse (
  * This table seems to be intended to store student results from program courses.
  */
 CREATE TABLE studentresultat (
-    sid 		mediumint(9) NOT NULL AUTO_INCREMENT,
-    pnr 		varchar(11) DEFAULT NULL,
-    anmkod 		varchar(6) DEFAULT NULL,
-    kurskod 	varchar(6) NOT NULL,
-    termin 		varchar(5) DEFAULT NULL,
-    resultat 	decimal(3,1) DEFAULT NULL,
-    avbrott 	date DEFAULT NULL,
+    sid 	MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
+    pnr 	VARCHAR(11) DEFAULT NULL,
+    anmkod 	VARCHAR(6) DEFAULT NULL,
+    kurskod 	VARCHAR(6) NOT NULL,
+    termin 	VARCHAR(5) DEFAULT NULL,
+    resultat 	DECIMAL(3,1) DEFAULT NULL,
+    avbrott 	DATE DEFAULT NULL,
     PRIMARY KEY (sid),
     KEY anmkod (anmkod),
     KEY pnr (pnr),
@@ -447,9 +447,9 @@ Todo: This table has a number of references, such as to course, list etc., this 
 create foreign key constraints for those references so it will need to be revisited and refactored later.
 */
 CREATE TABLE list (
-	listnr 			INT,
+	listnr 		INT,
 	listeriesid 	INT,
-	provdatum 		DATE,
+	provdatum 	DATE,
 	responsible 	VARCHAR(40),
 	responsibledate DATE,
 	course 			INT,
