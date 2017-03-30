@@ -166,11 +166,21 @@
         echo htmlspecialchars("?>");
         echo "</pre><br>";
 
+        echo "<b>Bash command to complete all this:</b><br>";
+        echo '<pre>';
+        echo 'printf "' . htmlspecialchars("<?php") . '\n';
+        echo 'define(\"DB_USER\",\"' . $username . '\");\n';
+        echo 'define("DB_PASSWORD","' . $password . '");\n';
+        echo 'define("DB_HOST","' . $serverName . '");\n';
+        echo 'define("DB_NAME","' . $databaseName . '");\n';
+        echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
+        echo '</pre>';
+
         echo "<b> Now create a directory named 'log' at " . $putFileHere . " with permissions 777.</b><br>";
         echo "<pre>mkdir " . $putFileHere . "/log</pre>";
         echo "<pre>chmod 777 " . $putFileHere . "/log</pre>";
         echo "<b> Inside this directory create a new sqlite file (and change permissions) by running the commands: </b><br>";
-        echo "<pre>sqlite3 " . $putFileHere . "/loglena4.db</pre>";
+        echo "<pre>sqlite3 " . $putFileHere . '/log/loglena4.db ""</pre>';
         echo "<pre>chmod 777 " . $putFileHere . "/log/loglena4.db</pre><br>";
     }
     ?>
