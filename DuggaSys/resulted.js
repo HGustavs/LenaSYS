@@ -555,13 +555,12 @@ function process()
 		document.getElementById("dropdownc").innerHTML=dstr;	
 		
 		var dstr="";
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='onlyPending' value='0' id='onlyPending'";
-    // Hide Teacher
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #ff00bf'><input type='checkbox' class='headercheck' name='hideTeacher' value='-1' id='hideTeacher'";
-    dstr+="><label class='headerlabel' for='hideTeacher'>Hide teachers</label></div>";
+    //dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='onlyPending' value='0' id='onlyPending'";
+    //dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #ff00bf'><input type='checkbox' class='headercheck' name='hideTeacher' value='-1' id='hideTeacher'";
     if (onlyPending){ dstr+=" checked='true'"; }
-    dstr+="><label class='headerlabel' for='onlyPending'>Show only pending</label></div>";
-
+    //dstr+="><label class='headerlabel' for='onlyPending'>Show only pending</label></div>";
+    //dstr+="><label class='headerlabel' for='hideTeacher'>Hide teachers</label></div>";
+    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Show only pending</label><input name='sortdir' type='checkbox' class='headercheck' value='-1' id='sortdir-1'><label class='headerlabel' for='sortdir-1'>Hide Teacher</label></div>";
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort ascending</label><input name='sortdir' type='radio' class='headercheck' value='-1' id='sortdir-1'><label class='headerlabel' for='sortdir-1'>Sort descending</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
