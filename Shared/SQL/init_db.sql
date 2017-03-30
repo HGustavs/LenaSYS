@@ -357,14 +357,14 @@ CREATE TABLE playereditor_playbacks(
  * to have any relation to the rest of the database and kind of stands out oddly.
 
 CREATE TABLE programkurs (
-		pkid	INT(11) NOT NULL AUTO_INCREMENT,
-		kull	VARCHAR(8) DEFAULT NULL,
+		pkid			INT(11) NOT NULL AUTO_INCREMENT,
+		kull			VARCHAR(8) DEFAULT NULL,
 		kurskod 	VARCHAR(6) DEFAULT NULL,
 		kursnamn 	VARCHAR(100) DEFAULT NULL,
-		anmkod 	VARCHAR(8) DEFAULT NULL,
-		period 	MEDIUMINT(9) DEFAULT NULL,
+		anmkod 		VARCHAR(8) DEFAULT NULL,
+		period 		MEDIUMINT(9) DEFAULT NULL,
 		platser 	INT(11) DEFAULT NULL,
-		termin 	VARCHAR(45) DEFAULT NULL,
+		termin 		VARCHAR(45) DEFAULT NULL,
 		PRIMARY KEY (pkid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 */
@@ -398,7 +398,7 @@ CREATE TABLE subparts(
  * this table is weak reslation to user and partcourse.
  */
 CREATE TABLE partresult (
-	cid 		INT UNSIGNED NOT NULL,
+	cid 			INT UNSIGNED NOT NULL,
 	uid				INT UNSIGNED NOT NULL,
 	partname	VARCHAR(50),
 	grade 		VARCHAR(1) DEFAULT NULL,
