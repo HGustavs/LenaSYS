@@ -445,6 +445,23 @@ function loginEventHandler(event){
 	}
 }
 
+function processResetPassword() {
+	var username = $("#newpassword #username").val();
+	
+	/*
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				opt: "RESETPW"
+			},
+			var result = JSON.parse(data);
+			if(result['login'] == "success") {
+				$("#userName").html(result['username']);
+
+	*/
+}
 
 function processLogin() {
 
