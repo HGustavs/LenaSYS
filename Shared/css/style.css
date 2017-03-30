@@ -979,7 +979,7 @@ input.submit-button {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color:#614875;
     border:0px;
-    width:120px;
+    width:110px;
     height:30px;
     color:#fff;
     cursor:pointer;
@@ -989,6 +989,10 @@ input.submit-button {
     font-size:14px;
     transition:1s background-color;
     float:right;
+}
+
+#changepasswordbutton{
+    width:150px;
 }
 
 input.submit-button:hover {

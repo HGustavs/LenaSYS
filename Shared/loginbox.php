@@ -151,7 +151,8 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processResetPasswordChangePassword();" value='Change password'>
+						<!-- -->
+							<input id="changepasswordbutton" type='button' class='submit-button' onclick="processResetPasswordChangePassword();" value='Change password'>
 							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
 						</td>
 					</tr>
