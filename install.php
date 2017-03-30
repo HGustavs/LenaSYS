@@ -113,7 +113,7 @@
                         $blockStarted = false;
                         #$queryBlock = $queryBlock . $completeQuery;
                         #$connection->query($queryBlock);
-                    } else if ($queryBlock){
+                    } else if ($blockStarted){
                         #$queryBlock = $queryBlock . $completeQuery;
                     } else {
                         if(trim($query) != ''){ // do not send if empty query.
