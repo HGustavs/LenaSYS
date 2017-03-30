@@ -85,7 +85,7 @@
 			  </div>
 		</div>
 		<div id='showsecurityquestion' style="display:none">
-			<div class='loginBoxheader' id="securityid"><!--What is this id?-->
+			<div class='loginBoxheader' id="securityid">
 				<h3>New Password</h3>
 				<div onclick="closeWindows()">x</div>
 			</div>
@@ -93,10 +93,13 @@
 				<table>
 					<tr>
 						<td>
-							<label class="text">Your sequrity queston is:</label>
+							<label class="text">Your security queston is:</label>
 						</td>
+					</tr>
+					<tr>
 						<td>
-							<label class="text">Who let the dogs out? BTW: maybe not the perfect solution to use a label for the question</label>
+							<!-- Using a label to show the security question might not be the best idea, the label will be changed using js, but using a label and updating it with js might not be the best approach. -->
+							<label id="displaysecurityquestion" class="text">Who let the dogs out?</label>
 						</td>
 					</tr>
 					<tr>
@@ -104,21 +107,20 @@
 							<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus >
 						</td>
 					</tr>
-	
-					<tr>
+					<tr><
 						<td id="message3"></td>
 					</tr>
 					<tr>
 						<td>
 							<input type='button' class='submit-button' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Abort</label>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
 						</td>
 					</tr>
 				</table>
 			  </div>
 		</div>
 		<div id='changepassword' style="display:none">
-			<div class='loginBoxheader' id="changeid"><!--What is this id?-->
+			<div class='loginBoxheader' id="changeid">
 				<h3>New Password</h3>
 				<div onclick="closeWindows()">x</div>
 			</div>
@@ -131,7 +133,6 @@
 					</tr>
 					<tr>
 						<td>
-
 							<input id="newpassword" placeholder="New password" class='form-control textinput' type='password' autofocus >
 						</td>
 					</tr>
@@ -150,8 +151,8 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processResetPasswordChangePassword();" value='Change password'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Abort</label>
+							<input type='button' class='submit-button' onclick="processResetPasswordChangePassword();" value='Accept change'>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
 						</td>
 					</tr>
 				</table>

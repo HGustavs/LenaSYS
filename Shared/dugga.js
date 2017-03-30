@@ -461,7 +461,12 @@ function loginEventHandler(event){
 	}
 }
 
+
+
 function processResetPasswordCheckUsername() {
+
+	/*This function is supposed to get the security question from the database*/
+
 	var username = $("#newpassword #username").val();
 	
 	/*
@@ -485,7 +490,7 @@ function processResetPasswordCheckUsername() {
 
 function processResetPasswordCheckSecurityAnswer() {
 
-	/*add code for check the security answer*/
+	/*This function is supposed to be resposible for checking so the sequrity question answer is correct and make the user go to the last step of changeing/recovering its password*/
 	
 	status = 3;
 	toggleloginnewpass();
@@ -493,8 +498,8 @@ function processResetPasswordCheckSecurityAnswer() {
 }
 
 function processResetPasswordChangePassword(){
-	$("input#username").css("background-color", "rgba(0, 255, 6, 0.2)");
-	$("input#password").css("background-color", "rgba(0, 255, 6, 0.2)");
+	/* This function is supposed to hande the change of the password if the two fucntions before it have proceeded without errors. 
+	Might be worth to add all the functions together (processResetPasswordCheckUsername, processResetPasswordCheckSecurityAnswer, processResetPasswordChangePassword)*/
 }
 
 function processLogin() {
