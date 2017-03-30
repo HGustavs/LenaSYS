@@ -17,11 +17,27 @@ function toggleloginnewpass(){
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "none");
+		$("#changepassword").css("display", "none");
 		status++;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
+		$("#showsecurityquestion").css("display", "none");
+		$("#changepassword").css("display", "none");
 		status= 0;
+	}else if(status == 2){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "block");
+		$("#changepassword").css("display", "none");
+		status= 1;
+	}else if(status == 3){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "none");
+		$("#changepassword").css("display", "block");
+		status= 1;
 	}
 
 }
@@ -445,6 +461,46 @@ function loginEventHandler(event){
 	}
 }
 
+
+
+function processResetPasswordCheckUsername() {
+
+	/*This function is supposed to get the security question from the database*/
+
+	var username = $("#newpassword #username").val();
+	
+	/*
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				opt: "RESETPW"
+			},
+			var result = JSON.parse(data);
+			if(result['login'] == "success") {
+				$("#userName").html(result['username']);
+
+	*/
+
+	status = 2;
+	toggleloginnewpass();
+
+}
+
+function processResetPasswordCheckSecurityAnswer() {
+
+	/*This function is supposed to be resposible for checking so the sequrity question answer is correct and make the user go to the last step of changeing/recovering its password*/
+	
+	status = 3;
+	toggleloginnewpass();
+
+}
+
+function processResetPasswordChangePassword(){
+	/* This function is supposed to hande the change of the password if the two fucntions before it have proceeded without errors. 
+	Might be worth to add all the functions together (processResetPasswordCheckUsername, processResetPasswordCheckSecurityAnswer, processResetPasswordChangePassword)*/
+}
 
 function processLogin() {
 
