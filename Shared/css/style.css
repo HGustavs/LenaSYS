@@ -522,17 +522,8 @@ header td {
     padding-right:4px;
 }
 
-
-.navName a {
-    color: #FFFFFF;
-    text-decoration:none;
-    overflow:hidden;
-}
-
-.navName a:hover {
-    color: #FFFFFF;
-	text-decoration:underline;
-    overflow:hidden;
+#userName {
+    cursor:pointer;
 }
 
 .loggedout {
