@@ -276,15 +276,15 @@ CREATE TABLE word(
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
-	boxid					INTEGER UNSIGNED NOT NULL,
-	exampleid 		MEDIUMINT UNSIGNED NOT NULL,
+	boxid				INTEGER UNSIGNED NOT NULL,
+	exampleid 			MEDIUMINT UNSIGNED NOT NULL,
 	boxtitle			VARCHAR(20),
-	boxcontent		VARCHAR(64),
+	boxcontent			VARCHAR(64),
 	filename			VARCHAR(256),
 	settings			VARCHAR(1024),
-	wordlistid		MEDIUMINT UNSIGNED,
+	wordlistid			MEDIUMINT UNSIGNED,
 	segment				TEXT,
-	fontsize			VARCHAR(10),
+	fontsize			INT NOT NULL DEFAULT '9',
 	CONSTRAINT pk_box PRIMARY KEY(boxid, exampleid),
 	CONSTRAINT fk_box_joins_codeexample FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
