@@ -70,7 +70,7 @@ function redrawtable()
 		str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 		
 		// Redraw Magic heading 
-		str += "<div id='upperDecker' style='position:absolute;left:start;display:none;'>";
+		str += '<div id=\'upperDecker\' style=\'position:absolute;left:0;display:none;\'>';
 		str += "<table class='markinglist' style='table-layout: fixed;'>";
 		str += "<thead>";
 		str += "<tr class='markinglist-header'>";
@@ -646,7 +646,7 @@ function sorttype(t){
 		var c=$("input[name='sortcol']:checked").val();
 		if (c == 0){
 				localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);		
-				$("input[name='sorttype'").prop("checked", false);
+				$("input[name='sorttype']").prop("checked", false);
 		} else {
 				if (t == -1){
 						t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
