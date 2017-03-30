@@ -35,6 +35,7 @@ pdoConnect();
  			Challenge question: <input onclick="saveSettings()" type="text" name="challengeQuestion" id="challengeQuestion" value="" />
 		 	<input type="button" name="Save" id="Save" value="Save" />
 		</form>
+		<button type="button" id="NotificationButton">Click here to activate notifications</button>
 	</div>
 
 </body>
