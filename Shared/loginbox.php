@@ -47,7 +47,7 @@
 
 							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
 						
-							<!--<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>-->
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
 
 						</td>
 					</tr>
@@ -63,12 +63,12 @@
 				<table>
 					<tr>
 						<td>
-							<label class="text">email:</label>
+							<label class="text">username:</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input id="email" class='form-control textinput' type='text' placeholder="c13andfi@student.his.se" autofocus >
+							<input id="username" class='form-control textinput' type='text' placeholder="c13andfi" autofocus >
 						</td>
 					</tr>
 	
