@@ -76,21 +76,21 @@ h1 {
     font-size: 1.8em;
     line-height: 1.4em;
     */
-    font-size:24px;
+   
     margin:2px 0px 10px 0px;
     padding:0px;
 }
 h2 {
-    font-size: 18px;
-    margin:1px 0px 8px 0px;
+  
+    margin:2px 0px 10px 0px;
     padding:0px;
 }
 h3 {
-    font-size: 16px;
-    margin:4px 0px 6px 0px;
+   
+    margin:2px 0px 10px 0px;
     padding:0px;
-    font-weight:bold;
-    border-bottom:2px solid #614875;
+   
+
 
 }
 .instructions-container h3 {
