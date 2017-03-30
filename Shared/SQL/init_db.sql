@@ -73,7 +73,7 @@ CREATE TABLE user_course(
 		creator 		INTEGER,
 		access			VARCHAR(10) NOT NULL,
 		period			INTEGER DEFAULT 1,
-		term				CHAR(5) DEFAULT "VT16",
+		term				CHAR(5) DEFAULT "1",
 		vers				VARCHAR(8),
 		vershistory	TEXT,
 		PRIMARY KEY(uid, cid),
