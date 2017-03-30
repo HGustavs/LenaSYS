@@ -146,8 +146,8 @@ points.distance = function(xk,yk)
 }
 
 //--------------------------------------------------------------------
-// distancepoint
-// Returns the distance to closest point and the index of that point
+// clearsel
+// Clears all selects from the array "points"
 //--------------------------------------------------------------------
 
 points.clearsel = function()
