@@ -79,8 +79,11 @@
                 echo "<span style='color: red;' />Could not create user with name " . $username . ", maybe it already exists...</span><br>";
             }
 
-            # Init database
+            # Init database.
             $initQuery = file_get_contents("Shared/SQL/init_db.sql");
+
+            # This loop will find comments in the sql file and remove these.
+            # Comments are removed because some comments included semi-colons which wont work.
             while(true) {
                 $startPos = strpos($initQuery, "/*");
                 $endPos = strpos($initQuery, "*/");
@@ -91,19 +94,18 @@
                 $initQuery = str_replace($removeThisText, '', $initQuery);
             }
 
+            # Split the sql file at semi-colons to send each query separated.
             $initQueryArray = explode(";", $initQuery);
             try {
                 $connection->query("USE " . $databaseName);
-                # Use this var if several statements should be called at once.
+                # Use this var if several statements should be called at once (functions).
                 $queryBlock = '';
                 $blockStarted = false;
                 foreach($initQueryArray AS $query) {
                     $completeQuery = $query . ";";
 
-                    /* The commented code in this block
-                     * could work if delimiters are fixed/removed
-                     * in sql files.
-                     */
+                    # This commented code in this block could work if delimiters are fixed/removed in sql files.
+                    # TODO: Fix handling of delimiters. Now this part only removes code between them.
                     if (!$blockStarted && strpos($completeQuery, "delimiter //")){
                         $blockStarted = true;
                         #$queryBlock = $completeQuery;
@@ -114,21 +116,23 @@
                     } else if ($queryBlock){
                         #$queryBlock = $queryBlock . $completeQuery;
                     } else {
-                        if(trim($query) != ''){
+                        if(trim($query) != ''){ // do not send if empty query.
                             $connection->query($completeQuery);
                         }
                     }
                 }
                 echo "<span style='color: green;' />Initiated database. </span><br>";
 
-                # Fill database
+                # Fill database with test data if this was checked.
                 if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
                     $testDataQuery = file_get_contents("Shared/SQL/testdata.sql");
+
+                    # Split SQL file at semi-colons to send each query separated.
                     $testDataQueryArray = explode(";", $testDataQuery);
                     try {
                         foreach($testDataQueryArray AS $query) {
-                            $completeQuery = $query . ";";
-                            if(trim($query) != ''){
+                            $completeQuery = $query . ";"; // Add semi-colon to each query.
+                            if(trim($query) != ''){ // do not send if empty query.
                                 $connection->query($completeQuery);
                             }
                         }
@@ -148,6 +152,7 @@
 
         echo "Installation completed! <br>";
 
+        # All this code prints further instructions to complete installation.
         $putFileHere = dirname(getcwd(), 1);
         echo "<br><b>To make it work please make a file named 'coursesyspw.php' at " . $putFileHere . "</b><br>";
         echo "<b>After this - fill the file with the code below:</b>";
