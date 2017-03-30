@@ -1,6 +1,3 @@
-drop database imperious;
-create database imperious;
-use imperious;
 
 /* user contains the users of the system and related information */
 

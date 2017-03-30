@@ -1,7 +1,5 @@
 /* use script like this to insert testdata. Do not have inserts in the script to create the database..*/
 
-USE imperious;
-
 /* START duggasys test data START */
 /* Insert test users */
 INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (1010, 'c92cober', 'Conny',  'Berg Czarnecki', '19920404-4522', password('password'), '1', 'c92cober@student.his.se');
