@@ -107,7 +107,7 @@
 							<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus >
 						</td>
 					</tr>
-					<tr><
+					<tr>
 						<td id="message3"></td>
 					</tr>
 					<tr>
@@ -151,7 +151,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processResetPasswordChangePassword();" value='Accept change'>
+							<input type='button' class='submit-button' onclick="processResetPasswordChangePassword();" value='Change password'>
 							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
 						</td>
 					</tr>
