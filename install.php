@@ -81,16 +81,57 @@
 
             # Init database
             $initQuery = file_get_contents("Shared/SQL/init_db.sql");
+            while(true) {
+                $startPos = strpos($initQuery, "/*");
+                $endPos = strpos($initQuery, "*/");
+                if ($startPos === false || $endPos === false) {
+                    break;
+                }
+                $removeThisText = substr($initQuery, $startPos, ($endPos + 2) - $startPos);
+                $initQuery = str_replace($removeThisText, '', $initQuery);
+            }
+
+            $initQueryArray = explode(";", $initQuery);
             try {
                 $connection->query("USE " . $databaseName);
-                $connection->query($initQuery);
+                # Use this var if several statements should be called at once.
+                $queryBlock = '';
+                $blockStarted = false;
+                foreach($initQueryArray AS $query) {
+                    $completeQuery = $query . ";";
+
+                    /* The commented code in this block
+                     * could work if delimiters are fixed/removed
+                     * in sql files.
+                     */
+                    if (!$blockStarted && strpos($completeQuery, "delimiter //")){
+                        $blockStarted = true;
+                        #$queryBlock = $completeQuery;
+                    } else if ($blockStarted && strpos($completeQuery, "delimiter ;")) {
+                        $blockStarted = false;
+                        #$queryBlock = $queryBlock . $completeQuery;
+                        #$connection->query($queryBlock);
+                    } else if ($queryBlock){
+                        #$queryBlock = $queryBlock . $completeQuery;
+                    } else {
+                        if(trim($query) != ''){
+                            $connection->query($completeQuery);
+                        }
+                    }
+                }
                 echo "<span style='color: green;' />Initiated database. </span><br>";
 
                 # Fill database
                 if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
                     $testDataQuery = file_get_contents("Shared/SQL/testdata.sql");
+                    $testDataQueryArray = explode(";", $testDataQuery);
                     try {
-                        $connection->query($testDataQuery);
+                        foreach($testDataQueryArray AS $query) {
+                            $completeQuery = $query . ";";
+                            if(trim($query) != ''){
+                                $connection->query($completeQuery);
+                            }
+                        }
                         echo "<span style='color: green;' />Successfully filled database with test data.</span><br>";
                     } catch (PDOException $e) {
                         echo "<span style='color: red;' />Failed to fill database with data... </span><br>";
@@ -105,7 +146,7 @@
             echo "Skipped creating database <br>";
         }
 
-        echo "Installation complete.<br>";
+        echo "Installation completed! <br>";
 
         $putFileHere = dirname(getcwd(), 1);
         echo "<br><b>To make it work please make a file named 'coursesyspw.php' at " . $putFileHere . "</b><br>";
