@@ -181,7 +181,7 @@ function redrawtable()
                     if (student[j].submitted.getTime() !== timeZero.getTime()){
                         strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();  
                     }
-										strt += "</div></td>";											
+										strt += "</div></td>";
 								}
 						}
 						strt+="</tr>"
@@ -557,7 +557,7 @@ function process()
 		var dstr="";
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='onlyPending' value='0' id='onlyPending'";
     // Hide Teacher
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #ff00bf'><input type='checkbox' class='headercheck' name='hideTeacher' value='0' id='hideTeacher'";
+    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #ff00bf'><input type='checkbox' class='headercheck' name='hideTeacher' value='1' id='hideTeacher'";
     if (onlyPending){ dstr+=" checked='true'"; }
     dstr+="><label class='headerlabel' for='onlyPending'>Show only pending</label></div>";
     dstr+="><label class='headerlabel' for='hideTeacher'>Hide teachers</label></div>";
