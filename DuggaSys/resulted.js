@@ -77,7 +77,7 @@ function redrawtable()
 		str += "<th id='header' class='rowno' ><span>#<span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
 		if (momtmp.length > 0){
 				// Make first header row!
-				//    No such header for magic heading - by design
+				// No such header for magic heading - by design
 				
 				// Make second header row!
 				for(var j=0;j<momtmp.length;j++){
@@ -171,7 +171,7 @@ function redrawtable()
 												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
 										}										
 										strt += "<img id='korf' class='fist";
-										if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
+										if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows first. Should be re-evaluated
 											strt += " grading-hidden";
 										}
 										strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
@@ -725,7 +725,7 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid
 
 		var str = "";
 
-		// Irrespective of marking system we allways print - and U
+		// Irrespective of marking system we always print - and U
 		if (mark === null || mark === 0 || mark === -1){
 				str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind,"../Shared/icons/Uc.png","Uc", qvariant, qid);
 		} else if (mark === 1) {
@@ -858,7 +858,7 @@ function enterCell(thisObj)
   						u="."+clsArr[i];
   				}
   		}
-  		// highligt the row first
+  		// highlight the row first
   		$("tr"+u).addClass("highlightRow");
   		
   		if (c==="dugga-pass")	{
