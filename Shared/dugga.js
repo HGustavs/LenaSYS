@@ -353,7 +353,10 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: returnedAccess
+				success: returnedAccess,
+				error: function(err) {
+					console.log("err:", err);
+				}
 			});
 	}else if(kind=="SECTION"){
 			$.ajax({

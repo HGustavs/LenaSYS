@@ -16,7 +16,9 @@ function addUsers()
 		for (var i=0; i<myArr.length; i++){
 				newUsersArr.push(myArr[i].split("\t"));
 		}
-		var newUserJSON = JSON.stringify(newUsersArr);	
+		var newUserJSON = JSON.stringify(newUsersArr);
+		alert(newUserJSON);
+		alert(JSON.stringify({cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']}));
 		AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 		$("#createUsers").css("display","none");
 }
@@ -79,16 +81,20 @@ function resetPw(uid,username)
 	
 	AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
 }
-
+var ramCounter;
 //----------------------------------------
 // Renderer
 //----------------------------------------
 function returnedAccess(data)
 {
+    ramCounter++;
+    console.log(ramCounter);
+	console.log(data['entries'].length);
 	// Fill section list with information
 	str="";
+    console.log("im returnedacc");
 	if (data['entries'].length > 0) {
-
+		console.log("im returnedacc2");
 		str+="<table class='list'>";
 
 		str+="<tr><th class='first' style='text-align:left; padding-left:8px; width:140px;'>Username</th><th style='text-align:left; padding-left:8px; width:150px;'>SSN</th><th style='text-align:left; padding-left:8px;'>First Name</th><th style='text-align:left; padding-left:8px;'>Last Name</th><th style='text-align:left; padding-left:8px; width:150px;'>Study program</th><th style='text-align:left; padding-left:8px; width:100px;'>Added</th><th style='text-align:left; padding-left:8px; width:90px;'>Access</th><th style='text-align:left; padding-left:8px; width:90px;'>Settings</th><th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
@@ -137,6 +143,7 @@ function returnedAccess(data)
 		str+="</table>";
 	}
 	var slist=document.getElementById("accessedcontent");
+	console.log(slist);
 	slist.innerHTML=str;
 	
 	if(data['debug']!="NONE!") alert(data['debug']);

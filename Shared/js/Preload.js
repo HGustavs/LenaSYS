@@ -1,4 +1,4 @@
-Custom progress bar that updates as images are downloaded
+//Custom progress bar that updates as images are downloaded
 
 var pictures = [
                     "1.jgp",
