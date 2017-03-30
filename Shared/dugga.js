@@ -18,16 +18,25 @@ function toggleloginnewpass(){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
+		$("#changepassword").css("display", "none");
 		status++;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
+		$("#changepassword").css("display", "none");
 		status= 0;
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "block");
+		$("#changepassword").css("display", "none");
+		status= 1;
+	}else if(status == 3){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "none");
+		$("#changepassword").css("display", "block");
 		status= 1;
 	}
 
@@ -452,7 +461,7 @@ function loginEventHandler(event){
 	}
 }
 
-function processResetPassword() {
+function processResetPasswordCheckUsername() {
 	var username = $("#newpassword #username").val();
 	
 	/*
@@ -472,6 +481,20 @@ function processResetPassword() {
 	status = 2;
 	toggleloginnewpass();
 
+}
+
+function processResetPasswordCheckSecurityAnswer() {
+
+	/*add code for check the security answer*/
+	
+	status = 3;
+	toggleloginnewpass();
+
+}
+
+function processResetPasswordChangePassword(){
+	$("input#username").css("background-color", "rgba(0, 255, 6, 0.2)");
+	$("input#password").css("background-color", "rgba(0, 255, 6, 0.2)");
 }
 
 function processLogin() {
