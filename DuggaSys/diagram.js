@@ -3,8 +3,8 @@ var retdata;
 
 AJAXService("get",{},"DIAGRAM");
 
-   	
-/* 
+
+/*
 
 -----------------------=====================##################=====================-----------------------
 		Layout (curve drawing tools)
@@ -17,7 +17,7 @@ AJAXService("get",{},"DIAGRAM");
 	 Segment - A collection of curves connecting points
 	 Point - A 2d coordinate
 
-*/   
+*/
 
 // Global settings
 
@@ -51,28 +51,28 @@ var points=[
             {x:310,y:60,selected:0},{x:400,y:160,selected:0},{x:355,y:115,selected:0},
 						// Path B -- Segment 1 (4,5 and 17,18)
             {x:100,y:40,selected:0},{x:140,y:40,selected:0},
-						// ER Attribute A -- TopLeft BottomRight MiddlePointConnector 19,20,21            
+						// ER Attribute A -- TopLeft BottomRight MiddlePointConnector 19,20,21
             {x:300,y:200,selected:0},{x:400,y:250,selected:0},{x:350,y:225,selected:0},
-						// ER Attribute B -- TopLeft BottomRight MiddlePointConnector 22,23,24            
+						// ER Attribute B -- TopLeft BottomRight MiddlePointConnector 22,23,24
             {x:300,y:275,selected:0},{x:400,y:325,selected:0},{x:350,y:300,selected:0},
-						// ER Entity A -- TopLeft BottomRight MiddlePointConnector 25,26,27            
+						// ER Entity A -- TopLeft BottomRight MiddlePointConnector 25,26,27
             {x:150,y:275,selected:0},{x:250,y:325,selected:0},{x:200,y:300,selected:0},
 						// ER Entity Connector Right Points -- 28,29
             {x:225,y:290,selected:1},
             {x:225,y:310,selected:1},
 
-						// ER Attribute C -- TopLeft BottomRight MiddlePointConnector 30,31,32            
+						// ER Attribute C -- TopLeft BottomRight MiddlePointConnector 30,31,32
 					  {x:15,y:275,selected:0},{x:115,y:325,selected:0},{x:65,y:300,selected:0},
-						// ER Attribute D -- TopLeft BottomRight MiddlePointConnector 33,34,35            
+						// ER Attribute D -- TopLeft BottomRight MiddlePointConnector 33,34,35
 						{x:15,y:350,selected:0},{x:115,y:400,selected:0},{x:65,y:375,selected:0},
-						// ER Attribute E -- TopLeft BottomRight MiddlePointConnector 36,37,38            
+						// ER Attribute E -- TopLeft BottomRight MiddlePointConnector 36,37,38
             {x:15,y:200,selected:0},{x:115,y:250,selected:0},{x:65,y:225,selected:0},
-					  
+
 						// ER Entity Connector Left Points -- 39,40,41
 					  {x:150,y:225,selected:0},
 					  {x:150,y:235,selected:0},
 					  {x:150,y:245,selected:0},
-					  
+
            ];
 
 //--------------------------------------------------------------------
@@ -100,7 +100,7 @@ points.drawpoints = function ()
 		ctx.lineWidth=2;
 		for(var i=0;i<this.length;i++){
 				var point=this[i];
-				
+
 				if(point.selected==0){
 						ctx.beginPath();
 						ctx.moveTo(point.x-crossl,point.y-crossl);
@@ -116,9 +116,9 @@ points.drawpoints = function ()
 						ctx.strokeRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
 						ctx.restore();
 				}
-								
+
 		}
-		ctx.lineWidth=1;		
+		ctx.lineWidth=1;
 }
 
 //--------------------------------------------------------------------
@@ -133,14 +133,14 @@ points.distance = function(xk,yk)
 		for(i=0;i<this.length;i++){
 				var dx=xk-this[i].x;
 				var dy=yk-this[i].y;
-				
+
 				var dd=(dx*dx)+dy*dy;
 				if(dd<dist){
 						dist=dd;
 						ind=i;
 				}
 		}
-		
+
 		return {dist:Math.sqrt(dist),ind:ind};
 }
 
@@ -153,7 +153,7 @@ points.clearsel = function()
 {
 		for(i=0;i<this.length;i++){
 				this[i].selected=0;
-		}		
+		}
 }
 
 //--------------------------------------------------------------------
@@ -171,17 +171,17 @@ diagram.draw = function ()
 {
 		// On every draw of diagram adjust the midpoint if there is one to adjust
 		this.adjust();
-		
+
 		for(i=0;i<this.length;i++){
 				item=this[i];
-				
+
 				// Path item
 				if(item.kind==1){
-						item.draw(1,1);						
+						item.draw(1,1);
 				}else if(item.kind==2){
 						item.draw();
 				}
-				
+
 		}
 }
 
@@ -193,14 +193,14 @@ diagram.adjust = function ()
 {
 		for(i=0;i<this.length;i++){
 				item=this[i];
-				
+
 				// Diagram item
 				if(item.kind==2){
-						item.adjust();						
+						item.adjust();
 				}
-				
+
 		}
-		
+
 }
 
 //--------------------------------------------------------------------
@@ -211,14 +211,14 @@ diagram.inside = function (xk,yk)
 {
 		for(i=0;i<this.length;i++){
 				item=this[i];
-				
+
 				if(item.kind==2){
 						var insided=item.inside(xk,yk);
 						if(insided==true) return i;
 				}
-				
+
 		}
-		
+
 		return -1;
 }
 
@@ -231,7 +231,7 @@ diagram.linedist = function (xk,yk)
 {
 		for(i=0;i<this.length;i++){
 				item=this[i];
-				
+
 				if(item.kind==2){
 						var insided=item.linedist(xk,yk);
 						if(insided!=-1&&insided<15){
@@ -240,9 +240,9 @@ diagram.linedist = function (xk,yk)
 								item.sel=false;
 						}
 				}
-				
+
 		}
-		
+
 		return -1;
 }
 
@@ -253,27 +253,27 @@ diagram.linedist = function (xk,yk)
 
 function Path() {
 		this.kind=1;							// Path kind
-				
+
 		this.segments=Array();		// Segments
 		this.sel;									// Selected object info
 		this.intarr=Array();			// Intersection list (one list per segment)
 
 		this.tmplist=Array();			// Temporary list for testing of intersections
 		this.auxlist=Array();			// Auxillary temp list for testing of intersections
-		
+
 		this.fillColor="#48B";		// Fill color (default is blueish)
 		this.strokeColor="#246";	// Stroke color (default is dark blue)
 		this.Opacity=0.5;					// Opacity (default is 50%)
 		this.linewidth=3;					// Line Width (stroke width - default is 3 pixels)
-		
+
 		this.isorganized=true;			// This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
 																// An organized path can contain several sub-path, each of which must be organized
-		
+
 		//--------------------------------------------------------------------
 		// move
 		// Performs a delta-move on all points in a path
 		//--------------------------------------------------------------------
-		
+
     this.move = function(movex,movey)
     {
 						// Mar all segment points as unmoved
@@ -282,11 +282,11 @@ function Path() {
 								points[seg.pa].moved=false;
 								points[seg.pb].moved=false;
 						}
-						
+
 						// Move segments that have not previously been moved
 						for(var i=0;i<this.segments.length;i++){
 								var seg=this.segments[i];
-								
+
 								if(points[seg.pa].moved==false){
 										points[seg.pa].x+=movex;
 										points[seg.pa].y+=movey;
@@ -298,27 +298,27 @@ function Path() {
 										points[seg.pb].moved=true;
 								}
 
-						}				
+						}
     }
 
 		//--------------------------------------------------------------------
 		// addsegment
 		// Adds a segment to a path
 		//--------------------------------------------------------------------
-		
+
     this.addsegment = function(kind, p1, p2, p3, p4, p5, p6, p7, p8)
     {
     		// Line segment (only kind of segment at the moment)
     		if(kind==1){
     				// Only push segment if it does not already exist
     				if(!this.existsline(p1,p2,this.segments)){
-    						this.segments.push({kind:1,pa:p1,pb:p2});    				
+    						this.segments.push({kind:1,pa:p1,pb:p2});
     				}
     		}else{
     				alert("Unknown segment type: "+kind);
     		}
     }
-    
+
 		//--------------------------------------------------------------------
 		// addsegment
 		// Draws filled path to screen (or svg when that functionality is added)
@@ -328,35 +328,35 @@ function Path() {
     {
 				if(this.isorganized==false) alert("Only organized paths can be filled!");
 				if(this.segments.length>0){
-						
+
 						// Assign stroke style, color, transparency etc
 						ctx.strokeStyle=this.strokeColor;
 						ctx.fillStyle=this.fillColor;
 						ctx.globalAlpha=this.Opacity;
-						ctx.lineWidth=this.linewidth; 
+						ctx.lineWidth=this.linewidth;
 						ctx.beginPath();
 
 						var pseg=this.segments[0];
 						ctx.moveTo(points[pseg.pa].x,points[pseg.pa].y);
 						for(var i=0;i<this.segments.length;i++){
 								var seg=this.segments[i];
-								
+
 								// If we start over on another sub-path, we must start with a moveto
 								if(seg.pa!=pseg.pb){
-										ctx.moveTo(points[seg.pa].x,points[seg.pa].y);								
+										ctx.moveTo(points[seg.pa].x,points[seg.pa].y);
 								}
-								
+
 								// Draw current line
 								ctx.lineTo(points[seg.pb].x,points[seg.pb].y);
-								
+
 								// Remember previous segment
 								pseg=seg;
 						}
-						
+
 						// Make either stroke or fill or both -- stroke always after fill
 						if(fillstate) ctx.fill();
 						if(strokestate) ctx.stroke();
-						
+
 						// Reset opacity so that following draw operations are unaffected
 						ctx.globalAlpha=1.0;
 				}
@@ -366,48 +366,48 @@ function Path() {
 		//--------------------------------------------------------------------
 		// inside
 		// Returns true if coordinate xk,yk falls inside the bounding box of the symbol
-		//--------------------------------------------------------------------    
-    
-    this.inside = function (xk,yk) 
+		//--------------------------------------------------------------------
+
+    this.inside = function (xk,yk)
 		{
 						// Count Crossing linear segments
 						var crosses=0;
-						
+
 						// Check against segment list
 						for(var i=0;i<this.segments.length;i++){
 								var item=this.segments[i];
-		
+
 								var pax=points[item.pa].x;
 								var pbx=points[item.pb].x;
 								var pay=points[item.pa].y;
 								var pby=points[item.pb].y;
-		
+
 								var dx=pbx-pax;
 								var dy=pby-pay;
 								var dd=dx/dy;
 
-								// Returning working cross even if line goes top to bottom		
+								// Returning working cross even if line goes top to bottom
 								if(pby<pay){
 										if (yk>pby&&yk<pay&&((((yk-pay)*dd)+pax)<xk)){
 												crosses++;
-										}						
+										}
 								}else{
 										if (yk>pay&&yk<pby&&((((yk-pay)*dd)+pax)<xk)){
 												crosses++;
-										}												
+										}
 								}
-		
+
 						}
-						
-						// Add one to reverse truth value e.g. 0 if 1 etc		
-						return (crosses+1)%2;				
+
+						// Add one to reverse truth value e.g. 0 if 1 etc
+						return (crosses+1)%2;
 		}
 
 
 		//--------------------------------------------------------------------
 		// recursetest
 		// Recursively splits a line at intersection points from top to bottom until there is no line left
-		//--------------------------------------------------------------------    
+		//--------------------------------------------------------------------
 
 		this.recursetest = function(p1,p2)
 		{
@@ -415,23 +415,23 @@ function Path() {
 				var endres=null;
 				for(var i=0;i<this.segments.length;i++){
 						bitem=this.segments[i];
-						var result=this.intersection(p1,p2,bitem.pa,bitem.pb);				
+						var result=this.intersection(p1,p2,bitem.pa,bitem.pb);
 						if(result.state==true&&result.y<yk){
 								yk=result.y;
 								endres=result;
-						}				
+						}
 				}
 				if(yk!=5000){
 						// Create new point (if it does not already exist)
 						pointno=points.length
 						points.push({x:endres.x,y:endres.y});
-		
+
 						// Depending on direction of p1 and p2
 						if(points[p2].y<points[p1].y){
 								this.tmplist.push({kind:1,pa:pointno,pb:p2});
 								this.recursetest(pointno,p1);
 						}else{
-								this.tmplist.push({kind:1,pa:pointno,pb:p1});				
+								this.tmplist.push({kind:1,pa:pointno,pb:p1});
 								this.recursetest(pointno,p2);
 						}
 				}else{
@@ -443,31 +443,31 @@ function Path() {
 		// intersection
 		// Line to line intersection
 		// Does not detect intersections on end points (we do not want end points to be part of intersection set)
-		//--------------------------------------------------------------------    
+		//--------------------------------------------------------------------
 
 		this.intersection = function(p1,p2,p3,p4) {
-		
+
 				var x1=points[p1].x;
 				var y1=points[p1].y;
-				
+
 				var x2=points[p2].x;
 				var y2=points[p2].y;
-				
+
 				var x3=points[p3].x;
 				var y3=points[p3].y;
-				
+
 				var x4=points[p4].x;
 				var y4=points[p4].y;
-				
+
 				// Basic fix for straight lines
 				if(x1==x2) x2+=0.01;
 				if(y1==y2) y2+=0.01;
 				if(x3==x4) x4+=0.01;
 				if(y3==y4) y4+=0.01;
-		
+
 		    var x=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
 		    var y=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
-		
+
 		    if (isNaN(x)||isNaN(y)) {
 		        return {state:false,x:0,y:0};;
 		    } else {
@@ -494,13 +494,13 @@ function Path() {
 		    }
 		    return {state:true,x:x,y:y};;
 		}
-		
+
 		//--------------------------------------------------------------------
 		// existsline
 		// Checks if a line already exists but in the reverse direction
 		// Only checks lines, not bezier curves
-		//--------------------------------------------------------------------    
-		
+		//--------------------------------------------------------------------
+
 		this.existsline = function (p1,p2,segmentset)
 		{
 				if(p1==p2) return true;
@@ -510,15 +510,15 @@ function Path() {
 				}
 				return false;
 		}
-		
+
 		//--------------------------------------------------------------------
 		// recursetest
 		// Line to line intersection
 		// Does not detect intersections on end points (we do not want end points to be part of intersection set)
-		//--------------------------------------------------------------------    
+		//--------------------------------------------------------------------
 
 		this.boolOp = function (otherpath)
-		{				
+		{
 				// Clear temporary lists used for merging paths
 				this.tmplist=[];
 				this.auxlist=[];
@@ -530,7 +530,7 @@ function Path() {
 						var item=otherpath.segments[i];
 						this.recursetest(item.pa,item.pb);
 				}
-				
+
 				// Check if each segment is inside the joining set
 				for(var i=0;i<this.tmplist.length;i++){
 						var item=this.tmplist[i];
@@ -539,21 +539,21 @@ function Path() {
 						var p1=points[item.pa];
 						var p2=points[item.pb];
 						var xk=(p1.x+p2.x)*0.5;
-						var yk=(p1.y+p2.y)*0.5;				
-		
+						var yk=(p1.y+p2.y)*0.5;
+
 						if(this.inside(xk,yk,otherpath)){
     						if(!this.existsline(item.pa,item.pb,this.auxlist)){
 										this.auxlist.push(item);
 								}
 						}
 				}
-				
+
 				// Recurse into joining segment set and check for crossing lines
 				for(var i=0;i<this.segments.length;i++){
 						var item=this.segments[i];
 						otherpath.recursetest(item.pa,item.pb);
 				}
-				
+
 				// Check if each segment is inside the local set
 				for(var i=0;i<otherpath.tmplist.length;i++){
 						var item=otherpath.tmplist[i];
@@ -562,42 +562,42 @@ function Path() {
 						var p1=points[item.pa];
 						var p2=points[item.pb];
 						var xk=(p1.x+p2.x)*0.5;
-						var yk=(p1.y+p2.y)*0.5;				
-		
+						var yk=(p1.y+p2.y)*0.5;
+
 						if(otherpath.inside(xk,yk,this)){
     						if(!this.existsline(item.pa,item.pb,this.auxlist)){
 										this.auxlist.push(item);
 								}
 						}
 				}
-				
+
 				alert(this.auxlist.length);
-												
+
 				this.drawsegments(this.auxlist);
 		}
-		
+
 		//--------------------------------------------------------------------
 		// drawsegments
 		// Debug drawing of a segment set (for example for drawing tmplist, auxlist etc)
-		//--------------------------------------------------------------------    
+		//--------------------------------------------------------------------
 
 		this.drawsegments = function (segmentlist, color)
-		{				
+		{
 				// Draw aux set
 				ctx.lineWidth=1;
 				ctx.strokeStyle="#46f";
 				for(var i=0;i<segmentlist.length;i++){
 						var line=segmentlist[i];
-		
-						// If line is a straight line				
+
+						// If line is a straight line
 						if(line.kind==1){
 								ctx.beginPath();
 								ctx.moveTo(points[line.pa].x,points[line.pa].y);
 								ctx.lineTo(points[line.pb].x,points[line.pb].y);
 								ctx.stroke();
 						}
-						
-				}		
+
+				}
 		}
 }
 
@@ -608,148 +608,20 @@ function initcanvas()
         ctx = canvas.getContext("2d");
 				acanvas=document.getElementById("myCanvas");
 		}
-	
+
 		makegfx();
-		
+
 		updategfx();
 
-} 
+}
 
 var erEntityA;
 
 // Demo data for testing purposes.
 
-function makegfx()
-{
-		// Declare three paths
-		var pathA=new Path;
-		var pathB=new Path;
-		var pathC=new Path;
-	
-		// Add segments to paths
-		pathA.addsegment(1,0,1);
-		pathA.addsegment(1,1,3);
-		pathA.addsegment(1,3,2);
-		pathA.addsegment(1,2,0);
-
-		pathA.addsegment(1,6,7);
-		pathA.addsegment(1,7,8);
-		pathA.addsegment(1,8,9);
-		pathA.addsegment(1,9,6);
-
-		pathB.addsegment(1,18,17);
-		pathB.addsegment(1,17,4);
-		pathB.addsegment(1,4,5);
-		pathB.addsegment(1,5,18);
-		
-		pathC.addsegment(1,10,11);
-		pathC.addsegment(1,11,13);
-		pathC.addsegment(1,13,12);
-		pathC.addsegment(1,12,10);
-		
-		// Create a UML Class and add three attributes, two operations and a name
-		classA = new Symbol(1);
-		
-		classA.name="Person";		
-
-		classA.operations.push({visibility:"+",text:"hold(name:String)"});
-		classA.operations.push({visibility:"-",text:"makemore()"});		
-
-		classA.attributes.push({visibility:"+",text:"height:Integer"});
-		classA.attributes.push({visibility:"#",text:"at:Large"});		
-		classA.attributes.push({visibility:"-",text:"megalomania:Real"});	
-		
-		classA.topLeft=14;
-		classA.bottomRight=15;	
-		classA.middleDivider=16;	
-
-		erAttributeA = new Symbol(2);
-		erAttributeA.name="SSN";		
-		erAttributeA.topLeft=19;
-		erAttributeA.bottomRight=20;	
-		erAttributeA.centerpoint=21;	
-
-		erAttributeB = new Symbol(2);
-		erAttributeB.name="Name";		
-		erAttributeB.topLeft=22;
-		erAttributeB.bottomRight=23;	
-		erAttributeB.centerpoint=24;	
-
-		erAttributeC = new Symbol(2);
-		erAttributeC.name="Smell";		
-		erAttributeC.topLeft=30;
-		erAttributeC.bottomRight=31;	
-		erAttributeC.centerpoint=32;	
-
-		erAttributeD = new Symbol(2);
-		erAttributeD.name="Stink";		
-		erAttributeD.topLeft=33;
-		erAttributeD.bottomRight=34;	
-		erAttributeD.centerpoint=35;	
-
-		erAttributeE = new Symbol(2);
-		erAttributeE.name="Verisimilitude";		
-		erAttributeE.topLeft=36;
-		erAttributeE.bottomRight=37;	
-		erAttributeE.centerpoint=38;	
-		
-		erEntityA = new Symbol(3);
-		erEntityA.name="Person";		
-		erEntityA.topLeft=25;
-		erEntityA.bottomRight=26;	
-		erEntityA.centerpoint=27;
-		
-		erattributeRelA = new Symbol(4);
-		erattributeRelA.topLeft=28;
-		erattributeRelA.bottomRight=24;	
-
-		erattributeRelB = new Symbol(4);
-		erattributeRelB.topLeft=29;
-		erattributeRelB.bottomRight=21;	
-
-		// We connect the connector point to the middle point of the attribute in this case
-		erattributeRelC = new Symbol(4);
-		erattributeRelC.topLeft=39;
-		erattributeRelC.bottomRight=32;	
-
-		erattributeRelD = new Symbol(4);
-		erattributeRelD.topLeft=40;
-		erattributeRelD.bottomRight=35;	
-
-		erattributeRelE = new Symbol(4);
-		erattributeRelE.topLeft=41;
-		erattributeRelE.bottomRight=38;	
-		
-		erEntityA.connectorRight.push({from:28,to:24});
-		erEntityA.connectorRight.push({from:29,to:21});
-
-		erEntityA.connectorLeft.push({from:40,to:35});
-		erEntityA.connectorLeft.push({from:39,to:32});
-
-		erEntityA.connectorTop.push({from:41,to:38});
-
-		// Add all elements to diagram		
-		diagram.push(pathA);
-		diagram.push(pathB);
-		diagram.push(pathC);
-
-		diagram.push(classA);
-		diagram.push(erAttributeA);
-		diagram.push(erAttributeB);
-		diagram.push(erAttributeC);
-		diagram.push(erAttributeD);
-		diagram.push(erAttributeE);
-		diagram.push(erEntityA);
-		diagram.push(erattributeRelA);
-		diagram.push(erattributeRelB);
-		diagram.push(erattributeRelC);
-		diagram.push(erattributeRelD);
-		diagram.push(erattributeRelE);
-		
-}
 
 function updategfx()
-{		
+{
 		ctx.clearRect(0,0,600,600);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
@@ -760,12 +632,12 @@ function updategfx()
 
 // Make a bool operation between PathA and PathB
 //		pathA.boolOp(pathC);
-		
+
 		// Draw all points as crosses
 		points.drawpoints();
-		
+
 		// Draw all symbols
-		
+
 }
 
 // Recursive Pos of div in document - should work in most browsers
@@ -788,7 +660,7 @@ function findPos(obj) {
 function mousemoveevt(ev, t){
 		mox=cx;
 		moy=cy;
-		
+
 		if (ev.layerX||ev.layerX==0) { // Firefox
 		    cx=ev.layerX-acanvas.offsetLeft;
 		    cy=ev.layerY-acanvas.offsetTop;
@@ -796,14 +668,14 @@ function mousemoveevt(ev, t){
 		    cx=ev.offsetX-acanvas.offsetLeft;
 		    cy=ev.offsetY-acanvas.offsetTop;
 		}
-			
+
 		if(md==0){
 				// Select a new point only if mouse is not already moving a point or selection box
 				sel=points.distance(cx,cy);
 
 				// If mouse is not pressed highlight closest point
-				points.clearsel();	
-				
+				points.clearsel();
+
 				movobj=diagram.inside(cx,cy);
 
 		}else if(md==1){
@@ -811,17 +683,17 @@ function mousemoveevt(ev, t){
 		}else if(md==2){
 				// If mouse is pressed down and a point is selected - move that point
 				points[sel.ind].x=cx;
-				points[sel.ind].y=cy;					
+				points[sel.ind].y=cy;
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
 						diagram[movobj].move(cx-mox,cy-moy);
-				}	
+				}
 		}
-		
+
 		diagram.linedist(cx,cy);
 
-		updategfx();		
+		updategfx();
 
 		// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
 		for(i=0;i<diagram.length;i++){
@@ -830,9 +702,9 @@ function mousemoveevt(ev, t){
 				if(item.symbolkind==3){
 						item.quadrants();
 				}
-				
+
 		}
-		
+
 		// Draw select or create dotted box
 		if(md==4){
 				ctx.setLineDash([3, 3]);
@@ -841,22 +713,22 @@ function mousemoveevt(ev, t){
 				ctx.lineTo(cx,sy);
 				ctx.lineTo(cx,cy);
 				ctx.lineTo(sx,cy);
-				ctx.lineTo(sx,sy);		
+				ctx.lineTo(sx,sy);
 				ctx.stroke();
 				ctx.setLineDash([]);
 		}
 
-} 
+}
 
 function mousedownevt(ev)
 {
 		if(sel.dist<10){
-				md=2;				
+				md=2;
 		}else if(movobj!=-1){
 				md=3;
 		}else{
 				md=4;			// Box select or Create mode.
-				sx=cx;		
+				sx=cx;
 				sy=cy;
 		}
 
@@ -864,9 +736,9 @@ function mousedownevt(ev)
 
 function mouseupevt(ev)
 {
-		
+
 		// Code for creating a new class
-				
+
 		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr")){
 				// Add required points
 				var p1=points.addpoint(sx,sy,false);
@@ -876,27 +748,27 @@ function mouseupevt(ev)
 
 		if(uimode=="CreateClass"&&md==4){
 				classB = new Symbol(1);
-				classB.name="New"+diagram.length;		
+				classB.name="New"+diagram.length;
 
-				classB.operations.push({visibility:"-",text:"makemore()"});		
+				classB.operations.push({visibility:"-",text:"makemore()"});
 				classB.attributes.push({visibility:"+",text:"height:Integer"});
-								
+
 				classB.topLeft=p1;
-				classB.bottomRight=p2;	
-				classB.middleDivider=p3;	
+				classB.bottomRight=p2;
+				classB.middleDivider=p3;
 
 				diagram.push(classB);
 		}else if(uimode=="CreateERAttr"&&md==4){
 				erAttributeA = new Symbol(2);
-				erAttributeA.name="Attr"+diagram.length;		
+				erAttributeA.name="Attr"+diagram.length;
 				erAttributeA.topLeft=p1;
-				erAttributeA.bottomRight=p2;	
-				erAttributeA.centerpoint=p3;	
+				erAttributeA.bottomRight=p2;
+				erAttributeA.centerpoint=p3;
 				diagram.push(erAttributeA);
 
 		}
 
-		updategfx();		
+		updategfx();
 
 		// Clear mouse state
 		md=0;
@@ -922,26 +794,26 @@ function cross(xk,yk)
 				ctx.lineTo(xk+crossl,yk+crossl);
 				ctx.moveTo(xk+crossl,yk-crossl);
 				ctx.lineTo(xk-crossl,yk+crossl);
-				ctx.stroke();				
+				ctx.stroke();
 }
 
 function drawOval(x1, y1, x2, y2) {
 		xm = x1+((x2-x1)*0.5),       // x-middle
 		ym = y1+((y2-y1)*0.5);       // y-middle
-		
+
 		ctx.beginPath();
 		ctx.moveTo(x1, ym);
 		ctx.quadraticCurveTo(x1,y1,xm,y1);
 		ctx.quadraticCurveTo(x2,y1,x2,ym);
 		ctx.quadraticCurveTo(x2,y2,xm,y2);
 		ctx.quadraticCurveTo(x1,y2,x1,ym);
-}   
+}
 
 var consloe={};
 consloe.log=function(gobBluth)
 {
 		document.getElementById("consloe").innerHTML=((JSON.stringify(gobBluth)+"<br>")+document.getElementById("consloe").innerHTML);
-} 
+}
 
 //----------------------------------------
 // Renderer
@@ -953,5 +825,5 @@ function returnedSection(data)
 {
 	retdata=data;
   if(data['debug']!="NONE!") alert(data['debug']);
-		  
+
 }
