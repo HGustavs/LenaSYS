@@ -85,7 +85,6 @@ points.addpoint = function (xk,yk,selval)
 		var newpnt={x:xk,y:yk,selected:selval};
 		var pos=this.length;
 		this.push(newpnt);
-		console.log("Pos:"+pos+" | Newpnt: "+newpnt);
 		return pos;
 }
 
@@ -956,4 +955,3 @@ function returnedSection(data)
   if(data['debug']!="NONE!") alert(data['debug']);
 		  
 }
-
