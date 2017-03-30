@@ -170,9 +170,9 @@
         echo '<pre>';
         echo 'printf "' . htmlspecialchars("<?php") . '\n';
         echo 'define(\"DB_USER\",\"' . $username . '\");\n';
-        echo 'define("DB_PASSWORD","' . $password . '");\n';
-        echo 'define("DB_HOST","' . $serverName . '");\n';
-        echo 'define("DB_NAME","' . $databaseName . '");\n';
+        echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
+        echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
+        echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
         echo '</pre>';
 
