@@ -27,6 +27,8 @@ var versions;
 var clist;
 var onlyPending=false;
 var timeZero=new Date(0);
+// Hide Teacher
+var hideTeacher=false;
 
 function setup(){
 	// Benchmarking function
@@ -94,8 +96,7 @@ function redrawtable()
 		str += "</table>"
 		str += "</div>"
 		
-		// Redraw main result table    
-
+		// Redraw main result table
 		str+="<table class='markinglist' id='markinglist'>";
 		str+="<thead>";
 		str+="<tr class='markinglist-header'>";
@@ -196,19 +197,19 @@ function redrawtable()
 
 function cellIn(ev)
 {
-		var greger=ev.target;
+	var greger=ev.target;
 
-		if(greger.nodeName!="TD") greger=greger.parentElement;
-    if(greger.nodeName!="TD") greger=greger.parentElement; /* These are two by design */
+    if(greger.nodeName!="TD") greger=greger.parentElement;
+        if(greger.nodeName!="TD") greger=greger.parentElement; /* These are two by design */
 
     var bodyRect = document.body.getBoundingClientRect(),
-    gregerRect = greger.getBoundingClientRect(),
-    offset   = gregerRect.top - bodyRect.top;
-    offsetH   = gregerRect.left - bodyRect.left;
+    gregerRect   = greger.getBoundingClientRect(),
+    offset       = gregerRect.top - bodyRect.top;
+    offsetH      = gregerRect.left - bodyRect.left;
 
 		$("#verthighlight").css("display","block");
-    $("#horizhighlight").css("display","block");
-    $("#horizhighlight").addClass("hhighlight-border-color");
+        $("#horizhighlight").css("display","block");
+        $("#horizhighlight").addClass("hhighlight-border-color");
     if($("#header"+(greger.cellIndex-1)).hasClass("result-header-inverse")){
         $("#verthighlight").removeClass("vhighlight-border-color");
         $("#verthighlight").addClass("vhighlight-border-color-inverse");
@@ -216,7 +217,7 @@ function cellIn(ev)
         $("#verthighlight").removeClass("vhighlight-border-color-inverse");
         $("#verthighlight").addClass("vhighlight-border-color");
     }
-    $("#verthighlight").css("left",offsetH+"px");
+        $("#verthighlight").css("left",offsetH+"px");
 		$("#verthighlight").css("top",greger.offsetHeight+47+"px");
 
 		$("#verthighlight").css("width",greger.offsetWidth-8+"px");
@@ -227,7 +228,6 @@ function cellIn(ev)
 
 		$("#horizhighlight").css("height",greger.offsetHeight-4+"px");
 		$("#horizhighlight").css("width",$("#markinglist").outerWidth()+"px");
-
 }
 
 function cellOut(ev)
@@ -556,12 +556,15 @@ function process()
 		
 		var dstr="";
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='onlyPending' value='0' id='onlyPending'";
+    // Hide Teacher
+    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #ff00bf'><input type='checkbox' class='headercheck' name='hideTeacher' value='0' id='hideTeacher'";
     if (onlyPending){ dstr+=" checked='true'"; }
     dstr+="><label class='headerlabel' for='onlyPending'>Show only pending</label></div>";
+    dstr+="><label class='headerlabel' for='hideTeacher'>Hide teachers</label></div>";
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort ascending</label><input name='sortdir' type='radio' class='headercheck' value='-1' id='sortdir-1'><label class='headerlabel' for='sortdir-1'>Sort descending</label></div>";
-		dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
-		dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-		dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";		
+	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
+	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
+	dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
 
 		dstr+="<table><tr><td>";
@@ -627,14 +630,14 @@ function leaves()
   onlyPending=$('#onlyPending').is(":checked");
 	var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
 	var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
-  var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
+    var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
 		
 	$("input[name='sortcol']:checked").each(function() {col=this.value;});
 	$("input[name='sortdir']:checked").each(function() {dir=this.value;});
 	
 	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
 	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
-  localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
+    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
 	if (!(ocol==col && odir==dir && onlyPending==opend) || typechanged) {
 			typechanged=false;
@@ -718,7 +721,6 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
 	return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
-
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
 {
@@ -872,7 +874,6 @@ function enterCell(thisObj)
   		} else if (c==="dugga-unassigned") {
   				$(thisObj).addClass("dugga-unassigned-highlighted");			
   		} else {
-  			
   		}
 }
 
