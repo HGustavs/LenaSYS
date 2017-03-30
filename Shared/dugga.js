@@ -17,11 +17,18 @@ function toggleloginnewpass(){
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "none");
 		status++;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
+		$("#showsecurityquestion").css("display", "none");
 		status= 0;
+	}else if(status == 2){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "block");
+		status= 1;
 	}
 
 }
@@ -461,6 +468,10 @@ function processResetPassword() {
 				$("#userName").html(result['username']);
 
 	*/
+
+	status = 2;
+	toggleloginnewpass();
+
 }
 
 function processLogin() {

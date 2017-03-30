@@ -77,8 +77,41 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' value='Send'>
+							<input type='button' class='submit-button' onclick="processResetPassword();" value='Check user'>
 							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
+						</td>
+					</tr>
+				</table>
+			  </div>
+		</div>
+		<div id='showsecurityquestion' style="display:none">
+			<div class='loginBoxheader' id="securityid"><!--What is this id?-->
+				<h3>New Password</h3>
+				<div onclick="closeWindows()">x</div>
+			</div>
+			  <div class="table-wrap">
+				<table>
+					<tr>
+						<td>
+							<label class="text">Your sequrity queston is:</label>
+						</td>
+						<td>
+							<label class="text">Who let the dogs out? BTW: maybe not the perfect solution to use a label for the question</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus >
+						</td>
+					</tr>
+	
+					<tr>
+						<td id="message3"></td>
+					</tr>
+					<tr>
+						<td>
+							<input type='button' class='submit-button' onclick="processResetPassword();" value='Check answer'>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Abort</label>
 						</td>
 					</tr>
 				</table>
