@@ -1,6 +1,0 @@
-ALTER TABLE user_course ALTER COLUMN result SET DEFAULT 0.0;
-ALTER TABLE user_course ALTER COLUMN period SET DEFAULT 1;
-ALTER TABLE user_course ALTER COLUMN term SET DEFAULT 1;
-ALTER TABLE user_course ADD COLUMN vershistory TEXT;
-ALTER TABLE user_course ADD COLUMN vers VARCHAR(8);
-ALTER TABLE codeexample MODIFY runlink VARCHAR(256);

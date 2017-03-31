@@ -337,7 +337,6 @@ INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES
 INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG14h','theDEST',199393,'WEBUG',180,100,101);
 
 -- Courses --
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (300, "DA121G","Datorns grunder",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (301, "DA124G","Programmeringsmetodik",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (302, "DA324G","Datakommunikation - Routing",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (303, "IT1435","USEREXPERIENCE",NOW(),1,0,7.5);
@@ -370,9 +369,8 @@ INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VAL
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (330, "DA330G","Webbprogrammering",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (331, "MA113G","Algebra och logik",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (332, "DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,7.5);
-
-
 -- course and class--
+
 -- DVSUG --
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',300);
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',301);
@@ -615,8 +613,10 @@ INSERT INTO list(listnr,listeriesid,responsible,course) VALUES('23415',2022,'Chr
 
 -- END UMV test data END --
 
-/* testdata for moments*/
+/* Testdata for description box in PHP Example */
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '5', '13', '2007', NULL, '2', NULL, '2015-05-20 10:49:22', NULL, '97732', NULL, NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', NULL, '97732', NULL, NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', NULL, '97732', NULL, NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', NULL, '97732', NULL, NULL);
+INSERT INTO fileLink (fileid, filename, kind, cid, isGlobal) VALUES (2, "PHP_Ex2.txt", 2 , 1, 1);
+
