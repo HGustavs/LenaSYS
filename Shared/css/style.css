@@ -522,8 +522,17 @@ header td {
     padding-right:4px;
 }
 
-#userName {
-    cursor:pointer;
+
+.navName a {
+    color: #FFFFFF;
+    text-decoration:none;
+    overflow:hidden;
+}
+
+.navName a:hover {
+    color: #FFFFFF;
+	text-decoration:underline;
+    overflow:hidden;
 }
 
 .loggedout {
@@ -979,7 +988,7 @@ input.submit-button {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color:#614875;
     border:0px;
-    width:110px;
+    width:120px;
     height:30px;
     color:#fff;
     cursor:pointer;
