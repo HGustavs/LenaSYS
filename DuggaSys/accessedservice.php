@@ -73,11 +73,12 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 	}else if(strcmp($opt,"ADDUSR")==0){		
 			$newUserData = json_decode(htmlspecialchars_decode($newusers));
-        var_dump($newUserData);
+        // var_dump($newUserData);
+        // print_r($newUserData);
 		foreach ($newUserData as $user) {
 			$uid="UNK";
 			if (count($user) == 1) {
-				var_dump($user);
+//				var_dump($user);
 					// See if we have added with username or SSN
 					$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn or ssn=:usernameorssn");
 					$userquery->bindParam(':usernameorssn', $user[0]);
@@ -92,7 +93,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					}
 
 			} else if (count($user) > 1 && count($user) <= 6){
-				var_dump("test else", $user);
+//				var_dump("test else", $user);
 					$ssn = $user[0];
 					$tmp = explode(',', $user[1]);
 					$firstname = trim($tmp[1]);
