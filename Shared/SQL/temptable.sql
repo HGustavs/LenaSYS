@@ -15,5 +15,5 @@ CREATE TABLE tmplistentries (
 	moment				INT UNSIGNED,
 	gradesystem 	TINYINT(1),
 	highscoremode	INT DEFAULT 0,
-	CONSTRAINT PRIMARY KEY(lid)
+	PRIMARY KEY(lid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
