@@ -106,10 +106,10 @@
 
                     # This commented code in this block could work if delimiters are fixed/removed in sql files.
                     # TODO: Fix handling of delimiters. Now this part only removes code between them.
-                    if (!$blockStarted && strpos($completeQuery, "delimiter //")){
+                    if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")){
                         $blockStarted = true;
                         #$queryBlock = $completeQuery;
-                    } else if ($blockStarted && strpos($completeQuery, "delimiter ;")) {
+                    } else if ($blockStarted && strpos(strtolower($completeQuery), "delimiter ;")) {
                         $blockStarted = false;
                         #$queryBlock = $queryBlock . $completeQuery;
                         #$connection->query($queryBlock);
