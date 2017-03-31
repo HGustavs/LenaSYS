@@ -483,7 +483,7 @@ function returnedSection(data)
 			str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
 			str+="<div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 		str+="</div>";
-	
+
 		str+="<div id='Sectionlistc' >";
 			
 		var groupitems = 0;
@@ -495,8 +495,22 @@ function returnedSection(data)
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
 				var released = item['release'];
-				str += "<div>";
 
+				// Separating the created div's
+				if(parseInt(item['kind']) === 0){
+					str += "<div class='header'>";
+				}else if(parseInt(item['kind']) === 1){
+					str += "<div class='section'>";
+				}else if(parseInt(item['kind']) === 2){
+					str += "<div class='code'>";
+				}else if(parseInt(item['kind']) === 3){
+					str += "<div class='testDugga'>";
+				}else if(parseInt(item['kind']) === 4){
+					str += "<div class='moment'>";
+				}else if(parseInt(item['kind']) === 5){
+					str += "<div class='link'>";
+				}
+					
 				// All are visible according to database
 
 				// Content table 		
@@ -843,3 +857,9 @@ function returnedHighscore(data){
 	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
 }
+
+
+// Function for toggling content in the section
+$(document).on('click', '.moment', function () {
+	$(this).nextUntil('.moment').toggle();
+});
