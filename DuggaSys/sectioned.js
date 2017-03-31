@@ -462,7 +462,6 @@ function returnedSection(data)
       			
 			str+="<td style='width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='width:112px;'><input type='button' value='List' class='submit-button' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			
 		}else{
 			// No version selector for students
@@ -484,7 +483,7 @@ function returnedSection(data)
 			str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
 			str+="<div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 		str+="</div>";
-	
+
 		str+="<div id='Sectionlistc' >";
 			
 		var groupitems = 0;
@@ -499,6 +498,21 @@ function returnedSection(data)
 				
 				str += "<div>";
 
+				// Separating the created div's
+				if(parseInt(item['kind']) === 0){
+					str += "<div class='header'>";
+				}else if(parseInt(item['kind']) === 1){
+					str += "<div class='section'>";
+				}else if(parseInt(item['kind']) === 2){
+					str += "<div class='code'>";
+				}else if(parseInt(item['kind']) === 3){
+					str += "<div class='testDugga'>";
+				}else if(parseInt(item['kind']) === 4){
+					str += "<div class='moment'>";
+				}else if(parseInt(item['kind']) === 5){
+					str += "<div class='link'>";
+				}
+					
 				// All are visible according to database
 
 				// Content table 		
@@ -846,3 +860,9 @@ function returnedHighscore(data){
 	var highscorelist=document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
 }
+
+
+// Function for toggling content in the section
+$(document).on('click', '.moment', function () {
+	$(this).nextUntil('.moment').toggle();
+});
