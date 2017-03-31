@@ -110,7 +110,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					
 					// If there isn't we'll register a new user and give them a randomly
 					// assigned password which can be printed later.
-					if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
+					if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) { //check here if it doesnt work
 							$rnd=makeRandomString(9);
 							$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now(),:className);';	
 							$stmt = $pdo->prepare($querystring);

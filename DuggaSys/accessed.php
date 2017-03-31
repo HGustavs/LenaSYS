@@ -55,8 +55,8 @@
 			<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
 			<p>SSN&lt;space&gt;Lastname,&lt;space&gt;Firstname&lt;space&gt;Email&lt;linebreak&gt;</p>
 			<p>Example:<br/>
-			000000-0000 Lastname, Firstname a12firla@student.his.se<br/>
-			111111-1111 Lastname, Firstname b12firla@student.his.se</p>
+                999102-5571	Gregersson, Greger	91001	Ny	WEBUG, H11	b17mahgo@student.his.se<br/>
+                777153-6699	Broskelsson, Dagmar	91001	Ny	WEBUG, H09	f16dagbr@student.his.se</p>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Add Users' onclick='addUsers();' />
