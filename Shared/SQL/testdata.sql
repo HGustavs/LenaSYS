@@ -339,7 +339,6 @@ INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES
 INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG14h','theDEST',199393,'WEBUG',180,100,101);
 
 -- Courses --
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (300, "DA121G","Datorns grunder",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (301, "DA124G","Programmeringsmetodik",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (302, "DA324G","Datakommunikation - Routing",NOW(),1,0,7.5);
 INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) values (303, "IT1435","USEREXPERIENCE",NOW(),1,0,7.5);
