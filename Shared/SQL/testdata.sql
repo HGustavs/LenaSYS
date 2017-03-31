@@ -622,3 +622,6 @@ insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,m
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', NULL, '97732', NULL, NULL);
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', NULL, '97732', NULL, NULL);
 insert into userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) values ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', NULL, '97732', NULL, NULL);
+
+/* Testdata for description box in PHP Example */
+insert into fileLink (fileid, filename, kind, cid, isGlobal) values (2, "PHP_Ex2.txt", 2 , 1, 1);
