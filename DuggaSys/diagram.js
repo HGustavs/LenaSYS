@@ -32,6 +32,7 @@ var testCounter=0;
 var tempP1=0;
 var md=0;							// Mouse state
 var movobj=-1;				// Moving object ID
+var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
 
 //--------------------------------------------------------------------
@@ -88,6 +89,20 @@ points.addpoint = function (xk,yk,selval)
 		var pos=this.length;
 		this.push(newpnt);
 		return pos;
+}
+
+//--------------------------------------------------------------------
+// deletepoint
+// Deletes point from points
+//--------------------------------------------------------------------
+
+points.deletepoint = function (point)
+{
+		for(var i = 0; i < this.length; i++){
+			if(this[i] == point){
+				this.splice(i, 1);
+			}
+		}
 }
 
 //--------------------------------------------------------------------
@@ -682,6 +697,7 @@ function mousemoveevt(ev, t){
 
 				movobj=diagram.inside(cx,cy);
 
+
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
 		}else if(md==2){
@@ -691,6 +707,8 @@ function mousemoveevt(ev, t){
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
+						//Last moved object
+						selobj = movobj;
 						diagram[movobj].move(cx-mox,cy-moy);
 				}
 		}
@@ -738,10 +756,9 @@ function mousedownevt(ev)
 
 }
 
-function mouseupevt(ev)
-{
+function mouseupevt(ev){
 
-		// Code for creating a new class
+	// Code for creating a new class
 
 		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine"||uimode=="CreateFigure")){
 				// Add required points
@@ -806,8 +823,17 @@ function mouseupevt(ev)
     	if(uimode!="CreateFigure"){
     		uimode=" ";
         }
-}
 
+}
+function deleteobject(){
+	if(selobj != -1){
+		//Issue: Need to remove the crosses
+
+		diagram.splice(selobj, 1);
+		//To avoid removing the same index twice, selobj is reset
+		selobj = -1;
+	}
+}
 function classmode()
 {
 		uimode="CreateClass";
@@ -820,7 +846,7 @@ function attrmode()
 
 function entitymode()
 {
-    	uimode="CreateEREntity";
+  	uimode="CreateEREntity";
 }
 
 function linemode()
