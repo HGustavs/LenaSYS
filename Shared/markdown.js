@@ -132,25 +132,38 @@ function parseLineByLine(inString) {
 	var str = inString;
 	
 	var currentLineFeed = str.indexOf("\n");
-	
+
 	while(currentLineFeed != -1){ /* EOF */
+
+			// debug
+			console.log(markdown);
 
 			var firstLine = str.substr(0, currentLineFeed);
 			var remainingLines = str.substr(currentLineFeed + 1, str.length);
 
-			markdown += markdownBlock(firstLine);
-			markdown += "<br>"; // bug? create two linesbrakes instead of one
-
-			// handle unordered lists
 			
-			// handle ordered lists
+
+			// handle unordered lists <ul></ul>
+			if(/^[\-\*]\s(.*)/gm.test(firstLine)) {
+				var startPos = 2; // should change dynamically depending on 
+				
+				firstLine = "<li>" + firstLine.substr(startPos, firstLine.length) + "</li>";
+
+				// check sublist-level (number of tabs and spaces)
+			}
+			
+			// handle ordered lists <ol></ol>
 
 			// handle table
 
+			markdown += markdownBlock(firstLine);
+			markdown += "<br>"; // bug? create two linesbreakes instead of one
 
 			// first line done parsing. change start position to next line
 			str = remainingLines; 
 			currentLineFeed = str.indexOf("\n"); 
+
+			
 	}
 	return markdown;
 }
