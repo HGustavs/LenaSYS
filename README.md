@@ -42,6 +42,11 @@ enter_hostname_here = The hostname you provided (where the databae is located, p
 enter_database_here = The name of the new database you provided. IF you are using an old database (you did not create a new one) enter the database you wish to use here.    
 
 * When this file is created and filled create a new directory at the same location as the file you just created (**NOT IN THE LENASYS DIRECTORY; ONE LEVEL UP**). Call this directory **'log'**.
+
+```BASH
+mkdir log
+```
+
 * Give the folder 'log' full permissions - in unix run the command:
 
 ```BASH
@@ -54,7 +59,11 @@ chmod 777 log
 sqlite3 loglena4.db ""
 ```
 
-* Set full permissions on this file also with the command chmod 777 loglena4.db.
+* Set full permissions on this file also with the command:
+
+```BASH
+chmod 777 loglena4.db
+```
 
 
 
