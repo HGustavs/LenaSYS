@@ -706,7 +706,12 @@ function mousemoveevt(ev, t){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
 						//Last moved object
+						if(selobj != -1){
+							diagram[selobj].targeted = false;
+						}
 						selobj = movobj;
+						diagram[selobj].targeted = true;
+
 						diagram[movobj].move(cx-mox,cy-moy);
 				}
 		}
@@ -816,6 +821,7 @@ function deleteobject(){
 		//Issue: Need to remove the crosses
 
 		diagram.splice(selobj, 1);
+		diagram[selobj].targeted = false;
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
 	}
