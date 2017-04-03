@@ -40,8 +40,10 @@ pdoConnect();
 
 	<!-- content START -->
 	<div id="content">
-	
+
+
 	</div>
+
 	<!-- content END -->
 
 	<?php

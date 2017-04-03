@@ -35,6 +35,7 @@ var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
 var widthWindow;			// The width on the users screen is saved is in this var.
 var heightWindow;			// The height on the users screen is saved is in this var.
+var consoleInt = 0;
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -355,6 +356,7 @@ function Path() {
 
 						var pseg=this.segments[0];
 						ctx.moveTo(points[pseg.pa].x,points[pseg.pa].y);
+
 						for(var i=0;i<this.segments.length;i++){
 								var seg=this.segments[i];
 
@@ -364,7 +366,8 @@ function Path() {
 								}
 
 								// Draw current line
-								ctx.lineTo(points[seg.pb].x,points[seg.pb].y);
+
+								ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
 
 								// Remember previous segment
 								pseg=seg;
@@ -486,7 +489,7 @@ function Path() {
 		    var y=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
 
 		    if (isNaN(x)||isNaN(y)) {
-		        return {state:false,x:0,y:0};;
+		        return {state:false,x:0,y:0};
 		    } else {
 		        if (x1>=x2) {
 		            if (!(x2<x&&x<x1)) return {state:false,x:0,y:0};
@@ -509,7 +512,7 @@ function Path() {
 		            if (!(y3<y&&y<y4)) return {state:false,x:0,y:0};
 		        }
 		    }
-		    return {state:true,x:x,y:y};;
+		    return {state:true,x:x,y:y};
 		}
 
 		//--------------------------------------------------------------------
@@ -621,8 +624,15 @@ function Path() {
 function initcanvas()
 {
     widthWindow = (window.innerWidth-20);
-	heightWindow = (window.innerHeight-244);
-	document.getElementById("content").innerHTML="<button onclick='classmode();'>Create Class</button><button onclick='attrmode();'>Create Attribute</button><button onclick='linemode();'>Create Line</button><button onclick='entitymode();'>Create Entity</button><button onclick='deleteobject();'>Delete Object</button><button onclick='figuremode();'>Create Figure</button><br/><canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas><div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:144px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>";
+	heightWindow = (window.innerHeight-220);
+	document.getElementById("content").innerHTML="<button onclick='classmode();'>Create Class</button><button onclick='attrmode();'>Create Attribute</button>" +
+		"<button onclick='linemode();'>Create Line</button>" +
+		"<button onclick='entitymode();'>Create Entity</button>" +
+		"<button onclick='deleteobject();'>Delete Object</button><button onclick='figuremode();'>Create Figure</button><br/>" +
+		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
+		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
+		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
+		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
     var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -840,6 +850,7 @@ function mouseupevt(ev){
 			testCounter++;
         }
 
+
     	updategfx();
 
     	// Clear mouse state
@@ -884,6 +895,32 @@ function figuremode()
     	uimode="CreateFigure";
 }
 
+function Consolemode(action){
+
+	/*<div class='Hide Console'>
+	 <input id="Hide Console" style="position:fixed; right:0; bottom:100px;" type="button" value="Hide Console" onclick="Consolemode('Hide Console');" />
+	 </div>
+	 <div class='Show Console'>
+	 <input id="Show Console" style="display:none;position:fixed; right:0; bottom:144px;" type="button" value="Show Console" onclick="Consolemode('Show Console');" />
+	 </div>*/
+
+	if(action == 1) {
+		document.getElementById('Hide Console').style.display = "none";
+		document.getElementById('Show Console').style.display = "block";
+		document.getElementById('Show Console').style="position:fixed; right:0; bottom:0px;";
+		heightWindow = (window.innerHeight-120);
+		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		$("#consloe").hide();
+	}
+	if(action == 2) {
+		document.getElementById('Hide Console').style.display = "block";
+		document.getElementById('Show Console').style.display = "none";
+		document.getElementById('Hide Console').style="position:fixed; right:0; bottom:133px;";
+		heightWindow = (window.innerHeight-244);
+		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		$("#consloe").show();
+	}
+}
 function cross(xk,yk)
 {
 				ctx.strokeStyle="#4f6";
