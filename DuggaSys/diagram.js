@@ -30,8 +30,9 @@ var sx,sy=0;					// Start Mouse coordinate x and y
 var mox,moy=0;				// Old mouse x and y
 var md=0;							// Mouse state
 var movobj=-1;				// Moving object ID
-var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
+var widthWindow;			// The width on the users screen is saved is in this var.
+var heightWindow;			// The height on the users screen is saved is in this var.
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -87,20 +88,6 @@ points.addpoint = function (xk,yk,selval)
 		var pos=this.length;
 		this.push(newpnt);
 		return pos;
-}
-
-//--------------------------------------------------------------------
-// deletepoint
-// Deletes point from points
-//--------------------------------------------------------------------
-
-points.deletepoint = function (point)
-{
-		for(var i = 0; i < this.length; i++){
-			if(this[i] == point){
-				this.splice(i, 1);
-			}
-		}
 }
 
 //--------------------------------------------------------------------
@@ -617,6 +604,9 @@ function Path() {
 
 function initcanvas()
 {
+	widthWindow = (window.innerWidth-20);
+	heightWindow = (window.innerHeight-244);
+	document.getElementById("content").innerHTML="<button onclick='classmode();'>Create Class</button><button onclick='attrmode();'>Create Attribute</button><button onclick='linemode();'>Create Line</button><button onclick='entitymode();'>Create Entity</button><button onclick='deleteobject();'>Delete Object</button><br/><canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas><div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:144px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>";
     var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -629,6 +619,19 @@ function initcanvas()
 
 }
 
+function canvassize()
+{
+	widthWindow = (window.innerWidth-20);
+	heightWindow = (window.innerHeight-244);
+	document.getElementById("myCanvas").setAttribute("width", widthWindow);
+	document.getElementById("myCanvas").setAttribute("height", heightWindow);
+}
+
+// Function that is used for the resize. 
+// Making the page more responsive
+
+window.addEventListener('resize', canvassize);
+
 var erEntityA;
 
 // Demo data for testing purposes.
@@ -636,7 +639,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(0,0,600,600);
+		ctx.clearRect(0,0,widthWindow,heightWindow);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -695,7 +698,6 @@ function mousemoveevt(ev, t){
 
 				movobj=diagram.inside(cx,cy);
 
-
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
 		}else if(md==2){
@@ -705,8 +707,6 @@ function mousemoveevt(ev, t){
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
-						//Last moved object
-						selobj = movobj;
 						diagram[movobj].move(cx-mox,cy-moy);
 				}
 		}
@@ -754,72 +754,65 @@ function mousedownevt(ev)
 
 }
 
-function mouseupevt(ev){
+function mouseupevt(ev)
+{
 
-	// Code for creating a new class
+		// Code for creating a new class
 
-	if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine")){
-			// Add required points
-			var p1=points.addpoint(sx,sy,false);
-			var p2=points.addpoint(cx,cy,false);
-			var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
-	}
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine")){
+				// Add required points
+				var p1=points.addpoint(sx,sy,false);
+				var p2=points.addpoint(cx,cy,false);
+				var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
+		}
 
-	if(uimode=="CreateClass"&&md==4){
-			classB = new Symbol(1);
-			classB.name="New"+diagram.length;
+		if(uimode=="CreateClass"&&md==4){
+				classB = new Symbol(1);
+				classB.name="New"+diagram.length;
 
-			classB.operations.push({visibility:"-",text:"makemore()"});
-			classB.attributes.push({visibility:"+",text:"height:Integer"});
+				classB.operations.push({visibility:"-",text:"makemore()"});
+				classB.attributes.push({visibility:"+",text:"height:Integer"});
 
-			classB.topLeft=p1;
-			classB.bottomRight=p2;
-			classB.middleDivider=p3;
+				classB.topLeft=p1;
+				classB.bottomRight=p2;
+				classB.middleDivider=p3;
 
-			diagram.push(classB);
-	}else if(uimode=="CreateERAttr"&&md==4){
-			erAttributeA = new Symbol(2);
-			erAttributeA.name="Attr"+diagram.length;
-			erAttributeA.topLeft=p1;
-			erAttributeA.bottomRight=p2;
-			erAttributeA.centerpoint=p3;
+				diagram.push(classB);
+		}else if(uimode=="CreateERAttr"&&md==4){
+				erAttributeA = new Symbol(2);
+				erAttributeA.name="Attr"+diagram.length;
+				erAttributeA.topLeft=p1;
+				erAttributeA.bottomRight=p2;
+				erAttributeA.centerpoint=p3;
 
-			diagram.push(erAttributeA);
-	}else if(uimode=="CreateEREntity"&&md==4){
-          	erEnityA = new Symbol(3);
-          	erEnityA.name="Entity"+diagram.length;
-          	erEnityA.topLeft=p1;
-          	erEnityA.bottomRight=p2;
-          	erEnityA.centerpoint=p3;
+				diagram.push(erAttributeA);
+		}else if(uimode=="CreateEREntity"&&md==4){
+            	erEnityA = new Symbol(3);
+            	erEnityA.name="Entity"+diagram.length;
+            	erEnityA.topLeft=p1;
+            	erEnityA.bottomRight=p2;
+            	erEnityA.centerpoint=p3;
 
-          	diagram.push(erEnityA);
-  }
-  /* Code for making a line */
-  else if(uimode=="CreateLine"&&md==4){
-  		erLineA = new Symbol(4);
-  		erLineA.name="Line"+diagram.length;
-  		erLineA.topLeft=p1;
-  		erLineA.bottomRight=p2;
-  		erLineA.centerpoint=p3;
+            	diagram.push(erEnityA);
+        }
+        /* Code for making a line */
+        else if(uimode=="CreateLine"&&md==4){
+        		erLineA = new Symbol(4);
+        		erLineA.name="Line"+diagram.length;
+        		erLineA.topLeft=p1;
+        		erLineA.bottomRight=p2;
+        		erLineA.centerpoint=p3;
 
-  		diagram.push(erLineA);
-  }
+        		diagram.push(erLineA);
+        }
 
-	updategfx();
+    	updategfx();
 
-	// Clear mouse state
-	md=0;
-	uimode=" ";
+    	// Clear mouse state
+    	md=0;
+    	uimode=" ";
 }
-function deleteobject(){
-	if(selobj != -1){
-		//Issue: Need to remove the crosses
 
-		diagram.splice(selobj, 1);
-		//To avoid removing the same index twice, selobj is reset
-		selobj = -1;
-	}
-}
 function classmode()
 {
 		uimode="CreateClass";
@@ -832,7 +825,7 @@ function attrmode()
 
 function entitymode()
 {
-  	uimode="CreateEREntity";
+    	uimode="CreateEREntity";
 }
 
 function linemode()
