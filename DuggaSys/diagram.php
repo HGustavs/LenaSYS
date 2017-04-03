@@ -21,17 +21,13 @@ pdoConnect();
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="diagram.js"></script>
-	<script src="diagram_symbol.js"></script>
-	<script src="diagram_figure.js"></script>
-	 <script src="diagram_example.js"></script>
-
+	
    <style>
-
+ 
    </style>
 
 </head>
-<!-- Reads the content from the js-files -->
-<body onload="initcanvas(); Symbol();">
+<body onload="initcanvas();">
 
 	<?php
 		$noup="COURSE";

@@ -47,32 +47,3 @@ Code block
 ~~~
 var i = 0;
 ~~~
-
-Line break
-2 clean rows prints 1 line break(<br>)
-3 clean rows prints 2 line break (<br><br>)
-
-Arrow
- -> 
-(whitespace before and after) prints arrow with double head: “&rarr;”.
-
-Images
-|||src,thumbnail width in px,full size width in px|||
-
-Tables
-|tr|
-|td|
-||td in tr||
-
-Ellipsis
-... turns to ellipsis
-
-Iframe, website inside a inline frame
-Format: url, width,height
-
-Quotes
-^ text to quote ^ 
-
-Smilies
-Icons can be found in Shared/icons
-Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
