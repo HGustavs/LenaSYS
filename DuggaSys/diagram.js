@@ -661,12 +661,15 @@ function mousemoveevt(ev, t){
 		mox=cx;
 		moy=cy;
 
-		if (ev.layerX||ev.layerX==0) { // Firefox
-		    cx=ev.layerX-acanvas.offsetLeft;
-		    cy=ev.layerY-acanvas.offsetTop;
+		if (ev.pageX || ev.pageY == 0){ // Chrome
+			cx=ev.pageX-acanvas.offsetLeft;
+			cy=ev.pageY-acanvas.offsetTop;
+		} else if (ev.layerX||ev.layerX==0) { // Firefox
+			cx=ev.layerX-acanvas.offsetLeft;
+			cy=ev.layerY-acanvas.offsetTop;
 		} else if (ev.offsetX || ev.offsetX == 0) { // Opera
-		    cx=ev.offsetX-acanvas.offsetLeft;
-		    cy=ev.offsetY-acanvas.offsetTop;
+			cx=ev.offsetX-acanvas.offsetLeft;
+			cy=ev.offsetY-acanvas.offsetTop;
 		}
 
 		if(md==0){
