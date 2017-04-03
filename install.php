@@ -36,7 +36,7 @@
     <?php if (isset($_POST["submitButton"])) {
         ob_end_clean(); // Remove form and start installation.
         echo "<h1>Installation</h1>";
-        echo "-----------------------------------------------------------------------------------<br>";
+        echo "<hr>";
         flush();
 
         # Check if all fields are filled.
@@ -157,11 +157,11 @@
                 }
                 $initSuccess = true;
                 echo "<span style='color: green;' />Initialization of database complete. </span><br>";
-                flush();
             } catch (PDOException $e) {
-                echo "<span style='color: red;' />Failed initialization of database because of: </span><br>";
-                echo "<code>" . $completeQuery . "</code>";
+                echo "<span style='color: red;' />Failed initialization of database because of query (in init_db.sql): </span><br>";
+                echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>" . $completeQuery . "</textarea></code><br><br>";
             }
+            flush();
 
             # Fill database with test data if this was checked.
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
@@ -178,9 +178,10 @@
                     }
                     echo "<span style='color: green;' />Successfully filled database with test data.</span><br>";
                 } catch (PDOException $e) {
-                    echo "<span style='color: red;' />Failed to fill database with data because of:</span><br>";
-                    echo "<code>" . $completeQuery . "</code>";
+                    echo "<span style='color: red;' />Failed to fill database with data because of query (in testdata.sql):</span><br>";
+                    echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>" . $completeQuery . "</textarea></code><br><br>";
                 }
+                flush();
             } else {
                 echo "Skipped filling database with test data.<br>";
             }
@@ -189,8 +190,7 @@
             echo "Skipped creating database.<br>";
         }
 
-        echo "<b>Installation finished.</b><br>
-                -----------------------------------------------------------------------------------<br>";
+        echo "<b>Installation finished.</b><br><hr>";
         flush();
 
         # All this code prints further instructions to complete installation.
