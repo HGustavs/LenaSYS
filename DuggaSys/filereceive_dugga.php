@@ -67,13 +67,6 @@ if($ha){
 		// Create folder if link textinput or file
 		$currcvd=getcwd();
 
-		if(!file_exists($currcvd."/submissions")) {
-				if(!mkdir($currcvd."/submissions")) {
-						echo "Error creating folder: ".$currcvd."/submissions";
-						$error=true;
-				}
-		}
-
 		if(!file_exists ($currcvd."/submissions/".$cid)){
 				if(!mkdir($currcvd."/submissions/".$cid)){
 						echo "Error creating folder: ".$currcvd."/submissions/cid";

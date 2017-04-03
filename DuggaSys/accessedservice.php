@@ -39,6 +39,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php"
 
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"UPDATE")==0){
+        alert("im here5");
 		$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username,class=:className WHERE uid=:uid;");
 		$query->bindParam(':firstname', $firstname);
 		$query->bindParam(':lastname', $lastname);
@@ -72,10 +73,12 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		}
 	}else if(strcmp($opt,"ADDUSR")==0){		
 			$newUserData = json_decode(htmlspecialchars_decode($newusers));
-	
+        // var_dump($newUserData);
+        // print_r($newUserData);
 		foreach ($newUserData as $user) {
 			$uid="UNK";
 			if (count($user) == 1) {
+//				var_dump($user);
 					// See if we have added with username or SSN
 					$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn or ssn=:usernameorssn");
 					$userquery->bindParam(':usernameorssn', $user[0]);
@@ -87,8 +90,10 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							foreach($userquery->fetchAll(PDO::FETCH_ASSOC) as $row){
 									$uid = $row["uid"];
 							}
-					}				
+					}
+
 			} else if (count($user) > 1 && count($user) <= 6){
+//				var_dump("test else", $user);
 					$ssn = $user[0];
 					$tmp = explode(',', $user[1]);
 					$firstname = trim($tmp[1]);
@@ -105,7 +110,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					
 					// If there isn't we'll register a new user and give them a randomly
 					// assigned password which can be printed later.
-					if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
+					if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) { //check here if it doesnt work
 							$rnd=makeRandomString(9);
 							$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now(),:className);';	
 							$stmt = $pdo->prepare($querystring);
@@ -127,7 +132,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					}else if($userquery->rowCount() > 0){
 							$usr = $userquery->fetch(PDO::FETCH_ASSOC);
 							$uid = $usr['uid'];
-					}				
+					}
+
 			}
 				
 			// We have a user, connect to current course

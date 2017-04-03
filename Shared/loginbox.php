@@ -47,7 +47,7 @@
 
 							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
 						
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
+							<!--<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>-->
 
 						</td>
 					</tr>
@@ -63,12 +63,12 @@
 				<table>
 					<tr>
 						<td>
-							<label class="text">username:</label>
+							<label class="text">email:</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input id="username" class='form-control textinput' type='text' placeholder="c13andfi" autofocus >
+							<input id="email" class='form-control textinput' type='text' placeholder="c13andfi@student.his.se" autofocus >
 						</td>
 					</tr>
 	
@@ -77,81 +77,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processResetPasswordCheckUsername();" value='Check user'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
-						</td>
-					</tr>
-				</table>
-			  </div>
-		</div>
-		<div id='showsecurityquestion' style="display:none">
-			<div class='loginBoxheader' id="securityid">
-				<h3>New Password</h3>
-				<div onclick="closeWindows()">x</div>
-			</div>
-			  <div class="table-wrap">
-				<table>
-					<tr>
-						<td>
-							<label class="text">Your security queston is:</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<!-- Using a label to show the security question might not be the best idea, the label will be changed using js, but using a label and updating it with js might not be the best approach. -->
-							<label id="displaysecurityquestion" class="text">Who let the dogs out?</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus >
-						</td>
-					</tr>
-					<tr>
-						<td id="message3"></td>
-					</tr>
-					<tr>
-						<td>
-							<input type='button' class='submit-button' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
-						</td>
-					</tr>
-				</table>
-			  </div>
-		</div>
-		<div id='changepassword' style="display:none">
-			<div class='loginBoxheader' id="changeid">
-				<h3>New Password</h3>
-				<div onclick="closeWindows()">x</div>
-			</div>
-			  <div class="table-wrap">
-				<table>
-					<tr>
-						<td>
-							<label class="text">New password:</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input id="newpassword" placeholder="New password" class='form-control textinput' type='password' autofocus >
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label class="text">Confirm new password:</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input id="confirmpassword" placeholder="Confirm password" class='form-control textinput' type='password' >
-						</td>
-					</tr>
-					<tr>
-						<td id="message4"></td>
-					</tr>
-					<tr>
-						<td>
-							<input type='button' class='submit-button' onclick="processResetPasswordChangePassword();" value='Change password'>
+							<input type='button' class='submit-button' value='Send'>
 							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
 						</td>
 					</tr>
@@ -159,7 +85,5 @@
 			  </div>
 		</div>
 	</div>
-	</div>
-	
 	
 	<!-- Login Box End! -->

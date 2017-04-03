@@ -83,7 +83,6 @@ function updateDugga()
 	var template=$("#template").val();
 	var release=$("#release").val();
 	var deadline=$("#deadline").val();
-	console.log(deadline);
 	
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline,coursevers:querystring['coursevers']},"DUGGA");
 }
