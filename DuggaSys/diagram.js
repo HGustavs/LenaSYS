@@ -701,7 +701,7 @@ function mouseupevt(ev)
 
 		// Code for creating a new class
 
-		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr")){
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity")){
 				// Add required points
 				var p1=points.addpoint(sx,sy,false);
 				var p2=points.addpoint(cx,cy,false);
@@ -726,15 +726,23 @@ function mouseupevt(ev)
 				erAttributeA.topLeft=p1;
 				erAttributeA.bottomRight=p2;
 				erAttributeA.centerpoint=p3;
+
 				diagram.push(erAttributeA);
+		}else if(uimode=="CreateEREntity"&&md==4){
+            	erEnityA = new Symbol(3);
+            	erEnityA.name="Entity"+diagram.length;
+            	erEnityA.topLeft=p1;
+            	erEnityA.bottomRight=p2;
+            	erEnityA.centerpoint=p3;
 
-		}
+            	diagram.push(erEnityA);
+        }
 
-		updategfx();
+    	updategfx();
 
-		// Clear mouse state
-		md=0;
-
+    	// Clear mouse state
+    	md=0;
+    	uimode=" ";
 }
 
 function classmode()
@@ -745,6 +753,11 @@ function classmode()
 function attrmode()
 {
 		uimode="CreateERAttr";
+}
+
+function entitymode()
+{
+    	uimode="CreateEREntity";
 }
 
 function cross(xk,yk)
