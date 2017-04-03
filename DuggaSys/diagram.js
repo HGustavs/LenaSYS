@@ -246,7 +246,6 @@ diagram.linedist = function (xk,yk)
 		return -1;
 }
 
-
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
@@ -742,7 +741,7 @@ function mouseupevt(ev)
 
 		// Code for creating a new class
 
-		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity")){
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine")){
 				// Add required points
 				var p1=points.addpoint(sx,sy,false);
 				var p2=points.addpoint(cx,cy,false);
@@ -778,6 +777,16 @@ function mouseupevt(ev)
 
             	diagram.push(erEnityA);
         }
+        /* Code for making a line */
+        else if(uimode=="CreateLine"&&md==4){
+        		erLineA = new Symbol(4);
+        		erLineA.name="Line"+diagram.length;
+        		erLineA.topLeft=p1;
+        		erLineA.bottomRight=p2;
+        		erLineA.centerpoint=p3;
+
+        		diagram.push(erLineA);
+        }
 
     	updategfx();
 
@@ -801,6 +810,10 @@ function entitymode()
     	uimode="CreateEREntity";
 }
 
+function linemode()
+{
+		uimode="CreateLine";
+}
 function cross(xk,yk)
 {
 				ctx.strokeStyle="#4f6";

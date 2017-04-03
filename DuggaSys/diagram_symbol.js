@@ -456,8 +456,3 @@ function Symbol(kind) {
     }
   }
 }
-
-function linemode(){
-  /* Function */
-  console.log("Working!");
-}
