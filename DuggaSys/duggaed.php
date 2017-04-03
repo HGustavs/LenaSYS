@@ -88,19 +88,19 @@ pdoConnect();
 					<div class="inputwrapper" style="height:240px">
 						<div id="duggaSubmissionForm">
 							<fieldset style="width:90%;max-width:250px;">
-	        			<legend>New submission</legend>
-				        <label for="name">Name:</label><input type="text" name="name" id="name" style="margin-bottom:3px"/><br/>
-				        <label for="filetype">Filetype:</label>
-				        <select name="filetype" id="filetype" onchange="selected()" style="margin-bottom:3px;width:160px;">
-				          <option value="Pick"> Pick filetype </option>
-				          <option value="PDF" id="pdf"> PDF </option>
-				          <option value="Zip" id="zip"> Zip </option>
-				          <option value="Link" id="link"> Link </option>
-				          <option value="Text" id="text"> Text </option>
-				        </select><br/>
-				        <label for="instruction">Instruction:</label><textarea id="instruction" value=""/></textarea><br/>
-				        <input type="submit" name="save" id="save" value="Save" onclick="addToTable()" class="submit-button" style="width:60px;height:25px;line-height:25px;margin-top:2px;"/><br/>
-				    	</fieldset>
+								<legend>New submission</legend>
+								<label for="name">Name:</label><input type="text" name="name" id="name" style="margin-bottom:3px"/><br/>
+								<label for="filetype">Filetype:</label>
+								<select name="filetype" id="filetype" onchange="selected()" style="margin-bottom:3px;width:160px;">
+									<option value="Pick"> Pick filetype </option>
+									<option value="PDF" id="pdf"> PDF </option>
+									<option value="Zip" id="zip"> Zip </option>
+									<option value="Link" id="link"> Link </option>
+									<option value="Text" id="text"> Text </option>
+								<select><br/>
+								<label for="instruction">Instruction:</label><textarea id="instruction" value=""/></textarea><br/>
+								<input type="submit" name="save" id="save" value="Save" onclick="addToTable()" class="submit-button" style="width:60px;height:25px;line-height:25px;margin-top:2px;"/><br/>
+							</fieldset>
 						</div>
 					</div>
 				</div>
