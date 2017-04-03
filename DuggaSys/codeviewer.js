@@ -333,8 +333,8 @@ function editImpWords(editType)
 //----------------------------------------------------------------------------------¨
 function displayEditExample(boxid)
 {
-	$("#title").val(retData['examplename']);
-	$("#secttitle").val(retData['sectionname']);
+	$("#title").val($('<textarea />').html(retData['examplename']).text());
+	$("#secttitle").val($('<textarea />').html(retData['sectionname']).text());
 	$("#playlink").val(retData['playlink']);
 	
 	var iw=retData['impwords'];
