@@ -26,6 +26,14 @@ INSERT INTO user(username,password,newpassword,creator,superuser) values ("Griml
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
 INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111");
 
+/* updatesd info in user table */
+UPDATE user SET firstname="Toddler", lastname="Kong" WHERE username="Toddler";
+UPDATE user SET firstname="Johan", lastname="Grimling" WHERE username="Grimling";
+UPDATE user SET ssn="810101-5567" WHERE username="Grimling";
+UPDATE user SET ssn="444444-5447" WHERE username="Toddler";
+UPDATE user SET password=password("Kong") WHERE username="Toddler";
+UPDATE user SET superuser=1 WHERE username="Toddler";
+
 
 /**
  * Course table contains the most essential information relating to study courses in the database.
@@ -205,6 +213,18 @@ CREATE TABLE template(
 	PRIMARY KEY(templateid, stylesheet)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
+/* Templates for codeexamples */
+
+INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2);
+INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
+INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
+INSERT INTO template (templateid,stylesheet,numbox) VALUES (7,"template7.css",4);
+INSERT INTO template (templateid,stylesheet,numbox) VALUES (8,"template8.css",3);
+INSERT INTO template (templateid,stylesheet,numbox) VALUES (9,"template9.css",5);
 
 /* Code Example contains a list of the code examples for a version of a course in the database
  Version of sections and examples corresponds roughly to year or semester that the course was given. */
@@ -246,6 +266,15 @@ CREATE TABLE wordlist(
 	FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
+/* Programming languages that decide highlighting */
+
+INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("Plain Text",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("Java",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("SR",1);
+
 /**
  * Delete and update all foreign keys before deleting a wordlist
  */
@@ -271,6 +300,22 @@ CREATE TABLE word(
 		FOREIGN KEY (uid) REFERENCES user (uid),
 		FOREIGN KEY(wordlistid) REFERENCES wordlist(wordlistid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/* Wordlist for different programming languages */
+
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"if","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"var","D",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"echo","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"function","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"if","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"else","D",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
+INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
+
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
@@ -478,50 +523,6 @@ CREATE VIEW studentresultCourse AS
 		AND subparts.parthp = partresult.hp
 	WHERE partresult.grade != 'u';
 
-/* updatesd info in user table */
-UPDATE user SET firstname="Toddler", lastname="Kong" WHERE username="Toddler";
-UPDATE user SET firstname="Johan", lastname="Grimling" WHERE username="Grimling";
-UPDATE user SET ssn="810101-5567" WHERE username="Grimling";
-UPDATE user SET ssn="444444-5447" WHERE username="Toddler";
-UPDATE user SET password=password("Kong") WHERE username="Toddler";
-UPDATE user SET superuser=1 WHERE username="Toddler";
-
-/* Templates for codeexamples */
-
-INSERT INTO template(templateid, stylesheet, numbox) VALUES (0, "template0.css",0);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (1,"template1.css",2);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (2,"template2.css",2);
-INSERT INTO template(templateid,stylesheet,numbox) VALUES (3,"template3.css",3);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (4,"template4.css",3);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (5,"template5.css",4);
-INSERT INTO template(templateid,stylesheet, numbox) VALUES (6,"template6.css",4);
-INSERT INTO template (templateid,stylesheet,numbox) VALUES (7,"template7.css",4);
-INSERT INTO template (templateid,stylesheet,numbox) VALUES (8,"template8.css",3);
-INSERT INTO template (templateid,stylesheet,numbox) VALUES (9,"template9.css",5);
-
-/* Programming languages that decide highlighting */
-
-INSERT INTO wordlist(wordlistname,uid) VALUES ("JS",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("PHP",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("Plain Text",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("Java",1);
-INSERT INTO wordlist(wordlistname,uid) VALUES ("SR",1);
-
-/* Wordlist for different programming languages */
-
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"for","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"function","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"if","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (1,"var","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"echo","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"function","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"if","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (2,"else","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
 /* Merged from strutt.sql */
 alter table user_course alter column result SET DEFAULT 0.0;
