@@ -79,7 +79,7 @@ pdoConnect();
 							<select name="filename" id="filename" style="margin-bottom:-1px;width:160px;">
 								<option value="pick"> Pick filetype </option>
 								<option value="md">Markdown</option>
-								<option value="pdf">PDF</<option>
+								<option value="pdf">PDF</option>
 							</select><br/>
 							<label for="filelink">Filelink:</label><input type="text" name="filelink" id="filelink"><br/>
 						</fieldset>
@@ -102,7 +102,6 @@ pdoConnect();
 				        <input type="submit" name="save" id="save" value="Save" onclick="addToTable()" class="submit-button" style="width:60px;height:25px;line-height:25px;margin-top:2px;"/><br/>
 				    	</fieldset>
 						</div>
-						<div id="duggaSubmissionTable"></div>
 					</div>
 				</div>
 				<!-- Table showing ways of submissions -->
