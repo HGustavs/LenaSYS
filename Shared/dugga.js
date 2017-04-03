@@ -471,8 +471,6 @@ function loginEventHandler(event){
 	}
 }
 
-
-
 function processResetPasswordCheckUsername() {
 
 	/*This function is supposed to get the security question from the database*/
@@ -485,7 +483,7 @@ function processResetPasswordCheckUsername() {
 			url: "../Shared/resetpw.php",
 			data: {
 				username: username,
-				opt: "RESETPW"
+				opt: "GETQUESTION"
 			},
 			var result = JSON.parse(data);
 			if(result['login'] == "success") {
