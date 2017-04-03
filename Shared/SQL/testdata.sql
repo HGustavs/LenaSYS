@@ -619,5 +619,8 @@ INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,m
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', NULL, '97732', NULL, NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', NULL, '97732', NULL, NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', NULL, '97732', NULL, NULL);
-INSERT INTO fileLink (fileid, filename, kind, cid, isGlobal) VALUES (2, "PHP_Ex2.txt", 2 , 1, 1);
+
+/* Testdata for description box and code box in PHP Example 2*/
+INSERT INTO fileLink (fileid, filename, kind, cid, isGlobal) VALUES (2,"PHP_Ex2.txt",2,1,1);
+INSERT INTO fileLink (fileid, filename, kind, cid, isGlobal) VALUES (1,"PHP_Ex2.php",4,1,1);
 
