@@ -1687,7 +1687,7 @@ function Play(event)
 		if(retData['playlink'].indexOf("http")==0){
 				window.location.href=retData['playlink'];
 		}else{
-				navigateTo("../courses/",retData['playlink']);		
+				navigateTo("/../courses/",retData['playlink']);
 		}
 	}
 }
