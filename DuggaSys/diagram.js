@@ -28,6 +28,8 @@ var sel;							// Selection state
 var cx,cy=0;					// Current Mouse coordinate x and y
 var sx,sy=0;					// Start Mouse coordinate x and y
 var mox,moy=0;				// Old mouse x and y
+var testCounter=0;
+var tempP1=0;
 var md=0;							// Mouse state
 var movobj=-1;				// Moving object ID
 var uimode="normal";		// User interface mode e.g. normal or create class currently
@@ -741,7 +743,7 @@ function mouseupevt(ev)
 
 		// Code for creating a new class
 
-		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine")){
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine"||uimode=="CreateFigure")){
 				// Add required points
 				var p1=points.addpoint(sx,sy,false);
 				var p2=points.addpoint(cx,cy,false);
@@ -788,11 +790,22 @@ function mouseupevt(ev)
         		diagram.push(erLineA);
         }
 
+        else if(uimode=="CreateFigure"&&md==4){
+            var figurePath=new Path;
+			if(testCounter>0){
+                diagram.push(drawSegment(figurePath, tempP1, p2));
+			}
+            tempP1 = p1
+			testCounter++;
+        }
+
     	updategfx();
 
     	// Clear mouse state
     	md=0;
-    	uimode=" ";
+    	if(uimode!="CreateFigure"){
+    		uimode=" ";
+        }
 }
 
 function classmode()
@@ -814,6 +827,12 @@ function linemode()
 {
 		uimode="CreateLine";
 }
+
+function figuremode()
+{
+    	uimode="CreateFigure";
+}
+
 function cross(xk,yk)
 {
 				ctx.strokeStyle="#4f6";
