@@ -3,8 +3,7 @@ LenaSYS
 
 University of Skövde Code Viewer and Course Organization System
 
-==============
-#Install instructions
+# Install instructions
 ==============
 
 To install a fresh copy of LenaSYS on your system an installes has been created called 'install.php'.
@@ -28,13 +27,14 @@ What the installer will do is to help you create a new user in the MySQL databas
 6. There are three more steps to complete for the installation to be successful. The installer will, after successful creation of database, tell you what to do next but this will be explained here too.
   1. You will need to create a file named 'coursesyspw.php' outside the root directory of LenaSYS. If LenaSYS is located at /var/www/html/LenaSYS/ you will need to create this file at /var/www/html/ (NOT IN THE LENASYS CATALOG). In this file you will need to paste the code provided in the installer after installation. This code is:
 
+```PHP
         <?php
         define("DB_USER","enter_user_here");
         define("DB_PASSWORD","enter_password_here");
         define("DB_HOST","enter_hostname_here");
         define("DB_NAME","enter_database_here");
         ?>
-
+```
 
    enter_user_here = The username you provided as the new user.
    enter_password_here = The password you provided for this user.
