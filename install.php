@@ -222,7 +222,7 @@
                 }
                 echo "<span style='color: green;' />Successfully filled database with test data from " . $file . ".sql.</span><br>";
             } catch (PDOException $e) {
-                echo "<span style='color: red;' />Failed to fill database with data because of query (in " . $file . ".sql):</span><br>";
+                echo "<span style='color: red;' />Failed to fill database with data because of query in " . $file . ".sql (Skipped the rest of this file):</span><br>";
                 echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>" . $completeQuery . "</textarea></code><br><br>";
             }
         }
