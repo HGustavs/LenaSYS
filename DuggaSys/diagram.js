@@ -28,6 +28,8 @@ var sel;							// Selection state
 var cx,cy=0;					// Current Mouse coordinate x and y
 var sx,sy=0;					// Start Mouse coordinate x and y
 var mox,moy=0;				// Old mouse x and y
+var testCounter=0;
+var tempP1=0;
 var md=0;							// Mouse state
 var movobj=-1;				// Moving object ID
 var selobj = -1;			// The last selected object
@@ -758,58 +760,70 @@ function mouseupevt(ev){
 
 	// Code for creating a new class
 
-	if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine")){
-			// Add required points
-			var p1=points.addpoint(sx,sy,false);
-			var p2=points.addpoint(cx,cy,false);
-			var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
-	}
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine"||uimode=="CreateFigure")){
+				// Add required points
+				var p1=points.addpoint(sx,sy,false);
+				var p2=points.addpoint(cx,cy,false);
+				var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
+		}
 
-	if(uimode=="CreateClass"&&md==4){
-			classB = new Symbol(1);
-			classB.name="New"+diagram.length;
+		if(uimode=="CreateClass"&&md==4){
+				classB = new Symbol(1);
+				classB.name="New"+diagram.length;
 
-			classB.operations.push({visibility:"-",text:"makemore()"});
-			classB.attributes.push({visibility:"+",text:"height:Integer"});
+				classB.operations.push({visibility:"-",text:"makemore()"});
+				classB.attributes.push({visibility:"+",text:"height:Integer"});
 
-			classB.topLeft=p1;
-			classB.bottomRight=p2;
-			classB.middleDivider=p3;
+				classB.topLeft=p1;
+				classB.bottomRight=p2;
+				classB.middleDivider=p3;
 
-			diagram.push(classB);
-	}else if(uimode=="CreateERAttr"&&md==4){
-			erAttributeA = new Symbol(2);
-			erAttributeA.name="Attr"+diagram.length;
-			erAttributeA.topLeft=p1;
-			erAttributeA.bottomRight=p2;
-			erAttributeA.centerpoint=p3;
+				diagram.push(classB);
+		}else if(uimode=="CreateERAttr"&&md==4){
+				erAttributeA = new Symbol(2);
+				erAttributeA.name="Attr"+diagram.length;
+				erAttributeA.topLeft=p1;
+				erAttributeA.bottomRight=p2;
+				erAttributeA.centerpoint=p3;
 
-			diagram.push(erAttributeA);
-	}else if(uimode=="CreateEREntity"&&md==4){
-          	erEnityA = new Symbol(3);
-          	erEnityA.name="Entity"+diagram.length;
-          	erEnityA.topLeft=p1;
-          	erEnityA.bottomRight=p2;
-          	erEnityA.centerpoint=p3;
+				diagram.push(erAttributeA);
+		}else if(uimode=="CreateEREntity"&&md==4){
+            	erEnityA = new Symbol(3);
+            	erEnityA.name="Entity"+diagram.length;
+            	erEnityA.topLeft=p1;
+            	erEnityA.bottomRight=p2;
+            	erEnityA.centerpoint=p3;
 
-          	diagram.push(erEnityA);
-  }
-  /* Code for making a line */
-  else if(uimode=="CreateLine"&&md==4){
-  		erLineA = new Symbol(4);
-  		erLineA.name="Line"+diagram.length;
-  		erLineA.topLeft=p1;
-  		erLineA.bottomRight=p2;
-  		erLineA.centerpoint=p3;
+            	diagram.push(erEnityA);
+        }
+        /* Code for making a line */
+        else if(uimode=="CreateLine"&&md==4){
+        		erLineA = new Symbol(4);
+        		erLineA.name="Line"+diagram.length;
+        		erLineA.topLeft=p1;
+        		erLineA.bottomRight=p2;
+        		erLineA.centerpoint=p3;
 
-  		diagram.push(erLineA);
-  }
+        		diagram.push(erLineA);
+        }
 
-	updategfx();
+        else if(uimode=="CreateFigure"&&md==4){
+            var figurePath=new Path;
+			if(testCounter>0){
+                diagram.push(drawSegment(figurePath, tempP1, p2));
+			}
+            tempP1 = p1
+			testCounter++;
+        }
 
-	// Clear mouse state
-	md=0;
-	uimode=" ";
+    	updategfx();
+
+    	// Clear mouse state
+    	md=0;
+    	if(uimode!="CreateFigure"){
+    		uimode=" ";
+        }
+
 }
 function deleteobject(){
 	if(selobj != -1){
@@ -839,6 +853,12 @@ function linemode()
 {
 		uimode="CreateLine";
 }
+
+function figuremode()
+{
+    	uimode="CreateFigure";
+}
+
 function cross(xk,yk)
 {
 				ctx.strokeStyle="#4f6";
