@@ -2,44 +2,6 @@
  * Created by mataddas on 2017-03-30.
  * lbl
  */
-points=[
-						// Path A -- Segment 1 (0,1,2,3)
-						{x:20,y:200,selected:0},{x:60,y:200,selected:0},{x:100,y:40,selected:0},{x:140,y:40,selected:0},
-						// Path B -- Segment 1 (4,5 and 17,18)
-						{x:180,y:200,selected:0},{x:220,y:200,selected:0},
-						// Path A -- Segment 2 (6,7,8,9)
-						{x:300,y:250,selected:0},{x:320,y:250,selected:0},{x:320,y:270,selected:0},{x:300,y:270,selected:0},
-            // Path C -- Segment 1 (10,11,12,13)
-            {x:70,y:130,selected:0},{x:70,y:145,selected:0},{x:170,y:130,selected:0},{x:170,y:145,selected:0},
-            // Class A -- TopLeft BottomRight MiddleDivider 14,15,16
-            {x:310,y:60,selected:0},{x:400,y:160,selected:0},{x:355,y:115,selected:0},
-						// Path B -- Segment 1 (4,5 and 17,18)
-            {x:100,y:40,selected:0},{x:140,y:40,selected:0},
-						// ER Attribute A -- TopLeft BottomRight MiddlePointConnector 19,20,21
-            {x:300,y:200,selected:0},{x:400,y:250,selected:0},{x:350,y:225,selected:0},
-						// ER Attribute B -- TopLeft BottomRight MiddlePointConnector 22,23,24
-            {x:300,y:275,selected:0},{x:400,y:325,selected:0},{x:350,y:300,selected:0},
-						// ER Entity A -- TopLeft BottomRight MiddlePointConnector 25,26,27
-            {x:150,y:275,selected:0},{x:250,y:325,selected:0},{x:200,y:300,selected:0},
-						// ER Entity Connector Right Points -- 28,29
-            {x:225,y:290,selected:1},
-            {x:225,y:310,selected:1},
-
-						// ER Attribute C -- TopLeft BottomRight MiddlePointConnector 30,31,32
-					  {x:15,y:275,selected:0},{x:115,y:325,selected:0},{x:65,y:300,selected:0},
-						// ER Attribute D -- TopLeft BottomRight MiddlePointConnector 33,34,35
-						{x:15,y:350,selected:0},{x:115,y:400,selected:0},{x:65,y:375,selected:0},
-						// ER Attribute E -- TopLeft BottomRight MiddlePointConnector 36,37,38
-            {x:15,y:200,selected:0},{x:115,y:250,selected:0},{x:65,y:225,selected:0},
-
-						// ER Entity Connector Left Points -- 39,40,41
-					  {x:150,y:225,selected:0},
-					  {x:150,y:235,selected:0},
-					  {x:150,y:245,selected:0},
-
-           ];
-
-// Demo data for testing purposes.
 
  function makegfx()
  {
