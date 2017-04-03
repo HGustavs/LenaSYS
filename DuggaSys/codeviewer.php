@@ -227,7 +227,7 @@ Testing Link:
 		</div>
 		<!-- Example Content Cog Wheel Dialog END -->
 		<!-- Code Example Cog Wheel Dialog START -->
-		<div id='editExample' class='loginBox' style='width:464x;display:none;'>
+		<div id='editExample' class='loginBox' style='width:464px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
 				<div onclick='closeEditExample();'>x</div>
