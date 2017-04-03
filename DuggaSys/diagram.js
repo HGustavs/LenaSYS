@@ -34,6 +34,8 @@ var md=0;							// Mouse state
 var movobj=-1;				// Moving object ID
 var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
+var widthWindow;			// The width on the users screen is saved is in this var.
+var heightWindow;			// The height on the users screen is saved is in this var.
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -619,6 +621,9 @@ function Path() {
 
 function initcanvas()
 {
+    widthWindow = (window.innerWidth-20);
+	heightWindow = (window.innerHeight-244);
+	document.getElementById("content").innerHTML="<button onclick='classmode();'>Create Class</button><button onclick='attrmode();'>Create Attribute</button><button onclick='linemode();'>Create Line</button><button onclick='entitymode();'>Create Entity</button><button onclick='deleteobject();'>Delete Object</button><button onclick='figuremode();'>Create Figure</button><br/><canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas><div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:144px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>";
     var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -631,6 +636,21 @@ function initcanvas()
 
 }
 
+// Function that is used for the resize 
+// Making the page more responsive
+
+function canvassize()
+{
+	widthWindow = (window.innerWidth-20);
+	heightWindow = (window.innerHeight-244);
+	document.getElementById("myCanvas").setAttribute("width", widthWindow);
+	document.getElementById("myCanvas").setAttribute("height", heightWindow);
+}
+
+// Listen if the window is the resized
+
+window.addEventListener('resize', canvassize);
+
 var erEntityA;
 
 // Demo data for testing purposes.
@@ -638,7 +658,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(0,0,600,600);
+		ctx.clearRect(0,0,widthWindow,heightWindow);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
