@@ -56,7 +56,7 @@ pdoConnect();
 			<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
-			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-weight:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
+			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
 		</div>
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
