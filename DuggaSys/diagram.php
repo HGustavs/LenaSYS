@@ -15,20 +15,23 @@ pdoConnect();
 	<title>Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<!--<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">-->
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="diagram.js"></script>
-	
+	<script src="diagram_symbol.js"></script>
+	<script src="diagram_figure.js"></script>
+	 <script src="diagram_example.js"></script>
+
    <style>
- 
+
    </style>
 
 </head>
-<body onload="initcanvas();">
+<!-- Reads the content from the js-files -->
+<body onload="initcanvas(); Symbol();">
 
 	<?php
 		$noup="COURSE";

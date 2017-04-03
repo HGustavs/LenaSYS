@@ -11,6 +11,7 @@ var timeUsed;
 var stepsUsed;
 var inParams = "UNK";;
 var MAX_SUBMIT_LENGTH = 5000;
+var querystring=parseGet();
 
 function toggleloginnewpass(){
 
@@ -154,11 +155,30 @@ function saveDuggaResult(citstr)
 		}
 		
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-
-		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
+		
+		
+		
 		document.getElementById('receipt').value = hexstr;
-		document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+		
+		
+		var deadline = querystring['deadline']; //Get deadlinedate from URL
+		var currentTime = new Date().toJSON().slice(0,10).replace(/-/g,'-'); //Get current time
+		
+		if(deadline > currentTime){	//Check if deadline has past
+			
+			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+		}
+		else{
+			
+			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid nästa kurstillfälle.";
+		
+		}
+		
+		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
+		//}
+		
 		showReceiptPopup();
+	
 }
 
 //----------------------------------------------------------------------------------
