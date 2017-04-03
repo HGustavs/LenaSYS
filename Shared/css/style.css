@@ -1000,10 +1000,6 @@ input.submit-button {
     float:right;
 }
 
-#changepasswordbutton{
-    width:150px;
-}
-
 input.submit-button:hover {
     background-color:#7B5A96;
     border-radius:4px;
