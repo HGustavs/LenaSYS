@@ -112,7 +112,7 @@
             }
             flush();
 
-            # Init database.
+            /**************************** Init database. *************************************/
             $initQuery = file_get_contents("Shared/SQL/init_db.sql");
 
             # This loop will find comments in the sql file and remove these.
@@ -135,22 +135,22 @@
                 # Use this var if several statements should be called at once (functions).
                 $queryBlock = '';
                 $blockStarted = false;
-                foreach($initQueryArray AS $query) {
+                foreach ($initQueryArray AS $query) {
                     $completeQuery = $query . ";";
 
                     # This commented code in this block could work if delimiters are fixed/removed in sql files.
                     # TODO: Fix handling of delimiters. Now this part only removes code between them.
-                    if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")){
+                    if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")) {
                         $blockStarted = true;
                         #$queryBlock = $completeQuery;
                     } else if ($blockStarted && strpos(strtolower($completeQuery), "delimiter ;")) {
                         $blockStarted = false;
                         #$queryBlock = $queryBlock . $completeQuery;
                         #$connection->query($queryBlock);
-                    } else if ($blockStarted){
+                    } else if ($blockStarted) {
                         #$queryBlock = $queryBlock . $completeQuery;
                     } else {
-                        if(trim($query) != ''){ // do not send if empty query.
+                        if (trim($query) != '') { // do not send if empty query.
                             $connection->query($completeQuery);
                         }
                     }
@@ -163,25 +163,13 @@
             }
             flush();
 
-            # Fill database with test data if this was checked.
+            /*************** Fill database with test data if this was checked. ****************/
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
-                $testDataQuery = file_get_contents("Shared/SQL/testdata.sql");
-
-                # Split SQL file at semi-colons to send each query separated.
-                $testDataQueryArray = explode(";", $testDataQuery);
-                try {
-                    foreach($testDataQueryArray AS $query) {
-                        $completeQuery = $query . ";"; // Add semi-colon to each query.
-                        if(trim($query) != ''){ // do not send if empty query.
-                            $connection->query($completeQuery);
-                        }
-                    }
-                    echo "<span style='color: green;' />Successfully filled database with test data.</span><br>";
-                } catch (PDOException $e) {
-                    echo "<span style='color: red;' />Failed to fill database with data because of query (in testdata.sql):</span><br>";
-                    echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>" . $completeQuery . "</textarea></code><br><br>";
-                }
-                flush();
+                addTestData("testdata", $connection);
+                addTestData("keywords_php", $connection);
+                addTestData("keywords_sql", $connection);
+                addTestData("keywords_sr", $connection);
+                addTestData("keywords_java", $connection);
             } else {
                 echo "Skipped filling database with test data.<br>";
             }
@@ -215,5 +203,31 @@
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && <br>';
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db</pre><br>";
     }
+
+    # Function to add testdata from specified file. Parameter file = sql file name without .sql.
+    function addTestData($file, $connection){
+        $testDataQuery = @file_get_contents("Shared/SQL/" . $file .  ".sql");
+
+        if ($testDataQuery === FALSE) {
+            echo "<span style='color: red;' />Could not find LenaSYS/Shared/SQL/" . $file . ".sql, skipped this test data.</span><br>";
+        } else {
+            # Split SQL file at semi-colons to send each query separated.
+            $testDataQueryArray = explode(";", $testDataQuery);
+            try {
+                foreach ($testDataQueryArray AS $query) {
+                    $completeQuery = $query . ";"; // Add semi-colon to each query.
+                    if (trim($query) != '') { // do not send if empty query.
+                        $connection->query($completeQuery);
+                    }
+                }
+                echo "<span style='color: green;' />Successfully filled database with test data from " . $file . ".sql.</span><br>";
+            } catch (PDOException $e) {
+                echo "<span style='color: red;' />Failed to fill database with data because of query (in " . $file . ".sql):</span><br>";
+                echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>" . $completeQuery . "</textarea></code><br><br>";
+            }
+        }
+        flush();
+    }
+
     ?>
 </body>
