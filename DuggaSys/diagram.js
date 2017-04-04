@@ -37,6 +37,11 @@ var widthWindow;			// The width on the users screen is saved is in this var.
 var heightWindow;			// The height on the users screen is saved is in this var.
 var consoleInt = 0;
 
+// set the color for the crosses.
+var crossStrokeStyle1 = "#f64";
+var crossfillStyle = "#d51";
+var crossStrokeStyle2 = "#d51";
+
 //--------------------------------------------------------------------
 // points - stores a global list of points
 // A point can not be physically deleted but marked as deleted in order to reuse
@@ -115,7 +120,7 @@ points.deletepoint = function (point)
 points.drawpoints = function ()
 {
 		// Mark points
-		ctx.strokeStyle="#f64";
+		ctx.strokeStyle= crossStrokeStyle1;
 		ctx.lineWidth=2;
 		for(var i=0;i<this.length;i++){
 				var point=this[i];
@@ -129,8 +134,8 @@ points.drawpoints = function ()
 						ctx.stroke();
 				}else{
 						ctx.save();
-						ctx.fillStyle="#d51";
-						ctx.strokeStyle="#420";
+						ctx.fillStyle= crossfillStyle;
+						ctx.strokeStyle= crossStrokeStyle2;
 						ctx.fillRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
 						ctx.strokeRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
 						ctx.restore();
@@ -631,6 +636,7 @@ function initcanvas()
 		"<button onclick='linemode();'>Create Line</button>" +
 		"<button onclick='entitymode();'>Create Entity</button>" +
 		"<button onclick='figuremode();'>Create Figure</button>" +
+		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='deleteobject();'>Delete Object</button>" +
 		"<button onclick='RemoveElementsInDiagram()';>Delete All</button><br/>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
@@ -959,10 +965,45 @@ function RemoveElementsInDiagram()
 			console.log("deleting done!");
 }
 
+//remove all elements in the diagram array. it hides the points by placing them beyond the users view.
+function RemoveElementsInDiagram()
+{			console.log("Deleting");
+			var lastelement = diagram.length;
+			var lastpoint = points.length;
+			diagram.splice(0, lastelement);
+
+			for(i = 0; i < lastpoint; i++){
+			points[i] = {x:-10,y:-10,selected:true};
+
+			}
+			updategfx();
+			console.log("deleting done!");
+}
+
 var consloe={};
 consloe.log=function(gobBluth)
 {
 		document.getElementById("consloe").innerHTML=((JSON.stringify(gobBluth)+"<br>")+document.getElementById("consloe").innerHTML);
+}
+var ghostingvrosses = false;
+function debugMode()
+{
+	if(ghostingvrosses == true){
+		crossStrokeStyle1 = "#f64";
+		crossfillStyle = "#d51";
+		crossStrokeStyle2 = "#d51";
+		ghostingvrosses = false
+		Consolemode(2)
+		}
+		
+		else{
+			crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+			crossfillStyle = "rgba(255, 102, 68, 0.0)";
+			crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+			ghostingvrosses = true
+			Consolemode(1)
+		}
+		
 }
 
 //----------------------------------------
