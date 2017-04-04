@@ -113,6 +113,9 @@
  		erEntityA.connectorTop.push({from:41,to:38});
 
  		// Add all elements to diagram
+     diagram.push(erattributeRelA);
+     diagram.push(erattributeRelB);
+     diagram.push(erattributeRelC);
  		diagram.push(pathA);
  		diagram.push(pathB);
  		diagram.push(pathC);
@@ -124,10 +127,8 @@
  		diagram.push(erAttributeD);
  		diagram.push(erAttributeE);
  		diagram.push(erEntityA);
- 		diagram.push(erattributeRelA);
- 		diagram.push(erattributeRelB);
- 		diagram.push(erattributeRelC);
- 		diagram.push(erattributeRelD);
- 		diagram.push(erattributeRelE);
+
+     diagram.push(erattributeRelD);
+     diagram.push(erattributeRelE);
 
  }

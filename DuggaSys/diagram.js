@@ -625,16 +625,19 @@ function initcanvas()
 {
     	widthWindow = (window.innerWidth-20);
 	heightWindow = (window.innerHeight-220);
-	document.getElementById("content").innerHTML="<button onclick='classmode();'>Create Class</button><button onclick='attrmode();'>Create Attribute</button>" +
+	document.getElementById("content").innerHTML=
+		"<button onclick='classmode();'>Create Class</button>" +
+		"<button onclick='attrmode();'>Create Attribute</button>" +
 		"<button onclick='linemode();'>Create Line</button>" +
 		"<button onclick='entitymode();'>Create Entity</button>" +
+		"<button onclick='figuremode();'>Create Figure</button>" +
 		"<button onclick='deleteobject();'>Delete Object</button>" +
-		"<button onclick='figuremode();'>Create Figure</button><br/>" +
+		"<button onclick='RemoveElementsInDiagram()';>Delete All</button><br/>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
 		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
-    var canvas = document.getElementById("myCanvas");
+	var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
 				acanvas=document.getElementById("myCanvas");
