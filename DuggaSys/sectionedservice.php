@@ -37,6 +37,7 @@ $coursename=getOP('coursename');
 $versname=getOP('versname');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
+$comment=getOP('comment');
 $unmarked = 0;
 
 if($gradesys=="UNK") $gradesys=0;
@@ -76,6 +77,7 @@ if(checklogin()){
 		}else if(strcmp($opt,"NEW")===0){
 			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator) VALUES(:cid,:cvs,'New Item','', '0', '100','0',:usrid)");
 			$query->bindParam(':cid', $courseid);
+			
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
 			
@@ -91,7 +93,9 @@ if(checklogin()){
 				$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
 				$query->bindParam(':lid', $armin[1]);
 				$query->bindParam(':pos', $armin[0]);
+				
 				$query->bindParam(':moment', $armin[2]);
+				
 				
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
@@ -133,11 +137,15 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 
 			}			
-						
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys WHERE lid=:lid;");
+			
+			
+			//Added comment	
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys, comment=:comment WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
+			$query->bindParam(':comment', $comment);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':highscoremode', $highscoremode);
+			
 			
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
 			else $query->bindParam(':moment', $moment);
@@ -292,8 +300,10 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comment FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
+
+	
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
 	
@@ -319,6 +329,7 @@ if($cvisibility){
 						'gradesys' => $row['gradesystem'],
 						'code_id' => $row['code_id'],
 						'deadline'=> $row['deadline'],
+						'comment'=> $row['comment'],
 						'qrelease' => $row['qrelease']
 					)
 				);
