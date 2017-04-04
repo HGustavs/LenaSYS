@@ -655,7 +655,7 @@ function Path() {
 
 function initcanvas()
 {
-    	widthWindow = (window.innerWidth-20);
+    widthWindow = (window.innerWidth-20);
 	heightWindow = (window.innerHeight-220);
 	document.getElementById("content").innerHTML=
 		"<button onclick='classmode();'>Create Class</button>" +
@@ -663,6 +663,7 @@ function initcanvas()
 		"<button onclick='linemode();'>Create Line</button>" +
 		"<button onclick='entitymode();'>Create Entity</button>" +
 		"<button onclick='figuremode();'>Create Figure</button>" +
+		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='deleteobject();'>Delete Object</button>" +
 		"<button onclick='RemoveElementsInDiagram()';>Delete All</button><br/>" +
@@ -975,6 +976,20 @@ function linemode()
 function figuremode()
 {
     	uimode="CreateFigure";
+}
+
+/**
+ * Opens the dialog menu for appearance.
+ */
+function openAppearanceDialogMenu() {
+	$("#appearance").show();
+}
+
+/**
+ * Closes the dialog menu for appearance.
+ */
+function closeAppearanceDialogMenu() {
+	$("#appearance").hide();
 }
 
 function Consolemode(action){
