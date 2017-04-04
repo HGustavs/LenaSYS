@@ -63,7 +63,7 @@
                 $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
                 // set the PDO error mode to exception
                 $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "<span style='color: green;' />Connected successfully to " . $serverName . ".</span><br>";
+                echo "<span style='color: green;' />Connected successfully to {$serverName}.</span><br>";
             } catch (PDOException $e) {
                 echo "<span style='color: red;' />Connection failed: " . $e->getMessage() . "</span><br>";
             }
@@ -73,42 +73,42 @@
             if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
                 # User
                 try {
-                    $connection->query("DELETE FROM mysql.user WHERE user='" . $username . "';");
-                    echo "<span style='color: green;' />Successfully removed old user, " . $username . ".</span><br>";
+                    $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
+                    echo "<span style='color: green;' />Successfully removed old user, {$username}.</span><br>";
                 } catch (PDOException $e) {
-                    echo "<span style='color: red;' />User with name " . $username .
-                        " does not already exist. Will only make a new one (not write over).</span><br>";
+                    echo "<span style='color: red;' />User with name {$username} 
+                            does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 flush();
                 # Database
                 try {
-                    $connection->query("DROP DATABASE " . $databaseName);
-                    echo "<span style='color: green;' />Successfully removed old database, " . $databaseName . ".</span><br>";
+                    $connection->query("DROP DATABASE {$databaseName}");
+                    echo "<span style='color: green;' />Successfully removed old database, {$databaseName}.</span><br>";
                 } catch (PDOException $e) {
-                    echo "<span style='color: red;' />Database with name " . $databaseName .
-                        " does not already exist. Will only make a new one (not write over).</span><br>";
+                    echo "<span style='color: red;' />Database with name {$databaseName} 
+                            does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 flush();
             }
 
             # Create new database
             try {
-                $connection->query("CREATE DATABASE " . $databaseName);
-                echo "<span style='color: green;' />Database with name " . $databaseName . " created successfully.</span><br>";
+                $connection->query("CREATE DATABASE {$databaseName}");
+                echo "<span style='color: green;' />Database with name {$databaseName} created successfully.</span><br>";
             } catch (PDOException $e) {
-                echo "<span style='color: red;' />Database with name " . $databaseName . " could not be created. Maybe it already exists...</span><br>";
+                echo "<span style='color: red;' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
             }
             flush();
 
             # Create new user and grant privileges to created database.
             try {
                 $connection->query("FLUSH PRIVILEGES");
-                $connection->query("CREATE USER '" . $username . "'@'" . $serverName . "' IDENTIFIED BY '" . $password . "'");
-                $connection->query("GRANT ALL PRIVILEGES ON *.* TO '" . $username . "'@'" . $serverName . "'");
+                $connection->query("CREATE USER '{$username}'@'{$serverName}' IDENTIFIED BY '{$password}'");
+                $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}'@'{$serverName}'");
                 $connection->query("FLUSH PRIVILEGES");
-                echo "<span style='color: green;' />Successfully created user " . $username . ".</span><br>";
+                echo "<span style='color: green;' />Successfully created user {$username}.</span><br>";
             } catch (PDOException $e) {
-                echo "<span style='color: red;' />Could not create user with name " . $username . ", maybe it already exists...</span><br>";
+                echo "<span style='color: red;' />Could not create user with name {$username}, maybe it already exists...</span><br>";
             }
             flush();
 
@@ -131,7 +131,7 @@
             $initQueryArray = explode(";", $initQuery);
             $initSuccess = false;
             try {
-                $connection->query("USE " . $databaseName);
+                $connection->query("USE {$databaseName}");
                 # Use this var if several statements should be called at once (functions).
                 $queryBlock = '';
                 $blockStarted = false;
@@ -159,17 +159,18 @@
                 echo "<span style='color: green;' />Initialization of database complete. </span><br>";
             } catch (PDOException $e) {
                 echo "<span style='color: red;' />Failed initialization of database because of query (in init_db.sql): </span><br>";
-                echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>" . $completeQuery . "</textarea></code><br><br>";
+                echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>{$completeQuery}</textarea></code><br><br>";
             }
             flush();
 
             /*************** Fill database with test data if this was checked. ****************/
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
                 addTestData("testdata", $connection);
-                addTestData("keywords_php", $connection);
-                addTestData("keywords_sql", $connection);
-                addTestData("keywords_sr", $connection);
-                addTestData("keywords_java", $connection);
+                # Add a language (for a existing file) in this array to add it to database.
+                $languages = array("php", "sql", "sr", "java");
+                foreach ($languages AS $language) {
+                    addTestData("keywords_{$language}", $connection);
+                }
             } else {
                 echo "Skipped filling database with test data.<br>";
             }
@@ -183,7 +184,7 @@
 
         # All this code prints further instructions to complete installation.
         $putFileHere = dirname(getcwd(), 1);
-        echo "<br><b>To make installation work please make a file named 'coursesyspw.php' at " . $putFileHere . " with some code.</b><br>";
+        echo "<br><b>To make installation work please make a file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
         echo '<pre>';
@@ -206,10 +207,10 @@
 
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
     function addTestData($file, $connection){
-        $testDataQuery = @file_get_contents("Shared/SQL/" . $file .  ".sql");
+        $testDataQuery = @file_get_contents("Shared/SQL/{$file}.sql");
 
         if ($testDataQuery === FALSE) {
-            echo "<span style='color: red;' />Could not find LenaSYS/Shared/SQL/" . $file . ".sql, skipped this test data.</span><br>";
+            echo "<span style='color: red;' />Could not find LenaSYS/Shared/SQL/{$file}.sql, skipped this test data.</span><br>";
         } else {
             # Split SQL file at semi-colons to send each query separated.
             $testDataQueryArray = explode(";", $testDataQuery);
@@ -220,10 +221,10 @@
                         $connection->query($completeQuery);
                     }
                 }
-                echo "<span style='color: green;' />Successfully filled database with test data from " . $file . ".sql.</span><br>";
+                echo "<span style='color: green;' />Successfully filled database with test data from {$file}.sql.</span><br>";
             } catch (PDOException $e) {
-                echo "<span style='color: red;' />Failed to fill database with data because of query in " . $file . ".sql (Skipped the rest of this file):</span><br>";
-                echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>" . $completeQuery . "</textarea></code><br><br>";
+                echo "<span style='color: red;' />Failed to fill database with data because of query in {$file}.sql (Skipped the rest of this file):</span><br>";
+                echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>{$completeQuery}</textarea></code><br><br>";
             }
         }
         flush();
