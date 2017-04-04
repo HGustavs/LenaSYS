@@ -744,13 +744,6 @@ function mousemoveevt(ev, t){
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
-						//Last moved object
-						if(selobj != -1){
-							diagram[selobj].targeted = false;
-						}
-						selobj = movobj;
-						diagram[selobj].targeted = true;
-
 						diagram[movobj].move(cx-mox,cy-moy);
 				}
 		}
@@ -789,6 +782,14 @@ function mousedownevt(ev)
 				md=2;
 		}else if(movobj!=-1){
 				md=3;
+
+        //Last moved object
+        if(selobj != -1){
+          diagram[selobj].targeted = false;
+        }
+        selobj=diagram.inside(cx,cy);
+        diagram[selobj].targeted = true;
+
 		}else{
 				md=4;			// Box select or Create mode.
 				sx=cx;
@@ -1013,7 +1014,7 @@ function debugMode()
 		ghostingvrosses = false
 		Consolemode(2)
 		}
-		
+
 		else{
 			crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
 			crossfillStyle = "rgba(255, 102, 68, 0.0)";
@@ -1021,7 +1022,7 @@ function debugMode()
 			ghostingvrosses = true
 			Consolemode(1)
 		}
-		
+
 }
 
 //----------------------------------------
