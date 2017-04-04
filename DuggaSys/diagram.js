@@ -781,7 +781,11 @@ function mousemoveevt(ev, t){
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
-						diagram[movobj].move(cx-mox,cy-moy);
+					for (var i=0;i<diagram.length;i++){
+						if(diagram[i].targeted == true){
+						diagram[i].move(cx-mox,cy-moy);
+						}
+					}
 				}
 		}
 		diagram.linedist(cx,cy);
@@ -821,11 +825,20 @@ function mousedownevt(ev)
 				md=3;
 
         //Last moved object
-        if(selobj != -1){
-          diagram[selobj].targeted = false;
-        }
-        selobj=diagram.inside(cx,cy);
-        diagram[selobj].targeted = true;
+			//if(selobj != -1){
+          //		diagram[selobj].targeted = false;
+       		// }
+			selobj=diagram.inside(cx,cy);
+			//;
+
+				if (diagram[selobj].targeted == false){
+					for (var i=0;i<diagram.length;i++){
+						diagram[i].targeted=false;
+				}
+					diagram[selobj].targeted = true
+
+			}
+
 
 		}else{
 				md=4;			// Box select or Create mode.
