@@ -170,7 +170,7 @@ function saveDuggaResult(citstr)
 		}
 		else{
 			
-			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid nästa kurstillfälle.";
+			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid nästa kurstillfälle.";
 		
 		}
 		
