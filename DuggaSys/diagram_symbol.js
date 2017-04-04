@@ -352,7 +352,7 @@ function Symbol(kind) {
         }else{
           ctx.strokeStyle="#253";
         }
-        
+
         // Write Class Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
