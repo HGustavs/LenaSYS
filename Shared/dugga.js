@@ -477,7 +477,6 @@ function processResetPasswordCheckUsername() {
 
 	var username = $("#newpassword #username").val();
 	
-	/*
 	$.ajax({
 			type:"POST",
 			url: "../Shared/resetpw.php",
@@ -485,16 +484,24 @@ function processResetPasswordCheckUsername() {
 				username: username,
 				opt: "GETQUESTION"
 			},
-			var result = JSON.parse(data);
-			if(result['login'] == "success") {
-				$("#userName").html(result['username']);
-
-	*/
-
-	status = 2;
-	toggleloginnewpass();
-
+			success:function(data) {
+				console.log("hai there");
+				console.log(data);
+				var result = JSON.parse(data);
+				console.log(result)
+				
+				if(result['getname'] == "success") {
+					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
+					status = 2;
+					toggleloginnewpass();
+				}else{
+					console.log("Failed");
+			}
+		}
+		});
 }
+			
+
 
 function processResetPasswordCheckSecurityAnswer() {
 

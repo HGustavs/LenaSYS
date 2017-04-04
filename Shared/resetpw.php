@@ -16,27 +16,32 @@ $opt=getOP('opt');
 
 if($opt=="GETQUESTION"){
 	$username=getOP('username');
+	$securityquestion=getOP('securityquestion');
 
 	pdoConnect(); // Made sure if actually connects to a database
 
 	// Default values
 	$res = array("getname" => "failed");
+	$res = array("securityquestion" => "undefined");
 
 	if(getQuestion($username)){
 		$res["getname"] = "success";
 		$res["username"] = $username;
+		$res["securityquestion"] = $_SESSION["securityquestion"];
 
 		//maybe log this action?
 	}else{
 		//should maybe use tries here so that you cant guess all usernames or maybe just return an error if user does not exist.
 
 		//maybe log this action?
+
+		$res["getname"] = "failure";
 	}
+	
 	echo json_encode($res);
+
 }else if($opt=="CHECKANSWER"){
 	//everybody placehold now!
 }
-
 	
 ?>
- 
