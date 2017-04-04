@@ -462,6 +462,7 @@ function returnedSection(data)
       			
 			str+="<td style='width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='width:112px;'><input type='button' value='List' class='submit-button' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			
 		}else{
 			// No version selector for students
@@ -495,24 +496,21 @@ function returnedSection(data)
 				var item=data['entries'][i];
 				var deadline = item['deadline'];
 				var released = item['release'];
-				
-				str += "<div>";
 
-				// Separating the created div's
+				// Separating sections into different classes
 				if(parseInt(item['kind']) === 0){
-					str += "<div class='header'>";
+					str += "<div class='header' style='display:block'>";
 				}else if(parseInt(item['kind']) === 1){
-					str += "<div class='section'>";
+					str += "<div class='section' style='display:block'>";
 				}else if(parseInt(item['kind']) === 2){
-					str += "<div class='code'>";
+					str += "<div class='code' style='display:block'>";
 				}else if(parseInt(item['kind']) === 3){
-					str += "<div class='testDugga'>";
+					str += "<div class='test' style='display:block'>";
 				}else if(parseInt(item['kind']) === 4){
-					str += "<div class='moment'>";
+					str += "<div class='moment' style='display:block'>";
 				}else if(parseInt(item['kind']) === 5){
-					str += "<div class='link'>";
+					str += "<div class='link' style='display:block'>";
 				}
-					
 				// All are visible according to database
 
 				// Content table 		
@@ -642,7 +640,7 @@ function returnedSection(data)
 					kk=0;
 				}else if(parseInt(item['kind']) === 1 ){						// Section
 					// Styling for Section row
-					str+="<td class='section item"+blorf+"' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
+					str+="<td class='section item"+blorf+"' placeholder='"+momentexists+"'id='I"+item['lid']+"' style='cursor:pointer;' ";
 					kk=0;
 				}else if(parseInt(item['kind']) === 2 ){						// Code Example
 					str+="<td";
@@ -677,7 +675,7 @@ function returnedSection(data)
 					momentexists = item['lid'];
 								
 					// Styling for moment row
-					str+="<td class='moment item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+					str+="<td class='moment item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' style='cursor:pointer;' ";
 					kk=0;
 				}else if(parseInt(item['kind']) === 5 ){					// Link
 					str+="<td";
@@ -693,14 +691,16 @@ function returnedSection(data)
 				str+=">";
 
 				// Content of Section Item					
-				if (parseInt(item['kind']) < 2) {						// Header or Section
+				if (parseInt(item['kind']) == 0) {						// Header
 					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
+				}else if (parseInt(item['kind']) == 1) {					// Section
+					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/sort_white.svg'>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
-					str+="<span class='"+blorf+"' style='padding-left:5px;'>"+item['entryname']+"</span>";
+					str+="<span class='"+blorf+"' style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/sort_white.svg'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {		// Test / Dugga
-					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";	//added deadline date to the URL in showDugga.php
+					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"\");' >"+item['entryname']+"</a>";
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
 						str+= "<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
@@ -719,7 +719,6 @@ function returnedSection(data)
 						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
 					}
 					str+=" >"+deadline.slice(0, -3);+"</td>";
-					
 				} else {
 					// Do nothing
 				}
@@ -861,8 +860,12 @@ function returnedHighscore(data){
 	$("#HighscoreBox").css("display", "block");
 }
 
-
-// Function for toggling content in the section
+// Function for toggling content for each moment
 $(document).on('click', '.moment', function () {
-	$(this).nextUntil('.moment').toggle();
+	$(this).nextUntil('.moment').slideToggle();
+});
+
+// Function for toggling content for each section
+$(document).on('click', '.section', function () {
+	$(this).nextUntil('.section').slideToggle();
 });

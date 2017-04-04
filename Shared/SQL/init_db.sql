@@ -523,7 +523,6 @@ CREATE VIEW studentresultCourse AS
 		AND subparts.parthp = partresult.hp
 	WHERE partresult.grade != 'u';
 
-
 /* Merged from strutt.sql */
 alter table user_course alter column result SET DEFAULT 0.0;
 alter table user_course alter column period set default 1;
