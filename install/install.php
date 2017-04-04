@@ -185,10 +185,23 @@
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
                 addTestData("testdata", $connection);
                 # Add a language (for a existing file) in this array to add it to database.
-                $languages = array("php", "sql", "sr", "java", "html", "plain");
+                /*$languages = array("php", "sql", "sr", "java", "html", "plain");
                 foreach ($languages AS $language) {
                     addTestData("keywords_{$language}", $connection);
+                } */
+
+                # Check which languages to add from checkboxes.
+                $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
+                foreach ($checkBoxes AS $boxName) { //Loop trough each field
+                    if (!isset($_POST[$boxName]) || empty($_POST[$boxName])) {
+                        echo "Skipped keywords for {$boxName}. <br>";
+                    } else {
+                        if ($_POST[$boxName] == 'Yes') {
+                            addTestData("keywords_{$boxName}", $connection);
+                        }
+                    }
                 }
+
             } else {
                 echo "Skipped filling database with test data.<br>";
             }
