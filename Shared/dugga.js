@@ -477,7 +477,7 @@ function AJAXService(opt,apara,kind)
 			type:"POST",
 			data: "opt="+opt+para,
 			dataType: "json",
-			success: returned
+			success: returnedAnalysis
 		});
 	}
 }
