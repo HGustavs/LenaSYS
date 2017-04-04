@@ -220,6 +220,43 @@ diagram.adjust = function ()
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
+diagram.insides = function (ex,ey,sx,sy)
+{
+	for(i=0;i<this.length;i++){
+		if (sx > ex){
+			var tempa = ex;
+			ex = sx;
+			sx = tempa;
+		}
+		if (sy > ey){
+			var tempb = ey;
+			ey=sy;
+			sy=tempb;
+		}
+		if(!(this[i].kind == 1)){
+		var tx = points[this[i].topLeft].x;
+		var ty = points[this[i].topLeft].y;
+		var bx = points[this[i].bottomRight].x;
+		var by = points[this[i].bottomRight].y;
+		console.log(sx + " target x ");
+		console.log(sy + " target y ");
+		console.log(sx + " start point x");
+		console.log(sy + " start point y ");
+		console.log(ex + " end point x ");
+		console.log(ey + " end point x ");
+		if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by){
+
+			console.log("4");
+			this[i].targeted = true;
+			// return i;
+		} else {
+			this[i].targeted = false;
+		}
+		}
+	}
+
+	return -1;
+}
 
 diagram.inside = function (xk,yk)
 {
@@ -870,7 +907,10 @@ function mouseupevt(ev){
     		erLineA.centerpoint=p3;
 
     		diagram.push(erLineA);
-    }
+    } else if(md == 4 && !(uimode=="CreateFigure") && !(uimode=="CreateLine") && !(uimode=="CreateEREntity") && !(uimode=="CreateERAttr" ) &&!(uimode=="CreateClass" ) ){
+			console.log("box drawn");
+			diagram.insides(cx,cy,sx,sy);
+		}
 
 
 
