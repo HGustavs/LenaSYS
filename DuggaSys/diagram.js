@@ -666,7 +666,7 @@ function initcanvas()
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='deleteobject();'>Delete Object</button>" +
 		"<button onclick='RemoveElementsInDiagram()';>Delete All</button><br/>" +
-		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
+		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event); ondblclick='doubleclick(event);'></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
 		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
@@ -833,6 +833,17 @@ function mousedownevt(ev)
 				sy=cy;
 		}
 
+}
+
+//Enables the user to double click to bring up an alert
+
+function doubleclick(ev)
+{
+	if(sel.dist<30){
+		md=1;
+		alert('clicked an element');
+		console.log("working");
+	}
 }
 
 function mouseupevt(ev){
