@@ -127,35 +127,64 @@ function parseMarkdown(inString)
 //----------------------------------------------------------------------------------
 
 function parseLineByLine(inString) {
-	
-	var markdown = "";
-	var str = inString;
-	
-	var currentLineFeed = str.indexOf("\n");
-	
-	while(currentLineFeed != -1){ /* EOF */
+    var str = inString;
+    var markdown = "";
 
-			var firstLine = str.substr(0, currentLineFeed);
-			var remainingLines = str.substr(currentLineFeed + 1, str.length);
+    var currentLineFeed = str.indexOf("\n");
+    var currentLine = "";
+    var prevLine = "";
+    var remainingLines = "";
 
-			markdown += markdownBlock(firstLine);
-			markdown += "<br>"; // bug? create two linesbrakes instead of one
+    while(currentLineFeed != -1){ /* EOF */
+        prevLine = currentLine;
+        currentLine = str.substr(0, currentLineFeed);
+        remainingLines = str.substr(currentLineFeed + 1, str.length);
 
-			// handle unordered lists
-			
-			// handle ordered lists
+        // handle unordered lists <ul></ul>
+        if(isUnorderdList(currentLine)) {
 
-			// handle table
+        }
+        // handle ordered lists <ol></ol>
+        else if(isOrderdList(currentLine)) {
+            if(!isOrderdList(prevLine)){
+                markdown += "<ol>";
+            }
+                var matches = currentLine.match(/^\s*\d*\.\s(.*)/gm);
 
+                markdown += "<li>" + currentLine.substr(currentLine.match(/^\d*\./)[0].length, currentLine.length) + "</li>";
+                alert("i am in order:" + matches);
+                var matches2 = remainingLines.match(/^\s*\d*\.\s(.*)/gm);
+                if(matches && (prevLine.match(/^\s*/)[0].length < currentLine.match(/^\s*/)[0].length)){
 
-			// first line done parsing. change start position to next line
-			str = remainingLines; 
-			currentLineFeed = str.indexOf("\n"); 
-	}
-	return markdown;
+                    markdown += ("<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>");
+                    alert("i am in order2:" + matches2);
+
+                }
+
+        }
+        // handle table
+        else if(false) {
+
+        }
+        else {
+            markdown += markdownBlock(currentLine);
+        }
+        markdown += "<br>"; // bug? create two linesbreakes instead of one
+
+        // first line done parsing. change start position to next line
+        str = remainingLines;
+        currentLineFeed = str.indexOf("\n");
+    }
+    return markdown;
 }
 
+function isUnorderdList(item) {
+    return /^\s*[\-\*]\s(.*)/gm.test(item);
+}
 
+function isOrderdList(item) {
+    return /^\s*\d*\.\s(.*)/gm.test(item);
+}
 
 //----------------------------------------------------------------------------------
 // markdownBlock: 
