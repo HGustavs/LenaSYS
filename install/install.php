@@ -1,5 +1,7 @@
+<head>
+    <title>Install LenaSYS!</title>
+</head>
 <body>
-
     <h1>Fill out all fields to install LenaSYS and create database.</h1>
     <form action="install.php" method="post">
         <table cellspacing="0px">
@@ -57,8 +59,18 @@
         </table>
     </form>
 
-    <?php if (isset($_POST["submitButton"])) {
+    <?php
+    $putFileHere = dirname(getcwd(), 2); // Path to lenasys
+
+    # Call JS to show alert about permission.
+    echo '<script>',
+        'alert("!!!!!!BEFORE YOU START!!!!!!\nMake sure you set ownership of the directory LenaSYS is located in to the group \'www-data\'.\n" +
+                "\nTo do this run the command:\nchgrp -R www-data ' . $putFileHere . '\n");',
+    '</script>';
+
+    if (isset($_POST["submitButton"])) {
         ob_end_clean(); // Remove form and start installation.
+
         echo "<h1>Installation</h1>";
         echo "<hr>";
         flush();
@@ -220,26 +232,27 @@
         flush();
 
         # All this code prints further instructions to complete installation.
-        $putFileHere = dirname(getcwd(), 2);
         echo "<br><b>To make installation work please make a file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
-        echo '<pre>';
-        echo 'printf "' . htmlspecialchars("<?php") . '\n' . "<br>";
-        echo 'define(\"DB_USER\",\"' . $username . '\");\n' . "<br>";
-        echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n' . "<br>";
-        echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n' . "<br>";
-        echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n' . "<br>";
+        echo "<textarea rows='6' cols='70' readonly style='resize:none'>";
+        echo 'printf "' . htmlspecialchars("<?php") . '\n';
+        echo 'define(\"DB_USER\",\"' . $username . '\");\n';
+        echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
+        echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
+        echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
-        echo '</pre>';
+        echo "</textarea><br>";
 
         echo "<b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<pre>mkdir " . $putFileHere . "/log && <br>";
-        echo "chmod 777 " . $putFileHere . "/log && <br>";
-        echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && <br>';
-        echo "chmod 777 " . $putFileHere . "/log/loglena4.db</pre><br>";
+        echo "<textarea rows='4' cols='70' readonly style='resize:none'>";
+        echo "mkdir " . $putFileHere . "/log && ";
+        echo "chmod 777 " . $putFileHere . "/log && ";
+        echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
+        echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
+        echo "</textarea><br>";
     }
 
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
@@ -266,6 +279,5 @@
         }
         flush();
     }
-
     ?>
 </body>
