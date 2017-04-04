@@ -134,7 +134,6 @@ function parseLineByLine(inString) {
     var currentLine = "";
     var prevLine = "";
     var remainingLines = "";
-
     while(currentLineFeed != -1){ /* EOF */
         prevLine = currentLine;
         currentLine = str.substr(0, currentLineFeed);
@@ -149,17 +148,20 @@ function parseLineByLine(inString) {
             if(!isOrderdList(prevLine)){
                 markdown += "<ol>";
             }
-                var matches = currentLine.match(/^\s*\d*\.\s(.*)/gm);
+            var matches = currentLine.match(/^\s*\d*\.\s(.*)/gm);
+            if(matches && (currentLine.match(/^\s*/)[0].length ==0)){
+                markdown += "<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>";
+            }
 
-                markdown += "<li>" + currentLine.substr(currentLine.match(/^\d*\./)[0].length, currentLine.length) + "</li>";
-                alert("i am in order:" + matches);
-                var matches2 = remainingLines.match(/^\s*\d*\.\s(.*)/gm);
-                if(matches && (prevLine.match(/^\s*/)[0].length < currentLine.match(/^\s*/)[0].length)){
 
-                    markdown += ("<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>");
-                    alert("i am in order2:" + matches2);
+            if(matches && (currentLine.match(/^\s*/)[0].length > prevLine.match(/^\s*/)[0].length)){
 
-                }
+                markdown += "<li>"+"<ol>"+ ("<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>");
+
+            }
+            else if(matches && (currentLine.match(/^\s*/)[0].length == prevLine.match(/^\s*/)[0].length) && (currentLine.match(/^\s*/)[0].length !=0)){
+                markdown += ("<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>");
+            }
 
         }
         // handle table
@@ -175,6 +177,7 @@ function parseLineByLine(inString) {
         str = remainingLines;
         currentLineFeed = str.indexOf("\n");
     }
+
     return markdown;
 }
 
