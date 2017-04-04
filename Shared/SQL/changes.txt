@@ -1,0 +1,9 @@
+New table user_push_registration, created with the following sql:
+	CREATE TABLE user_push_registration (
+		id							INT NOT NULL AUTO_INCREMENT,
+		uid 						INT UNSIGNED NOT NULL,
+		endpoint				VARCHAR(500) NOT NULL,
+		added						TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		PRIMARY KEY 	(id),
+		FOREIGN KEY (uid) REFERENCES user(uid)
+	) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
