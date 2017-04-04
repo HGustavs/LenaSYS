@@ -184,10 +184,10 @@ function handleUnorderedList(currentLine, prevLine) {
 	var currentvSublistLevel = currentLine.match(/^\s*\t*/gm)[0].length;
 	var prevSublistLevel = prevLine.match(/^\s*\t*/gm)[0].length
 	if(currentvSublistLevel !== 0) {
-		markdown += "<li><ul>";
+		markdown += "<ul>";
 	}
 	if(currentvSublistLevel < prevSublistLevel) {
-		markdown += "</ul></li>";
+		markdown += "</ul>";
 	}
 
 	// handle listitem
