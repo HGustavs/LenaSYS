@@ -17,6 +17,8 @@ CREATE TABLE user(
 		email				VARCHAR(256) DEFAULT NULL,
 		class 				VARCHAR(10) DEFAULT NULL REFERENCES class (class),
 		totalHp				decimal(4,1),
+		securityquestion	VARCHAR(256) DEFAULT NULL,
+		securityquestionanswer	VARCHAR(256) DEFAULT NULL,
 
 		PRIMARY KEY(uid)
 
