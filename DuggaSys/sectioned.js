@@ -711,6 +711,18 @@ function returnedSection(data)
 													
 				str+="</td>";
 
+				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
+				var dateSubmitted = submitted.toJSON().slice(0,10).replace(/-/g,'-');
+				var timeSubmitted = submitted.toJSON().slice(11,19).replace(/-/g,'-');
+				var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
+				
+				// create a warning if the dugga is submitted after the set deadline
+				if ((status === "pending")&&(dateTimeSubmitted>deadline)){
+					str+="<td style='width:20px;'><img style='width:20px;' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.png'/></td>";
+				}else{
+					
+				}
+				
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")){
 					if(kk==1){
