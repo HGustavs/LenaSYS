@@ -159,7 +159,7 @@ function parseLineByLine(inString) {
 
 			// first line done parsing. change start position to next line
 			str = remainingLines; 
-			currentLineFeed = str.indexOf("\n"); 		
+			currentLineFeed = str.indexOf("\n");
 	}
 	return markdown;
 }
@@ -174,13 +174,23 @@ function isOrderdList(item) {
 
 function handleUnorderedList(currentLine, prevLine) {
   var markdown = "";
-  
-  // prepend "<ul>" in start of list
+
+  // prepend "<ul>" at the start of list
   if(!isUnorderdList(prevLine)) {
-    markdown += "<ul>"; //  html takes care of closing tag for us in chrome
+    markdown += "<ul>"; //  html takes care of closing tag for us
   }
 
-  // <li></li>
+  // handle sublist
+  var currentvSublistLevel = currentLine.match(/^\s*\t*/gm)[0].length;
+  var prevSublistLevel = prevLine.match(/^\s*\t*/gm)[0].length
+  if(currentvSublistLevel !== 0) {
+    markdown += "<li><ul>";
+  }
+  if(currentvSublistLevel < prevSublistLevel) {
+     markdown += "</ul></li>";
+  }
+
+  // handle listitem
   var trimPosition = currentLine.match(/^\s*[\-\*]\s*/gm)[0].length;
   markdown += "<li>" + currentLine.substr(trimPosition, currentLine.length) + "</li>";
 
