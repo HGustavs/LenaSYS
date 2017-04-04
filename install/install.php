@@ -2,10 +2,10 @@
 
     <h1>Fill out all fields to install LenaSYS and create database.</h1>
     <form action="install.php" method="post">
-        <table>
+        <table cellspacing="0px">
             <tr align="left">
                 <th valign=top><h2>New/Existing MySQL user and DB</h2></th>
-                <th valign=top><h2>MySQL Root Login</h2></th>
+                <th valign=top bgcolor="#EEEEEE"><h2>MySQL Root Login</h2></th>
                 <th valign=top><h2>Test Data</h2></th>
             </tr>
             <tr>
@@ -19,7 +19,7 @@
                     Enter hostname (e.g localhost). <br>
                     <input type="text" name="hostname" placeholder="Hostname" /> <br>
                 </td>
-                <td valign=top width="30%">
+                <td valign=top width="30%" bgcolor="#EEEEEE">
                     Enter root user. <br>
                     <input type="text" name="mysqlRoot" placeholder="Root" /> <br>
                     Enter password for MySQL root. <br>
@@ -40,15 +40,21 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3">
+                <td colspan="3" bgcolor="#FFCCCC">
                     <input type="checkbox" name="writeOverDB" value="Yes" />
                     <b><-- Check the box if you want to write over existing database and user<br>
                         <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE)</span></b><br>
                 </td>
             </tr>
         </table>
-        <input type="submit" name="submitButton" value="Install!"/>
-        <input type="reset" value="Clear"/>
+        <table width="100%">
+            <tr>
+                <td bgcolor="#EEEEEE">
+                    <input type="submit" name="submitButton" value="Install!"/>
+                    <input type="reset" value="Clear"/>
+                </td>
+            </tr>
+        </table>
     </form>
 
     <?php if (isset($_POST["submitButton"])) {
