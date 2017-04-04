@@ -131,70 +131,70 @@ function parseLineByLine(inString) {
 	var markdown = "";
 
 	var currentLineFeed = str.indexOf("\n");
-  var currentLine = "";
+	var currentLine = "";
 	var prevLine = "";
-  var remainingLines = "";
+	var remainingLines = "";
 
 	while(currentLineFeed != -1){ /* EOF */
-      prevLine = currentLine;
-			currentLine = str.substr(0, currentLineFeed);
-			remainingLines = str.substr(currentLineFeed + 1, str.length);
+		prevLine = currentLine;
+		currentLine = str.substr(0, currentLineFeed);
+		remainingLines = str.substr(currentLineFeed + 1, str.length);
 
-			// handle unordered lists <ul></ul>
-      if(isUnorderdList(currentLine)) {
-        markdown += handleUnorderedList(currentLine, prevLine);
-      }
-      // handle ordered lists <ol></ol>
-      else if(isOrderdList(currentLine)) {
+		// handle unordered lists <ul></ul>
+		if(isUnorderdList(currentLine)) {
+			markdown += handleUnorderedList(currentLine, prevLine);
+		}
+		// handle ordered lists <ol></ol>
+		else if(isOrderdList(currentLine)) {
 
-      }
-      // handle table
-      else if(false) {
+		}
+		// handle table
+		else if(false) {
 
-      }
-			else {
-        markdown += markdownBlock(currentLine);
-      }
-			markdown += "<br>"; // bug? create two linesbreakes instead of one
+		}
+		else {
+			markdown += markdownBlock(currentLine);
+		}
+		markdown += "<br>"; // bug? create two linesbreakes instead of one
 
-			// first line done parsing. change start position to next line
-			str = remainingLines; 
-			currentLineFeed = str.indexOf("\n");
+		// first line done parsing. change start position to next line
+		str = remainingLines; 
+		currentLineFeed = str.indexOf("\n");
 	}
 	return markdown;
 }
 
 function isUnorderdList(item) {
-  return /^\s*[\-\*]\s(.*)/gm.test(item);
+	return /^\s*[\-\*]\s(.*)/gm.test(item);
 }
 
 function isOrderdList(item) {
-  return /^\s*\d*\.\s(.*)/gm.test(item);
+	return /^\s*\d*\.\s(.*)/gm.test(item);
 }
 
 function handleUnorderedList(currentLine, prevLine) {
-  var markdown = "";
+	var markdown = "";
 
-  // prepend "<ul>" at the start of list
-  if(!isUnorderdList(prevLine)) {
-    markdown += "<ul>"; //  html takes care of closing tag for us
-  }
+	// prepend "<ul>" at the start of list
+	if(!isUnorderdList(prevLine)) {
+		markdown += "<ul>"; //  html takes care of closing tag for us
+	}
 
-  // handle sublist
-  var currentvSublistLevel = currentLine.match(/^\s*\t*/gm)[0].length;
-  var prevSublistLevel = prevLine.match(/^\s*\t*/gm)[0].length
-  if(currentvSublistLevel !== 0) {
-    markdown += "<li><ul>";
-  }
-  if(currentvSublistLevel < prevSublistLevel) {
-     markdown += "</ul></li>";
-  }
+	// handle sublist
+	var currentvSublistLevel = currentLine.match(/^\s*\t*/gm)[0].length;
+	var prevSublistLevel = prevLine.match(/^\s*\t*/gm)[0].length
+	if(currentvSublistLevel !== 0) {
+		markdown += "<li><ul>";
+	}
+	if(currentvSublistLevel < prevSublistLevel) {
+		markdown += "</ul></li>";
+	}
 
-  // handle listitem
-  var trimPosition = currentLine.match(/^\s*[\-\*]\s*/gm)[0].length;
-  markdown += "<li>" + currentLine.substr(trimPosition, currentLine.length) + "</li>";
+	// handle listitem
+	var trimPosition = currentLine.match(/^\s*[\-\*]\s*/gm)[0].length;
+	markdown += "<li>" + currentLine.substr(trimPosition, currentLine.length) + "</li>";
 
-  return markdown;
+	return markdown;
 }
 
 //----------------------------------------------------------------------------------
