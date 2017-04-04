@@ -220,41 +220,7 @@ diagram.adjust = function ()
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-diagram.insides = function (ex,ey,sx,sy)
-{
-    for(i=0;i<this.length;i++){
 
-        if (sx > ex){
-
-            var tempa = ex;
-            ex = sx;
-            sx = tempa;
-        }
-        if (sy > ey){
-
-            var tempb = ey;
-            ey=sy;
-            sy=tempb;
-        }
-        console.log(this[i].kind);
-        if(!(this[i].kind == 1)) {
-            var tx = points[this[i].topLeft].x;
-            var ty = points[this[i].topLeft].y;
-            var bx = points[this[i].bottomRight].x;
-            var by = points[this[i].bottomRight].y;
-            if (sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by) {
-
-                console.log("Found inside");
-                this[i].targeted = true;
-                // return i;
-            } else {
-                this[i].targeted = false;
-            }
-        }
-    }
-
-    return -1;
-}
 diagram.inside = function (xk,yk)
 {
 		for(i=0;i<this.length;i++){
@@ -785,7 +751,6 @@ function mousemoveevt(ev, t){
 						selobj = movobj;
 						diagram[selobj].targeted = true;
 
-
 						diagram[movobj].move(cx-mox,cy-moy);
 				}
 		}
@@ -813,12 +778,10 @@ function mousemoveevt(ev, t){
 				ctx.lineTo(cx,cy);
 				ctx.lineTo(sx,cy);
 				ctx.lineTo(sx,sy);
-
 				ctx.stroke();
 				ctx.setLineDash([]);
 		}
 }
-
 
 function mousedownevt(ev)
 {
@@ -909,17 +872,6 @@ function mouseupevt(ev){
     		diagram.push(erLineA);
     }
 
-        else if(uimode=="CreateFigure"&&md==4){
-            var figurePath=new Path;
-			if(testCounter>0){
-                diagram.push(drawSegment(figurePath, tempP1, p2));
-			}
-            tempP1 = p1
-			testCounter++;
-        }else if(md==4){
-            console.log("box drawn");
-            diagram.insides(cx,cy,sx,sy);
-        }
 
 
 
