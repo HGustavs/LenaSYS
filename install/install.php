@@ -65,7 +65,7 @@
     # Call JS to show alert about permission.
     echo '<script>',
         'alert("!!!!!!BEFORE YOU START!!!!!!\nMake sure you set ownership of the directory LenaSYS is located in to the group \'www-data\'.\n" +
-                "\nTo do this run the command:\nchgrp -R www-data ' . $putFileHere . '\n");',
+                "\nTo do this run the command:\nsudo chgrp -R www-data ' . $putFileHere . '\n");',
     '</script>';
 
     if (isset($_POST["submitButton"])) {
