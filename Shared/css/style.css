@@ -272,6 +272,7 @@ p {
     color:#434343;
     display: block;
     padding-top:1px;
+    border-radius: 5px;
 }
 
 .item {
@@ -283,6 +284,7 @@ p {
 #Sectionlist .section {
     color:#fff;
     background-color: #927b9e;
+    border-radius: 10px;
 }
 
 #Sectionlist .header {
@@ -301,6 +303,7 @@ p {
     font-size: 12pt;
     padding-top:5px;
     min-height:26px;
+    border-radius: 5px;
 }
 
 #Sectionlist .spacerLeft {
@@ -333,10 +336,10 @@ p {
     text-align: center;
     color: #fff;
     display: block;
-/*    font-family: Calibri,Sans-Serif;*/
     font-size:18pt;
     background-color: #614875;
     clear:both;
+    border-radius: 5px;
 }
 
 .item a {
@@ -1847,7 +1850,7 @@ input.large-button {
 
 			table {
 			    border-collapse: collapse;
-			    font-family: Arial Narrow;
+			    font-family: Roboto,Arial Narrow;
 			}
 
 			.fumho td{
