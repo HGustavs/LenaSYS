@@ -79,18 +79,63 @@
                 echo "<span style='color: red;' />Could not create user with name " . $username . ", maybe it already exists...</span><br>";
             }
 
-            # Init database
+            # Init database.
             $initQuery = file_get_contents("Shared/SQL/init_db.sql");
+
+            # This loop will find comments in the sql file and remove these.
+            # Comments are removed because some comments included semi-colons which wont work.
+            while(true) {
+                $startPos = strpos($initQuery, "/*");
+                $endPos = strpos($initQuery, "*/");
+                if ($startPos === false || $endPos === false) {
+                    break;
+                }
+                $removeThisText = substr($initQuery, $startPos, ($endPos + 2) - $startPos);
+                $initQuery = str_replace($removeThisText, '', $initQuery);
+            }
+
+            # Split the sql file at semi-colons to send each query separated.
+            $initQueryArray = explode(";", $initQuery);
             try {
                 $connection->query("USE " . $databaseName);
-                $connection->query($initQuery);
+                # Use this var if several statements should be called at once (functions).
+                $queryBlock = '';
+                $blockStarted = false;
+                foreach($initQueryArray AS $query) {
+                    $completeQuery = $query . ";";
+
+                    # This commented code in this block could work if delimiters are fixed/removed in sql files.
+                    # TODO: Fix handling of delimiters. Now this part only removes code between them.
+                    if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")){
+                        $blockStarted = true;
+                        #$queryBlock = $completeQuery;
+                    } else if ($blockStarted && strpos(strtolower($completeQuery), "delimiter ;")) {
+                        $blockStarted = false;
+                        #$queryBlock = $queryBlock . $completeQuery;
+                        #$connection->query($queryBlock);
+                    } else if ($blockStarted){
+                        #$queryBlock = $queryBlock . $completeQuery;
+                    } else {
+                        if(trim($query) != ''){ // do not send if empty query.
+                            $connection->query($completeQuery);
+                        }
+                    }
+                }
                 echo "<span style='color: green;' />Initiated database. </span><br>";
 
-                # Fill database
+                # Fill database with test data if this was checked.
                 if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
                     $testDataQuery = file_get_contents("Shared/SQL/testdata.sql");
+
+                    # Split SQL file at semi-colons to send each query separated.
+                    $testDataQueryArray = explode(";", $testDataQuery);
                     try {
-                        $connection->query($testDataQuery);
+                        foreach($testDataQueryArray AS $query) {
+                            $completeQuery = $query . ";"; // Add semi-colon to each query.
+                            if(trim($query) != ''){ // do not send if empty query.
+                                $connection->query($completeQuery);
+                            }
+                        }
                         echo "<span style='color: green;' />Successfully filled database with test data.</span><br>";
                     } catch (PDOException $e) {
                         echo "<span style='color: red;' />Failed to fill database with data... </span><br>";
@@ -105,8 +150,9 @@
             echo "Skipped creating database <br>";
         }
 
-        echo "Installation complete.<br>";
+        echo "Installation completed! <br>";
 
+        # All this code prints further instructions to complete installation.
         $putFileHere = dirname(getcwd(), 1);
         echo "<br><b>To make it work please make a file named 'coursesyspw.php' at " . $putFileHere . "</b><br>";
         echo "<b>After this - fill the file with the code below:</b>";
@@ -120,11 +166,21 @@
         echo htmlspecialchars("?>");
         echo "</pre><br>";
 
+        echo "<b>Bash command to complete all this:</b><br>";
+        echo '<pre>';
+        echo 'printf "' . htmlspecialchars("<?php") . '\n';
+        echo 'define(\"DB_USER\",\"' . $username . '\");\n';
+        echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
+        echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
+        echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
+        echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
+        echo '</pre>';
+
         echo "<b> Now create a directory named 'log' at " . $putFileHere . " with permissions 777.</b><br>";
         echo "<pre>mkdir " . $putFileHere . "/log</pre>";
         echo "<pre>chmod 777 " . $putFileHere . "/log</pre>";
         echo "<b> Inside this directory create a new sqlite file (and change permissions) by running the commands: </b><br>";
-        echo "<pre>sqlite3 " . $putFileHere . "/loglena4.db</pre>";
+        echo "<pre>sqlite3 " . $putFileHere . '/log/loglena4.db ""</pre>';
         echo "<pre>chmod 777 " . $putFileHere . "/log/loglena4.db</pre><br>";
     }
     ?>

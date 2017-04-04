@@ -522,8 +522,17 @@ header td {
     padding-right:4px;
 }
 
-#userName {
-    cursor:pointer;
+
+.navName a {
+    color: #FFFFFF;
+    text-decoration:none;
+    overflow:hidden;
+}
+
+.navName a:hover {
+    color: #FFFFFF;
+	text-decoration:underline;
+    overflow:hidden;
 }
 
 .loggedout {
@@ -979,7 +988,7 @@ input.submit-button {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color:#614875;
     border:0px;
-    width:110px;
+    width:120px;
     height:30px;
     color:#fff;
     cursor:pointer;
@@ -1767,3 +1776,87 @@ input.large-button {
     min-height: 47px;
     line-height: 47px;
 }
+
+
+
+/*styling for contribution.php*/
+/*this was inline-CSS before, only moved it to the right file*/
+.fumho th{
+   				background:#620;
+   				color:#fff;
+   				font-family:Arial;
+   				font-weight: bold;
+   		}
+   	
+			.contribheading{
+					background:#FFF8A5;
+					box-shadow:1px 1px 6px rgba(0,0,0,0.6);
+					border-radius: 4px 6px 0px 0px;
+					max-width:400px;
+					overflow:hidden;
+					margin-top:8px;
+			}
+
+			.contribcontent{
+					position:relative;
+					background:#FFF8A5;
+					margin-bottom:10px;
+					margin-top:4px;
+					z-index:3000;
+					box-shadow:1px 1px 6px rgba(0,0,0,0.6);					
+					padding-left:8px;
+					width:400px;
+			}
+			
+			.contrib{
+					font-family: Arial Narrow,Arial,sans-serif;
+					font-size:14px;
+
+					padding-bottom:10px;
+					padding-top:10px;
+					padding-left:8px;
+					padding-right:8px;
+					width:400px;
+			}
+			
+			.contribfile{
+					color:#521;
+			}
+
+			.contribpath{
+					color:#252;
+			}
+			
+			.createissue{
+					color:#247;
+			}
+
+			.contentissue{
+					color:#472;
+					padding-left:20px;
+					padding-right:10px;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+			}
+						
+			table {
+			    border-collapse: collapse;
+			    font-family: Arial Narrow;
+			}
+
+			.fumho td{
+					padding-left:8px;
+					padding-right:8px;
+					border-right:2px dotted rgba(0,0,0,0.2);'			
+			}
+
+			.fumho tr:nth-child(even) {
+					background-color:#e8e8e8;
+			}
+
+			.fumho tr:nth-child(odd) {
+					background-color:#fff;
+			}
+							
+/*end, styling for contribution.php*/
