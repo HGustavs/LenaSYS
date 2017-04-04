@@ -21,14 +21,13 @@ AJAXService("get",{},"DIAGRAM");
 // Global settings
 
 var crossl=4.0;				// Size of point cross
+var tolerance = 8;		// Size of tolerance area around the point
 var ctx;							// Canvas context
 var acanvas;					// Canvas Element
 var sel;							// Selection state
 var cx,cy=0;					// Current Mouse coordinate x and y
 var sx,sy=0;					// Start Mouse coordinate x and y
 var mox,moy=0;				// Old mouse x and y
-var testCounter=0;
-var tempP1=0;
 var md=0;							// Mouse state
 var movobj=-1;				// Moving object ID
 var selobj = -1;			// The last selected object
@@ -36,6 +35,16 @@ var uimode="normal";		// User interface mode e.g. normal or create class current
 var widthWindow;			// The width on the users screen is saved is in this var.
 var heightWindow;			// The height on the users screen is saved is in this var.
 var consoleInt = 0;
+var canFigure = false; // When figure mode is enabled for the session, this needs to be set to true and p1 to null.
+
+var activePoint = null; //This point indicates what point is being hovered by the user
+var p1=null,					// When creating a new figure, these two variables are used ...
+ 		p2=null;					// to keep track of points created with mousedownevt and mouseupevt
+
+// set the color for the crosses.
+var crossStrokeStyle1 = "#f64";
+var crossfillStyle = "#d51";
+var crossStrokeStyle2 = "#d51";
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -94,20 +103,6 @@ points.addpoint = function (xk,yk,selval)
 }
 
 //--------------------------------------------------------------------
-// deletepoint
-// Deletes point from points
-//--------------------------------------------------------------------
-
-points.deletepoint = function (point)
-{
-		for(var i = 0; i < this.length; i++){
-			if(this[i] == point){
-				this.splice(i, 1);
-			}
-		}
-}
-
-//--------------------------------------------------------------------
 // drawpoints
 // Draws each of the points as a cross
 //--------------------------------------------------------------------
@@ -115,7 +110,7 @@ points.deletepoint = function (point)
 points.drawpoints = function ()
 {
 		// Mark points
-		ctx.strokeStyle="#f64";
+		ctx.strokeStyle= crossStrokeStyle1;
 		ctx.lineWidth=2;
 		for(var i=0;i<this.length;i++){
 				var point=this[i];
@@ -129,8 +124,8 @@ points.drawpoints = function ()
 						ctx.stroke();
 				}else{
 						ctx.save();
-						ctx.fillStyle="#d51";
-						ctx.strokeStyle="#420";
+						ctx.fillStyle= crossfillStyle;
+						ctx.strokeStyle= crossStrokeStyle2;
 						ctx.fillRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
 						ctx.strokeRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
 						ctx.restore();
@@ -631,6 +626,7 @@ function initcanvas()
 		"<button onclick='linemode();'>Create Line</button>" +
 		"<button onclick='entitymode();'>Create Entity</button>" +
 		"<button onclick='figuremode();'>Create Figure</button>" +
+		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='deleteobject();'>Delete Object</button>" +
 		"<button onclick='RemoveElementsInDiagram()';>Delete All</button><br/>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
@@ -649,7 +645,7 @@ function initcanvas()
 
 }
 
-// Function that is used for the resize 
+// Function that is used for the resize
 // Making the page more responsive
 
 function canvassize()
@@ -730,6 +726,14 @@ function mousemoveevt(ev, t){
 
 				movobj=diagram.inside(cx,cy);
 
+				// If the cursor is within the tolerance area of a point, the hovered point will be set as active
+				if(sel.dist <= tolerance){
+					activePoint = sel.ind;
+				}
+				else{
+					activePoint = null;
+				}
+
 
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
@@ -750,8 +754,8 @@ function mousemoveevt(ev, t){
 						diagram[movobj].move(cx-mox,cy-moy);
 				}
 		}
-
 		diagram.linedist(cx,cy);
+
 
 		updategfx();
 
@@ -777,12 +781,11 @@ function mousemoveevt(ev, t){
 				ctx.stroke();
 				ctx.setLineDash([]);
 		}
-
 }
 
 function mousedownevt(ev)
 {
-		if(sel.dist<10){
+		if(uimode!="CreateFigure"&&sel.dist<10){
 				md=2;
 		}else if(movobj!=-1){
 				md=3;
@@ -798,11 +801,36 @@ function mouseupevt(ev){
 
 	// Code for creating a new class
 
-		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine"||uimode=="CreateFigure")){
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity")){
 				// Add required points
-				var p1=points.addpoint(sx,sy,false);
-				var p2=points.addpoint(cx,cy,false);
+				p1=points.addpoint(sx,sy,false);
+				p2=points.addpoint(cx,cy,false);
 				var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
+		}
+		if(uimode=="CreateLine"&&md==4){
+			p1=points.addpoint(sx,sy,false);
+			p2=points.addpoint(cx,cy,false);
+		}
+		console.log(uimode+md);
+		if(uimode=="CreateFigure"&& md==4){
+			p2=null;
+			if(canFigure==true){
+				p2=p1;
+				if(activePoint!=null){
+					console.log(activePoint);
+					p1=activePoint;
+				}else{
+					p1=points.addpoint(cx,cy,false);
+				}
+				var figurePath = new Path;
+				diagram.push(drawSegment(figurePath, p1, p2));
+			}
+			else{
+					p1=points.addpoint(cx,cy,false);
+				canFigure=true;
+			}
+		}else{
+			canFigure=false;
 		}
 
 		if(uimode=="CreateClass"&&md==4){
@@ -833,26 +861,18 @@ function mouseupevt(ev){
             	erEnityA.centerpoint=p3;
 
             	diagram.push(erEnityA);
-        }
-        /* Code for making a line */
-        else if(uimode=="CreateLine"&&md==4){
-        		erLineA = new Symbol(4);
-        		erLineA.name="Line"+diagram.length;
-        		erLineA.topLeft=p1;
-        		erLineA.bottomRight=p2;
-        		erLineA.centerpoint=p3;
+    }else if(uimode=="CreateLine"&&md==4){
+			/* Code for making a line */
+    		erLineA = new Symbol(4);
+    		erLineA.name="Line"+diagram.length;
+    		erLineA.topLeft=p1;
+    		erLineA.bottomRight=p2;
+    		erLineA.centerpoint=p3;
 
-        		diagram.push(erLineA);
-        }
+    		diagram.push(erLineA);
+    }
 
-        else if(uimode=="CreateFigure"&&md==4){
-            var figurePath=new Path;
-			if(testCounter>0){
-                diagram.push(drawSegment(figurePath, tempP1, p2));
-			}
-            tempP1 = p1
-			testCounter++;
-        }
+
 
 
     	updategfx();
@@ -867,9 +887,13 @@ function mouseupevt(ev){
 function deleteobject(){
 	if(selobj != -1){
 		//Issue: Need to remove the crosses
-
-		diagram.splice(selobj, 1);
+		points[diagram[selobj].topLeft].x = -10;
+		points[diagram[selobj].topLeft].y = -10;
+		points[diagram[selobj].bottomRight].x = -10;
+		points[diagram[selobj].bottomRight].y = -10;
 		diagram[selobj].targeted = false;
+		diagram.splice(selobj, 1);
+		updategfx();
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
 	}
@@ -959,10 +983,45 @@ function RemoveElementsInDiagram()
 			console.log("deleting done!");
 }
 
+//remove all elements in the diagram array. it hides the points by placing them beyond the users view.
+function RemoveElementsInDiagram()
+{			console.log("Deleting");
+			var lastelement = diagram.length;
+			var lastpoint = points.length;
+			diagram.splice(0, lastelement);
+
+			for(i = 0; i < lastpoint; i++){
+			points[i] = {x:-10,y:-10,selected:true};
+
+			}
+			updategfx();
+			console.log("deleting done!");
+}
+
 var consloe={};
 consloe.log=function(gobBluth)
 {
 		document.getElementById("consloe").innerHTML=((JSON.stringify(gobBluth)+"<br>")+document.getElementById("consloe").innerHTML);
+}
+var ghostingvrosses = false;
+function debugMode()
+{
+	if(ghostingvrosses == true){
+		crossStrokeStyle1 = "#f64";
+		crossfillStyle = "#d51";
+		crossStrokeStyle2 = "#d51";
+		ghostingvrosses = false
+		Consolemode(2)
+		}
+		
+		else{
+			crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+			crossfillStyle = "rgba(255, 102, 68, 0.0)";
+			crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+			ghostingvrosses = true
+			Consolemode(1)
+		}
+		
 }
 
 //----------------------------------------
