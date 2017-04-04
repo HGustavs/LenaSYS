@@ -3,4 +3,8 @@
  * lbl
  */
 
- // Declare three paths
+function drawSegment(pathA,p1, p2) {
+    pathA.addsegment(1,p1,p2);
+    return pathA;
+
+}

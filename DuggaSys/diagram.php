@@ -31,7 +31,7 @@ pdoConnect();
 
 </head>
 <!-- Reads the content from the js-files -->
-<body onload="initcanvas(); Symbol();">
+<body onload="initcanvas(); Symbol(); canvassize();">
 
 	<?php
 		$noup="COURSE";
@@ -42,12 +42,9 @@ pdoConnect();
 	<div id="content">
 
 
-	      <button onclick="classmode();">Create Class</button><button onclick="attrmode();">Create Attribute</button><button onclick="linemode();">Create Line</button><br><button onclick="entitymode();">Create Entity</button><button onclick="RemoveElementsInDiagram();">Remove Entities</button><br>
-
-	      <canvas id="myCanvas" width="600" height="600" onmousemove="mousemoveevt(event,this);" onmousedown="mousedownevt(event);" onmouseup="mouseupevt(event);"></canvas>
-	      <div id="consloe" style="position:fixed;left:0px;right:0px;bottom:0px;height:144px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;">Application console</div>
 
 	</div>
+
 	<!-- content END -->
 
 	<?php

@@ -3,7 +3,6 @@ var retdata;
 
 AJAXService("get",{},"DIAGRAM");
 
-
 /*
 
 -----------------------=====================##################=====================-----------------------
@@ -28,9 +27,15 @@ var sel;							// Selection state
 var cx,cy=0;					// Current Mouse coordinate x and y
 var sx,sy=0;					// Start Mouse coordinate x and y
 var mox,moy=0;				// Old mouse x and y
+var testCounter=0;
+var tempP1=0;
 var md=0;							// Mouse state
 var movobj=-1;				// Moving object ID
+var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
+var widthWindow;			// The width on the users screen is saved is in this var.
+var heightWindow;			// The height on the users screen is saved is in this var.
+var consoleInt = 0;
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -86,6 +91,20 @@ points.addpoint = function (xk,yk,selval)
 		var pos=this.length;
 		this.push(newpnt);
 		return pos;
+}
+
+//--------------------------------------------------------------------
+// deletepoint
+// Deletes point from points
+//--------------------------------------------------------------------
+
+points.deletepoint = function (point)
+{
+		for(var i = 0; i < this.length; i++){
+			if(this[i] == point){
+				this.splice(i, 1);
+			}
+		}
 }
 
 //--------------------------------------------------------------------
@@ -337,6 +356,7 @@ function Path() {
 
 						var pseg=this.segments[0];
 						ctx.moveTo(points[pseg.pa].x,points[pseg.pa].y);
+
 						for(var i=0;i<this.segments.length;i++){
 								var seg=this.segments[i];
 
@@ -346,7 +366,8 @@ function Path() {
 								}
 
 								// Draw current line
-								ctx.lineTo(points[seg.pb].x,points[seg.pb].y);
+
+								ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
 
 								// Remember previous segment
 								pseg=seg;
@@ -468,7 +489,7 @@ function Path() {
 		    var y=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
 
 		    if (isNaN(x)||isNaN(y)) {
-		        return {state:false,x:0,y:0};;
+		        return {state:false,x:0,y:0};
 		    } else {
 		        if (x1>=x2) {
 		            if (!(x2<x&&x<x1)) return {state:false,x:0,y:0};
@@ -491,7 +512,7 @@ function Path() {
 		            if (!(y3<y&&y<y4)) return {state:false,x:0,y:0};
 		        }
 		    }
-		    return {state:true,x:x,y:y};;
+		    return {state:true,x:x,y:y};
 		}
 
 		//--------------------------------------------------------------------
@@ -602,6 +623,16 @@ function Path() {
 
 function initcanvas()
 {
+    widthWindow = (window.innerWidth-20);
+	heightWindow = (window.innerHeight-220);
+	document.getElementById("content").innerHTML="<button onclick='classmode();'>Create Class</button><button onclick='attrmode();'>Create Attribute</button>" +
+		"<button onclick='linemode();'>Create Line</button>" +
+		"<button onclick='entitymode();'>Create Entity</button>" +
+		"<button onclick='deleteobject();'>Delete Object</button><button onclick='figuremode();'>Create Figure</button><br/>" +
+		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
+		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
+		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
+		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
     var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -614,6 +645,21 @@ function initcanvas()
 
 }
 
+// Function that is used for the resize 
+// Making the page more responsive
+
+function canvassize()
+{
+	widthWindow = (window.innerWidth-20);
+	heightWindow = (window.innerHeight-244);
+	document.getElementById("myCanvas").setAttribute("width", widthWindow);
+	document.getElementById("myCanvas").setAttribute("height", heightWindow);
+}
+
+// Listen if the window is the resized
+
+window.addEventListener('resize', canvassize);
+
 var erEntityA;
 
 // Demo data for testing purposes.
@@ -621,7 +667,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(0,0,600,600);
+		ctx.clearRect(0,0,widthWindow,heightWindow);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -680,6 +726,7 @@ function mousemoveevt(ev, t){
 
 				movobj=diagram.inside(cx,cy);
 
+
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
 		}else if(md==2){
@@ -689,6 +736,13 @@ function mousemoveevt(ev, t){
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
+						//Last moved object
+						if(selobj != -1){
+							diagram[selobj].targeted = false;
+						}
+						selobj = movobj;
+						diagram[selobj].targeted = true;
+
 						diagram[movobj].move(cx-mox,cy-moy);
 				}
 		}
@@ -736,12 +790,11 @@ function mousedownevt(ev)
 
 }
 
-function mouseupevt(ev)
-{
+function mouseupevt(ev){
 
-		// Code for creating a new class
+	// Code for creating a new class
 
-		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine")){
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateLine"||uimode=="CreateFigure")){
 				// Add required points
 				var p1=points.addpoint(sx,sy,false);
 				var p2=points.addpoint(cx,cy,false);
@@ -788,13 +841,35 @@ function mouseupevt(ev)
         		diagram.push(erLineA);
         }
 
+        else if(uimode=="CreateFigure"&&md==4){
+            var figurePath=new Path;
+			if(testCounter>0){
+                diagram.push(drawSegment(figurePath, tempP1, p2));
+			}
+            tempP1 = p1
+			testCounter++;
+        }
+
+
     	updategfx();
 
     	// Clear mouse state
     	md=0;
-    	uimode=" ";
-}
+    	if(uimode!="CreateFigure"){
+    		uimode=" ";
+        }
 
+}
+function deleteobject(){
+	if(selobj != -1){
+		//Issue: Need to remove the crosses
+
+		diagram.splice(selobj, 1);
+		diagram[selobj].targeted = false;
+		//To avoid removing the same index twice, selobj is reset
+		selobj = -1;
+	}
+}
 function classmode()
 {
 		uimode="CreateClass";
@@ -807,12 +882,44 @@ function attrmode()
 
 function entitymode()
 {
-    	uimode="CreateEREntity";
+  	uimode="CreateEREntity";
 }
 
 function linemode()
 {
 		uimode="CreateLine";
+}
+
+function figuremode()
+{
+    	uimode="CreateFigure";
+}
+
+function Consolemode(action){
+
+	/*<div class='Hide Console'>
+	 <input id="Hide Console" style="position:fixed; right:0; bottom:100px;" type="button" value="Hide Console" onclick="Consolemode('Hide Console');" />
+	 </div>
+	 <div class='Show Console'>
+	 <input id="Show Console" style="display:none;position:fixed; right:0; bottom:144px;" type="button" value="Show Console" onclick="Consolemode('Show Console');" />
+	 </div>*/
+
+	if(action == 1) {
+		document.getElementById('Hide Console').style.display = "none";
+		document.getElementById('Show Console').style.display = "block";
+		document.getElementById('Show Console').style="position:fixed; right:0; bottom:0px;";
+		heightWindow = (window.innerHeight-120);
+		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		$("#consloe").hide();
+	}
+	if(action == 2) {
+		document.getElementById('Hide Console').style.display = "block";
+		document.getElementById('Show Console').style.display = "none";
+		document.getElementById('Hide Console').style="position:fixed; right:0; bottom:133px;";
+		heightWindow = (window.innerHeight-244);
+		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		$("#consloe").show();
+	}
 }
 function cross(xk,yk)
 {
