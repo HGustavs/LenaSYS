@@ -2,9 +2,14 @@
 
     <h1>Fill out all fields to install LenaSYS and create database.</h1>
     <form action="install.php" method="post">
-        <table cellspacing="20px">
+        <table>
+            <tr align="left">
+                <th valign=top><h2>New/Existing MySQL user and DB</h2></th>
+                <th valign=top><h2>MySQL Root Login</h2></th>
+                <th valign=top><h2>Test Data</h2></th>
+            </tr>
             <tr>
-                <td>
+                <td valign=top width="20%">
                     Enter new MySQL user. <br>
                     <input type="text" name="newUser" placeholder="Username" /> <br>
                     Enter password for MySQL user. <br>
@@ -14,15 +19,28 @@
                     Enter hostname (e.g localhost). <br>
                     <input type="text" name="hostname" placeholder="Hostname" /> <br>
                 </td>
-                <td align=left valign=top>
+                <td valign=top width="30%">
                     Enter root user. <br>
                     <input type="text" name="mysqlRoot" placeholder="Root" /> <br>
                     Enter password for MySQL root. <br>
                     <input type="password" name="rootPwd" placeholder="Root Password" /> <br>
-                    <input type="checkbox" name="createDB" value="Yes" />
-                    <-- Check the box if you want to create a new database. <br>
-                    <input type="checkbox" name="fillDB" value="Yes" />
-                    <-- Check the box if you want to fill the new database with test data. <br><br>
+                </td>
+                <td valign=top width="40%">
+                    <input type="checkbox" name="createDB" value="Yes" checked/>
+                    Create new database. <br><hr>
+                    <input type="checkbox" name="fillDB" value="Yes" checked/>
+                    Include test data. <br><br>
+                    <b>Language keyword highlighting support.<br></b>
+                    <input type="checkbox" name="html" value="Yes" checked/> HTML <br>
+                    <input type="checkbox" name="java" value="Yes" checked/> Java <br>
+                    <input type="checkbox" name="php" value="Yes" checked/> PHP <br>
+                    <input type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
+                    <input type="checkbox" name="sql" value="Yes" checked/> SQL <br>
+                    <input type="checkbox" name="sr" value="Yes" checked/> SR <br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
                     <input type="checkbox" name="writeOverDB" value="Yes" />
                     <b><-- Check the box if you want to write over existing database and user<br>
                         <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE)</span></b><br>
@@ -113,7 +131,7 @@
             flush();
 
             /**************************** Init database. *************************************/
-            $initQuery = file_get_contents("Shared/SQL/init_db.sql");
+            $initQuery = file_get_contents("SQL/init_db.sql");
 
             # This loop will find comments in the sql file and remove these.
             # Comments are removed because some comments included semi-colons which wont work.
@@ -167,7 +185,7 @@
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
                 addTestData("testdata", $connection);
                 # Add a language (for a existing file) in this array to add it to database.
-                $languages = array("php", "sql", "sr", "java");
+                $languages = array("php", "sql", "sr", "java", "html", "plain");
                 foreach ($languages AS $language) {
                     addTestData("keywords_{$language}", $connection);
                 }
@@ -183,7 +201,7 @@
         flush();
 
         # All this code prints further instructions to complete installation.
-        $putFileHere = dirname(getcwd(), 1);
+        $putFileHere = dirname(getcwd(), 2);
         echo "<br><b>To make installation work please make a file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
@@ -207,10 +225,10 @@
 
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
     function addTestData($file, $connection){
-        $testDataQuery = @file_get_contents("Shared/SQL/{$file}.sql");
+        $testDataQuery = @file_get_contents("SQL/{$file}.sql");
 
         if ($testDataQuery === FALSE) {
-            echo "<span style='color: red;' />Could not find LenaSYS/Shared/SQL/{$file}.sql, skipped this test data.</span><br>";
+            echo "<span style='color: red;' />Could not find SQL/{$file}.sql, skipped this test data.</span><br>";
         } else {
             # Split SQL file at semi-colons to send each query separated.
             $testDataQueryArray = explode(";", $testDataQuery);
