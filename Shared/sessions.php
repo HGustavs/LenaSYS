@@ -64,6 +64,47 @@ function failedLoginCount($addr)
 	}
 }
 
+function getQuestion($username)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare("SELECT uid,username,superuser,securityquestion FROM user WHERE username=:username LIMIT 1");
+
+	$query->bindParam(':username', $username);
+
+	$query->execute();
+
+	if($query->rowCount() > 0) {
+		// Fetch the result
+		$row = $query->fetch(PDO::FETCH_ASSOC);
+		$_SESSION['uid'] = $row['uid'];
+		$_SESSION["loginname"]=$row['username'];
+		$_SESSION["superuser"]=$row['superuser'];
+		$_SESSION["securityquestion"]=$row['securityquestion'];
+
+		/*If the user in question is a superuser(teacher) they are not allowed to reset password, this if for security reasons. Also if the security question is null/default there is no point in allowing the user to continue.
+		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question NOTE: superuser is not all teachers.*/
+		
+		/*
+		if($_SESSION["superuser"] == 1||$_SESSION["securityquestion"]==null){
+			return false
+		}
+		*/
+
+		// Save some login details in cookies.
+		setcookie('username', $row['username'], time()+60*30, '/');
+		//setcookie('securityquestion', $securityquestion, time()+60*30, '/');
+		return true;
+
+	} else {
+		return false;
+	}
+}
+
 /**
  * Log in the user with the specified username and password and
  * optionally set cookies for the user to be remembered until next

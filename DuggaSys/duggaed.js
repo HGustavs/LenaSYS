@@ -410,3 +410,81 @@ function closePreview()
 	$("#resultpopover").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
 }
+
+// Needed for button clicks.. :) 
+$(document).ready(function(){
+
+	addSubmissionRow();
+
+	/**
+	* @TODO Make it possible to allow for no submission fields, or omission of any other field. 
+	* @TODO Add the free text field submission.
+	* This function demands specific names on the form fields, elaborate on this
+	* @param formData an array of the "Edit Variant: Param" form. 
+	* @return a JSON string
+	*/
+	function createJSONString(formData) {
+		// Init the JSON string variable
+		var jsonStr = "{";
+
+		// Get the first static fields
+		jsonStr += '"' + formData[0]['name'] + '":"' + formData[0]['value'] + '",';
+		jsonStr += '"' + formData[1]['name'] + '":"' + formData[1]['value'] + '",';
+		jsonStr += '"submissions":[';
+
+		// Handle the dynamic amount of submission types
+		for(var i = 2; i < formData.length; i++) {
+			// console.log(formData[i]);
+			if(i % 2 == 0) {
+				// The start of a new submissions field, prepend with curly bracket
+				jsonStr += "{";
+			}
+			// Input the values of the array. This parses the option-select first, then the textfield. But if the text field is empty, then do not write it to JSON. 
+			if(formData[i]['value'].length > 0) {
+				jsonStr += '"' + formData[i]['name'] + '":"' + formData[i]['value'] + '",';
+			}
+			if(i % 2 == 0) { // i is divisible by 2 - add the type field to the JSON string. 
+				jsonStr += '"type":';
+				// Add the type k/v pair to the submission element
+				if(formData[i]['value'] === "project_report") {
+					jsonStr += '"pdf",';
+				} else if(formData[i]['value'] === "project_link") {
+					jsonStr += '"link",';
+				} else if(formData[i]['value'] === "project_zip") {
+					jsonStr += '"zip",';
+				} else if(formData[i]['value'] === "textsubmit") {
+					jsonStr += '"text",';
+				}
+			}
+			if(i % 2 == 1) {
+				// This submission field is complete, prepare for next
+				// Remove the last comma
+				jsonStr = jsonStr.substr(0, jsonStr.length-1); 
+				// Prepare for next submissions array element. 
+				jsonStr += "},";
+			}
+		}
+		// Remove the last comma
+		jsonStr = jsonStr.substr(0, jsonStr.length-1);
+		// Append the end of the submissions array.
+		jsonStr += ']'; // The end of the submissions array. 
+		// Here, the freetext field handling should be added as it comes after the submissions array.
+		jsonStr += '}'; // The end of the JSON-string. 
+
+		return jsonStr;
+	}
+
+	function addSubmissionRow() {
+		$('#submissions').append("<select name='fieldname' id='fieldname' style='margin-bottom:3px;width:160px;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><br/><input type='text' name='instruction' id='instruction' placeholder='Upload instruction'/><br/>");
+	}
+
+	$('#addfieldname').click(function(){
+		addSubmissionRow();
+	});
+
+	$('#createjson').click(function(){
+		// console.log("asdasd");
+		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
+	});
+});
+

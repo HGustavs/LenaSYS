@@ -1,3 +1,13 @@
+Changes needed to the live sql database
+
+
+Table user:
+	Added securityquestion VARCHAR(256) DEFAULT NULL
+	Added securityquestionanswer VARCHAR(256) DEFAULT NULL
+	
+Table listentries:
+	Added comment VARCHAR(512)
+
 New table user_push_registration, created with the following sql:
 	CREATE TABLE user_push_registration (
 		id							INT NOT NULL AUTO_INCREMENT,
