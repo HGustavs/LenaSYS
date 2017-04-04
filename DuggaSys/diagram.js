@@ -838,6 +838,19 @@ function drawOval(x1, y1, x2, y2) {
 		ctx.quadraticCurveTo(x1,y2,x1,ym);
 }
 
+//remove all elements in the diagram array. it hides the points by placing them beyond the users view.
+function RemoveElementsInDiagram()
+{			console.log("Deleting");
+			var lastelement = diagram.length;
+			var lastpoint = points.length;
+			diagram.splice(0, lastelement);
+
+			for(i = 0; i < lastpoint; i++){
+			points[i] = {x:-10,y:-10,selected:true};
+			}
+			console.log("deleting done!");
+}
+
 var consloe={};
 consloe.log=function(gobBluth)
 {
