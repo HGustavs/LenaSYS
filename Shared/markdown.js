@@ -156,7 +156,7 @@ function parseLineByLine(inString) {
 
             if(matches && (currentLine.match(/^\s*/)[0].length > prevLine.match(/^\s*/)[0].length)){
 
-                markdown += "<li>"+"<ol>"+ ("<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>");
+                markdown += "<ol>"+ ("<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>");
 
             }
             else if(matches && (currentLine.match(/^\s*/)[0].length == prevLine.match(/^\s*/)[0].length) && (currentLine.match(/^\s*/)[0].length !=0)){
