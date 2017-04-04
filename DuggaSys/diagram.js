@@ -901,13 +901,6 @@ function figuremode()
 
 function Consolemode(action){
 
-	/*<div class='Hide Console'>
-	 <input id="Hide Console" style="position:fixed; right:0; bottom:100px;" type="button" value="Hide Console" onclick="Consolemode('Hide Console');" />
-	 </div>
-	 <div class='Show Console'>
-	 <input id="Show Console" style="display:none;position:fixed; right:0; bottom:144px;" type="button" value="Show Console" onclick="Consolemode('Show Console');" />
-	 </div>*/
-
 	if(action == 1) {
 		document.getElementById('Hide Console').style.display = "none";
 		document.getElementById('Show Console').style.display = "block";
@@ -915,6 +908,7 @@ function Consolemode(action){
 		heightWindow = (window.innerHeight-120);
 		document.getElementById("myCanvas").setAttribute("height", heightWindow);
 		$("#consloe").hide();
+		updategfx();
 	}
 	if(action == 2) {
 		document.getElementById('Hide Console').style.display = "block";
@@ -923,6 +917,7 @@ function Consolemode(action){
 		heightWindow = (window.innerHeight-244);
 		document.getElementById("myCanvas").setAttribute("height", heightWindow);
 		$("#consloe").show();
+		updategfx();
 	}
 }
 function cross(xk,yk)
@@ -958,7 +953,9 @@ function RemoveElementsInDiagram()
 
 			for(i = 0; i < lastpoint; i++){
 			points[i] = {x:-10,y:-10,selected:true};
+
 			}
+			updategfx();
 			console.log("deleting done!");
 }
 
