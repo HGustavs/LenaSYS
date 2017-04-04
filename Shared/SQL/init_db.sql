@@ -93,7 +93,6 @@ CREATE TABLE listentries (
 	code_id 			MEDIUMINT unsigned NULL DEFAULT NULL,
 	visible 			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	vers					VARCHAR(8),
-	comment					VARCHAR(512),
 	moment				INT UNSIGNED,
 	gradesystem 	TINYINT(1),
 	highscoremode	INT DEFAULT 0,
