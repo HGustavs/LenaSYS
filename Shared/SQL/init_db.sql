@@ -507,6 +507,7 @@ INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("Plain Text",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("Java",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("SR",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("SQL",1);
 
 /* Wordlist for different programming languages */
 
