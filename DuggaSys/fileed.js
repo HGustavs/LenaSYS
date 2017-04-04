@@ -109,10 +109,8 @@ function validateForm()
 	}else{
 		result = true;
 	} 
-
 	return result;
 }
-
 
 function showLoginPopup()
 {
@@ -142,7 +140,7 @@ function returnedFile(data)
 		str1+="<thead>";
 		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Link URL<img id='links_icon' src='../Shared/icons/sort_white.svg' class='toggleContent' style='cursor:pointer;vertical-align:middle;'/></th><th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
 		//str1+="<tr><th class='first' style='width:64px;'>ID</th><th style='width:30px' ></th></tr>";
-		str1+="<thead><tbody id='links_body'>"
+		str1+="</thead><tbody id='links_body'>"
 
 		if (data['entries'].length > 0) {
 			for(i=0;i<data['entries'].length;i++){
@@ -162,7 +160,7 @@ function returnedFile(data)
 			str2+="<table class='list' style='margin-bottom:8px;' >";
       str2+="<thead>";      
       str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Global File<img id='global_icon' src='../Shared/icons/sort_white.svg' class='toggleContent' style='cursor:pointer;vertical-align:middle;'/></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
-			str2+="<thead><tbody id='global_body'>"
+			str2+="</thead><tbody id='global_body'>"
 			
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
@@ -184,7 +182,8 @@ function returnedFile(data)
 			str2+="</tbody></table>";
 			str3+="<table class='list' style='margin-bottom:8px;' >";
 			str3+="<thead>";
-			str3+="<thead><tbody id='course_body'>";
+      str3+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Course File<img id='course_icon' src='../Shared/icons/sort_white.svg' class='toggleContent' style='cursor:pointer;vertical-align:middle;'/></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+			str3+="</thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				if(parseInt(item['kind'])==3){
@@ -204,7 +203,8 @@ function returnedFile(data)
 			str3+="</tbody></table>";
 			str4+="<table class='list' style='margin-bottom:8px;' >";
 			str4+="<thead>";
-			str4+="<thead><tbody id='local_body'>"
+      str4+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Course Local File<img id='local_icon' src='../Shared/icons/sort_white.svg' class='toggleContent' style='cursor:pointer;vertical-align:middle;'/></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+			str4+="</thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				if(parseInt(item['kind'])==4){
