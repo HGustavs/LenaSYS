@@ -250,7 +250,19 @@ function Symbol(kind) {
     // move
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
+    this.inside = function(ax,ay,bx,by){
+        var x1=points[this.topLeft].x;
+        var y1=points[this.topLeft].y;
+        var x2=points[this.bottomRight].x;
+        var y2=points[this.bottomRight].y;
 
+        if (ax < x1 && bx > x1){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
     this.inside = function (xk,yk)
     {
       var x1=points[this.topLeft].x;
