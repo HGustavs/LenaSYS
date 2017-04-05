@@ -432,22 +432,11 @@ p {
 		color: #612;
 }
 
-/* Submission table */
-#tableDivDialog{
-    width: 100%;
-    float: right;
-    margin-right: 10px;
-    width: 63%;
+/* Instruction and submission of dugga */
+#leftDivDialog, #rightDivDialog{
+    width: 49%;
 }
 
-#tableDivDialog th{
-    text-align: left;
-    padding-right: 8px;
-}
-
-.delButton{
-    text-align: center;
-}
 
 /* --------------================################================-------------- *
  *                                    Header                                    *
