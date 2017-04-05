@@ -977,32 +977,27 @@ function deleteObject(index){
     for(i = 0; i < diagram.length; i++){
         if(!(diagram[i].symbolkind == 1)){
         var temp = true;
-
-        for (var j = 0; j < (diagram[index].connectorRight.length ); j++) {
-            if (temp == true) {
-                if (diagram[i].symbolkind == 4 &&
-                    ((diagram[i].topLeft == diagram[index].connectorRight[j].from ||
-                    diagram[i].bottomRight == diagram[index].connectorRight[j].from) ||
-                    (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
-                    diagram[i].bottomRight == diagram[index].connectorRight[j].to))) {
-                    diagram.splice(i, 1);
-                    if (index > i) {
-                        index--;
-                        console.log(index + "a b ");
+            for (var j = 0; j < (diagram[index].connectorRight.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        ((diagram[i].topLeft == diagram[index].connectorRight[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].from))) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                            console.log(index + "a b ");
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorRight.length;
                     }
-                    i--;
-                    temp = false;
-                    j = diagram[index].connectorRight.length;
                 }
             }
-        }
             for (var j = 0; j < (diagram[index].connectorLeft.length ); j++) {
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
                         ((diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to))) {
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from))) {
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
@@ -1018,9 +1013,7 @@ function deleteObject(index){
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
                         ((diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorBottom[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to))) {
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from))) {
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
@@ -1036,9 +1029,7 @@ function deleteObject(index){
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
                         ((diagram[i].topLeft == diagram[index].connectorTop[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorTop[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].to))) {
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].from))) {
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
@@ -1050,7 +1041,7 @@ function deleteObject(index){
                     }
                 }
             }
-      }
+        }
         if (temp == true){
             if(diagram[i].symbolkind == 4 &&
                 (diagram[i].topLeft == diagram[index].centerpoint ||
