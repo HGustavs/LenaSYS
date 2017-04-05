@@ -924,7 +924,6 @@ function mouseupevt(ev){
 
 				diagram.push(erAttributeA);
 		}else if(uimode=="CreateEREntity"&&md==4){
-				openAppearanceDialogMenu();
             	erEnityA = new Symbol(3);
             	erEnityA.name="Entity"+diagram.length;
             	erEnityA.topLeft=p1;
@@ -932,6 +931,12 @@ function mouseupevt(ev){
             	erEnityA.centerpoint=p3;
 
             	diagram.push(erEnityA);
+				
+				//selecting the newly created enitity and open the dialogmenu.
+				selobj = diagram.length -1;
+				diagram[selobj].targeted = true;
+				openAppearanceDialogMenu();
+				
     }else if(uimode=="CreateLine"&&md==4){
 			/* Code for making a line */
     		erLineA = new Symbol(4);
@@ -1066,7 +1071,10 @@ function dialogForm() {
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: <input id='text' type='text'>" +
-            "Change name  <input id='button' type='button' onclick='changeName(form)' ></input></br>";
+            "Change name  <input id='button' type='button' onclick='changeName(form)' ></input></br>"
+			+ "<input type='checkbox' name='Entity' value='weak' >Weak entity<br>"
+			+ "<input type='checkbox' name='Entity' value='strong' >Strong entity<br>" 
+			+ "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select>";;
     }
 }
 
