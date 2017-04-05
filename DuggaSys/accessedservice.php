@@ -26,6 +26,7 @@ $username = getOP('username');
 $val = getOP('val');
 $newusers = getOP('newusers');
 $coursevers = getOP('coursevers');
+$teacher = getOP('teacher');
 
 $debug="NONE!";	
 
@@ -51,8 +52,18 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
 		}
+
+		$query = $pdo->prepare("UPDATE user_course set teacher=:teacher WHERE uid=:uid;");
+		$query->bindParam(':uid', $uid);
+		$query->bindParam(':teacher', $teacher);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating user".$error[2];
+		}
+
 	}else if(strcmp($opt,"ACCESS")==0){
-		$query = $pdo->prepare("UPDATE user_course set access=:val WHERE uid=:uid and cid=:cid;");
+		$query = $pdo->prepare("UPDATE user_course set access=:val WHERE uid=:uid AND cid=:cid;");
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':val', $val);
@@ -154,7 +165,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 $entries=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -171,14 +182,35 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'ssn' => $row['ssn'],	
 				'class' => $row['class'],	
 				'modified' => $row['modified'],
-				'newly' => $row['newly']
+				'newly' => $row['newly'],
+				'teacher' => $row['teacher']
 			);
 			array_push($entries, $entry);
 	}
 }
+
+// Array to fetch the username of all users with access "W" as these are all the teachers.
+$teachers=array();
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	$query = $pdo->prepare("SELECT user.firstname, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP BY user.firstname, user.lastname;");
+	$query->bindParam(':cid', $cid);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		$debug="Error reading user entries".$error[2];
+	}
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$teacher = array(
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname']
+			);
+			array_push($teachers, $teacher);
+		}
+}
+
 $array = array(
 	'entries' => $entries,
 	"debug" => $debug,
+	'teachers' => $teachers
 );
 
 echo json_encode($array);
