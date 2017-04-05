@@ -37,9 +37,12 @@ function deleteFile(fileid,filename){
 }
 
 // Function to toggle the content (tbody) under each header
-$(document).on('click','.toggleContent',function(){
-		$(this).closest('table').find('tbody').fadeToggle();
+$(document).on('click','thead',function(){
+	$(this).closest('table').find('tbody').fadeToggle();
+	$('.arrowRight', this).slideToggle();
+	$('.arrowComp', this).slideToggle();
 });
+
 
 function createLink()
 {
@@ -137,8 +140,8 @@ function returnedFile(data)
 		str3="";
 		str4="";
 		str1+="<table class='list' style='margin-bottom:8px;' >";
-		str1+="<thead>";
-		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Link URL<img id='links_icon' src='../Shared/icons/sort_white.svg' class='toggleContent' style='cursor:pointer;vertical-align:middle;'/></th><th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+		str1+="<thead style='cursor:pointer;'>";
+		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Link URL<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
 		//str1+="<tr><th class='first' style='width:64px;'>ID</th><th style='width:30px' ></th></tr>";
 		str1+="</thead><tbody id='links_body'>"
 
@@ -158,8 +161,8 @@ function returnedFile(data)
 			}
 			str1+="</tbody></table>";
 			str2+="<table class='list' style='margin-bottom:8px;' >";
-      str2+="<thead>";      
-      str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Global File<img id='global_icon' src='../Shared/icons/sort_white.svg' class='toggleContent' style='cursor:pointer;vertical-align:middle;'/></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+      str2+="<thead style='cursor:pointer;'>";      
+      str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str2+="</thead><tbody id='global_body'>"
 			
 			for(i=0;i<data['entries'].length;i++){
@@ -181,8 +184,8 @@ function returnedFile(data)
 			}
 			str2+="</tbody></table>";
 			str3+="<table class='list' style='margin-bottom:8px;' >";
-			str3+="<thead>";
-      str3+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Course File<img id='course_icon' src='../Shared/icons/sort_white.svg' class='toggleContent' style='cursor:pointer;vertical-align:middle;'/></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+			str3+="<thead style='cursor:pointer;'>";
+      str3+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Course File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
 			str3+="</thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
@@ -202,8 +205,8 @@ function returnedFile(data)
 			}
 			str3+="</tbody></table>";
 			str4+="<table class='list' style='margin-bottom:8px;' >";
-			str4+="<thead>";
-      str4+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Course Local File<img id='local_icon' src='../Shared/icons/sort_white.svg' class='toggleContent' style='cursor:pointer;vertical-align:middle;'/></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+			str4+="<thead style='cursor:pointer;'>";
+      str4+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Course Local File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
 			str4+="</thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
