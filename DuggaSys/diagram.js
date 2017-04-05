@@ -1051,7 +1051,29 @@ function figuremode()
 function openAppearanceDialogMenu() {
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="default";
-	$("#appearance").show();
+    $("#appearance").show();
+    $("#appearance").width("auto");
+    dialogForm();
+}
+
+function dialogForm() {
+    var form = document.getElementById("f01");
+    form.innerHTML= "Generic dialog <type='text'>";
+
+    if(diagram[selobj].symbolkind==2){
+        form.innerHTML = "Attribute name: <input id='text' type='text'>" +
+            "Change name  <input id='button' type='button' onclick='changeName(form)' ></input></br>";
+    }
+    if(diagram[selobj].symbolkind==3){
+        form.innerHTML = "Entity name: <input id='text' type='text'>" +
+            "Change name  <input id='button' type='button' onclick='changeName(form)' ></input></br>";
+    }
+}
+
+function changeName(form){
+	diagram[selobj].name=document.getElementById('text').value;
+
+    updategfx();
 }
 
 /**
