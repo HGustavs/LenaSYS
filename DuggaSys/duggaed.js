@@ -72,6 +72,14 @@ function createDugga()
 	AJAXService("ADDUGGA",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 }
 
+function deleteDugga()
+{
+   // var did=$("#id").val();
+    did=$("#did").val();
+    if(confirm("Do you really want to delete this Variant?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    $("#editDugga").css("display","none");
+}
+
 function updateDugga()
 {
 	$("#editDugga").css("display","none");
@@ -108,7 +116,7 @@ function hideLoginPopup()
 function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 {
 	$("#editDugga").css("display","block");
-	$("#did").val(did); // Set Variant ID		
+	$("#did").val(did); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#release").val(release); // Set Release date name
 	$("#deadline").val(deadline); // Set Deadline date name
