@@ -471,6 +471,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: renderTeacherView
 			});
+	}else if(kind=="STATS") {
+		$.ajax({
+			url: "stats.php",
+			type:"POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedAnalysis
+		});
 	}
 }
 
