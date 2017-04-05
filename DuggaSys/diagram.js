@@ -676,7 +676,8 @@ function initcanvas()
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
 		"<button onclick='deleteAllObjects();'>Delete All</button>" +
-		"<button onclick='movemode();' style='float: right;'>Move Around</button><br>" +
+		"<button onclick='movemode(event);' style='float: right;'>Start Moving</button>" +
+		"<button onclick='stopmovemode();' style='float: right;'>Stop Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
@@ -1150,19 +1151,23 @@ function debugMode()
 //---------------------------------------
 
 
-function movemode()
+function movemode(e)
 {
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="all-scroll";
-	mouseposcanvas();
+	canvas.addEventListener('mousemove', mouseposcanvas, false);
+	mouseposcanvas(e);
 }
 function mouseposcanvas(e){
 	var canvas = document.getElementById("myCanvas");
-	canvas.addEventListener('mousemove', function(e){
-		console.log(e.pageX+" | "+e.pageY);
-	}, false);
+	console.log(e.pageX+" | "+e.pageY);
 }
 
+function stopmovemode(){
+	var canvas = document.getElementById("myCanvas");
+	canvas.style.cursor="default";
+	canvas.removeEventListener('mousemove', mouseposcanvas);
+}
 
 //----------------------------------------
 // Renderer
