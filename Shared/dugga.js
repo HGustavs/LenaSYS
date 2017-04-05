@@ -485,11 +485,7 @@ function processResetPasswordCheckUsername() {
 				opt: "GETQUESTION"
 			},
 			success:function(data) {
-				console.log("hai there");
-				console.log(data);
-				var result = JSON.parse(data);
-				console.log(result)
-				
+				var result = JSON.parse(data);				
 				if(result['getname'] == "success") {
 					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 					status = 2;
@@ -506,8 +502,30 @@ function processResetPasswordCheckUsername() {
 function processResetPasswordCheckSecurityAnswer() {
 
 	/*This function is supposed to be resposible for checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed*/
+	var username = $("#newpassword #username").val();
+	var securityquestionanswer = $("#showsecurityquestion #answer").val();
 
-}
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				securityquestionanswer: securityquestionanswer,
+				opt: "CHECKANSWER"
+			},
+			success:function(data) {
+				var result = JSON.parse(data);
+				
+				if(result['checkanswer'] == "success") {
+					console.log("The answer was correct");
+					//do something
+				}else{
+					console.log("Failed");
+			}
+		}
+		});
+}	
+
 
 function processLogin() {
 

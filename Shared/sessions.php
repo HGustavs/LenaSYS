@@ -90,14 +90,39 @@ function getQuestion($username)
 		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question NOTE: superuser is not all teachers.*/
 		
 		/*
-		if($_SESSION["superuser"] == 1||$_SESSION["securityquestion"]==null){
+		if($_SESSION["securityquestion"]==null){
 			return false
 		}
 		*/
 
-		// Save some login details in cookies.
-		setcookie('username', $row['username'], time()+60*30, '/');
-		//setcookie('securityquestion', $securityquestion, time()+60*30, '/');
+		return true;
+
+	} else {
+		return false;
+	}
+}
+
+function checkAnswer($username, $securityquestionanswer)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare("SELECT uid,username,password FROM user WHERE username=:username and securityquestionanswer=password(:sqa) LIMIT 1");
+
+	$query->bindParam(':username', $username);
+	$query->bindParam(':sqa', $securityquestionanswer);
+
+	$query->execute();
+
+	if($query->rowCount() > 0) {
+		// Fetch the result
+		$row = $query->fetch(PDO::FETCH_ASSOC);
+		$_SESSION['uid'] = $row['uid'];
+		$_SESSION["loginname"]=$row['username'];
+
 		return true;
 
 	} else {
