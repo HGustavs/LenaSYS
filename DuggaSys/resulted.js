@@ -710,7 +710,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 				changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 		}
 		else {
-			//alert("This grading is not OK!");
+			alert("Something went wrong when grading!");
 		}
 
 }
@@ -722,7 +722,7 @@ function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
 {
-
+    if (qid=="UNK"){qid=null;}
 		var str = "";
 
 		// Irrespective of marking system we allways print - and U
