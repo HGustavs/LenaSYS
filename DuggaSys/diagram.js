@@ -1046,12 +1046,10 @@ function dialogForm() {
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name: <input id='text' type='text'>" +
             "Change name  <input id='button' type='button' onclick='changeName(form)' ></button></br>";
-        diagram[selobj].name=document.getElementById('text').value;
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: <input id='text' type='text'>" +
             "Change name  <input id='button' type='button' onclick='changeName(form)' ></button></br>";
-        diagram[selobj].name=document.getElementById('text').value;
     }
 }
 
