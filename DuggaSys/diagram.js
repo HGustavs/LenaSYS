@@ -665,8 +665,8 @@ function initcanvas()
 		"<button onclick='figuremode();'>Create Figure</button>" +
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
-		"<button onclick='deleteobject();'>Delete Object</button>" +
-		"<button onclick='RemoveElementsInDiagram()';>Delete All</button><br/>" +
+		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
+		"<button onclick='deleteAllObjects()';>Delete All</button><br/>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
@@ -939,21 +939,48 @@ function mouseupevt(ev){
         }
 
 }
-function deleteobject(){
+function deleteObject(index){
+  try{
+    points[diagram[index].topLeft].x = -10;
+    points[diagram[index].topLeft].y = -10;
+    
+  }
+  catch(err){
+    //Point does not exist
+  }
+  try{
+    points[diagram[index].bottomRight].x = -10;
+    points[diagram[index].bottomRight].y = -10;
+  }
+  catch(err){
+    //Point does not exist
+  }
+  try{
+    points[diagram[index].centerpoint].y = -10;
+    points[diagram[index].centerpoint].x = -10;
+  }
+  catch(err){
+    //Point does not exist
+  }
+  try{
+    points[diagram[index].middleDivider].y = -10;
+    points[diagram[index].middleDivider].x = -10;
+  }
+  catch(err){
+    //Point does not exist
+  }
+  diagram.splice(index, 1);
+
+
+  updategfx();
+}
+function deleteSelectedObject(){
 	//
 		//Issue: Need to remove the crosses
 		for (var i = 0; i < diagram.length;i++){
 			if(diagram[i].targeted == true){
-
-
-
-		points[diagram[i].topLeft].x = -10;
-		points[diagram[i].topLeft].y = -10;
-		points[diagram[i].bottomRight].x = -10;
-		points[diagram[i].bottomRight].y = -10;
 		//diagram[i].targeted = false;
-		diagram.splice(i, 1);
-		updategfx();
+		deleteObject(i);
 		i--;
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
@@ -1046,33 +1073,14 @@ function drawOval(x1, y1, x2, y2) {
 }
 
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
-function RemoveElementsInDiagram()
-{			console.log("Deleting");
-			var lastelement = diagram.length;
-			var lastpoint = points.length;
-			diagram.splice(0, lastelement);
+function deleteAllObjects()
+{
+  console.log("Deleting");
 
-			for(i = 0; i < lastpoint; i++){
-			points[i] = {x:-10,y:-10,selected:true};
-
-			}
-			updategfx();
-			console.log("deleting done!");
-}
-
-//remove all elements in the diagram array. it hides the points by placing them beyond the users view.
-function RemoveElementsInDiagram()
-{			console.log("Deleting");
-			var lastelement = diagram.length;
-			var lastpoint = points.length;
-			diagram.splice(0, lastelement);
-
-			for(i = 0; i < lastpoint; i++){
-			points[i] = {x:-10,y:-10,selected:true};
-
-			}
-			updategfx();
-			console.log("deleting done!");
+  for(i = diagram.length; i >= 0;i--){
+    deleteObject(i);
+  }
+	console.log("deleting done!");
 }
 
 var consloe={};
