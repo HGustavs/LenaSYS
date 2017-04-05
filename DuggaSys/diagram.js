@@ -849,6 +849,15 @@ function mousedownevt(ev)
 
 }
 
+// Enables the user to double click on the canvas
+
+function doubleclick(ev)
+{
+	if(diagram[selobj].inside(cx,cy)){
+    $("#appearance").show();
+  }
+}
+
 function mouseupevt(ev){
 
 	// Code for creating a new class
