@@ -192,7 +192,7 @@ diagram.draw = function ()
 		if(item.symbolkind==4) {
 			item.draw();
 		}
-		
+
 
 	}
 		for(i=0;i<this.length;i++){
@@ -960,7 +960,6 @@ function deleteObject(index){
   try{
     points[diagram[index].topLeft].x = -10;
     points[diagram[index].topLeft].y = -10;
-    
   }
   catch(err){
     //Point does not exist
@@ -973,10 +972,25 @@ function deleteObject(index){
     //Point does not exist
   }
   try{
+    console.log(index);
+    // Will remove all the lines connected to the center of the deleted object
+    for(i = 0; i < diagram.length; i++){
+      if(diagram[i].symbolkind == 4 &&
+        diagram[i].topLeft == diagram[index].centerpoint ||
+        diagram[i].bottomRight == diagram[index].centerpoint){
+        if(index > i){
+          index--;
+          console.log(index);
+        }
+        diagram.splice(i, 1);
+        i--;
+      }
+    }
     points[diagram[index].centerpoint].y = -10;
     points[diagram[index].centerpoint].x = -10;
   }
   catch(err){
+    console.log(err);
     //Point does not exist
   }
   try{
@@ -987,7 +1001,6 @@ function deleteObject(index){
     //Point does not exist
   }
   diagram.splice(index, 1);
-
 
   updategfx();
 }
