@@ -922,6 +922,7 @@ function mouseupevt(ev){
 
 				diagram.push(erAttributeA);
 		}else if(uimode=="CreateEREntity"&&md==4){
+				openAppearanceDialogMenu();
             	erEnityA = new Symbol(3);
             	erEnityA.name="Entity"+diagram.length;
             	erEnityA.topLeft=p1;
@@ -1043,6 +1044,7 @@ function closeAppearanceDialogMenu() {
 	$("#appearance").hide();
 }
 
+
 function Consolemode(action){
 
 	if(action == 1) {
@@ -1104,7 +1106,9 @@ consloe.log=function(gobBluth)
 {
 		document.getElementById("consloe").innerHTML=((JSON.stringify(gobBluth)+"<br>")+document.getElementById("consloe").innerHTML);
 }
-var ghostingcrosses = false;
+
+//debugMode this function show and hides crosses and the consol.
+var ghostingcrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
 function debugMode()
 {
 	if(ghostingcrosses == true){
