@@ -45,6 +45,19 @@ pdoConnect();
 
 	</div>
 
+	<!-- The Appearance menu. Default state is display: none; -->
+	<div id="appearance" class='loginBox' style='display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Apperance</h3>
+			<div onclick='closeAppearanceDialogMenu()'>x</div>
+		</div>
+		<div class='table-wrap'>
+			<table>
+				
+			</table>
+		</div>
+	</div>
+
 	<!-- content END -->
 
 	<?php
