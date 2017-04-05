@@ -575,7 +575,7 @@ function processLogin() {
 					} else {
 						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
 					}
-					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
+					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
 					
