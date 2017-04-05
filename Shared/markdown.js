@@ -146,7 +146,7 @@ function parseLineByLine(inString) {
 		}
 		// handle ordered lists <ol></ol>
 		else if(isOrderdList(currentLine)) {
-            markdown += handleOrderedList(currentLine, prevLine, remainingLines);
+            markdown += handleOrderedList(currentLine, prevLine);
 		}
 		// handle table
 		else if(false) {
@@ -175,29 +175,28 @@ function isOrderdList(item) {
 function handleUnorderedList(currentLine, prevLine) {
 	var markdown = "";
 
-	// prepend "<ul>" at the start of list
+	// first list item should be prepended with ul-tag
 	if(!isUnorderdList(prevLine)) {
-		markdown += "<ul>"; //  html takes care of closing tag for us
+		markdown += "<ul>"; // html will close tag for us
 	}
 
-	// handle sublist
-	var currentvSublistLevel = currentLine.match(/^\s*\t*/gm)[0].length;
+	// handle sublists
+	var currentSublistLevel = currentLine.match(/^\s*\t*/gm)[0].length;
 	var prevSublistLevel = prevLine.match(/^\s*\t*/gm)[0].length
-	if(currentvSublistLevel !== 0) {
+	if(currentSublistLevel > prevSublistLevel) { // create sublist if current line is less indented then previous line
 		markdown += "<ul>";
-	}
-	if(currentvSublistLevel < prevSublistLevel) {
-		markdown += "</ul>";
+	} else if(currentSublistLevel < prevSublistLevel) { // close sublist 
+		markdown += "</ul></li>"
 	}
 
-	// handle listitem
-	var trimPosition = currentLine.match(/^\s*[\-\*]\s*/gm)[0].length;
-	markdown += "<li>" + currentLine.substr(trimPosition, currentLine.length) + "</li>";
+	// create list item
+	var trimPosition = currentLine.match(/^\s*[\-\*]\s*/gm)[0].length; // start position for real value
+	markdown += "<li>" + currentLine.substr(trimPosition, currentLine.length); // html will close tag for us
 
 	return markdown;
 }
 
-function handleOrderedList(currentLine, prevLine, remainingLines) {
+function handleOrderedList(currentLine, prevLine) { // function works the same way handleUnorderedList does(). 
     var markdown = "";
     var matches = currentLine.match(/^\s*\d*\.\s(.*)/gm);
     if(currentLine.match(/^\s*\d*/)[0].length > prevLine.match(/^\s*\d*/)[0].length){
