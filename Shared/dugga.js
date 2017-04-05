@@ -150,11 +150,17 @@ function saveDuggaResult(citstr)
 		
 		document.getElementById('receipt').value = hexstr;
 		
-		
+		var dateTime = new Date(); // Get the current date and time
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
-		var currentTime = new Date().toJSON().slice(0,10).replace(/-/g,'-'); //Get current time
 		
-		if(deadline > currentTime){	//Check if deadline has past
+		Number.prototype.padLeft = function(base,chr){
+			var  len = (String(base || 10).length - String(this).length)+1;
+			return len > 0? new Array(len).join(chr || '0')+this : this;
+		}
+		
+		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');	
+		
+		if(deadline > dateTimeFormat){	//Check if deadline has past
 			
 			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 		}
