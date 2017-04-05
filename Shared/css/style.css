@@ -1798,14 +1798,6 @@ input.large-button {
  *                             Basic simple classes                             *
  * --------------================################================-------------- */
 
-.left {
-    float: left;
-}
-
-.right {
-    float: right;
-}
-
 .top {
     margin-top: 0px;
 }
