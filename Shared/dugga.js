@@ -150,18 +150,26 @@ function saveDuggaResult(citstr)
 		
 		document.getElementById('receipt').value = hexstr;
 		
+		//Get the comment
+ 		var comment = querystring['comment'];
 		
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
 		var currentTime = new Date().toJSON().slice(0,10).replace(/-/g,'-'); //Get current time
 		
-		if(deadline > currentTime){	//Check if deadline has past
-			
-			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
-		}
-		else{
-			
-			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid nästa kurstillfälle.";
+		if(deadline > currentTime){	//Check if deadline has not past
 		
+ 			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+		
+		}
+		else{ //Check if deadline has past
+			
+			if(comment == "UNK" || comment == "undefined"){
+ 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
+ 			}
+ 			else{
+ 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>\n\n"+comment+"\n\n</p>";
+ 			}
+			
 		}
 		
 		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
@@ -385,7 +393,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['deadlinecomment']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedSection
 			});
