@@ -1034,7 +1034,31 @@ function figuremode()
  * Opens the dialog menu for appearance.
  */
 function openAppearanceDialogMenu() {
-	$("#appearance").show();
+    $("#appearance").show();
+    $("#appearance").width("auto");
+    dialogForm();
+}
+
+function dialogForm() {
+    var form = document.getElementById("f01");
+    form.innerHTML= "Generic dialog <type='text'>";
+
+    if(diagram[selobj].symbolkind==2){
+        form.innerHTML = "Attribute name: <input id='text' type='text'>" +
+            "Change name  <input id='button' type='button' onclick='changeName(form)' ></button></br>";
+        diagram[selobj].name=document.getElementById('text').value;
+    }
+    if(diagram[selobj].symbolkind==3){
+        form.innerHTML = "Entity name: <input id='text' type='text'>" +
+            "Change name  <input id='button' type='button' onclick='changeName(form)' ></button></br>";
+        diagram[selobj].name=document.getElementById('text').value;
+    }
+}
+
+function changeName(form){
+	diagram[selobj].name=document.getElementById('text').value;
+
+    updategfx();
 }
 
 /**
