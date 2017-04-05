@@ -940,18 +940,26 @@ function mouseupevt(ev){
 
 }
 function deleteobject(){
-	if(selobj != -1){
+	//
 		//Issue: Need to remove the crosses
-		points[diagram[selobj].topLeft].x = -10;
-		points[diagram[selobj].topLeft].y = -10;
-		points[diagram[selobj].bottomRight].x = -10;
-		points[diagram[selobj].bottomRight].y = -10;
-		diagram[selobj].targeted = false;
-		diagram.splice(selobj, 1);
+		for (var i = 0; i < diagram.length;i++){
+			if(diagram[i].targeted == true){
+
+
+
+		points[diagram[i].topLeft].x = -10;
+		points[diagram[i].topLeft].y = -10;
+		points[diagram[i].bottomRight].x = -10;
+		points[diagram[i].bottomRight].y = -10;
+		//diagram[i].targeted = false;
+		diagram.splice(i, 1);
 		updategfx();
+		i--;
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
-	}
+			}
+		}
+	//}
 }
 function classmode()
 {
