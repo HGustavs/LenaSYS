@@ -250,12 +250,11 @@ if (isset($_GET["mode"])) {
 
                 /************* Copy test code files to the right place *****************/
                 if(@!mkdir("{$putFileHere}/courses", 0770, true)){
-                    echo "Did not create courses directory, it already exists. 
-                        (For a full, clean install - remove this folder. <span style='color: red;' />WARNING:</span> this will remove all uploaded files.)<br>";
+                    echo "Did not create courses directory, it already exists.<br>";
                 } else {
                     echo "<span style='color: green;' />Created the directory '{$putFileHere}/courses'.</span><br>";
                 }
-                copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/global/");
+                copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/1/");
 
             } else {
                 echo "Skipped filling database with test data.<br>";
@@ -275,7 +274,7 @@ if (isset($_GET["mode"])) {
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
         echo "<textarea rows='6' cols='70' readonly style='resize:none'>";
-        echo 'printf "' . htmlspecialchars("<?php") . '\n';
+        echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
         echo 'define(\"DB_USER\",\"' . $username . '\");\n';
         echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
         echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
@@ -343,21 +342,14 @@ if (isset($_GET["mode"])) {
     # Function to copy test files
     function copyTestFiles($fromDir,$destDir) {
         $dir = opendir($fromDir);
-        if(!@mkdir($destDir)){
-            echo "<span style='color: red;' />{$destDir} already exists. Skipping copying of example files.</span><br>";
-        } else {
-            while (false !== ($file = readdir($dir))) {
-                if (($file != '.') && ($file != '..')) {
-                    if (is_dir($fromDir . '/' . $file)) {
-                        recurse_copy($fromDir . '/' . $file, $destDir . '/' . $file);
-                    } else {
-                        copy($fromDir . '/' . $file, $destDir . '/' . $file);
-                    }
-                }
+        @mkdir($destDir);
+        while (false !== ($copyThis = readdir($dir))) {
+            if (($copyThis != '.') && ($copyThis != '..')) {
+                copy($fromDir . '/' . $copyThis, $destDir . '/' . $copyThis);
             }
-            closedir($dir);
-            echo "<span style='color: green;' />Successfully filled {$destDir} with example files.</span><br>";
         }
+        closedir($dir);
+        echo "<span style='color: green;' />Successfully filled {$destDir} with example files.</span><br>";
     }
     ?>
 </body>
