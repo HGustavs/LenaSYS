@@ -17,6 +17,8 @@ CREATE TABLE user(
 		email				VARCHAR(256) DEFAULT NULL,
 		class 				VARCHAR(10) DEFAULT NULL REFERENCES class (class),
 		totalHp				decimal(4,1),
+		securityquestion	VARCHAR(256) DEFAULT NULL,
+		securityquestionanswer	VARCHAR(256) DEFAULT NULL,
 
 		PRIMARY KEY(uid)
 
@@ -91,6 +93,7 @@ CREATE TABLE listentries (
 	code_id 			MEDIUMINT unsigned NULL DEFAULT NULL,
 	visible 			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	vers					VARCHAR(8),
+	comment					VARCHAR(512),
 	moment				INT UNSIGNED,
 	gradesystem 	TINYINT(1),
 	highscoremode	INT DEFAULT 0,
