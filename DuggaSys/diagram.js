@@ -675,7 +675,9 @@ function initcanvas()
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
-		"<button onclick='deleteAllObjects()';>Delete All</button><br/>" +
+		"<button onclick='deleteAllObjects();'>Delete All</button>" +
+		"<button onclick='movemode(event);' style='float: right;'>Start Moving</button>" +
+		"<button onclick='stopmovemode();' style='float: right;'>Stop Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
@@ -957,6 +959,8 @@ function mouseupevt(ev){
 
 }
 function deleteObject(index){
+  var canvas = document.getElementById("myCanvas");
+  canvas.style.cursor="default";
   try{
     points[diagram[index].topLeft].x = -10;
     points[diagram[index].topLeft].y = -10;
@@ -992,7 +996,8 @@ function deleteObject(index){
   updategfx();
 }
 function deleteSelectedObject(){
-	//
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
 		//Issue: Need to remove the crosses
 		for (var i = 0; i < diagram.length;i++){
 			if(diagram[i].targeted == true){
@@ -1007,26 +1012,36 @@ function deleteSelectedObject(){
 }
 function classmode()
 {
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
 		uimode="CreateClass";
 }
 
 function attrmode()
 {
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
 		uimode="CreateERAttr";
 }
 
 function entitymode()
 {
-  	uimode="CreateEREntity";
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
+  		uimode="CreateEREntity";
 }
 
 function linemode()
 {
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
 		uimode="CreateLine";
 }
 
 function figuremode()
 {
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
     	uimode="CreateFigure";
 }
 
@@ -1034,6 +1049,8 @@ function figuremode()
  * Opens the dialog menu for appearance.
  */
 function openAppearanceDialogMenu() {
+	var canvas = document.getElementById("myCanvas");
+	canvas.style.cursor="default";
     $("#appearance").show();
     $("#appearance").width("auto");
     dialogForm();
@@ -1045,11 +1062,11 @@ function dialogForm() {
 
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name: <input id='text' type='text'>" +
-            "Change name  <input id='button' type='button' onclick='changeName(form)' ></button></br>";
+            "Change name  <input id='button' type='button' onclick='changeName(form)' ></input></br>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: <input id='text' type='text'>" +
-            "Change name  <input id='button' type='button' onclick='changeName(form)' ></button></br>";
+            "Change name  <input id='button' type='button' onclick='changeName(form)' ></input></br>";
     }
 }
 
@@ -1149,6 +1166,29 @@ function debugMode()
 			Consolemode(1)
 		}
 
+}
+
+//---------------------------------------
+// MOVING AROUND IN THE CANVAS
+//---------------------------------------
+
+
+function movemode(e)
+{
+	var canvas = document.getElementById("myCanvas");
+	canvas.style.cursor="all-scroll";
+	canvas.addEventListener('mousemove', mouseposcanvas, false);
+	mouseposcanvas(e);
+}
+function mouseposcanvas(e){
+	var canvas = document.getElementById("myCanvas");
+	console.log(e.pageX+" | "+e.pageY);
+}
+
+function stopmovemode(){
+	var canvas = document.getElementById("myCanvas");
+	canvas.style.cursor="default";
+	canvas.removeEventListener('mousemove', mouseposcanvas);
 }
 
 //----------------------------------------
