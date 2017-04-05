@@ -1072,14 +1072,14 @@ consloe.log=function(gobBluth)
 {
 		document.getElementById("consloe").innerHTML=((JSON.stringify(gobBluth)+"<br>")+document.getElementById("consloe").innerHTML);
 }
-var ghostingvrosses = false;
+var ghostingcrosses = false;
 function debugMode()
 {
-	if(ghostingvrosses == true){
+	if(ghostingcrosses == true){
 		crossStrokeStyle1 = "#f64";
 		crossfillStyle = "#d51";
 		crossStrokeStyle2 = "#d51";
-		ghostingvrosses = false
+		ghostingcrosses = false
 		Consolemode(2)
 		}
 
@@ -1087,7 +1087,7 @@ function debugMode()
 			crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
 			crossfillStyle = "rgba(255, 102, 68, 0.0)";
 			crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-			ghostingvrosses = true
+			ghostingcrosses = true
 			Consolemode(1)
 		}
 
