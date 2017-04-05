@@ -2,6 +2,23 @@
     <title>Install LenaSYS!</title>
 </head>
 <body>
+<?php
+$fileIsCreated = false;
+if (isset($_GET["mode"])) {
+    echo "<h1>Installation</h1>";
+    echo "<hr>";
+    flush();
+    /* Not yet implemented. TODO: Ask about how this should be done in a safe way.
+    if ($_GET["mode"] == "createfile"){
+        makeCoursesysFile($_POST["username"], $_POST["password"], $_POST["servername"], $_POST["database"], $_POST["putfilehere"]);
+        $fileIsCreated = true;
+    }
+    if ($fileIsCreated) {
+        exit ($_POST["putfilehere"] . "/coursesyspw.php was created and filled.");
+    }
+    */
+}
+?>
     <h1>Fill out all fields to install LenaSYS and create database.</h1>
     <form action="install.php" method="post">
         <table cellspacing="0px">
@@ -60,12 +77,12 @@
     </form>
 
     <?php
-    $putFileHere = dirname(getcwd(), 2); // Path to lenasys
 
     # Call JS to show alert about permission.
+    $putFileHere = dirname(getcwd(), 1); // Path to lenasys
     echo '<script>',
         'alert("!!!!!!BEFORE YOU START!!!!!!\nMake sure you set ownership of the directory LenaSYS is located in to the group \'www-data\'.\n" +
-                "\nTo do this run the command:\nsudo chgrp -R www-data ' . $putFileHere . '\n");',
+                "\nTo do this run the command:\nsudo chown -R www-data:www-data ' . $putFileHere . '\n");',
     '</script>';
 
     if (isset($_POST["submitButton"])) {
@@ -74,6 +91,17 @@
         echo "<h1>Installation</h1>";
         echo "<hr>";
         flush();
+
+        # Test permissions on directory before starting installation.
+        if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
+            exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span>");
+        } else {
+            if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
+                exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span>");
+            } else {
+                echo "<span style='color: green;' />Permissions on {$putFileHere} set correctly.</span><br>";
+            }
+        }
 
         # Check if all fields are filled.
         $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
@@ -220,6 +248,15 @@
                     }
                 }
 
+                /************* Copy test code files to the right place *****************/
+                if(@!mkdir("{$putFileHere}/courses", 0770, true)){
+                    echo "Did not create courses directory, it already exists. 
+                        (For a full, clean install - remove this folder. <span style='color: red;' />WARNING:</span> this will remove all uploaded files.)<br>";
+                } else {
+                    echo "<span style='color: green;' />Created the directory '{$putFileHere}/courses'.</span><br>";
+                }
+                copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/global/");
+
             } else {
                 echo "Skipped filling database with test data.<br>";
             }
@@ -232,7 +269,9 @@
         flush();
 
         # All this code prints further instructions to complete installation.
-        echo "<br><b>To make installation work please make a file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
+        $putFileHere = dirname(getcwd(), 2); // Path to lenasys
+        echo "<br><b><span style='color: red;' />To make installation work</span> please make a 
+            file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
         echo "<textarea rows='6' cols='70' readonly style='resize:none'>";
@@ -244,6 +283,17 @@
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
         echo "</textarea><br>";
 
+        /* Not yet implemented - TODO: Ask about how this should be done in a safe way.
+        echo "<form action='install.php?mode=createfile' method='post'>";
+        echo '<input type="submit" name="makeCoursesysFileButton" value="Make!"/><br>';
+        echo '<input name="username" type="hidden" value="'. $username . '">';
+        echo '<input name="password" type="hidden" value="'. $password . '">';
+        echo '<input name="servername" type="hidden" value="'. $serverName . '">';
+        echo '<input name="database" type="hidden" value="'. $databaseName . '">';
+        echo '<input name="putfilehere" type="hidden" value="'. $putFileHere . '">';
+        echo "</form>";
+        */
+
         echo "<b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below and paste it into bash shell as one statement to do this).</b><br>";
@@ -253,6 +303,16 @@
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
         echo "</textarea><br>";
+    }
+
+    function makeCoursesysFile($username, $password, $serverName, $databaseName, $putFileHere){
+        # Make and edit the coursesyspw.php file
+        $fileContent = "<?php\ndefine(\"DB_USER\",\"{$username}\");\n" .
+            "define(\"DB_PASSWORD\",\"{$password}\");\n" .
+            "define(\"DB_HOST\",\"{$serverName}\");\n" .
+            "define(\"DB_NAME\",\"{$databaseName}\");\n" .
+            "?>";
+        file_put_contents("{$putFileHere}/coursesyspw.php", $fileContent);
     }
 
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
@@ -278,6 +338,26 @@
             }
         }
         flush();
+    }
+
+    # Function to copy test files
+    function copyTestFiles($fromDir,$destDir) {
+        $dir = opendir($fromDir);
+        if(!@mkdir($destDir)){
+            echo "<span style='color: red;' />{$destDir} already exists. Skipping copying of example files.</span><br>";
+        } else {
+            while (false !== ($file = readdir($dir))) {
+                if (($file != '.') && ($file != '..')) {
+                    if (is_dir($fromDir . '/' . $file)) {
+                        recurse_copy($fromDir . '/' . $file, $destDir . '/' . $file);
+                    } else {
+                        copy($fromDir . '/' . $file, $destDir . '/' . $file);
+                    }
+                }
+            }
+            closedir($dir);
+            echo "<span style='color: green;' />Successfully filled {$destDir} with example files.</span><br>";
+        }
     }
     ?>
 </body>
