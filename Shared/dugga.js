@@ -19,28 +19,18 @@ function toggleloginnewpass(){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
-		$("#changepassword").css("display", "none");
 		status++;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
-		$("#changepassword").css("display", "none");
 		status= 0;
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "block");
-		$("#changepassword").css("display", "none");
-		status= 1;
-	}else if(status == 3){
-		$("#newpassword").css("display", "none");
-		$("#login").css("display", "none");
-		$("#showsecurityquestion").css("display", "none");
-		$("#changepassword").css("display", "block");
 		status= 1;
 	}
-
 }
 
 function closeWindows(){
@@ -160,18 +150,26 @@ function saveDuggaResult(citstr)
 		
 		document.getElementById('receipt').value = hexstr;
 		
+		//Get the comment
+ 		var comment = querystring['comment'];
 		
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
 		var currentTime = new Date().toJSON().slice(0,10).replace(/-/g,'-'); //Get current time
 		
-		if(deadline > currentTime){	//Check if deadline has past
-			
-			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
-		}
-		else{
-			
-			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid nästa kurstillfälle.";
+		if(deadline > currentTime){	//Check if deadline has not past
 		
+ 			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+		
+		}
+		else{ //Check if deadline has past
+			
+			if(comment == "UNK" || comment == "undefined"){
+ 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
+ 			}
+ 			else{
+ 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>\n\n"+comment+"\n\n</p>";
+ 			}
+			
 		}
 		
 		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
@@ -395,7 +393,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['deadlinecomment']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedSection
 			});
@@ -481,45 +479,42 @@ function loginEventHandler(event){
 	}
 }
 
-
-
 function processResetPasswordCheckUsername() {
 
 	/*This function is supposed to get the security question from the database*/
 
 	var username = $("#newpassword #username").val();
 	
-	/*
 	$.ajax({
 			type:"POST",
 			url: "../Shared/resetpw.php",
 			data: {
 				username: username,
-				opt: "RESETPW"
+				opt: "GETQUESTION"
 			},
-			var result = JSON.parse(data);
-			if(result['login'] == "success") {
-				$("#userName").html(result['username']);
-
-	*/
-
-	status = 2;
-	toggleloginnewpass();
-
+			success:function(data) {
+				console.log("hai there");
+				console.log(data);
+				var result = JSON.parse(data);
+				console.log(result)
+				
+				if(result['getname'] == "success") {
+					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
+					status = 2;
+					toggleloginnewpass();
+				}else{
+					console.log("Failed");
+			}
+		}
+		});
 }
+			
+
 
 function processResetPasswordCheckSecurityAnswer() {
 
-	/*This function is supposed to be resposible for checking so the sequrity question answer is correct and make the user go to the last step of changeing/recovering its password*/
-	
-	status = 3;
-	toggleloginnewpass();
+	/*This function is supposed to be resposible for checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed*/
 
-}
-
-function processResetPasswordChangePassword(){
-	/* This function is supposed to hande the change of the password if the two fucntions before it have proceeded without errors. 
-	Might be worth to add all the functions together (processResetPasswordCheckUsername, processResetPasswordCheckSecurityAnswer, processResetPasswordChangePassword)*/
 }
 
 function processLogin() {

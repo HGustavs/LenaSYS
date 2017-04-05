@@ -119,46 +119,6 @@
 				</table>
 			  </div>
 		</div>
-		<div id='changepassword' style="display:none">
-			<div class='loginBoxheader' id="changeid">
-				<h3>New Password</h3>
-				<div onclick="closeWindows()">x</div>
-			</div>
-			  <div class="table-wrap">
-				<table>
-					<tr>
-						<td>
-							<label class="text">New password:</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input id="newpassword" placeholder="New password" class='form-control textinput' type='password' autofocus >
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label class="text">Confirm new password:</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input id="confirmpassword" placeholder="Confirm password" class='form-control textinput' type='password' >
-						</td>
-					</tr>
-					<tr>
-						<td id="message4"></td>
-					</tr>
-					<tr>
-						<td>
-							<input type='button' class='submit-button' onclick="processResetPasswordChangePassword();" value='Change password'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
-						</td>
-					</tr>
-				</table>
-			  </div>
-		</div>
-	</div>
 	</div>
 	
 	
