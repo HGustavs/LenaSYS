@@ -972,19 +972,96 @@ function deleteObject(index){
     //Point does not exist
   }
   try{
-    console.log(index);
+
     // Will remove all the lines connected to the center of the deleted object
     for(i = 0; i < diagram.length; i++){
-      if(diagram[i].symbolkind == 4 &&
-        diagram[i].topLeft == diagram[index].centerpoint ||
-        diagram[i].bottomRight == diagram[index].centerpoint){
-        if(index > i){
-          index--;
-          console.log(index);
+        if(!(diagram[i].symbolkind == 1)){
+        var temp = true;
+
+        for (var j = 0; j < (diagram[index].connectorRight.length ); j++) {
+            if (temp == true) {
+                if (diagram[i].symbolkind == 4 &&
+                    ((diagram[i].topLeft == diagram[index].connectorRight[j].from ||
+                    diagram[i].bottomRight == diagram[index].connectorRight[j].from) ||
+                    (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
+                    diagram[i].bottomRight == diagram[index].connectorRight[j].to))) {
+                    diagram.splice(i, 1);
+                    if (index > i) {
+                        index--;
+                        console.log(index + "a b ");
+                    }
+                    i--;
+                    temp = false;
+                    j = diagram[index].connectorRight.length;
+                }
+            }
         }
-        diagram.splice(i, 1);
-        i--;
+            for (var j = 0; j < (diagram[index].connectorLeft.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        ((diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to))) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                            console.log(index + "a b ");
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorLeft.length;
+                    }
+                }
+            }
+            for (var j = 0; j < (diagram[index].connectorBottom.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        ((diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorBottom[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to))) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                            console.log(index + "a b ");
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorBottom.length;
+                    }
+                }
+            }
+            for (var j = 0; j < (diagram[index].connectorTop.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        ((diagram[i].topLeft == diagram[index].connectorTop[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorTop[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].to))) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                            console.log(index + "a b ");
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorTop.length;
+                    }
+                }
+            }
       }
+        if (temp == true){
+            if(diagram[i].symbolkind == 4 &&
+                (diagram[i].topLeft == diagram[index].centerpoint ||
+                diagram[i].bottomRight == diagram[index].centerpoint)) {
+                if (index > i) {
+                    index--;
+                }
+                diagram.splice(i, 1);
+                i--;
+            }
+        }
     }
     points[diagram[index].centerpoint].y = -10;
     points[diagram[index].centerpoint].x = -10;
@@ -1000,18 +1077,19 @@ function deleteObject(index){
   catch(err){
     //Point does not exist
   }
-  diagram.splice(index, 1);
+    diagram.splice(index, 1);
+    updategfx();
+    return index;
 
-  updategfx();
 }
 function deleteSelectedObject(){
-	//
-		//Issue: Need to remove the crosses
+
+		//Issue: Need to remove the    crosses
 		for (var i = 0; i < diagram.length;i++){
 			if(diagram[i].targeted == true){
 		//diagram[i].targeted = false;
-		deleteObject(i);
-		i--;
+		     i = deleteObject(i)-1;
+
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
 			}
