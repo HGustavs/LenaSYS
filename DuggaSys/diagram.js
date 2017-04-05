@@ -192,7 +192,7 @@ diagram.draw = function ()
 		if(item.symbolkind==4) {
 			item.draw();
 		}
-		
+
 
 	}
 		for(i=0;i<this.length;i++){
@@ -860,10 +860,11 @@ function mousedownevt(ev)
 
 }
 
+
 function doubleclick(ev)
 {
 	if(diagram[selobj].inside(cx,cy)){
-    $("#appearance").show();
+        openAppearanceDialogMenu();
   }
 }
 
@@ -969,7 +970,7 @@ function deleteObject(index){
   try{
     points[diagram[index].topLeft].x = -10;
     points[diagram[index].topLeft].y = -10;
-    
+
   }
   catch(err){
     //Point does not exist
@@ -1063,18 +1064,26 @@ function openAppearanceDialogMenu() {
 
 function dialogForm() {
     var form = document.getElementById("f01");
-    form.innerHTML= "Generic dialog <type='text'>";
+    form.innerHTML= "No item selected<type='text'>";
 
+    if(diagram[selobj].symbolkind==1){
+        form.innerHTML = "Class name: <input id='text' type='text'></br>" +
+            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
+            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+    }
     if(diagram[selobj].symbolkind==2){
-        form.innerHTML = "Attribute name: <input id='text' type='text'>" +
-            "Change name  <input id='button' type='button' onclick='changeName(form)' ></input></br>";
+        form.innerHTML = "Attribute name: <input id='text' type='text'></br>" +
+            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
+            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
     }
     if(diagram[selobj].symbolkind==3){
-        form.innerHTML = "Entity name: <input id='text' type='text'>" +
-            "Change name  <input id='button' type='button' onclick='changeName(form)' ></input></br>"
-			+ "<input type='checkbox' name='Entity' value='weak' >Weak entity<br>"
-			+ "<input type='checkbox' name='Entity' value='strong' >Strong entity<br>" 
-			+ "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select>";;
+        form.innerHTML = "Entity name: <input id='text' type='text'></br>" +
+            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
+            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>" +
+			      "<input type='checkbox' name='Entity' value='weak' >Weak entity<br>" +
+			      "<input type='checkbox' name='Entity' value='strong' >Strong entity<br>" +
+			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select>";
+
     }
 }
 

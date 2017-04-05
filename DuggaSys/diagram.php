@@ -52,8 +52,8 @@ pdoConnect();
 			<div onclick='closeAppearanceDialogMenu()'>x</div>
 		</div>
 		<div class='table-wrap'>
-			<form id="f01">
-			</form>
+			<div id="f01">
+            </div>
 		</div>
 	</div>
 
