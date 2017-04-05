@@ -253,3 +253,38 @@ function returnedFile(data)
 	//-------------------------------------------------------------------------------------
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
+
+function setupSort(){ 
+	/*		Add filter menu		 */
+	var filt ="";	
+	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
+	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+	filt+="<div id='dropdownc' class='dropdown-list-container'>";
+	filt+="</div>";
+	filt+="</span></td>";
+
+	filt+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
+	filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+	filt+="<div id='dropdowns' class='dropdown-list-container'>";
+	filt+="</div>";
+	filt+="</span></td>";
+	//$("#menuHook").before(filt); //menuHook is set between buttons and navName //Not printed since the sorting functionality is not done
+}
+
+function hoverc(){
+    $('#dropdowns').css('display','none');
+  	$('#dropdownc').css('display','block');
+}
+
+function leavec(){
+	$('#dropdownc').css('display','none');  
+}
+
+function hovers(){
+    $('#dropdownc').css('display','none');
+  	$('#dropdowns').css('display','block');
+}
+
+function leaves(){
+	$('#dropdowns').css('display','none'); 
+}
