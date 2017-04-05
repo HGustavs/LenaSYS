@@ -146,7 +146,7 @@ function parseLineByLine(inString) {
 		}
 		// handle ordered lists <ol></ol>
 		else if(isOrderdList(currentLine)) {
-
+            markdown += handleOrderedList(currentLine, prevLine);
 		}
 		// handle table
 		else if(false) {
@@ -195,6 +195,28 @@ function handleUnorderedList(currentLine, prevLine) {
 	markdown += "<li>" + currentLine.substr(trimPosition, currentLine.length) + "</li>";
 
 	return markdown;
+}
+
+function handleOrderedList(currentLine, prevLine) {
+    var markdown = "";
+    if(!isOrderdList(prevLine)){
+        markdown += "<ol>";
+    }
+    var matches = currentLine.match(/^\s*\d*\.\s(.*)/gm);
+    if(matches && (currentLine.match(/^\s*/)[0].length ==0)){
+        markdown += "<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>";
+    }
+
+
+    if(matches && (currentLine.match(/^\s*/)[0].length > prevLine.match(/^\s*/)[0].length)){
+
+        markdown += "<ol>"+ ("<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>");
+
+    }
+    else if(matches && (currentLine.match(/^\s*/)[0].length == prevLine.match(/^\s*/)[0].length) && (currentLine.match(/^\s*/)[0].length !=0)){
+        markdown += ("<li>" + currentLine.substr(currentLine.match(/^\s*\d*\./)[0].length, currentLine.length) + "</li>");
+    }
+    return markdown;
 }
 
 //----------------------------------------------------------------------------------
