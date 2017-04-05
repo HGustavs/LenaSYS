@@ -6,6 +6,7 @@ var renderId; // Used to store active rendering function
 var benchmarkData = performance.timing; // Will be updated after onload event
 
 var status = 0;
+var showing = 1;
 var score;
 var timeUsed;
 var stepsUsed;
@@ -14,22 +15,24 @@ var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
 function toggleloginnewpass(){
-
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
-		status++;
+		status= 1;
+		showing= 0;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
 		status= 0;
+		showing= 1;
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "block");
 		status= 1;
+		showing= 2;
 	}
 }
 
@@ -467,7 +470,13 @@ function AJAXService(opt,apara,kind)
 //Will handle enter key pressed when loginbox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
-		processLogin();
+		if(showing == 1){
+			processLogin();
+		}else if(showing == 0){
+			processResetPasswordCheckUsername();
+		}else if(showing == 2){
+			processResetPasswordCheckSecurityAnswer();
+		}
 	}
 }
 
@@ -494,7 +503,7 @@ function processResetPasswordCheckUsername() {
 					console.log("Failed");
 			}
 		}
-		});
+	});
 }
 			
 
@@ -523,7 +532,7 @@ function processResetPasswordCheckSecurityAnswer() {
 					console.log("Failed");
 			}
 		}
-		});
+	});
 }	
 
 
