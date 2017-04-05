@@ -1876,4 +1876,16 @@ input.large-button {
 					background-color:#fff;
 			}
 
+/* JQuery UI Complement for missing icons in the DatePicker */ 
+
+.ui-datepicker .ui-datepicker-next span {
+    background: url("../icons/PlayT.svg"); 
+    transform: rotate(0deg);
+}
+
+.ui-datepicker .ui-datepicker-prev span {
+    background: url("../icons/PlayT.svg"); 
+    transform: rotate(180deg);
+}
+
 /*end, styling for contribution.php*/

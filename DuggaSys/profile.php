@@ -21,7 +21,7 @@ pdoConnect();
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 
-    <script src="pushnotifications.js"></script>
+	<script src="pushnotifications.js"></script>
 </head>
 <body>
 
@@ -33,12 +33,12 @@ pdoConnect();
 
 	<div id="content">
 		<form method="POST" action="">
- 			Challenge question: <input onclick="saveSettings()" type="text" name="challengeQuestion" id="challengeQuestion" value="" />
-		 	<input type="button" name="Save" id="Save" value="Save" />
+			Challenge question: <input onclick="saveSettings()" type="text" name="challengeQuestion" id="challengeQuestion" value="" />
+			<input type="button" name="Save" id="Save" value="Save" />
 		</form>
 		<button type="button" id="activate_notifications">Click here to activate notifications</button>
 	</div>
-    
+
 
 </body>
 </html>

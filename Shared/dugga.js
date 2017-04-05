@@ -150,16 +150,27 @@ function saveDuggaResult(citstr)
 		
 		document.getElementById('receipt').value = hexstr;
 		
+
+		var dateTime = new Date(); // Get the current date and time
+
 		//Get the comment
  		var comment = querystring['comment'];
 		
+
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
-		var currentTime = new Date().toJSON().slice(0,10).replace(/-/g,'-'); //Get current time
 		
-		if(deadline > currentTime){	//Check if deadline has not past
+
+		Number.prototype.padLeft = function(base,chr){
+			var  len = (String(base || 10).length - String(this).length)+1;
+			return len > 0? new Array(len).join(chr || '0')+this : this;
+		}
 		
- 			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');	
 		
+		if(deadline > dateTimeFormat){	//Check if deadline has past
+			
+			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+
 		}
 		else{ //Check if deadline has past
 			
@@ -167,8 +178,9 @@ function saveDuggaResult(citstr)
  				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
  			}
  			else{
- 				// document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>\n\n"+comment+"\n\n</p>";
-			  document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid nästa kurstillfälle.";
+ 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>\n\n"+comment+"\n\n</p>";
+ 			}
+			
 		}
 		
 		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
