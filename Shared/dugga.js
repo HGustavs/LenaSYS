@@ -156,15 +156,15 @@ function saveDuggaResult(citstr)
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
 		var currentTime = new Date().toJSON().slice(0,10).replace(/-/g,'-'); //Get current time
 		
-		if(deadline > currentTime){	//Check if deadline has past
+		if(deadline > currentTime){	//Check if deadline has not past
 		
  			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 		
 		}
-		else{
+		else{ //Check if deadline has past
 			
-			if(comment == "UNK"){
- 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid nästa kurstillfälle.";
+			if(comment == "UNK" || comment == "undefined"){
+ 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
  			}
  			else{
  				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><p>\n\n"+comment+"\n\n</p>";
