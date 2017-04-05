@@ -31,11 +31,24 @@ pdoConnect();
 	?>
 
 	<div id="content">
-		<form method="POST" action="">
+		<form class="profile-element" method="POST" action="">
  			Challenge question: <input onclick="saveSettings()" type="text" name="challengeQuestion" id="challengeQuestion" value="" />
 		 	<input type="button" name="Save" id="Save" value="Save" />
 		</form>
-		<button type="button" id="NotificationButton">Click here to activate notifications</button>
+		
+		<button class="profile-element" type="button" id="NotificationButton">Click here to activate notifications</button>
+		
+		<form class="profile-element" method="POST" action="">
+ 			Change password: 
+ 			<br>
+ 			New password: <input type="text" id="newPassword" value="" />
+ 			<br>
+ 			Old password: <input type="text" id="oldPassword" value="" />
+ 			<br>
+		 	<input type="button" name="Save" id="Save" value="Save" />
+		</form>
+		
+		<button class="profile-element" type="button" id="saveProfile">Save changes</button>
 	</div>
 
 </body>
