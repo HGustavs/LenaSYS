@@ -185,15 +185,24 @@ diagram.draw = function ()
 {
 		// On every draw of diagram adjust the midpoint if there is one to adjust
 		this.adjust();
+	for(i=0;i<this.length;i++){
+		item=this[i];
 
+		// Path item
+		if(item.symbolkind==4) {
+			item.draw();
+		}
+		
+
+	}
 		for(i=0;i<this.length;i++){
 				item=this[i];
 
 				// Path item
 				if(item.kind==1){
-						item.draw(1,1);
-				}else if(item.kind==2){
-						item.draw();
+					item.draw(1,1);
+				}else if(item.kind==2 && !(item.symbolkind == 4)){
+					item.draw();
 				}
 
 		}
