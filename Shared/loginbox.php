@@ -99,7 +99,7 @@
 					<tr>
 						<td>
 							<!-- Using a label to show the security question might not be the best idea, the label will be changed using js, but using a label and updating it with js might not be the best approach. -->
-							<label id="displaysecurityquestion" class="text">Who let the dogs out?</label>
+							<label id="displaysecurityquestion" class="text">Placeholder question</label>
 						</td>
 					</tr>
 					<tr>
