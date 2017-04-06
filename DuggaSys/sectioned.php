@@ -57,6 +57,7 @@ pdoConnect();
 			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
+			<div id='inputwrapper-comment' class='inputwrapper'><span>Comment for deadline:</span><input type='text' class='textinput' id='deadlinecomment' value='deadlinecomment' placeholder="Deadline comment" /></div>
 		</div>
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
@@ -65,6 +66,19 @@ pdoConnect();
 		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
+
+
+    <!-- Edit participant Dialog START -->
+    <div id='editParticipant' class='loginBox' style='width:460px;display:none;'>
+        <div class='loginBoxheader'>
+            <h3>Edit Participant</h3>
+            <div onclick='closeWindows(); closeSelect();'>x</div>
+        </div>
+        <div style='padding:5px;'>
+            <input type='hidden' id='lid' value='Toddler' />
+    </div>
+    <!-- Edit Participant Dialog END -->
+
 
 	<!-- New Verison Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>

@@ -113,7 +113,11 @@
 								
 				// Create appropriate number of boxes
 				for($i=1;$i<$boxCount+1;$i++){
-						$query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");		
+				        // Update boxes
+                        $query = $pdo->prepare("UPDATE box SET boxid = :i , exampleid = :exampleid , 
+                          boxtitle = :boxtitle , boxcontent = :boxcontent , settings = :settings, filename = :filename 
+                          WHERE boxid = :i AND exampleid = :exapleid");
+
 						$query->bindParam(':i', $i);
 						$query->bindParam(':exampleid', $exampleId);
 						$query->bindValue(':boxtitle', 'Title');

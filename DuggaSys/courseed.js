@@ -231,6 +231,7 @@ function createVersion(){
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
 	var copycourse = $("#copyvers").val();
+	var deadlinecomment = $("#deadlinecomment").val();
 
 	if (versid=="" || versname=="") {
 		alert("Version Name and Version ID must be entered!");
@@ -316,14 +317,19 @@ function returnedCourse(data)
 			if (data['writeaccess']) {
 				str += "<span style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
 			} else {
-				str += "<span style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] +"&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
+               // str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
+				if(item['registered'] == true) {
+                    str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
+                }else{
+					str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
+                }
 			}
 
 			if (data['writeaccess']) {
 				//str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeedversion'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
-				str += "<img id='dorf' src='../Shared/icons/PenV.svg' onclick='editVersion("+item['cid']+",\""+item['coursename']+"\",\""+item['coursecode']+"\")'>";
+				str += "<img id='dorf' src='../Shared/icons/PenV.svg' onclick='editVersion("+item['cid']+",\""+htmlFix(item['coursename'])+"\",\""+item['coursecode']+"\")'>";
 				str += "<img id='dorf' style='float:right;' src='../Shared/icons/Cogwheel.svg' ";
-				str += " onclick='selectCourse(\"" + item['cid'] + "\",\"" + item['coursename'] + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' >";
+				str += " onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' >";
 			}
 
 			str += "</span>";
@@ -346,4 +352,17 @@ function returnedCourse(data)
 
 	resetinputs();
 	//resets all inputs
+}
+
+/* Used to enable using list entries with ' */
+function htmlFix(text){
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }

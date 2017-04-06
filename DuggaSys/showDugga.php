@@ -36,6 +36,7 @@
 	$vers=getOPG('coursevers');
 	$quizid=getOPG('did');
 	$deadline=getOPG('deadline');
+	$comment=getOPG('comment');
 
 	$duggatitle="UNK";
 	$duggafile="UNK";

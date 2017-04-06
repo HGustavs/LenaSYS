@@ -20,7 +20,8 @@ pdoConnect();
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src="sectioned.js"></script>
+
+	<script src="pushnotifications.js"></script>
 </head>
 <body>
 
@@ -31,12 +32,37 @@ pdoConnect();
 	?>
 
 	<div id="content">
-		<form method="POST" action="">
- 			Challenge question: <input onclick="saveSettings()" type="text" name="challengeQuestion" id="challengeQuestion" value="" />
+		<button class="profile-element" type="button" id="NotificationButton">Click here to activate notifications</button>
+	
+		<form class="profile-element" method="POST" action="">
+ 			Challenge question
+ 			<br>
+ 			<?php
+ 				/*change loginname to security question when we are able to get that from session*/
+				echo "<textarea id='challengeQuestion' value='' onkeyup='checkScroll(this)' style='height:1.25em; width:16em; overflow:auto; font-family:sans-serif;'>".$_SESSION['loginname']."</textarea>"
+			?>
+		 	<br>
+		 	<input type="button" name="Save" id="Save" value="Save" />
+
+		</form>
+		
+		<form class="profile-element" method="POST" action="">
+ 			New password 
+ 			<br>
+ 			<input type="text" id="newPassword" value="" style="width:16em;" placeholder="Enter new password" />
+ 			<br>
 		 	<input type="button" name="Save" id="Save" value="Save" />
 		</form>
-		<button type="button" id="NotificationButton">Click here to activate notifications</button>
+		
+		<form class="profile-element" method="POST" action="">
+			Enter password to make changes 
+			<br>
+			<input type="text" id="passwordConfirmation" value="" style="width:16em;" placeholder="Enter password" /> 
+			<br>
+			<button type="button" id="saveProfile">Save changes</button>
+		</form>
 	</div>
+
 
 </body>
 </html>
