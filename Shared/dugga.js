@@ -73,6 +73,8 @@ function closeWindows(){
 			 * as well.
 			 */
 			if (index_highest < 10000) {
+					status=1;
+					toggleloginnewpass();
 					$("#overlay").css("display","none");
 					$("#login #username").val("");
 					$("#login #password").val("");
@@ -182,7 +184,7 @@ function saveDuggaResult(citstr)
 			return len > 0? new Array(len).join(chr || '0')+this : this;
 		}
 		
-		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');	
+		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
 		
 		if(deadline > dateTimeFormat){	//Check if deadline has past
 			
@@ -274,7 +276,6 @@ function parseGet(){
 //----------------------------------------------------------------------------------
 
 function htmlEntities(str) {
-
 	if (typeof str === "string"){
 		befstr=str;
 		if(str!=undefined && str != null){
@@ -600,7 +601,6 @@ function processLogin() {
 
 					$("#login #username").val("");
 					$("#login #password").val("");
-
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
@@ -680,7 +680,6 @@ function setupLoginLogoutButton(isLoggedIn){
 	else{
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){showLoginPopup();});
-
 	}
 }
 
@@ -892,7 +891,6 @@ function findfilevers(filez,cfield,ctype,displaystate)
 
 		document.getElementById(cfield+"Prev").innerHTML=tab;
 }
-
 
 function makeForm(cfield, ctype){
 
