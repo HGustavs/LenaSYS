@@ -70,32 +70,34 @@ pdoConnect();
 		<div style='padding:5px;display:flex;'>
 			<input type='hidden' id='vid' value='Toddler' />
 			<div id="leftDivDialog">
-				<!-- Instruction for assignment -->
-				<div class="inputwrapper" style="height:80px">
-					<fieldset style="width:90%">
-						<legend>Instruction file</legend>
-						<div style="display:flex;flex-wrap:nowrap;flex-direction:row;">
-							<select name="type" id="type" style="flex:1">
-								<option value="md">Markdown</option>
-								<option value="html">HTML</option>
-								<option value="pdf">PDF</option>
-							</select>
-							<input type="text" name="filelink" id="filelink" placeholder="File link" style="flex:2;margin-left:5px;">
-						</div>
-					</fieldset>
-				</div>
-				<!-- Submissions for dugga -->
-				<div class="inputwrapper" style="height:240px">
-					<div id="duggaSubmissionForm">
+				<form name="jsonform" id="jsonform">
+					<!-- Instruction for assignment -->
+					<div class="inputwrapper" style="height:80px">
 						<fieldset style="width:90%">
-						<legend>Submissions types</legend>
-							<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;">
+							<legend>Instruction file</legend>
+							<div style="display:flex;flex-wrap:nowrap;flex-direction:row;">
+								<select name="type" id="type" style="flex:1">
+									<option value="md">Markdown</option>
+									<option value="html">HTML</option>
+									<option value="pdf">PDF</option>
+								</select>
+								<input type="text" name="filelink" id="filelink" placeholder="File link" style="flex:2;margin-left:5px;">
 							</div>
 						</fieldset>
-						<button type="button" name="addfieldname" id="addfieldname">Add row</button>
-						<button type="button" name="createjson" id="createjson">Create JSON</button>
 					</div>
-				</div>
+					<!-- Submissions for dugga -->
+					<div class="inputwrapper" style="height:240px">
+						<div id="duggaSubmissionForm">
+							<fieldset style="width:90%">
+								<legend>Submissions types</legend>
+								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;">
+								</div>
+							</fieldset>
+							<button type="button" name="addfieldname" id="addfieldname"><img src='../Shared/icons/PlusT.svg' alt='Add row'/></button>
+							<button type="button" name="createjson" id="createjson">Create JSON</button>
+						</div>
+					</div>
+				</form>
 			</div>
 			<!-- JSON and answer fields -->
 			<div id="rightDivDialog">
