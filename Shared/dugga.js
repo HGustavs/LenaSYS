@@ -636,6 +636,11 @@ function hideReceiptPopup()
 	$("#overlay").css("display","none");
 }
 
+function checkScroll(obj) { 
+	if(obj.clientHeight < obj.scrollHeight) {
+		obj.style.height = (parseInt(obj.style.height)+1) + 'em';
+	}
+}
 
 function showEmailPopup()
 {
