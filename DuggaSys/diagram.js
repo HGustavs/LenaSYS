@@ -29,6 +29,8 @@ var cx,cy=0;					// Current Mouse coordinate x and y
 var sx,sy=0;					// Start Mouse coordinate x and y
 var mox,moy=0;				// Old mouse x and y
 var md=0;							// Mouse state
+var hovobj=-1;
+var lineStartObj = -1;
 var movobj=-1;				// Moving object ID
 var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
@@ -751,11 +753,20 @@ function findPos(obj) {
 				y:curtop
 		}
 }
-
+function updateActivePoint(){
+  if(sel.dist <= tolerance){
+    activePoint = sel.ind;
+    console.log("New active point");
+  }
+  else{
+    activePoint = null;
+  }
+}
 function mousemoveevt(ev, t){
 		mox=cx;
 		moy=cy;
-
+    hovobj = diagram.inside(cx,cy);
+    console.log(hovobj);
 		if (ev.pageX || ev.pageY == 0){ // Chrome
 			cx=ev.pageX-acanvas.offsetLeft;
 			cy=ev.pageY-acanvas.offsetTop;
@@ -766,7 +777,6 @@ function mousemoveevt(ev, t){
 			cx=ev.offsetX-acanvas.offsetLeft;
 			cy=ev.offsetY-acanvas.offsetTop;
 		}
-
 		if(md==0){
 				// Select a new point only if mouse is not already moving a point or selection box
 				sel=points.distance(cx,cy);
@@ -776,14 +786,7 @@ function mousemoveevt(ev, t){
 
 				movobj=diagram.inside(cx,cy);
 
-				// If the cursor is within the tolerance area of a point, the hovered point will be set as active
-				if(sel.dist <= tolerance){
-					activePoint = sel.ind;
-				}
-				else{
-					activePoint = null;
-				}
-
+        updateActivePoint();
 
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
@@ -832,7 +835,29 @@ function mousemoveevt(ev, t){
 
 function mousedownevt(ev)
 {
-		if(uimode!="CreateFigure"&&sel.dist<10){
+    if(uimode=="CreateLine"){
+      md=4;			// Box select or Create mode.
+      sx=cx;
+      sy=cy;
+      sel=points.distance(cx,cy);
+
+      if(hovobj==-1){
+        p1=points.addpoint(cx,cy,false);
+      }
+      else{
+        lineStartObj = hovobj;
+
+        if(diagram[lineStartObj].symbolkind==2){
+          p1=diagram[lineStartObj].centerpoint;
+        }
+        else{
+          p1=points.addpoint(cx,cy,false);
+        }
+        //p1=diagram[hovobj].centerpoint;
+      }
+
+    }
+		else if(uimode!="CreateFigure"&&sel.dist<tolerance){
 				md=2;
 		}else if(movobj!=-1){
 				md=3;
@@ -880,8 +905,42 @@ function mouseupevt(ev){
 				var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
 		}
 		if(uimode=="CreateLine"&&md==4){
-			p1=points.addpoint(sx,sy,false);
-			p2=points.addpoint(cx,cy,false);
+      sel=points.distance(cx,cy);
+
+      if(hovobj==-1){
+        // End line on empty
+        p2=points.addpoint(cx,cy,false);
+        if(lineStartObj == -1){
+          // Start line on empty
+          // Just draw a normal line
+        }
+        else{
+          // Start line on object
+          console.log("Symbolkind"+diagram[lineStartObj].symbolkind);
+          diagram[lineStartObj].connectorTop.push({from:p1,to:p2});
+          lineStartObj = -1;
+        }
+      }
+      else{
+        // End line on object
+        if(diagram[hovobj].symbolkind == 2){
+          p2=diagram[hovobj].centerpoint;
+        }else{
+          p2=points.addpoint(cx,cy,false);
+        }
+
+        if(lineStartObj==-1){
+          // Start line on empty
+          diagram[hovobj].connectorTop.push({from:p2,to:p1});
+        }
+        else{
+          // Start line on object
+          console.log("Symbolkind"+diagram[lineStartObj].symbolkind);
+          console.log("Symbolkind"+diagram[hovobj].symbolkind);
+          diagram[lineStartObj].connectorTop.push({from:p1,to:p2});
+          diagram[hovobj].connectorTop.push({from:p2,to:p1});
+        }
+      }
 		}
 
 		createFigure();
