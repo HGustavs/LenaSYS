@@ -36,7 +36,7 @@ var widthWindow;			// The width on the users screen is saved is in this var.
 var heightWindow;			// The height on the users screen is saved is in this var.
 var consoleInt = 0;
 var canFigure = false; // When figure mode is enabled for the session, this needs to be set to true and p1 to null.
-
+var startX=0; var startY=0;			// Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = {x:-10,y:-10,selected:false};
 var activePoint = null; //This point indicates what point is being hovered by the user
 var p1=null,					// When creating a new figure, these two variables are used ...
@@ -248,12 +248,12 @@ diagram.insides = function (ex,ey,sx,sy)
 		var ty = points[this[i].topLeft].y;
 		var bx = points[this[i].bottomRight].x;
 		var by = points[this[i].bottomRight].y;
-		console.log(sx + " target x ");
+		/*console.log(sx + " target x ");
 		console.log(sy + " target y ");
 		console.log(sx + " start point x");
 		console.log(sy + " start point y ");
 		console.log(ex + " end point x ");
-		console.log(ey + " end point x ");
+		console.log(ey + " end point x ");*/
 		if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by){
 
 			console.log("4");
@@ -717,7 +717,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(0,0,widthWindow,heightWindow);
+		ctx.clearRect(startX,startY,widthWindow,heightWindow);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -929,7 +929,7 @@ function mouseupevt(ev){
     		erLineA.centerpoint=p3;
 
     		diagram.push(erLineA);
-    } else if(md == 4 && !(uimode=="CreateFigure") && !(uimode=="CreateLine") && !(uimode=="CreateEREntity") && !(uimode=="CreateERAttr" ) &&!(uimode=="CreateClass" ) ){
+    } else if(md == 4 && !(uimode=="CreateFigure") && !(uimode=="CreateLine") && !(uimode=="CreateEREntity") && !(uimode=="CreateERAttr" ) &&!(uimode=="CreateClass" ) &&!(uimode=="MoveAround" ) ){
 			console.log("box drawn");
 			diagram.insides(cx,cy,sx,sy);
 		}
@@ -1229,24 +1229,54 @@ function debugMode()
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
-
+var mousedownX = 0; var mousedownY = 0;
+var mouseupX = 0; var mouseupY = 0;
+var mouseDiffX = 0; var mouseDiffY = 0;
+var newCanvasX = 0; var newCanvasY = 0;
 
 function movemode(e)
 {
+	uimode="MoveAround";
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="all-scroll";
-	canvas.addEventListener('mousemove', mouseposcanvas, false);
-	mouseposcanvas(e);
+	canvas.addEventListener('mousedown', mousedownposcanvas, false);
+	canvas.addEventListener('mouseup', mouseupposcanvas, false);
 }
-function mouseposcanvas(e){
+function mousedownposcanvas(e){
+	mousedownX = e.pageX;
+	mousedownY = e.pageY;
+}
+function mouseupposcanvas(e){
+	mouseupX = e.pageX;
+	mouseupY = e.pageY;
+	movecanvas();
+}
+function movecanvas(){
 	var canvas = document.getElementById("myCanvas");
-	console.log(e.pageX+" | "+e.pageY);
-}
+	mouseDiffX = (mousedownX - mouseupX);
+	mouseDiffY = (mousedownY - mouseupY);
+	newCanvasX = (mouseDiffX+newCanvasX);
+	newCanvasY = (mouseDiffY+newCanvasY);
 
+	ctx.clearRect(startX,startX,widthWindow,heightWindow);
+	ctx.translate(newCanvasX,newCanvasY);
+	// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
+	erEntityA.sortAllConnectors();
+	// Redraw diagram
+	diagram.draw();
+	// Draw all points as crosses
+	points.drawpoints();
+	mousedownX = 0; mousedownY = 0;
+	mouseupX = 0; mouseupY = 0;
+	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
+	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
+	canvas.style.cursor="default";
+}
 function stopmovemode(){
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="default";
-	canvas.removeEventListener('mousemove', mouseposcanvas);
+	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
+	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
 }
 
 //----------------------------------------
