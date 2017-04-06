@@ -4,40 +4,40 @@
 @font-face{
   font-family:'Hack';
   src:url('../fonts/eot/hack-regular-webfont.eot?v=2.019');
-  src:url('../fonts/eot/hack-regular-webfont.eot?#iefix&v=2.019') 
-  format('embedded-opentype'),url('../fonts/woff2/hack-regular-webfont.woff2?v=2.019') 
-  format('woff2'),url('../fonts/woff/hack-regular-webfont.woff?v=2.019') 
-  format('woff'),url('../fonts/web-ttf/hack-regular-webfont.ttf?v=2.019') 
+  src:url('../fonts/eot/hack-regular-webfont.eot?#iefix&v=2.019')
+  format('embedded-opentype'),url('../fonts/woff2/hack-regular-webfont.woff2?v=2.019')
+  format('woff2'),url('../fonts/woff/hack-regular-webfont.woff?v=2.019')
+  format('woff'),url('../fonts/web-ttf/hack-regular-webfont.ttf?v=2.019')
   format('truetype');font-weight:400;font-style:normal
 }
 @font-face{
   font-family:'Hack';
   src:url('../fonts/eot/hack-bold-webfont.eot?v=2.019');
-  src:url('../fonts/eot/hack-bold-webfont.eot?#iefix&v=2.019') 
-  format('embedded-opentype'),url('../fonts/woff2/hack-bold-webfont.woff2?v=2.019') 
-  format('woff2'),url('../fonts/woff/hack-bold-webfont.woff?v=2.019') 
-  format('woff'),url('../fonts/web-ttf/hack-bold-webfont.ttf?v=2.019') 
+  src:url('../fonts/eot/hack-bold-webfont.eot?#iefix&v=2.019')
+  format('embedded-opentype'),url('../fonts/woff2/hack-bold-webfont.woff2?v=2.019')
+  format('woff2'),url('../fonts/woff/hack-bold-webfont.woff?v=2.019')
+  format('woff'),url('../fonts/web-ttf/hack-bold-webfont.ttf?v=2.019')
   format('truetype');font-weight:700;font-style:normal
 }
 @font-face{
   font-family:'Hack';
   src:url('../fonts/eot/hack-italic-webfont.eot?v=2.019');
-  src:url('../fonts/eot/hack-italic-webfont.eot?#iefix&v=2.019') 
-  format('embedded-opentype'),url('../fonts/woff2/hack-italic-webfont.woff2?v=2.019') 
-  format('woff2'),url('../fonts/woff/hack-italic-webfont.woff?v=2.019') 
-  format('woff'),url('../fonts/web-ttf/hack-italic-webfont.ttf?v=2.019') 
+  src:url('../fonts/eot/hack-italic-webfont.eot?#iefix&v=2.019')
+  format('embedded-opentype'),url('../fonts/woff2/hack-italic-webfont.woff2?v=2.019')
+  format('woff2'),url('../fonts/woff/hack-italic-webfont.woff?v=2.019')
+  format('woff'),url('../fonts/web-ttf/hack-italic-webfont.ttf?v=2.019')
   format('truetype');font-weight:400;font-style:italic
 }
 @font-face{
   font-family:'Hack';
   src:url('../fonts/eot/hack-bolditalic-webfont.eot?v=2.019');
-  src:url('../fonts/eot/hack-bolditalic-webfont.eot?#iefix&v=2.019') 
-  format('embedded-opentype'),url('../fonts/woff2/hack-bolditalic-webfont.woff2?v=2.019') 
-  format('woff2'),url('../fonts/woff/hack-bolditalic-webfont.woff?v=2.019') 
-  format('woff'),url('../fonts/web-ttf/hack-bolditalic-webfont.ttf?v=2.019') 
+  src:url('../fonts/eot/hack-bolditalic-webfont.eot?#iefix&v=2.019')
+  format('embedded-opentype'),url('../fonts/woff2/hack-bolditalic-webfont.woff2?v=2.019')
+  format('woff2'),url('../fonts/woff/hack-bolditalic-webfont.woff?v=2.019')
+  format('woff'),url('../fonts/web-ttf/hack-bolditalic-webfont.ttf?v=2.019')
   format('truetype');font-weight:700;font-style:italic
 }
-@font-face{ 
+@font-face{
   font-family: 'Ubuntu Mono';
   src: url('../fonts/eot/ubuntu-mono-webfont.eot');
   src: url('../fonts/eot/ubuntu-mono-webfont.eot?iefix') format('eot'),
@@ -72,30 +72,30 @@ th, td {
     padding: 0;
 }
 h1 {
-    /*color: #fff;    
+    /*color: #fff;
     font-size: 1.8em;
     line-height: 1.4em;
     */
-   
+
     margin:2px 0px 10px 0px;
     padding:0px;
 }
 h2 {
-  
+
     margin:2px 0px 10px 0px;
     padding:0px;
 }
 h3 {
-   
+
     margin:2px 0px 10px 0px;
     padding:0px;
-   
+
 
 
 }
 .instructions-container h3 {
     border-bottom:none;
-	
+
 }
 h4 {
     font-size: 16px;
@@ -191,6 +191,10 @@ p {
     margin-right:2px;
 }
 
+.profile-element {
+	margin-top: 25px;
+}
+
 .sys{
     border-radius:6px;
     color:#775886;
@@ -245,7 +249,7 @@ p {
 }
 
 .public {
-  
+
 }
 
 .hidden {
@@ -431,6 +435,25 @@ p {
 #Sectionlist .loginsectionl{
 		color: #612;
 }
+
+
+/* Submission table */
+#tableDivDialog{
+    width: 100%;
+    float: right;
+    margin-right: 10px;
+    width: 63%;
+}
+
+#tableDivDialog th{
+    text-align: left;
+    padding-right: 8px;
+}
+
+.delButton{
+    text-align: center;
+}
+
 
 /* --------------================################================-------------- *
  *                                    Header                                    *
@@ -988,7 +1011,7 @@ input.submit-button {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color:#614875;
     border:0px;
-    width:120px;
+    width:110px;
     height:30px;
     color:#fff;
     cursor:pointer;
@@ -1053,16 +1076,18 @@ input.large-button {
     width:160px !important;
     height:48px !important;
     line-height:48px !important;
+    
+    
 }
 
 .list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-size: 16px;}
 
-.list tbody tr:nth-child(odd) { background-color: #ccc; }
+.list tbody tr:nth-child(odd) { /*background-color: #ccc;*/}
 .list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
 .list th {background:#614875; color:#fff;line-height:28px; font-weight: bold;}
 
 .innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
-.innertable td {color:#000;line-height:28px;border:none;}
+.innertable td {color:#000;line-height:28px;border:none;text-align:left !important;}
 
 .list tr:hover { /*background-color: #dbd0d8;*/ }
 
@@ -1073,6 +1098,24 @@ input.large-button {
 .last {
     width:110px;
 }
+
+.list#testTable td{padding:8px; text-align:center;border:none;}
+.list#testTable th{line-height:45px; box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);}
+.list#testTable tr{line-height:45px;}
+
+.list#testTable .variantInfo {display:none;}
+
+.list#testTable input, .list#testTable select, .list#testTable label {
+    padding:5px;
+}
+
+.selectedtr {border-bottom:none !important;}
+
+.list#testTable input{border-width: 2px !important; border-style: inset !important;}
+
+#testinnertable {background:#fff;box-shadow:none;border-top: none;border-bottom: none;}
+
+span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
 
 .markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8; font-family: hack,"Lucida Console", Monaco, monospace;}
 
@@ -1400,23 +1443,23 @@ input.large-button {
 }
 
 .facitPreview {
-    width:200px; 
+    width:200px;
     height:200px;
-    overflow:hidden; 
-    position:absolute; 
+    overflow:hidden;
+    position:absolute;
     bottom:50px;
     right:11px;
     border:1px solid black;
 }
 
 .facitPopover {
-    overflow:hidden; 
-    position:absolute; 
+    overflow:hidden;
+    position:absolute;
     top: 50px;
     bottom:50px;
     right:50px;
     left:50px;
-    border:1px solid black;  
+    border:1px solid black;
 }
 
 #MarkCont a:hover {
@@ -1434,8 +1477,8 @@ input.large-button {
 			height: 50px;
 			width: auto;
 			display: inline-block;
-			vertical-align: middle; 
-			margin-left: 20px; 
+			vertical-align: middle;
+			margin-left: 20px;
 			padding: 5px 0px;
 }
 
@@ -1492,7 +1535,7 @@ input.large-button {
 }
 
 .dugga-pass {
-		border-left: 2px solid rgb(219, 208, 216); 
+		border-left: 2px solid rgb(219, 208, 216);
 		background-color: rgb(221, 255, 238);
 }
 
@@ -1501,7 +1544,7 @@ input.large-button {
 }
 
 .dugga-pending {
-		border-left: 2px solid rgb(219, 208, 216); 
+		border-left: 2px solid rgb(219, 208, 216);
 		background-color: rgb(255, 255, 221);
 }
 
@@ -1510,7 +1553,7 @@ input.large-button {
 }
 
 .dugga-fail {
-		border-left: 2px solid rgb(219, 208, 216); 
+		border-left: 2px solid rgb(219, 208, 216);
 		background-color: rgb(255, 170, 170);
 }
 
@@ -1519,7 +1562,7 @@ input.large-button {
 }
 
 .dugga-assigned {
-		border-left: 2px solid rgb(219, 208, 216); 
+		border-left: 2px solid rgb(219, 208, 216);
 		background-color: rgb(248, 232, 248);
 }
 .dugga-assigned-highlighted {
@@ -1527,7 +1570,7 @@ input.large-button {
 }
 
 .dugga-unassigned {
-		border-left: 2px solid rgb(219, 208, 216); 
+		border-left: 2px solid rgb(219, 208, 216);
 		background-color: rgb(255, 255, 255);
 }
 
@@ -1582,18 +1625,18 @@ input.large-button {
 .responseArea {
     width: 100%;
     height:100%;
-    -webkit-box-sizing: border-box; 
+    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 .markCont {
-    position:absolute; 
-    left:4px; 
-    right:204px; 
-    top:34px; 
-    bottom:4px; 
+    position:absolute;
+    left:4px;
+    right:204px;
+    top:34px;
+    bottom:4px;
     border:2px inset #aaa;
-    background:#bbb; 
+    background:#bbb;
     overflow:scroll;
 }
 #teacherFeedbackTable {
@@ -1625,7 +1668,7 @@ input.large-button {
     justify-content: space-around;
     padding: 5px 0 5px 0;
     min-width:140px;
-    max-width:140px; 	
+    max-width:140px;
     margin: auto;
 }
 #newFeedback {
@@ -1643,8 +1686,8 @@ input.large-button {
 
 .dugga-result-subheader
 {
-		border-top:2px solid white;    
-}	
+		border-top:2px solid white;
+}
 
 .dugga-result-subheader-div
 {
@@ -1681,7 +1724,7 @@ input.large-button {
 
 .checknarrow {
 		max-width:140px !important;
-		min-width:140px !important;	
+		min-width:140px !important;
 }
 
 .grading-hidden {
@@ -1730,7 +1773,7 @@ input.large-button {
 		min-width:140px;
 		overflow:hidden;
 		white-space:nowrap;
-		text-overflow:ellipsis;    
+		text-overflow:ellipsis;
 }
 
 .badge {
@@ -1787,7 +1830,7 @@ input.large-button {
    				font-family:Arial;
    				font-weight: bold;
    		}
-   	
+
 			.contribheading{
 					background:#FFF8A5;
 					box-shadow:1px 1px 6px rgba(0,0,0,0.6);
@@ -1803,11 +1846,11 @@ input.large-button {
 					margin-bottom:10px;
 					margin-top:4px;
 					z-index:3000;
-					box-shadow:1px 1px 6px rgba(0,0,0,0.6);					
+					box-shadow:1px 1px 6px rgba(0,0,0,0.6);
 					padding-left:8px;
 					width:400px;
 			}
-			
+
 			.contrib{
 					font-family: Arial Narrow,Arial,sans-serif;
 					font-size:14px;
@@ -1818,7 +1861,7 @@ input.large-button {
 					padding-right:8px;
 					width:400px;
 			}
-			
+
 			.contribfile{
 					color:#521;
 			}
@@ -1826,7 +1869,7 @@ input.large-button {
 			.contribpath{
 					color:#252;
 			}
-			
+
 			.createissue{
 					color:#247;
 			}
@@ -1839,7 +1882,7 @@ input.large-button {
 					overflow: hidden;
 					text-overflow: ellipsis;
 			}
-						
+
 			table {
 			    border-collapse: collapse;
 			    font-family: Arial Narrow;
@@ -1848,7 +1891,7 @@ input.large-button {
 			.fumho td{
 					padding-left:8px;
 					padding-right:8px;
-					border-right:2px dotted rgba(0,0,0,0.2);'			
+					border-right:2px dotted rgba(0,0,0,0.2);'
 			}
 
 			.fumho tr:nth-child(even) {
@@ -1858,5 +1901,17 @@ input.large-button {
 			.fumho tr:nth-child(odd) {
 					background-color:#fff;
 			}
-							
+
+
+/* JQuery UI Complement for missing icons in the DatePicker */ 
+
+.ui-datepicker .ui-datepicker-next span {
+    background: url("../icons/PlayT.svg"); 
+    transform: rotate(0deg);
+}
+
+.ui-datepicker .ui-datepicker-prev span {
+    background: url("../icons/PlayT.svg"); 
+    transform: rotate(180deg);
+}
 /*end, styling for contribution.php*/
