@@ -475,11 +475,14 @@ $(document).ready(function(){
 	}
 
 	function addSubmissionRow() {
-		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'><select name='fieldname' id='fieldname' style='margin-bottom:3px;flex:4;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:15;margin-left:5px;margin-bottom:3px;'/><button class='delButton' style='margin-left:5px;margin-bottom:3px;flex:1;'>X</button><br/></div>");
+		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'><select name='fieldname' id='fieldname' style='margin-bottom:3px;flex:4;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:15;margin-left:5px;margin-bottom:3px;'/><button class='delButton' style='margin-left:5px;margin-bottom:3px;flex:1;'><img src='../Shared/icons/MinusT.svg' alt='Del row'/></button><br/></div>");
 	}
 
 	$(document).on('click','.delButton', function(){
-		$(this).parent().remove();
+		if($(this).parent().parent().children().length > 1) {
+			$(this).parent().remove();
+		}
+		return false;
 	});
 
 	$('#addfieldname').click(function(){
