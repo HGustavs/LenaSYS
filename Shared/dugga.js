@@ -26,11 +26,25 @@ function toggleloginnewpass(){
 
 }
 
+//----------------------------------------------------------------------------------
+// Sets cookie that expires when there's 30 min left of session
+//----------------------------------------------------------------------------------
+
+function setExpireCookie(){
+
+	var expireDate = new Date();
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
+
+	document.cookie = "session=expireC; expires="+ expireDate.toGMTString() +"; path=/";
+	console.log(expireDate);
+
+}
+//----------------------------------------------------------------------------------
 function closeWindows(){
 
-	var index_highest = 0;   
+	var index_highest = 0;
 	var e;
-	// more effective to have a class for the div you want to search and 
+	// more effective to have a class for the div you want to search and
 	// pass that to your selector
 	$("*").each(function() {
 	    // always use a radix when using parseInt
@@ -43,8 +57,8 @@ function closeWindows(){
 
 	if (index_highest > 0){
 			e.style.display = "none";
-			/* Overlay is only present for loginbox which 
-			 * has z-index of 9000, so if we closed such a 
+			/* Overlay is only present for loginbox which
+			 * has z-index of 9000, so if we closed such a
 			 * window, hide the overlay and clear any values
 			 * as well.
 			 */
@@ -65,13 +79,13 @@ function changeCSS(cssFile, index)
 		newlink.setAttribute("rel", "stylesheet");
 		newlink.setAttribute("type", "text/css");
 		newlink.setAttribute("href", cssFile);
-		
+
 		document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
 //----------------------------------------------------------------------------------
 // loadJS: Using Jquery Dynamically Load external JS.
-//          Does not load again if previously loaded same file 
+//          Does not load again if previously loaded same file
 //----------------------------------------------------------------------------------
 
 var JSFiles=[];
@@ -79,20 +93,20 @@ var JSFiles=[];
 function loadJS(src) {
 		if(JSFiles[src]!="Loaded"){
 		   var jsLink = $("<script type='text/javascript' src='"+src+"'>");
-		   $("head").append(jsLink); 
+		   $("head").append(jsLink);
 		   JSFiles[src]="Loaded";
 		}else{
-				// Do nothing if already loaded 			
+				// Do nothing if already loaded
 		}
-}; 
- 
+};
+
 //----------------------------------------------------------------------------------
 // loadCSS: Using Jquery Dynamically Load external CSS
 //----------------------------------------------------------------------------------
 
 function loadCSS(href) {
 		var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
-		$("head").append(cssLink); 
+		$("head").append(cssLink);
 };
 
 //----------------------------------------------------------------------------------
@@ -119,7 +133,7 @@ function randomstring()
 //                Is called by editImpRows in codeviewer.js
 //----------------------------------------------------------------------------------
 
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
 //----------------------------------------------------------------------------------
 // saveDuggaResult: Saves the result of a dugga
@@ -130,13 +144,13 @@ function saveDuggaResult(citstr)
 		citstr=querystring['coursevers']+" "+citstr;
 		citstr=querystring['cid']+" "+citstr;
 		citstr+= "##!!##" + timeUsed;
-		citstr+= "##!!##" + stepsUsed;		
+		citstr+= "##!!##" + stepsUsed;
 		citstr+= "##!!##" + score;
 		hexstr="";
 		for(i=0;i<citstr.length;i++){
 				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 		}
-		
+
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 
 		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
@@ -154,7 +168,7 @@ function savequizResult(citstr)
 	citstr=querystring['moment']+" "+citstr;
 	citstr=querystring['coursevers']+" "+citstr;
 	citstr=querystring['cid']+" "+citstr;
-	AJAXService("SAVDU",{answer:citstr},"PDUGGA");	
+	AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 	alert('inlämnat');
 }
 
@@ -175,7 +189,7 @@ function changeURL(thisurl)
 function navigateExample(exampleno)
 {
 		surl=window.location.href;
-		surl=surl.substring(0,surl.lastIndexOf("/")); 
+		surl=surl.substring(0,surl.lastIndexOf("/"));
 		window.location.href = surl+"/codeviewer.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
 }
 
@@ -186,7 +200,7 @@ function navigateExample(exampleno)
 function navigateTo(prefix,file)
 {
 		surl=window.location.href;
-		surl=surl.substring(0,surl.lastIndexOf("/")); 
+		surl=surl.substring(0,surl.lastIndexOf("/"));
 		window.location.href = surl+prefix+file;
 }
 
@@ -212,8 +226,8 @@ function parseGet(){
 //----------------------------------------------------------------------------------
 
 function htmlEntities(str) {
-		
-	if (typeof str === "string"){					
+
+	if (typeof str === "string"){
 		befstr=str;
 		if(str!=undefined && str != null){
 			str=str.replace(/\&/g, '&amp;');
@@ -270,7 +284,7 @@ function AJAXService(opt,apara,kind)
 					para+="&"+key+"=";
 					var array = [];
 					for (var i = 0; i < apara[key].length; i++) {
-							var string = "["; 
+							var string = "[";
 							var row = [];
 							for (var j = 0; j < apara[key][i].length; j++) {
 									row.push(apara[key][i][j]);
@@ -281,16 +295,16 @@ function AJAXService(opt,apara,kind)
 					para += array;
 			}else{
 //					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}():|"\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
-			
+
 					// Concat the generated regex result to a string again.
 //					apara[key] = s.join("");
 					apara[key] = old;
-			
+
 					// Informs the user that his input contained illegal characters that were removed after parsing.
 					if(old != apara[key]) {
 						alert("Illegal characters removed in " + key);
 					}
-					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));		
+					para+="&"+key+"="+encodeURIComponent(htmlEntities(apara[key]));
 			}
 		}
 		if(apara[key] == "") {
@@ -298,7 +312,7 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
-	
+
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
@@ -442,16 +456,19 @@ function AJAXService(opt,apara,kind)
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
 		processLogin();
+
 	}
 }
 
 
 function processLogin() {
 
+
+
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
-		
+
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -462,22 +479,24 @@ function processLogin() {
 				opt: "LOGIN"
 			},
 			success:function(data) {
-				var result = JSON.parse(data);
+				var result = JSON.	parse(data);
 				if(result['login'] == "success") {
+					setExpireCookie();
 					$("#userName").html(result['username']);
 					$("#loginbutton").removeClass("loggedout");
 					$("#loginbutton").addClass("loggedin");
 
 					hideLoginPopup();
-					
+
+
 					$("#login #username").val("");
-					$("#login #password").val("");		
-					
+					$("#login #password").val("");
+
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
-					location.reload();				
+					location.reload();
 				}else{
 					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
@@ -488,7 +507,7 @@ function processLogin() {
 					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
-					
+
 			},
 			error:function() {
 				console.log("error");
@@ -505,7 +524,7 @@ function processLogout() {
 			urlDivided.pop();
 			urlDivided.pop();
 			var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
-			window.location.replace(newURL);			
+			window.location.replace(newURL);
 		},
 		error:function() {
 			console.log("error");
@@ -518,14 +537,14 @@ function showLoginPopup()
 	$("#loginBox").css("display","block");
 	$("#overlay").css("display","block");
 	$("#username").focus();
-		
+
 	// Reset input box color
 	$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
 	$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
-	
+
 	// Reset warning, if applicable
 	$("#login #message").html("<div class='alert danger'></div>");
-	
+
 	window.addEventListener("keypress", loginEventHandler, false);
 }
 
@@ -533,7 +552,7 @@ function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
 		$("#overlay").css("display","none");
-		
+
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -545,11 +564,14 @@ function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
 		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){processLogout();});	
+		$("#loginbutton").click(function(){processLogout();});
+		sessionExpireMessage();
 	}
+
 	else{
 		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){showLoginPopup();});		
+		$("#loginbutton").click(function(){showLoginPopup();});
+
 	}
 }
 
@@ -571,7 +593,7 @@ function showEmailPopup()
 	var receiptcemail ="";
 	$("#emailPopup").css("display","block");
 	$("#overlay").css("display","block");
-	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item 
+	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
 	document.getElementById('email').value = receiptcemail;
 }
 
@@ -586,7 +608,7 @@ function hideEmailPopup()
 //----------------------------------------------------------------------------------
 function sendReceiptEmail(){
 	var receipt = document.getElementById('receipt').value;
-	var email = $("#email").val();	
+	var email = $("#email").val();
 		if (email != ""){
 			localStorage.setItem("receiptcemail", email); //save value of input into a localStorage variable
 			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
@@ -613,6 +635,28 @@ function hideDuggaInfoPopup()
 }
 
 //----------------------------------------------------------------------------------
+// Timeout function, gives a prompt if the session is about to expire
+//----------------------------------------------------------------------------------
+function sessionExpireMessage() {
+
+	if(document.cookie.indexOf('session=expireC') > -1){
+		var intervalId = setInterval(function() {
+		console.log("test");
+		checkIfExpired();
+		}, 2000);
+	}
+
+	function checkIfExpired() {
+
+			if (document.cookie.indexOf('session=expireC') == -1){
+				alert('Session is about to expire in 30 minutes');
+				clearInterval(intervalId);
+			}
+
+		}
+	}
+
+//----------------------------------------------------------------------------------
 // A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
 //----------------------------------------------------------------------------------
 function loginButtonHover(status) {
@@ -630,14 +674,14 @@ function loginButtonHover(status) {
 		}, false);
 		document.getElementById("loginbutton").addEventListener("mouseout", function() {
 			document.getElementById("loginbuttonIcon").src="../Shared/icons/Man.svg";
-		}, false);		
+		}, false);
 	}
 }
 
 //----------------------------------------------------------------------------------
 // A function for redirecting the user to there UserManagementView
 //----------------------------------------------------------------------------------
-function redirectToUMV() 
+function redirectToUMV()
 {
 	window.location.replace("../UserManagementView/redirector.php");
 }
@@ -694,7 +738,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
 					if(cfield==filez[i].fieldnme){
-							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;											
+							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
 
 							tab+="<td>";
@@ -704,9 +748,9 @@ function findfilevers(filez,cfield,ctype,displaystate)
 
 							tab+="<td style='padding:4px;'>";
 							if (ctype == "link"){
-									tab+="<a href='"+filez[i].content+"' >"+filez[i].content+"</a>";	
+									tab+="<a href='"+filez[i].content+"' >"+filez[i].content+"</a>";
 							} else {
-									tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";	
+									tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";
 							}
 							tab+="</td><td style='padding:4px;'>";
 							tab+=filez[i].updtime;+"</td>";
@@ -720,21 +764,21 @@ function findfilevers(filez,cfield,ctype,displaystate)
 
 							tab+="<td>";
 							if(filez[i].feedback!=="UNK"){
-									tab+=filez[i].feedback.substring(0,64)+"&#8230;";						
+									tab+=filez[i].feedback.substring(0,64)+"&#8230;";
 							}else{
-									tab+="&nbsp;";												
+									tab+="&nbsp;";
 							}
 							tab+="</td>";
-							tab+="</tr>";		
+							tab+="</tr>";
 					}
-			}			
+			}
 		}
 		tab+="</tbody>"
-		tab+="</table>"			
+		tab+="</table>"
 
 		document.getElementById(cfield+"Prev").innerHTML=tab;
-} 
-	
+}
+
 
 function makeForm(cfield, ctype){
 
@@ -779,12 +823,12 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 {
 		clickedindex=fileindex;
 		var str ="";
-		
+
 		if(displaystate){
-				document.getElementById("markMenuPlaceholderz").style.display="block";		
+				document.getElementById("markMenuPlaceholderz").style.display="block";
 		}else{
 				document.getElementById("markMenuPlaceholderz").style.display="none";
-		} 
+		}
 
 		if (filetype === "text") {
 				str+="<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</textarea>";
@@ -793,14 +837,14 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 				if(window.location.protocol === "https:"){
 						filename=filename.replace("http://", "https://");
 				}else{
-						filename=filename.replace("https://", "http://");				
+						filename=filename.replace("https://", "http://");
 				}
-				str += '<iframe allowtransparency="true" style="background: #FFFFFF;" src="'+filename+'" width="100%" height="100%" />';			
+				str += '<iframe allowtransparency="true" style="background: #FFFFFF;" src="'+filename+'" width="100%" height="100%" />';
 		} else {
 		 		if (fileext === "pdf"){
-						str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />'; 			
+						str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />';
 		 		} else if (fileext === "zip" || fileext === "rar"){
-		 				str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>'; 			
+		 				str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>';
 		 		} else if (fileext === "txt"){
 		 				str+="<pre style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</pre>";
 		 		}
@@ -811,7 +855,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		} else {
 				document.getElementById("responseArea").innerHTML = "No feedback given.";
 		}
-		
+
 		$("#previewpopover").css("display", "block");
 }
 function displayDuggaStatus(answer,grade,submitted,marked){
@@ -825,7 +869,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			var tt = marked.split(/[- :]/);
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
-		
+
 		if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
 				str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga not yet submitted!</div>";
 		} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
@@ -835,7 +879,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		} else if (grade > 1) {
 				str+="<div class='StopLight GreenLight' style='margin:4px;'></div></div><div>Dugga marked as pass: "+marked+"</div>";
 		}
-		
+
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
