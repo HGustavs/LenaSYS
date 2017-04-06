@@ -62,8 +62,7 @@ pdoConnect();
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteItem();' />
-			<input style='margin-left:20px;display:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();' />
-			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' />
+			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateItem();' />
 		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
