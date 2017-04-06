@@ -966,7 +966,7 @@ function mouseupevt(ev){
 }
 function deleteObject(index){
   var canvas = document.getElementById("myCanvas");
-  canvas.style.cursor="default";
+    canvas.style.cursor="default";
   try{
     points[diagram[index].topLeft].x = -10;
     points[diagram[index].topLeft].y = -10;
@@ -982,8 +982,6 @@ function deleteObject(index){
     //Point does not exist
   }
   try{
-
-    // Will remove all the lines connected to the center of the deleted object
     for(i = 0; i < diagram.length; i++){
         if(!(diagram[i].symbolkind == 1)){
         var temp = true;
@@ -991,11 +989,12 @@ function deleteObject(index){
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
                         ((diagram[i].topLeft == diagram[index].connectorRight[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorRight[j].from))) {
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].from)||
+                        (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].to))){
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
-                            console.log(index + "a b ");
                         }
                         i--;
                         temp = false;
@@ -1007,11 +1006,12 @@ function deleteObject(index){
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
                         ((diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from))) {
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to))){
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
-                            console.log(index + "a b ");
                         }
                         i--;
                         temp = false;
@@ -1023,11 +1023,12 @@ function deleteObject(index){
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
                         ((diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from))) {
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorBottom[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to))) {
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
-                            console.log(index + "a b ");
                         }
                         i--;
                         temp = false;
@@ -1039,11 +1040,12 @@ function deleteObject(index){
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
                         ((diagram[i].topLeft == diagram[index].connectorTop[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].from))) {
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorTop[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].to))) {
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
-                            console.log(index + "a b ");
                         }
                         i--;
                         temp = false;
@@ -1052,6 +1054,7 @@ function deleteObject(index){
                 }
             }
         }
+        // Will remove all the lines connected to the center of the deleted object
         if (temp == true){
             if(diagram[i].symbolkind == 4 &&
                 (diagram[i].topLeft == diagram[index].centerpoint ||
