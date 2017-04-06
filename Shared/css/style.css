@@ -191,6 +191,10 @@ p {
     margin-right:2px;
 }
 
+.profile-element {
+	margin-top: 25px;
+}
+
 .sys{
     border-radius:6px;
     color:#775886;
@@ -432,6 +436,7 @@ p {
 		color: #612;
 }
 
+
 /* Submission table */
 #tableDivDialog{
     width: 100%;
@@ -448,6 +453,7 @@ p {
 .delButton{
     text-align: center;
 }
+
 
 /* --------------================################================-------------- *
  *                                    Header                                    *
@@ -1896,4 +1902,16 @@ span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
 					background-color:#fff;
 			}
 
+
+/* JQuery UI Complement for missing icons in the DatePicker */ 
+
+.ui-datepicker .ui-datepicker-next span {
+    background: url("../icons/PlayT.svg"); 
+    transform: rotate(0deg);
+}
+
+.ui-datepicker .ui-datepicker-prev span {
+    background: url("../icons/PlayT.svg"); 
+    transform: rotate(180deg);
+}
 /*end, styling for contribution.php*/

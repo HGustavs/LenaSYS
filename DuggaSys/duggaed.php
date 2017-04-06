@@ -67,8 +67,9 @@ pdoConnect();
 			<h3>Edit Variant</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
-		<div style='padding:5px;'>
+		<div style='padding:5px;display:flex;'>
 			<input type='hidden' id='vid' value='Toddler' />
+
 			<div id="leftDivDialog" style="width:67%;float:left;">
 				<div id="formDivDialog" style="float:left">
 					<!-- Instruction for assignment -->
@@ -82,11 +83,13 @@ pdoConnect();
 								<option value="pdf">PDF</option>
 							</select><br/>
 							<label for="filelink">Filelink:</label><input type="text" name="filelink" id="filelink"><br/>
+
 						</fieldset>
 					</div>
 					<!-- Submissions for dugga -->
 					<div class="inputwrapper" style="height:240px">
 						<div id="duggaSubmissionForm">
+
 							<fieldset style="width:90%;max-width:250px;">
 								<legend>New submission</legend>
 								<label for="name">Name:</label><input type="text" name="name" id="name" style="margin-bottom:3px"/><br/>
@@ -115,6 +118,7 @@ pdoConnect();
 			</div>
 			<!-- JSON and answer fields -->
 			<div id="rightDivDialog" style="width:33%;float:right;">
+
 				<div class='inputwrapper' style='height:170px'><span>Param:</span><textarea id='parameter' placeholder='Variant Param' rows="5" style="height:100px"></textarea></div>
 				<div class='inputwrapper' style='height:170px'><span>Answer:</span><textarea id='variantanswer' placeholder='Variant Param' rows="5" style="height:100px"></textarea></div>
 			</div>
