@@ -6,6 +6,7 @@ var renderId; // Used to store active rendering function
 var benchmarkData = performance.timing; // Will be updated after onload event
 
 var status = 0;
+var showing = 1;
 var score;
 var timeUsed;
 var stepsUsed;
@@ -14,25 +15,41 @@ var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
 function toggleloginnewpass(){
-
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
-		status++;
+		status= 1;
+		showing= 0;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
 		status= 0;
+		showing= 1;
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "block");
 		status= 1;
+		showing= 2;
 	}
 }
 
+//----------------------------------------------------------------------------------
+// Sets cookie that expires when there's 30 min left of session
+//----------------------------------------------------------------------------------
+
+function setExpireCookie(){
+
+	var expireDate = new Date();
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
+
+	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
+	console.log(expireDate);
+
+}
+//----------------------------------------------------------------------------------
 function closeWindows(){
 
 	var index_highest = 0;
@@ -74,7 +91,7 @@ function changeCSS(cssFile, index)
 		newlink.setAttribute("rel", "stylesheet");
 		newlink.setAttribute("type", "text/css");
 		newlink.setAttribute("href", cssFile);
-		
+
 		document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
 }
 
@@ -94,7 +111,7 @@ function loadJS(src) {
 				// Do nothing if already loaded
 		}
 };
- 
+
 //----------------------------------------------------------------------------------
 // loadCSS: Using Jquery Dynamically Load external CSS
 //----------------------------------------------------------------------------------
@@ -145,7 +162,7 @@ function saveDuggaResult(citstr)
 		for(i=0;i<citstr.length;i++){
 				hexstr+=citstr.charCodeAt(i).toString(16)+" ";
 		}
-		
+
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
 		
 		
@@ -259,7 +276,6 @@ function parseGet(){
 //----------------------------------------------------------------------------------
 
 function htmlEntities(str) {
-		
 	if (typeof str === "string"){
 		befstr=str;
 		if(str!=undefined && str != null){
@@ -328,11 +344,11 @@ function AJAXService(opt,apara,kind)
 					para += array;
 			}else{
 //					var s = apara[key].match(/[a-zA-ZäöåÄÖÅ0-9@=#!{}():|"\/\&\?\. \_ \, \- \: \* \[ \] \s]*/gi);
-			
+
 					// Concat the generated regex result to a string again.
 //					apara[key] = s.join("");
 					apara[key] = old;
-			
+
 					// Informs the user that his input contained illegal characters that were removed after parsing.
 					if(old != apara[key]) {
 						alert("Illegal characters removed in " + key);
@@ -345,7 +361,7 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
-	
+
 	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
@@ -488,7 +504,14 @@ function AJAXService(opt,apara,kind)
 //Will handle enter key pressed when loginbox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
-		processLogin();
+
+		if(showing == 1){
+			processLogin();
+		}else if(showing == 0){
+			processResetPasswordCheckUsername();
+		}else if(showing == 2){
+			processResetPasswordCheckSecurityAnswer();
+		}
 	}
 }
 
@@ -506,11 +529,7 @@ function processResetPasswordCheckUsername() {
 				opt: "GETQUESTION"
 			},
 			success:function(data) {
-				console.log("hai there");
-				console.log(data);
-				var result = JSON.parse(data);
-				console.log(result)
-				
+				var result = JSON.parse(data);				
 				if(result['getname'] == "success") {
 					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 					status = 2;
@@ -519,7 +538,7 @@ function processResetPasswordCheckUsername() {
 					console.log("Failed");
 			}
 		}
-		});
+	});
 }
 			
 
@@ -527,15 +546,39 @@ function processResetPasswordCheckUsername() {
 function processResetPasswordCheckSecurityAnswer() {
 
 	/*This function is supposed to be resposible for checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed*/
+	var username = $("#newpassword #username").val();
+	var securityquestionanswer = $("#showsecurityquestion #answer").val();
 
-}
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				securityquestionanswer: securityquestionanswer,
+				opt: "CHECKANSWER"
+			},
+			success:function(data) {
+				var result = JSON.parse(data);
+				
+				if(result['checkanswer'] == "success") {
+					console.log("The answer was correct");
+					//do something
+				}else{
+					console.log("Failed");
+			}
+		}
+	});
+}	
+
 
 function processLogin() {
+
+
 
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
-		
+
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -546,17 +589,18 @@ function processLogin() {
 				opt: "LOGIN"
 			},
 			success:function(data) {
-				var result = JSON.parse(data);
+				var result = JSON.	parse(data);
 				if(result['login'] == "success") {
+					setExpireCookie();
 					$("#userName").html(result['username']);
 					$("#loginbutton").removeClass("loggedout");
 					$("#loginbutton").addClass("loggedin");
 
 					hideLoginPopup();
-					
+
+
 					$("#login #username").val("");
 					$("#login #password").val("");
-					
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
@@ -569,10 +613,10 @@ function processLogin() {
 					} else {
 						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
 					}
-					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
+					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
-					
+
 			},
 			error:function() {
 				console.log("error");
@@ -602,14 +646,14 @@ function showLoginPopup()
 	$("#loginBox").css("display","block");
 	$("#overlay").css("display","block");
 	$("#username").focus();
-		
+
 	// Reset input box color
 	$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
 	$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
-	
+
 	// Reset warning, if applicable
 	$("#login #message").html("<div class='alert danger'></div>");
-	
+
 	window.addEventListener("keypress", loginEventHandler, false);
 }
 
@@ -617,7 +661,7 @@ function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
 		$("#overlay").css("display","none");
-		
+
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -630,7 +674,9 @@ function setupLoginLogoutButton(isLoggedIn){
 	if(isLoggedIn == "true"){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){processLogout();});
+		sessionExpireMessage();
 	}
+
 	else{
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){showLoginPopup();});
@@ -695,6 +741,28 @@ function hideDuggaInfoPopup()
 		startDuggaHighScore();
 	}
 }
+
+//----------------------------------------------------------------------------------
+// Timeout function, gives a prompt if the session is about to expire
+//----------------------------------------------------------------------------------
+function sessionExpireMessage() {
+
+	if(document.cookie.indexOf('sessionEndTime=expireC') > -1){
+		var intervalId = setInterval(function() {
+		//console.log("test");
+		checkIfExpired();
+		}, 2000);
+	}
+
+	function checkIfExpired() {
+
+			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
+				alert('Session is about to expire in 30 minutes');
+				clearInterval(intervalId);
+			}
+
+		}
+	}
 
 //----------------------------------------------------------------------------------
 // A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
@@ -818,7 +886,6 @@ function findfilevers(filez,cfield,ctype,displaystate)
 
 		document.getElementById(cfield+"Prev").innerHTML=tab;
 }
-	
 
 function makeForm(cfield, ctype){
 
@@ -863,7 +930,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 {
 		clickedindex=fileindex;
 		var str ="";
-		
+
 		if(displaystate){
 				document.getElementById("markMenuPlaceholderz").style.display="block";
 		}else{
@@ -895,7 +962,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 		} else {
 				document.getElementById("responseArea").innerHTML = "No feedback given.";
 		}
-		
+
 		$("#previewpopover").css("display", "block");
 }
 function displayDuggaStatus(answer,grade,submitted,marked){
@@ -909,7 +976,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 			var tt = marked.split(/[- :]/);
 			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
 		}
-		
+
 		if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
 				str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga not yet submitted!</div>";
 		} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
@@ -919,7 +986,7 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		} else if (grade > 1) {
 				str+="<div class='StopLight GreenLight' style='margin:4px;'></div></div><div>Dugga marked as pass: "+marked+"</div>";
 		}
-		
+
 		str+="</div>";
 		$("#duggaStatus").remove();
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
