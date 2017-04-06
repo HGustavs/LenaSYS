@@ -11,7 +11,7 @@
  		var pathC=new Path;
 
  		// Add segments to paths
- 	/*	pathA.addsegment(1,0,1);
+ 		pathA.addsegment(1,0,1);
  		pathA.addsegment(1,1,3);
  		pathA.addsegment(1,3,2);
  		pathA.addsegment(1,2,0);
@@ -25,7 +25,7 @@
  		pathB.addsegment(1,17,4);
  		pathB.addsegment(1,4,5);
  		pathB.addsegment(1,5,18);
-*/
+
  		pathC.addsegment(1,10,11);
  		pathC.addsegment(1,11,13);
  		pathC.addsegment(1,13,12);
@@ -113,6 +113,9 @@
  		erEntityA.connectorTop.push({from:41,to:38});
 
  		// Add all elements to diagram
+     diagram.push(erattributeRelA);
+     diagram.push(erattributeRelB);
+     diagram.push(erattributeRelC);
  		diagram.push(pathA);
  		diagram.push(pathB);
  		diagram.push(pathC);
@@ -124,10 +127,8 @@
  		diagram.push(erAttributeD);
  		diagram.push(erAttributeE);
  		diagram.push(erEntityA);
- 		diagram.push(erattributeRelA);
- 		diagram.push(erattributeRelB);
- 		diagram.push(erattributeRelC);
- 		diagram.push(erattributeRelD);
- 		diagram.push(erattributeRelE);
+
+     diagram.push(erattributeRelD);
+     diagram.push(erattributeRelE);
 
  }

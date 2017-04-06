@@ -10,7 +10,7 @@ pdoConnect();
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome = 1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Section Editor</title>
 
@@ -23,7 +23,7 @@ pdoConnect();
 	<script src="diagram.js"></script>
 	<script src="diagram_symbol.js"></script>
 	<script src="diagram_figure.js"></script>
-	 <script src="diagram_example.js"></script>
+    <script src="diagram_example.js"></script>
 
    <style>
 
@@ -31,7 +31,7 @@ pdoConnect();
 
 </head>
 <!-- Reads the content from the js-files -->
-<body onload="initcanvas(); Symbol();">
+<body onload="initcanvas(); Symbol(); canvassize();">
 
 	<?php
 		$noup="COURSE";
@@ -41,11 +41,22 @@ pdoConnect();
 	<!-- content START -->
 	<div id="content">
 
-	      <button onclick="classmode();">create class</button><button onclick="attrmode();">create attribute</button><br>
-	      <canvas id="myCanvas" width="600" height="600" onmousemove="mousemoveevt(event,this);" onmousedown="mousedownevt(event);" onmouseup="mouseupevt(event);"></canvas>
-	      <div id="consloe" style="position:fixed;left:0px;right:0px;bottom:0px;height:144px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;">Application console</div>
+
 
 	</div>
+
+	<!-- The Appearance menu. Default state is display: none; -->
+	<div id="appearance" class='loginBox' style='display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Apperance</h3>
+			<div onclick='closeAppearanceDialogMenu()'>x</div>
+		</div>
+		<div class='table-wrap'>
+			<div id="f01">
+            </div>
+		</div>
+	</div>
+
 	<!-- content END -->
 
 	<?php
