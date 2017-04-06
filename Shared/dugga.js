@@ -500,7 +500,13 @@ function processResetPasswordCheckUsername() {
 					status = 2;
 					toggleloginnewpass();
 				}else{
-					console.log("Failed");
+					console.log("Username was not found OR User does not have a question OR User might be a teacher");
+					if(typeof result.reason != "undefined") {
+						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
+					} else {
+						$("#newpassword #message2").html("<div class='alert danger'>Wrong answer</div>");
+					}
+					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
 		}
 	});
@@ -528,8 +534,15 @@ function processResetPasswordCheckSecurityAnswer() {
 				if(result['checkanswer'] == "success") {
 					console.log("The answer was correct");
 					//do something
+					$("#showsecurityquestion #displaysecurityquestion").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
-					console.log("Failed");
+					console.log("Wrong answer");
+					if(typeof result.reason != "undefined") {
+						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
+					} else {
+						$("#showsecurityquestion #message3").html("<div class='alert danger'>Wrong answer</div>");
+					}
+					$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
 		}
 	});

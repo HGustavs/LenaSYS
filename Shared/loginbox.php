@@ -14,7 +14,7 @@
 				<table>
 					<tr>
 						<td>
-							<label class="text">Login name:</label>
+							<label class="text">Username:</label>
 						</td>
 					</tr>
 					<tr>
@@ -63,12 +63,12 @@
 				<table>
 					<tr>
 						<td>
-							<label class="text">username:</label>
+							<label class="text">Username:</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input id="username" class='form-control textinput' type='text' placeholder="c13andfi" autofocus >
+							<input id="username" class='form-control textinput' type='text' placeholder="Username" autofocus >
 						</td>
 					</tr>
 	
