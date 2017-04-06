@@ -1064,14 +1064,44 @@ input.large-button {
     line-height:48px !important;
 }
 
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-size: 16px;}
+.list {
+    width:100%;
+    padding:1px;
+    border-left:2px solid #dbd0d8;
+    border-bottom:2px solid #dbd0d8;
+    margin-top:20px;
+    font-size: 16px;
+}
 
-.list tbody tr:nth-child(odd) { background-color: #ccc; }
-.list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
-.list th {background:#614875; color:#fff;line-height:28px; font-weight: bold;}
+.list tbody tr:nth-child(odd) { 
+    background-color: #dad8db; 
+}
 
-.innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
-.innertable td {color:#000;line-height:28px;border:none;}
+.list td {
+    border-right:2px solid #dbd0d8; 
+    line-height:28px;
+    padding-left:8px;
+}
+.list th {
+    background:#614875;
+    color:#fff;
+    line-height:28px;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.innertable {
+    background:#fff;
+    box-shadow:2px 3px 2px #a09098 inset;
+    border-top: 2px solid #dbd0d8;
+    border-bottom: 2px solid #dbd0d8;
+}
+
+.innertable td {
+    color:#000;
+    line-height:28px;
+    border:none;
+}
 
 .list tr:hover { /*background-color: #dbd0d8;*/ }
 
@@ -1289,11 +1319,11 @@ input.large-button {
 	box-sizing: border-box;
 }
 .fumo {
-	border-bottom:2px solid #614875;
 	clear:both;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+    background-color: #eae8eb;
 }
 /* End DuggaSys resulted*/
 /**************************/
