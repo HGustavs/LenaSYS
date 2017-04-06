@@ -1,4 +1,4 @@
 courses/
-
+!install/courses/
 sftp-config.json
 .DS_Store

@@ -45,6 +45,11 @@
   url('../fonts/web-ttf/ubuntu-mono-webfont.ttf') format('truetype'),
   url('../fonts/svg/ubuntu-mono-webfont.svg#webfont') format('svg');
 }
+
+@font-face{
+  font-family: 'Roboto';
+  src: url('../fonts/web-ttf/Roboto-Regular.ttf');
+}
 /* --------------================################================-------------- *
  *                                   Generics                                   *
  * --------------================################================-------------- */
@@ -54,7 +59,7 @@ html, body {
     border: 0;
 }
 body {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 .listbar{
@@ -214,6 +219,7 @@ p {
 }
 
 #Courselist a{
+    color: #775886;
     text-decoration:none;
 }
 
@@ -271,6 +277,7 @@ p {
     color:#434343;
     display: block;
     padding-top:1px;
+    border-radius: 5px;
 }
 
 .item {
@@ -282,6 +289,7 @@ p {
 #Sectionlist .section {
     color:#fff;
     background-color: #927b9e;
+    border-radius: 10px;
 }
 
 #Sectionlist .header {
@@ -300,6 +308,7 @@ p {
     font-size: 12pt;
     padding-top:5px;
     min-height:26px;
+    border-radius: 5px;
 }
 
 #Sectionlist .spacerLeft {
@@ -332,10 +341,10 @@ p {
     text-align: center;
     color: #fff;
     display: block;
-/*    font-family: Calibri,Sans-Serif;*/
     font-size:18pt;
     background-color: #614875;
     clear:both;
+    border-radius: 5px;
 }
 
 .item a {
@@ -1080,14 +1089,44 @@ input.large-button {
     
 }
 
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-size: 16px;}
+.list {
+    width:100%;
+    padding:1px;
+    border-left:2px solid #dbd0d8;
+    border-bottom:2px solid #dbd0d8;
+    margin-top:20px;
+    font-size: 16px;
+}
 
 .list tbody tr:nth-child(odd) { /*background-color: #ccc;*/}
-.list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
-.list th {background:#614875; color:#fff;line-height:28px; font-weight: bold;}
 
 .innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
 .innertable td {color:#000;line-height:28px;border:none;text-align:left !important;}
+.list td {
+    border-right:2px solid #dbd0d8; 
+    line-height:28px;
+    padding-left:8px;
+}
+.list th {
+    background:#614875;
+    color:#fff;
+    line-height:28px;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.innertable {
+    background:#fff;
+    box-shadow:2px 3px 2px #a09098 inset;
+    border-top: 2px solid #dbd0d8;
+    border-bottom: 2px solid #dbd0d8;
+}
+
+.innertable td {
+    color:#000;
+    line-height:28px;
+    border:none;
+}
 
 .list tr:hover { /*background-color: #dbd0d8;*/ }
 
@@ -1323,11 +1362,11 @@ span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
 	box-sizing: border-box;
 }
 .fumo {
-	border-bottom:2px solid #614875;
 	clear:both;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+    background-color: #eae8eb;
 }
 /* End DuggaSys resulted*/
 /**************************/
@@ -1852,7 +1891,7 @@ span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
 			}
 
 			.contrib{
-					font-family: Arial Narrow,Arial,sans-serif;
+					font-family: Roboto,Arial Narrow,Arial,sans-serif;
 					font-size:14px;
 
 					padding-bottom:10px;
@@ -1885,7 +1924,7 @@ span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
 
 			table {
 			    border-collapse: collapse;
-			    font-family: Arial Narrow;
+			    font-family: Roboto,Arial Narrow;
 			}
 
 			.fumho td{

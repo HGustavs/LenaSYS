@@ -78,6 +78,7 @@
 			<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
 			<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>	
 			<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
+			<div class='inputwrapper'><span>Teacher:</span><select  id='teacher' value='Teacher' ></select></div>
 			<div class='inputwrapper'><span>Study program, Start year:</span><input class='textinput' type='text' id='class' placeholder='WEBUG, H15' /></div>
 		</div> 
 		<div style='padding:5px;'>
