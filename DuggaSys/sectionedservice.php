@@ -75,10 +75,15 @@ if(checklogin()){
 				$debug="Error updating entries";
 			}
 		}else if(strcmp($opt,"NEW")===0){
-			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator) VALUES(:cid,:cvs,'New Item','', '0', '100','0',:usrid)");
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comment) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment)");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
+			$query->bindParam(':entryname', $sectname);
+			$query->bindParam(':link', $link);
+			$query->bindParam(':kind', $kind);
+			$query->bindParam(':comment', $comment);
+			$query->bindParam(':visible', $visibility);
 			
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
