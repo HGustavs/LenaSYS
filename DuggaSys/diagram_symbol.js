@@ -169,25 +169,30 @@ function Symbol(kind) {
   //--------------------------------------------------------------------
   // adjust
   // Moves midpoint or other fixed point to geometric center of object again
+  // Restricts resizing for classes
   //--------------------------------------------------------------------
 
-  this.adjust = function ()
-  {
-    var x1=points[this.topLeft].x;
-    var y1=points[this.topLeft].y;
-    var hw=(points[this.bottomRight].x-x1)*0.5;
-    var hh=(points[this.bottomRight].y-y1)*0.5;
+  this.adjust = function ()
+  {
+    var x1=points[this.topLeft].x;
+    var y1=points[this.topLeft].y;
+    var hw=(points[this.bottomRight].x-x1)*0.5;
+    var hh=(points[this.bottomRight].y-y1)*0.5;
+    if(this.symbolkind==2||this.symbolkind==3){
+      points[this.centerpoint].x=x1+hw;
+      points[this.centerpoint].y=y1+hh;
+    }else if(this.symbolkind==1){
+      // Place middle divider point in middle between x1 and y1
+      points[this.middleDivider].x=x1+hw;
+      // If middle divider is below y2 set y2 to middle divider
+      if(points[this.middleDivider].y>points[this.bottomRight].y) points[this.bottomRight].y=points[this.middleDivider].y;
+      // If bottom right is below 0 set bottom right to top left
+      if(hw<0) points[this.bottomRight].x=points[this.topLeft].x+150;
+      // If top left is below middle divider set top left to middle divider
+      if(points[this.topLeft].y>points[this.middleDivider].y) points[this.topLeft].y=points[this.middleDivider].y;
+    }
+  }
 
-    if(this.symbolkind==2||this.symbolkind==3){
-      points[this.centerpoint].x=x1+hw;
-      points[this.centerpoint].y=y1+hh;
-    }else if(this.symbolkind==1){
-      // Place middle divider point in middle between x1 and y1
-      points[this.middleDivider].x=x1+hw;
-      // If middle divider is below y2 set y2 to middle divider
-      if(points[this.middleDivider].y>points[this.bottomRight].y) points[this.bottomRight].y=points[this.middleDivider].y;
-    }
-  }
 
   //--------------------------------------------------------------------
   // sortConnector
