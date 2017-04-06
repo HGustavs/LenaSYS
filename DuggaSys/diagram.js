@@ -883,28 +883,9 @@ function mouseupevt(ev){
 			p1=points.addpoint(sx,sy,false);
 			p2=points.addpoint(cx,cy,false);
 		}
-		console.log(uimode+md);
-		if(uimode=="CreateFigure"&& md==4){
-			p2=null;
-			if(canFigure==true){
-				p2=p1;
-				if(activePoint!=null){
-					console.log(activePoint);
-					p1=activePoint;
-				}else{
-					p1=points.addpoint(cx,cy,false);
-				}
-				var figurePath = new Path;
-				diagram.push(drawSegment(figurePath, p1, p2));
-			}
-			else{
-					p1=points.addpoint(cx,cy,false);
-				canFigure=true;
-			}
-		}else{
-			canFigure=false;
-		}
 
+		createFigure();
+		
 		if(uimode=="CreateClass"&&md==4){
 				classB = new Symbol(1);
 				classB.name="New"+diagram.length;
