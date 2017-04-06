@@ -968,6 +968,10 @@ function mouseupevt(ev){
 function deleteObject(index){
   var canvas = document.getElementById("myCanvas");
   canvas.style.cursor="default";
+      points[diagram[index].topLeft] = waldoPoint;
+      points[diagram[index].bottomRight] = waldoPoint;
+      points[diagram[index].centerpoint] = waldoPoint;
+      points[diagram[index].middleDivider] = waldoPoint;
     for(i = 0; i < diagram.length; i++){
         if(!(diagram[i].symbolkind == 1)){
             var temp = true;
