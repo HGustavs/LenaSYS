@@ -15,7 +15,6 @@ pdoConnect();
 	<title>Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<!--<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">-->
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
@@ -58,6 +57,7 @@ pdoConnect();
 			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-weight:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
+			<div id='inputwrapper-comment' class='inputwrapper'><span>Comment for deadline:</span><input type='text' class='textinput' id='deadlinecomment' value='deadlinecomment' placeholder="Deadline comment" /></div>
 		</div>
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>

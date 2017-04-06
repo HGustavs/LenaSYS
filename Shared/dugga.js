@@ -6,24 +6,34 @@ var renderId; // Used to store active rendering function
 var benchmarkData = performance.timing; // Will be updated after onload event
 
 var status = 0;
+var showing = 1;
 var score;
 var timeUsed;
 var stepsUsed;
 var inParams = "UNK";;
 var MAX_SUBMIT_LENGTH = 5000;
+var querystring=parseGet();
 
 function toggleloginnewpass(){
-
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
-		status++;
+		$("#showsecurityquestion").css("display", "none");
+		status= 1;
+		showing= 0;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
+		$("#showsecurityquestion").css("display", "none");
 		status= 0;
+		showing= 1;
+	}else if(status == 2){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "block");
+		status= 1;
+		showing= 2;
 	}
-
 }
 
 //----------------------------------------------------------------------------------
@@ -152,11 +162,49 @@ function saveDuggaResult(citstr)
 		}
 
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-
-		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
+		
+		
+		
 		document.getElementById('receipt').value = hexstr;
-		document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+		
+
+		var dateTime = new Date(); // Get the current date and time
+
+		//Get the comment
+ 		var comment = querystring['comment'];
+		
+
+		var deadline = querystring['deadline']; //Get deadlinedate from URL
+		
+
+		Number.prototype.padLeft = function(base,chr){
+			var  len = (String(base || 10).length - String(this).length)+1;
+			return len > 0? new Array(len).join(chr || '0')+this : this;
+		}
+		
+		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');	
+		
+		if(deadline > dateTimeFormat){	//Check if deadline has past
+			
+			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+
+		}
+		else{ //Check if deadline has past
+			
+			if(comment == "UNK" || comment == "undefined"){
+ 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
+ 			}
+ 			else{
+ 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>\n\n"+comment+"\n\n</p>";
+ 			}
+			
+		}
+		
+		//alert("Kvitto - Duggasvar\n\n"+"\""+hexstr+"\"\n\nTeckensträngen ovan är ditt kvitto på att duggan har lämnats in.\n\nSpara kvittot på ett säkert ställe.");
+		//}
+		
 		showReceiptPopup();
+	
 }
 
 //----------------------------------------------------------------------------------
@@ -373,7 +421,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['deadlinecomment']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedSection
 			});
@@ -455,10 +503,71 @@ function AJAXService(opt,apara,kind)
 //Will handle enter key pressed when loginbox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
-		processLogin();
 
+		if(showing == 1){
+			processLogin();
+		}else if(showing == 0){
+			processResetPasswordCheckUsername();
+		}else if(showing == 2){
+			processResetPasswordCheckSecurityAnswer();
+		}
 	}
 }
+
+function processResetPasswordCheckUsername() {
+
+	/*This function is supposed to get the security question from the database*/
+
+	var username = $("#newpassword #username").val();
+	
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				opt: "GETQUESTION"
+			},
+			success:function(data) {
+				var result = JSON.parse(data);				
+				if(result['getname'] == "success") {
+					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
+					status = 2;
+					toggleloginnewpass();
+				}else{
+					console.log("Failed");
+			}
+		}
+	});
+}
+			
+
+
+function processResetPasswordCheckSecurityAnswer() {
+
+	/*This function is supposed to be resposible for checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed*/
+	var username = $("#newpassword #username").val();
+	var securityquestionanswer = $("#showsecurityquestion #answer").val();
+
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				securityquestionanswer: securityquestionanswer,
+				opt: "CHECKANSWER"
+			},
+			success:function(data) {
+				var result = JSON.parse(data);
+				
+				if(result['checkanswer'] == "success") {
+					console.log("The answer was correct");
+					//do something
+				}else{
+					console.log("Failed");
+			}
+		}
+	});
+}	
 
 
 function processLogin() {
@@ -504,7 +613,7 @@ function processLogin() {
 					} else {
 						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
 					}
-					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
+					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
 

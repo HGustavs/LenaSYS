@@ -13,7 +13,7 @@ pdoConnect();
 	<title>Dugga editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+  <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -22,20 +22,20 @@ pdoConnect();
 	<script src="duggaed.js"></script>
 </head>
 <body>
-	
+
 	<!-- Navigation Header START -->
-	<?php 
+	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
 	<!-- Navigation Header END -->
-		
+
 	<!-- Content START -->
 	<div id="content"></div>
 	<!-- Content END -->
-	
+
 	<!-- Login Dialog START -->
-	<?php 
+	<?php
 		include '../Shared/loginbox.php';
 	?>
 	<!-- Login Dialog END -->
@@ -60,23 +60,54 @@ pdoConnect();
 		</div>
 	</div>
 	<!-- Edit Dugga Dialog END -->
-	
+
 	<!-- Edit Variant Dialog START -->
 	<div id='editVariant' class='loginBox' style='width:80%; left:20%; display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Variant</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
-		<div style='padding:5px;'>
+		<div style='padding:5px;display:flex;'>
 			<input type='hidden' id='vid' value='Toddler' />
-			<div class='inputwrapper' style='height:100px'><span>Param:</span><textarea id='parameter' placeholder='Variant Param'></textarea></div>
-			<div class='inputwrapper' style='height:100px'><span>Answer:</span><textarea id='variantanswer' placeholder='Variant Param'></textarea></div>
-		</div>	
+			<div id="leftDivDialog">
+				<!-- Instruction for assignment -->
+				<div class="inputwrapper" style="height:80px">
+					<fieldset style="width:90%">
+						<legend>Instruction file</legend>
+						<div style="display:flex;flex-wrap:nowrap;flex-direction:row;">
+							<select name="type" id="type" style="flex:1">
+								<option value="md">Markdown</option>
+								<option value="html">HTML</option>
+								<option value="pdf">PDF</option>
+							</select>
+							<input type="text" name="filelink" id="filelink" placeholder="File link" style="flex:2;margin-left:5px;">
+						</div>
+					</fieldset>
+				</div>
+				<!-- Submissions for dugga -->
+				<div class="inputwrapper" style="height:240px">
+					<div id="duggaSubmissionForm">
+						<fieldset style="width:90%">
+						<legend>Submissions types</legend>
+							<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;">
+							</div>
+						</fieldset>
+						<button type="button" name="addfieldname" id="addfieldname">Add row</button>
+						<button type="button" name="createjson" id="createjson">Create JSON</button>
+					</div>
+				</div>
+			</div>
+			<!-- JSON and answer fields -->
+			<div id="rightDivDialog">
+				<div class='inputwrapper' style='height:170px'><span>Param:</span><textarea id='parameter' placeholder='Variant Param' rows="5" style="height:100px"></textarea></div>
+				<div class='inputwrapper' style='height:170px'><span>Answer:</span><textarea id='variantanswer' placeholder='Variant Param' rows="5" style="height:100px"></textarea></div>
+			</div>
+		</div>
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
 			<input id="toggleVariantButton" style='float:left;' class='submit-button' type='button' value='Disable' onclick='toggleVariant();' />
 			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();' />
-		</div>	
+		</div>
 	</div>
 	<!-- Edit Variant Dialog END -->
 
@@ -88,6 +119,6 @@ pdoConnect();
 		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"></div>
 	</div>
 	<!-- Result Dialog END -->
-	
+
 </body>
 </html>
