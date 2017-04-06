@@ -89,7 +89,7 @@ pdoConnect();
 					<div class="inputwrapper" style="height:240px">
 						<div id="duggaSubmissionForm">
 							<fieldset style="width:90%">
-							<legend>Submissions types</legend>
+								<legend>Submissions types</legend>
 								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;">
 								</div>
 							</fieldset>
