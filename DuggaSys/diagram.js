@@ -967,93 +967,88 @@ function mouseupevt(ev){
 }
 function deleteObject(index){
   var canvas = document.getElementById("myCanvas");
-                        (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorRight[j].to))){
   canvas.style.cursor="default";
-  points[diagram[index].topLeft] = waldoPoint;
-  points[diagram[index].bottomRight] = waldoPoint;
-  points[diagram[index].centerpoint] = waldoPoint;
-  points[diagram[index].middleDivider] = waldoPoint;
     for(i = 0; i < diagram.length; i++){
         if(!(diagram[i].symbolkind == 1)){
-        var temp = true;
+            var temp = true;
             for (var j = 0; j < (diagram[index].connectorRight.length ); j++) {
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
-                        ((diagram[i].topLeft == diagram[index].connectorRight[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorRight[j].from)||
+                        (diagram[i].topLeft == diagram[index].connectorRight[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].to)) {
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
                         }
                         i--;
-                        j = diagram[index].connectorRight.length;
                         temp = false;
+                        j = diagram[index].connectorRight.length;
                     }
                 }
-            for (var j = 0; j < (diagram[index].connectorLeft.length ); j++) {
             }
+            for (var j = 0; j < (diagram[index].connectorLeft.length ); j++) {
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
-                        ((diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
-                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
+                        (diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
                         diagram[i].bottomRight == diagram[index].connectorLeft[j].from) ||
-                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to))){
-                        if (index > i) {
+                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to)) {
                         diagram.splice(i, 1);
+                        if (index > i) {
                             index--;
-                        i--;
                         }
+                        i--;
                         temp = false;
                         j = diagram[index].connectorLeft.length;
                     }
-            }
                 }
+            }
             for (var j = 0; j < (diagram[index].connectorBottom.length ); j++) {
                 if (temp == true) {
                     if (diagram[i].symbolkind == 4 &&
-                        ((diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
+                        (diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
                         diagram[i].bottomRight == diagram[index].connectorBottom[j].from) ||
                         (diagram[i].topLeft == diagram[index].connectorBottom[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to))) {
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to)) {
                         diagram.splice(i, 1);
                         if (index > i) {
                             index--;
                         }
                         i--;
                         temp = false;
-                    }
                         j = diagram[index].connectorBottom.length;
+                    }
                 }
             }
             for (var j = 0; j < (diagram[index].connectorTop.length ); j++) {
                 if (temp == true) {
-                        ((diagram[i].topLeft == diagram[index].connectorTop[j].from ||
                     if (diagram[i].symbolkind == 4 &&
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].from) ||
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].to))) {
+                        (diagram[i].topLeft == diagram[index].connectorTop[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].from)||
                         (diagram[i].topLeft == diagram[index].connectorTop[j].to ||
-                        if (index > i) {
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].to)) {
                         diagram.splice(i, 1);
+                        if (index > i) {
                             index--;
-                        i--;
                         }
+                        i--;
                         temp = false;
                         j = diagram[index].connectorTop.length;
-                }
                     }
+                }
             }
         }
-        // Will remove all the lines connected to the center of the deleted object
         if (temp == true){
+            if(diagram[i].symbolkind == 4 &&
                 (diagram[i].topLeft == diagram[index].centerpoint ||
                 diagram[i].bottomRight == diagram[index].centerpoint)) {
                 if (index > i) {
                     index--;
                 }
-                i--;
                 diagram.splice(i, 1);
-            if(diagram[i].symbolkind == 4 &&
+                i--;
             }
         }
     }
