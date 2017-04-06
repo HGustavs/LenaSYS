@@ -436,9 +436,22 @@ p {
 		color: #612;
 }
 
-/* Instruction and submission of dugga */
-#leftDivDialog, #rightDivDialog{
-    width: 49%;
+
+/* Submission table */
+#tableDivDialog{
+    width: 100%;
+    float: right;
+    margin-right: 10px;
+    width: 63%;
+}
+
+#tableDivDialog th{
+    text-align: left;
+    padding-right: 8px;
+}
+
+.delButton{
+    text-align: center;
 }
 
 
@@ -1063,16 +1076,18 @@ input.large-button {
     width:160px !important;
     height:48px !important;
     line-height:48px !important;
+    
+    
 }
 
 .list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-size: 16px;}
 
-.list tbody tr:nth-child(odd) { background-color: #ccc; }
+.list tbody tr:nth-child(odd) { /*background-color: #ccc;*/}
 .list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
 .list th {background:#614875; color:#fff;line-height:28px; font-weight: bold;}
 
 .innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
-.innertable td {color:#000;line-height:28px;border:none;}
+.innertable td {color:#000;line-height:28px;border:none;text-align:left !important;}
 
 .list tr:hover { /*background-color: #dbd0d8;*/ }
 
@@ -1083,6 +1098,24 @@ input.large-button {
 .last {
     width:110px;
 }
+
+.list#testTable td{padding:8px; text-align:center;border:none;}
+.list#testTable th{line-height:45px; box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);}
+.list#testTable tr{line-height:45px;}
+
+.list#testTable .variantInfo {display:none;}
+
+.list#testTable input, .list#testTable select, .list#testTable label {
+    padding:5px;
+}
+
+.selectedtr {border-bottom:none !important;}
+
+.list#testTable input{border-width: 2px !important; border-style: inset !important;}
+
+#testinnertable {background:#fff;box-shadow:none;border-top: none;border-bottom: none;}
+
+span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
 
 .markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8; font-family: hack,"Lucida Console", Monaco, monospace;}
 
@@ -1869,6 +1902,7 @@ input.large-button {
 					background-color:#fff;
 			}
 
+
 /* JQuery UI Complement for missing icons in the DatePicker */ 
 
 .ui-datepicker .ui-datepicker-next span {
@@ -1880,5 +1914,4 @@ input.large-button {
     background: url("../icons/PlayT.svg"); 
     transform: rotate(180deg);
 }
-
 /*end, styling for contribution.php*/
