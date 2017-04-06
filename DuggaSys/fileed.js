@@ -43,6 +43,10 @@ $(document).on('click','thead',function(){
 	$('.arrowComp', this).slideToggle();
 });
 
+$(document).on('click','.last',function(e) {
+     e.stopPropagation();
+  });
+
 
 function createLink()
 {
