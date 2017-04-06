@@ -70,6 +70,14 @@ function createDugga()
 	AJAXService("ADDUGGA",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 }
 
+function deleteDugga()
+{
+   // var did=$("#id").val();
+    did=$("#did").val();
+    if(confirm("Do you really want to delete this Variant?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    $("#editDugga").css("display","none");
+}
+
 function updateDugga()
 {
 	$("#editDugga").css("display","none");

@@ -75,7 +75,7 @@ pdoConnect();
 			<div style='padding:5px;'>
 				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
 			</div> 
-			<div style ='padding:5px, display:none' id='errormessage'>
+			<div style ='padding:5px; display:none;' id='errormessage'>
 			</div> 
 		</form>
 	</div>

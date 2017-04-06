@@ -188,9 +188,9 @@ function returnedFile(data)
 			}
 			str2+="</tbody></table>";
 			str3+="<table class='list' style='margin-bottom:8px;' >";
-			str3+="<thead style='cursor:pointer;'>";
-      str3+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Course File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
-			str3+="</thead><tbody id='course_body'>";
+			str3+="<thead>";
+      str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+			str3+="<thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				if(parseInt(item['kind'])==3){
@@ -209,9 +209,9 @@ function returnedFile(data)
 			}
 			str3+="</tbody></table>";
 			str4+="<table class='list' style='margin-bottom:8px;' >";
-			str4+="<thead style='cursor:pointer;'>";
-      str4+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Course Local File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
-			str4+="</thead><tbody id='local_body'>"
+			str4+="<thead>";
+      str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+			str4+="<thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
 				if(parseInt(item['kind'])==4){
@@ -246,4 +246,39 @@ function returnedFile(data)
 	//if there was an error in the php file while fetching, an alert goes off here
 	//-------------------------------------------------------------------------------------
 	if(data['debug']!="NONE!") alert(data['debug']);
+}
+
+function setupSort(){ 
+	/*		Add filter menu		 */
+	var filt ="";	
+	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
+	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+	filt+="<div id='dropdownc' class='dropdown-list-container'>";
+	filt+="</div>";
+	filt+="</span></td>";
+
+	filt+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
+	filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+	filt+="<div id='dropdowns' class='dropdown-list-container'>";
+	filt+="</div>";
+	filt+="</span></td>";
+	//$("#menuHook").before(filt); //menuHook is set between buttons and navName //Not printed since the sorting functionality is not done
+}
+
+function hoverc(){
+    $('#dropdowns').css('display','none');
+  	$('#dropdownc').css('display','block');
+}
+
+function leavec(){
+	$('#dropdownc').css('display','none');  
+}
+
+function hovers(){
+    $('#dropdownc').css('display','none');
+  	$('#dropdowns').css('display','block');
+}
+
+function leaves(){
+	$('#dropdowns').css('display','none'); 
 }

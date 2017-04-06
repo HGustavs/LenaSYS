@@ -1,6 +1,7 @@
 var sessionkind=0;
 var querystring=parseGet();
 var versions;
+var dataInfo;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 
@@ -121,22 +122,60 @@ function resetPw(uid,username)
 	AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
 }
 
+/**
+ * Selects column to be sorted from table.
+ * @param prop Column to sort
+ * @returns {Function} Sorting function with the correct property to fetch.
+ */
+function propComparator(prop) {
+	var propt = prop.split(' ').join('').toLocaleLowerCase();
+    return function(a, b) {
+		if(!a[propt] || !b[propt]) {
+            return 0;
+        }
+        else{
+            var aName = a[propt].toLowerCase();
+            var bName = b[propt].toLowerCase();
+            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+		}
+    }
+}
+var bool = true;
+/**
+ * Sort based on what cell was pressed. Toggles between sort and reverse sort.
+ * @param column
+ */
+function sortData(column){
+    if(bool) {
+        dataInfo['entries'].sort(propComparator(column));
+    }
+    else{
+        dataInfo['entries'].sort(propComparator(column)).reverse();
+	}
+    returnedAccess(dataInfo);
+    bool = !bool;
+}
 //----------------------------------------
 // Renderer
 //----------------------------------------
 function returnedAccess(data)
 {
 	var teachs = [];
+  dataInfo = data;
 	// Fill section list with information
 	str="";
 	if (data['entries'].length > 0) {
 
-		str+="<table class='list'>";
-
-		// Create headings
-		str+="<tr><th class='first' style='text-align:left; padding-left:8px; width:140px;'>Username</th><th style='text-align:left; padding-left:8px; width:150px;'>SSN</th><th style='text-align:left; padding-left:8px;'>First Name</th><th style='text-align:left; padding-left:8px;'>Last Name</th><th style='text-align:left; padding-left:8px; width:150px;'>Study program</th><th style='text-align:left; padding-left:8px; width:150px;'>Teacher</th><th style='text-align:left; padding-left:8px; width:100px;'>Added</th><th style='text-align:left; padding-left:8px; width:90px;'>Access</th><th style='text-align:left; padding-left:8px; width:90px;'>Settings</th><th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
-	
-		// Loop through all data entries
+		  str+="<table class='list'>";
+      str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>SSN</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>First Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>Last Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Class</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer;'>Added</th>" +
+			"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
+			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
+			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 

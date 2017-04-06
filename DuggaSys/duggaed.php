@@ -56,7 +56,8 @@ pdoConnect();
 			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Save' onclick='updateDugga();' />
+            <input style='float:left; 'class='submit-button' type='button' value='Delete' onclick='deleteDugga();' />
+			<input style='float:right; 'class='submit-button' type='button' value='Save' onclick='updateDugga();' />
 		</div>
 	</div>
 	<!-- Edit Dugga Dialog END -->

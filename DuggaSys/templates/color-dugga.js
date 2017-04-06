@@ -7,7 +7,7 @@
 Example seed
 ---------------------
 	 NB! This dugga requires a png-file corresponding to the specific colors, e.g., color_red.png
-	 Param: {*color*:*red*,*colorname*:*Röd*}
+	 Param: {"color":"red","colorname":"Röd"}
 	 Answer: Variant
 
 -------------==============######## Documentation End ###########==============-------------

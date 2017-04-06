@@ -55,7 +55,7 @@
 
 	$log_uuid = getOP('log_uuid');
 	$info=$opt." ".$courseId." ".$courseVersion." ".$exampleName." ".$sectionName." ".$exampleId;
-	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerservice.php",$userid,$info);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "codeviewerService.php",$userid,$info);
 
 	// Checks and sets user rights
 	if(checklogin() && (hasAccess($userid, $courseId, 'w'))){
@@ -498,6 +498,6 @@
 
 	}
 
-	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "codeviewerservice.php",$userid,$info);
+	logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "codeviewerService.php",$userid,$info);
 
 ?>
