@@ -37,6 +37,7 @@ var heightWindow;			// The height on the users screen is saved is in this var.
 var consoleInt = 0;
 var canFigure = false; // When figure mode is enabled for the session, this needs to be set to true and p1 to null.
 
+var waldoPoint = {x:-10,y:-10,selected:false};
 var activePoint = null; //This point indicates what point is being hovered by the user
 var p1=null,					// When creating a new figure, these two variables are used ...
  		p2=null;					// to keep track of points created with mousedownevt and mouseupevt
@@ -932,12 +933,12 @@ function mouseupevt(ev){
             	erEnityA.centerpoint=p3;
 
             	diagram.push(erEnityA);
-				
+
 				//selecting the newly created enitity and open the dialogmenu.
 				selobj = diagram.length -1;
 				diagram[selobj].targeted = true;
 				openAppearanceDialogMenu();
-				
+
     }else if(uimode=="CreateLine"&&md==4){
 			/* Code for making a line */
     		erLineA = new Symbol(4);
@@ -967,39 +968,94 @@ function mouseupevt(ev){
 function deleteObject(index){
   var canvas = document.getElementById("myCanvas");
   canvas.style.cursor="default";
-  try{
-    points[diagram[index].topLeft].x = -10;
-    points[diagram[index].topLeft].y = -10;
+    for(i = 0; i < diagram.length; i++){
+        if(!(diagram[i].symbolkind == 1)){
+            var temp = true;
+            for (var j = 0; j < (diagram[index].connectorRight.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        (diagram[i].topLeft == diagram[index].connectorRight[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].to)) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorRight.length;
+                    }
+                }
+            }
+            for (var j = 0; j < (diagram[index].connectorLeft.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        (diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to)) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorLeft.length;
+                    }
+                }
+            }
+            for (var j = 0; j < (diagram[index].connectorBottom.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        (diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorBottom[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to)) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorBottom.length;
+                    }
+                }
+            }
+            for (var j = 0; j < (diagram[index].connectorTop.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        (diagram[i].topLeft == diagram[index].connectorTop[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].from)||
+                        (diagram[i].topLeft == diagram[index].connectorTop[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].to)) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorTop.length;
+                    }
+                }
+            }
+        }
+        if (temp == true){
+            if(diagram[i].symbolkind == 4 &&
+                (diagram[i].topLeft == diagram[index].centerpoint ||
+                diagram[i].bottomRight == diagram[index].centerpoint)) {
+                if (index > i) {
+                    index--;
+                }
+                diagram.splice(i, 1);
+                i--;
+            }
+        }
+    }
+    diagram.splice(index, 1);
+    updategfx();
+    return index;
 
-  }
-  catch(err){
-    //Point does not exist
-  }
-  try{
-    points[diagram[index].bottomRight].x = -10;
-    points[diagram[index].bottomRight].y = -10;
-  }
-  catch(err){
-    //Point does not exist
-  }
-  try{
-    points[diagram[index].centerpoint].y = -10;
-    points[diagram[index].centerpoint].x = -10;
-  }
-  catch(err){
-    //Point does not exist
-  }
-  try{
-    points[diagram[index].middleDivider].y = -10;
-    points[diagram[index].middleDivider].x = -10;
-  }
-  catch(err){
-    //Point does not exist
-  }
-  diagram.splice(index, 1);
-
-
-  updategfx();
 }
 function deleteSelectedObject(){
 		var canvas = document.getElementById("myCanvas");
@@ -1008,8 +1064,8 @@ function deleteSelectedObject(){
 		for (var i = 0; i < diagram.length;i++){
 			if(diagram[i].targeted == true){
 		//diagram[i].targeted = false;
-		deleteObject(i);
-		i--;
+		     i = deleteObject(i)-1;
+
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
 			}
