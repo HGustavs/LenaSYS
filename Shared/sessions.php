@@ -86,18 +86,46 @@ function getQuestion($username)
 		$_SESSION["superuser"]=$row['superuser'];
 		$_SESSION["securityquestion"]=$row['securityquestion'];
 
-		/*If the user in question is a superuser(teacher) they are not allowed to reset password, this if for security reasons. Also if the security question is null/default there is no point in allowing the user to continue.
-		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question NOTE: superuser is not all teachers.*/
+		/*If the security question is null/default there is no point in allowing the user to continue.
+		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question*/
 		
 		/*
-		if($_SESSION["superuser"] == 1||$_SESSION["securityquestion"]==null){
-			return false
+		if($_SESSION["securityquestion"]==null){
+			return false;
+		}
+		if($_SESSION["superuser"]==1){
+			return false;
 		}
 		*/
 
-		// Save some login details in cookies.
-		setcookie('username', $row['username'], time()+60*30, '/');
-		//setcookie('securityquestion', $securityquestion, time()+60*30, '/');
+		return true;
+
+	} else {
+		return false;
+	}
+}
+
+function checkAnswer($username, $securityquestionanswer)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare("SELECT uid,username,password FROM user WHERE username=:username and securityquestionanswer=password(:sqa) LIMIT 1");
+
+	$query->bindParam(':username', $username);
+	$query->bindParam(':sqa', $securityquestionanswer);
+
+	$query->execute();
+
+	if($query->rowCount() > 0) {
+		// Fetch the result
+		$row = $query->fetch(PDO::FETCH_ASSOC);
+		$_SESSION['uid'] = $row['uid'];
+		$_SESSION["loginname"]=$row['username'];
+
 		return true;
 
 	} else {
