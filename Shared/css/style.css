@@ -191,6 +191,10 @@ p {
     margin-right:2px;
 }
 
+.profile-element {
+	margin-top: 25px;
+}
+
 .sys{
     border-radius:6px;
     color:#775886;
@@ -432,22 +436,11 @@ p {
 		color: #612;
 }
 
-/* Submission table */
-#tableDivDialog{
-    width: 100%;
-    float: right;
-    margin-right: 10px;
-    width: 63%;
+/* Instruction and submission of dugga */
+#leftDivDialog, #rightDivDialog{
+    width: 49%;
 }
 
-#tableDivDialog th{
-    text-align: left;
-    padding-right: 8px;
-}
-
-.delButton{
-    text-align: center;
-}
 
 /* --------------================################================-------------- *
  *                                    Header                                    *
@@ -1005,7 +998,7 @@ input.submit-button {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color:#614875;
     border:0px;
-    width:120px;
+    width:110px;
     height:30px;
     color:#fff;
     cursor:pointer;
@@ -1875,5 +1868,17 @@ input.large-button {
 			.fumho tr:nth-child(odd) {
 					background-color:#fff;
 			}
+
+/* JQuery UI Complement for missing icons in the DatePicker */ 
+
+.ui-datepicker .ui-datepicker-next span {
+    background: url("../icons/PlayT.svg"); 
+    transform: rotate(0deg);
+}
+
+.ui-datepicker .ui-datepicker-prev span {
+    background: url("../icons/PlayT.svg"); 
+    transform: rotate(180deg);
+}
 
 /*end, styling for contribution.php*/
