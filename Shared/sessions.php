@@ -86,12 +86,15 @@ function getQuestion($username)
 		$_SESSION["superuser"]=$row['superuser'];
 		$_SESSION["securityquestion"]=$row['securityquestion'];
 
-		/*If the user in question is a superuser(teacher) they are not allowed to reset password, this if for security reasons. Also if the security question is null/default there is no point in allowing the user to continue.
-		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question NOTE: superuser is not all teachers.*/
+		/*If the security question is null/default there is no point in allowing the user to continue.
+		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question*/
 		
 		/*
 		if($_SESSION["securityquestion"]==null){
-			return false
+			return false;
+		}
+		if($_SESSION["superuser"]==1){
+			return false;
 		}
 		*/
 
