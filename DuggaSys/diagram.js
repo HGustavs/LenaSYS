@@ -1169,23 +1169,24 @@ function dialogForm() {
     form.innerHTML= "No item selected<type='text'>";
 
     if(diagram[selobj].symbolkind==1){
-        form.innerHTML = "Class name: <input id='text' type='text'></br>" +
-            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+        form.innerHTML = "Class name: </br>" +
+            "<input id='text' type='text'></br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
-        form.innerHTML = "Attribute name: <input id='text' type='text'></br>" +
-            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+        form.innerHTML = "Attribute name: " +
+            "<input id='text' type='text'></br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
             "<input id='text' type='text'></br>" +
             "Entity type: </br>" +
-			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+			      "<select id ='entityType'><option value='weak'>Weak</option><option value='strong' selected>Strong</option></select></br>" +
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
 }
+
 
 function changeName(form){
 	diagram[selobj].name=document.getElementById('text').value;
