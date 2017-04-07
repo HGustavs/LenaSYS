@@ -196,7 +196,6 @@ diagram.draw = function ()
 			item.draw();
 		}
 
-
 	}
 		for(i=0;i<this.length;i++){
 				item=this[i];
@@ -944,7 +943,7 @@ function mouseupevt(ev){
 		}
 
 		createFigure();
-		
+
 		if(uimode=="CreateClass"&&md==4){
 				classB = new Symbol(1);
 				classB.name="New"+diagram.length;
@@ -965,12 +964,12 @@ function mouseupevt(ev){
 				erAttributeA.centerpoint=p3;
 
 				diagram.push(erAttributeA);
-				
+
 				//selecting the newly created attribute and open the dialogmenu.
 				selobj = diagram.length -1;
 				diagram[selobj].targeted = true;
 				openAppearanceDialogMenu();
-				
+
 		}else if(uimode=="CreateEREntity"&&md==4){
             	erEnityA = new Symbol(3);
             	erEnityA.name="Entity"+diagram.length;
@@ -1180,13 +1179,11 @@ function dialogForm() {
             "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
     }
     if(diagram[selobj].symbolkind==3){
-        form.innerHTML = "Entity name: <input id='text' type='text'></br>" +
-            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>" +
-			      "<input type='checkbox' name='Entity' value='weak' >Weak entity<br>" +
-			      "<input type='checkbox' name='Entity' value='strong' >Strong entity<br>" +
-			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select>";
-
+        form.innerHTML = "Entity name: </br>" +
+            "<input id='text' type='text'></br>" +
+            "Entity type: </br>" +
+			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
 }
 
