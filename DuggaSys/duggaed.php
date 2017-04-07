@@ -101,7 +101,7 @@ pdoConnect();
 									<option value="Zip" id="zip"> Zip </option>
 									<option value="Link" id="link"> Link </option>
 									<option value="Text" id="text"> Text </option>
-								<select><br/>
+								</select><br/>
 								<label for="instruction">Instruction:</label><textarea id="instruction" value=""/></textarea><br/>
 								<input type="submit" name="save" id="save" value="Save" onclick="addToTable()" class="submit-button" style="width:60px;height:25px;line-height:25px;margin-top:2px;"/><br/>
 							</fieldset>
