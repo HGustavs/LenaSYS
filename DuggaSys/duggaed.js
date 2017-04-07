@@ -6,8 +6,6 @@
 var sessionkind=0;
 var querystring=parseGet();
 var filez;
-var duggaPages;
-
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
 $(function() {
@@ -70,6 +68,14 @@ function closeEditVariant()
 function createDugga()
 {
 	AJAXService("ADDUGGA",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
+}
+
+function deleteDugga()
+{
+   // var did=$("#id").val();
+    did=$("#did").val();
+    if(confirm("Do you really want to delete this Variant?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    $("#editDugga").css("display","none");
 }
 
 function updateDugga()
@@ -159,6 +165,25 @@ function selectVariant(vid,param,answer,template,dis)
 	}
 }
 
+function showVariant(param){
+    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {
+        $(".fumo").removeClass("selectedtr");
+        $(".variantInfo").hide();
+        var variantId="#variantInfo" + param;
+        var duggaId="#dugga" + param;
+        /*
+        var arrowId="#arrow" + param;
+        $(arrowId).show(400);
+        /*
+        console.log(variantId);
+        console.log(duggaId);*/
+        $(variantId).slideDown(400);
+        
+        $(duggaId).addClass("selectedtr");
+        $(variantId).css("border-bottom", "2px solid gray");
+       
+    }
+}
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -176,36 +201,39 @@ function returnedDugga(data)
 		str+="<div style='float:right;padding-bottom:10px;'>";
 		str+="<input class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";
 		str+="</div>";
-		str+="<table class='list'>";
+		str+="<table class='list' id='testTable'>";
 		str+="<tr><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Release</th><th>Deadline</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr>";
 
 		for(i=0;i<data['entries'].length;i++){
 
 			var item=data['entries'][i];
+      
+			str+="<tr class='fumo' id='dugga" +i+ "' onClick='showVariant("+i+")'>";
 
-			str+="<tr class='fumo'>";
 			result++;
-			str+="<td style='width:170px'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
+			str+="<td><label>Name: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			if(item['autograde']=="1"){
 				result++;
-				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:1em;' id='duggav"+result+"' ><option selected value='1'>On</option><option value='2'>Off</option></select></td>";
+				str+="<td><label>Autograde: </label><select onchange='changeauto("+item['did']+","+result+")' style='font-size:1em;' id='duggav"+result+"' ><option selected value='1'>On</option><option value='2'>Off</option></select></td>";
 			}else{
 				result++;
-				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:1em;' id='duggav"+result+"' ><option value='1'>On</option><option selected value='2'>Off</option></select></td>";
+				str+="<td><label>Autograde: </label><select onchange='changeauto("+item['did']+","+result+")' style='font-size:1em;' id='duggav"+result+"' ><option value='1'>On</option><option selected value='2'>Off</option></select></td>";
 			}
 
 			if(item['gradesystem']=="1"){
 				result++;
-				str+="<td><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option selected='selected' value='1'>U/G/VG</option><option value='2'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
+				str+="<td><label>Grade System: </label><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option selected='selected' value='1'>U/G/VG</option><option value='2'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
 			}else if(item['gradesystem']=="2"){
 				result++;
-				str+="<td><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2' selected='selected'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
+				str+="<td class='gradesystem'><label>Grade System: </label><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2' selected='selected'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
 			}else{
 				result++;
-				str+="<td><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
+				str+="<td><label>Grade System: </label><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
 			}
 			result++;
-			str+="<td><select style='font-size:1em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
+
+			str+="<td><span class='arrow' id='arrow"+i+"'>&#x25BC;</span><label>Template: </label><select style='font-size:1em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";		
+
 			for(var j=0;j<filez.length;j++){
 				filen=filez[j];
 				if(filen!=".."&&filen!="."){
@@ -248,8 +276,9 @@ function returnedDugga(data)
 			var variantz=item['variants'];
 
 			if(variantz.length>0){
-				str+="<tr class='fumo'><td colspan='9' style='padding:0px;'>";
-				str+="<table width='100%' class='innertable'>";
+                
+				str+="<tr class='variantInfo' id='variantInfo"+i+"'><td colspan='9' style='padding:0px;'>";
+				str+="<table width='100%' class='innertable' id='testinnertable'>";
 				for(j=0;j<variantz.length;j++){
 					var itemz=variantz[j];
 					var paramz = encodeURIComponent("{}");
@@ -262,11 +291,11 @@ function returnedDugga(data)
 					} else {
 						str += ">"
 					}
-					str+="<td style='width:30px;'></td>"
+					str+="<td colspan='1' style='padding-right:30px;'></td>"
 					result++;
-					str+="<td colspan='1'><div style='overflow:hidden;	max-width: 300px;	max-height: 20px;text-overflow: ellipsis;'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+itemz['param']+"' /></td></div></td>";
+					str+="<td colspan='1'><label>Params: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+itemz['param']+"' /></td></td>";
 					result++;
-					str+="<td colspan='1'><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+itemz['variantanswer']+"' /></td>";
+					str+="<td colspan='2'><label>Answer: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+itemz['variantanswer']+"' /></td>";
 
 					str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
@@ -276,22 +305,20 @@ function returnedDugga(data)
 					str+="<img id='dorf"+j+"' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 					str+=" onclick='selectVariant(\""+itemz['vid']+"\",\""+paramz+"\",\""+answerz+"\",\"UNK\",\""+itemz['disabled']+"\");' >";
 					str+="</td>";
-
+                    
 					str+="</tr>";
 				}
 				str+="</table>";
-				str+="</td></tr>";
+				str+="</td></tr>"; 
 			}
 		}
 
 		str+="</table>";
-
 	}
 	alla = result;
 	var slist=document.getElementById("content");
 	slist.innerHTML=str;
 	if(data['debug']!="NONE!") alert(data['debug']);
-
 }
 
 function parseParameters(str){
@@ -409,6 +436,7 @@ function closePreview()
 {
 	$("#resultpopover").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
+
 }
 
 // Needed for button clicks.. :)

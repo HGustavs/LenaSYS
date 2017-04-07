@@ -3,7 +3,6 @@ var retdata;
 
 AJAXService("get",{},"DIAGRAM");
 
-
 /*
 
 -----------------------=====================##################=====================-----------------------
@@ -22,6 +21,7 @@ AJAXService("get",{},"DIAGRAM");
 // Global settings
 
 var crossl=4.0;				// Size of point cross
+var tolerance = 8;		// Size of tolerance area around the point
 var ctx;							// Canvas context
 var acanvas;					// Canvas Element
 var sel;							// Selection state
@@ -29,8 +29,25 @@ var cx,cy=0;					// Current Mouse coordinate x and y
 var sx,sy=0;					// Start Mouse coordinate x and y
 var mox,moy=0;				// Old mouse x and y
 var md=0;							// Mouse state
+var hovobj=-1;
+var lineStartObj = -1;
 var movobj=-1;				// Moving object ID
+var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
+var widthWindow;			// The width on the users screen is saved is in this var.
+var heightWindow;			// The height on the users screen is saved is in this var.
+var consoleInt = 0;
+var canFigure = false; // When figure mode is enabled for the session, this needs to be set to true and p1 to null.
+var startX=0; var startY=0;			// Current X- and Y-coordinant from which the canvas start from
+var waldoPoint = {x:-10,y:-10,selected:false};
+var activePoint = null; //This point indicates what point is being hovered by the user
+var p1=null,					// When creating a new figure, these two variables are used ...
+ 		p2=null;					// to keep track of points created with mousedownevt and mouseupevt
+
+// set the color for the crosses.
+var crossStrokeStyle1 = "#f64";
+var crossfillStyle = "#d51";
+var crossStrokeStyle2 = "#d51";
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -96,7 +113,7 @@ points.addpoint = function (xk,yk,selval)
 points.drawpoints = function ()
 {
 		// Mark points
-		ctx.strokeStyle="#f64";
+		ctx.strokeStyle= crossStrokeStyle1;
 		ctx.lineWidth=2;
 		for(var i=0;i<this.length;i++){
 				var point=this[i];
@@ -110,8 +127,8 @@ points.drawpoints = function ()
 						ctx.stroke();
 				}else{
 						ctx.save();
-						ctx.fillStyle="#d51";
-						ctx.strokeStyle="#420";
+						ctx.fillStyle= crossfillStyle;
+						ctx.strokeStyle= crossStrokeStyle2;
 						ctx.fillRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
 						ctx.strokeRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
 						ctx.restore();
@@ -171,15 +188,24 @@ diagram.draw = function ()
 {
 		// On every draw of diagram adjust the midpoint if there is one to adjust
 		this.adjust();
+	for(i=0;i<this.length;i++){
+		item=this[i];
 
+		// Path item
+		if(item.symbolkind==4) {
+			item.draw();
+		}
+
+
+	}
 		for(i=0;i<this.length;i++){
 				item=this[i];
 
 				// Path item
 				if(item.kind==1){
-						item.draw(1,1);
-				}else if(item.kind==2){
-						item.draw();
+					item.draw(1,1);
+				}else if(item.kind==2 && !(item.symbolkind == 4)){
+					item.draw();
 				}
 
 		}
@@ -206,6 +232,43 @@ diagram.adjust = function ()
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
+diagram.insides = function (ex,ey,sx,sy)
+{
+	for(i=0;i<this.length;i++){
+		if (sx > ex){
+			var tempa = ex;
+			ex = sx;
+			sx = tempa;
+		}
+		if (sy > ey){
+			var tempb = ey;
+			ey=sy;
+			sy=tempb;
+		}
+		if(!(this[i].kind == 1)){
+		var tx = points[this[i].topLeft].x;
+		var ty = points[this[i].topLeft].y;
+		var bx = points[this[i].bottomRight].x;
+		var by = points[this[i].bottomRight].y;
+		/*console.log(sx + " target x ");
+		console.log(sy + " target y ");
+		console.log(sx + " start point x");
+		console.log(sy + " start point y ");
+		console.log(ex + " end point x ");
+		console.log(ey + " end point x ");*/
+		if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by){
+
+			console.log("4");
+			this[i].targeted = true;
+			// return i;
+		} else {
+			this[i].targeted = false;
+		}
+		}
+	}
+
+	return -1;
+}
 
 diagram.inside = function (xk,yk)
 {
@@ -245,7 +308,6 @@ diagram.linedist = function (xk,yk)
 
 		return -1;
 }
-
 
 //--------------------------------------------------------------------
 // path - stores a number of segments
@@ -338,6 +400,7 @@ function Path() {
 
 						var pseg=this.segments[0];
 						ctx.moveTo(points[pseg.pa].x,points[pseg.pa].y);
+
 						for(var i=0;i<this.segments.length;i++){
 								var seg=this.segments[i];
 
@@ -347,7 +410,8 @@ function Path() {
 								}
 
 								// Draw current line
-								ctx.lineTo(points[seg.pb].x,points[seg.pb].y);
+
+								ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
 
 								// Remember previous segment
 								pseg=seg;
@@ -469,7 +533,7 @@ function Path() {
 		    var y=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
 
 		    if (isNaN(x)||isNaN(y)) {
-		        return {state:false,x:0,y:0};;
+		        return {state:false,x:0,y:0};
 		    } else {
 		        if (x1>=x2) {
 		            if (!(x2<x&&x<x1)) return {state:false,x:0,y:0};
@@ -492,7 +556,7 @@ function Path() {
 		            if (!(y3<y&&y<y4)) return {state:false,x:0,y:0};
 		        }
 		    }
-		    return {state:true,x:x,y:y};;
+		    return {state:true,x:x,y:y};
 		}
 
 		//--------------------------------------------------------------------
@@ -603,7 +667,25 @@ function Path() {
 
 function initcanvas()
 {
-    var canvas = document.getElementById("myCanvas");
+    widthWindow = (window.innerWidth-20);
+	heightWindow = (window.innerHeight-220);
+	document.getElementById("content").innerHTML=
+		"<button onclick='classmode();'>Create Class</button>" +
+		"<button onclick='attrmode();'>Create Attribute</button>" +
+		"<button onclick='linemode();'>Create Line</button>" +
+		"<button onclick='entitymode();'>Create Entity</button>" +
+		"<button onclick='figuremode();'>Create Figure</button>" +
+		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
+		"<button onclick='debugMode();'>Debug</button>" +
+		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
+		"<button onclick='deleteAllObjects();'>Delete All</button>" +
+		"<button onclick='movemode(event);' style='float: right;'>Start Moving</button>" +
+		"<button onclick='stopmovemode();' style='float: right;'>Stop Moving</button><br>" +
+		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
+		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
+		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
+		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
+	var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
 				acanvas=document.getElementById("myCanvas");
@@ -615,6 +697,21 @@ function initcanvas()
 
 }
 
+// Function that is used for the resize
+// Making the page more responsive
+
+function canvassize()
+{
+	widthWindow = (window.innerWidth-20);
+	heightWindow = (window.innerHeight-244);
+	document.getElementById("myCanvas").setAttribute("width", widthWindow);
+	document.getElementById("myCanvas").setAttribute("height", heightWindow);
+}
+
+// Listen if the window is the resized
+
+window.addEventListener('resize', canvassize);
+
 var erEntityA;
 
 // Demo data for testing purposes.
@@ -622,7 +719,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(0,0,600,600);
+		ctx.clearRect(startX,startY,widthWindow,heightWindow);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -656,19 +753,30 @@ function findPos(obj) {
 				y:curtop
 		}
 }
-
+function updateActivePoint(){
+  if(sel.dist <= tolerance){
+    activePoint = sel.ind;
+    console.log("New active point");
+  }
+  else{
+    activePoint = null;
+  }
+}
 function mousemoveevt(ev, t){
 		mox=cx;
 		moy=cy;
-
-		if (ev.layerX||ev.layerX==0) { // Firefox
-		    cx=ev.layerX-acanvas.offsetLeft;
-		    cy=ev.layerY-acanvas.offsetTop;
+    hovobj = diagram.inside(cx,cy);
+    console.log(hovobj);
+		if (ev.pageX || ev.pageY == 0){ // Chrome
+			cx=ev.pageX-acanvas.offsetLeft;
+			cy=ev.pageY-acanvas.offsetTop;
+		} else if (ev.layerX||ev.layerX==0) { // Firefox
+			cx=ev.layerX-acanvas.offsetLeft;
+			cy=ev.layerY-acanvas.offsetTop;
 		} else if (ev.offsetX || ev.offsetX == 0) { // Opera
-		    cx=ev.offsetX-acanvas.offsetLeft;
-		    cy=ev.offsetY-acanvas.offsetTop;
+			cx=ev.offsetX-acanvas.offsetLeft;
+			cy=ev.offsetY-acanvas.offsetTop;
 		}
-
 		if(md==0){
 				// Select a new point only if mouse is not already moving a point or selection box
 				sel=points.distance(cx,cy);
@@ -677,6 +785,8 @@ function mousemoveevt(ev, t){
 				points.clearsel();
 
 				movobj=diagram.inside(cx,cy);
+
+        updateActivePoint();
 
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
@@ -687,11 +797,15 @@ function mousemoveevt(ev, t){
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
-						diagram[movobj].move(cx-mox,cy-moy);
+					for (var i=0;i<diagram.length;i++){
+						if(diagram[i].targeted == true){
+						diagram[i].move(cx-mox,cy-moy);
+						}
+					}
 				}
 		}
-
 		diagram.linedist(cx,cy);
+
 
 		updategfx();
 
@@ -717,15 +831,53 @@ function mousemoveevt(ev, t){
 				ctx.stroke();
 				ctx.setLineDash([]);
 		}
-
 }
 
 function mousedownevt(ev)
 {
-		if(sel.dist<10){
+    if(uimode=="CreateLine"){
+      md=4;			// Box select or Create mode.
+      sx=cx;
+      sy=cy;
+      sel=points.distance(cx,cy);
+
+      if(hovobj==-1){
+        p1=points.addpoint(cx,cy,false);
+      }
+      else{
+        lineStartObj = hovobj;
+
+        if(diagram[lineStartObj].symbolkind==2){
+          p1=diagram[lineStartObj].centerpoint;
+        }
+        else{
+          p1=points.addpoint(cx,cy,false);
+        }
+        //p1=diagram[hovobj].centerpoint;
+      }
+
+    }
+		else if(uimode!="CreateFigure"&&sel.dist<tolerance){
 				md=2;
 		}else if(movobj!=-1){
 				md=3;
+
+        //Last moved object
+			//if(selobj != -1){
+          //		diagram[selobj].targeted = false;
+       		// }
+			selobj=diagram.inside(cx,cy);
+			//;
+
+				if (diagram[selobj].targeted == false){
+					for (var i=0;i<diagram.length;i++){
+						diagram[i].targeted=false;
+				}
+					diagram[selobj].targeted = true
+
+			}
+
+
 		}else{
 				md=4;			// Box select or Create mode.
 				sx=cx;
@@ -734,18 +886,65 @@ function mousedownevt(ev)
 
 }
 
-function mouseupevt(ev)
+
+function doubleclick(ev)
 {
+	if(diagram[selobj].inside(cx,cy)){
+        openAppearanceDialogMenu();
+  }
+}
 
-		// Code for creating a new class
+function mouseupevt(ev){
 
-		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr")){
+	// Code for creating a new class
+
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity")){
 				// Add required points
-				var p1=points.addpoint(sx,sy,false);
-				var p2=points.addpoint(cx,cy,false);
+				p1=points.addpoint(sx,sy,false);
+				p2=points.addpoint(cx,cy,false);
 				var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
 		}
+		if(uimode=="CreateLine"&&md==4){
+      sel=points.distance(cx,cy);
 
+      if(hovobj==-1){
+        // End line on empty
+        p2=points.addpoint(cx,cy,false);
+        if(lineStartObj == -1){
+          // Start line on empty
+          // Just draw a normal line
+        }
+        else{
+          // Start line on object
+          console.log("Symbolkind"+diagram[lineStartObj].symbolkind);
+          diagram[lineStartObj].connectorTop.push({from:p1,to:p2});
+          lineStartObj = -1;
+        }
+      }
+      else{
+        // End line on object
+        if(diagram[hovobj].symbolkind == 2){
+          p2=diagram[hovobj].centerpoint;
+        }else{
+          p2=points.addpoint(cx,cy,false);
+        }
+
+        if(lineStartObj==-1){
+          // Start line on empty
+          diagram[hovobj].connectorTop.push({from:p2,to:p1});
+        }
+        else{
+          // Start line on object
+          console.log("Symbolkind"+diagram[lineStartObj].symbolkind);
+          console.log("Symbolkind"+diagram[hovobj].symbolkind);
+          diagram[lineStartObj].connectorTop.push({from:p1,to:p2});
+          diagram[hovobj].connectorTop.push({from:p2,to:p1});
+        }
+      }
+		}
+
+		createFigure();
+		
 		if(uimode=="CreateClass"&&md==4){
 				classB = new Symbol(1);
 				classB.name="New"+diagram.length;
@@ -764,27 +963,265 @@ function mouseupevt(ev)
 				erAttributeA.topLeft=p1;
 				erAttributeA.bottomRight=p2;
 				erAttributeA.centerpoint=p3;
-				diagram.push(erAttributeA);
 
+				diagram.push(erAttributeA);
+		}else if(uimode=="CreateEREntity"&&md==4){
+            	erEnityA = new Symbol(3);
+            	erEnityA.name="Entity"+diagram.length;
+            	erEnityA.topLeft=p1;
+            	erEnityA.bottomRight=p2;
+            	erEnityA.centerpoint=p3;
+
+            	diagram.push(erEnityA);
+
+				//selecting the newly created enitity and open the dialogmenu.
+				selobj = diagram.length -1;
+				diagram[selobj].targeted = true;
+				openAppearanceDialogMenu();
+
+    }else if(uimode=="CreateLine"&&md==4){
+			/* Code for making a line */
+    		erLineA = new Symbol(4);
+    		erLineA.name="Line"+diagram.length;
+    		erLineA.topLeft=p1;
+    		erLineA.bottomRight=p2;
+    		erLineA.centerpoint=p3;
+
+    		diagram.push(erLineA);
+    } else if(md == 4 && !(uimode=="CreateFigure") && !(uimode=="CreateLine") && !(uimode=="CreateEREntity") && !(uimode=="CreateERAttr" ) &&!(uimode=="CreateClass" ) &&!(uimode=="MoveAround" ) ){
+			console.log("box drawn");
+			diagram.insides(cx,cy,sx,sy);
 		}
 
-		updategfx();
 
-		// Clear mouse state
-		md=0;
+
+
+    	updategfx();
+
+    	// Clear mouse state
+    	md=0;
+    	if(uimode!="CreateFigure"){
+    		uimode=" ";
+        }
 
 }
+function deleteObject(index){
+  var canvas = document.getElementById("myCanvas");
+  canvas.style.cursor="default";
+      points[diagram[index].topLeft] = waldoPoint;
+      points[diagram[index].bottomRight] = waldoPoint;
+      points[diagram[index].centerpoint] = waldoPoint;
+      points[diagram[index].middleDivider] = waldoPoint;
+    for(i = 0; i < diagram.length; i++){
+        if(!(diagram[i].symbolkind == 1)){
+            var temp = true;
+            for (var j = 0; j < (diagram[index].connectorRight.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        (diagram[i].topLeft == diagram[index].connectorRight[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorRight[j].to)) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorRight.length;
+                    }
+                }
+            }
+            for (var j = 0; j < (diagram[index].connectorLeft.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        (diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to)) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorLeft.length;
+                    }
+                }
+            }
+            for (var j = 0; j < (diagram[index].connectorBottom.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        (diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from) ||
+                        (diagram[i].topLeft == diagram[index].connectorBottom[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to)) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorBottom.length;
+                    }
+                }
+            }
+            for (var j = 0; j < (diagram[index].connectorTop.length ); j++) {
+                if (temp == true) {
+                    if (diagram[i].symbolkind == 4 &&
+                        (diagram[i].topLeft == diagram[index].connectorTop[j].from ||
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].from)||
+                        (diagram[i].topLeft == diagram[index].connectorTop[j].to ||
+                        diagram[i].bottomRight == diagram[index].connectorTop[j].to)) {
+                        diagram.splice(i, 1);
+                        if (index > i) {
+                            index--;
+                        }
+                        i--;
+                        temp = false;
+                        j = diagram[index].connectorTop.length;
+                    }
+                }
+            }
+        }
+        if (temp == true){
+            if(diagram[i].symbolkind == 4 &&
+                (diagram[i].topLeft == diagram[index].centerpoint ||
+                diagram[i].bottomRight == diagram[index].centerpoint)) {
+                if (index > i) {
+                    index--;
+                }
+                diagram.splice(i, 1);
+                i--;
+            }
+        }
+    }
+    diagram.splice(index, 1);
+    updategfx();
+    return index;
 
+}
+function deleteSelectedObject(){
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
+		//Issue: Need to remove the crosses
+		for (var i = 0; i < diagram.length;i++){
+			if(diagram[i].targeted == true){
+		//diagram[i].targeted = false;
+		     i = deleteObject(i)-1;
+
+		//To avoid removing the same index twice, selobj is reset
+		selobj = -1;
+			}
+		}
+	//}
+}
 function classmode()
 {
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
 		uimode="CreateClass";
 }
 
 function attrmode()
 {
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
 		uimode="CreateERAttr";
 }
 
+function entitymode()
+{
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
+  		uimode="CreateEREntity";
+}
+
+function linemode()
+{
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
+		uimode="CreateLine";
+}
+
+function figuremode()
+{
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
+    	uimode="CreateFigure";
+}
+
+/**
+ * Opens the dialog menu for appearance.
+ */
+function openAppearanceDialogMenu() {
+	var canvas = document.getElementById("myCanvas");
+	canvas.style.cursor="default";
+    $("#appearance").show();
+    $("#appearance").width("auto");
+    dialogForm();
+}
+
+function dialogForm() {
+    var form = document.getElementById("f01");
+    form.innerHTML= "No item selected<type='text'>";
+
+    if(diagram[selobj].symbolkind==1){
+        form.innerHTML = "Class name: <input id='text' type='text'></br>" +
+            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
+            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+    }
+    if(diagram[selobj].symbolkind==2){
+        form.innerHTML = "Attribute name: <input id='text' type='text'></br>" +
+            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
+            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+    }
+    if(diagram[selobj].symbolkind==3){
+        form.innerHTML = "Entity name: <input id='text' type='text'></br>" +
+            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
+            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>" +
+			      "<input type='checkbox' name='Entity' value='weak' >Weak entity<br>" +
+			      "<input type='checkbox' name='Entity' value='strong' >Strong entity<br>" +
+			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select>";
+
+    }
+}
+
+function changeName(form){
+	diagram[selobj].name=document.getElementById('text').value;
+
+    updategfx();
+}
+
+/**
+ * Closes the dialog menu for appearance.
+ */
+function closeAppearanceDialogMenu() {
+	$("#appearance").hide();
+}
+
+
+function Consolemode(action){
+
+	if(action == 1) {
+		document.getElementById('Hide Console').style.display = "none";
+		document.getElementById('Show Console').style.display = "block";
+		document.getElementById('Show Console').style="position:fixed; right:0; bottom:0px;";
+		heightWindow = (window.innerHeight-120);
+		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		$("#consloe").hide();
+		updategfx();
+	}
+	if(action == 2) {
+		document.getElementById('Hide Console').style.display = "block";
+		document.getElementById('Show Console').style.display = "none";
+		document.getElementById('Hide Console').style="position:fixed; right:0; bottom:133px;";
+		heightWindow = (window.innerHeight-244);
+		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		$("#consloe").show();
+		updategfx();
+	}
+}
 function cross(xk,yk)
 {
 				ctx.strokeStyle="#4f6";
@@ -809,10 +1246,96 @@ function drawOval(x1, y1, x2, y2) {
 		ctx.quadraticCurveTo(x1,y2,x1,ym);
 }
 
+//remove all elements in the diagram array. it hides the points by placing them beyond the users view.
+function deleteAllObjects()
+{
+  console.log("Deleting");
+
+  for(i = diagram.length; i >= 0;i--){
+    deleteObject(i);
+  }
+	console.log("deleting done!");
+}
+
 var consloe={};
 consloe.log=function(gobBluth)
 {
 		document.getElementById("consloe").innerHTML=((JSON.stringify(gobBluth)+"<br>")+document.getElementById("consloe").innerHTML);
+}
+
+//debugMode this function show and hides crosses and the consol.
+var ghostingcrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
+function debugMode()
+{
+	if(ghostingcrosses == true){
+		crossStrokeStyle1 = "#f64";
+		crossfillStyle = "#d51";
+		crossStrokeStyle2 = "#d51";
+		ghostingcrosses = false
+		Consolemode(2)
+		}
+
+		else{
+			crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+			crossfillStyle = "rgba(255, 102, 68, 0.0)";
+			crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+			ghostingcrosses = true
+			Consolemode(1)
+		}
+
+}
+
+//---------------------------------------
+// MOVING AROUND IN THE CANVAS
+//---------------------------------------
+var mousedownX = 0; var mousedownY = 0;
+var mouseupX = 0; var mouseupY = 0;
+var mouseDiffX = 0; var mouseDiffY = 0;
+var newCanvasX = 0; var newCanvasY = 0;
+
+function movemode(e)
+{
+	uimode="MoveAround";
+	var canvas = document.getElementById("myCanvas");
+	canvas.style.cursor="all-scroll";
+	canvas.addEventListener('mousedown', mousedownposcanvas, false);
+	canvas.addEventListener('mouseup', mouseupposcanvas, false);
+}
+function mousedownposcanvas(e){
+	mousedownX = e.pageX;
+	mousedownY = e.pageY;
+}
+function mouseupposcanvas(e){
+	mouseupX = e.pageX;
+	mouseupY = e.pageY;
+	movecanvas();
+}
+function movecanvas(){
+	var canvas = document.getElementById("myCanvas");
+	mouseDiffX = (mousedownX - mouseupX);
+	mouseDiffY = (mousedownY - mouseupY);
+	newCanvasX = (mouseDiffX+newCanvasX);
+	newCanvasY = (mouseDiffY+newCanvasY);
+
+	ctx.clearRect(startX,startX,widthWindow,heightWindow);
+	ctx.translate(newCanvasX,newCanvasY);
+	// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
+	erEntityA.sortAllConnectors();
+	// Redraw diagram
+	diagram.draw();
+	// Draw all points as crosses
+	points.drawpoints();
+	mousedownX = 0; mousedownY = 0;
+	mouseupX = 0; mouseupY = 0;
+	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
+	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
+	canvas.style.cursor="default";
+}
+function stopmovemode(){
+	var canvas = document.getElementById("myCanvas");
+	canvas.style.cursor="default";
+	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
+	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
 }
 
 //----------------------------------------

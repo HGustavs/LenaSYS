@@ -1,12 +1,18 @@
 LenaSYS supports a simple form of markdown. The following syntax can be used:
 
 Italics
+___this is italic___
 __this is italic__
 **this is italic**
+***this is italic***
+
 
 Bold
-___this is bold___
+**this is bold**
 ***this is bold***
+__this is bold__
+___this is bold___
+
 
 Bold and Italic
 ____this is bold and italic____
@@ -19,10 +25,18 @@ Headings
 # This is a level 1 heading
 ## This is a level 2 heading
 ### This is a level 3 heading
+#### This is a level 4 heading
+##### This is a level 5 heading
+###### This is a level 6 heading
+
+
 
 Links
 Format: !!!url,text to show!!!
 !!!http://www.some.where.com!!!%%%The text to be shown as a link%%%
+
+Link to animated GIF with thumbnail
+Format: +++thumbnail.png,animation.gif+++
 
 Animated GIFs
 Format: +++image.png,image.gif+++	
@@ -32,6 +46,9 @@ Importand Rows in code file in different window (only in Codeviewer)
 Format: ===filename,start row,end row, text to show===
 ===javascript_source.js,4,10,A cool source code part!===
 
+External mp4 src
+Format: ==[src]==
+
 Ordered lists
 1. This is item one
 2. This is item two
@@ -39,6 +56,9 @@ Ordered lists
 Unordered lists
 - Item
 - Item
+And:
+* Item
+* Item
 
 Horizontal line
 ---
@@ -58,6 +78,7 @@ Arrow
 
 Images
 |||src,thumbnail width in px,full size width in px|||
+|||src|||
 
 Tables
 |tr|
@@ -65,14 +86,15 @@ Tables
 ||td in tr||
 
 Ellipsis
-... turns to ellipsis
+Three or more dots should always be converted to an ellipsis.
+
 
 Iframe, website inside a inline frame
-Format: url, width,height
+Format: (--url, width,height--)
 
 Quotes
 ^ text to quote ^ 
 
-Smilies
+smileys
 Icons can be found in Shared/icons
 Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
