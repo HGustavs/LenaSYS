@@ -19,7 +19,6 @@ var momtmp=new Array;
 var sortcolumn=1;
 var clickedindex;
 var typechanged=false;
-
 var entries;
 var moments;
 var results;
@@ -30,7 +29,7 @@ var timeZero=new Date(0);
 var hideTeacher=false;
 
 function setup(){
-	// Benchmarking function
+	//Benchmarking function
 	//benchmarkData = performance.timing;
 	//console.log("Network Latency: "+(benchmarkData.responseEnd-benchmarkData.fetchStart));
 	//console.log("responseEnd -> onload: "+(benchmarkData.loadEventEnd-benchmarkData.responseEnd));
@@ -58,7 +57,6 @@ function setup(){
   }
   	
   window.onscroll = function() {magicHeading()};
-	
 
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "RESULT");
 }
@@ -100,7 +98,6 @@ function redrawtable()
 		str+="<table class='markinglist' id='markinglist'>";
 		str+="<thead>";
 		str+="<tr class='markinglist-header'>";
-
 		str+="<th id='header' ></th><th colspan='1' id='subheading' class='result-header'>";
 		str+="";
 		str+="</th>";
@@ -228,7 +225,6 @@ function cellIn(ev)
 
 		$("#horizhighlight").css("height",greger.offsetHeight-4+"px");
 		$("#horizhighlight").css("width",$("#markinglist").outerWidth()+"px");
-
 }
 
 function cellOut(ev)
@@ -443,8 +439,7 @@ function toggleSortDir(col){
         dir=dir*-1;
         $("input[name='sortdir']:checked").val(dir);
         localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);      
-    }    
-    
+    }
     resort();  
 }
 
@@ -521,7 +516,6 @@ function process()
 									}		
 							}
 					}
-					
 					students.push(student);
 		}			
 		// Update dropdown list
@@ -586,7 +580,6 @@ function process()
 		document.getElementById("dropdowns").innerHTML=dstr;	
 
 		resort();
-		
 		//console.log(performance.now()-tim);
 }
 
@@ -595,7 +588,6 @@ function hoverc()
     $('#dropdowns').css('display','none');
   	$('#dropdownc').css('display','block');
 }
-
 
 function leavec()
 {
@@ -680,9 +672,7 @@ function magicHeading()
 				} else {
 						$("#"+elemid+"magic").removeClass("result-header-inverse");	
 				}
-				
 		});
-
 		$("#upperDecker").css("top",(window.pageYOffset+48)+"px");
 }
 
@@ -712,13 +702,11 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		else {
 			//alert("This grading is not OK!");
 		}
-
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
 	return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
-
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
 {
@@ -776,7 +764,6 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid
 		} else {
 			//alert("Unknown Grade System: "+gradesys);
 		}
-
 		return str;
 }
 
@@ -872,7 +859,6 @@ function enterCell(thisObj)
   		} else if (c==="dugga-unassigned") {
   				$(thisObj).addClass("dugga-unassigned-highlighted");			
   		} else {
-  			
   		}
 }
 
