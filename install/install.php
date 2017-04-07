@@ -3,8 +3,66 @@
     <link rel="stylesheet" type="text/css" href="CSS/install_style.css">
 </head>
 <body>
+    <?php
+    ob_start();
+    /************* MODAL TO SHOW STEPS BEFORE AND AFTER ****************/
+    $putFileHere = dirname(getcwd(), 1); // Path to lenasys
+    echo "
+                    <div id='warning' class='modal'>
+                
+                        <!-- Modal content -->
+                        <div class='modal-content'>
+                            <span class='close''>&times;</span>
+                                <span id='dialogText'></span>
+                        </div>
+                
+                    </div>";
+    ?>
+
+    <script>
+        var modalRead = false; // Have the user read info?
+        var modal = document.getElementById('warning'); // Get the modal
+        var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
+        var filePath = "<?php echo $putFileHere; ?>";
+
+        document.getElementById('dialogText').innerHTML="<h1 style='text-align: center;'><span style='color: red;' />" +
+            "!!!!!!READ THIS BEFORE YOU START!!!!!!</span></h1><br>" +
+            "<h2 style='text-align: center;'>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
+            "<br>" +
+            "To do this run the command:<br>" +
+            "sudo chgrp -R www-data " + filePath + "</h2><br>" +
+            "<br>" +
+            "<input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1'>" +
+            "<i>I promise i have done this and will not complain that it's not working</i>";
+
+        function haveRead(isTrue) {
+            modalRead = isTrue;
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            if (modalRead) {
+                modal.style.display = "none";
+            }
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal && modalRead) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
     <h1>Fill out all fields to install LenaSYS and create database.</h1>
-    <button id="myBtn">Open start-dialog again.</button> (To see what permissions to set) <br>
+    <button id="showModalBtn">Open start-dialog again.</button> (To see what permissions to set) <br>
+    <script>
+        var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
+        // Open modal on button click
+        btn.onclick = function () {
+        modal.style.display = "block";
+        }
+    </script>
     <form action="install.php?mode=install" method="post">
         <table cellspacing="0px">
             <tr align="left">
@@ -54,7 +112,7 @@
         <table width="100%">
             <tr>
                 <td bgcolor="#EEEEEE">
-                    <input type="submit" name="submitButton" value="Install!"/>
+                    <input type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                     <input type="reset" value="Clear"/>
                 </td>
             </tr>
@@ -62,12 +120,54 @@
     </form>
 
     <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
-        $putFileHere = dirname(getcwd(), 1); // Path to lenasys
+        $putFileHere = dirname(getcwd(), 2); // Path to lenasys
         ob_end_clean(); // Remove form and start installation.
 
+        echo "
+                    <div id='warning' class='modal'>
+                
+                        <!-- Modal content -->
+                        <div class='modal-content'>
+                            <span class='close''>&times;</span>
+                                <span id='dialogText'></span>
+                        </div>
+                
+                    </div>";
+        echo "
+            <script>
+                var modalRead = false; // Have the user read info?
+                var modal = document.getElementById('warning'); // Get the modal
+                var btn = document.getElementById('showModalBtn'); // Get the button that opens the modal
+                var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
+                var filePath = '{$putFileHere}';
+                
+                document.getElementById('dialogText').innerHTML = '<h1 style=\'text-align: center;\'><span style=\'color: red;\' />!!!WARNING!!!</span></h1><br>' +
+                    '<h2 style=\'text-align: center;\'>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
+                    '<p style=\'text-align: center;\'>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
+                    'responsibility for your failing system.</p>';
+                
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = 'none';
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                }
+            </script>
+        ";
+        flush();
+        ob_flush();
+
+        /***** START ******/
+        $putFileHere = dirname(getcwd(), 1); // Path to lenasys
         echo "<h1>Installation</h1>";
         echo "<hr>";
         flush();
+        ob_flush();
 
         # Test permissions on directory before starting installation.
         if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
@@ -109,6 +209,7 @@
                 echo "<span style='color: red;' />Connection failed: " . $e->getMessage() . "</span><br>";
             }
             flush();
+            ob_flush();
 
             # If checked, write over existing database and user
             if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
@@ -130,6 +231,7 @@
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 flush();
+                ob_flush();
             }
 
             # Create new database
@@ -140,6 +242,7 @@
                 echo "<span style='color: red;' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
             }
             flush();
+            ob_flush();
 
             # Create new user and grant privileges to created database.
             try {
@@ -152,6 +255,7 @@
                 echo "<span style='color: red;' />Could not create user with name {$username}, maybe it already exists...</span><br>";
             }
             flush();
+            ob_flush();
 
             /**************************** Init database. *************************************/
             $initQuery = file_get_contents("SQL/init_db.sql");
@@ -203,6 +307,7 @@
                 echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>{$completeQuery}</textarea></code><br><br>";
             }
             flush();
+            ob_flush();
 
             /*************** Fill database with test data if this was checked. ****************/
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
@@ -238,10 +343,12 @@
 
         echo "<b>Installation finished.</b><br><hr>";
         flush();
+        ob_flush();
 
         # All this code prints further instructions to complete installation.
         $putFileHere = dirname(getcwd(), 2); // Path to lenasys
-        echo "<br><b><span style='color: red;' />To make installation work</span> please make a 
+        echo "<h1><span style='color: red;' />!!!READ BELOW!!!</span></h1>";
+        echo "<br><b>To make installation work please make a
             file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
@@ -264,7 +371,6 @@
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
         echo "</textarea><br>";
-        exit();
     }
 
     function makeCoursesysFile($username, $password, $serverName, $databaseName, $putFileHere){
@@ -300,6 +406,7 @@
             }
         }
         flush();
+        ob_flush();
     }
 
     # Function to copy test files
@@ -316,63 +423,9 @@
     }
     ?>
 
-    <?php
-    $putFileHere = dirname(getcwd(), 1); // Path to lenasys
-    # Overlay modal window that should pop up before installation starts.
-    echo "<!-- Start modal with permission instructions -->
-        <div id='startWarning' class='modal'>
-    
-            <!-- Modal content -->
-            <div class='modal-content'>
-                <span class='close''>&times;</span>
-                    <h1><span style='color: red;' />!!!!!!READ THIS BEFORE YOU START!!!!!!</span></h1><br>
-                    <h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>
-                    <br>
-                    To do this run the command:<br>
-                    sudo chgrp -R www-data {$putFileHere}</h2><br>
-                    <br>
-                    <p><i>I promise i have done this and will not complain that it's not working</i>
-                    <input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1'></p>
-            </div>
-    
-        </div>";
-    ?>
-
     <script>
-        var modalRead = false;
-        // Get the modal
-        var modal = document.getElementById('startWarning');
-
         // Show modal
         modal.style.display = "block";
-
-        // Get the button that opens the modal
-        var btn = document.getElementById("myBtn");
-
-        // When the user clicks on the button, open the modal
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        function haveRead(isTrue) {
-            modalRead = isTrue;
-        }
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            if (modalRead) {
-                modal.style.display = "none";
-            }
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal && modalRead) {
-                modal.style.display = "none";
-            }
-        }
     </script>
+
 </body>
