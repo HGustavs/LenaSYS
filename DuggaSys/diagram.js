@@ -1175,9 +1175,12 @@ function dialogForm() {
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
-        form.innerHTML = "Attribute name: " +
-            "<input id='text' type='text'></br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
+        form.innerHTML = "Attribute name:</br>" +
+        	"<input id='text' type='text'></br>" +
+            "Attribute type: </br>" +
+            	  "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+ 			"<button type='submit' onclick='changeName(form)'>Ok</button>" +
+            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";   
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
