@@ -890,7 +890,8 @@ function doubleclick(ev)
 {
 	if(diagram[selobj].inside(cx,cy)){
         openAppearanceDialogMenu();
-  }
+	}
+    clickOutsideDialogMenu();
 }
 
 function mouseupevt(ev){
@@ -1005,7 +1006,6 @@ function mouseupevt(ev){
     	if(uimode!="CreateFigure"){
     		uimode=" ";
         }
-
 }
 function deleteObject(index){
   var canvas = document.getElementById("myCanvas");
@@ -1162,6 +1162,7 @@ function openAppearanceDialogMenu() {
     $("#appearance").show();
     $("#appearance").width("auto");
     dialogForm();
+
 }
 
 function dialogForm() {
@@ -1169,20 +1170,20 @@ function dialogForm() {
     form.innerHTML= "No item selected<type='text'>";
 
     if(diagram[selobj].symbolkind==1){
-        form.innerHTML = "Class name: <input id='text' type='text'></br>" +
-            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+        form.innerHTML = "Class name: </br>" +
+            "<input id='text' type='text'></br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
-        form.innerHTML = "Attribute name: <input id='text' type='text'></br>" +
-            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+        form.innerHTML = "Attribute name: </br>" +
+            "<input id='text' type='text'></br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
             "<input id='text' type='text'></br>" +
             "Entity type: </br>" +
-			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+			      "<select id ='entityType'><option value='weak'>Weak</option><option value='strong' selected>Strong</option></select></br>" +
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
 }
@@ -1197,9 +1198,25 @@ function changeName(form){
  * Closes the dialog menu for appearance.
  */
 function closeAppearanceDialogMenu() {
+    document.removeEventListener("click", clickOutsideDialogMenu);
 	$("#appearance").hide();
 }
 
+/**
+ * Closes the dialog menu when click is done outside box.
+ */
+function clickOutsideDialogMenu(ev) {
+    $(document).mouseup(function (ev)
+    {
+		var container = $("#appearance");
+		if (!container.is(ev.target)
+			&& container.has(ev.target).length === 0)
+		{
+			container.hide();
+			document.removeEventListener("click", clickOutsideDialogMenu);
+		}
+    });
+}
 
 function Consolemode(action){
 
