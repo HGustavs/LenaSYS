@@ -1,26 +1,11 @@
 <head>
     <title>Install LenaSYS!</title>
+    <link rel="stylesheet" type="text/css" href="CSS/install_style.css">
 </head>
 <body>
-<?php
-$fileIsCreated = false;
-if (isset($_GET["mode"])) {
-    echo "<h1>Installation</h1>";
-    echo "<hr>";
-    flush();
-    /* Not yet implemented. TODO: Ask about how this should be done in a safe way.
-    if ($_GET["mode"] == "createfile"){
-        makeCoursesysFile($_POST["username"], $_POST["password"], $_POST["servername"], $_POST["database"], $_POST["putfilehere"]);
-        $fileIsCreated = true;
-    }
-    if ($fileIsCreated) {
-        exit ($_POST["putfilehere"] . "/coursesyspw.php was created and filled.");
-    }
-    */
-}
-?>
     <h1>Fill out all fields to install LenaSYS and create database.</h1>
-    <form action="install.php" method="post">
+    <button id="myBtn">Open start-dialog again.</button> (To see what permissions to set) <br>
+    <form action="install.php?mode=install" method="post">
         <table cellspacing="0px">
             <tr align="left">
                 <th valign=top><h2>New/Existing MySQL user and DB</h2></th>
@@ -61,7 +46,7 @@ if (isset($_GET["mode"])) {
             <tr>
                 <td colspan="3" bgcolor="#FFCCCC">
                     <input type="checkbox" name="writeOverDB" value="Yes" />
-                    <b><-- Check the box if you want to write over existing database and user<br>
+                    <b><-- Check the box if you want to write over an existing database and user<br>
                         <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE)</span></b><br>
                 </td>
             </tr>
@@ -76,16 +61,8 @@ if (isset($_GET["mode"])) {
         </table>
     </form>
 
-    <?php
-
-    # Call JS to show alert about permission.
-    $putFileHere = dirname(getcwd(), 1); // Path to lenasys
-    echo '<script>',
-        'alert("!!!!!!BEFORE YOU START!!!!!!\nMake sure you set ownership of the directory LenaSYS is located in to the group \'www-data\'.\n" +
-                "\nTo do this run the command:\nsudo chown -R www-data:www-data ' . $putFileHere . '\n");',
-    '</script>';
-
-    if (isset($_POST["submitButton"])) {
+    <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
+        $putFileHere = dirname(getcwd(), 1); // Path to lenasys
         ob_end_clean(); // Remove form and start installation.
 
         echo "<h1>Installation</h1>";
@@ -230,11 +207,6 @@ if (isset($_GET["mode"])) {
             /*************** Fill database with test data if this was checked. ****************/
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
                 addTestData("testdata", $connection);
-                # Add a language (for a existing file) in this array to add it to database.
-                /*$languages = array("php", "sql", "sr", "java", "html", "plain");
-                foreach ($languages AS $language) {
-                    addTestData("keywords_{$language}", $connection);
-                } */
 
                 # Check which languages to add from checkboxes.
                 $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
@@ -282,16 +254,6 @@ if (isset($_GET["mode"])) {
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
         echo "</textarea><br>";
 
-        /* Not yet implemented - TODO: Ask about how this should be done in a safe way.
-        echo "<form action='install.php?mode=createfile' method='post'>";
-        echo '<input type="submit" name="makeCoursesysFileButton" value="Make!"/><br>';
-        echo '<input name="username" type="hidden" value="'. $username . '">';
-        echo '<input name="password" type="hidden" value="'. $password . '">';
-        echo '<input name="servername" type="hidden" value="'. $serverName . '">';
-        echo '<input name="database" type="hidden" value="'. $databaseName . '">';
-        echo '<input name="putfilehere" type="hidden" value="'. $putFileHere . '">';
-        echo "</form>";
-        */
 
         echo "<b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
@@ -302,6 +264,7 @@ if (isset($_GET["mode"])) {
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
         echo "</textarea><br>";
+        exit();
     }
 
     function makeCoursesysFile($username, $password, $serverName, $databaseName, $putFileHere){
@@ -352,4 +315,64 @@ if (isset($_GET["mode"])) {
         echo "<span style='color: green;' />Successfully filled {$destDir} with example files.</span><br>";
     }
     ?>
+
+    <?php
+    $putFileHere = dirname(getcwd(), 1); // Path to lenasys
+    # Overlay modal window that should pop up before installation starts.
+    echo "<!-- Start modal with permission instructions -->
+        <div id='startWarning' class='modal'>
+    
+            <!-- Modal content -->
+            <div class='modal-content'>
+                <span class='close''>&times;</span>
+                    <h1><span style='color: red;' />!!!!!!READ THIS BEFORE YOU START!!!!!!</span></h1><br>
+                    <h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>
+                    <br>
+                    To do this run the command:<br>
+                    sudo chgrp -R www-data {$putFileHere}</h2><br>
+                    <br>
+                    <p><i>I promise i have done this and will not complain that it's not working</i>
+                    <input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1'></p>
+            </div>
+    
+        </div>";
+    ?>
+
+    <script>
+        var modalRead = false;
+        // Get the modal
+        var modal = document.getElementById('startWarning');
+
+        // Show modal
+        modal.style.display = "block";
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        function haveRead(isTrue) {
+            modalRead = isTrue;
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            if (modalRead) {
+                modal.style.display = "none";
+            }
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal && modalRead) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
