@@ -547,7 +547,9 @@ function processResetPasswordCheckUsername() {
 					if(typeof result.reason != "undefined") {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
+
 						$("#newpassword #message2").html("<div class='alert danger'>Username does not exist</div>");
+
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -577,7 +579,7 @@ function processResetPasswordCheckSecurityAnswer() {
 				if(result['checkanswer'] == "success") {
 					console.log("The answer was correct");
 					//do something
-					$("#showsecurityquestion #displaysecurityquestion").css("background-color", "rgba(0, 255, 6, 0.2)");
+					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
 					console.log("Wrong answer");
 					if(typeof result.reason != "undefined") {
