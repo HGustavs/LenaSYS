@@ -965,6 +965,12 @@ function mouseupevt(ev){
 				erAttributeA.centerpoint=p3;
 
 				diagram.push(erAttributeA);
+				
+				//selecting the newly created attribute and open the dialogmenu.
+				selobj = diagram.length -1;
+				diagram[selobj].targeted = true;
+				openAppearanceDialogMenu();
+				
 		}else if(uimode=="CreateEREntity"&&md==4){
             	erEnityA = new Symbol(3);
             	erEnityA.name="Entity"+diagram.length;
@@ -992,9 +998,6 @@ function mouseupevt(ev){
 			console.log("box drawn");
 			diagram.insides(cx,cy,sx,sy);
 		}
-
-
-
 
     	updategfx();
 
