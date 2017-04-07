@@ -890,7 +890,8 @@ function doubleclick(ev)
 {
 	if(diagram[selobj].inside(cx,cy)){
         openAppearanceDialogMenu();
-  }
+	}
+    clickOutsideDialogMenu();
 }
 
 function mouseupevt(ev){
@@ -1005,7 +1006,6 @@ function mouseupevt(ev){
     	if(uimode!="CreateFigure"){
     		uimode=" ";
         }
-
 }
 function deleteObject(index){
   var canvas = document.getElementById("myCanvas");
@@ -1162,9 +1162,11 @@ function openAppearanceDialogMenu() {
     $("#appearance").show();
     $("#appearance").width("auto");
     dialogForm();
+
 }
 
 function dialogForm() {
+	document.addEventListener("click", clickOutsideDialogMenu);
     var form = document.getElementById("f01");
     form.innerHTML= "No item selected<type='text'>";
 
@@ -1197,9 +1199,25 @@ function changeName(form){
  * Closes the dialog menu for appearance.
  */
 function closeAppearanceDialogMenu() {
+    document.removeEventListener("click", clickOutsideDialogMenu);
 	$("#appearance").hide();
 }
 
+/**
+ * Closes the dialog menu when click is done outside box.
+ */
+function clickOutsideDialogMenu(ev) {
+    $(document).mouseup(function (ev)
+    {
+		var container = $("#appearance");
+		if (!container.is(ev.target)
+			&& container.has(ev.target).length === 0)
+		{
+			container.hide();
+			document.removeEventListener("click", clickOutsideDialogMenu);
+		}
+    });
+}
 
 function Consolemode(action){
 
