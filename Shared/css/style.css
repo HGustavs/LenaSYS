@@ -289,7 +289,6 @@ p {
 #Sectionlist .section {
     color:#fff;
     background-color: #927b9e;
-    border-radius: 10px;
 }
 
 #Sectionlist .header {
@@ -308,7 +307,6 @@ p {
     font-size: 12pt;
     padding-top:5px;
     min-height:26px;
-    border-radius: 5px;
 }
 
 #Sectionlist .spacerLeft {
