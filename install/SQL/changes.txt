@@ -30,7 +30,7 @@ CREATE TABLE `usergroup` (
   `lastupdated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
   PRIMARY KEY (`ugid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Create table user_usergroup. This table represents the relation between users and usergroups. */
 
@@ -42,4 +42,4 @@ CREATE TABLE `user_usergroup` (
   KEY `uid` (`uid`),
   CONSTRAINT `usergroupid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`),
   CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
