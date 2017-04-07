@@ -821,7 +821,6 @@ function mousemoveevt(ev, t){
 		// Draw select or create dotted box
 		if(md==4){
 				ctx.setLineDash([3, 3]);
-				ctx.beginPath();
 				ctx.beginPath(1);
 				ctx.moveTo(sx,sy);
 				ctx.lineTo(cx,sy);
@@ -830,10 +829,8 @@ function mousemoveevt(ev, t){
 				ctx.lineTo(sx,sy);
 				ctx.strokeStyle = "#d51";
 				ctx.stroke();
-				ctx.setLineDash([]);
             	ctx.setLineDash([]);
             	ctx.closePath(1);
-
             	if(ghostingcrosses == true){
                     crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                     crossfillStyle = "rgba(255, 102, 68, 0.0)";
