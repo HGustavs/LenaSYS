@@ -145,7 +145,10 @@ function returnedFile(data)
 		str4="";
 		str1+="<table class='list' style='margin-bottom:8px;' >";
 		str1+="<thead style='cursor:pointer;'>";
-		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Link URL<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
+		"<th>Link URL<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+		"<th>Upload date & time</th>" +
+		"<th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
 		//str1+="<tr><th class='first' style='width:64px;'>ID</th><th style='width:30px' ></th></tr>";
 		str1+="</thead><tbody id='links_body'>"
 
@@ -156,6 +159,7 @@ function returnedFile(data)
 							str1+="<tr class='fumo'>";
 							str1+="<td>"+item['fileid']+"</td>";
 							str1+="<td>"+"<a href="+item['filename']+" target="+"_blank"+">"+item['filename']+"</a>"+"</td>";
+							str1+="<td>" + item['uploaddate'] + "</td>";
 							str1+="<td style='padding:4px;'>";
 							str1+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 							str1+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -166,7 +170,10 @@ function returnedFile(data)
 			str1+="</tbody></table>";
 			str2+="<table class='list' style='margin-bottom:8px;' >";
       str2+="<thead style='cursor:pointer;'>";      
-      str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+      str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
+      "<th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" + 
+      "<th>Upload date & time</th>" +
+      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str2+="</thead><tbody id='global_body'>"
 			
 			for(i=0;i<data['entries'].length;i++){
@@ -178,6 +185,7 @@ function returnedFile(data)
 					// str2+=item['filename']
 					str2+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
 					str2+="</td>";
+					str2+="<td>" + item['uploaddate'] + "</td>";
 					str2+="<td style='padding:4px;'>";
 					str2+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str2+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -189,7 +197,9 @@ function returnedFile(data)
 			str2+="</tbody></table>";
 			str3+="<table class='list' style='margin-bottom:8px;' >";
 			str3+="<thead>";
-      str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+      str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th>" + 
+      "<th>Upload date & time</th>" +
+      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
 			str3+="<thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
@@ -200,6 +210,7 @@ function returnedFile(data)
 					// str3+="<td>"+item['filename']+"</td>";
 					str3+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
 					str3+="</td>";
+					str3+="<td>" + item['uploaddate'] + "</td>";
 					str3+="<td style='padding:4px;'>";
 					str3+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str3+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -210,7 +221,9 @@ function returnedFile(data)
 			str3+="</tbody></table>";
 			str4+="<table class='list' style='margin-bottom:8px;' >";
 			str4+="<thead>";
-      str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+      str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" + 
+      "<th>Upload date & time</th>" +
+      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
 			str4+="<thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
@@ -221,6 +234,7 @@ function returnedFile(data)
 					// str4+="<td>"+item['filename']+"</td>";
 					str4+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
 					str4+="</td>";
+					str4+="<td>" + item['uploaddate'] + "</td>";
 					str4+="<td style='padding:4px;'>";
 					str4+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str4+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
