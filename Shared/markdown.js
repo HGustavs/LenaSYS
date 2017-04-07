@@ -139,29 +139,38 @@ function parseLineByLine(inString) {
 		prevLine = currentLine;
 		currentLine = str.substr(0, currentLineFeed);
 		remainingLines = str.substr(currentLineFeed + 1, str.length);
+        markdown = identifier(prevLine, currentLine, markdown);
+       // markdown += "<br>"; // bug? create two linesbreakes instead of one
 
-		// handle unordered lists <ul></ul>
-		if(isUnorderdList(currentLine)) {
-			markdown += handleUnorderedList(currentLine, prevLine);
-		}
-		// handle ordered lists <ol></ol>
-		else if(isOrderdList(currentLine)) {
-            markdown += handleOrderedList(currentLine, prevLine);
-		}
-		// handle table
-		else if(false) {
-
-		}
-		else {
-			markdown += markdownBlock(currentLine);
-		}
-		markdown += "<br>"; // bug? create two linesbreakes instead of one
-
-		// first line done parsing. change start position to next line
-		str = remainingLines; 
-		currentLineFeed = str.indexOf("\n");
+        // first line done parsing. change start position to next line
+        str = remainingLines;
+        currentLineFeed = str.indexOf("\n");
 	}
+    markdown = identifier(prevLine, remainingLines, markdown);
 	return markdown;
+}
+function identifier(prevLine, currentLine, markdown){
+    // handle unordered lists <ul></ul>
+    if(isUnorderdList(currentLine)) {
+        markdown += handleUnorderedList(currentLine, prevLine);
+    }
+    // handle ordered lists <ol></ol>
+    else if(isOrderdList(currentLine)) {
+        markdown += handleOrderedList(currentLine, prevLine);
+    }
+    // handle table
+    else if(false) {
+
+    }
+    else {
+        markdown += markdownBlock(currentLine);
+        if(currentLine.match(/\br*/)){
+            markdown += "<br>";
+        }
+
+    }
+
+    return markdown;
 }
 
 function isUnorderdList(item) {
