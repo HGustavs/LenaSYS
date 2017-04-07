@@ -174,7 +174,8 @@ function returnedAccess(data)
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Class</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Teacher</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer;'>Added</th>" +
-			"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
+          	"<th style='text-align:left; padding-left:8px; width:90px;'>Version</th>" +
+		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
 			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
 			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
 		for(i=0;i<data['entries'].length;i++){
@@ -203,6 +204,8 @@ function returnedAccess(data)
 			str+="<td>"+teacher+"</td>";
 
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
+
+            str+="<td>"+item['vers']+"</td>";
 
 			// Select box for Access
 			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
