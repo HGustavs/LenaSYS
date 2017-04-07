@@ -52,11 +52,12 @@
 			<div onclick='closeWindows();'>x</div>
 		</div>
 		<div class='note'>
-			<p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
-			<p>SSN&lt;space&gt;Lastname,&lt;space&gt;Firstname&lt;space&gt;Email&lt;linebreak&gt;</p>
-			<p>Example:<br/>
-			000000-0000 Lastname, Firstname a12firla@student.his.se<br/>
-			111111-1111 Lastname, Firstname b12firla@student.his.se</p>
+            <p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
+            <p>SSN&lt;tab&gt;Lastname,&lt;space&gt;Firstname&lt;tab&gt;CID&lt;tab&gt;Ny&lt;tab&gt;PID,&lt;space&gt;Term&lt;tab&gt;Email&lt;linebreak&gt;</p>
+            <p>Example:<br/>
+                999102-5571	Gregersson, Greger	91001	Ny	WEBUG, H11	b17mahgo@student.his.se<br/>
+                888107-4432	Sven Harkel, Egon	91001	Ny	WEBUG, H11	b14sveha@student.his.se<br/>
+                777153-6699	Broskelsson, Dagmar	91001	Ny	WEBUG, H09	f16dagbr@student.his.se</p>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Add Users' onclick='addUsers();' />
@@ -78,6 +79,7 @@
 			<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
 			<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>	
 			<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
+			<div class='inputwrapper'><span>Teacher:</span><select  id='teacher' value='Teacher' ></select></div>
 			<div class='inputwrapper'><span>Study program, Start year:</span><input class='textinput' type='text' id='class' placeholder='WEBUG, H15' /></div>
 		</div> 
 		<div style='padding:5px;'>

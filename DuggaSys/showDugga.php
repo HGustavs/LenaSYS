@@ -213,6 +213,6 @@
 	<?php
 		include '../Shared/loginbox.php';
 	?>
-	
+</head>
 </body>
 </html>

@@ -40,26 +40,26 @@ INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, de
 INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (9, 2, 1, 2, 'Quiz', 'kryss', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
 
 /* Insert variants of tests */
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (1, 1, '{*tal*:*2*}', '{*danswer*:*00000010 0 2*}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (2, 1, '{*tal*:*5*}', '{*danswer*:*00000101 0 5*}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (3, 1, '{*tal*:*10*}', '{*danswer*:*00002 0 A*}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (4, 2, '{*tal*:*25*}', '{*danswer*:*00011001 1 9*}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (5, 2, '{*tal*:*87*}', '{*danswer*:*02111 5 7*}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (6, 2, '{*tal*:*192*}', '{*danswer*:*11000000 C 0*}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (7, 3, '{*color*:*red*,*colorname*:*Röd*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (8, 3, '{*color*:*white*,*colorname*:*Vit*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (9, 3, '{*color*:*black*,*colorname*:*Svart*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (10, 4, '{*color*:*blue*,*colorname*:*Blå*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (11, 4, '{*color*:*purple*,*colorname*:*Lila*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (12, 4, '{*color*:*teal*,*colorname*:*Turkos (Teal)*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (13, 5, '{*linje*:*10,30,19 20 40 20 50 30 50,81 65 50*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (14, 6, '{*linje*:*10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (15, 7, '{*variant*:*40 13 7 20 0*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (16, 8, '{*variant*:*26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0*}', '{Variant}', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (17, 9, '{question*One byte is equivalent to how many bits?: A*4: B*8: C*16: D*32}', 'B', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (18, 9, '{question*RGB and CMYK are abbreviations for what?: A*Red, Green, Blue and Cyan Magenta, Yellow, Key (black): B*Red, Grey, Black and Cyclone, Magenta, Yellow, Kayo: C*Randy´s Green Brick and Cactus Magnolia Yronema Kalmia}', 'A', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (19, 9, '{question*Which of these are examples of actual shaders?: A*B32shader, 554shader: B*Context shaders, Shadow shaders and Block shaders: C*Vertex shaders, Pixel shaders and Geometry shaders}', 'C', NOW(), 2);
-INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (20, 9, '{question*Points, lines and curves are examples of geometrical...: A*Primitives: B*Substitutes: C*Formations: D*Partitions}', 'A', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (1, 1, '{\"tal\":\"2\"}', '{"danswer":\"00000010 0 2\"}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (2, 1, '{\"tal\":\"5\"}', '{\"danswer\":\"00000101 0 5\"}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (3, 1, '{\"tal\":\"10\"}', '{\"danswer\":\"00002 0 A\"}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (4, 2, '{\"tal\":\"25\"}', '{\"danswer\":\"00011001 1 9\"}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (5, 2, '{\"tal\":\"87\"}', '{\"danswer\":\"02111 5 7\"}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (6, 2, '{\"tal\":\"192\"}', '{\"danswer\":\"11000000 C 0\"}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (7, 3, '{\"color\":\"red\",\"colorname\":\"Röd\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (8, 3, '{\"color\":\"white\",\"colorname\":\"Vit\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (9, 3, '{\"color\":\"black\",\"colorname\":\"Svart\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (10, 4, '{\"color\":\"blue\",\"colorname\":\"Blå\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (11, 4, '{\"color\":\"purple\",\"colorname\":\"Lila\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (12, 4, '{\"color\":\"teal\",\"colorname\":\"Turkos (Teal)\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (13, 5, '{\"linje\":\"10,30,19 20 40 20 50 30 50,81 65 50\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (14, 6, '{\"linje\":\"10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (15, 7, '{\"variant\":\"40 13 7 20 0\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (16, 8, '{\"variant\":\"26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0\"}', '{Variant}', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (17, 9, '{question\"One byte is equivalent to how many bits?: A\"4: B\"8: C\"16: D\"32}', 'B', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (18, 9, '{question\"RGB and CMYK are abbreviations for what?: A\"Red, Green, Blue and Cyan Magenta, Yellow, Key (black): B\"Red, Grey, Black and Cyclone, Magenta, Yellow, Kayo: C\"Randy´s Green Brick and Cactus Magnolia Yronema Kalmia}', 'A', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (19, 9, '{question\"Which of these are examples of actual shaders?: A\"B32shader, 554shader: B\"Context shaders, Shadow shaders and Block shaders: C\"Vertex shaders, Pixel shaders and Geometry shaders}', 'C', NOW(), 2);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (20, 9, '{question\"Points, lines and curves are examples of geometrical...: A\"Primitives: B\"Substitutes: C\"Formations: D\"Partitions}', 'A', NOW(), 2);
 
 
 /* Insert items on coursepage */
@@ -619,5 +619,47 @@ INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,m
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '5', '13', '2007', NULL, '1010', NULL, '2015-05-20 11:18:42', NULL, '97732', NULL, NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '9', '19', '2007', NULL, '100', NULL, '2015-05-21 14:17:02', NULL, '97732', NULL, NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2', '7', '15', '2010', NULL, '2', NULL, '2015-05-20 14:40:35', NULL, '97732', NULL, NULL);
-INSERT INTO fileLink (fileid, filename, kind, cid, isGlobal) VALUES (2, "PHP_Ex2.txt", 2 , 1, 1);
+/* Link all test files */
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex1.css", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex1.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex1.js", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex1.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex2.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex2.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex3.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex3.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex4.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex4.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex5.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex5.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex6.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex6.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex7.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex7.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex8.css", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex8.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex8.js", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("HTML_Ex8.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex1.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex1.js", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex1.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex2.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex2.js", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex2.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex3.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex3.js", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("JavaScript_Ex3.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("PHP_Ex1.php", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("PHP_Ex1.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("PHP_Ex2.php", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("PHP_Ex2.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("PHP_Ex3.php", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("PHP_Ex3.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex1.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex1.js", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex1.txt", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.html", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.js", 3 , 1, 0);
+INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.txt", 3 , 1, 0);
+
 

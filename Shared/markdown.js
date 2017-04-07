@@ -86,6 +86,7 @@ function thumbnailImg(x,size) {
 //								Identical php code exists in showdoc any changes must be propagated
 //----------------------------------------------------------------------------------
 
+
 function parseMarkdown(inString)
 {	
 	inString = inString.replace(/\</g, "&lt;");
@@ -109,14 +110,106 @@ function parseMarkdown(inString)
 					specialBlockStart=false;
 					workstr='<div class="console"><pre>'+workstr.substr(3)+'</pre></div>';
 			} else if(workstr !== "") {
-					workstr=markdownBlock(workstr.replace(/^\&{3}|^\@{3}/gm, ''));
+					workstr=parseLineByLine(workstr.replace(/^\&{3}|^\@{3}/gm, ''));
 					specialBlockStart=true;					
-			} else{
-					// What to do with "" strings?
-			}
+			} 
+
 			str+=workstr;
 	}
+
 	return str;
+}
+
+//----------------------------------------------------------------------------------
+// parseLineByLine: Parses file line by line 
+//					
+//          
+//----------------------------------------------------------------------------------
+
+function parseLineByLine(inString) {
+	var str = inString;	
+	var markdown = "";
+
+	var currentLineFeed = str.indexOf("\n");
+	var currentLine = "";
+	var prevLine = "";
+	var remainingLines = "";
+
+	while(currentLineFeed != -1){ /* EOF */
+		prevLine = currentLine;
+		currentLine = str.substr(0, currentLineFeed);
+		remainingLines = str.substr(currentLineFeed + 1, str.length);
+
+		// handle unordered lists <ul></ul>
+		if(isUnorderdList(currentLine)) {
+			markdown += handleUnorderedList(currentLine, prevLine);
+		}
+		// handle ordered lists <ol></ol>
+		else if(isOrderdList(currentLine)) {
+            markdown += handleOrderedList(currentLine, prevLine);
+		}
+		// handle table
+		else if(false) {
+
+		}
+		else {
+			markdown += markdownBlock(currentLine);
+		}
+		markdown += "<br>"; // bug? create two linesbreakes instead of one
+
+		// first line done parsing. change start position to next line
+		str = remainingLines; 
+		currentLineFeed = str.indexOf("\n");
+	}
+	return markdown;
+}
+
+function isUnorderdList(item) {
+	return /^\s*[\-\*]\s(.*)/gm.test(item);
+}
+
+function isOrderdList(item) {
+	return /^\s*\d*\.\s(.*)/gm.test(item);
+}
+
+function handleUnorderedList(currentLine, prevLine) {
+	var markdown = "";
+
+	// first list item should be prepended with ul-tag
+	if(!isUnorderdList(prevLine)) {
+		markdown += "<ul>"; // html will close tag for us
+	}
+
+	// handle sublists
+	var currentSublistLevel = currentLine.match(/^\s*\t*/gm)[0].length;
+	var prevSublistLevel = prevLine.match(/^\s*\t*/gm)[0].length
+	if(currentSublistLevel > prevSublistLevel) { // create sublist if current line is less indented then previous line
+		markdown += "<ul>";
+	} else if(currentSublistLevel < prevSublistLevel) { // close sublist 
+		markdown += "</ul></li>"
+	}
+
+	// create list item
+	var trimPosition = currentLine.match(/^\s*[\-\*]\s*/gm)[0].length; // start position for real value
+	markdown += "<li>" + currentLine.substr(trimPosition, currentLine.length); // html will close tag for us
+
+	return markdown;
+}
+
+function handleOrderedList(currentLine, prevLine) { // function works the same way handleUnorderedList does(). 
+    var markdown = "";
+    var matches = currentLine.match(/^\s*\d*\.\s(.*)/gm);
+    if(currentLine.match(/^\s*\d*/)[0].length > prevLine.match(/^\s*\d*/)[0].length){
+        markdown += "<ol>";
+    }
+    else if(currentLine.match(/^\s*\d*/)[0].length < prevLine.match(/^\s*\d*/)[0].length){
+        markdown += "</ol>" + "</li>";
+    }else{
+
+    }
+    markdown += "<li>" + currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
+
+    return markdown;
 }
 
 //----------------------------------------------------------------------------------
@@ -127,6 +220,16 @@ function parseMarkdown(inString)
 
 function markdownBlock(inString)
 {	
+
+/* OLD SHIT, only for reference
+	//Regular expressions for lists
+		inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
+		inString = inString.replace(/^\s*[\-\*]\s(.*)/gm, '<ul><li>$1</li></ul>');
+	// Fix for superflous ul tags
+		inString = inString.replace(/\<\/ol\>(\r\n|\n|\r)\<ol\>/gm,"");
+		inString = inString.replace(/\<\/ul\>(\r\n|\n|\r)\<ul\>/gm,"");		
+*/
+
 	//Regular expressions for italics and bold formatting
 	inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<strong><em>$1</em></strong>');	
 	inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<strong>$1</strong>');
@@ -142,41 +245,6 @@ function markdownBlock(inString)
 	inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
 	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
 	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
-	
-/*
-	//Regular expressions for ordered lists
-	// (###) to start a list
-	// 1. Digit dot space
-	// 2. Digit dot space
-	// 		(###) to start a sublist
-	// 		1. Digit dot space
-	// 		(/###) to close the sublist
-	// (/###) to close the list
-	inString = inString.replace(/[(]\#{3}[)]/gm, '<ol>');
-	inString = inString.replace(/[\d]{1,}\.\s(.*)/gm, '<li>$1</li>');
-	inString = inString.replace(/[(][\/]\#{3}[)]/gm, '</ol>');
-	
-	//Regular expressions for unordered lists
-	// (***) to start a list
-	// * Bullet
-	// 		(***) to start a sublist
-	// 		* Sub-bullet
-	// 		(/***) to close the sublist
-	// (/***) to close the list
-	inString = inString.replace(/[(]\*{3}[)]/gm, '<ul>');
-	inString = inString.replace(/[\-\*]{1}\s(.*)/gm, '<li>$1</li>');
-	inString = inString.replace(/[(][\/]\*{3}[)]/gm, '</ul>');
-*/
-
-	// Reverting to old way of handling ordered lists - as new way breaks old type of list
-
-	//Regular expressions for lists
-	inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
-	inString = inString.replace(/^\s*[\-\*]\s(.*)/gm, '<ul><li>$1</li></ul>');
-
-	// Fix for superflous ul tags
-	inString = inString.replace(/\<\/ol\>(\r\n|\n|\r)\<ol\>/gm,"");
-	inString = inString.replace(/\<\/ul\>(\r\n|\n|\r)\<ul\>/gm,"");
 
 	//Regular expression for line
 	inString = inString.replace(/\-{3,}/g, '<hr>');
@@ -248,3 +316,4 @@ function markdownBlock(inString)
 
 	return inString;
 }
+

@@ -14,7 +14,7 @@
 				<table>
 					<tr>
 						<td>
-							<label class="text">Login name:</label>
+							<label class="text">Username:</label>
 						</td>
 					</tr>
 					<tr>
@@ -63,12 +63,12 @@
 				<table>
 					<tr>
 						<td>
-							<label class="text">username:</label>
+							<label class="text">Username:</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input id="username" class='form-control textinput' type='text' placeholder="c13andfi" autofocus >
+							<input id="username" class='form-control textinput' type='text' placeholder="Username" autofocus >
 						</td>
 					</tr>
 	
@@ -99,7 +99,7 @@
 					<tr>
 						<td>
 							<!-- Using a label to show the security question might not be the best idea, the label will be changed using js, but using a label and updating it with js might not be the best approach. -->
-							<label id="displaysecurityquestion" class="text">Who let the dogs out?</label>
+							<label id="displaysecurityquestion" class="text">Placeholder question</label>
 						</td>
 					</tr>
 					<tr>

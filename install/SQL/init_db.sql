@@ -71,6 +71,7 @@ CREATE TABLE user_course(
 		result 			DECIMAL(2,1) DEFAULT 0.0,
 		modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 		INTEGER,
+        teacher   VARCHAR(50),
 		access			VARCHAR(10) NOT NULL,
 		period			INTEGER DEFAULT 1,
 		term					CHAR(5) DEFAULT "VT16",
@@ -93,7 +94,7 @@ CREATE TABLE listentries (
 	code_id 			MEDIUMINT unsigned NULL DEFAULT NULL,
 	visible 			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	vers					VARCHAR(8),
-	comment					VARCHAR(512),
+	comments					VARCHAR(512),
 	moment				INT UNSIGNED,
 	gradesystem 	TINYINT(1),
 	highscoremode	INT DEFAULT 0,
@@ -460,6 +461,16 @@ CREATE TABLE list (
 	PRIMARY KEY(listid)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
+
+CREATE TABLE user_push_registration (
+	id							INT NOT NULL AUTO_INCREMENT,
+	uid 						INT UNSIGNED NOT NULL,
+	endpoint				VARCHAR(500) NOT NULL,
+	added						TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY 	(id),
+	FOREIGN KEY (uid) REFERENCES user(uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
 /*
 INSERT INTO programkurs VALUES (45,'WEBUG12h','DA135G','Datakommunikation - Introduktion G1N 7,5 hp','87524',5,NULL,'20132'),(46,'WEBUG12h','SD140G','Studieteknik G1N 1,5 hp','85621',4,NULL,'20122'),(47,'WEBUG12h','DA147G','Grundl�ggande programmering med C++ G1N 7,5 hp','87520',5,NULL,'20122'),(48,'WEBUG12h','IT116G','Informationss�kerhet - Introduktion G1N 7,5 hp','87510',5,NULL,'20142'),(49,'WEBUG12h','DA133G','Webbutveckling - datorgrafik G1N 7,5 hp','87518',4,NULL,'20122'),(50,'WEBUG12h','DA121G','Datorns grunder G1N 7,5 hp','87514',4,NULL,'20122'),(51,'WEBUG12h','DA330G','Webbprogrammering G1F 7,5 hp','87547',5,NULL,'20132'),(52,'WEBUG12h','DA523G','Webbteknologi - forskning och utveckling G2F 7,5 hp','87568',5,NULL,'20142'),(53,'WEBUG12h','DA524G','Webbutveckling - content management och drift G2F 7,5 hp','87569',4,NULL,'20142'),(54,'WEBUG12h','DA322G','Operativsystem G1F 7,5 hp','87531',4,NULL,'20142'),(55,'WEBUG12h','IS130G','IT i organisationer - Introduktion G1N 7,5 hp','88317',4,NULL,'20132'),(56,'WEBUG12h','IS317G','Databaskonstruktion G1F 7,5 hp','88344',4,NULL,'20132'),(57,'WEBUG12h','KB111G','Interaktion, design och anv�ndbarhet I G1N 7,5 hp','88417',5,NULL,'20122'),(58,'WEBUG12h','DA348G','Objektorienterad programmering G1F 7,5 hp','97543',1,NULL,'20131'),(59,'WEBUG12h','MA113G','Algebra och logik G1N 7,5 hp','93612',1,NULL,'20141'),(60,'WEBUG12h','DA338G','Projekt i webbutveckling G1F 15 hp','97545',2,NULL,'20141'),(61,'WEBUG12h','DA345G','Examensarbete i datalogi med inriktning mot webbutveckling G2E 30 hp','97560',1,NULL,'20151'),(62,'WEBUG12h','DV123G','Webbutveckling - webbplatsdesign G1N 7,5 hp','97703',1,NULL,'20131'),(63,'WEBUG12h','DV313G','Webbutveckling - XML API G1F 7,5 hp','97737',2,NULL,'20131'),(64,'WEBUG12h','DV318G','Programvaruutveckling - programvaruprojekt G1F 15 hp','97744',2,NULL,'20141'),(65,'WEBUG12h','DV316G','Programvaruutveckling G1F 7,5 hp','97745',1,NULL,'20141'),(66,'WEBUG12h','IS114G','Databassystem G1N 7,5 hp','98324',2,NULL,'20131'),(67,'WEBUG13h','DA147G','Grundl�ggande programmering med C++ G1N 7,5 hp','87501',5,NULL,'20132');
 INSERT INTO studentresultat VALUES (1,'111111-1111',NULL,'IT111G','H14',5.0,NULL),(2,'111111-1111',NULL,'IT115G','H14',7.5,NULL),(3,'111111-1111',NULL,'IT118G','H14',7.5,NULL),(4,'111111-1111',NULL,'IT120G','H14',0.0,NULL),(5,'111111-1111',NULL,'IT108G','V15',0.0,NULL),(6,'111111-1111',NULL,'IT121G','V15',0.0,NULL),(7,'111111-1111',NULL,'IT308G','V15',0.0,NULL);
@@ -510,6 +521,7 @@ INSERT INTO wordlist(wordlistname,uid) VALUES ("HTML",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("Plain Text",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("Java",1);
 INSERT INTO wordlist(wordlistname,uid) VALUES ("SR",1);
+INSERT INTO wordlist(wordlistname,uid) VALUES ("SQL",1);
 
 /* Wordlist for different programming languages */
 
@@ -525,56 +537,6 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onclick","A",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"onload","B",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
-
-/* Java Keywords */
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"abstract","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"continue","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"for","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"new","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"switch","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"assert","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"default","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"goto","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"package","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"synchronized","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"boolean","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"do","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"if","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"private","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"this","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"break","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"double","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"implements","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"protected","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"throw","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"byte","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"else","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"import","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"public","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"throws","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"case","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"enum","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"var","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"catch","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"instanceof","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"return","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"transient","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"extends","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"int","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"short","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"try","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"char","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"final","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"interface","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"static","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"class","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"long","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"strictfp","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"volatile","A",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"float","B",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"native","C",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"super","D",1);
-INSERT INTO word(wordlistid, word,label,uid) VALUES (5,"while","A",1);
 
 /* Merged from strutt.sql */
 alter table user_course alter column result SET DEFAULT 0.0;
