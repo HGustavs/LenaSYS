@@ -992,19 +992,20 @@ function mouseupevt(ev){
     		erLineA.bottomRight=p2;
     		erLineA.centerpoint=p3;
 
-    		diagram.push(erLineA);
-    } else if(md == 4 && !(uimode=="CreateFigure") && !(uimode=="CreateLine") && !(uimode=="CreateEREntity") && !(uimode=="CreateERAttr" ) &&!(uimode=="CreateClass" ) &&!(uimode=="MoveAround" ) ){
-			console.log("box drawn");
-			diagram.insides(cx,cy,sx,sy);
-		}
-
-    	updategfx();
-
-    	// Clear mouse state
-    	md=0;
-    	if(uimode!="CreateFigure"){
-    		uimode=" ";
+            diagram.push(erLineA);
+        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" )) {
+            console.log("box drawn");
+            diagram.insides(cx, cy, sx, sy);
         }
+
+    document.addEventListener("click", clickOutsideDialogMenu);
+    updategfx();
+
+    // Clear mouse state
+    md = 0;
+    if (uimode != "CreateFigure") {
+        uimode = " ";
+    }
 
 }
 function deleteObject(index){
@@ -1199,8 +1200,22 @@ function changeName(form){
  */
 function closeAppearanceDialogMenu() {
 	$("#appearance").hide();
+    document.removeEventListener("click", clickOutsideDialogMenu);
 }
 
+/**
+ * Closes the dialog menu when click is done outside box.
+ */
+function clickOutsideDialogMenu(ev) {
+    $(document).mousedown(function (ev) {
+        var container = $("#appearance");
+        if (!container.is(ev.target)
+            && container.has(ev.target).length === 0) {
+            container.hide();
+            document.removeEventListener("click", clickOutsideDialogMenu);
+        }
+    });
+}
 
 function Consolemode(action){
 
