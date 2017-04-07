@@ -207,10 +207,27 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
+$classes=array();
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	$query = $pdo->prepare("SELECT class FROM class;");
+	$query->bindParam(':cid', $cid);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		$debug="Error reading user entries".$error[2];
+	}
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$classe = array(
+				'class' => $row['class'],
+			);
+			array_push($classes, $classe);
+		}
+}
+
 $array = array(
 	'entries' => $entries,
 	"debug" => $debug,
-	'teachers' => $teachers
+	'teachers' => $teachers,
+	'classes' => $classes
 );
 
 echo json_encode($array);
