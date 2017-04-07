@@ -547,7 +547,9 @@ function processResetPasswordCheckUsername() {
 					if(typeof result.reason != "undefined") {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#newpassword #message2").html("<div class='alert danger'>User not found</div>");
+
+						$("#newpassword #message2").html("<div class='alert danger'>Username does not exist</div>");
+
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
