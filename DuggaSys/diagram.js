@@ -1307,7 +1307,7 @@ function debugMode()
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
 var mousedownX = 0; var mousedownY = 0;
-var mouseupX = 0; var mouseupY = 0;
+var mousemoveX = 0; var mousemoveY = 0;
 var mouseDiffX = 0; var mouseDiffY = 0;
 var newCanvasX = 0; var newCanvasY = 0;
 
@@ -1317,24 +1317,27 @@ function movemode(e)
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="all-scroll";
 	canvas.addEventListener('mousedown', mousedownposcanvas, false);
-	canvas.addEventListener('mouseup', mouseupposcanvas, false);
 }
 function mousedownposcanvas(e){
-	mousedownX = e.pageX;
-	mousedownY = e.pageY;
-}
-function mouseupposcanvas(e){
-	mouseupX = e.pageX;
-	mouseupY = e.pageY;
-	movecanvas();
-}
-function movecanvas(){
 	var canvas = document.getElementById("myCanvas");
-	mouseDiffX = (mousedownX - mouseupX);
-	mouseDiffY = (mousedownY - mouseupY);
+	mousedownX = e.clientX;
+	mousedownY = e.clientY;
+	canvas.addEventListener('mousemove', mousemoveposcanvas, false);
+	canvas.addEventListener('mouseup', mouseupposcanvas, false);
+}
+function mousemoveposcanvas(e){
+	mousemoveX = 0; 
+	mousemoveY = 0;
+	mouseDiffX = 0; 
+	mouseDiffY = 0;
+	mousemoveX = e.clientX;
+	mousemoveY = e.clientY;
+	var canvas = document.getElementById("myCanvas");
+	mouseDiffX = (mousedownX - mousemoveX - mouseDiffX);
+	mouseDiffY = (mousedownY - mousemoveY - mouseDiffY);
 	newCanvasX = (mouseDiffX+newCanvasX);
 	newCanvasY = (mouseDiffY+newCanvasY);
-
+	console.log(mouseDiffX+" | "+mouseDiffY);
 	ctx.clearRect(startX,startX,widthWindow,heightWindow);
 	ctx.translate(newCanvasX,newCanvasY);
 	// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
@@ -1343,17 +1346,21 @@ function movecanvas(){
 	diagram.draw();
 	// Draw all points as crosses
 	points.drawpoints();
-	mousedownX = 0; mousedownY = 0;
-	mouseupX = 0; mouseupY = 0;
+}
+function mouseupposcanvas(e){
+	var canvas = document.getElementById("myCanvas");
 	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
+	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
 	canvas.style.cursor="default";
+	mousedownX = 0; mousedownY = 0;
+	mousemoveX = 0; mousemoveY = 0;
 }
 function stopmovemode(){
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="default";
 	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
-	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
+	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 }
 
 //----------------------------------------
