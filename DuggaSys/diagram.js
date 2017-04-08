@@ -34,6 +34,7 @@ var lineStartObj = -1;
 var movobj=-1;				// Moving object ID
 var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
+var figureMode = null;		// Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
 var widthWindow;			// The width on the users screen is saved is in this var.
 var heightWindow;			// The height on the users screen is saved is in this var.
 var consoleInt = 0;
@@ -672,7 +673,12 @@ function initcanvas()
 		"<button onclick='attrmode();'>Create Attribute</button>" +
 		"<button onclick='linemode();'>Create Line</button>" +
 		"<button onclick='entitymode();'>Create Entity</button>" +
-		"<button onclick='figuremode();'>Create Figure</button>" +
+		"<select id='selectFigure' onchange='figuremode()'>" +
+			"<option selected='selected' disabled>Create Figure</option>" +
+			"<option value='Square'>Square</option>" +
+			"<option value='Circle'>Circle</option>" +
+			"<option value='Free'>Free-Draw</option>" +
+		"</select>" +
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
@@ -1149,8 +1155,17 @@ function linemode()
 function figuremode()
 {
 		var canvas = document.getElementById("myCanvas");
-		canvas.style.cursor="default";
-    	uimode="CreateFigure";
+		canvas.style.cursor = "default";
+    	uimode = "CreateFigure";
+    	var selectBox = document.getElementById("selectFigure");
+    	figureMode = selectBox.options[selectBox.selectedIndex].value;
+}
+
+/**
+ * Resets the select box to its default value (Create Figure)
+ */
+function resetSelectionCreateFigure() {
+	document.getElementById("selectFigure").selectedIndex = 0;
 }
 
 /**
