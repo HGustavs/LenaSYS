@@ -37,7 +37,6 @@ var uimode="normal";		// User interface mode e.g. normal or create class current
 var widthWindow;			// The width on the users screen is saved is in this var.
 var heightWindow;			// The height on the users screen is saved is in this var.
 var consoleInt = 0;
-var canFigure = false; // When figure mode is enabled for the session, this needs to be set to true and p1 to null.
 var startX=0; var startY=0;			// Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = {x:-10,y:-10,selected:false};
 var activePoint = null; //This point indicates what point is being hovered by the user
