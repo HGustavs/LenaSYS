@@ -15,6 +15,7 @@ var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
 function toggleloginnewpass(){
+	resetFields();
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
@@ -34,6 +35,23 @@ function toggleloginnewpass(){
 		status= 1;
 		showing= 2;
 	}
+}
+
+// This function only resets login and forgot password fields
+function resetFields(){
+	$("#login #username").val("");
+	$("#login #password").val("");
+	$("#newpassword #username").val("");
+	$("#showsecurityquestion #answer").val("");
+
+	$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
+	$("#loginBox #password").css("background-color", "rgb(255, 255, 255)");
+	$("#newpassword #username").css("background-color", "rgb(255, 255, 255)");
+	$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
+
+	$("#login #message").html("<div class='alert danger'></div>");
+	$("#newpassword #message2").html("<div class='alert danger'></div>");
+	$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
 }
 
 //----------------------------------------------------------------------------------
@@ -76,8 +94,7 @@ function closeWindows(){
 					status=1;
 					toggleloginnewpass();
 					$("#overlay").css("display","none");
-					$("#login #username").val("");
-					$("#login #password").val("");
+					resetFields();
 			}
 	}
 	window.removeEventListener("keypress", loginEventHandler, false);
@@ -512,7 +529,6 @@ function AJAXService(opt,apara,kind)
 //Will handle enter key pressed when loginbox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
-
 		if(showing == 1){
 			processLogin();
 		}else if(showing == 0){
@@ -577,7 +593,7 @@ function processResetPasswordCheckSecurityAnswer() {
 				if(result['checkanswer'] == "success") {
 					console.log("The answer was correct");
 					//do something
-					$("#showsecurityquestion #displaysecurityquestion").css("background-color", "rgba(0, 255, 6, 0.2)");
+					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
 					console.log("Wrong answer");
 					if(typeof result.reason != "undefined") {
@@ -593,8 +609,6 @@ function processResetPasswordCheckSecurityAnswer() {
 
 
 function processLogin() {
-
-
 
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
