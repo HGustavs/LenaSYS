@@ -183,8 +183,6 @@ function saveDuggaResult(citstr)
 		}
 		
 		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
-		console.log(dateTimeFormat);
-		console.log(deadline);
 		
 		if(deadline > dateTimeFormat){	//Check if deadline has past
 			
