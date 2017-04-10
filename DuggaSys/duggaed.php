@@ -92,7 +92,7 @@ pdoConnect();
 						<div id="duggaSubmissionForm">
 							<fieldset style="width:90%">
 								<legend>Submission types</legend>
-								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;"></div>
+								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;max-height:180px;overflow:auto;"></div>
 							</fieldset>
 							<button type="button" name="addfieldname" id="addfieldname"><img src="../Shared/icons/PlusT.svg" alt="Add row"/></button>
 							<button type="button" name="createjson" id="createjson">Create JSON</button>
