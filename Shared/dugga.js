@@ -189,10 +189,8 @@ function saveDuggaResult(citstr)
 
 		var dateTime = new Date(); // Get the current date and time
 
-		//Get the comment
- 		var comment = querystring['comment'];
+ 		var comment = querystring['comment']; //Get the comment
 		
-
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
 		
 

@@ -751,6 +751,7 @@ function returnedSection(data)
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {		// Test / Dugga
+					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
 					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"\");' >"+item['entryname']+"</a>";
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
@@ -763,8 +764,8 @@ function returnedSection(data)
 				str+="</td>";
 
 				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
-				var dateSubmitted = new Date();//submitted.toJSON().slice(0,10).replace(/-/g,'-');
-				var timeSubmitted = new Date();//submitted.toJSON().slice(11,19).replace(/-/g,'-');
+				var dateSubmitted = submitted.toJSON().slice(0,10).replace(/-/g,'-');
+				var timeSubmitted = submitted.toJSON().slice(11,19).replace(/-/g,'-');
 				var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 				
 				// create a warning if the dugga is submitted after the set deadline
