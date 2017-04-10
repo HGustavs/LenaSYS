@@ -71,7 +71,7 @@ CREATE TABLE user_course(
 		result 			DECIMAL(2,1) DEFAULT 0.0,
 		modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 		INTEGER,
-        teacher   VARCHAR(50),
+        teacher   		VARCHAR(50),
 		access			VARCHAR(10) NOT NULL,
 		period			INTEGER DEFAULT 1,
 		term					CHAR(5) DEFAULT "VT16",
