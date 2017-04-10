@@ -32,7 +32,10 @@ pdoConnect();
 	?>
 
 	<div id="content">
-		<button class="profile-element" type="button" id="NotificationButton">Click here to activate notifications</button>
+		<button class="profile-element" type="button" id="activate_notifications">Activate notifications</button>
+		<script>
+var push_notifications_vapid_public_key = "<?php echo PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY; ?>";
+		</script>
 	
 		<form class="profile-element" method="POST" action="">
  			Challenge question
