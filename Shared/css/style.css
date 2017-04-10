@@ -1154,7 +1154,7 @@ input.large-button {
 
 #testinnertable {background:#fff;box-shadow:none;border-top: none;border-bottom: none;}
 
-span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
+span.arrow{}
 
 .markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8; font-family: hack,"Lucida Console", Monaco, monospace;}
 
