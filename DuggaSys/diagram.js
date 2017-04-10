@@ -719,6 +719,7 @@ var erEntityA;
 function updategfx()
 {
 		ctx.clearRect(startX,startY,widthWindow,heightWindow);
+		ctx.translate(mouseDiffX,mouseDiffY);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -1334,18 +1335,17 @@ function mousemoveposcanvas(e){
 	mouseDiffY = (mousedownY - mousemoveY);
 	mousedownX = mousemoveX;
 	mousedownY = mousemoveY;
-	//var newPosX =
 	console.log("Diff: "+mouseDiffX+" | "+mouseDiffY);
 	ctx.clearRect(startX,startX,widthWindow,heightWindow);
 	ctx.translate(mouseDiffX,mouseDiffY);
-	// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 	erEntityA.sortAllConnectors();
-	// Redraw diagram
 	diagram.draw();
-	// Draw all points as crosses
 	points.drawpoints();
 }
 function stopmovemode(){
+	mousedownX = 0; mousedownY = 0;
+	mousemoveX = 0; mousemoveY = 0;
+	mouseDiffX = 0; mouseDiffY = 0;
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="default";
 	canvas.removeEventListener('mousedown', getMousePos, false);
