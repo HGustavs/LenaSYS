@@ -304,6 +304,11 @@ p {
 	cursor: pointer;
 }
 
+/*changes the cursor for the cogwheels*/
+#corf, #dorf {
+	cursor: pointer;
+}
+
 #Sectionlist .example {
     color:#434343;
     font-size: 12pt;
