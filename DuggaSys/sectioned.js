@@ -513,8 +513,9 @@ function returnedSection(data)
 			str+="<td style='width:112px;'><input type='button' value='List' class='submit-button' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			
 			str+="<td style='width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='width:112px;'><input type='button' value='Groups' class='submit-button' onclick='changeURL(\"grouped.php\");'/></td>";	
-				
+			str+="<td style='width:112px;'><input type='button' value='Groups' class='submit-button' title='Access analysis page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+
+
 		}else{
 			// No version selector for students
 		}
