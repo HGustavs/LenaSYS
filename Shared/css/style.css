@@ -301,6 +301,7 @@ p {
 #Sectionlist .moment {
     color:#ffffff;
     background-color: #927b9e;
+	cursor: pointer;
 }
 
 #Sectionlist .example {
