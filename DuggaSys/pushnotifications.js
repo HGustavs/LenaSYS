@@ -21,7 +21,16 @@ $(function() {
 		button.disabled = true;
 
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-			serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
+			var rawData = window.atob(push_notifications_vapid_public_key);
+			var vapidKey = new Uint8Array(rawData.length);
+			for (let i = 0; i < rawData.length; ++i) {
+				vapidKey[i] = rawData.charCodeAt(i);
+			}
+
+			serviceWorkerRegistration.pushManager.subscribe({
+				userVisibleOnly: true,
+				applicationServerKey: vapidKey
+			})
 				.then(function(subscription) {
 					sendPushRegistrationToServer(subscription);
 				})

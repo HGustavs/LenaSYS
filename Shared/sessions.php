@@ -90,6 +90,13 @@ function getQuestion($username)
 		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question*/
 		
 		/*
+ 		$query = $pdo->prepare("SELECT teacher FROM user_course WHERE uid=:uid LIMIT 1"); 
+   		$query->bindParam(':uid', $_SESSION['uid']); 
+    	$query->execute(); 
+    	if($query->rowCount() > 0) { 
+      		return false 
+    	} 
+
 		if($_SESSION["securityquestion"]==null){
 			return false;
 		}
@@ -113,7 +120,7 @@ function checkAnswer($username, $securityquestionanswer)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare("SELECT uid,username,password FROM user WHERE username=:username and securityquestionanswer=password(:sqa) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,password FROM user WHERE username=:username and securityquestionanswer=password(LCASE(:sqa)) LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':sqa', $securityquestionanswer);
