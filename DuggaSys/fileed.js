@@ -173,6 +173,7 @@ function returnedFile(data)
       str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
       "<th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" + 
       "<th>Upload date & time</th>" +
+      "<th>File size</th>" +
       "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str2+="</thead><tbody id='global_body'>"
 			
@@ -186,6 +187,7 @@ function returnedFile(data)
 					str2+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
 					str2+="</td>";
 					str2+="<td>" + item['uploaddate'] + "</td>";
+					str2+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
 					str2+="<td style='padding:4px;'>";
 					str2+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str2+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -199,6 +201,7 @@ function returnedFile(data)
 			str3+="<thead>";
       str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th>" + 
       "<th>Upload date & time</th>" +
+      "<th>File size</th>" +
       "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
 			str3+="<thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
@@ -211,6 +214,7 @@ function returnedFile(data)
 					str3+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
 					str3+="</td>";
 					str3+="<td>" + item['uploaddate'] + "</td>";
+					str3+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
 					str3+="<td style='padding:4px;'>";
 					str3+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str3+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -223,6 +227,7 @@ function returnedFile(data)
 			str4+="<thead>";
       str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" + 
       "<th>Upload date & time</th>" +
+      "<th>File size</th>" +
       "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
 			str4+="<thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
@@ -235,6 +240,7 @@ function returnedFile(data)
 					str4+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
 					str4+="</td>";
 					str4+="<td>" + item['uploaddate'] + "</td>";
+					str4+="<td>" + formatBytes(item['filesize'],0) + "</td>";
 					str4+="<td style='padding:4px;'>";
 					str4+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str4+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -260,6 +266,15 @@ function returnedFile(data)
 	//if there was an error in the php file while fetching, an alert goes off here
 	//-------------------------------------------------------------------------------------
 	if(data['debug']!="NONE!") alert(data['debug']);
+}
+
+function formatBytes(bytes,decimals) {
+   if(bytes == 0) return '0 Bytes';
+   var k = 1000,
+       dm = decimals + 1 || 3,
+       sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+       i = Math.floor(Math.log(bytes) / Math.log(k));
+   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
 function setupSort(){ 
