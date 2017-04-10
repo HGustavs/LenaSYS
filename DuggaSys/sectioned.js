@@ -751,8 +751,7 @@ function returnedSection(data)
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {		// Test / Dugga
-					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
-					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"\");' >"+item['entryname']+"</a>";
+					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
 						str+= "<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
