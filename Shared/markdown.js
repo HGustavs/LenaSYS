@@ -116,6 +116,7 @@ function parseMarkdown(inString)
 
 			str+=workstr;
 	}
+	alert(str);
 
 	return str;
 }
@@ -193,22 +194,28 @@ function handleUnorderedList(currentLine, prevLine, nextLine) {
     var nextLineIndentation = nextLine.match(/^\s*/)[0].length;
     var indentationLevel = (currentLineIndentation - prevLineIndentation) / 2;
 
-    //var currentIndentationLevel = (prevLineIndentation - currentIndentationLevel) / 2;
+    if(!isUnorderdList(prevLine)) {
+    	markdown += "<p>Opening</p>";
+    }
 
     // indent forwards (lightred)
     if(currentLineIndentation > prevLineIndentation) { 
-    	
     	markdown += "<p style='color:red;'>" + value + " @should indent: " + indentationLevel + "</p>"; // should indent currentLine forward
     }
     // indent backwards (lightgreen)
     else if(currentLineIndentation < prevLineIndentation) { 
     	markdown += "<p style='color:green;'>" + value + " @should indent: " + indentationLevel +  "</p>"; // should indent currentLine backwards
+    	
+    	
     }
     // stay (lightblue)
     else {
     	markdown += "<p style='color:blue;'>" + value + " @should indent: 0</p>"; // ńo indentation
     }
     
+    if(!isUnorderdList(nextLine)) {
+    	markdown += "<p>Closing</p>";
+    }
 
 	return markdown;
 }
