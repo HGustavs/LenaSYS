@@ -1,5 +1,9 @@
 <?php
 
+
+include_once "../../vendor/autoload.php";
+use Minishlink\WebPush\WebPush;
+
 session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
@@ -22,18 +26,27 @@ if(checklogin()) {
 			// Update registration if needed
 		} else {
 			// Add the push registration to the database
-			$query = "INSERT INTO user_push_registration(uid, endpoint) VALUES (:uid, :endpoint)";	
+			$query = "INSERT INTO user_push_registration(uid, endpoint, keyAuth, keyValue) VALUES (:uid, :endpoint, :keyAuth, :keyValue)";	
 			$stmt = $pdo->prepare($query);
 			$stmt->bindParam(':uid', $_SESSION['uid']);
 			$stmt->bindParam(':endpoint', $_POST['subscription']['endpoint']);
-			//$stmt->bindParam(':keyAuth', $_POST['subscription']['keys']['auth']);
-			//$stmt->bindParam(':keyValue', $_POST['subscription']['keys']['p256dh']);
+			$stmt->bindParam(':keyAuth', $_POST['subscription']['keys']['auth']);
+			$stmt->bindParam(':keyValue', $_POST['subscription']['keys']['p256dh']);
 			if(!$stmt->execute()) {
 				$error = $stmt->errorInfo();
 				print_r($error);
 			}
 		}
 	} else if (isset($_POST['action']) && $_POST['action'] == "send") {
+
+		$auth = array(
+			'VAPID' => array(
+				'subject' => 'mailto:c14caran@student.his.se',
+				'publicKey' => PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY,
+				'privateKey' => PUSH_NOTIFICATIONS_VAPID_PRIVATE_KEY
+			),
+		);
+		$webPush = new WebPush($auth);
 		
 		$query = "SELECT * FROM user_push_registration WHERE uid = :uid";
 		$stmt = $pdo->prepare($query);
@@ -42,6 +55,18 @@ if(checklogin()) {
 		if ($stmt->execute()) {
 			$results = $stmt->fetchAll();
 			foreach($results as $row) {
+				echo "hej";
+
+				$webPush->sendNotification(
+					$row['endpoint'],
+					"{title:'hej',text:'hoj'}",
+					$row['keyValue'],
+					$row['keyAuth'],
+					true
+				);
+
+				echo "hoj";
+				/*
 				$arrContextOptions = array(
 					"ssl" => array(
 						"verify_peer" => false,
@@ -54,6 +79,7 @@ if(checklogin()) {
 				
 				$response = file_get_contents($row['endpoint'], false, stream_context_create($arrContextOptions));
 				print_r($response);
+				*/
 			}
 		} else {
 			$error = $stmt->errorInfo();
