@@ -8,6 +8,12 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
+~~~
+#indent back (lightgreen)
+#stay (lightblue)
+#indent back (lightgreen)
+~~~
+
 * item 1
 * item 2
 * item 3
