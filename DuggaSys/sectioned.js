@@ -22,6 +22,21 @@ $(document).ready(function(){
     });
 });
 
+
+function showSubmitButton(){ 
+  $(".submitDugga").css("display","inline-block"); 
+  $(".updateDugga").css("display","none"); 
+  $(".deleteDugga").css("display","none"); 
+  $(".closeDugga").css("display","inline-block"); 
+} 
+ 
+function showSaveButton(){ 
+  $(".submitDugga").css("display","none"); 
+  $(".updateDugga").css("display","block");
+  $(".deleteDugga").css("display","block");
+  $(".closeDugga").css("display","none"); 
+} 
+
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
 		
@@ -324,8 +339,23 @@ function createLink()
 		
 function newItem()
 {
-	lid=$("#lid").val();
-	AJAXService("NEW",{lid:lid},"SECTION");
+	/*lid=$("#lid").val(); 
+  AJAXService("NEW",{lid:lid},"SECTION");*/ 
+   
+  tabs=$("#tabs").val(); 
+  lid=$("#lid").val(); 
+  kind=$("#type").val(); 
+  link=$("#link").val(); 
+  highscoremode=$("#highscoremode").val(); 
+  sectionname=$("#sectionname").val(); 
+  visibility=$("#visib").val(); 
+  moment=$("#moment").val(); 
+  gradesys=$("#gradesys").val(); 
+  comment=$("#deadlinecomment").val(); 
+  // Storing tabs in gradesys column! 
+  if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
+  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment},"SECTION"); 
+  $("#editSection").css("display","none"); 
 }
 
 function closeSelect()
@@ -480,17 +510,19 @@ function returnedSection(data)
 			str+="<td style='width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='width:112px;'><input type='button' value='List' class='submit-button' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-
+			
 			str+="<td style='width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='width:112px;'><input type='button' value='Groups' class='submit-button' title='Access analysis page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+
 
 		}else{
 			// No version selector for students
 		}
 
 		if(retdata["writeaccess"]){
-      str += "<td><input type='button' value='New Item' class='submit-button' onclick='newItem();'/><td>";
+      str += "<td><input type='button' value='New Item' class='submit-button' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
 			str+="</tr></table>";
-      str += "<input type='button' class='fab' value='+' onclick='newItem();'>";
+      str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>"; 
 		}else{
 			str+="</tr></table>";
 		}
@@ -719,7 +751,8 @@ function returnedSection(data)
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {		// Test / Dugga
-					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"\");' >"+item['entryname']+"</a>";
+					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&deadline="+item['deadline']+"&comment="+item['comments']+"\");' >"+item['entryname']+"</a>";
+
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
 						str+= "<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
@@ -731,8 +764,8 @@ function returnedSection(data)
 				str+="</td>";
 
 				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
-				var dateSubmitted = new Date();//submitted.toJSON().slice(0,10).replace(/-/g,'-');
-				var timeSubmitted = new Date();//submitted.toJSON().slice(11,19).replace(/-/g,'-');
+				var dateSubmitted = submitted.toJSON().slice(0,10).replace(/-/g,'-');
+				var timeSubmitted = submitted.toJSON().slice(11,19).replace(/-/g,'-');
 				var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 				
 				// create a warning if the dugga is submitted after the set deadline
@@ -763,13 +796,21 @@ function returnedSection(data)
                         }
 
                         if (parseInt(item['kind']) === 0) {
-                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");' /></td>";
+                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
                         } else if (parseInt(item['kind']) === 1) {
-                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");' /></td>";
+                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
                         } else if (parseInt(item['kind']) === 4) {
-                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");' /></td>";
+                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
                         } else {
-                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");' /></td>";
+                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
+
+                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
+                        } else if (parseInt(item['kind']) === 1) {
+                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
+                        } else if (parseInt(item['kind']) === 4) {
+                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
+                        } else {
+                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
                         }
                     }
 
