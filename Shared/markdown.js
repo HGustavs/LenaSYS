@@ -116,7 +116,6 @@ function parseMarkdown(inString)
 
 			str+=workstr;
 	}
-	alert(str);
 
 	return str;
 }
@@ -199,7 +198,7 @@ function handleUnorderedList(currentLine, prevLine, nextLine) {
 
     // indent forwards (lightred)
     if(currentLineIndentation < nextLineIndentation) { 
-    	markdown += "<li>";
+    	markdown += "<lii>";
     	markdown +=  value;
 
     	// open sublist
