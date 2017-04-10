@@ -134,29 +134,33 @@ function parseLineByLine(inString) {
 	var currentLine = "";
 	var prevLine = "";
 	var remainingLines = "";
+	var nextLine = "";
 
 	while(currentLineFeed != -1){ /* EOF */
 		prevLine = currentLine;
 		currentLine = str.substr(0, currentLineFeed);
 		remainingLines = str.substr(currentLineFeed + 1, str.length);
-        markdown = identifier(prevLine, currentLine, markdown);
-       // markdown += "<br>"; // bug? create two linesbreakes instead of one
+        nextLine= remainingLines.substr(0,remainingLines.indexOf("\n"));
 
-        // first line done parsing. change start position to next line
+        // handle markdown
+        markdown = identifier(prevLine, currentLine, markdown, nextLine);
+
+        // line done parsing. change start position to next line
         str = remainingLines;
         currentLineFeed = str.indexOf("\n");
 	}
-    markdown = identifier(prevLine, remainingLines, markdown);
+    markdown = identifier(prevLine, remainingLines, markdown, nextLine);
 	return markdown;
 }
-function identifier(prevLine, currentLine, markdown){
+
+function identifier(prevLine, currentLine, markdown, nextLine){
     // handle unordered lists <ul></ul>
     if(isUnorderdList(currentLine)) {
-        markdown += handleUnorderedList(currentLine, prevLine);
+        markdown += handleUnorderedList(currentLine, prevLine, nextLine);
     }
     // handle ordered lists <ol></ol>
     else if(isOrderdList(currentLine)) {
-        markdown += handleOrderedList(currentLine, prevLine);
+        markdown += handleOrderedList(currentLine, prevLine, nextLine);
     }
     // handle table
     else if(false) {
@@ -181,31 +185,18 @@ function isOrderdList(item) {
 	return /^\s*\d*\.\s(.*)/gm.test(item);
 }
 
-function handleUnorderedList(currentLine, prevLine) {
+function handleUnorderedList(currentLine, prevLine, nextLine) {
 	var markdown = "";
+	var value = currentLine.substr(currentLine.match(/^\s*[\-\*]\s*/gm)[0].length, currentLine.length);
+	var currentLineIndentation = currentLine.match(/^\s*/)[0].length;
+    var prevLineIndentation = prevLine.match(/^\s*/)[0].length;
+    var nextLineIndentation = nextLine.match(/^\s*/)[0].length;
 
-	// first list item should be prepended with ul-tag
-	if(!isUnorderdList(prevLine)) {
-		markdown += "<ul>"; // html will close tag for us
-	}
-
-	// handle sublists
-	var currentSublistLevel = currentLine.match(/^\s*\t*/gm)[0].length;
-	var prevSublistLevel = prevLine.match(/^\s*\t*/gm)[0].length
-	if(currentSublistLevel > prevSublistLevel) { // create sublist if current line is less indented then previous line
-		markdown += "<ul>";
-	} else if(currentSublistLevel < prevSublistLevel) { // close sublist 
-		markdown += "</ul></li>"
-	}
-
-	// create list item
-	var trimPosition = currentLine.match(/^\s*[\-\*]\s*/gm)[0].length; // start position for real value
-	markdown += "<li>" + currentLine.substr(trimPosition, currentLine.length); // html will close tag for us
 
 	return markdown;
 }
 
-function handleOrderedList(currentLine, prevLine) { // function works the same way handleUnorderedList does(). 
+function handleOrderedList(currentLine, prevLine, nextLine) { // function works the same way handleUnorderedList does().
     var markdown = "";
     var matches = currentLine.match(/^\s*\d*\.\s(.*)/gm);
     if(currentLine.match(/^\s*\d*/)[0].length > prevLine.match(/^\s*\d*/)[0].length){
