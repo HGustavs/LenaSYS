@@ -233,7 +233,7 @@ function returnedDugga(data)
 			}
 			result++;
 
-			str+="<td><label>Template: </label><select style='font-size:1em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";		
+			str+="<td><label>Template: </label><select style='font-size:1em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
 
 			for(var j=0;j<filez.length;j++){
 				filen=filez[j];
@@ -310,7 +310,7 @@ function returnedDugga(data)
 					str+="</tr>";
 				}
 				str+="</table>";
-				str+="</td></tr>"; 
+				str+="</td></tr>";
 			}
 		}
 
@@ -504,7 +504,7 @@ $(document).ready(function(){
 	}
 
 	function addSubmissionRow() {
-		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'><select name='fieldname' id='fieldname' style='margin-bottom:3px;flex:4;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:15;margin-left:5px;margin-bottom:3px;'/><button class='delButton' style='margin-left:5px;margin-bottom:3px;flex:1;'><img src='../Shared/icons/MinusT.svg' alt='Del row'/></button><br/></div>");
+		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'><select name='fieldname' id='fieldname' style='margin-bottom:3px;flex:4;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:15;margin-left:5px;margin-bottom:3px;' onkeydown='if (event.keyCode == 13) return false;'/><button class='delButton' style='margin-left:5px;margin-bottom:3px;flex:1;'><img src='../Shared/icons/MinusT.svg' alt='Del row'/></button><br/></div>");
 	}
 
 	$(document).on('click','.delButton', function(){
