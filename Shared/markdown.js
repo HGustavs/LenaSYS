@@ -192,29 +192,44 @@ function handleUnorderedList(currentLine, prevLine, nextLine) {
 	var currentLineIndentation = currentLine.match(/^\s*/)[0].length;
     var prevLineIndentation = prevLine.match(/^\s*/)[0].length;
     var nextLineIndentation = nextLine.match(/^\s*/)[0].length;
-    var indentationLevel = (currentLineIndentation - prevLineIndentation) / 2;
 
     if(!isUnorderdList(prevLine)) {
-    	markdown += "<p>Opening</p>";
+    	markdown += "<hr>";
+    	markdown += "<ul>";
     }
 
     // indent forwards (lightred)
-    if(currentLineIndentation > prevLineIndentation) { 
-    	markdown += "<p style='color:red;'>" + value + " @should indent: " + indentationLevel + "</p>"; // should indent currentLine forward
+    if(currentLineIndentation < nextLineIndentation) { 
+    	markdown += "<li style='color:red;'>";
+    	markdown +=  value;
+
+    	// open sublist
+    	markdown += "<ul>" 
     }
     // indent backwards (lightgreen)
-    else if(currentLineIndentation < prevLineIndentation) { 
-    	markdown += "<p style='color:green;'>" + value + " @should indent: " + indentationLevel +  "</p>"; // should indent currentLine backwards
+    else if(currentLineIndentation > nextLineIndentation) { 
+    	markdown += "<li style='color:green;'>"; 
+    	markdown +=  value + "should close";
+    	markdown += "</li>";
+
+    	//close sublists
+    	var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
+    	for(var i = 0; i < sublistsToClose; i++) {
+    		markdown += "</ul></li>";
+    	}
     	
-    	
+
     }
     // stay (lightblue)
     else {
-    	markdown += "<p style='color:blue;'>" + value + " @should indent: 0</p>"; // ńo indentation
+    	markdown += "<li style='color:blue;'>";
+    	markdown +=  value;
+    	markdown += "</li>";
     }
     
     if(!isUnorderdList(nextLine)) {
-    	markdown += "<p>Closing</p>";
+    	markdown += "</ul>";
+    	markdown += "<hr>";
     }
 
 	return markdown;
