@@ -22,7 +22,23 @@ $(document).ready(function(){
     });
 });
 
+
+function showSubmitButton(){ 
+  $(".submitDugga").css("display","inline-block"); 
+  $(".updateDugga").css("display","none"); 
+  $(".deleteDugga").css("display","none"); 
+  $(".closeDugga").css("display","inline-block"); 
+} 
+ 
+function showSaveButton(){ 
+  $(".submitDugga").css("display","none"); 
+  $(".updateDugga").css("display","block");
+  $(".deleteDugga").css("display","block");
+  $(".closeDugga").css("display","none"); 
+} 
+
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
+
 {
 		
 	xelink=elink;
@@ -324,8 +340,23 @@ function createLink()
 		
 function newItem()
 {
-	lid=$("#lid").val();
-	AJAXService("NEW",{lid:lid},"SECTION");
+	/*lid=$("#lid").val(); 
+  AJAXService("NEW",{lid:lid},"SECTION");*/ 
+   
+  tabs=$("#tabs").val(); 
+  lid=$("#lid").val(); 
+  kind=$("#type").val(); 
+  link=$("#link").val(); 
+  highscoremode=$("#highscoremode").val(); 
+  sectionname=$("#sectionname").val(); 
+  visibility=$("#visib").val(); 
+  moment=$("#moment").val(); 
+  gradesys=$("#gradesys").val(); 
+  comment=$("#deadlinecomment").val(); 
+  // Storing tabs in gradesys column! 
+  if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
+  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment},"SECTION"); 
+  $("#editSection").css("display","none"); 
 }
 
 function closeSelect()
@@ -489,9 +520,9 @@ function returnedSection(data)
 		}
 
 		if(retdata["writeaccess"]){
-      str += "<td><input type='button' value='New Item' class='submit-button' onclick='newItem();'/><td>";
+      str += "<td><input type='button' value='New Item' class='submit-button' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
 			str+="</tr></table>";
-      str += "<input type='button' class='fab' value='+' onclick='newItem();'>";
+      str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>"; 
 		}else{
 			str+="</tr></table>";
 		}
@@ -764,13 +795,14 @@ function returnedSection(data)
                         }
 
                         if (parseInt(item['kind']) === 0) {
-                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");' /></td>";
+
+                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
                         } else if (parseInt(item['kind']) === 1) {
-                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");' /></td>";
+                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
                         } else if (parseInt(item['kind']) === 4) {
-                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");' /></td>";
+                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
                         } else {
-                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");' /></td>";
+                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
                         }
                     }
 
