@@ -553,7 +553,7 @@ function processResetPasswordCheckUsername() {
 				opt: "GETQUESTION"
 			},
 			success:function(data) {
-				var result = JSON.parse(data);				
+				var result = JSON.parse(data);			
 				if(result['getname'] == "success") {
 					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 					status = 2;
@@ -561,10 +561,10 @@ function processResetPasswordCheckUsername() {
 				}else{
 					console.log("Username was not found OR User does not have a question OR User might be a teacher");
 					if(typeof result.reason != "undefined") {
-						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
+						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason  + "</div>");
 					} else {
-
-						$("#newpassword #message2").html("<div class='alert danger'>Username does not exist</div>");
+						$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
+						//$("#newpassword #message2").html("<div class='alert danger'>Username does not exist</div>");
 
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
