@@ -688,7 +688,6 @@ function initcanvas()
 		"<select id='selectFigure' onchange='figuremode()'>" +
 			"<option selected='selected' disabled>Create Figure</option>" +
 			"<option value='Square'>Square</option>" +
-			"<option value='Circle'>Circle</option>" +
 			"<option value='Free'>Free-Draw</option>" +
 		"</select>" +
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
