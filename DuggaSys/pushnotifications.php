@@ -55,31 +55,13 @@ if(checklogin()) {
 		if ($stmt->execute()) {
 			$results = $stmt->fetchAll();
 			foreach($results as $row) {
-				echo "hej";
-
 				$webPush->sendNotification(
 					$row['endpoint'],
-					"{title:'hej',text:'hoj'}",
+					"This is a test message from PHP",
 					$row['keyValue'],
 					$row['keyAuth'],
 					true
 				);
-
-				echo "hoj";
-				/*
-				$arrContextOptions = array(
-					"ssl" => array(
-						"verify_peer" => false,
-						"verify_peer_name" => false
-					),
-					"http" => array(
-						"method" => "POST"
-					)
-				);
-				
-				$response = file_get_contents($row['endpoint'], false, stream_context_create($arrContextOptions));
-				print_r($response);
-				*/
 			}
 		} else {
 			$error = $stmt->errorInfo();
@@ -94,6 +76,8 @@ if(checklogin()) {
 	<input type="hidden" name="action" value="send">
 	user:<br>
 	<input type="text" name="user"><br><br>
+	message:<br>
+	<input type="text" name="message"><br><br>
 	<input type="submit" value="Submit">
 </form>
 

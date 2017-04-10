@@ -1,9 +1,12 @@
 'use strict';
 
 self.addEventListener('push', function(event) {
+	var notificationText = event.data.text();
 	event.waitUntil(
 		self.registration.showNotification("LenaSYS Notification", {
-			body: "New stuff has happened"
+			body: notificationText,
+			badge: '../Shared/icons/Pen.png',
+			icon: '../Shared/icons/LenasysIcon.png'
 		})
 	);
 });
@@ -11,5 +14,5 @@ self.addEventListener('push', function(event) {
 self.addEventListener('notificationclick', function(event) {
 	event.notification.close();
 
-	client.openWindow("/");
+	clients.openWindow("courseed.php");
 });
