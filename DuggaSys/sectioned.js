@@ -213,6 +213,10 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	
 }
 
+function participationList(){
+	alert("ParticipationList");
+}
+
 function changedType()
 {
 	kind=$("#type").val();		
@@ -756,7 +760,8 @@ function returnedSection(data)
 						}else if(parseInt(item['kind']) === 1){
 								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comment']+"\");' /></td>";											
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comment']+"\");' /></td>";											
+
+							str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comment']+"\");' /></td>";
 						}else{
 								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comment']+"\");' /></td>";																	
 						}
@@ -888,10 +893,19 @@ $(document).on('click', '.moment', function () {
 	$(this).children('.arrowComp').slideToggle();
 });
 
-
 // Function for toggling content for each section
 $(document).on('click', '.section', function () {
 	$(this).nextUntil('.section').slideToggle();
 	$(this).children('.arrowRight').slideToggle();
 	$(this).children('.arrowComp').slideToggle();
+});
+
+// Function to prevent collapsing when clicking icons
+$(document).ready(function(){
+	$(document).on('click','#corf',function(e) {
+		e.stopPropagation();
+	});
+	$(document).on('click','#dorf',function(e) {
+		e.stopPropagation();
+	});
 });
