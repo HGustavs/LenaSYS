@@ -49,6 +49,18 @@ var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
+//this block of the code is used to handel keyboard input;
+window.addEventListener("keydown",this.keyDownHandler, false);
+
+function keyDownHandler(e){
+	var key = e.keyCode;
+	
+	//Delete selected objects when del key is pressed down.
+	if(key == 46){
+		deleteSelectedObject();
+	}	
+}
+
 //--------------------------------------------------------------------
 // points - stores a global list of points
 // A point can not be physically deleted but marked as deleted in order to reuse
@@ -1186,9 +1198,23 @@ function dialogForm() {
         form.innerHTML = "Entity name: </br>" +
             "<input id='text' type='text'></br>" +
             "Entity type: </br>" +
-			      "<select id ='entityType'><option value='weak'>Weak</option><option value='strong' selected>Strong</option></select></br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
+
+			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>"+
+			"<select id ='TextSize'><option value=5>Tiny</option><option value=10>Small</option><option value=14>Medium</option><option value=18>Large</option></select>";
     }
+}
+
+//setTextSize(): used to change the size of the text. unifinish can's get it to work.
+function setTextSizeEntity(){
+	var text_size = document.getElementById('TextSize').value;
+	diagram[selobj].textsize = text_size;
+	updategfx();
+		
+	/*
+		Hämtar specifik entitet/attribut/detpersonenharklickat på.
+		[ovannämndklick].font=text_size+"px";
+	*/
 }
 
 
