@@ -23,13 +23,17 @@ $(document).ready(function(){
 });
 
 function showSubmitButton(){ 
-  $(".submitDugga").css("display","block"); 
+  $(".submitDugga").css("display","inline-block"); 
   $(".updateDugga").css("display","none"); 
+  $(".deleteDugga").css("display","none"); 
+  $(".closeDugga").css("display","inline-block"); 
 } 
  
 function showSaveButton(){ 
   $(".submitDugga").css("display","none"); 
-  $(".updateDugga").css("display","block"); 
+  $(".updateDugga").css("display","block");
+  $(".deleteDugga").css("display","block");
+  $(".closeDugga").css("display","none"); 
 } 
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comment)
