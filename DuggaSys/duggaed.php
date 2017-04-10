@@ -83,7 +83,7 @@ pdoConnect();
 									<option value="pdf">PDF</option>
 									<option value="html">HTML</option>
 								</select><br/>
-								<input type="text" name="filelink" placeholder="File link" style="flex:2;margin-left:5px;"><br/>
+								<input type="text" name="filelink" placeholder="File link" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;"><br/>
 							</div>
 						</fieldset>
 					</div>
