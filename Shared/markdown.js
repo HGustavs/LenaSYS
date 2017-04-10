@@ -192,24 +192,87 @@ function handleUnorderedList(currentLine, prevLine, nextLine) {
     var prevLineIndentation = prevLine.match(/^\s*/)[0].length;
     var nextLineIndentation = nextLine.match(/^\s*/)[0].length;
 
+    if(!isUnorderdList(prevLine)) {
+    	markdown += "<ul>";
+    }
+
+    // indent forwards (lightred)
+    if(currentLineIndentation < nextLineIndentation) { 
+    	markdown += "<lii>";
+    	markdown +=  value;
+
+    	// open sublist
+    	markdown += "<ul>" 
+    }
+    // indent backwards
+    else if(currentLineIndentation > nextLineIndentation) { 
+    	markdown += "<li>"; 
+    	markdown +=  value;
+    	markdown += "</li>";
+
+    	//close sublists
+    	var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
+    	for(var i = 0; i < sublistsToClose; i++) {
+    		markdown += "</ul></li>";
+    	}
+    }
+    // stay
+    else {
+    	markdown += "<li>";
+    	markdown +=  value;
+    	markdown += "</li>";
+    }
+    
+    if(!isUnorderdList(nextLine)) {
+    	markdown += "</ul>";
+    }
 
 	return markdown;
 }
 
-function handleOrderedList(currentLine, prevLine, nextLine) { // function works the same way handleUnorderedList does().
+function handleOrderedList(currentLine, prevLine, nextLine) {
     var markdown = "";
-    var matches = currentLine.match(/^\s*\d*\.\s(.*)/gm);
-    if(currentLine.match(/^\s*\d*/)[0].length > prevLine.match(/^\s*\d*/)[0].length){
-        markdown += "<ol>";
-    }
-    else if(currentLine.match(/^\s*\d*/)[0].length < prevLine.match(/^\s*\d*/)[0].length){
-        markdown += "</ol>" + "</li>";
-    }else{
+	var value = currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
+	var currentLineIndentation = currentLine.match(/^\s*\d*/)[0].length;
+    var prevLineIndentation = prevLine.match(/^\s*\d*/)[0].length;
+    var nextLineIndentation = nextLine.match(/^\s*\d*/)[0].length;
 
+    if(!isOrderdList(prevLine)) {
+    	markdown += "<ol>";
     }
-    markdown += "<li>" + currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
 
-    return markdown;
+    // indent forwards
+    if(currentLineIndentation < nextLineIndentation) { 
+    	markdown += "<li>";
+    	markdown +=  value;
+
+    	// open sublist
+    	markdown += "<ol>" 
+    }
+    // indent backwards
+    else if(currentLineIndentation > nextLineIndentation) { 
+    	markdown += "<li>"; 
+    	markdown +=  value;
+    	markdown += "</li>";
+
+    	//close sublists
+    	var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
+    	for(var i = 0; i < sublistsToClose; i++) {
+    		markdown += "</ol></li>";
+    	}
+    }
+    // stay
+    else {
+    	markdown += "<li>";
+    	markdown +=  value;
+    	markdown += "</li>";
+    }
+    
+    if(!isOrderdList(nextLine)) {
+    	markdown += "</ol>";
+    }
+
+	return markdown;
 }
 
 //----------------------------------------------------------------------------------

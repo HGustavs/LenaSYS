@@ -8,10 +8,24 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
+~~~
+# indent forwards (red)
+# stay (blue)
+# indent backwards (green)
+~~~
+
 * item 1
 * item 2
 * item 3
-    * item 4
+  * item 3.1
+  * item 3.2
+  * item 3.3
+* item 4
+  * item 4.1
+    * item 4.1.1
+  * item 4.2
+    * item 4.2.1
+    * item 4.2.2
+    * item 4.2.3
+      * item 4.2.3.1
 * item 5
-  * item 6
-    * item 7
