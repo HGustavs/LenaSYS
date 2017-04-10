@@ -719,9 +719,10 @@ function returnedSection(data)
 				str+="</td>";
 
 				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
-				var dateSubmitted = new Date();//submitted.toJSON().slice(0,10).replace(/-/g,'-');
-				var timeSubmitted = new Date();//submitted.toJSON().slice(11,19).replace(/-/g,'-');
+				var dateSubmitted = submitted.toJSON().slice(0,10).replace(/-/g,'-');
+				var timeSubmitted = submitted.toJSON().slice(11,19).replace(/-/g,'-');
 				var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
+				console.log(dateTimeSubmitted);
 				
 				// create a warning if the dugga is submitted after the set deadline
 				if ((status === "pending")&&(dateTimeSubmitted>deadline)){

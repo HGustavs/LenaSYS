@@ -172,10 +172,8 @@ function saveDuggaResult(citstr)
 
 		var dateTime = new Date(); // Get the current date and time
 
-		//Get the comment
- 		var comment = querystring['comment'];
+ 		var comment = querystring['comment']; //Get the comment
 		
-
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
 		
 
@@ -185,6 +183,8 @@ function saveDuggaResult(citstr)
 		}
 		
 		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
+		console.log(dateTimeFormat);
+		console.log(deadline);
 		
 		if(deadline > dateTimeFormat){	//Check if deadline has past
 			
