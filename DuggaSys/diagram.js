@@ -764,8 +764,8 @@ function updateActivePoint(){
 function mousemoveevt(ev, t){
 		mox=cx;
 		moy=cy;
-    hovobj = diagram.inside(cx,cy);
-    console.log(hovobj);
+	    hovobj = diagram.inside(cx,cy);
+	    //console.log(hovobj);
 		if (ev.pageX || ev.pageY == 0){ // Chrome
 			cx=ev.pageX-acanvas.offsetLeft;
 			cy=ev.pageY-acanvas.offsetTop;
@@ -1309,37 +1309,35 @@ function debugMode()
 var mousedownX = 0; var mousedownY = 0;
 var mousemoveX = 0; var mousemoveY = 0;
 var mouseDiffX = 0; var mouseDiffY = 0;
-var newCanvasX = 0; var newCanvasY = 0;
 
 function movemode(e)
 {
 	uimode="MoveAround";
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="all-scroll";
-	canvas.addEventListener('mousedown', mousedownposcanvas, false);
+	canvas.addEventListener('mousedown', getMousePos, false);
+	canvas.addEventListener('mouseup', stopmovemode, false);
 }
-function mousedownposcanvas(e){
+function getMousePos(e){
 	var canvas = document.getElementById("myCanvas");
 	mousedownX = e.clientX;
 	mousedownY = e.clientY;
+	console.log("Down: "+mousedownX+" | "+mousedownY);
 	canvas.addEventListener('mousemove', mousemoveposcanvas, false);
-	canvas.addEventListener('mouseup', mouseupposcanvas, false);
 }
 function mousemoveposcanvas(e){
-	mousemoveX = 0; 
-	mousemoveY = 0;
-	mouseDiffX = 0; 
-	mouseDiffY = 0;
 	mousemoveX = e.clientX;
 	mousemoveY = e.clientY;
+	console.log("Move: "+mousemoveX+" | "+mousemoveY);
 	var canvas = document.getElementById("myCanvas");
-	mouseDiffX = (mousedownX - mousemoveX - mouseDiffX);
-	mouseDiffY = (mousedownY - mousemoveY - mouseDiffY);
-	newCanvasX = (mouseDiffX+newCanvasX);
-	newCanvasY = (mouseDiffY+newCanvasY);
-	console.log(mouseDiffX+" | "+mouseDiffY);
+	mouseDiffX = (mousedownX - mousemoveX);
+	mouseDiffY = (mousedownY - mousemoveY);
+	mousedownX = mousemoveX;
+	mousedownY = mousemoveY;
+	//var newPosX =
+	console.log("Diff: "+mouseDiffX+" | "+mouseDiffY);
 	ctx.clearRect(startX,startX,widthWindow,heightWindow);
-	ctx.translate(newCanvasX,newCanvasY);
+	ctx.translate(mouseDiffX,mouseDiffY);
 	// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 	erEntityA.sortAllConnectors();
 	// Redraw diagram
@@ -1347,20 +1345,12 @@ function mousemoveposcanvas(e){
 	// Draw all points as crosses
 	points.drawpoints();
 }
-function mouseupposcanvas(e){
-	var canvas = document.getElementById("myCanvas");
-	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
-	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
-	canvas.style.cursor="default";
-	mousedownX = 0; mousedownY = 0;
-	mousemoveX = 0; mousemoveY = 0;
-}
 function stopmovemode(){
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="default";
-	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
+	canvas.removeEventListener('mousedown', getMousePos, false);
 	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+	canvas.removeEventListener('mouseup', stopmovemode, false);
 }
 
 //----------------------------------------
