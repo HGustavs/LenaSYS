@@ -210,7 +210,7 @@ function saveDuggaResult(citstr)
 		}
 		else{ //Check if deadline has past
 			
-			if(comment == "UNK" || comment == "undefined"){
+			if(comment == "UNK" || comment == "undefined" || comment == "null"){
  				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
  			}
  			else{
@@ -439,7 +439,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['deadlinecomment']+"&opt="+opt+para,
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedSection
 			});
@@ -563,7 +563,9 @@ function processResetPasswordCheckUsername() {
 					if(typeof result.reason != "undefined") {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#newpassword #message2").html("<div class='alert danger'>Wrong answer</div>");
+
+						$("#newpassword #message2").html("<div class='alert danger'>Username does not exist</div>");
+
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}

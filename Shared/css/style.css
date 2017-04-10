@@ -446,21 +446,9 @@ p {
 }
 
 
-/* Submission table */
-#tableDivDialog{
-    width: 100%;
-    float: right;
-    margin-right: 10px;
-    width: 63%;
-}
-
-#tableDivDialog th{
-    text-align: left;
-    padding-right: 8px;
-}
-
-.delButton{
-    text-align: center;
+/* Instruction and submission of dugga */
+#leftDivDialog, #rightDivDialog{
+    width: 49%;
 }
 
 
@@ -1103,7 +1091,7 @@ input.large-button {
 .innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
 .innertable td {color:#000;line-height:28px;border:none;text-align:left !important;}
 .list td {
-    border-right:2px solid #dbd0d8; 
+    border-right:2px solid #dbd0d8;
     line-height:28px;
     padding-left:8px;
 }
@@ -1942,15 +1930,15 @@ span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
 			}
 
 
-/* JQuery UI Complement for missing icons in the DatePicker */ 
+/* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
-    background: url("../icons/PlayT.svg"); 
+    background: url("../icons/PlayT.svg");
     transform: rotate(0deg);
 }
 
 .ui-datepicker .ui-datepicker-prev span {
-    background: url("../icons/PlayT.svg"); 
+    background: url("../icons/PlayT.svg");
     transform: rotate(180deg);
 }
 /*end, styling for contribution.php*/

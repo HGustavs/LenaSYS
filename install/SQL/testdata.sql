@@ -662,4 +662,9 @@ INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.html", 
 INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.js", 3 , 1, 0);
 INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.txt", 3 , 1, 0);
 
+INSERT INTO usergroup (name) VALUES ("testsquad1");
+INSERT INTO usergroup (name) VALUES ("testsquad2"); 
 
+INSERT INTO user_usergroup(uid, ugid) VALUES (209, 1);
+INSERT INTO user_usergroup(uid, ugid) VALUES (212, 1);
+INSERT INTO user_usergroup(uid, ugid) VALUES (100, 2);

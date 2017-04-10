@@ -37,7 +37,7 @@ $coursename=getOP('coursename');
 $versname=getOP('versname');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
-$comment=getOP('comment');
+$comments=getOP('comments');
 $unmarked = 0;
 
 if($gradesys=="UNK") $gradesys=0;
@@ -135,10 +135,10 @@ if(checklogin()){
 
 			}			
 						
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comment WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
-			$query->bindParam(':comment', $comment);
+			$query->bindParam(':comments', $comments);
 			$query->bindParam(':highscoremode', $highscoremode);
 			
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
@@ -322,7 +322,7 @@ if($cvisibility){
 						'code_id' => $row['code_id'],
 						'deadline'=> $row['deadline'],
 						'qrelease' => $row['qrelease'],
-						'comment' => $row['comments']
+						'comments' => $row['comments']
 					)
 				);
 		}
