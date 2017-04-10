@@ -68,18 +68,6 @@ pdoConnect();
 	<!-- Edit Section Dialog END -->
 
 
-    <!-- Edit participant Dialog START -->
-    <div id='editParticipant' class='loginBox' style='width:460px;display:none;'>
-        <div class='loginBoxheader'>
-            <h3>Edit Participant</h3>
-            <div onclick='closeWindows(); closeSelect();'>x</div>
-        </div>
-        <div style='padding:5px;'>
-            <input type='hidden' id='lid' value='Toddler' />
-    </div>
-    <!-- Edit Participant Dialog END -->
-
-
 	<!-- New Verison Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
