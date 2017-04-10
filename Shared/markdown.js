@@ -191,20 +191,22 @@ function handleUnorderedList(currentLine, prevLine, nextLine) {
 	var currentLineIndentation = currentLine.match(/^\s*/)[0].length;
     var prevLineIndentation = prevLine.match(/^\s*/)[0].length;
     var nextLineIndentation = nextLine.match(/^\s*/)[0].length;
+    var indentationLevel = (currentLineIndentation - prevLineIndentation) / 2;
 
     //var currentIndentationLevel = (prevLineIndentation - currentIndentationLevel) / 2;
 
     // indent forwards (lightred)
     if(currentLineIndentation > prevLineIndentation) { 
-    	markdown += "<p style='color:red;'>" + value +  "</p>"; // should indent currentLine forward
+    	
+    	markdown += "<p style='color:red;'>" + value + " @should indent: " + indentationLevel + "</p>"; // should indent currentLine forward
     }
     // indent backwards (lightgreen)
     else if(currentLineIndentation < prevLineIndentation) { 
-    	markdown += "<p style='color:green;'>" + value +  "</p>"; // should indent currentLine backwards
+    	markdown += "<p style='color:green;'>" + value + " @should indent: " + indentationLevel +  "</p>"; // should indent currentLine backwards
     }
     // stay (lightblue)
     else {
-    	markdown += "<p style='color:blue;'>" + value +  "</p>"; // ńo indentation
+    	markdown += "<p style='color:blue;'>" + value + " @should indent: 0</p>"; // ńo indentation
     }
     
 
