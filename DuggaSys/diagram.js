@@ -1197,6 +1197,7 @@ function openAppearanceDialogMenu() {
 	canvas.style.cursor="default";
     $("#appearance").show();
     $("#appearance").width("auto");
+    dimDialogMenu(true);
     dialogForm();
 }
 
@@ -1215,7 +1216,8 @@ function dialogForm() {
             "Attribute type: </br>" +
             	  "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
  			"<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";   
+            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";
+
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
@@ -1243,7 +1245,7 @@ function setTextSizeEntity(){
 
 function changeName(form){
 	diagram[selobj].name=document.getElementById('text').value;
-
+    dimDialogMenu(false);
     updategfx();
 }
 
@@ -1252,6 +1254,7 @@ function changeName(form){
  */
 function closeAppearanceDialogMenu() {
 	$("#appearance").hide();
+    dimDialogMenu(false);
     document.removeEventListener("click", clickOutsideDialogMenu);
 }
 
@@ -1264,9 +1267,22 @@ function clickOutsideDialogMenu(ev) {
         if (!container.is(ev.target)
             && container.has(ev.target).length === 0) {
             container.hide();
+            dimDialogMenu(false);
             document.removeEventListener("click", clickOutsideDialogMenu);
         }
+
     });
+}
+
+function dimDialogMenu(dim) {
+    if(dim==true) {
+        $("#appearance").css("display", "block");
+        $("#overlay").css("display", "block");
+    }
+    else {
+        $("#appearance").css("display", "none");
+        $("#overlay").css("display", "none");
+    }
 }
 
 function Consolemode(action){
