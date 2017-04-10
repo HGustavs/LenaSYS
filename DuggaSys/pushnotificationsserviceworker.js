@@ -9,6 +9,17 @@ self.addEventListener('push', function(event) {
 			icon: '../Shared/icons/LenasysIcon.png'
 		})
 	);
+	self.registration.pushManager.getSubscription().then(function(subscription) {
+		if (subscription) {
+			fetch('pushnotifications.php', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+				},
+				body: 'action=pushsuccess&endpoint=' + encodeURIComponent(subscription.endpoint)
+			});
+		}
+	});
 });
 
 self.addEventListener('notificationclick', function(event) {
