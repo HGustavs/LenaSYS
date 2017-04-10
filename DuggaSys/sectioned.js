@@ -913,10 +913,19 @@ $(document).on('click', '.moment', function () {
 	$(this).children('.arrowComp').slideToggle();
 });
 
-
 // Function for toggling content for each section
 $(document).on('click', '.section', function () {
 	$(this).nextUntil('.section').slideToggle();
 	$(this).children('.arrowRight').slideToggle();
 	$(this).children('.arrowComp').slideToggle();
+});
+
+// Function to prevent collapsing when clicking icons
+$(document).ready(function(){
+	$(document).on('click','#corf',function(e) {
+		e.stopPropagation();
+	});
+	$(document).on('click','#dorf',function(e) {
+		e.stopPropagation();
+	});
 });
