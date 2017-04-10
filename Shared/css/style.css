@@ -301,6 +301,12 @@ p {
 #Sectionlist .moment {
     color:#ffffff;
     background-color: #927b9e;
+	cursor: pointer;
+}
+
+/*changes the cursor for the cogwheels*/
+#corf, #dorf {
+	cursor: pointer;
 }
 
 #Sectionlist .example {
