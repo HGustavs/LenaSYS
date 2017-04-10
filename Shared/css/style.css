@@ -1740,6 +1740,7 @@ span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
     line-height: 26px;
     height: 20px;
     position: relative;
+	cursor: pointer;
 }
 
 .checkbox-dugga {
@@ -1782,6 +1783,7 @@ span.arrow{position:relative; top: 10px; left: -36px; z-index:300;}
 .U, .Uc, .Uh, .G, .Gc, .Gh, .VG, .VGc, .VGh  {
     height:24px;
     width:24px;
+	cursor: pointer;
 }
 
 .result-header-inverse {
