@@ -57,7 +57,7 @@ function keyDownHandler(e){
 
 	//Delete selected objects when del key is pressed down.
 	if(key == 46){
-		deleteSelectedObject();
+		eraseSelectedObject();
 	}
 }
 
@@ -725,7 +725,7 @@ function initcanvas()
 		"</select>" +
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
-		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
+		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
 		"<button onclick='movemode(event);' style='float: right;'>Start Moving</button>" +
 		"<button onclick='stopmovemode();' style='float: right;'>Stop Moving</button><br>" +
@@ -1085,7 +1085,7 @@ function eraseObject(object){
   diagram.delete(object);
   updategfx();
 }
-function deleteSelectedObject(){
+function eraseSelectedObject(){
 		var canvas = document.getElementById("myCanvas");
 		canvas.style.cursor="default";
 		//Issue: Need to remove the crosses
@@ -1093,12 +1093,13 @@ function deleteSelectedObject(){
       var object = diagram[i];
 			if(object.targeted == true){
 		    object.targeted = false;
-		    object.erase();
+		    eraseObject(object);
         i = 0;
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
 			}
 		}
+    updategfx();
 }
 function classmode()
 {
@@ -1208,11 +1209,11 @@ function changeName(form){
 }
 
 function setType(form){
-	
+
 	if(document.getElementById('attributeType').value == 'Primary key')
-	{    		
+	{
 		diagram[selobj].key_type = 'Primary key';
-	}	
+	}
 	 updategfx();
 }
 
@@ -1308,6 +1309,7 @@ function clearCanvas()
     diagram.pop();
   }
 	console.log(diagram.length + " " + points.length);
+  updategfx();
 }
 
 var consloe={};
