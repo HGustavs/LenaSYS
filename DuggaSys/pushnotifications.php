@@ -1,9 +1,4 @@
 <?php
-
-
-include_once "../../vendor/autoload.php";
-use Minishlink\WebPush\WebPush;
-
 session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
@@ -51,71 +46,24 @@ if (isset($_POST['action']) && $_POST['action'] == "pushsuccess") {
 			}
 		}
 	}
-} else if (isset($_POST['action']) && $_POST['action'] == "send") {
-
-	$auth = array(
-		'VAPID' => array(
-			'subject' => 'mailto:c14caran@student.his.se',
-			'publicKey' => PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY,
-			'privateKey' => PUSH_NOTIFICATIONS_VAPID_PRIVATE_KEY
-		),
-	);
-	$webPush = new WebPush($auth);
-	// Increases speed of encryption a lot by making it slightly less secure
-	// Man-in-the-middle attackers can now figure out the approximate length of a sent message but not the contents
-	$webPush->setAutomaticPadding(false);
-	
-	$query = "SELECT * FROM user_push_registration WHERE uid = :uid AND daysOfUnsent < 10";
-	$stmt = $pdo->prepare($query);
-	$stmt->bindParam(':uid', $_POST['user']);
-
-	if ($stmt->execute()) {
-		$results = $stmt->fetchAll();
-		foreach($results as $row) {
-			$query = "UPDATE user_push_registration SET daysOfUnsent = daysOfUnsent + 1, lastSent = CURDATE() WHERE id = :id AND lastSent <> CURDATE()";
-			$stmt = $pdo->prepare($query);
-			$stmt->bindParam(':id', $row['id']);
-			$stmt->execute();
-
-			$webPush->sendNotification(
-				$row['endpoint'],
-				"This is a test message from PHP",
-				$row['keyValue'],
-				$row['keyAuth']
-			);
-		}
-		$pushResults = $webPush->flush();
-
-		// Stop sending messages to clients no longer registered
-		// Works for mozilla push (firefox), not tested for firebase (chrome)
-		if (is_array($pushResults)) {
-			foreach($pushResults as $result) {
-				if (isset($result['statusCode']) && ($result['statusCode'] == 410 || $result['statusCode'] == 404) && isset($result['endpoint'])) {
-					$query = "UPDATE user_push_registration SET daysOfUnsent = 99 WHERE endpoint = :endpoint";
-					$stmt = $pdo->prepare($query);
-					$stmt->bindParam(':endpoint', $result['endpoint']);
-					$stmt->execute();
-				}
-			}
-		}
+} else if (checklogin() && isSuperUser($_SESSION['uid'])) {
+	if (isset($_POST['action']) && $_POST['action'] == "send") {
+		include_once "../Shared/pushnotificationshelper.php";
+		echo sendPushNotification($_POST['user'], $_POST['message']);
 	} else {
-		$error = $stmt->errorInfo();
-		print_r($error);
+		?>
+
+		<p>Send a message to a registered client</p>
+		<form action="pushnotifications.php" method="post">
+			<input type="hidden" name="action" value="send">
+			user:<br>
+			<input type="text" name="user"><br><br>
+			message:<br>
+			<input type="text" name="message"><br><br>
+			<input type="submit" value="Submit">
+		</form>
+
+		<?php
 	}
-
-} else if (isset($_GET['action']) && $_GET['action'] == "form") {
-?>
-
-<p>Send a message to a registered client</p>
-<form action="pushnotifications.php" method="post">
-	<input type="hidden" name="action" value="send">
-	user:<br>
-	<input type="text" name="user"><br><br>
-	message:<br>
-	<input type="text" name="message"><br><br>
-	<input type="submit" value="Submit">
-</form>
-
-<?php
 }
 ?>
