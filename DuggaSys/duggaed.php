@@ -83,7 +83,7 @@ pdoConnect();
 									<option value="pdf">PDF</option>
 									<option value="html">HTML</option>
 								</select><br/>
-								<input type="text" name="filelink" placeholder="File link" style="flex:2;margin-left:5px;"><br/>
+								<input type="text" name="filelink" placeholder="File link" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;"><br/>
 							</div>
 						</fieldset>
 					</div>
@@ -92,7 +92,7 @@ pdoConnect();
 						<div id="duggaSubmissionForm">
 							<fieldset style="width:90%">
 								<legend>Submission types</legend>
-								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;"></div>
+								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;max-height:180px;overflow:auto;"></div>
 							</fieldset>
 							<button type="button" name="addfieldname" id="addfieldname"><img src="../Shared/icons/PlusT.svg" alt="Add row"/></button>
 							<button type="button" name="createjson" id="createjson">Create JSON</button>
