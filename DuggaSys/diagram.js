@@ -54,11 +54,11 @@ window.addEventListener("keydown",this.keyDownHandler, false);
 
 function keyDownHandler(e){
 	var key = e.keyCode;
-	
+
 	//Delete selected objects when del key is pressed down.
 	if(key == 46){
 		deleteSelectedObject();
-	}	
+	}
 }
 
 //--------------------------------------------------------------------
@@ -916,6 +916,7 @@ function doubleclick(ev)
 {
 	if(diagram[selobj].inside(cx,cy)){
         openAppearanceDialogMenu();
+        document.getElementById('nametext').value = diagram[selobj].name;
   }
 }
 
@@ -1207,21 +1208,22 @@ function dialogForm() {
 
     if(diagram[selobj].symbolkind==1){
         form.innerHTML = "Class name: </br>" +
-            "<input id='text' type='text'></br>" +
+            "<input id='nametext' type='text'></br>" +
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name:</br>" +
-        	"<input id='text' type='text'></br>" +
+        	"<input id='nametext' type='text'></br>" +
             "Attribute type: </br>" +
-            	  "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+
+        "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
  			"<button type='submit' onclick='changeName(form)'>Ok</button>" +
 			"<button type='submit' onclick='setType(form)'>setType</button>" +
             "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
-            "<input id='text' type='text'></br>" +
+            "<input id='nametext' type='text'></br>" +
             "Entity type: </br>" +
 			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>"+
@@ -1235,7 +1237,7 @@ function setTextSizeEntity(){
 	var scaletype = document.getElementById('TextSize').value;
 	diagram[selobj].sizeOftext = scaletype;
 	updategfx();
-		
+
 	/*
 		Hämtar specifik entitet/attribut/detpersonenharklickat på.
 		[ovannämndklick].font=text_size+"px";
@@ -1244,7 +1246,7 @@ function setTextSizeEntity(){
 
 
 function changeName(form){
-	diagram[selobj].name=document.getElementById('text').value;
+	diagram[selobj].name=document.getElementById('nametext').value;
     dimDialogMenu(false);
     updategfx();
 }
