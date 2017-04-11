@@ -245,12 +245,12 @@ diagram.adjust = function ()
 
 diagram.delete = function (object)
 {
-		for(i=0;i<this.length;i++){
-				if(this[i]==object){
-          this.splice(i,1);
-        }
+	for(i=0;i<this.length;i++){
+		if(this[i]==object){
+          		this.splice(i,1);
+        	}
 
-		}
+	}
 
 }
 
