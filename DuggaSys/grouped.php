@@ -25,7 +25,7 @@
 
 	<!-- Navigation Header START -->
 	<?php
-		$noup="GROUP"; // What is this... Something for AJAXService?
+		$noup="SECTION"; // This makes the back-button available. 
 		include '../Shared/navheader.php';
 	?>
 	<!-- Navigation Header END -->
