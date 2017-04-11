@@ -171,7 +171,8 @@ function returnedFile(data)
 			str2+="<table class='list' style='margin-bottom:8px;' >";
       str2+="<thead style='cursor:pointer;'>";      
       str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
-      "<th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" + 
+      "<th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+		  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
       "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
@@ -184,8 +185,9 @@ function returnedFile(data)
 					str2+="<td>"+item['fileid']+"</td>";
 					str2+="<td>";
 					// str2+=item['filename']
-					str2+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
+					str2+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
 					str2+="</td>";
+					str2+="<td>" + getFileInformation(item['filename'], true) + "</td>";
 					str2+="<td>" + item['uploaddate'] + "</td>";
 					str2+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
 					str2+="<td style='padding:4px;'>";
@@ -199,7 +201,8 @@ function returnedFile(data)
 			str2+="</tbody></table>";
 			str3+="<table class='list' style='margin-bottom:8px;' >";
 			str3+="<thead>";
-      str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th>" + 
+      str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th>" +
+		  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
       "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
@@ -211,8 +214,9 @@ function returnedFile(data)
 					str3+="<td>"+item['fileid']+"</td>";
 					str3+="<td>";
 					// str3+="<td>"+item['filename']+"</td>";
-					str3+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
+					str3+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
 					str3+="</td>";
+					str3+="<td>" + getFileInformation(item['filename'], true) + "</td>";
 					str3+="<td>" + item['uploaddate'] + "</td>";
 					str3+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
 					str3+="<td style='padding:4px;'>";
@@ -225,7 +229,8 @@ function returnedFile(data)
 			str3+="</tbody></table>";
 			str4+="<table class='list' style='margin-bottom:8px;' >";
 			str4+="<thead>";
-      str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" + 
+      str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" +
+		  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
       "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
@@ -237,8 +242,9 @@ function returnedFile(data)
 					str4+="<td>"+item['fileid']+"</td>";
 					str4+="<td>";
 					// str4+="<td>"+item['filename']+"</td>";
-					str4+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
+					str4+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
 					str4+="</td>";
+					str4+="<td>" + getFileInformation(item['filename'], true) + "</td>";
 					str4+="<td>" + item['uploaddate'] + "</td>";
 					str4+="<td>" + formatBytes(item['filesize'],0) + "</td>";
 					str4+="<td style='padding:4px;'>";
@@ -266,6 +272,18 @@ function returnedFile(data)
 	//if there was an error in the php file while fetching, an alert goes off here
 	//-------------------------------------------------------------------------------------
 	if(data['debug']!="NONE!") alert(data['debug']);
+}
+
+function getFileInformation(name, getExt) {
+	var str = name.split(".");
+	var extension = str[str.length - 1];
+	var filename = str.splice(0, str.length - 1).join("");
+	if(getExt === true) {
+		return extension;
+	}
+	else {
+		return filename;
+	}
 }
 
 function formatBytes(bytes,decimals) {
