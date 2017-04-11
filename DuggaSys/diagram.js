@@ -1169,22 +1169,24 @@ function dialogForm() {
             "Attribute type: </br>" +
             "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
  			      "<button type='submit' onclick='changeName(form)'>Ok</button>" +
+			      "<button type='submit' onclick='setType(form)'>setType</button>" +
             "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
             "<input id='nametext' type='text'></br>" +
             "Entity type: </br>" +
-			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>"+
-			      "<select id ='TextSize'><option value=5>Tiny</option><option value=10>Small</option><option value=14>Medium</option><option value=18>Large</option></select>";
+			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>"+
+			"<select id ='TextSize'><option value=Tiny>Tiny</option><option value=Small>Small</option><option value=Medium>Medium</option><option value=Large>Large</option></select>"+
+			"<button type='submit' onclick='setTextSizeEntity()'>TextScale</button>";
     }
 }
 
 //setTextSize(): used to change the size of the text. unifinish can's get it to work.
 function setTextSizeEntity(){
-	var text_size = document.getElementById('TextSize').value;
-	diagram[selobj].textsize = text_size;
+	var scaletype = document.getElementById('TextSize').value;
+	diagram[selobj].sizeOftext = scaletype;
 	updategfx();
 
 	/*
@@ -1198,6 +1200,15 @@ function changeName(form){
 	diagram[selobj].name=document.getElementById('nametext').value;
     dimDialogMenu(false);
     updategfx();
+}
+
+function setType(form){
+	
+	if(document.getElementById('attributeType').value == 'Primary key')
+	{    		
+		diagram[selobj].key_type = 'Primary key';
+	}	
+	 updategfx();
 }
 
 /**
