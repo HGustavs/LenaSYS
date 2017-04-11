@@ -86,7 +86,6 @@ function thumbnailImg(x,size) {
 //								Identical php code exists in showdoc any changes must be propagated
 //----------------------------------------------------------------------------------
 
-
 function parseMarkdown(inString)
 {	
 	inString = inString.replace(/\</g, "&lt;");
@@ -126,6 +125,7 @@ function parseMarkdown(inString)
 //          
 //----------------------------------------------------------------------------------
 
+// This function will parse the text line by line
 function parseLineByLine(inString) {
 	var str = inString;	
 	var markdown = "";
@@ -142,7 +142,6 @@ function parseLineByLine(inString) {
 		remainingLines = str.substr(currentLineFeed + 1, str.length);
         nextLine= remainingLines.substr(0,remainingLines.indexOf("\n"));
 
-        // handle markdown
         markdown = identifier(prevLine, currentLine, markdown, nextLine);
 
         // line done parsing. change start position to next line
@@ -152,7 +151,7 @@ function parseLineByLine(inString) {
     markdown = identifier(prevLine, remainingLines, markdown, nextLine);
 	return markdown;
 }
-
+// This function detect the text type
 function identifier(prevLine, currentLine, markdown, nextLine){
     // handle unordered lists <ul></ul>
     if(isUnorderdList(currentLine)) {
@@ -162,10 +161,11 @@ function identifier(prevLine, currentLine, markdown, nextLine){
     else if(isOrderdList(currentLine)) {
         markdown += handleOrderedList(currentLine, prevLine, nextLine);
     }
-    // handle table
+    // handle tables
     else if(false) {
 
     }
+    // If its ordinary text then show it directly
     else {
         markdown += markdownBlock(currentLine);
         if(currentLine.match(/\br*/)){
@@ -176,72 +176,64 @@ function identifier(prevLine, currentLine, markdown, nextLine){
 
     return markdown;
 }
-
+// Check if its an unordered list
 function isUnorderdList(item) {
 	return /^\s*[\-\*]\s(.*)/gm.test(item);
 }
-
+// Check if its an ordered list
 function isOrderdList(item) {
 	return /^\s*\d*\.\s(.*)/gm.test(item);
 }
-
+// The creation and destruction of unordered lists
 function handleUnorderedList(currentLine, prevLine, nextLine) {
 	var markdown = "";
 	var value = currentLine.substr(currentLine.match(/^\s*[\-\*]\s*/gm)[0].length, currentLine.length);
 	var currentLineIndentation = currentLine.match(/^\s*/)[0].length;
-    var prevLineIndentation = prevLine.match(/^\s*/)[0].length;
     var nextLineIndentation = nextLine.match(/^\s*/)[0].length;
-
+	//Open a new unordered list
     if(!isUnorderdList(prevLine)) {
     	markdown += "<ul>";
     }
-
-    // indent forwards (lightred)
+    // Open a new sublist
     if(currentLineIndentation < nextLineIndentation) { 
-    	markdown += "<lii>";
+    	markdown += "<li>";
     	markdown +=  value;
-
-    	// open sublist
     	markdown += "<ul>" 
     }
-    // indent backwards
+    // Close sublists
     else if(currentLineIndentation > nextLineIndentation) { 
     	markdown += "<li>"; 
     	markdown +=  value;
     	markdown += "</li>";
-
-    	//close sublists
     	var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
     	for(var i = 0; i < sublistsToClose; i++) {
     		markdown += "</ul></li>";
     	}
     }
-    // stay
+    // Stay in current list or sublist
     else {
     	markdown += "<li>";
     	markdown +=  value;
     	markdown += "</li>";
     }
-    
+    // Close the list
     if(!isUnorderdList(nextLine)) {
     	markdown += "</ul>";
     }
 
 	return markdown;
 }
-
+// The creation and destruction of ordered lists
 function handleOrderedList(currentLine, prevLine, nextLine) {
     var markdown = "";
 	var value = currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
 	var currentLineIndentation = currentLine.match(/^\s*\d*/)[0].length;
-    var prevLineIndentation = prevLine.match(/^\s*\d*/)[0].length;
     var nextLineIndentation = nextLine.match(/^\s*\d*/)[0].length;
-
+	//Open a new ordered list
     if(!isOrderdList(prevLine)) {
     	markdown += "<ol>";
     }
-
-    // indent forwards
+    // Open a new sublist
     if(currentLineIndentation < nextLineIndentation) { 
     	markdown += "<li>";
     	markdown +=  value;
@@ -249,25 +241,23 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
     	// open sublist
     	markdown += "<ol>" 
     }
-    // indent backwards
+    // Close sublists
     else if(currentLineIndentation > nextLineIndentation) { 
     	markdown += "<li>"; 
     	markdown +=  value;
     	markdown += "</li>";
-
-    	//close sublists
     	var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
     	for(var i = 0; i < sublistsToClose; i++) {
     		markdown += "</ol></li>";
     	}
     }
-    // stay
+    // Stay in current list or sublist
     else {
     	markdown += "<li>";
     	markdown +=  value;
     	markdown += "</li>";
     }
-    
+    // Close the ordered list
     if(!isOrderdList(nextLine)) {
     	markdown += "</ol>";
     }
