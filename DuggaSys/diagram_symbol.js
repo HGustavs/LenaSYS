@@ -575,8 +575,8 @@ function Symbol(kind) {
         ctx.fillText(this.name,x1+((x2-x1)*0.5),(y1+((y2-y1)*0.5)));
       }else if(this.symbolkind==3){
 		  
-		//scale the text 
-		ctx.font="bold "+parseInt(textsize)+"px Arial";
+		//scale the text
+    ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
