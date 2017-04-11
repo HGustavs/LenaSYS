@@ -11,7 +11,10 @@ function Symbol(kind) {
   this.attributes=[];           // Attributes array
 
   this.textsize=14;             // 14 pixels text size is default
+  var textscale = 10;
   this.name="New Class";    // Default name is new class
+  this.key_type = "none" //Defult key tyoe for a class.
+  this.sizeOftext = "none" //used to set size of text.
 
   this.topLeft;                 // Top Left Point
   this.bottomRight;             // Bottom Right Point
@@ -336,16 +339,43 @@ function Symbol(kind) {
 
     this.draw = function ()
     {
+		
+		if(this.sizeOftext == 'Tiny')
+		{  
+			textsize = 14;
+		}
+		else if(this.sizeOftext == 'Small')
+		{
+			textsize = 20;
+		}
+		
+		else if(this.sizeOftext == 'Medium')
+		{
+			textsize = 30;
+		}
+		
+		else if(this.sizeOftext == 'Large')
+		{
+			textsize = 50;
+		} 
+		else 
+		{ 
+			textsize = 14
+		}
+		
+	
       var x1=points[this.topLeft].x;
       var y1=points[this.topLeft].y;
 
       var x2=points[this.bottomRight].x;
       var y2=points[this.bottomRight].y;
+	  
+	  
 
       if(this.symbolkind==1){
         var midy=points[this.middleDivider].y;
 
-        ctx.font="bold "+parseInt(this.textsize)+"px Arial";
+        ctx.font="bold "+parseInt(textsize)+"px Arial";
 
         // Clear Class Box
         ctx.fillStyle="#fff";
@@ -361,7 +391,24 @@ function Symbol(kind) {
         // Write Class Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
-        ctx.fillText(this.name,x1+((x2-x1)*0.5),y1+(0.85*this.textsize));
+		ctx.fillStyle="#F0F";
+		ctx.fillText(this.name,x1+((x2-x1)*0.5),y1+(0.85*this.textsize));
+
+
+		if(this.key_type == 'Primary key'){
+			var linelenght = ctx.measureText(this.name).width;
+			ctx.beginPath(1);
+			ctx.moveTo(x1+((x2-x1)*0.5), y1+(0.85*this.textsize));
+			ctx.lineTo(x1+((x2-x1)*0.5), y1+(0.85*this.textsize));
+			ctx.lineTo(x1+((x2-x1)*0.5)+linelenght, y1+(0.85*this.textsize)+10);
+			ctx.strokeStyle = "#000";
+			ctx.stroke();
+		}
+		
+		// ctx.measureText(txt).width
+		// beginpath - moveto - lineto
+		// För att göra streckad linje rita med 
+		// ctx.setLineDash(segments);
 
         // Change Alignment and Font
         ctx.textAlign="start";
@@ -418,7 +465,9 @@ function Symbol(kind) {
 
         ctx.stroke();
       }else if(this.symbolkind==2){
-
+		  
+		//scale the text 
+		ctx.font="bold "+parseInt(textsize)+"px Arial";
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
@@ -436,7 +485,9 @@ function Symbol(kind) {
         ctx.fillStyle="#253";
         ctx.fillText(this.name,x1+((x2-x1)*0.5),(y1+((y2-y1)*0.5)));
       }else if(this.symbolkind==3){
-
+		  
+		//scale the text 
+		ctx.font="bold "+parseInt(textsize)+"px Arial";
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
