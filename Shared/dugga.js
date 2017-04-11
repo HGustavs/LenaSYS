@@ -595,6 +595,7 @@ function processResetPasswordCheckSecurityAnswer() {
 				if(result['checkanswer'] == "success") {
 					console.log("The answer was correct");
 					//do something
+					$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
 					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
 					console.log("Wrong answer");
