@@ -179,11 +179,22 @@ function returnedAccess(data)
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 
-			// If this 
-			if(parseFloat(item['newly'])<10){
+			// If this
+			
+			/*
+			//This should make is so students who forgot their password gets marked blood red.
+			if(item['requestedpasswordchange']=1){
+					str+="<tr style='background:#ff0000;'>";
+			}else if(parseFloat(item['newly'])<10){
 					str+="<tr style='background:#efd;'>";						
 			}else{
 					str+="<tr>";			
+			}*/
+
+			if(parseFloat(item['newly'])<10){
+					str+="<tr style='background:#efd;'>";						
+			}else{
+					str+="<tr style='background:#ff0000;'>";			
 			}
 
 			str+="<td>"+item['username']+"</td>";
