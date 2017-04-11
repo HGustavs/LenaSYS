@@ -19,6 +19,7 @@ CREATE TABLE user(
 		totalHp				decimal(4,1),
 		securityquestion	VARCHAR(256) DEFAULT NULL,
 		securityquestionanswer	VARCHAR(256) DEFAULT NULL,
+		/*requestedpasswordchange	TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,*/
 
 		PRIMARY KEY(uid)
 
