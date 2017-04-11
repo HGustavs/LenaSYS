@@ -89,25 +89,17 @@ function getQuestion($username)
 		/*If the security question is null/default there is no point in allowing the user to continue.
 		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question*/
 		
-		/*
- 		$query = $pdo->prepare("SELECT teacher FROM user_course WHERE uid=:uid LIMIT 1"); 
-   		$query->bindParam(':uid', $_SESSION['uid']); 
-    	$query->execute(); 
-    	if($query->rowCount() > 0) { 
-      		return false 
-    	} 
 
 		if($_SESSION["securityquestion"]==null){
+									//Temporary error message, change later
+			$_SESSION["getname"] = "Securityquestion not found";
 			return false;
 		}
-		if($_SESSION["superuser"]==1){
-			return false;
-		}
-		*/
 
 		return true;
 
 	} else {
+		$_SESSION["getname"] = "Username does not exist";
 		return false;
 	}
 }
