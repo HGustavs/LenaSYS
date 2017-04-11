@@ -103,6 +103,7 @@ function getQuestion($username)
 
     	if($query->rowCount() > 0) { 
     								//Temporary error message, change later
+    								//Maybe dont show that a person is a teacher.
 			$_SESSION["getname"] = "User is a teacher";
       		return false;
     	}	 
