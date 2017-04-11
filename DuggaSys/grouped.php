@@ -21,7 +21,7 @@
 	<script src="../Shared/dugga.js"></script>
 	<script src="grouped.js"></script>
 </head>
-<body>
+<body onload="setup();">
 
 	<!-- Navigation Header START -->
 	<?php
