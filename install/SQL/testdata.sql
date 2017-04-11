@@ -2,6 +2,7 @@
 
 /* START duggasys test data START */
 /* Insert test users */
+-- No Course --
 INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (1010, 'c92cober', 'Conny',  'Berg Czarnecki', '19920404-4522', password('password'), '1', 'c92cober@student.his.se');
 INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (2020, 'a87antal', 'Ann-Marie',  'Tallström', '19871116-7384', password('password'), '1', 'a87antal@student.his.se');
 INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (3030, 'a72ashal', 'Åsa',  'Hällsjö', '19721224-5582', password('password'), '1', 'a72ashal@student.his.se');
@@ -18,15 +19,75 @@ INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, em
 INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (1515, 'j94jojoh', 'Johan', 'Johansson', '19870427-6635', password('password'), '1', 'j87jojoh@student.his.se');
 INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (1616, 'a94anjoh', 'Anita', 'Johansson', '19830617-6654', password('password'), '1', 'a83anjoh@student.his.se');
 INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (1717, 'b94bejoh', 'Berit', 'Johansson', '19900412-2554', password('password'), '1', 'b90bejoh@student.his.se');
+-- DVSUG --
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(216,'a99marjo',password('password'),'Maria','Johansson','19990101-0001','a99marjo@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(217,'a99erijo',password('password'),'Erik','Johansson','19990101-0002','a99erijo@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(218,'a99annan',password('password'),'Anna','Andersson','19990101-0003','a99annan@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(219,'a99laran',password('password'),'Lars','Andersson','19990101-0004','a99laran@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(220,'a99karka',password('password'),'Karl','Karlsson','19990101-0005','a99karka@student.his.se','DVSUG13h');
+-- WEBUG13h --
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(221,'a99marka',password('password'),'Margareta','Karlsson','19990101-0006','a99marka@student.his.se','WEBUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(222,'a99elini',password('password'),'Elisabet','Nilsson','19990101-0007','a99elini@student.his.se','WEBUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(223,'a99andni',password('password'),'Anders','Nilsson','19990101-0008','a99andni@student.his.se','WEBUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(224,'a99evaer',password('password'),'Eva','Eriksson','19990101-0009','a99evaer@student.his.se','WEBUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(225,'a99joher',password('password'),'Johan','Eriksson','19990101-0010','a99joher@student.his.se','WEBUG13h');
+-- WEBUG14h --
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(226,'a99krila',password('password'),'Kristina','Larsson','19990101-0011','a99krila@student.his.se','WEBUG14h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(227,'a99perla',password('password'),'Per','Larsson','19990101-0012','a99perla@student.his.se','WEBUG14h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(228,'a99birol',password('password'),'Birgitta','Olsson','19990101-0013','a99birol@student.his.se','WEBUG14h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(229,'a99nilol',password('password'),'Nils','Olsson','19990101-0014','a99nilol@student.his.se','WEBUG14h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(230,'a99karpe',password('password'),'Karin','Persson','19990101-0015','a99karpe@student.his.se','WEBUG14h');
+
+/* Teachers */ 
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) values(100,'stei','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Joe','Steinhauer','340101-0101','joe.steinhauer@his.se', 0, 1);
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) values(101,'brom','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Marcus','Brohede','340101-1232','marcus.brohede@his.se', 0, 1);
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (4, 'b77andma', 'András', 'Márki', '19770101-1231', password('password'), '1', 'b77andma@his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (5, 'b77mikth', 'Mikael', 'Thieme', '19770101-1232', password('password'), '1', 'b77mikth@his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (6, 'b77jonme', 'Jonas', 'Mellin', '19770101-1233', password('password'), '1', 'b77jonme@his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (7, 'b77yacat', 'Yacine', 'Atif', '19770101-1234', password('password'), '1', 'b77yacat@his.se');
 
 /* Insert courses */
 INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1, 'DV12G', 'Webbprogrammering', NOW(), 1, 1, '45656', '7.5');
 INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (2, 'IT118G', 'Webbutveckling - datorgrafik', NOW(), 1, 1, '97732', '7.5');
+INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (300, 'IT500G','Datorns grunder',NOW(),1,1,'1337','7.5'); -- Will be empty test course.
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (301, "DA124G","Programmeringsmetodik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (302, "DA324G","Datakommunikation - Routing",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (303, "IT1435","USEREXPERIENCE",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (304, "DV130G","Statistik för datavetare",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (305, "IT308G","Objektorienterad programmering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (306, "IT309G","Maskinnära programmering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (307, "IT115G","Datorns grunder",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (308, "MA161G","Diskret matematik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (309, "DA322G","Operativsystem",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (310, "IT325G","Parallella processer",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (311, "DA327G","Mjukvarukomponenter i C++",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (312, "IT326G","Distribuerade system",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (313, "IT301G","Software Engineering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (314, "DV318G","Programvaruutveckling - programvaruprojekt",NOW(),1,0,15);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (315, "IS317G","Databaskonstruktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (316, "DA321G","Programvarutestning",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (317, "DV517G","Systemutveckling - forskning och utveckling",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (318, "DA346G","Algoritmer och datastrukturer",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (319, "DV736A","Examensarbete i datavetenskap",NOW(),1,0,30);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (320, "IT503G","IT i organisationer - vetenskap och profession",NOW(),1,0,30);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (321, "DA133G","Webbutveckling - datorgrafik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (322, "KB126G","Introduktion till User Experience Design",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (323, "DA147G","Grundläggande programmering med C++",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (324, "IT108G","Webbutveckling - webbplatsdesign",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (325, "IS134G","Databassystem",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (326, "DV313G","Webbutveckling - XML API",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (327, "IT110G","IT i organisationer - introduktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (328, "IS324G","Databaskonstruktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (329, "IT119G","Datakommunikation - Introduktion",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (330, "DA330G","Webbprogrammering",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (331, "MA113G","Algebra och logik",NOW(),1,0,7.5);
+INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (332, "DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,7.5);
 
 /* Insert versions of courses (The column vers should be the same as "anmälningskod", number with 5 digts) */
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES(1, 'DV12G', 'Webbprogrammering', 'UNK', '45656', 'HT15');
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97732', 'HT15');
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES('2', 'IT118G', 'Webbutveckling - datorgrafik', 'UNK', '97731', 'HT14');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES(300, 'IT500G', 'Datorns grunder', 'UNK', '1337', 'HT15');
 
 /* Insert tests */
 INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
@@ -327,51 +388,13 @@ INSERT INTO impwordlist(exampleid,word,uid) VALUES (10,"shadowBlur",1);
 
 -- START UMV test data START --
 
--- Users -- 
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) values(100,'stei','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Joe','Steinhauer','340101-0101','joe.steinhauer@his.se', 0, 1);
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) values(101,'brom','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Marcus','Brohede','340101-1232','marcus.brohede@his.se', 0, 1);
-
 -- CLass --
 INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('DVSUG13h','theGreat',199191,'DVSUG',180,100,100);
 INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG13h','theBEST',199292,'WEBUG',180,100,101);
 INSERT INTO class(class,classname,regcode,classcode,hp,tempo,responsible) VALUES ('WEBUG14h','theDEST',199393,'WEBUG',180,100,101);
 
--- Courses --
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (300, "IT500G","Datorns grunder",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (301, "DA124G","Programmeringsmetodik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (302, "DA324G","Datakommunikation - Routing",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (303, "IT1435","USEREXPERIENCE",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (304, "DV130G","Statistik för datavetare",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (305, "IT308G","Objektorienterad programmering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (306, "IT309G","Maskinnära programmering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (307, "IT115G","Datorns grunder",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (308, "MA161G","Diskret matematik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (309, "DA322G","Operativsystem",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (310, "IT325G","Parallella processer",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (311, "DA327G","Mjukvarukomponenter i C++",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (312, "IT326G","Distribuerade system",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (313, "IT301G","Software Engineering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (314, "DV318G","Programvaruutveckling - programvaruprojekt",NOW(),1,0,15);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (315, "IS317G","Databaskonstruktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (316, "DA321G","Programvarutestning",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (317, "DV517G","Systemutveckling - forskning och utveckling",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (318, "DA346G","Algoritmer och datastrukturer",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (319, "DV736A","Examensarbete i datavetenskap",NOW(),1,0,30);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (320, "IT503G","IT i organisationer - vetenskap och profession",NOW(),1,0,30);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (321, "DA133G","Webbutveckling - datorgrafik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (322, "KB126G","Introduktion till User Experience Design",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (323, "DA147G","Grundläggande programmering med C++",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (324, "IT108G","Webbutveckling - webbplatsdesign",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (325, "IS134G","Databassystem",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (326, "DV313G","Webbutveckling - XML API",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (327, "IT110G","IT i organisationer - introduktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (328, "IS324G","Databaskonstruktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (329, "IT119G","Datakommunikation - Introduktion",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (330, "DA330G","Webbprogrammering",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (331, "MA113G","Algebra och logik",NOW(),1,0,7.5);
-INSERT INTO course(cid, coursecode,coursename,created,creator,visibility,hp) VALUES (332, "DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,7.5);
--- course and class--
 
+/* courses for classes */
 -- DVSUG --
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',300);
 INSERT INTO programcourse(class,cid) VALUES ('DVSUG13h',301);
@@ -447,6 +470,12 @@ INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALU
 INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(215,'a13jacan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Jacob','Andersson Svensson','751202-2389','a13jacan@student.his.se','WEBUG14h');
 
 -- Course with user --
+-- Teachers --
+insert into user_course(uid,cid,result,access,period,term) values(4,2,0,'W',1,'HT15');
+insert into user_course(uid,cid,result,access,period,term) values(5,2,0,'W',1,'HT15');
+insert into user_course(uid,cid,result,access,period,term) values(6,2,0,'W',1,'HT15');
+insert into user_course(uid,cid,result,access,period,term) values(6,1,0,'W',1,'HT15');
+insert into user_course(uid,cid,result,access,period,term) values(7,1,0,'W',1,'HT15');
 
 insert into user_course(uid,cid,result,access,period,term) values(200,300,0,'R',1,'HT-13');
 insert into user_course(uid,cid,result,access,period,term) values(200,301,0,'R',1,'HT-13');
@@ -513,7 +542,40 @@ insert into user_course(uid,cid,result,access,period,term) values(208,303,0,'R',
 insert into user_course(uid,cid,result,access,period,term) values(209,303,0,'R',1,'HT-13');
 insert into user_course(uid,cid,result,access,period,term) values(210,303,0,'R',1,'HT-13');
 
-
+-- DVSUG --
+insert into user_course(uid,cid,result,access,period,term,teacher) values(216,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(217,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(218,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(219,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(220,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(216,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(217,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(218,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(219,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(220,2,0,'R',1,'HT15','AndrásMárki');
+-- WEBUG13 --
+insert into user_course(uid,cid,result,access,period,term,teacher) values(221,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(222,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(223,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(224,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(225,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(221,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(222,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(223,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(224,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(225,2,0,'R',1,'HT15','AndrásMárki');    
+    
+-- WEBUG14 --
+insert into user_course(uid,cid,result,access,period,term,teacher) values(226,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(227,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(228,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(229,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(230,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(226,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(227,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(228,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(229,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(230,2,0,'R',1,'HT15','AndrásMárki');
 
 
 -- Examination/subparts --
