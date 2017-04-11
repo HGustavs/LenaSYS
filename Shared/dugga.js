@@ -41,7 +41,10 @@ function toggleloginnewpass(){
 function resetFields(){
 	$("#login #username").val("");
 	$("#login #password").val("");
-	$("#newpassword #username").val("");
+	//Since we need the username from this box during the answer part we cant clear it directly afterwards
+	if (status!=2){
+		$("#newpassword #username").val("");
+	}
 	$("#showsecurityquestion #answer").val("");
 
 	$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
@@ -561,8 +564,7 @@ function processResetPasswordCheckUsername() {
 					if(typeof result.reason != "undefined") {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-
-						$("#newpassword #message2").html("<div class='alert danger'>Username does not exist</div>");
+						$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
 
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
@@ -593,6 +595,7 @@ function processResetPasswordCheckSecurityAnswer() {
 				if(result['checkanswer'] == "success") {
 					console.log("The answer was correct");
 					//do something
+					$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
 					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
 					console.log("Wrong answer");
