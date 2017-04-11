@@ -727,8 +727,7 @@ function initcanvas()
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
-		"<button onclick='movemode(event);' style='float: right;'>Start Moving</button>" +
-		"<button onclick='stopmovemode();' style='float: right;'>Stop Moving</button><br>" +
+		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
@@ -742,6 +741,9 @@ function initcanvas()
 		makegfx();
 
 		updategfx();
+
+		var buttonStyle = document.getElementById("moveButton");
+		buttonStyle.addEventListener('click', movemode, false);
 
 }
 
@@ -768,7 +770,6 @@ var erEntityA;
 function updategfx()
 {
 		ctx.clearRect(startX,startY,widthWindow,heightWindow);
-		ctx.translate(mouseDiffX,mouseDiffY);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -1351,9 +1352,28 @@ function movemode(e)
 {
 	uimode="MoveAround";
 	var canvas = document.getElementById("myCanvas");
-	canvas.style.cursor="all-scroll";
-	canvas.addEventListener('mousedown', getMousePos, false);
-	canvas.addEventListener('mouseup', stopmovemode, false);
+	var button = document.getElementById("moveButton").className;
+	var buttonStyle = document.getElementById("moveButton");
+	if(button == "unpressed"){
+		buttonStyle.className="pressed";
+		canvas.style.cursor="all-scroll";
+		canvas.addEventListener('mousedown', getMousePos, false);
+		canvas.addEventListener('mouseup', mouseupcanvas, false);
+		buttonStyle.style.background="grey";
+		buttonStyle.style.color="white";
+	}else{
+		buttonStyle.className="unpressed";
+		mousedownX = 0; mousedownY = 0;
+		mousemoveX = 0; mousemoveY = 0;
+		mouseDiffX = 0; mouseDiffY = 0;
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
+		canvas.removeEventListener('mousedown', getMousePos, false);
+		canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+		canvas.removeEventListener('mouseup', mouseupcanvas, false);
+		buttonStyle.style.background="";
+		buttonStyle.style.color="";
+	}
 }
 function getMousePos(e){
 	var canvas = document.getElementById("myCanvas");
@@ -1378,15 +1398,9 @@ function mousemoveposcanvas(e){
 	diagram.draw();
 	points.drawpoints();
 }
-function stopmovemode(){
-	mousedownX = 0; mousedownY = 0;
-	mousemoveX = 0; mousemoveY = 0;
-	mouseDiffX = 0; mouseDiffY = 0;
+function mouseupcanvas(e){
 	var canvas = document.getElementById("myCanvas");
-	canvas.style.cursor="default";
-	canvas.removeEventListener('mousedown', getMousePos, false);
 	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-	canvas.removeEventListener('mouseup', stopmovemode, false);
 }
 
 //----------------------------------------
