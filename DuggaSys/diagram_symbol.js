@@ -598,6 +598,7 @@ function Symbol(kind) {
         ctx.stroke();
 
         ctx.fillStyle="#253";
+        ctx.fillStyle=this.fontColor;
         ctx.fillText(this.name,x1+((x2-x1)*0.5),(y1+((y2-y1)*0.5)));
 
       }else if(this.symbolkind==4){
