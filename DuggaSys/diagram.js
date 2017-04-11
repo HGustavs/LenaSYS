@@ -916,6 +916,8 @@ function doubleclick(ev)
 {
 	if(diagram[selobj].inside(cx,cy)){
         openAppearanceDialogMenu();
+		document.getElementById('fontColor').value=diagram[selobj].fontColor;
+
   }
 }
 
@@ -1002,6 +1004,7 @@ function mouseupevt(ev){
             	erEnityA.topLeft=p1;
             	erEnityA.bottomRight=p2;
             	erEnityA.centerpoint=p3;
+				erEnityA.fontColor="#253"
 
             	diagram.push(erEnityA);
 
@@ -1224,9 +1227,12 @@ function dialogForm() {
             "<input id='text' type='text'></br>" +
             "Entity type: </br>" +
 
-			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>"+
-			"<select id ='TextSize'><option value=5>Tiny</option><option value=10>Small</option><option value=14>Medium</option><option value=18>Large</option></select>";
+			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+			"Font size:<br>" +
+			"<select id ='TextSize'><option value=5>Tiny</option><option value=10>Small</option><option value=14>Medium</option><option value=18>Large</option></select><br>" +
+			"Font color:<br>" +
+			"<input id ='fontColor'><br>" +
+			"<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
 }
 
@@ -1245,6 +1251,7 @@ function setTextSizeEntity(){
 
 function changeName(form){
 	diagram[selobj].name=document.getElementById('text').value;
+	diagram[selobj].fontColor=document.getElementById('fontColor').value;
     dimDialogMenu(false);
     updategfx();
 }
