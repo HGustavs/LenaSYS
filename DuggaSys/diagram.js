@@ -951,6 +951,7 @@ function doubleclick(ev)
         openAppearanceDialogMenu();
         document.getElementById('nametext').value = diagram[selobj].name;
 		document.getElementById('fontColor').value = diagram[selobj].fontColor;
+		document.getElementById('font').value = diagram[selobj].font;
   }
 }
 
@@ -1037,7 +1038,8 @@ function mouseupevt(ev){
             	erEnityA.topLeft=p1;
             	erEnityA.bottomRight=p2;
             	erEnityA.centerpoint=p3;
-				erEnityA.fontColor="#253"
+				erEnityA.fontColor="#253";
+				erEnityA.font="Arial";
 
             	diagram.push(erEnityA);
 
@@ -1180,6 +1182,8 @@ function dialogForm() {
             "<input id='nametext' type='text'></br>" +
             "Entity type: </br>" +
 			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+			"Font family:<br>" +
+			"<input id ='font'><br>" +
 			"Font color:<br>" +
 			"<input id ='fontColor'><br>" +
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>"+
@@ -1204,6 +1208,8 @@ function setTextSizeEntity(){
 function changeName(form){
 	diagram[selobj].name=document.getElementById('nametext').value;
 	diagram[selobj].fontColor=document.getElementById('fontColor').value;
+	diagram[selobj].font=document.getElementById('font').value;
+	console.log(diagram[selobj])
     dimDialogMenu(false);
     updategfx();
 }

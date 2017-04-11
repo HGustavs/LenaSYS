@@ -576,8 +576,8 @@ function Symbol(kind) {
 		
       }else if(this.symbolkind==3){
 		  
-		//scale the text 
-		ctx.font="bold "+parseInt(textsize)+"px Arial";
+		//scale the text
+    ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
