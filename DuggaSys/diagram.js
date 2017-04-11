@@ -57,7 +57,7 @@ function keyDownHandler(e){
 
 	//Delete selected objects when del key is pressed down.
 	if(key == 46){
-		eraseSelectedObject();
+		deleteSelectedObject();
 	}
 }
 
@@ -725,7 +725,7 @@ function initcanvas()
 		"</select>" +
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
-		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
+		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
 		"<button onclick='movemode(event);' style='float: right;'>Start Moving</button>" +
 		"<button onclick='stopmovemode();' style='float: right;'>Stop Moving</button><br>" +
@@ -768,6 +768,7 @@ var erEntityA;
 function updategfx()
 {
 		ctx.clearRect(startX,startY,widthWindow,heightWindow);
+		ctx.translate(mouseDiffX,mouseDiffY);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -813,8 +814,8 @@ function updateActivePoint(){
 function mousemoveevt(ev, t){
 		mox=cx;
 		moy=cy;
-    hovobj = diagram.inside(cx,cy);
-    console.log(hovobj);
+	    hovobj = diagram.inside(cx,cy);
+	    //console.log(hovobj);
 		if (ev.pageX || ev.pageY == 0){ // Chrome
 			cx=ev.pageX-acanvas.offsetLeft;
 			cy=ev.pageY-acanvas.offsetTop;
@@ -948,6 +949,7 @@ function doubleclick(ev)
 {
 	if(diagram[selobj].inside(cx,cy)){
         openAppearanceDialogMenu();
+        document.getElementById('nametext').value = diagram[selobj].name;
   }
 }
 
@@ -1081,7 +1083,7 @@ function eraseObject(object){
   diagram.delete(object);
   updategfx();
 }
-function eraseSelectedObject(){
+function deleteSelectedObject(){
 		var canvas = document.getElementById("myCanvas");
 		canvas.style.cursor="default";
 		//Issue: Need to remove the crosses
@@ -1148,6 +1150,7 @@ function openAppearanceDialogMenu() {
 	canvas.style.cursor="default";
     $("#appearance").show();
     $("#appearance").width("auto");
+    dimDialogMenu(true);
     dialogForm();
 }
 
@@ -1157,25 +1160,24 @@ function dialogForm() {
 
     if(diagram[selobj].symbolkind==1){
         form.innerHTML = "Class name: </br>" +
-            "<input id='text' type='text'></br>" +
+            "<input id='nametext' type='text'></br>" +
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name:</br>" +
-        	"<input id='text' type='text'></br>" +
+        	"<input id='nametext' type='text'></br>" +
             "Attribute type: </br>" +
-            	  "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
- 			"<button type='submit' onclick='changeName(form)'>Ok</button>" +
+            "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+ 			      "<button type='submit' onclick='changeName(form)'>Ok</button>" +
             "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
-            "<input id='text' type='text'></br>" +
+            "<input id='nametext' type='text'></br>" +
             "Entity type: </br>" +
-
 			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>"+
-			"<select id ='TextSize'><option value=5>Tiny</option><option value=10>Small</option><option value=14>Medium</option><option value=18>Large</option></select>";
+			      "<select id ='TextSize'><option value=5>Tiny</option><option value=10>Small</option><option value=14>Medium</option><option value=18>Large</option></select>";
     }
 }
 
@@ -1193,8 +1195,8 @@ function setTextSizeEntity(){
 
 
 function changeName(form){
-	diagram[selobj].name=document.getElementById('text').value;
-
+	diagram[selobj].name=document.getElementById('nametext').value;
+    dimDialogMenu(false);
     updategfx();
 }
 
@@ -1203,6 +1205,7 @@ function changeName(form){
  */
 function closeAppearanceDialogMenu() {
 	$("#appearance").hide();
+    dimDialogMenu(false);
     document.removeEventListener("click", clickOutsideDialogMenu);
 }
 
@@ -1215,9 +1218,22 @@ function clickOutsideDialogMenu(ev) {
         if (!container.is(ev.target)
             && container.has(ev.target).length === 0) {
             container.hide();
+            dimDialogMenu(false);
             document.removeEventListener("click", clickOutsideDialogMenu);
         }
+
     });
+}
+
+function dimDialogMenu(dim) {
+    if(dim==true) {
+        $("#appearance").css("display", "block");
+        $("#overlay").css("display", "block");
+    }
+    else {
+        $("#appearance").css("display", "none");
+        $("#overlay").css("display", "none");
+    }
 }
 
 function Consolemode(action){
@@ -1310,53 +1326,49 @@ function debugMode()
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
 var mousedownX = 0; var mousedownY = 0;
-var mouseupX = 0; var mouseupY = 0;
+var mousemoveX = 0; var mousemoveY = 0;
 var mouseDiffX = 0; var mouseDiffY = 0;
-var newCanvasX = 0; var newCanvasY = 0;
 
 function movemode(e)
 {
 	uimode="MoveAround";
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="all-scroll";
-	canvas.addEventListener('mousedown', mousedownposcanvas, false);
-	canvas.addEventListener('mouseup', mouseupposcanvas, false);
+	canvas.addEventListener('mousedown', getMousePos, false);
+	canvas.addEventListener('mouseup', stopmovemode, false);
 }
-function mousedownposcanvas(e){
-	mousedownX = e.pageX;
-	mousedownY = e.pageY;
-}
-function mouseupposcanvas(e){
-	mouseupX = e.pageX;
-	mouseupY = e.pageY;
-	movecanvas();
-}
-function movecanvas(){
+function getMousePos(e){
 	var canvas = document.getElementById("myCanvas");
-	mouseDiffX = (mousedownX - mouseupX);
-	mouseDiffY = (mousedownY - mouseupY);
-	newCanvasX = (mouseDiffX+newCanvasX);
-	newCanvasY = (mouseDiffY+newCanvasY);
-
+	mousedownX = e.clientX;
+	mousedownY = e.clientY;
+	console.log("Down: "+mousedownX+" | "+mousedownY);
+	canvas.addEventListener('mousemove', mousemoveposcanvas, false);
+}
+function mousemoveposcanvas(e){
+	mousemoveX = e.clientX;
+	mousemoveY = e.clientY;
+	console.log("Move: "+mousemoveX+" | "+mousemoveY);
+	var canvas = document.getElementById("myCanvas");
+	mouseDiffX = (mousedownX - mousemoveX);
+	mouseDiffY = (mousedownY - mousemoveY);
+	mousedownX = mousemoveX;
+	mousedownY = mousemoveY;
+	console.log("Diff: "+mouseDiffX+" | "+mouseDiffY);
 	ctx.clearRect(startX,startX,widthWindow,heightWindow);
-	ctx.translate(newCanvasX,newCanvasY);
-	// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
+	ctx.translate(mouseDiffX,mouseDiffY);
 	erEntityA.sortAllConnectors();
-	// Redraw diagram
 	diagram.draw();
-	// Draw all points as crosses
 	points.drawpoints();
-	mousedownX = 0; mousedownY = 0;
-	mouseupX = 0; mouseupY = 0;
-	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
-	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
-	canvas.style.cursor="default";
 }
 function stopmovemode(){
+	mousedownX = 0; mousedownY = 0;
+	mousemoveX = 0; mousemoveY = 0;
+	mouseDiffX = 0; mouseDiffY = 0;
 	var canvas = document.getElementById("myCanvas");
 	canvas.style.cursor="default";
-	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
-	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
+	canvas.removeEventListener('mousedown', getMousePos, false);
+	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+	canvas.removeEventListener('mouseup', stopmovemode, false);
 }
 
 //----------------------------------------
