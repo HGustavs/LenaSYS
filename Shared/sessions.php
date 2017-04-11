@@ -92,7 +92,7 @@ function getQuestion($username)
 
 		if($_SESSION["securityquestion"]==null){
 									//Temporary error message, change later
-			$_SESSION["getname"] = "Securityquestion not found";
+			$_SESSION["getname"] = "Security question not found";
 			return false;
 		}
 
