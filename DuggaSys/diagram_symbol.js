@@ -235,6 +235,7 @@ function Symbol(kind) {
     }
     //        consloe.log(pointcnt);
   }
+
     //--------------------------------------------------------------------
     // sortAllConnectors
     // Sorts all connectors
@@ -253,6 +254,24 @@ function Symbol(kind) {
       this.sortConnector(this.connectorBottom,2,x1,x2,y2);
 
     }
+      //--------------------------------------------------------------------
+      // sortAllConnectors
+      // Sorts all connectors
+      //--------------------------------------------------------------------
+
+      this.sortAllConnectors = function ()
+      {
+        var x1=points[this.topLeft].x;
+        var y1=points[this.topLeft].y;
+        var x2=points[this.bottomRight].x;
+        var y2=points[this.bottomRight].y;
+
+        this.sortConnector(this.connectorRight,1,y1,y2,x2);
+        this.sortConnector(this.connectorLeft,1,y1,y2,x1);
+        this.sortConnector(this.connectorTop,2,x1,x2,y1);
+        this.sortConnector(this.connectorBottom,2,x1,x2,y2);
+
+      }
 
     //--------------------------------------------------------------------
     // move
@@ -329,6 +348,76 @@ function Symbol(kind) {
       }else if(this.symbolkind==2){
         points[this.centerpoint].x+=movex;
         points[this.centerpoint].y+=movey;
+      }
+    }
+
+    //--------------------------------------------------------------------
+    // delete
+    // attempts to erase object completely from canvas
+    //--------------------------------------------------------------------
+    this.erase = function (){
+      this.movePoints();
+      this.deleteLines();
+      //emptyConnectors();
+    }
+
+    //--------------------------------------------------------------------
+    // movePoints
+    // Moves all relevant points, within the object, off the canvas.
+    // IMP!: Should not be moved back on canvas after this function is run.
+    //--------------------------------------------------------------------
+    this.movePoints = function (){
+      points[this.topLeft] = waldoPoint;
+      points[this.bottomRight] = waldoPoint;
+      points[this.centerpoint] = waldoPoint;
+      points[this.middleDivider] = waldoPoint;
+    }
+
+    //--------------------------------------------------------------------
+    // movePoints
+    // Moves all relevant points, within the object, off the canvas.
+    // IMP!: Should not be moved back on canvas after this function is run.
+    //--------------------------------------------------------------------
+    this.deleteLines = function(){
+      // Adds the different connectors into an array to reduce the amount of code
+      var connectors = [this.connectorTop, this.connectorRight,  this.connectorBottom,  this.connectorLeft];
+
+      for(i = 0; i < diagram.length; i++){
+        var hasDeleted = false;
+        var line = diagram[i];
+
+        //Line
+        if(line.symbolkind == 4){
+          if(this.symbolkind == 2){
+            //Deletes lines connected to object's centerpoint
+            //Line always have topLeft and bottomRight if symbolkind == 4, because that means it's a line object
+            if(line.topLeft == this.centerpoint || line.bottomRight == this.centerpoint) {
+              diagram.delete(line);
+              hasDeleted = true;
+            }
+          }
+
+          else if(this.symbolkind == 3){
+            hasDeleted = false;
+            //Deletes lines connected to connectors top, right, bottom and left.
+            for(var j = 0; j < connectors.length; j++){
+              for (var k = 0; k < connectors[j].length; k++) {
+                if (line.topLeft == connectors[j][k].from || line.bottomRight == connectors[j][k].from ||  line.topLeft == connectors[j][k].to || line.bottomRight == connectors[j][k].to) {
+                  diagram.delete(line);
+
+                  hasDeleted = true;;
+                  break;
+                }
+              }
+              if(hasDeleted){
+                break;
+              }
+            }
+          }
+        }
+        if(hasDeleted){
+          i=-1;
+        }
       }
     }
 

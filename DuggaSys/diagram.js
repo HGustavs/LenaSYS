@@ -239,6 +239,20 @@ diagram.adjust = function ()
 		}
 
 }
+//--------------------------------------------------------------------
+// delete - deletes sent object from diagram
+//--------------------------------------------------------------------
+
+diagram.delete = function (object)
+{
+	for(i=0;i<this.length;i++){
+		if(this[i]==object){
+          		this.splice(i,1);
+        	}
+
+	}
+
+}
 
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
@@ -318,6 +332,18 @@ diagram.linedist = function (xk,yk)
 		}
 
 		return -1;
+}
+//--------------------------------------------------------------------
+// inside - executes linedist methond in all diagram objects (currently of kind==2)
+//--------------------------------------------------------------------
+diagram.getLineObjects = function (){
+  var lines = new Array();
+  for(i = 0; i < this.length; i++){
+    if(diagram[i].symbolkind == 4){
+      lines.push(lines);
+    }
+  }
+  return lines;
 }
 
 //--------------------------------------------------------------------
@@ -674,6 +700,13 @@ function Path() {
 
 				}
 		}
+
+    this.erase = function(){
+      for(i = 0; i < this.segments.length; i++){
+          points[this.segments[i].pa] = waldoPoint;
+          points[this.segments[i].pb] = waldoPoint;
+        }
+    }
 }
 
 function initcanvas()
@@ -693,7 +726,7 @@ function initcanvas()
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
-		"<button onclick='deleteAllObjects();'>Delete All</button>" +
+		"<button onclick='clearCanvas();'>Delete All</button>" +
 		"<button onclick='movemode(event);' style='float: right;'>Start Moving</button>" +
 		"<button onclick='stopmovemode();' style='float: right;'>Stop Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
@@ -1035,116 +1068,35 @@ function mouseupevt(ev){
     }
 
 }
-function deleteObject(index){
+
+
+function movePoint(point){
+  point = waldoPoint;
+}
+
+function eraseObject(object){
   var canvas = document.getElementById("myCanvas");
   canvas.style.cursor="default";
-      points[diagram[index].topLeft] = waldoPoint;
-      points[diagram[index].bottomRight] = waldoPoint;
-      points[diagram[index].centerpoint] = waldoPoint;
-      points[diagram[index].middleDivider] = waldoPoint;
-    for(i = 0; i < diagram.length; i++){
-        if(!(diagram[i].symbolkind == 1)){
-            var temp = true;
-            for (var j = 0; j < (diagram[index].connectorRight.length ); j++) {
-                if (temp == true) {
-                    if (diagram[i].symbolkind == 4 &&
-                        (diagram[i].topLeft == diagram[index].connectorRight[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorRight[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorRight[j].to)) {
-                        diagram.splice(i, 1);
-                        if (index > i) {
-                            index--;
-                        }
-                        i--;
-                        temp = false;
-                        j = diagram[index].connectorRight.length;
-                    }
-                }
-            }
-            for (var j = 0; j < (diagram[index].connectorLeft.length ); j++) {
-                if (temp == true) {
-                    if (diagram[i].symbolkind == 4 &&
-                        (diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to)) {
-                        diagram.splice(i, 1);
-                        if (index > i) {
-                            index--;
-                        }
-                        i--;
-                        temp = false;
-                        j = diagram[index].connectorLeft.length;
-                    }
-                }
-            }
-            for (var j = 0; j < (diagram[index].connectorBottom.length ); j++) {
-                if (temp == true) {
-                    if (diagram[i].symbolkind == 4 &&
-                        (diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorBottom[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to)) {
-                        diagram.splice(i, 1);
-                        if (index > i) {
-                            index--;
-                        }
-                        i--;
-                        temp = false;
-                        j = diagram[index].connectorBottom.length;
-                    }
-                }
-            }
-            for (var j = 0; j < (diagram[index].connectorTop.length ); j++) {
-                if (temp == true) {
-                    if (diagram[i].symbolkind == 4 &&
-                        (diagram[i].topLeft == diagram[index].connectorTop[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].from)||
-                        (diagram[i].topLeft == diagram[index].connectorTop[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].to)) {
-                        diagram.splice(i, 1);
-                        if (index > i) {
-                            index--;
-                        }
-                        i--;
-                        temp = false;
-                        j = diagram[index].connectorTop.length;
-                    }
-                }
-            }
-        }
-        if (temp == true){
-            if(diagram[i].symbolkind == 4 &&
-                (diagram[i].topLeft == diagram[index].centerpoint ||
-                diagram[i].bottomRight == diagram[index].centerpoint)) {
-                if (index > i) {
-                    index--;
-                }
-                diagram.splice(i, 1);
-                i--;
-            }
-        }
-    }
-    diagram.splice(index, 1);
-    updategfx();
-    return index;
 
+  object.erase();
+
+  diagram.delete(object);
+  updategfx();
 }
 function deleteSelectedObject(){
 		var canvas = document.getElementById("myCanvas");
 		canvas.style.cursor="default";
 		//Issue: Need to remove the crosses
 		for (var i = 0; i < diagram.length;i++){
-			if(diagram[i].targeted == true){
-		//diagram[i].targeted = false;
-		     i = deleteObject(i)-1;
-
+      var object = diagram[i];
+			if(object.targeted == true){
+		    object.targeted = false;
+		    object.erase();
+        i = 0;
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
 			}
 		}
-	//}
 }
 function classmode()
 {
@@ -1215,10 +1167,9 @@ function dialogForm() {
         form.innerHTML = "Attribute name:</br>" +
         	"<input id='nametext' type='text'></br>" +
             "Attribute type: </br>" +
-
-        "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
- 			"<button type='submit' onclick='changeName(form)'>Ok</button>" +
-			"<button type='submit' onclick='setType(form)'>setType</button>" +
+            "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+ 			      "<button type='submit' onclick='changeName(form)'>Ok</button>" +
+			      "<button type='submit' onclick='setType(form)'>setType</button>" +
             "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";
     }
     if(diagram[selobj].symbolkind==3){
@@ -1342,14 +1293,16 @@ function drawOval(x1, y1, x2, y2) {
 }
 
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
-function deleteAllObjects()
+function clearCanvas()
 {
   console.log("Deleting");
 
-  for(i = diagram.length; i >= 0;i--){
-    deleteObject(i);
+  while(diagram.length > 0){
+    console.log(diagram.length);
+    diagram[diagram.length-1].erase();
+    diagram.pop();
   }
-	console.log("deleting done!");
+	console.log(diagram.length + " " + points.length);
 }
 
 var consloe={};
