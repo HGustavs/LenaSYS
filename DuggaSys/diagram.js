@@ -49,6 +49,10 @@ var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
+var a,b,c;
+a = [];
+b = [];
+c = [];
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown",this.keyDownHandler, false);
 
@@ -727,6 +731,15 @@ function initcanvas()
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
+        "<select id='download' onchange='downloadMode()'>" +
+        "<option selected='selected' disabled>State</option>" +
+        "<option value='getImage'>getImage</option>" +
+        "<option value='Save'>Save</option>" +
+        "<option value='Load'>Load</option>" +
+        "</select>"+
+        "<button> <a onclick='SaveFile(this);' class='btn'> <i class='icon-download'></i>Export</a></button>" +
+        "<input id='fileid' type='file' name='file_name' hidden multiple/>"+
+        "<input id='buttonid' type='button' value='Import' />"+
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
@@ -737,7 +750,7 @@ function initcanvas()
         ctx = canvas.getContext("2d");
 				acanvas=document.getElementById("myCanvas");
 		}
-
+		getUploads();
 		makegfx();
 
 		updategfx();
@@ -746,7 +759,39 @@ function initcanvas()
 		buttonStyle.addEventListener('click', movemode, false);
 
 }
+function getUploads() {
+    document.getElementById('buttonid').addEventListener('click', openDialog);
+    function openDialog() {
+        document.getElementById('fileid').click();
+    }
 
+    document.getElementById('fileid').addEventListener('change', submitFile);
+    function submitFile() {
+
+        var reader = new FileReader();
+        var file = document.getElementById('fileid').files[0];
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            a = evt.currentTarget.result;
+        }
+        file = document.getElementById('fileid').files[2];
+        var reader1 = new FileReader();
+        reader1.readAsText(file, "UTF-8");
+        reader1.onload = function (evt) {
+            b = evt.currentTarget.result;
+
+        }
+        file = document.getElementById('fileid').files[1];
+        var reader2 = new FileReader();
+        reader2.readAsText(file, "UTF-8");
+        reader2.onload = function (evt) {
+            c = evt.currentTarget.result;
+
+        }
+
+        // LoadFile();
+    }
+}
 // Function that is used for the resize
 // Making the page more responsive
 
@@ -1409,6 +1454,144 @@ function mouseupcanvas(e){
 	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 }
 
+
+function downloadMode(){
+    var canvas = document.getElementById("content");
+    var selectBox = document.getElementById("download");
+    download = selectBox.options[selectBox.selectedIndex].value;
+
+    if(download.toString() == "getImage"){
+        console.log("b");
+        getImage();
+    }
+    if(download == "Save"){
+
+        Save();
+    }
+    if(download == "Load"){
+        Load();
+    }
+}
+
+function getImage(){
+    window.open( document.getElementById("myCanvas").toDataURL("image/png"), 'Image');
+}
+
+var ac = [];
+function Save() {
+    for (i = 0; i < diagram.length; i++){
+        c[i] = diagram[i].constructor.name;
+        c[i] = c[i].replace(/"/g,"");
+    }
+    a = (JSON.stringify(diagram));
+    b = (JSON.stringify(points));
+    c = (JSON.stringify(c));
+    console.log(c);
+    console.log("State is saved");
+
+}
+var io = 0;
+function SaveFile(el){
+    //Save();
+    if (io == 0) {
+        var data = "text/json;charset=utf-8," + encodeURIComponent(a);
+        el.setAttribute("class", 'icon-download');
+        el.setAttribute("href", "data:" + data);
+        el.setAttribute("download", "diagram.txt");
+        updategfx();
+        io++;
+
+    }
+    else if (io == 1) {
+        var data = "text/json;charset=utf-8," + encodeURIComponent(b);
+        el.setAttribute("class", 'icon-download');
+        el.setAttribute("href", "data:" + data);
+        el.setAttribute("download", "points.txt");
+        updategfx();
+        io++;
+
+    }
+    else if (io == 2) {
+        var data = "text/json;charset=utf-8," + encodeURIComponent(c);
+        el.setAttribute("class", 'icon-download');
+        el.setAttribute("href", "data:" + data);
+        el.setAttribute("download", "diagram_object_names.txt");
+        updategfx();
+        io = 0;
+
+    }
+}
+function LoadFile(){
+    var dp = JSON.parse(a);
+    var pp = JSON.parse(b);
+    a = dp;
+    b = pp;
+    //Diagram fix
+    for (i = 0; i < a.length; i++) {
+        if (c[i] == "Symbol") {
+            a[i] = Object.assign(new Symbol, a[i]);
+        } else if (c[i] == "Path") {
+            a[i] = Object.assign(new Path, a[i]);
+        }
+    }
+    diagram.length = a.length;
+    for (i = 0; i < a.length;i++) {
+        diagram[i] = a[i];
+    }
+
+    // Points fix
+    for (i = 0; i < b.length; i++) {
+        b[i] = Object.assign(new Path, b[i]);
+    }
+    points.length = b.length;
+    for (i = 0; i< b.length; i++ ){
+        points[i] = b[i];
+    }
+    console.log("State is loaded");
+    //Redrawn old state.
+    updategfx();
+}
+
+function Load() {
+    // Implement a JSON.parse() that will unmarshall a b c, so we can add
+    // them to their respecive array so it can redraw the desired canvas.
+
+    //TEMPORARY SOLUTION FOR PARSE
+    console.log(a);
+    var dp = JSON.parse(a);
+    var pp = JSON.parse(b);
+    var dn = JSON.parse(c);
+    a = dp;
+    b = pp;
+    c = dn;
+    console.log(a);
+    console.log(b);
+    console.log(c);
+    //Diagram fix
+    for (i = 0; i < a.length; i++) {
+        if (c[i] == "Symbol") {
+            a[i] = Object.assign(new Symbol, a[i]);
+        } else if (c[i] == "Path") {
+            a[i] = Object.assign(new Path, a[i]);
+        }
+    }
+    diagram.length = a.length;
+    for (i = 0; i < a.length;i++) {
+        diagram[i] = a[i];
+    }
+
+    // Points fix
+    for (i = 0; i < b.length; i++) {
+        b[i] = Object.assign(new Path, b[i]);
+    }
+    points.length = b.length;
+    for (i = 0; i< b.length; i++ ){
+        points[i] = b[i];
+    }
+    console.log("State is loaded");
+    //Redrawn old state.
+    updategfx();
+}
 //----------------------------------------
 // Renderer
 //----------------------------------------
