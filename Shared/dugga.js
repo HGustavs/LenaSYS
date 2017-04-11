@@ -41,7 +41,10 @@ function toggleloginnewpass(){
 function resetFields(){
 	$("#login #username").val("");
 	$("#login #password").val("");
-	$("#newpassword #username").val("");
+	//Since we need the username from this box during the answer part we cant clear it directly afterwards
+	if (status!=2){
+		$("#newpassword #username").val("");
+	}
 	$("#showsecurityquestion #answer").val("");
 
 	$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
