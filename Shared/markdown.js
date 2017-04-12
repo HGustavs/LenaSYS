@@ -162,8 +162,8 @@ function identifier(prevLine, currentLine, markdown, nextLine){
         markdown += handleOrderedList(currentLine, prevLine, nextLine);
     }
     // handle tables
-    else if(false) {
-
+    else if(isTable(currentLine)) {
+    	markdown += handleTable(currentLine, prevLine, nextLine);
     }
     // If its ordinary text then show it directly
     else {
@@ -178,11 +178,19 @@ function identifier(prevLine, currentLine, markdown, nextLine){
 }
 // Check if its an unordered list
 function isUnorderdList(item) {
+	// return true if space followed by a dash or astersik 
 	return /^\s*[\-\*]\s(.*)/gm.test(item);
 }
 // Check if its an ordered list
 function isOrderdList(item) {
-	return /^\s*\d*\.\s(.*)/gm.test(item);
+	// return true if space followed by a digit and a dot
+	return /^\s*\d*\.\s(.*)/gm.test(item); 
+}
+
+// CHeck if its a table
+function isTable(item) {
+	// return true if space followed by a pipe-character
+	return /\s*\|\s(.*)/gm.test(item); 
 }
 // The creation and destruction of unordered lists
 function handleUnorderedList(currentLine, prevLine, nextLine) {
@@ -264,7 +272,31 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
 
 	return markdown;
 }
+function handleTable(currentLine, prevLine, nextLine) {
+	var markdown = "";
 
+	// open new table
+	if(!isTable(prevLine)) {
+    	markdown += "<table>";
+    }
+
+    // handle table row
+    markdown += "<tr>" 
+    var columns = currentLine.split('|').filter(function(v){return v !== '';});
+    for(var i = 0; i < columns.length; i++) {
+    	markdown += "<td>" + columns[i].trim() + "</td>";
+    }
+    markdown += "</td>";
+
+    // close table
+	if(!isTable(nextLine)) {
+		console.log("end");
+    	markdown += "</table>";
+    }
+
+    return markdown;
+	
+}
 //----------------------------------------------------------------------------------
 // markdownBlock: 
 //					
