@@ -280,13 +280,13 @@ function handleTable(currentLine, prevLine, nextLine) {
     	markdown += "<table>";
     }
 
-    
+    // handle table row
     markdown += "<tr>" 
-
-    markdown += "<td>" + currentLine + "</td>";
-
+    var columns = currentLine.split('|').filter(function(v){return v !== '';});
+    for(var i = 0; i < columns.length; i++) {
+    	markdown += "<td>" + columns[i].trim() + "</td>";
+    }
     markdown += "</td>";
-
 
     // close table
 	if(!isTable(nextLine)) {
