@@ -1951,6 +1951,8 @@ span.arrow {
   border-top:2px solid black !important;
   box-shadow:0px 0px 4px #202 inset;
 }
+
+/* styling for "Magic Headers" in resulted mHead is for the number and c0 is the student div */
 .mHead{
     position:fixed;
     background-color:#e8e8e8;
@@ -1960,6 +1962,7 @@ span.arrow {
     transform: translateX(-110%);
     background-color:#eae8eb;
 }
+
 .rowno {
   /*width:40px;*/
 }
