@@ -77,7 +77,7 @@ pdoConnect();
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' /></div>
+			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID'  maxlength='8'/></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 		</div>
@@ -95,7 +95,7 @@ pdoConnect();
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
-			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name' /></div>
+			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 		</div>
