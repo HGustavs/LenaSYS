@@ -18,7 +18,7 @@ pdoConnect();
 	<script src="../Shared/dugga.js"></script>
 	<script src="fileed.js"></script>
 </head>
-<body>
+<body onload="setupSort();">
 	<?php 
 		$noup="SECTION";
 		include '../Shared/navheader.php';
