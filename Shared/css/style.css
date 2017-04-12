@@ -1843,7 +1843,37 @@ span.arrow{}
     line-height: 47px;
 }
 
+/* --------------================################================-------------- *
+ *                             Basic simple classes                             *
+ * --------------================################================-------------- */
 
+.top {
+    margin-top: 0px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.small {
+    font-size: smaller;
+}
+
+.large {
+    font-size: larger;
+}
+
+.center {
+    text-align: center;
+}
+
+.justify {
+    text-align: justify;
+}
+
+.no-float {
+    float: none;
+}
 
 /*styling for contribution.php*/
 /*this was inline-CSS before, only moved it to the right file*/
