@@ -554,7 +554,8 @@ function processResetPasswordCheckUsername() {
 				opt: "GETQUESTION"
 			},
 			success:function(data) {
-				var result = JSON.parse(data);				
+				var result = JSON.parse(data);	
+					//It is worth to note that getname should probably be named status/error since thats basically what it is			
 				if(result['getname'] == "success") {
 					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 					status = 2;
