@@ -1125,8 +1125,14 @@ input.large-button {
 .list#testTable td{padding:8px; text-align:center;border:none;}
 .list#testTable th{line-height:45px; box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);}
 .list#testTable tr{line-height:45px;}
+.list#testTable tr:hover{cursor:pointer;}
+
 
 .list#testTable .variantInfo {display:none;}
+
+.variantInfo td:hover {
+    cursor:default;
+}
 
 .list#testTable input, .list#testTable select, .list#testTable label {
     padding:5px;

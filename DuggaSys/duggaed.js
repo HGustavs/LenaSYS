@@ -6,6 +6,7 @@
 var sessionkind=0;
 var querystring=parseGet();
 var filez;
+var variant;
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
 $(function() {
@@ -22,6 +23,7 @@ $(function() {
 		dateFormat: "yy-mm-dd"
 	});
 });
+
 //----------------------------------------
 // Commands:
 //----------------------------------------
@@ -166,24 +168,25 @@ function selectVariant(vid,param,answer,template,dis)
 }
 
 function showVariant(param){
-    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {
-        $(".fumo").removeClass("selectedtr");
-        $(".variantInfo").hide();
-        var variantId="#variantInfo" + param;
-        var duggaId="#dugga" + param;
-        /*
-        var arrowId="#arrow" + param;
-        $(arrowId).show(400);
-        /*
-        console.log(variantId);
-        console.log(duggaId);*/
-        $(variantId).slideDown(400);
+    var variantId="#variantInfo" + param;
+    var duggaId="#dugga" + param;
+    var arrowId="#arrow" + param;
+    variant = param;
+    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {// Check if dugga row and corresponding variant rows exist.
         
-        $(duggaId).addClass("selectedtr");
-        $(variantId).css("border-bottom", "2px solid gray");
        
+        if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
+            $(variantId).hide();
+            $(duggaId).removeClass("selectedtr");
+        } else {
+            $(duggaId).addClass("selectedtr");
+            $(variantId).slideDown(); 
+        }
+        
+        $(variantId).css("border-bottom", "2px solid gray");
     }
 }
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -262,13 +265,13 @@ function returnedDugga(data)
 
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
-			str+="<td style='padding:4px;'>";
+			str+="<td>";
 			str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");' >";
+			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");'>";
 			str+="</td>";
 
 
-			str+="<td style='padding:4px;'>";
+			str+="<td>";
 			str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");' >";
 			str+="</td>";
@@ -320,6 +323,8 @@ function returnedDugga(data)
 	var slist=document.getElementById("content");
 	slist.innerHTML=str;
 	if(data['debug']!="NONE!") alert(data['debug']);
+    
+    showVariant(variant);
 }
 
 function parseParameters(str){
