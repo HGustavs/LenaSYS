@@ -68,10 +68,10 @@ pdoConnect();
 	<!-- Edit Section Dialog END -->
 
 
-	<!-- New Verison Dialog START -->
+	<!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>New Course Verison</h3>
+			<h3>New Course Version</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
@@ -85,12 +85,12 @@ pdoConnect();
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
 		</div>
 	</div>
-	<!-- New Verison Dialog END -->
+	<!-- New Version Dialog END -->
 
-	<!-- Edit Verison Dialog START -->
+	<!-- Edit Version Dialog START -->
 	<div id='editCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>Edit Course Verison</h3>
+			<h3>Edit Course Version</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
@@ -103,7 +103,7 @@ pdoConnect();
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />
 		</div>
 	</div>
-	<!-- Edit Verison Dialog END -->
+	<!-- Edit Version Dialog END -->
 
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBox' style='width:500px;display:none;'>
