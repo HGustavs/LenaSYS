@@ -482,6 +482,17 @@ function Symbol(kind) {
         ctx.textBaseline = "middle";
 		ctx.fillStyle="#F0F";
 		ctx.fillText(this.name,x1+((x2-x1)*0.5),y1+(0.85*this.textsize));
+
+
+		if(this.key_type == 'Primary key'){
+			var linelenght = ctx.measureText(this.name).width;
+			ctx.beginPath(1);
+			ctx.moveTo(x1+((x2-x1)*0.5), y1+(0.85*this.textsize));
+			ctx.lineTo(x1+((x2-x1)*0.5), y1+(0.85*this.textsize));
+			ctx.lineTo(x1+((x2-x1)*0.5)+linelenght, y1+(0.85*this.textsize)+10);
+			ctx.strokeStyle = "#000";
+			ctx.stroke();
+		}
 		
 		// ctx.measureText(txt).width
 		// beginpath - moveto - lineto
@@ -545,7 +556,7 @@ function Symbol(kind) {
       }else if(this.symbolkind==2){
 		  
 		//scale the text 
-		ctx.font="bold "+parseInt(textsize)+"px Arial";
+		ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
@@ -561,6 +572,7 @@ function Symbol(kind) {
         ctx.stroke();
 
         ctx.fillStyle="#253";
+        ctx.fillStyle=this.fontColor;
         ctx.fillText(this.name,x1+((x2-x1)*0.5),(y1+((y2-y1)*0.5)));
 		
 		if(this.key_type == 'Primary key')
