@@ -1184,7 +1184,7 @@ function dialogForm() {
             "Entity type: </br>" +
 			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
 			"Font family:<br>" +
-			"<input id ='font'><br>" +
+            "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
 			"Font color:<br>" +
 			"<input id ='fontColor'><br>" +
             "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>"+
