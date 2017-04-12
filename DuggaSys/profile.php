@@ -63,11 +63,12 @@ pdoConnect();
 			</div>
 		
 			<div id="notificationsOnOff">
-				<h3>Activate notifications</h3>
+				<h3>Push notifications</h3>
 				<?php
 				if (defined('PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY')) {
 				?>
-				<button type="button" class="profile-element" id="activate_notifications" disabled>Activate notifications</button><br/><br/>
+				<p id="notificationsText">Checking for push notification subscription...</p>
+				<button type="button" class="profile-element" id="notificationsToggle" disabled>Please wait...</button>
 				<script>
 					var push_notifications_vapid_public_key = "<?php echo PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY; ?>";
 				</script>
