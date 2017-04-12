@@ -1,16 +1,16 @@
 <?php
-
-
-include_once "../../vendor/autoload.php";
-use Minishlink\WebPush\WebPush;
-
 session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
 
-if(checklogin()) {
-	if (isset($_POST['action']) && $_POST['action'] == "register") {
+if (isset($_POST['action']) && $_POST['action'] == "pushsuccess") {
+	$query = "UPDATE user_push_registration SET daysOfUnsent = 0 WHERE endpoint = :endpoint";
+	$stmt = $pdo->prepare($query);
+	$stmt->bindParam(':endpoint', $_POST['endpoint']);
+	$stmt->execute();
+} else if (isset($_POST['action']) && $_POST['action'] == "register") {
+	if(checklogin()) {
 		$query = "SELECT * FROM user_push_registration WHERE uid = :uid AND endpoint = :endpoint";
 		$stmt = $pdo->prepare($query);
 		$stmt->bindParam(':uid', $_SESSION['uid']);
@@ -23,7 +23,15 @@ if(checklogin()) {
 
 		if (count($results) == 1) {
 			$registration = $results[0];
-			// Update registration if needed
+			$query = "UPDATE user_push_registration SET keyAuth = :keyAuth, keyValue = :keyValue, daysOfUnsent = 0 WHERE id = :id";
+			$stmt = $pdo->prepare($query);
+			$stmt->bindParam(':id', $registration['id']);
+			$stmt->bindParam(':keyAuth', $_POST['subscription']['keys']['auth']);
+			$stmt->bindParam(':keyValue', $_POST['subscription']['keys']['p256dh']);
+			if(!$stmt->execute()) {
+				$error = $stmt->errorInfo();
+				print_r($error);
+			}
 		} else {
 			// Add the push registration to the database
 			$query = "INSERT INTO user_push_registration(uid, endpoint, keyAuth, keyValue) VALUES (:uid, :endpoint, :keyAuth, :keyValue)";	
@@ -37,67 +45,25 @@ if(checklogin()) {
 				print_r($error);
 			}
 		}
-	} else if (isset($_POST['action']) && $_POST['action'] == "send") {
+	}
+} else if (checklogin() && isSuperUser($_SESSION['uid'])) {
+	if (isset($_POST['action']) && $_POST['action'] == "send") {
+		include_once "../Shared/pushnotificationshelper.php";
+		echo sendPushNotification($_POST['user'], $_POST['message']);
+	} else {
+		?>
 
-		$auth = array(
-			'VAPID' => array(
-				'subject' => 'mailto:c14caran@student.his.se',
-				'publicKey' => PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY,
-				'privateKey' => PUSH_NOTIFICATIONS_VAPID_PRIVATE_KEY
-			),
-		);
-		$webPush = new WebPush($auth);
-		
-		$query = "SELECT * FROM user_push_registration WHERE uid = :uid";
-		$stmt = $pdo->prepare($query);
-		$stmt->bindParam(':uid', $_POST['user']);
+		<p>Send a message to a registered client</p>
+		<form action="pushnotifications.php" method="post">
+			<input type="hidden" name="action" value="send">
+			user:<br>
+			<input type="text" name="user"><br><br>
+			message:<br>
+			<input type="text" name="message"><br><br>
+			<input type="submit" value="Submit">
+		</form>
 
-		if ($stmt->execute()) {
-			$results = $stmt->fetchAll();
-			foreach($results as $row) {
-				echo "hej";
-
-				$webPush->sendNotification(
-					$row['endpoint'],
-					"{title:'hej',text:'hoj'}",
-					$row['keyValue'],
-					$row['keyAuth'],
-					true
-				);
-
-				echo "hoj";
-				/*
-				$arrContextOptions = array(
-					"ssl" => array(
-						"verify_peer" => false,
-						"verify_peer_name" => false
-					),
-					"http" => array(
-						"method" => "POST"
-					)
-				);
-				
-				$response = file_get_contents($row['endpoint'], false, stream_context_create($arrContextOptions));
-				print_r($response);
-				*/
-			}
-		} else {
-			$error = $stmt->errorInfo();
-			print_r($error);
-		}
-
-	} else if (isset($_GET['action']) && $_GET['action'] == "form") {
-	?>
-
-<p>Send a message to a registered client</p>
-<form action="pushnotifications.php" method="post">
-	<input type="hidden" name="action" value="send">
-	user:<br>
-	<input type="text" name="user"><br><br>
-	<input type="submit" value="Submit">
-</form>
-
-	<?php
+		<?php
 	}
 }
 ?>
