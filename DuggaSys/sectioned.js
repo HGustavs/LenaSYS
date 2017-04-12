@@ -22,7 +22,7 @@ $(document).ready(function(){
     });
 });
 
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comment)
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comment, rowColor)
 {
 		
 	xelink=elink;
@@ -137,6 +137,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>2 tabs + end</option>" 
 	else str +="<option value ='6'>2 tabs + end</option>"; 
 
+	// Set color on "test"
+	str="";
+	if(rowColor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
+	else str+="<option value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>";
+	if(rowColor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
+	else str+="<option value='1' style='background-color: #927b9e; color: white'>Header</option>";
+	$("#rowColor").html(str);
+
 	$("#tabs").html(str);
 		
 	// Set Link
@@ -151,12 +159,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	// Section
 	}else if(kind==1){
 		$("#inputwrapper-tabs").css("display","block");
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	// Code
 	}else if(kind==2){
 		$("#inputwrapper-tabs").css("display","block");
@@ -172,6 +182,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	// Dugga
 	}else if(kind==3){
 		$("#inputwrapper-tabs").css("display","none");
@@ -187,12 +198,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
+		$("#inputwrapper-color").css("display","block");
 	// Moment
 	}else if(kind==4){
 		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	// Link
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
@@ -208,6 +221,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}
 	$("#editSection").css("display","block");
 	
@@ -227,11 +241,13 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}else if(kind==1){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
@@ -246,6 +262,7 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","block");
+		$("#inputwrapper-color").css("display","none");
 	}else if(kind==3){
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
 			var iitem=retdata['duggor'][ii];
@@ -259,12 +276,14 @@ function changedType()
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
-		$("#inputwrapper-tabs").css("display","none");	
+		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-color").css("display","block");	
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
@@ -279,6 +298,7 @@ function changedType()
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}
 }
 
