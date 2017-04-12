@@ -179,21 +179,17 @@ function identifier(prevLine, currentLine, markdown, nextLine){
 // Check if its an unordered list
 function isUnorderdList(item) {
 	// return true if space followed by a dash or astersik 
-	// example:  * 
 	return /^\s*[\-\*]\s(.*)/gm.test(item);
 }
 // Check if its an ordered list
 function isOrderdList(item) {
 	// return true if space followed by a digit and a dot
-	// example:  1.
 	return /^\s*\d*\.\s(.*)/gm.test(item); 
 }
 
 // CHeck if its a table
 function isTable(item) {
-	// return true if space followed by a pipe-character and pipe-character is not precedent by a backslash
-	// example that will return true:  |
-	// example that will return false:  \|
+	// return true if space followed by a pipe-character
 	return /\s*\|/gm.test(item); 
 }
 // The creation and destruction of unordered lists
