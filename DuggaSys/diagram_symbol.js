@@ -595,6 +595,13 @@ function Symbol(kind) {
         ctx.textBaseline = "middle";
 
         ctx.beginPath();
+        if (this.type == "weak") {
+          ctx.moveTo(x1 - 5, y1 - 5);
+          ctx.lineTo(x2 + 5, y1 - 5);
+          ctx.lineTo(x2 + 5, y2 + 5);
+          ctx.lineTo(x1 - 5, y2 + 5);
+          ctx.lineTo(x1 - 5, y1 - 5);
+        }
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y1);
         ctx.lineTo(x2,y2);

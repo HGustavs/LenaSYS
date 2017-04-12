@@ -1199,7 +1199,7 @@ function dialogForm() {
             "Text size:<br>" +
 			"<select id ='TextSize'><option value=Tiny>Tiny</option><option value=Small>Small</option><option value=Medium>Medium</option><option value=Large>Large</option></select><br>"+
 			"<button type='submit' onclick='setTextSizeEntity()'>TextScale</button>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>";
+            "<button type='submit'  class='submit-button' onclick='changeName(form); setEntityType(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
 }
 
@@ -1223,6 +1223,11 @@ function changeName(form){
 	console.log(diagram[selobj])
     dimDialogMenu(false);
     updategfx();
+}
+
+function setEntityType() {
+	var selectBox = document.getElementById("entityType");
+	diagram[selobj].type = selectBox.options[selectBox.selectedIndex].value;
 }
 
 function setType(form){
