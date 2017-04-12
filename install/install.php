@@ -276,6 +276,7 @@
             $initQueryArray = explode(";", $initQuery);
             $initSuccess = false;
             try {
+                $connection->query("SET NAMES utf8");
                 $connection->query("USE {$databaseName}");
                 # Use this var if several statements should be called at once (functions).
                 $queryBlock = '';
