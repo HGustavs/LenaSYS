@@ -6,7 +6,7 @@
 var sessionkind=0;
 var querystring=parseGet();
 var filez;
-var variant;
+var variant = [];
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
 $(function() {
@@ -167,25 +167,51 @@ function selectVariant(vid,param,answer,template,dis)
 	}
 }
 
+function isInArray(array, search)
+{
+    return array.indexOf(search) >= 0;
+}
+
 function showVariant(param){
     var variantId="#variantInfo" + param;
     var duggaId="#dugga" + param;
     var arrowId="#arrow" + param;
-    variant = param;
-    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {// Check if dugga row and corresponding variant rows exist.
+    var index = variant.indexOf(param);
+    
+    
+    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {// Check if dugga row and corresponding variant
+        if(isInArray(variant, param))
+        {  
+        } else {
+            console.log("added");
+            variant.push(param);
+        }
         
-       
         if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
             $(variantId).hide();
             $(duggaId).removeClass("selectedtr");
+            if (index > -1) {
+               variant.splice(index, 1);
+            }
+            
         } else {
             $(duggaId).addClass("selectedtr");
             $(variantId).slideDown(); 
         }
         
-        $(variantId).css("border-bottom", "2px solid gray");
+        $(variantId).css("border-bottom", "1px solid gray");
     }
 }
+
+function showVariantz(param){
+    var index = variant.indexOf(param);
+    if(isInArray(variant, param)){  
+    } else {
+        console.log("added");
+         variant.push(param);
+    }
+}
+
 
 //----------------------------------------
 // Renderer
@@ -211,10 +237,10 @@ function returnedDugga(data)
 
 			var item=data['entries'][i];
       
-			str+="<tr class='fumo' id='dugga" +i+ "' onClick='showVariant("+i+")'>";
+			str+="<tr class='fumo' id='dugga" +i+ "'>";
 
 			result++;
-            str+="<td><span class='arrow' id='arrow"+i+"'>&#x25BC;</span></td>";
+            str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#x25BC;</span></td>";
 			str+="<td><label>Name: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			if(item['autograde']=="1"){
 				result++;
@@ -267,7 +293,7 @@ function returnedDugga(data)
 
 			str+="<td>";
 			str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");'>";
+			str+=" onclick=' showVariantz("+i+"); addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");'>";
 			str+="</td>";
 
 
@@ -324,7 +350,13 @@ function returnedDugga(data)
 	slist.innerHTML=str;
 	if(data['debug']!="NONE!") alert(data['debug']);
     
-    showVariant(variant);
+    var length = variant.length;
+    console.log
+    for(index = 0;  index < length; index++){
+        console.log(index);
+        showVariant(variant[index]);
+    }
+    
 }
 
 function parseParameters(str){
