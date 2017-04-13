@@ -71,16 +71,47 @@
                 <th valign=top><h2>Test Data</h2></th>
             </tr>
             <tr>
-                <td valign=top width="20%">
-                    Enter new MySQL user. <br>
-                    <input type="text" name="newUser" placeholder="Username" /> <br>
-                    Enter password for MySQL user. <br>
-                    <input type="password" name="password" placeholder="Password" /> <br>
-                    Enter new database name. <br>
-                    <input type="text" name="DBName" placeholder="Database name" /> <br>
-                    Enter hostname (e.g localhost). <br>
-                    <input type="text" name="hostname" placeholder="Hostname" /> <br>
-                </td>
+ <?php
+    // Prefill existing credentials, exluding password
+    $dbUsername = "";
+    $dbHostname = "";
+    $dbName = "";
+
+    $credentialsFile = "../../coursesyspw.php";
+    if(file_exists("../../coursesyspw.php")) {
+      $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+
+      // check if the credentials exists in the file, store them if they do
+      foreach($credentialsArray as $cred) {
+        if(stripos(trim($cred), 'DB_') !== FALSE){
+          $tArray = explode('"', trim($cred));
+          if(count($tArray) == 5) {
+            switch($tArray[1]) {
+              case "DB_USER":
+                $dbUsername = $tArray[3];
+                break;
+              case "DB_HOST":
+                $dbHostname = $tArray[3];
+                break;
+              case "DB_NAME":
+                $dbName = $tArray[3];
+                break;
+            }
+          }
+        }
+      }
+    }
+    echo '<td valign=top width="20%">';
+    echo 'Enter new MySQL user. <br>';
+    echo '<input type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
+    echo 'Enter password for MySQL user. <br>';
+    echo '<input type="password" name="password" placeholder="Password" /> <br>';
+    echo 'Enter new database name. <br>';
+    echo '<input type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
+    echo 'Enter hostname (e.g localhost). <br>';
+    echo '<input type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+    echo '</td>';
+?>
                 <td valign=top width="30%" bgcolor="#EEEEEE">
                     Enter root user. <br>
                     <input type="text" name="mysqlRoot" placeholder="Root" /> <br>
