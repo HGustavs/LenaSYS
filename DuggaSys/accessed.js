@@ -38,12 +38,14 @@ function changeAccess(cid,uid,val)
 }
 
 // Sets values in the "cogwheel popup"
-function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring)
+function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 {
 	// Reverts the string to an array
 	var teachs = teacherstring.split("/t");
+	var userClass = classString.split("/t");
 	// Sort the array to make navigation easier
 	teachs.sort();
+	userClass.sort();
 
 	// Array with no spaces used for our IF case as option[value] does not work with spaces
 	var trimmed = $.map(teachs, function(value){
@@ -57,14 +59,11 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className,teacher
 			// Loop through all of our options
 			$("#teacher option").each(function(){
 
-				// If the option exists in our array
-				if ($.inArray(this.text, teachs) != -1)
+				// If a teacher no longer exists but the option for said teacher still exists
+				if ($.inArray(this.text, teachs) == -1)
 					{
-					  // Nothing happens as of now
-					}
-				// Otherwise this person is no longer a teacher and should not exist in an option
-				else{ 
-					$(this).remove();
+					  // Remove that option
+					  $(this).remove();
 					}
 				})
 		}
@@ -77,6 +76,23 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className,teacher
 				}));
     		}
 	};
+
+	// Loop through our array to put the classes into an option in our select input
+	for(var j = 0; j < userClass.length; j++){
+		// If the class already exists in an option
+		if($("#class option[value="+ userClass[j] +"]").length > 0){
+		}
+		// If the class doesn't exist in an option
+		else{
+			// Create a new option where the value and text is the classes name
+		    $('#class').append($('<option>', {
+   				value: userClass[j],
+    			text: userClass[j]
+				}));
+    		}
+	};
+
+	
 	// Set Name		
 	$("#firstname").val(firstname);
 	$("#lastname").val(lastname);
@@ -102,7 +118,7 @@ function updateUser()
 	var uid=$("#uid").val();
 	var className=$("#class").val();
 	var teach=$("#teacher").val();
-	alert(teach);
+
 	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
 	
 	$("#editUsers").css("display","none");
@@ -160,7 +176,9 @@ function sortData(column){
 //----------------------------------------
 function returnedAccess(data)
 {
-	var teachs = [];
+  // Defining arrays for later use
+  var teachs = [];
+  var userClass = [];
   dataInfo = data;
 	// Fill section list with information
 	str="";
@@ -172,8 +190,10 @@ function returnedAccess(data)
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>First Name</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>Last Name</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Class</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Teacher</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer;'>Added</th>" +
-			"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
+          	"<th style='text-align:left; padding-left:8px; width:90px;'>Version</th>" +
+		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
 			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
 			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
 		for(i=0;i<data['entries'].length;i++){
@@ -203,6 +223,8 @@ function returnedAccess(data)
 
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
+            str+="<td>"+item['vers']+"</td>";
+
 			// Select box for Access
 			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
 				if(item['access']=="R"){
@@ -227,12 +249,19 @@ function returnedAccess(data)
 				var items=data['teachers'][j];
 				teachs[j] = items['firstname']+" "+items['lastname'];
 			}
-			// Convert our array to a string where each field is separated with /t, this is necessary to keep structure when we send it to another function
+
+			// Loops through the "classes" data array and stores all the classes in a new array
+			for(h=0; h<data['classes'].length;h++){
+				var itemc=data['classes'][h];
+				userClass[h] = itemc['class'];
+			}
+			// Convert our arrays to strings where each field is separated with /t, this is necessary to keep structure when we send it to another function
 			var teacherstring = teachs.join("/t");
+			var classString = userClass.join("/t");
 
 			// Create cogwheel
 			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\",\""+item['class']+"\",\""+teacherstring+"\");'></td>";
+			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\",\""+item['class']+"\",\""+teacherstring+"\",\""+classString+"\");'></td>";
 			
 			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;' style='float:none;'></td>";
 			str+="</tr>";
