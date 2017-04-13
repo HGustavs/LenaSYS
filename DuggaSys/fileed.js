@@ -145,7 +145,10 @@ function returnedFile(data)
 		str4="";
 		str1+="<table class='list' style='margin-bottom:8px;' >";
 		str1+="<thead style='cursor:pointer;'>";
-		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Link URL<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
+		"<th>Link URL<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+		"<th>Upload date & time</th>" +
+		"<th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
 		//str1+="<tr><th class='first' style='width:64px;'>ID</th><th style='width:30px' ></th></tr>";
 		str1+="</thead><tbody id='links_body'>"
 
@@ -156,6 +159,7 @@ function returnedFile(data)
 							str1+="<tr class='fumo'>";
 							str1+="<td>"+item['fileid']+"</td>";
 							str1+="<td>"+"<a href="+item['filename']+" target="+"_blank"+">"+item['filename']+"</a>"+"</td>";
+							str1+="<td>" + item['uploaddate'] + "</td>";
 							str1+="<td style='padding:4px;'>";
 							str1+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 							str1+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -166,7 +170,12 @@ function returnedFile(data)
 			str1+="</tbody></table>";
 			str2+="<table class='list' style='margin-bottom:8px;' >";
       str2+="<thead style='cursor:pointer;'>";      
-      str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th><th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+      str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
+      "<th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+		  "<th>File extension</th>" +
+      "<th>Upload date & time</th>" +
+      "<th>File size</th>" +
+      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str2+="</thead><tbody id='global_body'>"
 			
 			for(i=0;i<data['entries'].length;i++){
@@ -176,8 +185,11 @@ function returnedFile(data)
 					str2+="<td>"+item['fileid']+"</td>";
 					str2+="<td>";
 					// str2+=item['filename']
-					str2+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
+					str2+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
 					str2+="</td>";
+					str2+="<td>" + getFileInformation(item['filename'], true) + "</td>";
+					str2+="<td>" + item['uploaddate'] + "</td>";
+					str2+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
 					str2+="<td style='padding:4px;'>";
 					str2+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str2+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -188,8 +200,14 @@ function returnedFile(data)
 			}
 			str2+="</tbody></table>";
 			str3+="<table class='list' style='margin-bottom:8px;' >";
-			str3+="<thead>";
-      str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+      
+      str3+="<thead style='cursor:pointer;'>";
+      str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th>" +
+		  "<th>File extension</th>" +
+      "<th>Upload date & time</th>" +
+      "<th>File size</th>" +
+      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+      
 			str3+="<thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
@@ -198,8 +216,11 @@ function returnedFile(data)
 					str3+="<td>"+item['fileid']+"</td>";
 					str3+="<td>";
 					// str3+="<td>"+item['filename']+"</td>";
-					str3+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
+					str3+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
 					str3+="</td>";
+					str3+="<td>" + getFileInformation(item['filename'], true) + "</td>";
+					str3+="<td>" + item['uploaddate'] + "</td>";
+					str3+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
 					str3+="<td style='padding:4px;'>";
 					str3+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str3+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -209,8 +230,14 @@ function returnedFile(data)
 			}
 			str3+="</tbody></table>";
 			str4+="<table class='list' style='margin-bottom:8px;' >";
-			str4+="<thead>";
-      str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th><th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+
+		  str4+="<thead style='cursor:pointer;'>";
+      str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" +
+		  "<th>File extension</th>" +
+      "<th>Upload date & time</th>" +
+      "<th>File size</th>" +
+      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+      
 			str4+="<thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
@@ -219,8 +246,11 @@ function returnedFile(data)
 					str4+="<td>"+item['fileid']+"</td>";
 					str4+="<td>";
 					// str4+="<td>"+item['filename']+"</td>";
-					str4+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+item['filename']+"</a>";
+					str4+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
 					str4+="</td>";
+					str4+="<td>" + getFileInformation(item['filename'], true) + "</td>";
+					str4+="<td>" + item['uploaddate'] + "</td>";
+					str4+="<td>" + formatBytes(item['filesize'],0) + "</td>";
 					str4+="<td style='padding:4px;'>";
 					str4+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
 					str4+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -248,34 +278,39 @@ function returnedFile(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
 
+function getFileInformation(name, getExt) {
+	var str = name.split(".");
+	var extension = str[str.length - 1];
+	var filename = str.splice(0, str.length - 1).join("");
+	if(getExt === true) {
+		return extension;
+	}
+	else {
+		return filename;
+	}
+}
+
+function formatBytes(bytes,decimals) {
+   if(bytes == 0) return '0 Bytes';
+   var k = 1000,
+       dm = decimals + 1 || 3,
+       sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+       i = Math.floor(Math.log(bytes) / Math.log(k));
+   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
 function setupSort(){ 
 	/*		Add filter menu		 */
 	var filt ="";	
-	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
-	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-	filt+="<div id='dropdownc' class='dropdown-list-container'>";
-	filt+="</div>";
-	filt+="</span></td>";
-
 	filt+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
 	filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 	filt+="<div id='dropdowns' class='dropdown-list-container'>";
 	filt+="</div>";
 	filt+="</span></td>";
-	//$("#menuHook").before(filt); //menuHook is set between buttons and navName //Not printed since the sorting functionality is not done
-}
-
-function hoverc(){
-    $('#dropdowns').css('display','none');
-  	$('#dropdownc').css('display','block');
-}
-
-function leavec(){
-	$('#dropdownc').css('display','none');  
+	$("#menuHook").before(filt); //menuHook is set between buttons and navName
 }
 
 function hovers(){
-    $('#dropdownc').css('display','none');
   	$('#dropdowns').css('display','block');
 }
 

@@ -488,15 +488,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="RESULTLIST"){
-			$.ajax({
-				url: "resultlistedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedResults
-			});
-	}else if(kind=="CODEVIEW"){
+	} else if(kind=="CODEVIEW"){
 			$.ajax({
 				url: "codeviewerService.php",
 				type: "POST",
@@ -765,6 +757,12 @@ function hideReceiptPopup()
 {
 	$("#receiptBox").css("display","none");
 	$("#overlay").css("display","none");
+}
+
+function hideDuggaStatsPopup() 
+{
+	$("#duggaStats").css("display", "none");
+	$("#overlay").css("display", "none");
 }
 
 function checkScroll(obj) { 
