@@ -731,13 +731,13 @@ function initcanvas()
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
-        "<select id='download' onchange='downloadMode()'>" +
+        "<select id='download' onchange='downloadMode(this)'>" +
         "<option selected='selected' disabled>State</option>" +
-        "<option value='getImage'>getImage</option>" +
-        "<option value='Save'>Save</option>" +
-        "<option value='Load'>Load</option>" +
+       	 "<option value='getImage'>getImage</option>" +
+       	 "<option value='Save'>Save</option>" +
+       	 "<option value='Load'>Load</option>" +
         "</select>"+
-        "<button> <a onclick='SaveFile(this);' class='btn'> <i class='icon-download'></i>Export</a></button>" +
+        "<button onclick='SaveFile(this);'> <a class='btn'> <i class='icon-download'></i>Export</a></button>" +
         "<input id='fileid' type='file' name='file_name' hidden multiple/>"+
         "<input id='buttonid' type='button' value='Import' />"+
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
@@ -1455,7 +1455,7 @@ function mouseupcanvas(e){
 }
 
 
-function downloadMode(){
+function downloadMode(el){
     var canvas = document.getElementById("content");
     var selectBox = document.getElementById("download");
     download = selectBox.options[selectBox.selectedIndex].value;
@@ -1465,15 +1465,17 @@ function downloadMode(){
         getImage();
     }
     if(download == "Save"){
-
         Save();
     }
     if(download == "Load"){
         Load();
-    }
+    } if(download == "Export"){
+		SaveFile(el);
+	}
 }
 
 function getImage(){
+
     window.open( document.getElementById("myCanvas").toDataURL("image/png"), 'Image');
 }
 
@@ -1483,10 +1485,26 @@ function Save() {
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
     }
-    a = (JSON.stringify(diagram));
-    b = (JSON.stringify(points));
-    c = (JSON.stringify(c));
-    console.log(c);
+    ac[0] = diagram;
+	ac[1] = points;
+	ac[2] = c;
+	//a = JSON.stringify(ac);
+
+	var obj = {
+		diagram: diagram,
+		points: points,
+		diagram_names: c
+	};
+	//console.log(JSON.stringify(obj));
+	var g = JSON.stringify(obj);
+	var h = (JSON.parse(g));
+	console.log(h);
+
+	//a = (JSON.stringify(diagram));
+    //b = (JSON.stringify(points));
+    //c = (JSON.stringify(c));
+
+    //console.log(c);
     console.log("State is saved");
 
 }
@@ -1495,7 +1513,7 @@ function SaveFile(el){
     //Save();
     if (io == 0) {
         var data = "text/json;charset=utf-8," + encodeURIComponent(a);
-        el.setAttribute("class", 'icon-download');
+        el.setAttribute("class",'icon-download');
         el.setAttribute("href", "data:" + data);
         el.setAttribute("download", "diagram.txt");
         updategfx();
