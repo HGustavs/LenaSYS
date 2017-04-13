@@ -49,6 +49,10 @@ var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
+var mousedownX = 0; var mousedownY = 0;	// Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
+var mousemoveX = 0; var mousemoveY = 0; // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
+var mouseDiffX = 0; var mouseDiffY = 0; // Saves to diff between mousedown and mousemove to know how much to translate the diagram
+
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown",this.keyDownHandler, false);
 
@@ -275,15 +279,7 @@ diagram.insides = function (ex,ey,sx,sy)
 		var ty = points[this[i].topLeft].y;
 		var bx = points[this[i].bottomRight].x;
 		var by = points[this[i].bottomRight].y;
-		/*console.log(sx + " target x ");
-		console.log(sy + " target y ");
-		console.log(sx + " start point x");
-		console.log(sy + " start point y ");
-		console.log(ex + " end point x ");
-		console.log(ey + " end point x ");*/
 		if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by){
-
-			console.log("4");
 			this[i].targeted = true;
 			// return i;
 		} else {
@@ -769,7 +765,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(startX,startY,widthWindow,heightWindow);
+		ctx.clearRect(0,0,widthWindow,heightWindow);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -806,17 +802,17 @@ function findPos(obj) {
 function updateActivePoint(){
   if(sel.dist <= tolerance){
     activePoint = sel.ind;
-    console.log("New active point");
   }
   else{
     activePoint = null;
   }
 }
 function mousemoveevt(ev, t){
+		cx=(cx+mouseDiffX);
+		cy=(cy+mouseDiffY);
 		mox=cx;
 		moy=cy;
 	    hovobj = diagram.inside(cx,cy);
-	    //console.log(hovobj);
 		if (ev.pageX || ev.pageY == 0){ // Chrome
 			cx=ev.pageX-acanvas.offsetLeft;
 			cy=ev.pageY-acanvas.offsetTop;
@@ -979,7 +975,6 @@ function mouseupevt(ev){
         }
         else{
           // Start line on object
-          console.log("Symbolkind"+diagram[lineStartObj].symbolkind);
           diagram[lineStartObj].connectorTop.push({from:p1,to:p2});
           lineStartObj = -1;
         }
@@ -998,8 +993,6 @@ function mouseupevt(ev){
         }
         else{
           // Start line on object
-          console.log("Symbolkind"+diagram[lineStartObj].symbolkind);
-          console.log("Symbolkind"+diagram[hovobj].symbolkind);
           diagram[lineStartObj].connectorTop.push({from:p1,to:p2});
           diagram[hovobj].connectorTop.push({from:p2,to:p1});
         }
@@ -1062,7 +1055,6 @@ function mouseupevt(ev){
 
             diagram.push(erLineA);
         } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" )) {
-            console.log("box drawn");
             diagram.insides(cx, cy, sx, sy);
         }
 
@@ -1324,14 +1316,11 @@ function drawOval(x1, y1, x2, y2) {
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
 function clearCanvas()
 {
-  console.log("Deleting");
 
   while(diagram.length > 0){
-    console.log(diagram.length);
     diagram[diagram.length-1].erase();
     diagram.pop();
   }
-	console.log(diagram.length + " " + points.length);
   updategfx();
 }
 
@@ -1366,11 +1355,8 @@ function debugMode()
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
-var mousedownX = 0; var mousedownY = 0;
-var mousemoveX = 0; var mousemoveY = 0;
-var mouseDiffX = 0; var mouseDiffY = 0;
 
-function movemode(e)
+function movemode(e, t)
 {
 	uimode="MoveAround";
 	var canvas = document.getElementById("myCanvas");
@@ -1395,26 +1381,24 @@ function movemode(e)
 		canvas.removeEventListener('mouseup', mouseupcanvas, false);
 		buttonStyle.style.background="";
 		buttonStyle.style.color="";
+		mousemoveevt(e,t);
 	}
 }
 function getMousePos(e){
 	var canvas = document.getElementById("myCanvas");
 	mousedownX = e.clientX;
 	mousedownY = e.clientY;
-	console.log("Down: "+mousedownX+" | "+mousedownY);
 	canvas.addEventListener('mousemove', mousemoveposcanvas, false);
 }
 function mousemoveposcanvas(e){
 	mousemoveX = e.clientX;
 	mousemoveY = e.clientY;
-	console.log("Move: "+mousemoveX+" | "+mousemoveY);
 	var canvas = document.getElementById("myCanvas");
 	mouseDiffX = (mousedownX - mousemoveX);
 	mouseDiffY = (mousedownY - mousemoveY);
 	mousedownX = mousemoveX;
 	mousedownY = mousemoveY;
-	console.log("Diff: "+mouseDiffX+" | "+mouseDiffY);
-	ctx.clearRect(startX,startX,widthWindow,heightWindow);
+	ctx.clearRect(startX,startY,widthWindow,heightWindow);
 	ctx.translate(mouseDiffX,mouseDiffY);
 	erEntityA.sortAllConnectors();
 	diagram.draw();

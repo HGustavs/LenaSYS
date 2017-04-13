@@ -450,7 +450,7 @@ function Symbol(kind) {
     else if(this.attributeType == 'Drive')
     {
     ctx.setLineDash([5, 4]);
-    console.log("TEST");
+      //console.log("TEST");
     }
     else
     {
