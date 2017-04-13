@@ -469,7 +469,10 @@ CREATE TABLE user_push_registration (
 	added						TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	keyAuth					VARCHAR(50) NOT NULL,
 	keyValue				VARCHAR(100) NOT NULL,
-	PRIMARY KEY 	(id),
+	lastSent				DATE DEFAULT NULL,
+	daysOfUnsent		INT NOT NULL DEFAULT '0',
+	PRIMARY KEY			(id),
+	KEY							(endpoint),
 	FOREIGN KEY (uid) REFERENCES user(uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 

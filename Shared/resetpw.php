@@ -32,7 +32,7 @@ if($opt=="GETQUESTION"){
 
 		//maybe log this action?
 
-		$res["getname"] = "failure";
+		$res["getname"] = $_SESSION["getname"];
 	}
 	
 	echo json_encode($res);

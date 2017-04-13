@@ -41,7 +41,10 @@ function toggleloginnewpass(){
 function resetFields(){
 	$("#login #username").val("");
 	$("#login #password").val("");
-	$("#newpassword #username").val("");
+	//Since we need the username from this box during the answer part we cant clear it directly afterwards
+	if (status!=2){
+		$("#newpassword #username").val("");
+	}
 	$("#showsecurityquestion #answer").val("");
 
 	$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
@@ -537,6 +540,25 @@ function loginEventHandler(event){
 	}
 }
 
+function addSecurityQuestionProfile(username) {
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				opt: "GETQUESTION"
+			},
+			success:function(data) {
+				var result = JSON.parse(data);	
+				if(result['getname'] == "success") {
+					$("#challengeQuestion").html(result['securityquestion']);
+				}else{
+					console.log("Username was not found OR User does not have a question OR User might be a teacher");
+			}
+		}
+	});
+}
+
 function processResetPasswordCheckUsername() {
 
 	/*This function is supposed to get the security question from the database*/
@@ -551,7 +573,8 @@ function processResetPasswordCheckUsername() {
 				opt: "GETQUESTION"
 			},
 			success:function(data) {
-				var result = JSON.parse(data);				
+				var result = JSON.parse(data);	
+					//It is worth to note that getname should probably be named status/error since thats basically what it is			
 				if(result['getname'] == "success") {
 					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 					status = 2;
@@ -561,8 +584,7 @@ function processResetPasswordCheckUsername() {
 					if(typeof result.reason != "undefined") {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-
-						$("#newpassword #message2").html("<div class='alert danger'>Username does not exist</div>");
+						$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
 
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
@@ -593,6 +615,7 @@ function processResetPasswordCheckSecurityAnswer() {
 				if(result['checkanswer'] == "success") {
 					console.log("The answer was correct");
 					//do something
+					$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
 					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
 					console.log("Wrong answer");
