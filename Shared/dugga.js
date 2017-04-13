@@ -540,6 +540,25 @@ function loginEventHandler(event){
 	}
 }
 
+function addSecurityQuestionProfile(username) {
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				opt: "GETQUESTION"
+			},
+			success:function(data) {
+				var result = JSON.parse(data);	
+				if(result['getname'] == "success") {
+					$("#challengeQuestion").html(result['securityquestion']);
+				}else{
+					console.log("Username was not found OR User does not have a question OR User might be a teacher");
+			}
+		}
+	});
+}
+
 function processResetPasswordCheckUsername() {
 
 	/*This function is supposed to get the security question from the database*/
