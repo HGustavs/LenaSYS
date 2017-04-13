@@ -235,17 +235,17 @@ p {
 }
 
 #Courselist .head {
-  text-align: center;
-  color:#775886;
-  font-size: 18pt;
-  display: block;
-  background-color: #FFF;
-  padding-top:7px;
-  min-height:30px;
-  margin-top:40px;
-  margin-bottom:4px;
-  padding-bottom:4px;
-  border-bottom: 2px dotted #775886;
+    text-align: center;
+    color:#775886;
+    font-size: 18pt;
+    display: block;
+    background-color: #FFF;
+    padding-top:7px;
+    min-height:30px;
+    margin-top:40px;
+    margin-bottom:4px;
+    padding-bottom:15px;
+    border-bottom: 2px dotted #775886;
 }
 
 #Courselist .bigg {
@@ -304,8 +304,15 @@ p {
 }
 
 #Sectionlist .moment {
-  color:#ffffff;
-  background-color: #927b9e;
+  
+    color:#ffffff;
+    background-color: #927b9e;
+	  cursor: pointer;
+}
+
+/*changes the cursor for the cogwheels*/
+#corf, #dorf {
+	cursor: pointer;
 }
 
 #Sectionlist .example {
@@ -1834,16 +1841,17 @@ span.arrow {
 }
 
 .dugga-result-subheader-div {
-	direction:rtl;
-	max-width:140px;
-	min-width:140px;
-	overflow:hidden;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-  display: inline-block;
-  line-height: 26px;
-  height: 20px;
-  position: relative;
+		direction:rtl;
+		max-width:140px;
+		min-width:140px;
+		overflow:hidden;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+    display: inline-block;
+    line-height: 26px;
+    height: 20px;
+    position: relative;
+	  cursor: pointer;
 }
 
 .checkbox-dugga {
@@ -1884,8 +1892,9 @@ span.arrow {
 }
 
 .U, .Uc, .Uh, .G, .Gc, .Gh, .VG, .VGc, .VGh  {
-  height:24px;
-  width:24px;
+    height:24px;
+    width:24px;
+	  cursor: pointer;
 }
 
 .result-header-inverse {

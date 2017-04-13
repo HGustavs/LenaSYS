@@ -193,6 +193,8 @@ CREATE TABLE fileLink(
 	kind					INTEGER,
 	cid						INT UNSIGNED NOT NULL,
 	isGlobal			BOOLEAN DEFAULT 0,
+	filesize			INT(11) NOT NULL DEFAULT 0,
+	uploaddate			DATETIME NOT NULL DEFAULT NOW(),
 	PRIMARY KEY (fileid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;

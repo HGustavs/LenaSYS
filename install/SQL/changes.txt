@@ -17,3 +17,8 @@ New table user_push_registration, created with the following sql:
 		PRIMARY KEY 	(id),
 		FOREIGN KEY (uid) REFERENCES user(uid)
 	) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+Added columns to fileLink table:
+
+	filesize			INT(11) NOT NULL DEFAULT 0,
+	uploaddate			DATETIME NOT NULL DEFAULT NOW(),
