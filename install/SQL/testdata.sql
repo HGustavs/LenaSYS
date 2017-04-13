@@ -25,11 +25,11 @@ INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALU
 INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(218,'a99annan',password('password'),'Anna','Andersson','19990101-0003','a99annan@student.his.se','DVSUG13h');
 INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(219,'a99laran',password('password'),'Lars','Andersson','19990101-0004','a99laran@student.his.se','DVSUG13h');
 INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(220,'a99karka',password('password'),'Karl','Karlsson','19990101-0005','a99karka@student.his.se','DVSUG13h');
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(231,'b15matgu',password('password'),'Mats','Gustavsson','19990101-0016','b15matgu@student.his.se','DVSUG13h');
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(232,'b15eriho',password('password'),'Erik','Holstensson','19990101-0017','b15eriho@student.his.se','DVSUG13h');
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(233,'b15adau',password('password'),'Andreas','Augustsson','19990101-0018','b15andau@student.his.se','DVSUG13h');
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(234,'b14johho',password('password'),'Johan','Holm','19990101-0019','b14johho@student.his.se','DVSUG13h');
-INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(235,'b15linek',password('password'),'Linus','Ekström','19990101-0020','b15linek@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(231,'a99oloja',password('password'),'Olof','Jansson','19990101-0016','a99oloja@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(232,'a99linja',password('password'),'Linnéa','Jansson','19990101-0017','a99linja@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(233,'a99petha',password('password'),'Peter','Hansson','19990101-0018','a99petha@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(234,'a99gunbe',password('password'),'Gunnar','Bengtsson','19990101-0019','a99gunbe@student.his.se','DVSUG13h');
+INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(235,'a99kerbe',password('password'),'Kerstin','Bengtsson','19990101-0020','a99kerbe@student.his.se','DVSUG13h');
 -- WEBUG13h --
 INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(221,'a99marka',password('password'),'Margareta','Karlsson','19990101-0006','a99marka@student.his.se','WEBUG13h');
 INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALUES(222,'a99elini',password('password'),'Elisabet','Nilsson','19990101-0007','a99elini@student.his.se','WEBUG13h');
@@ -46,10 +46,10 @@ INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,class) VALU
 /* Teachers */ 
 INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) values(100,'stei','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Joe','Steinhauer','340101-0101','joe.steinhauer@his.se', 0, 1);
 INSERT INTO user(uid,username, password,firstname,lastname,ssn,email,creator,superuser) values(101,'brom','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Marcus','Brohede','340101-1232','marcus.brohede@his.se', 0, 1);
-INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (4, 'b77andma', 'András', 'Márki', '19770101-1231', password('password'), '1', 'b77andma@his.se');
-INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (5, 'b77mikth', 'Mikael', 'Thieme', '19770101-1232', password('password'), '1', 'b77mikth@his.se');
-INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (6, 'b77jonme', 'Jonas', 'Mellin', '19770101-1233', password('password'), '1', 'b77jonme@his.se');
-INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (7, 'b77yacat', 'Yacine', 'Atif', '19770101-1234', password('password'), '1', 'b77yacat@his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (4, 'teacher1', 'Emma', 'Lindberg', '19770101-1231', password('password'), '1', 'teacher1@his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (5, 'teacher2', 'Lena', 'Carlsson', '19770101-1232', password('password'), '1', 'teacher2@his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (6, 'teacher3', 'Bo', 'Lindberg', '19770101-1233', password('password'), '1', 'teacher3@his.se');
+INSERT INTO user (uid, username, firstname, lastname, ssn, password, creator, email) VALUES (7, 'teacher4', 'Daniel', 'Magnusson', '19770101-1234', password('password'), '1', 'teacher4@his.se');
 
 /* Insert courses */
 INSERT INTO course(cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1, 'DV12G', 'Webbprogrammering', NOW(), 1, 1, '45656', '7.5');
@@ -545,76 +545,76 @@ insert into user_course(uid,cid,result,access,period,term) values(210,303,0,'R',
 
 -- Users added 2017 --
 -- DVSUG --
-insert into user_course(uid,cid,result,access,period,term,teacher) values(216,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(217,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(218,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(219,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(220,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(231,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(232,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(233,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(234,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(235,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(216,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(217,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(218,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(219,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(220,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(231,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(232,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(233,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(234,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(235,1,0,'R',1,'HT15','BoLindberg');
 
-insert into user_course(uid,cid,result,access,period,term,teacher) values(216,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(217,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(218,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(219,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(220,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(231,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(232,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(233,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(234,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(235,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(216,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(217,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(218,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(219,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(220,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(231,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(232,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(233,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(234,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(235,2,0,'R',1,'HT15','EmmaLindberg');
 
-insert into user_course(uid,cid,result,access,period,term,teacher) values(216,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(217,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(218,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(219,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(220,4,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(216,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(217,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(218,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(219,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(220,4,0,'R',1,'HT15','BoLindberg');
 
-insert into user_course(uid,cid,result,access,period,term,teacher) values(231,5,0,'R',1,'HT15','MikaelThieme');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(232,5,0,'R',1,'HT15','MikaelThieme');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(233,5,0,'R',1,'HT15','MikaelThieme');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(234,5,0,'R',1,'HT15','MikaelThieme');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(235,5,0,'R',1,'HT15','MikaelThieme');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(231,5,0,'R',1,'HT15','LenaCarlsson');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(232,5,0,'R',1,'HT15','LenaCarlsson');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(233,5,0,'R',1,'HT15','LenaCarlsson');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(234,5,0,'R',1,'HT15','LenaCarlsson');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(235,5,0,'R',1,'HT15','LenaCarlsson');
 -- WEBUG13 --
-insert into user_course(uid,cid,result,access,period,term,teacher) values(221,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(222,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(223,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(224,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(225,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(221,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(222,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(223,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(224,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(225,1,0,'R',1,'HT15','BoLindberg');
 
-insert into user_course(uid,cid,result,access,period,term,teacher) values(221,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(222,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(223,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(224,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(225,2,0,'R',1,'HT15','AndrásMárki');  
+insert into user_course(uid,cid,result,access,period,term,teacher) values(221,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(222,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(223,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(224,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(225,2,0,'R',1,'HT15','EmmaLindberg');  
 
-insert into user_course(uid,cid,result,access,period,term,teacher) values(221,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(222,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(223,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(224,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(225,4,0,'R',1,'HT15','JonasMellin');      
+insert into user_course(uid,cid,result,access,period,term,teacher) values(221,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(222,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(223,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(224,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(225,4,0,'R',1,'HT15','BoLindberg');      
     
 -- WEBUG14 --
-insert into user_course(uid,cid,result,access,period,term,teacher) values(226,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(227,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(228,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(229,1,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(230,1,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(226,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(227,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(228,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(229,1,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(230,1,0,'R',1,'HT15','BoLindberg');
 
-insert into user_course(uid,cid,result,access,period,term,teacher) values(226,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(227,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(228,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(229,2,0,'R',1,'HT15','AndrásMárki');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(230,2,0,'R',1,'HT15','AndrásMárki');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(226,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(227,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(228,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(229,2,0,'R',1,'HT15','EmmaLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(230,2,0,'R',1,'HT15','EmmaLindberg');
 
-insert into user_course(uid,cid,result,access,period,term,teacher) values(226,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(227,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(228,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(229,4,0,'R',1,'HT15','JonasMellin');
-insert into user_course(uid,cid,result,access,period,term,teacher) values(230,4,0,'R',1,'HT15','JonasMellin');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(226,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(227,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(228,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(229,4,0,'R',1,'HT15','BoLindberg');
+insert into user_course(uid,cid,result,access,period,term,teacher) values(230,4,0,'R',1,'HT15','BoLindberg');
 
 /* Examination/subparts */
 INSERT INTO subparts(partname,cid,parthp,difgrade) VALUES ('salstentamen',302,7.5,'u-3-4-5');
