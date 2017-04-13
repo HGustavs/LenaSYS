@@ -747,3 +747,9 @@ INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.js", 3 
 INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.txt", 3 , 1, 0);
 
 
+/* Creation of new dugga (MINIMAL needs more fixing..) */
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (12, 5, 1, 1, 'DUGANNN', 'dugga1', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 6);
+INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (24, 12, '{\"tal\":\"33\"}', '{"danswer":\"7\"}', NOW(), 6);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, gradesystem, highscoremode) VALUES (3001, 5, 'Bitdugga 1HP', '12', 3, 100, 6, 1, '1339', 3, 1);
+
+
