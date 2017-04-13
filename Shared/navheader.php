@@ -39,8 +39,8 @@
 			}
 			
 			if($noup=='COURSE'){
-					echo "<td class='navButt' id='back' title='swimlane'>";	
-					echo "<img src='../Shared/icons/swimlane.svg'></td>";
+					echo "<td class='navButt' id='swimlane' title='Swimlane'>";	
+		            echo "<img src='../Shared/icons/swimlane.svg'></td>";
 			}
 			
 			// Either generate code viewer specific nav menu or a spacer
