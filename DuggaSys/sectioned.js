@@ -22,7 +22,7 @@ $(document).ready(function(){
     });
 });
 
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comment)
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comment, rowColor)
 {
 		
 	xelink=elink;
@@ -137,6 +137,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>2 tabs + end</option>" 
 	else str +="<option value ='6'>2 tabs + end</option>"; 
 
+	// Set color on "test"
+	str="";
+	if(rowColor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
+	else str+="<option value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>";
+	if(rowColor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
+	else str+="<option value='1' style='background-color: #927b9e; color: white'>Header</option>";
+	$("#rowColor").html(str);
+
 	$("#tabs").html(str);
 		
 	// Set Link
@@ -151,12 +159,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	// Section
 	}else if(kind==1){
 		$("#inputwrapper-tabs").css("display","block");
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	// Code
 	}else if(kind==2){
 		$("#inputwrapper-tabs").css("display","block");
@@ -172,6 +182,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	// Dugga
 	}else if(kind==3){
 		$("#inputwrapper-tabs").css("display","none");
@@ -187,12 +198,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
+		$("#inputwrapper-color").css("display","block");
 	// Moment
 	}else if(kind==4){
 		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	// Link
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
@@ -208,9 +221,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}
 	$("#editSection").css("display","block");
 	
+}
+
+function participationList(){
+	alert("ParticipationList");
 }
 
 function changedType()
@@ -223,11 +241,13 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}else if(kind==1){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
@@ -242,6 +262,7 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","block");
+		$("#inputwrapper-color").css("display","none");
 	}else if(kind==3){
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
 			var iitem=retdata['duggor'][ii];
@@ -255,12 +276,14 @@ function changedType()
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
-		$("#inputwrapper-tabs").css("display","none");	
+		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-color").css("display","block");	
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
@@ -275,6 +298,7 @@ function changedType()
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
+		$("#inputwrapper-color").css("display","none");
 	}
 }
 
@@ -742,25 +766,6 @@ function returnedSection(data)
 					// Do nothing
 				}
 
-				// Participant list
-                if(data['writeaccess']){
-                    str+="<td style='width:24px;";
-
-                        if (kk == 1) {
-                            str += "box-shadow: 0px 3px 2px #aaa inset;";
-                        }
-
-                        if (parseInt(item['kind']) === 0) {
-                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] + "\");' /></td>";
-                        } else if (parseInt(item['kind']) === 1) {
-                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] + "\");' /></td>";
-                        } else if (parseInt(item['kind']) === 4) {
-                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] + "\");' /></td>";
-                        } else {
-                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] + "\");' /></td>";
-                        }
-                    }
-
 				// Cog Wheel
 				if(data['writeaccess']){
 						str+="<td style='width:24" +
@@ -775,7 +780,8 @@ function returnedSection(data)
 						}else if(parseInt(item['kind']) === 1){
 								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comment']+"\");' /></td>";											
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comment']+"\");' /></td>";											
+
+							str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comment']+"\");' /></td>";
 						}else{
 								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comment']+"\");' /></td>";																	
 						}
@@ -907,10 +913,19 @@ $(document).on('click', '.moment', function () {
 	$(this).children('.arrowComp').slideToggle();
 });
 
-
 // Function for toggling content for each section
 $(document).on('click', '.section', function () {
 	$(this).nextUntil('.section').slideToggle();
 	$(this).children('.arrowRight').slideToggle();
 	$(this).children('.arrowComp').slideToggle();
+});
+
+// Function to prevent collapsing when clicking icons
+$(document).ready(function(){
+	$(document).on('click','#corf',function(e) {
+		e.stopPropagation();
+	});
+	$(document).on('click','#dorf',function(e) {
+		e.stopPropagation();
+	});
 });

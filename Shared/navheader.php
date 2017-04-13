@@ -36,7 +36,16 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
+<<<<<<< HEAD
 
+=======
+			
+			if($noup=='COURSE'){
+					echo "<td class='navButt' id='swimlane' title='Swimlane'>";	
+		            echo "<img src='../Shared/icons/swimlane.svg'></td>";
+			}
+			
+>>>>>>> G3
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";

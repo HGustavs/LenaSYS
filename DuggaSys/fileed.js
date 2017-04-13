@@ -200,12 +200,14 @@ function returnedFile(data)
 			}
 			str2+="</tbody></table>";
 			str3+="<table class='list' style='margin-bottom:8px;' >";
-			str3+="<thead>";
+      
+      str3+="<thead style='cursor:pointer;'>";
       str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th>" +
 		  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
       "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+      
 			str3+="<thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
@@ -228,12 +230,14 @@ function returnedFile(data)
 			}
 			str3+="</tbody></table>";
 			str4+="<table class='list' style='margin-bottom:8px;' >";
-			str4+="<thead>";
+
+		  str4+="<thead style='cursor:pointer;'>";
       str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" +
 		  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
       "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+      
 			str4+="<thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
 				var item=data['entries'][i];
