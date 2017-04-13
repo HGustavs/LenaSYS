@@ -1124,8 +1124,8 @@ input.large-button {
 
 .list#testTable td{padding:8px; text-align:center;border:none;}
 .list#testTable th{line-height:45px; box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);}
-.list#testTable tr{line-height:45px;}
-
+.list#testTable tr{line-height:45px; border-bottom:1px solid gray;}
+.list#testTable tr>tr{line-height:45px; border-bottom:none;}
 
 .list#testTable .variantInfo {display:none;}
 
@@ -1140,6 +1140,8 @@ input.large-button {
 .list#testTable input{border-width: 2px !important; border-style: inset !important;}
 
 #testinnertable {background:#fff;box-shadow:none;border-top: none;border-bottom: none;}
+
+#testinnertable tr{border-bottom: none !important;}
 
 span.arrow{ padding:10px; cursor:pointer; box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);}
 
