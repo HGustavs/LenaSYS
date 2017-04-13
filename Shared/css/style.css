@@ -1128,9 +1128,13 @@ input.large-button {
 
 .list#testTable .variantInfo {display:none;}
 
-.list#testTable input, .list#testTable select, .list#testTable label {
-    padding:5px;
-}
+
+.list#testTable #plorf:hover,  .list#testTable #dorf:hover{cursor:pointer;}
+
+.list#testTable #plorf, .list#testTable #dorf{box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2); padding:10px;}
+
+.list#testTable input, .list#testTable select, .list#testTable label {padding:5px;}
+
 
 .selectedtr {border-bottom:none !important;}
 
