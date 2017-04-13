@@ -25,7 +25,7 @@
 
 	<!-- Navigation Header START -->
 	<?php
-		$noup="GROUP"; // What is this... Something for AJAXService?
+		$noup="SECTION"; // What is this... Something for AJAXService?
 		include '../Shared/navheader.php';
 	?>
 	<!-- Navigation Header END -->
