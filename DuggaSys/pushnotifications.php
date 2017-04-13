@@ -9,6 +9,13 @@ if (isset($_POST['action']) && $_POST['action'] == "pushsuccess") {
 	$stmt = $pdo->prepare($query);
 	$stmt->bindParam(':endpoint', $_POST['endpoint']);
 	$stmt->execute();
+} else if (isset($_POST['action']) && $_POST['action'] == "deregister") {
+	if (checklogin()) {
+		$query = "UPDATE user_push_registration SET daysOfUnsent = 99 WHERE endpoint = :endpoint";
+		$stmt = $pdo->prepare($query);
+		$stmt->bindParam(':endpoint', $_POST['subscription']['endpoint']);
+		$stmt->execute();
+	}
 } else if (isset($_POST['action']) && $_POST['action'] == "register") {
 	if(checklogin()) {
 		$query = "SELECT * FROM user_push_registration WHERE uid = :uid AND endpoint = :endpoint";
@@ -22,10 +29,9 @@ if (isset($_POST['action']) && $_POST['action'] == "pushsuccess") {
 		$results = $stmt->fetchAll();
 
 		if (count($results) == 1) {
-			$registration = $results[0];
 			$query = "UPDATE user_push_registration SET keyAuth = :keyAuth, keyValue = :keyValue, daysOfUnsent = 0 WHERE id = :id";
 			$stmt = $pdo->prepare($query);
-			$stmt->bindParam(':id', $registration['id']);
+			$stmt->bindParam(':id', $results[0]['id']);
 			$stmt->bindParam(':keyAuth', $_POST['subscription']['keys']['auth']);
 			$stmt->bindParam(':keyValue', $_POST['subscription']['keys']['p256dh']);
 			if(!$stmt->execute()) {

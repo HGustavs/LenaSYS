@@ -2,21 +2,23 @@
 
 $(function() {
 
-	var sendPushRegistrationToServer = function(subscription) {
+	var sendPushRegistrationToServer = function(subscription, deregister) {
 		$.ajax({
 			url: "pushnotifications.php",
 			type: "POST",
-			data: {action: 'register', subscription: subscription.toJSON()},
+			data: {action: (deregister == true ? 'deregister' : 'register'), subscription: subscription.toJSON()},
 			dataType: "text",
 			success: function() {
-				updateTextAndButton(true);
+				windows.setTimeout(function() {
+					updateTextAndButton((deregister != true));
+				}, 1000);
 			}
 		});
 	};
 
 
 	var subscribe = function() {
-		$("#notificationsToggle").attr('disabled', true);
+		$("#notificationsToggle")[0].disabled = true;
 
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
 			var rawData = window.atob(push_notifications_vapid_public_key);
@@ -43,17 +45,32 @@ $(function() {
 	};
 
 	var unsubscribe = function() {
-		$("#notificationsToggle").attr('disabled', true);
-		alert("Not implemented");
+		$("#notificationsToggle")[0].disabled = true;
+		
+		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+			serviceWorkerRegistration.pushManager.getSubscription()
+				.then(function(subscription) {
+					if (subscription) {
+						sendPushRegistrationToServer(subscription, true);
+						subscription.unsubscribe();
+					}
+				})
+				.catch(function(error) {
+					$("#notificationsText").html("Error unsubscribing").css('color', '#a00');
+					console.log('Error unsubscribing', error);
+				});
+		});
 	};
 
 	var updateTextAndButton = function(subscribed) {
 		if (subscribed) {
 			$("#notificationsText").html("Push notifications are activated on this device.");
-			$("#notificationsToggle").attr('disabled', false).off("click").on("click", unsubscribe).html("Deactivate push notifications");
+			$("#notificationsToggle").off("click").on("click", unsubscribe).html("Deactivate push notifications");
+			$("#notificationsToggle")[0].disabled = false;
 		} else {
 			$("#notificationsText").html("Push notifications are not activated on this device.");
-			$("#notificationsToggle").attr('disabled', false).off("click").on("click", subscribe).html("Activate push notifications");
+			$("#notificationsToggle").off("click").on("click", subscribe).html("Activate push notifications");
+			$("#notificationsToggle")[0].disabled = false;
 		}
 	};
 
