@@ -203,10 +203,6 @@ p {
   margin-right:2px;
 }
 
-.profile-element {
-	margin-top: 25px;
-}
-
 .sys {
   border-radius:6px;
   color:#775886;
@@ -454,21 +450,9 @@ p {
 	color: #612;
 }
 
-/* Submission table */
-#tableDivDialog{
-  width: 100%;
-  float: right;
-  margin-right: 10px;
-  width: 63%;
-}
-
-#tableDivDialog th{
-  text-align: left;
-  padding-right: 8px;
-}
-
-.delButton{
-  text-align: center;
+/* Instruction and submission of dugga */
+#leftDivDialog, #rightDivDialog{
+  width: 49%;
 }
 
 /* --------------================################================-------------- *
@@ -1135,9 +1119,9 @@ input.large-button {
 }
 
 .list td {
-border-right:2px solid #dbd0d8; 
-line-height:28px;
-padding-left:8px;
+  border-right:2px solid #dbd0d8; 
+  line-height:28px;
+  padding-left:8px;
 }
 
 .list th {
@@ -1211,13 +1195,6 @@ padding-left:8px;
   border-top: none;
   border-bottom: none;
 }
-
-span.arrow {
-  position:relative; 
-  top: 10px; 
-  left: -36px;
-  z-index:300;
- }
 
 .markinglist {
   width:100%;
@@ -2052,7 +2029,7 @@ table {
 }
 
 
-/* JQuery UI Complement for missing icons in the DatePicker */ 
+/* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
   background: url("../icons/PlayT.svg"); 

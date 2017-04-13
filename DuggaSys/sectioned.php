@@ -58,13 +58,15 @@ pdoConnect();
 			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 			<div id='inputwrapper-color' class='inputwrapper'><span>Color:</span><select id='rowColor' ></select></div>
 			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
-			<div id='inputwrapper-comment' class='inputwrapper'><span>Comment for deadline:</span><input type='text' class='textinput' id='deadlinecomment' value='deadlinecomment' placeholder="Deadline comment" /></div>
+			<div id='inputwrapper-comments' class='inputwrapper'><span>Comment for deadline:</span><input type='text' class='textinput' id='comments' value='comments' placeholder="Deadline comment" /></div>
 		</div>
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
-			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteItem();' />
-			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateItem();' />
-		</div>
+			<input style='float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' /> 
+			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' /> 
+			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();' /> 
+			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' /> 
+    </div>
 	</div>
 	<!-- Edit Section Dialog END -->
 
