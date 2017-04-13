@@ -1124,10 +1124,10 @@ input.large-button {
 
 .list#testTable td{padding:8px; text-align:center;border:none;}
 .list#testTable th{line-height:45px; box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);}
-.list#testTable tr{line-height:45px; border-bottom:1px solid gray;}
-.list#testTable tr>tr{line-height:45px; border-bottom:none;}
+.list#testTable tr{line-height:45px;}
 
 .list#testTable .variantInfo {display:none;}
+
 
 .list#testTable #plorf:hover,  .list#testTable #dorf:hover{cursor:pointer;}
 
@@ -1135,15 +1135,14 @@ input.large-button {
 
 .list#testTable input, .list#testTable select, .list#testTable label {padding:5px;}
 
+
 .selectedtr {border-bottom:none !important;}
 
 .list#testTable input{border-width: 2px !important; border-style: inset !important;}
 
 #testinnertable {background:#fff;box-shadow:none;border-top: none;border-bottom: none;}
 
-#testinnertable tr{border-bottom: none !important;}
-
-span.arrow{ padding:10px; cursor:pointer; box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);}
+span.arrow{}
 
 .markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8; font-family: hack,"Lucida Console", Monaco, monospace;}
 

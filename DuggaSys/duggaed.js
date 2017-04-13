@@ -6,7 +6,6 @@
 var sessionkind=0;
 var querystring=parseGet();
 var filez;
-var variant = [];
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
 $(function() {
@@ -23,7 +22,6 @@ $(function() {
 		dateFormat: "yy-mm-dd"
 	});
 });
-
 //----------------------------------------
 // Commands:
 //----------------------------------------
@@ -167,52 +165,25 @@ function selectVariant(vid,param,answer,template,dis)
 	}
 }
 
-function isInArray(array, search)
-{
-    return array.indexOf(search) >= 0;
-}
-
 function showVariant(param){
-    var variantId="#variantInfo" + param;
-    var duggaId="#dugga" + param;
-    var arrowId="#arrow" + param;
-    var index = variant.indexOf(param);
-    
-    
-    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {// Check if dugga row and corresponding variant
-        if(isInArray(variant, param))
-        {  
-        } else {
-            console.log("added");
-            variant.push(param);
-        }
+    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {
+        $(".fumo").removeClass("selectedtr");
+        $(".variantInfo").hide();
+        var variantId="#variantInfo" + param;
+        var duggaId="#dugga" + param;
+        /*
+        var arrowId="#arrow" + param;
+        $(arrowId).show(400);
+        /*
+        console.log(variantId);
+        console.log(duggaId);*/
+        $(variantId).slideDown(400);
         
-        if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
-            $(variantId).hide();
-            $(duggaId).removeClass("selectedtr");
-            if (index > -1) {
-               variant.splice(index, 1);
-            }
-            
-        } else {
-            $(duggaId).addClass("selectedtr");
-            $(variantId).slideDown(); 
-        }
-        
-        $(variantId).css("border-bottom", "1px solid gray");
+        $(duggaId).addClass("selectedtr");
+        $(variantId).css("border-bottom", "2px solid gray");
+       
     }
 }
-
-function showVariantz(param){
-    var index = variant.indexOf(param);
-    if(isInArray(variant, param)){  
-    } else {
-        console.log("added");
-         variant.push(param);
-    }
-}
-
-
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -237,10 +208,10 @@ function returnedDugga(data)
 
 			var item=data['entries'][i];
       
-			str+="<tr class='fumo' id='dugga" +i+ "'>";
+			str+="<tr class='fumo' id='dugga" +i+ "' onClick='showVariant("+i+")'>";
 
 			result++;
-            str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#x25BC;</span></td>";
+            str+="<td><span class='arrow' id='arrow"+i+"'>&#x25BC;</span></td>";
 			str+="<td><label>Name: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			if(item['autograde']=="1"){
 				result++;
@@ -291,13 +262,13 @@ function returnedDugga(data)
 
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
-			str+="<td>";
+			str+="<td style='padding:4px;'>";
 			str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-			str+=" onclick=' showVariantz("+i+"); addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");'>";
+			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");' >";
 			str+="</td>";
 
 
-			str+="<td>";
+			str+="<td style='padding:4px;'>";
 			str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");' >";
 			str+="</td>";
@@ -349,14 +320,6 @@ function returnedDugga(data)
 	var slist=document.getElementById("content");
 	slist.innerHTML=str;
 	if(data['debug']!="NONE!") alert(data['debug']);
-    
-    var length = variant.length;
-    console.log
-    for(index = 0;  index < length; index++){
-        console.log(index);
-        showVariant(variant[index]);
-    }
-    
 }
 
 function parseParameters(str){
