@@ -737,7 +737,7 @@ function initcanvas()
        	 "<option value='Save'>Save</option>" +
        	 "<option value='Load'>Load</option>" +
         "</select>"+
-        "<button onclick='SaveFile(this);'> <a class='btn'> <i class='icon-download'></i>Export</a></button>" +
+        "<button><a onclick='SaveFile(this);' class='btn'> <i class='icon-download'></i>Export</a></button>" +
         "<input id='fileid' type='file' name='file_name' hidden multiple/>"+
         "<input id='buttonid' type='button' value='Import' />"+
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
@@ -773,21 +773,10 @@ function getUploads() {
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
             a = evt.currentTarget.result;
+			LoadFile();
         }
-        file = document.getElementById('fileid').files[2];
-        var reader1 = new FileReader();
-        reader1.readAsText(file, "UTF-8");
-        reader1.onload = function (evt) {
-            b = evt.currentTarget.result;
 
-        }
-        file = document.getElementById('fileid').files[1];
-        var reader2 = new FileReader();
-        reader2.readAsText(file, "UTF-8");
-        reader2.onload = function (evt) {
-            c = evt.currentTarget.result;
 
-        }
 
         // LoadFile();
     }
@@ -1501,85 +1490,47 @@ function Save() {
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
     }
-    ac[0] = diagram;
-	ac[1] = points;
-	ac[2] = c;
-	//a = JSON.stringify(ac);
 
 	var obj = {
 		diagram: diagram,
 		points: points,
 		diagram_names: c
 	};
-	//console.log(JSON.stringify(obj));
-	var g = JSON.stringify(obj);
-	var h = (JSON.parse(g));
-	console.log(h);
-
-	//a = (JSON.stringify(diagram));
-    //b = (JSON.stringify(points));
-    //c = (JSON.stringify(c));
-
-    //console.log(c);
+	 a = JSON.stringify(obj);
     console.log("State is saved");
 
 }
-var io = 0;
 function SaveFile(el){
-    //Save();
-    if (io == 0) {
+		Save();
         var data = "text/json;charset=utf-8," + encodeURIComponent(a);
         el.setAttribute("class",'icon-download');
         el.setAttribute("href", "data:" + data);
         el.setAttribute("download", "diagram.txt");
         updategfx();
-        io++;
-
-    }
-    else if (io == 1) {
-        var data = "text/json;charset=utf-8," + encodeURIComponent(b);
-        el.setAttribute("class", 'icon-download');
-        el.setAttribute("href", "data:" + data);
-        el.setAttribute("download", "points.txt");
-        updategfx();
-        io++;
-
-    }
-    else if (io == 2) {
-        var data = "text/json;charset=utf-8," + encodeURIComponent(c);
-        el.setAttribute("class", 'icon-download');
-        el.setAttribute("href", "data:" + data);
-        el.setAttribute("download", "diagram_object_names.txt");
-        updategfx();
-        io = 0;
-
-    }
 }
 function LoadFile(){
-    var dp = JSON.parse(a);
-    var pp = JSON.parse(b);
-    a = dp;
+    var pp = JSON.parse(a);
     b = pp;
-    //Diagram fix
-    for (i = 0; i < a.length; i++) {
-        if (c[i] == "Symbol") {
-            a[i] = Object.assign(new Symbol, a[i]);
-        } else if (c[i] == "Path") {
-            a[i] = Object.assign(new Path, a[i]);
+	//diagram fix
+    for (i = 0; i < b.diagram.length; i++) {
+        if (b.diagram_names[i] == "Symbol") {
+            b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+        } else if (b.diagram_names[i] == "Path") {
+            b.diagram[i] = Object.assign(new Path, b.diagram[i]);
         }
     }
-    diagram.length = a.length;
-    for (i = 0; i < a.length;i++) {
-        diagram[i] = a[i];
+    diagram.length = b.diagram.length;
+    for (i = 0; i < b.diagram.length;i++) {
+        diagram[i] = b.diagram[i];
     }
 
     // Points fix
-    for (i = 0; i < b.length; i++) {
-        b[i] = Object.assign(new Path, b[i]);
+    for (i = 0; i < b.points.length; i++) {
+        b.points[i] = Object.assign(new Path, b.points[i]);
     }
-    points.length = b.length;
-    for (i = 0; i< b.length; i++ ){
-        points[i] = b[i];
+    points.length = b.points.length;
+    for (i = 0; i< b.points.length; i++ ){
+        points[i] = b.points[i];
     }
     console.log("State is loaded");
     //Redrawn old state.
@@ -1590,38 +1541,28 @@ function Load() {
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.
 
-    //TEMPORARY SOLUTION FOR PARSE
-    console.log(a);
-    var dp = JSON.parse(a);
-    var pp = JSON.parse(b);
-    var dn = JSON.parse(c);
-    a = dp;
-    b = pp;
-    c = dn;
-    console.log(a);
-    console.log(b);
-    console.log(c);
-    //Diagram fix
-    for (i = 0; i < a.length; i++) {
-        if (c[i] == "Symbol") {
-            a[i] = Object.assign(new Symbol, a[i]);
-        } else if (c[i] == "Path") {
-            a[i] = Object.assign(new Path, a[i]);
-        }
-    }
-    diagram.length = a.length;
-    for (i = 0; i < a.length;i++) {
-        diagram[i] = a[i];
-    }
+	var dia = JSON.parse(a);
+	b= dia;
+	for (i = 0; i < b.diagram.length; i++) {
+		if (b.diagram_names[i] == "Symbol") {
+			b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+		} else if (b.diagram_names[i] == "Path") {
+			b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+		}
+	}
+	diagram.length = b.diagram.length;
+	for (i = 0; i < b.diagram.length;i++) {
+		diagram[i] = b.diagram[i];
+	}
 
-    // Points fix
-    for (i = 0; i < b.length; i++) {
-        b[i] = Object.assign(new Path, b[i]);
-    }
-    points.length = b.length;
-    for (i = 0; i< b.length; i++ ){
-        points[i] = b[i];
-    }
+	// Points fix
+	for (i = 0; i < b.points.length; i++) {
+		b.points[i] = Object.assign(new Path, b.points[i]);
+	}
+	points.length = b.points.length;
+	for (i = 0; i< b.points.length; i++ ){
+		points[i] = b.points[i];
+	}
     console.log("State is loaded");
     //Redrawn old state.
     updategfx();
