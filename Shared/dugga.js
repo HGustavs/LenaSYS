@@ -80,7 +80,6 @@ function setExpireCookieLogOut(){
 	expireDate.setTime(expireDate.getTime() + (1 * 2 * 9000000));
 
 	document.cookie = "sessionEndTimeLogOut=expireC; expires="+ expireDate.toGMTString() +"; path=/";
-	console.log(expireDate);
 
 }
 //----------------------------------------------------------------------------------
