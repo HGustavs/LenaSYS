@@ -428,38 +428,44 @@ function Symbol(kind) {
 
     this.draw = function ()
     {
-		
+
 		if(this.sizeOftext == 'Tiny')
-		{  
+		{
 			textsize = 14;
 		}
 		else if(this.sizeOftext == 'Small')
 		{
 			textsize = 20;
 		}
-		
+
 		else if(this.sizeOftext == 'Medium')
 		{
 			textsize = 30;
 		}
-		
+
 		else if(this.sizeOftext == 'Large')
 		{
 			textsize = 50;
-		} 
-		else 
-		{ 
-			textsize = 14
 		}
-		
-	
+    else if(this.attributeType == 'Drive')
+    {
+    ctx.setLineDash([5, 4]);
+    console.log("TEST");
+    }
+    else
+    {
+    textsize = 14;
+    ctx.setLineDash([5, 0]);
+    }
+
+
       var x1=points[this.topLeft].x;
       var y1=points[this.topLeft].y;
 
       var x2=points[this.bottomRight].x;
       var y2=points[this.bottomRight].y;
-	  
-	  
+
+
 
       if(this.symbolkind==1){
         var midy=points[this.middleDivider].y;
@@ -482,10 +488,21 @@ function Symbol(kind) {
         ctx.textBaseline = "middle";
 		ctx.fillStyle="#F0F";
 		ctx.fillText(this.name,x1+((x2-x1)*0.5),y1+(0.85*this.textsize));
-		
+
+
+		if(this.key_type == 'Primary key'){
+			var linelenght = ctx.measureText(this.name).width;
+			ctx.beginPath(1);
+			ctx.moveTo(x1+((x2-x1)*0.5), y1+(0.85*this.textsize));
+			ctx.lineTo(x1+((x2-x1)*0.5), y1+(0.85*this.textsize));
+			ctx.lineTo(x1+((x2-x1)*0.5)+linelenght, y1+(0.85*this.textsize)+10);
+			ctx.strokeStyle = "#000";
+			ctx.stroke();
+		}
+
 		// ctx.measureText(txt).width
 		// beginpath - moveto - lineto
-		// För att göra streckad linje rita med 
+		// För att göra streckad linje rita med
 		// ctx.setLineDash(segments);
 
         // Change Alignment and Font
@@ -543,9 +560,9 @@ function Symbol(kind) {
 
         ctx.stroke();
       }else if(this.symbolkind==2){
-		  
-		//scale the text 
-		ctx.font="bold "+parseInt(textsize)+"px Arial";
+
+		//scale the text
+		ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
@@ -555,14 +572,16 @@ function Symbol(kind) {
         ctx.fill();
         if(this.targeted){
           ctx.strokeStyle="#F82";
+          ctx.setLineDash([5, 0]);
         }else{
           ctx.strokeStyle="#253";
         }
         ctx.stroke();
 
         ctx.fillStyle="#253";
+        ctx.fillStyle=this.fontColor;
         ctx.fillText(this.name,x1+((x2-x1)*0.5),(y1+((y2-y1)*0.5)));
-		
+
 		if(this.key_type == 'Primary key')
 		{
 			var linelenght = ctx.measureText(this.name).width;
@@ -573,9 +592,9 @@ function Symbol(kind) {
 			ctx.strokeStyle = "#000";
 			ctx.stroke();
 		}
-		
+
       }else if(this.symbolkind==3){
-		  
+
 		//scale the text
     ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
@@ -583,6 +602,13 @@ function Symbol(kind) {
         ctx.textBaseline = "middle";
 
         ctx.beginPath();
+        if (this.type == "weak") {
+          ctx.moveTo(x1 - 5, y1 - 5);
+          ctx.lineTo(x2 + 5, y1 - 5);
+          ctx.lineTo(x2 + 5, y2 + 5);
+          ctx.lineTo(x1 - 5, y2 + 5);
+          ctx.lineTo(x1 - 5, y1 - 5);
+        }
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y1);
         ctx.lineTo(x2,y2);
