@@ -32,8 +32,7 @@
 
 	<!-- Content START -->
 	<div id="content">
-		<h1>Hello, world!</h1>
-		<p>This will be filled to the brim with fun content soon&trade;.</p>
+
 	</div>
 	<!-- Content END -->
 
