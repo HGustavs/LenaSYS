@@ -200,31 +200,25 @@ var diagram=[];
 //--------------------------------------------------------------------
 // draw - executes draw methond in all diagram objects
 //--------------------------------------------------------------------
-
-diagram.draw = function ()
-{
-		// On every draw of diagram adjust the midpoint if there is one to adjust
-		this.adjust();
-	for(i=0;i<this.length;i++){
-		item=this[i];
-
-		// Path item
-		if(item.symbolkind==4) {
-			item.draw();
+diagram.draw = function () {
+	// On every draw of diagram adjust the midpoint if there is one to adjust
+	this.adjust();
+	// Render figures
+	for(i = 0; i < this.length; i++) {
+		if(this[i].kind == 1) {
+			this[i].draw(1, 1);
 		}
-
 	}
-		for(i=0;i<this.length;i++){
-				item=this[i];
-
-				// Path item
-				if(item.kind==1){
-					item.draw(1,1);
-				}else if(item.kind==2 && !(item.symbolkind == 4)){
-					item.draw();
-				}
-
+	for(i = 0; i < this.length; i++) {
+		if(this[i].symbolkind == 4) {
+			this[i].draw();
 		}
+	}
+	for(i = 0; i < this.length; i++) {
+		if(this[i].kind == 2 && !(this[i].symbolkind == 4)) {
+			this[i].draw();
+		}
+	}
 }
 
 //--------------------------------------------------------------------
