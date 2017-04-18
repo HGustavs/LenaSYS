@@ -8,7 +8,8 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
-| asd | asd |
+| head0 | head1 |
+| ----- | ----- |
 | dsa | dsa | dsa |
 | dsa | dsa | dsa | asd |
 

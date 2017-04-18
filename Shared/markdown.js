@@ -189,8 +189,8 @@ function isOrderdList(item) {
 
 // CHeck if its a table
 function isTable(item) {
-	// return true if space followed by a pipe-character
-	return /\s*\|\s(.*)/gm.test(item); 
+	// return true if space followed by a pipe-character and have closing pipe-character
+	return /\s*\|\s(.*)\|/gm.test(item);
 }
 // The creation and destruction of unordered lists
 function handleUnorderedList(currentLine, prevLine, nextLine) {
@@ -277,21 +277,29 @@ function handleTable(currentLine, prevLine, nextLine) {
 
 	// open new table
 	if(!isTable(prevLine)) {
-    	markdown += "<table>";
+    	markdown += "<table border='1' style='margin-top: 10px;'><thead style='color:red;'>";
     }
 
-    // handle table row
-    markdown += "<tr>" 
-    var columns = currentLine.split('|').filter(function(v){return v !== '';});
-    for(var i = 0; i < columns.length; i++) {
-    	markdown += "<td>" + columns[i].trim() + "</td>";
+    // handle tbody
+    if(currentLine.match(/^\s*\|\s*[-]*\s*\|/gm)) {
+        markdown = "</thead><tbody style='color:blue;'>";
+    } else {
+        // handle table row
+        markdown += "<tr>"
+        var columns = currentLine.split('|').filter(function(v){return v !== '';});
+        for(var i = 0; i < columns.length; i++) {
+            markdown += "<td style='padding: 15px;'>" + columns[i].trim() + "</td>";
+        }
+        markdown += "</td>";
     }
-    markdown += "</td>";
+
+
+
 
     // close table
 	if(!isTable(nextLine)) {
 		console.log("end");
-    	markdown += "</table>";
+    	markdown += "</tbody></table>";
     }
 
     return markdown;
