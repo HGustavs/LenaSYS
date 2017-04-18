@@ -810,8 +810,6 @@ function updateActivePoint(){
   }
 }
 function mousemoveevt(ev, t){
-		cx=(cx+mouseDiffX);
-		cy=(cy+mouseDiffY);
 		mox=cx;
 		moy=cy;
 	    hovobj = diagram.inside(cx,cy);
@@ -854,7 +852,8 @@ function mousemoveevt(ev, t){
 		}
 		diagram.linedist(cx,cy);
 
-
+		cx-=startX;
+		cy-=startY;
 		updategfx();
 
 		// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
