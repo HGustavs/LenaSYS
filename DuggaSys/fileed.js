@@ -143,6 +143,7 @@ function returnedFile(data)
 		str2="";
 		str3="";
 		str4="";
+		str5="";
 		str1+="<table class='list' style='margin-bottom:8px;' >";
 		str1+="<thead style='cursor:pointer;'>";
 		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
@@ -168,6 +169,39 @@ function returnedFile(data)
 					}
 			}
 			str1+="</tbody></table>";
+			str5+="<table class='list' style='margin-bottom:8px;' >";
+			str5+="<thead style='cursor:pointer;'>";
+			str5+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" +
+            "<th>Files<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+            "<th>File extension</th>" +
+            "<th>Upload date & time</th>" +
+            "<th>File size</th>" +
+				"<th>File Kind</th>" +
+            "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+			str5+="</thead><tbody id='allcontent_body'>";
+
+            for(i=0;i<data['entries'].length;i++){
+                var item=data['entries'][i];
+                if(parseInt(item['kind'])!=1){
+                    str5+="<tr class='fumo'>";
+                    str5+="<td>"+item['fileid']+"</td>";
+                    str5+="<td>";
+                    // str2+=item['filename']
+                    str5+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
+                    str5+="</td>";
+                    str5+="<td>" + getFileInformation(item['filename'], true) + "</td>";
+                    str5+="<td>" + item['uploaddate'] + "</td>";
+                    str5+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
+                    str5+="<td>" + item['kind'] + "</td>";
+                    str5+="<td style='padding:4px;'>";
+                    str5+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+                    str5+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+                    str5+="</td>";
+                    str5+="</tr>";
+
+                }
+            }
+            str5+="</tbody></table>";
 			str2+="<table class='list' style='margin-bottom:8px;' >";
       str2+="<thead style='cursor:pointer;'>";      
       str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
@@ -270,6 +304,8 @@ function returnedFile(data)
 		allcoursefiles.innerHTML=str3;
 		var alllocalfiles=document.getElementById("alllocalfiles");
 		alllocalfiles.innerHTML=str4;
+		var allcontent=document.getElementById("allcontent");
+		allcontent.innerHTML=str5;
 		}else{
 
 		}
@@ -321,12 +357,10 @@ function leaves(){
 //Switch Content between one table and separate tables;
 
 function switchcontent() {
-	
 		$("#allglobalfiles").toggle("hide");
 		$("#allcoursefiles").toggle("hide");
     	$("#alllocalfiles").toggle("hide");
 		$("#allcontent").toggle("show");
-		console.log("hej");
 }
 
 
