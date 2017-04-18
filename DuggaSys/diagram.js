@@ -1167,42 +1167,37 @@ function dialogForm() {
     }
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name:</br>" +
-        "<input id='nametext' type='text'></br>" +
+        	"<input id='nametext' type='text'></br>" +
         "Attribute type: </br>" +
-        "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
-   			"Font family:<br>" +
-        "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
-  			"Font color:<br>" +
+        	"<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+   		"Font family:<br>" +
+        	"<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+  		"Font color:<br>" +
   			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
-        "Text size:<br>" +
-  			"<select id ='TextSize'><option value=Tiny>Tiny</option><option value=Small>Small</option><option value=Medium>Medium</option><option value=Large>Large</option></select><br>"+
-  			"<button type='submit' onclick='setTextSizeEntity()'>TextScale</button>" +
-  			"<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>" +
-  			"<button type='submit' onclick='setType(form)'>setType</button>" +
-  			"<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";
+       		"Text size:<br>" +
+  			"<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+  			"<button type='submit'  class='submit-button' onclick='changeName(form); setType(form); setTextSizeEntity(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
-            "<input id='nametext' type='text'></br>" +
-            "Entity type: </br>" +
+       		"<input id='nametext' type='text'></br>" +
+        "Entity type: </br>" +
 			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
-			"Font family:<br>" +
-            "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
-			"Font color:<br>" +
+		"Font family:<br>" +
+        	"<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+		"Font color:<br>" +
 			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
-            "Text size:<br>" +
-			"<select id ='TextSize'><option value=Tiny>Tiny</option><option value=Small>Small</option><option value=Medium>Medium</option><option value=Large>Large</option></select><br>"+
-			"<button type='submit' onclick='setTextSizeEntity()'>TextScale</button>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form); setEntityType(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+        "Text size:<br>" +
+			"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form); setTextSizeEntity(form); setEntityType(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
 }
 
 //setTextSize(): used to change the size of the text. unifinish can's get it to work.
-function setTextSizeEntity(){
+function setTextSizeEntity(form){
 	var scaletype = document.getElementById('TextSize').value;
 	diagram[selobj].sizeOftext = scaletype;
-	updategfx();
-
+	
 	/*
 		Hämtar specifik entitet/attribut/detpersonenharklickat på.
 		[ovannämndklick].font=text_size+"px";
@@ -1213,8 +1208,7 @@ function setTextSizeEntity(){
 function changeName(form){
 	diagram[selobj].name=document.getElementById('nametext').value;
 	diagram[selobj].fontColor=document.getElementById('fontColor').value;
-	diagram[selobj].font=document.getElementById('font').value;
-	diagram[selobj].attributeType=document.getElementById('attributeType').value;
+	diagram[selobj].font=document.getElementById('font').value; 
     dimDialogMenu(false);
     updategfx();
 }
