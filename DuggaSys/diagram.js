@@ -752,7 +752,7 @@ function initcanvas()
 }
 
 function zoomInMode(e){
-  uimode="ZoomIn";
+  uimode="Zoom";
   var canvas = document.getElementById("myCanvas");
   canvas.removeEventListener("click", zoomOutClick, false);
   canvas.removeEventListener("dblclick", doubleclick, false);
@@ -774,7 +774,7 @@ function zoomInMode(e){
 }
 
 function zoomOutMode(e){
-  uimode="ZoomOut";
+  uimode="Zoom";
   var canvas = document.getElementById("myCanvas");
   canvas.removeEventListener("click", zoomInClick, false);
   canvas.removeEventListener("dblclick", doubleclick, false);
@@ -822,7 +822,7 @@ function canvassize()
 	heightWindow = (window.innerHeight-244);
 	document.getElementById("myCanvas").setAttribute("width", widthWindow);
 	document.getElementById("myCanvas").setAttribute("height", heightWindow);
-  ctx.clearRect(0,0,widthWindow,heightWindow);
+  ctx.clearRect(startX,startY,widthWindow,heightWindow);
 	ctx.translate(startX,startY);
   ctx.scale(1,1);
   ctx.scale(zv,zv);
@@ -839,7 +839,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(0,0,widthWindow,heightWindow);
+		ctx.clearRect(startX,startY,widthWindow,heightWindow);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -926,6 +926,8 @@ function mousemoveevt(ev, t){
 		}
 		diagram.linedist(cx,cy);
 
+    cx+=startX;
+    cy+=startY;
 
 		updategfx();
 
@@ -1127,7 +1129,7 @@ function mouseupevt(ev){
     		erLineA.centerpoint=p3;
 
             diagram.push(erLineA);
-        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" )) {
+        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" ) && !(uimode == "Zoom" )) {
             diagram.insides(cx, cy, sx, sy);
         }
 
@@ -1475,7 +1477,7 @@ function mousemoveposcanvas(e){
 	mousedownX = mousemoveX;
 	mousedownY = mousemoveY;
 	ctx.clearRect(0,0,widthWindow,heightWindow);
-	ctx.translate(mouseDiffX,mouseDiffY);
+	ctx.translate((-mouseDiffX),(-mouseDiffY));
 	erEntityA.sortAllConnectors();
 	diagram.draw();
 	points.drawpoints();
