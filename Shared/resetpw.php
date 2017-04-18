@@ -37,9 +37,7 @@ if($opt=="GETQUESTION"){
 	
 	echo json_encode($res);
 
-}else if($opt=="CHECKANSWER"){
-	//everybody placehold now!
-	
+}else if($opt=="CHECKANSWER"){	
 	$username=getOP('username');
 	$securityquestionanswer=getOP('securityquestionanswer');
 
@@ -63,6 +61,28 @@ if($opt=="GETQUESTION"){
 	
 	echo json_encode($res);
 
+}else if($opt=="REQUESTCHANGE"){
+	$username=getOP('username');
+
+	pdoConnect(); // Made sure if actually connects to a database
+
+	// Default values
+	$res = array("requestchange" => "failed");
+
+	if(requestChange($username)){
+		$res["requestchange"] = "success";
+		$res["username"] = $username;
+
+		//maybe log this action?
+	}else{
+		//should maybe use tries here so that you cant guess all usernames or maybe just return an error if user does not exist.
+
+		//maybe log this action?
+
+		$res["requestchange"] = "failure";
+	}
+
+	echo json_encode($res);
 }
 	
 ?>
