@@ -625,12 +625,28 @@ function processResetPasswordCheckSecurityAnswer() {
 				var result = JSON.parse(data);
 				
 				if(result['checkanswer'] == "success") {
-					console.log("The answer was correct");
-					//do something
-					$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
-					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
+					$.ajax({
+						type:"POST",
+						url: "../Shared/resetpw.php",
+						data: {
+							username: username,
+							opt: "REQUESTCHANGE"
+						},
+						success:function(data){
+							var result = JSON.parse(data);
+							if(result['requestchange'] == "success"){
+								$("#showsecurityquestion #answer").css("background-color", "rgba(0, 0, 255, 0.2)");
+							}else{
+								$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+								$("#showsecurityquestion #message3").html("<div class='alert danger'>Something went wrong</div>");
+							}
+						}
+					})
+
+
+					//$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
+					//$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
-					console.log("Wrong answer");
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
