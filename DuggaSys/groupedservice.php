@@ -40,13 +40,7 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "groupedservice.php",$userid,$info); */
 
 //------------------------------------------------------------------------------------------------
-// Services ??? Here was a few things that updated a few things. Not needed as of now. 
-//------------------------------------------------------------------------------------------------
-
-
-
-//------------------------------------------------------------------------------------------------
-// Retrieve Information ??? Here is some SQL that retreives things. 
+// Retrieve Information about the existing groups.
 //------------------------------------------------------------------------------------------------
 
 // Don't retreive all results if request was for a single dugga or a grade update
