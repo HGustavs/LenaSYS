@@ -70,6 +70,18 @@ function setExpireCookie(){
 	console.log(expireDate);
 
 }
+
+//----------------------------------------------------------------------------------
+// Sets a cookie that expires at the same time as the user is logged out (when the session ends)
+//----------------------------------------------------------------------------------
+function setExpireCookieLogOut(){
+
+	var expireDate = new Date();
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 9000000));
+
+	document.cookie = "sessionEndTimeLogOut=expireC; expires="+ expireDate.toGMTString() +"; path=/";
+
+}
 //----------------------------------------------------------------------------------
 function closeWindows(){
 
@@ -476,15 +488,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	}else if(kind=="RESULTLIST"){
-			$.ajax({
-				url: "resultlistedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedResults
-			});
-	}else if(kind=="CODEVIEW"){
+	} else if(kind=="CODEVIEW"){
 			$.ajax({
 				url: "codeviewerService.php",
 				type: "POST",
@@ -538,6 +542,25 @@ function loginEventHandler(event){
 			processResetPasswordCheckSecurityAnswer();
 		}
 	}
+}
+
+function addSecurityQuestionProfile(username) {
+	$.ajax({
+			type:"POST",
+			url: "../Shared/resetpw.php",
+			data: {
+				username: username,
+				opt: "GETQUESTION"
+			},
+			success:function(data) {
+				var result = JSON.parse(data);	
+				if(result['getname'] == "success") {
+					$("#challengeQuestion").html(result['securityquestion']);
+				}else{
+					console.log("Username was not found OR User does not have a question OR User might be a teacher");
+			}
+		}
+	});
 }
 
 function processResetPasswordCheckUsername() {
@@ -631,6 +654,7 @@ function processLogin() {
 				var result = JSON.	parse(data);
 				if(result['login'] == "success") {
 					setExpireCookie();
+					setExpireCookieLogOut();
 					$("#userName").html(result['username']);
 					$("#loginbutton").removeClass("loggedout");
 					$("#loginbutton").addClass("loggedin");
@@ -714,6 +738,7 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){processLogout();});
 		sessionExpireMessage();
+		sessionExpireLogOut();
 	}
 
 	else{
@@ -732,6 +757,12 @@ function hideReceiptPopup()
 {
 	$("#receiptBox").css("display","none");
 	$("#overlay").css("display","none");
+}
+
+function hideDuggaStatsPopup() 
+{
+	$("#duggaStats").css("display", "none");
+	$("#overlay").css("display", "none");
 }
 
 function checkScroll(obj) { 
@@ -808,6 +839,29 @@ function sessionExpireMessage() {
 		}
 	}
 
+//----------------------------------------------------------------------------------
+// Gives an alert when user is timed out (when the session ends)
+//----------------------------------------------------------------------------------
+function sessionExpireLogOut() {
+
+	if(document.cookie.indexOf('sessionEndTimeLogOut=expireC') > -1){
+		var intervalId = setInterval(function() {
+			checkIfExpired();
+		}, 2000);
+	}
+
+	function checkIfExpired() {
+
+		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
+			alert('Your session has expired');
+			// When reloaded the log in icon should change from green to red
+			location.reload();
+			clearInterval(intervalId);
+		}
+
+	}
+}
+	
 //----------------------------------------------------------------------------------
 // A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
 //----------------------------------------------------------------------------------

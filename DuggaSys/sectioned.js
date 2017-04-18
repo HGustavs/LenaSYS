@@ -22,7 +22,6 @@ $(document).ready(function(){
     });
 });
 
-
 function showSubmitButton(){ 
   $(".submitDugga").css("display","inline-block"); 
   $(".updateDugga").css("display","none"); 
@@ -37,8 +36,7 @@ function showSaveButton(){
   $(".closeDugga").css("display","none"); 
 } 
 
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
-
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments, rowColor )
 {
 		
 	xelink=elink;
@@ -153,6 +151,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>2 tabs + end</option>" 
 	else str +="<option value ='6'>2 tabs + end</option>"; 
 
+	// Set color on "test"
+	str="";
+	if(rowColor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
+	else str+="<option value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>";
+	if(rowColor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
+	else str+="<option value='1' style='background-color: #927b9e; color: white'>Header</option>";
+	$("#rowColor").html(str);
+
 	$("#tabs").html(str);
 		
 	// Set Link
@@ -168,6 +174,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	// Section
 	}else if(kind==1){
 		$("#inputwrapper-tabs").css("display","block");
@@ -175,6 +183,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	// Code
 	}else if(kind==2){
 		$("#inputwrapper-tabs").css("display","block");
@@ -191,6 +201,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+    
 	// Dugga
 	}else if(kind==3){
 		$("#inputwrapper-tabs").css("display","none");
@@ -207,6 +219,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
 		$("#inputwrapper-comments").css("display","block");
+		$("#inputwrapper-color").css("display","block");
+
 	// Moment
 	}else if(kind==4){
 		$("#inputwrapper-tabs").css("display","none");
@@ -214,6 +228,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	// Link
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
@@ -230,9 +246,15 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	}
 	$("#editSection").css("display","block");
 	
+}
+
+function participationList(){
+	alert("ParticipationList");
 }
 
 function changedType()
@@ -246,12 +268,16 @@ function changedType()
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	}else if(kind==1){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	}else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
@@ -267,6 +293,8 @@ function changedType()
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","block");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	}else if(kind==3){
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
 			var iitem=retdata['duggor'][ii];
@@ -282,12 +310,16 @@ function changedType()
 		$("#inputwrapper-highscore").css("display","block");
 		$("#inputwrapper-tabs").css("display","none");	
 		$("#inputwrapper-comments").css("display","block");	
+		$("#inputwrapper-color").css("display","block");	
+
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
@@ -303,6 +335,8 @@ function changedType()
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
+		$("#inputwrapper-color").css("display","none");
+
 	}
 }
 
@@ -511,7 +545,6 @@ function returnedSection(data)
 			str+="<td style='width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='width:112px;'><input type='button' value='List' class='submit-button' onclick='changeURL(\"resultlisted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			
 			str+="<td style='width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='width:112px;'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 
@@ -764,15 +797,17 @@ function returnedSection(data)
 				str+="</td>";
 
 				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
-				var dateSubmitted = submitted.toJSON().slice(0,10).replace(/-/g,'-');
-				var timeSubmitted = submitted.toJSON().slice(11,19).replace(/-/g,'-');
-				var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
-				
-				// create a warning if the dugga is submitted after the set deadline
-				if ((status === "pending")&&(dateTimeSubmitted>deadline)){
-					str+="<td style='width:20px;'><img style='width:20px;' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.png'/></td>";
-				}else{
+				if(submitted){
+					var dateSubmitted = submitted.toJSON().slice(0,10).replace(/-/g,'-');
+					var timeSubmitted = submitted.toJSON().slice(11,19).replace(/-/g,'-');
+					var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 					
+					// create a warning if the dugga is submitted after the set deadline
+					if ((status === "pending")&&(dateTimeSubmitted>deadline)){
+						str+="<td style='width:20px;'><img style='width:20px;' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.png'/></td>";
+					}else{
+						
+					}
 				}
 				
 				// Add generic td for deadlines if one exists
@@ -953,10 +988,19 @@ $(document).on('click', '.moment', function () {
 	$(this).children('.arrowComp').slideToggle();
 });
 
-
 // Function for toggling content for each section
 $(document).on('click', '.section', function () {
 	$(this).nextUntil('.section').slideToggle();
 	$(this).children('.arrowRight').slideToggle();
 	$(this).children('.arrowComp').slideToggle();
+});
+
+// Function to prevent collapsing when clicking icons
+$(document).ready(function(){
+	$(document).on('click','#corf',function(e) {
+		e.stopPropagation();
+	});
+	$(document).on('click','#dorf',function(e) {
+		e.stopPropagation();
+	});
 });

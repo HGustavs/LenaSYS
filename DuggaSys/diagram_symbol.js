@@ -11,7 +11,10 @@ function Symbol(kind) {
   this.attributes=[];           // Attributes array
 
   this.textsize=14;             // 14 pixels text size is default
+  var textscale = 10;
   this.name="New Class";    // Default name is new class
+  this.key_type = "none" //Defult key tyoe for a class.
+  this.sizeOftext = "none" //used to set size of text.
 
   this.topLeft;                 // Top Left Point
   this.bottomRight;             // Bottom Right Point
@@ -232,6 +235,7 @@ function Symbol(kind) {
     }
     //        consloe.log(pointcnt);
   }
+
     //--------------------------------------------------------------------
     // sortAllConnectors
     // Sorts all connectors
@@ -250,6 +254,24 @@ function Symbol(kind) {
       this.sortConnector(this.connectorBottom,2,x1,x2,y2);
 
     }
+      //--------------------------------------------------------------------
+      // sortAllConnectors
+      // Sorts all connectors
+      //--------------------------------------------------------------------
+
+      this.sortAllConnectors = function ()
+      {
+        var x1=points[this.topLeft].x;
+        var y1=points[this.topLeft].y;
+        var x2=points[this.bottomRight].x;
+        var y2=points[this.bottomRight].y;
+
+        this.sortConnector(this.connectorRight,1,y1,y2,x2);
+        this.sortConnector(this.connectorLeft,1,y1,y2,x1);
+        this.sortConnector(this.connectorTop,2,x1,x2,y1);
+        this.sortConnector(this.connectorBottom,2,x1,x2,y2);
+
+      }
 
     //--------------------------------------------------------------------
     // move
@@ -330,22 +352,125 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
+    // delete
+    // attempts to erase object completely from canvas
+    //--------------------------------------------------------------------
+    this.erase = function (){
+      this.movePoints();
+      this.deleteLines();
+      //emptyConnectors();
+    }
+
+    //--------------------------------------------------------------------
+    // movePoints
+    // Moves all relevant points, within the object, off the canvas.
+    // IMP!: Should not be moved back on canvas after this function is run.
+    //--------------------------------------------------------------------
+    this.movePoints = function (){
+      points[this.topLeft] = waldoPoint;
+      points[this.bottomRight] = waldoPoint;
+      points[this.centerpoint] = waldoPoint;
+      points[this.middleDivider] = waldoPoint;
+    }
+
+    //--------------------------------------------------------------------
+    // movePoints
+    // Moves all relevant points, within the object, off the canvas.
+    // IMP!: Should not be moved back on canvas after this function is run.
+    //--------------------------------------------------------------------
+    this.deleteLines = function(){
+      // Adds the different connectors into an array to reduce the amount of code
+      var connectors = [this.connectorTop, this.connectorRight,  this.connectorBottom,  this.connectorLeft];
+
+      for(i = 0; i < diagram.length; i++){
+        var hasDeleted = false;
+        var line = diagram[i];
+
+        //Line
+        if(line.symbolkind == 4){
+          if(this.symbolkind == 2){
+            //Deletes lines connected to object's centerpoint
+            //Line always have topLeft and bottomRight if symbolkind == 4, because that means it's a line object
+            if(line.topLeft == this.centerpoint || line.bottomRight == this.centerpoint) {
+              diagram.delete(line);
+              hasDeleted = true;
+            }
+          }
+
+          else if(this.symbolkind == 3){
+            hasDeleted = false;
+            //Deletes lines connected to connectors top, right, bottom and left.
+            for(var j = 0; j < connectors.length; j++){
+              for (var k = 0; k < connectors[j].length; k++) {
+                if (line.topLeft == connectors[j][k].from || line.bottomRight == connectors[j][k].from ||  line.topLeft == connectors[j][k].to || line.bottomRight == connectors[j][k].to) {
+                  diagram.delete(line);
+
+                  hasDeleted = true;;
+                  break;
+                }
+              }
+              if(hasDeleted){
+                break;
+              }
+            }
+          }
+        }
+        if(hasDeleted){
+          i=-1;
+        }
+      }
+    }
+
+    //--------------------------------------------------------------------
     // draw
     // Redraws graphics
     //--------------------------------------------------------------------
 
     this.draw = function ()
     {
+
+		if(this.sizeOftext == 'Tiny')
+		{
+			textsize = 14;
+		}
+		else if(this.sizeOftext == 'Small')
+		{
+			textsize = 20;
+		}
+
+		else if(this.sizeOftext == 'Medium')
+		{
+			textsize = 30;
+		}
+
+		else if(this.sizeOftext == 'Large')
+		{
+			textsize = 50;
+		}
+    else if(this.attributeType == 'Drive')
+    {
+    ctx.setLineDash([5, 4]);
+    console.log("TEST");
+    }
+    else
+    {
+    textsize = 14;
+    ctx.setLineDash([5, 0]);
+    }
+
+
       var x1=points[this.topLeft].x;
       var y1=points[this.topLeft].y;
 
       var x2=points[this.bottomRight].x;
       var y2=points[this.bottomRight].y;
 
+
+
       if(this.symbolkind==1){
         var midy=points[this.middleDivider].y;
 
-        ctx.font="bold "+parseInt(this.textsize)+"px Arial";
+        ctx.font="bold "+parseInt(textsize)+"px Arial";
 
         // Clear Class Box
         ctx.fillStyle="#fff";
@@ -361,7 +486,24 @@ function Symbol(kind) {
         // Write Class Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
-        ctx.fillText(this.name,x1+((x2-x1)*0.5),y1+(0.85*this.textsize));
+		ctx.fillStyle="#F0F";
+		ctx.fillText(this.name,x1+((x2-x1)*0.5),y1+(0.85*this.textsize));
+
+
+		if(this.key_type == 'Primary key'){
+			var linelenght = ctx.measureText(this.name).width;
+			ctx.beginPath(1);
+			ctx.moveTo(x1+((x2-x1)*0.5), y1+(0.85*this.textsize));
+			ctx.lineTo(x1+((x2-x1)*0.5), y1+(0.85*this.textsize));
+			ctx.lineTo(x1+((x2-x1)*0.5)+linelenght, y1+(0.85*this.textsize)+10);
+			ctx.strokeStyle = "#000";
+			ctx.stroke();
+		}
+
+		// ctx.measureText(txt).width
+		// beginpath - moveto - lineto
+		// För att göra streckad linje rita med
+		// ctx.setLineDash(segments);
 
         // Change Alignment and Font
         ctx.textAlign="start";
@@ -419,6 +561,8 @@ function Symbol(kind) {
         ctx.stroke();
       }else if(this.symbolkind==2){
 
+		//scale the text
+		ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
@@ -428,20 +572,43 @@ function Symbol(kind) {
         ctx.fill();
         if(this.targeted){
           ctx.strokeStyle="#F82";
+          ctx.setLineDash([5, 0]);
         }else{
           ctx.strokeStyle="#253";
         }
         ctx.stroke();
 
         ctx.fillStyle="#253";
+        ctx.fillStyle=this.fontColor;
         ctx.fillText(this.name,x1+((x2-x1)*0.5),(y1+((y2-y1)*0.5)));
+
+		if(this.key_type == 'Primary key')
+		{
+			var linelenght = ctx.measureText(this.name).width;
+			ctx.beginPath(1);
+			ctx.moveTo(x1+((x2-x1)*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.lineTo(x1+((x2-x1)*0.5)-(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.lineTo(x1+((x2-x1)*0.5)+(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.strokeStyle = "#000";
+			ctx.stroke();
+		}
+
       }else if(this.symbolkind==3){
 
+		//scale the text
+    ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
 
         ctx.beginPath();
+        if (this.type == "weak") {
+          ctx.moveTo(x1 - 5, y1 - 5);
+          ctx.lineTo(x2 + 5, y1 - 5);
+          ctx.lineTo(x2 + 5, y2 + 5);
+          ctx.lineTo(x1 - 5, y2 + 5);
+          ctx.lineTo(x1 - 5, y1 - 5);
+        }
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y1);
         ctx.lineTo(x2,y2);
@@ -458,6 +625,7 @@ function Symbol(kind) {
         ctx.stroke();
 
         ctx.fillStyle="#253";
+        ctx.fillStyle=this.fontColor;
         ctx.fillText(this.name,x1+((x2-x1)*0.5),(y1+((y2-y1)*0.5)));
 
       }else if(this.symbolkind==4){

@@ -21,7 +21,7 @@
 	<script src="../Shared/dugga.js"></script>
 	<script src="grouped.js"></script>
 </head>
-<body>
+<body onload="setup();">
 
 	<!-- Navigation Header START -->
 	<?php
@@ -32,8 +32,7 @@
 
 	<!-- Content START -->
 	<div id="content">
-		<h1>Hello, world!</h1>
-		<p>This will be filled to the brim with fun content soon&trade;.</p>
+
 	</div>
 	<!-- Content END -->
 

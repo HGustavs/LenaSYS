@@ -31,7 +31,8 @@ pdoConnect();
 
 </head>
 <!-- Reads the content from the js-files -->
-<body onload="initcanvas(); Symbol(); canvassize();">
+<!-- updategfx() must be last -->
+<body onload="initcanvas(); Symbol(); canvassize(); updategfx();">
 
 	<?php
 		$noup="COURSE";

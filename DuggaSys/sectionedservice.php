@@ -281,8 +281,8 @@ foreach($query->fetchAll() as $row) {
 					$markedy=null;
 			}
 	}else{
-			$resulty=-1;
-			$markedy=null;	
+        	$resulty=$row['grade'];
+        	$markedy=$row['marked'];
 	}
 	array_push(
 		$resulties,

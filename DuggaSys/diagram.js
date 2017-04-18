@@ -34,10 +34,10 @@ var lineStartObj = -1;
 var movobj=-1;				// Moving object ID
 var selobj = -1;			// The last selected object
 var uimode="normal";		// User interface mode e.g. normal or create class currently
+var figureMode = null;		// Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
 var widthWindow;			// The width on the users screen is saved is in this var.
 var heightWindow;			// The height on the users screen is saved is in this var.
 var consoleInt = 0;
-var canFigure = false; // When figure mode is enabled for the session, this needs to be set to true and p1 to null.
 var startX=0; var startY=0;			// Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = {x:-10,y:-10,selected:false};
 var activePoint = null; //This point indicates what point is being hovered by the user
@@ -48,6 +48,18 @@ var p1=null,					// When creating a new figure, these two variables are used ...
 var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+
+//this block of the code is used to handel keyboard input;
+window.addEventListener("keydown",this.keyDownHandler, false);
+
+function keyDownHandler(e){
+	var key = e.keyCode;
+
+	//Delete selected objects when del key is pressed down.
+	if(key == 46){
+		eraseSelectedObject();
+	}
+}
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -196,7 +208,6 @@ diagram.draw = function ()
 			item.draw();
 		}
 
-
 	}
 		for(i=0;i<this.length;i++){
 				item=this[i];
@@ -226,6 +237,20 @@ diagram.adjust = function ()
 				}
 
 		}
+
+}
+//--------------------------------------------------------------------
+// delete - deletes sent object from diagram
+//--------------------------------------------------------------------
+
+diagram.delete = function (object)
+{
+	for(i=0;i<this.length;i++){
+		if(this[i]==object){
+          		this.splice(i,1);
+        	}
+
+	}
 
 }
 
@@ -307,6 +332,18 @@ diagram.linedist = function (xk,yk)
 		}
 
 		return -1;
+}
+//--------------------------------------------------------------------
+// inside - executes linedist methond in all diagram objects (currently of kind==2)
+//--------------------------------------------------------------------
+diagram.getLineObjects = function (){
+  var lines = new Array();
+  for(i = 0; i < this.length; i++){
+    if(diagram[i].symbolkind == 4){
+      lines.push(lines);
+    }
+  }
+  return lines;
 }
 
 //--------------------------------------------------------------------
@@ -663,6 +700,13 @@ function Path() {
 
 				}
 		}
+
+    this.erase = function(){
+      for(i = 0; i < this.segments.length; i++){
+          points[this.segments[i].pa] = waldoPoint;
+          points[this.segments[i].pb] = waldoPoint;
+        }
+    }
 }
 
 function initcanvas()
@@ -674,13 +718,16 @@ function initcanvas()
 		"<button onclick='attrmode();'>Create Attribute</button>" +
 		"<button onclick='linemode();'>Create Line</button>" +
 		"<button onclick='entitymode();'>Create Entity</button>" +
-		"<button onclick='figuremode();'>Create Figure</button>" +
+		"<select id='selectFigure' onchange='figuremode()'>" +
+			"<option selected='selected' disabled>Create Figure</option>" +
+			"<option value='Square'>Square</option>" +
+			"<option value='Free'>Free-Draw</option>" +
+		"</select>" +
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
-		"<button onclick='deleteSelectedObject();'>Delete Object</button>" +
-		"<button onclick='deleteAllObjects();'>Delete All</button>" +
-		"<button onclick='movemode(event);' style='float: right;'>Start Moving</button>" +
-		"<button onclick='stopmovemode();' style='float: right;'>Stop Moving</button><br>" +
+		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
+		"<button onclick='clearCanvas();'>Delete All</button>" +
+		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
@@ -694,6 +741,9 @@ function initcanvas()
 		makegfx();
 
 		updategfx();
+
+		var buttonStyle = document.getElementById("moveButton");
+		buttonStyle.addEventListener('click', movemode, false);
 
 }
 
@@ -765,8 +815,8 @@ function updateActivePoint(){
 function mousemoveevt(ev, t){
 		mox=cx;
 		moy=cy;
-    hovobj = diagram.inside(cx,cy);
-    console.log(hovobj);
+	    hovobj = diagram.inside(cx,cy);
+	    //console.log(hovobj);
 		if (ev.pageX || ev.pageY == 0){ // Chrome
 			cx=ev.pageX-acanvas.offsetLeft;
 			cy=ev.pageY-acanvas.offsetTop;
@@ -822,14 +872,23 @@ function mousemoveevt(ev, t){
 		// Draw select or create dotted box
 		if(md==4){
 				ctx.setLineDash([3, 3]);
-				ctx.beginPath();
+				ctx.beginPath(1);
 				ctx.moveTo(sx,sy);
 				ctx.lineTo(cx,sy);
 				ctx.lineTo(cx,cy);
 				ctx.lineTo(sx,cy);
 				ctx.lineTo(sx,sy);
+				ctx.strokeStyle = "#d51";
 				ctx.stroke();
-				ctx.setLineDash([]);
+            	ctx.setLineDash([]);
+            	ctx.closePath(1);
+            	if(ghostingcrosses == true){
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossfillStyle = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+				}
+
+
 		}
 }
 
@@ -891,6 +950,10 @@ function doubleclick(ev)
 {
 	if(diagram[selobj].inside(cx,cy)){
         openAppearanceDialogMenu();
+        document.getElementById('nametext').value = diagram[selobj].name;
+    		document.getElementById('fontColor').value = diagram[selobj].fontColor;
+    		document.getElementById('font').value = diagram[selobj].font;
+    		document.getElementById('attributeType').value = diagram[selobj].attributeType;
   }
 }
 
@@ -944,7 +1007,7 @@ function mouseupevt(ev){
 		}
 
 		createFigure();
-		
+
 		if(uimode=="CreateClass"&&md==4){
 				classB = new Symbol(1);
 				classB.name="New"+diagram.length;
@@ -963,14 +1026,24 @@ function mouseupevt(ev){
 				erAttributeA.topLeft=p1;
 				erAttributeA.bottomRight=p2;
 				erAttributeA.centerpoint=p3;
-
+				erAttributeA.attributeType="";
+				erAttributeA.fontColor="#253";
+				erAttributeA.font="Arial";
 				diagram.push(erAttributeA);
+
+				//selecting the newly created attribute and open the dialogmenu.
+				selobj = diagram.length -1;
+				diagram[selobj].targeted = true;
+				openAppearanceDialogMenu();
+
 		}else if(uimode=="CreateEREntity"&&md==4){
             	erEnityA = new Symbol(3);
             	erEnityA.name="Entity"+diagram.length;
             	erEnityA.topLeft=p1;
             	erEnityA.bottomRight=p2;
             	erEnityA.centerpoint=p3;
+				erEnityA.fontColor="#253";
+				erEnityA.font="Arial";
 
             	diagram.push(erEnityA);
 
@@ -987,134 +1060,52 @@ function mouseupevt(ev){
     		erLineA.bottomRight=p2;
     		erLineA.centerpoint=p3;
 
-    		diagram.push(erLineA);
-    } else if(md == 4 && !(uimode=="CreateFigure") && !(uimode=="CreateLine") && !(uimode=="CreateEREntity") && !(uimode=="CreateERAttr" ) &&!(uimode=="CreateClass" ) &&!(uimode=="MoveAround" ) ){
-			console.log("box drawn");
-			diagram.insides(cx,cy,sx,sy);
-		}
-
-
-
-
-    	updategfx();
-
-    	// Clear mouse state
-    	md=0;
-    	if(uimode!="CreateFigure"){
-    		uimode=" ";
+            diagram.push(erLineA);
+        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" )) {
+            console.log("box drawn");
+            diagram.insides(cx, cy, sx, sy);
         }
 
+    document.addEventListener("click", clickOutsideDialogMenu);
+    updategfx();
+
+    // Clear mouse state
+    md = 0;
+    if (uimode != "CreateFigure") {
+        uimode = " ";
+    }
+
 }
-function deleteObject(index){
+
+
+function movePoint(point){
+  point = waldoPoint;
+}
+
+function eraseObject(object){
   var canvas = document.getElementById("myCanvas");
   canvas.style.cursor="default";
-      points[diagram[index].topLeft] = waldoPoint;
-      points[diagram[index].bottomRight] = waldoPoint;
-      points[diagram[index].centerpoint] = waldoPoint;
-      points[diagram[index].middleDivider] = waldoPoint;
-    for(i = 0; i < diagram.length; i++){
-        if(!(diagram[i].symbolkind == 1)){
-            var temp = true;
-            for (var j = 0; j < (diagram[index].connectorRight.length ); j++) {
-                if (temp == true) {
-                    if (diagram[i].symbolkind == 4 &&
-                        (diagram[i].topLeft == diagram[index].connectorRight[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorRight[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorRight[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorRight[j].to)) {
-                        diagram.splice(i, 1);
-                        if (index > i) {
-                            index--;
-                        }
-                        i--;
-                        temp = false;
-                        j = diagram[index].connectorRight.length;
-                    }
-                }
-            }
-            for (var j = 0; j < (diagram[index].connectorLeft.length ); j++) {
-                if (temp == true) {
-                    if (diagram[i].symbolkind == 4 &&
-                        (diagram[i].topLeft == diagram[index].connectorLeft[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorLeft[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorLeft[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorLeft[j].to)) {
-                        diagram.splice(i, 1);
-                        if (index > i) {
-                            index--;
-                        }
-                        i--;
-                        temp = false;
-                        j = diagram[index].connectorLeft.length;
-                    }
-                }
-            }
-            for (var j = 0; j < (diagram[index].connectorBottom.length ); j++) {
-                if (temp == true) {
-                    if (diagram[i].symbolkind == 4 &&
-                        (diagram[i].topLeft == diagram[index].connectorBottom[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorBottom[j].from) ||
-                        (diagram[i].topLeft == diagram[index].connectorBottom[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorBottom[j].to)) {
-                        diagram.splice(i, 1);
-                        if (index > i) {
-                            index--;
-                        }
-                        i--;
-                        temp = false;
-                        j = diagram[index].connectorBottom.length;
-                    }
-                }
-            }
-            for (var j = 0; j < (diagram[index].connectorTop.length ); j++) {
-                if (temp == true) {
-                    if (diagram[i].symbolkind == 4 &&
-                        (diagram[i].topLeft == diagram[index].connectorTop[j].from ||
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].from)||
-                        (diagram[i].topLeft == diagram[index].connectorTop[j].to ||
-                        diagram[i].bottomRight == diagram[index].connectorTop[j].to)) {
-                        diagram.splice(i, 1);
-                        if (index > i) {
-                            index--;
-                        }
-                        i--;
-                        temp = false;
-                        j = diagram[index].connectorTop.length;
-                    }
-                }
-            }
-        }
-        if (temp == true){
-            if(diagram[i].symbolkind == 4 &&
-                (diagram[i].topLeft == diagram[index].centerpoint ||
-                diagram[i].bottomRight == diagram[index].centerpoint)) {
-                if (index > i) {
-                    index--;
-                }
-                diagram.splice(i, 1);
-                i--;
-            }
-        }
-    }
-    diagram.splice(index, 1);
-    updategfx();
-    return index;
 
+  object.erase();
+
+  diagram.delete(object);
+  updategfx();
 }
-function deleteSelectedObject(){
+function eraseSelectedObject(){
 		var canvas = document.getElementById("myCanvas");
 		canvas.style.cursor="default";
 		//Issue: Need to remove the crosses
 		for (var i = 0; i < diagram.length;i++){
-			if(diagram[i].targeted == true){
-		//diagram[i].targeted = false;
-		     i = deleteObject(i)-1;
-
+      var object = diagram[i];
+			if(object.targeted == true){
+		    object.targeted = false;
+		    eraseObject(object);
+        i = 0;
 		//To avoid removing the same index twice, selobj is reset
 		selobj = -1;
 			}
 		}
-	//}
+    updategfx();
 }
 function classmode()
 {
@@ -1147,8 +1138,17 @@ function linemode()
 function figuremode()
 {
 		var canvas = document.getElementById("myCanvas");
-		canvas.style.cursor="default";
-    	uimode="CreateFigure";
+		canvas.style.cursor = "default";
+    	uimode = "CreateFigure";
+    	var selectBox = document.getElementById("selectFigure");
+    	figureMode = selectBox.options[selectBox.selectedIndex].value;
+}
+
+/**
+ * Resets the select box to its default value (Create Figure)
+ */
+function resetSelectionCreateFigure() {
+	document.getElementById("selectFigure").selectedIndex = 0;
 }
 
 /**
@@ -1159,6 +1159,7 @@ function openAppearanceDialogMenu() {
 	canvas.style.cursor="default";
     $("#appearance").show();
     $("#appearance").width("auto");
+    dimDialogMenu(true);
     dialogForm();
 }
 
@@ -1167,30 +1168,76 @@ function dialogForm() {
     form.innerHTML= "No item selected<type='text'>";
 
     if(diagram[selobj].symbolkind==1){
-        form.innerHTML = "Class name: <input id='text' type='text'></br>" +
-            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+        form.innerHTML = "Class name: </br>" +
+            "<input id='nametext' type='text'></br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
-        form.innerHTML = "Attribute name: <input id='text' type='text'></br>" +
-            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>";
+        form.innerHTML = "Attribute name:</br>" +
+        "<input id='nametext' type='text'></br>" +
+        "Attribute type: </br>" +
+        "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+   			"Font family:<br>" +
+        "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+  			"Font color:<br>" +
+  			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
+        "Text size:<br>" +
+  			"<select id ='TextSize'><option value=Tiny>Tiny</option><option value=Small>Small</option><option value=Medium>Medium</option><option value=Large>Large</option></select><br>"+
+  			"<button type='submit' onclick='setTextSizeEntity()'>TextScale</button>" +
+  			"<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>" +
+  			"<button type='submit' onclick='setType(form)'>setType</button>" +
+  			"<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";
     }
     if(diagram[selobj].symbolkind==3){
-        form.innerHTML = "Entity name: <input id='text' type='text'></br>" +
-            "<button type='submit' onclick='changeName(form)'>Ok</button>" +
-            "<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button>" +
-			      "<input type='checkbox' name='Entity' value='weak' >Weak entity<br>" +
-			      "<input type='checkbox' name='Entity' value='strong' >Strong entity<br>" +
-			      "<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select>";
-
+        form.innerHTML = "Entity name: </br>" +
+            "<input id='nametext' type='text'></br>" +
+            "Entity type: </br>" +
+			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+			"Font family:<br>" +
+            "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+			"Font color:<br>" +
+			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
+            "Text size:<br>" +
+			"<select id ='TextSize'><option value=Tiny>Tiny</option><option value=Small>Small</option><option value=Medium>Medium</option><option value=Large>Large</option></select><br>"+
+			"<button type='submit' onclick='setTextSizeEntity()'>TextScale</button>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form); setEntityType(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
 }
 
-function changeName(form){
-	diagram[selobj].name=document.getElementById('text').value;
+//setTextSize(): used to change the size of the text. unifinish can's get it to work.
+function setTextSizeEntity(){
+	var scaletype = document.getElementById('TextSize').value;
+	diagram[selobj].sizeOftext = scaletype;
+	updategfx();
 
+	/*
+		Hämtar specifik entitet/attribut/detpersonenharklickat på.
+		[ovannämndklick].font=text_size+"px";
+	*/
+}
+
+
+function changeName(form){
+	diagram[selobj].name=document.getElementById('nametext').value;
+	diagram[selobj].fontColor=document.getElementById('fontColor').value;
+	diagram[selobj].font=document.getElementById('font').value;
+	diagram[selobj].attributeType=document.getElementById('attributeType').value;
+    dimDialogMenu(false);
     updategfx();
+}
+
+function setEntityType() {
+	var selectBox = document.getElementById("entityType");
+	diagram[selobj].type = selectBox.options[selectBox.selectedIndex].value;
+}
+
+function setType(form){
+
+	if(document.getElementById('attributeType').value == 'Primary key')
+	{
+		diagram[selobj].key_type = 'Primary key';
+	}
+	 updategfx();
 }
 
 /**
@@ -1198,8 +1245,36 @@ function changeName(form){
  */
 function closeAppearanceDialogMenu() {
 	$("#appearance").hide();
+    dimDialogMenu(false);
+    document.removeEventListener("click", clickOutsideDialogMenu);
 }
 
+/**
+ * Closes the dialog menu when click is done outside box.
+ */
+function clickOutsideDialogMenu(ev) {
+    $(document).mousedown(function (ev) {
+        var container = $("#appearance");
+        if (!container.is(ev.target)
+            && container.has(ev.target).length === 0) {
+            container.hide();
+            dimDialogMenu(false);
+            document.removeEventListener("click", clickOutsideDialogMenu);
+        }
+
+    });
+}
+
+function dimDialogMenu(dim) {
+    if(dim==true) {
+        $("#appearance").css("display", "block");
+        $("#overlay").css("display", "block");
+    }
+    else {
+        $("#appearance").css("display", "none");
+        $("#overlay").css("display", "none");
+    }
+}
 
 function Consolemode(action){
 
@@ -1247,14 +1322,17 @@ function drawOval(x1, y1, x2, y2) {
 }
 
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
-function deleteAllObjects()
+function clearCanvas()
 {
   console.log("Deleting");
 
-  for(i = diagram.length; i >= 0;i--){
-    deleteObject(i);
+  while(diagram.length > 0){
+    console.log(diagram.length);
+    diagram[diagram.length-1].erase();
+    diagram.pop();
   }
-	console.log("deleting done!");
+	console.log(diagram.length + " " + points.length);
+  updategfx();
 }
 
 var consloe={};
@@ -1289,53 +1367,62 @@ function debugMode()
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
 var mousedownX = 0; var mousedownY = 0;
-var mouseupX = 0; var mouseupY = 0;
+var mousemoveX = 0; var mousemoveY = 0;
 var mouseDiffX = 0; var mouseDiffY = 0;
-var newCanvasX = 0; var newCanvasY = 0;
 
 function movemode(e)
 {
 	uimode="MoveAround";
 	var canvas = document.getElementById("myCanvas");
-	canvas.style.cursor="all-scroll";
-	canvas.addEventListener('mousedown', mousedownposcanvas, false);
-	canvas.addEventListener('mouseup', mouseupposcanvas, false);
+	var button = document.getElementById("moveButton").className;
+	var buttonStyle = document.getElementById("moveButton");
+	if(button == "unpressed"){
+		buttonStyle.className="pressed";
+		canvas.style.cursor="all-scroll";
+		canvas.addEventListener('mousedown', getMousePos, false);
+		canvas.addEventListener('mouseup', mouseupcanvas, false);
+		buttonStyle.style.background="grey";
+		buttonStyle.style.color="white";
+	}else{
+		buttonStyle.className="unpressed";
+		mousedownX = 0; mousedownY = 0;
+		mousemoveX = 0; mousemoveY = 0;
+		mouseDiffX = 0; mouseDiffY = 0;
+		var canvas = document.getElementById("myCanvas");
+		canvas.style.cursor="default";
+		canvas.removeEventListener('mousedown', getMousePos, false);
+		canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+		canvas.removeEventListener('mouseup', mouseupcanvas, false);
+		buttonStyle.style.background="";
+		buttonStyle.style.color="";
+	}
 }
-function mousedownposcanvas(e){
-	mousedownX = e.pageX;
-	mousedownY = e.pageY;
-}
-function mouseupposcanvas(e){
-	mouseupX = e.pageX;
-	mouseupY = e.pageY;
-	movecanvas();
-}
-function movecanvas(){
+function getMousePos(e){
 	var canvas = document.getElementById("myCanvas");
-	mouseDiffX = (mousedownX - mouseupX);
-	mouseDiffY = (mousedownY - mouseupY);
-	newCanvasX = (mouseDiffX+newCanvasX);
-	newCanvasY = (mouseDiffY+newCanvasY);
-
+	mousedownX = e.clientX;
+	mousedownY = e.clientY;
+	console.log("Down: "+mousedownX+" | "+mousedownY);
+	canvas.addEventListener('mousemove', mousemoveposcanvas, false);
+}
+function mousemoveposcanvas(e){
+	mousemoveX = e.clientX;
+	mousemoveY = e.clientY;
+	console.log("Move: "+mousemoveX+" | "+mousemoveY);
+	var canvas = document.getElementById("myCanvas");
+	mouseDiffX = (mousedownX - mousemoveX);
+	mouseDiffY = (mousedownY - mousemoveY);
+	mousedownX = mousemoveX;
+	mousedownY = mousemoveY;
+	console.log("Diff: "+mouseDiffX+" | "+mouseDiffY);
 	ctx.clearRect(startX,startX,widthWindow,heightWindow);
-	ctx.translate(newCanvasX,newCanvasY);
-	// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
+	ctx.translate(mouseDiffX,mouseDiffY);
 	erEntityA.sortAllConnectors();
-	// Redraw diagram
 	diagram.draw();
-	// Draw all points as crosses
 	points.drawpoints();
-	mousedownX = 0; mousedownY = 0;
-	mouseupX = 0; mouseupY = 0;
-	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
-	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
-	canvas.style.cursor="default";
 }
-function stopmovemode(){
+function mouseupcanvas(e){
 	var canvas = document.getElementById("myCanvas");
-	canvas.style.cursor="default";
-	canvas.removeEventListener('mousedown', mousedownposcanvas, false);
-	canvas.removeEventListener('mouseup', mouseupposcanvas, false);
+	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 }
 
 //----------------------------------------
