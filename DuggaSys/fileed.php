@@ -26,7 +26,7 @@ pdoConnect();
 
 	<!-- content START -->
 	<div id="content" >
-	<button onclick="switchcontent()" type="button">Switch to One table</button>
+	<button class="switchContent" onclick="switchcontent()" type="button">Switch to One table</button>
 		<div id="alllinks" style='width:100%;'>
 			<table class='list list--nomargin' style='margin-bottom:8px;' >
 				<tr><th><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>
