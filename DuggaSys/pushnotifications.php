@@ -55,7 +55,14 @@ if (isset($_POST['action']) && $_POST['action'] == "pushsuccess") {
 } else if (checklogin() && isSuperUser($_SESSION['uid'])) {
 	if (isset($_POST['action']) && $_POST['action'] == "send") {
 		include_once "../Shared/pushnotificationshelper.php";
-		echo sendPushNotification($_POST['user'], $_POST['message']);
+		$results = sendPushNotification($_POST['user'], $_POST['message']);
+		if ($results === true) {
+			$response = array("success" => true);
+			echo json_encode($response);
+		} else {
+			$response = array("success" => false, "error_message" => $results);
+			echo json_encode($response);
+		}
 	} else {
 		?>
 
