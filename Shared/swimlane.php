@@ -32,33 +32,46 @@
           <text x="70" y="670" fill="black">Week 9</text>
 
           <?php
-            date_default_timezone_set("Europe/Stockholm");
+          date_default_timezone_set("Europe/Stockholm");
 
-            // Include basic application services!
-            include_once "../Shared/sessions.php";
-            include_once "../Shared/basic.php";
+          // Include basic application services!
+          include_once "../Shared/sessions.php";
+          include_once "../Shared/basic.php";
 
-            pdoConnect();
-            session_start();
+          pdoConnect();
+          session_start();
 
-            $course = 2;
+          $course = 2;
 
-              $querystring="SELECT entryname FROM listentries WHERE cid={$course} AND kind=4";
-              $stmt = $pdo->prepare($querystring);
-              $stmt->bindParam(':cid', $cid);
-              $stmt->bindParam(':uid', $userid);
-              $stmt->bindParam(':coursevers', $coursevers);
+          $querystring="SELECT coursecode, coursename FROM course WHERE cid=:cid";
+          $stmt = $pdo->prepare($querystring);
+          $stmt->bindParam(':cid', $course);
 
-              try{
-                  $stmt->execute();
-              }catch (PDOException $e){
-                  // Error handling to $debug
-              }
+          try{
+              $stmt->execute();
+          }catch (PDOException $e){
+              // Error handling to $debug
+          }
+
+          foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+              echo '<text y="15" x="10" fill="black">' . $row['coursecode'] . '</text>';
+              echo '<text y="35" x="10" fill="black">' . $row['coursename'] . '</text>';
+          }
+
+          $querystring="SELECT entryname FROM listentries WHERE cid=:cid AND kind=4";
+          $stmt = $pdo->prepare($querystring);
+          $stmt->bindParam(':cid', $course);
+
+          try{
+              $stmt->execute();
+          }catch (PDOException $e){
+              // Error handling to $debug
+          }
 
           $white = true;
           $i = 0;
           foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-              echo '<text y="30" x="' . (($i * 200) + 230) . '" fill="black">' . $row['entryname'] . '</text>';
+              echo '<text y="50" x="' . (($i * 200) + 230) . '" fill="black">' . $row['entryname'] . '</text>';
               echo '<rect y="70" x="' . (($i * 200) + 200) . '" width="200" height="700" style="fill:rgb(';
               if ($white){
                   echo '255,255,255';
