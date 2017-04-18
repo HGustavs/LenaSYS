@@ -8,10 +8,10 @@ var versions;
 var courselist;
 
 function setup(){  	
-	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "RESULT");
+	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
 }
 
-function returnedResults(data)
+function returnedGroup(data)
 {
 		entries=data.entries;
 		moments=data.moments;
