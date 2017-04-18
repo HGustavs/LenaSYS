@@ -493,13 +493,24 @@ CREATE TABLE `usergroup` (
 
 /* Create table user_usergroup. This table represents the relation between users and usergroups. */
 CREATE TABLE `user_usergroup` (
-  `uid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `uid` int(10) UNSIGNED NOT NULL,
   `ugid` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`uid`,`ugid`),
   KEY `ugid` (`ugid`),
   KEY `uid` (`uid`),
   CONSTRAINT `usergroupid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`),
   CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/* Create table usergroup_listentries. This table represents the relation between usergroups and listentries (coarse moments) */
+CREATE TABLE `usergroup_listentries` (
+  `ugid` int(10) UNSIGNED NOT NULL,
+  `lid` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ugid`,`lid`),
+  KEY `lid` (`lid`),
+  KEY `ugid` (`ugid`,`lid`),
+  CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`),
+  CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`);
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /*table used for checking participation. i.e participation is 0 = not participated, 1 = participated.*/
