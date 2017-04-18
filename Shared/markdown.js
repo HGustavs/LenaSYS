@@ -282,7 +282,7 @@ function handleTable(currentLine, prevLine, nextLine) {
 
 	// open new table
 	if(!isTable(prevLine)) {
-    	markdown += "<table border='1' style='margin-top: 10px;'><thead style='color: red;'>";
+    	markdown += "<table><thead>";
     }
 
     // configure alignment
@@ -309,13 +309,13 @@ function handleTable(currentLine, prevLine, nextLine) {
             else if(tableAlignmentConf[i] === 2) alignment = "right";
             else alignment = "left";
 
-            markdown += "<td style='width: 50px; text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
+            markdown += "<td style='text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
         }
         markdown += "</tr>";
 
         // close thead and open tbody
         if(!isTable(prevLine)) {
-            markdown += "</thead><tbody style='color: blue;'>";
+            markdown += "</thead><tbody>";
         }
     }
 
