@@ -27,6 +27,7 @@ var acanvas;					// Canvas Element
 var sel;							// Selection state
 var cx,cy=0;					// Current Mouse coordinate x and y
 var sx,sy=0;					// Start Mouse coordinate x and y
+var zv = 1.00;				// The value of the zoom
 var mox,moy=0;				// Old mouse x and y
 var md=0;							// Mouse state
 var hovobj=-1;
@@ -726,6 +727,7 @@ function initcanvas()
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
+		"<div id='valuesCanvas' style='position: fixed; left: 10px; bottom:130px;'><p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p></div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
 		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
 	var canvas = document.getElementById("myCanvas");
@@ -1396,19 +1398,28 @@ function mousemoveposcanvas(e){
 	var canvas = document.getElementById("myCanvas");
 	mouseDiffX = (mousedownX - mousemoveX);
 	mouseDiffY = (mousedownY - mousemoveY);
+	startX += mouseDiffX;
+	startY += mouseDiffY;
 	mousedownX = mousemoveX;
 	mousedownY = mousemoveY;
-	ctx.clearRect(startX,startY,widthWindow,heightWindow);
+	ctx.clearRect(0,0,widthWindow,heightWindow);
 	ctx.translate(mouseDiffX,mouseDiffY);
 	erEntityA.sortAllConnectors();
 	diagram.draw();
 	points.drawpoints();
+	reWrite();
 }
 function mouseupcanvas(e){
 	var canvas = document.getElementById("myCanvas");
 	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 }
 
+// Function that rewrites the values of zoom and x+y that's under the canvas element
+
+function reWrite(){
+	var valuesCanvas = document.getElementById("valuesCanvas");
+	valuesCanvas.innerHTML="<p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
+}	
 //----------------------------------------
 // Renderer
 //----------------------------------------
