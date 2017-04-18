@@ -10,6 +10,9 @@ Markdown support javascript
 -------------==============######## Documentation End ###########==============-------------
 
 */
+// GLOBALS
+var tableAlignmentConf = [];
+
 
 //Functions for gif image
 //Fetches the picture and sets its properties
@@ -284,29 +287,46 @@ function handleTable(currentLine, prevLine, nextLine) {
 
     // configure alignment
     if(currentLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+	    // tableAlignmentConf
+
+
         for(var i = 0; i < columns.length; i++) {
             var column = columns[i].trim();
             // align center
             if(column.match(/[:][-]*[:]/gm)) {
-                console.log("center", column);
+                tableAlignmentConf[i] = 1;
             }
             // align right
             else if(column.match(/[-]*[:]/gm)) {
-                console.log("right", column);
+                tableAlignmentConf[i] = 2;
             }
             // align left
             else {
-                console.log("left", column);
+                tableAlignmentConf[i] = 3;
             }
         }
     }
     // handle table row
     else {
+	    console.log(tableAlignmentConf);
         markdown += "<tr>"
         for(var i = 0; i < columns.length; i++) {
-            markdown += "<td style='padding: 15px;'>" + columns[i].trim() + "</td>";
+            var alignment = "";
+            // align text in the center
+            if(tableAlignmentConf[i] === 1){
+                alignment = "center";
+            }
+            //align text to the right
+            else if(tableAlignmentConf[i] === 2){
+                alignment = "right";
+            }
+            // align text to the left
+            else{
+                alignment = "left";
+            }
+            markdown += "<td style='width: 50px; text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
         }
-        markdown += "</td>";
+        markdown += "</tr>";
     }
 
 
