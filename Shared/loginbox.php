@@ -8,7 +8,7 @@
 		<div id='login'>
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
-				<div style="cursor: pointer;" onclick="closeWindows()">x</div>
+				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
 			  <div class="table-wrap">
 				<table>
@@ -57,7 +57,7 @@
 		<div id='newpassword' style="display:none">
 			<div class='loginBoxheader' id="passwordid">
 				<h3>New Password</h3>
-				<div onclick="closeWindows()">x</div>
+				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
 			  <div class="table-wrap">
 				<table>
@@ -87,7 +87,7 @@
 		<div id='showsecurityquestion' style="display:none">
 			<div class='loginBoxheader' id="securityid">
 				<h3>New Password</h3>
-				<div onclick="closeWindows()">x</div>
+				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
 			  <div class="table-wrap">
 				<table>
