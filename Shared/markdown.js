@@ -282,57 +282,46 @@ function handleTable(currentLine, prevLine, nextLine) {
 
 	// open new table
 	if(!isTable(prevLine)) {
-    	markdown += "<table border='1' style='margin-top: 10px;'>";
+    	markdown += "<table border='1' style='margin-top: 10px;'><thead style='color: red;'>";
     }
 
     // configure alignment
     if(currentLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
-	    // tableAlignmentConf
-
-
         for(var i = 0; i < columns.length; i++) {
             var column = columns[i].trim();
+
             // align center
-            if(column.match(/[:][-]*[:]/gm)) {
-                tableAlignmentConf[i] = 1;
-            }
+            if(column.match(/[:][-]*[:]/gm)) tableAlignmentConf[i] = 1;
             // align right
-            else if(column.match(/[-]*[:]/gm)) {
-                tableAlignmentConf[i] = 2;
-            }
+            else if(column.match(/[-]*[:]/gm)) tableAlignmentConf[i] = 2;
             // align left
-            else {
-                tableAlignmentConf[i] = 3;
-            }
+            else tableAlignmentConf[i] = 3;
         }
     }
     // handle table row
     else {
-	    console.log(tableAlignmentConf);
+
         markdown += "<tr>"
         for(var i = 0; i < columns.length; i++) {
             var alignment = "";
-            // align text in the center
-            if(tableAlignmentConf[i] === 1){
-                alignment = "center";
-            }
-            //align text to the right
-            else if(tableAlignmentConf[i] === 2){
-                alignment = "right";
-            }
-            // align text to the left
-            else{
-                alignment = "left";
-            }
+
+            if(tableAlignmentConf[i] === 1) alignment = "center";
+            else if(tableAlignmentConf[i] === 2) alignment = "right";
+            else alignment = "left";
+
             markdown += "<td style='width: 50px; text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
         }
         markdown += "</tr>";
-    }
 
+        // close thead and open tbody
+        if(!isTable(prevLine)) {
+            markdown += "</thead><tbody style='color: blue;'>";
+        }
+    }
 
     // close table
 	if(!isTable(nextLine)) {
-    	markdown += "</table>";
+    	markdown += "</tbody></table>";
     }
 
     return markdown;
