@@ -822,26 +822,6 @@ function returnedSection(data)
 					// Do nothing
 				}
 
-				// Participant list
-                if(data['writeaccess']){
-                    str+="<td style='width:24px;";
-
-                        if (kk == 1) {
-                            str += "box-shadow: 0px 3px 2px #aaa inset;";
-                        }
-
-                        if (parseInt(item['kind']) === 0) {
-
-                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
-                        } else if (parseInt(item['kind']) === 1) {
-                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
-                        } else if (parseInt(item['kind']) === 4) {
-                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
-                        } else {
-                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
-                        }
-                    }
-
 				// Cog Wheel
 				if(data['writeaccess']){
 						str+="<td style='width:24" +
