@@ -488,7 +488,15 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	} else if(kind=="CODEVIEW"){
+	}else if(kind=="GROUP"){
+			$.ajax({
+				url: "groudedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedGroup
+			});
+	}else if(kind=="CODEVIEW"){
 			$.ajax({
 				url: "codeviewerService.php",
 				type: "POST",
