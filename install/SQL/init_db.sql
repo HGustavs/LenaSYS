@@ -510,7 +510,7 @@ CREATE TABLE `usergroup_listentries` (
   KEY `lid` (`lid`),
   KEY `ugid` (`ugid`,`lid`),
   CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`),
-  CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`);
+  CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /*table used for checking participation. i.e participation is 0 = not participated, 1 = participated.*/
