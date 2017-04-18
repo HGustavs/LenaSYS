@@ -1224,6 +1224,11 @@ function setType(form){
 	{
 		diagram[selobj].key_type = 'Primary key';
 	}
+	
+	else if(document.getElementById('attributeType').value == 'Normal')
+	{
+		diagram[selobj].key_type = 'Normal';
+	}
 	 updategfx();
 }
 
