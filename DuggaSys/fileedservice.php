@@ -57,7 +57,7 @@ $files=array();
 $lfiles =array();
 $gfiles =array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE (cid=:cid or isGlobal='1') ORDER BY filename;");
+	$query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE (cid=:cid or isGlobal='1') ORDER BY filename;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -68,7 +68,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		$entry = array(
 			'fileid' => $row['fileid'],
 			'filename' => $row['filename'],
-			'kind' => $row['kind']
+			'kind' => $row['kind'],
+			'filesize' => $row['filesize'],
+			'uploaddate' => $row['uploaddate']
 		);
 
 		array_push($entries, $entry);
