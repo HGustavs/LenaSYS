@@ -490,7 +490,7 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="GROUP"){
 			$.ajax({
-				url: "groudedservice.php",
+				url: "groupedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
