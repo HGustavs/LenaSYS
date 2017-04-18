@@ -591,6 +591,13 @@ function Symbol(kind) {
 			ctx.lineTo(x1+((x2-x1)*0.5)+(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
 			ctx.strokeStyle = "#000";
 			ctx.stroke();
+		} else if(this.key_type == 'Normal')
+		{
+			ctx.beginPath(1);
+			ctx.moveTo(x1+((x2-x1)*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.lineTo(x1+((x2-x1)*0.5)-(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.lineTo(x1+((x2-x1)*0.5)+(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.strokeStyle = "#000";
 		}
 
       }else if(this.symbolkind==3){
