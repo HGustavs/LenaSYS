@@ -724,11 +724,13 @@ function initcanvas()
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
+    "<button id='zoomInButton' class='unpressed' style='right: 0; position: fixed; margin-right: 120px;'>+</button>" +
+    "<button id='zoomOutButton' class='unpressed' style='right: 0; position: fixed; margin-right: 100px;'>-</button>" +
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
-		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
+		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<div id='valuesCanvas' style='position: fixed; left: 10px; bottom:130px;'><p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p></div>"+
-		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
+    "<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
 		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
 	var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
@@ -740,11 +742,77 @@ function initcanvas()
 
 		updategfx();
 
-		var buttonStyle = document.getElementById("moveButton");
-		buttonStyle.addEventListener('click', movemode, false);
+		document.getElementById("moveButton").addEventListener('click', movemode, false);
 
+    document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
+
+		document.getElementById("zoomOutButton").addEventListener('click', zoomOutMode, false);
+
+    canvas.addEventListener("dblclick", doubleclick, false);
 }
 
+function zoomInMode(e){
+  uimode="ZoomIn";
+  var canvas = document.getElementById("myCanvas");
+  canvas.removeEventListener("click", zoomOutClick, false);
+  canvas.removeEventListener("dblclick", doubleclick, false);
+  var zoomInClass = document.getElementById("zoomInButton").className;
+  var zoomInButton = document.getElementById("zoomInButton");
+  document.getElementById("zoomOutButton").className= "unpressed";
+  document.getElementById("moveButton").className= "unpressed";
+  if(zoomInClass == "unpressed"){
+    zoomInButton.className = "pressed";
+    canvas.style.cursor = "zoom-in";
+    //canvas.addEventListener("mousemove", zoomIndicator, false);
+    canvas.addEventListener("click", zoomInClick, false);
+  } else {
+    canvas.addEventListener("dblclick", doubleclick, false);
+    zoomInButton.className = "unpressed";
+    canvas.style.cursor = "default";
+    canvas.removeEventListener("click", zoomInClick, false);
+  }
+}
+
+function zoomOutMode(e){
+  uimode="ZoomOut";
+  var canvas = document.getElementById("myCanvas");
+  canvas.removeEventListener("click", zoomInClick, false);
+  canvas.removeEventListener("dblclick", doubleclick, false);
+  var zoomOutClass = document.getElementById("zoomOutButton").className;
+  var zoomOutButton = document.getElementById("zoomOutButton");
+  document.getElementById("zoomInButton").className= "unpressed";
+  document.getElementById("moveButton").className= "unpressed";
+
+  if(zoomOutClass == "unpressed"){
+    zoomOutButton.className = "pressed";
+    canvas.style.cursor = "zoom-out";
+    //canvas.addEventListener("mousemove", zoomIndicator, false);
+    canvas.addEventListener("click", zoomOutClick, false);
+  } else {
+    canvas.addEventListener("dblclick", doubleclick, false);
+    zoomOutButton.className = "unpressed";
+    canvas.style.cursor = "default";
+    canvas.removeEventListener("click", zoomOutClick, false);
+  }
+}
+
+function zoomInClick(){
+  zv+=0.1;
+  reWrite();
+  ctx.scale(1.1,1.1);
+}
+
+function zoomOutClick(){
+  zv-=0.1;
+  reWrite();
+  ctx.scale(0.9,0.9);
+}
+
+function zoomIndicator(e){
+  var mouseX = e.clientX;
+  var mouseY = e.clientY;
+  console.log(mouseX +" | "+ mouseY);
+}
 // Function that is used for the resize
 // Making the page more responsive
 
@@ -754,6 +822,10 @@ function canvassize()
 	heightWindow = (window.innerHeight-244);
 	document.getElementById("myCanvas").setAttribute("width", widthWindow);
 	document.getElementById("myCanvas").setAttribute("height", heightWindow);
+  ctx.clearRect(0,0,widthWindow,heightWindow);
+	ctx.translate(startX,startY);
+  ctx.scale(1,1);
+  ctx.scale(zv,zv);
 }
 
 // Listen if the window is the resized
@@ -943,16 +1015,15 @@ function mousedownevt(ev)
 
 }
 
-
 function doubleclick(ev)
 {
-	if(diagram[selobj].inside(cx,cy)){
-        openAppearanceDialogMenu();
-        document.getElementById('nametext').value = diagram[selobj].name;
-    		document.getElementById('fontColor').value = diagram[selobj].fontColor;
-    		document.getElementById('font').value = diagram[selobj].font;
-    		document.getElementById('attributeType').value = diagram[selobj].attributeType;
-  }
+    if(diagram[selobj].inside(cx,cy)){
+          openAppearanceDialogMenu();
+          document.getElementById('nametext').value = diagram[selobj].name;
+          document.getElementById('fontColor').value = diagram[selobj].fontColor;
+          document.getElementById('font').value = diagram[selobj].font;
+          document.getElementById('attributeType').value = diagram[selobj].attributeType;
+    }
 }
 
 function mouseupevt(ev){
@@ -1364,13 +1435,16 @@ function movemode(e, t)
 	var canvas = document.getElementById("myCanvas");
 	var button = document.getElementById("moveButton").className;
 	var buttonStyle = document.getElementById("moveButton");
+  canvas.removeEventListener("click", zoomOutClick, false);
+  canvas.removeEventListener("click", zoomInClick, false);
+  canvas.removeEventListener("dblclick", doubleclick, false);
+  document.getElementById("zoomInButton").className= "unpressed";
+  document.getElementById("zoomOutButton").className= "unpressed";
 	if(button == "unpressed"){
 		buttonStyle.className="pressed";
 		canvas.style.cursor="all-scroll";
 		canvas.addEventListener('mousedown', getMousePos, false);
 		canvas.addEventListener('mouseup', mouseupcanvas, false);
-		buttonStyle.style.background="grey";
-		buttonStyle.style.color="white";
 	}else{
 		buttonStyle.className="unpressed";
 		mousedownX = 0; mousedownY = 0;
@@ -1381,8 +1455,6 @@ function movemode(e, t)
 		canvas.removeEventListener('mousedown', getMousePos, false);
 		canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 		canvas.removeEventListener('mouseup', mouseupcanvas, false);
-		buttonStyle.style.background="";
-		buttonStyle.style.color="";
 		mousemoveevt(e,t);
 	}
 }
@@ -1414,12 +1486,13 @@ function mouseupcanvas(e){
 	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 }
 
+
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 
 function reWrite(){
 	var valuesCanvas = document.getElementById("valuesCanvas");
-	valuesCanvas.innerHTML="<p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
-}	
+	valuesCanvas.innerHTML="<p>Zoom: "+Math.round((zv*100))+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
+}
 //----------------------------------------
 // Renderer
 //----------------------------------------

@@ -300,7 +300,7 @@ p {
 }
 
 #Sectionlist .moment {
-  
+
     color:#ffffff;
     background-color: #927b9e;
 	  cursor: pointer;
@@ -1085,10 +1085,20 @@ input.new-item-button:hover {
   text-align: right;
 }
 
+.unpressed {
+  background: ;
+  color: ; 
+}
+
+.pressed {
+background: grey;
+color: white;
+}
+
 input.large-button {
   width:160px !important;
   height:48px !important;
-  line-height:48px !important;  
+  line-height:48px !important;
 }
 
 .list {
@@ -1100,7 +1110,7 @@ input.large-button {
   font-size: 16px;
 }
 
-.list tbody tr:nth-child(odd) { 
+.list tbody tr:nth-child(odd) {
   background-color: #ccc;
 }
 
@@ -1119,7 +1129,7 @@ input.large-button {
 }
 
 .list td {
-  border-right:2px solid #dbd0d8; 
+  border-right:2px solid #dbd0d8;
   line-height:28px;
   padding-left:8px;
 }
@@ -1145,8 +1155,8 @@ input.large-button {
   border:none;
 }
 
-.list tr:hover { 
-  /*background-color: #dbd0d8;*/ 
+.list tr:hover {
+  /*background-color: #dbd0d8;*/
 }
 
 .list--nomargin {
@@ -1158,13 +1168,13 @@ input.large-button {
 }
 
 .list#testTable td {
-  padding:8px; 
+  padding:8px;
   text-align:center;
   border:none;
 }
 
 .list#testTable th {
-  line-height:45px; 
+  line-height:45px;
   box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);
 }
 
@@ -1180,11 +1190,11 @@ input.large-button {
   padding:5px;
 }
 
-.selectedtr { 
+.selectedtr {
   border-bottom:none !important;
 }
 
-.list#testTable input { 
+.list#testTable input {
   border-width: 2px !important;
   border-style: inset !important;
 }
@@ -1200,7 +1210,7 @@ input.large-button {
   width:100%;
   padding:1px;
   border-left: 2px solid #dbd0d8;
-  border-bottom:2px solid #dbd0d8; 
+  border-bottom:2px solid #dbd0d8;
   font-family: hack,"Lucida Console", Monaco, monospace;
 }
 
@@ -1210,10 +1220,10 @@ input.large-button {
 }
 
 .markinglist  th {
-  background:#614875; 
+  background:#614875;
   color:#fff;
-  font-style: italic; 
-  font-size: 12px; 
+  font-style: italic;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -1224,7 +1234,7 @@ input.large-button {
 }
 
 .markinginnertable  td {
-  color:#000;border:none; 
+  color:#000;border:none;
 }
 
 .markinglist tr:hover {
@@ -1237,7 +1247,7 @@ input.large-button {
 
 .feedback-list caption {
   border-left:2px solid #dbd0d8;
-  background:#614875; 
+  background:#614875;
   color:#fff;line-height:28px;
 }
 
@@ -2032,12 +2042,12 @@ table {
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
-  background: url("../icons/PlayT.svg"); 
+  background: url("../icons/PlayT.svg");
   transform: rotate(0deg);
 }
 
 .ui-datepicker .ui-datepicker-prev span {
-  background: url("../icons/PlayT.svg"); 
+  background: url("../icons/PlayT.svg");
   transform: rotate(180deg);
 }
 /*end, styling for contribution.php*/
