@@ -1157,31 +1157,68 @@ input.large-button {
   width:110px;
 }
 
-.list#testTable td {
-  padding:8px; 
-  text-align:center;
-  border:none;
+
+.list#testTable td{
+    padding:8px; 
+    text-align:center;border:none;
 }
 
-.list#testTable th {
-  line-height:45px; 
-  box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);
+.list#testTable th{
+    line-height:45px;
+    box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);
 }
 
-.list#testTable tr {
-  line-height:45px;
+.list#testTable tr{
+    line-height:45px; 
+    border-bottom:1px solid gray;
+}
+.list#testTable tr>tr{
+    line-height:45px; 
+    border-bottom:none;
 }
 
 .list#testTable .variantInfo {
-  display:none;
+    display:none;
+}
+
+.list#testTable #plorf:hover,  .list#testTable #dorf:hover {
+    cursor:pointer;
+}
+
+.list#testTable #plorf, .list#testTable #dorf {
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2); 
+    padding:10px;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
-  padding:5px;
+    padding:5px;
 }
 
-.selectedtr { 
-  border-bottom:none !important;
+.selectedtr {
+    border-bottom:none !important;
+}
+
+.list#testTable input {
+    border-width: 2px !important; 
+    border-style: inset !important;
+}
+
+#testinnertable {
+    background:#fff;
+    box-shadow:none;
+    border-top: none;
+    border-bottom: none;
+}
+
+#testinnertable tr {
+    border-bottom: none !important;
+    background-color:white;
+}
+
+span.arrow {
+    padding:10px; 
+    cursor:pointer; 
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
 
 .list#testTable input { 
