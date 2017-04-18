@@ -8,7 +8,7 @@
 		<div id='login'>
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
-				<div onclick="closeWindows()">x</div>
+				<div style="cursor: pointer;" onclick="closeWindows()">x</div>
 			</div>
 			  <div class="table-wrap">
 				<table>
