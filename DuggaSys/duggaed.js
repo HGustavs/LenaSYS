@@ -187,6 +187,7 @@ function showVariant(param){
         if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
             $(variantId).hide();
             $(duggaId).removeClass("selectedtr");
+            $(arrowId).html("&#x25BC;");
             if (index > -1) {
                variant.splice(index, 1);
             }
@@ -194,6 +195,7 @@ function showVariant(param){
         } else {
             $(duggaId).addClass("selectedtr");
             $(variantId).slideDown(); 
+            $(arrowId).html("&#9658;");
         }
         
         $(variantId).css("border-bottom", "1px solid gray");
@@ -346,6 +348,13 @@ function returnedDugga(data)
     var length = variant.length;
     for(index = 0;  index < length; index++){
         showVariant(variant[index]);
+    }
+    
+    var variantLength = data['entries'].length;
+    for(idx = 0; idx < variantLength; idx++) {
+        if (!document.getElementById("variantInfo"+idx) && document.getElementById("dugga"+idx)) {
+            $("#arrow"+idx).hide();
+        }
     }
 }
 
