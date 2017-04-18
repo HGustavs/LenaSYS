@@ -49,13 +49,14 @@ pdoConnect();
 		
 			<div id="changePassword" style="margin-right:60px;">
 				<h3>Change password</h3>
+				<p style="max-width:165px">(max 72 characters)</p>
 				<form method="post">
 					<label for="currentPassword2">Current password</label><br/>
-					<input type="password" id="currentPassword2" placeholder="Current password" /><br/><br/>
+					<input type="password" id="currentPassword2" placeholder="Current password" maxlength="72"/><br/><br/>
 					<label for="newPassword">New password</label><br/>
-					<input type="password" id="newPassword" placeholder="New password" /><br/>
+					<input type="password" id="newPassword" placeholder="New password" maxlength="72"/><br/>
 					<label for="newPassword2">New password again</label><br/>
-					<input type="password" id="newPassword2" placeholder="New password again" /><br/><br/>
+					<input type="password" id="newPassword2" placeholder="New password again" maxlength="72"/><br/><br/>
 					<button type="button" id="savePassword">Save</button><br/><br/>
 				</form>
 			</div>
