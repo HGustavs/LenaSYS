@@ -733,7 +733,7 @@ header td {
   margin-left: 1px;
 }
 
-.loginBox {
+.loginBox, .expiremessagebox {
   display:block;
   padding:4px;
   background-color: #ccc;
