@@ -56,31 +56,40 @@ pdoConnect();
 			<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
-			<div id='inputwrapper-color' class='inputwrapper'><span>Color:</span><select id='rowColor' ></select></div>
 			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
-			<div id='inputwrapper-comments' class='inputwrapper'><span>Comment for deadline:</span><input type='text' class='textinput' id='comments' value='comments' placeholder="Deadline comment" /></div>
+			<div id='inputwrapper-comment' class='inputwrapper'><span>Comment for deadline:</span><input type='text' class='textinput' id='deadlinecomment' value='deadlinecomment' placeholder="Deadline comment" /></div>
 		</div>
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
-			<input style='float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' /> 
-			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' /> 
-			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();' /> 
-			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' /> 
-    </div>
+			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteItem();' />
+			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateItem();' />
+		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
 
 
-	<!-- New Version Dialog START -->
+    <!-- Edit participant Dialog START -->
+    <div id='editParticipant' class='loginBox' style='width:460px;display:none;'>
+        <div class='loginBoxheader'>
+            <h3>Edit Participant</h3>
+            <div onclick='closeWindows(); closeSelect();'>x</div>
+        </div>
+        <div style='padding:5px;'>
+            <input type='hidden' id='lid' value='Toddler' />
+    </div>
+    <!-- Edit Participant Dialog END -->
+
+
+	<!-- New Verison Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>New Course Version</h3>
+			<h3>New Course Verison</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID'  maxlength='8'/></div>
+			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 		</div>
@@ -88,17 +97,17 @@ pdoConnect();
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
 		</div>
 	</div>
-	<!-- New Version Dialog END -->
+	<!-- New Verison Dialog END -->
 
-	<!-- Edit Version Dialog START -->
+	<!-- Edit Verison Dialog START -->
 	<div id='editCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>Edit Course Version</h3>
+			<h3>Edit Course Verison</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
-			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
+			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name' /></div>
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 		</div>
@@ -106,7 +115,7 @@ pdoConnect();
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />
 		</div>
 	</div>
-	<!-- Edit Version Dialog END -->
+	<!-- Edit Verison Dialog END -->
 
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBox' style='width:500px;display:none;'>

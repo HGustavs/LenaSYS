@@ -231,7 +231,7 @@ function createVersion(){
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
 	var copycourse = $("#copyvers").val();
-	var comments = $("#comments").val();
+	var deadlinecomment = $("#deadlinecomment").val();
 
 	if (versid=="" || versname=="") {
 		alert("Version Name and Version ID must be entered!");

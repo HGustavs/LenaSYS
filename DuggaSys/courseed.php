@@ -86,10 +86,10 @@ setcookie("loginvar", $loginvar);
 	</div>
 	<!-- Edit Section Dialog END -->
 
-	<!-- New Version Dialog START -->
+	<!-- New Verison Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>New Course Version</h3>
+			<h3>New Course Verison</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
@@ -105,7 +105,7 @@ setcookie("loginvar", $loginvar);
 			<input class='submit-button' type='button' value='Create' title='Create new version' onclick='createVersion();' />
 		</div>
 	</div>
-	<!-- New Version Dialog END -->
+	<!-- New Verison Dialog END -->
 
 </body>
 </html>

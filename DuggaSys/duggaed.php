@@ -70,31 +70,27 @@ pdoConnect();
 		</div>
 		<div style='padding:5px;display:flex;'>
 			<input type='hidden' id='vid' value='Toddler' />
-			<div id="leftDivDialog">
-				<form name="jsonform" id="jsonform">
+
+			<div id="leftDivDialog" style="width:67%;float:left;">
+				<div id="formDivDialog" style="float:left">
 					<!-- Instruction for assignment -->
-					<div class="inputwrapper" style="height:80px">
-						<fieldset style="width:90%">
+					<div class="inputwrapper" style="height:100px">
+						<fieldset style="width:90%;max-width:250px;">
 							<legend>Instruction file</legend>
-							<div style="display:flex;flex-wrap:nowrap;flex-direction:row;">
-								<select name="type" id="type" style="flex:1">
-									<option value="pick"> Pick filetype </option>
-									<option value="md">Markdown</option>
-									<option value="pdf">PDF</option>
-									<option value="html">HTML</option>
-								</select><br/>
-								<input type="text" name="filelink" placeholder="File link" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;"><br/>
-							</div>
+							<label for="filename">Type:</label>
+							<select name="filename" id="filename" style="margin-bottom:-1px;width:160px;">
+								<option value="pick"> Pick filetype </option>
+								<option value="md">Markdown</option>
+								<option value="pdf">PDF</option>
+							</select><br/>
+							<label for="filelink">Filelink:</label><input type="text" name="filelink" id="filelink"><br/>
+
 						</fieldset>
 					</div>
 					<!-- Submissions for dugga -->
 					<div class="inputwrapper" style="height:240px">
 						<div id="duggaSubmissionForm">
-							<fieldset style="width:90%">
-								<legend>Submission types</legend>
-								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;max-height:180px;overflow:auto;"></div>
-              </fieldset>
-              
+
 							<fieldset style="width:90%;max-width:250px;">
 								<legend>New submission</legend>
 								<label for="name">Name:</label><input type="text" name="name" id="name" style="margin-bottom:3px"/><br/>
@@ -105,17 +101,25 @@ pdoConnect();
 									<option value="Zip" id="zip"> Zip </option>
 									<option value="Link" id="link"> Link </option>
 									<option value="Text" id="text"> Text </option>
-								</select><br/>
+								<select><br/>
 								<label for="instruction">Instruction:</label><textarea id="instruction" value=""/></textarea><br/>
 								<input type="submit" name="save" id="save" value="Save" onclick="addToTable()" class="submit-button" style="width:60px;height:25px;line-height:25px;margin-top:2px;"/><br/>
 							</fieldset>
-							<button type="button" name="addfieldname" id="addfieldname"><img src="../Shared/icons/PlusT.svg" alt="Add row"/></button>
-							<button type="button" name="createjson" id="createjson">Create JSON</button>
 						</div>
 					</div>
 				</div>
+				<!-- Table showing ways of submissions -->
+				<div id="tableDivDialog">
+					<span>Submissions</span>
+					<table>
+						<tr><th style="width:25%">Name</th><th style="width:12%">Filetype</th><th style="width:60%">Instruction</th><th style="width:3%">Del</th></tr>
+						<!-- <tr><td></td><td></td><td></td><td class="delButton">X</td></tr> -->
+					</table>
+				</div>
+			</div>
 			<!-- JSON and answer fields -->
-			<div id="rightDivDialog">
+			<div id="rightDivDialog" style="width:33%;float:right;">
+
 				<div class='inputwrapper' style='height:170px'><span>Param:</span><textarea id='parameter' placeholder='Variant Param' rows="5" style="height:100px"></textarea></div>
 				<div class='inputwrapper' style='height:170px'><span>Answer:</span><textarea id='variantanswer' placeholder='Variant Param' rows="5" style="height:100px"></textarea></div>
 			</div>

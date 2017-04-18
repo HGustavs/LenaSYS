@@ -125,20 +125,18 @@ if($ha){
 								$query->bindParam(':filename', $selectedfile);
 								$query->bindParam(':cid', $cid);
 								$query->execute(); 
-								$norows = $query->fetchColumn();
-								$filesize=filesize($selectedfile);
+								$norows = $query->fetchColumn(); 
 								
 								//  if rows equals to 0 (e.g it doesn't exist) add it yo.
 								if($norows==0&&($kind=="GFILE"||$kind=="MFILE")){
 										if($kind=="GFILE"){
-												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:linkval,'2',:cid,'1', :filesize);");
+												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal) VALUES(:linkval,'2',:cid,'1');");
 										}else if($kind=="MFILE"){
-												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'3',:cid,:filesize);");
+												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
 										}
 
 										$query->bindParam(':cid', $cid);
 										$query->bindParam(':linkval', $selectedfile);
-										$query->bindParam(':filesize', $filesize);
 								
 										if(!$query->execute()) {
 											$error=$query->errorInfo();
@@ -181,22 +179,20 @@ if($ha){
 												$query->bindParam(':filename', $fname);
 												$query->bindParam(':cid', $cid);
 												$query->execute(); 
-												$norows = $query->fetchColumn();
-												$filesize=filesize($movname);
+												$norows = $query->fetchColumn(); 
 												
 												//  if returned rows equals 0(the existence of the file is not in the db) add data into the db
 												if($norows==0){
 														if($kind=="LFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,fileize) VALUES(:linkval,'4',:cid,:filesize);");
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'4',:cid);");
 														}else if($kind=="MFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'3',:cid,:filesize);");
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
 														}else if($kind=="GFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:linkval,'2',:cid,'1',:filesize);");
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal) VALUES(:linkval,'2',:cid,'1');");
 														}
 
 														$query->bindParam(':cid', $cid);
 														$query->bindParam(':linkval', $fname);
-														$query->bindParam(':filesize', $filesize);
 												
 														if(!$query->execute()) {
 															$error=$query->errorInfo();

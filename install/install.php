@@ -1,69 +1,26 @@
 <head>
     <title>Install LenaSYS!</title>
-    <link rel="stylesheet" type="text/css" href="CSS/install_style.css">
 </head>
 <body>
-    <?php
-    ob_start();
-    /************* MODAL TO SHOW STEPS BEFORE AND AFTER ****************/
-    $putFileHere = dirname(getcwd(), 1); // Path to lenasys
-    echo "
-                    <div id='warning' class='modal'>
-                
-                        <!-- Modal content -->
-                        <div class='modal-content'>
-                            <span class='close''>&times;</span>
-                                <span id='dialogText'></span>
-                        </div>
-                
-                    </div>";
-    ?>
-
-    <script>
-        var modalRead = false; // Have the user read info?
-        var modal = document.getElementById('warning'); // Get the modal
-        var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
-        var filePath = "<?php echo $putFileHere; ?>";
-
-        document.getElementById('dialogText').innerHTML="<h1 style='text-align: center;'><span style='color: red;' />" +
-            "!!!!!!READ THIS BEFORE YOU START!!!!!!</span></h1><br>" +
-            "<h2 style='text-align: center;'>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
-            "<br>" +
-            "To do this run the command:<br>" +
-            "sudo chgrp -R www-data " + filePath + "</h2><br>" +
-            "<br>" +
-            "<input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1'>" +
-            "<i>I promise i have done this and will not complain that it's not working</i>";
-
-        function haveRead(isTrue) {
-            modalRead = isTrue;
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            if (modalRead) {
-                modal.style.display = "none";
-            }
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal && modalRead) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
-
+<?php
+$fileIsCreated = false;
+if (isset($_GET["mode"])) {
+    echo "<h1>Installation</h1>";
+    echo "<hr>";
+    flush();
+    /* Not yet implemented. TODO: Ask about how this should be done in a safe way.
+    if ($_GET["mode"] == "createfile"){
+        makeCoursesysFile($_POST["username"], $_POST["password"], $_POST["servername"], $_POST["database"], $_POST["putfilehere"]);
+        $fileIsCreated = true;
+    }
+    if ($fileIsCreated) {
+        exit ($_POST["putfilehere"] . "/coursesyspw.php was created and filled.");
+    }
+    */
+}
+?>
     <h1>Fill out all fields to install LenaSYS and create database.</h1>
-    <button id="showModalBtn">Open start-dialog again.</button> (To see what permissions to set) <br>
-    <script>
-        var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
-        // Open modal on button click
-        btn.onclick = function () {
-        modal.style.display = "block";
-        }
-    </script>
-    <form action="install.php?mode=install" method="post">
+    <form action="install.php" method="post">
         <table cellspacing="0px">
             <tr align="left">
                 <th valign=top><h2>New/Existing MySQL user and DB</h2></th>
@@ -71,47 +28,16 @@
                 <th valign=top><h2>Test Data</h2></th>
             </tr>
             <tr>
- <?php
-    // Prefill existing credentials, exluding password
-    $dbUsername = "";
-    $dbHostname = "";
-    $dbName = "";
-
-    $credentialsFile = "../../coursesyspw.php";
-    if(file_exists("../../coursesyspw.php")) {
-      $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
-
-      // check if the credentials exists in the file, store them if they do
-      foreach($credentialsArray as $cred) {
-        if(stripos(trim($cred), 'DB_') !== FALSE){
-          $tArray = explode('"', trim($cred));
-          if(count($tArray) == 5) {
-            switch($tArray[1]) {
-              case "DB_USER":
-                $dbUsername = $tArray[3];
-                break;
-              case "DB_HOST":
-                $dbHostname = $tArray[3];
-                break;
-              case "DB_NAME":
-                $dbName = $tArray[3];
-                break;
-            }
-          }
-        }
-      }
-    }
-    echo '<td valign=top width="20%">';
-    echo 'Enter new MySQL user. <br>';
-    echo '<input type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
-    echo 'Enter password for MySQL user. <br>';
-    echo '<input type="password" name="password" placeholder="Password" /> <br>';
-    echo 'Enter new database name. <br>';
-    echo '<input type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
-    echo 'Enter hostname (e.g localhost). <br>';
-    echo '<input type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
-    echo '</td>';
-?>
+                <td valign=top width="20%">
+                    Enter new MySQL user. <br>
+                    <input type="text" name="newUser" placeholder="Username" /> <br>
+                    Enter password for MySQL user. <br>
+                    <input type="password" name="password" placeholder="Password" /> <br>
+                    Enter new database name. <br>
+                    <input type="text" name="DBName" placeholder="Database name" /> <br>
+                    Enter hostname (e.g localhost). <br>
+                    <input type="text" name="hostname" placeholder="Hostname" /> <br>
+                </td>
                 <td valign=top width="30%" bgcolor="#EEEEEE">
                     Enter root user. <br>
                     <input type="text" name="mysqlRoot" placeholder="Root" /> <br>
@@ -135,7 +61,7 @@
             <tr>
                 <td colspan="3" bgcolor="#FFCCCC">
                     <input type="checkbox" name="writeOverDB" value="Yes" />
-                    <b><-- Check the box if you want to write over an existing database and user<br>
+                    <b><-- Check the box if you want to write over existing database and user<br>
                         <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE)</span></b><br>
                 </td>
             </tr>
@@ -143,62 +69,28 @@
         <table width="100%">
             <tr>
                 <td bgcolor="#EEEEEE">
-                    <input type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
+                    <input type="submit" name="submitButton" value="Install!"/>
                     <input type="reset" value="Clear"/>
                 </td>
             </tr>
         </table>
     </form>
 
-    <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
-        $putFileHere = dirname(getcwd(), 2); // Path to lenasys
+    <?php
+
+    # Call JS to show alert about permission.
+    $putFileHere = dirname(getcwd(), 1); // Path to lenasys
+    echo '<script>',
+        'alert("!!!!!!BEFORE YOU START!!!!!!\nMake sure you set ownership of the directory LenaSYS is located in to the group \'www-data\'.\n" +
+                "\nTo do this run the command:\nsudo chown -R www-data:www-data ' . $putFileHere . '\n");',
+    '</script>';
+
+    if (isset($_POST["submitButton"])) {
         ob_end_clean(); // Remove form and start installation.
 
-        echo "
-                    <div id='warning' class='modal'>
-                
-                        <!-- Modal content -->
-                        <div class='modal-content'>
-                            <span class='close''>&times;</span>
-                                <span id='dialogText'></span>
-                        </div>
-                
-                    </div>";
-        echo "
-            <script>
-                var modalRead = false; // Have the user read info?
-                var modal = document.getElementById('warning'); // Get the modal
-                var btn = document.getElementById('showModalBtn'); // Get the button that opens the modal
-                var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
-                var filePath = '{$putFileHere}';
-                
-                document.getElementById('dialogText').innerHTML = '<h1 style=\'text-align: center;\'><span style=\'color: red;\' />!!!WARNING!!!</span></h1><br>' +
-                    '<h2 style=\'text-align: center;\'>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
-                    '<p style=\'text-align: center;\'>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
-                    'responsibility for your failing system.</p>';
-                
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                    modal.style.display = 'none';
-                }
-
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = 'none';
-                    }
-                }
-            </script>
-        ";
-        flush();
-        ob_flush();
-
-        /***** START ******/
-        $putFileHere = dirname(getcwd(), 1); // Path to lenasys
         echo "<h1>Installation</h1>";
         echo "<hr>";
         flush();
-        ob_flush();
 
         # Test permissions on directory before starting installation.
         if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
@@ -240,7 +132,6 @@
                 echo "<span style='color: red;' />Connection failed: " . $e->getMessage() . "</span><br>";
             }
             flush();
-            ob_flush();
 
             # If checked, write over existing database and user
             if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
@@ -262,7 +153,6 @@
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 flush();
-                ob_flush();
             }
 
             # Create new database
@@ -273,7 +163,6 @@
                 echo "<span style='color: red;' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
             }
             flush();
-            ob_flush();
 
             # Create new user and grant privileges to created database.
             try {
@@ -286,7 +175,6 @@
                 echo "<span style='color: red;' />Could not create user with name {$username}, maybe it already exists...</span><br>";
             }
             flush();
-            ob_flush();
 
             /**************************** Init database. *************************************/
             $initQuery = file_get_contents("SQL/init_db.sql");
@@ -307,7 +195,6 @@
             $initQueryArray = explode(";", $initQuery);
             $initSuccess = false;
             try {
-                $connection->query("SET NAMES utf8");
                 $connection->query("USE {$databaseName}");
                 # Use this var if several statements should be called at once (functions).
                 $queryBlock = '';
@@ -339,11 +226,15 @@
                 echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>{$completeQuery}</textarea></code><br><br>";
             }
             flush();
-            ob_flush();
 
             /*************** Fill database with test data if this was checked. ****************/
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
                 addTestData("testdata", $connection);
+                # Add a language (for a existing file) in this array to add it to database.
+                /*$languages = array("php", "sql", "sr", "java", "html", "plain");
+                foreach ($languages AS $language) {
+                    addTestData("keywords_{$language}", $connection);
+                } */
 
                 # Check which languages to add from checkboxes.
                 $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
@@ -375,12 +266,10 @@
 
         echo "<b>Installation finished.</b><br><hr>";
         flush();
-        ob_flush();
 
         # All this code prints further instructions to complete installation.
         $putFileHere = dirname(getcwd(), 2); // Path to lenasys
-        echo "<h1><span style='color: red;' />!!!READ BELOW!!!</span></h1>";
-        echo "<br><b>To make installation work please make a
+        echo "<br><b><span style='color: red;' />To make installation work</span> please make a 
             file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
@@ -393,6 +282,16 @@
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
         echo "</textarea><br>";
 
+        /* Not yet implemented - TODO: Ask about how this should be done in a safe way.
+        echo "<form action='install.php?mode=createfile' method='post'>";
+        echo '<input type="submit" name="makeCoursesysFileButton" value="Make!"/><br>';
+        echo '<input name="username" type="hidden" value="'. $username . '">';
+        echo '<input name="password" type="hidden" value="'. $password . '">';
+        echo '<input name="servername" type="hidden" value="'. $serverName . '">';
+        echo '<input name="database" type="hidden" value="'. $databaseName . '">';
+        echo '<input name="putfilehere" type="hidden" value="'. $putFileHere . '">';
+        echo "</form>";
+        */
 
         echo "<b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
@@ -438,7 +337,6 @@
             }
         }
         flush();
-        ob_flush();
     }
 
     # Function to copy test files
@@ -454,10 +352,4 @@
         echo "<span style='color: green;' />Successfully filled {$destDir} with example files.</span><br>";
     }
     ?>
-
-    <script>
-        // Show modal
-        modal.style.display = "block";
-    </script>
-
 </body>

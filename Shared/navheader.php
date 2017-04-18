@@ -26,7 +26,6 @@
 					echo (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-
 			}else if($noup=='SECTION'){
 					$cid=getOPG('cid');
 					if($cid=="UNK") $cid=getOPG('courseid');
@@ -37,12 +36,7 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
-			
-			if($noup=='COURSE'){
-					echo "<td class='navButt' id='back' title='swimlane'>";	
-					echo "<img src='../Shared/icons/swimlane.svg'></td>";
-			}
-			
+
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
@@ -78,7 +72,4 @@
 </header>
 <script type="text/javascript">
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
-  function displaySwimlane(){
-    $("#swimlane").css("display", "block");
-  }
 </script>

@@ -261,14 +261,11 @@
 				if($hdrs=="none"){
 				
 				}else{
-                    $temp = explode('.', $filename);
-                    $ext  = array_pop($temp);
-                    $name = implode('.', $temp);
 						echo "<html>";
 						echo "<head>";
 						echo "<link rel='icon' type='image/ico' href='../Shared/icons/favicon.ico'/>";
 						echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
-						echo "<title>Document Viewer: $name</title>";
+						echo "<title>Document Viewer</title>";
 						echo "<link type='text/css' href='../Shared/css/style.css' rel='stylesheet'>";
 						echo "<link type='text/css' href='../Shared/css/markdown.css' rel='stylesheet'>";
 						echo "<link type='text/css' href='../Shared/css/jquery-ui-1.10.4.min.css' rel='stylesheet'>";  

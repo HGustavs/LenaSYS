@@ -27,7 +27,6 @@ $val = getOP('val');
 $newusers = getOP('newusers');
 $coursevers = getOP('coursevers');
 $teacher = getOP('teacher');
-$vers = getOP('vers');
 
 $debug="NONE!";	
 
@@ -166,7 +165,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 $entries=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher,vers, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -184,8 +183,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'class' => $row['class'],	
 				'modified' => $row['modified'],
 				'newly' => $row['newly'],
-				'teacher' => $row['teacher'],
-				'vers' => $row['vers']
+				'teacher' => $row['teacher']
 			);
 			array_push($entries, $entry);
 	}
@@ -209,27 +207,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
-$classes=array();
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT class FROM class;");
-	$query->bindParam(':cid', $cid);
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
-	}
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			$classe = array(
-				'class' => $row['class'],
-			);
-			array_push($classes, $classe);
-		}
-}
-
 $array = array(
 	'entries' => $entries,
 	"debug" => $debug,
-	'teachers' => $teachers,
-	'classes' => $classes
+	'teachers' => $teachers
 );
 
 echo json_encode($array);

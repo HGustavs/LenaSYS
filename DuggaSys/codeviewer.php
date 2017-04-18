@@ -246,7 +246,7 @@ Testing Link:
 					</tr>
 
 					<tr>
-						<td>Play Link:<select id='playlink'></select></td>
+						<td>Play Link:<input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
 						<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
 					</tr>
 					<tr>

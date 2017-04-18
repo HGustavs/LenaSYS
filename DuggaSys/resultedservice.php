@@ -32,7 +32,6 @@ $newDuggaFeedback = getOP('newFeedback');
 $coursevers=getOP('coursevers');
 $qvariant=getOP("qvariant");
 $quizId=getOP("quizId");
-$teacher = getOP('teacher');
 
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
@@ -502,30 +501,12 @@ if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 		$benchmark="-1";
 }
 
-$teachers=array();
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT teacher, uid FROM user_course;");
-	$query->bindParam(':cid', $cid);
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
-	}
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			$teacher = array(
-				'teacher' => $row['teacher'],
-				'tuid' => $row['uid'],
-			);
-			array_push($teachers, $teacher);
-		}
-}
-
 $array = array(
 	'entries' => $entries,
 	'moments' => $gentries,
 	'versions' => $sentries,
 	'debug' => $debug,
 	'results' => $lentries,
-	'teachers' => $teachers,
 
 	'duggauser' => $duggauser,
 	'duggaentry' => $duggaentry,

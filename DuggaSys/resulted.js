@@ -19,7 +19,7 @@ var momtmp=new Array;
 var sortcolumn=1;
 var clickedindex;
 var typechanged=false;
-var teacher;
+
 var entries;
 var moments;
 var results;
@@ -30,7 +30,7 @@ var timeZero=new Date(0);
 var hideTeacher=false;
 
 function setup(){
-	//Benchmarking function
+	// Benchmarking function
 	//benchmarkData = performance.timing;
 	//console.log("Network Latency: "+(benchmarkData.responseEnd-benchmarkData.fetchStart));
 	//console.log("responseEnd -> onload: "+(benchmarkData.loadEventEnd-benchmarkData.responseEnd));
@@ -58,6 +58,7 @@ function setup(){
   }
   	
   window.onscroll = function() {magicHeading()};
+	
 
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "RESULT");
 }
@@ -99,6 +100,7 @@ function redrawtable()
 		str+="<table class='markinglist' id='markinglist'>";
 		str+="<thead>";
 		str+="<tr class='markinglist-header'>";
+
 		str+="<th id='header' ></th><th colspan='1' id='subheading' class='result-header'>";
 		str+="";
 		str+="</th>";
@@ -226,6 +228,7 @@ function cellIn(ev)
 
 		$("#horizhighlight").css("height",greger.offsetHeight-4+"px");
 		$("#horizhighlight").css("width",$("#markinglist").outerWidth()+"px");
+
 }
 
 function cellOut(ev)
@@ -264,60 +267,50 @@ function resort()
 								$("#sortcol"+columno).prop("checked", true);
 								$("#sorttype"+colkind2).prop("checked", true);								
 						}
-						// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
+				
 						if(columno==0){
-							if(colkind==0){
-								students.sort(function compare(a,b){                        
-										if(a[0].firstname>b[0].firstname){
-											return sortdir;
-										}else if(a[0].firstname<b[0].firstname){
-												return -sortdir;
-										}else{
-											return 0;
-										}
+								if(colkind==0){
+										students.sort(function compare(a,b){                        
+												if(a[0].firstname>b[0].firstname){
+														return sortdir;
+												}else if(a[0].firstname<b[0].firstname){
+														return -sortdir;
+												}else{
+														return 0;
+												}
+										});
+							 }else if(colkind==1){
+                  students.sort(function compare(a,b){
+									 if(a[0].lastname>b[0].lastname){
+											 return sortdir;
+									 }else if(a[0].lastname<b[0].lastname){
+											 return -sortdir;
+									 }else{
+											 return 0;
+									 }
 									});
-							}else if(colkind==1){
-                			    students.sort(function compare(a,b){
-									if(a[0].lastname>b[0].lastname){
-										return sortdir;
-									}else if(a[0].lastname<b[0].lastname){
-										return -sortdir;
-									}else{
-										 return 0;
-									}
-								});
-							}else if(colkind==2){
-                 				students.sort(function compare(a,b){
-               				 		if(a[0].ssn>b[0].ssn){
-                 			   			return sortdir;
-                			    	}else if(a[0].ssn<b[0].ssn){
-                         				return -sortdir;
-                    		        }else{
-                         				return 0;
-                     				}
-                 				});
-							}else if(colkind==3){
-                				students.sort(function compare(a,b){ 
-                 					if(a[0].class>b[0].class || b[0].class == undefined){
-                     					return sortdir;
-                  					}else if(a[0].class<b[0].class || a[0].class == undefined){
-                   						return -sortdir;
-                 					}else{
-                      					return 0;
-                  					}
-                 				});
-							}else if(colkind==4){
-								students.sort(function compare(a,b){ 
-                 					if(a[0].setTeacher>b[0].setTeacher || b[0].setTeacher == undefined){
-                     					return sortdir;
-                  					}else if(a[0].setTeacher<b[0].setTeacher || a[0].setTeacher == undefined){
-                   						return -sortdir;
-                 					}else{
-                      					return 0;
-                  					}
-                 				});
-							}
-						}else{
+							 }else if(colkind==2){
+                   students.sort(function compare(a,b){
+                     if(a[0].ssn>b[0].ssn){
+                         return sortdir;
+                     }else if(a[0].ssn<b[0].ssn){
+                         return -sortdir;
+                     }else{
+                         return 0;
+                     }
+                  });
+							 }else{
+                 students.sort(function compare(a,b){ 
+                  if(a[0].class>b[0].class || b[0].class == undefined){
+                      return sortdir;
+                  }else if(a[0].class<b[0].class || a[0].class == undefined){
+                      return -sortdir;
+                  }else{
+                      return 0;
+                  }
+                 });
+							 }
+							}else{
 							// other columns sort by 
 							// 0. need marking -> FIFO 
 							// 1. grade
@@ -450,7 +443,8 @@ function toggleSortDir(col){
         dir=dir*-1;
         $("input[name='sortdir']:checked").val(dir);
         localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);      
-    }
+    }    
+    
     resort();  
 }
 
@@ -485,23 +479,12 @@ function process()
 						momtmp.push(moments[l]);
 				}
 		}
+
 		// Reconstitute table
 		students=new Array;
 		for(i=0;i<entries.length;i++){
 
-			var uid=entries[i].uid;
-
-		// Loop through all teacher names and store the appropriate name in a variable
-		for(j=0; j<teacher.length;j++){
-				var tuid=teacher[j].tuid;
-		if(uid==tuid){
-			var setTeacher = teacher[j].teacher;
-			}
-		}
-		if(setTeacher !== null){
-				// Place spaces in the string when a lowercase is followed by a uppercase
-				setTeacher = setTeacher.replace(/([a-z])([A-Z])/g, '$1 $2');
-			}
+					var uid=entries[i].uid;
 										
 					// All results of this student
 					var res=results[uid];
@@ -513,9 +496,9 @@ function process()
 									restmp[res[k].dugga]=res[k];
 							}
 					}
+		
 					var student=new Array;
-					// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,setTeacher});
+					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class});
 										
 					// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 					for(var j=0;j<momtmp.length;j++){
@@ -538,6 +521,7 @@ function process()
 									}		
 							}
 					}
+					
 					students.push(student);
 		}			
 		// Update dropdown list
@@ -575,11 +559,10 @@ function process()
     if (onlyPending){ dstr+=" checked='true'"; }
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending1'><label class='headerlabel' for='pending0'>Only pending</label><input name='teacher' type='checkbox' class='headercheck' value='0' id='teacher1'><label class='headerlabel' for='teacher0'>Hide Teacher</label></div>";
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort ascending</label><input name='sortdir' type='radio' class='headercheck' value='0' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
-	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
-	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-	dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";		
-    dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(4)' value='0' id='sortcol0_4'><label class='headerlabel' for='sortcol0_4' >Teacher</label></div>";
+		dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
+		dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
+		dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";		
+    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
 
 		dstr+="<table><tr><td>";
 		for(var j=0;j<momtmp.length;j++){
@@ -603,6 +586,7 @@ function process()
 		document.getElementById("dropdowns").innerHTML=dstr;	
 
 		resort();
+		
 		//console.log(performance.now()-tim);
 }
 
@@ -611,6 +595,7 @@ function hoverc()
     $('#dropdowns').css('display','none');
   	$('#dropdownc').css('display','block');
 }
+
 
 function leavec()
 {
@@ -695,7 +680,9 @@ function magicHeading()
 				} else {
 						$("#"+elemid+"magic").removeClass("result-header-inverse");	
 				}
+				
 		});
+
 		$("#upperDecker").css("top",(window.pageYOffset+48)+"px");
 }
 
@@ -725,11 +712,13 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 		else {
 			//alert("This grading is not OK!");
 		}
+
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
 	return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
+
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
 {
@@ -787,6 +776,7 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid
 		} else {
 			//alert("Unknown Grade System: "+gradesys);
 		}
+
 		return str;
 }
 
@@ -882,6 +872,7 @@ function enterCell(thisObj)
   		} else if (c==="dugga-unassigned") {
   				$(thisObj).addClass("dugga-unassigned-highlighted");			
   		} else {
+  			
   		}
 }
 
@@ -969,7 +960,7 @@ function returnedResults(data)
       } else {
           $("#u"+data.duggauser+"_d"+data.duggaid).addClass("dugga-fail");       
       }
-      // Find the array row for updated grade in our local data structure "students"
+      // Find the array row for updated grade in or local data structure "students"
       var rowpos=-1;
       var dpos=-1;
       for (var t=0;t<students.length;t++){
@@ -1006,7 +997,6 @@ function returnedResults(data)
 		moments=data.moments;
 		versions=data.versions;
 		results=data.results;
-		teacher=data.teachers;
 		
 		//tim=performance.now();
 

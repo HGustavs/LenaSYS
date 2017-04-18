@@ -71,7 +71,7 @@ CREATE TABLE user_course(
 		result 			DECIMAL(2,1) DEFAULT 0.0,
 		modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 		creator 		INTEGER,
-        teacher   		VARCHAR(50),
+        teacher   VARCHAR(50),
 		access			VARCHAR(10) NOT NULL,
 		period			INTEGER DEFAULT 1,
 		term					CHAR(5) DEFAULT "VT16",
@@ -193,8 +193,6 @@ CREATE TABLE fileLink(
 	kind					INTEGER,
 	cid						INT UNSIGNED NOT NULL,
 	isGlobal			BOOLEAN DEFAULT 0,
-	filesize			INT(11) NOT NULL DEFAULT 0,
-	uploaddate			DATETIME NOT NULL DEFAULT NOW(),
 	PRIMARY KEY (fileid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
@@ -469,48 +467,8 @@ CREATE TABLE user_push_registration (
 	uid 						INT UNSIGNED NOT NULL,
 	endpoint				VARCHAR(500) NOT NULL,
 	added						TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	keyAuth					VARCHAR(50) NOT NULL,
-	keyValue				VARCHAR(100) NOT NULL,
-	lastSent				DATE DEFAULT NULL,
-	daysOfUnsent		INT NOT NULL DEFAULT '0',
-	PRIMARY KEY			(id),
-	KEY							(endpoint),
+	PRIMARY KEY 	(id),
 	FOREIGN KEY (uid) REFERENCES user(uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-/* Usergroup and user_usergroup relation */
-
-/* Create the usergroup table. This table consists of groups containing students */
-CREATE TABLE `usergroup` (
-  `ugid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL UNIQUE,
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `lastupdated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-  PRIMARY KEY (`ugid`)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-/* Create table user_usergroup. This table represents the relation between users and usergroups. */
-CREATE TABLE `user_usergroup` (
-  `uid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `ugid` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`uid`,`ugid`),
-  KEY `ugid` (`ugid`),
-  KEY `uid` (`uid`),
-  CONSTRAINT `usergroupid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`),
-  CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-/*table used for checking participation. i.e participation is 0 = not participated, 1 = participated.*/
-CREATE TABLE user_participant (
-  id						INT NOT NULL AUTO_INCREMENT,
-  uid					  INT UNSIGNED NOT NULL,
-  lid 					INT UNSIGNED NOT NULL,
-  participation TINYINT(1) UNSIGNED,
-  comments      VARCHAR(512),
-  PRIMARY KEY (id),
-  FOREIGN KEY (lid) REFERENCES listentries (lid),
-  FOREIGN KEY (uid) REFERENCES user (uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /*

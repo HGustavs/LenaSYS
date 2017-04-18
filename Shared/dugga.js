@@ -15,7 +15,6 @@ var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
 function toggleloginnewpass(){
-	resetFields();
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
@@ -37,26 +36,6 @@ function toggleloginnewpass(){
 	}
 }
 
-// This function only resets login and forgot password fields
-function resetFields(){
-	$("#login #username").val("");
-	$("#login #password").val("");
-	//Since we need the username from this box during the answer part we cant clear it directly afterwards
-	if (status!=2){
-		$("#newpassword #username").val("");
-	}
-	$("#showsecurityquestion #answer").val("");
-
-	$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
-	$("#loginBox #password").css("background-color", "rgb(255, 255, 255)");
-	$("#newpassword #username").css("background-color", "rgb(255, 255, 255)");
-	$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
-
-	$("#login #message").html("<div class='alert danger'></div>");
-	$("#newpassword #message2").html("<div class='alert danger'></div>");
-	$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
-}
-
 //----------------------------------------------------------------------------------
 // Sets cookie that expires when there's 30 min left of session
 //----------------------------------------------------------------------------------
@@ -68,18 +47,6 @@ function setExpireCookie(){
 
 	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 	console.log(expireDate);
-
-}
-
-//----------------------------------------------------------------------------------
-// Sets a cookie that expires at the same time as the user is logged out (when the session ends)
-//----------------------------------------------------------------------------------
-function setExpireCookieLogOut(){
-
-	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 9000000));
-
-	document.cookie = "sessionEndTimeLogOut=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 
 }
 //----------------------------------------------------------------------------------
@@ -109,7 +76,8 @@ function closeWindows(){
 					status=1;
 					toggleloginnewpass();
 					$("#overlay").css("display","none");
-					resetFields();
+					$("#login #username").val("");
+					$("#login #password").val("");
 			}
 	}
 	window.removeEventListener("keypress", loginEventHandler, false);
@@ -204,8 +172,10 @@ function saveDuggaResult(citstr)
 
 		var dateTime = new Date(); // Get the current date and time
 
- 		var comment = querystring['comment']; //Get the comment
+		//Get the comment
+ 		var comment = querystring['comment'];
 		
+
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
 		
 
@@ -223,7 +193,7 @@ function saveDuggaResult(citstr)
 		}
 		else{ //Check if deadline has past
 			
-			if(comment == "UNK" || comment == "undefined" || comment == "null"){
+			if(comment == "UNK" || comment == "undefined"){
  				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
  			}
  			else{
@@ -452,7 +422,7 @@ function AJAXService(opt,apara,kind)
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['deadlinecomment']+"&opt="+opt+para,
 				dataType: "json",
 				success: returnedSection
 			});
@@ -488,7 +458,15 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	} else if(kind=="CODEVIEW"){
+	}else if(kind=="RESULTLIST"){
+			$.ajax({
+				url: "resultlistedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedResults
+			});
+	}else if(kind=="CODEVIEW"){
 			$.ajax({
 				url: "codeviewerService.php",
 				type: "POST",
@@ -534,6 +512,7 @@ function AJAXService(opt,apara,kind)
 //Will handle enter key pressed when loginbox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
+
 		if(showing == 1){
 			processLogin();
 		}else if(showing == 0){
@@ -542,25 +521,6 @@ function loginEventHandler(event){
 			processResetPasswordCheckSecurityAnswer();
 		}
 	}
-}
-
-function addSecurityQuestionProfile(username) {
-	$.ajax({
-			type:"POST",
-			url: "../Shared/resetpw.php",
-			data: {
-				username: username,
-				opt: "GETQUESTION"
-			},
-			success:function(data) {
-				var result = JSON.parse(data);	
-				if(result['getname'] == "success") {
-					$("#challengeQuestion").html(result['securityquestion']);
-				}else{
-					console.log("Username was not found OR User does not have a question OR User might be a teacher");
-			}
-		}
-	});
 }
 
 function processResetPasswordCheckUsername() {
@@ -577,8 +537,7 @@ function processResetPasswordCheckUsername() {
 				opt: "GETQUESTION"
 			},
 			success:function(data) {
-				var result = JSON.parse(data);	
-					//It is worth to note that getname should probably be named status/error since thats basically what it is			
+				var result = JSON.parse(data);				
 				if(result['getname'] == "success") {
 					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 					status = 2;
@@ -588,8 +547,7 @@ function processResetPasswordCheckUsername() {
 					if(typeof result.reason != "undefined") {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
-
+						$("#newpassword #message2").html("<div class='alert danger'>Wrong answer</div>");
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -619,8 +577,7 @@ function processResetPasswordCheckSecurityAnswer() {
 				if(result['checkanswer'] == "success") {
 					console.log("The answer was correct");
 					//do something
-					$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
-					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
+					$("#showsecurityquestion #displaysecurityquestion").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
 					console.log("Wrong answer");
 					if(typeof result.reason != "undefined") {
@@ -636,6 +593,8 @@ function processResetPasswordCheckSecurityAnswer() {
 
 
 function processLogin() {
+
+
 
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
@@ -654,7 +613,6 @@ function processLogin() {
 				var result = JSON.	parse(data);
 				if(result['login'] == "success") {
 					setExpireCookie();
-					setExpireCookieLogOut();
 					$("#userName").html(result['username']);
 					$("#loginbutton").removeClass("loggedout");
 					$("#loginbutton").addClass("loggedin");
@@ -738,7 +696,6 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){processLogout();});
 		sessionExpireMessage();
-		sessionExpireLogOut();
 	}
 
 	else{
@@ -757,12 +714,6 @@ function hideReceiptPopup()
 {
 	$("#receiptBox").css("display","none");
 	$("#overlay").css("display","none");
-}
-
-function hideDuggaStatsPopup() 
-{
-	$("#duggaStats").css("display", "none");
-	$("#overlay").css("display", "none");
 }
 
 function checkScroll(obj) { 
@@ -839,29 +790,6 @@ function sessionExpireMessage() {
 		}
 	}
 
-//----------------------------------------------------------------------------------
-// Gives an alert when user is timed out (when the session ends)
-//----------------------------------------------------------------------------------
-function sessionExpireLogOut() {
-
-	if(document.cookie.indexOf('sessionEndTimeLogOut=expireC') > -1){
-		var intervalId = setInterval(function() {
-			checkIfExpired();
-		}, 2000);
-	}
-
-	function checkIfExpired() {
-
-		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
-			alert('Your session has expired');
-			// When reloaded the log in icon should change from green to red
-			location.reload();
-			clearInterval(intervalId);
-		}
-
-	}
-}
-	
 //----------------------------------------------------------------------------------
 // A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
 //----------------------------------------------------------------------------------

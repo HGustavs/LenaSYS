@@ -88,33 +88,19 @@ function getQuestion($username)
 
 		/*If the security question is null/default there is no point in allowing the user to continue.
 		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question*/
-		if($_SESSION["superuser"]==1){
-			$_SESSION["getname"] = "Username not found";
-			//$_SESSION["getname"] = "User is a superuser";
-			return false;
-		}
-
-		$query = $pdo->prepare("SELECT access FROM user_course WHERE uid=:uid AND access='W'");
-
-   		$query->bindParam(':uid', $_SESSION['uid']);
-
-    	$query->execute();
-
-    	if($query->rowCount() > 0) { 
-    		$_SESSION["getname"] = "Username not found";
-			//$_SESSION["getname"] = "User is a teacher";
-      		return false;
-    	}	
-
+		
+		/*
 		if($_SESSION["securityquestion"]==null){
-			$_SESSION["getname"] = "Security question not found";
 			return false;
 		}
+		if($_SESSION["superuser"]==1){
+			return false;
+		}
+		*/
 
 		return true;
 
 	} else {
-		$_SESSION["getname"] = "Username not found";
 		return false;
 	}
 }
@@ -127,7 +113,7 @@ function checkAnswer($username, $securityquestionanswer)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare("SELECT uid,username,password FROM user WHERE username=:username and securityquestionanswer=password(LCASE(:sqa)) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,password FROM user WHERE username=:username and securityquestionanswer=password(:sqa) LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':sqa', $securityquestionanswer);
