@@ -23,14 +23,24 @@ pdoConnect();
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
-		
+
 	<!-- content START -->
 	<div id="content" >
+	<button onclick="switchcontent()" type="button">Switch to One table</button>
 		<div id="alllinks" style='width:100%;'>
 			<table class='list list--nomargin' style='margin-bottom:8px;' >
 				<tr><th><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>
 				<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
 			</table>
+		</div>
+		<!-- allcontent -->
+		<div id="allcontent" style="width:100%;display:none">
+
+			<table class='list list--nomargin' style='margin-bottom:8px;' >
+				<tr><th><input class='submit-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
+				<tr><th class='first' style='width:64px;'>ID</th><th>File Group</th><th style='width:30px' class='last'></th></tr>
+			</table>			
+
 		</div>
 		<div id="allglobalfiles" style='width:100%;'>
 			<table class='list list--nomargin' style='margin-bottom:8px;' >

@@ -317,3 +317,16 @@ function hovers(){
 function leaves(){
 	$('#dropdowns').css('display','none'); 
 }
+
+//Switch Content between one table and separate tables;
+
+function switchcontent() {
+	
+		$("#allglobalfiles").toggle("hide");
+		$("#allcoursefiles").toggle("hide");
+    	$("#alllocalfiles").toggle("hide");
+		$("#allcontent").toggle("show");
+		console.log("hej");
+}
+
+
