@@ -192,7 +192,7 @@ function returnedFile(data)
                     str5+="<td>" + getFileInformation(item['filename'], true) + "</td>";
                     str5+="<td>" + item['uploaddate'] + "</td>";
                     str5+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
-                    str5+="<td>" + item['kind'] + "</td>";
+                    str5+="<td>" + convertfilekind(item['kind']) + "</td>";
                     str5+="<td style='padding:4px;'>";
                     str5+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
                     str5+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
@@ -361,6 +361,28 @@ function switchcontent() {
 		$("#allcoursefiles").toggle("hide");
     	$("#alllocalfiles").toggle("hide");
 		$("#allcontent").toggle("show");
+}
+
+function convertfilekind(kind){
+	var retString = "";
+	switch(kind){
+		case "1":
+			retString = "Link";
+			break;
+		case "2":
+			retString = "Global";
+			break;
+		case "3":
+			retString = "Course Local";
+			break;
+		case "4":
+			retString = "Local";
+			break;
+		default:
+			retString = "Not recognized";
+			break;
+	}
+	return retString;
 }
 
 
