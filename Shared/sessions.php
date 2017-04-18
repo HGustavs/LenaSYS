@@ -163,10 +163,7 @@ function login($username, $password, $savelogin)
 	if($pdo == null) {
 		pdoConnect();
 	}
-
-//echo "SELECT uid,username,password,superuser FROM user WHERE username=:username and password=password(':pwd') LIMIT 1";
-
-	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username and password=password(:pwd) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);
@@ -176,6 +173,29 @@ function login($username, $password, $savelogin)
 	if($query->rowCount() > 0) {
 		// Fetch the result
 		$row = $query->fetch(PDO::FETCH_ASSOC);
+
+		if ($row['password'] == $row['mysql_pwd_input']) {
+			// User still has a mysql password, update to better
+			$row['password'] = password_hash($password, PASSWORD_BCRYPT);
+			$query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");
+			$query->bindParam(':uid', $row['uid']);
+			$query->bindParam(':pwd', $row['password']);
+			$query->execute();
+		} else if (password_verify($password, $row['password'])) {
+			// User has a php password
+			if (password_needs_rehash($row['password'], PASSWORD_BCRYPT)) {
+				// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
+				$row['password'] = password_hash($password, PASSWORD_BCRYPT);
+				$query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");
+				$query->bindParam(':uid', $row['uid']);
+				$query->bindParam(':pwd', $row['password']);
+				$query->execute();
+			}
+		} else {
+			// Wrong password entered
+			return false;
+		}
+
 		$_SESSION['uid'] = $row['uid'];
 		$_SESSION["loginname"]=$row['username'];
 		$_SESSION["passwd"]=$row['password'];
@@ -184,10 +204,12 @@ function login($username, $password, $savelogin)
 		$_SESSION["firstname"]=$row['firstname'];
 
 		// Save some login details in cookies.
-		if($savelogin) {
+		// The current try at a solution solution is unsafe as anyone with access to the computer can check the cookie and get the full password
+		// Therefore the solution has been commented away
+		/*if($savelogin) {
 			setcookie('username', $row['username'], time()+60*60*24*30, '/');
 			setcookie('password', $password, time()+60*60*24*30, '/');
-		}
+		}*/
 		return true;
 
 	} else {
