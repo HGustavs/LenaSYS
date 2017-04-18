@@ -275,18 +275,34 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
 function handleTable(currentLine, prevLine, nextLine) {
 	var markdown = "";
 
+    var columns = currentLine.split('|').filter(function(v){return v !== '';});
+
 	// open new table
 	if(!isTable(prevLine)) {
-    	markdown += "<table border='1' style='margin-top: 10px;'><thead style='color:red;'>";
+    	markdown += "<table border='1' style='margin-top: 10px;'>";
     }
 
-    // handle tbody
-    if(currentLine.match(/^\s*\|\s*[-]*\s*\|/gm)) {
-        markdown = "</thead><tbody style='color:blue;'>";
-    } else {
-        // handle table row
+    // configure alignment
+    if(currentLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+        for(var i = 0; i < columns.length; i++) {
+            var column = columns[i].trim();
+            // align center
+            if(column.match(/[:][-]*[:]/gm)) {
+                console.log("center", column);
+            }
+            // align right
+            else if(column.match(/[-]*[:]/gm)) {
+                console.log("right", column);
+            }
+            // align left
+            else {
+                console.log("left", column);
+            }
+        }
+    }
+    // handle table row
+    else {
         markdown += "<tr>"
-        var columns = currentLine.split('|').filter(function(v){return v !== '';});
         for(var i = 0; i < columns.length; i++) {
             markdown += "<td style='padding: 15px;'>" + columns[i].trim() + "</td>";
         }
@@ -294,12 +310,9 @@ function handleTable(currentLine, prevLine, nextLine) {
     }
 
 
-
-
     // close table
 	if(!isTable(nextLine)) {
-		console.log("end");
-    	markdown += "</tbody></table>";
+    	markdown += "</table>";
     }
 
     return markdown;

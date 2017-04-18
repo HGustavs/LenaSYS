@@ -8,9 +8,9 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
-| head0 | head1 |
-| ----- | ----- |
-| dsa | dsa | dsa |
-| dsa | dsa | dsa | asd |
-
-test | asd
+| head0 | head1 | head2 | head3 |
+| ----- | :----: | ---- | ---- |
+| dsa1 | dsa1 | dsa1 | dsa1 |
+| dsa2 | dsa2 | dsa2 | dsa2 |
+| ----- | ---- | ---- | :----: |
+| dsa3 | dsa3 | dsa3 | dsa3 |
