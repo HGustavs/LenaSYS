@@ -20,20 +20,31 @@ function toggleloginnewpass(){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
+		$("#resetcomplete").css("display", "none");
 		status= 1;
 		showing= 0;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
+		$("#resetcomplete").css("display", "none");
 		status= 0;
 		showing= 1;
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "block");
+		$("#resetcomplete").css("display", "none");
 		status= 1;
 		showing= 2;
+	}
+	else if(status == 3){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "none");
+		$("#resetcomplete").css("display", "block");
+		status= 1;
+		showing= 3;
 	}
 }
 
@@ -574,7 +585,6 @@ function addSecurityQuestionProfile(username) {
 function processResetPasswordCheckUsername() {
 
 	/*This function is supposed to get the security question from the database*/
-
 	var username = $("#newpassword #username").val();
 	
 	$.ajax({
@@ -597,7 +607,6 @@ function processResetPasswordCheckUsername() {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
-
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -635,17 +644,14 @@ function processResetPasswordCheckSecurityAnswer() {
 						success:function(data){
 							var result = JSON.parse(data);
 							if(result['requestchange'] == "success"){
-								$("#showsecurityquestion #answer").css("background-color", "rgba(0, 0, 255, 0.2)");
+								status = 3;
+								toggleloginnewpass();
 							}else{
 								$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
 								$("#showsecurityquestion #message3").html("<div class='alert danger'>Something went wrong</div>");
 							}
 						}
 					})
-
-
-					//$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
-					//$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");

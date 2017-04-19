@@ -114,6 +114,11 @@ h4 {
   padding:0px;
 }
 
+h6 {
+  margin:1px 0px 8px 0px;
+  padding:0px;
+}
+
 body {
   background: #ddd;
 }
