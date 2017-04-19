@@ -501,7 +501,7 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="GROUP"){
 			$.ajax({
-				url: "groudedservice.php",
+				url: "groupedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
@@ -777,6 +777,18 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
+//----------------------------------------------------------------------------------
+// Checks if a user is logged in or not. If not, the content in profile.php is hidden
+//----------------------------------------------------------------------------------
+function checkUserLogin(isLoggedIn){
+	
+	if(isLoggedIn === "true"){
+		$("#content").css("display","block");
+	}else{
+		$("#content").css("display","none");
+	}
+}
+
 function showReceiptPopup()
 {
 	$("#receiptBox").css("display","block");
@@ -862,7 +874,8 @@ function sessionExpireMessage() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
-				alert('Session is about to expire in 30 minutes');
+				// alert('Session is about to expire in 30 minutes');
+				$(".expiremessagebox").css("display","block")
 				clearInterval(intervalId);
 			}
 

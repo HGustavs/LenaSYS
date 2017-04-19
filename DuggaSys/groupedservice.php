@@ -1,7 +1,4 @@
 <?php
-
-// This is a work in progress for the group editor service. 
-
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
@@ -26,88 +23,56 @@ if(isset($_SESSION['uid'])){
 
 $opt = getOP('opt');
 $cid = getOP('cid');
-$coursevers=getOP('coursevers');
+$vers = getOP('vers');
+$listentry = getOP('moment');
+$qvariant=getOP("qvariant");
+$gentries=array();
 
-$entries = array();
-/* $gentries=array();
-$sentries=array();
-$lentries=array();
-$snus=array(); */
-
-
-/* $log_uuid = getOP('log_uuid');
-$info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark;
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "groupedservice.php",$userid,$info); */
-
-//------------------------------------------------------------------------------------------------
-// Retrieve Information about the existing groups.
-//------------------------------------------------------------------------------------------------
+$debug="NONE!";
 
 // Don't retreive all results if request was for a single dugga or a grade update
-if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
+if(strcmp($opt,"GET")==0){
 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-		$query = $pdo->prepare("SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class FROM user,user_course WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;");
-
-		$query->bindParam(':coursevers', $vers);
+		
+		$query = $pdo->prepare("SELECT listentries.*,quizFile,COUNT(variant.vid) as qvariant FROM listentries LEFT JOIN quiz ON  listentries.link=quiz.id LEFT JOIN variant ON quiz.id=variant.quizID WHERE listentries.cid=:cid and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
 		$query->bindParam(':cid', $cid);
+		$query->bindParam(':vers', $vers);
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error retreiving users. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			$debug="Error retreiving moments and duggas. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
 		}
 
+		$currentMoment=null;
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-			// Create array entry for each course participant
-
-			$entry = array(
-				'cid' => (int)$row['cid'],
-				'uid' => (int)$row['uid'],
-				'username' => $row['username'],
-				'firstname' => $row['firstname'],
-				'lastname' => $row['lastname'],
-				'ssn' => $row['ssn'],
-				'class' => $row['class']
+			array_push(
+				$gentries,
+				array(
+					'entryname' => $row['entryname'],
+					'lid' => (int)$row['lid'],
+					'kind' => (int)$row['kind'],
+					'moment' => (int)$row['moment'],
+					'visible'=> (int)$row['visible']
+				)
 			);
-
-			$entry = array(
-				'cid' => (int)$row['cid'],
-				'uid' => (int)$row['uid'],
-				'username' => $row['username'],
-				'firstname' => $row['firstname'],
-				'lastname' => $row['lastname'],
-				'ssn' => $row['ssn'],
-				'role' => $row['access']
-			);
-			
-			array_push($entries, $entry);
 		}
 	}
 }
 
+if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
+		$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];	
+		$benchmark =  array('totalServiceTime' => $serviceTime);
+}else{
+		$benchmark="-1";
+}
+
 $array = array(
-	'entries' => $entries, // listentry? 
-	/* 'moments' => $gentries, // wut
-	'versions' => $sentries,
+	'moments' => $gentries,
 	'debug' => $debug,
-	'results' => $lentries,
-	'teachers' => $teachers,
-	'duggauser' => $duggauser,
-	'duggaentry' => $duggaentry,
-	'duggaid' => $duggaid,
-	'duggapage' => $duggapage,
-	'dugganame' => $dugganame,
-	'duggaparam' => $duggaparam,
-	'duggaanswer' => $duggaanswer,
-	'useranswer' => $useranswer,
-	'duggastats' => $duggastats,
-	'duggafeedback' => $duggafeedback,
 	'moment' => $listentry,
-	'files' => $files,
-	'gradeupdated' => $gradeupdated,
-	'benchmark' => $benchmark */
+	'benchmark' => $benchmark
 );
 
 echo json_encode($array);
-
-// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "groupedservice.php",$userid,$info);
+// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
 ?>
