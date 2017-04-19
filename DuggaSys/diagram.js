@@ -27,6 +27,7 @@ var acanvas;					// Canvas Element
 var sel;							// Selection state
 var cx,cy=0;					// Current Mouse coordinate x and y
 var sx,sy=0;					// Start Mouse coordinate x and y
+var zv = 1.00;				// The value of the zoom
 var mox,moy=0;				// Old mouse x and y
 var md=0;							// Mouse state
 var hovobj=-1;
@@ -49,10 +50,17 @@ var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
+
 var a,b,c;
 a = [];
 b = [];
 c = [];
+
+var mousedownX = 0; var mousedownY = 0;	// Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
+var mousemoveX = 0; var mousemoveY = 0; // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
+var mouseDiffX = 0; var mouseDiffY = 0; // Saves to diff between mousedown and mousemove to know how much to translate the diagram
+
+
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown",this.keyDownHandler, false);
 
@@ -199,31 +207,25 @@ var diagram=[];
 //--------------------------------------------------------------------
 // draw - executes draw methond in all diagram objects
 //--------------------------------------------------------------------
-
-diagram.draw = function ()
-{
-		// On every draw of diagram adjust the midpoint if there is one to adjust
-		this.adjust();
-	for(i=0;i<this.length;i++){
-		item=this[i];
-
-		// Path item
-		if(item.symbolkind==4) {
-			item.draw();
+diagram.draw = function () {
+	// On every draw of diagram adjust the midpoint if there is one to adjust
+	this.adjust();
+	// Render figures
+	for(i = 0; i < this.length; i++) {
+		if(this[i].kind == 1) {
+			this[i].draw(1, 1);
 		}
-
 	}
-		for(i=0;i<this.length;i++){
-				item=this[i];
-
-				// Path item
-				if(item.kind==1){
-					item.draw(1,1);
-				}else if(item.kind==2 && !(item.symbolkind == 4)){
-					item.draw();
-				}
-
+	for(i = 0; i < this.length; i++) {
+		if(this[i].symbolkind == 4) {
+			this[i].draw();
 		}
+	}
+	for(i = 0; i < this.length; i++) {
+		if(this[i].kind == 2 && !(this[i].symbolkind == 4)) {
+			this[i].draw();
+		}
+	}
 }
 
 //--------------------------------------------------------------------
@@ -279,15 +281,7 @@ diagram.insides = function (ex,ey,sx,sy)
 		var ty = points[this[i].topLeft].y;
 		var bx = points[this[i].bottomRight].x;
 		var by = points[this[i].bottomRight].y;
-		/*console.log(sx + " target x ");
-		console.log(sy + " target y ");
-		console.log(sx + " start point x");
-		console.log(sy + " start point y ");
-		console.log(ex + " end point x ");
-		console.log(ey + " end point x ");*/
 		if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by){
-
-			console.log("4");
 			this[i].targeted = true;
 			// return i;
 		} else {
@@ -743,6 +737,7 @@ function initcanvas()
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
+		"<div id='valuesCanvas' style='position: fixed; left: 10px; bottom:130px;'><p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p></div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
 		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
 	var canvas = document.getElementById("myCanvas");
@@ -803,7 +798,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(startX,startY,widthWindow,heightWindow);
+		ctx.clearRect(0,0,widthWindow,heightWindow);
 
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -840,7 +835,6 @@ function findPos(obj) {
 function updateActivePoint(){
   if(sel.dist <= tolerance){
     activePoint = sel.ind;
-    console.log("New active point");
   }
   else{
     activePoint = null;
@@ -850,7 +844,6 @@ function mousemoveevt(ev, t){
 		mox=cx;
 		moy=cy;
 	    hovobj = diagram.inside(cx,cy);
-	    //console.log(hovobj);
 		if (ev.pageX || ev.pageY == 0){ // Chrome
 			cx=ev.pageX-acanvas.offsetLeft;
 			cy=ev.pageY-acanvas.offsetTop;
@@ -890,7 +883,8 @@ function mousemoveevt(ev, t){
 		}
 		diagram.linedist(cx,cy);
 
-
+		cx-=startX;
+		cy-=startY;
 		updategfx();
 
 		// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
@@ -1013,7 +1007,6 @@ function mouseupevt(ev){
         }
         else{
           // Start line on object
-          console.log("Symbolkind"+diagram[lineStartObj].symbolkind);
           diagram[lineStartObj].connectorTop.push({from:p1,to:p2});
           lineStartObj = -1;
         }
@@ -1032,8 +1025,6 @@ function mouseupevt(ev){
         }
         else{
           // Start line on object
-          console.log("Symbolkind"+diagram[lineStartObj].symbolkind);
-          console.log("Symbolkind"+diagram[hovobj].symbolkind);
           diagram[lineStartObj].connectorTop.push({from:p1,to:p2});
           diagram[hovobj].connectorTop.push({from:p2,to:p1});
         }
@@ -1096,7 +1087,6 @@ function mouseupevt(ev){
 
             diagram.push(erLineA);
         } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" )) {
-            console.log("box drawn");
             diagram.insides(cx, cy, sx, sy);
         }
 
@@ -1208,42 +1198,37 @@ function dialogForm() {
     }
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name:</br>" +
-        "<input id='nametext' type='text'></br>" +
+        	"<input id='nametext' type='text'></br>" +
         "Attribute type: </br>" +
-        "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
-   			"Font family:<br>" +
-        "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
-  			"Font color:<br>" +
+        	"<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+   		"Font family:<br>" +
+        	"<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+  		"Font color:<br>" +
   			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
-        "Text size:<br>" +
-  			"<select id ='TextSize'><option value=Tiny>Tiny</option><option value=Small>Small</option><option value=Medium>Medium</option><option value=Large>Large</option></select><br>"+
-  			"<button type='submit' onclick='setTextSizeEntity()'>TextScale</button>" +
-  			"<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>" +
-  			"<button type='submit' onclick='setType(form)'>setType</button>" +
-  			"<button type='button' onclick='closeAppearanceDialogMenu()'>Cancel</button></br>";
+       		"Text size:<br>" +
+  			"<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+  			"<button type='submit'  class='submit-button' onclick='changeName(form); setType(form); setTextSizeEntity(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
-            "<input id='nametext' type='text'></br>" +
-            "Entity type: </br>" +
+       		"<input id='nametext' type='text'></br>" +
+        "Entity type: </br>" +
 			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
-			"Font family:<br>" +
-            "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
-			"Font color:<br>" +
+		"Font family:<br>" +
+        	"<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+		"Font color:<br>" +
 			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
-            "Text size:<br>" +
-			"<select id ='TextSize'><option value=Tiny>Tiny</option><option value=Small>Small</option><option value=Medium>Medium</option><option value=Large>Large</option></select><br>"+
-			"<button type='submit' onclick='setTextSizeEntity()'>TextScale</button>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form); setEntityType(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+        "Text size:<br>" +
+			"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+            "<button type='submit'  class='submit-button' onclick='changeName(form); setTextSizeEntity(form); setEntityType(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
 }
 
 //setTextSize(): used to change the size of the text. unifinish can's get it to work.
-function setTextSizeEntity(){
+function setTextSizeEntity(form){
 	var scaletype = document.getElementById('TextSize').value;
 	diagram[selobj].sizeOftext = scaletype;
-	updategfx();
-
+	
 	/*
 		Hämtar specifik entitet/attribut/detpersonenharklickat på.
 		[ovannämndklick].font=text_size+"px";
@@ -1254,8 +1239,7 @@ function setTextSizeEntity(){
 function changeName(form){
 	diagram[selobj].name=document.getElementById('nametext').value;
 	diagram[selobj].fontColor=document.getElementById('fontColor').value;
-	diagram[selobj].font=document.getElementById('font').value;
-	diagram[selobj].attributeType=document.getElementById('attributeType').value;
+	diagram[selobj].font=document.getElementById('font').value; 
     dimDialogMenu(false);
     updategfx();
 }
@@ -1270,6 +1254,16 @@ function setType(form){
 	if(document.getElementById('attributeType').value == 'Primary key')
 	{
 		diagram[selobj].key_type = 'Primary key';
+	}
+	
+	else if(document.getElementById('attributeType').value == 'Normal')
+	{
+		diagram[selobj].key_type = 'Normal';
+	}
+	
+		else if(document.getElementById('attributeType').value == 'Multivalue')
+	{
+		diagram[selobj].key_type = 'Multivalue';
 	}
 	 updategfx();
 }
@@ -1358,14 +1352,11 @@ function drawOval(x1, y1, x2, y2) {
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
 function clearCanvas()
 {
-  console.log("Deleting");
 
   while(diagram.length > 0){
-    console.log(diagram.length);
     diagram[diagram.length-1].erase();
     diagram.pop();
   }
-	console.log(diagram.length + " " + points.length);
   updategfx();
 }
 
@@ -1400,11 +1391,8 @@ function debugMode()
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
-var mousedownX = 0; var mousedownY = 0;
-var mousemoveX = 0; var mousemoveY = 0;
-var mouseDiffX = 0; var mouseDiffY = 0;
 
-function movemode(e)
+function movemode(e, t)
 {
 	uimode="MoveAround";
 	var canvas = document.getElementById("myCanvas");
@@ -1429,35 +1417,37 @@ function movemode(e)
 		canvas.removeEventListener('mouseup', mouseupcanvas, false);
 		buttonStyle.style.background="";
 		buttonStyle.style.color="";
+		mousemoveevt(e,t);
 	}
 }
 function getMousePos(e){
 	var canvas = document.getElementById("myCanvas");
 	mousedownX = e.clientX;
 	mousedownY = e.clientY;
-	console.log("Down: "+mousedownX+" | "+mousedownY);
 	canvas.addEventListener('mousemove', mousemoveposcanvas, false);
 }
 function mousemoveposcanvas(e){
 	mousemoveX = e.clientX;
 	mousemoveY = e.clientY;
-	console.log("Move: "+mousemoveX+" | "+mousemoveY);
 	var canvas = document.getElementById("myCanvas");
 	mouseDiffX = (mousedownX - mousemoveX);
 	mouseDiffY = (mousedownY - mousemoveY);
+	startX += mouseDiffX;
+	startY += mouseDiffY;
 	mousedownX = mousemoveX;
 	mousedownY = mousemoveY;
-	console.log("Diff: "+mouseDiffX+" | "+mouseDiffY);
-	ctx.clearRect(startX,startX,widthWindow,heightWindow);
+	ctx.clearRect(0,0,widthWindow,heightWindow);
 	ctx.translate(mouseDiffX,mouseDiffY);
 	erEntityA.sortAllConnectors();
 	diagram.draw();
 	points.drawpoints();
+	reWrite();
 }
 function mouseupcanvas(e){
 	var canvas = document.getElementById("myCanvas");
 	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 }
+
 
 
 function downloadMode(el){
@@ -1567,6 +1557,14 @@ function Load() {
     //Redrawn old state.
     updategfx();
 }
+
+// Function that rewrites the values of zoom and x+y that's under the canvas element
+
+function reWrite(){
+	var valuesCanvas = document.getElementById("valuesCanvas");
+	valuesCanvas.innerHTML="<p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
+}	
+
 //----------------------------------------
 // Renderer
 //----------------------------------------

@@ -335,6 +335,8 @@ function displayEditExample(boxid)
 {
 	$("#title").val($('<textarea />').html(retData['examplename']).text());
 	$("#secttitle").val($('<textarea />').html(retData['sectionname']).text());
+	$("#boxcontent").val(retData['box'][1][1]);
+	changeDirectory($("#boxcontent"));
 	$("#playlink").val(retData['playlink']);
 	
 	var iw=retData['impwords'];
@@ -503,6 +505,7 @@ function changeDirectory(kind)
 		}
 	}
 	$("#filename").html(str);
+	$("#playlink").html(str);
 }
 
 //----------------------------------------------------------------------------------

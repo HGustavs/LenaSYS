@@ -2,53 +2,91 @@
 
 $(function() {
 
-	var sendPushRegistrationToServer = function(subscription) {
-		console.log(subscription);
+	var sendPushRegistrationToServer = function(subscription, deregister) {
 		$.ajax({
 			url: "pushnotifications.php",
 			type: "POST",
-			data: {action: 'register', subscription: subscription.toJSON()},
-			dataType: "json",
+			data: {action: (deregister == true ? 'deregister' : 'register'), subscription: subscription.toJSON()},
+			dataType: "text",
 			success: function() {
-				console.log("Push data sent to server");
+				windows.setTimeout(function() {
+					updateTextAndButton((deregister != true));
+				}, 1000);
 			}
 		});
 	};
 
 
 	var subscribe = function() {
-		var button = document.getElementById("activate_notifications");
-		button.disabled = true;
+		$("#notificationsToggle")[0].disabled = true;
 
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-			serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
+			var rawData = window.atob(push_notifications_vapid_public_key);
+			var vapidKey = new Uint8Array(rawData.length);
+			for (let i = 0; i < rawData.length; ++i) {
+				vapidKey[i] = rawData.charCodeAt(i);
+			}
+
+			serviceWorkerRegistration.pushManager.subscribe({
+				userVisibleOnly: true,
+				applicationServerKey: vapidKey
+			})
 				.then(function(subscription) {
 					sendPushRegistrationToServer(subscription);
 				})
 				.catch(function(e) {
 					if (Notification.permission === 'denied') {
-						console.log('Permission for Notifications was denied');
+						$("#notificationsText").html("Push notifications has been disabled in your browser").css('color', '#a00');
 					} else {
-						console.log('Unable to subscribe to push.', e);
+						$("#notificationsText").html("Unable to subscribe to push messaging, unknown error").css('color', '#a00');
 					}
-					alert("Could not subscribe to push notifications");
 				});
 		});
 	};
 
+	var unsubscribe = function() {
+		$("#notificationsToggle")[0].disabled = true;
+		
+		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+			serviceWorkerRegistration.pushManager.getSubscription()
+				.then(function(subscription) {
+					if (subscription) {
+						sendPushRegistrationToServer(subscription, true);
+						subscription.unsubscribe();
+					}
+				})
+				.catch(function(error) {
+					$("#notificationsText").html("Error unsubscribing").css('color', '#a00');
+					console.log('Error unsubscribing', error);
+				});
+		});
+	};
+
+	var updateTextAndButton = function(subscribed) {
+		if (subscribed) {
+			$("#notificationsText").html("Push notifications are activated on this device.");
+			$("#notificationsToggle").off("click").on("click", unsubscribe).html("Deactivate push notifications");
+			$("#notificationsToggle")[0].disabled = false;
+		} else {
+			$("#notificationsText").html("Push notifications are not activated on this device.");
+			$("#notificationsToggle").off("click").on("click", subscribe).html("Activate push notifications");
+			$("#notificationsToggle")[0].disabled = false;
+		}
+	};
+
 	var initialiseState = function() {
-		if (!('showNotification' in ServiceWorkerRegistration.prototype) ||
-				Notification.permission === 'denied' ||
-				!('PushManager' in window)) {
-			console.log('Notifications is not supported or is disabled.');
+		if (!('showNotification' in ServiceWorkerRegistration.prototype) || !('PushManager' in window)) {
+			$("#notificationsText").html("Push notifications not supported in this browser").css('color', '#a00'); // Notification or PushManager support not found
+			return;
+		}
+		if (Notification.permission === 'denied') {
+			$("#notificationsText").html("Push notifications has been disabled in your browser, please enable to use this function").css('color', '#a00'); // User has disabled push messaging
 			return;
 		}
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
 			serviceWorkerRegistration.pushManager.getSubscription()
 				.then(function(subscription) {
-					var button = document.getElementById("activate_notifications");
-					button.disabled = false;
-					button.addEventListener('click', subscribe);
+					updateTextAndButton(subscription !== null);
 				})
 				.catch(function(err) {
 					console.log('Error during getSubscription()', err);
@@ -59,7 +97,7 @@ $(function() {
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('pushnotificationsserviceworker.js').then(initialiseState);
 	} else {
-		console.log('Service workers aren\'t supported in this browser.');
+		$("#notificationsText").html("Push notifications not supported in this browser").css('color', '#a00'); // No service worker support found
 	}
 
 });
