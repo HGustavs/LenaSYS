@@ -31,7 +31,7 @@ Added columns to fileLink table:
 	uploaddate			DATETIME NOT NULL DEFAULT NOW(),
   
   
-/* ----------------------------------------------- */ 
+/* ----------------------------------------------- */
 /* ---- Usergroup and user_usergroup relation ---- */
 /* ----------------------------------------------- */
 
@@ -67,3 +67,8 @@ CREATE TABLE `usergroup_listentries` (
   CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`),
   CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+
+/*----*/
+Added a column to listentries table:
+grouptype TINYINT(1),
