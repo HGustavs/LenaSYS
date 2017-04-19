@@ -75,7 +75,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"CHPWD")==0){
-		$query = $pdo->prepare("UPDATE user set password=password(:pwd) where uid=:uid;");
+		$query = $pdo->prepare("UPDATE user set password=password(:pwd), requestedpasswordchange=0 where uid=:uid;");
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':pwd', $pw);
 
