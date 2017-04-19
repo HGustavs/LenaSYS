@@ -10,6 +10,9 @@ Markdown support javascript
 -------------==============######## Documentation End ###########==============-------------
 
 */
+// GLOBALS
+var tableAlignmentConf = [];
+
 
 //Functions for gif image
 //Fetches the picture and sets its properties
@@ -189,8 +192,8 @@ function isOrderdList(item) {
 
 // CHeck if its a table
 function isTable(item) {
-	// return true if space followed by a pipe-character
-	return /\s*\|\s(.*)/gm.test(item); 
+	// return true if space followed by a pipe-character and have closing pipe-character
+	return /\s*\|\s(.*)\|/gm.test(item);
 }
 // The creation and destruction of unordered lists
 function handleUnorderedList(currentLine, prevLine, nextLine) {
@@ -275,23 +278,50 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
 function handleTable(currentLine, prevLine, nextLine) {
 	var markdown = "";
 
+    var columns = currentLine.split('|').filter(function(v){return v !== '';});
+
 	// open new table
 	if(!isTable(prevLine)) {
-    	markdown += "<table>";
+    	markdown += "<table><thead>";
     }
 
-    // handle table row
-    markdown += "<tr>" 
-    var columns = currentLine.split('|').filter(function(v){return v !== '';});
-    for(var i = 0; i < columns.length; i++) {
-    	markdown += "<td>" + columns[i].trim() + "</td>";
+    // configure alignment
+    if(currentLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+        for(var i = 0; i < columns.length; i++) {
+            var column = columns[i].trim();
+
+            // align center
+            if(column.match(/[:][-]*[:]/gm)) tableAlignmentConf[i] = 1;
+            // align right
+            else if(column.match(/[-]*[:]/gm)) tableAlignmentConf[i] = 2;
+            // align left
+            else tableAlignmentConf[i] = 3;
+        }
     }
-    markdown += "</td>";
+    // handle table row
+    else {
+
+        markdown += "<tr>"
+        for(var i = 0; i < columns.length; i++) {
+            var alignment = "";
+
+            if(tableAlignmentConf[i] === 1) alignment = "center";
+            else if(tableAlignmentConf[i] === 2) alignment = "right";
+            else alignment = "left";
+
+            markdown += "<td style='text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
+        }
+        markdown += "</tr>";
+
+        // close thead and open tbody
+        if(!isTable(prevLine)) {
+            markdown += "</thead><tbody>";
+        }
+    }
 
     // close table
 	if(!isTable(nextLine)) {
-		console.log("end");
-    	markdown += "</table>";
+    	markdown += "</tbody></table>";
     }
 
     return markdown;
