@@ -1281,7 +1281,7 @@ function dialogForm() {
   			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
        		"Text size:<br>" +
   			"<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-  			"<button type='submit'  class='submit-button' onclick='changeName(form); setType(form); setTextSizeEntity(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+  			"<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
@@ -1294,7 +1294,7 @@ function dialogForm() {
 			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
         "Text size:<br>" +
 			"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form); setTextSizeEntity(form); setEntityType(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
 }
 
@@ -1311,17 +1311,27 @@ function setTextSizeEntity(form){
 
 
 function changeName(form){
-	diagram[selobj].name=document.getElementById('nametext').value;
-	diagram[selobj].fontColor=document.getElementById('fontColor').value;
-	diagram[selobj].font=document.getElementById('font').value; 
-	//diagram[selobj].attributeType=document.getElementById('attributeType').value;
-  dimDialogMenu(false);
-  updategfx();
+
+    dimDialogMenu(false);
+
+    diagram[selobj].name=document.getElementById('nametext').value;
+    diagram[selobj].fontColor=document.getElementById('fontColor').value;
+    diagram[selobj].font=document.getElementById('font').value;
+    diagram[selobj].attributeType=document.getElementById('attributeType').value;
+
+    setEntityType(form);
+    setTextSizeEntity(form);
+    setType(form);
+
+    updategfx();
+    $("#appearance").hide();
+
 }
 
-function setEntityType() {
+function setEntityType(form) {
 	var selectBox = document.getElementById("entityType");
 	diagram[selobj].type = selectBox.options[selectBox.selectedIndex].value;
+  updategfx();
 }
 
 function setType(form){
@@ -1335,7 +1345,7 @@ function setType(form){
 	{
 		diagram[selobj].key_type = 'Normal';
 	}
-	
+
 		else if(document.getElementById('attributeType').value == 'Multivalue')
 	{
 		diagram[selobj].key_type = 'Multivalue';
@@ -1690,7 +1700,7 @@ function Load() {
 function reWrite(){
 	var valuesCanvas = document.getElementById("valuesCanvas");
 	valuesCanvas.innerHTML="<p>Zoom: "+Math.round((zv*100))+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
-}	
+}
 
 //----------------------------------------
 // Renderer
