@@ -1168,6 +1168,10 @@ input.large-button {
     box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);
 }
 
+.list#testTable tr:nth-child(odd), .list#testTable tr:nth-child(even){
+    background-color:#eae8eb;
+}
+
 .list#testTable tr{
     line-height:45px; 
     border-bottom:1px solid gray;
@@ -1212,7 +1216,7 @@ input.large-button {
 
 #testinnertable tr {
     border-bottom: none !important;
-    background-color:white;
+    background-color:white !important;
 }
 
 span.arrow {
