@@ -95,10 +95,11 @@ CREATE TABLE listentries (
 	code_id 			MEDIUMINT unsigned NULL DEFAULT NULL,
 	visible 			TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	vers					VARCHAR(8),
-	comments					VARCHAR(512),
+	comments			VARCHAR(512),
 	moment				INT UNSIGNED,
 	gradesystem 	TINYINT(1),
 	highscoremode	INT DEFAULT 0,
+	grouptype			TINYINT(1),
 	PRIMARY KEY(lid),
 
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
@@ -600,4 +601,3 @@ alter table user_course alter column term set default 1;
 alter table user_course add column vers VARCHAR(8);
 */
 alter table codeexample MODIFY runlink VARCHAR(256);
-
