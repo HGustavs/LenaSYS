@@ -60,6 +60,8 @@ var mousedownX = 0; var mousedownY = 0;	// Is used to save the exact coordinants
 var mousemoveX = 0; var mousemoveY = 0; // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
 var mouseDiffX = 0; var mouseDiffY = 0; // Saves to diff between mousedown and mousemove to know how much to translate the diagram
 
+var xPos = 0;
+var yPos = 0;
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown",this.keyDownHandler, false);
@@ -297,7 +299,6 @@ diagram.inside = function (xk,yk)
 {
 		for(i=0;i<this.length;i++){
 				item=this[i];
-
 				if(item.kind==2){
 						var insided=item.inside(xk,yk);
 						if(insided==true) return i;
@@ -725,6 +726,8 @@ function initcanvas()
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
+		"<button id='zoomInButton' class='unpressed' style='right:0; position:fixed; margin-right:120px;'>+</button>"+
+		"<button id='zoomOutButton' class='unpressed' style='right:0; position:fixed; margin-right:100px;'>-</button>"+
         "<select id='download' onchange='downloadMode(this)'>" +
         "<option selected='selected' disabled>State</option>" +
        	 "<option value='getImage'>getImage</option>" +
@@ -735,7 +738,7 @@ function initcanvas()
         "<input id='fileid' type='file' name='file_name' hidden multiple/>"+
         "<input id='buttonid' type='button' value='Import' />"+
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
-		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
+		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<div id='valuesCanvas' style='position: fixed; left: 10px; bottom:130px;'><p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p></div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
@@ -748,11 +751,71 @@ function initcanvas()
 		getUploads();
 		makegfx();
 
-		updategfx();
+	updategfx();
 
-		var buttonStyle = document.getElementById("moveButton");
-		buttonStyle.addEventListener('click', movemode, false);
+	document.getElementById("moveButton").addEventListener('click', movemode, false);
+	document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
+	document.getElementById("zoomOutButton").addEventListener('click', zoomOutMode, false);
+	canvas.addEventListener('dblclick', doubleclick, false);
 
+}
+
+// Function for the zoom in and zoom out in the canvas element
+
+function zoomInMode(e){
+	uimode="Zoom";
+	var canvas = document.getElementById("myCanvas");
+	canvas.removeEventListener('click', zoomOutClick, false);
+	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+	var zoomInClass = document.getElementById("zoomInButton").className;
+	var zoomInButton = document.getElementById("zoomInButton");
+	document.getElementById("zoomOutButton").className="unpressed";
+	document.getElementById("moveButton").className="unpressed";
+	if(zoomInClass == "unpressed"){
+		canvas.removeEventListener('dblclick', doubleclick, false);
+		zoomInButton.className="pressed";
+		canvas.style.cursor="zoom-in";
+		canvas.addEventListener("click", zoomInClick, false);
+	}else{
+		zoomInButton.className="unpressed";
+		canvas.addEventListener("dblclick", doubleclick, false);
+		canvas.removeEventListener("click", zoomInClick, false);
+		canvas.style.cursor="default";
+	}
+}
+
+function zoomOutMode(e){
+	uimode="Zoom";
+	var canvas = document.getElementById("myCanvas");
+	canvas.removeEventListener('click', zoomInClick, false);
+	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+	var zoomOutClass = document.getElementById("zoomOutButton").className;
+	var zoomOutButton = document.getElementById("zoomOutButton");
+	document.getElementById("zoomInButton").className="unpressed";
+	document.getElementById("moveButton").className="unpressed";
+	if(zoomOutClass == "unpressed"){
+		canvas.removeEventListener('dblclick', doubleclick, false);
+		zoomOutButton.className="pressed";
+		canvas.style.cursor="zoom-out";
+		canvas.addEventListener("click", zoomOutClick, false);
+	}else{
+		zoomOutButton.className="unpressed";
+		canvas.addEventListener("dblclick", doubleclick, false);
+		canvas.removeEventListener("click", zoomOutClick, false);
+		canvas.style.cursor="default";
+	}
+}
+
+function zoomInClick(){
+	zv+=0.1;
+	reWrite();
+	ctx.scale(1.1,1.1);
+}
+
+function zoomOutClick(){
+	zv-=0.1;
+	reWrite();
+	ctx.scale(0.9,0.9);
 }
 function getUploads() {
     document.getElementById('buttonid').addEventListener('click', openDialog);
@@ -785,6 +848,10 @@ function canvassize()
 	heightWindow = (window.innerHeight-244);
 	document.getElementById("myCanvas").setAttribute("width", widthWindow);
 	document.getElementById("myCanvas").setAttribute("height", heightWindow);
+	ctx.clearRect(startX,startY,widthWindow,heightWindow);
+	ctx.translate(startX,startY);
+	ctx.scale(1,1);
+	ctx.scale(zv,zv);
 }
 
 // Listen if the window is the resized
@@ -798,7 +865,7 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(0,0,widthWindow,heightWindow);
+		ctx.clearRect(startX,startY,widthWindow,heightWindow);
     drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
@@ -841,6 +908,8 @@ function updateActivePoint(){
   }
 }
 function mousemoveevt(ev, t){
+		xPos = ev.clientX;
+		yPos = ev.clientY;
 		mox=cx;
 		moy=cy;
 	    hovobj = diagram.inside(cx,cy);
@@ -883,8 +952,9 @@ function mousemoveevt(ev, t){
 		}
 		diagram.linedist(cx,cy);
 
-		cx-=startX;
-		cy-=startY;
+		cx+=startX;
+		cy+=startY;
+
 		updategfx();
 
 		// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
@@ -976,12 +1046,16 @@ function mousedownevt(ev)
 
 function doubleclick(ev)
 {
-	if(diagram[selobj].inside(cx,cy)){
+	var posistionX = (startX+xPos);
+	var posistionY = (startY+yPos);
+	console.log(posistionX+" | "+posistionY);
+	if(diagram[selobj].inside(posistionX,posistionY)){
+		console.log(" H|J ");
         openAppearanceDialogMenu();
         document.getElementById('nametext').value = diagram[selobj].name;
-    		document.getElementById('fontColor').value = diagram[selobj].fontColor;
-    		document.getElementById('font').value = diagram[selobj].font;
-    		document.getElementById('attributeType').value = diagram[selobj].attributeType;
+		document.getElementById('fontColor').value = diagram[selobj].fontColor;
+		document.getElementById('font').value = diagram[selobj].font;
+		//document.getElementById('attributeType').value = diagram[selobj].attributeType;
   }
 }
 
@@ -1086,7 +1160,7 @@ function mouseupevt(ev){
     		erLineA.centerpoint=p3;
 
             diagram.push(erLineA);
-        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" )) {
+        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "Zoom" ) && !(uimode == "MoveAround" )) {
             diagram.insides(cx, cy, sx, sy);
         }
 
@@ -1239,9 +1313,10 @@ function setTextSizeEntity(form){
 function changeName(form){
 	diagram[selobj].name=document.getElementById('nametext').value;
 	diagram[selobj].fontColor=document.getElementById('fontColor').value;
-	diagram[selobj].font=document.getElementById('font').value;
-    dimDialogMenu(false);
-    updategfx();
+	diagram[selobj].font=document.getElementById('font').value; 
+	//diagram[selobj].attributeType=document.getElementById('attributeType').value;
+  dimDialogMenu(false);
+  updategfx();
 }
 
 function setEntityType() {
@@ -1310,6 +1385,7 @@ function Consolemode(action){
 		document.getElementById('Hide Console').style.display = "none";
 		document.getElementById('Show Console').style.display = "block";
 		document.getElementById('Show Console').style="position:fixed; right:0; bottom:0px;";
+		document.getElementById('valuesCanvas').style.bottom = "0";
 		heightWindow = (window.innerHeight-120);
 		document.getElementById("myCanvas").setAttribute("height", heightWindow);
 		$("#consloe").hide();
@@ -1321,6 +1397,7 @@ function Consolemode(action){
 		document.getElementById('Hide Console').style="position:fixed; right:0; bottom:133px;";
 		heightWindow = (window.innerHeight-244);
 		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		document.getElementById('valuesCanvas').style.bottom = "130px";
 		$("#consloe").show();
 		updategfx();
 	}
@@ -1446,14 +1523,18 @@ function movemode(e, t)
 	var canvas = document.getElementById("myCanvas");
 	var button = document.getElementById("moveButton").className;
 	var buttonStyle = document.getElementById("moveButton");
+	canvas.removeEventListener("click", zoomOutClick, false);
+	canvas.removeEventListener("click", zoomInClick, false);
+	canvas.removeEventListener("dblclick", doubleclick, false);
+	document.getElementById("zoomInButton").className="unpressed";
+	document.getElementById("zoomOutButton").className="unpressed";
 	if(button == "unpressed"){
 		buttonStyle.className="pressed";
 		canvas.style.cursor="all-scroll";
 		canvas.addEventListener('mousedown', getMousePos, false);
 		canvas.addEventListener('mouseup', mouseupcanvas, false);
-		buttonStyle.style.background="grey";
-		buttonStyle.style.color="white";
 	}else{
+		canvas.addEventListener('dblclick', doubleclick, false);
 		buttonStyle.className="unpressed";
 		mousedownX = 0; mousedownY = 0;
 		mousemoveX = 0; mousemoveY = 0;
@@ -1463,8 +1544,6 @@ function movemode(e, t)
 		canvas.removeEventListener('mousedown', getMousePos, false);
 		canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 		canvas.removeEventListener('mouseup', mouseupcanvas, false);
-		buttonStyle.style.background="";
-		buttonStyle.style.color="";
 		mousemoveevt(e,t);
 	}
 }
@@ -1485,7 +1564,7 @@ function mousemoveposcanvas(e){
 	mousedownX = mousemoveX;
 	mousedownY = mousemoveY;
 	ctx.clearRect(0,0,widthWindow,heightWindow);
-	ctx.translate(mouseDiffX,mouseDiffY);
+	ctx.translate((-mouseDiffX),(-mouseDiffY));
 	erEntityA.sortAllConnectors();
 	diagram.draw();
 	points.drawpoints();
@@ -1610,8 +1689,8 @@ function Load() {
 
 function reWrite(){
 	var valuesCanvas = document.getElementById("valuesCanvas");
-	valuesCanvas.innerHTML="<p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
-}
+	valuesCanvas.innerHTML="<p>Zoom: "+Math.round((zv*100))+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
+}	
 
 //----------------------------------------
 // Renderer
