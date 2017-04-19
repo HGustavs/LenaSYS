@@ -19,7 +19,7 @@ AJAXService("get",{},"DIAGRAM");
 */
 
 // Global settings
-
+var gridSize = 16;
 var crossl=4.0;				// Size of point cross
 var tolerance = 8;		// Size of tolerance area around the point
 var ctx;							// Canvas context
@@ -762,7 +762,7 @@ var erEntityA;
 function updategfx()
 {
 		ctx.clearRect(0,0,widthWindow,heightWindow);
-
+    drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
 
@@ -1191,7 +1191,7 @@ function dialogForm() {
 function setTextSizeEntity(form){
 	var scaletype = document.getElementById('TextSize').value;
 	diagram[selobj].sizeOftext = scaletype;
-	
+
 	/*
 		Hämtar specifik entitet/attribut/detpersonenharklickat på.
 		[ovannämndklick].font=text_size+"px";
@@ -1202,7 +1202,7 @@ function setTextSizeEntity(form){
 function changeName(form){
 	diagram[selobj].name=document.getElementById('nametext').value;
 	diagram[selobj].fontColor=document.getElementById('fontColor').value;
-	diagram[selobj].font=document.getElementById('font').value; 
+	diagram[selobj].font=document.getElementById('font').value;
     dimDialogMenu(false);
     updategfx();
 }
@@ -1218,7 +1218,7 @@ function setType(form){
 	{
 		diagram[selobj].key_type = 'Primary key';
 	}
-	
+
 	else if(document.getElementById('attributeType').value == 'Normal')
 	{
 		diagram[selobj].key_type = 'Normal';
@@ -1300,6 +1300,54 @@ function cross(xk,yk)
 				ctx.stroke();
 }
 
+function drawGrid(){
+  ctx.lineWidth=1;
+  ctx.strokeStyle="rgb(238,238,250)";
+  var quadrantx = (startX < 0)? startX: -startX,
+    quadranty = (startY < 0)? startY: -startY;
+  console.log(quadrantx+" : "+widthWindow+ "; "+(quadrantx+widthWindow));
+  for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
+    if(i%5==0){
+      i++;
+    }
+    ctx.beginPath();
+    ctx.moveTo(i*gridSize,0-startY);
+    ctx.lineTo(i*gridSize,heightWindow-startY);
+    ctx.stroke();
+    ctx.closePath();
+  }
+  for(i = 0+quadranty; i < quadranty+heightWindow; i++){
+    if(i%5==0){
+      i++;
+    }
+    ctx.beginPath();
+    ctx.moveTo(0-startX, i*gridSize);
+    ctx.lineTo(widthWindow-startX, i*gridSize);
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  //Draws the thick lines
+  ctx.strokeStyle="rgb(208,208,220)";
+  for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
+    if(i%5==0){
+      ctx.beginPath();
+      ctx.moveTo(i*gridSize,0-startY);
+      ctx.lineTo(i*gridSize,heightWindow-startY);
+      ctx.stroke();
+      ctx.closePath();
+    }
+  }
+  for(i = 0+quadranty; i < quadranty+heightWindow; i++){
+    if(i%5==0){
+      ctx.beginPath();
+      ctx.moveTo(0-startX, i*gridSize);
+      ctx.lineTo(widthWindow-startX, i*gridSize);
+      ctx.stroke();
+      ctx.closePath();
+    }
+  }
+}
 function drawOval(x1, y1, x2, y2) {
 		xm = x1+((x2-x1)*0.5),       // x-middle
 		ym = y1+((y2-y1)*0.5);       // y-middle
@@ -1416,7 +1464,7 @@ function mouseupcanvas(e){
 function reWrite(){
 	var valuesCanvas = document.getElementById("valuesCanvas");
 	valuesCanvas.innerHTML="<p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
-}	
+}
 //----------------------------------------
 // Renderer
 //----------------------------------------
