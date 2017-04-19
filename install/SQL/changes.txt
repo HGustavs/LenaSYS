@@ -7,7 +7,8 @@ Table user:
 	Added requestedpasswordchange TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	
 Table listentries:
-	Added comment VARCHAR(512)
+	Added comments VARCHAR(512)
+	Added grouptype TINYINT(1)
 
 New table user_push_registration, created with the following sql:
 	CREATE TABLE user_push_registration (
@@ -67,8 +68,3 @@ CREATE TABLE `usergroup_listentries` (
   CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`),
   CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-
-/*----*/
-Added a column to listentries table:
-grouptype TINYINT(1),
