@@ -1,5 +1,5 @@
 <!-- Overlay -->
-
+<script src="js/jquery-1.11.0.min.js"></script>
 <?php
     date_default_timezone_set("Europe/Stockholm");
 
@@ -29,7 +29,7 @@
 	<!-- Swimlane Box Start! -->
 
   <div id="swimlanebox" class="swimlanebox" style="display:block">
-      <div style="position:fixed; background: white">
+      <div id="weeks" style="left: 5px; position:absolute; background: white">
           <svg width="200" height="770">
               <?php
                   foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -59,6 +59,13 @@
               <text x="70" y="740" fill="black">Week 10</text>
           </svg>
       </div>
+      <script>
+          $(window).scroll(function(){
+              $('#weeks').css({
+                  'left': $(this).scrollLeft() + 5
+              });
+          });
+      </script>
       <svg width="2000" height="770">
 
           <?php if (isset($_GET["courseid"])) {
@@ -127,3 +134,4 @@
   
   
   </div>
+
