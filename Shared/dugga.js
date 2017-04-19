@@ -488,7 +488,15 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	} else if(kind=="CODEVIEW"){
+	}else if(kind=="GROUP"){
+			$.ajax({
+				url: "groupedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedGroup
+			});
+	}else if(kind=="CODEVIEW"){
 			$.ajax({
 				url: "codeviewerService.php",
 				type: "POST",
@@ -617,12 +625,28 @@ function processResetPasswordCheckSecurityAnswer() {
 				var result = JSON.parse(data);
 				
 				if(result['checkanswer'] == "success") {
-					console.log("The answer was correct");
-					//do something
-					$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
-					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
+					$.ajax({
+						type:"POST",
+						url: "../Shared/resetpw.php",
+						data: {
+							username: username,
+							opt: "REQUESTCHANGE"
+						},
+						success:function(data){
+							var result = JSON.parse(data);
+							if(result['requestchange'] == "success"){
+								$("#showsecurityquestion #answer").css("background-color", "rgba(0, 0, 255, 0.2)");
+							}else{
+								$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+								$("#showsecurityquestion #message3").html("<div class='alert danger'>Something went wrong</div>");
+							}
+						}
+					})
+
+
+					//$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
+					//$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
 				}else{
-					console.log("Wrong answer");
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
@@ -844,7 +868,8 @@ function sessionExpireMessage() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
-				alert('Session is about to expire in 30 minutes');
+				// alert('Session is about to expire in 30 minutes');
+				$(".expiremessagebox").css("display","block")
 				clearInterval(intervalId);
 			}
 

@@ -93,22 +93,8 @@ pdoConnect();
 							<fieldset style="width:90%">
 								<legend>Submission types</legend>
 								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;max-height:180px;overflow:auto;"></div>
-              </fieldset>
-              
-							<fieldset style="width:90%;max-width:250px;">
-								<legend>New submission</legend>
-								<label for="name">Name:</label><input type="text" name="name" id="name" style="margin-bottom:3px"/><br/>
-								<label for="filetype">Filetype:</label>
-								<select name="filetype" id="filetype" onchange="selected()" style="margin-bottom:3px;width:160px;">
-									<option value="Pick"> Pick filetype </option>
-									<option value="PDF" id="pdf"> PDF </option>
-									<option value="Zip" id="zip"> Zip </option>
-									<option value="Link" id="link"> Link </option>
-									<option value="Text" id="text"> Text </option>
-								</select><br/>
-								<label for="instruction">Instruction:</label><textarea id="instruction" value=""/></textarea><br/>
-								<input type="submit" name="save" id="save" value="Save" onclick="addToTable()" class="submit-button" style="width:60px;height:25px;line-height:25px;margin-top:2px;"/><br/>
 							</fieldset>
+
 							<button type="button" name="addfieldname" id="addfieldname"><img src="../Shared/icons/PlusT.svg" alt="Add row"/></button>
 							<button type="button" name="createjson" id="createjson">Create JSON</button>
 						</div>
