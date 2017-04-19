@@ -28,6 +28,7 @@ $newusers = getOP('newusers');
 $coursevers = getOP('coursevers');
 $teacher = getOP('teacher');
 $vers = getOP('vers');
+$requestedpasswordchange = getOP('requestedpasswordchange');
 
 $debug="NONE!";	
 
@@ -166,7 +167,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 $entries=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher,vers, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher,vers,requestedpasswordchange, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -185,7 +186,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'modified' => $row['modified'],
 				'newly' => $row['newly'],
 				'teacher' => $row['teacher'],
-				'vers' => $row['vers']
+				'vers' => $row['vers'],
+				'requestedpasswordchange' => $row['requestedpasswordchange']
 			);
 			array_push($entries, $entry);
 	}
