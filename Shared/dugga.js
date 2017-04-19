@@ -771,6 +771,18 @@ function setupLoginLogoutButton(isLoggedIn){
 	}
 }
 
+//----------------------------------------------------------------------------------
+// Checks if a user is logged in or not. If not, the content in profile.php is hidden
+//----------------------------------------------------------------------------------
+function checkUserLogin(isLoggedIn){
+	
+	if(isLoggedIn === "true"){
+		$("#content").css("display","block");
+	}else{
+		$("#content").css("display","none");
+	}
+}
+
 function showReceiptPopup()
 {
 	$("#receiptBox").css("display","block");
