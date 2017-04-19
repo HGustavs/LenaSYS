@@ -29,8 +29,8 @@
 	<!-- Swimlane Box Start! -->
 
   <div id="swimlanebox" class="swimlanebox" style="display:block">
-      <div style="position:fixed; background: white>
-          <svg width="200" height="700">
+      <div style="position:fixed; background: white">
+          <svg width="200" height="770">
               <?php
                   foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
                       echo '<text y="15" x="10" fill="black">' . $row['coursecode'] . '</text>';
@@ -46,6 +46,7 @@
               <rect x="0" y="490" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
               <rect x="0" y="560" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
               <rect x="0" y="630" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
+              <rect x="0" y="700" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
               <text x="70" y="110" fill="black">Week 1</text>
               <text x="70" y="180" fill="black">Week 2</text>
               <text x="70" y="250" fill="black">Week 3</text>
@@ -55,9 +56,10 @@
               <text x="70" y="530" fill="black">Week 7</text>
               <text x="70" y="600" fill="black">Week 8</text>
               <text x="70" y="670" fill="black">Week 9</text>
+              <text x="70" y="740" fill="black">Week 10</text>
           </svg>
       </div>
-      <svg width="2000" height="700">
+      <svg width="2000" height="770">
 
           <?php if (isset($_GET["courseid"])) {
 
