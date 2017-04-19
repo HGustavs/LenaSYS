@@ -54,6 +54,9 @@ var mousedownX = 0; var mousedownY = 0;	// Is used to save the exact coordinants
 var mousemoveX = 0; var mousemoveY = 0; // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
 var mouseDiffX = 0; var mouseDiffY = 0; // Saves to diff between mousedown and mousemove to know how much to translate the diagram
 
+var xPos = 0;
+var yPos = 0;
+
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown",this.keyDownHandler, false);
 
@@ -296,7 +299,6 @@ diagram.inside = function (xk,yk)
 {
 		for(i=0;i<this.length;i++){
 				item=this[i];
-
 				if(item.kind==2){
 						var insided=item.inside(xk,yk);
 						if(insided==true) return i;
@@ -876,6 +878,8 @@ function updateActivePoint(){
   }
 }
 function mousemoveevt(ev, t){
+		xPos = ev.clientX;
+		yPos = ev.clientY;
 		mox=cx;
 		moy=cy;
 	    hovobj = diagram.inside(cx,cy);
@@ -1012,12 +1016,16 @@ function mousedownevt(ev)
 
 function doubleclick(ev)
 {
-	if(diagram[selobj].inside(cx,cy)){
+	var posistionX = (startX+xPos);
+	var posistionY = (startY+yPos);
+	console.log(posistionX+" | "+posistionY);
+	if(diagram[selobj].inside(posistionX,posistionY)){
+		console.log(" H|J ");
         openAppearanceDialogMenu();
         document.getElementById('nametext').value = diagram[selobj].name;
 		document.getElementById('fontColor').value = diagram[selobj].fontColor;
 		document.getElementById('font').value = diagram[selobj].font;
-		document.getElementById('attributeType').value = diagram[selobj].attributeType;
+		//document.getElementById('attributeType').value = diagram[selobj].attributeType;
   }
 }
 
@@ -1276,7 +1284,7 @@ function changeName(form){
 	diagram[selobj].name=document.getElementById('nametext').value;
 	diagram[selobj].fontColor=document.getElementById('fontColor').value;
 	diagram[selobj].font=document.getElementById('font').value; 
-	diagram[selobj].attributeType=document.getElementById('attributeType').value;
+	//diagram[selobj].attributeType=document.getElementById('attributeType').value;
     dimDialogMenu(false);
     updategfx();
 }
@@ -1342,6 +1350,7 @@ function Consolemode(action){
 		document.getElementById('Hide Console').style.display = "none";
 		document.getElementById('Show Console').style.display = "block";
 		document.getElementById('Show Console').style="position:fixed; right:0; bottom:0px;";
+		document.getElementById('valuesCanvas').style.bottom = "0";
 		heightWindow = (window.innerHeight-120);
 		document.getElementById("myCanvas").setAttribute("height", heightWindow);
 		$("#consloe").hide();
@@ -1353,6 +1362,7 @@ function Consolemode(action){
 		document.getElementById('Hide Console').style="position:fixed; right:0; bottom:133px;";
 		heightWindow = (window.innerHeight-244);
 		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		document.getElementById('valuesCanvas').style.bottom = "130px";
 		$("#consloe").show();
 		updategfx();
 	}
