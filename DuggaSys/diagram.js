@@ -50,6 +50,12 @@ var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
+
+var a,b,c;
+a = [];
+b = [];
+c = [];
+
 var mousedownX = 0; var mousedownY = 0;	// Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
 var mousemoveX = 0; var mousemoveY = 0; // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
 var mouseDiffX = 0; var mouseDiffY = 0; // Saves to diff between mousedown and mousemove to know how much to translate the diagram
@@ -722,6 +728,15 @@ function initcanvas()
 		"<button onclick='clearCanvas();'>Delete All</button>" +
 		"<button id='zoomInButton' class='unpressed' style='right:0; position:fixed; margin-right:120px;'>+</button>"+
 		"<button id='zoomOutButton' class='unpressed' style='right:0; position:fixed; margin-right:100px;'>-</button>"+
+        "<select id='download' onchange='downloadMode(this)'>" +
+        "<option selected='selected' disabled>State</option>" +
+       	 "<option value='getImage'>getImage</option>" +
+       	 "<option value='Save'>Save</option>" +
+       	 "<option value='Load'>Load</option>" +
+        "</select>"+
+        "<button><a onclick='SaveFile(this);' class='btn'> <i class='icon-download'></i>Export</a></button>" +
+        "<input id='fileid' type='file' name='file_name' hidden multiple/>"+
+        "<input id='buttonid' type='button' value='Import' />"+
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
 		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
@@ -731,10 +746,10 @@ function initcanvas()
 	var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
-		acanvas=document.getElementById("myCanvas");
-	}
-
-	makegfx();
+				acanvas=document.getElementById("myCanvas");
+		}
+		getUploads();
+		makegfx();
 
 	updategfx();
 
@@ -802,7 +817,28 @@ function zoomOutClick(){
 	reWrite();
 	ctx.scale(0.9,0.9);
 }
+function getUploads() {
+    document.getElementById('buttonid').addEventListener('click', openDialog);
+    function openDialog() {
+        document.getElementById('fileid').click();
+    }
 
+    document.getElementById('fileid').addEventListener('change', submitFile);
+    function submitFile() {
+
+        var reader = new FileReader();
+        var file = document.getElementById('fileid').files[0];
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            a = evt.currentTarget.result;
+			LoadFile();
+        }
+
+
+
+        // LoadFile();
+    }
+}
 // Function that is used for the resize
 // Making the page more responsive
 
@@ -1539,12 +1575,123 @@ function mouseupcanvas(e){
 	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 }
 
+
+
+function downloadMode(el){
+    var canvas = document.getElementById("content");
+    var selectBox = document.getElementById("download");
+    download = selectBox.options[selectBox.selectedIndex].value;
+
+    if(download.toString() == "getImage"){
+        console.log("b");
+        getImage();
+    }
+    if(download == "Save"){
+        Save();
+    }
+    if(download == "Load"){
+        Load();
+    } if(download == "Export"){
+		SaveFile(el);
+	}
+}
+
+function getImage(){
+
+    window.open( document.getElementById("myCanvas").toDataURL("image/png"), 'Image');
+}
+
+var ac = [];
+function Save() {
+    for (i = 0; i < diagram.length; i++){
+        c[i] = diagram[i].constructor.name;
+        c[i] = c[i].replace(/"/g,"");
+    }
+
+	var obj = {
+		diagram: diagram,
+		points: points,
+		diagram_names: c
+	};
+	 a = JSON.stringify(obj);
+    console.log("State is saved");
+
+}
+function SaveFile(el){
+		Save();
+        var data = "text/json;charset=utf-8," + encodeURIComponent(a);
+        el.setAttribute("class",'icon-download');
+        el.setAttribute("href", "data:" + data);
+        el.setAttribute("download", "diagram.txt");
+        updategfx();
+}
+function LoadFile(){
+    var pp = JSON.parse(a);
+    b = pp;
+	//diagram fix
+    for (i = 0; i < b.diagram.length; i++) {
+        if (b.diagram_names[i] == "Symbol") {
+            b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+        } else if (b.diagram_names[i] == "Path") {
+            b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+        }
+    }
+    diagram.length = b.diagram.length;
+    for (i = 0; i < b.diagram.length;i++) {
+        diagram[i] = b.diagram[i];
+    }
+
+    // Points fix
+    for (i = 0; i < b.points.length; i++) {
+        b.points[i] = Object.assign(new Path, b.points[i]);
+    }
+    points.length = b.points.length;
+    for (i = 0; i< b.points.length; i++ ){
+        points[i] = b.points[i];
+    }
+    console.log("State is loaded");
+    //Redrawn old state.
+    updategfx();
+}
+
+function Load() {
+    // Implement a JSON.parse() that will unmarshall a b c, so we can add
+    // them to their respecive array so it can redraw the desired canvas.
+
+	var dia = JSON.parse(a);
+	b= dia;
+	for (i = 0; i < b.diagram.length; i++) {
+		if (b.diagram_names[i] == "Symbol") {
+			b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+		} else if (b.diagram_names[i] == "Path") {
+			b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+		}
+	}
+	diagram.length = b.diagram.length;
+	for (i = 0; i < b.diagram.length;i++) {
+		diagram[i] = b.diagram[i];
+	}
+
+	// Points fix
+	for (i = 0; i < b.points.length; i++) {
+		b.points[i] = Object.assign(new Path, b.points[i]);
+	}
+	points.length = b.points.length;
+	for (i = 0; i< b.points.length; i++ ){
+		points[i] = b.points[i];
+	}
+    console.log("State is loaded");
+    //Redrawn old state.
+    updategfx();
+}
+
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 
 function reWrite(){
 	var valuesCanvas = document.getElementById("valuesCanvas");
 	valuesCanvas.innerHTML="<p>Zoom: "+Math.round((zv*100))+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
 }	
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
