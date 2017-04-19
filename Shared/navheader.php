@@ -39,8 +39,10 @@
 			}
 			
 			if($noup=='COURSE'){
+                    $cid=getOPG('cid');
+                    if($cid=="UNK") $cid=getOPG('courseid');
 					echo "<td class='navButt' id='back' title='swimlane'>";
-                    echo "<a href='../Shared/swimlane.php'><img src='../Shared/icons/swimlane.svg'></a></td>";
+                    echo "<a href='../Shared/swimlane.php?courseid=" . $cid . "'><img src='../Shared/icons/swimlane.svg'></a></td>";
 			}
 			
 			// Either generate code viewer specific nav menu or a spacer
