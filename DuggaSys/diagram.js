@@ -1348,44 +1348,6 @@ function drawGrid(){
       ctx.closePath();
     }
   }
-/*
-  if(startX < 0){
-    for(i = 0; i < -startX+widthWindow; i++){
-      ctx.beginPath();
-
-      ctx.moveTo(i*gridSize,0);
-      ctx.lineTo(i*gridSize,heightWindow);
-      ctx.stroke();
-      ctx.closePath();
-    }
-  } else {
-    for(i = 0-startX; i < -startX+widthWindow; i++){
-      ctx.beginPath();
-
-      ctx.moveTo(i*gridSize,0);
-      ctx.lineTo(i*gridSize,heightWindow);
-      ctx.stroke();
-      ctx.closePath();
-    }
-  }*/
-/*
-  for(i = -quadrantx; i < widthWindow+quadrantx; i++){
-    if(i%5 == 0){
-      ctx.beginPath();
-      ctx.moveTo(i*gridSize,0-quadranty);
-      ctx.lineTo(i*gridSize,heightWindow-quadranty);
-      ctx.stroke();
-    }
-
-  }
-  for(i = -quadranty; i < heightWindow+quadranty; i++){
-    if(i%5 == 0){
-      ctx.beginPath();
-      ctx.moveTo(0-quadrantx,i*gridSize);
-      ctx.lineTo(widthWindow-quadrantx,i*gridSize);
-      ctx.stroke();
-    }
-  }*/
 }
 function drawOval(x1, y1, x2, y2) {
 		xm = x1+((x2-x1)*0.5),       // x-middle
