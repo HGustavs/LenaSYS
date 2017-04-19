@@ -74,9 +74,9 @@ chmod 777 loglena4.db
 
 # Push notifications installation
 
-Note: Only install if there is no other installation on the system already, if an installation already exists follow the guide further below for instructions for that.
+Note: Only install if there is no other push notifications installation on the system already, if an installation already exists follow the guide further below for instructions for that.
 
-1. To install the push notification subsystem first the following packages needs to be installed. The following commands assume using php 7.0, change all the 7.0 to your php version and run the following command:
+1. To install the push notification subsystem first the following packages needs to be installed. The following commands assume the system is using php version 7.0. If you use another version, change all the 7.0 in the command below to the php version on your system and run the following command:
 
 ```BASH
 sudo apt-get install php7.0-curl php7.0-gmp php7.0-mbstring
@@ -84,13 +84,13 @@ sudo apt-get install php7.0-curl php7.0-gmp php7.0-mbstring
 
 2. Install composer in your LenaSYS folder ( https://getcomposer.org/ )
 
-3. In your LenaSYS folder, run the following command to populate the vendor folder with the requirements stated in composer.json:
+3. Go into the LenaSYS folder run the following command. This command will download all the packages listed in the 'composer.json' file and download them to the 'vendor/' folder.
 
 ```BASH
 php composer.phar install
 ```
 
-4. Now you need to change the 'coursesyspw.php' file created during the initial installation of LenaSYS. The settings that needs to be added are the following:
+4. Now open the 'coursesyspw.php' file created earlier during the initial installation of LenaSYS. The following settings need to be added in the bottom part of the file:
 
 ```PHP
 define("PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY", "Insert your public key here");
@@ -103,9 +103,18 @@ If you do not have a private and public key already, you can use the tool at /Du
 
 ## Copying a push notifications installation if it was already installed before
 
-If another installation of LenaSys has push notification installed it is much simpler to copy that to another installation.
+If another installation of LenaSys has push notification installed it is much simpler to copy that.
 
-1. Copy the folder vendor/ from the other LenaSys/ folder to your LenaSys/ folder
+1. Find another installation of LenaSys with push notifications installed. In the following steps we will assume an installation exists at /[groupname]/[username]/LenaSYS
 
-2. Copy the three defines for push notifications in the other installations 'coursesyspw.php' file to your 'coursesyspw.php' file
+2. Copy the folder vendor/ from /[groupname]/[username]/LenaSYS to /[groupname]/[**YOUR**username]/LenaSYS
 
+3. Open the file /[groupname]/[username]/coursesyspw.php and locate the rows containing code like this
+
+```PHP
+define("PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY", "Insert your public key here");
+define("PUSH_NOTIFICATIONS_VAPID_PRIVATE_KEY", "Insert your private key here");
+define("PUSH_NOTIFICATIONS_VAPID_EMAIL", "Insert your email address here");
+```
+
+4. Copy that code from that file into /[groupname]/[**YOUR**username]/LenaSYS/coursesyspw.php
