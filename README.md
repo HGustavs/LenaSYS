@@ -71,3 +71,41 @@ chmod 777 loglena4.db
 #### CONGRATULATIONS!
 
 
+
+# Push notifications installation
+
+Note: Only install if there is no other installation on the system already, if an installation already exists follow the guide further below for instructions for that.
+
+1. To install the push notification subsystem first the following packages needs to be installed. The following commands assume using php 7.0, change all the 7.0 to your php version and run the following command:
+
+```BASH
+sudo apt-get install php7.0-curl php7.0-gmp php7.0-mbstring
+```
+
+2. Install composer in your LenaSYS folder ( https://getcomposer.org/ )
+
+3. In your LenaSYS folder, run the following command to populate the vendor folder with the requirements stated in composer.json:
+
+```BASH
+php composer.phar install
+```
+
+4. Now you need to change the 'coursesyspw.php' file created during the initial installation of LenaSYS. The settings that needs to be added are the following:
+
+```PHP
+define("PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY", "Insert your public key here");
+define("PUSH_NOTIFICATIONS_VAPID_PRIVATE_KEY", "Insert your private key here");
+define("PUSH_NOTIFICATIONS_VAPID_EMAIL", "Insert your email address here");
+```
+
+If you do not have a private and public key already, you can use the tool at /DuggaSys/pushnotifications.php?action=genkeys to generate keys locally for usage. You need to be logged in as an administrator in LenaSys to use the tool. These keys should be shared to every installation on the same server.
+
+
+## Copying a push notifications installation if it was already installed before
+
+If another installation of LenaSys has push notification installed it is much simpler to copy that to another installation.
+
+1. Copy the folder vendor/ from the other LenaSys/ folder to your LenaSys/ folder
+
+2. Copy the three defines for push notifications in the other installations 'coursesyspw.php' file to your 'coursesyspw.php' file
+
