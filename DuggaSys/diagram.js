@@ -767,8 +767,8 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(-2000,-2000,4000,4000);
-    drawGrid(startX,startY);
+		ctx.clearRect(0,0,widthWindow,heightWindow);
+    drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
 
