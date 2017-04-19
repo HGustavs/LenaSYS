@@ -68,3 +68,4 @@ CREATE TABLE `usergroup_listentries` (
   CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`),
   CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
