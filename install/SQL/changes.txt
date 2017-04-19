@@ -55,3 +55,6 @@ CREATE TABLE `user_usergroup` (
   CONSTRAINT `usergroupid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`),
   CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+Added row 'rowcolor' in 'listentries'
+rowcolor		TINYINT(1),
