@@ -758,3 +758,5 @@ INSERT INTO usergroup (name) VALUES ("testsquad2");
 INSERT INTO user_usergroup(uid, ugid) VALUES (209, 1);
 INSERT INTO user_usergroup(uid, ugid) VALUES (212, 1);
 INSERT INTO user_usergroup(uid, ugid) VALUES (100, 2);
+
+INSERT INTO `usergroup_listentries` (`ugid`, `lid`) VALUES (1, 2013);
