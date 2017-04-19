@@ -1223,6 +1223,11 @@ function setType(form){
 	{
 		diagram[selobj].key_type = 'Normal';
 	}
+	
+		else if(document.getElementById('attributeType').value == 'Multivalue')
+	{
+		diagram[selobj].key_type = 'Multivalue';
+	}
 	 updategfx();
 }
 
