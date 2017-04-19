@@ -28,5 +28,8 @@ $noup="NONE";
 </head>
 <body>
 You may not view this page
+<!--<br>
+<a href="/DuggaSys/courseed.php">Go to start</a>
+-->
 </body>
 </html>
