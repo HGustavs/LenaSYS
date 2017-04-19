@@ -282,7 +282,7 @@ function handleTable(currentLine, prevLine, nextLine) {
 
 	// open new table
 	if(!isTable(prevLine)) {
-    	markdown += "<table><thead>";
+    	markdown += "<table border='1' style='width: 100%;'><thead style='font-weight: bold; background: Cornsilk'>";
     }
 
     // configure alignment
@@ -298,10 +298,10 @@ function handleTable(currentLine, prevLine, nextLine) {
             else tableAlignmentConf[i] = 3;
         }
     }
+
     // handle table row
     else {
-
-        markdown += "<tr>"
+        markdown += "<tr style=''>"
         for(var i = 0; i < columns.length; i++) {
             var alignment = "";
 
@@ -309,7 +309,7 @@ function handleTable(currentLine, prevLine, nextLine) {
             else if(tableAlignmentConf[i] === 2) alignment = "right";
             else alignment = "left";
 
-            markdown += "<td style='text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
+            markdown += "<td style='text-align: " + alignment + "; padding: 2px;'>" + columns[i].trim() + "</td>";
         }
         markdown += "</tr>";
 
@@ -431,4 +431,3 @@ function markdownBlock(inString)
 
 	return inString;
 }
-
