@@ -36,7 +36,7 @@ function showSaveButton(){
   $(".closeDugga").css("display","none"); 
 } 
 
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments, rowColor )
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments, rowcolor )
 {
 		
 	xelink=elink;
@@ -153,11 +153,11 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	// Set color on "test"
 	str="";
-	if(rowColor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
+	if(rowcolor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
 	else str+="<option value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>";
-	if(rowColor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
+	if(rowcolor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
 	else str+="<option value='1' style='background-color: #927b9e; color: white'>Header</option>";
-	$("#rowColor").html(str);
+	$("#rowcolor").html(str);
 
 	$("#tabs").html(str);
 		
@@ -359,9 +359,10 @@ function updateItem()
 	moment=$("#moment").val();
 	gradesys=$("#gradesys").val();
 	comments=$("#comments").val();
+	rowcolor=$("#rowcolor").val();
 	// Storing tabs in gradesys column!
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
-	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments},"SECTION");
+	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments,rowcolor:rowcolor},"SECTION");
 	$("#editSection").css("display","none");
 }
 
@@ -387,9 +388,10 @@ function newItem()
   moment=$("#moment").val(); 
   gradesys=$("#gradesys").val(); 
   comment=$("#deadlinecomment").val(); 
+  rowcolor=$("#rowcolor").val();
   // Storing tabs in gradesys column! 
   if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
-  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment},"SECTION"); 
+  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment,rowcolor:rowcolor},"SECTION"); 
   $("#editSection").css("display","none"); 
 }
 
@@ -598,8 +600,17 @@ function returnedSection(data)
 				}
 				// All are visible according to database
 
+				/*
+				var listentry = document.getElementsByClassname('example');
+				if (parseInt(item['rowcolor']) < 0){
+					listentry.style.backgroundColor = "green";
+				}else{
+					listentry.style.backgroundColor = "red";
+				}
+				*/
+
 				// Content table 		
-				str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
+				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
 				if(kk%2==0){
 					str+=" class='hi' ";
 				}else{
@@ -749,7 +760,9 @@ function returnedSection(data)
 						str+="<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 					}						
 					str += "<td ";
-					if(kk%2==0){
+					if(parseInt(item['rowcolor']) === 1){
+						str+=" class='example item"+blorf+"' style='background-color:#927b9e;color:white;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+					}else if(kk%2==0){
 						str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 					}else{
 						str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
@@ -784,8 +797,12 @@ function returnedSection(data)
 					str+="<span class='"+blorf+"' style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
-				}else if (parseInt(item['kind']) == 3 ) {		// Test / Dugga
-					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+				}else if (parseInt(item['kind']) == 3 ) {	
+					if(parseInt(item['rowcolor']) == 1) {
+						str+="<a class='"+blorf+"' style='font-size:14pt;color:white;cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+					}else{	// Test / Dugga
+						str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+					}
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
 						str+= "<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
