@@ -32,7 +32,7 @@ Added columns to fileLink table:
 	uploaddate			DATETIME NOT NULL DEFAULT NOW(),
   
   
-/* ----------------------------------------------- */
+/* ----------------------------------------------- */ 
 /* ---- Usergroup and user_usergroup relation ---- */
 /* ----------------------------------------------- */
 

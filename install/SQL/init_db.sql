@@ -601,3 +601,4 @@ alter table user_course alter column term set default 1;
 alter table user_course add column vers VARCHAR(8);
 */
 alter table codeexample MODIFY runlink VARCHAR(256);
+
