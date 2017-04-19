@@ -97,15 +97,15 @@ INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES(
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES(5, 'DA124G', 'Programmeringsmetodik', 'UNK', '1339', 'HT15');
 
 /* Insert tests */
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (2, 2, 1, 2, 'Bitdugga2', 'dugga1', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (3, 2, 1, 2, 'colordugga1', 'dugga2', '2015-04-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (4, 2, 1, 2, 'colordugga2', 'dugga2', '2015-04-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (5, 2, 1, 2, 'linjedugga1', 'dugga3', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (6, 2, 1, 2, 'linjedugga2', 'dugga3', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (7, 2, 1, 2, 'dugga1', 'dugga4', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (8, 2, 1, 2, 'dugga2', 'dugga4', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (9, 2, 1, 2, 'Quiz', 'kryss', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-01-01 00:00:00', '2015-01-30 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (2, 2, 1, 2, 'Bitdugga2', 'dugga1', '2015-01-08 00:00:00', '2015-01-25 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (3, 2, 1, 2, 'colordugga1', 'dugga2', '2015-01-01 00:00:00', '2015-01-20 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (4, 2, 1, 2, 'colordugga2', 'dugga2', '2015-01-08 00:00:00', '2015-01-18 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (5, 2, 1, 2, 'linjedugga1', 'dugga3', '2015-01-01 00:00:00', '2015-02-10 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (6, 2, 1, 2, 'linjedugga2', 'dugga3', '2015-01-01 00:00:00', '2015-02-15 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (7, 2, 1, 2, 'dugga1', 'dugga4', '2015-01-01 00:00:00', '2015-02-05 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (8, 2, 1, 2, 'dugga2', 'dugga4', '2015-02-01 00:00:00', '2015-02-20 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (9, 2, 1, 2, 'Quiz', 'kryss', '2015-01-01 00:00:00', '2015-02-19 00:00:00', NOW(), 2);
 
 /* Insert variants of tests */
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (1, 1, '{\"tal\":\"2\"}', '{"danswer":\"00000010 0 2\"}', NOW(), 2);
@@ -748,7 +748,7 @@ INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.txt", 2
 
 
 /* Creation of new dugga (MINIMAL needs more fixing..) */
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (12, 5, 1, 1, 'DUGANNN', 'dugga1', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 6);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (12, 5, 1, 1, 'DUGANNN', 'dugga1', '2015-02-01 00:00:00', '2015-02-25 00:00:00', NOW(), 6);
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (24, 12, '{\"tal\":\"33\"}', '{"danswer":\"7\"}', NOW(), 6);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, gradesystem, highscoremode) VALUES (3001, 5, 'Bitdugga 1HP', '12', 3, 100, 6, 1, '1339', 3, 1);
 
