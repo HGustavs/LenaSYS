@@ -39,6 +39,7 @@ $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
 $unmarked = 0;
+$grouptype=getOP('grouptype');
 
 if($gradesys=="UNK") $gradesys=0;
 
@@ -75,7 +76,7 @@ if(checklogin()){
 				$debug="Error updating entries";
 			}
 		}else if(strcmp($opt,"NEW")===0){
-			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment)"); 
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments,grouptype) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment,:grouptype)"); 
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
@@ -84,6 +85,7 @@ if(checklogin()){
 			$query->bindParam(':kind', $kind); 
 			$query->bindParam(':comment', $comment); 
 			$query->bindParam(':visible', $visibility); 
+			$query->bindParam(':grouptype', $grouptype); 
 			
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -140,11 +142,12 @@ if(checklogin()){
 
 			}			
 						
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,grouptype=:grouptype WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
 			$query->bindParam(':highscoremode', $highscoremode);
+			$query->bindParam(':grouptype', $grouptype);
 			
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
 			else $query->bindParam(':moment', $moment);
