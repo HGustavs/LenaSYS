@@ -169,6 +169,17 @@ function requestChange($username)
 }
 
 /**
+ * Hash a password with the global LenaSys settings, this will make any future changes simpler as
+ * only this function and needs_rehash in login needs to be changed to accomodate future settings
+ * @param string $password Password to hash
+ * @return string Hashed password
+ */
+function standardPasswordHash($password)
+{
+	return password_hash($password, PASSWORD_BCRYPT);
+}
+
+/**
  * Log in the user with the specified username and password and
  * optionally set cookies for the user to be remembered until next
  * time they visit the site.
@@ -197,7 +208,7 @@ function login($username, $password, $savelogin)
 
 		if ($row['password'] == $row['mysql_pwd_input']) {
 			// User still has a mysql password, update to better
-			$row['password'] = password_hash($password, PASSWORD_BCRYPT);
+			$row['password'] = standardPasswordHash($password);
 			$query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");
 			$query->bindParam(':uid', $row['uid']);
 			$query->bindParam(':pwd', $row['password']);
@@ -206,7 +217,7 @@ function login($username, $password, $savelogin)
 			// User has a php password
 			if (password_needs_rehash($row['password'], PASSWORD_BCRYPT)) {
 				// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
-				$row['password'] = password_hash($password, PASSWORD_BCRYPT);
+				$row['password'] = standardPasswordHash($password);
 				$query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");
 				$query->bindParam(':uid', $row['uid']);
 				$query->bindParam(':pwd', $row['password']);
