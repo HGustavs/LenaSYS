@@ -228,7 +228,7 @@ function handleUnorderedList(currentLine, prevLine, nextLine) {
     	markdown += "</li>";
     }
     // Close the list
-    if(!isUnorderdList(nextLine)) {
+    if(!isUnorderdList(currentLine)) {
     	markdown += "</ul>";
     }
 
@@ -269,7 +269,7 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
     	markdown += "</li>";
     }
     // Close the ordered list
-    if(!isOrderdList(nextLine)) {
+    if(!isOrderdList(currentLine)) {
     	markdown += "</ol>";
     }
 
