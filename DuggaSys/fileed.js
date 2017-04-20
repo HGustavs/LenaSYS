@@ -395,4 +395,73 @@ function convertfilekind(kind){
 	return retString;
 }
 
+function searchcontent(){
+	var searchstr = new RegExp($('#searchinput').val(), 'i');
+	var searchdata = [];
+	console.log(searchstr);
+    for(i=0;i<filez['entries'].length;i++){
+        var item=filez['entries'][i];
+        if(searchstr.test(item['filename'])){
+			searchdata.push(item);
+		}
+		else if(searchstr.test(item['fileid'])){
+            searchdata.push(item);
+		}
+		else if(searchstr.test(item['uploaddate'])){
+			searchdata.push(item);
+		}
+		else if(searchstr.test(item['filesize'])){
+			searchdata.push(item);
+		}
+	}
+	console.log(searchdata);
+	str="";
+	str+="<table class='list' style='margin-bottom:8px;' >";
+	str+="<thead style='cursor:pointer;'>";
+	str+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" +
+    "<th>Search Results<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+    "<th>File extension</th>" +
+    "<th>Upload date & time</th>" +
+    "<th>File size</th>" +
+    "<th>File Kind</th>" +
+    "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+	str+="</thead><tbody id='searchresults_body'>";
+	for(i=0;i<searchdata.length;i++){
+		item = searchdata[i];
+        str+="<tr class='fumo'>";
+        str+="<td>"+item['fileid']+"</td>";
+        str+="<td>";
+        // str2+=item['filename']
+        str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
+        str+="</td>";
+        str+="<td>" + getFileInformation(item['filename'], true) + "</td>";
+        str+="<td>" + item['uploaddate'] + "</td>";
+        str+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
+        str+="<td>" + convertfilekind(item['kind']) + "</td>";
+        str+="<td style='padding:4px;'>";
+        str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+        str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+        str+="</td>";
+        str+="</tr>";
+	}
+	str+="</tbody></table>";
+    var searchresults=document.getElementById("searchresults");
+    searchresults.innerHTML=str;
+    if(searchstr != "/(?:)/i") {
+        $("#allglobalfiles").hide();
+        $("#allcoursefiles").hide();
+        $("#alllocalfiles").hide();
+        $("#alllinks").hide();
+        $("#allcontent").hide();
+        $("#searchresults").show();
+    }
+    else{
+        $("#allglobalfiles").show();
+        $("#allcoursefiles").show();
+        $("#alllocalfiles").show();
+        $("#allcontent").hide();
+        $("#alllinks").show();
+        $("#searchresults").hide();
+	}
+}
 
