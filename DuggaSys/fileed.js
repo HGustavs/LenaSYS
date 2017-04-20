@@ -461,6 +461,29 @@ function searchcontent(){
         $("#alllinks").show();
         $("#searchresults").hide();
 	}
+	//filters in search table 
+	var $rows = $('#searchresults_body tr');
+	$('#searchinput').keyup(function() {
+	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+	    
+	    $rows.show().filter(function() {
+	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+	        return !~text.indexOf(val);
+	    }).hide();
+	});
+}  
+
+//excuted onclick button for switching to "one" table - functionality that filters in table 
+function keyUpSearch() {
+	var $rows2 = $('#allcontent_body tr');
+	$('#searchinput').keyup(function() {
+	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+	    
+	    $rows2.show().filter(function() {
+	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+	        return !~text.indexOf(val);
+	    }).hide();
+	});
 }
 
 
@@ -475,3 +498,4 @@ function searchKeyPress(e)
     }
     return true;
 }
+
