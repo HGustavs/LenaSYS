@@ -74,7 +74,9 @@ chmod 777 loglena4.db
 
 # Push notifications installation
 
-Note: Only install if there is no other push notifications installation on the system already, if an installation already exists follow the guide further below for instructions for that.
+**Note:** For the push notification system to work the server needs to use https, so make sure that is set up and valid.
+
+**Note:** Only install if there is no other push notifications installation on the system already, if an installation already exists follow the guide further below for instructions for that.
 
 1. To install the push notification subsystem first the following packages needs to be installed. The following commands assume the system is using php version 7.0. If you use another version, change all the 7.0 in the command below to the php version on your system and run the following command:
 
