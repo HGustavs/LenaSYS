@@ -8,10 +8,25 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
-| head0 | head1 | head2 | head3 |
-| ----- | :----: | ---- | ---- |
-| dsa1 | dsa1 | dsa1 | dsa1 |
-| dsa2 | dsa2 | dsa2 | dsa2 |
-| ----- | ----: | ---- | :----: |
-| dsa3 | dsa3 | dsa3 | dsa3 |
-| dsa4 | dsa4 | dsa4 | dsa3 |
+1. asd
+2. awed
+  1. asd
+  2. asd
+  3. asd
+    1. asd
+      1. asd
+    2. asd
+      1. asd
+3. asd
+4. asd
+* asd
+* awed
+  * asd
+  * asd
+  * asd
+    * asd
+      * asd
+    * asd
+      * asd
+* asd
+* asd
