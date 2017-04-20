@@ -1055,7 +1055,8 @@ function doubleclick(ev)
         document.getElementById('nametext').value = diagram[selobj].name;
 		document.getElementById('fontColor').value = diagram[selobj].fontColor;
 		document.getElementById('font').value = diagram[selobj].font;
-		//document.getElementById('attributeType').value = diagram[selobj].attributeType;
+    document.getElementById('attributeType').value = diagram[selobj].attributeType;
+    document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
   }
 }
 
@@ -1141,8 +1142,9 @@ function mouseupevt(ev){
             	erEnityA.topLeft=p1;
             	erEnityA.bottomRight=p2;
             	erEnityA.centerpoint=p3;
-				erEnityA.fontColor="#253";
-				erEnityA.font="Arial";
+              erEnityA.entityType="";
+				      erEnityA.fontColor="#253";
+				      erEnityA.font="Arial";
 
             	diagram.push(erEnityA);
 
@@ -1267,34 +1269,34 @@ function dialogForm() {
 
     if(diagram[selobj].symbolkind==1){
         form.innerHTML = "Class name: </br>" +
-            "<input id='nametext' type='text'></br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
+          "<input id='nametext' type='text'></br>" +
+          "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name:</br>" +
-        	"<input id='nametext' type='text'></br>" +
-        "Attribute type: </br>" +
-        	"<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
-   		"Font family:<br>" +
-        	"<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
-  		"Font color:<br>" +
-  			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
-       		"Text size:<br>" +
-  			"<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-  			"<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>";
+          "<input id='nametext' type='text'></br>" +
+          "Attribute type: </br>" +
+          "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue'>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+       		"Font family:<br>" +
+          "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+      		"Font color:<br>" +
+      		"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
+          "Text size:<br>" +
+      		"<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+      		"<button type='submit'  class='submit-button' onclick='changeNameAttr(form); setType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
-       		"<input id='nametext' type='text'></br>" +
-        "Entity type: </br>" +
-			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
-		"Font family:<br>" +
-        	"<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
-		"Font color:<br>" +
-			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
-        "Text size:<br>" +
-			"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>OK</button>";
+        	"<input id='nametext' type='text'></br>" +
+          "Entity type: </br>" +
+      		"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+      		"Font family:<br>" +
+          "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+      		"Font color:<br>" +
+      	  "<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
+          "Text size:<br>" +
+      		"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+          "<button type='submit'  class='submit-button' onclick='changeNameEntity(form); setEntityType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
 }
 
@@ -1310,19 +1312,30 @@ function setTextSizeEntity(form){
 }
 
 
-function changeName(form){
+function changeNameAttr(form){
 
     dimDialogMenu(false);
 
     diagram[selobj].name=document.getElementById('nametext').value;
     diagram[selobj].fontColor=document.getElementById('fontColor').value;
     diagram[selobj].font=document.getElementById('font').value;
+    diagram[selobj].sizeOftext=document.getElementById('TextSize').value;
     diagram[selobj].attributeType=document.getElementById('attributeType').value;
 
-    setEntityType(form);
-    setTextSizeEntity(form);
-    setType(form);
 
+    updategfx();
+    $("#appearance").hide();
+
+}
+function changeNameEntity(form){
+
+    dimDialogMenu(false);
+
+    diagram[selobj].name=document.getElementById('nametext').value;
+    diagram[selobj].fontColor=document.getElementById('fontColor').value;
+    diagram[selobj].font=document.getElementById('font').value;
+    diagram[selobj].sizeOftext=document.getElementById('TextSize').value;
+    diagram[selobj].entityType=document.getElementById('entityType').value;
     updategfx();
     $("#appearance").hide();
 
@@ -1350,6 +1363,10 @@ function setType(form){
 	{
 		diagram[selobj].key_type = 'Multivalue';
 	}
+  else if(document.getElementById('attributeType').value == 'Drive')
+{
+  diagram[selobj].key_type = 'Drive';
+}
 	 updategfx();
 }
 
