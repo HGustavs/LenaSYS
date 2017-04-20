@@ -11,6 +11,7 @@
     session_start();
 
     $course = $_GET["courseid"];
+    $vers = $_GET["coursevers"];
 
     $querystring = "SELECT coursecode, coursename FROM course WHERE cid=:cid";
     $stmt = $pdo->prepare($querystring);
@@ -36,6 +37,7 @@
                       echo '<text y="15" x="10" fill="black">' . $row['coursecode'] . '</text>';
                       echo '<text y="35" x="10" fill="black">' . $row['coursename'] . '</text>';
                   }
+                      echo '<text y="55" x="10" fill="black">Version: ' . $vers . '</text>';
               ?>
               <rect x="0" y="70" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
               <rect x="0" y="140" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
@@ -68,12 +70,13 @@
       </script>
       <svg width="2000" height="770">
 
-          <?php if (isset($_GET["courseid"])) {
+          <?php if (isset($_GET["courseid"]) && isset($_GET["coursevers"])) {
 
               $querystring = "SELECT listentries.entryname, listentries.kind, quiz.qrelease, quiz.deadline 
-                        FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid;";
+                        FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :vers;";
               $stmt = $pdo->prepare($querystring);
               $stmt->bindParam(':cid', $course);
+              $stmt->bindParam(':vers', $_GET["coursevers"]);
 
               try {
                   $stmt->execute();
