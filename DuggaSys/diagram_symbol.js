@@ -447,11 +447,6 @@ function Symbol(kind) {
 		{
 			textsize = 50;
 		}
-    else if(this.attributeType == 'Drive')
-    {
-    ctx.setLineDash([5, 4]);
-      //console.log("TEST");
-    }
     else
     {
     textsize = 14;
@@ -561,12 +556,42 @@ function Symbol(kind) {
         ctx.stroke();
       }else if(this.symbolkind==2){
 
+		//drawing a multivalue attribute
+		if(this.key_type == 'Multivalue')
+		{
+		drawOval(x1-10,y1-10,x2+10,y2+10);
+        ctx.fillStyle="#dfe";
+        ctx.fill();
+
+        if(this.targeted){
+          ctx.strokeStyle="#F82";
+          ctx.setLineDash([5, 0]);
+        }else{
+          ctx.strokeStyle="#253";
+        }
+        ctx.stroke();
+		}
+
+    //drawing an derived attribute
+		if(this.key_type == 'Drive')
+		{
+		drawOval(x1-10,y1-10);
+        ctx.fillStyle="#dfe";
+        ctx.fill();
+        if(this.targeted){
+          ctx.strokeStyle="#F82";
+        }else{
+          ctx.setLineDash([5, 4]);
+          ctx.strokeStyle="#253";
+        }
+		}
+
+
 		//scale the text
 		ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
-
         drawOval(x1,y1,x2,y2);
         ctx.fillStyle="#dfe";
         ctx.fill();
@@ -591,7 +616,9 @@ function Symbol(kind) {
 			ctx.lineTo(x1+((x2-x1)*0.5)+(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
 			ctx.strokeStyle = "#000";
 			ctx.stroke();
-		} else if(this.key_type == 'Normal')
+		}
+
+		else if(this.key_type == 'Normal')
 		{
 			ctx.beginPath(1);
 			ctx.moveTo(x1+((x2-x1)*0.5), (y1+((y2-y1)*0.5))+10);

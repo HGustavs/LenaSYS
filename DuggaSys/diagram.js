@@ -19,7 +19,7 @@ AJAXService("get",{},"DIAGRAM");
 */
 
 // Global settings
-
+var gridSize = 16;
 var crossl=4.0;				// Size of point cross
 var tolerance = 8;		// Size of tolerance area around the point
 var ctx;							// Canvas context
@@ -50,9 +50,18 @@ var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
+
+var a,b,c;
+a = [];
+b = [];
+c = [];
+
 var mousedownX = 0; var mousedownY = 0;	// Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
 var mousemoveX = 0; var mousemoveY = 0; // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
 var mouseDiffX = 0; var mouseDiffY = 0; // Saves to diff between mousedown and mousemove to know how much to translate the diagram
+
+var xPos = 0;
+var yPos = 0;
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown",this.keyDownHandler, false);
@@ -200,31 +209,25 @@ var diagram=[];
 //--------------------------------------------------------------------
 // draw - executes draw methond in all diagram objects
 //--------------------------------------------------------------------
-
-diagram.draw = function ()
-{
-		// On every draw of diagram adjust the midpoint if there is one to adjust
-		this.adjust();
-	for(i=0;i<this.length;i++){
-		item=this[i];
-
-		// Path item
-		if(item.symbolkind==4) {
-			item.draw();
+diagram.draw = function () {
+	// On every draw of diagram adjust the midpoint if there is one to adjust
+	this.adjust();
+	// Render figures
+	for(i = 0; i < this.length; i++) {
+		if(this[i].kind == 1) {
+			this[i].draw(1, 1);
 		}
-
 	}
-		for(i=0;i<this.length;i++){
-				item=this[i];
-
-				// Path item
-				if(item.kind==1){
-					item.draw(1,1);
-				}else if(item.kind==2 && !(item.symbolkind == 4)){
-					item.draw();
-				}
-
+	for(i = 0; i < this.length; i++) {
+		if(this[i].symbolkind == 4) {
+			this[i].draw();
 		}
+	}
+	for(i = 0; i < this.length; i++) {
+		if(this[i].kind == 2 && !(this[i].symbolkind == 4)) {
+			this[i].draw();
+		}
+	}
 }
 
 //--------------------------------------------------------------------
@@ -296,7 +299,6 @@ diagram.inside = function (xk,yk)
 {
 		for(i=0;i<this.length;i++){
 				item=this[i];
-
 				if(item.kind==2){
 						var insided=item.inside(xk,yk);
 						if(insided==true) return i;
@@ -724,8 +726,19 @@ function initcanvas()
 		"<button onclick='debugMode();'>Debug</button>" +
 		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
+		"<button id='zoomInButton' class='unpressed' style='right:0; position:fixed; margin-right:120px;'>+</button>"+
+		"<button id='zoomOutButton' class='unpressed' style='right:0; position:fixed; margin-right:100px;'>-</button>"+
+        "<select id='download' onchange='downloadMode(this)'>" +
+        "<option selected='selected' disabled>State</option>" +
+       	 "<option value='getImage'>getImage</option>" +
+       	 "<option value='Save'>Save</option>" +
+       	 "<option value='Load'>Load</option>" +
+        "</select>"+
+        "<button><a onclick='SaveFile(this);' class='btn'> <i class='icon-download'></i>Export</a></button>" +
+        "<input id='fileid' type='file' name='file_name' hidden multiple/>"+
+        "<input id='buttonid' type='button' value='Import' />"+
 		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
-		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+widthWindow+"' height='"+heightWindow+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);' ondblclick='doubleclick(event)';></canvas>" +
+		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
 		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
 		"<div id='valuesCanvas' style='position: fixed; left: 10px; bottom:130px;'><p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p></div>"+
 		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
@@ -735,16 +748,97 @@ function initcanvas()
         ctx = canvas.getContext("2d");
 				acanvas=document.getElementById("myCanvas");
 		}
-
+		getUploads();
 		makegfx();
 
-		updategfx();
+	updategfx();
 
-		var buttonStyle = document.getElementById("moveButton");
-		buttonStyle.addEventListener('click', movemode, false);
+	document.getElementById("moveButton").addEventListener('click', movemode, false);
+	document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
+	document.getElementById("zoomOutButton").addEventListener('click', zoomOutMode, false);
+	canvas.addEventListener('dblclick', doubleclick, false);
 
 }
 
+// Function for the zoom in and zoom out in the canvas element
+
+function zoomInMode(e){
+	uimode="Zoom";
+	var canvas = document.getElementById("myCanvas");
+	canvas.removeEventListener('click', zoomOutClick, false);
+	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+	var zoomInClass = document.getElementById("zoomInButton").className;
+	var zoomInButton = document.getElementById("zoomInButton");
+	document.getElementById("zoomOutButton").className="unpressed";
+	document.getElementById("moveButton").className="unpressed";
+	if(zoomInClass == "unpressed"){
+		canvas.removeEventListener('dblclick', doubleclick, false);
+		zoomInButton.className="pressed";
+		canvas.style.cursor="zoom-in";
+		canvas.addEventListener("click", zoomInClick, false);
+	}else{
+		zoomInButton.className="unpressed";
+		canvas.addEventListener("dblclick", doubleclick, false);
+		canvas.removeEventListener("click", zoomInClick, false);
+		canvas.style.cursor="default";
+	}
+}
+
+function zoomOutMode(e){
+	uimode="Zoom";
+	var canvas = document.getElementById("myCanvas");
+	canvas.removeEventListener('click', zoomInClick, false);
+	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+	var zoomOutClass = document.getElementById("zoomOutButton").className;
+	var zoomOutButton = document.getElementById("zoomOutButton");
+	document.getElementById("zoomInButton").className="unpressed";
+	document.getElementById("moveButton").className="unpressed";
+	if(zoomOutClass == "unpressed"){
+		canvas.removeEventListener('dblclick', doubleclick, false);
+		zoomOutButton.className="pressed";
+		canvas.style.cursor="zoom-out";
+		canvas.addEventListener("click", zoomOutClick, false);
+	}else{
+		zoomOutButton.className="unpressed";
+		canvas.addEventListener("dblclick", doubleclick, false);
+		canvas.removeEventListener("click", zoomOutClick, false);
+		canvas.style.cursor="default";
+	}
+}
+
+function zoomInClick(){
+	zv+=0.1;
+	reWrite();
+	ctx.scale(1.1,1.1);
+}
+
+function zoomOutClick(){
+	zv-=0.1;
+	reWrite();
+	ctx.scale(0.9,0.9);
+}
+function getUploads() {
+    document.getElementById('buttonid').addEventListener('click', openDialog);
+    function openDialog() {
+        document.getElementById('fileid').click();
+    }
+
+    document.getElementById('fileid').addEventListener('change', submitFile);
+    function submitFile() {
+
+        var reader = new FileReader();
+        var file = document.getElementById('fileid').files[0];
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            a = evt.currentTarget.result;
+			LoadFile();
+        }
+
+
+
+        // LoadFile();
+    }
+}
 // Function that is used for the resize
 // Making the page more responsive
 
@@ -754,6 +848,10 @@ function canvassize()
 	heightWindow = (window.innerHeight-244);
 	document.getElementById("myCanvas").setAttribute("width", widthWindow);
 	document.getElementById("myCanvas").setAttribute("height", heightWindow);
+	ctx.clearRect(startX,startY,widthWindow,heightWindow);
+	ctx.translate(startX,startY);
+	ctx.scale(1,1);
+	ctx.scale(zv,zv);
 }
 
 // Listen if the window is the resized
@@ -767,8 +865,8 @@ var erEntityA;
 
 function updategfx()
 {
-		ctx.clearRect(0,0,widthWindow,heightWindow);
-
+		ctx.clearRect(startX,startY,widthWindow,heightWindow);
+    drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
 
@@ -810,6 +908,8 @@ function updateActivePoint(){
   }
 }
 function mousemoveevt(ev, t){
+		xPos = ev.clientX;
+		yPos = ev.clientY;
 		mox=cx;
 		moy=cy;
 	    hovobj = diagram.inside(cx,cy);
@@ -852,8 +952,9 @@ function mousemoveevt(ev, t){
 		}
 		diagram.linedist(cx,cy);
 
-		cx-=startX;
-		cy-=startY;
+		cx+=startX;
+		cy+=startY;
+
 		updategfx();
 
 		// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
@@ -945,12 +1046,17 @@ function mousedownevt(ev)
 
 function doubleclick(ev)
 {
-	if(diagram[selobj].inside(cx,cy)){
+	var posistionX = (startX+xPos);
+	var posistionY = (startY+yPos);
+	console.log(posistionX+" | "+posistionY);
+	if(diagram[selobj].inside(posistionX,posistionY)){
+		console.log(" H|J ");
         openAppearanceDialogMenu();
         document.getElementById('nametext').value = diagram[selobj].name;
-    		document.getElementById('fontColor').value = diagram[selobj].fontColor;
-    		document.getElementById('font').value = diagram[selobj].font;
-    		document.getElementById('attributeType').value = diagram[selobj].attributeType;
+		document.getElementById('fontColor').value = diagram[selobj].fontColor;
+		document.getElementById('font').value = diagram[selobj].font;
+    document.getElementById('attributeType').value = diagram[selobj].attributeType;
+    document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
   }
 }
 
@@ -1036,8 +1142,9 @@ function mouseupevt(ev){
             	erEnityA.topLeft=p1;
             	erEnityA.bottomRight=p2;
             	erEnityA.centerpoint=p3;
-				erEnityA.fontColor="#253";
-				erEnityA.font="Arial";
+              erEnityA.entityType="";
+				      erEnityA.fontColor="#253";
+				      erEnityA.font="Arial";
 
             	diagram.push(erEnityA);
 
@@ -1055,7 +1162,7 @@ function mouseupevt(ev){
     		erLineA.centerpoint=p3;
 
             diagram.push(erLineA);
-        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" )) {
+        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "Zoom" ) && !(uimode == "MoveAround" )) {
             diagram.insides(cx, cy, sx, sy);
         }
 
@@ -1162,34 +1269,34 @@ function dialogForm() {
 
     if(diagram[selobj].symbolkind==1){
         form.innerHTML = "Class name: </br>" +
-            "<input id='nametext' type='text'></br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
+          "<input id='nametext' type='text'></br>" +
+          "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name:</br>" +
-        	"<input id='nametext' type='text'></br>" +
-        "Attribute type: </br>" +
-        	"<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue' selected>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
-   		"Font family:<br>" +
-        	"<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
-  		"Font color:<br>" +
-  			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
-       		"Text size:<br>" +
-  			"<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-  			"<button type='submit'  class='submit-button' onclick='changeName(form); setType(form); setTextSizeEntity(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+          "<input id='nametext' type='text'></br>" +
+          "Attribute type: </br>" +
+          "<select id ='attributeType'><option value='Primary key'>Primary key</option><option value='Normal'>Normal</option><option value='Multivalue'>Multivalue</option><option value='Composite' selected>Composite</option><option value='Drive' selected>Derive</option></select></br>" +
+       		"Font family:<br>" +
+          "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+      		"Font color:<br>" +
+      		"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
+          "Text size:<br>" +
+      		"<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+      		"<button type='submit'  class='submit-button' onclick='changeNameAttr(form); setType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
-       		"<input id='nametext' type='text'></br>" +
-        "Entity type: </br>" +
-			"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
-		"Font family:<br>" +
-        	"<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
-		"Font color:<br>" +
-			"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
-        "Text size:<br>" +
-			"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-            "<button type='submit'  class='submit-button' onclick='changeName(form); setTextSizeEntity(form); setEntityType(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+        	"<input id='nametext' type='text'></br>" +
+          "Entity type: </br>" +
+      		"<select id ='entityType'><option value='weak'>weak</option><option value='strong' selected>strong</option></select></br>" +
+      		"Font family:<br>" +
+          "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+      		"Font color:<br>" +
+      	  "<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
+          "Text size:<br>" +
+      		"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+          "<button type='submit'  class='submit-button' onclick='changeNameEntity(form); setEntityType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
 }
 
@@ -1197,7 +1304,7 @@ function dialogForm() {
 function setTextSizeEntity(form){
 	var scaletype = document.getElementById('TextSize').value;
 	diagram[selobj].sizeOftext = scaletype;
-	
+
 	/*
 		Hämtar specifik entitet/attribut/detpersonenharklickat på.
 		[ovannämndklick].font=text_size+"px";
@@ -1205,17 +1312,39 @@ function setTextSizeEntity(form){
 }
 
 
-function changeName(form){
-	diagram[selobj].name=document.getElementById('nametext').value;
-	diagram[selobj].fontColor=document.getElementById('fontColor').value;
-	diagram[selobj].font=document.getElementById('font').value; 
+function changeNameAttr(form){
+
     dimDialogMenu(false);
+
+    diagram[selobj].name=document.getElementById('nametext').value;
+    diagram[selobj].fontColor=document.getElementById('fontColor').value;
+    diagram[selobj].font=document.getElementById('font').value;
+    diagram[selobj].sizeOftext=document.getElementById('TextSize').value;
+    diagram[selobj].attributeType=document.getElementById('attributeType').value;
+
+
     updategfx();
+    $("#appearance").hide();
+
+}
+function changeNameEntity(form){
+
+    dimDialogMenu(false);
+
+    diagram[selobj].name=document.getElementById('nametext').value;
+    diagram[selobj].fontColor=document.getElementById('fontColor').value;
+    diagram[selobj].font=document.getElementById('font').value;
+    diagram[selobj].sizeOftext=document.getElementById('TextSize').value;
+    diagram[selobj].entityType=document.getElementById('entityType').value;
+    updategfx();
+    $("#appearance").hide();
+
 }
 
-function setEntityType() {
+function setEntityType(form) {
 	var selectBox = document.getElementById("entityType");
 	diagram[selobj].type = selectBox.options[selectBox.selectedIndex].value;
+  updategfx();
 }
 
 function setType(form){
@@ -1224,11 +1353,20 @@ function setType(form){
 	{
 		diagram[selobj].key_type = 'Primary key';
 	}
-	
+
 	else if(document.getElementById('attributeType').value == 'Normal')
 	{
 		diagram[selobj].key_type = 'Normal';
 	}
+
+		else if(document.getElementById('attributeType').value == 'Multivalue')
+	{
+		diagram[selobj].key_type = 'Multivalue';
+	}
+  else if(document.getElementById('attributeType').value == 'Drive')
+{
+  diagram[selobj].key_type = 'Drive';
+}
 	 updategfx();
 }
 
@@ -1274,6 +1412,7 @@ function Consolemode(action){
 		document.getElementById('Hide Console').style.display = "none";
 		document.getElementById('Show Console').style.display = "block";
 		document.getElementById('Show Console').style="position:fixed; right:0; bottom:0px;";
+		document.getElementById('valuesCanvas').style.bottom = "0";
 		heightWindow = (window.innerHeight-120);
 		document.getElementById("myCanvas").setAttribute("height", heightWindow);
 		$("#consloe").hide();
@@ -1285,6 +1424,7 @@ function Consolemode(action){
 		document.getElementById('Hide Console').style="position:fixed; right:0; bottom:133px;";
 		heightWindow = (window.innerHeight-244);
 		document.getElementById("myCanvas").setAttribute("height", heightWindow);
+		document.getElementById('valuesCanvas').style.bottom = "130px";
 		$("#consloe").show();
 		updategfx();
 	}
@@ -1301,6 +1441,54 @@ function cross(xk,yk)
 				ctx.stroke();
 }
 
+function drawGrid(){
+  ctx.lineWidth=1;
+  ctx.strokeStyle="rgb(238,238,250)";
+  var quadrantx = (startX < 0)? startX: -startX,
+    quadranty = (startY < 0)? startY: -startY;
+  console.log(quadrantx+" : "+widthWindow+ "; "+(quadrantx+widthWindow));
+  for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
+    if(i%5==0){
+      i++;
+    }
+    ctx.beginPath();
+    ctx.moveTo(i*gridSize,0-startY);
+    ctx.lineTo(i*gridSize,heightWindow-startY);
+    ctx.stroke();
+    ctx.closePath();
+  }
+  for(i = 0+quadranty; i < quadranty+heightWindow; i++){
+    if(i%5==0){
+      i++;
+    }
+    ctx.beginPath();
+    ctx.moveTo(0-startX, i*gridSize);
+    ctx.lineTo(widthWindow-startX, i*gridSize);
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  //Draws the thick lines
+  ctx.strokeStyle="rgb(208,208,220)";
+  for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
+    if(i%5==0){
+      ctx.beginPath();
+      ctx.moveTo(i*gridSize,0-startY);
+      ctx.lineTo(i*gridSize,heightWindow-startY);
+      ctx.stroke();
+      ctx.closePath();
+    }
+  }
+  for(i = 0+quadranty; i < quadranty+heightWindow; i++){
+    if(i%5==0){
+      ctx.beginPath();
+      ctx.moveTo(0-startX, i*gridSize);
+      ctx.lineTo(widthWindow-startX, i*gridSize);
+      ctx.stroke();
+      ctx.closePath();
+    }
+  }
+}
 function drawOval(x1, y1, x2, y2) {
 		xm = x1+((x2-x1)*0.5),       // x-middle
 		ym = y1+((y2-y1)*0.5);       // y-middle
@@ -1362,14 +1550,18 @@ function movemode(e, t)
 	var canvas = document.getElementById("myCanvas");
 	var button = document.getElementById("moveButton").className;
 	var buttonStyle = document.getElementById("moveButton");
+	canvas.removeEventListener("click", zoomOutClick, false);
+	canvas.removeEventListener("click", zoomInClick, false);
+	canvas.removeEventListener("dblclick", doubleclick, false);
+	document.getElementById("zoomInButton").className="unpressed";
+	document.getElementById("zoomOutButton").className="unpressed";
 	if(button == "unpressed"){
 		buttonStyle.className="pressed";
 		canvas.style.cursor="all-scroll";
 		canvas.addEventListener('mousedown', getMousePos, false);
 		canvas.addEventListener('mouseup', mouseupcanvas, false);
-		buttonStyle.style.background="grey";
-		buttonStyle.style.color="white";
 	}else{
+		canvas.addEventListener('dblclick', doubleclick, false);
 		buttonStyle.className="unpressed";
 		mousedownX = 0; mousedownY = 0;
 		mousemoveX = 0; mousemoveY = 0;
@@ -1379,8 +1571,6 @@ function movemode(e, t)
 		canvas.removeEventListener('mousedown', getMousePos, false);
 		canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 		canvas.removeEventListener('mouseup', mouseupcanvas, false);
-		buttonStyle.style.background="";
-		buttonStyle.style.color="";
 		mousemoveevt(e,t);
 	}
 }
@@ -1401,7 +1591,7 @@ function mousemoveposcanvas(e){
 	mousedownX = mousemoveX;
 	mousedownY = mousemoveY;
 	ctx.clearRect(0,0,widthWindow,heightWindow);
-	ctx.translate(mouseDiffX,mouseDiffY);
+	ctx.translate((-mouseDiffX),(-mouseDiffY));
 	erEntityA.sortAllConnectors();
 	diagram.draw();
 	points.drawpoints();
@@ -1412,12 +1602,123 @@ function mouseupcanvas(e){
 	canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
 }
 
+
+
+function downloadMode(el){
+    var canvas = document.getElementById("content");
+    var selectBox = document.getElementById("download");
+    download = selectBox.options[selectBox.selectedIndex].value;
+
+    if(download.toString() == "getImage"){
+        console.log("b");
+        getImage();
+    }
+    if(download == "Save"){
+        Save();
+    }
+    if(download == "Load"){
+        Load();
+    } if(download == "Export"){
+		SaveFile(el);
+	}
+}
+
+function getImage(){
+
+    window.open( document.getElementById("myCanvas").toDataURL("image/png"), 'Image');
+}
+
+var ac = [];
+function Save() {
+    for (i = 0; i < diagram.length; i++){
+        c[i] = diagram[i].constructor.name;
+        c[i] = c[i].replace(/"/g,"");
+    }
+
+	var obj = {
+		diagram: diagram,
+		points: points,
+		diagram_names: c
+	};
+	 a = JSON.stringify(obj);
+    console.log("State is saved");
+
+}
+function SaveFile(el){
+		Save();
+        var data = "text/json;charset=utf-8," + encodeURIComponent(a);
+        el.setAttribute("class",'icon-download');
+        el.setAttribute("href", "data:" + data);
+        el.setAttribute("download", "diagram.txt");
+        updategfx();
+}
+function LoadFile(){
+    var pp = JSON.parse(a);
+    b = pp;
+	//diagram fix
+    for (i = 0; i < b.diagram.length; i++) {
+        if (b.diagram_names[i] == "Symbol") {
+            b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+        } else if (b.diagram_names[i] == "Path") {
+            b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+        }
+    }
+    diagram.length = b.diagram.length;
+    for (i = 0; i < b.diagram.length;i++) {
+        diagram[i] = b.diagram[i];
+    }
+
+    // Points fix
+    for (i = 0; i < b.points.length; i++) {
+        b.points[i] = Object.assign(new Path, b.points[i]);
+    }
+    points.length = b.points.length;
+    for (i = 0; i< b.points.length; i++ ){
+        points[i] = b.points[i];
+    }
+    console.log("State is loaded");
+    //Redrawn old state.
+    updategfx();
+}
+
+function Load() {
+    // Implement a JSON.parse() that will unmarshall a b c, so we can add
+    // them to their respecive array so it can redraw the desired canvas.
+
+	var dia = JSON.parse(a);
+	b= dia;
+	for (i = 0; i < b.diagram.length; i++) {
+		if (b.diagram_names[i] == "Symbol") {
+			b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+		} else if (b.diagram_names[i] == "Path") {
+			b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+		}
+	}
+	diagram.length = b.diagram.length;
+	for (i = 0; i < b.diagram.length;i++) {
+		diagram[i] = b.diagram[i];
+	}
+
+	// Points fix
+	for (i = 0; i < b.points.length; i++) {
+		b.points[i] = Object.assign(new Path, b.points[i]);
+	}
+	points.length = b.points.length;
+	for (i = 0; i< b.points.length; i++ ){
+		points[i] = b.points[i];
+	}
+    console.log("State is loaded");
+    //Redrawn old state.
+    updategfx();
+}
+
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 
 function reWrite(){
 	var valuesCanvas = document.getElementById("valuesCanvas");
-	valuesCanvas.innerHTML="<p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
-}	
+	valuesCanvas.innerHTML="<p>Zoom: "+Math.round((zv*100))+"% | Coordinates: X="+startX+" & Y="+startY+"</p>"
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------

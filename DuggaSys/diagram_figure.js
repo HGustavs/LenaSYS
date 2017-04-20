@@ -3,7 +3,7 @@ function drawSegment(pathA,p1, p2) {
     return pathA;
 }
 
-var figurePath = new Path;
+var figurePath = new Path();
 var isFirstPoint = true;
 var startPosition;
 var numberOfPointsInFigure = 0;
