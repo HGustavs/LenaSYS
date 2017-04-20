@@ -10,6 +10,10 @@ Table listentries:
 	Added comments VARCHAR(512)
 	Added grouptype TINYINT(1)
 
+Added row 'rowcolor' in 'listentries'
+  rowcolor		TINYINT(1),
+
+
 New table user_push_registration, created with the following sql:
 	CREATE TABLE user_push_registration (
 		id							INT NOT NULL AUTO_INCREMENT,
@@ -69,3 +73,10 @@ CREATE TABLE `usergroup_listentries` (
   CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
+/* -----------------------------*/
+/* ------- COURSE DATES --------*/
+/* -----------------------------*/
+
+Added rows to 'vers' to have a start date and end date to a version of a course
+  startdate     DATETIME,
+  enddate       DATETIME,

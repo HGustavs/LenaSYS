@@ -97,15 +97,15 @@ INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES(
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES(5, 'DA124G', 'Programmeringsmetodik', 'UNK', '1339', 'HT15');
 
 /* Insert tests */
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (2, 2, 1, 2, 'Bitdugga2', 'dugga1', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (3, 2, 1, 2, 'colordugga1', 'dugga2', '2015-04-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (4, 2, 1, 2, 'colordugga2', 'dugga2', '2015-04-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (5, 2, 1, 2, 'linjedugga1', 'dugga3', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (6, 2, 1, 2, 'linjedugga2', 'dugga3', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (7, 2, 1, 2, 'dugga1', 'dugga4', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (8, 2, 1, 2, 'dugga2', 'dugga4', '2015-03-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (9, 2, 1, 2, 'Quiz', 'kryss', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (1, 2, 1, 2, 'Bitdugga1', 'dugga1', '2015-01-01 00:00:00', '2015-01-30 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (2, 2, 1, 2, 'Bitdugga2', 'dugga1', '2015-01-08 00:00:00', '2015-01-25 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (3, 2, 1, 2, 'colordugga1', 'dugga2', '2015-01-01 00:00:00', '2015-01-20 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (4, 2, 1, 2, 'colordugga2', 'dugga2', '2015-01-08 00:00:00', '2015-01-18 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (5, 2, 1, 2, 'linjedugga1', 'dugga3', '2015-01-01 00:00:00', '2015-02-10 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (6, 2, 1, 2, 'linjedugga2', 'dugga3', '2015-01-01 00:00:00', '2015-02-15 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (7, 2, 1, 2, 'dugga1', 'dugga4', '2015-01-01 00:00:00', '2015-02-05 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (8, 2, 1, 2, 'dugga2', 'dugga4', '2015-02-01 00:00:00', '2015-02-20 00:00:00', NOW(), 2);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (9, 2, 1, 2, 'Quiz', 'kryss', '2015-01-01 00:00:00', '2015-02-19 00:00:00', NOW(), 2);
 
 /* Insert variants of tests */
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (1, 1, '{\"tal\":\"2\"}', '{"danswer":\"00000010 0 2\"}', NOW(), 2);
@@ -131,57 +131,57 @@ INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUE
 
 
 /* Insert items on coursepage */
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1001, 1, 'PHP examples', 'UNK', 1, 1, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1002, 1, 'PHP Example 1', 1, 2, 2, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1003, 1, 'PHP Example 2', 2, 2, 3, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1004, 1, 'PHP Example 3', 3, 2, 4, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1005, 1, 'Javascript examples', 'UNK', 1, 5, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1006, 1, 'JavaScript Example 1', 4, 2, 6, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1007, 1, 'JavaScript Example 2', 5, 2, 7, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1008, 1, 'JavaScript Example 3', 6, 2, 8, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1009, 1, 'HTML5 examples', 'UNK', 1, 9, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1010, 1, 'HTML5 Example 1', 7, 2, 10, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1011, 1, 'HTML5 Example 2', 8, 2, 11, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1012, 1, 'HTML5 Example 3', 9, 2, 12, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1013, 1, 'HTML5 Example 4', 10, 2, 13, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1014, 1, 'HTML5 Example 5', 11, 2, 14, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1015, 1, 'HTML5 Example 6', 12, 2, 15, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1016, 1, 'HTML5 Example 7', 13, 2, 16, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1017, 1, 'HTML5 Example 8', 14, 2, 17, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1018, 1, 'Shader examples', 'UNK', 1, 18, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1019, 1, 'Shaderprogrammering', 15, 2, 19, 1, 1,'45656');
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers) VALUES(1020, 1, 'Shaderprogrammering', 16, 2, 20, 1, 1,'45656');
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1001, 1, 'PHP examples', 'UNK', 1, 1, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1002, 1, 'PHP Example 1', 1, 2, 2, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1003, 1, 'PHP Example 2', 2, 2, 3, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1004, 1, 'PHP Example 3', 3, 2, 4, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1005, 1, 'Javascript examples', 'UNK', 1, 5, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1006, 1, 'JavaScript Example 1', 4, 2, 6, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1007, 1, 'JavaScript Example 2', 5, 2, 7, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1008, 1, 'JavaScript Example 3', 6, 2, 8, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1009, 1, 'HTML5 examples', 'UNK', 1, 9, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1010, 1, 'HTML5 Example 1', 7, 2, 10, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1011, 1, 'HTML5 Example 2', 8, 2, 11, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1012, 1, 'HTML5 Example 3', 9, 2, 12, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1013, 1, 'HTML5 Example 4', 10, 2, 13, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1014, 1, 'HTML5 Example 5', 11, 2, 14, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1015, 1, 'HTML5 Example 6', 12, 2, 15, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1016, 1, 'HTML5 Example 7', 13, 2, 16, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1017, 1, 'HTML5 Example 8', 14, 2, 17, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1018, 1, 'Shader examples', 'UNK', 1, 18, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1019, 1, 'Shaderprogrammering', 15, 2, 19, 1, 1,'45656', 0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, rowcolor) VALUES(1020, 1, 'Shaderprogrammering', 16, 2, 20, 1, 1,'45656', 0);
 
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2001, 2, 'Biträkningsduggor 1HP', '', 4, 0, 1, 1, '97732', 2001, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2002, 2, 'Biträkningsdugga 1', '1', 3, 1, 1, 1, '97732', 2001, 2, 1);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2003, 2, 'Biträkningsdugga 2', '2', 3, 2, 1, 1, '97732', 2001, 2, 1);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2004, 2, 'Färgduggor 1HP', '', 4, 3, 1, 1, '97732', 2004, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2005, 2, 'Färgdugga 1', '3', 3, 4, 1, 1, '97732', 2004, 2, 1);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2006, 2, 'Färgdugga 2', '4', 3, 5, 1, 1, '97732', 2004, 2, 1);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2007, 2, 'Geometri 2HP', '', 4, 6, 1, 1, '97732', 2007, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2008, 2, 'Linjedugga 1', '5', 3, 7, 1, 1, '97732', 2007, 2, 2);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2009, 2, 'Linjedugga 2', '6', 3, 8, 1, 1, '97732', 2007, 2, 2);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2010, 2, 'Transformationer 3,5HP', '', 4, 9, 1, 1, '97732', 2010, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2011, 2, 'Transformationsdugga 1', '7', 3, 10, 1, 1, '97732', 2010, 2, 2);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2012, 2, 'Transformationsdugga 2', '8', 3, 11, 1, 1, '97732', 2010, 2, 2);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2013, 2, 'Frågeduggor 1HP', '', 4, 12, 1, 1, '97732', 2013, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2014, 2, 'Frågedugga 1', '9', 3, 13, 1, 1, '97732', 2013, 2, 1);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2001, 2, 'Biträkningsduggor 1HP', '', 4, 0, 1, 1, '97732', 2001, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2002, 2, 'Biträkningsdugga 1', '1', 3, 1, 1, 1, '97732', 2001, 2, 1,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2003, 2, 'Biträkningsdugga 2', '2', 3, 2, 1, 1, '97732', 2001, 2, 1,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2004, 2, 'Färgduggor 1HP', '', 4, 3, 1, 1, '97732', 2004, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2005, 2, 'Färgdugga 1', '3', 3, 4, 1, 1, '97732', 2004, 2, 1,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2006, 2, 'Färgdugga 2', '4', 3, 5, 1, 1, '97732', 2004, 2, 1,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2007, 2, 'Geometri 2HP', '', 4, 6, 1, 1, '97732', 2007, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2008, 2, 'Linjedugga 1', '5', 3, 7, 1, 1, '97732', 2007, 2, 2,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2009, 2, 'Linjedugga 2', '6', 3, 8, 1, 1, '97732', 2007, 2, 2,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2010, 2, 'Transformationer 3,5HP', '', 4, 9, 1, 1, '97732', 2010, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2011, 2, 'Transformationsdugga 1', '7', 3, 10, 1, 1, '97732', 2010, 2, 2,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2012, 2, 'Transformationsdugga 2', '8', 3, 11, 1, 1, '97732', 2010, 2, 2,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2013, 2, 'Frågeduggor 1HP', '', 4, 12, 1, 1, '97732', 2013, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2014, 2, 'Frågedugga 1', '9', 3, 13, 1, 1, '97732', 2013, 2, 1,0);
 
 
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2015, 2, 'Bit count test 1HP', '', 4, 0, 1, 1, '97731', 2015, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2016, 2, 'Bit count test 1', '1', 3, 1, 1, 1, '97731', 2015, 2, 1);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2017, 2, 'Bit count test 2', '2', 3, 2, 1, 1, '97731', 2015, 0, 1);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2018, 2, 'Color test 1HP', '', 4, 3, 1, 1, '97731', 2018, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2019, 2, 'Hex color test 1', '3', 3, 4, 1, 1, '97731', 2018, 2, 1);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2020, 2, 'Hex color test 2', '4', 3, 5, 1, 1, '97731', 2018, 2, 1);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2021, 2, 'Geometry 2HP', '', 4, 6, 1, 1, '97731', 2021, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2022, 2, 'Geometry test 1', '5', 3, 7, 1, 1, '97731', 2021, 2, 2);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2023, 2, 'Geometry test 2', '6', 3, 8, 1, 1, '97731', 2021, 2, 2);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2024, 2, 'Transforms 3,5HP', '', 4, 9, 1, 1, '97731', 2024, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2025, 2, 'Transforms test 1', '7', 3, 10, 1, 1, '97731', 2024, 2, 2);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2026, 2, 'Transforms test 2', '8', 3, 11, 1, 1, '97731', 2024, 2, 2);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2027, 2, 'Quizzes 1HP', '', 4, 12, 1, 1, '97731', 2027, 2, 0);
-INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode) VALUES (2028, 2, 'Quiz 1', '9', 3, 13, 1, 1, '97731', 2027, 2, 1);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2015, 2, 'Bit count test 1HP', '', 4, 0, 1, 1, '97731', 2015, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2016, 2, 'Bit count test 1', '1', 3, 1, 1, 1, '97731', 2015, 2, 1,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2017, 2, 'Bit count test 2', '2', 3, 2, 1, 1, '97731', 2015, 0, 1,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2018, 2, 'Color test 1HP', '', 4, 3, 1, 1, '97731', 2018, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2019, 2, 'Hex color test 1', '3', 3, 4, 1, 1, '97731', 2018, 2, 1,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2020, 2, 'Hex color test 2', '4', 3, 5, 1, 1, '97731', 2018, 2, 1,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2021, 2, 'Geometry 2HP', '', 4, 6, 1, 1, '97731', 2021, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2022, 2, 'Geometry test 1', '5', 3, 7, 1, 1, '97731', 2021, 2, 2,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2023, 2, 'Geometry test 2', '6', 3, 8, 1, 1, '97731', 2021, 2, 2,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2024, 2, 'Transforms 3,5HP', '', 4, 9, 1, 1, '97731', 2024, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2025, 2, 'Transforms test 1', '7', 3, 10, 1, 1, '97731', 2024, 2, 2,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2026, 2, 'Transforms test 2', '8', 3, 11, 1, 1, '97731', 2024, 2, 2,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2027, 2, 'Quizzes 1HP', '', 4, 12, 1, 1, '97731', 2027, 2, 0,0);
+INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, moment, gradesystem, highscoremode, rowcolor) VALUES (2028, 2, 'Quiz 1', '9', 3, 13, 1, 1, '97731', 2027, 2, 1,0);
 
 
 /* Insert access for users */
@@ -748,7 +748,7 @@ INSERT INTO fileLink (filename, kind, cid, isGlobal) VALUES ("Shader_Ex2.txt", 2
 
 
 /* Creation of new dugga (MINIMAL needs more fixing..) */
-INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (12, 5, 1, 1, 'DUGANNN', 'dugga1', '2015-02-01 00:00:00', '2015-12-31 00:00:00', NOW(), 6);
+INSERT INTO quiz (id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, modified, creator) VALUES (12, 5, 1, 1, 'DUGANNN', 'dugga1', '2015-02-01 00:00:00', '2015-02-25 00:00:00', NOW(), 6);
 INSERT INTO variant (vid, quizID, param, variantanswer, modified, creator) VALUES (24, 12, '{\"tal\":\"33\"}', '{"danswer":\"7\"}', NOW(), 6);
 INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible, vers, gradesystem, highscoremode) VALUES (3001, 5, 'Bitdugga 1HP', '12', 3, 100, 6, 1, '1339', 3, 1);
 

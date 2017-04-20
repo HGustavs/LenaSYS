@@ -296,6 +296,8 @@ p {
 #Sectionlist .section {
   color:#fff;
   background-color: #927b9e;
+  box-shadow: 0px 3px 2px #aaa;
+  margin-bottom: 3px;
 }
 
 #Sectionlist .header {
@@ -305,10 +307,11 @@ p {
 }
 
 #Sectionlist .moment {
-  
     color:#ffffff;
     background-color: #927b9e;
 	  cursor: pointer;
+    box-shadow: 0px 3px 2px #aaa;
+    margin-bottom: 3px;
 }
 
 /*changes the cursor for the cogwheels*/

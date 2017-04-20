@@ -9,6 +9,34 @@ AJAXService("get",{},"SECTION");
 
 var xelink;
 
+$(function() {
+	$("#startdate").datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0,
+		onSelect: function(date){
+			var newDate = $('#startdate').datepicker('getDate');
+			$('#enddate').datepicker("option","minDate", newDate);
+		}
+	});
+	$('#enddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+});
+
+$(function() {
+	$("#estartdate").datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0,
+		onSelect: function(date){
+			var newDate = $('#estartdate').datepicker('getDate');
+			$('#eenddate').datepicker("option","minDate", newDate);
+		}
+	});
+	$('#eenddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+});
+
 function displaymessage(){
    $(".messagebox").css("display","block");
 }
@@ -36,7 +64,7 @@ function showSaveButton(){
   $(".closeDugga").css("display","none"); 
 } 
 
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments,rowColor,grouptype )
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments,rowcolor,grouptype)
 {
 		
 	xelink=elink;
@@ -172,16 +200,16 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str +="<option value ='5'>1 tab + end</option>"; 
 	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>2 tabs + end</option>" 
 	else str +="<option value ='6'>2 tabs + end</option>"; 
+	
+	$("#tabs").html(str);
 
 	// Set color on "test"
 	str="";
-	if(rowColor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
+	if(rowcolor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
 	else str+="<option value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>";
-	if(rowColor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
+	if(rowcolor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
 	else str+="<option value='1' style='background-color: #927b9e; color: white'>Header</option>";
-	$("#rowColor").html(str);
-
-	$("#tabs").html(str);
+	$("#rowcolor").html(str);
 		
 	// Set Link
 	$("#link").val(elink);
@@ -393,10 +421,11 @@ function updateItem()
 	moment=$("#moment").val();
 	gradesys=$("#gradesys").val();
 	comments=$("#comments").val();
+	rowcolor=$("#rowcolor").val();
 	grouptype=$("#grouptype").val();
 	// Storing tabs in gradesys column!
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
-	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments,grouptype:grouptype},"SECTION");
+	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments,rowcolor:rowcolor,grouptype:grouptype},"SECTION");
 	$("#editSection").css("display","none");
 }
 
@@ -422,10 +451,11 @@ function newItem()
   moment=$("#moment").val(); 
   gradesys=$("#gradesys").val(); 
   comment=$("#deadlinecomment").val(); 
+  rowcolor=$("#rowcolor").val();
   grouptype=$("#grouptype").val(); 
   // Storing tabs in gradesys column! 
   if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
-  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment,grouptype:grouptype},"SECTION"); 
+  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment,rowcolor:rowcolor,grouptype:grouptype},"SECTION"); 
   $("#editSection").css("display","none"); 
 }
 
@@ -451,6 +481,17 @@ function createVersion(){
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
+	var startdate = $("#startdate").val();
+	var enddate = $("#enddate").val();
+  if(startdate === "None" || startdate === null || startdate.length === 0) {
+    // 2017-04-27 00:00:00
+    var date = new Date();
+    startdate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+  }
+  if(enddate === "None" || enddate === null || enddate.length === 0) {
+    // 2017-04-27 00:00:00
+    enddate = startdate;
+  }
 	
 	if(coursevers=="null"){
 		makeactive=true;
@@ -461,13 +502,15 @@ function createVersion(){
 		versid : versid,
 		versname : versname,
 		coursecode : coursecode,
-		coursename : coursename
-	}, "SECTION");
+		coursename : coursename,
+   startdate : startdate,
+   enddate : enddate
+  }, "SECTION");
 	
 	if(makeactive){
 		AJAXService("CHGVERS", {
 			cid : cid,
-			versid : versid,
+			versid : versid
 		}, "SECTION");
 	}
 
@@ -478,10 +521,12 @@ function createVersion(){
 	}, 1000);
 }
 
-function showEditVersion(versid, versname)
+function showEditVersion(versid, versname, startdate, enddate)
 {
 	$("#eversid").val(versid);
 	$("#eversname").val(versname);
+	$("#estartdate").val(startdate);
+	$("#eenddate").val(enddate);
 	$("#editCourseVersion").css("display", "block");
 }
 
@@ -491,12 +536,25 @@ function updateVersion(){
 	var versname = $("#eversname").val();
 	var coursecode = $("#course-coursecode").text();
 	var makeactive = $("#emakeactive").is(':checked');
+   var startdate = $("#estartdate").val();
+   var enddate = $("#eenddate").val();
 
+  if(startdate === "None" || startdate === null || startdate.length === 0) {
+    // 2017-04-27 00:00:00
+    var date = new Date();
+    startdate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+  }
+  if(enddate === "None" || enddate === null || enddate.length === 0) {
+    enddate = startdate;
+  }
+  
 	AJAXService("UPDATEVRS", {
 		cid : cid,
 		versid : versid,
 		versname : versname,
-		coursecode : coursecode
+		coursecode : coursecode,
+   startdate : startdate,
+   enddate : enddate
 	}, "SECTION");
 	
 	if(makeactive){
@@ -571,7 +629,20 @@ function returnedSection(data)
 			str+="</select></td>";
 			
 			str+="<td style='width:112px;'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
-			str+='("'+querystring['coursevers']+'","'+versionname+'")';
+
+      var startdate = null;
+      var enddate = null;
+      if (retdata['versions'].length > 0) {
+      for ( i = 0; i < retdata['versions'].length; i++) {
+          var item = retdata['versions'][i];
+          if (retdata['courseid'] == item['cid'] && retdata['coursevers'] == item['vers']) {
+            startdate = item['startdate'];
+            enddate = item['enddate'];
+          }
+        }
+      }
+
+			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
 			str+=";'></td>";	
 
 			str+="<td style='width:112px;'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
@@ -634,8 +705,17 @@ function returnedSection(data)
 				}
 				// All are visible according to database
 
+				/*
+				var listentry = document.getElementsByClassname('example');
+				if (parseInt(item['rowcolor']) < 0){
+					listentry.style.backgroundColor = "green";
+				}else{
+					listentry.style.backgroundColor = "red";
+				}
+				*/
+
 				// Content table 		
-				str+="<table style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
+				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
 				if(kk%2==0){
 					str+=" class='hi' ";
 				}else{
@@ -768,9 +848,9 @@ function returnedSection(data)
 
 					if(kk==0){
 						if(kk%2==0){
-							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;box-shadow: 0px 3px 2px #aaa inset;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}else{
-							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;box-shadow: 0px 3px 2px #aaa inset;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
 					}else{
 						if(kk%2==0){
@@ -785,7 +865,9 @@ function returnedSection(data)
 						str+="<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 					}						
 					str += "<td ";
-					if(kk%2==0){
+					if(parseInt(item['rowcolor']) === 1){
+						str+=" class='example item"+blorf+"' style='display:block;box-shadow: 0px 3px 2px #aaa;background-color:#927b9e;color:white;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+					}else if(kk%2==0){
 						str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 					}else{
 						str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
@@ -820,8 +902,12 @@ function returnedSection(data)
 					str+="<span class='"+blorf+"' style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
-				}else if (parseInt(item['kind']) == 3 ) {		// Test / Dugga
-					str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+				}else if (parseInt(item['kind']) == 3 ) {	
+					if(parseInt(item['rowcolor']) == 1) {
+						str+="<a class='"+blorf+"' style='font-size:14pt;color:white;cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+					}else{	// Test / Dugga
+						str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+					}
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
 						str+= "<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
@@ -849,7 +935,7 @@ function returnedSection(data)
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")){
 					if(kk==1){
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;box-shadow: 0px 3px 2px #aaa inset;' ";
+						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
 					}else{
 						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
 					}
@@ -858,35 +944,12 @@ function returnedSection(data)
 					// Do nothing
 				}
 
-				// Participant list
-                if(data['writeaccess']){
-                    str+="<td style='width:24px;";
-
-                        if (kk == 1) {
-                            str += "box-shadow: 0px 3px 2px #aaa inset;";
-                        }
-
-                        if (parseInt(item['kind']) === 0) {
-
-                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] +"\",\"" + item['grouptype'] + "\");showSaveButton();' /></td>";
-                        } else if (parseInt(item['kind']) === 1) {
-                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] +"\",\"" + item['grouptype'] + "\");showSaveButton();' /></td>";
-                        } else if (parseInt(item['kind']) === 4) {
-                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] +"\",\"" + item['grouptype'] + "\");showSaveButton();' /></td>";
-                        } else {
-                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] +"\",\"" + item['grouptype'] + "\");showSaveButton();' /></td>";
-                        }
-                    }
-
 				// Cog Wheel
 				if(data['writeaccess']){
 						str+="<td style='width:24" +
 							"px;";
 						
-						if(kk==1){
-							str +="box-shadow: 0px 3px 2px #aaa inset;";
-						}
-
+					
 						if(parseInt(item['kind']) === 0){
 								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";
 						}else if(parseInt(item['kind']) === 1){

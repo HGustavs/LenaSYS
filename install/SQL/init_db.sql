@@ -99,6 +99,7 @@ CREATE TABLE listentries (
 	moment				INT UNSIGNED,
 	gradesystem 	TINYINT(1),
 	highscoremode	INT DEFAULT 0,
+	rowcolor		TINYINT(1),
 	grouptype			TINYINT(1),
 	PRIMARY KEY(lid),
 
@@ -185,6 +186,8 @@ CREATE TABLE vers(
 	coursecode		VARCHAR(45) NOT NULL,
 	coursename		VARCHAR(80) NOT NULL,
 	coursenamealt	VARCHAR(45) NOT NULL,
+  startdate     DATETIME,
+  enddate       DATETIME,
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	PRIMARY KEY(cid,vers)
 );
