@@ -1039,9 +1039,21 @@ input.submit-button {
   float:right;
 }
 
+input.fileed-button {
+    background-color:#7B5A96;
+    margin-right:6px;
+    margin-top:6px;
+    margin-left:6px;
+    margin-bottom:6px;
+}
+
 input.submit-button:hover {
   background-color:#7B5A96;
   border-radius:4px;
+}
+
+input.fileed-button:hover {
+    background-color:#91859b;
 }
 
 input.submit-button:disabled {

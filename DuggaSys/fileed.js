@@ -150,7 +150,7 @@ function returnedFile(data)
 		"<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" + 
 		"<th>Link URL</th>" +
 		"<th>Upload date & time</th>" +
-		"<th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+		"<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
 		//str1+="<tr><th class='first' style='width:64px;'>ID</th><th style='width:30px' ></th></tr>";
 		str1+="</thead><tbody id='links_body'>"
 
@@ -179,7 +179,7 @@ function returnedFile(data)
             "<th>Upload date & time</th>" +
             "<th>File size</th>" +
 				"<th>File Kind</th>" +
-            "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+            "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str5+="</thead><tbody id='allcontent_body'>";
 
             for(i=0;i<data['entries'].length;i++){
@@ -212,7 +212,7 @@ function returnedFile(data)
 	  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
-      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+      "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str2+="</thead><tbody id='global_body'>"
 			
 			for(i=0;i<data['entries'].length;i++){
@@ -247,7 +247,7 @@ function returnedFile(data)
 	  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
-      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+      "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
       
 			str3+="<thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
@@ -280,7 +280,7 @@ function returnedFile(data)
 		  "<th>File extension</th>" +
       	"<th>Upload date & time</th>" +
         "<th>File size</th>" +
-        "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+        "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
       
 			str4+="<thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
