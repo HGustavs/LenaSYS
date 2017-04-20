@@ -200,11 +200,14 @@ function returnedAccess(data)
 			var item=data['entries'][i];
 
 			// If this 
-			if(parseFloat(item['newly'])<10){
+			if(item['requestedpasswordchange']==1){
+					str+="<tr style='background:#ff0000;'>";
+			}else if(parseFloat(item['newly'])<10){
 					str+="<tr style='background:#efd;'>";						
 			}else{
 					str+="<tr>";			
 			}
+			
 
 			str+="<td>"+item['username']+"</td>";
 			str+="<td>"+item['ssn']+"</td>";

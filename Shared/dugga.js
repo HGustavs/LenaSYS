@@ -20,20 +20,31 @@ function toggleloginnewpass(){
 		$("#newpassword").css("display", "block");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
+		$("#resetcomplete").css("display", "none");
 		status= 1;
 		showing= 0;
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
+		$("#resetcomplete").css("display", "none");
 		status= 0;
 		showing= 1;
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
 		$("#login").css("display", "none");
 		$("#showsecurityquestion").css("display", "block");
+		$("#resetcomplete").css("display", "none");
 		status= 1;
 		showing= 2;
+	}
+	else if(status == 3){
+		$("#newpassword").css("display", "none");
+		$("#login").css("display", "none");
+		$("#showsecurityquestion").css("display", "none");
+		$("#resetcomplete").css("display", "block");
+		status= 1;
+		showing= 3;
 	}
 }
 
@@ -488,7 +499,15 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedResults
 			});
-	} else if(kind=="CODEVIEW"){
+	}else if(kind=="GROUP"){
+			$.ajax({
+				url: "groupedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedGroup
+			});
+	}else if(kind=="CODEVIEW"){
 			$.ajax({
 				url: "codeviewerService.php",
 				type: "POST",
@@ -566,7 +585,6 @@ function addSecurityQuestionProfile(username) {
 function processResetPasswordCheckUsername() {
 
 	/*This function is supposed to get the security question from the database*/
-
 	var username = $("#newpassword #username").val();
 	
 	$.ajax({
@@ -584,12 +602,10 @@ function processResetPasswordCheckUsername() {
 					status = 2;
 					toggleloginnewpass();
 				}else{
-					console.log("Username was not found OR User does not have a question OR User might be a teacher");
 					if(typeof result.reason != "undefined") {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
 						$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
-
 					}
 					$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -617,12 +633,25 @@ function processResetPasswordCheckSecurityAnswer() {
 				var result = JSON.parse(data);
 				
 				if(result['checkanswer'] == "success") {
-					console.log("The answer was correct");
-					//do something
-					$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
-					$("#showsecurityquestion #answer").css("background-color", "rgba(0, 255, 6, 0.2)");
+					$.ajax({
+						type:"POST",
+						url: "../Shared/resetpw.php",
+						data: {
+							username: username,
+							opt: "REQUESTCHANGE"
+						},
+						success:function(data){
+							var result = JSON.parse(data);
+							if(result['requestchange'] == "success"){
+								status = 3;
+								toggleloginnewpass();
+							}else{
+								$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+								$("#showsecurityquestion #message3").html("<div class='alert danger'>Something went wrong</div>");
+							}
+						}
+					})
 				}else{
-					console.log("Wrong answer");
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
@@ -665,12 +694,10 @@ function processLogin() {
 					$("#login #username").val("");
 					$("#login #password").val("");
 					$("#loginbutton").off("click");
-					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
 					location.reload();
 				}else{
-					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
@@ -744,6 +771,18 @@ function setupLoginLogoutButton(isLoggedIn){
 	else{
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){showLoginPopup();});
+	}
+}
+
+//----------------------------------------------------------------------------------
+// Checks if a user is logged in or not. If not, the content in profile.php is hidden
+//----------------------------------------------------------------------------------
+function checkUserLogin(isLoggedIn){
+	
+	if(isLoggedIn === "true"){
+		$("#content").css("display","block");
+	}else{
+		$("#content").css("display","none");
 	}
 }
 
@@ -834,6 +873,7 @@ function sessionExpireMessage() {
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
 				// alert('Session is about to expire in 30 minutes');
 				$(".expiremessagebox").css("display","block");
+
 				clearInterval(intervalId);
 			}
 

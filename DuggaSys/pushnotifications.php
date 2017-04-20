@@ -53,9 +53,22 @@ if (isset($_POST['action']) && $_POST['action'] == "pushsuccess") {
 		}
 	}
 } else if (checklogin() && isSuperUser($_SESSION['uid'])) {
-	if (isset($_POST['action']) && $_POST['action'] == "send") {
+	if (isset($_GET['action']) && $_GET['action'] == "genkeys") {
+		include_once "../vendor/autoload.php";
+		$keys = Minishlink\WebPush\VAPID::createVapidKeys();
+		echo 'define("PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY", "'.$keys['publicKey'].'");<br>
+define("PUSH_NOTIFICATIONS_VAPID_PRIVATE_KEY", "'.$keys['privateKey'].'");<br>
+define("PUSH_NOTIFICATIONS_VAPID_EMAIL", "Insert your email address here");';
+	} else if (isset($_POST['action']) && $_POST['action'] == "send") {
 		include_once "../Shared/pushnotificationshelper.php";
-		echo sendPushNotification($_POST['user'], $_POST['message']);
+		$results = sendPushNotification($_POST['user'], $_POST['message']);
+		if ($results === true) {
+			$response = array("success" => true);
+			echo json_encode($response);
+		} else {
+			$response = array("success" => false, "error_message" => $results);
+			echo json_encode($response);
+		}
 	} else {
 		?>
 
