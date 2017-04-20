@@ -39,7 +39,7 @@
 			}
 			
 			if($noup=='COURSE'){
-					echo "<td class='navButt' id='back' title='swimlane'>";	
+					echo "<td class='navButt' id='swimlane' title='Swimlane'>";	
 					echo "<img src='../Shared/icons/swimlane.svg'></td>";
 			}
 			
