@@ -58,3 +58,11 @@ CREATE TABLE `user_usergroup` (
 
 Added row 'rowcolor' in 'listentries'
 rowcolor		TINYINT(1),
+
+/* -----------------------------*/
+/* ------- COURSE DATES --------*/
+/* -----------------------------*/
+
+Added rows to 'vers' to have a start date and end date to a version of a course
+  startdate     DATETIME,
+  enddate       DATETIME,
