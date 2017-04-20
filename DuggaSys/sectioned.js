@@ -178,6 +178,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str +="<option value ='5'>1 tab + end</option>"; 
 	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>2 tabs + end</option>" 
 	else str +="<option value ='6'>2 tabs + end</option>"; 
+	
+	$("#tabs").html(str);
 
 	// Set color on "test"
 	str="";
@@ -186,8 +188,6 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(rowcolor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
 	else str+="<option value='1' style='background-color: #927b9e; color: white'>Header</option>";
 	$("#rowcolor").html(str);
-
-	$("#tabs").html(str);
 		
 	// Set Link
 	$("#link").val(elink);
@@ -812,9 +812,9 @@ function returnedSection(data)
 
 					if(kk==0){
 						if(kk%2==0){
-							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;box-shadow: 0px 3px 2px #aaa inset;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}else{
-							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;box-shadow: 0px 3px 2px #aaa inset;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
 					}else{
 						if(kk%2==0){
@@ -830,7 +830,7 @@ function returnedSection(data)
 					}						
 					str += "<td ";
 					if(parseInt(item['rowcolor']) === 1){
-						str+=" class='example item"+blorf+"' style='background-color:#927b9e;color:white;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+						str+=" class='example item"+blorf+"' style='display:block;box-shadow: 0px 3px 2px #aaa;background-color:#927b9e;color:white;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 					}else if(kk%2==0){
 						str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 					}else{
@@ -899,7 +899,7 @@ function returnedSection(data)
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")){
 					if(kk==1){
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;box-shadow: 0px 3px 2px #aaa inset;' ";
+						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
 					}else{
 						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
 					}
@@ -913,10 +913,7 @@ function returnedSection(data)
 						str+="<td style='width:24" +
 							"px;";
 						
-						if(kk==1){
-							str +="box-shadow: 0px 3px 2px #aaa inset;";
-						}
-
+					
 						if(parseInt(item['kind']) === 0){
 								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' /></td>";
 						}else if(parseInt(item['kind']) === 1){
