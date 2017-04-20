@@ -863,7 +863,7 @@ function sessionExpireMessage() {
 
 	if(document.cookie.indexOf('sessionEndTime=expireC') > -1){
 		var intervalId = setInterval(function() {
-		console.log("testEMessage");
+		//console.log("testEMessage");
 		checkIfExpired();
 		}, 2000);
 	}
