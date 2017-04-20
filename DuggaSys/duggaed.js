@@ -6,6 +6,8 @@
 var sessionkind=0;
 var querystring=parseGet();
 var filez;
+var variant = [];
+
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
 $(function() {
@@ -165,23 +167,45 @@ function selectVariant(vid,param,answer,template,dis)
 	}
 }
 
+function isInArray(array, search)
+{
+    return array.indexOf(search) >= 0;
+}
+
 function showVariant(param){
-    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {
-        $(".fumo").removeClass("selectedtr");
-        $(".variantInfo").hide();
-        var variantId="#variantInfo" + param;
-        var duggaId="#dugga" + param;
-        /*
-        var arrowId="#arrow" + param;
-        $(arrowId).show(400);
-        /*
-        console.log(variantId);
-        console.log(duggaId);*/
-        $(variantId).slideDown(400);
+    var variantId="#variantInfo" + param;
+    var duggaId="#dugga" + param;
+    var arrowId="#arrow" + param;
+    var index = variant.indexOf(param);
+    
+    
+    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {// Check if dugga row and corresponding variant
+        if(!isInArray(variant, param)){
+             variant.push(param);
+        }
         
-        $(duggaId).addClass("selectedtr");
-        $(variantId).css("border-bottom", "2px solid gray");
-       
+        if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
+            $(variantId).hide();
+            $(duggaId).removeClass("selectedtr");
+            $(arrowId).html("&#9658;");
+            if (index > -1) {
+               variant.splice(index, 1);
+            }
+            
+        } else {
+            $(duggaId).addClass("selectedtr");
+            $(variantId).slideDown();
+            $(arrowId).html("&#x25BC;");
+        }
+        
+        $(variantId).css("border-bottom", "1px solid gray");
+    }
+}
+
+function showVariantz(param){
+    var index = variant.indexOf(param);
+    if(!isInArray(variant, param)){
+         variant.push(param);
     }
 }
 //----------------------------------------
@@ -208,10 +232,10 @@ function returnedDugga(data)
 
 			var item=data['entries'][i];
       
-			str+="<tr class='fumo' id='dugga" +i+ "' onClick='showVariant("+i+")'>";
+			str+="<tr class='fumo' id='dugga" +i+ "'>";
 
 			result++;
-            str+="<td><span class='arrow' id='arrow"+i+"'>&#x25BC;</span></td>";
+            str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#9658;</span></td>";
 			str+="<td><label>Name: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			if(item['autograde']=="1"){
 				result++;
@@ -264,7 +288,7 @@ function returnedDugga(data)
 
 			str+="<td style='padding:4px;'>";
 			str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-			str+=" onclick='addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");' >";
+			str+=" onclick=' showVariantz("+i+"); addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");'>";
 			str+="</td>";
 
 
@@ -320,6 +344,18 @@ function returnedDugga(data)
 	var slist=document.getElementById("content");
 	slist.innerHTML=str;
 	if(data['debug']!="NONE!") alert(data['debug']);
+    
+    var length = variant.length;
+    for(index = 0;  index < length; index++){
+        showVariant(variant[index]);
+    }
+    
+    var variantLength = data['entries'].length;
+    for(idx = 0; idx < variantLength; idx++) {
+        if (!document.getElementById("variantInfo"+idx) && document.getElementById("dugga"+idx)) {
+            $("#arrow"+idx).hide();
+        }
+    }
 }
 
 function parseParameters(str){
@@ -504,7 +540,7 @@ $(document).ready(function(){
 	}
 
 	function addSubmissionRow() {
-		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'><select name='fieldname' id='fieldname' style='margin-bottom:3px;flex:4;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:15;margin-left:5px;margin-bottom:3px;' onkeydown='if (event.keyCode == 13) return false;'/><button class='delButton' style='margin-left:5px;margin-bottom:3px;flex:1;'><img src='../Shared/icons/MinusT.svg' alt='Del row'/></button><br/></div>");
+		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'><select name='fieldname' id='fieldname' style='margin-bottom:3px;flex:4;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:15;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/><input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></button><br/></div>");
 	}
 
 	$(document).on('click','.delButton', function(){

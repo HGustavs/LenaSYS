@@ -4,9 +4,11 @@ Changes needed to the live sql database
 Table user:
 	Added securityquestion VARCHAR(256) DEFAULT NULL
 	Added securityquestionanswer VARCHAR(256) DEFAULT NULL
+	Added requestedpasswordchange TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	
 Table listentries:
-	Added comment VARCHAR(512)
+	Added comments VARCHAR(512)
+	Added grouptype TINYINT(1)
 
 New table user_push_registration, created with the following sql:
 	CREATE TABLE user_push_registration (
@@ -55,3 +57,15 @@ CREATE TABLE `user_usergroup` (
   CONSTRAINT `usergroupid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`),
   CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/* Create table usergroup_listentries. This table represents the relation between usergroups and listentries (coarse moments) */
+CREATE TABLE `usergroup_listentries` (
+  `ugid` int(10) UNSIGNED NOT NULL,
+  `lid` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ugid`,`lid`),
+  KEY `lid` (`lid`),
+  KEY `ugid` (`ugid`,`lid`),
+  CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`),
+  CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+

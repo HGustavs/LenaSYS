@@ -9,7 +9,7 @@ $(function() {
 			data: {action: (deregister == true ? 'deregister' : 'register'), subscription: subscription.toJSON()},
 			dataType: "text",
 			success: function() {
-				windows.setTimeout(function() {
+				window.setTimeout(function() {
 					updateTextAndButton((deregister != true));
 				}, 1000);
 			}
