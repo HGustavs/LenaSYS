@@ -150,5 +150,5 @@
       <h3>Alert</h3>
       <div onclick="closeWindows()">x</div>
     </div>
-    <p>Your session will expire in about 30 minutes.</p>
+    <p id="expiremessage">Your session will expire in about 30 minutes.</p>
   </div>
