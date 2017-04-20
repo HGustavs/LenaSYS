@@ -26,7 +26,7 @@ pdoConnect();
 
 	<!-- content START -->
 	<div id="content" >
-	<button class="switchContent" onclick="switchcontent()" type="button">Switch to One table</button>
+	<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
 	<input id="searchinput" type="text" name="search" placeholder="Search..">
 	<button class="switchContent" onclick="searchcontent()" type="button">Search</button>
         <div id="searchresults" style='width:100%; display:none;'>
