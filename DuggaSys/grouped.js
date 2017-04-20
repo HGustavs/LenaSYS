@@ -9,7 +9,6 @@ var courselist;
 
 function setup(){  	
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
-	
 }
 
 function returnedGroup(data)
@@ -31,11 +30,11 @@ function returnedGroup(data)
 		str+="<tr class='markinglist-header'>";
 		
 		str+="<th colspan='1' id='subheading' class='result-header'>";
-		str+="Grupper";
+		str+="Studenter";
 		str+="</th>";
 
 		str+="<th colspan='1' id='subheading' class='result-header'>";
-		str+="Studenter";
+		str+="Grupper";
 		str+="</th>";
 		
 		str+="</th><th colspan='1' id='subheading' class='result-header'>";
@@ -82,8 +81,12 @@ function returnedGroup(data)
 		*/	for(var l=0;l<moments.length;l++){
 				if(moments[l].name){
 					str+="</tr><tr class='markinglist-header'>";
+					str+="<th class='result-header dugga-result-subheader' id='header"+(l+1)+"'><div class='dugga-result-subheader-div' title='"+moments[l].username+"'>"+moments[l].username+"</div></th>";	
+					
 					str+="<th class='result-header dugga-result-subheader' id='header"+(l+1)+"'><div class='dugga-result-subheader-div' title='"+moments[l].name+"'>"+moments[l].name+"</div></th>";	
 					str+="</tr>";
+					
+		
 				}
 			}
 			str+="</thead></table>";
