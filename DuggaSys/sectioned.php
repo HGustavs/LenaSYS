@@ -56,7 +56,7 @@ pdoConnect();
 			<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
-			<div id='inputwrapper-color' class='inputwrapper'><span>Color:</span><select id='rowColor' ></select></div>
+			<div id='inputwrapper-color' class='inputwrapper'><span>Color:</span><select id='rowcolor' ></select></div>
 			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
 			<div id='inputwrapper-comments' class='inputwrapper'><span>Comment for deadline:</span><input type='text' class='textinput' id='comments' value='comments' placeholder="Deadline comment" /></div>
 		</div>
@@ -83,6 +83,8 @@ pdoConnect();
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID'  maxlength='8'/></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
+			<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='None' /></div>
+			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
@@ -101,6 +103,8 @@ pdoConnect();
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
+			<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='None' /></div>
+			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />

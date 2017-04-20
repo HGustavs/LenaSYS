@@ -55,3 +55,14 @@ CREATE TABLE `user_usergroup` (
   CONSTRAINT `usergroupid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`),
   CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+Added row 'rowcolor' in 'listentries'
+rowcolor		TINYINT(1),
+
+/* -----------------------------*/
+/* ------- COURSE DATES --------*/
+/* -----------------------------*/
+
+Added rows to 'vers' to have a start date and end date to a version of a course
+  startdate     DATETIME,
+  enddate       DATETIME,
