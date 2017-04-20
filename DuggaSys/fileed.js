@@ -398,7 +398,6 @@ function convertfilekind(kind){
 function searchcontent(){
 	var searchstr = new RegExp($('#searchinput').val(), 'i');
 	var searchdata = [];
-	console.log(searchstr);
     for(i=0;i<filez['entries'].length;i++){
         var item=filez['entries'][i];
         if(searchstr.test(item['filename'])){
@@ -414,7 +413,6 @@ function searchcontent(){
 			searchdata.push(item);
 		}
 	}
-	console.log(searchdata);
 	str="";
 	str+="<table class='list' style='margin-bottom:8px;' >";
 	str+="<thead style='cursor:pointer;'>";
@@ -465,3 +463,15 @@ function searchcontent(){
 	}
 }
 
+
+function searchKeyPress(e)
+{
+    // look for window.event in case event isn't passed in
+    e = e || window.event;
+    if (e.keyCode == 13)
+    {
+        document.getElementById('searchbutton').click();
+        return false;
+    }
+    return true;
+}
