@@ -779,6 +779,10 @@ header td {
   font-size: 0.95em;
 }
 
+.loginBox .cursorPointer {
+  cursor: pointer;
+}
+
 /* --------------================################================-------------- *
  *                       		  Pop-up BOX        				   *
  * --------------================################================-------------- */
@@ -1043,9 +1047,21 @@ input.submit-button {
   float:right;
 }
 
+input.fileed-button {
+    background-color:#7B5A96;
+    margin-right:6px;
+    margin-top:6px;
+    margin-left:6px;
+    margin-bottom:6px;
+}
+
 input.submit-button:hover {
   background-color:#7B5A96;
   border-radius:4px;
+}
+
+input.fileed-button:hover {
+    background-color:#91859b;
 }
 
 input.submit-button:disabled {
@@ -2099,3 +2115,17 @@ table {
   transform: rotate(180deg);
 }
 /*end, styling for contribution.php*/
+
+/* styling for fileed switching table button*/
+.switchContent {
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+  font-size:14px;
+  text-align:center;
+  background-color:#614875;    
+  color:#fff;
+  padding:6px;
+  margin:1px;
+  border-radius: 2px;
+  border:0px;
+  cursor: pointer;
+}

@@ -8,8 +8,25 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
-| asd | asd |
-| dsa | dsa | dsa |
-| dsa | dsa | dsa | asd |
-
-test | asd
+1. asd
+2. awed
+  1. asd
+  2. asd
+  3. asd
+    1. asd
+      1. asd
+    2. asd
+      1. asd
+3. asd
+4. asd
+* asd
+* awed
+  * asd
+  * asd
+  * asd
+    * asd
+      * asd
+    * asd
+      * asd
+* asd
+* asd
