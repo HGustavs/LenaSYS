@@ -123,3 +123,13 @@
 	
 	
 	<!-- Login Box End! -->
+  
+  <!-- dialogbox -->
+  
+  <div class="expiremessagebox" style="display:none">
+    <div class='loginBoxheader'>
+      <h3>Alert</h3>
+      <div onclick="closeWindows()">x</div>
+    </div>
+    <p id="expiremessage">Your session will expire in about 30 minutes.</p>
+  </div>
