@@ -28,12 +28,18 @@ $listentry = getOP('moment');
 $qvariant=getOP("qvariant");
 $gentries=array();
 
+
+
 $debug="NONE!";
 
 // Don't retreive all results if request was for a single dugga or a grade update
 if(strcmp($opt,"GET")==0){
 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 		
+		//FIX
+		//SELECT user.username, usergroup.name, course.coursename, user_course.vers  FROM user INNER JOIN user_usergroup ON user.uid=user_usergroup.uid INNER JOIN usergroup ON usergroup.ugid=user_usergroup.ugid INNER JOIN user_course ON user_course.uid=user.uid INNER JOIN course ON course.cid=user_course.cid WHERE course.cid=2 AND user_course.vers=97732
+		
+		//$query = $pdo->prepare("SELECT user.username, usergroup.name, course.coursename, user_course.vers  FROM user INNER JOIN user_usergroup ON user.uid=user_usergroup.uid INNER JOIN usergroup ON usergroup.ugid=user_usergroup.ugid INNER JOIN user_course ON user_course.uid=user.uid INNER JOIN course ON course.cid=user_course.cid WHERE course.cid=:cid;");
 		$query = $pdo->prepare("SELECT listentries.*,quizFile,COUNT(variant.vid) as qvariant FROM listentries LEFT JOIN quiz ON  listentries.link=quiz.id LEFT JOIN variant ON quiz.id=variant.quizID WHERE listentries.cid=:cid and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
@@ -56,8 +62,31 @@ if(strcmp($opt,"GET")==0){
 				)
 			);
 		}
+		//Get users and their groups
+		$query = $pdo->prepare("SELECT user.username, usergroup.name  FROM user INNER JOIN user_usergroup ON user.uid=user_usergroup.uid INNER JOIN usergroup ON usergroup.ugid=user_usergroup.ugid INNER JOIN user_course ON user_course.uid=user.uid INNER JOIN course ON course.cid=user_course.cid WHERE course.cid=:cid;");
+		$query->bindParam(':cid', $cid);
+		
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error retreiving moments and duggas. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+		}
+
+		$currentMoment=null;
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$gentries,
+				array(
+					'username' =>$row['username'],
+					'name' =>$row['name']
+					
+				)
+			);
+		}
 	}
 }
+
+
 
 if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 		$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];	

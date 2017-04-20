@@ -95,8 +95,8 @@ pdoConnect();
 								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;max-height:180px;overflow:auto;"></div>
 							</fieldset>
 
-							<button type="button" name="addfieldname" id="addfieldname"><img src="../Shared/icons/PlusT.svg" alt="Add row"/></button>
-							<button type="button" name="createjson" id="createjson">Create JSON</button>
+							<input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;float:left;"></button>
+							<input type="button" class="submit-button" name="createjson" id="createjson" value="Create JSON" style="float:left"></button>
 						</div>
 					</div>
 				</div>
