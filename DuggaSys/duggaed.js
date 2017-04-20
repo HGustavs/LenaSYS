@@ -187,15 +187,15 @@ function showVariant(param){
         if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
             $(variantId).hide();
             $(duggaId).removeClass("selectedtr");
-            $(arrowId).html("&#x25BC;");
+            $(arrowId).html("&#9658;");
             if (index > -1) {
                variant.splice(index, 1);
             }
             
         } else {
             $(duggaId).addClass("selectedtr");
-            $(variantId).slideDown(); 
-            $(arrowId).html("&#9658;");
+            $(variantId).slideDown();
+            $(arrowId).html("&#x25BC;");
         }
         
         $(variantId).css("border-bottom", "1px solid gray");
@@ -235,7 +235,7 @@ function returnedDugga(data)
 			str+="<tr class='fumo' id='dugga" +i+ "'>";
 
 			result++;
-            str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#x25BC;</span></td>";
+            str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#9658;</span></td>";
 			str+="<td><label>Name: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			if(item['autograde']=="1"){
 				result++;
