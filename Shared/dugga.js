@@ -694,12 +694,10 @@ function processLogin() {
 					$("#login #username").val("");
 					$("#login #password").val("");
 					$("#loginbutton").off("click");
-					//console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
 					location.reload();
 				}else{
-					//console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
