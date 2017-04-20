@@ -147,11 +147,10 @@ function redrawtable()
             strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"
 						var student=students[i];
 						for(var j=0;j<student.length;j++){
-                            if (showTeacher === false && isTeacher === true) {
+                            if (showTeacher === false) {
                                 // dont show teacher if a teacher exist
                             }
                             else {
-
                                 strt += "<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u" + student[j].uid + "_d" + student[j].lid + "' class='result-data c" + j;
                                 if (j == 0) {
                                     strt += "'>" + student[j].grade + "</td>";

@@ -185,27 +185,27 @@ INSERT INTO listentries (lid, cid, entryname, link, kind, pos, creator, visible,
 
 
 /* Insert access for users */
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1010, 1, '0.0', 1, 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (2020, 1, '0.0', 1, 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (3030, 1, '0.0', 1, 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (4040, 1, '0.0', 1, 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1010, 1, '0.0', 1, 'R', 0, '', 45656);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (2020, 1, '0.0', 1, 'R', 0, '', 45656);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (3030, 1, '0.0', 1, 'R', 0, '', 45656);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (4040, 1, '0.0', 1, 'R', 0, '', 45656);
 
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1010, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (2020, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (3030, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (4040, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (5050, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (6060, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (7070, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (8080, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (9090, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1111, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1212, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1313, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1414, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1515, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1616, 2, '0.0', '1', 'R', 0, '');
-INSERT INTO user_course (uid, cid, result, creator, access, period, term) VALUES (1717, 2, '0.0', '1', 'R', 0, '');
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1010, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (2020, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (3030, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (4040, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (5050, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (6060, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (7070, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (8080, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (9090, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1111, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1212, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1313, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1414, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1515, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1616, 2, '0.0', '1', 'R', 0, '', 97732);
+INSERT INTO user_course (uid, cid, result, creator, access, period, term, vers) VALUES (1717, 2, '0.0', '1', 'R', 0, '', 97732);
 /* END duggasys test data END */
 
 /* START codeviewver test data START */

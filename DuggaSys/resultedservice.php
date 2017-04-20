@@ -33,6 +33,7 @@ $coursevers=getOP('coursevers');
 $qvariant=getOP("qvariant");
 $quizId=getOP("quizId");
 $teacher = getOP('teacher');
+$access = getOP('access');
 
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
@@ -527,7 +528,6 @@ $array = array(
 	'debug' => $debug,
 	'results' => $lentries,
 	'teachers' => $teachers,
-
 	'duggauser' => $duggauser,
 	'duggaentry' => $duggaentry,
 	'duggaid' => $duggaid,
