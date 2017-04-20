@@ -9,6 +9,34 @@ AJAXService("get",{},"SECTION");
 
 var xelink;
 
+$(function() {
+	$("#startdate").datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0,
+		onSelect: function(date){
+			var newDate = $('#startdate').datepicker('getDate');
+			$('#enddate').datepicker("option","minDate", newDate);
+		}
+	});
+	$('#enddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+});
+
+$(function() {
+	$("#estartdate").datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0,
+		onSelect: function(date){
+			var newDate = $('#estartdate').datepicker('getDate');
+			$('#eenddate').datepicker("option","minDate", newDate);
+		}
+	});
+	$('#eenddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+});
+
 function displaymessage(){
    $(".messagebox").css("display","block");
 }
@@ -417,6 +445,17 @@ function createVersion(){
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
+	var startdate = $("#startdate").val();
+	var enddate = $("#enddate").val();
+  if(startdate === "None" || startdate === null || startdate.length === 0) {
+    // 2017-04-27 00:00:00
+    var date = new Date();
+    startdate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+  }
+  if(enddate === "None" || enddate === null || enddate.length === 0) {
+    // 2017-04-27 00:00:00
+    enddate = startdate;
+  }
 	
 	if(coursevers=="null"){
 		makeactive=true;
@@ -427,13 +466,15 @@ function createVersion(){
 		versid : versid,
 		versname : versname,
 		coursecode : coursecode,
-		coursename : coursename
-	}, "SECTION");
+		coursename : coursename,
+   startdate : startdate,
+   enddate : enddate
+  }, "SECTION");
 	
 	if(makeactive){
 		AJAXService("CHGVERS", {
 			cid : cid,
-			versid : versid,
+			versid : versid
 		}, "SECTION");
 	}
 
@@ -444,10 +485,12 @@ function createVersion(){
 	}, 1000);
 }
 
-function showEditVersion(versid, versname)
+function showEditVersion(versid, versname, startdate, enddate)
 {
 	$("#eversid").val(versid);
 	$("#eversname").val(versname);
+	$("#estartdate").val(startdate);
+	$("#eenddate").val(enddate);
 	$("#editCourseVersion").css("display", "block");
 }
 
@@ -457,12 +500,25 @@ function updateVersion(){
 	var versname = $("#eversname").val();
 	var coursecode = $("#course-coursecode").text();
 	var makeactive = $("#emakeactive").is(':checked');
+   var startdate = $("#estartdate").val();
+   var enddate = $("#eenddate").val();
 
+  if(startdate === "None" || startdate === null || startdate.length === 0) {
+    // 2017-04-27 00:00:00
+    var date = new Date();
+    startdate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+  }
+  if(enddate === "None" || enddate === null || enddate.length === 0) {
+    enddate = startdate;
+  }
+  
 	AJAXService("UPDATEVRS", {
 		cid : cid,
 		versid : versid,
 		versname : versname,
-		coursecode : coursecode
+		coursecode : coursecode,
+   startdate : startdate,
+   enddate : enddate
 	}, "SECTION");
 	
 	if(makeactive){
@@ -537,7 +593,20 @@ function returnedSection(data)
 			str+="</select></td>";
 			
 			str+="<td style='width:112px;'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
-			str+='("'+querystring['coursevers']+'","'+versionname+'")';
+
+      var startdate = null;
+      var enddate = null;
+      if (retdata['versions'].length > 0) {
+      for ( i = 0; i < retdata['versions'].length; i++) {
+          var item = retdata['versions'][i];
+          if (retdata['courseid'] == item['cid'] && retdata['coursevers'] == item['vers']) {
+            startdate = item['startdate'];
+            enddate = item['enddate'];
+          }
+        }
+      }
+
+			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
 			str+=";'></td>";	
 
 			str+="<td style='width:112px;'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></td>";

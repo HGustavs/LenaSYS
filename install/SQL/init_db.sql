@@ -184,6 +184,8 @@ CREATE TABLE vers(
 	coursecode		VARCHAR(45) NOT NULL,
 	coursename		VARCHAR(80) NOT NULL,
 	coursenamealt	VARCHAR(45) NOT NULL,
+  startdate     DATETIME,
+  enddate       DATETIME,
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	PRIMARY KEY(cid,vers)
 );
