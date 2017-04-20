@@ -26,9 +26,13 @@ pdoConnect();
 
 	<!-- content START -->
 	<div id="content" >
+
 	<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
-	<input id="searchinput" type="text" name="search" placeholder="Search..">
-	<button class="switchContent" onclick="searchcontent()" type="button">Search</button>
+
+		<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);">
+
+		<button id="searchbutton" class="switchContent" onclick="searchcontent()" type="button">Search</button>
+
         <div id="searchresults" style='width:100%; display:none;'>
             <table class='list list--nomargin' style='margin-bottom:8px;' >
                 <tr><th class='first' style='width:64px;'>ID</th><th>Search Results</th><th style='width:30px' class='last'></th></tr>
