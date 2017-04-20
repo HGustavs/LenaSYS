@@ -338,11 +338,12 @@ function Symbol(kind) {
 
     this.move = function (movex,movey)
     {
+
       points[this.topLeft].x+=movex;
       points[this.topLeft].y+=movey;
       points[this.bottomRight].x+=movex;
       points[this.bottomRight].y+=movey;
-      if(this.symbolkind==1){
+      if(this.symbolkind==1||this.symbolkind==5){
         points[this.middleDivider].x+=movex;
         points[this.middleDivider].y+=movey;
       }else if(this.symbolkind==2){
@@ -675,6 +676,27 @@ function Symbol(kind) {
         ctx.stroke();
 
         ctx.strokeStyle="#000";
-    }
+      }else if(this.symbolkind==5){
+
+          var midx=points[this.middleDivider].x;
+          var midy=points[this.middleDivider].y;
+
+          ctx.beginPath();
+
+          ctx.moveTo(midx,y1);
+          ctx.lineTo(x2,midy);
+          ctx.lineTo(midx,y2);
+          ctx.lineTo(x1,midy);
+          ctx.lineTo(midx,y1);
+
+          ctx.fillStyle="#dfe";
+          ctx.fill();
+          if(this.targeted){
+              ctx.strokeStyle="#F82";
+          }else{
+              ctx.strokeStyle="#253";
+          }
+          ctx.stroke();
+      }
   }
 }

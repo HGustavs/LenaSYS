@@ -717,6 +717,7 @@ function initcanvas()
 		"<button onclick='attrmode();'>Create Attribute</button>" +
 		"<button onclick='linemode();'>Create Line</button>" +
 		"<button onclick='entitymode();'>Create Entity</button>" +
+        "<button onclick='relationmode();'>Create Relation</button>" +
 		"<select id='selectFigure' onchange='figuremode()'>" +
 			"<option selected='selected' disabled>Create Figure</option>" +
 			"<option value='Square'>Square</option>" +
@@ -938,8 +939,8 @@ function mousemoveevt(ev, t){
 				// If mouse is pressed down and no point is close show selection box
 		}else if(md==2){
 				// If mouse is pressed down and a point is selected - move that point
-				points[sel.ind].x=cx;
-				points[sel.ind].y=cy;
+				points[sel.ind].x = cx;
+                points[sel.ind].y = cy;
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
@@ -1064,7 +1065,7 @@ function mouseupevt(ev){
 
 	// Code for creating a new class
 
-		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity")){
+		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateERRelation")){
 				// Add required points
 				p1=points.addpoint(sx,sy,false);
 				p2=points.addpoint(cx,cy,false);
@@ -1152,8 +1153,7 @@ function mouseupevt(ev){
 				selobj = diagram.length -1;
 				diagram[selobj].targeted = true;
 				openAppearanceDialogMenu();
-
-    }else if(uimode=="CreateLine"&&md==4){
+		}else if(uimode=="CreateLine"&&md==4){
 			/* Code for making a line */
     		erLineA = new Symbol(4);
     		erLineA.name="Line"+diagram.length;
@@ -1162,7 +1162,16 @@ function mouseupevt(ev){
     		erLineA.centerpoint=p3;
 
             diagram.push(erLineA);
-        } else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "Zoom" ) && !(uimode == "MoveAround" )) {
+        }
+        else if(uimode=="CreateERRelation"&&md==4){
+            erRelationA = new Symbol(5);
+
+            erRelationA.topLeft=p1;
+            erRelationA.bottomRight=p2;
+            erRelationA.middleDivider=p3;
+
+            diagram.push(erRelationA);
+        }else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" ) && !(uimode=="CreateERRelation")) {
             diagram.insides(cx, cy, sx, sy);
         }
 
@@ -1242,6 +1251,13 @@ function figuremode()
     	uimode = "CreateFigure";
     	var selectBox = document.getElementById("selectFigure");
     	figureMode = selectBox.options[selectBox.selectedIndex].value;
+}
+
+function relationmode()
+{
+    	var canvas = document.getElementById("myCanvas");
+    	canvas.style.cursor="default";
+    	uimode="CreateERRelation";
 }
 
 /**
