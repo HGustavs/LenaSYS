@@ -13,6 +13,7 @@ function setup(){
 
 function returnedGroup(data)
 {
+		console.log(data);
 		entries=data.entries;
 		moments=data.moments;
 		versions=data.versions;
