@@ -391,22 +391,17 @@ function searchcontent(){
 	console.log(searchstr);
     for(i=0;i<filez['entries'].length;i++){
         var item=filez['entries'][i];
-        console.log(searchstr.test(item['filename']));
         if(searchstr.test(item['filename'])){
-        	console.log(item);
 			searchdata.push(item);
 		}
 		else if(searchstr.test(item['fileid'])){
-            console.log(item);
-            //searchdata.push(item);
+            searchdata.push(item);
 		}
 		else if(searchstr.test(item['uploaddate'])){
-            console.log(item);
-			//searchdata.push(item);
+			searchdata.push(item);
 		}
 		else if(searchstr.test(item['filesize'])){
-            console.log(item);
-			//searchdata.push(item);
+			searchdata.push(item);
 		}
 	}
 	console.log(searchdata);
