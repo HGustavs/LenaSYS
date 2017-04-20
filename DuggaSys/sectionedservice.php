@@ -39,9 +39,13 @@ $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
 $unmarked = 0;
+$rowcolor=getOP('rowcolor');
+$startdate=getOP('startdate');
+$enddate=getOP('enddate');
 $grouptype=getOP('grouptype');
 
 if($gradesys=="UNK") $gradesys=0;
+if($rowcolor=="UNK") $rowcolor=0;
 
 // Store current day in string
 $today = date("Y-m-d H:i:s");
@@ -76,7 +80,7 @@ if(checklogin()){
 				$debug="Error updating entries";
 			}
 		}else if(strcmp($opt,"NEW")===0){
-			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments,grouptype) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment,:grouptype)"); 
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments,rowcolor,grouptype) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment,:rowcolor,:grouptype)"); 
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
@@ -84,8 +88,9 @@ if(checklogin()){
 			$query->bindParam(':link', $link); 
 			$query->bindParam(':kind', $kind); 
 			$query->bindParam(':comment', $comment); 
-			$query->bindParam(':visible', $visibility); 
+			$query->bindParam(':visible', $visibility);
 			$query->bindParam(':grouptype', $grouptype); 
+			$query->bindParam(':rowcolor', $rowcolor); 
 			
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -141,12 +146,12 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 
 			}			
-						
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,grouptype=:grouptype WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,rowcolor=:rowcolor,grouptype=:grouptype WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
 			$query->bindParam(':highscoremode', $highscoremode);
+			$query->bindParam(':rowcolor', $rowcolor);
 			$query->bindParam(':grouptype', $grouptype);
 			
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
@@ -175,13 +180,17 @@ if(checklogin()){
 				}
 			}
 		}else if(strcmp($opt,"NEWVRS")===0){
-			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate);");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
 			$query->bindParam(':versname', $versname);				
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':coursenamealt', $coursenamealt);
+     if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+     else $query->bindParam(':startdate', $startdate);
+     if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
+     else $query->bindParam(':enddate', $enddate);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -189,11 +198,15 @@ if(checklogin()){
 			}
 			
 		}else if(strcmp($opt,"UPDATEVRS")===0){
-			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+			$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
 			$query->bindParam(':versname', $versname);				
+     if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+     else $query->bindParam(':startdate', $startdate);
+     if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
+     else $query->bindParam(':enddate', $enddate);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -302,7 +315,7 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments,rowcolor FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -330,7 +343,8 @@ if($cvisibility){
 						'code_id' => $row['code_id'],
 						'deadline'=> $row['deadline'],
 						'qrelease' => $row['qrelease'],
-						'comments' => $row['comments']
+						'comments' => $row['comments'],
+						'rowcolor' => $row['rowcolor']
 					)
 				);
 		}
@@ -356,7 +370,7 @@ if($query->execute()) {
 $links=array();
 
 $versions=array();
-$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
+$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
@@ -371,7 +385,9 @@ if(!$query->execute()) {
 				'vers' => $row['vers'],
 				'versname' => $row['versname'],
 				'coursename' => $row['coursename'],
-				'coursenamealt' => $row['coursenamealt']
+				'coursenamealt' => $row['coursenamealt'],
+				'startdate' => $row['startdate'],
+				'enddate' => $row['enddate']
 			)
 		);
 	}
@@ -414,7 +430,7 @@ if($ha){
 	}
 	
 	$versions=array();
-	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt FROM vers;");
+	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
 	
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -429,7 +445,9 @@ if($ha){
 					'vers' => $row['vers'],
 					'versname' => $row['versname'],
 					'coursename' => $row['coursename'],
-					'coursenamealt' => $row['coursenamealt']
+					'coursenamealt' => $row['coursenamealt'],
+  				'startdate' => $row['startdate'],
+         'enddate' => $row['enddate']
 				)
 			);
 		}
@@ -497,7 +515,10 @@ $array = array(
 	'results' => $resulties,
 	'versions' => $versions,
 	'codeexamples' => $codeexamples,
-	'unmarked' => $unmarked
+	'unmarked' => $unmarked,
+	'rowcolor' => $rowcolor,
+	'startdate' => $startdate,
+	'enddate' => $enddate
 );
 
 echo json_encode($array);
