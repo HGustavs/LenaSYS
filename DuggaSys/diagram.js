@@ -725,6 +725,7 @@ function initcanvas()
 		"</select>" +
 		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
 		"<button onclick='debugMode();'>Debug</button>" +
+		"<button onclick='hashfunction();'>Hash</button>" +
 		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
 		"<button onclick='clearCanvas();'>Delete All</button>" +
 		"<button id='zoomInButton' class='unpressed' style='right:0; position:fixed; margin-right:120px;'>+</button>"+
@@ -1726,6 +1727,28 @@ function Load() {
     console.log("State is loaded");
     //Redrawn old state.
     updategfx();
+}
+
+//calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram.
+function hashfunction()
+{
+    window.location.hash=diagram;
+	var diagramToString = "";
+	var hash = 0;
+	for(var i = 0; i < diagram.length; i++){
+		diagramToString = diagramToString + JSON.stringify(diagram[i])
+	}
+
+    if (diagram.length == 0){console.log(hash);}
+	else{
+		for (i = 0; i < diagramToString.length; i++) {
+        char = diagramToString.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+		}
+		var hexHash = hash.toString(16);
+		console.log(hash.toString(16));
+	}	
 }
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
