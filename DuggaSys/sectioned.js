@@ -36,7 +36,7 @@ function showSaveButton(){
   $(".closeDugga").css("display","none"); 
 } 
 
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments, rowColor )
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments,rowColor,grouptype )
 {
 		
 	xelink=elink;
@@ -62,6 +62,28 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='3'>U-3-4-5</option>";
 
 	$("#gradesys").html(str);
+	
+	// Display Select Marker
+	$(".item").css("border","none");
+	$(".item").css("box-shadow","none");
+	$("#I"+lid).css("border","2px dashed #FC5");
+	$("#I"+lid).css("box-shadow","1px 1px 3px #000 inset");
+		
+	// Set grouptype
+	str="";
+	if(grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
+	else str+="<option value='0'>Regular dugga</option>";
+	
+	if(grouptype==1) str+="<option selected='selected' value='1'>Group dugga</option>"
+	else str+="<option value='1'>Group dugga</option>";
+	
+	if(grouptype==2) str+="<option selected='selected' value='2'>Seminar</option>"
+	else str+="<option value='2'>Seminar</option>";
+	
+	if(grouptype==3) str+="<option selected='selected' value='3'>Group seminar</option>"
+	else str+="<option value='3'>Group seminar</option>";
+
+	$("#grouptype").html(str);
 	
 	// Set Moments
 	str="";
@@ -175,6 +197,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","none");
 
 	// Section
 	}else if(kind==1){
@@ -184,6 +207,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","none");
 
 	// Code
 	}else if(kind==2){
@@ -202,6 +226,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","none");
     
 	// Dugga
 	}else if(kind==3){
@@ -220,6 +245,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","block");
 		$("#inputwrapper-comments").css("display","block");
 		$("#inputwrapper-color").css("display","block");
+		$("#inputwrapper-grouptype").css("display","block");
 
 	// Moment
 	}else if(kind==4){
@@ -229,6 +255,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","block");
 
 	// Link
 	}else if(kind==5){
@@ -247,6 +274,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","none");
 
 	}
 	$("#editSection").css("display","block");
@@ -269,6 +297,7 @@ function changedType()
 		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","none");
 
 	}else if(kind==1){
 		$("#inputwrapper-link").css("display","none");
@@ -277,6 +306,7 @@ function changedType()
 		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","none");
 
 	}else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
@@ -294,6 +324,7 @@ function changedType()
 		$("#inputwrapper-tabs").css("display","block");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","none");
 
 	}else if(kind==3){
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
@@ -311,6 +342,7 @@ function changedType()
 		$("#inputwrapper-tabs").css("display","none");	
 		$("#inputwrapper-comments").css("display","block");	
 		$("#inputwrapper-color").css("display","block");	
+		$("#inputwrapper-grouptype").css("display","block");
 
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
@@ -319,6 +351,7 @@ function changedType()
 		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","block");
 
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
@@ -336,6 +369,7 @@ function changedType()
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
 		$("#inputwrapper-color").css("display","none");
+		$("#inputwrapper-grouptype").css("display","none");
 
 	}
 }
@@ -359,9 +393,10 @@ function updateItem()
 	moment=$("#moment").val();
 	gradesys=$("#gradesys").val();
 	comments=$("#comments").val();
+	grouptype=$("#grouptype").val();
 	// Storing tabs in gradesys column!
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
-	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments},"SECTION");
+	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments,grouptype:grouptype},"SECTION");
 	$("#editSection").css("display","none");
 }
 
@@ -387,9 +422,10 @@ function newItem()
   moment=$("#moment").val(); 
   gradesys=$("#gradesys").val(); 
   comment=$("#deadlinecomment").val(); 
+  grouptype=$("#grouptype").val(); 
   // Storing tabs in gradesys column! 
   if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
-  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment},"SECTION"); 
+  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment,grouptype:grouptype},"SECTION"); 
   $("#editSection").css("display","none"); 
 }
 
@@ -832,13 +868,13 @@ function returnedSection(data)
 
                         if (parseInt(item['kind']) === 0) {
 
-                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
+                            str += "' class='header" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] +"\",\"" + item['grouptype'] + "\");showSaveButton();' /></td>";
                         } else if (parseInt(item['kind']) === 1) {
-                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
+                            str += "' class='section" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] +"\",\"" + item['grouptype'] + "\");showSaveButton();' /></td>";
                         } else if (parseInt(item['kind']) === 4) {
-                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
+                            str += "' class='moment" + blorf + "'><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] +"\",\"" + item['grouptype'] + "\");showSaveButton();' /></td>";
                         } else {
-                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] + "\");showSaveButton();' /></td>";
+                            str += "' ><img id='corf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\"" + item['lid'] + "\",\"" + item['entryname'] + "\",\"" + item['kind'] + "\",\"" + item['visible'] + "\",\"" + item['link'] + "\",\"" + momentexists + "\",\"" + item['gradesys'] + "\",\"" + item['highscoremode'] +"\",\"" + item['comments'] +"\",\"" + item['grouptype'] + "\");showSaveButton();' /></td>";
                         }
                     }
 
@@ -852,13 +888,13 @@ function returnedSection(data)
 						}
 
 						if(parseInt(item['kind']) === 0){
-								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' /></td>";
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";
 						}else if(parseInt(item['kind']) === 1){
-								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' /></td>";											
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";											
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' /></td>";											
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";											
 						}else{
-								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' /></td>";																	
+								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";																	
 						}
 				}
 

@@ -119,7 +119,36 @@
 				</table>
 			  </div>
 		</div>
+		<div id='resetcomplete' style="display:none">
+			<div class='loginBoxheader' id="completeid">
+				<h3>Request complete</h3>
+				<div onclick="closeWindows()">x</div>
+			</div>
+			  <div class="table-wrap">
+				<table>
+					<tr>
+						<td>
+							<h4>Your teachers has been notified, your new password should be sent to you soon™.</h4>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h6>You can change your password later in the profile page.</h6>
+						</td>
+					</tr>
+				</table>
+			  </div>
+		</div>
 	</div>
 	
-	
 	<!-- Login Box End! -->
+  
+  <!-- dialogbox -->
+  
+  <div class="expiremessagebox" style="display:none">
+    <div class='loginBoxheader'>
+      <h3>Alert</h3>
+      <div onclick="closeWindows()">x</div>
+    </div>
+    <p id="expiremessage">Your session will expire in about 30 minutes.</p>
+  </div>

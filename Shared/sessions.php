@@ -147,6 +147,27 @@ function checkAnswer($username, $securityquestionanswer)
 	}
 }
 
+function requestChange($username)
+{
+	global $pdo;
+
+	if($pdo == null) {
+		pdoConnect();
+	}
+
+	$query = $pdo->prepare("UPDATE user set requestedpasswordchange=1 where username=:username;");
+
+	$query->bindParam(':username', $username);
+
+	//$query->execute();
+
+	if(!$query->execute()) {
+		return false;
+	}else{
+		return true;
+	}
+}
+
 /**
  * Log in the user with the specified username and password and
  * optionally set cookies for the user to be remembered until next
