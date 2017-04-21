@@ -68,6 +68,7 @@ pdoConnect();
 	        <button><a onclick='SaveFile(this);' class='btn'> <i class='icon-download'></i>Export</a></button>
 	        <input id='fileid' type='file' name='file_name' hidden multiple/>
 	        <input id='buttonid' type='button' value='Import' />
+
 			<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>
 		</div>
 		<div id="canvasDiv"></div>
