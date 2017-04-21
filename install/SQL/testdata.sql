@@ -125,7 +125,6 @@ INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES 
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (329,"IT119G","Datakommunikation - Introduktion",'UNK','12329','HT15');
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (330,"DA330G","Webbprogrammering",'UNK','12330','HT15');
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (331,"MA113G","Algebra och logik",'UNK','12331','HT15');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (332,"DA131G","Informationssäkerhet - Introduktion",'UNK','12332','HT15');
 
 /* Insert tests */
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (1,2,1,2,'Bitdugga1','dugga1','2015-01-01 00:00:00','2015-01-30 00:00:00',NOW(),2);
@@ -216,27 +215,27 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 
 
 /* Insert access for users */
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1010,1,'0.0',1,'R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (2020,1,'0.0',1,'R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (3030,1,'0.0',1,'R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (4040,1,'0.0',1,'R',0,'');
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1010,1,'0.0',1,'R',0,'', 45656);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (2020,1,'0.0',1,'R',0,'', 45656);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (3030,1,'0.0',1,'R',0,'', 45656);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (4040,1,'0.0',1,'R',0,'', 45656);
 
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1010,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (2020,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (3030,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (4040,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (5050,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (6060,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (7070,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (8080,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (9090,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1111,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1212,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1313,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1414,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1515,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1616,2,'0.0','1','R',0,'');
-INSERT INTO user_course (uid,cid,result,creator,access,period,term) VALUES (1717,2,'0.0','1','R',0,'');
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1010,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (2020,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (3030,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (4040,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (5050,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (6060,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (7070,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (8080,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (9090,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1111,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1212,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1313,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1414,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1515,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1616,2,'0.0','1','R',0,'',97731);
+INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1717,2,'0.0','1','R',0,'',97731);
 /* END duggasys test data END */
 
 /* START codeviewver test data START */
@@ -505,145 +504,145 @@ INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALU
 
 -- Course with user --
 -- Teachers --
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (4,2,0,'W',1,'HT15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (6,2,0,'W',1,'HT15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (6,1,0,'W',1,'HT15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (7,1,0,'W',1,'HT15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (6,4,0,'W',1,'HT15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (5,5,0,'W',1,'HT15');
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (6,1,0,'W',1,'HT15',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (7,1,0,'W',1,'HT15',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (4,2,0,'W',1,'HT15',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (6,2,0,'W',1,'HT15',97731);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (6,4,0,'W',1,'HT15',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (5,5,0,'W',1,'HT15',1339);
 -- Teachers END --
 
 -- Old users --
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,4,0,'R',4,'VT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,302,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,304,0,'R',2,'VT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,305,0,'R',2,'VT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,306,0,'R',2,'VT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,307,0,'R',2,'VT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,308,0,'R',3,'HT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,309,0,'R',3,'HT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,310,0,'R',3,'HT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,311,0,'R',3,'HT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,312,0,'R',4,'VT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (200,314,0,'R',4,'VT-15');
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,4,0,'R',4,'VT-15',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,302,0,'R',1,'HT-13',12302);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,304,0,'R',2,'VT-14',12304);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,305,0,'R',2,'VT-14',12305);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,306,0,'R',2,'VT-14',12306);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,307,0,'R',2,'VT-14',12307);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,308,0,'R',3,'HT-14',12308);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,309,0,'R',3,'HT-14',12309);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,310,0,'R',3,'HT-14',12310);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,311,0,'R',3,'HT-14',12311);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,312,0,'R',4,'VT-15',12312);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (200,314,0,'R',4,'VT-15',12314);
 
 
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,4,0,'R',4,'VT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,302,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,304,0,'R',2,'VT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,305,0,'R',2,'VT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,306,0,'R',2,'VT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,307,0,'R',2,'VT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,308,0,'R',3,'HT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,309,0,'R',3,'HT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,310,0,'R',3,'HT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,311,0,'R',3,'HT-14');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,312,0,'R',4,'VT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,314,0,'R',4,'VT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,315,0,'R',4,'VT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,316,0,'R',4,'HT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,317,0,'R',4,'HT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,318,0,'R',4,'HT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,319,0,'R',4,'HT-15');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (201,320,0,'R',4,'VT-16');
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,4,0,'R',4,'VT-15',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,302,0,'R',1,'HT-13',12302);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,304,0,'R',2,'VT-14',12304);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,305,0,'R',2,'VT-14',12305);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,306,0,'R',2,'VT-14',12306);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,307,0,'R',2,'VT-14',12307);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,308,0,'R',3,'HT-14',12308);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,309,0,'R',3,'HT-14',12309);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,310,0,'R',3,'HT-14',12310);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,311,0,'R',3,'HT-14',12311);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,312,0,'R',4,'VT-15',12312);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,314,0,'R',4,'VT-15',12314);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,315,0,'R',4,'VT-15',12315);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,316,0,'R',4,'HT-15',12316);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,317,0,'R',4,'HT-15',12317);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,318,0,'R',4,'HT-15',12318);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,319,0,'R',4,'HT-15',12319);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (201,320,0,'R',4,'VT-16',12320);
 
 
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (202,302,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (202,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (202,304,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (202,305,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (202,306,0,'R',1,'HT-13');
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (202,302,0,'R',1,'HT-13',12302);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (202,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (202,304,0,'R',1,'HT-13',12304);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (202,305,0,'R',1,'HT-13',12305);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (202,306,0,'R',1,'HT-13',12306);
 
 
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (203,302,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (203,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (203,304,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (203,305,0,'R',1,'HT-13');
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (203,302,0,'R',1,'HT-13',12302);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (203,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (203,304,0,'R',1,'HT-13',12304);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (203,305,0,'R',1,'HT-13',12305);
 
 
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (204,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (205,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (206,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (207,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (208,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (209,303,0,'R',1,'HT-13');
-INSERT INTO user_course (uid,cid,result,access,period,term) VALUES (210,303,0,'R',1,'HT-13');
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (204,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (205,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (206,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (207,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (208,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (209,303,0,'R',1,'HT-13',12303);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (210,303,0,'R',1,'HT-13',12303);
 -- Old users END --
 
 -- Users added 2017 --
 -- DVSUG --
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (216,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (217,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (218,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (219,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (220,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (231,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (232,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (233,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (234,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (235,1,0,'R',1,'HT15','BoLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (216,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (217,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (218,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (219,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (220,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (231,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (232,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (233,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (234,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (235,1,0,'R',1,'HT15','BoLindberg',45656);
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (216,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (217,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (218,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (219,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (220,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (231,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (232,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (233,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (234,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (235,2,0,'R',1,'HT15','EmmaLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (216,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (217,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (218,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (219,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (220,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (231,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (232,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (233,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (234,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (235,2,0,'R',1,'HT15','EmmaLindberg',97732);
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (216,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (217,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (218,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (219,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (220,4,0,'R',1,'HT15','BoLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (216,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (217,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (218,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (219,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (220,4,0,'R',1,'HT15','BoLindberg',1338);
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (231,5,0,'R',1,'HT15','LenaCarlsson');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (232,5,0,'R',1,'HT15','LenaCarlsson');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (233,5,0,'R',1,'HT15','LenaCarlsson');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (234,5,0,'R',1,'HT15','LenaCarlsson');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (235,5,0,'R',1,'HT15','LenaCarlsson');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (231,5,0,'R',1,'HT15','LenaCarlsson',1339);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (232,5,0,'R',1,'HT15','LenaCarlsson',1339);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (233,5,0,'R',1,'HT15','LenaCarlsson',1339);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (234,5,0,'R',1,'HT15','LenaCarlsson',1339);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (235,5,0,'R',1,'HT15','LenaCarlsson',1339);
 -- WEBUG13 --
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (221,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (222,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (223,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (224,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (225,1,0,'R',1,'HT15','BoLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (221,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (222,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (223,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (224,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (225,1,0,'R',1,'HT15','BoLindberg',45656);
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (221,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (222,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (223,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (224,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (225,2,0,'R',1,'HT15','EmmaLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (221,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (222,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (223,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (224,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (225,2,0,'R',1,'HT15','EmmaLindberg',97732);
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (221,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (222,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (223,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (224,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (225,4,0,'R',1,'HT15','BoLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (221,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (222,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (223,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (224,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (225,4,0,'R',1,'HT15','BoLindberg',1338);
 
 -- WEBUG14 --
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (226,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (227,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (228,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (229,1,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (230,1,0,'R',1,'HT15','BoLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (226,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (227,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (228,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (229,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (230,1,0,'R',1,'HT15','BoLindberg',45656);
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (226,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (227,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (228,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (229,2,0,'R',1,'HT15','EmmaLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (230,2,0,'R',1,'HT15','EmmaLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (226,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (227,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (228,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (229,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (230,2,0,'R',1,'HT15','EmmaLindberg',97732);
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (226,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (227,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (228,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (229,4,0,'R',1,'HT15','BoLindberg');
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher) VALUES (230,4,0,'R',1,'HT15','BoLindberg');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (226,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (227,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (228,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (229,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (230,4,0,'R',1,'HT15','BoLindberg',1338);
 
 /* Examination/subparts */
 INSERT INTO subparts (partname,cid,parthp,difgrade) VALUES ('salstentamen',302,7.5,'u-3-4-5');
