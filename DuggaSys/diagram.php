@@ -64,16 +64,17 @@ pdoConnect();
 	       		<option value='getImage'>getImage</option>
 	       		<option value='Save'>Save</option>
 	       		<option value='Load'>Load</option>
-	        </select>"+
+	        </select>
 	        <button><a onclick='SaveFile(this);' class='btn'> <i class='icon-download'></i>Export</a></button>
-	        <input id='fileid' type='file' name='file_name' hidden multiple/>"+
-	        <input id='buttonid' type='button' value='Import' />"+
+	        <input id='fileid' type='file' name='file_name' hidden multiple/>
+	        <input id='buttonid' type='button' value='Import' />
+
 			<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>
 		</div>
 		<div id="canvasDiv"></div>
 		<div id="consoleDiv">
-			<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>
-			<div id='valuesCanvas' style='position: fixed; left: 10px; bottom:130px;'><p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p></div>
+			<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
+			<div id='valuesCanvas' style='position: fixed; left: 10px; bottom:130px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'></div>
 			<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
 			<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
 		</div>
