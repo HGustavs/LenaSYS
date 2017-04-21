@@ -2023,6 +2023,14 @@ span.arrow {
   line-height: 47px;
 }
 
+.grouprow > div {
+  text-align: center;
+  font-size: 20px;
+  color:#614875 !important;
+  min-height: 47px;
+  line-height: 47px;
+}
+
 /*styling for contribution.php*/
 /*this was inline-CSS before, only moved it to the right file*/
 .fumho th {
