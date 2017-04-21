@@ -36,11 +36,6 @@ function returnedGroup(data)
 		str+="<th colspan='1' id='subheading' class='result-header'>";
 		str+="Grupper";
 		str+="</th>";
-		
-		str+="</th><th colspan='1' id='subheading' class='result-header'>";
-		str+="Aktiva i kursen JA/NEJ";
-		str+="</th>";	
-		
 
 		var colsp=1;
 		var colpos=1;
@@ -58,7 +53,7 @@ function returnedGroup(data)
 					
 						colsp++;
 					
-					if (moments[l].kind===4){
+					if (moments[l].kind===3){
 							momname = moments[l].entryname;
 							str+="<th  class='result-header' colspan='"+(colsp)+"'>"+momname+"</th>";	
 							colpos=l;
