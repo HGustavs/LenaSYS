@@ -137,8 +137,9 @@ function checkAnswer($username, $securityquestionanswer)
 		$row = $query->fetch(PDO::FETCH_ASSOC);
 		$_SESSION['uid'] = $row['uid'];
 		$_SESSION["loginname"]=$row['username'];
+		$securityquestionanswer = strtolower($securityquestionanswer);
 
-		if (standardPasswordHash($securityquestionanswer = strtolower($securityquestionanswer), $row['securityquestionanswer'])){
+		if (standardPasswordHash($securityquestionanswer, $row['securityquestionanswer'])){
 			if (standardPasswordNeedsRehash($row['securityquestionanswer'], PASSWORD_BCRYPT)) {
  			// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
  				$row['securityquestionanswer'] = password_hash($securityquestionanswer, PASSWORD_BCRYPT);
