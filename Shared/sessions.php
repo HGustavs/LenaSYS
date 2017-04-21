@@ -81,14 +81,11 @@ function getQuestion($username)
 	if($query->rowCount() > 0) {
 		// Fetch the result
 		$row = $query->fetch(PDO::FETCH_ASSOC);
-		$_SESSION['uid'] = $row['uid'];
-		$_SESSION["loginname"]=$row['username'];
-		$_SESSION["superuser"]=$row['superuser'];
 		$_SESSION["securityquestion"]=$row['securityquestion'];
 
 		/*If the security question is null/default there is no point in allowing the user to continue.
 		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question*/
-		if($_SESSION["superuser"]==1){
+		if($row["superuser"]==1){
 			$_SESSION["getname"] = "Username not found";
 			//$_SESSION["getname"] = "User is a superuser";
 			return false;
@@ -96,7 +93,7 @@ function getQuestion($username)
 
 		$query = $pdo->prepare("SELECT access FROM user_course WHERE uid=:uid AND access='W'");
 
-   		$query->bindParam(':uid', $_SESSION['uid']);
+   		$query->bindParam(':uid', $row['uid']);
 
     	$query->execute();
 
@@ -135,8 +132,6 @@ function checkAnswer($username, $securityquestionanswer)
 	if($query->rowCount() > 0) {
 		// Fetch the result
 		$row = $query->fetch(PDO::FETCH_ASSOC);
-		$_SESSION['uid'] = $row['uid'];
-		$_SESSION["loginname"]=$row['username'];
 		$securityquestionanswer = strtolower($securityquestionanswer);
 
 		if (standardPasswordHash($securityquestionanswer, $row['securityquestionanswer'])){
