@@ -25,9 +25,13 @@ function returnedGroup(data)
 
 		// Redraw main result table    
 
+		
+		
 		str+="<table class='markinglist' id='markinglist'>";
 		str+="<thead>";
 		str+="<tr class='markinglist-header'>";
+		
+		str+="<th id='header' class='rowno' ><span>#<span></th>"
 		
 		str+="<th colspan='1' id='subheading' class='result-header'>";
 		str+="Studenter";
@@ -36,11 +40,6 @@ function returnedGroup(data)
 		str+="<th colspan='1' id='subheading' class='result-header'>";
 		str+="Grupper";
 		str+="</th>";
-		
-		str+="</th><th colspan='1' id='subheading' class='result-header'>";
-		str+="Aktiva i kursen JA/NEJ";
-		str+="</th>";	
-		
 
 		var colsp=1;
 		var colpos=1;
@@ -73,14 +72,12 @@ function returnedGroup(data)
 															
 			}
 			
-			
-			
-			/* str+="</th><th colspan='1' class='result-header dugga-result-subheader' id='header0'><div class='dugga-result-subheader-div' title='Grupper'>Grupper</div></th>"	
-			str+="</th><th colspan='1' class='result-header dugga-result-subheader' id='header0'><div class='dugga-result-subheader-div' title='Uppgifter'>Uppgifter</div></th>"	
-			str+="</th><th colspan='1' class='result-header dugga-result-subheader' id='header0'><div class='dugga-result-subheader-div' title='Aktiv'>Aktiv i kursen</div></th>"	
-		*/	for(var l=0;l<moments.length;l++){
+			var row=0;
+			for(var l=0;l<moments.length;l++){
 				if(moments[l].name){
+					row++;
 					str+="</tr><tr class='markinglist-header'>";
+					str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>"
 					str+="<th class='result-header dugga-result-subheader' id='header"+(l+1)+"'><div class='dugga-result-subheader-div' title='"+moments[l].username+"'>"+moments[l].username+"</div></th>";	
 					
 					str+="<th class='result-header dugga-result-subheader' id='header"+(l+1)+"'><div class='dugga-result-subheader-div' title='"+moments[l].name+"'>"+moments[l].name+"</div></th>";	
