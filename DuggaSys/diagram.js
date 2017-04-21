@@ -188,6 +188,21 @@ points.distance = function(xk,yk)
 		return {dist:Math.sqrt(dist),ind:ind};
 }
 
+points.distanceBetweenPoints = function( x1, y1, x2, y2, axis) {
+
+	xs = x2 - x1;
+    ys = y2 - y1;
+
+    if(axis==true) {
+        return xs;
+    }
+    else {
+    	return ys;
+	}
+}
+
+
+
 //--------------------------------------------------------------------
 // clearsel
 // Clears all selects from the array "points"
@@ -910,8 +925,19 @@ function mousemoveevt(ev, t){
 				// If mouse is pressed down and no point is close show selection box
 		}else if(md==2){
 				// If mouse is pressed down and a point is selected - move that point
-				points[sel.ind].x = cx;
+            if(diagram[selobj].symbolkind==5){
+                // Changes relations size as mirrored.
+                points[sel.ind].x = cx;
                 points[sel.ind].y = cy;
+
+                points[sel.ind-1].x = points[sel.ind+1].x-points.distanceBetweenPoints(points[sel.ind+1].x,points[sel.ind+1].y,points[sel.ind].x,points[sel.ind].y,true);
+                points[sel.ind-1].y = points[sel.ind+1].y-points.distanceBetweenPoints(points[sel.ind+1].x,points[sel.ind+1].y,points[sel.ind].x,points[sel.ind].y,false);
+
+            }else {
+                // If mouse is pressed down and a point is selected - move that point
+                points[sel.ind].x = cx;
+                points[sel.ind].y = cy;
+            }
 		}else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
