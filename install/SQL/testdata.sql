@@ -89,12 +89,12 @@ INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activev
 INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (332,"DA131G","Informationssäkerhet - Introduktion",NOW(),1,0,12332,7.5);
 
 /* Insert versions of courses (The column vers should be the same as "anmälningskod", number with 5 digts) */
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (1,'DV12G','Webbprogrammering','UNK','45656','HT15');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (2,'IT118G','Webbutveckling - datorgrafik','UNK','97732','HT15');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (2,'IT118G','Webbutveckling - datorgrafik','UNK','97731','HT14');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (3,'IT500G','Datorns grunder','UNK','1337','HT15');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (4,'IT301G','Software Engineering','UNK','1338','HT15');
-INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (5,'DA124G','Programmeringsmetodik','UNK','1339','HT15');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (1,'DV12G','Webbprogrammering','UNK','45656','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (2,'IT118G','Webbutveckling - datorgrafik','UNK','97732','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (2,'IT118G','Webbutveckling - datorgrafik','UNK','97731','HT14''2014-12-29 00:00:00','2015-03-08 00:00:00');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (3,'IT500G','Datorns grunder','UNK','1337','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (4,'IT301G','Software Engineering','UNK','1338','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
+INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate) VALUES (5,'DA124G','Programmeringsmetodik','UNK','1339','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00');
 
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (302,"DA324G","Datakommunikation - Routing",'UNK','12302','HT15');
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (303,"IT1435","USEREXPERIENCE",'UNK','12303','HT15');
