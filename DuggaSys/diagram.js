@@ -712,39 +712,7 @@ function initcanvas()
 {
     widthWindow = (window.innerWidth-20);
 	heightWindow = (window.innerHeight-220);
-	document.getElementById("content").innerHTML=
-		"<button onclick='classmode();'>Create Class</button>" +
-		"<button onclick='attrmode();'>Create Attribute</button>" +
-		"<button onclick='linemode();'>Create Line</button>" +
-		"<button onclick='entitymode();'>Create Entity</button>" +
-        "<button onclick='relationmode();'>Create Relation</button>" +
-		"<select id='selectFigure' onchange='figuremode()'>" +
-			"<option selected='selected' disabled>Create Figure</option>" +
-			"<option value='Square'>Square</option>" +
-			"<option value='Free'>Free-Draw</option>" +
-		"</select>" +
-		"<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>" +
-		"<button onclick='debugMode();'>Debug</button>" +
-		"<button onclick='hashfunction();'>Hash</button>" +
-		"<button onclick='eraseSelectedObject();'>Delete Object</button>" +
-		"<button onclick='clearCanvas();'>Delete All</button>" +
-		"<button id='zoomInButton' class='unpressed' style='right:0; position:fixed; margin-right:120px;'>+</button>"+
-		"<button id='zoomOutButton' class='unpressed' style='right:0; position:fixed; margin-right:100px;'>-</button>"+
-        "<select id='download' onchange='downloadMode(this)'>" +
-        "<option selected='selected' disabled>State</option>" +
-       	 "<option value='getImage'>getImage</option>" +
-       	 "<option value='Save'>Save</option>" +
-       	 "<option value='Load'>Load</option>" +
-        "</select>"+
-        "<button><a onclick='SaveFile(this);' class='btn'> <i class='icon-download'></i>Export</a></button>" +
-        "<input id='fileid' type='file' name='file_name' hidden multiple/>"+
-        "<input id='buttonid' type='button' value='Import' />"+
-		"<button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>" +
-		"<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>" +
-		"<div id='consloe' style='position:fixed;left:0px;right:0px;bottom:0px;height:133px;background:#dfe;border:1px solid #284;z-index:5000;overflow:scroll;color:#4A6;font-family:lucida console;font-size:13px;'>Application console</div>"+
-		"<div id='valuesCanvas' style='position: fixed; left: 10px; bottom:130px;'><p>Zoom: "+(zv*100)+"% | Coordinates: X="+startX+" & Y="+startY+"</p></div>"+
-		"<input id='Hide Console' style='position:fixed; right:0; bottom:133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />" +
-		"<input id='Show Console' style='display:none;position:fixed; right:0; bottom:133px;' type='button' value='Show Console' onclick='Consolemode(2);' />";
+	document.getElementById("canvasDiv").innerHTML="<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
 	var canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
