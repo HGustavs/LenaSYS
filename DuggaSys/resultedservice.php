@@ -33,6 +33,7 @@ $coursevers=getOP('coursevers');
 $qvariant=getOP("qvariant");
 $quizId=getOP("quizId");
 $teacher = getOP('teacher');
+$access = getOP('access');
 
 $responsetext=getOP('resptext');
 $responsefile=getOP('respfile');
@@ -292,7 +293,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 				
 		}
 		*/
-		$query = $pdo->prepare("SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class FROM user,user_course WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;");
+		$query = $pdo->prepare("SELECT user_course.cid AS cid,user.uid AS uid,user_course.access AS access,username,firstname,lastname,ssn,class FROM user,user_course WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;");
 		//		$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn,access from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
 		$query->bindParam(':coursevers', $vers);
 		$query->bindParam(':cid', $cid);
@@ -312,7 +313,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
 				'ssn' => $row['ssn'],
-				'class' => $row['class']
+				'class' => $row['class'],
+				'access' => $row['access']
 			);
 /*
 			$entry = array(
@@ -526,7 +528,6 @@ $array = array(
 	'debug' => $debug,
 	'results' => $lentries,
 	'teachers' => $teachers,
-
 	'duggauser' => $duggauser,
 	'duggaentry' => $duggaentry,
 	'duggaid' => $duggaid,

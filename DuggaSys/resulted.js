@@ -27,7 +27,8 @@ var versions;
 var clist;
 var onlyPending=false;
 var timeZero=new Date(0);
-var hideTeacher=false;
+var showTeacher=false;
+var isTeacher=false; // only true if it has write access, otherwise its a student
 
 function setup(){
 	//Benchmarking function
@@ -140,51 +141,71 @@ function redrawtable()
             } else {
                 show=true;
             }
+
             var strt="";
 						strt+="<tr class='fumo'>"
             strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"
 						var student=students[i];
-						for(var j=0;j<student.length;j++){                
-								strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
-								if(j==0){
-									strt+="'>"+student[j].grade+"</td>";																	
-								}else{
-										if(student[j].kind==4){	strt+=" dugga-moment"; }
-										// color based on pass,fail,pending,assigned,unassigned
-										if (student[j].grade === 1 && student[j].needMarking === false) {strt += " dugga-fail"}
-										else if (student[j].grade > 1) {strt += " dugga-pass"}
-										else if (student[j].needMarking === true) {strt += " dugga-pending"; show=true;}
-										else if (student[j].grade === 0 /*&& student[j].userAnswer === null*/) {strt += " dugga-assigned"}
-										else {strt += " dugga-unassigned"}
-										strt += "'>";
-										strt += "<div class='gradeContainer";                    
-										if(student[j].ishere===false){
-											strt += " grading-hidden";
-										}
-										strt += "'>";
-										if (student[j].grade === null ){
-												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'I', student[j].qvariant, student[j].quizId);
-										} else if (student[j].grade === -1 ){
-  												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'IFeedback', student[j].qvariant, student[j].quizId);
-  									}else {
-												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
-										}										
-										strt += "<img id='korf' class='fist";
-										if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
-											strt += " grading-hidden";
-										}
-										strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
-										strt += "</div>";
-										strt += "<div class='text-center'>"                                 
-                    if (student[j].submitted.getTime() !== timeZero.getTime()){
-                        strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();  
-                    }
-										strt += "</div></td>";											
-								}
+						for(var j=0;j<student.length;j++){
+                            if (showTeacher === false) {
+                                // dont show teacher if a teacher exist
+                            }
+                            else {
+                                strt += "<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u" + student[j].uid + "_d" + student[j].lid + "' class='result-data c" + j;
+                                if (j == 0) {
+                                    strt += "'>" + student[j].grade + "</td>";
+                                } else {
+                                    if (student[j].kind == 4) {
+                                        strt += " dugga-moment";
+                                    }
+                                    // color based on pass,fail,pending,assigned,unassigned
+                                    if (student[j].grade === 1 && student[j].needMarking === false) {
+                                        strt += " dugga-fail"
+                                    }
+                                    else if (student[j].grade > 1) {
+                                        strt += " dugga-pass"
+                                    }
+                                    else if (student[j].needMarking === true) {
+                                        strt += " dugga-pending";
+                                        show = true;
+                                    }
+                                    else if (student[j].grade === 0 /*&& student[j].userAnswer === null*/) {
+                                        strt += " dugga-assigned"
+                                    }
+                                    else {
+                                        strt += " dugga-unassigned"
+                                    }
+                                    strt += "'>";
+                                    strt += "<div class='gradeContainer";
+                                    if (student[j].ishere === false) {
+                                        strt += " grading-hidden";
+                                    }
+                                    strt += "'>";
+                                    if (student[j].grade === null) {
+                                        strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'I', student[j].qvariant, student[j].quizId);
+                                    } else if (student[j].grade === -1) {
+                                        strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'IFeedback', student[j].qvariant, student[j].quizId);
+                                    } else {
+                                        strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
+                                    }
+                                    strt += "<img id='korf' class='fist";
+                                    if (student[j].userAnswer === null && !(student[j].quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
+                                        strt += " grading-hidden";
+                                    }
+                                    strt += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
+                                    strt += "</div>";
+                                    strt += "<div class='text-center'>"
+                                    if (student[j].submitted.getTime() !== timeZero.getTime()) {
+                                        strt += student[j].submitted.toLocaleDateString() + " " + student[j].submitted.toLocaleTimeString();
+                                    }
+                                    strt += "</div></td>";
+
+                                }
+                            }
 						}
 						strt+="</tr>"
             if(show){
-                str+=strt; 
+                str += strt;
                 row++;
             }
 				}
@@ -573,7 +594,7 @@ function process()
 		
 		var dstr="";
     if (onlyPending){ dstr+=" checked='true'"; }
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending1'><label class='headerlabel' for='pending0'>Only pending</label><input name='teacher' type='checkbox' class='headercheck' value='0' id='teacher1'><label class='headerlabel' for='teacher0'>Hide Teacher</label></div>";
+    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending1'><label class='headerlabel' for='pending0'>Only pending</label><input name='teacher' type='checkbox' class='headercheck' value='0' id='teacher1'><label class='headerlabel' for='teacher0'>Show Teacher</label></div>";
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort ascending</label><input name='sortdir' type='radio' class='headercheck' value='0' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
