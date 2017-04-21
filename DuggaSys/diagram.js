@@ -20,6 +20,7 @@ AJAXService("get",{},"DIAGRAM");
 
 // Global settings
 var gridSize = 16;
+
 var crossl=4.0;				// Size of point cross
 var tolerance = 8;		// Size of tolerance area around the point
 var ctx;							// Canvas context
@@ -1430,6 +1431,7 @@ function cross(xk,yk)
 function drawGrid(){
   ctx.lineWidth=1;
   ctx.strokeStyle="rgb(238,238,250)";
+  ctx.setLineDash([5, 0]);
   var quadrantx = (startX < 0)? startX: -startX,
     quadranty = (startY < 0)? startY: -startY;
   console.log(quadrantx+" : "+widthWindow+ "; "+(quadrantx+widthWindow));
@@ -1717,7 +1719,7 @@ function hashfunction()
 		}
 		var hexHash = hash.toString(16);
 		console.log(hash.toString(16));
-	}	
+	}
 }
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
