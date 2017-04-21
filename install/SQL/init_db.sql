@@ -26,8 +26,8 @@ CREATE TABLE user(
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 INSERT INTO user(username,password,newpassword,creator,superuser) values ("Grimling","$2y$12$stG4CWU//NCdnbAQi.KTHO2V0UVDVi89Lx5ShDvIh/d8.J4vO8o8m",0,1,1);
-INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
-INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111");
+INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1); /* Password is Kong */
+INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111"); /* Password is Kong */
 
 
 /**
@@ -555,7 +555,6 @@ UPDATE user SET firstname="Toddler", lastname="Kong" WHERE username="Toddler";
 UPDATE user SET firstname="Johan", lastname="Grimling" WHERE username="Grimling";
 UPDATE user SET ssn="810101-5567" WHERE username="Grimling";
 UPDATE user SET ssn="444444-5447" WHERE username="Toddler";
-UPDATE user SET password=password("Kong") WHERE username="Toddler";
 UPDATE user SET superuser=1 WHERE username="Toddler";
 
 /* Templates for codeexamples */
