@@ -1039,31 +1039,48 @@ function tokenize(instring,inprefix,insuffix)
 					currentStr+=currentCharacter;
 				}
 			}
-			if (currentCharacter=='e'||currentCharacter=='E') {
+			if (currentCharacter=='#') {
+				for (int j = 0; j <= 6; j++) {
+					if ((currentCharacter >= '0' || currentCharacter <= '9') || (currentCharacter >= 'a' || currentCharacter <= 'f') || (currentCharacter >= 'A' || currentCharacter <= 'F')) {
+						i++;
+						currentStr+=currentCharacter;
+						currentCharacter=instring.charAt(i);
+					}
+					else {
+						break;
+					}
+				}
 				i++;
 				currentStr+=currentCharacter;
 				currentCharacter=instring.charAt(i);
-				if(currentCharacter=='-'||currentCharacter=='+'){
-					i+=1;
-					currentStr+=currentCharacter;
-					currentCharacter=instring.charAt(i);
+
+				if (currentCharacter=='e'||currentCharacter=='E') {
+				i++;
+				currentStr+=currentCharacter;
+				currentCharacter=instring.charAt(i);
+					if(currentCharacter=='-'||currentCharacter=='+'){
+						i+=1;
+						currentStr+=currentCharacter;
+						currentCharacter=instring.charAt(i);
+					}
+					if (currentCharacter < '0' || currentCharacter > '9') error('Bad Exponent in Number: ',currentStr,row);
+					do {
+						i++;
+						currentStr+=currentCharacter;
+						currentCharacter=instring.charAt(i);
+					}while(currentCharacter>='0'&&currentCharacter<='9');
 				}
-				if (currentCharacter < '0' || currentCharacter > '9') error('Bad Exponent in Number: ',currentStr,row);
-				do {
-					i++;
-					currentStr+=currentCharacter;
-					currentCharacter=instring.charAt(i);
-				}while(currentCharacter>='0'&&currentCharacter<='9');
+			
+				if (currentCharacter>='a'&&currentCharacter<='z'){
+					//if currentStr is not finite (aka non-numerical) then it is a bad number!
+					if(!isFinite(currentStr)) {
+						currentStr += currentCharacter;
+						i += 1;
+						error('Bad Number: ',currentStr,row);
+					}
+				}
 			}
 			
-			if (currentCharacter>='a'&&currentCharacter<='z'){
-				//if currentStr is not finite (aka non-numerical) then it is a bad number!
-				if(!isFinite(currentStr)) {
-					currentStr += currentCharacter;
-					i += 1;
-					error('Bad Number: ',currentStr,row);
-				}
-			}
 			
 			currentNum = currentStr;
 			

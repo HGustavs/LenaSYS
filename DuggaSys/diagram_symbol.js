@@ -338,11 +338,12 @@ function Symbol(kind) {
 
     this.move = function (movex,movey)
     {
+
       points[this.topLeft].x+=movex;
       points[this.topLeft].y+=movey;
       points[this.bottomRight].x+=movex;
       points[this.bottomRight].y+=movey;
-      if(this.symbolkind==1){
+      if(this.symbolkind==1||this.symbolkind==5){
         points[this.middleDivider].x+=movex;
         points[this.middleDivider].y+=movey;
       }else if(this.symbolkind==2){
@@ -447,11 +448,6 @@ function Symbol(kind) {
 		{
 			textsize = 50;
 		}
-    else if(this.attributeType == 'Drive')
-    {
-    ctx.setLineDash([5, 4]);
-    console.log("TEST");
-    }
     else
     {
     textsize = 14;
@@ -561,12 +557,42 @@ function Symbol(kind) {
         ctx.stroke();
       }else if(this.symbolkind==2){
 
+		//drawing a multivalue attribute
+		if(this.key_type == 'Multivalue')
+		{
+		drawOval(x1-10,y1-10,x2+10,y2+10);
+        ctx.fillStyle="#dfe";
+        ctx.fill();
+
+        if(this.targeted){
+          ctx.strokeStyle="#F82";
+          ctx.setLineDash([5, 0]);
+        }else{
+          ctx.strokeStyle="#253";
+        }
+        ctx.stroke();
+		}
+
+    //drawing an derived attribute
+		if(this.key_type == 'Drive')
+		{
+		drawOval(x1-10,y1-10);
+        ctx.fillStyle="#dfe";
+        ctx.fill();
+        if(this.targeted){
+          ctx.strokeStyle="#F82";
+        }else{
+          ctx.setLineDash([5, 4]);
+          ctx.strokeStyle="#253";
+        }
+		}
+
+
 		//scale the text
 		ctx.font="bold "+parseInt(textsize)+"px "+this.font;
         // Write Attribute Name
         ctx.textAlign="center";
         ctx.textBaseline = "middle";
-
         drawOval(x1,y1,x2,y2);
         ctx.fillStyle="#dfe";
         ctx.fill();
@@ -591,6 +617,15 @@ function Symbol(kind) {
 			ctx.lineTo(x1+((x2-x1)*0.5)+(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
 			ctx.strokeStyle = "#000";
 			ctx.stroke();
+		}
+
+		else if(this.key_type == 'Normal')
+		{
+			ctx.beginPath(1);
+			ctx.moveTo(x1+((x2-x1)*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.lineTo(x1+((x2-x1)*0.5)-(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.lineTo(x1+((x2-x1)*0.5)+(linelenght*0.5), (y1+((y2-y1)*0.5))+10);
+			ctx.strokeStyle = "#000";
 		}
 
       }else if(this.symbolkind==3){
@@ -641,6 +676,27 @@ function Symbol(kind) {
         ctx.stroke();
 
         ctx.strokeStyle="#000";
-    }
+      }else if(this.symbolkind==5){
+
+          var midx=points[this.middleDivider].x;
+          var midy=points[this.middleDivider].y;
+
+          ctx.beginPath();
+
+          ctx.moveTo(midx,y1);
+          ctx.lineTo(x2,midy);
+          ctx.lineTo(midx,y2);
+          ctx.lineTo(x1,midy);
+          ctx.lineTo(midx,y1);
+
+          ctx.fillStyle="#dfe";
+          ctx.fill();
+          if(this.targeted){
+              ctx.strokeStyle="#F82";
+          }else{
+              ctx.strokeStyle="#253";
+          }
+          ctx.stroke();
+      }
   }
 }

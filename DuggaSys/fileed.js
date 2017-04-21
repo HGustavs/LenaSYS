@@ -143,12 +143,14 @@ function returnedFile(data)
 		str2="";
 		str3="";
 		str4="";
+		str5="";
 		str1+="<table class='list' style='margin-bottom:8px;' >";
 		str1+="<thead style='cursor:pointer;'>";
-		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
-		"<th>Link URL<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
+		"<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" + 
+		"<th>Link URL</th>" +
 		"<th>Upload date & time</th>" +
-		"<th class='last'><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+		"<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
 		//str1+="<tr><th class='first' style='width:64px;'>ID</th><th style='width:30px' ></th></tr>";
 		str1+="</thead><tbody id='links_body'>"
 
@@ -168,14 +170,49 @@ function returnedFile(data)
 					}
 			}
 			str1+="</tbody></table>";
+			str5+="<table class='list' style='margin-bottom:8px;' >";
+			str5+="<thead style='cursor:pointer;'>";
+			str5+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>"+
+			"<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
+            "<th>Files</th>" +
+            "<th>File extension</th>" +
+            "<th>Upload date & time</th>" +
+            "<th>File size</th>" +
+				"<th>File Kind</th>" +
+            "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+			str5+="</thead><tbody id='allcontent_body'>";
+
+            for(i=0;i<data['entries'].length;i++){
+                var item=data['entries'][i];
+                if(parseInt(item['kind'])!=1){
+                    str5+="<tr class='fumo'>";
+                    str5+="<td>"+item['fileid']+"</td>";
+                    str5+="<td>";
+                    // str2+=item['filename']
+                    str5+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
+                    str5+="</td>";
+                    str5+="<td>" + getFileInformation(item['filename'], true) + "</td>";
+                    str5+="<td>" + item['uploaddate'] + "</td>";
+                    str5+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
+                    str5+="<td>" + convertfilekind(item['kind']) + "</td>";
+                    str5+="<td style='padding:4px;'>";
+                    str5+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+                    str5+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+                    str5+="</td>";
+                    str5+="</tr>";
+
+                }
+            }
+            str5+="</tbody></table>";
 			str2+="<table class='list' style='margin-bottom:8px;' >";
       str2+="<thead style='cursor:pointer;'>";      
-      str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" + 
-      "<th>Global File<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
-		  "<th>File extension</th>" +
+      str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
+      "<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" + 
+      "<th>Global File</th>" +
+	  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
-      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+      "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str2+="</thead><tbody id='global_body'>"
 			
 			for(i=0;i<data['entries'].length;i++){
@@ -202,11 +239,15 @@ function returnedFile(data)
 			str3+="<table class='list' style='margin-bottom:8px;' >";
       
       str3+="<thead style='cursor:pointer;'>";
-      str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='course_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course File</th>" +
-		  "<th>File extension</th>" +
+      //str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID<span></div></th><th>Course File</th>" +
+	
+      str3+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID<span>" +
+      "<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
+      "<th>Course File</th>" +
+	  "<th>File extension</th>" +
       "<th>Upload date & time</th>" +
       "<th>File size</th>" +
-      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
+      "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
       
 			str3+="<thead><tbody id='course_body'>";
 			for(i=0;i<data['entries'].length;i++){
@@ -231,12 +272,15 @@ function returnedFile(data)
 			str3+="</tbody></table>";
 			str4+="<table class='list' style='margin-bottom:8px;' >";
 
-		  str4+="<thead style='cursor:pointer;'>";
-      str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" +
+		  str4+="<thead style='cursor:pointer;'>" + 
+		  "<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID<span>" +
+		  "<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
+    //  str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" +
+		  "<th>Course Local File</th>" +
 		  "<th>File extension</th>" +
-      "<th>Upload date & time</th>" +
-      "<th>File size</th>" +
-      "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
+      	"<th>Upload date & time</th>" +
+        "<th>File size</th>" +
+        "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
       
 			str4+="<thead><tbody id='local_body'>"
 			for(i=0;i<data['entries'].length;i++){
@@ -270,6 +314,8 @@ function returnedFile(data)
 		allcoursefiles.innerHTML=str3;
 		var alllocalfiles=document.getElementById("alllocalfiles");
 		alllocalfiles.innerHTML=str4;
+		var allcontent=document.getElementById("allcontent");
+		allcontent.innerHTML=str5;
 		}else{
 
 		}
@@ -317,3 +363,139 @@ function hovers(){
 function leaves(){
 	$('#dropdowns').css('display','none'); 
 }
+
+//Switch Content between one table and separate tables;
+
+function switchcontent() {
+		$("#allglobalfiles").toggle("hide");
+		$("#allcoursefiles").toggle("hide");
+    	$("#alllocalfiles").toggle("hide");
+		$("#allcontent").toggle("show");
+}
+
+function convertfilekind(kind){
+	var retString = "";
+	switch(kind){
+		case "1":
+			retString = "Link";
+			break;
+		case "2":
+			retString = "Global";
+			break;
+		case "3":
+			retString = "Course Local";
+			break;
+		case "4":
+			retString = "Local";
+			break;
+		default:
+			retString = "Not recognized";
+			break;
+	}
+	return retString;
+}
+
+function searchcontent(){
+	var searchstr = new RegExp($('#searchinput').val(), 'i');
+	var searchdata = [];
+    for(i=0;i<filez['entries'].length;i++){
+        var item=filez['entries'][i];
+        if(searchstr.test(item['filename'])){
+			searchdata.push(item);
+		}
+		else if(searchstr.test(item['fileid'])){
+            searchdata.push(item);
+		}
+		else if(searchstr.test(item['uploaddate'])){
+			searchdata.push(item);
+		}
+		else if(searchstr.test(item['filesize'])){
+			searchdata.push(item);
+		}
+	}
+	str="";
+	str+="<table class='list' style='margin-bottom:8px;' >";
+	str+="<thead style='cursor:pointer;'>";
+	str+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" +
+    "<th>Search Results<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+    "<th>File extension</th>" +
+    "<th>Upload date & time</th>" +
+    "<th>File size</th>" +
+    "<th>File Kind</th>" +
+    "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+	str+="</thead><tbody id='searchresults_body'>";
+	for(i=0;i<searchdata.length;i++){
+		item = searchdata[i];
+        str+="<tr class='fumo'>";
+        str+="<td>"+item['fileid']+"</td>";
+        str+="<td>";
+        // str2+=item['filename']
+        str+="<a style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+item['filename']+"\");' >"+getFileInformation(item['filename'], false)+"</a>";
+        str+="</td>";
+        str+="<td>" + getFileInformation(item['filename'], true) + "</td>";
+        str+="<td>" + item['uploaddate'] + "</td>";
+        str+="<td>" + formatBytes(item['filesize'],0 ) + "</td>";
+        str+="<td>" + convertfilekind(item['kind']) + "</td>";
+        str+="<td style='padding:4px;'>";
+        str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+        str+=" onclick='deleteFile(\""+item['fileid']+"\",\""+item['filename']+"\");' >";
+        str+="</td>";
+        str+="</tr>";
+	}
+	str+="</tbody></table>";
+    var searchresults=document.getElementById("searchresults");
+    searchresults.innerHTML=str;
+    if(searchstr != "/(?:)/i") {
+        $("#allglobalfiles").hide();
+        $("#allcoursefiles").hide();
+        $("#alllocalfiles").hide();
+        $("#alllinks").hide();
+        $("#allcontent").hide();
+        $("#searchresults").show();
+    }
+    else{
+        $("#allglobalfiles").show();
+        $("#allcoursefiles").show();
+        $("#alllocalfiles").show();
+        $("#allcontent").hide();
+        $("#alllinks").show();
+        $("#searchresults").hide();
+	}
+	//filters in search table 
+	var $rows = $('#searchresults_body tr');
+	$('#searchinput').keyup(function() {
+	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+	    
+	    $rows.show().filter(function() {
+	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+	        return !~text.indexOf(val);
+	    }).hide();
+	});
+}  
+
+//excuted onclick button for switching to "one" table - functionality that filters in table 
+function keyUpSearch() {
+	var $rows2 = $('#allcontent_body tr');
+	$('#searchinput').keyup(function() {
+	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+	    
+	    $rows2.show().filter(function() {
+	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+	        return !~text.indexOf(val);
+	    }).hide();
+	});
+}
+
+
+function searchKeyPress(e)
+{
+    // look for window.event in case event isn't passed in
+    e = e || window.event;
+    if (e.keyCode == 13)
+    {
+        document.getElementById('searchbutton').click();
+        return false;
+    }
+    return true;
+}
+

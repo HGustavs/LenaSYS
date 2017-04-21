@@ -55,7 +55,7 @@ setcookie("loginvar", $loginvar);
 	<div id='newCourse' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>New Course</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class="cursorPointer" onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
@@ -72,7 +72,7 @@ setcookie("loginvar", $loginvar);
 	<div id='editCourse' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Course</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class="cursorPointer" onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
@@ -90,7 +90,7 @@ setcookie("loginvar", $loginvar);
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>New Course Version</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class="cursorPointer" onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />

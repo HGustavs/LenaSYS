@@ -78,7 +78,7 @@ function setExpireCookie(){
 	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
 
 	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
-	console.log(expireDate);
+	//console.log(expireDate);
 
 }
 
@@ -863,7 +863,7 @@ function sessionExpireMessage() {
 
 	if(document.cookie.indexOf('sessionEndTime=expireC') > -1){
 		var intervalId = setInterval(function() {
-		//console.log("test");
+		//console.log("testEMessage");
 		checkIfExpired();
 		}, 2000);
 	}
@@ -872,7 +872,8 @@ function sessionExpireMessage() {
 
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
 				// alert('Session is about to expire in 30 minutes');
-				$(".expiremessagebox").css("display","block")
+				$(".expiremessagebox").css("display","block");
+
 				clearInterval(intervalId);
 			}
 
@@ -886,16 +887,19 @@ function sessionExpireLogOut() {
 
 	if(document.cookie.indexOf('sessionEndTimeLogOut=expireC') > -1){
 		var intervalId = setInterval(function() {
+			//console.log("testTimeout");
 			checkIfExpired();
 		}, 2000);
 	}
 
 	function checkIfExpired() {
-
+		
 		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
-			alert('Your session has expired');
+			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
-			location.reload();
+			$(".expiremessagebox").css("display","block");
+			$("#expiremessage").text("Your session has timed out");
+			//location.reload();
 			clearInterval(intervalId);
 		}
 
