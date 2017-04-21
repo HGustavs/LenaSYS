@@ -40,7 +40,7 @@ if(strcmp($opt,"GET")==0){
 		//SELECT user.username, usergroup.name, course.coursename, user_course.vers  FROM user INNER JOIN user_usergroup ON user.uid=user_usergroup.uid INNER JOIN usergroup ON usergroup.ugid=user_usergroup.ugid INNER JOIN user_course ON user_course.uid=user.uid INNER JOIN course ON course.cid=user_course.cid WHERE course.cid=2 AND user_course.vers=97732
 		
 		//$query = $pdo->prepare("SELECT user.username, usergroup.name, course.coursename, user_course.vers  FROM user INNER JOIN user_usergroup ON user.uid=user_usergroup.uid INNER JOIN usergroup ON usergroup.ugid=user_usergroup.ugid INNER JOIN user_course ON user_course.uid=user.uid INNER JOIN course ON course.cid=user_course.cid WHERE course.cid=:cid;");
-		$query = $pdo->prepare("SELECT listentries.*,quizFile,COUNT(variant.vid) as qvariant FROM listentries LEFT JOIN quiz ON  listentries.link=quiz.id LEFT JOIN variant ON quiz.id=variant.quizID WHERE listentries.cid=:cid and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
+		$query = $pdo->prepare("SELECT lid, entryname,grouptype, kind FROM listentries WHERE listentries.cid=:cid and listentries.vers=:vers and listentries.kind=3 and (grouptype=1 or grouptype=3);");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 
@@ -57,8 +57,7 @@ if(strcmp($opt,"GET")==0){
 					'entryname' => $row['entryname'],
 					'lid' => (int)$row['lid'],
 					'kind' => (int)$row['kind'],
-					'moment' => (int)$row['moment'],
-					'visible'=> (int)$row['visible']
+					'grouptype'=> (int)$row['grouptype']
 				)
 			);
 		}
