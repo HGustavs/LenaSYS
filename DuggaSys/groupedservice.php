@@ -34,8 +34,8 @@ $debug="NONE!"; // How is this used? Is it neccessary?
 
 // Debug mode, not caring for login details. 
 // Don't retreive all results if request was for a single dugga or a grade update
-// if(strcmp($opt,"GET")==0){
-// 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+if(strcmp($opt,"GET")==0){
+ 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 		
 		// Select all the moments, to be used as headings.
 		// temporarily set the cid and vers to "constants" to be able to debug the JSON page directly. 
@@ -73,7 +73,7 @@ $debug="NONE!"; // How is this used? Is it neccessary?
 		}
 
 		// Put it in the data array
-		array_push($data, ['headings' => $headings]);
+		$data['headings'] =$headings;
 
 		// Second query: select all users that are in a group, belonging to the cid and the course vers. This makes up the first and second column of the data table. This data is processed in a later step, because the connection to each moment is needed to display the data. 
 		$query = $pdo->prepare("SELECT GROUP_CONCAT(DISTINCT u.username SEPARATOR '\n') AS students, ug.name AS groupname, ug.ugid FROM user AS u, usergroup AS ug, user_usergroup AS uug, listentries AS le, usergroup_listentries AS ugl WHERE u.uid = uug.uid AND uug.ugid = ug.ugid AND ug.ugid = ugl.ugid AND ugl.lid = le.lid AND le.cid = :cid AND le.kind = 4 AND le.vers = :vers GROUP BY ug.name");
@@ -116,7 +116,7 @@ $debug="NONE!"; // How is this used? Is it neccessary?
 			array_push($row, $dbRow['students']);
 			array_push($row, $dbRow['groupname']);
 
-			// Iterate through the listentries. 
+			// Iterate through the listentries, and add the list entry id where there is a match for the group. This should later be presented as some kind of boolean instead, to be able to use buttons. 
 			foreach ($assignedCourses as $dbCol) {
 				if(isset($dbCol['ugid'])) {
 					if($row[0] == $dbCol['ugid']) {
@@ -129,13 +129,13 @@ $debug="NONE!"; // How is this used? Is it neccessary?
 				}
 			}
 
-			array_push($tableContent, ['row' => $row]);
+			array_push($tableContent, $row);
 		}
 		
-		array_push($data, ['tableContent' => $tableContent]);
+		$data['tableContent'] = $tableContent;
 
-// 	}
-// }
+ 	}
+}
 
 if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 		$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];	
@@ -144,14 +144,15 @@ if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 		$benchmark="-1";
 }
 
+// This is possibly needed later, for debugging and benchmarking and such.
 $array = array(
-	'data' => $data
 	/* 
+	'data' => $data,
 	'debug' => $debug,
 	'moment' => $listentry,
 	'benchmark' => $benchmark */
 );
 
-echo json_encode($array);
+echo json_encode($data);
 // logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
 ?>
