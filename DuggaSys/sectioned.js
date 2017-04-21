@@ -9,6 +9,7 @@ AJAXService("get",{},"SECTION");
 
 var xelink;
 
+// Picking dates when creating a new version
 $(function() {
 	$("#startdate").datepicker({
 		dateFormat: "yy-mm-dd",
@@ -23,6 +24,7 @@ $(function() {
 	});
 });
 
+// Picking dates when modifying a version
 $(function() {
 	$("#estartdate").datepicker({
 		dateFormat: "yy-mm-dd",
@@ -483,13 +485,14 @@ function createVersion(){
 	var coursevers = $("#course-coursevers").text();
 	var startdate = $("#startdate").val();
 	var enddate = $("#enddate").val();
+/*  If start date for a version is not selected when creating a version, set the current date as the start date */
+//  Date Format: 2017-04-27 00:00:00
   if(startdate === "None" || startdate === null || startdate.length === 0) {
-    // 2017-04-27 00:00:00
     var date = new Date();
     startdate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
   }
+/*  If end date for a version is not selected when creating a version, set the start date as the end date */
   if(enddate === "None" || enddate === null || enddate.length === 0) {
-    // 2017-04-27 00:00:00
     enddate = startdate;
   }
 	
@@ -538,12 +541,14 @@ function updateVersion(){
 	var makeactive = $("#emakeactive").is(':checked');
    var startdate = $("#estartdate").val();
    var enddate = $("#eenddate").val();
-
+/*  If start date for a version is not selected when creating a version, set the current date as the start date */
+//  Date Format: 2017-04-27 00:00:00
   if(startdate === "None" || startdate === null || startdate.length === 0) {
     // 2017-04-27 00:00:00
     var date = new Date();
     startdate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
   }
+/*  If end date for a version is not selected when creating a version, set the start date as the end date */
   if(enddate === "None" || enddate === null || enddate.length === 0) {
     enddate = startdate;
   }
@@ -630,6 +635,7 @@ function returnedSection(data)
 			
 			str+="<td style='width:112px;'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
 
+// Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
       var enddate = null;
       if (retdata['versions'].length > 0) {

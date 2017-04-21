@@ -40,6 +40,7 @@ $coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
 $unmarked = 0;
 $rowcolor=getOP('rowcolor');
+// course start and end dates, for a version of a course, created for swimlane functionality
 $startdate=getOP('startdate');
 $enddate=getOP('enddate');
 $grouptype=getOP('grouptype');
@@ -187,7 +188,8 @@ if(checklogin()){
 			$query->bindParam(':versname', $versname);				
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':coursenamealt', $coursenamealt);
-     if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+// if start and end dates are null, insert mysql null value into database
+      if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
      else $query->bindParam(':startdate', $startdate);
      if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
      else $query->bindParam(':enddate', $enddate);
@@ -203,6 +205,7 @@ if(checklogin()){
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
 			$query->bindParam(':versname', $versname);				
+// if start and end dates are null, insert mysql null value into database
      if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
      else $query->bindParam(':startdate', $startdate);
      if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
