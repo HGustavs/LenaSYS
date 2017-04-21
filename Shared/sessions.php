@@ -138,8 +138,8 @@ function checkAnswer($username, $securityquestionanswer)
 		$_SESSION['uid'] = $row['uid'];
 		$_SESSION["loginname"]=$row['username'];
 
-		if (password_verify($securityquestionanswer, $row['securityquestionanswer'])){
-			if (password_needs_rehash($row['securityquestionanswer'], PASSWORD_BCRYPT)) {
+		if (standardPasswordHash($securityquestionanswer = strtolower($securityquestionanswer), $row['securityquestionanswer'])){
+			if (standardPasswordNeedsRehash($row['securityquestionanswer'], PASSWORD_BCRYPT)) {
  			// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
  				$row['securityquestionanswer'] = password_hash($securityquestionanswer, PASSWORD_BCRYPT);
  				$query = $pdo->prepare("UPDATE user SET securityquestionanswer = :sqa WHERE uid=:uid");
