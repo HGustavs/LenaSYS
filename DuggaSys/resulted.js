@@ -461,7 +461,7 @@ function process()
 		if (clist){	
 				clist=clist.split("**"); 
 		} 
-		
+
 		// Create temporary list that complies with dropdown
 		momtmp=new Array;
 		var momname = "tore";
@@ -485,6 +485,12 @@ function process()
 						momtmp.push(moments[l]);
 				}
 		}
+
+		// If momtmp doesn't contain any items no filters were selected
+		if(momtmp.length === 0) {
+			document.getElementById("content").innerHTML="<h3>Filter list is blank</h3>";
+		}
+
 		// Reconstitute table
 		students=new Array;
 		for(i=0;i<entries.length;i++){
