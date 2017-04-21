@@ -1040,7 +1040,7 @@ function tokenize(instring,inprefix,insuffix)
 				}
 			}
 			if (currentCharacter=='#') {
-				for (int j = 0; j <= 6; j++) {
+				for (var j = 0; j <= 6; j++) {
 					if ((currentCharacter >= '0' || currentCharacter <= '9') || (currentCharacter >= 'a' || currentCharacter <= 'f') || (currentCharacter >= 'A' || currentCharacter <= 'F')) {
 						i++;
 						currentStr+=currentCharacter;
