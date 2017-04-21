@@ -23,6 +23,46 @@
         // Error handling to $debug
     }
 
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $coursecode = $row['coursecode'];
+        $coursename = $row['coursename'];
+    }
+
+    $querystring = "SELECT count(*) FROM listentries WHERE kind=4 AND cid=:cid AND vers=:vers";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(':cid',$course);
+    $stmt->bindParam(':vers',$vers);
+
+    try {
+        $stmt->execute();
+    } catch (PDOException $e) {
+        // Error handling to $debug
+    }
+
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $numberOfParts = $row['count(*)'];
+    }
+
+    $querystring = "SELECT startdate, enddate FROM vers WHERE vers = :vers;";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(':vers',$vers);
+
+    try {
+        $stmt->execute();
+    } catch (PDOException $e) {
+        // Error handling to $debug
+    }
+
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $versStart = new DateTime($row['startdate']);
+        $versEnd = new DateTime($row['enddate']);
+    }
+
+    $versStartWeek = $versStart->format("W");
+    $versEndWeek = $versEnd->format("W");
+
+    $versLength = $versEndWeek - $versStartWeek + 1;
+
 ?>
 
   <div id="overlay" style="display:none"></div>
@@ -31,34 +71,18 @@
 
   <div id="swimlanebox" class="swimlanebox" style="display:block">
       <div id="weeks" style="left: 5px; position:absolute; background: white">
-          <svg width="200" height="770">
               <?php
-                  foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-                      echo '<text y="15" x="10" fill="black">' . $row['coursecode'] . '</text>';
-                      echo '<text y="35" x="10" fill="black">' . $row['coursename'] . '</text>';
+                  echo '<svg width="200" height="' . (70 + (70 * $versLength)) . '">';
+                  echo '<rect y="0" x="0" width="200" height="70" style="fill:rgb(97,73,116)" />';
+                  echo '<text y="15" x="8" fill="white">' . $coursecode . '</text>';
+                  echo '<text y="35" x="8" fill="white">' . $coursename . '</text>';
+                  echo '<text y="55" x="8" fill="white">Version: ' . $vers . '</text>';
+
+                  for ($i = 1; $i <= $versLength; $i++){
+                      echo '<rect x="0" y="' . ($i * 70) . '" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />';
+                      echo '<text x="70" y="' . (40 + ($i*70)) . '" fill="black">Week ' . $i . '</text>';
                   }
-                      echo '<text y="55" x="10" fill="black">Version: ' . $vers . '</text>';
               ?>
-              <rect x="0" y="70" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="140" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="210" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="280" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="350" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="420" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="490" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="560" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="630" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <rect x="0" y="700" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />
-              <text x="70" y="110" fill="black">Week 1</text>
-              <text x="70" y="180" fill="black">Week 2</text>
-              <text x="70" y="250" fill="black">Week 3</text>
-              <text x="70" y="320" fill="black">Week 4</text>
-              <text x="70" y="390" fill="black">Week 5</text>
-              <text x="70" y="460" fill="black">Week 6</text>
-              <text x="70" y="530" fill="black">Week 7</text>
-              <text x="70" y="600" fill="black">Week 8</text>
-              <text x="70" y="670" fill="black">Week 9</text>
-              <text x="70" y="740" fill="black">Week 10</text>
           </svg>
       </div>
       <script>
@@ -68,9 +92,10 @@
               });
           });
       </script>
-      <svg width="2000" height="770">
-
           <?php if (isset($_GET["courseid"]) && isset($_GET["coursevers"])) {
+              echo '<svg width="' . (200 * ($numberOfParts + 1) + 100) . '" height="' . (70 + (70 * $versLength)) . '">';
+              echo '<rect y="0" x="0" width="' . 200 * ($numberOfParts + 1) . '" height="70" style="fill:rgb(146,124,157)" />';
+
 
               $querystring = "SELECT listentries.entryname, listentries.kind, quiz.qrelease, quiz.deadline 
                         FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :vers;";
@@ -92,11 +117,11 @@
               foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
                   if ($row['kind'] == 4) {
                       $j = 0;
-                      $pos = (($i * 200) + 230);
-                      echo '<text y="50" x="' . $pos . '" fill="black">' . $row['entryname'] . '</text>';
-                      echo '<rect y="70" x="' . $pos . '" width="200" height="700" style="fill:rgb(';
+                      $pos = (($i * 200) + 200);
+                      echo '<text y="50" x="' . $pos . '" fill="white">' . $row['entryname'] . '</text>';
+                      echo '<rect y="70" x="' . $pos . '" width="200" height="' . (70 * $versLength) . '" style="fill:rgb(';
                       if ($white) {
-                          echo '255,255,255';
+                          echo '250,250,250';
                           $white = false;
                       } else {
                           echo '230,230,230';
@@ -107,8 +132,8 @@
                   } else if ($row['kind'] == 3) {
                       $deadlinedate = new DateTime($row['deadline']);
                       $startdate = new DateTime($row['qrelease']);
-                      $deadlineweek = $deadlinedate->format("W");
-                      $startweek = $startdate->format("W");
+                      $deadlineweek = $deadlinedate->format("W") - $versStartWeek + 1;
+                      $startweek = $startdate->format("W") - $versStartWeek + 1;
                       if ($j == 0) {
                           $oldWeek = $deadlineweek;
                       }
@@ -129,6 +154,16 @@
 
                   }
               }
+
+              $thisDate = new DateTime(date("Y/m/d"));
+              $thisWeek = $thisDate->format("W");
+
+              echo '<line stroke-dasharray="5,5" x1="200" y1="' . (100 + ($thisWeek - $versStartWeek) * 70) .
+                  '" x2="' . (($numberOfParts * 200) + 200) .
+                  '" y2="' . (100 + ($thisWeek - $versStartWeek) * 70) .
+                  '" style="stroke:rgb(255,0,0);stroke-width:2" />';
+              echo '<text y="' . (105 + ($thisWeek - $versStartWeek) * 70) .
+                  '" x="' . (200 * ($numberOfParts + 1)) . '" fill="red">' . $thisDate->format("jS F") . '</text>';
 
           }
           ?>
