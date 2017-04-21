@@ -127,11 +127,9 @@ function checkAnswer($username, $securityquestionanswer)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare("SELECT uid,username,password FROM user WHERE username=:username and securityquestionanswer=password(LCASE(:sqa)) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,securityquestionanswer FROM user WHERE username=:username LIMIT 1");
 
 	$query->bindParam(':username', $username);
-	$query->bindParam(':sqa', $securityquestionanswer);
-
 	$query->execute();
 
 	if($query->rowCount() > 0) {
@@ -140,8 +138,20 @@ function checkAnswer($username, $securityquestionanswer)
 		$_SESSION['uid'] = $row['uid'];
 		$_SESSION["loginname"]=$row['username'];
 
+		if (password_verify($securityquestionanswer, $row['securityquestionanswer'])){
+			if (password_needs_rehash($row['securityquestionanswer'], PASSWORD_BCRYPT)) {
+ 			// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
+ 				$row['securityquestionanswer'] = password_hash($securityquestionanswer, PASSWORD_BCRYPT);
+ 				$query = $pdo->prepare("UPDATE user SET securityquestionanswer = :sqa WHERE uid=:uid");
+ 				$query->bindParam(':uid', $row['uid']);
+ 				$query->bindParam(':sqa', $row['securityquestionanswer']);
+ 				$query->execute();
+ 			}
+		} else{
+			//Wrong password
+			return false;
+		}
 		return true;
-
 	} else {
 		return false;
 	}
