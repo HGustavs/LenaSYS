@@ -457,6 +457,7 @@ function newItem()
   if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
   AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment,rowcolor:rowcolor,grouptype:grouptype},"SECTION"); 
   $("#editSection").css("display","none"); 
+  window.location.reload();		// Refreshes page to make it able to update items
 }
 
 function closeSelect()
