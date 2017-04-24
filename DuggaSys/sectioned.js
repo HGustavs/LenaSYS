@@ -3,14 +3,9 @@ var retdata;
 
 AJAXService("get",{},"SECTION");
 
-//----------------------------------------
-// Commands:
-//----------------------------------------
-
-var xelink;
-
-// Picking dates when creating a new version
+// These functions loads at page load
 $(function() {
+// Picking dates when creating a new version
 	$("#startdate").datepicker({
 		dateFormat: "yy-mm-dd",
 		minDate: 0,
@@ -22,10 +17,7 @@ $(function() {
 	$('#enddate').datepicker({
 		dateFormat: "yy-mm-dd"
 	});
-});
-
 // Picking dates when modifying a version
-$(function() {
 	$("#estartdate").datepicker({
 		dateFormat: "yy-mm-dd",
 		minDate: 0,
@@ -38,6 +30,12 @@ $(function() {
 		dateFormat: "yy-mm-dd"
 	});
 });
+
+//----------------------------------------
+// Commands:
+//----------------------------------------
+
+var xelink;
 
 function displaymessage(){
    $(".messagebox").css("display","block");
