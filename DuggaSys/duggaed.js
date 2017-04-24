@@ -540,7 +540,17 @@ $(document).ready(function(){
 	}
 
 	function addSubmissionRow() {
-		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'><select name='fieldname' id='fieldname' style='margin-bottom:3px;flex:4;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:15;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/><input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></button><br/></div>");
+		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
+					 	"<select style='width:65px;'>"+
+					 		"<option value='pdf'>PDF</option>"+
+					 		"<option value='zip'>Zip</option>"+
+					 		"<option value='link'>Link</option>"+
+					 		"<option value='text'>Text</option>"+
+					 	"</select>"+
+					 	"<input type='text' name='fieldname' id='fieldname' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					 	"<input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					 	"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
+					 "</div>");
 	}
 
 	$(document).on('click','.delButton', function(){
