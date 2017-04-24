@@ -155,6 +155,20 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				}
 			}
 		}
+
+		if ($gradeupdated) {
+			include_once "../Shared/pushnotificationshelper.php";
+			$query = $pdo->prepare("SELECT listentries.entryname, course.coursename FROM listentries,course WHERE listentries.lid = :lid and listentries.cid = course.cid");
+			$query->bindParam(':lid', $listentry);
+			if($query->execute()) {
+				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+					$listname = $row['entryname'];
+					$coursename = $row['coursename'];
+					$results = sendPushNotification($luid, "$listname for $coursename has been graded");
+					// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
+				}
+			}
+		}
 		
 	}
 
