@@ -300,9 +300,6 @@ diagram.delete = function (object)
 
 }
 
-//--------------------------------------------------------------------
-// inside - executes inside methond in all diagram objects (currently of kind==2)
-//--------------------------------------------------------------------
 diagram.insides = function (ex, ey, sx, sy) {	
 	//ensure that an entity cannot scale below the minimum size
 	for(var i = 0; i < this.length; i++) {
@@ -338,18 +335,18 @@ diagram.insides = function (ex, ey, sx, sy) {
 	return -1;
 }
 
-diagram.inside = function (xk,yk)
-{
-		for(i=0;i<this.length;i++){
-				item=this[i];
-				if(item.kind==2){
-						var insided=item.inside(xk,yk);
-						if(insided==true) return i;
-				}
-
+//--------------------------------------------------------------------
+// inside - executes inside methond in all diagram objects (currently of kind==2)
+//--------------------------------------------------------------------
+diagram.inside = function (xk, yk) {
+	for(var i = 0; i < this.length; i++) {
+		item = this[i];
+		if(item.kind == 2) {
+			var insided = item.inside(xk, yk);
+			if(insided == true) return i;
 		}
-
-		return -1;
+	}
+	return -1;
 }
 
 
@@ -1055,7 +1052,7 @@ function mousedownevt(ev) {
 		//if(selobj != -1) {
 		//	diagram[selobj].targeted = false;
 		//}
-		selobj = diagram.inside(cx,cy);
+		selobj = diagram.inside(cx, cy);
 		if (diagram[selobj].targeted == false) {
 			for (var i = 0; i < diagram.length; i++) {
 				diagram[i].targeted = false;
