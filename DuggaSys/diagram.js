@@ -303,49 +303,42 @@ diagram.delete = function (object)
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-diagram.insides = function (ex,ey,sx,sy)
-{	
+diagram.insides = function (ex, ey, sx, sy) {	
 	//ensure that an entity cannot scale below the minimum size
-	for(i=0;i<this.length;i++){
-		if(!(this[i].kind == 1)){
-			if(points[this[i].topLeft].x > points[this[i].bottomRight].x || points[this[i].topLeft].x >points[this[i].bottomRight].x -minEntityX){
-				points[this[i].topLeft].x = points[this[i].bottomRight].x -minEntityX;
+	for(var i = 0; i < this.length; i++) {
+		if(!(this[i].kind == 1)) {
+			if(points[this[i].topLeft].x > points[this[i].bottomRight].x || points[this[i].topLeft].x > points[this[i].bottomRight].x - minEntityX) {
+				points[this[i].topLeft].x = points[this[i].bottomRight].x - minEntityX;
 			}
-			if(points[this[i].topLeft].y > points[this[i].bottomRight].y ||points[this[i].topLeft].y > points[this[i].bottomRight].y -minEntityY){
-					points[this[i].topLeft].y = points[this[i].bottomRight].y -minEntityY;
+			if(points[this[i].topLeft].y > points[this[i].bottomRight].y || points[this[i].topLeft].y > points[this[i].bottomRight].y - minEntityY) {
+				points[this[i].topLeft].y = points[this[i].bottomRight].y - minEntityY;
 			}
-			
-		}		
+		}
 	}
- 
-	for(i=0;i<this.length;i++){
-		if (sx > ex){
+	for(var i = 0; i < this.length; i++) {
+		if (sx > ex) {
 			var tempa = ex;
 			ex = sx;
 			sx = tempa;
 		}
-		if (sy > ey){
+		if (sy > ey) {
 			var tempb = ey;
-			ey=sy;
-			sy=tempb;
+			ey = sy;
+			sy = tempb;
 		}
-		if(!(this[i].kind == 1)){
-						
-		var tx = points[this[i].topLeft].x;
-		var ty = points[this[i].topLeft].y;
-		var bx = points[this[i].bottomRight].x;
-		var by = points[this[i].bottomRight].y;
-		
-		
-		if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by){
-			this[i].targeted = true;
-			// return i;
-		} else {
-			this[i].targeted = false;
+		if(!(this[i].kind == 1)) {				
+			var tx = points[this[i].topLeft].x;
+			var ty = points[this[i].topLeft].y;
+			var bx = points[this[i].bottomRight].x;
+			var by = points[this[i].bottomRight].y;
+			if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by) {
+				this[i].targeted = true;
+				// return i;
+			} else {
+				this[i].targeted = false;
 			}
 		}
 	}
-
 	return -1;
 }
 
