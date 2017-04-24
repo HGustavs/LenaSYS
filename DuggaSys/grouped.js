@@ -31,6 +31,7 @@ function returnedGroup(data)
 	str+="<thead>";
 	str+="<tr class='markinglist-header'>";
 	
+	str += "<th id='header' class='grouprow' ><span>#<span></th>";
 	str+="<th colspan='1' id='subheading' class='result-header'>";
 	str+="Studenter";
 	str+="</th>";
@@ -71,8 +72,11 @@ function returnedGroup(data)
 	str+="</thead>";
 	// Iterate the tableContent. 
 	str += "<tbody>";
+	var row=0;
 	for(var i = 0; i < tableContent.length; i++) { // create table rows. 
+		row++;
 		str+="<tr>";
+		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
 		for(var j = 1; j < tableContent[i].length; j++) {
 			str+="<td>"+tableContent[i][j]+"</td>";
 		}
