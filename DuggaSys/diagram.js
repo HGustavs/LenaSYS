@@ -1052,58 +1052,45 @@ function mousemoveevt(ev, t){
 		}
 }
 
-function mousedownevt(ev)
-{
-    if(uimode=="CreateLine"){
-      md=4;			// Box select or Create mode.
-      sx=cx;
-      sy=cy;
-      sel=points.distance(cx,cy);
-
-      if(hovobj==-1){
-        p1=points.addpoint(cx,cy,false);
-      }
-      else{
-        lineStartObj = hovobj;
-
-        if(diagram[lineStartObj].symbolkind==2){
-          p1=diagram[lineStartObj].centerpoint;
-        }else if(diagram[lineStartObj].symbolkind==5){
-          p1=diagram[lineStartObj].middleDivider;
-		} else{
-          p1=points.addpoint(cx,cy,false);
-        }
-        //p1=diagram[hovobj].centerpoint;
-      }
-
-    }
-		else if(uimode!="CreateFigure"&&sel.dist<tolerance){
-				md=2;
-		}else if(movobj!=-1){
-				md=3;
-
-        //Last moved object
-			//if(selobj != -1){
-          //		diagram[selobj].targeted = false;
-       		// }
-			selobj=diagram.inside(cx,cy);
-			//;
-
-				if (diagram[selobj].targeted == false){
-					for (var i=0;i<diagram.length;i++){
-						diagram[i].targeted=false;
-				}
-					diagram[selobj].targeted = true
-
+function mousedownevt(ev) {
+	if(uimode == "CreateLine") {
+		md = 4;			// Box select or Create mode.
+		sx = cx;
+		sy = cy;
+		sel = points.distance(cx, cy);
+		if(hovobj == -1) {
+			p1 = points.addpoint(cx, cy, false);
+		} else {
+			lineStartObj = hovobj;
+			if(diagram[lineStartObj].symbolkind == 2) {
+				p1 = diagram[lineStartObj].centerpoint;
+			} else if(diagram[lineStartObj].symbolkind == 5) {
+				p1 = diagram[lineStartObj].middleDivider;
+			} else {
+				p1 = points.addpoint(cx, cy, false);
 			}
-
-
-		}else{
-				md=4;			// Box select or Create mode.
-				sx=cx;
-				sy=cy;
+			//p1=diagram[hovobj].centerpoint;
 		}
-
+	} else if(uimode != "CreateFigure" && sel.dist < tolerance) {
+		md = 2;
+	} else if(movobj != -1) {
+		md = 3;
+		//Last moved object
+		//if(selobj != -1) {
+		//	diagram[selobj].targeted = false;
+		//}
+		selobj = diagram.inside(cx,cy);
+		if (diagram[selobj].targeted == false) {
+			for (var i = 0; i < diagram.length; i++) {
+				diagram[i].targeted = false;
+			}
+			diagram[selobj].targeted = true;
+		}
+	} else {
+		md = 4;			// Box select or Create mode.
+		sx = cx;
+		sy = cy;
+	}
 }
 
 
@@ -1124,11 +1111,11 @@ function doubleclick(ev)
 }
 
 function mouseupevt(ev) {
-	// Code for creating a new class
 	if(snapToGrid) {
-		cx = Math.round(cx / gridSize) * gridSize
+		cx = Math.round(cx / gridSize) * gridSize;
 		cy = Math.round(cy / gridSize) * gridSize;
 	}
+	// Code for creating a new class
 	if(md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
 		// Add required points
 		p1 = points.addpoint(sx, sy, false);
