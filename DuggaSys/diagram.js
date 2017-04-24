@@ -51,6 +51,9 @@ var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
+//the minimum size for an Enitny are set by the values seen below.
+var minEntityX = 100;
+var minEntityY = 50;
 
 var attributeTemplate = { // Defines entity/attribute/relations predefined sizes
   width: 7*gridSize,
@@ -300,7 +303,20 @@ diagram.delete = function (object)
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
 diagram.insides = function (ex,ey,sx,sy)
-{
+{	
+	//ensure that an entity cannot scale below the minimum size
+	for(i=0;i<this.length;i++){
+		if(!(this[i].kind == 1)){
+			if(points[this[i].topLeft].x > points[this[i].bottomRight].x || points[this[i].topLeft].x >points[this[i].bottomRight].x -minEntityX){
+				points[this[i].topLeft].x = points[this[i].bottomRight].x -minEntityX;
+			}
+			if(points[this[i].topLeft].y > points[this[i].bottomRight].y ||points[this[i].topLeft].y > points[this[i].bottomRight].y -minEntityY){
+					points[this[i].topLeft].y = points[this[i].bottomRight].y -minEntityY;
+			}
+			
+		}		
+	}
+ 
 	for(i=0;i<this.length;i++){
 		if (sx > ex){
 			var tempa = ex;
@@ -313,16 +329,19 @@ diagram.insides = function (ex,ey,sx,sy)
 			sy=tempb;
 		}
 		if(!(this[i].kind == 1)){
+						
 		var tx = points[this[i].topLeft].x;
 		var ty = points[this[i].topLeft].y;
 		var bx = points[this[i].bottomRight].x;
 		var by = points[this[i].bottomRight].y;
+		
+		
 		if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by){
 			this[i].targeted = true;
 			// return i;
 		} else {
 			this[i].targeted = false;
-		}
+			}
 		}
 	}
 
@@ -884,10 +903,10 @@ function updategfx()
     drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
-
+				
 		// Redraw diagram
 		diagram.draw();
-
+				
 // Make a bool operation between PathA and PathB
 //		pathA.boolOp(pathC);
 
@@ -895,7 +914,8 @@ function updategfx()
 		points.drawpoints();
 
 		// Draw all symbols
-
+		
+		
 }
 
 // Recursive Pos of div in document - should work in most browsers
@@ -1301,7 +1321,7 @@ function mouseupevt(ev){
             diagram[selobj].targeted = true;
             openAppearanceDialogMenu();
         }else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" ) && !(uimode=="CreateERRelation")) {
-            diagram.insides(cx, cy, sx, sy);
+			diagram.insides(cx, cy, sx, sy);
         }
 
     document.addEventListener("click", clickOutsideDialogMenu);
