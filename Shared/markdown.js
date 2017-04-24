@@ -276,56 +276,69 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
 	return markdown;
 }
 function handleTable(currentLine, prevLine, nextLine) {
-	var markdown = "";
+    var markdown = "";
 
     var columns = currentLine.split('|').filter(function(v){return v !== '';});
 
-	// open new table
-	if(!isTable(prevLine)) {
-    	markdown += "<table border='1' style='width: 100%;'><thead style='font-weight: bold; background: Cornsilk'>";
+    // open table
+    if(!isTable(prevLine)) {
+        markdown += "<table class='markdown-table'>";
     }
 
-    // configure alignment
-    if(currentLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+    // create thead
+    if(!isTable(prevLine) && nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+        markdown += "<thead>";
+        markdown += "<tr>"
         for(var i = 0; i < columns.length; i++) {
-            var column = columns[i].trim();
-
-            // align center
-            if(column.match(/[:][-]*[:]/gm)) tableAlignmentConf[i] = 1;
-            // align right
-            else if(column.match(/[-]*[:]/gm)) tableAlignmentConf[i] = 2;
-            // align left
-            else tableAlignmentConf[i] = 3;
-        }
-    }
-
-    // handle table row
-    else {
-        markdown += "<tr style=''>"
-        for(var i = 0; i < columns.length; i++) {
-            var alignment = "";
-
-            if(tableAlignmentConf[i] === 1) alignment = "center";
-            else if(tableAlignmentConf[i] === 2) alignment = "right";
-            else alignment = "left";
-
-            markdown += "<td style='text-align: " + alignment + "; padding: 2px;'>" + columns[i].trim() + "</td>";
+            markdown += "<th>" + columns[i].trim() + "</th>";
         }
         markdown += "</tr>";
+        markdown += "</thead>";
+    }
+    // create tbody
+    else {
+        // configure alignment
+        if(currentLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+            for(var i = 0; i < columns.length; i++) {
+                var column = columns[i].trim();
 
-        // close thead and open tbody
-        if(!isTable(prevLine)) {
-            markdown += "</thead><tbody>";
+                // align center
+                if(column.match(/[:][-]*[:]/gm)) tableAlignmentConf[i] = 1;
+                // align right
+                else if(column.match(/[-]*[:]/gm)) tableAlignmentConf[i] = 2;
+                // align left
+                else tableAlignmentConf[i] = 3;
+            }
+        }
+        // handle table row
+        else {
+            markdown += "<tr style=''>"
+            for(var i = 0; i < columns.length; i++) {
+                var alignment = "";
+
+                if(tableAlignmentConf[i] === 1) alignment = "center";
+                else if(tableAlignmentConf[i] === 2) alignment = "right";
+                else alignment = "left";
+
+                markdown += "<td style='text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
+            }
+            markdown += "</tr>";
+
+            // close thead and open tbody
+            if(!isTable(prevLine)) {
+                console.log("hej");
+                markdown += "</thead><tbody>";
+            }
         }
     }
 
     // close table
-	if(!isTable(nextLine)) {
-    	markdown += "</tbody></table>";
+    if(!isTable(nextLine)) {
+        markdown += "</tbody></table>";
     }
 
     return markdown;
-	
+
 }
 //----------------------------------------------------------------------------------
 // markdownBlock: 
