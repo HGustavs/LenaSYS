@@ -277,7 +277,7 @@
 						echo "<script src='../Shared/dugga.js'></script>";
 						echo "<script src='../Shared/markdown.js'></script>";				
 						echo "</head>";
-						echo "<body onload='loadedmd();'>";
+						echo "<body>";
 				}
 				
 				if($hdrs=="none"){
