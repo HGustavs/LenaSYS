@@ -20,32 +20,32 @@ INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email) VA
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email) VALUES (1616,'a94anjoh','Anita','Johansson','19830617-6654',password('password'),'1','a83anjoh@student.his.se');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email) VALUES (1717,'b94bejoh','Berit','Johansson','19900412-2554',password('password'),'1','b90bejoh@student.his.se');
 -- DVSUG --
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (216,'a99marjo',password('password'),'Maria','Johansson','19990101-0001','a99marjo@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (217,'a99erijo',password('password'),'Erik','Johansson','19990101-0002','a99erijo@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (218,'a99annan',password('password'),'Anna','Andersson','19990101-0003','a99annan@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (219,'a99laran',password('password'),'Lars','Andersson','19990101-0004','a99laran@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (220,'a99karka',password('password'),'Karl','Karlsson','19990101-0005','a99karka@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (231,'a99oloja',password('password'),'Olof','Jansson','19990101-0016','a99oloja@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (232,'a99linja',password('password'),'Linnéa','Jansson','19990101-0017','a99linja@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (233,'a99petha',password('password'),'Peter','Hansson','19990101-0018','a99petha@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (234,'a99gunbe',password('password'),'Gunnar','Bengtsson','19990101-0019','a99gunbe@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (235,'a99kerbe',password('password'),'Kerstin','Bengtsson','19990101-0020','a99kerbe@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (216,'a99marjo','Maria','Johansson','19990101-0001',password('password'),'a99marjo@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (217,'a99erijo','Erik','Johansson','19990101-0002',password('password'),'a99erijo@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (218,'a99annan','Anna','Andersson','19990101-0003',password('password'),'a99annan@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (219,'a99laran','Lars','Andersson','19990101-0004',password('password'),'a99laran@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (220,'a99karka','Karl','Karlsson','19990101-0005',password('password'),'a99karka@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (231,'a99oloja','Olof','Jansson','19990101-0016',password('password'),'a99oloja@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (232,'a99linja','Linnéa','Jansson','19990101-0017',password('password'),'a99linja@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (233,'a99petha','Peter','Hansson','19990101-0018',password('password'),'a99petha@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (234,'a99gunbe','Gunnar','Bengtsson','19990101-0019' ,password('password'),'a99gunbe@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (235,'a99kerbe','Kerstin','Bengtsson','19990101-0020',password('password'),'a99kerbe@student.his.se','DVSUG13h');
 -- WEBUG13h --
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (221,'a99marka',password('password'),'Margareta','Karlsson','19990101-0006','a99marka@student.his.se','WEBUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (222,'a99elini',password('password'),'Elisabet','Nilsson','19990101-0007','a99elini@student.his.se','WEBUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (223,'a99andni',password('password'),'Anders','Nilsson','19990101-0008','a99andni@student.his.se','WEBUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (224,'a99evaer',password('password'),'Eva','Eriksson','19990101-0009','a99evaer@student.his.se','WEBUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (225,'a99joher',password('password'),'Johan','Eriksson','19990101-0010','a99joher@student.his.se','WEBUG13h');
--- WEBUG14h --
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (226,'a99krila',password('password'),'Kristina','Larsson','19990101-0011','a99krila@student.his.se','WEBUG14h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (227,'a99perla',password('password'),'Per','Larsson','19990101-0012','a99perla@student.his.se','WEBUG14h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (228,'a99birol',password('password'),'Birgitta','Olsson','19990101-0013','a99birol@student.his.se','WEBUG14h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (229,'a99nilol',password('password'),'Nils','Olsson','19990101-0014','a99nilol@student.his.se','WEBUG14h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (230,'a99karpe',password('password'),'Karin','Persson','19990101-0015','a99karpe@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (221,'a99marka','Margareta','Karlsson','19990101-0006',password('password'),'a99marka@student.his.se','WEBUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (222,'a99elini','Elisabet','Nilsson','19990101-0007',password('password'),'a99elini@student.his.se','WEBUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (223,'a99andni','Anders','Nilsson','19990101-0008',password('password'),'a99andni@student.his.se','WEBUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (224,'a99evaer','Eva','Eriksson','19990101-0009',password('password'),'a99evaer@student.his.se','WEBUG13h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (225,'a99joher','Johan','Eriksson','19990101-0010',password('password'),'a99joher@student.his.se','WEBUG13h');
+-- WEBUG14h --                                                                                                                           
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (226,'a99krila','Kristina','Larsson','19990101-0011',password('password'),'a99krila@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (227,'a99perla','Per','Larsson','19990101-0012',password('password'),'a99perla@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (228,'a99birol','Birgitta','Olsson','19990101-0013',password('password'),'a99birol@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (229,'a99nilol','Nils','Olsson','19990101-0014',password('password'),'a99nilol@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,class) VALUES (230,'a99karpe','Karin','Persson','19990101-0015',password('password'),'a99karpe@student.his.se','WEBUG14h');
 
 /* Teachers */
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,creator,superuser) VALUES (100,'stei','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Joe','Steinhauer','340101-0101','joe.steinhauer@his.se',0,1);
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,creator,superuser) VALUES (101,'brom','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Marcus','Brohede','340101-1232','marcus.brohede@his.se',0,1);
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser) VALUES (100,'stei','Joey','Stenhus','340101-0101','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','joey.s@his.se',0,1);
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser) VALUES (101,'brom','Martin','Brobygge','340101-1232','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','martin.b@his.se',0,1);
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email) VALUES (4,'teacher1','Emma','Lindberg','19770101-1231',password('password'),'1','teacher1@his.se');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email) VALUES (5,'teacher2','Lena','Carlsson','19770101-1232',password('password'),'1','teacher2@his.se');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email) VALUES (6,'teacher3','Bo','Lindberg','19770101-1233',password('password'),'1','teacher3@his.se');
