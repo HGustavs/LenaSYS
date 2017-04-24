@@ -332,7 +332,7 @@ function handleTable(currentLine, prevLine, nextLine) {
         }
     }
     // close table
-    if(!isTable(nextLine)) {
+    if(!isTable(currentLine)) {
         markdown += "</tbody></table>";
     }
     return markdown;
