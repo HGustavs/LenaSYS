@@ -957,22 +957,24 @@ function mousemoveevt(ev, t){
 
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
-		}else if(md==2){
-				// If mouse is pressed down and a point is selected - move that point
-            if(diagram[selobj].symbolkind==5){
+		}else if(md==2) {
+            // If mouse is pressed down and a point is selected - move that point
+            if (diagram[selobj].symbolkind == 5) {
                 // Changes relations size as mirrored.
                 points[sel.ind].x = cx;
                 points[sel.ind].y = cy;
 
-                points[sel.ind-1].x = points[sel.ind+1].x-points.distanceBetweenPoints(points[sel.ind+1].x,points[sel.ind+1].y,points[sel.ind].x,points[sel.ind].y,true);
-                points[sel.ind-1].y = points[sel.ind+1].y-points.distanceBetweenPoints(points[sel.ind+1].x,points[sel.ind+1].y,points[sel.ind].x,points[sel.ind].y,false);
-
-            }else {
-                // If mouse is pressed down and a point is selected - move that point
+                if (diagram[selobj].bottomRight == sel.ind) {
+                    points[diagram[selobj].topLeft].x = points[diagram[selobj].middleDivider].x - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, true);
+                    points[diagram[selobj].topLeft].y = points[diagram[selobj].middleDivider].y - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, false);
+                }
+            }
+            else {
                 points[sel.ind].x = cx;
                 points[sel.ind].y = cy;
             }
-		}else if(md==3){
+        }
+		else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
 					for (var i=0;i<diagram.length;i++){
@@ -1266,6 +1268,7 @@ function mouseupevt(ev){
         else if(uimode=="CreateERRelation"&&md==4){
             erRelationA = new Symbol(5);
 
+            erRelationA.name="Relation"+diagram.length;
             erRelationA.topLeft=p1;
             erRelationA.bottomRight=p2;
             erRelationA.middleDivider=p3;
@@ -1286,6 +1289,11 @@ function mouseupevt(ev){
             }
 
             diagram.push(erRelationA);
+
+            //selecting the newly created relation and open the dialog menu.
+            selobj = diagram.length -1;
+            diagram[selobj].targeted = true;
+            openAppearanceDialogMenu();
         }else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" ) && !(uimode=="CreateERRelation")) {
             diagram.insides(cx, cy, sx, sy);
         }
@@ -1429,6 +1437,17 @@ function dialogForm() {
       		"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
           "<button type='submit'  class='submit-button' onclick='changeNameEntity(form); setEntityType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
+    if(diagram[selobj].symbolkind==5){
+        form.innerHTML = "Relation name:</br>" +
+            "<input id='nametext' type='text'></br>" +
+            "Font family:<br>" +
+            "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+            "Font color:<br>" +
+            "<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
+            "Text size:<br>" +
+            "<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+            "<button type='submit'  class='submit-button' onclick='changeNameRelation(form); setType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+    }
 }
 
 //setTextSize(): used to change the size of the text. unifinish can's get it to work.
@@ -1470,6 +1489,18 @@ function changeNameEntity(form){
     updategfx();
     $("#appearance").hide();
 
+}
+
+function  changeNameRelation() {
+    dimDialogMenu(false);
+
+    diagram[selobj].name=document.getElementById('nametext').value;
+    diagram[selobj].fontColor=document.getElementById('fontColor').value;
+    diagram[selobj].font=document.getElementById('font').value;
+    diagram[selobj].sizeOftext=document.getElementById('TextSize').value;
+    diagram[selobj].entityType=document.getElementById('entityType').value;
+    updategfx();
+    $("#appearance").hide();
 }
 
 function setEntityType(form) {

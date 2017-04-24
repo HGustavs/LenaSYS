@@ -678,6 +678,11 @@ function Symbol(kind) {
         ctx.strokeStyle="#000";
       }else if(this.symbolkind==5){
 
+          ctx.font="bold "+parseInt(textsize)+"px "+this.font;
+
+          ctx.textAlign="center";
+          ctx.textBaseline = "middle";
+
           var midx=points[this.middleDivider].x;
           var midy=points[this.middleDivider].y;
 
@@ -697,6 +702,10 @@ function Symbol(kind) {
               ctx.strokeStyle="#253";
           }
           ctx.stroke();
+
+          ctx.fillStyle="#253";
+          ctx.fillStyle=this.fontColor;
+          ctx.fillText(this.name,x1+((x2-x1)*0.5),(y1+((y2-y1)*0.5)));
       }
   }
 }
