@@ -40,6 +40,7 @@ pdoConnect();
 						<label for="currentPassword">Current password</label><br/>
 						<input type="password" id="currentPassword" placeholder="Current password" /><br/><br/>
 						<label for="challengeQuestion">Challenge question</label><br/>
+						<label id="securityQuestionError"></label>
 						<?php echo "<textarea id='challengeQuestion' value='' onkeyup='checkScroll(this)' style='height:1.25em; max-height:110px; width:16em; overflow:auto; font-family:sans-serif;'></textarea><br/>" ?>
 						<script>addSecurityQuestionProfile('<?php echo $_SESSION['loginname'] ?>')</script>
 						<label for="challengeAnswer">Challenge question</label><br/>

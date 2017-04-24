@@ -576,7 +576,13 @@ function addSecurityQuestionProfile(username) {
 				if(result['getname'] == "success") {
 					$("#challengeQuestion").html(result['securityquestion']);
 				}else{
-					console.log("Username was not found OR User does not have a question OR User might be a teacher");
+					if(typeof result.reason != "undefined") {
+						$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result.reason + "</div>");
+					} else {
+						$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result['getname']  + "</div>");
+					}
+					$("#changeChallengeQuestion #challengeQuestion").css("background-color", "rgba(255, 0, 6, 0.2)");
+					$("#changeChallengeQuestion #securityQuestionError").css("color", "rgba(255, 0, 6, 0.8)");
 			}
 		}
 	});
