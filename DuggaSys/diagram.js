@@ -1044,8 +1044,9 @@ function mousedownevt(ev)
 
         if(diagram[lineStartObj].symbolkind==2){
           p1=diagram[lineStartObj].centerpoint;
-        }
-        else{
+        }else if(diagram[lineStartObj].symbolkind==5){
+          p1=diagram[lineStartObj].middleDivider;
+		} else{
           p1=points.addpoint(cx,cy,false);
         }
         //p1=diagram[hovobj].centerpoint;
@@ -1143,7 +1144,9 @@ function mouseupevt(ev){
         // End line on object
         if(diagram[hovobj].symbolkind == 2){
           p2=diagram[hovobj].centerpoint;
-        }else{
+        }else if(diagram[hovobj].symbolkind == 5){
+            p2=diagram[hovobj].middleDivider;
+	  	}else{
           p2=points.addpoint(cx,cy,false);
         }
 
