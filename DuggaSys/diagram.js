@@ -45,11 +45,29 @@ var waldoPoint = {x:-10,y:-10,selected:false};
 var activePoint = null; //This point indicates what point is being hovered by the user
 var p1=null,					// When creating a new figure, these two variables are used ...
  		p2=null;					// to keep track of points created with mousedownevt and mouseupevt
-
+var snapToGrid = true; // Will the clients actions snap to grid
 // set the color for the crosses.
 var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+
+
+var attributeTemplate = { // Defines entity/attribute/relations predefined sizes
+  width: 7*gridSize,
+  height: 4*gridSize
+};
+var entityTemplate = {
+  width: 6*gridSize,
+  height: 3*gridSize
+};
+var relationTemplate = {
+  width: 8*gridSize,
+  height: 4*gridSize
+};
+var classTemplate = {
+  width: 6*gridSize,
+  height: 7*gridSize
+};
 
 
 var a,b,c;
@@ -746,6 +764,16 @@ function initcanvas()
 	canvas.addEventListener('dblclick', doubleclick, false);
 
 }
+// Function to enable and disable the grid, functionality is related to cx and cy
+
+function enableGrid(element){
+  if(snapToGrid == false){
+    snapToGrid = true;
+  }
+  else{
+    snapToGrid = false;
+  }
+}
 
 // Function for the zoom in and zoom out in the canvas element
 
@@ -901,7 +929,7 @@ function mousemoveevt(ev, t){
 		moy=cy;
 	    hovobj = diagram.inside(cx,cy);
 		if (ev.pageX || ev.pageY == 0){ // Chrome
-			cx=ev.pageX-acanvas.offsetLeft;
+      cx=ev.pageX-acanvas.offsetLeft;
 			cy=ev.pageY-acanvas.offsetTop;
 		} else if (ev.layerX||ev.layerX==0) { // Firefox
 			cx=ev.layerX-acanvas.offsetLeft;
@@ -910,6 +938,12 @@ function mousemoveevt(ev, t){
 			cx=ev.offsetX-acanvas.offsetLeft;
 			cy=ev.offsetY-acanvas.offsetTop;
 		}
+    if(md==1 || md==2 || md==0 && uimode != " "){
+      if(snapToGrid){
+        cx=Math.round(cx/gridSize)*gridSize
+        cy=Math.round(cy/gridSize)*gridSize;
+      }
+    }
 		if(md==0){
 				// Select a new point only if mouse is not already moving a point or selection box
 				sel=points.distance(cx,cy);
@@ -943,7 +977,11 @@ function mousemoveevt(ev, t){
 				if(movobj!=-1){
 					for (var i=0;i<diagram.length;i++){
 						if(diagram[i].targeted == true){
-						diagram[i].move(cx-mox,cy-moy);
+              if(snapToGrid){
+                cx=Math.round(cx/gridSize)*gridSize
+                cy=Math.round(cy/gridSize)*gridSize;
+              }
+              diagram[i].move(cx-mox,cy-moy);
 						}
 					}
 				}
@@ -1061,11 +1099,25 @@ function doubleclick(ev)
 function mouseupevt(ev){
 
 	// Code for creating a new class
-
+    if(snapToGrid){
+      cx=Math.round(cx/gridSize)*gridSize
+      cy=Math.round(cy/gridSize)*gridSize;
+    }
 		if(md==4&&(uimode=="CreateClass"||uimode=="CreateERAttr"||uimode=="CreateEREntity"||uimode=="CreateERRelation")){
 				// Add required points
 				p1=points.addpoint(sx,sy,false);
-				p2=points.addpoint(cx,cy,false);
+        p2=points.addpoint(cx,cy,false);
+        var swap = null;
+        /*if(p1.x > p2.x){
+          swap = p1.x;
+          p1.x = p2.x;
+          p2.x = swap;
+        }
+        if(p1.y > p2.y){
+          swap = p1.y;
+          p1.y = p2.y;
+          p2.y = swap;
+        }*/
 				var p3=points.addpoint((cx+sx)*0.5,(cy+sy)*0.5,false);
 		}
 		if(uimode=="CreateLine"&&md==4){
@@ -1074,6 +1126,7 @@ function mouseupevt(ev){
       if(hovobj==-1){
         // End line on empty
         p2=points.addpoint(cx,cy,false);
+
         if(lineStartObj == -1){
           // Start line on empty
           // Just draw a normal line
@@ -1115,14 +1168,48 @@ function mouseupevt(ev){
 
 				classB.topLeft=p1;
 				classB.bottomRight=p2;
-				classB.middleDivider=p3;
 
+        if(points[classB.bottomRight].x >= points[classB.topLeft].x && (points[classB.bottomRight].x - points[classB.topLeft].x) < classTemplate.width){
+          points[classB.bottomRight].x = points[classB.topLeft].x + classTemplate.width;
+        }
+        else if(points[classB.bottomRight].x < points[classB.topLeft].x && (points[classB.topLeft].x - points[classB.bottomRight].x) < classTemplate.width){
+
+          points[classB.bottomRight].x = points[classB.topLeft].x - classTemplate.width;
+        }
+
+        if(points[classB.bottomRight].y >= points[classB.topLeft].y && (points[classB.bottomRight].y - points[classB.topLeft].y) < classTemplate.width){
+          points[classB.bottomRight].y = points[classB.topLeft].y + classTemplate.height;
+        }
+        else if(points[classB.bottomRight].y < points[classB.topLeft].y && (points[classB.topLeft].y - points[classB.bottomRight].y) < classTemplate.height){
+          points[classB.bottomRight].y = points[classB.topLeft].y - classTemplate.height;
+        }
+        classB.middleDivider=p3;
+        console.log("banan:"+points[classB.middleDivider].y);
+        points[classB.middleDivider].x = ((classB.bottomRight.x+classB.topLeft.x)*0.5);
+        points[classB.middleDivider].y = ((classB.bottomRight.y+classB.topLeft.y)*0.5);
 				diagram.push(classB);
 		}else if(uimode=="CreateERAttr"&&md==4){
 				erAttributeA = new Symbol(2);
 				erAttributeA.name="Attr"+diagram.length;
-				erAttributeA.topLeft=p1;
+        erAttributeA.topLeft=p1;
 				erAttributeA.bottomRight=p2;
+
+
+        if(points[erAttributeA.bottomRight].x >= points[erAttributeA.topLeft].x && (points[erAttributeA.bottomRight].x - points[erAttributeA.topLeft].x) < attributeTemplate.width){
+          points[erAttributeA.bottomRight].x = points[erAttributeA.topLeft].x + attributeTemplate.width;
+        }
+        else if(points[erAttributeA.bottomRight].x < points[erAttributeA.topLeft].x && (points[erAttributeA.topLeft].x - points[erAttributeA.bottomRight].x) < attributeTemplate.width){
+
+          points[erAttributeA.bottomRight].x = points[erAttributeA.topLeft].x - attributeTemplate.width;
+        }
+
+        if(points[erAttributeA.bottomRight].y >= points[erAttributeA.topLeft].y && (points[erAttributeA.bottomRight].y - points[erAttributeA.topLeft].y) < attributeTemplate.width){
+          points[erAttributeA.bottomRight].y = points[erAttributeA.topLeft].y + attributeTemplate.height;
+        }
+        else if(points[erAttributeA.bottomRight].y < points[erAttributeA.topLeft].y && (points[erAttributeA.topLeft].y - points[erAttributeA.bottomRight].y) < attributeTemplate.height){
+          points[erAttributeA.bottomRight].y = points[erAttributeA.topLeft].y - attributeTemplate.height;
+        }
+
 				erAttributeA.centerpoint=p3;
 				erAttributeA.attributeType="";
 				erAttributeA.fontColor="#253";
@@ -1140,6 +1227,22 @@ function mouseupevt(ev){
             	erEnityA.topLeft=p1;
             	erEnityA.bottomRight=p2;
             	erEnityA.centerpoint=p3;
+
+              if(points[erEnityA.bottomRight].x >= points[erEnityA.topLeft].x && (points[erEnityA.bottomRight].x - points[erEnityA.topLeft].x) < entityTemplate.width){
+                points[erEnityA.bottomRight].x = points[erEnityA.topLeft].x + entityTemplate.width;
+              }
+              else if(points[erEnityA.bottomRight].x < points[erEnityA.topLeft].x && (points[erEnityA.topLeft].x - points[erEnityA.bottomRight].x) < entityTemplate.width){
+
+                points[erEnityA.bottomRight].x = points[erEnityA.topLeft].x - entityTemplate.width;
+              }
+
+              if(points[erEnityA.bottomRight].y >= points[erEnityA.topLeft].y && (points[erEnityA.bottomRight].y - points[erEnityA.topLeft].y) < entityTemplate.width){
+                points[erEnityA.bottomRight].y = points[erEnityA.topLeft].y + entityTemplate.height;
+              }
+              else if(points[erEnityA.bottomRight].y < points[erEnityA.topLeft].y && (points[erEnityA.topLeft].y - points[erEnityA.bottomRight].y) < entityTemplate.height){
+                points[erEnityA.bottomRight].y = points[erEnityA.topLeft].y - entityTemplate.height;
+              }
+
               erEnityA.entityType="";
 				      erEnityA.fontColor="#253";
 				      erEnityA.font="Arial";
@@ -1166,6 +1269,21 @@ function mouseupevt(ev){
             erRelationA.topLeft=p1;
             erRelationA.bottomRight=p2;
             erRelationA.middleDivider=p3;
+
+            if(points[erRelationA.bottomRight].x >= points[erRelationA.topLeft].x && (points[erRelationA.bottomRight].x - points[erRelationA.topLeft].x) < relationTemplate.width){
+              points[erRelationA.bottomRight].x = points[erRelationA.topLeft].x + relationTemplate.width;
+            }
+            else if(points[erRelationA.bottomRight].x < points[erRelationA.topLeft].x && (points[erRelationA.topLeft].x - points[erRelationA.bottomRight].x) < relationTemplate.width){
+
+              points[erRelationA.bottomRight].x = points[erRelationA.topLeft].x - relationTemplate.width;
+            }
+
+            if(points[erRelationA.bottomRight].y >= points[erRelationA.topLeft].y && (points[erRelationA.bottomRight].y - points[erRelationA.topLeft].y) < relationTemplate.width){
+              points[erRelationA.bottomRight].y = points[erRelationA.topLeft].y + relationTemplate.height;
+            }
+            else if(points[erRelationA.bottomRight].y < points[erRelationA.topLeft].y && (points[erRelationA.topLeft].y - points[erRelationA.bottomRight].y) < relationTemplate.height){
+              points[erRelationA.bottomRight].y = points[erRelationA.topLeft].y - relationTemplate.height;
+            }
 
             diagram.push(erRelationA);
         }else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" ) && !(uimode=="CreateERRelation")) {
@@ -1466,8 +1584,8 @@ function drawGrid(){
       i++;
     }
     ctx.beginPath();
-    ctx.moveTo(i*gridSize,0-startY);
-    ctx.lineTo(i*gridSize,heightWindow-startY);
+    ctx.moveTo(i*gridSize,0+startY);
+    ctx.lineTo(i*gridSize,heightWindow+startY);
     ctx.stroke();
     ctx.closePath();
   }
@@ -1476,8 +1594,8 @@ function drawGrid(){
       i++;
     }
     ctx.beginPath();
-    ctx.moveTo(0-startX, i*gridSize);
-    ctx.lineTo(widthWindow-startX, i*gridSize);
+    ctx.moveTo(0+startX, i*gridSize);
+    ctx.lineTo(widthWindow+startX, i*gridSize);
     ctx.stroke();
     ctx.closePath();
   }
@@ -1487,8 +1605,8 @@ function drawGrid(){
   for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
     if(i%5==0){
       ctx.beginPath();
-      ctx.moveTo(i*gridSize,0-startY);
-      ctx.lineTo(i*gridSize,heightWindow-startY);
+      ctx.moveTo(i*gridSize,0+startY);
+      ctx.lineTo(i*gridSize,heightWindow+startY);
       ctx.stroke();
       ctx.closePath();
     }
@@ -1496,8 +1614,8 @@ function drawGrid(){
   for(i = 0+quadranty; i < quadranty+heightWindow; i++){
     if(i%5==0){
       ctx.beginPath();
-      ctx.moveTo(0-startX, i*gridSize);
-      ctx.lineTo(widthWindow-startX, i*gridSize);
+      ctx.moveTo(0+startX, i*gridSize);
+      ctx.lineTo(widthWindow+startX, i*gridSize);
       ctx.stroke();
       ctx.closePath();
     }
