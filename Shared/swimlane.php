@@ -1,7 +1,4 @@
-<script src="js/jquery-1.11.0.min.js"></script>
-
-<!-- Overlay -->
-<div id="overlay" style="display:none"></div>
+<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 
 
 <!-- PHP to set up variables and connect to database -->
@@ -85,7 +82,7 @@ $versLength = $versEndWeek - $versStartWeek + 1;
     // Move left column with side scroll.
     $(window).scroll(function () {
         $('#weeks').css({
-            'left': $(this).scrollLeft() + 5
+            'left': $(this).scrollLeft()
         });
     });
 
@@ -114,20 +111,20 @@ $versLength = $versEndWeek - $versStartWeek + 1;
 </script>
 
 <!-- Swimlane Box Start! -->
-<div id="swimlanebox" class="swimlanebox" style="display:block">
-    <div id="weeks" style="left: 5px; position:absolute; background: white">
+<div id="swimlanebox" class="swimlanebox">
+    <div id="weeks" style="position:absolute; background: white">
       <?php
       // Course information.
-      echo '<svg width="200" height="' . (70 + (70 * $versLength)) . '">';
-      echo '<rect y="0" x="0" width="200" height="70" style="fill:rgb(97,73,116)" />';
+      echo '<svg width="250" height="' . (70 + (70 * $versLength)) . '">';
+      echo '<rect y="0" x="0" width="250" height="70" style="fill:rgb(97,73,116)" />';
       echo '<text y="15" x="8" fill="white">' . $coursecode . '</text>';
       echo '<text y="35" x="8" fill="white">' . $coursename . '</text>';
       echo '<text y="55" x="8" fill="white">Version: ' . $vers . '</text>';
 
       // Add right amount of weeks to left column.
       for ($i = 1; $i <= $versLength; $i++) {
-        echo '<rect x="0" y="' . ($i * 70) . '" width="200" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />';
-        echo '<text x="70" y="' . (40 + ($i * 70)) . '" fill="black">Week ' . $i . '</text>';
+        echo '<rect x="0" y="' . ($i * 70) . '" width="250" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />';
+        echo '<text x="95" y="' . (40 + ($i * 70)) . '" fill="black">Week ' . $i . '</text>';
       }
       ?>
         </svg>
@@ -135,8 +132,8 @@ $versLength = $versEndWeek - $versStartWeek + 1;
 
   <?php if (isset($_GET["courseid"]) && isset($_GET["coursevers"])) {
     // Total svg size + add heading.
-    echo '<svg width="' . (200 * ($numberOfParts + 1)) . '" height="' . (70 + (70 * $versLength)) . '">';
-    echo '<rect y="0" x="0" width="' . 200 * ($numberOfParts + 1) . '" height="70" style="fill:rgb(146,124,157)" />';
+    echo '<svg width="' . (200 * ($numberOfParts + 1) + 50) . '" height="' . (70 + (70 * $versLength)) . '">';
+    echo '<rect y="0" x="0" width="' . (200 * ($numberOfParts + 1) + 50) . '" height="70" style="fill:rgb(146,124,157)" />';
 
     // Get parts and duggas.
     $querystring = "SELECT listentries.entryname, listentries.kind, quiz.qrelease, quiz.deadline 
@@ -162,8 +159,8 @@ $versLength = $versEndWeek - $versStartWeek + 1;
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
       if ($row['kind'] == 4) {
         $j = 0;
-        $pos = (($i * 200) + 200);
-        echo '<text y="50" x="' . $pos . '" fill="white">' . $row['entryname'] . '</text>';
+        $pos = (($i * 200) + 250);
+        echo '<text y="50" x="' . ($pos + 10) . '" fill="white">' . $row['entryname'] . '</text>';
         echo '<rect y="70" x="' . $pos . '" width="200" height="' . (70 * $versLength) . '" style="fill:rgb(';
         if ($white) {
           echo '250,250,250';
@@ -206,17 +203,17 @@ $versLength = $versEndWeek - $versStartWeek + 1;
     $thisDate = new DateTime(date("Y/m/d"));
     $thisWeek = $thisDate->format("W");
 
-    echo '<line stroke-dasharray="5,5" x1="200" y1="' .
+    echo '<line stroke-dasharray="5,5" x1="250" y1="' .
       (100 + ($thisWeek - $versStartWeek) * 70) .
-      '" x2="' . (($numberOfParts * 200) + 200) .
+      '" x2="' . (($numberOfParts * 200) + 250) .
       '" y2="' . (100 + ($thisWeek - $versStartWeek) * 70) .
       '" style="stroke:rgb(255,0,0);stroke-width:2" />';
 
     echo '<line onmouseover="mouseOverLine(\'Current date:<br>' . $thisDate->format("jS F") .
       '\')" onmouseout="mouseGoneFromLine()"' .
-      ' x1="200" y1="' .
+      ' x1="250" y1="' .
       (100 + ($thisWeek - $versStartWeek) * 70) .
-      '" x2="' . (($numberOfParts * 200) + 200) .
+      '" x2="' . (($numberOfParts * 200) + 250) .
       '" y2="' . (100 + ($thisWeek - $versStartWeek) * 70) .
       '" style="stroke:rgb(0,0,0);stroke-width:10;stroke-opacity:0" />';
   }
