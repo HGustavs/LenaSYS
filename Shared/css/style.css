@@ -832,6 +832,10 @@ header td {
   width: 216px;
 }
 
+input {
+  border-radius: 2px;
+}
+
 .loginBox .inputwrapper {
   clear:both;
 	width:100%;
@@ -1057,7 +1061,7 @@ input.fileed-button {
 
 input.submit-button:hover {
   background-color:#7B5A96;
-  border-radius:4px;
+  border-radius:2px;
 }
 
 input.fileed-button:hover {
