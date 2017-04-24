@@ -1,5 +1,5 @@
 	<header>
-		<?php
+		<?php	
 			echo "<table class='navheader'><tr>";
 
 			include_once "../Shared/basic.php";
@@ -79,6 +79,10 @@
 
 
 		echo "</tr></table>";
+		
+		//Cookie message
+		echo "<div id='cookiemsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
+		
 	?>
 </header>
 <script type="text/javascript">
@@ -86,4 +90,8 @@
   function displaySwimlane(){
     $("#swimlane").css("display", "block");
   }
+	
+	function cookieMessage(){
+		$("#cookiemsg").css("display", "none");
+	}
 </script>
