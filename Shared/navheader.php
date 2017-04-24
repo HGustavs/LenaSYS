@@ -86,12 +86,20 @@
 	?>
 </header>
 <script type="text/javascript">
+		if(localStorage.getItem("cookieMessage")=="off"){
+			$("#cookiemsg").css("display", "none");
+		}
+		else{
+			$("#cookiemsg").css("display", "flex");
+		}
+
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
   function displaySwimlane(){
     $("#swimlane").css("display", "block");
   }
 	
 	function cookieMessage(){
+		localStorage.setItem("cookieMessage", "off");
 		$("#cookiemsg").css("display", "none");
 	}
 </script>
