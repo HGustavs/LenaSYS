@@ -313,20 +313,16 @@ diagram.insides = function (ex, ey, sx, sy) {
 			if(points[this[i].topLeft].y > points[this[i].bottomRight].y || points[this[i].topLeft].y > points[this[i].bottomRight].y - minEntityY) {
 				points[this[i].topLeft].y = points[this[i].bottomRight].y - minEntityY;
 			}
-		}
-	}
-	for(var i = 0; i < this.length; i++) {
-		if (sx > ex) {
-			var tempa = ex;
-			ex = sx;
-			sx = tempa;
-		}
-		if (sy > ey) {
-			var tempb = ey;
-			ey = sy;
-			sy = tempb;
-		}
-		if(!(this[i].kind == 1)) {				
+			if (sx > ex) {
+				var tempa = ex;
+				ex = sx;
+				sx = tempa;
+			}
+			if (sy > ey) {
+				var tempb = ey;
+				ey = sy;
+				sy = tempb;
+			}
 			var tx = points[this[i].topLeft].x;
 			var ty = points[this[i].topLeft].y;
 			var bx = points[this[i].bottomRight].x;
