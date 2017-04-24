@@ -336,7 +336,7 @@
                 echo "<span style='color: green;' />Initialization of database complete. </span><br>";
             } catch (PDOException $e) {
                 echo "<span style='color: red;' />Failed initialization of database because of query (in init_db.sql): </span><br>";
-                echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>{$completeQuery}</textarea></code><br><br>";
+                echo "<code><textarea rows='4' cols='70' readonly>{$completeQuery}</textarea></code><br><br>";
             }
             flush();
             ob_flush();
@@ -434,7 +434,7 @@
                 echo "<span style='color: green;' />Successfully filled database with test data from {$file}.sql.</span><br>";
             } catch (PDOException $e) {
                 echo "<span style='color: red;' />Failed to fill database with data because of query in {$file}.sql (Skipped the rest of this file):</span><br>";
-                echo "<code><textarea rows='2' cols='70' readonly style='resize:none'>{$completeQuery}</textarea></code><br><br>";
+                echo "<code><textarea rows='4' cols='70' readonly>{$completeQuery}</textarea></code><br><br>";
             }
         }
         flush();
