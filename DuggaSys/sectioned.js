@@ -90,16 +90,10 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='3'>U-3-4-5</option>";
 
 	$("#gradesys").html(str);
-	
-	// Display Select Marker
-	$(".item").css("border","none");
-	$(".item").css("box-shadow","none");
-	$("#I"+lid).css("border","2px dashed #FC5");
-	$("#I"+lid).css("box-shadow","1px 1px 3px #000 inset");
 		
 	// Set grouptype
 	str="";
-	if(grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
+	if(grouptype==null||grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
 	else str+="<option value='0'>Regular dugga</option>";
 	
 	if(grouptype==1) str+="<option selected='selected' value='1'>Group dugga</option>"
@@ -659,7 +653,7 @@ function returnedSection(data)
 		}
 
 		if(retdata["writeaccess"]){
-      str += "<td><input type='button' value='New Item' class='submit-button' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
+      str += "<td><input type='button' value='New Item' class='submit-button' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
 			str+="</tr></table>";
       str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>"; 
 		}else{
