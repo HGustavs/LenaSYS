@@ -331,14 +331,11 @@ function handleTable(currentLine, prevLine, nextLine) {
             }
         }
     }
-
     // close table
     if(!isTable(nextLine)) {
         markdown += "</tbody></table>";
     }
-
     return markdown;
-
 }
 //----------------------------------------------------------------------------------
 // markdownBlock: 
