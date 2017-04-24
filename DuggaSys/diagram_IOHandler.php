@@ -1,16 +1,9 @@
 <?php
-    $myfile = fopen("Saves/test.txt", "w");
-    if( $_REQUEST["hash"] ) {
-
-        $hash = $_REQUEST['hash'];
-        echo "Welcome " . $hash;
+if(isset($_POST['save'])){
+    save();
+}
+    function save(){
+        $myfile = fopen("Saves/te.txt", "w");
     }
-
-   // $bar = $_POST['bar'];
-   // echo($bar);
-//
 ?>
-<script>
-    console.log();
-</script>
 

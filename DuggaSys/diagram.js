@@ -1756,6 +1756,7 @@ function hashfunction()
 		}
 		var hexHash = hash.toString(16);
 		console.log(hash.toString(16));
+		return hexHash;
 	}
 }
 

@@ -99,6 +99,17 @@ pdoConnect();
 	<?php
 		include '../Shared/loginbox.php';
 	?>
-
+    <?php
+    if(isset($_POST['StringDiagram'])){
+        $str = $_POST['StringDiagram'];
+        $hash = $_POST['Hash'];
+        save($str,$hash);
+    }
+    function save($data,$hash){
+        mkdir("Saves/b", 0777, true);
+        $myfile = fopen("Saves/b/$hash.txt", "w");
+        fwrite($myfile,$data);
+    }
+    ?>
 </body>
 </html>

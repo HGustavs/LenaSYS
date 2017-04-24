@@ -1,7 +1,9 @@
 /**
  * Created by Jockus on 2017-04-24.
  */
-
+var a;
+var c;
+var b;
 function downloadMode(el){
     var canvas = document.getElementById("content");
     var selectBox = document.getElementById("download");
@@ -21,13 +23,26 @@ function downloadMode(el){
     }
 }
 
-function saveToServer(){
+function saveToServer(dia){
 
-    window.open("diagram_IOHandler.php");
+    //window.open("diagram_IOHandler.php");
    // $.post("diagram_IOHandler.php",{ string: "ABC" });
-    $.post( "diagram_IOHandler.php",{hash: "ABC"}, function( data ) {
-        $('#stage').html(data);
-    });
+    //$.post( "diagram_IOHandler.php",{DataString: a}, function( a ) {
+    //    $('#stage').html(a);
+    //});
+   $.ajax({
+       url: 'diagram.php',
+       type: 'POST', // GET or POST
+        data: {StringDiagram : dia, Hash: hashfunction()} // will be in $_POST on PHP side
+       //success: function(data) { // data is the response from your php script
+       //    // This function is called if your AJAX query was successful
+       //    alert("Response is: " + data);
+       //},
+       //error: function() {
+       //    // This callback is called if your AJAX query has failed
+       //    alert("Error!");
+       //}
+   });
 
 
 
@@ -51,8 +66,9 @@ function Save() {
         diagram_names: c
     };
     a = JSON.stringify(obj);
-    saveToServer();
+    saveToServer(a);
     console.log("State is saved");
+
 
 }
 function SaveFile(el){
