@@ -932,113 +932,100 @@ function updateActivePoint(){
     activePoint = null;
   }
 }
-function mousemoveevt(ev, t){
-		xPos = ev.clientX;
-		yPos = ev.clientY;
-		mox=cx;
-		moy=cy;
-	    hovobj = diagram.inside(cx,cy);
-		if (ev.pageX || ev.pageY == 0){ // Chrome
-      cx=ev.pageX-acanvas.offsetLeft;
-			cy=ev.pageY-acanvas.offsetTop;
-		} else if (ev.layerX||ev.layerX==0) { // Firefox
-			cx=ev.layerX-acanvas.offsetLeft;
-			cy=ev.layerY-acanvas.offsetTop;
-		} else if (ev.offsetX || ev.offsetX == 0) { // Opera
-			cx=ev.offsetX-acanvas.offsetLeft;
-			cy=ev.offsetY-acanvas.offsetTop;
+
+function mousemoveevt(ev, t) {
+	xPos = ev.clientX;
+	yPos = ev.clientY;
+	mox = cx;
+	moy = cy;
+	hovobj = diagram.inside(cx, cy);
+	if (ev.pageX || ev.pageY == 0) { // Chrome
+		cx = ev.pageX - acanvas.offsetLeft;
+		cy = ev.pageY - acanvas.offsetTop;
+	} else if (ev.layerX || ev.layerX == 0) { // Firefox
+		cx = ev.layerX - acanvas.offsetLeft;
+		cy = ev.layerY - acanvas.offsetTop;
+	} else if (ev.offsetX || ev.offsetX == 0) { // Opera
+		cx = ev.offsetX - acanvas.offsetLeft;
+		cy = ev.offsetY - acanvas.offsetTop;
+	}
+	if(md == 1 || md == 2 || md == 0 && uimode != " ") {
+		if(snapToGrid) {
+			cx = Math.round(cx / gridSize) * gridSize;
+			cy = Math.round(cy / gridSize) * gridSize;
 		}
-    if(md==1 || md==2 || md==0 && uimode != " "){
-      if(snapToGrid){
-        cx=Math.round(cx/gridSize)*gridSize
-        cy=Math.round(cy/gridSize)*gridSize;
-      }
-    }
-		if(md==0){
-				// Select a new point only if mouse is not already moving a point or selection box
-				sel=points.distance(cx,cy);
-
-				// If mouse is not pressed highlight closest point
-				points.clearsel();
-
-				movobj=diagram.inside(cx,cy);
-
-        updateActivePoint();
-
-		}else if(md==1){
-				// If mouse is pressed down and no point is close show selection box
-		}else if(md==2){
-            // If mouse is pressed down and at a point in selected object - move that point
-            // Changes relations size as mirrored.
-            if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind==5) {
-                points[diagram[selobj].bottomRight].x = cx;
-                points[diagram[selobj].bottomRight].y = cy;
-            	points[diagram[selobj].topLeft].x = points[diagram[selobj].middleDivider].x - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, true);
-                points[diagram[selobj].topLeft].y = points[diagram[selobj].middleDivider].y - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, false);
-			}
-            else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind==5) {
-                points[diagram[selobj].topLeft].x = cx;
-                points[diagram[selobj].topLeft].y = cy;
-                points[diagram[selobj].bottomRight].x = points[diagram[selobj].middleDivider].x + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, true);
-                points[diagram[selobj].bottomRight].y = points[diagram[selobj].middleDivider].y + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, false);
-            }
-            else {
-                points[sel.ind].x = cx;
-                points[sel.ind].y = cy;
-            }
-        }
-		else if(md==3){
-				// If mouse is pressed down inside a movable object - move that object
-				if(movobj!=-1){
-					for (var i=0;i<diagram.length;i++){
-						if(diagram[i].targeted == true){
-              if(snapToGrid){
-                cx=Math.round(cx/gridSize)*gridSize
-                cy=Math.round(cy/gridSize)*gridSize;
-              }
-              diagram[i].move(cx-mox,cy-moy);
-						}
+	}
+	if(md == 0) {
+		// Select a new point only if mouse is not already moving a point or selection box
+		sel = points.distance(cx, cy);
+		// If mouse is not pressed highlight closest point
+		points.clearsel();
+		movobj = diagram.inside(cx, cy);
+		updateActivePoint();
+	} else if(md == 1) {
+		// If mouse is pressed down and no point is close show selection box
+	} else if(md == 2) {
+		// If mouse is pressed down and at a point in selected object - move that point
+		// Changes relations size as mirrored.
+		if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind == 5) {
+			points[diagram[selobj].bottomRight].x = cx;
+			points[diagram[selobj].bottomRight].y = cy;
+			points[diagram[selobj].topLeft].x = points[diagram[selobj].middleDivider].x - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, true);
+			points[diagram[selobj].topLeft].y = points[diagram[selobj].middleDivider].y - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, false);
+		} else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind == 5) {
+			points[diagram[selobj].topLeft].x = cx;
+			points[diagram[selobj].topLeft].y = cy;
+			points[diagram[selobj].bottomRight].x = points[diagram[selobj].middleDivider].x + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, true);
+			points[diagram[selobj].bottomRight].y = points[diagram[selobj].middleDivider].y + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, false);
+		} else {
+			points[sel.ind].x = cx;
+			points[sel.ind].y = cy;
+		}
+	} else if(md == 3) {
+		// If mouse is pressed down inside a movable object - move that object
+		if(movobj != -1) {
+			for (var i = 0; i < diagram.length; i++) {
+				if(diagram[i].targeted == true) {
+					if(snapToGrid) {
+						cx = Math.round(cx / gridSize) * gridSize;
+						cy = Math.round(cy / gridSize) * gridSize;
 					}
+					diagram[i].move(cx - mox, cy - moy);
 				}
+			}
 		}
-		diagram.linedist(cx,cy);
-
-		cx+=startX;
-		cy+=startY;
-
-		updategfx();
-
-		// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
-		for(i=0;i<diagram.length;i++){
-				item=diagram[i];
-				// Diagram item
-				if(item.symbolkind==3){
-						item.quadrants();
-				}
-
+	}
+	diagram.linedist(cx, cy);
+	cx += startX;
+	cy += startY;
+	updategfx();
+	// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
+	for(var i = 0; i < diagram.length; i++) {
+		item = diagram[i];
+		// Diagram item
+		if(item.symbolkind == 3) {
+			item.quadrants();
 		}
-
-		// Draw select or create dotted box
-		if(md==4){
-				ctx.setLineDash([3, 3]);
-				ctx.beginPath(1);
-				ctx.moveTo(sx,sy);
-				ctx.lineTo(cx,sy);
-				ctx.lineTo(cx,cy);
-				ctx.lineTo(sx,cy);
-				ctx.lineTo(sx,sy);
-				ctx.strokeStyle = "#d51";
-				ctx.stroke();
-            	ctx.setLineDash([]);
-            	ctx.closePath(1);
-            	if(ghostingcrosses == true){
-                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                    crossfillStyle = "rgba(255, 102, 68, 0.0)";
-                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-				}
-
-
+	}
+	// Draw select or create dotted box
+	if(md == 4) {
+		ctx.setLineDash([3, 3]);
+		ctx.beginPath(1);
+		ctx.moveTo(sx, sy);
+		ctx.lineTo(cx, sy);
+		ctx.lineTo(cx, cy);
+		ctx.lineTo(sx, cy);
+		ctx.lineTo(sx, sy);
+		ctx.strokeStyle = "#d51";
+		ctx.stroke();
+		ctx.setLineDash([]);
+		ctx.closePath(1);
+		if(ghostingcrosses == true){
+			crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+			crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+			crossfillStyle = "rgba(255, 102, 68, 0.0)";
 		}
+	}
 }
 
 function mousedownevt(ev) {
