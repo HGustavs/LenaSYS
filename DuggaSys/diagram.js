@@ -957,21 +957,21 @@ function mousemoveevt(ev, t){
 
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
-		}else if(md==2) {
-            // If mouse is pressed down and a point is selected - move that point
-            if (diagram[selobj].symbolkind == 5) {
-                // Changes relations size as mirrored.
-                points[sel.ind].x = cx;
-                points[sel.ind].y = cy;
+		}else if(md==2){
+            // If mouse is pressed down and at a point in selected object - move that point
 
-                if (diagram[selobj].bottomRight == sel.ind) {
-                    points[diagram[selobj].topLeft].x = points[diagram[selobj].middleDivider].x - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, true);
-                    points[diagram[selobj].topLeft].y = points[diagram[selobj].middleDivider].y - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, false);
-                }
-            }
-            else {
+            // Changes relations size as mirrored.
+            if (diagram[selobj].bottomRight == sel.ind) {
                 points[sel.ind].x = cx;
                 points[sel.ind].y = cy;
+            	points[diagram[selobj].topLeft].x = points[diagram[selobj].middleDivider].x - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, true);
+                points[diagram[selobj].topLeft].y = points[diagram[selobj].middleDivider].y - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, false);
+			}
+            else if (diagram[selobj].topLeft == sel.ind) {
+                points[sel.ind].x = cx;
+                points[sel.ind].y = cy;
+                points[diagram[selobj].bottomRight].x = points[diagram[selobj].middleDivider].x + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, true);
+                points[diagram[selobj].bottomRight].y = points[diagram[selobj].middleDivider].y + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, false);
             }
         }
 		else if(md==3){
