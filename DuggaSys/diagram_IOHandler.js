@@ -22,7 +22,14 @@ function downloadMode(el){
 }
 
 function saveToServer(){
-    
+
+    window.open("diagram_IOHandler.php");
+   // $.post("diagram_IOHandler.php",{ string: "ABC" });
+    $.post( "diagram_IOHandler.php",{hash: "ABC"}, function( data ) {
+        $('#stage').html(data);
+    });
+
+
 
 }
 
@@ -44,6 +51,7 @@ function Save() {
         diagram_names: c
     };
     a = JSON.stringify(obj);
+    saveToServer();
     console.log("State is saved");
 
 }
