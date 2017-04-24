@@ -521,7 +521,7 @@ function process()
 					}
 					var student=new Array;
 					// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,setTeacher});
+					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class});
 										
 					// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 					for(var j=0;j<momtmp.length;j++){
