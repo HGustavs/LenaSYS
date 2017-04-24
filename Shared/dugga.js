@@ -631,7 +631,6 @@ function processResetPasswordCheckSecurityAnswer() {
 			},
 			success:function(data) {
 				var result = JSON.parse(data);
-				
 				if(result['checkanswer'] == "success") {
 					$.ajax({
 						type:"POST",
