@@ -255,6 +255,7 @@ diagram.draw = function () {
 			this[i].draw(1, 1);
 		}
 	}
+	// Render Lines
 	for(i = 0; i < this.length; i++) {
 		if(this[i].symbolkind == 4) {
 			this[i].draw();
