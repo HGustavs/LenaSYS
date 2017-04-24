@@ -367,10 +367,17 @@ function leaves(){
 //Switch Content between one table and separate tables;
 
 function switchcontent() {
+	var allcont = $("#allcontent");
+	if(allcont.css('display') != 'none'){
+        $("button.switchContent").first().html('Switch to One table');
+	}
+	else{
+        $("button.switchContent").first().html('Switch to Multiple tables');
+    }
 		$("#allglobalfiles").toggle("hide");
 		$("#allcoursefiles").toggle("hide");
     	$("#alllocalfiles").toggle("hide");
-		$("#allcontent").toggle("show");
+    allcont.toggle("show");
 }
 
 function convertfilekind(kind){
