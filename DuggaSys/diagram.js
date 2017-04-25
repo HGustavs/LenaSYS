@@ -1085,14 +1085,17 @@ function doubleclick(ev)
 	var posistionX = (startX+xPos);
 	var posistionY = (startY+yPos);
 	console.log(posistionX+" | "+posistionY);
-	if(diagram[selobj].inside(posistionX,posistionY)){
+	if(diagram.inside(posistionX,posistionY)){
 		console.log(" H|J ");
         openAppearanceDialogMenu();
         document.getElementById('nametext').value = diagram[selobj].name;
 		document.getElementById('fontColor').value = diagram[selobj].fontColor;
 		document.getElementById('font').value = diagram[selobj].font;
-    document.getElementById('attributeType').value = diagram[selobj].attributeType;
-    document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
+    	document.getElementById('attributeType').value = diagram[selobj].attributeType;
+    	document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
+  }
+  else{
+  	console.log("Can't find!");
   }
 }
 
@@ -1578,7 +1581,7 @@ function drawGrid(){
   ctx.setLineDash([5, 0]);
   var quadrantx = (startX < 0)? startX: -startX,
     quadranty = (startY < 0)? startY: -startY;
-  console.log(quadrantx+" : "+widthWindow+ "; "+(quadrantx+widthWindow));
+  //console.log(quadrantx+" : "+widthWindow+ "; "+(quadrantx+widthWindow));
   for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
     if(i%5==0){
       i++;
