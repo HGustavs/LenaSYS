@@ -55,6 +55,8 @@ var crossStrokeStyle2 = "#d51";
 var minEntityX = 100;
 var minEntityY = 50;
 
+
+
 var attributeTemplate = { // Defines entity/attribute/relations predefined sizes
   width: 7*gridSize,
   height: 4*gridSize
@@ -761,8 +763,11 @@ function Path() {
     }
 }
 
+
+// the code seems to start here. think this is the Main();
 function initcanvas()
 {
+	setInterval(hashfunction, 1000);
     widthWindow = (window.innerWidth-20);
 	heightWindow = (window.innerHeight-220);
 	document.getElementById("canvasDiv").innerHTML="<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
@@ -1900,7 +1905,7 @@ function Load() {
     updategfx();
 }
 
-//calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram.
+//calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
 function hashfunction()
 {
     window.location.hash=diagram;
@@ -1917,9 +1922,100 @@ function hashfunction()
         hash = ((hash<<5)-hash)+char;
         hash = hash & hash; // Convert to 32bit integer
 		}
+		
 		var hexHash = hash.toString(16);
+		var copyDiagram = JSON.parse(JSON.stringify(diagram));
+		localStorage.setItem('localhash', hexHash);
+		//localStorage.setItem('localdiagram', copyDiagram);
+		
+		for (i = 0; i < diagram.length; i++){
+        c[i] = diagram[i].constructor.name;
+        c[i] = c[i].replace(/"/g,"");
+			}
+
+		var obj = {
+		diagram: diagram,
+		points: points,
+		diagram_names: c
+			};
+		a = JSON.stringify(obj);
+		
+		localStorage.setItem('localdiagram', a);
+		
+		
 		console.log(hash.toString(16));
 	}
+}
+
+// retrive an old diagram if it exist.
+function loadDiagram(){
+	
+	//loacal storage and hash
+	var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+	var localhexHash = localStorage.getItem('localhash');
+	
+	console.log("local hash: ", localhexHash);
+	console.log("local localDiagram: ", localDiagram);
+	
+	var diagramToString = "";
+	var hash = 0;
+	for(var i = 0; i < diagram.length; i++){
+		diagramToString = diagramToString + JSON.stringify(diagram[i])
+	}
+
+    if (diagram.length == 0){console.log(hash);}
+	else{
+		for (i = 0; i < diagramToString.length; i++) {
+        char = diagramToString.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+		}
+		
+		var hexHash = hash.toString(16);
+		
+		
+		}
+		console.log("hash: " + hexHash);
+		
+	if(typeof localhexHash !== "undefined" && typeof localDiagram !== "undefined"){
+		
+		if(localhexHash != hexHash){
+				
+				var dia = JSON.parse(JSON.stringify(localDiagram));
+				b= dia;
+				for (i = 0; i < b.diagram.length; i++) {
+				if (b.diagram_names[i] == "Symbol") {
+					b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
+				} else if (b.diagram_names[i] == "Path") {
+					b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+						}
+				}
+				diagram.length = b.diagram.length;
+				for (i = 0; i < b.diagram.length;i++) {
+				diagram[i] = b.diagram[i];
+				}
+
+				// Points fix
+				for (i = 0; i < b.points.length; i++) {
+					b.points[i] = Object.assign(new Path, b.points[i]);
+				}
+				points.length = b.points.length;
+				for (i = 0; i< b.points.length; i++ ){
+					points[i] = b.points[i];
+				}
+				console.log("State is loaded");
+				//Redrawn old state.
+				updategfx();
+				
+				
+				} else {console.log("the hashes are identical")}
+	
+	}else{console.log("no diagram have been saved.")}
+}
+
+//remove localstorage
+function removeLocal(){
+	 localStorage.clear();
 }
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element

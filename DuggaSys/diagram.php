@@ -32,7 +32,7 @@ pdoConnect();
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updategfx() must be last -->
-<body onload="initcanvas(); Symbol(); canvassize(); updategfx();">
+<body onload="initcanvas(); Symbol(); canvassize(); updategfx(); loadDiagram();">
 
 	<?php
 		$noup="COURSE";
@@ -54,7 +54,7 @@ pdoConnect();
 			</select>
 			<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>
 			<button onclick='debugMode();'>Debug</button>
-			<button onclick='hashfunction();'>Hash</button>
+			<button onclick='removeLocal();'>Removed Hashed Diagram</button>
 			<button onclick='eraseSelectedObject();'>Delete Object</button>
 			<button onclick='clearCanvas();'>Delete All</button>
 			<button id='zoomInButton' class='unpressed' style='right:0; position:fixed; margin-right:120px;'>+</button>
