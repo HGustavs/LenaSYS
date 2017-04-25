@@ -196,7 +196,6 @@ function Symbol(kind) {
     }
   }
 
-
   //--------------------------------------------------------------------
   // sortConnector
   // Sorts the connector
@@ -353,13 +352,36 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // delete
+    // erase/delete
     // attempts to erase object completely from canvas
     //--------------------------------------------------------------------
     this.erase = function (){
       this.movePoints();
-      this.deleteLines();
-      //emptyConnectors();
+      this.emptyConnectors();
+    }
+
+    //--------------------------------------------------------------------
+    // emptyConnector
+    // Empties every connector of the object
+    //--------------------------------------------------------------------
+
+    this.emptyConnectors = function (){
+      for(i = 0; i < this.connectorTop.length; i++){
+        this.connectorTop.splice(i,1);
+        i--;
+      }
+      for(i = 0; i < this.connectorRight.length; i++){
+        this.connectorRight.splice(i,1);
+        i--;
+      }
+      for(i = 0; i < this.connectorBottom.length; i++){
+        this.connectorBottom.splice(i,1);
+        i--;
+      }
+      for(i = 0; i < this.connectorLeft.length; i++){
+        this.connectorLeft.splice(i,1);
+        i--;
+      }
     }
 
     //--------------------------------------------------------------------
@@ -374,52 +396,51 @@ function Symbol(kind) {
       points[this.middleDivider] = waldoPoint;
     }
 
+    this.getPoints = function(){
+      var private_points = [];
+      for(i = 0; i < this.connectorTop.length; i++){
+        private_points.push(this.connectorTop[i].to);
+        private_points.push(this.connectorTop[i].from);
+      }
+      for(i = 0; i < this.connectorRight.length; i++){
+        private_points.push(this.connectorRight[i].to);
+        private_points.push(this.connectorRight[i].from);
+      }
+      for(i = 0; i < this.connectorBottom.length; i++){
+        private_points.push(this.connectorBottom[i].to);
+        private_points.push(this.connectorBottom[i].from);
+      }
+      for(i = 0; i < this.connectorLeft.length; i++){
+        private_points.push(this.connectorLeft[i].to);
+        private_points.push(this.connectorLeft[i].from);
+      }
+      private_points.push(this.topLeft);
+      private_points.push(this.bottomRight);
+      private_points.push(this.middleDivider);
+      private_points.push(this.centerpoint);
+
+      return private_points;
+    }
     //--------------------------------------------------------------------
-    // movePoints
-    // Moves all relevant points, within the object, off the canvas.
-    // IMP!: Should not be moved back on canvas after this function is run.
+    // getLines
+    // Returns all the lines connected to the object
     //--------------------------------------------------------------------
-    this.deleteLines = function(){
-      // Adds the different connectors into an array to reduce the amount of code
-      var connectors = [this.connectorTop, this.connectorRight,  this.connectorBottom,  this.connectorLeft];
+    this.getLines = function(){
+      var private_points = this.getPoints();
+      var lines = diagram.getLineObjects();
+      var object_lines = [];
+      for(i = 0; i < lines.length; i++){
+        var line = lines[i];
 
-      for(i = 0; i < diagram.length; i++){
-        var hasDeleted = false;
-        var line = diagram[i];
-
-        //Line
-        if(line.symbolkind == 4){
-          if(this.symbolkind == 2){
-            //Deletes lines connected to object's centerpoint
-            //Line always have topLeft and bottomRight if symbolkind == 4, because that means it's a line object
-            if(line.topLeft == this.centerpoint || line.bottomRight == this.centerpoint) {
-              diagram.delete(line);
-              hasDeleted = true;
-            }
+        //Connected to connectors top, right, bottom and left; topLeft, bottomRight, centerpoint or middleDivider.
+        for(var j = 0; j < private_points.length; j++){
+          if (line.topLeft == private_points[j] || line.bottomRight == private_points[j]) {
+            object_lines.push(line);
+            break;
           }
-
-          else if(this.symbolkind == 3){
-            hasDeleted = false;
-            //Deletes lines connected to connectors top, right, bottom and left.
-            for(var j = 0; j < connectors.length; j++){
-              for (var k = 0; k < connectors[j].length; k++) {
-                if (line.topLeft == connectors[j][k].from || line.bottomRight == connectors[j][k].from ||  line.topLeft == connectors[j][k].to || line.bottomRight == connectors[j][k].to) {
-                  diagram.delete(line);
-
-                  hasDeleted = true;;
-                  break;
-                }
-              }
-              if(hasDeleted){
-                break;
-              }
-            }
-          }
-        }
-        if(hasDeleted){
-          i=-1;
         }
       }
+      return object_lines;
     }
 
     //--------------------------------------------------------------------
