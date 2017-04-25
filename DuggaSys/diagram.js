@@ -305,22 +305,22 @@ diagram.delete = function (object)
 diagram.insides = function (ex, ey, sx, sy) {	
 	//ensure that an entity cannot scale below the minimum size
 	for(var i = 0; i < this.length; i++) {
+		if (sx > ex) {
+			var tempa = ex;
+			ex = sx;
+			sx = tempa;
+		}
+		if (sy > ey) {
+			var tempb = ey;
+			ey = sy;
+			sy = tempb;
+		}
 		if(!(this[i].kind == 1)) {
 			if(points[this[i].topLeft].x > points[this[i].bottomRight].x || points[this[i].topLeft].x > points[this[i].bottomRight].x - minEntityX) {
 				points[this[i].topLeft].x = points[this[i].bottomRight].x - minEntityX;
 			}
 			if(points[this[i].topLeft].y > points[this[i].bottomRight].y || points[this[i].topLeft].y > points[this[i].bottomRight].y - minEntityY) {
 				points[this[i].topLeft].y = points[this[i].bottomRight].y - minEntityY;
-			}
-			if (sx > ex) {
-				var tempa = ex;
-				ex = sx;
-				sx = tempa;
-			}
-			if (sy > ey) {
-				var tempb = ey;
-				ey = sy;
-				sy = tempb;
 			}
 			var tx = points[this[i].topLeft].x;
 			var ty = points[this[i].topLeft].y;
@@ -329,6 +329,24 @@ diagram.insides = function (ex, ey, sx, sy) {
 			if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by) {
 				this[i].targeted = true;
 				// return i;
+			} else {
+				this[i].targeted = false;
+			}
+		}
+		if(this[i].kind == 1) {
+			var tempPoints = [];
+			for (var j = 0; j < this[i].segments.length; j++) {
+				tempPoints.push({x:points[this[i].segments[j].pa].x, y:points[this[i].segments[j].pa].y});
+			}
+			var pointsSelected = 0;
+			for (var j = 0; j < tempPoints.length; j++) {
+				if(tempPoints[j].x < ex && tempPoints[j].x > sx &&
+					tempPoints[j].y < ey && tempPoints[j].y > sy) {
+					pointsSelected++;
+				}
+			}
+			if(pointsSelected >= tempPoints.length) {
+				this[i].targeted = true;
 			} else {
 				this[i].targeted = false;
 			}
@@ -969,19 +987,21 @@ function mousemoveevt(ev, t) {
 	} else if(md == 2) {
 		// If mouse is pressed down and at a point in selected object - move that point
 		// Changes relations size as mirrored.
-		if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind == 5) {
-			points[diagram[selobj].bottomRight].x = cx;
-			points[diagram[selobj].bottomRight].y = cy;
-			points[diagram[selobj].topLeft].x = points[diagram[selobj].middleDivider].x - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, true);
-			points[diagram[selobj].topLeft].y = points[diagram[selobj].middleDivider].y - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, false);
-		} else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind == 5) {
-			points[diagram[selobj].topLeft].x = cx;
-			points[diagram[selobj].topLeft].y = cy;
-			points[diagram[selobj].bottomRight].x = points[diagram[selobj].middleDivider].x + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, true);
-			points[diagram[selobj].bottomRight].y = points[diagram[selobj].middleDivider].y + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, false);
-		} else {
-			points[sel.ind].x = cx;
-			points[sel.ind].y = cy;
+		if(diagram[selobj].kind != 1) {
+			if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind == 5) {
+				points[diagram[selobj].bottomRight].x = cx;
+				points[diagram[selobj].bottomRight].y = cy;
+				points[diagram[selobj].topLeft].x = points[diagram[selobj].middleDivider].x - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, true);
+				points[diagram[selobj].topLeft].y = points[diagram[selobj].middleDivider].y - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, false);
+			} else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind == 5) {
+				points[diagram[selobj].topLeft].x = cx;
+				points[diagram[selobj].topLeft].y = cy;
+				points[diagram[selobj].bottomRight].x = points[diagram[selobj].middleDivider].x + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, true);
+				points[diagram[selobj].bottomRight].y = points[diagram[selobj].middleDivider].y + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, false);
+			} else {
+				points[sel.ind].x = cx;
+				points[sel.ind].y = cy;
+			}
 		}
 	} else if(md == 3) {
 		// If mouse is pressed down inside a movable object - move that object
