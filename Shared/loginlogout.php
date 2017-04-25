@@ -34,6 +34,9 @@ if($opt=="LOGIN"){
 			// Successfully logged in, return user name
 			$res["login"] = "success";
 			$res["username"] = $username;
+            if(isset($_SESSION["securityquestion"])) {
+                $res["securityquestion"] = "set";
+            }
 
 			// Log USERID for Dugga Access
 			logUserEvent($username,EventTypes::LoginSuccess,"");

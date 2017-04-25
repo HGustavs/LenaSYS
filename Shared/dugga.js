@@ -14,6 +14,18 @@ var inParams = "UNK";;
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
+//show or hide securitynotification based on localstorage variables
+$( document ).ready(function() {
+    if (localStorage.getItem("securityquestion") === null && localStorage.getItem("securitynotification") == "on"){
+        showSecurityPopup();
+    }
+});
+
+// Set the localstorage item securitynotifaction to on or off.
+function setSecurityNotifaction(param){
+    localStorage.setItem("securitynotification", param);
+}
+
 function toggleloginnewpass(){
 	resetFields();
 	if(status == 0){
@@ -687,6 +699,12 @@ function processLogin() {
 			success:function(data) {
 				var result = JSON.	parse(data);
 				if(result['login'] == "success") {
+                    if(result['securityquestion'] != null) {
+                        localStorage.setItem("securityquestion", "set");
+                    } else {
+                        setSecurityNotifaction("on"); 
+                    }
+                    
 					setExpireCookie();
 					setExpireCookieLogOut();
 					
@@ -714,6 +732,8 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
+            localStorage.removeItem("securityquestion");
+            localStorage.removeItem("securitynotification");
 			var urlDivided = window.location.href.split("/");
 			urlDivided.pop();
 			urlDivided.pop();
@@ -831,6 +851,11 @@ function sendReceiptEmail(){
 			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
 			hideReceiptPopup();
 	}
+}
+
+function showSecurityPopup()
+{
+   $("#securitynotification").css("display","block");
 }
 
 function showDuggaInfoPopup()

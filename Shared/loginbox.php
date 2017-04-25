@@ -146,7 +146,15 @@
 	</div>
 	
 	<!-- Login Box End! -->
-  
+  <!-- security question notifaction -->
+
+    <div class="loginBox" id="securitynotification" style="display:none;">
+         <div class='loginBoxheader'>
+          <h3>Choose a challenge question</h3>
+          <div onclick="closeWindows(); setSecurityNotifaction('off');">x</div>
+        </div>  
+        <p id="securitynotificationmessage">You need to choose a challenge question. You can do this by visiting your profile page(clicking your username) or by clicking <a onclick="closeWindows(); setSecurityNotifaction('off');" href='profile.php'>here</a> </p>
+    </div>
   <!-- dialogbox -->
   
   <div class="expiremessagebox" style="display:none">
