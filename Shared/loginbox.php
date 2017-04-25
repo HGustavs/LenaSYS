@@ -10,6 +10,7 @@
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
+				<form action="" id="loginForm" method="post">
 			  <div class="table-wrap">
 				<table>
 					<tr>
@@ -53,6 +54,7 @@
 					</tr>
 				</table>
 			  </div>
+				</form>
 		</div>
 		<div id='newpassword' style="display:none">
 			<div class='loginBoxheader' id="passwordid">

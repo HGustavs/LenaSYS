@@ -37,6 +37,14 @@ function checklogin()
 }	
 
 /**
+ * Helper function to display the login box if the user is not authenticated
+ */
+function showLoginPopup()
+{
+	echo '<script>$(function() { showLoginPopup(); });</script>';
+}
+
+/**
  * Returns the number of failed logins from this IP address in the
  * last 30 minutes.
  * @param string $addr Address to look up
