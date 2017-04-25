@@ -207,8 +207,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	str="";
 	if(rowcolor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
 	else str+="<option value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>";
-	if(rowcolor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
-	else str+="<option value='1' style='background-color: #927b9e; color: white'>Header</option>";
+	if(rowcolor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white;'>Header</option>"
+	else str+="<option value='1' style='background-color: #927b9e; color: white;'>Header</option>";
 	$("#rowcolor").html(str);
 		
 	// Set Link
