@@ -1707,8 +1707,16 @@ function Play(event)
 		if(retData['playlink'].indexOf("http")==0){
 				window.location.href=retData['playlink'];
 		}else{
-				navigateTo("/../courses/",retData['playlink']);
-		}
+				var urlText = "";
+				if(retData['public'] === "1") {
+					urlText = "global/" + retData['playlink'];
+                }
+                else{
+					urlText = retData['courseid'] + "/" + retData['playlink'];
+				}
+            	navigateTo("/../courses/", urlText);
+
+        }
 	}
 }
 //-----------------------------------------------------------------------------
