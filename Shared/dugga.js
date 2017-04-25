@@ -689,19 +689,9 @@ function processLogin() {
 				if(result['login'] == "success") {
 					setExpireCookie();
 					setExpireCookieLogOut();
-					$("#userName").html(result['username']);
-					$("#loginbutton").removeClass("loggedout");
-					$("#loginbutton").addClass("loggedin");
-
-					hideLoginPopup();
-
-
-					$("#login #username").val("");
-					$("#login #password").val("");
-					$("#loginbutton").off("click");
-					$("#loginbutton").click(function(){processLogout();});
-
-					location.reload();
+					
+					// Fake a second login, this will reload the page and enable chrome and firefox to save username and password
+					$("#loginForm").submit();
 				}else{
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
