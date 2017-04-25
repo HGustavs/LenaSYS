@@ -27,7 +27,7 @@ var versions;
 var clist;
 var onlyPending=false;
 var timeZero=new Date(0);
-var showTeachers;
+var showTeachers = false;
 
 function setup(){
 	//Benchmarking function
@@ -57,7 +57,10 @@ function setup(){
       onlyPending=false;
   }
 
-  showTeachers=((localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees").indexOf("showteachers**true",0)>=0)?true:false);
+  var t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+  if(t != null) {
+    showTeachers=((t.indexOf("showteachers**true",0)>=0)?true:false);
+  }
 
   window.onscroll = function() {magicHeading()};
 
