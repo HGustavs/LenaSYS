@@ -119,9 +119,7 @@ h6 {
   padding:0px;
 }
 
-body {
-  background: #ddd;
-}
+
 
 hr {
   border: 0;
@@ -155,6 +153,8 @@ p {
   text-align:center;
   padding: 10px;
   font-size: 10pt;
+  background-color: #ddd;
+  
 }
 
 .err{
