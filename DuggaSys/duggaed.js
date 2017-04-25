@@ -388,6 +388,7 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 	});
 
 	$("#resultpopover").css("display", "block");
+	$("#overlay").css("display", "block");
 
 }
 
@@ -480,6 +481,7 @@ function changeanswer(vidd,num)
 function closePreview()
 {
 	$("#resultpopover").css("display", "none");
+	$("#overlay").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
 
 }
