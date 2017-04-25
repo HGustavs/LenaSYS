@@ -588,6 +588,12 @@ function addSecurityQuestionProfile(username) {
 	});
 }
 
+function checkHTTPS() { 
+  if (location.protocol != 'https:') { 
+    /* do something */ 
+  } 
+} 
+
 function processResetPasswordCheckUsername() {
 
 	/*This function is supposed to get the security question from the database*/
