@@ -80,7 +80,7 @@
 					<tr>
 						<td>
 							<input type='button' class='submit-button' onclick="processResetPasswordCheckUsername();" value='Check user'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Back to login</label>
 						</td>
 					</tr>
 				</table>
@@ -115,7 +115,7 @@
 					<tr>
 						<td>
 							<input type='button' class='submit-button' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Back to login</label>
 						</td>
 					</tr>
 				</table>
