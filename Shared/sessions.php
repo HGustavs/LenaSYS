@@ -80,7 +80,7 @@ function getQuestion($username)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare("SELECT uid,username,superuser,securityquestion FROM user WHERE username=:username LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,superuser,securityquestion,requestedpasswordchange FROM user WHERE username=:username LIMIT 1");
 
 	$query->bindParam(':username', $username);
 
@@ -111,8 +111,13 @@ function getQuestion($username)
       		return false;
     	}	
 
-		if($_SESSION["securityquestion"]==null){
+		if($row["securityquestion"]==null){
 			$_SESSION["getname"] = "Security question not found";
+			return false;
+		}
+
+		if($row["requestedpasswordchange"]==1){
+			$_SESSION["getname"] = "You already have a pending reset password request";
 			return false;
 		}
 
