@@ -500,7 +500,14 @@ header td {
 }
 
 .navheader {
+  height: 20px;
+  margin-bottom: 10px;
   width:100%;
+}
+
+.trsize {
+  margin-top:5px;
+  margin-bottom:20px;
 }
 
 .navButt {
@@ -1047,6 +1054,40 @@ input.submit-button {
   float:right;
 }
 
+input.submit-button-rounded {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  background-color:#927b9e;
+  border-radius:4px;
+  width:110px;
+  height:30px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+  margin-bottom:2px;
+  margin-left:0px;
+  font-size:14px;
+  transition:1s background-color;
+  float:left;
+}
+
+input.submit-button-rounded-newitem {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: bold;
+  background-color:#927b9e;
+  border-radius:4px;
+  width:40px;
+  height:30px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+  margin-bottom:2px;
+  margin-left:0px;
+  font-size:16px;
+  text-align: center;
+  transition:1s background-color;
+  float:right;
+}
+
 input.fileed-button {
     background-color:#7B5A96;
     margin-right:6px;
@@ -1428,6 +1469,7 @@ span.arrow {
 .course-dropdown {
 	height: 30px;
 	margin-top: 6px;
+    float:right;
 }
 
 .course-menu-wrapper {
