@@ -1085,7 +1085,7 @@ function doubleclick(ev)
 	var posistionX = (startX+xPos);
 	var posistionY = (startY+yPos);
 	console.log(posistionX+" | "+posistionY);
-	if(diagram.inside(posistionX,posistionY)){
+	if(diagram[selobj].targeted == true){
 		console.log(" H|J ");
         openAppearanceDialogMenu();
         document.getElementById('nametext').value = diagram[selobj].name;
