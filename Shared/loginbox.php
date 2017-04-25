@@ -44,11 +44,13 @@
 					</tr>
 					<tr>
 						<td>
-
-							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
-						
 							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
 
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
 						</td>
 					</tr>
 				</table>
