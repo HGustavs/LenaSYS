@@ -220,8 +220,17 @@
 					
 							if(file_exists ( $file)){
 									$file_extension = strtolower(substr(strrchr($filename,"."),1));									
-									if($file_extension=="html"){
-											$bummer=file_get_contents($file);
+									if($file_extension=="html" || $file_extension=="css" || $file_extension=="js"){
+											//$bummer=file_get_contents($file);
+										    header('Content-Description: File Transfer');
+										    header('Content-Type: application/octet-stream');
+										    header('Content-Disposition: attachment; filename="'.basename($file).'"');
+										    header('Expires: 0');
+										    header('Cache-Control: must-revalidate');
+										    header('Pragma: public');
+										    header('Content-Length: ' . filesize($file));
+										    readfile($file);
+										    exit;
 									}else if($file_extension=="md"){
 											$bummer=file_get_contents($file);
 									}else{
@@ -242,6 +251,7 @@
 											header('Content-Transfer-Encoding: binary');
 											header('Accept-Ranges: bytes');
 											@readfile($file);
+											exit;
 									}
 								}else{
 									$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!".$file."</div>";										  
