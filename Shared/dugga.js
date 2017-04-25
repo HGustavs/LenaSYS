@@ -896,8 +896,7 @@ function sessionExpireLogOut() {
 		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
-			$(".expiremessagebox").css("display","block");
-			$("#expiremessage").text("Your session has timed out");
+			$(".endsessionmessagebox").css("display","block");
 			//location.reload();
 			clearInterval(intervalId);
 		}
@@ -1700,7 +1699,7 @@ function addSecurityQuestionProfile(username) {
 				opt: "GETQUESTION"
 			},
 			success:function(data) {
-				var result = JSON.parse(data);	
+				var result = JSON.parse(data);
 				if(result['getname'] == "success") {
 					$("#challengeQuestion").html(result['securityquestion']);
 				}else{
@@ -1723,8 +1722,8 @@ function processResetPasswordCheckUsername() {
 				opt: "GETQUESTION"
 			},
 			success:function(data) {
-				var result = JSON.parse(data);	
-					//It is worth to note that getname should probably be named status/error since thats basically what it is			
+				var result = JSON.parse(data);
+					//It is worth to note that getname should probably be named status/error since thats basically what it is
 				if(result['getname'] == "success") {
 					$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 					status = 2;
@@ -1789,7 +1788,7 @@ function processResetPasswordCheckSecurityAnswer() {
 			}
 		}
 	});
-}	
+}
 
 
 function processLogin() {
@@ -1926,13 +1925,13 @@ function hideReceiptPopup()
 	$("#overlay").css("display","none");
 }
 
-function hideDuggaStatsPopup() 
+function hideDuggaStatsPopup()
 {
 	$("#duggaStats").css("display", "none");
 	$("#overlay").css("display", "none");
 }
 
-function checkScroll(obj) { 
+function checkScroll(obj) {
 	if(obj.clientHeight < obj.scrollHeight) {
 		obj.style.height = (parseInt(obj.style.height)+1) + 'em';
 	}

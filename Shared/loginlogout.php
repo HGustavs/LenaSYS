@@ -74,10 +74,10 @@ if($opt=="LOGIN"){
 		setcookie('username', '', 0, '/');
 		setcookie('password', '', 0, '/');
 		
-		// Refresh page if session cookie is destroyed
-		if (!isset $_COOKIE["PHPSESSID"]){
-			header("Refresh:0");
-		}
+		// // Refresh page if session cookie is destroyed
+		// if (!isset $_COOKIE["PHPSESSID"]){
+		// 	header("Refresh:0");
+		// }
 		
 }
 	
