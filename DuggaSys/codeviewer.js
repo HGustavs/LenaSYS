@@ -91,8 +91,8 @@ function returned(data)
 		$("#afterbutton").css("pointer-events","none");	
 	}
 	
-	// Disables the play button if there is no playlink
-	if(typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
+	// Disables the play button if there is no playlink or if the file linked does not exist
+	if(!UrlExists()) {
 			$("#playbutton").css("opacity",0.4);
 			$("#playbutton").css("pointer-events","none");
 	}else{
@@ -1707,8 +1707,16 @@ function Play(event)
 		if(retData['playlink'].indexOf("http")==0){
 				window.location.href=retData['playlink'];
 		}else{
-				navigateTo("/../courses/",retData['playlink']);
-		}
+				var urlText = "";
+				if(retData['public'] === "1") {
+					urlText = "global/" + retData['playlink'];
+                }
+                else{
+					urlText = retData['courseid'] + "/" + retData['playlink'];
+				}
+            	navigateTo("/../courses/", urlText);
+
+        }
 	}
 }
 //-----------------------------------------------------------------------------
@@ -2676,4 +2684,24 @@ function setResizableToPer(boxValArray)
 //----------------------------------------------------------------------------------
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>'); 
+}
+
+function UrlExists()
+{
+    var urlText = "";
+    if(retData['public'] === "1") {
+        urlText = "global/" + retData['playlink'];
+    }
+    else{
+        urlText = retData['courseid'] + "/" + retData['playlink'];
+    }
+    var http = new XMLHttpRequest();
+    http.open('HEAD', "../courses/" + urlText, false);
+    http.send();
+    if(http.status == 404 || typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null){
+    	return false;
+	}
+	else{
+    	return true;
+	}
 }
