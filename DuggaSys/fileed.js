@@ -351,6 +351,14 @@ function setupSort(){
 	filt+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
 	filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 	filt+="<div id='dropdowns' class='dropdown-list-container'>";
+	filt+="<div class='checkbox-dugga'><form>"+ 
+	"<input type='radio' name='r0' value='0' onclick='sorttype(0)' class='headercheck' id='FNASC'><label class='headerlabel' for='FNASC'>File Name ASC</label><br />"+
+	"<input type='radio' name='r1' value='1' onclick='sorttype(1)' class='headercheck' id='FNDESC'><label class='headerlabel' for='FNDESC'>File Name DESC</label><br />"+
+    "<input type='radio' name='r2' value='2' onclick='sorttype(2)' class='headercheck' id='FE'><label class='headerlabel' for='FE'>File Extension</label><br />"+
+    "<input type='radio' name='r3' value='3' onclick='sorttype(3)' class='headercheck' id='Upld'><label class='headerlabel' for='Upld'>Upload Date</label><br />"+  
+    "<input type='radio' name='r4' value='4' onclick='sorttype(4)' class='headercheck' id='FS'><label class='headerlabel' for='FS'>File Size</label><br />"+
+    "<input type='radio' name='r5' value='5' onclick='sorttype(5)' class='headercheck' id='FK'><label class='headerlabel' for='FK'>File Kind</label><br />"+ 
+    "</form></div>";
 	filt+="</div>";
 	filt+="</span></td>";
 	$("#menuHook").before(filt); //menuHook is set between buttons and navName
