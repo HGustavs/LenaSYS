@@ -359,7 +359,8 @@ p {
   font-size:18pt;
   background-color: #614875;
   clear:both;
-  border-radius: 5px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 
 .item a {
