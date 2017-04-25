@@ -28,6 +28,7 @@ $(function(){$( "#release" ).datepicker({dateFormat: "yy-mm-dd"});$( "#deadline"
 function closeEditFile()
 {
 		$("#editFile").css("display","none");
+		$("#overlay").css("display","none");
 }
 
 function deleteFile(fileid,filename){
@@ -55,6 +56,7 @@ function createLink()
 		$("#filey").css("display","none");
 		$("#linky").css("display","block");
 		$("#selecty").css("display","none");
+		$("#overlay").css("display","block");
 		$("#kind").val("LINK");
 		$("#cid").val(querystring['cid']);
 		$("#coursevers").val(querystring['coursevers']);
@@ -90,6 +92,7 @@ function createFile(kind)
 		$("#editFile").css("display","block");
 		$("#filey").css("display","block");
 		$("#linky").css("display","none");
+		$("#overlay").css("display","block");
 		if(kind!="LFILE") $("#selecty").css("display","block");
 		$("#kind").val(kind);
 		$("#cid").val(querystring['cid']);
