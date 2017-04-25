@@ -50,12 +50,14 @@ function setup(){
   filt+="</span></td>";
   $("#menuHook").before(filt);
 
-  // Set part of filter config // Should be in filter menu then, not in sorting menu?!
+  // Set part of filter config
   if (localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending")=="true"){
       onlyPending=true;
   } else {
       onlyPending=false;
   }
+
+  showTeachers=((localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees").indexOf("showteachers**true",0)>=0)?true:false);
 
   window.onscroll = function() {magicHeading()};
 
@@ -132,8 +134,8 @@ function redrawtable()
     // Make result table
     var row=1;
     for(var i=0;i<students.length;i++){
-      var isTeacher = false;
-      var show;		// wont var show=onlyPending; ??
+      var isTeacher = false; // Will be true if a member of the course has "W" access
+      var show;
       if (onlyPending){
         show=false;
       } else {
@@ -144,12 +146,15 @@ function redrawtable()
       strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"
       var student=students[i];
       for(var j=0;j<student.length;j++){
-        if(student[j].access == "W") {
+        if(student[j].access == "W") { // Member is a teacher
           isTeacher = true;
         }
-        strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
+        strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
+        // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
+        strt+=" style='padding-left:6px;"+((student[j].access=="W")?" background-color: #ffff90;":"")+"'";
+        strt+=" id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
         if(j==0){
-          strt+="'>"+student[j].grade+"Access:"+student[j].access+"</td>";																	
+          strt+="'>"+student[j].grade+"</td>";																	
         } else {
           if(student[j].kind==4){	strt+=" dugga-moment"; }
           // color based on pass,fail,pending,assigned,unassigned
@@ -578,7 +583,8 @@ function process()
 				dstr+=">"+name+"</label></div>";
 		}
     // Filter for teachers.
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
+    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'>";
+    dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
     if(clist){
       index=clist.indexOf("showteachers");
       if(index>-1){
@@ -675,7 +681,7 @@ function leaves()
 	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
   localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
-	if (!(ocol==col && odir==dir && onlyPending==opend && showTeachers==opent) || typechanged) {
+	if (!(ocol==col && odir==dir && onlyPending==opend) || typechanged) {
 			typechanged=false;
 			resort();
 	}
