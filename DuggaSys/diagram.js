@@ -51,6 +51,9 @@ var crossStrokeStyle1 = "#f64";
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
+//the minimum size for an Enitny are set by the values seen below.
+var minEntityX = 100;
+var minEntityY = 50;
 
 var attributeTemplate = { // Defines entity/attribute/relations predefined sizes
   width: 7*gridSize,
@@ -300,7 +303,20 @@ diagram.delete = function (object)
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
 diagram.insides = function (ex,ey,sx,sy)
-{
+{	
+	//ensure that an entity cannot scale below the minimum size
+	for(i=0;i<this.length;i++){
+		if(!(this[i].kind == 1)){
+			if(points[this[i].topLeft].x > points[this[i].bottomRight].x || points[this[i].topLeft].x >points[this[i].bottomRight].x -minEntityX){
+				points[this[i].topLeft].x = points[this[i].bottomRight].x -minEntityX;
+			}
+			if(points[this[i].topLeft].y > points[this[i].bottomRight].y ||points[this[i].topLeft].y > points[this[i].bottomRight].y -minEntityY){
+					points[this[i].topLeft].y = points[this[i].bottomRight].y -minEntityY;
+			}
+			
+		}		
+	}
+ 
 	for(i=0;i<this.length;i++){
 		if (sx > ex){
 			var tempa = ex;
@@ -313,16 +329,19 @@ diagram.insides = function (ex,ey,sx,sy)
 			sy=tempb;
 		}
 		if(!(this[i].kind == 1)){
+						
 		var tx = points[this[i].topLeft].x;
 		var ty = points[this[i].topLeft].y;
 		var bx = points[this[i].bottomRight].x;
 		var by = points[this[i].bottomRight].y;
+		
+		
 		if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by){
 			this[i].targeted = true;
 			// return i;
 		} else {
 			this[i].targeted = false;
-		}
+			}
 		}
 	}
 
@@ -884,10 +903,10 @@ function updategfx()
     drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
-
+				
 		// Redraw diagram
 		diagram.draw();
-
+				
 // Make a bool operation between PathA and PathB
 //		pathA.boolOp(pathC);
 
@@ -895,7 +914,8 @@ function updategfx()
 		points.drawpoints();
 
 		// Draw all symbols
-
+		
+		
 }
 
 // Recursive Pos of div in document - should work in most browsers
@@ -958,21 +978,26 @@ function mousemoveevt(ev, t){
 		}else if(md==1){
 				// If mouse is pressed down and no point is close show selection box
 		}else if(md==2){
-				// If mouse is pressed down and a point is selected - move that point
-            if(diagram[selobj].symbolkind==5){
-                // Changes relations size as mirrored.
-                points[sel.ind].x = cx;
-                points[sel.ind].y = cy;
-
-                points[sel.ind-1].x = points[sel.ind+1].x-points.distanceBetweenPoints(points[sel.ind+1].x,points[sel.ind+1].y,points[sel.ind].x,points[sel.ind].y,true);
-                points[sel.ind-1].y = points[sel.ind+1].y-points.distanceBetweenPoints(points[sel.ind+1].x,points[sel.ind+1].y,points[sel.ind].x,points[sel.ind].y,false);
-
-            }else {
-                // If mouse is pressed down and a point is selected - move that point
+            // If mouse is pressed down and at a point in selected object - move that point
+            // Changes relations size as mirrored.
+            if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind==5) {
+                points[diagram[selobj].bottomRight].x = cx;
+                points[diagram[selobj].bottomRight].y = cy;
+            	points[diagram[selobj].topLeft].x = points[diagram[selobj].middleDivider].x - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, true);
+                points[diagram[selobj].topLeft].y = points[diagram[selobj].middleDivider].y - points.distanceBetweenPoints(points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, points[sel.ind].x, points[sel.ind].y, false);
+			}
+            else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind==5) {
+                points[diagram[selobj].topLeft].x = cx;
+                points[diagram[selobj].topLeft].y = cy;
+                points[diagram[selobj].bottomRight].x = points[diagram[selobj].middleDivider].x + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, true);
+                points[diagram[selobj].bottomRight].y = points[diagram[selobj].middleDivider].y + points.distanceBetweenPoints(points[sel.ind].x, points[sel.ind].y, points[diagram[selobj].middleDivider].x, points[diagram[selobj].middleDivider].y, false);
+            }
+            else {
                 points[sel.ind].x = cx;
                 points[sel.ind].y = cy;
             }
-		}else if(md==3){
+        }
+		else if(md==3){
 				// If mouse is pressed down inside a movable object - move that object
 				if(movobj!=-1){
 					for (var i=0;i<diagram.length;i++){
@@ -1042,8 +1067,9 @@ function mousedownevt(ev)
 
         if(diagram[lineStartObj].symbolkind==2){
           p1=diagram[lineStartObj].centerpoint;
-        }
-        else{
+        }else if(diagram[lineStartObj].symbolkind==5){
+          p1=diagram[lineStartObj].middleDivider;
+		} else{
           p1=points.addpoint(cx,cy,false);
         }
         //p1=diagram[hovobj].centerpoint;
@@ -1085,17 +1111,13 @@ function doubleclick(ev)
 	var posistionX = (startX+xPos);
 	var posistionY = (startY+yPos);
 	console.log(posistionX+" | "+posistionY);
-	if(diagram[selobj].targeted == true){
-		console.log(" H|J ");
+	if(diagram[selobj].targeted == true){ 
         openAppearanceDialogMenu();
         document.getElementById('nametext').value = diagram[selobj].name;
 		document.getElementById('fontColor').value = diagram[selobj].fontColor;
 		document.getElementById('font').value = diagram[selobj].font;
-    	document.getElementById('attributeType').value = diagram[selobj].attributeType;
-    	document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
-  }
-  else{
-  	console.log("Can't find!");
+	    document.getElementById('attributeType').value = diagram[selobj].attributeType;
+	    document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
   }
 }
 
@@ -1144,7 +1166,9 @@ function mouseupevt(ev){
         // End line on object
         if(diagram[hovobj].symbolkind == 2){
           p2=diagram[hovobj].centerpoint;
-        }else{
+        }else if(diagram[hovobj].symbolkind == 5){
+            p2=diagram[hovobj].middleDivider;
+	  	}else{
           p2=points.addpoint(cx,cy,false);
         }
 
@@ -1269,6 +1293,7 @@ function mouseupevt(ev){
         else if(uimode=="CreateERRelation"&&md==4){
             erRelationA = new Symbol(5);
 
+            erRelationA.name="Relation"+diagram.length;
             erRelationA.topLeft=p1;
             erRelationA.bottomRight=p2;
             erRelationA.middleDivider=p3;
@@ -1289,8 +1314,13 @@ function mouseupevt(ev){
             }
 
             diagram.push(erRelationA);
+
+            //selecting the newly created relation and open the dialog menu.
+            selobj = diagram.length -1;
+            diagram[selobj].targeted = true;
+            openAppearanceDialogMenu();
         }else if (md == 4 && !(uimode == "CreateFigure") && !(uimode == "CreateLine") && !(uimode == "CreateEREntity") && !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) && !(uimode == "MoveAround" ) && !(uimode=="CreateERRelation")) {
-            diagram.insides(cx, cy, sx, sy);
+			diagram.insides(cx, cy, sx, sy);
         }
 
     document.addEventListener("click", clickOutsideDialogMenu);
@@ -1432,6 +1462,17 @@ function dialogForm() {
       		"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
           "<button type='submit'  class='submit-button' onclick='changeNameEntity(form); setEntityType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
+    if(diagram[selobj].symbolkind==5){
+        form.innerHTML = "Relation name:</br>" +
+            "<input id='nametext' type='text'></br>" +
+            "Font family:<br>" +
+            "<select id ='font'><option value='arial' selected>Arial</option><option value='Courier New'>Courier New</option><option value='Impact'>Impact</option><option value='Calibri'>Calibri</option></select><br>" +
+            "Font color:<br>" +
+            "<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
+            "Text size:<br>" +
+            "<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
+            "<button type='submit'  class='submit-button' onclick='changeNameRelation(form); setType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+    }
 }
 
 //setTextSize(): used to change the size of the text. unifinish can's get it to work.
@@ -1473,6 +1514,18 @@ function changeNameEntity(form){
     updategfx();
     $("#appearance").hide();
 
+}
+
+function  changeNameRelation() {
+    dimDialogMenu(false);
+
+    diagram[selobj].name=document.getElementById('nametext').value;
+    diagram[selobj].fontColor=document.getElementById('fontColor').value;
+    diagram[selobj].font=document.getElementById('font').value;
+    diagram[selobj].sizeOftext=document.getElementById('TextSize').value;
+    diagram[selobj].entityType=document.getElementById('entityType').value;
+    updategfx();
+    $("#appearance").hide();
 }
 
 function setEntityType(form) {
@@ -1581,7 +1634,7 @@ function drawGrid(){
   ctx.setLineDash([5, 0]);
   var quadrantx = (startX < 0)? startX: -startX,
     quadranty = (startY < 0)? startY: -startY;
-  //console.log(quadrantx+" : "+widthWindow+ "; "+(quadrantx+widthWindow));
+  console.log(quadrantx+" : "+widthWindow+ "; "+(quadrantx+widthWindow));
   for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
     if(i%5==0){
       i++;
