@@ -44,7 +44,7 @@ if(strcmp($opt,"GET")==0){
 		$vers = 97732;
 
 		// First query: get the headings for the table, which is the listentry names. 
-		$query = $pdo->prepare("SELECT listentries.*,quizFile,COUNT(variant.vid) as qvariant FROM listentries LEFT JOIN quiz ON  listentries.link=quiz.id LEFT JOIN variant ON quiz.id=variant.quizID WHERE listentries.cid=:cid and listentries.vers=:vers and (listentries.kind=4) and (listentries.grouptype=1 or listentries.grouptype=3) GROUP BY lid ORDER BY pos;");
+		$query = $pdo->prepare("SELECT listentries.*,quizFile,COUNT(variant.vid) as qvariant FROM listentries LEFT JOIN quiz ON  listentries.link=quiz.id LEFT JOIN variant ON quiz.id=variant.quizID WHERE listentries.cid=:cid and listentries.vers=:vers and (listentries.kind=4) AND (listentries.grouptype=1 OR listentries.grouptype=3) GROUP BY lid ORDER BY pos;");
 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
@@ -90,7 +90,7 @@ if(strcmp($opt,"GET")==0){
 		$studentAndGroupRows = $query->fetchAll(PDO::FETCH_ASSOC); // 2 rows initially. (count = 2)
 
 		// Third query, get what listentry each group is associated with. 
-		$query = $pdo->prepare("SELECT listentries.lid, usergroup_listentries.ugid FROM listentries LEFT OUTER JOIN usergroup_listentries on listentries.lid = usergroup_listentries.lid WHERE listentries.cid = :cid AND listentries.vers = :vers AND listentries.kind = 4");
+		$query = $pdo->prepare("SELECT listentries.lid, usergroup_listentries.ugid FROM listentries LEFT OUTER JOIN usergroup_listentries on listentries.lid = usergroup_listentries.lid WHERE listentries.cid = :cid AND listentries.vers = :vers AND listentries.kind = 4 AND (listentries.grouptype=1 OR listentries.grouptype=3)");
 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
