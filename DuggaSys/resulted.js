@@ -596,15 +596,18 @@ function process()
         }
       }
     }
-    dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>"
+    dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
-		dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
+    // Filter for only showing pending
+    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
+    if (onlyPending){ dstr+=" checked"; }
+    dstr+="><label class='headerlabel' for='pending'>Only pending</label>";
+	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
-		document.getElementById("dropdownc").innerHTML=dstr;	
-		
-		var dstr="";
-    if (onlyPending){ dstr+=" checked='true'"; }
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending1'><label class='headerlabel' for='pending0'>Only pending</label>";
+	document.getElementById("dropdownc").innerHTML=dstr;
+	var dstr="";
+
+	// Sorting
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort ascending</label><input name='sortdir' type='radio' class='headercheck' value='0' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
@@ -654,11 +657,14 @@ function leavec()
 	});
   
   showTeachers=$('#showteachers').is(":checked");
-	
-	old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
-  
-	if(str!=old) process();
+  	old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+  	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
+
+  onlyPending=$('#pending').is(":checked");
+    var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
+    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
+
+	if(str!=old || onlyPending==opend) process();
 }
 
 function hovers()
@@ -672,22 +678,22 @@ function leaves()
 	$('#dropdowns').css('display','none'); 
 	var col=0;
 	var dir=1;
-  onlyPending=$('#onlyPending').is(":checked");
+
 	var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
 	var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
-  var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
+
 		
 	$("input[name='sortcol']:checked").each(function() {col=this.value;});
 	$("input[name='sortdir']:checked").each(function() {dir=this.value;});
 	
 	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
 	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
-  localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
-	if (!(ocol==col && odir==dir && onlyPending==opend) || typechanged) {
-			typechanged=false;
-			resort();
-	}
+
+	if (!(ocol==col && odir==dir) || typechanged) {
+    typechanged=false;
+    resort();
+}
 }
 
 function sorttype(t){
