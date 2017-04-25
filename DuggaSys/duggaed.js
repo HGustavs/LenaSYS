@@ -33,6 +33,7 @@ function deleteVariant()
 	var vid=$("#vid").val();
 	if(confirm("Do you really want to delete this Variant?")) AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
 	$("#editVariant").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function toggleVariant()
@@ -44,6 +45,7 @@ function toggleVariant()
 		if(confirm("Do you really want to enable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"0",coursevers:querystring['coursevers']},"DUGGA");
 	}
 	$("#editVariant").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function addVariant(cid,qid)
@@ -54,6 +56,7 @@ function addVariant(cid,qid)
 function updateVariant()
 {
 	$("#editVariant").css("display","none");
+	$("#overlay").css("display","none");
 
 	var vid=$("#vid").val();
 	var answer=$("#variantanswer").val();
@@ -78,11 +81,13 @@ function deleteDugga()
     did=$("#did").val();
     if(confirm("Do you really want to delete this dugga?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
+    $("#overlay").css("display","none");
 }
 
 function updateDugga()
 {
 	$("#editDugga").css("display","none");
+	$("#overlay").css("display","none");
 
 	var did=$("#did").val();
 	var nme=$("#name").val();
@@ -99,6 +104,7 @@ function updateDugga()
 function closeEditDugga()
 {
 	$("#editDugga").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function showLoginPopup()
@@ -116,6 +122,7 @@ function hideLoginPopup()
 function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 {
 	$("#editDugga").css("display","block");
+	$("#overlay").css("display","block");
 	$("#did").val(did); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#release").val(release); // Set Release date name
@@ -155,6 +162,7 @@ function selectVariant(vid,param,answer,template,dis)
 {
 
 	$("#editVariant").css("display","block"); // Display edit dialog
+	$("#overlay").css("display","block"); 
 	$("#vid").val(vid); // Set Variant ID
 	//var pparam = parseParameters(param);
 	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter

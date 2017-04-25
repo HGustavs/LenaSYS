@@ -55,6 +55,7 @@ function showSubmitButton(){
   $(".updateDugga").css("display","none"); 
   $(".deleteDugga").css("display","none"); 
   $(".closeDugga").css("display","inline-block"); 
+  $("#overlay").css("display","block"); 
 } 
  
 function showSaveButton(){ 
@@ -62,6 +63,7 @@ function showSaveButton(){
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
   $(".closeDugga").css("display","none"); 
+  $("#overlay").css("display","none"); 
 } 
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments,rowcolor,grouptype)
@@ -306,6 +308,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	}
 	$("#editSection").css("display","block");
+	$("#overlay").css("display","block");
 	
 }
 
@@ -407,6 +410,7 @@ function deleteItem()
 	lid=$("#lid").val();
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function updateItem()
@@ -427,6 +431,7 @@ function updateItem()
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments,rowcolor:rowcolor,grouptype:grouptype},"SECTION");
 	$("#editSection").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 // Create New Dugga/Example
@@ -469,6 +474,7 @@ function closeSelect()
 function showCreateVersion()
 {
 	$("#newCourseVersion").css("display", "block");
+	$("#overlay").css("display", "block");
 }
 
 function createVersion(){
@@ -515,6 +521,7 @@ function createVersion(){
 	}
 
 	$("#newCourseVersion").css("display","none");
+	$("#overlay").css("display","none");
 	
 	window.setTimeout(function(){
 		changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
@@ -528,6 +535,7 @@ function showEditVersion(versid, versname, startdate, enddate)
 	$("#estartdate").val(startdate);
 	$("#eenddate").val(enddate);
 	$("#editCourseVersion").css("display", "block");
+	$("#overlay").css("display", "block");
 }
 
 function updateVersion(){
@@ -565,6 +573,7 @@ function updateVersion(){
 	}
 
 	$("#editCourseVersion").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function goToVersion(selected)
