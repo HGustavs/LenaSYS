@@ -2244,3 +2244,14 @@ table {
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.ellipsis {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis; /* rest */
+  -o-text-overflow: ellipsis; /* opera */
+}

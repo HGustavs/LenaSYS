@@ -677,10 +677,13 @@ function returnedSection(data)
 
 
 		// Course Name
-		str+="<div class='course'>";
-			str+="<div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div>";
-			str+="<div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div>";
-			str+="<div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div>";
+		str+="<div class='course ellipseBox' style='display: flex;align-items: center;justify-content: center;'>";
+			str+="<div style='display: none; margin-right:10px;'></div>";
+			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-right:10px; max-width: 400px'>"+data.coursename+"</div>";
+      str+="<div class='nowrap'";
+			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
+			str+="<div id='course-versname' style='margin-right:10px;'>"+versionname+"</div>";
+      str+='</div>';
 			str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
 			str+="<div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 		str+="</div>";
