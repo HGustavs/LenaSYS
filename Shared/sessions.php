@@ -275,9 +275,9 @@ function login($username, $password, $savelogin)
             $_SESSION["securityquestion"]="set";
         }
 
-        $query = $pdo->prepare("SELECT access FROM user_course WHERE username=:username AND access='W'");
+        $query = $pdo->prepare("SELECT access FROM user_course WHERE uid=:uid AND access='W'");
 
-		$query->bindParam(':username', $username);
+		$query->bindParam(':uid', $row['uid']);
 
 		$query->execute();
 
