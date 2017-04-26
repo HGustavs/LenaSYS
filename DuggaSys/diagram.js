@@ -2002,7 +2002,7 @@ function loadDiagram(){
 
 //remove localstorage
 function removeLocal(){
-	 localStorage.clear();
+    localStorage.setItem('localhash', "");
 }
 
 
