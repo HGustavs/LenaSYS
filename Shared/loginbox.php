@@ -10,6 +10,7 @@
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
+				<form action="" id="loginForm" method="post">
 			  <div class="table-wrap">
 				<table>
 					<tr>
@@ -44,15 +45,18 @@
 					</tr>
 					<tr>
 						<td>
-
-							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
-						
 							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
 
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
+						</td>
+					</tr>
 				</table>
 			  </div>
+				</form>
 		</div>
 		<div id='newpassword' style="display:none">
 			<div class='loginBoxheader' id="passwordid">
@@ -78,7 +82,7 @@
 					<tr>
 						<td>
 							<input type='button' class='submit-button' onclick="processResetPasswordCheckUsername();" value='Check user'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Back to login</label>
 						</td>
 					</tr>
 				</table>
@@ -113,7 +117,7 @@
 					<tr>
 						<td>
 							<input type='button' class='submit-button' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer'>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Log in</label>
+							<label class='forgotPw' onclick='toggleloginnewpass();'>Back to login</label>
 						</td>
 					</tr>
 				</table>
@@ -142,7 +146,15 @@
 	</div>
 	
 	<!-- Login Box End! -->
-  
+  <!-- security question notifaction -->
+
+    <div class="loginBox" id="securitynotification" style="display:none;">
+         <div class='loginBoxheader'>
+          <h3>Choose a challenge question</h3>
+          <div onclick="closeWindows(); setSecurityNotifaction('off');">x</div>
+        </div>  
+        <p id="securitynotificationmessage">You need to choose a challenge question. You can do this by visiting your profile page(clicking your username) or by clicking <a onclick="closeWindows(); setSecurityNotifaction('off');" href='profile.php'>here</a> </p>
+    </div>
   <!-- dialogbox -->
   
   <div class="expiremessagebox" style="display:none">

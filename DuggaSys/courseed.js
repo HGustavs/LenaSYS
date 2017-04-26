@@ -24,6 +24,8 @@ function updateCourse()
 
 	// Show dialog
 	$("#editCourse").css("display", "none");
+	
+	$("#overlay").css("display", "none");
 
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
 }
@@ -43,11 +45,13 @@ function closeNewCourse()
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#newCourse").css("display", "none");
+	$("#overlay").css("display", "none");
 }
 
 function newCourse()
 {
 	$("#newCourse").css("display", "block");
+	$("#overlay").css("display", "block");
 }
 
 function createNewCourse()
@@ -55,6 +59,7 @@ function createNewCourse()
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
+	$("#overlay").css("display", "none");
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
@@ -168,6 +173,8 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	// Show dialog
 	$("#editCourse").css("display", "block");
+	
+	$("#overlay").css("display", "block");
 
 	return false;
 }
@@ -187,6 +194,7 @@ function getCurrentVersion(cid){
 
 function editVersion(cid, cname, ccode) {
 		document.getElementById('newCourseVersion').style.display = "block";
+		document.getElementById('overlay').style.display = "block";
 		document.getElementById('cid').value = cid;
 		document.getElementById('coursename1').value = cname;
 		document.getElementById('coursecode1').value = ccode;
@@ -270,6 +278,7 @@ function createVersion(){
 		}
 	
 		$("#newCourseVersion").css("display","none");		
+		$("#overlay").css("display","none");		
 	}
 
 }

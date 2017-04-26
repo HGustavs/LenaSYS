@@ -44,7 +44,7 @@ pdoConnect();
 	<div id='editSection' class='loginBox' style='width:460px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Item</h3>
-			<div onclick='closeWindows(); closeSelect();'>x</div>
+			<div onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='lid' value='Toddler' />
@@ -64,8 +64,8 @@ pdoConnect();
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' /> 
-			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' /> 
-			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();' /> 
+			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();showSaveButton();' /> 
+			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();showSaveButton();' /> 
 			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' /> 
     </div>
 	</div>

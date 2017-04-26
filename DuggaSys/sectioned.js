@@ -55,6 +55,7 @@ function showSubmitButton(){
   $(".updateDugga").css("display","none"); 
   $(".deleteDugga").css("display","none"); 
   $(".closeDugga").css("display","inline-block"); 
+  $("#overlay").css("display","block"); 
 } 
  
 function showSaveButton(){ 
@@ -62,6 +63,7 @@ function showSaveButton(){
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
   $(".closeDugga").css("display","none"); 
+  $("#overlay").css("display","none"); 
 } 
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments,rowcolor,grouptype)
@@ -90,16 +92,10 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='3'>U-3-4-5</option>";
 
 	$("#gradesys").html(str);
-	
-	// Display Select Marker
-	$(".item").css("border","none");
-	$(".item").css("box-shadow","none");
-	$("#I"+lid).css("border","2px dashed #FC5");
-	$("#I"+lid).css("box-shadow","1px 1px 3px #000 inset");
 		
 	// Set grouptype
 	str="";
-	if(grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
+	if(grouptype==null||grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
 	else str+="<option value='0'>Regular dugga</option>";
 	
 	if(grouptype==1) str+="<option selected='selected' value='1'>Group dugga</option>"
@@ -306,6 +302,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	}
 	$("#editSection").css("display","block");
+	$("#overlay").css("display","block");
 	
 }
 
@@ -407,6 +404,7 @@ function deleteItem()
 	lid=$("#lid").val();
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function updateItem()
@@ -427,6 +425,7 @@ function updateItem()
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments,rowcolor:rowcolor,grouptype:grouptype},"SECTION");
 	$("#editSection").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 // Create New Dugga/Example
@@ -469,6 +468,7 @@ function closeSelect()
 function showCreateVersion()
 {
 	$("#newCourseVersion").css("display", "block");
+	$("#overlay").css("display", "block");
 }
 
 function createVersion(){
@@ -515,6 +515,7 @@ function createVersion(){
 	}
 
 	$("#newCourseVersion").css("display","none");
+	$("#overlay").css("display","none");
 	
 	window.setTimeout(function(){
 		changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
@@ -528,6 +529,7 @@ function showEditVersion(versid, versname, startdate, enddate)
 	$("#estartdate").val(startdate);
 	$("#eenddate").val(enddate);
 	$("#editCourseVersion").css("display", "block");
+	$("#overlay").css("display", "block");
 }
 
 function updateVersion(){
@@ -565,6 +567,7 @@ function updateVersion(){
 	}
 
 	$("#editCourseVersion").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function goToVersion(selected)
@@ -949,13 +952,13 @@ function returnedSection(data)
 						
 					
 						if(parseInt(item['kind']) === 0){
-								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";
 						}else if(parseInt(item['kind']) === 1){
-								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";											
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";											
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";											
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";											
 						}else{
-								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";																	
+								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";																	
 						}
 				}
 

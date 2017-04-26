@@ -20,16 +20,19 @@ function addUsers()
 		var newUserJSON = JSON.stringify(newUsersArr);	
 		AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 		$("#createUsers").css("display","none");
+		$("#overlay").css("display","none");
 }
 
 function showCreateUsersPopup()
 {
 	$("#createUsers").css("display","block");
+	$("#overlay").css("display","block");
 }
 
 function hideCreateUsersPopup()
 {
 	$("#createUsers").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function changeAccess(cid,uid,val)
@@ -107,6 +110,8 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className,teacher
 
 	// Displays the cogwheel box
 	$("#editUsers").css("display","block");
+	
+	$("#overlay").css("display","block");
 }
 
 function updateUser()
@@ -122,6 +127,7 @@ function updateUser()
 	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
 	
 	$("#editUsers").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function closeEdituser()

@@ -40,8 +40,18 @@ pdoConnect();
 						<label for="currentPassword">Current password</label><br/>
 						<input type="password" id="currentPassword" placeholder="Current password" /><br/><br/>
 						<label for="challengeQuestion">Challenge question</label><br/>
-						<?php echo "<textarea id='challengeQuestion' value='' onkeyup='checkScroll(this)' style='height:1.25em; max-height:110px; width:16em; overflow:auto; font-family:sans-serif;'></textarea><br/>" ?>
-						<script>addSecurityQuestionProfile('<?php echo $_SESSION['loginname'] ?>')</script>
+						<label id="securityQuestionError"></label>
+						<form action="/action_page.php">
+						  <select name="securityQuestions">
+							<option value="What's your mother's name?" selected>What is your mother's name?</option>
+							<option value="In what year was your father born?">In what year was your father born?</option>
+							<option value="What is your pet’s name?">What is your pet’s name?</option>
+							<option value="Who was your childhood hero?">Who was your childhood hero?</option>
+						  </select>
+						  <br><br>
+						</form>
+						<!--<?php echo "<textarea id='challengeQuestion' value='' onkeyup='checkScroll(this)' style='height:1.25em; max-height:110px; width:16em; overflow:auto; font-family:sans-serif;'></textarea><br/>" ?>
+						<script>addSecurityQuestionProfile('<?php echo $_SESSION['loginname'] ?>')</script>-->
 						<label for="challengeAnswer">Challenge question</label><br/>
 						<input type="password" id="challengeAnswer" placeholder="Answer to question" /><br/><br/>
 						<button type="button" id="saveChallenge">Save</button><br/><br/>
