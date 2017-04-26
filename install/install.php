@@ -25,7 +25,7 @@
         var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
         var filePath = "<?php echo $putFileHere; ?>";
 
-        document.getElementById('dialogText').innerHTML="<h1 style='text-align: center;'><span style='color: red;' />" +
+        document.getElementById('dialogText').innerHTML="<div style='background-image: url(../Shared/icons/warningTriangle.png); background-size: 150px; background-repeat: no-repeat;'><h1 style='text-align: center;'><span style='color: red;' />" +
             "!!!!!!READ THIS BEFORE YOU START!!!!!!</span></h1><br>" +
             "<h2 style='text-align: center;'>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
             "<br>" +
@@ -33,7 +33,7 @@
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
             "<br>" +
             "<input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1'>" +
-            "<i>I promise i have done this and will not complain that it's not working</i>";
+            "<i>I promise i have done this and will not complain that it's not working</i></div>";
 
         function haveRead(isTrue) {
             modalRead = isTrue;
@@ -114,7 +114,7 @@
 ?>
                 <td valign=top width="30%" bgcolor="#EEEEEE">
                     Enter root user. <br>
-                    <input type="text" name="mysqlRoot" placeholder="Root" /> <br>
+                    <input type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
                     Enter password for MySQL root. <br>
                     <input type="password" name="rootPwd" placeholder="Root Password" /> <br>
                 </td>
@@ -172,7 +172,7 @@
                 var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
                 var filePath = '{$putFileHere}';
                 
-                document.getElementById('dialogText').innerHTML = '<h1 style=\'text-align: center;\'><span style=\'color: red;\' />!!!WARNING!!!</span></h1><br>' +
+                document.getElementById('dialogText').innerHTML = '<div style=\'background-image: url(../Shared/icons/warningTriangle.png); background-size: 150px; background-repeat: no-repeat;\'><h1 style=\'text-align: center;\'><span style=\'color: red;\' />!!!WARNING!!!</span></h1><br>' +
                     '<h2 style=\'text-align: center;\'>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
                     '<p style=\'text-align: center;\'>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
                     'responsibility for your failing system.</p>';
@@ -336,7 +336,7 @@
                 echo "<span style='color: green;' />Initialization of database complete. </span><br>";
             } catch (PDOException $e) {
                 echo "<span style='color: red;' />Failed initialization of database because of query (in init_db.sql): </span><br>";
-                echo "<code><textarea rows='4' cols='70' readonly>{$completeQuery}</textarea></code><br><br>";
+                echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>{$completeQuery}</code></div><br><br>";
             }
             flush();
             ob_flush();
@@ -380,39 +380,32 @@
         # All this code prints further instructions to complete installation.
         $putFileHere = dirname(getcwd(), 2); // Path to lenasys
         echo "<h1><span style='color: red;' />!!!READ BELOW!!!</span></h1>";
+        $lenaInstall = dirname($_SERVER['SCRIPT_NAME'], 2);
+        echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
+        echo "<input type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
+        echo "</form>";
         echo "<br><b>To make installation work please make a
             file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
-        echo "<textarea rows='6' cols='70' readonly style='resize:none'>";
+        echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>";
         echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
         echo 'define(\"DB_USER\",\"' . $username . '\");\n';
         echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
         echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
         echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
-        echo "</textarea><br>";
-
+        echo "</code></div><br>";
 
         echo "<b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<textarea rows='4' cols='70' readonly style='resize:none'>";
+        echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>";
         echo "mkdir " . $putFileHere . "/log && ";
         echo "chmod 777 " . $putFileHere . "/log && ";
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
-        echo "</textarea><br>";
-    }
-
-    function makeCoursesysFile($username, $password, $serverName, $databaseName, $putFileHere){
-        # Make and edit the coursesyspw.php file
-        $fileContent = "<?php\ndefine(\"DB_USER\",\"{$username}\");\n" .
-            "define(\"DB_PASSWORD\",\"{$password}\");\n" .
-            "define(\"DB_HOST\",\"{$serverName}\");\n" .
-            "define(\"DB_NAME\",\"{$databaseName}\");\n" .
-            "?>";
-        file_put_contents("{$putFileHere}/coursesyspw.php", $fileContent);
+        echo "</code></div><br>";
     }
 
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
@@ -434,7 +427,7 @@
                 echo "<span style='color: green;' />Successfully filled database with test data from {$file}.sql.</span><br>";
             } catch (PDOException $e) {
                 echo "<span style='color: red;' />Failed to fill database with data because of query in {$file}.sql (Skipped the rest of this file):</span><br>";
-                echo "<code><textarea rows='4' cols='70' readonly>{$completeQuery}</textarea></code><br><br>";
+                echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>{$completeQuery}</code></div><br><br>";
             }
         }
         flush();
