@@ -44,7 +44,8 @@
                     $coursevers=getOPG('coursevers');
                     if($coursevers=="UNK") $coursevers=getOPG('cvers');
 					echo "<td class='navButt' id='swimlane' title='swimlane'>";
-                    echo "<a href='../Shared/swimlane.php?courseid=" . $cid . "&coursevers=" . $coursevers . "'><img src='../Shared/icons/swimlane.svg'></a></td>";
+					$path = getcwd() . "/swimlane.php?courseid=" . $cid . "&coursevers=" . $coursevers;
+                    echo "<a class ='linkSwimlane' href='JavaScript:void(0);'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
 			}
 			
@@ -85,6 +86,84 @@
 		
 	?>
 </header>
+    <body>
+    <div class="swimlaneOverlay" id="swimlaneOverlay">
+        <span class='SwimClose''>&times;</span>
+        <!-- the external content of swimlane is loaded into this div -->
+        <div class="SwimContentWrap" id ="SwimContentWrap">
+        </div>
+    </div>
+        <script>
+            var swimBox = document.getElementById('swimlaneOverlay');
+            var path = location.protocol + '//' + location.host + location.pathname;
+
+            $(document).ready(function(){
+                $("a.linkSwimlane").click(function(){ loadSwimlane(); });
+            });
+
+            function loadSwimlane() {
+                $('.SwimContentWrap').load(path + "/../../Shared/swimlane.php?courseid=" +
+                  <?php ((isset($cid)) ? Print($cid) : Print(0)) ?> +
+                        "&coursevers=" +
+                  <?php ((isset($coursevers)) ? Print($coursevers) : Print(0)) ?>);
+                swimBox.style.display = "block";
+            }
+
+            var circlePosX;
+            var circlePosY;
+            var mouseX;
+            var mouseY;
+
+            // Get mouse position.
+            $(document).mousemove(function (e) {
+                mouseX = e.pageX;
+                mouseY = e.pageY;
+            });
+
+            // Move left column with side scroll.
+            $(window).scroll(function () {
+                $('#weeks').css({
+                    'left': $(this).scrollLeft() + 5
+                });
+            });
+
+            function mouseOverCircle(circle, text) {
+                circle.setAttribute("r", 15);
+                circlePosY = parseInt(circle.getAttribute('cy')) - 70;
+                circlePosX = parseInt(circle.getAttribute('cx')) + 20;
+                document.getElementById("duggaInfoText").innerHTML = text;
+                $('#duggainfo').css({'top': circlePosY, 'left': circlePosX}).fadeIn('fast');
+            }
+
+            function mouseGoneFromCircle(circle) {
+                circle.setAttribute("r", 10);
+                $('#duggainfo').fadeOut('fast');
+            }
+
+            function mouseOverLine(text) {
+                document.getElementById("currentDateText").innerHTML = text;
+                $('#currentDate').css({'top': mouseY, 'left': mouseX}).fadeIn('fast');
+            }
+
+            function mouseGoneFromLine() {
+                $('#currentDate').fadeOut('fast');
+            }
+
+            var exitButton = document.getElementsByClassName("SwimClose")[0]; // Get the button that opens the modal
+
+            // When the user clicks on <span> (x), close the modal
+            exitButton.onclick = function() {
+                swimBox.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == swimBox) {
+                    swimBox.style.display = "none";
+                }
+            }
+        </script>
+    </body>
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
 			$("#cookiemsg").css("display", "none");
@@ -94,10 +173,6 @@
 		}
 
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
-  function displaySwimlane(){
-    $("#swimlane").css("display", "block");
-  }
-	
 	function cookieMessage(){
 		localStorage.setItem("cookieMessage", "off");
 		$("#cookiemsg").css("display", "none");
