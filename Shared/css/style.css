@@ -2176,14 +2176,14 @@ table {
 .SwimContentWrap {
   position: absolute;
   left: 4%;
-  top: 7%
+  top: 62px;
 }
 
 /* The Close Button */
 .SwimClose {
   color: white;
   position: absolute;
-  top: 7%;
+  top: 62px;
   left: 2%;
   font-size: 28px;
   font-weight: bold;
